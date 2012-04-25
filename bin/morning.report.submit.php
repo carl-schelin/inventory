@@ -123,6 +123,10 @@
 # ignore the rest
 # delete the file when done
 
+# for blackberry messages, there is no mime encoding and the signature is actually an ***This message ...
+# so save the lines of text (if not blank) and bail if the "This message" signature pops up.
+
+  $savedlines = '';
   $boundary = '';
   $leave = 0;
   $report = '';
@@ -138,6 +142,19 @@
     if (preg_match("/^--------------/", $process) && $leave == 0) {
       while (!feof($file)) {
         $process = trim(fgets($file));
+
+# again, if a blackberry, we're done
+        if (preg_match("/This message has been sent via the Intrado Wireless Information Network/", $process)) {
+          $report .= $savedlines;
+          $leave = 1;
+          break;
+        }
+# save the lines in case it's a plain text message from the blackberry; save after the exit due to the "Wireless" message.
+        if ($process != '') {
+          $savedlines .= $process;
+        }
+
+# on the other hand, if it's an outlook message, parse out the mime encoding.
         if (preg_match("/Content-Transfer-Encoding: /", $process) && $leave == 0) {
           while (!feof($file)) {
             $process = trim(fgets($file));
