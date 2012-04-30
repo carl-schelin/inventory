@@ -178,7 +178,7 @@
               break;
             }
             if ($process != '') {
-              $report .= preg_replace("/=$/", '', $process) . " ";
+              $report .= preg_replace("/=$/", '', $process);
             }
           }
         }
