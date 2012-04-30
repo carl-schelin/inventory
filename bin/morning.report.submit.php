@@ -41,6 +41,9 @@
   }
 
   $impact = strtolower($impact);
+  $error = '';
+  $mngbldstart = "";
+  $mngbldend = "";
 
   if ($group != '') {
     $q_string = "select grp_id,grp_name from groups where grp_name like '" . $group . "%'";
@@ -53,18 +56,30 @@
     } else {
       $group = $a_groups['grp_name'];
     }
+  } else {
+# check to see if the user is in the management group
+    $q_string = "select usr_id,usr_group from users where usr_id != 1 and usr_email = '$email'";
+    $q_users = mysql_query($q_string, $db) or die($q_string . ": " . mysql_error());
+    $a_users = mysql_fetch_array($q_users);
+
+    if ($a_users['usr_group'] == 3) {
+      $error = "<p><b>Error:</b> You are in the Management Group but didn't select a group that you manage for the update.</p>\n\n";
+      $mngbldstart = "<b>";
+      $mngbldend = "</b>";
+      $impact = 'help';
+    }
   }
 
   if ($impact == 'help') {
-    $body  = "<p>Usage:</p>\n";
+    $body  = $error . "<p>Usage:</p>\n";
     $body .= "<p>To: report@incomsu1.scc911.com\n";
     $body .= "<br>Subject: [groupname:][status]</p>\n\n";
     $body .= "<br>Description to be added to the Morning Report.</p>\n\n";
 
     $body .= "<p>The 'groupname:' can be any portion of the group name to make it unique to the script. For example, 'v:' matches two groups; Voice Engineering and Virtualization. ";
-    $body .= "But if you provide 'vo:', you'll process information for the Voice Engineering group. This keyword can be used by anyone however it's meant to be used by a Manager or ";
+    $body .= "But if you provide 'vo:', you'll process information for the Voice Engineering group. " . $mngbldstart . "This keyword can be used by anyone however it's meant to be used by a Manager or ";
     $body .= "higher to provide a status for the groups they manage. For example, Ryan manages the Unix and NonStop team, the Virtualization team, and the Storage and Backup team. ";
-    $body .= "Ryan can send a status for each group by passing 'u:', 'vi:', and 'st:'</p>\n\n";
+    $body .= "Ryan can send a status for each group by passing 'u:', 'vi:', and 'st:'" . $mngbldend . "</p>\n\n";
 
     $body .= "<p>The 'status' portion of the Subject line can be red, yellow, or green indicating the status of the message you're sending. If you send a blank Subject line or one with ";
     $body .= "'groupname:' and no status, you'll receive a current status of either your default group or the group you put in the Subject line. For example, if Ryan sends an e-mail ";
