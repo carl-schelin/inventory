@@ -17,6 +17,12 @@
 # $argv[0] = script name.
 # $argc = the number of items in the $argv array
 
+# received an "Out of Office:" message; just exit the script
+  if ($argv[2] == "Out") {
+    print "ERROR: Out of Office message received\n";
+    exit(1);
+  }
+
   if ($argc == 1) {
     print "ERROR: invalid command line parameters\n";
     exit(1);
