@@ -151,7 +151,7 @@
         }
 # save the lines in case it's a plain text message from the blackberry; save after the exit due to the "Wireless" message.
         if ($process != '') {
-          $savedlines .= $process;
+          $savedlines .= $process . " ";
         }
 
 # on the other hand, if it's an outlook message, parse out the mime encoding.
@@ -163,7 +163,7 @@
               break;
             }
             if ($process != '') {
-              $report .= preg_replace("/=$/", '', $process);
+              $report .= preg_replace("/=$/", '', $process) . " ";
             }
           }
         }
