@@ -17,17 +17,20 @@
 # $argv[0] = script name.
 # $argc = the number of items in the $argv array
 
-# received an "Out of Office:" message; just exit the script
-  if ($argv[2] == "Out") {
-    print "ERROR: Out of Office message received\n";
-    exit(1);
-  }
-
   if ($argc == 1) {
+# you'll never get here if it's coming from the procmail script so you can't 'unlink' the file.
     print "ERROR: invalid command line parameters\n";
     exit(1);
   } else {
     $email = $argv[1];
+  }
+
+# received an "Out of Office:" message; just exit the script
+# don't forget to delete the .report file or the next report will be whack.
+  if ($argv[2] == "Out") {
+    print "ERROR: Out of Office message received\n";
+    unlink("/home/report/Mail/" . $email . ".report");
+    exit(1);
   }
 
   $group = '';
@@ -58,6 +61,7 @@
     if (mysql_num_rows($q_groups) > 1) {
       $body = "<p>Your group string doesn't contain enough characters to determine the proper group. Please add more characters to your group name (" . $group . ") and resend.</p>";
       mail($email, "Error: Search string too loose", $body, $headers);
+      unlink("/home/report/Mail/" . $email . ".report");
       exit(1);
     } else {
       $group = $a_groups['grp_name'];
@@ -98,6 +102,7 @@
     $body .= "Unix and NonStop Platforms team.</p>";
 
     mail($email, "Morning Report: Help", $body, $headers);
+    unlink("/home/report/Mail/" . $email . ".report");
     exit(1);
   }
 
