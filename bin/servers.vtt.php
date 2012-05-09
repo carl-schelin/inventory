@@ -7,13 +7,22 @@ include('function.php');
     return $db;
   }
 
+  $db = dbconn('localhost','inventory','root','this4now!!');
+
+  if (isset($_REQUEST["sort"])) {
+    $orderby = " order by " . $field;
+  } else {
+    $orderby = " order by inv_name";
+  }
+
+
   $q_string = "select zone_id,zone_name from zones";
   $q_zones = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_zones = mysql_fetch_array($q_zones)) {
     $zoneval[$a_zones['zone_id']] = $a_zones['zone_name'];
   }
 
-  $db = dbconn('localhost','inventory','root','this4now!!');
+#  $db = dbconn('localhost','inventory','root','this4now!!');
 
   $q_string = "select inv_id,inv_name,inv_zone,inv_notes from inventory where inv_status = 0 and inv_manager = 4 order by inv_name";
   $q_inventory = mysql_query($q_string) or die(mysql_error());
