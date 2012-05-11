@@ -143,7 +143,16 @@
 #--_000_CBAD9FE331D55CarlSchelinintradocom_
 # read content type for text/
 #Content-Type: text/plain; charset="us-ascii"
-# skip Content-Tranfer-Encoding:
+#
+#--_000_4AF497FC81FF2244B4B567536C8D627E011EC33478LMV08MX04corp_
+#Content-Type: text/plain; charset="us-ascii"
+#Content-Transfer-Encoding: quoted-printable
+#
+# looking for base64 and need to convert before processing.
+#--_000_51581CA9D0965243B6931E4CDEDF3E45033E271B4Clmv08mx02corp_
+#Content-Type: text/plain; charset="utf-8"
+#Content-Transfer-Encoding: base64
+#
 # save details
 # until '-- ' or '--=20' or until --border value
 # ignore the rest
@@ -181,7 +190,7 @@
         }
 
 # on the other hand, if it's an outlook message, parse out the mime encoding.
-        if (preg_match("/Content-Transfer-Encoding: /", $process) && $leave == 0) {
+        if (preg_match("/Content-Transfer-Encoding: quoted-printable/", $process) && $leave == 0) {
           while (!feof($file)) {
             $process = trim(fgets($file));
             if (preg_match("/^--/", $process)) {
@@ -190,6 +199,29 @@
             }
             if ($process != '') {
               $report .= preg_replace("/=$/", '', $process);
+            }
+          }
+        }
+# need to read it in, then convert it, _then_ loop through the resultent output looking for the *this message has been sent... or -- /r/n lines to save any encoded information
+        if (preg_match("/Content-Transfer-Encoding: base64/", $process) && $leave == 0) {
+          while (!feof($file)) {
+            $process = trim(fgets($file));
+            if (preg_match("/^--/", $process)) {
+              $parse = explode("\n", base64_decode($report));
+              $report = '';
+              for ($i = 0; $i < count($parse); $i++) {
+                if (preg_match("/_______________________/", $parse[$i])) {
+                  $leave = 1;
+                  break;
+                } else {
+                  $report .= $parse[$i];
+                }
+              }
+              $leave = 1;
+              break;
+            }
+            if ($process != '') {
+              $report .= $process;
             }
           }
         }
@@ -204,7 +236,7 @@
     "rep_group  =  " . $formVars['group']  . "," . 
     "rep_date   = '" . $formVars['date']   . "'," . 
     "rep_status =  " . $formVars['status'] . "," . 
-    "rep_task   = '" . $report             . "'";
+    "rep_task   = '" . trim($report)       . "'";
 
 # if the status == none, just send out the team's current status.
   if ($impact != "none") {
