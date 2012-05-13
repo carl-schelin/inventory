@@ -105,7 +105,7 @@
 #          UP LOOPBACK RUNNING  MTU:16436  Metric:1
 #          collisions:0 txqueuelen:0 
 
-    if ($os == "Linux") {
+    if ($os == "Linux" && file_exists("/usr/local/admin/servers/" . $name[0] . "/ifconfig.good")) {
       $file = fopen("/usr/local/admin/servers/" . $name[0] . "/ifconfig.good", "r") or exit("unable to open: /usr/local/admin/servers/" . $name[0] . "/ifconfig.good");
       while(!feof($file)) {
         $process = trim(fgets($file));
@@ -284,67 +284,73 @@
 ##### Memory Capture #####
 ##########################
 
-      $file = fopen("/usr/local/admin/servers/" . $name[0] . "/meminfo", "r") or exit("unable to open: /usr/local/admin/servers/" . $name[0] . "/meminfo");
-      while(!feof($file)) {
-        $process = trim(fgets($file));
+      if (file_exists("/usr/local/admin/servers/" . $name[0] . "/meminfo")) {
+        $file = fopen("/usr/local/admin/servers/" . $name[0] . "/meminfo", "r") or exit("unable to open: /usr/local/admin/servers/" . $name[0] . "/meminfo");
+        while(!feof($file)) {
+          $process = trim(fgets($file));
 
-        if (preg_match("/MemTotal:/",$process)) {
+          if (preg_match("/MemTotal:/",$process)) {
 
-          $value = preg_split("/\s+/", $process);
+            $value = preg_split("/\s+/", $process);
 
-          $q_string = "select mod_size,hw_id,hw_size from models left join hardware on hardware.hw_vendorid = models.mod_id where hw_companyid = " . $a_inventory['inv_id'] . " and hw_type = 4";
-          $q_models = mysql_query($q_string, $connection) or die($q_string . ": " . mysql_error());
-          $a_models = mysql_fetch_array($q_models);
+            $q_string = "select mod_size,hw_id,hw_size from models left join hardware on hardware.hw_vendorid = models.mod_id where hw_companyid = " . $a_inventory['inv_id'] . " and hw_type = 4";
+            $q_models = mysql_query($q_string, $connection) or die($q_string . ": " . mysql_error());
+            $a_models = mysql_fetch_array($q_models);
 
-          $models = preg_split("/\s+/", $a_models['mod_size']);
+            $models = preg_split("/\s+/", $a_models['mod_size']);
 
-          $gig = 1024 * 1024;
+            $gig = 1024 * 1024;
 
 # creating a sloppy table for figuring out the gross size. but save the info in the hardware size column for the actual value.
-          $size = 0;
-          if ($value[1] >   250000 && $value[1] <   750000) $size = 256;
-          if ($value[1] >   750000 && $value[1] <  1250000) $size = 235;
-          if ($value[1] >  1250000 && $value[1] <  1750000) $size = 236;
-          if ($value[1] >  1750000 && $value[1] <  2250000) $size = 240;
-          if ($value[1] >  2250000 && $value[1] <  2750000) $size = 255;
-          if ($value[1] >  2750000 && $value[1] <  3400000) $size = 249;
-          if ($value[1] >  3750000 && $value[1] <  4250000) $size = 242;
-          if ($value[1] >  5750000 && $value[1] <  6250000) $size = 252;
-          if ($value[1] >  7750000 && $value[1] <  8350000) $size = 244;
-          if ($value[1] >  9750000 && $value[1] < 10250000) $size = 237;
-          if ($value[1] > 11750000 && $value[1] < 12250000) $size = 238;
-          if ($value[1] > 15750000 && $value[1] < 17250000) $size = 239;
-          if ($value[1] > 31750000 && $value[1] < 33000000) $size = 251;
-          if ($value[1] > 37000000 && $value[1] < 38250000) $size = 257;
-          if ($value[1] > 47750000 && $value[1] < 50250000) $size = 250;
+            $size = 0;
+            if ($value[1] >   250000 && $value[1] <   750000) $size = 256;
+            if ($value[1] >   750000 && $value[1] <  1250000) $size = 235;
+            if ($value[1] >  1250000 && $value[1] <  1750000) $size = 236;
+            if ($value[1] >  1750000 && $value[1] <  2250000) $size = 240;
+            if ($value[1] >  2250000 && $value[1] <  2750000) $size = 255;
+            if ($value[1] >  2750000 && $value[1] <  3400000) $size = 249;
+            if ($value[1] >  3750000 && $value[1] <  4250000) $size = 242;
+            if ($value[1] >  5750000 && $value[1] <  6250000) $size = 252;
+            if ($value[1] >  7750000 && $value[1] <  8350000) $size = 244;
+            if ($value[1] >  9750000 && $value[1] < 10250000) $size = 237;
+            if ($value[1] > 11750000 && $value[1] < 12250000) $size = 238;
+            if ($value[1] > 15750000 && $value[1] < 17250000) $size = 239;
+            if ($value[1] > 31750000 && $value[1] < 33000000) $size = 251;
+            if ($value[1] > 37000000 && $value[1] < 38250000) $size = 257;
+            if ($value[1] > 47750000 && $value[1] < 50250000) $size = 250;
 
-          $q_string =
-            "hw_companyid =   " . $a_inventory['inv_id'] . "," . 
-            "hw_vendorid  =   " . $size                  . "," . 
-            "hw_type      =   " . "4"                    . "," . 
-            "hw_size      =   " . $value[1]              . "," . 
-            "hw_verified  =   " . "1";
+            $q_string =
+              "hw_companyid =   " . $a_inventory['inv_id'] . "," . 
+              "hw_vendorid  =   " . $size                  . "," . 
+              "hw_type      =   " . "4"                    . "," . 
+              "hw_size      =   " . $value[1]              . "," . 
+              "hw_verified  =   " . "1";
 
-          if ($a_models['hw_id'] == '') {
-            $query = "insert into hardware set hw_id = NULL," . $q_string;
-            if ($linuxdo == "no") {
-              print $query . "\n";
-            } else {
-              mysql_query($query, $connection) or die($query . ": " . mysql_error());
-            }
-          } else {
-            if ($a_models['hw_vendorid'] != $size && $a_models['hw_size'] != $value[1]) {
-              $query = "update hardware set " . $q_string . " where hw_id = " . $a_models['hw_id'];
+            if ($a_models['hw_id'] == '') {
+              $query = "insert into hardware set hw_id = NULL," . $q_string;
               if ($linuxdo == "no") {
                 print $query . "\n";
               } else {
                 mysql_query($query, $connection) or die($query . ": " . mysql_error());
               }
+            } else {
+              if ($a_models['hw_vendorid'] != $size && $a_models['hw_size'] != $value[1]) {
+                $query = "update hardware set " . $q_string . " where hw_id = " . $a_models['hw_id'];
+                if ($linuxdo == "no") {
+                  print $query . "\n";
+                } else {
+                  mysql_query($query, $connection) or die($query . ": " . mysql_error());
+                }
+              }
             }
           }
         }
+        fclose($file);
+      } else {
+#        print "Linux: Unable to open /usr/local/admin/servers/" . $name[0] . "/meminfo\n";
       }
-      fclose($file);
+    } else {
+#      print "Linux: Unable to open /usr/local/admin/servers/" . $name[0] . "/ifconfig.good\n";
     }
 
 #####################################
@@ -380,7 +386,7 @@
 #        groupname orapub
 #        ether 0:15:17:14:9c:b 
 
-    if ($os == "SunOS-bob") {
+    if ($os == "SunOS" && file_exists("/usr/local/admin/servers/" . $name[0] . "/ifconfig.good")) {
 
       if ($name[0] == "incoag13") {
         $name[0] = "incoag10";
@@ -465,13 +471,19 @@
               "int_face      = '" . $face                    . "'";
 
             $query = "insert into interface set int_id = NULL," . $q_string . "," . $q_interface;
-            print $query . "\n";
-#            mysql_query($query, $connection) or die($query . ": " . mysql_error());
+            if ($solarisdo == "no") {
+              print $query . "\n";
+            } else {
+               mysql_query($query, $connection) or die($query . ": " . mysql_error());
+            }
           } else {
             if ($a_interface['int_verified'] == 0) {
               $query = "update interface set " . $q_string . " where int_id = " . $a_interface['int_id'];
-              print $query . "\n";
-#              mysql_query($query, $connection) or die($query . ": " . mysql_error());
+              if ($solarisdo == "no") {
+                print $query . "\n";
+              } else {
+                mysql_query($query, $connection) or die($query . ": " . mysql_error());
+              }
             }
           }
         }
@@ -507,67 +519,73 @@
 ##### Memory Capture #####
 ##########################
 
-      $file = fopen("/usr/local/admin/servers/" . $name[0] . "/prtconf.output", "r") or exit("unable to open: /usr/local/admin/servers/" . $name[0] . "/prtconf.output");
-      while(!feof($file)) {
-        $process = trim(fgets($file));
+      if (file_exists("/usr/local/admin/servers/" . $name[0] . "/prtconf.output")) {
+        $file = fopen("/usr/local/admin/servers/" . $name[0] . "/prtconf.output", "r") or exit("unable to open: /usr/local/admin/servers/" . $name[0] . "/prtconf.output");
+        while(!feof($file)) {
+          $process = trim(fgets($file));
 
-        if (preg_match("/Memory Total:/",$process)) {
+          if (preg_match("/Memory Total:/",$process)) {
 
-          $value = preg_split("/\s+/", $process);
+            $value = preg_split("/\s+/", $process);
 
-          $q_string = "select mod_size,hw_id,hw_size from models left join hardware on hardware.hw_vendorid = models.mod_id where hw_companyid = " . $a_inventory['inv_id'] . " and hw_type = 4";
-          $q_models = mysql_query($q_string, $connection) or die($q_string . ": " . mysql_error());
-          $a_models = mysql_fetch_array($q_models);
+            $q_string = "select mod_size,hw_id,hw_size from models left join hardware on hardware.hw_vendorid = models.mod_id where hw_companyid = " . $a_inventory['inv_id'] . " and hw_type = 4";
+            $q_models = mysql_query($q_string, $connection) or die($q_string . ": " . mysql_error());
+            $a_models = mysql_fetch_array($q_models);
 
-          $models = preg_split("/\s+/", $a_models['mod_size']);
+            $models = preg_split("/\s+/", $a_models['mod_size']);
 
-          $gig = 1024 * 1024;
+            $gig = 1024 * 1024;
 
 # creating a sloppy table for figuring out the gross size. but save the info in the hardware size column for the actual value.
-          $size = 0;
-          if ($value[1] >   250000 && $value[1] <   750000) $size = 256;
-          if ($value[1] >   750000 && $value[1] <  1250000) $size = 235;
-          if ($value[1] >  1250000 && $value[1] <  1750000) $size = 236;
-          if ($value[1] >  1750000 && $value[1] <  2250000) $size = 240;
-          if ($value[1] >  2250000 && $value[1] <  2750000) $size = 255;
-          if ($value[1] >  2750000 && $value[1] <  3400000) $size = 249;
-          if ($value[1] >  3750000 && $value[1] <  4250000) $size = 242;
-          if ($value[1] >  5750000 && $value[1] <  6250000) $size = 252;
-          if ($value[1] >  7750000 && $value[1] <  8350000) $size = 244;
-          if ($value[1] >  9750000 && $value[1] < 10250000) $size = 237;
-          if ($value[1] > 11750000 && $value[1] < 12250000) $size = 238;
-          if ($value[1] > 15750000 && $value[1] < 17250000) $size = 239;
-          if ($value[1] > 31750000 && $value[1] < 33000000) $size = 251;
-          if ($value[1] > 37000000 && $value[1] < 38250000) $size = 257;
-          if ($value[1] > 47750000 && $value[1] < 50250000) $size = 250;
+            $size = 0;
+            if ($value[1] >   250000 && $value[1] <   750000) $size = 256;
+            if ($value[1] >   750000 && $value[1] <  1250000) $size = 235;
+            if ($value[1] >  1250000 && $value[1] <  1750000) $size = 236;
+            if ($value[1] >  1750000 && $value[1] <  2250000) $size = 240;
+            if ($value[1] >  2250000 && $value[1] <  2750000) $size = 255;
+            if ($value[1] >  2750000 && $value[1] <  3400000) $size = 249;
+            if ($value[1] >  3750000 && $value[1] <  4250000) $size = 242;
+            if ($value[1] >  5750000 && $value[1] <  6250000) $size = 252;
+            if ($value[1] >  7750000 && $value[1] <  8350000) $size = 244;
+            if ($value[1] >  9750000 && $value[1] < 10250000) $size = 237;
+            if ($value[1] > 11750000 && $value[1] < 12250000) $size = 238;
+            if ($value[1] > 15750000 && $value[1] < 17250000) $size = 239;
+            if ($value[1] > 31750000 && $value[1] < 33000000) $size = 251;
+            if ($value[1] > 37000000 && $value[1] < 38250000) $size = 257;
+            if ($value[1] > 47750000 && $value[1] < 50250000) $size = 250;
 
-          $q_string =
-            "hw_companyid =   " . $a_inventory['inv_id'] . "," . 
-            "hw_vendorid  =   " . $size                  . "," . 
-            "hw_type      =   " . "4"                    . "," . 
-            "hw_size      =   " . $value[1]              . "," . 
-            "hw_verified  =   " . "1";
+            $q_string =
+              "hw_companyid =   " . $a_inventory['inv_id'] . "," . 
+              "hw_vendorid  =   " . $size                  . "," . 
+              "hw_type      =   " . "4"                    . "," . 
+              "hw_size      =   " . $value[1]              . "," . 
+              "hw_verified  =   " . "1";
 
-          if ($a_models['hw_id'] == '') {
-            $query = "insert into hardware set hw_id = NULL," . $q_string;
-            if ($solarisdo == "no") {
-              print $query . "\n";
-            } else {
-              mysql_query($query, $connection) or die($query . ": " . mysql_error());
-            }
-          } else {
-            if ($a_models['hw_vendorid'] != $size && $a_models['hw_size'] != $value[1]) {
-              $query = "update hardware set " . $q_string . " where hw_id = " . $a_models['hw_id'];
+            if ($a_models['hw_id'] == '') {
+              $query = "insert into hardware set hw_id = NULL," . $q_string;
               if ($solarisdo == "no") {
                 print $query . "\n";
               } else {
                 mysql_query($query, $connection) or die($query . ": " . mysql_error());
               }
+            } else {
+              if ($a_models['hw_vendorid'] != $size && $a_models['hw_size'] != $value[1]) {
+                $query = "update hardware set " . $q_string . " where hw_id = " . $a_models['hw_id'];
+                if ($solarisdo == "no") {
+                  print $query . "\n";
+                } else {
+                  mysql_query($query, $connection) or die($query . ": " . mysql_error());
+                }
+              }
             }
           }
         }
+        fclose($file);
+      } else {
+#        print "Unable to open /usr/local/admin/servers/" . $name[0] . "/prtconf.output\n";
       }
-      fclose($file);
+    } else {
+#      print "Unable to open /usr/local/admin/servers/" . $name[0] . "/ifconfig.good\n";
     }
 
 ###################################
@@ -591,7 +609,7 @@
 #lan901: flags=8000000000001843<UP,BROADCAST,RUNNING,MULTICAST,CKO,PORT>
 #        inet 216.67.95.42 netmask fffffff8 broadcast 216.67.95.47
 
-    if ($os == "HP-UX-bob") {
+    if ($os == "HP-UX-bob" && file_exists("/usr/local/admin/servers/" . $name[0] . "/ifconfig.good")) {
       $file = fopen("/usr/local/admin/servers/" . $name[0] . "/ifconfig.good", "r") or exit("unable to open: /usr/local/admin/servers/" . $name[0] . "/ifconfig.good");
       while(!feof($file)) {
         $process = trim(fgets($file));
@@ -640,13 +658,19 @@ print $value[1] . " - " . $value[8] . "\n";
               "int_face      = '" . $face                    . "'";
 
             $query = "insert into interface set int_id = NULL," . $q_string . "," . $q_interface;
-#            print $query . "\n";
-#            mysql_query($query, $connection) or die($query . ": " . mysql_error());
+            if ($hpuxdo == "no") {
+              print $query . "\n";
+            } else {
+              mysql_query($query, $connection) or die($query . ": " . mysql_error());
+            }
           } else {
             if ($a_interface['int_verified'] == 0) {
               $query = "update interface set " . $q_string . " where int_id = " . $a_interface['int_id'];
-#              print $query . "\n";
-#              mysql_query($query, $connection) or die($query . ": " . mysql_error());
+              if ($hpuxdo == "no") {
+                print $query . "\n";
+              } else {
+                mysql_query($query, $connection) or die($query . ": " . mysql_error());
+              }
             }
           }
         }
