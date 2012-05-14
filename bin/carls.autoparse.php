@@ -277,7 +277,7 @@
       $q_string .= ")";
       $q_interface = mysql_query($q_string, $connection) or die($q_string . ": " . mysql_error());
       while ($a_interface = mysql_fetch_array($q_interface)) {
-        print $a_inventory['inv_name'] . " - " . $a_interface['int_face'] . " - " . $a_interface['int_addr'] . " - " . $a_interface['int_eth'] . " - " . $a_interface['int_mask'] . "\n";
+#        print $a_inventory['inv_name'] . " - " . $a_interface['int_face'] . " - " . $a_interface['int_addr'] . " - " . $a_interface['int_eth'] . " - " . $a_interface['int_mask'] . "\n";
       }
 
 ##########################
@@ -528,7 +528,8 @@
 
             $value = preg_split("/\s+/", $process);
 
-            $q_string = "select mod_size,hw_id,hw_size from models left join hardware on hardware.hw_vendorid = models.mod_id where hw_companyid = " . $a_inventory['inv_id'] . " and hw_type = 4";
+            $q_string  = "select mod_size,hw_id,hw_size from models left join hardware ";
+            $q_string .= "on hardware.hw_vendorid = models.mod_id where hw_companyid = " . $a_inventory['inv_id'] . " and hw_type = 4";
             $q_models = mysql_query($q_string, $connection) or die($q_string . ": " . mysql_error());
             $a_models = mysql_fetch_array($q_models);
 
@@ -591,7 +592,7 @@
 ###################################
 ##### HP-UX Interface Capture #####
 ###################################
-# This section parses the ifconfig.good file for solaris systems
+# This section parses the ifconfig.good file for hp-ux systems
 # The output looks something like this:
 #Hardware Station        Crd Hdw   Net-Interface  NM  MAC       HP-DLPI DLPI
 #Path     Address        In# State NamePPA        ID  Type      Support Mjr#
@@ -602,14 +603,8 @@
 #LinkAgg2 0x000000000000 902 DOWN  lan902 snap902 11  ETHER     Yes     119
 #LinkAgg3 0x000000000000 903 DOWN  lan903 snap903 12  ETHER     Yes     119
 #LinkAgg4 0x000000000000 904 DOWN  lan904 snap904 13  ETHER     Yes     119
-#lo0: flags=849<UP,LOOPBACK,RUNNING,MULTICAST>
-#        inet 127.0.0.1 netmask ff000000 
-#lan900: flags=8000000000001843<UP,BROADCAST,RUNNING,MULTICAST,CKO,PORT>
-#        inet 10.161.10.12 netmask ffffff00 broadcast 10.161.10.255
-#lan901: flags=8000000000001843<UP,BROADCAST,RUNNING,MULTICAST,CKO,PORT>
-#        inet 216.67.95.42 netmask fffffff8 broadcast 216.67.95.47
 
-    if ($os == "HP-UX-bob" && file_exists("/usr/local/admin/servers/" . $name[0] . "/ifconfig.good")) {
+    if ($os == "HP-UX" && file_exists("/usr/local/admin/servers/" . $name[0] . "/ifconfig.good")) {
       $file = fopen("/usr/local/admin/servers/" . $name[0] . "/ifconfig.good", "r") or exit("unable to open: /usr/local/admin/servers/" . $name[0] . "/ifconfig.good");
       while(!feof($file)) {
         $process = trim(fgets($file));
@@ -617,35 +612,80 @@
         $hwaddr = '';
         if (preg_match("/ UP /",$process)) {
           $value = preg_split("/\s+/", $process);
-          $ether[$value[4]] = $value[1];
-print $value[1] . " - " . $value[8] . "\n";
+
+          $hexarr = str_split($value[1], 2);
+          $hexstr = '';
+          $colon = '';
+          for ($i = 1; $i < 7; $i++) {
+            $hexstr .= $colon . $hexarr[$i];
+            $colon = ":";
+          }
+
+          $q_string = "select int_id,int_server,int_addr,int_eth,int_verified from interface where int_companyid = " . $a_inventory['inv_id'] . " and int_face = '" . $value[4] . ":'";
+          $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $a_interface = mysql_fetch_array($q_interface);
+
+          if (mysql_num_rows($q_interface) == 0) {
+            $q_string = "insert into interface set int_id = null," . 
+              "int_server    = '" . $name[0]               . "'," .
+              "int_companyid =  " . $a_inventory['inv_id'] . "," . 
+              "int_face      = '" . $value[4]              . ":'," . 
+              "int_ip6       =  " . "0"                    . "," . 
+              "int_eth       = '" . $hexstr                . "'," . 
+              "int_verified  =  " . "1";
+          } else {
+            if ($a_interface['int_server'] == '') {
+              $servername = $name[0];
+            } else {
+              $servername = $a_interface['int_server'];
+            }
+            $q_string = "update interface set " . 
+              "int_server   = '" . $servername . "'," . 
+              "int_eth      = '" . $hexstr . "'," . 
+              "int_verified =  " . "1"     . " " . 
+              "where int_id =  " . $a_interface['int_id'];
+          }
+
+          if ($a_interface['int_verified'] == 0) {
+            if ($hpuxno == "no") {
+              print $q_string . "\n";
+            } else {
+              mysql_query($q_string);
+            }
+          }
         }
+
+# This section parses the second half of the ifconfig.good file for hp-ux systems
+# The output looks something like this:
+#lo0: flags=849<UP,LOOPBACK,RUNNING,MULTICAST>
+#        inet 127.0.0.1 netmask ff000000 
+#lan900: flags=8000000000001843<UP,BROADCAST,RUNNING,MULTICAST,CKO,PORT>
+#        inet 10.161.10.12 netmask ffffff00 broadcast 10.161.10.255
+#lan901: flags=8000000000001843<UP,BROADCAST,RUNNING,MULTICAST,CKO,PORT>
+#        inet 216.67.95.42 netmask fffffff8 broadcast 216.67.95.47
         if (preg_match("/flags/",$process)) {
-          $value = split(" ", $process);
+          $value = preg_split("/\s+/", $process);
           $face = $value[0];
-          $hwaddr = $ether[$face];
 
 # now get the inet data;
           $process = trim(fgets($file));
-          $value = split(" ", $process);
+          $value = preg_split("/\s+/", $process);
           $ipaddr = $value[1];
           $mask = long2ip(hexdec($value[3]));
           $ip6value = 0;
 
-          $q_string  = "select int_id,int_addr,int_eth,int_mask,int_verified,int_ip6 from interface ";
+          $q_string  = "select int_id,int_addr,int_mask,int_verified,int_ip6 from interface ";
           $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_face = '" . $face . "' and int_ip6 = " . $ip6value;
           $q_interface = mysql_query($q_string, $connection) or die($q_string . ": " . mysql_error());
           $a_interface = mysql_fetch_array($q_interface);
 
           $q_string = 
             "int_addr     = '" . $ipaddr   . "'," . 
-            "int_eth      = '" . $hwaddr   . "'," . 
-            "int_mask     = '" . $mask     . "'," . 
             "int_ip6      = '" . $ip6value . "'," . 
             "int_verified =  " . '1';
 
           if ($a_interface['int_verified'] == '0') {
-            if ($a_interface['int_addr'] == $ipaddr && $a_interface['int_eth'] == $hwaddr && $a_interface['int_mask'] == $mask) {
+            if ($a_interface['int_addr'] == $ipaddr && $a_interface['int_mask'] == $mask) {
               $q_string = "int_verified = 1";
             }
           }
@@ -658,7 +698,7 @@ print $value[1] . " - " . $value[8] . "\n";
               "int_face      = '" . $face                    . "'";
 
             $query = "insert into interface set int_id = NULL," . $q_string . "," . $q_interface;
-            if ($hpuxdo == "no") {
+            if ($hpuxno == "no") {
               print $query . "\n";
             } else {
               mysql_query($query, $connection) or die($query . ": " . mysql_error());
@@ -666,7 +706,7 @@ print $value[1] . " - " . $value[8] . "\n";
           } else {
             if ($a_interface['int_verified'] == 0) {
               $query = "update interface set " . $q_string . " where int_id = " . $a_interface['int_id'];
-              if ($hpuxdo == "no") {
+              if ($hpuxno == "no") {
                 print $query . "\n";
               } else {
                 mysql_query($query, $connection) or die($query . ": " . mysql_error());
