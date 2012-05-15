@@ -309,7 +309,7 @@
   $a_users = mysql_fetch_array($q_users);
 
 # send to users who want to get the confirmation e-mail
-  $q_string = "select usr_email from users where usr_id != 1 and usr_email != '$email' and usr_confirm = 1";
+  $q_string = "select usr_email from users where usr_id != 1 and usr_email != '$email' and usr_confirm = 1 and usr_group = " . $a_users['usr_group'];
   $q_users = mysql_query($q_string, $db) or die($q_string . ": " . mysql_error());
   while ($a_users = mysql_fetch_array($q_users)) {
     mail($a_users['usr_email'], "Morning Report for: " . $group, $body, $headers);
