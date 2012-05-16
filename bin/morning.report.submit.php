@@ -178,8 +178,8 @@
       while (!feof($file)) {
         $process = trim(fgets($file));
 
-# again, if a blackberry, we're done
-        if (preg_match("/This message has been sent via the Intrado Wireless Information Network/", $process)) {
+# again, if a blackberry (bb uses '__' as signature sep), we're done
+        if (preg_match("/This message has been sent via the Intrado Wireless Information Network/", $process) || preg_match("/_______________________/", $process)) {
           $report .= $savedlines;
           $leave = 1;
           break;
