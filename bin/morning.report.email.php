@@ -38,11 +38,6 @@
   $status[2] = "Yellow";
   $status[3] = "Red";
 
-  $color[0] = "#ffffcc";  # set to the background color of yellow.
-  $color[1] = "#bced91";
-  $color[2] = "yellow";
-  $color[3] = "#fa8072";
-
   $output  = "<html>\n";
   $output .= "<body>\n";
   $output .= "<table width=80%>\n";
@@ -61,9 +56,22 @@
 
 # set a flag so at least one entry from each department is displayed.
     $flag = 0;
-    $q_string = "select rep_id,rep_status,rep_task from report where rep_group = " . $a_groups['grp_id'] . " and rep_date = '" . $formVars['date'] . "' order by rep_task";
+    $q_string = "select rep_id,rep_status,rep_timestamp,rep_task from report where rep_group = " . $a_groups['grp_id'] . " and rep_date = '" . $formVars['date'] . "' order by rep_task";
     $q_report = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     while ($a_report = mysql_fetch_array($q_report)) {
+
+      $color[0] = "#99ccff";
+      $color[1] = "#bced91";
+      $color[2] = "#ffff00";
+      $color[3] = "#fa8072";
+
+      $list = explode(" ", $a_report['rep_timestamp']);
+      $newcolor = explode(":", $list[1]);
+
+      if ($newcolor[0] == "01") {
+        $color[2] = "#cdcd00";
+        $color[3] = "#eeb4b4";
+      }
 
       $flag = 1;
       if ($a_report['rep_task'] == '') {
