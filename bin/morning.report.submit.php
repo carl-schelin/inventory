@@ -50,7 +50,14 @@
   }
 
   $impact = strtolower($impact);
+# logaccess($_SESSION['username'], "todo.review.php", $impact . " " . $group;
+  
   $error = '';
+  #if ($impact != 'green' && $impact != 'yellow' && $impact != 'red' && $impact != 'none' ) {
+  #  $error = "<p>The format of your subject was submitted incorrectly $impact . $group $argv[1] $argv[2].</p>";
+  #  $impact = 'help';
+  #}
+
   $mngbldstart = "";
   $mngbldend = "";
 
@@ -83,9 +90,9 @@
   if ($impact == 'help') {
     $body  = $error . "<p>Usage:</p>\n";
     $body .= "<p>To: report@incomsu1.scc911.com\n";
-    $body .= "<br>Subject: [groupname:][status]</p>\n\n";
-    $body .= "<br>Description to be added to the Morning Report.</p>\n\n";
-
+    $body .= "<br>Subject: [groupname:][status]\n";
+    $body .= "<br>Example: \"Green\" or \"Network:Green\"\n";
+    $body .= "<br>Message Body:  Description to be added to the Morning Report.</p>\n\n";
     $body .= "<p>The 'groupname:' can be any portion of the group name to make it unique to the script. For example, 'v:' matches two groups; Voice Engineering and Virtualization. ";
     $body .= "But if you provide 'vo:', you'll process information for the Voice Engineering group. " . $mngbldstart . "This keyword can be used by anyone however it's meant to be used by a Manager or ";
     $body .= "higher to provide a status for the groups they manage. For example, Ryan manages the Unix and NonStop team, the Virtualization team, and the Storage and Backup team. ";
