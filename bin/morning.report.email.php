@@ -24,7 +24,7 @@
   $q_string = "select usr_email from users where usr_id = 1";
   $q_users = mysql_query($q_string, $db) or die($q_string . ": " . mysql_error());
   $a_users = mysql_fetch_array($q_users);
-  $adminmail = $a_users['usr_mail'];
+  $adminmail = $a_users['usr_email'];
 
   $subject = "TechOps Morning Report: " . $formVars['date'];
 
@@ -68,7 +68,7 @@
       $list = explode(" ", $a_report['rep_timestamp']);
       $newcolor = explode(":", $list[1]);
 
-      if ($newcolor[0] == "01") {
+      if ($newcolor[0] == "01" && $newcolor[1] == "00") {
         $color[2] = "#cdcd00";
         $color[3] = "#eeb4b4";
       }
