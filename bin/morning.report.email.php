@@ -122,8 +122,20 @@
   $output .= "</table>\n\n";
 
   $output .= "<p>This message is from the Status Report Management application.\n";
-  $output .= "<br><a href=\"https://incomsu1/status/morning.report.php?date=" . $formVars['date'] . "\">Today's Status Report</a>\n";
-  $output .= "<br>This mail box is not monitored, please do not reply.</p>\n\n";
+  $output .= "<br><a href=\"https://incomsu1/status/morning.report.php?date=" . $formVars['date'] . "\">Today's Status Report</a></p>\n";
+
+  $output .= "<p>Legend:</p>\n";
+
+  $output .= "<ul>\n";
+  $output .= "  <li style=\"background:#bced91\">Green - All functional areas under the control of the team is at 100%.</li>\n";
+  $output .= "  <li style=\"background:#ffff00\">Yellow - Non critical functional areas are experiencing issues such as lab systems or support services.</li>\n";
+  $output .= "  <li style=\"background:#cdcd00\">Yellow - Same as above but indicates an entry copied from the previous business day.</li>\n";
+  $output .= "  <li style=\"background:#fa8072\">Red - A critical area is experiencing issues which will be generating an OMaR or Incident.</li>\n";
+  $output .= "  <li style=\"background:#eeb4b4\">Red - Same as above but indicates an entry copied from the previous business day.</li>\n";
+  $output .= "  <li style=\"background:#99ccff\">Blue - Group has failed to send a report or sent one with an invalid status.</li>\n";
+  $output .= "</ul>\n\n";
+
+  $output .= "<p>This mail box is not monitored, please do not reply.</p>\n\n";
 
   $output .= "</body>\n";
   $output .= "</html>\n";
