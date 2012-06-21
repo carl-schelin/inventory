@@ -10,10 +10,6 @@
 
   $db = dbconn('localhost','status','root','this4now!!');
 
-# set to 'no' when done debugging a problem
-  $debug = 'yes';
-  $debug = 'no';
-
   $headers  = "From: Morning Report <report@incomsu1.scc911.com>\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
   $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
@@ -33,9 +29,7 @@
 # don't forget to delete the .report file or the next report will be whack.
   if ($argv[2] == "Out") {
     print "ERROR: Out of Office message received\n";
-    if ($debug != 'yes') {
-      unlink("/home/report/Mail/" . $email . ".report");
-    }
+    unlink("/home/report/Mail/" . $email . ".report");
     exit(1);
   }
 
@@ -56,7 +50,6 @@
   }
 
   $impact = strtolower($impact);
-# logaccess($_SESSION['username'], "todo.review.php", $impact . " " . $group;
   
   $error = '';
   #if ($impact != 'green' && $impact != 'yellow' && $impact != 'red' && $impact != 'none' ) {
@@ -73,13 +66,8 @@
     $a_groups = mysql_fetch_array($q_groups);
     if (mysql_num_rows($q_groups) > 1) {
       $body = "<p>Your group string doesn't contain enough characters to determine the proper group. Please add more characters to your group name (" . $group . ") and resend.</p>";
-      if ($debug == 'yes') {
-        print "DEBUG Group Name Error:\n";
-        print $body;
-      } else {
-        mail($email, "Error: Search string too loose", $body, $headers);
-        unlink("/home/report/Mail/" . $email . ".report");
-      }
+      mail($email, "Error: Search string too loose", $body, $headers);
+      unlink("/home/report/Mail/" . $email . ".report");
       exit(1);
     } else {
       $group = $a_groups['grp_name'];
@@ -89,10 +77,6 @@
     $q_string = "select usr_id,usr_group from users where usr_id != 1 and usr_email = '$email'";
     $q_users = mysql_query($q_string, $db) or die($q_string . ": " . mysql_error());
     $a_users = mysql_fetch_array($q_users);
-
-    if ($debug == 'yes') {
-      print "Group: " . $a_users['usr_group'] . "\n";
-    }
 
     if ($a_users['usr_group'] == 3) {
       $error = "<p><b>Error:</b> You are in the Management Group but didn't select a group that you manage for the update.</p>\n\n";
@@ -123,13 +107,8 @@
     $body .= "with a Subject of 'vi:', he'll get an e-mail with the status for the Virtualization group. If Ryan sends an e-mail with a Subject of 'u:', he'll get an e-mail for the ";
     $body .= "Unix and NonStop Platforms team.</p>";
 
-    if ($debug == 'yes') {
-      print "DEBUG Dropped Into Help:\n";
-      print $body;
-    } else {
-      mail($email, "Morning Report: Help", $body, $headers);
-      unlink("/home/report/Mail/" . $email . ".report");
-    }
+    mail($email, "Morning Report: Help", $body, $headers);
+    unlink("/home/report/Mail/" . $email . ".report");
     exit(1);
   }
 
@@ -256,9 +235,7 @@
     }
   }
   fclose($file);
-  if ($debug != 'yes') {
-    unlink("/home/report/Mail/" . $email . ".report");
-  }
+  unlink("/home/report/Mail/" . $email . ".report");
 
   $q_string = "insert into report set rep_id = NULL," . 
     "rep_user   =  " . $a_users['usr_id']  . "," . 
@@ -266,12 +243,6 @@
     "rep_date   = '" . $formVars['date']   . "'," . 
     "rep_status =  " . $formVars['status'] . "," . 
     "rep_task   = '" . clean($report,1500)  . "'";
-
-  if ($debug == 'yes') {
-    print "DEBUG q_string and impact:\n";
-    print "q_string = " . $q_string . "\n";
-    print "impact = " . $impact . "\n";
-  }
 
 # if the status == none, just send out the team's current status.
   if ($impact != "none") {
@@ -337,24 +308,17 @@
 
   $body = $output;
 
-  if ($debug == 'yes') {
-    print "DEBUG Final Message:\n";
-    print $body;
-    exit(1);
-  } else {
+  mail($email, "Morning Report for: " . $group, $body, $headers);
 
-    mail($email, "Morning Report for: " . $group, $body, $headers);
-
-    $q_string = "select usr_id,usr_group from users where usr_id != 1 and usr_email = '$email'";
-    $q_users = mysql_query($q_string, $db) or die($q_string . ": " . mysql_error());
-    $a_users = mysql_fetch_array($q_users);
+  $q_string = "select usr_id,usr_group from users where usr_id != 1 and usr_email = '$email'";
+  $q_users = mysql_query($q_string, $db) or die($q_string . ": " . mysql_error());
+  $a_users = mysql_fetch_array($q_users);
 
 # send to users who want to get the confirmation e-mail
-    $q_string = "select usr_email from users where usr_id != 1 and usr_email != '$email' and usr_confirm = 1 and usr_group = " . $a_users['usr_group'];
-    $q_users = mysql_query($q_string, $db) or die($q_string . ": " . mysql_error());
-    while ($a_users = mysql_fetch_array($q_users)) {
-      mail($a_users['usr_email'], "Morning Report for: " . $group, $body, $headers);
-    }
+  $q_string = "select usr_email from users where usr_id != 1 and usr_email != '$email' and usr_confirm = 1 and usr_group = " . $a_users['usr_group'];
+  $q_users = mysql_query($q_string, $db) or die($q_string . ": " . mysql_error());
+  while ($a_users = mysql_fetch_array($q_users)) {
+    mail($a_users['usr_email'], "Morning Report for: " . $group, $body, $headers);
   }
 
 ?>
