@@ -385,7 +385,7 @@
 
     $output .= "</table>\n\n";
 
-    if ($action == "hardware" || $action == "*") {
+    if ($action == "hardware" || $action == "*" || $action == "all") {
       $output .= "<table width=80%>\n";
       $output .= "<tr>\n";
       $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=8>Full Hardware Listing</th>\n";
@@ -429,7 +429,7 @@
       $output .= "</table>\n\n";
     }
 
-    if ($action == "software" || $action == "*") {
+    if ($action == "software" || $action == "*" || $action == "all") {
       $output .= "<table width=80%>\n";
       $output .= "<tr>\n";
       $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=5>Software Listing</th>\n";
@@ -471,7 +471,7 @@
       $output .= "</table>\n\n";
     }
 
-    if ($action == "interface" || $action == "*") {
+    if ($action == "interface" || $action == "*" || $action == "all") {
       $output .= "<table width=80%>\n";
       $output .= "<tr>\n";
       $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=7>Interfaces</th>\n";
