@@ -66,9 +66,8 @@
       $color[3] = "#fa8072";
 
       $list = explode(" ", $a_report['rep_timestamp']);
-      $newcolor = explode(":", $list[1]);
 
-      if ($newcolor[0] == "01" && $newcolor[1] == "00") {
+      if ($list[0] != $formVars['date']) {
         $color[2] = "#cdcd00";
         $color[3] = "#eeb4b4";
       }
