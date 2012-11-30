@@ -151,6 +151,7 @@
     $body .= "  <li><b>{blank}</b> - An e-mail will be returned containing basic details about the requested server.</li>\n";
     $body .= "  <li><b>*</b> - An e-mail will be returned containing details from all the following keywords.</li>\n";
     $body .= "  <li><b>hardware</b> - An e-mail will be returned containing minimal details plus a list of the hardware.</li>\n";
+    $body .= "  <li><b>filesystem</b> - An e-mail will be returned containing minimal details plus a list of the filesystems.</li>\n";
     $body .= "  <li><b>software</b> - An e-mail will be returned containing minimal details plus a list of the installed software, not including the list of installed packages.</li>\n";
     $body .= "  <li><b>interface</b> - An e-mail will be returned containing minimal details plus a list of the active interfaces.</li>\n";
     $body .= "</ul>\n\n";
@@ -424,6 +425,33 @@
         $output .= "  <td>" . $a_models['mod_size'] . "</td>\n";
         $output .= "  <td>" . $a_models['mod_speed'] . "</td>\n";
         $output .= "  <td>" . $a_hardware['part_name'] . "</td>\n";
+        $output .= "</tr>\n";
+      }
+      $output .= "</table>\n\n";
+    }
+
+    if ($action == "filesystem" || $action == "*" || $action == "all") {
+      $output .= "<table width=80%>\n";
+      $output .= "<tr>\n";
+      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=5>Filesystem Listing</th>\n";
+      $output .= "</tr>\n";
+      $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
+      $output .= "  <th>Device</th>\n";
+      $output .= "  <th>Size</th>\n";
+      $output .= "  <th>Volume Name</th>\n";
+      $output .= "  <th>Mount</th>\n";
+      $output .= "  <th>WWNN</th>\n";
+      $output .= "</tr>\n";
+
+      $q_string  = "select fs_device,fs_size,fs_volume,fs_mount,fs_wwid from filesystem where fs_companyid = " . $a_inventory['inv_id'] . " order by fs_device,fs_mount";
+      $q_filesystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      while ( $a_filesystem = mysql_fetch_array($q_filesystem) ) {
+        $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">";
+        $output .= "<td>" . $a_filesystem['fs_device'] . "</td>\n";
+        $output .= "<td>" . $a_filesystem['fs_size'] . "</td>\n";
+        $output .= "<td>" . $a_filesystem['fs_volume'] . "</td>\n";
+        $output .= "<td>" . $a_filesystem['fs_mount'] . "</td>\n";
+        $output .= "<td>" . $a_filesystem['fs_wwid'] . "</td>\n";
         $output .= "</tr>\n";
       }
       $output .= "</table>\n\n";
