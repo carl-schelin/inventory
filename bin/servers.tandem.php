@@ -25,7 +25,7 @@ include('function.php');
 
   $bgcolor = "#EEEEEE";
 
-  $q_string = "select inv_id,inv_name,inv_zone from inventory where inv_manager = 1 and inv_ssh = 1 order by inv_name";
+  $q_string = "select inv_id,inv_name,inv_zone from inventory where inv_manager = 15 order by inv_name";
   $q_inventory = mysql_query($q_string) or die(mysql_error());
 
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
