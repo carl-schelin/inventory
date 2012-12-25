@@ -216,7 +216,7 @@
               $parse = explode("\n", base64_decode($report));
               $report = '';
               for ($i = 0; $i < count($parse); $i++) {
-                if (preg_match("/_______________________/", $parse[$i])) {
+                if (preg_match("/_______________________/", $parse[$i]) || preg_match("/^--/", $parse[$i])) {
                   $leave = 1;
                   break;
                 } else {
