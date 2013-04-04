@@ -1,5 +1,6 @@
 <?php
-include('function.php');
+  include('settings.php');
+  include($Sitepath . 'function.php');
 
   function dbconn($server,$database,$user,$pass){
     $db = mysql_connect($server,$user,$pass);
@@ -7,7 +8,7 @@ include('function.php');
     return $db;
   }
 
-  $db = dbconn('localhost','inventory','root','this4now!!');
+  $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
 # Set debug to 1 in order to debug the code
   $debug = 1;
