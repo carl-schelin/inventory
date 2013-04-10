@@ -1,6 +1,7 @@
 #!/usr/local/bin/php
 <?php
-  include('/usr/local/httpd/htsecure/inventory/function.php');
+  include('settings.php');
+  include($Sitepath . 'function.php');
 
   function dbconn($server,$database,$user,$pass){
     $db = mysql_connect($server,$user,$pass);
