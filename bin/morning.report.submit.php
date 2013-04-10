@@ -166,6 +166,12 @@
 
 # for blackberry messages, there is no mime encoding and the signature is actually an ***This message ...
 # so save the lines of text (if not blank) and bail if the "This message" signature pops up.
+#
+# $boundary = not used at this time
+# $leave = flag to indicate the signature or other end of message has occurred. Means don't process or add more lines to the morning report message
+# $process = the lines read from the email message
+# $report = 
+# $savedlines = 
 
   $savedlines = '';
   $boundary = '';
@@ -185,7 +191,7 @@
         $process = trim(fgets($file));
 
 # again, if a blackberry (bb uses '__' as signature sep), we're done
-        if (preg_match("/This message has been sent via the Intrado Wireless Information Network/", $process) || preg_match("/__/", $process)) {
+        if (preg_match("/Intrado Wireless Information Network/", $process) || preg_match("/__/", $process)) {
           $report .= $savedlines;
           $leave = 1;
           break;
