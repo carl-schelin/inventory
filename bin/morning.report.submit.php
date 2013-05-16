@@ -243,6 +243,10 @@
   fclose($file);
   unlink("/home/report/Mail/" . $email . ".report");
 
+  if ($report == '' and strlen($savedlines) > 0) {
+    $report = $savedlines;
+  }
+
   $q_string = "insert into report set rep_id = NULL," . 
     "rep_user   =  " . $a_users['usr_id']  . "," . 
     "rep_group  =  " . $formVars['group']  . "," . 
