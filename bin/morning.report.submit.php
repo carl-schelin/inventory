@@ -186,39 +186,52 @@
       $boundary = $value[1];
     }
 
+# this is added by the procmail script. lets us skip all the header information
     if (preg_match("/^--------------/", $process) && $leave == 0) {
+      print "Loop: Past the header lines, reached the separator between header and body\n";
       while (!feof($file)) {
         $process = trim(fgets($file));
 
 # again, if a blackberry (bb uses '__' as signature sep), we're done
-        if (preg_match("/Intrado Wireless Information Network/", $process) || preg_match("/__/", $process)) {
+        if (preg_match("/Intrado Wireless Information Network/", $process) || preg_match("/__/", $process) && $leave == 0) {
+          print "Loop-Wireless: Found Blackberry signature line. Saving text, exiting loop.\n";
           $report .= $savedlines;
           $leave = 1;
           break;
         }
 # save the lines in case it's a plain text message from the blackberry; save after the exit due to the "Wireless" message.
-        if ($process != '') {
+        if (($process != '' && preg_match("/^--/", $process) == 0 && preg_match("/Content-Type: text\/plain/", $process) == 0 && preg_match("/Content-Transfer-Encoding:/", $process) == 0) && $leave == 0) {
+          print "Loop-Blank: Non-blank line; saving.\n";
           $savedlines .= $process . " ";
         }
 
 # on the other hand, if it's an outlook message, parse out the mime encoding.
+# assume the text/plain is the first block of data with the text/html as the second block
+# each block starts with '^--' so after the '-----' line added by procmail, the next line to look for is
+# the Content-Transfer line (the last line of the separator block). Once that's reached, begin parsing each line 
+# until the next '^--' is reached which is either the signature block or the text/html block.
         if (preg_match("/Content-Transfer-Encoding: quoted-printable/", $process) && $leave == 0) {
+          print "Loop-Content: quoted-printable found.\n";
           while (!feof($file)) {
             $process = trim(fgets($file));
             if (preg_match("/^--/", $process)) {
+              print "Loop-Content: '^--' found. Exiting loop.\n";
               $leave = 1;
               break;
             }
             if ($process != '') {
+              print "Loop-Content: Non-blank line; removing equals sign and saving.\n";
               $report .= preg_replace("/=$/", '', $process);
             }
           }
         }
 # need to read it in, then convert it, _then_ loop through the resultent output looking for the *this message has been sent... or -- /r/n lines to save any encoded information
         if (preg_match("/Content-Transfer-Encoding: base64/", $process) && $leave == 0) {
+          print "Loop-Content: base64 found.\n";
           while (!feof($file)) {
             $process = trim(fgets($file));
             if (preg_match("/^--/", $process)) {
+              print "Loop-Content: '^--' found. Exiting loop.\n";
               $parse = explode("\n", base64_decode($report));
               $report = '';
               for ($i = 0; $i < count($parse); $i++) {
