@@ -155,6 +155,7 @@
     $body .= "  <li><b>filesystem</b> - An e-mail will be returned containing minimal details plus a list of the filesystems.</li>\n";
     $body .= "  <li><b>software</b> - An e-mail will be returned containing minimal details plus a list of the installed software, not including the list of installed packages.</li>\n";
     $body .= "  <li><b>interface</b> - An e-mail will be returned containing minimal details plus a list of the active interfaces.</li>\n";
+    $body .= "  <li><b>route/routing</b> - An e-mail will be returned containing minimal details plus a list of the baseline routes.</li>\n";
     $body .= "</ul>\n\n";
 
     $body .= "<p>This mail box is not monitored, please do not reply.</p>\n\n";
@@ -537,6 +538,42 @@
         $output .= "  <td>" . $a_interface['int_mask'] . "</td>\n";
         $output .= "  <td>" . $a_interface['int_gate'] . "</td>\n";
         $output .= "  <td>" . $a_inttype['itp_acronym'] . "</td>\n";
+        $output .= "</tr>\n";
+      }
+      $output .= "</table>\n\n";
+    }
+
+    if ($action == "route" || $action == "routing" || $action == "*" || $action == "all") {
+      $output .= "<table width=80%>\n";
+      $output .= "<tr>\n";
+      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=7>Baselined Routing Table</th>\n";
+      $output .= "</tr>\n";
+      $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
+      $output .= "  <th>Destination</th>\n";
+      $output .= "  <th>Gateway</th>\n";
+      $output .= "  <th>Netmask</th>\n";
+      $output .= "  <th>Interface</th>\n";
+      $output .= "  <th>Description</th>\n";
+      $output .= "</tr>\n";
+
+      $q_string  = "select route_address,route_gateway,route_mask,route_interface,route_desc,route_verified,int_face from routing ";
+      $q_string .= "left join interface on interface.int_id = route_interface ";
+      $q_string .= "where route_companyid = " . $a_inventory['inv_id'] . " ";
+      $q_string .= "order by route_address";
+      $q_routing = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      while ($a_routing = mysql_fetch_array($q_routing)) {
+        if ($a_routing['route_verified'] == 1) {
+          $bgcolor = $color[1];
+        } else {
+          $bgcolor = $color[0];
+        }
+
+        $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+        $output .= "  <td>" . $a_routing['route_address'] . "</td>\n";
+        $output .= "  <td>" . $a_routing['route_gateway'] . "</td>\n";
+        $output .= "  <td>" . createNetmaskAddr($a_routing['route_mask']) . "</td>\n";
+        $output .= "  <td>" . $a_routing['int_face'] . "</td>\n";
+        $output .= "  <td>" . $a_routing['route_desc'] . "</td>\n";
         $output .= "</tr>\n";
       }
       $output .= "</table>\n\n";
