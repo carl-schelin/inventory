@@ -147,15 +147,16 @@
     $body .= "  <li><b>help</b> - An e-mail will be returned with this message.</li>\n";
     $body .= "</ul>\n\n";
 
-    $body .= "<p>The second keyword describes what information you want to retrieve. This only works if the first keyword is the name of a server.</p>\n";
+    $body .= "<p>The second keyword describes what information you want to retrieve. This only works if the first keyword is the name of a server. ";
+    $body .= "Note that only the first letter of the keyword is necessary to retrieve the requested information.</p>\n";
     $body .= "<ul>\n";
     $body .= "  <li><b>{blank}</b> - An e-mail will be returned containing basic details about the requested server.</li>\n";
-    $body .= "  <li><b>*</b> - An e-mail will be returned containing details from all the following keywords.</li>\n";
-    $body .= "  <li><b>hardware</b> - An e-mail will be returned containing minimal details plus a list of the hardware.</li>\n";
-    $body .= "  <li><b>filesystem</b> - An e-mail will be returned containing minimal details plus a list of the filesystems.</li>\n";
-    $body .= "  <li><b>software</b> - An e-mail will be returned containing minimal details plus a list of the installed software, not including the list of installed packages.</li>\n";
-    $body .= "  <li><b>interface</b> - An e-mail will be returned containing minimal details plus a list of the active interfaces.</li>\n";
-    $body .= "  <li><b>route/routing</b> - An e-mail will be returned containing minimal details plus a list of the baseline routes.</li>\n";
+    $body .= "  <li><b>*/<u>a</u>ll</b> - An e-mail will be returned containing details from all the following keywords.</li>\n";
+    $body .= "  <li><b><u>h</u>ardware</b> - An e-mail will be returned containing minimal details plus a list of the hardware.</li>\n";
+    $body .= "  <li><b><u>f</u>ilesystems</b> - An e-mail will be returned containing minimal details plus a list of the filesystems.</li>\n";
+    $body .= "  <li><b><u>s</u>oftware</b> - An e-mail will be returned containing minimal details plus a list of the installed software, not including the list of installed packages.</li>\n";
+    $body .= "  <li><b><u>i</u>nterfaces</b> - An e-mail will be returned containing minimal details plus a list of the active interfaces.</li>\n";
+    $body .= "  <li><b><u>r</u>oute/routing</b> - An e-mail will be returned containing minimal details plus a list of the baseline routes.</li>\n";
     $body .= "</ul>\n\n";
 
     $body .= "<p>This mail box is not monitored, please do not reply.</p>\n\n";
@@ -388,7 +389,8 @@
 
     $output .= "</table>\n\n";
 
-    if ($action == "hardware" || $action == "*" || $action == "all") {
+# hardware display
+    if (strpos($action, 'h') !== false || $action == "*" || strpos($action, 'a') !== false) {
       $output .= "<table width=80%>\n";
       $output .= "<tr>\n";
       $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=8>Full Hardware Listing</th>\n";
@@ -432,7 +434,8 @@
       $output .= "</table>\n\n";
     }
 
-    if ($action == "filesystem" || $action == "*" || $action == "all") {
+# filesystem display
+    if (strpos($action, 'f') !== false || $action == "*" || strpos($action, 'a') !== false) {
       $output .= "<table width=80%>\n";
       $output .= "<tr>\n";
       $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=5>Filesystem Listing</th>\n";
@@ -459,7 +462,8 @@
       $output .= "</table>\n\n";
     }
 
-    if ($action == "software" || $action == "*" || $action == "all") {
+# software display
+    if (strpos($action, 's') !== false || $action == "*" || strpos($action, 'a') !== false) {
       $output .= "<table width=80%>\n";
       $output .= "<tr>\n";
       $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=5>Software Listing</th>\n";
@@ -501,7 +505,8 @@
       $output .= "</table>\n\n";
     }
 
-    if ($action == "interface" || $action == "*" || $action == "all") {
+# interface table
+    if (strpos($action, 'i') !== false || $action == "*" || strpos($action, 'a') !== false) {
       $output .= "<table width=80%>\n";
       $output .= "<tr>\n";
       $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=7>Interfaces</th>\n";
@@ -543,7 +548,8 @@
       $output .= "</table>\n\n";
     }
 
-    if ($action == "route" || $action == "routing" || $action == "*" || $action == "all") {
+# routing table
+    if (strpos($action, 'r') !== false || $action == "*" || strpos($action, 'a') !== false) {
       $output .= "<table width=80%>\n";
       $output .= "<tr>\n";
       $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=7>Baselined Routing Table</th>\n";
