@@ -39,6 +39,7 @@ include($Sitepath . 'function.php');
 
 # use $pre to add "<br>" in case you want to look at the output on a browser
     $pre = '<br>';
+    $pre = '';
     $os = '';
     $note = '';
     $config = '';
