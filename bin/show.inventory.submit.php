@@ -78,6 +78,7 @@
   $action = strtolower($action);
   $product = '';
   $server = '';
+  $error = '';
 
   if ($servername == 'help' || $servername == 'active' || $servername == "products") {
     $server = $servername;
@@ -88,6 +89,7 @@
       $q_string = "select prod_name from products where prod_name = '" . $productlist . "'";
       $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error());
       if (mysql_num_rows($q_products) == 0) {
+        $error = "<p><strong>Error</strong>: The requested server or product was not found in the Inventory database.</p>\n\n";
         $server = "help";
       } else {
         $product = $productlist;
@@ -132,9 +134,10 @@
   }
 
   if ($server == 'help') {
-    $body  = "<p>Your Input:</p>\n";
+    $body  = $error;
+    $body .= "<p><u>Your Input:</u></p>\n";
     $body .= "<p>" . $subjectline . "</p>\n\n";
-    $body .= "<p>Usage:</p>\n";
+    $body .= "<p><u>Usage:</u></p>\n";
     $body .= "<p>To: inventory@incojs01.scc911.com\n";
     $body .= "<br>Subject: [{servername} | {intrado product} | help | active | products | {blank}] [keyword]</p>\n\n";
 
