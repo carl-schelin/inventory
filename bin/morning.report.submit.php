@@ -200,7 +200,14 @@
           break;
         }
 # save the lines in case it's a plain text message from the blackberry; save after the exit due to the "Wireless" message.
-        if (($process != '' && preg_match("/^--/", $process) == 0 && preg_match("/Content-Type: text\/plain/", $process) == 0 && preg_match("/Content-Transfer-Encoding:/", $process) == 0) && $leave == 0) {
+        if (($process != '' && 
+             preg_match("/^--/", $process) == 0 && 
+             preg_match("/Content-Type: multipart\/alternative/", $process) == 0 && 
+             preg_match("/boundary=\"_/", $process) == 0 && 
+             preg_match("/Content-Type: text\/plain/", $process) == 0 && 
+             preg_match("/Content-Transfer-Encoding:/", $process) == 0) && 
+             $leave == 0
+           ) {
           print "Loop-Blank: Non-blank line; saving.\n";
           $savedlines .= $process . " ";
         }
