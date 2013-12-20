@@ -133,6 +133,12 @@ include($Sitepath . 'function.php');
     }
 
 # servers are called one thing but listed as another.
+    if ($value[0] == "miamfldctxc0") {
+      $value[0] = "miamfldctxc1";
+    }
+    if ($value[0] == "lnmtcodctxc0") {
+      $value[0] = "lnmtcodctxc1";
+    }
     if ($value[0] == "incoag13") {
       $value[0] = "incoag10";
     }
