@@ -11,7 +11,7 @@
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
 # Set debug to 1 in order to debug the code
-  $debug = 1;
+  $debug = 0;
 
 # get today's date
 # loop through the certs in the database.
