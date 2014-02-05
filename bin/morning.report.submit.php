@@ -37,12 +37,12 @@
   if ($argc == 2) {
     $impact = "none";
   } else {
-    $impact = $argv[2];
+    $impact = trim($argv[2]);
 # if the group is passed along as well
     if (strpos($impact, ":") > 0) {
       $list = split(":", $impact);
-      $group = $list[0];
-      $impact = $list[1];
+      $group = trim($list[0]);
+      $impact = trim($list[1]);
       if ($impact == '') {
         $impact = "none";
       }
