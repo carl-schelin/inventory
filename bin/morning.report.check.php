@@ -18,12 +18,17 @@
   $headers .= "MIME-Version: 1.0\r\n";
   $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
-  $q_string = "select grp_id,grp_name,grp_email from groups where grp_report != 0 order by grp_report";
+  $q_string  = "select grp_id,grp_name,grp_email ";
+  $q_string .= "from groups ";
+  $q_string .= "where grp_report != 0 ";
+  $q_string .= "order by grp_report";
   $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_groups = mysql_fetch_array($q_groups)) {
 
     $flag = 0;
-    $q_string = "select rep_id,rep_status,rep_task from report where rep_group = " . $a_groups['grp_id'] . " and rep_date = '" . $formVars['date'] . "'";
+    $q_string  = "select rep_id,rep_status,rep_task ";
+    $q_string .= "from report ";
+    $q_string .= "where rep_group = " . $a_groups['grp_id'] . " and rep_date = '" . $formVars['date'] . "'";
     $q_report = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     while ($a_report = mysql_fetch_array($q_report)) {
 
@@ -38,7 +43,9 @@
     if ($flag == 0) {
       $usermail = "";
       $comma = "";
-      $q_string = "select usr_email from users where usr_disabled = 0 and usr_group = " . $a_groups['grp_id'];
+      $q_string  = "select usr_email ";
+      $q_string .= "from users ";
+      $q_string .= "where usr_disabled = 0 and usr_group = " . $a_groups['grp_id'];
       $q_users = mysql_query($q_string, $db) or die($q_string . ": " . mysql_error());
       while ($a_users = mysql_fetch_array($q_users)) {
         $usermail = $usermail . $comma . $a_users['usr_email'];
@@ -50,6 +57,7 @@
       } else {
         $sendto = $a_groups['grp_email'];
       }
+      $sendto .= ",carl.schelin@intrado.com";
 
       $output  = "<html>\n";
       $output .= "<body>\n";
