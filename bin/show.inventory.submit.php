@@ -160,6 +160,7 @@
     $body .= "  <li><b><u>s</u>oftware</b> - An e-mail will be returned containing minimal details plus a list of the installed software, not including the list of installed packages.</li>\n";
     $body .= "  <li><b><u>i</u>nterfaces</b> - An e-mail will be returned containing minimal details plus a list of the active interfaces.</li>\n";
     $body .= "  <li><b><u>r</u>oute/routing</b> - An e-mail will be returned containing minimal details plus a list of the baseline routes.</li>\n";
+    $body .= "  <li><b><u>p</u>roblems/issues</b> - An e-mail will be returned containing minimal details plus a list of the baseline routes.</li>\n";
     $body .= "</ul>\n\n";
 
     $body .= "<p>This mail box is not monitored, please do not reply.</p>\n\n";
@@ -379,7 +380,9 @@
     $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=4>Location Information</th>\n";
     $output .= "</tr>\n";
 
-    $q_string = "select loc_name,loc_addr1,loc_city,loc_state,loc_zipcode,loc_country from locations where loc_id = " . $a_inventory['inv_location'];
+    $q_string  = "select loc_name,loc_addr1,loc_city,loc_state,loc_zipcode,loc_country ";
+    $q_string .= "from locations ";
+    $q_string .= "where loc_id = " . $a_inventory['inv_location'];
     $q_locations = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     $a_locations = mysql_fetch_array($q_locations);
 
@@ -393,10 +396,10 @@
     $output .= "</table>\n\n";
 
 # hardware display
-    if (strpos($action, 'h') !== false || $action == "*" || strpos($action, 'a') !== false) {
+    if (substr($action, 1, 1) == "h" || $action == "*" || substr($action, 1, 1) == "a") {
       $output .= "<table width=80%>\n";
       $output .= "<tr>\n";
-      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=8>Full Hardware Listing</th>\n";
+      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"9\">Full Hardware Listing</th>\n";
       $output .= "</tr>\n";
       $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
       $output .= "  <th>Serial Number</th>\n";
@@ -407,10 +410,14 @@
       $output .= "  <th>Size</th>\n";
       $output .= "  <th>Speed</th>\n";
       $output .= "  <th>Type</th>\n";
+      $output .= "  <th>Last</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select hw_serial,hw_asset,hw_service,hw_vendorid,hw_size,hw_speed,part_name,hw_verified from hardware left join parts on parts.part_id = hardware.hw_type ";
-      $q_string .= "where hw_deleted = 0 and hw_companyid = " . $a_inventory['inv_id'] . " order by part_name";
+      $q_string  = "select hw_serial,hw_asset,hw_service,hw_vendorid,hw_size,hw_speed,part_name,hw_verified,hw_update ";
+      $q_string .= "from hardware ";
+      $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
+      $q_string .= "where hw_deleted = 0 and hw_companyid = " . $a_inventory['inv_id'] . " ";
+      $q_string .= "order by part_name";
       $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
       while ($a_hardware = mysql_fetch_array($q_hardware)) {
         $q_string  = "select mod_vendor,mod_name,mod_size,mod_speed from models where mod_id = " . $a_hardware['hw_vendorid'];
@@ -424,24 +431,25 @@
         }
 
         $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
-        $output .= "  <td>" . $a_hardware['hw_serial'] . "</td>\n";
-        $output .= "  <td>" . $a_hardware['hw_asset'] . "</td>\n";
+        $output .= "  <td>" . $a_hardware['hw_serial']  . "</td>\n";
+        $output .= "  <td>" . $a_hardware['hw_asset']   . "</td>\n";
         $output .= "  <td>" . $a_hardware['hw_service'] . "</td>\n";
-        $output .= "  <td>" . $a_models['mod_vendor'] . "</td>\n";
-        $output .= "  <td>" . $a_models['mod_name'] . "</td>\n";
-        $output .= "  <td>" . $a_models['mod_size'] . "</td>\n";
-        $output .= "  <td>" . $a_models['mod_speed'] . "</td>\n";
-        $output .= "  <td>" . $a_hardware['part_name'] . "</td>\n";
+        $output .= "  <td>" . $a_models['mod_vendor']   . "</td>\n";
+        $output .= "  <td>" . $a_models['mod_name']     . "</td>\n";
+        $output .= "  <td>" . $a_models['mod_size']     . "</td>\n";
+        $output .= "  <td>" . $a_models['mod_speed']    . "</td>\n";
+        $output .= "  <td>" . $a_hardware['part_name']  . "</td>\n";
+        $output .= "  <td>" . $a_hardware['hw_update']  . "</td>\n";
         $output .= "</tr>\n";
       }
       $output .= "</table>\n\n";
     }
 
 # filesystem display
-    if (strpos($action, 'f') !== false || $action == "*" || strpos($action, 'a') !== false) {
+    if (substr($action, 1, 1) == 'f' || $action == "*" || substr($action, 1, 1) == 'a') {
       $output .= "<table width=80%>\n";
       $output .= "<tr>\n";
-      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=5>Filesystem Listing</th>\n";
+      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"6\">Filesystem Listing</th>\n";
       $output .= "</tr>\n";
       $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
       $output .= "  <th>Device</th>\n";
@@ -449,27 +457,39 @@
       $output .= "  <th>Volume Name</th>\n";
       $output .= "  <th>Mount</th>\n";
       $output .= "  <th>WWNN</th>\n";
+      $output .= "  <th>Last</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select fs_device,fs_size,fs_volume,fs_mount,fs_wwid from filesystem where fs_companyid = " . $a_inventory['inv_id'] . " order by fs_device,fs_mount";
+      $q_string  = "select fs_device,fs_size,fs_volume,fs_mount,fs_wwid,fs_verified,fs_update ";
+      $q_string .= "from filesystem ";
+      $q_string .= "where fs_companyid = " . $a_inventory['inv_id'] . " ";
+      $q_string .= "order by fs_device,fs_mount";
       $q_filesystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
       while ( $a_filesystem = mysql_fetch_array($q_filesystem) ) {
+
+        if ($a_filesystem['fs_verified'] == 1) {
+          $bgcolor = $color[1];
+        } else {
+          $bgcolor = $color[0];
+        }
+
         $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">";
         $output .= "<td>" . $a_filesystem['fs_device'] . "</td>\n";
-        $output .= "<td>" . $a_filesystem['fs_size'] . "</td>\n";
+        $output .= "<td>" . $a_filesystem['fs_size']   . "</td>\n";
         $output .= "<td>" . $a_filesystem['fs_volume'] . "</td>\n";
-        $output .= "<td>" . $a_filesystem['fs_mount'] . "</td>\n";
-        $output .= "<td>" . $a_filesystem['fs_wwid'] . "</td>\n";
+        $output .= "<td>" . $a_filesystem['fs_mount']  . "</td>\n";
+        $output .= "<td>" . $a_filesystem['fs_wwid']   . "</td>\n";
+        $output .= "<td>" . $a_filesystem['fs_update'] . "</td>\n";
         $output .= "</tr>\n";
       }
       $output .= "</table>\n\n";
     }
 
 # software display
-    if (strpos($action, 's') !== false || $action == "*" || strpos($action, 'a') !== false) {
+    if (substr($action, 1, 1) == 's' || $action == "*" || substr($action, 1, 1) == 'a') {
       $output .= "<table width=80%>\n";
       $output .= "<tr>\n";
-      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=5>Software Listing</th>\n";
+      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"6\">Software Listing</th>\n";
       $output .= "</tr>\n";
       $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
       $output .= "  <th>Product</th>\n";
@@ -477,10 +497,13 @@
       $output .= "  <th>Software</th>\n";
       $output .= "  <th>Type</th>\n";
       $output .= "  <th>Support Group</th>\n";
+      $output .= "  <th>Last</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select sw_product,sw_vendor,sw_software,sw_type,sw_group,sw_verified from software ";
-      $q_string .= "where (sw_type != 'PKG' and sw_type != 'RPM') and sw_companyid = " . $a_inventory['inv_id'] . " order by sw_software";
+      $q_string  = "select sw_product,sw_vendor,sw_software,sw_type,sw_group,sw_verified,sw_update ";
+      $q_string .= "from software ";
+      $q_string .= "where (sw_type != 'PKG' and sw_type != 'RPM') and sw_companyid = " . $a_inventory['inv_id'] . " ";
+      $q_string .= "order by sw_software";
       $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
       while ($a_software = mysql_fetch_array($q_software)) {
         $q_string = "select prod_name from products where prod_id = " . $a_software['sw_product'];
@@ -498,21 +521,22 @@
         }
 
         $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
-        $output .= "  <td>" . $a_products['prod_name'] . "</td>\n";
-        $output .= "  <td>" . $a_software['sw_vendor'] . "</td>\n";
+        $output .= "  <td>" . $a_products['prod_name']   . "</td>\n";
+        $output .= "  <td>" . $a_software['sw_vendor']   . "</td>\n";
         $output .= "  <td>" . $a_software['sw_software'] . "</td>\n";
-        $output .= "  <td>" . $a_software['sw_type'] . "</td>\n";
-        $output .= "  <td>" . $a_groups['grp_name'] . "</td>\n";
+        $output .= "  <td>" . $a_software['sw_type']     . "</td>\n";
+        $output .= "  <td>" . $a_groups['grp_name']      . "</td>\n";
+        $output .= "  <td>" . $a_software['sw_update']   . "</td>\n";
         $output .= "</tr>\n";
       }
       $output .= "</table>\n\n";
     }
 
 # interface table
-    if (strpos($action, 'i') !== false || $action == "*" || strpos($action, 'a') !== false) {
+    if (substr($action, 1, 1) == 'i' || $action == "*" || substr($action, 1, 1) == 'a') {
       $output .= "<table width=80%>\n";
       $output .= "<tr>\n";
-      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=7>Interfaces</th>\n";
+      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"8\">Interfaces</th>\n";
       $output .= "</tr>\n";
       $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
       $output .= "  <th>Name</th>\n";
@@ -522,10 +546,13 @@
       $output .= "  <th>Subnet</th>\n";
       $output .= "  <th>Gateway</th>\n";
       $output .= "  <th>Type</th>\n";
+      $output .= "  <th>Last</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select int_server,int_face,int_ip6,int_addr,int_eth,int_mask,int_gate,int_verified,int_type from interface ";
-      $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " order by int_face";
+      $q_string  = "select int_server,int_face,int_ip6,int_addr,int_eth,int_mask,int_gate,int_verified,int_type,int_update ";
+      $q_string .= "from interface ";
+      $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " ";
+      $q_string .= "order by int_face";
       $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
       while ($a_interface = mysql_fetch_array($q_interface)) {
         $q_string  = "select itp_acronym from inttype where itp_id = " . $a_interface['int_type'];
@@ -540,22 +567,65 @@
 
         $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
         $output .= "  <td>" . $a_interface['int_server'] . "</td>\n";
-        $output .= "  <td>" . $a_interface['int_face'] . "</td>\n";
-        $output .= "  <td>" . $a_interface['int_addr'] . "</td>\n";
-        $output .= "  <td>" . $a_interface['int_eth'] . "</td>\n";
-        $output .= "  <td>" . $a_interface['int_mask'] . "</td>\n";
-        $output .= "  <td>" . $a_interface['int_gate'] . "</td>\n";
-        $output .= "  <td>" . $a_inttype['itp_acronym'] . "</td>\n";
+        $output .= "  <td>" . $a_interface['int_face']   . "</td>\n";
+        $output .= "  <td>" . $a_interface['int_addr']   . "</td>\n";
+        $output .= "  <td>" . $a_interface['int_eth']    . "</td>\n";
+        $output .= "  <td>" . $a_interface['int_mask']   . "</td>\n";
+        $output .= "  <td>" . $a_interface['int_gate']   . "</td>\n";
+        $output .= "  <td>" . $a_inttype['itp_acronym']  . "</td>\n";
+        $output .= "  <td>" . $a_interface['int_update'] . "</td>\n";
         $output .= "</tr>\n";
       }
       $output .= "</table>\n\n";
     }
 
 # routing table
-    if (strpos($action, 'r') !== false || $action == "*" || strpos($action, 'a') !== false) {
+    if (substr($action, 1, 1) == 'r' || $action == "*" || substr($action, 1, 1) == 'a') {
       $output .= "<table width=80%>\n";
       $output .= "<tr>\n";
-      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=7>Baselined Routing Table</th>\n";
+      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"6\">Routing Table</th>\n";
+      $output .= "</tr>\n";
+      $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
+      $output .= "  <th>Destination</th>\n";
+      $output .= "  <th>Gateway</th>\n";
+      $output .= "  <th>Netmask</th>\n";
+      $output .= "  <th>Interface</th>\n";
+      $output .= "  <th>Description</th>\n";
+      $output .= "  <th>Last</th>\n";
+      $output .= "</tr>\n";
+
+      $q_string  = "select route_address,route_gateway,route_mask,route_interface,route_desc,route_verified,int_face,route_update ";
+      $q_string .= "from routing ";
+      $q_string .= "left join interface on interface.int_id = route_interface ";
+      $q_string .= "where route_companyid = " . $a_inventory['inv_id'] . " ";
+      $q_string .= "order by route_address";
+      $q_routing = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      while ($a_routing = mysql_fetch_array($q_routing)) {
+        if ($a_routing['route_verified'] == 1) {
+          $bgcolor = $color[1];
+        } else {
+          $bgcolor = $color[0];
+        }
+
+        $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+        $output .= "  <td>" . $a_routing['route_address']                 . "</td>\n";
+        $output .= "  <td>" . $a_routing['route_gateway']                 . "</td>\n";
+        $output .= "  <td>" . createNetmaskAddr($a_routing['route_mask']) . "</td>\n";
+        $output .= "  <td>" . $a_routing['int_face']                      . "</td>\n";
+        $output .= "  <td>" . $a_routing['route_desc']                    . "</td>\n";
+        $output .= "  <td>" . $a_routing['route_update']                  . "</td>\n";
+        $output .= "</tr>\n";
+      }
+      $output .= "</table>\n\n";
+    }
+
+# prevent this test section from executing while it's being worked on
+    $action = '';
+# problem/issue table
+    if (substr($action, 1, 1) == 'p' || $action == "*" || substr($action, 1, 1) == 'a') {
+      $output .= "<table width=80%>\n";
+      $output .= "<tr>\n";
+      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=7>Issue Tracker</th>\n";
       $output .= "</tr>\n";
       $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
       $output .= "  <th>Destination</th>\n";
@@ -588,9 +658,12 @@
       $output .= "</table>\n\n";
     }
 
+
+# this is the footer information
+
     $output .= "<table width=80%>\n";
     $output .= "<tr style=\"background-color: " . $color[1] . "; border: 1px solid #000000; font-size: 75%;\">\n";
-    $output .= "  <td><b>Green</b> indicates that the information was automatically gathered from the system so is accurate.</td>\n";
+    $output .= "  <td><strong>Green</strong> indicates that the information was automatically gathered from the system so is accurate as of the <strong>Last</strong> column date.</td>\n";
     $output .= "</tr>\n";
     $output .= "</table>\n\n";
 
