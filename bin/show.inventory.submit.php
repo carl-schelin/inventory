@@ -44,7 +44,7 @@
   }
 
   $q_string = "select usr_name from users where usr_id != 1 and usr_email = '" . $email . "'";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
   $a_users = mysql_fetch_array($q_users);
 
   logaccess($a_users['usr_name'], "show.inventory.submit.php", $subjectline);
@@ -75,6 +75,7 @@
 
   $servername = strtolower($servername);
   $productlist = strtolower($productlist);
+  $serverip = $servername;
   $action = strtolower($action);
   $product = '';
   $server = '';
@@ -83,14 +84,34 @@
   if ($servername == 'help' || $servername == 'active' || $servername == "products") {
     $server = $servername;
   } else {
-    $q_string = "select inv_id,inv_name,inv_manager from inventory where inv_name like '" . $servername . "%' and inv_status = 0 order by inv_name";
-    $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_string = "select inv_id,inv_name,inv_manager from inventory where inv_name like '%" . $servername . "%' and inv_status = 0 order by inv_name";
+    $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
+
     if (mysql_num_rows($q_inventory) == 0) {
       $q_string = "select prod_name from products where prod_name = '" . $productlist . "'";
-      $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
+
       if (mysql_num_rows($q_products) == 0) {
-        $error = "<p><strong>Error</strong>: The requested server or product was not found in the Inventory database.</p>\n\n";
-        $server = "help";
+        $q_string = "select int_companyid from interface where int_addr = '" . $serverip . "'";
+        $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
+
+        if (mysql_num_rows($q_interface) == 0) {
+          $error = "<p><strong>Error</strong>: The requested server, product, or IP was not found in the Inventory database.</p>\n\n";
+          $server = "help";
+        } else {
+          $a_interface = mysql_fetch_array($q_interface);
+          $q_string = "select inv_id,inv_name,inv_manager from inventory where inv_id = " . $a_interface['int_companyid'];
+          $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
+
+          if (mysql_num_rows($q_inventory) > 0) {
+            $a_inventory = mysql_fetch_array($q_inventory);
+            $servername = $a_inventory['inv_name'];
+          } else {
+            $error = "<p><strong>Error</strong>: Can't find the matching server name in the Inventory database.</p>\n\n";
+            $server = "help";
+          }
+
+        }
       } else {
         $product = $productlist;
       }
@@ -109,7 +130,7 @@
 
         while ($a_inventory = mysql_fetch_array($q_inventory)) {
           $q_string = "select grp_name from groups where grp_id = " . $a_inventory['inv_manager'];
-          $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_groups = mysql_query($q_string) or die($q_string . ":(1): " . mysql_error() . "\n\n");
           $a_groups = mysql_fetch_array($q_groups);
 
           $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
@@ -139,12 +160,13 @@
     $body .= "<p>" . $subjectline . "</p>\n\n";
     $body .= "<p><u>Usage:</u></p>\n";
     $body .= "<p>To: inventory@incojs01.scc911.com\n";
-    $body .= "<br>Subject: [{servername} | {intrado product} | help | active | products | {blank}] [keyword]</p>\n\n";
+    $body .= "<br>Subject: [{servername} | {serverip} | {intrado product} | help | active | products | {blank}] [keyword]</p>\n\n";
 
     $body .= "<p>The Subject line consists of up to two keywords. The first can be one of five options;</p>\n";
     $body .= "<ul>\n";
     $body .= "  <li><b>{blank} or active</b> - If the Subject line is empty or contains 'active', a list of all active servers will be returned via e-mail.</li>\n";
     $body .= "  <li><b>{servername}</b> - An e-mail will be returned containing information about the identified server. If it's a partial name (like inco or lnmtco), then a partial listing of servers will be returned.</li>\n";
+    $body .= "  <li><b>{serverip}</b> - An e-mail will be returned containing information about the server associated with the IP.</li>\n";
     $body .= "  <li><b>{intrado product}</b> - An e-mail will be returned containing a list of all servers assigned to this Intrado Product</li>\n";
     $body .= "  <li><b>products</b> - A list of all Intrado products will be returned.</li>\n";
     $body .= "  <li><b>help</b> - An e-mail will be returned with this message.</li>\n";
@@ -184,14 +206,14 @@
     $output .= "</tr>\n";
 
     $q_string  = "select inv_id,inv_name,inv_function,inv_manager from inventory where inv_status = 0 group by inv_name";
-    $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     while ($a_inventory = mysql_fetch_array($q_inventory)) {
       $q_string = "select grp_name from groups where grp_id = " . $a_inventory['inv_manager'];
-      $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_groups = mysql_query($q_string) or die($q_string . ":(2): " . mysql_error() . "\n\n");
       $a_groups = mysql_fetch_array($q_groups);
 
       $q_string = "select hw_active from hardware where hw_primary = 1 and hw_companyid = " . $a_inventory['inv_id'];
-      $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
       $a_hardware = mysql_fetch_array($q_hardware);
       if ($a_hardware['hw_active'] == '0000-00-00') {
         $bgcolor = $color[1];
@@ -230,7 +252,7 @@
     $output .= "</tr>\n";
 
     $q_string = "select prod_name,prod_desc from products order by prod_name";
-    $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     while ($a_products = mysql_fetch_array($q_products)) {
       $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
       $output .= "  <td>" . $a_products['prod_name'] . "</td>\n";
@@ -262,19 +284,19 @@
     $output .= "</tr>\n";
 
     $q_string = "select prod_id from products where prod_name = '" . $product . "'";
-    $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     $a_products = mysql_fetch_array($q_products);
 
     $q_string  = "select inv_id,inv_name,inv_function,inv_manager from inventory left join software on inventory.inv_id = software.sw_companyid ";
     $q_string .= "where inv_status = 0 and sw_product = " . $a_products['prod_id'] . " group by inv_name";
-    $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     while ($a_inventory = mysql_fetch_array($q_inventory)) {
       $q_string = "select grp_name from groups where grp_id = " . $a_inventory['inv_manager'];
-      $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_groups = mysql_query($q_string) or die($q_string . ":(3): " . mysql_error() . "\n\n");
       $a_groups = mysql_fetch_array($q_groups);
 
       $q_string = "select hw_active from hardware where hw_primary = 1 and hw_companyid = " . $a_inventory['inv_id'];
-      $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
       $a_hardware = mysql_fetch_array($q_hardware);
       if ($a_hardware['hw_active'] == '0000-00-00') {
         $bgcolor = $color[1];
@@ -308,11 +330,11 @@
 
     $q_string  = "select inv_id,inv_name,inv_function,inv_location,inv_rack,inv_row,inv_unit,inv_manager,inv_product ";
     $q_string .= "from inventory where inv_name = '" . $servername . "' and inv_status = 0";
-    $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_inventory = mysql_fetch_array($q_inventory) or die($q_string . ": " . mysql_error());
+    $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
+    $a_inventory = mysql_fetch_array($q_inventory);
 
     $q_string = "select grp_name from groups where grp_id = " . $a_inventory['inv_manager'];
-    $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_groups = mysql_query($q_string) or die($q_string . ":(4): " . mysql_error() . "\n\n");
     $a_groups = mysql_fetch_array($q_groups);
 
     $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
@@ -331,11 +353,11 @@
     $output .= "</tr>\n";
 
     $q_string = "select hw_supportid from hardware where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1";
-    $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     $a_hardware = mysql_fetch_array($q_hardware);
 
     $q_string  = "select sup_company,sup_phone,sup_contract,sup_hwresponse,sup_swresponse from support where sup_id = " . $a_hardware['hw_supportid'];
-    $q_support = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_support = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     $a_support = mysql_fetch_array($q_support);
 
     $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
@@ -356,11 +378,11 @@
     $output .= "</tr>\n";
 
     $q_string = "select hw_serial,hw_asset,hw_service,hw_vendorid from hardware where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1";
-    $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     $a_hardware = mysql_fetch_array($q_hardware);
 
     $q_string  = "select mod_vendor,mod_name from models where mod_id = " . $a_hardware['hw_vendorid'];
-    $q_models = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_models = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     $a_models = mysql_fetch_array($q_models);
 
     $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
@@ -383,7 +405,7 @@
     $q_string  = "select loc_name,loc_addr1,loc_city,loc_state,loc_zipcode,loc_country ";
     $q_string .= "from locations ";
     $q_string .= "where loc_id = " . $a_inventory['inv_location'];
-    $q_locations = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_locations = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     $a_locations = mysql_fetch_array($q_locations);
 
     $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
@@ -418,10 +440,10 @@
       $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
       $q_string .= "where hw_deleted = 0 and hw_companyid = " . $a_inventory['inv_id'] . " ";
       $q_string .= "order by part_name";
-      $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
       while ($a_hardware = mysql_fetch_array($q_hardware)) {
         $q_string  = "select mod_vendor,mod_name,mod_size,mod_speed from models where mod_id = " . $a_hardware['hw_vendorid'];
-        $q_models = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_models = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
         $a_models = mysql_fetch_array($q_models);
 
         if ($a_hardware['hw_verified'] == 1) {
@@ -464,7 +486,7 @@
       $q_string .= "from filesystem ";
       $q_string .= "where fs_companyid = " . $a_inventory['inv_id'] . " ";
       $q_string .= "order by fs_device,fs_mount";
-      $q_filesystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_filesystem = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
       while ( $a_filesystem = mysql_fetch_array($q_filesystem) ) {
 
         if ($a_filesystem['fs_verified'] == 1) {
@@ -504,14 +526,14 @@
       $q_string .= "from software ";
       $q_string .= "where (sw_type != 'PKG' and sw_type != 'RPM') and sw_companyid = " . $a_inventory['inv_id'] . " ";
       $q_string .= "order by sw_software";
-      $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
       while ($a_software = mysql_fetch_array($q_software)) {
         $q_string = "select prod_name from products where prod_id = " . $a_software['sw_product'];
-        $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
         $a_products = mysql_fetch_array($q_products);
 
         $q_string = "select grp_name from groups where grp_id = " . $a_software['sw_group'];
-        $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_groups = mysql_query($q_string) or die($q_string . ":(5): " . mysql_error() . "\n\n");
         $a_groups = mysql_fetch_array($q_groups);
 
         if ($a_software['sw_verified'] == 1) {
@@ -553,10 +575,10 @@
       $q_string .= "from interface ";
       $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " ";
       $q_string .= "order by int_face";
-      $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
       while ($a_interface = mysql_fetch_array($q_interface)) {
         $q_string  = "select itp_acronym from inttype where itp_id = " . $a_interface['int_type'];
-        $q_inttype = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_inttype = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
         $a_inttype = mysql_fetch_array($q_inttype);
 
         if ($a_interface['int_verified'] == 1) {
@@ -599,7 +621,7 @@
       $q_string .= "left join interface on interface.int_id = route_interface ";
       $q_string .= "where route_companyid = " . $a_inventory['inv_id'] . " ";
       $q_string .= "order by route_address";
-      $q_routing = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_routing = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
       while ($a_routing = mysql_fetch_array($q_routing)) {
         if ($a_routing['route_verified'] == 1) {
           $bgcolor = $color[1];
@@ -639,7 +661,7 @@
       $q_string .= "left join interface on interface.int_id = route_interface ";
       $q_string .= "where route_companyid = " . $a_inventory['inv_id'] . " ";
       $q_string .= "order by route_address";
-      $q_routing = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_routing = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
       while ($a_routing = mysql_fetch_array($q_routing)) {
         if ($a_routing['route_verified'] == 1) {
           $bgcolor = $color[1];
