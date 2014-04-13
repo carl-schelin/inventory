@@ -26,7 +26,7 @@ include($Sitepath . 'function.php');
 
   $bgcolor = "#EEEEEE";
 
-  $q_string  = "select inv_id,inv_name,inv_zone,inv_ssh ";
+  $q_string  = "select inv_id,inv_name,inv_ssh ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_manager = 1 and inv_status = 0 ";
   $q_string .= "order by inv_name";
@@ -80,7 +80,16 @@ include($Sitepath . 'function.php');
     }
 
     $value = split("/", $a_inventory['inv_name']);
-    
+
+    $interfaces = '';
+    $q_string  = "select int_server ";
+    $q_string .= "from interface ";
+    $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_type = 1 || int_type = 2)";
+    $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    while ($a_interface = mysql_fetch_array($q_interface)) {
+      $interfaces .= "," . $a_interface['int_server'] . ",";
+    }
+
 # determine any notes or commented out systems
 
 # Peering servers
@@ -407,7 +416,7 @@ include($Sitepath . 'function.php');
       $peering = "IEN";
     }
 
-    print "$pre$value[0]:$value[1]:$os:" . $zoneval[$a_inventory['inv_zone']] . ":$peering:$note:" . $a_inventory['inv_id'] . "\n";
+    print "$pre$value[0]:$value[1]:$os:$interfaces:$peering:$note:" . $a_inventory['inv_id'] . "\n";
 
   }
 
