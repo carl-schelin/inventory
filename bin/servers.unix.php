@@ -84,7 +84,7 @@ include($Sitepath . 'function.php');
     $interfaces = '';
     $q_string  = "select int_server ";
     $q_string .= "from interface ";
-    $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_type = 1 || int_type = 2)";
+    $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_type = 1 || int_type = 2 || int_type = 6)";
     $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     while ($a_interface = mysql_fetch_array($q_interface)) {
       $interfaces .= "," . $a_interface['int_server'] . ",";
