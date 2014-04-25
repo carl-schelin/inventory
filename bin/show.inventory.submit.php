@@ -1,7 +1,7 @@
 #!/usr/local/bin/php
 <?php
   include('settings.php');
-  include($Sitepath . 'function.php');
+  include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
     $db = mysql_connect($server,$user,$pass);
@@ -10,6 +10,9 @@
   }
 
   $db = dbconn('localhost','inventory','root','this4now!!');
+
+  $debug = 'yes';
+  $debug = 'no';
 
   $headers  = "From: Inventory Management <inventory@incojs01.scc911.com>\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
@@ -84,31 +87,113 @@
   if ($servername == 'help' || $servername == 'active' || $servername == "products") {
     $server = $servername;
   } else {
-    $q_string = "select inv_id,inv_name,inv_manager from inventory where inv_name like '%" . $servername . "%' and inv_status = 0 order by inv_name";
+    $q_string  = "select inv_id,inv_name,inv_manager ";
+    $q_string .= "from inventory ";
+    $q_string .= "where inv_name like '" . $servername . "' and inv_status = 0 ";
+    $q_string .= "order by inv_name";
     $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
 
+    if ($debut == 'yes') {
+      print $q_string . "\n\n";
+    }
     if (mysql_num_rows($q_inventory) == 0) {
       $q_string = "select prod_name from products where prod_name = '" . $productlist . "'";
       $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
 
+      if ($debut == 'yes') {
+        print $q_string . "\n\n";
+      }
       if (mysql_num_rows($q_products) == 0) {
-        $q_string = "select int_companyid from interface where int_addr = '" . $serverip . "'";
+        $q_string  = "select int_companyid,int_addr,int_face,int_eth ";
+        $q_string .= "from interface ";
+        $q_string .= "where int_addr like '" . $serverip . "' ";
+        $q_string .= "order by INET_ATON(int_addr) ";
         $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
 
+        if ($debug == 'yes') {
+          print $q_string . "\n\n";
+        }
         if (mysql_num_rows($q_interface) == 0) {
           $error = "<p><strong>Error</strong>: The requested server, product, or IP was not found in the Inventory database.</p>\n\n";
           $server = "help";
         } else {
-          $a_interface = mysql_fetch_array($q_interface);
-          $q_string = "select inv_id,inv_name,inv_manager from inventory where inv_id = " . $a_interface['int_companyid'];
-          $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
+          if (mysql_num_rows($q_interface) == 1) {
+            $a_interface = mysql_fetch_array($q_interface);
 
-          if (mysql_num_rows($q_inventory) > 0) {
-            $a_inventory = mysql_fetch_array($q_inventory);
-            $servername = $a_inventory['inv_name'];
+            $q_string  = "select inv_id,inv_name,inv_manager ";
+            $q_string .= "from inventory ";
+            $q_string .= "where inv_id = " . $a_interface['int_companyid'];
+            $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
+
+            if ($debug == 'yes') {
+              print $q_string . "\n\n";
+            }
+            if (mysql_num_rows($q_inventory) > 0) {
+              $a_inventory = mysql_fetch_array($q_inventory);
+              $servername = $a_inventory['inv_name'];
+            } else {
+              $error = "<p><strong>Error</strong>: Can't find the matching server name in the Inventory database.</p>\n\n";
+              $server = "help";
+            }
           } else {
-            $error = "<p><strong>Error</strong>: Can't find the matching server name in the Inventory database.</p>\n\n";
-            $server = "help";
+            $output .= "<table width=80%>\n";
+            $output .= "<tr>\n";
+            $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Intrado: IP Listing</th>\n";
+            $output .= "</tr>\n";
+            $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
+            $output .= "  <th>Servername</th>\n";
+            $output .= "  <th>IP Address</th>\n";
+            $output .= "  <th>Interface</th>\n";
+            $output .= "  <th>MAC</th>\n";
+            $output .= "  <th>Managed By</th>\n";
+            $output .= "</tr>\n";
+
+            while ($a_interface = mysql_fetch_array($q_interface)) {
+
+              $q_string  = "select inv_name,inv_manager,inv_status ";
+              $q_string .= "from inventory ";
+              $q_string .= "where inv_id = " . $a_interface['int_companyid'];
+              $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
+              $a_inventory = mysql_fetch_array($q_inventory);
+
+              if ($debug == 'yes') {
+                print $q_string . "\n\n";
+              }
+              $q_string  = "select grp_name ";
+              $q_string .= "from groups ";
+              $q_string .= "where grp_id = '" . $a_inventory['inv_manager'] . "'";
+              $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
+              $a_groups = mysql_fetch_array($q_groups);
+
+              if ($debug == 'yes') {
+                print $q_string . "\n\n";
+              }
+              if ($a_inventory['inv_status'] == 0) {
+                $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
+                $output .= "  <td>" . $a_inventory['inv_name'] . "</td>\n";
+                $output .= "  <td>" . $a_interface['int_addr'] . "</td>\n";
+                $output .= "  <td>" . $a_interface['int_face'] . "</td>\n";
+                $output .= "  <td>" . $a_interface['int_eth'] . "</td>\n";
+                $output .= "  <td>" . $a_groups['grp_name'] . "</td>\n";
+                $output .= "</tr>\n";
+              }
+            }
+
+            $output .= "</table>\n\n";
+
+            $output .= "<p>This mail box is not monitored, please do not reply.</p>\n\n";
+
+            $output .= "</body>\n";
+            $output .= "</html>\n";
+
+            $body = $output;
+
+            if ($debug == 'yes') {
+              print "mail($email, \"Inventory: IP Listing\", $body, $headers);\n\n";
+            } else {
+              mail($email, "Inventory: IP Listing", $body, $headers);
+            }
+            exit(1);
           }
 
         }
@@ -121,7 +206,7 @@
       } else {
         $output .= "<table width=80%>\n";
         $output .= "<tr>\n";
-        $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=3>Intrado: Partial Server Listing</th>\n";
+        $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"3\">Intrado: Server Listing</th>\n";
         $output .= "</tr>\n";
         $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
         $output .= "  <th>Servername</th>\n";
@@ -133,6 +218,9 @@
           $q_groups = mysql_query($q_string) or die($q_string . ":(1): " . mysql_error() . "\n\n");
           $a_groups = mysql_fetch_array($q_groups);
 
+          if ($debug == 'yes') {
+            print $q_string . "\n\n";
+          }
           $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
           $output .= "  <td>" . $a_inventory['inv_name'] . "</td>\n";
           $output .= "  <td>" . $a_groups['grp_name'] . "</td>\n";
@@ -148,7 +236,11 @@
 
         $body = $output;
 
-        mail($email, "Inventory: Partial Server List", $body, $headers);
+        if ($debug == 'yes') {
+          print "mail($email, \"Inventory: Server Listing\", $body, $headers);\n\n";
+        } else {
+          mail($email, "Inventory: Server Listing", $body, $headers);
+        }
         exit(1);
       }
     }
@@ -165,12 +257,14 @@
     $body .= "<p>The Subject line consists of up to two keywords. The first can be one of five options;</p>\n";
     $body .= "<ul>\n";
     $body .= "  <li><b>{blank} or active</b> - If the Subject line is empty or contains 'active', a list of all active servers will be returned via e-mail.</li>\n";
-    $body .= "  <li><b>{servername}</b> - An e-mail will be returned containing information about the identified server. If it's a partial name (like inco or lnmtco), then a partial listing of servers will be returned.</li>\n";
+    $body .= "  <li><b>{servername}</b> - An e-mail will be returned containing information about the identified server.</li>\n";
+
     $body .= "  <li><b>{serverip}</b> - An e-mail will be returned containing information about the server associated with the IP.</li>\n";
     $body .= "  <li><b>{intrado product}</b> - An e-mail will be returned containing a list of all servers assigned to this Intrado Product</li>\n";
     $body .= "  <li><b>products</b> - A list of all Intrado products will be returned.</li>\n";
     $body .= "  <li><b>help</b> - An e-mail will be returned with this message.</li>\n";
     $body .= "</ul>\n\n";
+    $body .= "<p>The email request supports Database wildcards (%) so to get a list of servers that start with 'inco', add the wildcard character to the end of the server name, example: 'inco%' or '10.100.78.%' for a list of servers with IP Addresses. You will receive a complete listing of all servers or IP addresses.</p>\n";
 
     $body .= "<p>The second keyword describes what information you want to retrieve. This only works if the first keyword is the name of a server. ";
     $body .= "Note that only the first letter of the keyword is necessary to retrieve the requested information.</p>\n";
@@ -190,7 +284,11 @@
     $body .= "</body>\n";
     $body .= "</html>\n";
 
-    mail($email, "Inventory: Help", $body, $headers);
+    if ($debug == 'yes') {
+      print "mail($email, \"Inventory: Help\", $body, $headers);\n\n";
+    } else {
+      mail($email, "Inventory: Help", $body, $headers);
+    }
     exit(1);
   }
 
@@ -236,7 +334,11 @@
 
     $body = $output;
 
-    mail($email, "Inventory: Active Server Listing", $body, $headers);
+    if ($debug == 'yes') {
+      print "mail($email, \"Inventory: Active Server Listing\", $body, $headers);\n\n";
+    } else {
+      mail($email, "Inventory: Active Server Listing", $body, $headers);
+    }
     exit(1);
 
   }
@@ -261,6 +363,8 @@
     }
     $output .= "</table>\n\n";
 
+    $output .= "<p><a href=\"" $Siteroot . "/products.php\">Inventory Product Listing.</a></p>\n\n";
+
     $output .= "<p>This mail box is not monitored, please do not reply.</p>\n\n";
 
     $output .= "</body>\n";
@@ -268,7 +372,11 @@
 
     $body = $output;
 
-    mail($email, "Intrado Product Listing", $body, $headers);
+    if ($debug == 'yes') {
+      print "mail($email, \"Intrado Product Listing\", $body, $headers);\n\n";
+    } else {
+      mail($email, "Intrado Product Listing", $body, $headers);
+    }
     exit(1);
   }
 
@@ -319,7 +427,11 @@
 
     $body = $output;
 
-    mail($email, "Inventory: " . $product . " server list", $body, $headers);
+    if ($debug == 'yes') {
+      print "mail($email, \"Inventory: \" . $product . \" server list\", $body, $headers);\n\n";
+    } else {
+      mail($email, "Inventory: " . $product . " server list", $body, $headers);
+    }
     exit(1);
 
   } else {
@@ -696,7 +808,11 @@
 
     $body = $output;
 
-    mail($email, "Inventory: " . $servername, $body, $headers);
+    if ($debug == 'yes') {
+      print "mail($email, \"Inventory: \" . $servername, $body, $headers);\n";
+    } else {
+      mail($email, "Inventory: " . $servername, $body, $headers);
+    }
   }
 
 ?>
