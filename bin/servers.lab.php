@@ -74,5 +74,7 @@ include($Sitepath . 'function.php');
     print "$pre$value[0]:$value[1]:$os:" . $zoneval[$a_inventory['inv_zone']] . ":$peering:$note:" . $a_inventory['inv_id'] . "\n";
 
   }
+# add the centrify application for changelog work
+  print "#centrify:::::,centrify,:0\n";
 
 ?>
