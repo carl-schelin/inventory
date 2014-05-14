@@ -10,24 +10,9 @@ include($Sitepath . 'function.php');
 
   $db = dbconn('localhost','inventory','root','this4now!!');
 
-  $field = clean($_REQUEST["sort"], 20);
-
-  if (isset($_REQUEST["sort"])) {
-    $orderby = " order by " . $field;
-  } else {
-    $orderby = " order by inv_name";
-  }
-
-  $q_string = "select zone_id,zone_name from zones";
-  $q_zones = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_zones = mysql_fetch_array($q_zones)) {
-    $zoneval[$a_zones['zone_id']] = $a_zones['zone_name'];
-  }
-
-  $bgcolor = "#EEEEEE";
-
-  $q_string  = "select inv_id,inv_name,inv_ssh ";
+  $q_string  = "select inv_id,inv_name,inv_ssh,zone_name,inv_tags ";
   $q_string .= "from inventory ";
+  $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
   $q_string .= "where inv_manager = 1 and inv_status = 0 ";
   $q_string .= "order by inv_name";
   $q_inventory = mysql_query($q_string) or die(mysql_error());
@@ -42,11 +27,10 @@ include($Sitepath . 'function.php');
 
     $os = "";
     $pre = "";
-    $note = "";
-    $peering = "";
+    $tags .= "";
 
 # add a comment character to the server list for live servers but not ssh'able.
-# scripts use the "^#" part to make sure commented servers
+# scripts use the "^#" part to make sure commented servers are able to use the changelog process
     if ($a_inventory['inv_ssh'] == 0) {
       $pre = '#';
     }
@@ -54,17 +38,20 @@ include($Sitepath . 'function.php');
 # determine operating system
     $value = split(" ", $a_software['sw_software']);
 
-    if ($value[0] == "Solaris") {
+# straight linux check
+    if ($value[0] == 'Linux' || $value[1] == 'Linux' || $value[2] == 'Linux') {
+      $os = "Linux";
+    }
+# red hat based systems
+    if ($value[0] == 'CentOS' || $value[0] == 'Fedora' || $value[0] == 'Red') {
+      $os = "Linux";
+    }
+# misc non redhat/linux systems
+    if ($value[0] == 'Debian' || $value[0] == 'Ubuntu' || $value[0] == 'SUSE') {
+      $os = "Linux";
+    }
+    if ($value[0] == "Solaris" || $value[1] == 'Solaris') {
       $os = "SunOS";
-    }
-    if ($value[0] == "Red" || $value[0] == "RedHat") {
-      $os = "Linux";
-    }
-    if ($value[0] == "Debian" || $value[0] == "Ubuntu" || $value[0] == "CentOS") {
-      $os = "Linux";
-    }
-    if ($value[0] == "Oracle") {
-      $os = "Linux";
     }
     if ($value[0] == "HP-UX") {
       $os = "HP-UX";
@@ -78,6 +65,8 @@ include($Sitepath . 'function.php');
     if ($os == "") {
       $os = $value[0];
     }
+
+    $tags = $a_inventory['inv_tags'];
 
     $value = split("/", $a_inventory['inv_name']);
 
@@ -97,58 +86,58 @@ include($Sitepath . 'function.php');
       $value[0] = "cilpsx1";
     }
     if ($value[0] == "cilpsx1") {
-      $peering = "Peering";
+      $tags .= ",peering,";
     }
     if ($value[0] == "lnmtems1") {
-      $peering = "Peering";
+      $tags .= ",peering,";
     }
     if ($value[0] == "lnmtnfs1") {
-      $peering = "Peering";
+      $tags .= ",peering,";
     }
     if ($value[0] == "lnmtnfs2") {
-      $peering = "Peering";
+      $tags .= ",peering,";
     }
     if ($value[0] == "lnmtpsx1") {
-      $peering = "Peering";
+      $tags .= ",peering,";
     }
     if ($value[0] == "lnmtpsx2") {
-      $peering = "Peering";
+      $tags .= ",peering,";
     }
     if ($value[0] == "lnmtsgx1") {
-      $peering = "Peering";
+      $tags .= ",peering,";
     }
     if ($value[0] == "lnmtsgx2") {
-      $peering = "Peering";
+      $tags .= ",peering,";
     }
     if ($value[0] == "nycnfs1") {
-      $peering = "Peering";
+      $tags .= ",peering,";
     }
     if ($value[0] == "nycnfs2") {
-      $peering = "Peering";
+      $tags .= ",peering,";
     }
     if ($value[0] == "nycpsx1") {
-      $peering = "Peering";
+      $tags .= ",peering,";
     }
     if ($value[0] == "miapsx1") {
-      $peering = "Peering";
+      $tags .= ",peering,";
     }
     if ($value[0] == "mianfs1") {
-      $peering = "Peering";
+      $tags .= ",peering,";
     }
     if ($value[0] == "mianfs2") {
-      $peering = "Peering";
+      $tags .= ",peering,";
     }
     if ($value[0] == "miasgx1") {
-      $peering = "Peering";
+      $tags .= ",peering,";
     }
     if ($value[0] == "miasgx2") {
-      $peering = "Peering";
+      $tags .= ",peering,";
     }
     if ($value[0] == "lgmtsgx1") {
-      $peering = "Peering";
+      $tags .= ",peering,";
     }
     if ($value[0] == "lgmtsgx2") {
-      $peering = "Peering";
+      $tags .= ",peering,";
     }
 
 # servers are called one thing but listed as another.
@@ -186,237 +175,237 @@ include($Sitepath . 'function.php');
 # IEN servers
 
     if ($value[0] == "coolcacsdca15") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "coolcacsdca25") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "coolcacslga25") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "coolcaecada1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "coolcaecadb1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "coolcaecdca15") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "coolcaecdca25") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "coolcaecera1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "coolcaecera2b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "coolcaecera3b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "coolcaecerb1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "coolcaecerb2b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "coolcaecerb3b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "coolcaecgc11") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "coolcaecgc21") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "coolcaecmpa1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "coolcaecmpb1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "coolcaecuta1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "coolcaecutb1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
 
     if ($value[0] == "dthvcaecada1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "dthvcaecdca15") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "dthvcaecdca25") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "dthvcaecera1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "dthvcaecera2b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "dthvcaecera3b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "dthvcaecgc11") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "dthvcaecgc21") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "dthvcaecuta1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
 
     if ($value[0] == "flsmcacsdba15") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "flsmcacsdca15") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "flsmcacsdca25") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "flsmcacslga25") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "flsmcacsmpa1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "flsmcacsmpb1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
 
     if ($value[0] == "enwdcocsdca15") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "enwdcocsdca25") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "enwdcocslg10") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "enwdcoecada1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "enwdcoecadb1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "enwdcoecdca15") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "enwdcoecdca25") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "enwdcoecera1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "enwdcoecera2b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "enwdcoecera3b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "enwdcoecerb1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "enwdcoecerb2b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "enwdcoecerb3b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "enwdcoecgc11") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "enwdcoecgc21") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "enwdcoecmpa1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "enwdcoecmpb1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "enwdcoecuta1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "enwdcoecutb1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
 
     if ($value[0] == "lnmtcocsdba15") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "lnmtcocsdca15") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "lnmtcocsdca25") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "lnmtcocslg10") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "lnmtcocsmpa1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "lnmtcocsmpb1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "lnmtcocswsa1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "lnmtcodcbm11") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
 
     if ($value[0] == "miamflecada1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "miamflecadb1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "miamflecdca15") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "miamflecdca25") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "miamflecera1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "miamflecera2b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "miamflecera3b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "miamflecerb1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "miamflecerb2b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "miamflecerb3b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "miamflecgc11") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "miamflecgc21") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "miamflecuta1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
     if ($value[0] == "miamflecutb1b") {
-      $peering = "IEN";
+      $tags .= ",ienvoice,";
     }
 
-    print "$pre$value[0]:$value[1]:$os:$interfaces:$peering:$note:" . $a_inventory['inv_id'] . "\n";
+    print "$pre$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . ":$tags:$interfaces:" . $a_inventory['inv_id'] . "\n";
 
   }
 
