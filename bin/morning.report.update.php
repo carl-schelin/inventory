@@ -23,11 +23,15 @@
   $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_groups = mysql_fetch_array($q_groups)) {
 
-    $q_string = "select rep_id,rep_user,rep_group,rep_status,rep_task,rep_timestamp from report where rep_group = " . $a_groups['grp_id'] . " and rep_date = '" . $previous . "'";
+    $q_string = "select rep_id,rep_user,rep_group,rep_status,rep_task,rep_timestamp ";
+    $q_string .= "from report ";
+    $q_string .= "where rep_group = " . $a_groups['grp_id'] . " and rep_date = '" . $previous . "'";
     $q_report = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     while ($a_report = mysql_fetch_array($q_report)) {
 
-      if ($a_report['rep_status'] > 1) {
+      $issues = strtolower(substr($a_report['rep_task'], 0, 9));
+
+      if ($a_report['rep_status'] > 1 || $issues != 'no issues') {
         $q_string = "insert into report set " .
           "rep_id        =   " . "NULL"                      . "," . 
           "rep_user      =   " . $a_report['rep_user']       . "," . 
