@@ -30,8 +30,11 @@
     while ($a_report = mysql_fetch_array($q_report)) {
 
       $issues = strtolower(substr($a_report['rep_task'], 0, 9));
+      if ($issues == 'no issues') {
+        $issues = '';
+      }
 
-      if ($a_report['rep_status'] > 1 || $issues != 'no issues') {
+      if ($a_report['rep_status'] > 1 && $issues != '') {
         $q_string = "insert into report set " .
           "rep_id        =   " . "NULL"                      . "," . 
           "rep_user      =   " . $a_report['rep_user']       . "," . 
