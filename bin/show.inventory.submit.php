@@ -363,7 +363,7 @@
     }
     $output .= "</table>\n\n";
 
-    $output .= "<p><a href=\"" $Siteroot . "/products.php\">Inventory Product Listing.</a></p>\n\n";
+    $output .= "<p><a href=\"" . $Siteroot . "/products.php\">Inventory Product Listing.</a></p>\n\n";
 
     $output .= "<p>This mail box is not monitored, please do not reply.</p>\n\n";
 
@@ -419,6 +419,8 @@
       $output .= "</tr>\n";
     }
     $output .= "</table>\n\n";
+
+    $output .= "<p><a href=\"" . $Siteroot . "/show.products.php?id=" . $a_products['prod_id'] . "\">Product Listing for " . $product . ".</a></p>\n\n";
 
     $output .= "<br>This mail box is not monitored, please do not reply.</p>\n\n";
 
@@ -800,6 +802,10 @@
     $output .= "  <td><strong>Green</strong> indicates that the information was automatically gathered from the system so is accurate as of the <strong>Last</strong> column date.</td>\n";
     $output .= "</tr>\n";
     $output .= "</table>\n\n";
+
+    $output .= "<p><a href=\"" . $Siteroot . "/show.inventory.php?server=" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . " Server Listing.</a></p>\n\n";
+
+    $output .= "<p><a href=\"" . $Siteroot . "/issue/issue.php?server=" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . " Server Issue Tracker.</a></p>\n\n";
 
     $output .= "<p>This mail box is not monitored, please do not reply.</p>\n\n";
 
