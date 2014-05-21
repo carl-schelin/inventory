@@ -73,6 +73,12 @@
   $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   $a_groups = mysql_fetch_array($q_groups);
 
+# added because Josh is in a different group (Mobility) that has their own changelog file.
+# Josh sends changelogs for the Unix group on incojs01 and changelogs for Mobility via Outlook.
+  if ($email == 'jjohnson@incojs01.scc911.com') {
+    $a_groups['grp_changelog'] = 'changelog';
+  }
+
   $changelog = "/export/home/" . $a_groups['grp_changelog'] . "/Mail/" . $email . ".report." . $random;
 
 # received an "Out of Office:" message; just exit the script
@@ -174,6 +180,24 @@
   $leave = 0;
   $report = '';
   $file = fopen($changelog, "r");
+  if ($file === FALSE) {
+    print "ERROR: Unable to open file.\n";
+
+    $headers  = "From: Changelog <changelog@incojs01.scc911.com>\r\n";
+
+    $body  = "ERROR: Unable to open " . $changelog . ".\n\n";
+    $body .= "Email: " . $email . ".\n";
+    $body .= "ClientID: " . $clientid . ".\n";
+    $body .= "Server: " . $server . ".\n";
+    $body .= "Application: " . $application . ".\n";
+    $body .= "Random Number: " . $random . ".\n\n";
+
+    $email .= "carl.schelin@intrado.com,paul.pietras@intrado.com";
+
+    mail($email, "Error: Unable to open changelog report", $body, $headers);
+
+    exit(1);
+  } else {
   while(!feof($file)) {
     $process = trim(fgets($file));
 
@@ -257,6 +281,7 @@
     }
   }
   fclose($file);
+  }
   unlink($changelog);
 
 
