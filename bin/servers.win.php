@@ -25,7 +25,10 @@ include($Sitepath . 'function.php');
 
 #  $db = dbconn('localhost','inventory','root','this4now!!');
 
-  $q_string = "select inv_id,inv_name,inv_zone,inv_notes from inventory where inv_status = 0 and inv_manager = 5 order by inv_name";
+  $q_string  = "select inv_id,inv_name,inv_zone ";
+  $q_string .= "from inventory ";
+  $q_string .= "where inv_status = 0 and inv_manager = 5 ";
+  $q_string .= "order by inv_name";
   $q_inventory = mysql_query($q_string) or die(mysql_error());
   while ( $a_inventory = mysql_fetch_array($q_inventory) ) {
 
@@ -78,7 +81,7 @@ include($Sitepath . 'function.php');
     $a_inventory['inv_zone'] = strtolower($zoneval[$a_inventory['inv_zone']]);
     $a_inventory['inv_notes'] = strtolower($a_inventory['inv_notes']);
     
-    print "$pre$value[0]:$value[1]:$os:" . $a_inventory['inv_zone'] . "::" . $a_inventory['inv_notes'] . ":" . $a_hardware['hw_service'] . "\n";
+    print "$pre$value[0]:$value[1]:$os:" . $a_inventory['inv_zone'] . ":::" . $a_inventory['inv_id'] . "\n";
 
   }
 
