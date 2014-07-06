@@ -439,11 +439,13 @@
   } else {
     $output .= "<table width=80%>\n";
     $output .= "<tr>\n";
-    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=3>Inventory Management</th>\n";
+    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"4\">Inventory Management</th>\n";
     $output .= "</tr>\n";
 
-    $q_string  = "select inv_id,inv_name,inv_function,inv_location,inv_rack,inv_row,inv_unit,inv_manager,inv_product ";
-    $q_string .= "from inventory where inv_name = '" . $servername . "' and inv_status = 0";
+    $q_string  = "select inv_id,inv_name,inv_function,inv_location,inv_rack,inv_row,inv_unit,inv_manager,prod_name ";
+    $q_string .= "from inventory ";
+    $q_string .= "left join products on products.prod_id = inventory.inv_product ";
+    $q_string .= "where inv_name = '" . $servername . "' and inv_status = 0";
     $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     $a_inventory = mysql_fetch_array($q_inventory);
 
@@ -454,6 +456,7 @@
     $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
     $output .= "  <td><strong>Server</strong>: " . $a_inventory['inv_name'] . "</td>\n";
     $output .= "  <td><strong>Function</strong>: " . $a_inventory['inv_function'] . "</td>\n";
+    $output .= "  <td><strong>Product</strong>: " . $a_inventory['prod_name'] . "</td>\n";
     $output .= "  <td><strong>Managed by</strong>: " . $a_groups['grp_name'] . "</td>\n";
     $output .= "</tr>\n";
 
@@ -466,20 +469,46 @@
     $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=5>Support Information</th>\n";
     $output .= "</tr>\n";
 
-    $q_string = "select hw_supportid from hardware where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1";
+    $q_string  = "select hw_supportid ";
+    $q_string .= "from hardware ";
+    $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1";
     $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     $a_hardware = mysql_fetch_array($q_hardware);
 
-    $q_string  = "select sup_company,sup_phone,sup_contract,sup_hwresponse,sup_swresponse from support where sup_id = " . $a_hardware['hw_supportid'];
+    $q_string  = "select sup_company,sup_phone,sup_contract,sup_hwresponse,sup_swresponse ";
+    $q_string .= "from support ";
+    $q_string .= "where sup_id = " . $a_hardware['hw_supportid'];
     $q_support = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     $a_support = mysql_fetch_array($q_support);
+
+    if ($a_support['sup_hwresponse'] == 0 || $a_support['sup_hwresponse'] == '') {
+      $hwsupport = "No Support Selected";
+    } else {
+      $q_string  = "select slv_value ";
+      $q_string .= "from supportlevel ";
+      $q_string .= "where slv_id = " . $a_support['sup_hwresponse'];
+      $q_supportlevel = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
+      $a_supportlevel = mysql_fetch_array($q_supportlevel);
+      $hwsupport = $a_supportlevel['slv_value'];
+    }
+    
+    if ($a_support['sup_swresponse'] == 0 || $a_support['sup_swresponse'] == '') {
+      $swsupport = "No Support Selected";
+    } else {
+      $q_string  = "select slv_value ";
+      $q_string .= "from supportlevel ";
+      $q_string .= "where slv_id = " . $a_support['sup_swresponse'];
+      $q_supportlevel = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
+      $a_supportlevel = mysql_fetch_array($q_supportlevel);
+      $swsupport = $a_supportlevel['slv_value'];
+    }
 
     $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
     $output .= "  <td><strong>Company</strong>: " . $a_support['sup_company'] . "</td>\n";
     $output .= "  <td><strong>Phone</strong>: " . $a_support['sup_phone'] . "</td>\n";
     $output .= "  <td><strong>Contract</strong>: " . $a_support['sup_contract'] . "</td>\n";
-    $output .= "  <td><strong>Hardware</strong>: " . $a_support['sup_hwresponse'] . "</td>\n";
-    $output .= "  <td><strong>Software</strong>: " . $a_support['sup_swresponse'] . "</td>\n";
+    $output .= "  <td><strong>Hardware</strong>: " . $hwsupport . "</td>\n";
+    $output .= "  <td><strong>Software</strong>: " . $swsupport . "</td>\n";
     $output .= "</tr>\n";
 
     $output .= "</table>\n\n";
@@ -491,20 +520,24 @@
     $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=5>Primary Hardware Information</th>\n";
     $output .= "</tr>\n";
 
-    $q_string = "select hw_serial,hw_asset,hw_service,hw_vendorid from hardware where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1";
+    $q_string  = "select hw_serial,hw_asset,hw_service,hw_vendorid ";
+    $q_string .= "from hardware ";
+    $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1";
     $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     $a_hardware = mysql_fetch_array($q_hardware);
 
-    $q_string  = "select mod_vendor,mod_name from models where mod_id = " . $a_hardware['hw_vendorid'];
+    $q_string  = "select mod_vendor,mod_name ";
+    $q_string .= "from models ";
+    $q_string .= "where mod_id = " . $a_hardware['hw_vendorid'];
     $q_models = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     $a_models = mysql_fetch_array($q_models);
 
     $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
     $output .= "  <td><strong>Vendor</strong>: " . $a_models['mod_vendor'] . "</td>\n";
     $output .= "  <td><strong>Model</strong>: " . $a_models['mod_name'] . "</td>\n";
-    $output .= "  <td><strong>Serial</strong>: " . $a_hardware['hw_serial'] . "</td>\n";
+    $output .= "  <td><strong>Serial Number</strong>: " . $a_hardware['hw_serial'] . "</td>\n";
     $output .= "  <td><strong>Asset Tag</strong>: " . $a_hardware['hw_asset'] . "</td>\n";
-    $output .= "  <td><strong>Service</strong>: " . $a_hardware['hw_service'] . "</td>\n";
+    $output .= "  <td><strong>Dell Service Tag</strong>: " . $a_hardware['hw_service'] . "</td>\n";
     $output .= "</tr>\n";
 
     $output .= "</table>\n\n";
@@ -523,10 +556,9 @@
     $a_locations = mysql_fetch_array($q_locations);
 
     $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
-    $output .= "  <td>" . $a_locations['loc_name'] . "</td>\n";
-    $output .= "  <td>" . $a_locations['loc_addr1'] . "</td>\n";
-    $output .= "  <td>" . $a_locations['loc_city'] . ", " . $a_locations['loc_state'] . " " . $a_locations['loc_zipcode'] . " (" . $a_locations['loc_country'] . ")</td>\n";
-    $output .= "  <td>" . $a_inventory['inv_rack'] . "-" . $a_inventory['inv_row'] . "/U" . $a_inventory['inv_unit'] . "</td>\n";
+    $output .= "  <td><strong>Data Center</strong>: " . $a_locations['loc_name'] . "</td>\n";
+    $output .= "  <td><strong>Location</strong>: " . $a_locations['loc_addr1'] . "  " . $a_locations['loc_city'] . ", " . $a_locations['loc_state'] . " " . $a_locations['loc_zipcode'] . " (" . $a_locations['loc_country'] . ")</td>\n";
+    $output .= "  <td><strong>Rack/Unit</strong>: " . $a_inventory['inv_rack'] . "-" . $a_inventory['inv_row'] . "/U" . $a_inventory['inv_unit'] . "</td>\n";
     $output .= "</tr>\n";
 
     $output .= "</table>\n\n";
