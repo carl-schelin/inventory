@@ -14,14 +14,18 @@
 
   $usermail = "";
   $comma = "";
-  $q_string = "select usr_email from users where usr_report = 1 and usr_disabled = 0 and usr_id != 1";
+  $q_string  = "select usr_email ";
+  $q_string .= "from users ";
+  $q_string .= "where usr_report = 1 and usr_disabled = 0 and usr_id != 1 and usr_email like '%@intrado.com' ";
   $q_users = mysql_query($q_string, $db) or die($q_string . ": " . mysql_error());
   while ($a_users = mysql_fetch_array($q_users)) {
     $usermail = $usermail . $comma . $a_users['usr_email'];
     $comma = ",";
   }
 # send To: the admin account
-  $q_string = "select usr_email from users where usr_id = 1";
+  $q_string  = "select usr_email ";
+  $q_string .= "from users ";
+  $q_string .= "where usr_id = 1";
   $q_users = mysql_query($q_string, $db) or die($q_string . ": " . mysql_error());
   $a_users = mysql_fetch_array($q_users);
   $adminmail = $a_users['usr_email'];
@@ -50,13 +54,20 @@
   $output .= "  <th>Description</th>\n";
   $output .= "</tr>\n";
 
-  $q_string = "select grp_id,grp_name from groups where grp_report != 0 order by grp_report";
+  $q_string  = "select grp_id,grp_name ";
+  $q_string .= "from groups ";
+  $q_string .= "where grp_report != 0 ";
+  $q_string .= "order by grp_report";
   $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_groups = mysql_fetch_array($q_groups)) {
 
 # set a flag so at least one entry from each department is displayed.
     $flag = 0;
-    $q_string = "select rep_id,rep_status,rep_timestamp,rep_task from report where rep_group = " . $a_groups['grp_id'] . " and rep_date = '" . $formVars['date'] . "' order by rep_task";
+    $q_string  = "select rep_id,rep_status,rep_timestamp,rep_task ";
+    $q_string .= "from report ";
+    $q_string .= "where rep_group = " . $a_groups['grp_id'] . " ";
+    $q_string .= "and rep_date = '" . $formVars['date'] . "' ";
+    $q_string .= "order by rep_task";
     $q_report = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     while ($a_report = mysql_fetch_array($q_report)) {
 
@@ -105,11 +116,15 @@
   $output .= "  <th>Description</th>\n";
   $output .= "</tr>\n";
 
-  $q_string = "select evt_id,evt_group,evt_task from events where evt_date = '" . $formVars['date'] . "'";
+  $q_string  = "select evt_id,evt_group,evt_task ";
+  $q_string .= "from events ";
+  $q_string .= "where evt_date = '" . $formVars['date'] . "'";
   $q_events = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_events = mysql_fetch_array($q_events)) {
 
-    $q_string = "select grp_name from groups where grp_id = " . $a_events['evt_group'];
+    $q_string  = "select grp_name ";
+    $q_string .= "from groups ";
+    $q_string .= "where grp_id = " . $a_events['evt_group'];
     $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     $a_groups = mysql_fetch_array($q_groups);
 
