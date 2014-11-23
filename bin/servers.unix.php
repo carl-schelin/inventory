@@ -10,9 +10,12 @@ include($Sitepath . 'function.php');
 
   $db = dbconn('localhost','inventory','root','this4now!!');
 
-  $q_string  = "select inv_id,inv_name,inv_ssh,zone_name,inv_tags ";
+  print "#Server Name(1):Cluster Name(2):Operating System(3):Time Zone(4):,Tag,(5):,Interface Name,(6):Inventory ID(7):Product Name(8)\n";
+
+  $q_string  = "select inv_id,inv_name,inv_ssh,zone_name,inv_tags,prod_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
+  $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "where inv_manager = 1 and inv_status = 0 ";
   $q_string .= "order by inv_name";
   $q_inventory = mysql_query($q_string) or die(mysql_error());
@@ -405,10 +408,11 @@ include($Sitepath . 'function.php');
       $tags .= ",ienvoice,";
     }
 
-    print "$pre$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . ":$tags:$interfaces:" . $a_inventory['inv_id'] . "\n";
+    $product = str_replace(" ", "_", $a_inventory['prod_name']);
+    print "$pre$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . ":$tags:$interfaces:" . $a_inventory['inv_id'] . ":" . $product . "\n";
 
   }
 # add the centrify application for changelog work
-  print "#centrify:::::,centrify,:0\n";
+  print "#centrify:::::,centrify,:0:centrify\n";
 
 ?>
