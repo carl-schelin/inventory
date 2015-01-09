@@ -105,7 +105,7 @@
 
     $body .= "https://incojs01/inventory/login/user_admin.php\n";
 
-    $email .= ",carl.schelin@intrado.com,paul.pietras@intrado.com";
+    $email .= ",carl.schelin@intrado.com";
 
     mail($email, "Error: ClientID Missing", $body, $headers);
 
@@ -192,7 +192,7 @@
     $body .= "Application: " . $application . ".\n";
     $body .= "Random Number: " . $random . ".\n\n";
 
-    $email .= "carl.schelin@intrado.com,paul.pietras@intrado.com";
+    $email .= "carl.schelin@intrado.com";
 
     mail($email, "Error: Unable to open changelog report", $body, $headers);
 
@@ -302,8 +302,8 @@
 
   $headers  = "From: Changelog <changelog@incojs01.scc911.com>\r\n";
 #  $magic = "carl.schelin@intrado.com";
-#  $magic = "svc_MagicAdminDev@intrado.com,carl.schelin@intrado.com,paul.pietras@intrado.com";
-  $magic = "svc_magicprodemail@intrado.com,carl.schelin@intrado.com,paul.pietras@intrado.com";
+#  $magic = "svc_MagicAdminDev@intrado.com,carl.schelin@intrado.com";
+  $magic = "svc_magicprodemail@intrado.com,carl.schelin@intrado.com";
 
 #########
 ### Client ID: -u-/*u*
