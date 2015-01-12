@@ -73,7 +73,7 @@ include($Sitepath . 'function.php');
     $q_string  = "select tag_name ";
     $q_string .= "from tags ";
     $q_string .= "where tag_inv_id = " . $a_inventory['inv_id'];
-    $q_tags = mysql_query($q_string) or die($q_string . ": " mysql_error());
+    $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     while ($a_tags = mysql_fetch_array($q_tags)) {
       $tags .= "," . $a_tags['tag_name'] . ",";
     }
