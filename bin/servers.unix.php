@@ -12,7 +12,7 @@ include($Sitepath . 'function.php');
 
   print "#Server Name(1):Cluster Name(2):Operating System(3):Time Zone(4):,Tag,(5):,Interface Name,(6):Inventory ID(7):Product Name(8)\n";
 
-  $q_string  = "select inv_id,inv_name,inv_ssh,zone_name,inv_tags,prod_name ";
+  $q_string  = "select inv_id,inv_name,inv_ssh,zone_name,prod_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
@@ -69,7 +69,14 @@ include($Sitepath . 'function.php');
       $os = $value[0];
     }
 
-    $tags = $a_inventory['inv_tags'];
+    $tags = '';
+    $q_string  = "select tag_name ";
+    $q_string .= "from tags ";
+    $q_string .= "where tag_inv_id = " . $a_inventory['inv_id'];
+    $q_tags = mysql_query($q_string) or die($q_string . ": " mysql_error());
+    while ($a_tags = mysql_fetch_array($q_tags)) {
+      $tags .= "," . $a_tags['tag_name'] . ",";
+    }
 
     $value = split("/", $a_inventory['inv_name']);
 

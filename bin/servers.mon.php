@@ -20,7 +20,7 @@ include($Sitepath . 'function.php');
   $q_sw = mysql_query($q_string) or die(mysql_error());
   while ($a_sw = mysql_fetch_array($q_sw)) {
 
-    $q_string  = "select inv_id,inv_name,inv_ssh,zone_name,inv_tags ";
+    $q_string  = "select inv_id,inv_name,inv_ssh,zone_name ";
     $q_string .= "from inventory ";
     $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
     $q_string .= "where inv_id = " . $a_sw['sw_companyid'] . " and inv_status = 0 ";
@@ -76,7 +76,14 @@ include($Sitepath . 'function.php');
         $os = $value[0];
       }
 
-      $tags = $a_inventory['inv_tags'];
+      $tags = '';
+      $q_string  = "select tag_name ";
+      $q_string .= "from tags ";
+      $q_string .= "where tag_inv_id = " . $a_inventory['inv_id'];
+      $q_tags = mysql_query($q_string) or die($q_string . ": " mysql_error());
+      while ($a_tags = mysql_fetch_array($q_tags)) {
+        $tags .= "," . $a_tags['tag_name'] . ",";
+      }
 
       $value = split("/", $a_inventory['inv_name']);
 
