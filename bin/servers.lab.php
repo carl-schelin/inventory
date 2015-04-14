@@ -1,6 +1,13 @@
+#!/usr/local/bin/php
 <?php
-include('settings.php');
-include($Sitepath . 'function.php');
+# Script: servers.lab.php
+# Owner: Carl Schelin
+# Coding Standard 3.0 Applied
+# See: https://incowk01/makers/index.php/Coding_Standards
+# Description:
+
+  include('settings.php');
+  include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
     $db = mysql_connect($server,$user,$pass);
@@ -8,73 +15,46 @@ include($Sitepath . 'function.php');
     return $db;
   }
 
-  $db = dbconn('localhost','inventory','root','this4now!!');
+  $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  $field = clean($_REQUEST["sort"], 20);
-
-  if (isset($_REQUEST["sort"])) {
-    $orderby = " order by " . $field;
-  } else {
-    $orderby = " order by inv_name";
-  }
-
-  $q_string = "select zone_id,zone_name from zones";
-  $q_zones = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_zones = mysql_fetch_array($q_zones)) {
-    $zoneval[$a_zones['zone_id']] = $a_zones['zone_name'];
-  }
-
-  $bgcolor = "#EEEEEE";
-
-  $q_string = "select inv_id,inv_name,inv_zone,inv_ssh from inventory where inv_manager = 26 and inv_ssh = 1 order by inv_name";
+  $q_string = "select inv_id,inv_name,zone_name,inv_ssh ";
+  $q_string .= "from inventory ";
+  $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
+  $q_string .= "where inv_manager = " . $GRP_ICLAdmins . " and inv_status = 0 ";
+  $q_string .= "order by inv_name";
   $q_inventory = mysql_query($q_string) or die(mysql_error());
-
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
-
-    $q_string = "select sw_software from software where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'OS'";
-    $q_software = mysql_query($q_string) or die(mysql_error());
-    $a_software = mysql_fetch_array($q_software);
 
     $os = "";
     $pre = "";
     $note = "";
     $peering = "";
 
+    $os = return_System($a_inventory['inv_id']);
 
-# determine operating system
-    $value = split(" ", $a_software['sw_software']);
-
-    if ($value[0] == "Solaris") {
-      $os = "SunOS";
-    }
-    if ($value[0] == "Red" || $value[0] == "RedHat") {
-      $os = "Linux";
-    }
-    if ($value[0] == "Debian" || $value[0] == "Ubuntu") {
-      $os = "Linux";
-    }
-    if ($value[0] == "Oracle") {
-      $os = "Linux";
-    }
-    if ($value[0] == "HP-UX") {
-      $os = "HP-UX";
-    }
-    if ($value[0] == "Tru64") {
-      $os = "OSF1";
-    }
-    if ($value[0] == "Free") {
-      $os = "FreeBSD";
-    }
-    if ($os == "") {
-      $os = $value[0];
+    if ($a_inventory['inv_ssh'] == 0) {
+      $pre = '#';
     }
 
-    $value = split("/", $a_inventory['inv_name']);
-    
-    print "$pre$value[0]:$value[1]:$os:" . $zoneval[$a_inventory['inv_zone']] . ":$peering:$note:" . $a_inventory['inv_id'] . "\n";
+    $value = explode("/", $a_inventory['inv_name']);
+    if (!isset($value[1])) {
+      $value[1] = '';
+    }
+
+    print "$pre$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . "::$note:" . $a_inventory['inv_id'] . "\n";
 
   }
-# add the centrify application for changelog work
-  print "#centrify:::::,centrify,:0\n";
+
+# add application for changelog work
+  $q_string  = "select cl_name ";
+  $q_string .= "from changelog ";
+  $q_string .= "where cl_group = " . $GRP_ICLAdmins . " and cl_delete = 0 ";
+  $q_string .= "order by cl_name";
+  $q_changelog = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  while ($a_changelog = mysql_fetch_array($q_changelog)) {
+
+    print "#" . $a_changelog['cl_name'] . ":::::," . $a_changelog['cl_name'] . ",:0\n";
+
+  }
 
 ?>

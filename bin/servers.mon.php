@@ -1,6 +1,13 @@
+#!/usr/local/bin/php
 <?php
-include('settings.php');
-include($Sitepath . 'function.php');
+# Script: servers.mob.php
+# Owner: Carl Schelin
+# Coding Standard 3.0 Applied
+# See: https://incowk01/makers/index.php/Coding_Standards
+# Description:
+
+  include('settings.php');
+  include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
     $db = mysql_connect($server,$user,$pass);
@@ -8,73 +15,26 @@ include($Sitepath . 'function.php');
     return $db;
   }
 
-  $db = dbconn('localhost','inventory','root','this4now!!');
-
-
-# get all the systems in the inventory based on software ownership
+  $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
   $q_string  = "select sw_companyid ";
   $q_string .= "from software ";
-  $q_string .= "where sw_group = 10 and sw_type = 'Monitoring' ";
+  $q_string .= "where sw_group = " . $GRP_Monitoring . " and sw_type = 'Monitoring' ";
   $q_string .= "group by sw_companyid ";
-  $q_sw = mysql_query($q_string) or die(mysql_error());
-  while ($a_sw = mysql_fetch_array($q_sw)) {
+  $q_software = mysql_query($q_string) or die(mysql_error());
+  while ($a_software = mysql_fetch_array($q_software)) {
 
     $q_string  = "select inv_id,inv_name,inv_ssh,zone_name ";
     $q_string .= "from inventory ";
     $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
-    $q_string .= "where inv_id = " . $a_sw['sw_companyid'] . " and inv_status = 0 ";
+    $q_string .= "where inv_id = " . $a_software['sw_companyid'] . " and inv_status = 0 ";
     $q_string .= "order by inv_name";
     $q_inventory = mysql_query($q_string) or die(mysql_error());
     $a_inventory = mysql_fetch_array($q_inventory);
 
     if ($a_inventory['inv_name'] != '') {
-      $q_string = "select sw_software ";
-      $q_string .= "from software ";
-      $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'OS'";
-      $q_software = mysql_query($q_string) or die(mysql_error());
-      $a_software = mysql_fetch_array($q_software);
 
       $os = "";
-      $pre = "";
-      $tags .= "";
-
-# add a comment character to the server list for live servers but not ssh'able.
-# scripts use the "^#" part to make sure commented servers are able to use the changelog process
-      if ($a_inventory['inv_ssh'] == 0) {
-        $pre = '#';
-      }
-
-# determine operating system
-      $value = split(" ", $a_software['sw_software']);
-
-# straight linux check
-      if ($value[0] == 'Linux' || $value[1] == 'Linux' || $value[2] == 'Linux') {
-        $os = "Linux";
-      }
-# red hat based systems
-      if ($value[0] == 'CentOS' || $value[0] == 'Fedora' || $value[0] == 'Red') {
-        $os = "Linux";
-      }
-# misc non redhat/linux systems
-      if ($value[0] == 'Debian' || $value[0] == 'Ubuntu' || $value[0] == 'SUSE') {
-        $os = "Linux";
-      }
-      if ($value[0] == "Solaris" || $value[1] == 'Solaris') {
-        $os = "SunOS";
-      }
-      if ($value[0] == "HP-UX") {
-        $os = "HP-UX";
-      }
-      if ($value[0] == "Tru64") {
-        $os = "OSF1";
-      }
-      if ($value[0] == "Free") {
-        $os = "FreeBSD";
-      }
-      if ($os == "") {
-        $os = $value[0];
-      }
 
       $tags = '';
       $q_string  = "select tag_name ";
@@ -85,7 +45,12 @@ include($Sitepath . 'function.php');
         $tags .= "," . $a_tags['tag_name'] . ",";
       }
 
-      $value = split("/", $a_inventory['inv_name']);
+      $value = explode("/", $a_inventory['inv_name']);
+      if (!isset($value[1])) {
+        $value[1] = '';
+      }
+
+      $os = return_System($a_inventory['inv_id']);
 
       $interfaces = '';
       $q_string  = "select int_server ";
@@ -96,48 +61,23 @@ include($Sitepath . 'function.php');
         $interfaces .= "," . $a_interface['int_server'] . ",";
       }
 
-# determine any notes or commented out systems
+      print "$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . ":$tags:$interfaces:" . $a_inventory['inv_id'] . "\n";
 
-# Peering servers
-      if ($value[0] == "inilpsx1") {
-        $value[0] = "cilpsx1";
-      }
-
-# servers are called one thing but listed as another.
-      if ($value[0] == "miamfldctxc0") {
-        $value[0] = "miamfldctxc1";
-      }
-      if ($value[0] == "lnmtcodctxc0") {
-        $value[0] = "lnmtcodctxc1";
-      }
-      if ($value[0] == "incoag13") {
-        $value[0] = "incoag10";
-      }
-      if ($value[0] == "incoag23") {
-        $value[0] = "incoag20";
-      }
-      if ($value[0] == "incoga13") {
-        $value[0] = "incoga10";
-      }
-      if ($value[0] == "incoga23") {
-        $value[0] = "incoga20";
-      }
-      if ($value[0] == "incolp10") {
-        $value[0] = "incolp11";
-      }
-      if ($value[0] == "incolp20") {
-        $value[0] = "incolp21";
-      }
-      if ($value[0] == "incolp30") {
-        $value[0] = "incolp31";
-      }
-      if ($value[0] == "incoce04") { # server is part of a manual cluster
-        $value[0] = "incoce00";
-      }
-
-      print "$pre$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . ":$tags:$interfaces:" . $a_inventory['inv_id'] . "\n";
-  
     }
   }
+
+# add applications for changelog work
+  $q_string  = "select cl_name ";
+  $q_string .= "from changelog ";
+  $q_string .= "where cl_group = " . $GRP_Monitoring . " and cl_delete = 0 ";
+  $q_string .= "order by cl_name";
+  $q_changelog = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  while ($a_changelog = mysql_fetch_array($q_changelog)) {
+
+    print $a_changelog['cl_name'] . ":::::," . $a_changelog['cl_name'] . ",:0\n";
+
+  }
+
+#  print "$pre$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . ":$tags:$interfaces:" . $a_inventory['inv_id'] . "\n";
 
 ?>

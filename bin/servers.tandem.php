@@ -1,6 +1,13 @@
+#!/usr/local/bin/php
 <?php
-include('settings.php');
-include($Sitepath . 'function.php');
+# Script: servers.tandem.php
+# Owner: Carl Schelin
+# Coding Standard 3.0 Applied
+# See: https://incowk01/makers/index.php/Coding_Standards
+# Description:
+
+  include('settings.php');
+  include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
     $db = mysql_connect($server,$user,$pass);
@@ -8,378 +15,61 @@ include($Sitepath . 'function.php');
     return $db;
   }
 
-  $db = dbconn('localhost','inventory','root','this4now!!');
+  $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  $field = clean($_REQUEST["sort"], 20);
-
-  if (isset($_REQUEST["sort"])) {
-    $orderby = " order by " . $field;
-  } else {
-    $orderby = " order by inv_name";
-  }
-
-  $q_string = "select zone_id,zone_name from zones";
-  $q_zones = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_zones = mysql_fetch_array($q_zones)) {
-    $zoneval[$a_zones['zone_id']] = $a_zones['zone_name'];
-  }
-
-  $bgcolor = "#EEEEEE";
-
-  $q_string = "select inv_id,inv_name,inv_zone from inventory where inv_manager = 15 order by inv_name";
+  $q_string  = "select inv_id,inv_name,inv_ssh,zone_name,prod_name ";
+  $q_string .= "from inventory ";
+  $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
+  $q_string .= "left join products on products.prod_id = inventory.inv_product ";
+  $q_string .= "where inv_manager = " . $GRP_Tandem . " and inv_status = 0 ";
+  $q_string .= "order by inv_name";
   $q_inventory = mysql_query($q_string) or die(mysql_error());
-
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
-    $q_string = "select sw_software from software where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'OS'";
-    $q_software = mysql_query($q_string) or die(mysql_error());
-    $a_software = mysql_fetch_array($q_software);
-
     $os = "";
-    $pre = "";
-    $note = "";
-    $peering = "";
+    $os = return_System($a_inventory['inv_id']);
 
-
-# determine operating system
-    $value = split(" ", $a_software['sw_software']);
-
-    if ($value[0] == "Solaris") {
-      $os = "SunOS";
-    }
-    if ($value[0] == "Red") {
-      $os = "Linux";
-    }
-    if ($value[0] == "Oracle") {
-      $os = "Linux";
-    }
-    if ($value[0] == "HP-UX") {
-      $os = "HP-UX";
-    }
-    if ($value[0] == "Tru64") {
-      $os = "OSF1";
-    }
-    if ($value[0] == "Free") {
-      $os = "FreeBSD";
-    }
-    if ($os == "") {
-      $os = $value[0];
+    $tags = '';
+    $q_string  = "select tag_name ";
+    $q_string .= "from tags ";
+    $q_string .= "where tag_inv_id = " . $a_inventory['inv_id'];
+    $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    while ($a_tags = mysql_fetch_array($q_tags)) {
+      $tags .= "," . $a_tags['tag_name'] . ",";
     }
 
-    $value = split("/", $a_inventory['inv_name']);
-    
-# determine any notes or commented out systems
-
-# Peering servers
-    if ($value[0] == "inilpsx1") {
-      $value[0] = "cilpsx1";
-    }
-    if ($value[0] == "cilpsx1") {
-      $peering = "Peering";
-    }
-    if ($value[0] == "lnmtems1") {
-      $peering = "Peering";
-    }
-    if ($value[0] == "lnmtnfs1") {
-      $peering = "Peering";
-    }
-    if ($value[0] == "lnmtnfs2") {
-      $peering = "Peering";
-    }
-    if ($value[0] == "lnmtpsx1") {
-      $peering = "Peering";
-    }
-    if ($value[0] == "lnmtpsx2") {
-      $peering = "Peering";
-    }
-    if ($value[0] == "lnmtsgx1") {
-      $peering = "Peering";
-    }
-    if ($value[0] == "lnmtsgx2") {
-      $peering = "Peering";
-    }
-    if ($value[0] == "nycnfs1") {
-      $peering = "Peering";
-    }
-    if ($value[0] == "nycnfs2") {
-      $peering = "Peering";
-    }
-    if ($value[0] == "nycpsx1") {
-      $peering = "Peering";
-    }
-    if ($value[0] == "miapsx1") {
-      $peering = "Peering";
-    }
-    if ($value[0] == "mianfs1") {
-      $peering = "Peering";
-    }
-    if ($value[0] == "mianfs2") {
-      $peering = "Peering";
-    }
-    if ($value[0] == "miasgx1") {
-      $peering = "Peering";
-    }
-    if ($value[0] == "miasgx2") {
-      $peering = "Peering";
-    }
-    if ($value[0] == "lgmtsgx1") {
-      $peering = "Peering";
-    }
-    if ($value[0] == "lgmtsgx2") {
-      $peering = "Peering";
+    $value = explode("/", $a_inventory['inv_name']);
+    if (!isset($value[1])) {
+      $value[1] = '';
     }
 
-# servers are called one thing but listed as another.
-    if ($value[0] == "incoag13") {
-      $value[0] = "incoag10";
-    }
-    if ($value[0] == "incoag23") {
-      $value[0] = "incoag20";
-    }
-    if ($value[0] == "incoga13") {
-      $value[0] = "incoga10";
-    }
-    if ($value[0] == "incoga23") {
-      $value[0] = "incoga20";
-    }
-    if ($value[0] == "incoce04") { # server is part of a manual cluster
-      $value[0] = "incoce00";
+    $interfaces = '';
+    $q_string  = "select int_server ";
+    $q_string .= "from interface ";
+    $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_type = 1 || int_type = 2 || int_type = 6)";
+    $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    while ($a_interface = mysql_fetch_array($q_interface)) {
+      $interfaces .= "," . $a_interface['int_server'] . ",";
     }
 
-# IEN servers
-
-    if ($value[0] == "coolcacsdca15") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "coolcacsdca25") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "coolcacslga25") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "coolcaecada1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "coolcaecadb1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "coolcaecdca15") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "coolcaecdca25") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "coolcaecera1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "coolcaecera2b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "coolcaecera3b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "coolcaecerb1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "coolcaecerb2b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "coolcaecerb3b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "coolcaecgc11") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "coolcaecgc21") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "coolcaecmpa1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "coolcaecmpb1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "coolcaecuta1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "coolcaecutb1b") {
-      $peering = "IEN";
+    $product = str_replace(" ", "_", $a_inventory['prod_name']);
+    if ($product == '') {
+      $product = "Unassigned";
     }
 
-    if ($value[0] == "dthvcaecada1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "dthvcaecdca15") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "dthvcaecdca25") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "dthvcaecera1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "dthvcaecera2b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "dthvcaecera3b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "dthvcaecgc11") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "dthvcaecgc21") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "dthvcaecuta1b") {
-      $peering = "IEN";
-    }
+    print "$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . ":$tags:$interfaces:" . $a_inventory['inv_id'] . ":" . $product . "\n";
 
-    if ($value[0] == "flsmcacsdba15") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "flsmcacsdca15") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "flsmcacsdca25") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "flsmcacslga25") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "flsmcacsmpa1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "flsmcacsmpb1b") {
-      $peering = "IEN";
-    }
+  }
 
-    if ($value[0] == "enwdcocsdca15") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "enwdcocsdca25") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "enwdcocslg10") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "enwdcoecada1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "enwdcoecadb1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "enwdcoecdca15") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "enwdcoecdca25") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "enwdcoecera1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "enwdcoecera2b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "enwdcoecera3b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "enwdcoecerb1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "enwdcoecerb2b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "enwdcoecerb3b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "enwdcoecgc11") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "enwdcoecgc21") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "enwdcoecmpa1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "enwdcoecmpb1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "enwdcoecuta1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "enwdcoecutb1b") {
-      $peering = "IEN";
-    }
+# add application for changelog work
+  $q_string  = "select cl_name ";
+  $q_string .= "from changelog ";
+  $q_string .= "where cl_group = " . $GRP_Tandem . " and cl_delete = 0 ";
+  $q_string .= "order by cl_name";
+  $q_changelog = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  while ($a_changelog = mysql_fetch_array($q_changelog)) {
 
-    if ($value[0] == "lnmtcocsdba15") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "lnmtcocsdca15") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "lnmtcocsdca25") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "lnmtcocslg10") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "lnmtcocsmpa1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "lnmtcocsmpb1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "lnmtcocswsa1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "lnmtcodcbm11") {
-      $peering = "IEN";
-    }
-
-    if ($value[0] == "miamflecada1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "miamflecadb1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "miamflecdca15") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "miamflecdca25") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "miamflecera1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "miamflecera2b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "miamflecera3b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "miamflecerb1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "miamflecerb2b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "miamflecerb3b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "miamflecgc11") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "miamflecgc21") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "miamflecuta1b") {
-      $peering = "IEN";
-    }
-    if ($value[0] == "miamflecutb1b") {
-      $peering = "IEN";
-    }
-
-    print "$pre$value[0]:$value[1]:$os:" . $zoneval[$a_inventory['inv_zone']] . ":$peering:$note:" . $a_inventory['inv_id'] . "\n";
+    print $a_changelog['cl_name'] . ":::::," . $a_changelog['cl_name'] . ",:0:" . $a_changelog['cl_name'] . "\n";
 
   }
 
