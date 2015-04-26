@@ -1,6 +1,13 @@
-#!/usr/bin/php
+#!/usr/local/bin/php
 <?php
-  include('/usr/local/httpd/htsecure/status/function.php');
+# Script: morning.report.submit.php
+# Owner: Carl Schelin
+# Coding Standard 3.0 Applied
+# See: https://incowk01/makers/index.php/Coding_Standards
+# Description:
+
+  include('settings.php');
+  include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
     $db = mysql_connect($server,$user,$pass);
@@ -8,9 +15,11 @@
     return $db;
   }
 
-  $db = dbconn('localhost','status','root','this4now!!');
+  $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  $headers  = "From: Morning Report <report@incomsu1.scc911.com>\r\n";
+  $mailpath = "/export/home/report/Mail";
+
+  $headers  = "From: Morning Report <report@" . $Sitehttp . ">\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
   $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
@@ -29,7 +38,7 @@
 # don't forget to delete the .report file or the next report will be whack.
   if ($argv[2] == "Out") {
     print "ERROR: Out of Office message received\n";
-    unlink("/home/report/Mail/" . $email . ".report");
+    unlink($mailpath . "/" . $email . ".report");
     exit(1);
   }
 
@@ -61,24 +70,28 @@
   $mngbldend = "";
 
   if ($group != '') {
-    $q_string = "select grp_id,grp_name from groups where grp_name like '" . $group . "%'";
+    $q_string  = "select grp_id,grp_name ";
+    $q_string .= "from groups ";
+    $q_string .= "where grp_name like '" . $group . "%'";
     $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     $a_groups = mysql_fetch_array($q_groups);
     if (mysql_num_rows($q_groups) > 1) {
       $body = "<p>Your group string doesn't contain enough characters to determine the proper group. Please add more characters to your group name (" . $group . ") and resend.</p>";
       mail($email, "Error: Search string too loose", $body, $headers);
-      unlink("/home/report/Mail/" . $email . ".report");
+      unlink($mailpath . "/" . $email . ".report");
       exit(1);
     } else {
       $group = $a_groups['grp_name'];
     }
   } else {
 # check to see if the user is in the management group
-    $q_string = "select usr_id,usr_group from users where usr_id != 1 and usr_email = '$email'";
+    $q_string  = "select usr_id,usr_group ";
+    $q_string .= "from users ";
+    $q_string .= "where usr_id != 1 and usr_email = '$email'";
     $q_users = mysql_query($q_string, $db) or die($q_string . ": " . mysql_error());
     $a_users = mysql_fetch_array($q_users);
 
-    if ($a_users['usr_group'] == 3) {
+    if ($a_users['usr_group'] == $GRPTechOps) {
       $error = "<p><b>Error:</b> You are in the Management Group but didn't select a group that you manage for the update.</p>\n\n";
       $mngbldstart = "<b>";
       $mngbldend = "</b>";
@@ -88,7 +101,7 @@
 
   if ($impact == 'help') {
     $body  = $error . "<p>Usage:</p>\n";
-    $body .= "<p>To: report@incomsu1.scc911.com\n";
+    $body .= "<p>To: report@" . $Sitehttp . "\n";
     $body .= "<br>Subject: [groupname:][status]\n";
     $body .= "<br>Example: \"Green\" or \"Network:Green\"\n";
     $body .= "<br>Message Body:  Description to be added to the Morning Report.</p>\n\n";
@@ -108,7 +121,7 @@
     $body .= "Unix and NonStop Platforms team.</p>";
 
     mail($email, "Morning Report: Help", $body, $headers);
-    unlink("/home/report/Mail/" . $email . ".report");
+    unlink($mailpath . "/" . $email . ".report");
     exit(1);
   }
 
@@ -125,12 +138,16 @@
     $formVars['status'] = 3;
   }
 
-  $q_string = "select usr_id,usr_group from users where usr_id != 1 and usr_email = '$email'";
+  $q_string  = "select usr_id,usr_group ";
+  $q_string .= "from users ";
+  $q_string .= "where usr_id != 1 and usr_email = '$email'";
   $q_users = mysql_query($q_string, $db) or die($q_string . ": " . mysql_error());
   $a_users = mysql_fetch_array($q_users);
 
   if ($group == '') {
-    $q_string = "select grp_name from groups where grp_id = " . $a_users['usr_group'];
+    $q_string  = "select grp_name ";
+    $q_string .= "from groups ";
+    $q_string .= "where grp_id = " . $a_users['usr_group'];
     $q_groups = mysql_query($q_string, $db) or die($q_string . ": " . mysql_error());
     $a_groups = mysql_fetch_array($q_groups);
 
@@ -177,7 +194,7 @@
   $boundary = '';
   $leave = 0;
   $report = '';
-  $file = fopen("/home/report/Mail/" . $email . ".report", "r");
+  $file = fopen($mailpath . "/" . $email . ".report", "r");
   while(!feof($file)) {
     $process = trim(fgets($file));
 
@@ -261,7 +278,7 @@
     }
   }
   fclose($file);
-  unlink("/home/report/Mail/" . $email . ".report");
+  unlink($mailpath . "/" . $email . ".report");
 
   if ($report == '' and strlen($savedlines) > 0) {
     $report = $savedlines;
@@ -291,9 +308,9 @@
 
   $output  = "<html>\n";
   $output .= "<body>\n";
-  $output .= "<table width=80%>\n";
+  $output .= "<table width=\"80%\">\n";
   $output .= "<tr>\n";
-  $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=4>Morning Report Status</th>\n";
+  $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"4\">Morning Report Status</th>\n";
   $output .= "</tr>\n";
   $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
   $output .= "  <th>Group</th>\n";
@@ -302,7 +319,10 @@
   $output .= "</tr>\n";
 
   $flag = 0;
-  $q_string = "select rep_id,rep_status,rep_task from report where rep_group = " . $formVars['group'] . " and rep_date = '" . $formVars['date'] . "' order by rep_task";
+  $q_string  = "select rep_id,rep_status,rep_task ";
+  $q_string .= "from report ";
+  $q_string .= "where rep_group = " . $formVars['group'] . " and rep_date = '" . $formVars['date'] . "' ";
+  $q_string .= "order by rep_task";
   $q_report = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_report = mysql_fetch_array($q_report)) {
 
@@ -330,7 +350,7 @@
   $output .= "</table>\n\n";
 
   $output .= "<p>This message is from the Status Report Management application.\n";
-  $output .= "<br><a href=\"https://incomsu1/status/morning.report.php?date=" . $formVars['date'] . "\">Today's Status Report</a>\n";
+  $output .= "<br><a href=\"" . $Morningroot . "/morning.report.php?date=" . $formVars['date'] . "\">Today's Status Report</a>\n";
   $output .= "<br>This mail box is not monitored, please do not reply.</p>\n\n";
 
   $output .= "</body>\n";
@@ -340,12 +360,16 @@
 
   mail($email, "Morning Report for: " . $group, $body, $headers);
 
-  $q_string = "select usr_id,usr_group from users where usr_id != 1 and usr_email = '$email'";
+  $q_string  = "select usr_id,usr_group ";
+  $q_string .= "from users ";
+  $q_string .= "where usr_id != 1 and usr_email = '$email'";
   $q_users = mysql_query($q_string, $db) or die($q_string . ": " . mysql_error());
   $a_users = mysql_fetch_array($q_users);
 
 # send to users who want to get the confirmation e-mail
-  $q_string = "select usr_email from users where usr_id != 1 and usr_email != '$email' and usr_confirm = 1 and usr_group = " . $a_users['usr_group'];
+  $q_string  = "select usr_email ";
+  $q_string .= "from users ";
+  $q_string .= "where usr_id != 1 and usr_email != '$email' and usr_confirm = 1 and usr_group = " . $a_users['usr_group'];
   $q_users = mysql_query($q_string, $db) or die($q_string . ": " . mysql_error());
   while ($a_users = mysql_fetch_array($q_users)) {
     mail($a_users['usr_email'], "Morning Report for: " . $group, $body, $headers);

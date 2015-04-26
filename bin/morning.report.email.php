@@ -1,6 +1,13 @@
-#!/usr/bin/php
+#!/usr/local/bin/php
 <?php
-  include('/usr/local/httpd/htsecure/status/function.php');
+# Script: morning.report.email.php
+# Owner: Carl Schelin
+# Coding Standard 3.0 Applied
+# See: https://incowk01/makers/index.php/Coding_Standards
+# Description:
+
+  include('settings.php');
+  include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
     $db = mysql_connect($server,$user,$pass);
@@ -8,7 +15,7 @@
     return $db;
   }
 
-  $db = dbconn('localhost','status','root','this4now!!');
+  $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
   $formVars['date'] = date('Y-m-d');
 
@@ -32,7 +39,7 @@
 
   $subject = "TechOps Morning Report: " . $formVars['date'];
 
-  $headers  = "From: Morning Report <report@incomsu1.scc911.com>\r\n";
+  $headers  = "From: Morning Report <report@" . $Sitehttp . ">\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
   $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
   $headers .= "BCC: " . $usermail . "\r\n";
@@ -46,7 +53,7 @@
   $output .= "<body>\n";
   $output .= "<table width=80%>\n";
   $output .= "<tr>\n";
-  $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=4>Morning Report Status</th>\n";
+  $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"4\">Morning Report Status</th>\n";
   $output .= "</tr>\n";
   $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
   $output .= "  <th>Group</th>\n";
@@ -109,7 +116,7 @@
 
   $output .= "<table width=80%>\n";
   $output .= "<tr>\n";
-  $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=2>Daily Events</th>\n";
+  $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"2\">Daily Events</th>\n";
   $output .= "</tr>\n";
   $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
   $output .= "  <th>Group</th>\n";
@@ -135,8 +142,8 @@
   }
   $output .= "</table>\n\n";
 
-  $output .= "<p>This message is from the Status Report Management application.\n";
-  $output .= "<br><a href=\"https://incomsu1/status/morning.report.php?date=" . $formVars['date'] . "\">Today's Status Report</a></p>\n";
+  $output .= "<p>This message is from the Inventory Management application.\n";
+  $output .= "<br><a href=\"" . $Morningroot . "/morning.report.php?date=" . $formVars['date'] . "\">Today's Status Report</a></p>\n";
 
   $output .= "<p>Legend:</p>\n";
 
