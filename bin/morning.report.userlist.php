@@ -1,6 +1,13 @@
-#!/usr/bin/php
+#!/usr/local/bin/php
 <?php
-  include('/usr/local/httpd/htsecure/status/function.php');
+# Script: morning.report.userlist.php
+# Owner: Carl Schelin
+# Coding Standard 3.0 Applied
+# See: https://incowk01/makers/index.php/Coding_Standards
+# Description:
+
+  include('settings.php');
+  include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
     $db = mysql_connect($server,$user,$pass);
@@ -8,10 +15,10 @@
     return $db;
   }
 
-  $db = dbconn('localhost','status','root','this4now!!');
+  $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
   $q_string  = "select usr_email ";
-  $q_string .=   "from users ";
+  $q_string .= "from users ";
   $q_string .= "where usr_id != 1 ";
   $q_string .= "and usr_disabled = 0 ";
   $q_string .= "and usr_email like '%@intrado.com' ";
