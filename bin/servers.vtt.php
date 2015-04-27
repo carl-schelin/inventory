@@ -27,10 +27,19 @@
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
     $os = '';
+    $tags = "";
 
     $value = explode("/", $a_inventory['inv_name']);
     if (!isset($value[1])) {
       $value[1] = '';
+    }
+
+    $q_string  = "select tag_name ";
+    $q_string .= "from tags ";
+    $q_string .= "where tag_inv_id = " . $a_inventory['inv_id'];
+    $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    while ($a_tags = mysql_fetch_array($q_tags)) {
+      $tags .= "," . $a_tags['tag_name'] . ", ";
     }
 
 # Convert all to lowercase
@@ -40,7 +49,7 @@
     $a_inventory['zone_name'] = strtolower($a_inventory['zone_name']);
     $a_inventory['inv_notes'] = strtolower($a_inventory['inv_notes']);
 
-    print "$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . "::" . $a_inventory['inv_notes'] . ":" . $a_inventory['hw_service'] . "\n";
+    print "$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . ":" . $tags . ":" . $a_inventory['inv_notes'] . ":" . $a_inventory['hw_service'] . "\n";
 
   }
 
