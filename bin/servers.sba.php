@@ -38,16 +38,18 @@
       $tags .= "," . $a_tags['tag_name'] . ",";
     }
 
+    if (strlen($tags) > 0) {
 # determine operating system
-    $os = return_System($a_inventory['inv_id']);
+      $os = return_System($a_inventory['inv_id']);
 
-    $value = explode("/", $a_inventory['inv_name']);
-    if (!isset($value[1])) {
-      $value[1] = '';
+      $value = explode("/", $a_inventory['inv_name']);
+      if (!isset($value[1])) {
+        $value[1] = '';
+      }
+
+      print "$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . ":$tags:$note:" . $a_inventory['inv_id'] . "\n";
+
     }
-
-    print "$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . ":$tags:$note:" . $a_inventory['inv_id'] . "\n";
-
   }
 
 # add applications for changelog work
