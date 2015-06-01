@@ -73,7 +73,7 @@
       $output .= "<p>Please take a moment to add your groups status prior to the morning e-mail distribution.</p>\n";
       $output .= "<p>Thank you.</p>\n";
       $output .= "<p><a href=\"" . $Morningroot . "/morning.report.php?date=" . $formVars['date'] . "\">Morning Report site</a></p>\n";
-      $output .= "<p>Morning Report documentation: <a href=\"" . $Wikiroot . "/Morning_Report\">Morning Report Wiki Page</a></p>\n";
+      $output .= "<p>Morning Report documentation: <a href=\"" . $Wikiroot . "/index.php/Morning_Report\">Morning Report Wiki Page</a></p>\n";
 
       $output .= "<p>This message is from the Inventory Management application.\n";
       $output .= "<br>This mail box is not monitored, please do not reply.</p>\n\n";
