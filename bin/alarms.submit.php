@@ -64,9 +64,9 @@
         "alarm_text       = \"" . $formVars['alarm_text']      . "\"";
 
       $query = "insert into alarms set alarm_id = null," . $q_string;
-#      mysql_query($query);
+      mysql_query($query);
 
-#      print $formVars['alarm_timestamp'] . "\n";
+      print $formVars['alarm_timestamp'] . "\n";
     } else {
 
       $q_string = "select int_companyid ";
@@ -83,9 +83,9 @@
           "alarm_text       = \"" . mysql_real_escape_string($formVars['alarm_text']) . "\"";
 
         $query = "insert into alarms set alarm_id = null," . $q_string;
-#        mysql_query($query);
+        mysql_query($query);
 
-#        print $formVars['alarm_timestamp'] . "\n";
+        print $formVars['alarm_timestamp'] . "\n";
       } else {
         print "Error: Unable to locate $value[1].\n";
       }
