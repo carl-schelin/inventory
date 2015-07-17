@@ -53,7 +53,7 @@
           "rep_group     =   " . $a_report['rep_group']      . "," . 
           "rep_date      = \"" . $today                      . "\"," . 
           "rep_status    =   " . $a_report['rep_status']     . "," . 
-          "rep_task      = \"" . $a_report['rep_task']       . "\"";
+          "rep_task      = \"" . mysql_real_escape_string($a_report['rep_task'])       . "\"";
 
         mysql_query($q_string) or die($q_string . ": " . mysql_error());
 
