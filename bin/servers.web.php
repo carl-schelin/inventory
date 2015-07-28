@@ -17,7 +17,7 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  $q_string  = "select inv_id,inv_name,zone_name ";
+  $q_string  = "select inv_id,inv_name,zone_name,inv_ssh ";
   $q_string .= "from inventory ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
   $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
@@ -30,12 +30,19 @@
     $os = "";
     $os = return_System($a_inventory['inv_id']);
 
+# add a comment character to the server list for live servers but not ssh'able.
+# scripts use the "^#" part to make sure commented servers are able to use the changelog process
+    $pre = "";
+    if ($a_inventory['inv_ssh'] == 0) {
+      $pre = '#';
+    }
+
     $value = explode("/", $a_inventory['inv_name']);
     if (!isset($value[1])) {
       $value[1] = '';
     }
 
-    print "$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . ":" . $a_inventory['inv_id'] . "\n";
+    print "$pre$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . ":" . $a_inventory['inv_id'] . "\n";
 
   }
 
@@ -47,7 +54,7 @@
   $q_changelog = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_changelog = mysql_fetch_array($q_changelog)) {
 
-    print $a_changelog['cl_name'] . ":::::0\n";
+    print "#" . $a_changelog['cl_name'] . ":::::0\n";
 
   }
 
