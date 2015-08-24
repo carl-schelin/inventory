@@ -303,14 +303,19 @@
     $output .= "  <th>Managed By</th>\n";
     $output .= "</tr>\n";
 
-    $q_string  = "select inv_id,inv_name,inv_function,inv_manager from inventory where inv_status = 0 group by inv_name";
+    $q_string  = "select inv_id,inv_name,inv_function,inv_manager ";
+    $q_string .= "from inventory ";
+    $q_string .= "where inv_status = 0 ";
+    $q_string .= "group by inv_name";
     $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     while ($a_inventory = mysql_fetch_array($q_inventory)) {
       $q_string = "select grp_name from groups where grp_id = " . $a_inventory['inv_manager'];
       $q_groups = mysql_query($q_string) or die($q_string . ":(2): " . mysql_error() . "\n\n");
       $a_groups = mysql_fetch_array($q_groups);
 
-      $q_string = "select hw_active from hardware where hw_primary = 1 and hw_companyid = " . $a_inventory['inv_id'];
+      $q_string  = "select hw_active ";
+      $q_string .= "from hardware ";
+      $q_string .= "where hw_primary = 1 and hw_companyid = " . $a_inventory['inv_id'];
       $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
       $a_hardware = mysql_fetch_array($q_hardware);
       if ($a_hardware['hw_active'] == '0000-00-00') {
@@ -564,7 +569,7 @@
     $output .= "</table>\n\n";
 
 # hardware display
-    if (substr($action, 1, 1) == "h" || $action == "*" || substr($action, 1, 1) == "a") {
+    if (substr($action, 1, 1) == "h" || $action == "*" || $action == "hardware" || substr($action, 1, 1) == "a") {
       $output .= "<table width=80%>\n";
       $output .= "<tr>\n";
       $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"9\">Full Hardware Listing</th>\n";
@@ -604,8 +609,8 @@
         $output .= "  <td>" . $a_hardware['hw_service'] . "</td>\n";
         $output .= "  <td>" . $a_models['mod_vendor']   . "</td>\n";
         $output .= "  <td>" . $a_models['mod_name']     . "</td>\n";
-        $output .= "  <td>" . $a_models['mod_size']     . "</td>\n";
-        $output .= "  <td>" . $a_models['mod_speed']    . "</td>\n";
+        $output .= "  <td>" . $a_hardware['hw_size']    . "</td>\n";
+        $output .= "  <td>" . $a_hardware['hw_speed']   . "</td>\n";
         $output .= "  <td>" . $a_hardware['part_name']  . "</td>\n";
         $output .= "  <td>" . $a_hardware['hw_update']  . "</td>\n";
         $output .= "</tr>\n";
@@ -835,9 +840,15 @@
     $output .= "</tr>\n";
     $output .= "</table>\n\n";
 
-    $output .= "<p><a href=\"" . $Siteroot . "/show.inventory.php?server=" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . " Server Listing.</a></p>\n\n";
+    $output .= "<p><a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . " Server Listing.</a></p>\n\n";
 
-    $output .= "<p><a href=\"" . $Siteroot . "/issue/issue.php?server=" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . " Server Issue Tracker.</a></p>\n\n";
+    $output .= "<p><a href=\"" . $Issueroot . "/issue.php?server=" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . " Server Issue Tracker.</a></p>\n\n";
+
+    if (file_exists($Sitedir . "/rrdtool/" . $a_inventory['inv_name'])) {
+      $output .= "<p><a href=\"" . $Siteurl . "/rrdtool/" . $a_inventory['inv_name'] . "\">" . $a_inventory['inv_name'] . " Performance Review.</a></p>\n\n";
+    } else {
+      $output .= "<p>Performance information unavailable.    - " . $Sitedir . "/rrdtool/" . $a_inventory['inv_name'] . "</p>\n\n";
+    }
 
     $output .= "<p>This mail box is not monitored, please do not reply.</p>\n\n";
 
