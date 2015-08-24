@@ -1,6 +1,6 @@
 <?php
   include('settings.php');
-  include($Sitepath . 'function.php');
+  include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
     $db = mysql_connect($server,$user,$pass);
@@ -23,7 +23,8 @@
 
   $date = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 
-  $q_string = "select cert_url,cert_expire,cert_group from certs";
+  $q_string  = "select cert_url,cert_expire,cert_group ";
+  $q_string .= "from certs";
   $q_certs = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_certs = mysql_fetch_array($q_certs)) {
 
@@ -31,8 +32,8 @@
       print "\n  cert url: " . $a_certs['cert_url'] . " cert expire:" . $a_certs['cert_expire'] . " cert group:" . $a_certs['cert_group'] . "\n";
     }
 
-    list($year, $month, $day) = split('[/.-]', $a_certs['cert_expire']);
-    $certtime = mktime(0, 0, 0, $month, $day, $year);
+# convert the cert expiration date to a numeric value for comparisons
+    $certtime = strtotime($a_certs['cert_expire']);
 
 # default is 90 days for all affected groups then users settings go into effect
     $warningdate = mktime(0, 0, 0, date('m'), date('d') + 90, date('Y'));
@@ -40,7 +41,9 @@
     $webappsemail = 0;
 
 # first check the affected group
-    $q_string = "select grp_name,grp_email from groups where grp_id = " . $a_certs['cert_group'];
+    $q_string  = "select grp_name,grp_email ";
+    $q_string .= "from groups ";
+    $q_string .= "where grp_id = " . $a_certs['cert_group'];
     $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     $a_groups = mysql_fetch_array($q_groups);
     if ($debug) {
@@ -56,7 +59,7 @@
 
     if ($debug) {
       print "  webappsemail: " . $webappsemail . " groupemail: " . $groupemail . "\n";
-      print "  date: " . $date . " cert expire:" . $certtime . " warning date:" . $warningdate . "\n";
+      print "  date: " . $date . " " . date('Y-m-d', $date) . " cert expire:" . $certtime . " " . date('Y-m-d', $certtime) . " warning date:" . $warningdate . " " . date('Y-m-d', $warningdate) . "\n";
     }
 # if it's a good e-mail address and it's right on the expiration date, send an e-mail to the group
     if ($certtime == $warningdate && (($webappsemail + $groupemail) > 0)) {
@@ -69,7 +72,9 @@
 
 # then check the WebApps group assuming the previous group check wasn't the webapps folks
     if ($webappsemail == 0) {
-      $q_string = "select grp_name,grp_email from groups where grp_id = 25";
+      $q_string  = "select grp_name,grp_email ";
+      $q_string .= "from groups ";
+      $q_string .= "where grp_id = " . $GRP_WebApps;
       $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
       $a_groups = mysql_fetch_array($q_groups);
       if (preg_match("/@intrado.com$/i", $a_groups['grp_email'])) {
@@ -90,12 +95,19 @@
       }
     }
 
-    $q_string = "select usr_id,usr_name,usr_email,usr_notify,usr_freq,usr_countdown from users where (usr_group = " . $a_certs['cert_group'] . " or usr_group = 25) and usr_disabled = 0";
+    $q_string  = "select usr_id,usr_name,usr_email,usr_notify,usr_freq,usr_countdown ";
+    $q_string .= "from users ";
+    $q_string .= "where (usr_group = " . $a_certs['cert_group'] . " or usr_group = " . $GRP_WebApps . ") and usr_disabled = 0";
     $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     while ($a_users = mysql_fetch_array($q_users)) {
+      $email = $a_users['usr_email'];
+      $subject = "Certificate is expiring";
+      $body = "The certificate for \"" . $a_certs['cert_url'] . "\" is expiring on " . $a_certs['cert_expire'] . ".";
+
       if ($debug) {
         print "    user name: " . $a_users['usr_name'] . " user countdown:" . $a_users['usr_countdown'] . " user notify:" . $a_users['usr_notify'] . "\n";
       }
+
 # default notification of 90 days
       if ($a_users['usr_notify'] < 1) {
         $a_users['usr_notify'] = 90;
@@ -113,9 +125,9 @@
 # on the first day of expiration, all members of the cert management group get an e-mail assuming the group mail failed
       if ($certtime == $warningdate && $groupemail == 0 && $a_certs['cert_group'] != 25) {
         if ($debug) {
-          print "    " . $a_users['usr_email'] . " Certificate is expiring" . " The certificate for \"" . $a_certs['cert_url'] . "\" is expiring on " . $a_certs['cert_expire'] . ".\n";
+          print "    " . $email . " " . $subject . " " . $body . "\n";
         } else {
-          mail($a_users['usr_email'], "Certificate is expiring", "The certificate for \"" . $a_certs['cert_url'] . "\" is expiring on " . $a_certs['cert_expire'] . ".");
+          mail($email, $subject, $body);
         }
         $a_users['usr_countdown'] = $a_users['usr_freq'];
       }
@@ -123,9 +135,9 @@
 # on the first day of expiration, all members of the Web apps group get an e-mail assuming the group mail failed
       if ($certtime == $warningdate && $webappsemail = 0) {
         if ($debug) {
-          print "    " . $a_users['usr_email'] . " Certificate is expiring" . " The certificate for \"" . $a_certs['cert_url'] . "\" is expiring on " . $a_certs['cert_expire'] . ".\n";
+          print "    " . $email . " " . $subject . " " . $body;
         } else {
-          mail($a_users['usr_email'], "Certificate is expiring", "The certificate for \"" . $a_certs['cert_url'] . "\" is expiring on " . $a_certs['cert_expire'] . ".");
+          mail($email, $subject, $body);
         }
         $a_users['usr_countdown'] = $a_users['usr_freq'];
       }
