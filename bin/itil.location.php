@@ -1,0 +1,61 @@
+#!/usr/local/bin/php
+<?php
+# Script: itil.location.php
+# Owner: Carl Schelin
+# Coding Standard 3.0 Applied
+# See: https://incowk01/makers/index.php/Coding_Standards
+# Description: Retrieve the company information from the Location table 
+# for the conversion to Remedy.
+# Requires:
+# Company Name
+# Type
+# Region
+# Site Group
+# Site Name
+# Street
+# Country
+# State/Province
+# City
+# Zip/Postal Code
+
+  include('settings.php');
+  include($Sitepath . '/function.php');
+
+  function dbconn($server,$database,$user,$pass){
+    $db = mysql_connect($server,$user,$pass);
+    $db_select = mysql_select_db($database,$db);
+    return $db;
+  }
+
+  $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
+
+  print "Company Name,Type,Region,Site Group,Site Name,Street,Country,State/Province,City,Zip/Postal Code\n";
+
+  $q_string  = "select loc_name,loc_type,loc_addr1,loc_addr2,cn_country,st_state,ct_city,loc_zipcode ";
+  $q_string .= "from locations ";
+  $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
+  $q_string .= "left join states on states.st_id = cities.ct_state ";
+  $q_string .= "left join country on country.cn_id = states.st_country ";
+  $q_string .= "order by loc_name ";
+  $q_locations = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  while ($a_locations = mysql_fetch_array($q_locations)) {
+
+    $type = "Other";
+    if ($a_locations['loc_type'] == 1) {
+      $type = "Service Provider";
+    }
+    if ($a_locations['loc_type'] == 2) {
+      $type = "Customer";
+    }
+    if ($a_locations['loc_type'] == 3) {
+      $type = "Vendor";
+    }
+
+    if (strlen($a_locations['loc_addr2']) > 0) {
+      $a_locations['loc_addr1'] .= ", " . $a_locations['loc_addr2'];
+    }
+
+    print $a_locations['loc_name'] . "," . $type . ",,," . $a_locations['loc_name'] . "," . $a_locations['loc_addr1'] . "," . $a_locations['cn_country'] . "," . $a_locations['st_state'] . "," . $a_locations['ct_city'] . "," . $a_locations['loc_zipcode'] . "\n";
+  }
+
+?>

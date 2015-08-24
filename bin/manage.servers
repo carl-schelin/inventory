@@ -1,0 +1,75 @@
+#!/bin/bash
+
+# Script: manage.servers
+# Owner: Carl Schelin
+# Description: Ensure soft links are in place and then run the script that creates the data
+# Need to determine if the file exists and is a symbolic link
+# Then we need to see if the file exists over on the website and is > 0 bytes
+
+ADMIN=/usr/local/admin
+SERVERS=/usr/local/httpd/htsecure/inventory
+
+### Dev:
+SVRRUN=/usr/local/httpd/jsbin
+WHOCARES="carl.schelin@intrado.com"
+OWNER="apache:sysadmin"
+
+### QA/Production:
+SVRRUN=/usr/local/httpd/bin
+WHOCARES="unixadmins@intrado.com"
+OWNER="webservd:sysadmin"
+
+##########
+# Unix is special. We were first so we're 'servers' vs others who need postfixes.
+##########
+
+echo "Processing servers.unix"
+
+# ensure file exists regardless
+$SVRRUN/servers.list.php > $SERVERS/servers.unix
+
+# chown so the web site can write to it
+chown $OWNER $SERVERS/servers.unix
+
+if [[ -f $ADMIN/etc/servers ]]
+then
+  OUTPUT=`/usr/bin/file -h $SERVERS/servers | grep symbolic`
+
+# if the file is NOT a symbolic link then the link has been broken
+# clear it and set it back up
+  if [[ -z $OUTPUT ]]
+  then
+    rm $ADMIN/etc/servers
+    ln -s $SERVERS/servers.unix $ADMIN/etc/servers
+  fi
+else
+  ln -s $SERVERS/servers.unix $ADMIN/etc/servers
+fi
+
+# now parse through the remaining servers files
+for i in dba lab mob mon net sba se tandem vtt web win
+do
+  echo "Processing servers.$i"
+
+# ensure file exists regardless
+  $SVRRUN/servers.$i.php > $SERVERS/servers.$i
+
+# chown so the web site can write to it
+  chown $OWNER $SERVERS/servers.$i
+
+  if [[ -f $ADMIN/etc/servers.$i ]]
+  then
+    OUTPUT=`/usr/bin/file -h $SERVERS/servers.$i | grep symbolic`
+
+# if the file is NOT a symbolic link then the link has been broken
+# clear it and set it back up
+    if [[ -z $OUTPUT ]]
+    then
+      rm $ADMIN/etc/servers.$i
+      ln -s $SERVERS/servers.$i $ADMIN/etc/servers.$i
+    fi
+  else
+    ln -s $SERVERS/servers.$i $ADMIN/etc/servers.$i
+  fi
+done
+
