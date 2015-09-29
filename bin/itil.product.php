@@ -22,7 +22,6 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  print "Product ID,Product Type,CI Type,Product Categorization Tier 1,Product Categorization Tier 2,Product Categorization Tier 3,Product Name,Manufacturer,Suite Definition,Status\n";
   print "Company,Product Type,CI Type,Product Categorization Tier 1,Product Categorization Tier 2,Product Categorization Tier 3,Product Name,Manufacturer,Deletion Flag,Status\n";
 
   $q_string  = "select prod_id,prod_name,prod_type,prod_citype,prod_tier1,prod_tier2,prod_tier3 ";
