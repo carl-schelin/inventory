@@ -23,6 +23,7 @@
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
   print "Product ID,Product Type,CI Type,Product Categorization Tier 1,Product Categorization Tier 2,Product Categorization Tier 3,Product Name,Manufacturer,Suite Definition,Status\n";
+  print "Company,Product Type,CI Type,Product Categorization Tier 1,Product Categorization Tier 2,Product Categorization Tier 3,Product Name,Manufacturer,Deletion Flag,Status\n";
 
   $q_string  = "select prod_id,prod_name,prod_type,prod_citype,prod_tier1,prod_tier2,prod_tier3 ";
   $q_string .= "from products ";
@@ -31,7 +32,7 @@
   $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_products = mysql_fetch_array($q_products)) {
 
-    print $a_products['prod_id'] . "," . $a_products['prod_type'] . "," . $a_products['prod_citype'] . "," . $a_products['prod_tier1'] . "," . $a_products['prod_tier2'] . "," . $a_products['prod_tier3'] . ",\"" . $a_products['prod_name'] . "\",Intrado,1,1\n";
+    print "Intrado, Inc.," . $a_products['prod_type'] . "," . $a_products['prod_citype'] . "," . $a_products['prod_tier1'] . "," . $a_products['prod_tier2'] . "," . $a_products['prod_tier3'] . ",\"" . $a_products['prod_name'] . "\",Intrado,0,1\n";
 
   }
 
