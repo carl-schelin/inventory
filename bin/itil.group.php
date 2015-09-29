@@ -24,7 +24,7 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  print "Support Organization,Support Group Name,Support Group Role,Vendor Group,Status,Disable Group Notifications,Group Email\n";
+  print "Company,Support Organization,Support Group Name,Support Group Role,Description,Group Email,Deletion Flag,Status\n";
 
   $q_string  = "select grp_id,grp_disabled,grp_name,grp_email,org_name,role_name ";
   $q_string .= "from groups ";
@@ -45,7 +45,7 @@
     } else {
       $disabled = '1';
     }
-    print $a_groups['org_name'] . "," . $a_groups['grp_name'] . "," . $a_groups['role_name'] . "," . $vendor . "," . $disabled . ",1," . $a_groups['grp_email'] . "\n";
+    print "\"Intrado, Inc.\"," . $a_groups['org_name'] . "," . $a_groups['grp_name'] . "," . $a_groups['role_name'] . ",," . $a_groups['grp_email'] . "," . $disabled . ",0\n";
   }
 
 ?>
