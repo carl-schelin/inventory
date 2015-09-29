@@ -29,7 +29,7 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  print "Company Name,Type,Region,Site Group,Site Name,Street,Country,State/Province,City,Zip/Postal Code\n";
+  print "Company,Region,Site Group,Site Name,Description,Street,Country,State/Province,City,Zip/Postal Code\n";
 
   $q_string  = "select loc_name,loc_type,loc_addr1,loc_addr2,cn_country,st_state,ct_city,loc_zipcode ";
   $q_string .= "from locations ";
@@ -55,7 +55,7 @@
       $a_locations['loc_addr1'] .= ", " . $a_locations['loc_addr2'];
     }
 
-    print $a_locations['loc_name'] . "," . $type . ",,," . $a_locations['loc_name'] . "," . $a_locations['loc_addr1'] . "," . $a_locations['cn_country'] . "," . $a_locations['st_state'] . "," . $a_locations['ct_city'] . "," . $a_locations['loc_zipcode'] . "\n";
+    print $a_locations['loc_name'] . ",,," . $a_locations['loc_name'] . ",," . $a_locations['loc_addr1'] . "," . $a_locations['cn_country'] . "," . $a_locations['st_state'] . "," . $a_locations['ct_city'] . "," . $a_locations['loc_zipcode'] . ",0\n";
   }
 
 ?>
