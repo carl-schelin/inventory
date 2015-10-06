@@ -52,7 +52,7 @@
       $comma = "";
       $q_string  = "select usr_email ";
       $q_string .= "from users ";
-      $q_string .= "where usr_disabled = 0 and usr_group = " . $a_groups['grp_id'];
+      $q_string .= "where usr_report = 1 and usr_disabled = 0 and usr_group = " . $a_groups['grp_id'];
       $q_users = mysql_query($q_string, $db) or die($q_string . ": " . mysql_error());
       while ($a_users = mysql_fetch_array($q_users)) {
         $usermail = $usermail . $comma . $a_users['usr_email'];
