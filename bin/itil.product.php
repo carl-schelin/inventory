@@ -31,7 +31,7 @@
   $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_products = mysql_fetch_array($q_products)) {
 
-    print "\"Intrado, Inc.\",\"" . $a_products['prod_type'] . "\",\"" . $a_products['prod_citype'] . "\",\"" . $a_products['prod_tier1'] . "\",\"" . $a_products['prod_tier2'] . "\",\"" . $a_products['prod_tier3'] . "\",\"" . $a_products['prod_name'] . "\",\"Intrado\",\"0\",\"1\"\n";
+    print "\"Intrado, Inc.\",\"" . $a_products['prod_type'] . "\",\"" . $a_products['prod_citype'] . "\",\"" . $a_products['prod_tier1'] . "\",\"" . $a_products['prod_tier2'] . "\",\"" . $a_products['prod_tier3'] . "\",\"" . $a_products['prod_name'] . "\",\"Intrado\",\"No\",\"1\"\n";
 
   }
 
