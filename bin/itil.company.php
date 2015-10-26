@@ -60,7 +60,7 @@
       $subtype = "NOC";
     }
 
-    print $a_locations['loc_id'] . ",\"" . $a_locations['loc_name'] . "\"," . $type . "," . $subtype . "\n";
+    print "\"" . $a_locations['loc_id'] . "\",\"" . $a_locations['loc_name'] . "\",\"" . $type . "\",\"" . $subtype . "\"\n";
   }
 
 ?>
