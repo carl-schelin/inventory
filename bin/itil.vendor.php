@@ -26,7 +26,7 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  print "Company,Company Type,Description,Phone,Email,Webpage,Deletion Flag\n";
+  print "Company,Company Type,Description,Hot Line,Email,Webpage,Deletion Flag\n";
 
   $q_string  = "select com_name,typ_name,com_description,com_phone,com_email,com_webpage,com_disabled ";
   $q_string .= "from company ";
