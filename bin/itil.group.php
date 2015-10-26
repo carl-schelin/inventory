@@ -41,11 +41,11 @@
     }
 
     if ($a_groups['grp_disabled'] || $a_groups['grp_role'] == 0) {
-      $disabled = '2';
+      $disabled = 'No'; # was '2'
     } else {
-      $disabled = '1';
+      $disabled = 'Yes'; # was '1'
     }
-    print "\"Intrado, Inc.\"," . $a_groups['org_name'] . "," . $a_groups['grp_name'] . "," . $a_groups['role_name'] . ",," . $a_groups['grp_email'] . "," . $disabled . ",0\n";
+    print "\"Intrado, Inc.\",\"" . $a_groups['org_name'] . "\",\"" . $a_groups['grp_name'] . "\",\"" . $a_groups['role_name'] . "\",,\"" . $a_groups['grp_email'] . "\",\"" . $disabled . "\",\"0\"\n";
   }
 
 ?>
