@@ -59,7 +59,7 @@
 
   $q_string  = "select usr_email,usr_clientid,usr_group ";
   $q_string .= "from users ";
-  $q_string .= "where (usr_email = '" . $email . "' or usr_altemail like '%" . $email . "%') and usr_id != 1 ";
+  $q_string .= "where (usr_email = '" . $email . "' or usr_altemail like '%" . $email . "%') and usr_id != 1 and usr_disabled = 0";
   $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   $a_users = mysql_fetch_array($q_users);
 
@@ -67,11 +67,16 @@
 #  $email = $a_users['usr_email'];
   $clientid = $a_users['usr_clientid'];
 
-  $q_string  = "select grp_changelog ";
+  $q_string  = "select grp_changelog,grp_magic ";
   $q_string .= "from groups ";
   $q_string .= "where grp_id = " . $a_users['usr_group'];
   $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   $a_groups = mysql_fetch_array($q_groups);
+
+  $groupid = $a_groups['grp_magic'];
+  if ($groupid == '') {
+    $groupid = "CORP-UNIX SYSADMIN";
+  }
 
 # added because Josh is in a different group (Mobility) that has their own changelog file.
 # Josh sends changelogs for the Unix group on incojs01 and changelogs for Mobility via Outlook.
@@ -309,6 +314,11 @@
 ### Client ID: -u-/*u*
 #########
   $body = "-u-" . $clientid . "*u*\n\n";
+
+#########
+### Group ID: -g-/*g*
+#########
+  $body .= "-g-" . $groupid . "*g*\n\n";
 
 #########
 ### Server: -s-/*s*
