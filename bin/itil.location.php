@@ -55,7 +55,7 @@
       $a_locations['loc_addr1'] .= ", " . $a_locations['loc_addr2'];
     }
 
-    print "\"" . $a_locations['loc_name'] . "\",\"\",\"\",\"" . $a_locations['loc_name'] . "\",\"\",\"" . $a_locations['loc_addr1'] . "\",\"" . $a_locations['cn_country'] . "\",\"" . $a_locations['st_state'] . "\",\"" . $a_locations['ct_city'] . "\",\"" . $a_locations['loc_zipcode'] . "\",\"0\"\n";
+    print "\"" . $a_locations['loc_name'] . "\",\"\",\"\",\"" . $a_locations['loc_name'] . "\",\"\",\"" . $a_locations['loc_addr1'] . "\",\"" . $a_locations['cn_country'] . "\",\"" . $a_locations['st_state'] . "\",\"" . $a_locations['ct_city'] . "\",\"" . $a_locations['loc_zipcode'] . "\",\"No\"\n";
   }
 
 ?>
