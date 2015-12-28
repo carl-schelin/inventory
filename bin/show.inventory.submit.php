@@ -25,7 +25,7 @@
 
   $output  = "<html>\n";
   $output .= "<body>\n";
-
+ 
 # $argv[0] = script name.
 # $argc = the number of items in the $argv array
 
@@ -46,7 +46,12 @@
     $email = $argv[1];
   }
 
-  $q_string = "select usr_name from users where usr_id != 1 and usr_email = '" . $email . "'";
+  $q_string  = "select usr_name ";
+  $q_string .= "from users ";
+  $q_string .= "where usr_id != 1 and usr_email = '" . $email . "'";
+  if ($debug == 'yes') {
+    print $q_string . "\n\n";
+  }
   $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
   $a_users = mysql_fetch_array($q_users);
 
@@ -87,20 +92,45 @@
   if ($servername == 'help' || $servername == 'active' || $servername == "products") {
     $server = $servername;
   } else {
+# need to get the inventory servername if int_server == servername
+# can't check it in the interface section due to the number of entries returned.
+# activate the network check if action is blank so the user can see the alternate interface entries.
+# make sure a wildcard hasn't been sent too, ignore the check if so.
+    if (strpos($servername, '%') === false) {
+      $q_string  = "select inv_name ";
+      $q_string .= "from interface ";
+      $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
+      $q_string .= "where int_server like '" . $servername . "' ";
+      $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      if ($debug == 'yes') {
+        print $q_string . "\n\n";
+      }
+      if (mysql_num_rows($q_interface) > 0) {
+        $a_interface = mysql_fetch_array($q_interface);
+# only replace it if it came from the interface table (keeps action from being replaced when you know what you're looking for).
+        if ($servername != $a_interface['inv_name']) {
+          $servername = $a_interface['inv_name'];
+          if (strlen($action) == 0 && $action != '*' && substr($action, 0, 1) != 'a') {
+            $action = 'network';
+          }
+        }
+      }
+    }
+
     $q_string  = "select inv_id,inv_name,inv_manager ";
     $q_string .= "from inventory ";
     $q_string .= "where inv_name like '" . $servername . "' and inv_status = 0 ";
     $q_string .= "order by inv_name";
     $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
 
-    if ($debut == 'yes') {
+    if ($debug == 'yes') {
       print $q_string . "\n\n";
     }
     if (mysql_num_rows($q_inventory) == 0) {
       $q_string = "select prod_name from products where prod_name = '" . $productlist . "'";
       $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
 
-      if ($debut == 'yes') {
+      if ($debug == 'yes') {
         print $q_string . "\n\n";
       }
       if (mysql_num_rows($q_products) == 0) {
@@ -271,12 +301,12 @@
     $body .= "<ul>\n";
     $body .= "  <li><b>{blank}</b> - An e-mail will be returned containing basic details about the requested server.</li>\n";
     $body .= "  <li><b>*/<u>a</u>ll</b> - An e-mail will be returned containing details from all the following keywords.</li>\n";
-    $body .= "  <li><b><u>h</u>ardware</b> - An e-mail will be returned containing minimal details plus a list of the hardware.</li>\n";
-    $body .= "  <li><b><u>f</u>ilesystems</b> - An e-mail will be returned containing minimal details plus a list of the filesystems.</li>\n";
-    $body .= "  <li><b><u>s</u>oftware</b> - An e-mail will be returned containing minimal details plus a list of the installed software, not including the list of installed packages.</li>\n";
-    $body .= "  <li><b><u>i</u>nterfaces</b> - An e-mail will be returned containing minimal details plus a list of the active interfaces.</li>\n";
-    $body .= "  <li><b><u>r</u>oute/routing</b> - An e-mail will be returned containing minimal details plus a list of the baseline routes.</li>\n";
-    $body .= "  <li><b><u>p</u>roblems/issues</b> - An e-mail will be returned containing minimal details plus a list of the baseline routes.</li>\n";
+    $body .= "  <li><b><u>h</u>ardware</b> - An e-mail will be returned containing basic information plus a list of the hardware.</li>\n";
+    $body .= "  <li><b><u>f</u>ilesystems</b> - An e-mail will be returned containing basic information plus a list of the filesystems.</li>\n";
+    $body .= "  <li><b><u>s</u>oftware</b> - An e-mail will be returned containing basic information plus a list of the installed software, not including the list of installed packages.</li>\n";
+    $body .= "  <li><b><u>n</u>etwork</b> - An e-mail will be returned containing the basic information plus the network interfaces.</li>\n";
+    $body .= "  <li><b><u>r</u>oute/routing</b> - An e-mail will be returned containing basic information plus a list of the baseline routes.</li>\n";
+    $body .= "  <li><b><u>i</u>ssues</b> - An e-mail will be returned containing basic information plus a list of open issues.</li>\n";
     $body .= "</ul>\n\n";
 
     $body .= "<p>This mail box is not monitored, please do not reply.</p>\n\n";
@@ -569,7 +599,7 @@
     $output .= "</table>\n\n";
 
 # hardware display
-    if (substr($action, 1, 1) == "h" || $action == "*" || $action == "hardware" || substr($action, 1, 1) == "a") {
+    if (substr($action, 0, 1) == 'h' || $action == '*' || substr($action, 0, 1) == 'a') {
       $output .= "<table width=80%>\n";
       $output .= "<tr>\n";
       $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"9\">Full Hardware Listing</th>\n";
@@ -619,7 +649,7 @@
     }
 
 # filesystem display
-    if (substr($action, 1, 1) == 'f' || $action == "*" || substr($action, 1, 1) == 'a') {
+    if (substr($action, 0, 1) == 'f' || $action == '*' || substr($action, 0, 1) == 'a') {
       $output .= "<table width=80%>\n";
       $output .= "<tr>\n";
       $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"6\">Filesystem Listing</th>\n";
@@ -659,7 +689,7 @@
     }
 
 # software display
-    if (substr($action, 1, 1) == 's' || $action == "*" || substr($action, 1, 1) == 'a') {
+    if (substr($action, 0, 1) == 's' || $action == "*" || substr($action, 0, 1) == 'a') {
       $output .= "<table width=80%>\n";
       $output .= "<tr>\n";
       $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"6\">Software Listing</th>\n";
@@ -705,55 +735,161 @@
       $output .= "</table>\n\n";
     }
 
-# interface table
-    if (substr($action, 1, 1) == 'i' || $action == "*" || substr($action, 1, 1) == 'a') {
+# network table
+    if (substr($action, 0, 1) == 'n' || $action == "*" || substr($action, 0, 1) == 'a') {
       $output .= "<table width=80%>\n";
       $output .= "<tr>\n";
-      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"8\">Interfaces</th>\n";
+      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"11\">Network</th>\n";
       $output .= "</tr>\n";
       $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
-      $output .= "  <th>Name</th>\n";
-      $output .= "  <th>Interface</th>\n";
-      $output .= "  <th>IP Address</th>\n";
+      $output .= "  <th>Interface Name</th>\n";
+      $output .= "  <th>Logical Interface</th>\n";
+      if (return_Virtual($a_inventory['inv_id']) == 0) {
+        $output .= "  <th>Physical Port</th>\n";
+      }
       $output .= "  <th>MAC Address</th>\n";
-      $output .= "  <th>Subnet</th>\n";
+      $output .= "  <th>IP Address/Netmask</th>\n";
+      $output .= "  <th>Zone</th>\n";
       $output .= "  <th>Gateway</th>\n";
+      if (return_Virtual($a_inventory['inv_id']) == 0) {
+        $output .= "  <th>Switch</th>\n";
+        $output .= "  <th>Port</th>\n";
+      }
       $output .= "  <th>Type</th>\n";
-      $output .= "  <th>Last</th>\n";
+      $output .= "  <th>Updated</th>\n";
       $output .= "</tr>\n";
-
-      $q_string  = "select int_server,int_face,int_ip6,int_addr,int_eth,int_mask,int_gate,int_verified,int_type,int_update ";
-      $q_string .= "from interface ";
-      $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " ";
-      $q_string .= "order by int_face";
-      $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
-      while ($a_interface = mysql_fetch_array($q_interface)) {
-        $q_string  = "select itp_acronym from inttype where itp_id = " . $a_interface['int_type'];
-        $q_inttype = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
-        $a_inttype = mysql_fetch_array($q_inttype);
-
+    
+      $q_string = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,"
+                .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name "
+                . "from interface "
+                . "left join ip_zones on interface.int_zone = ip_zones.zone_id  "
+                . "left join inttype on interface.int_type = inttype.itp_id "
+                . "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = 0 "
+                . "order by int_face,int_addr";
+      $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    
+      while ( $a_interface = mysql_fetch_array($q_interface) ) {
+    
+        $intnote = " title=\"" . $a_interface['int_note'] . "\"";
         if ($a_interface['int_verified'] == 1) {
           $bgcolor = $color[1];
         } else {
           $bgcolor = $color[0];
         }
-
+        if ($a_interface['int_eth'] == '00:00:00:00:00:00' ) {
+          $showmac = '';
+        } else {
+          $showmac = $a_interface['int_eth'];
+        }
+        if ($a_interface['int_addr'] == '' ) {
+          $showmask = '';
+        } else {
+          $showmask = '/' . $a_interface['int_mask'];
+        }
+        $redundancy = '';
+        if ($a_interface['int_redundancy'] > 0 ) {
+          $redundancy = ' (r)';
+        }
+        $virtual = '';
+        if ($a_interface['int_virtual'] == 1 ) {
+          $virtual = ' (v)';
+        }
+    
+        if ($a_interface['int_type'] == 4 || $a_interface['int_type'] == 6) {
+          $linkstart = "<a href=\"http://" . $a_interface['int_addr'] . "\" target=\"_blank\">";
+          $linkend = "</a>";
+        } else {
+          $linkstart = "";
+          $linkend = "";
+        }
+    
         $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
-        $output .= "  <td>" . $a_interface['int_server'] . "</td>\n";
-        $output .= "  <td>" . $a_interface['int_face']   . "</td>\n";
-        $output .= "  <td>" . $a_interface['int_addr']   . "</td>\n";
-        $output .= "  <td>" . $a_interface['int_eth']    . "</td>\n";
-        $output .= "  <td>" . $a_interface['int_mask']   . "</td>\n";
-        $output .= "  <td>" . $a_interface['int_gate']   . "</td>\n";
-        $output .= "  <td>" . $a_inttype['itp_acronym']  . "</td>\n";
-        $output .= "  <td>" . $a_interface['int_update'] . "</td>\n";
+        $output .= "<td" . $intnote . ">"              . $a_interface['int_server'] . $redundancy            . "</td>\n";
+        $output .= "<td" . $intnote . ">"              . $a_interface['int_face'] . $virtual                 . "</td>\n";
+        if (return_Virtual($a_inventory['inv_id']) == 0) {
+          $output .= "<td" . $intnote . ">"            . $a_interface['int_sysport']                         . "</td>\n";
+        }
+        $output .= "<td" . $intnote . ">"              . $showmac                                            . "</td>\n";
+        $output .= "<td" . $intnote . ">" . $linkstart . $a_interface['int_addr']     . $showmask . $linkend . "</td>\n";
+        $output .= "<td" . $intnote . ">"              . $a_interface['zone_name']                           . "</td>\n";
+        $output .= "<td" . $intnote . ">"              . $a_interface['int_gate']                            . "</td>\n";
+        if (return_Virtual($a_inventory['inv_id']) == 0) {
+          $output .= "<td" . $intnote . ">"            . $a_interface['int_switch']                          . "</td>\n";
+          $output .= "<td" . $intnote . ">"            . $a_interface['int_port']                            . "</td>\n";
+        }
+        $output .= "<td" . $intnote . ">"              . $a_interface['itp_acronym']                         . "</td>\n";
+        $output .= "<td" . $intnote . ">"              . $a_interface['int_update']                          . "</td>\n";
         $output .= "</tr>\n";
+    
+    
+        $q_string = "select int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,"
+                  .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_groupname "
+                  . "from interface "
+                  . "left join ip_zones on interface.int_zone = ip_zones.zone_id  "
+                  . "left join inttype on interface.int_type = inttype.itp_id "
+                  . "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_interface['int_id'] . " "
+                  . "order by int_face,int_addr";
+        $q_redundancy = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    
+        while ( $a_redundancy = mysql_fetch_array($q_redundancy) ) {
+    
+          $intnote = " title=\"" . $a_redundancy['int_note'] . "\"";
+          if ($a_redundancy['int_verified'] == 1) {
+            $bgcolor = $color[1];
+          } else {
+            $bgcolor = $color[0];
+          }
+          if ($a_redundancy['int_eth'] == '00:00:00:00:00:00' ) {
+            $showmac = '';
+          } else {
+            $showmac = $a_redundancy['int_eth'];
+          }
+          if ($a_redundancy['int_addr'] == '' ) {
+            $showmask = '';
+          } else {
+            $showmask = '/' . $a_redundancy['int_mask'];
+          }
+          $group = '';
+          if ($a_redundancy['int_groupname'] != '') {
+            $group = ' (' . $a_redundancy['int_groupname'] . ')';
+          }
+          $virtual = '';
+          if ($a_redundancy['int_virtual'] == 1 ) {
+            $virtual = ' (v)';
+          }
+    
+          if ($a_redundancy['int_type'] == 4 || $a_redundancy['int_type'] == 6) {
+            $linkstart = "<a href=\"http://" . $a_redundancy['int_addr'] . "\" target=\"_blank\">";
+            $linkend = "</a>";
+          } else {
+            $linkstart = "";
+            $linkend = "";
+          }
+    
+          $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+          $output .= "<td" . $intnote . ">> "            . $a_redundancy['int_server'] . $group                 . "</td>\n";
+          $output .= "<td" . $intnote . ">"              . $a_redundancy['int_face'] . $virtual                 . "</td>\n";
+          if (return_Virtual($a_inventory['inv_id']) == 0) {
+            $output .= "<td" . $intnote . ">"            . $a_redundancy['int_sysport']                         . "</td>\n";
+          }
+          $output .= "<td" . $intnote . ">"              . $showmac                                            . "</td>\n";
+          $output .= "<td" . $intnote . ">" . $linkstart . $a_redundancy['int_addr']     . $showmask . $linkend . "</td>\n";
+          $output .= "<td" . $intnote . ">"              . $a_redundancy['zone_name']                           . "</td>\n";
+          $output .= "<td" . $intnote . ">"              . $a_redundancy['int_gate']                            . "</td>\n";
+          if (return_Virtual($a_inventory['inv_id']) == 0) {
+            $output .= "<td" . $intnote . ">"            . $a_redundancy['int_switch']                          . "</td>\n";
+            $output .= "<td" . $intnote . ">"            . $a_redundancy['int_port']                            . "</td>\n";
+          }
+          $output .= "<td" . $intnote . ">"              . $a_redundancy['itp_acronym']                         . "</td>\n";
+          $output .= "<td" . $intnote . ">"              . $a_redundancy['int_update']                          . "</td>\n";
+          $output .= "</tr>\n";
+        }
       }
-      $output .= "</table>\n\n";
+      $output .= "</table>\n";
     }
 
 # routing table
-    if (substr($action, 1, 1) == 'r' || $action == "*" || substr($action, 1, 1) == 'a') {
+    if (substr($action, 0, 1) == 'r' || $action == "*" || substr($action, 0, 1) == 'a') {
       $output .= "<table width=80%>\n";
       $output .= "<tr>\n";
       $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"6\">Routing Table</th>\n";
@@ -794,8 +930,8 @@
 
 # prevent this test section from executing while it's being worked on
     $action = '';
-# problem/issue table
-    if (substr($action, 1, 1) == 'p' || $action == "*" || substr($action, 1, 1) == 'a') {
+# issue table
+    if (substr($action, 0, 1) == 'i' || $action == "*" || substr($action, 0, 1) == 'a') {
       $output .= "<table width=80%>\n";
       $output .= "<tr>\n";
       $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=7>Issue Tracker</th>\n";
