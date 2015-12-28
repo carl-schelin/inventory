@@ -209,8 +209,8 @@ $psapid[9697] = 9698;
       printf("\"%05d\",", $a_ctl['psap_psap_id']);
       print "\"" . $a_ctl['psap_description'] . "\",";
       print "\"" . $a_ctl['psap_pseudo_cid'] . "\",";
-      print "\"" . "NULL" . "\",";
-#      print "\"" . $a_ctl['psap_circuit_id'] . "\",";
+#      print "\"" . "NULL" . "\",";
+      print "\"" . $a_ctl['psap_circuit_id'] . "\",";
       print "\"" . $a_ctl['psap_lec'] . "\",";
       print "\"" . "" . "\",";
       if (strlen($a_psaps['psap_circuit_id']) > 0) {
