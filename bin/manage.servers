@@ -47,7 +47,7 @@ else
 fi
 
 # now parse through the remaining servers files
-for i in ali dba lab mob mon net sba se tandem vns vtt web win
+for i in ali dba lab mob mon net sba se tandem tss vns vtt web win
 do
   echo "Processing servers.$i"
 
