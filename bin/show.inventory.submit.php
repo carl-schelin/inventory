@@ -41,6 +41,7 @@
 # if only the script name then we're missing the e-mail address
   if ($argc == 1) {
     print "ERROR: invalid command line parameters\n";
+    print "./inventory.submit.php email server|product flags\n";
     exit(1);
   } else {
     $email = $argv[1];
@@ -491,6 +492,9 @@
     exit(1);
 
   } else {
+# Now we provide the basic server information including chassis or cluster members
+#
+# table one: name and managers
     $output .= "<table width=80%>\n";
     $output .= "<tr>\n";
     $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Inventory Management</th>\n";
@@ -520,7 +524,7 @@
 
     $output .= "</table>\n\n";
 
-
+# table two; support details
     $output .= "<table width=80%>\n";
 
     $output .= "<tr>\n";
@@ -571,7 +575,7 @@
 
     $output .= "</table>\n\n";
 
-
+# table three: basic hardware information
     $output .= "<table width=80%>\n";
 
     $output .= "<tr>\n";
@@ -601,6 +605,87 @@
     $output .= "</table>\n\n";
 
 
+# table four: optional: if a chassis id, list the members.
+    $q_string  = "select inv_name,inv_function,grp_name,inv_appadmin ";
+    $q_string .= "from inventory ";
+    $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
+    $q_string .= "where inv_companyid = " . $a_inventory['inv_id'] . " and inv_status = 0 ";
+    $q_string .= "order by inv_name ";
+    $q_cluster = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    if (mysql_num_rows($q_cluster) > 0) {
+      $output .= "<table width=80%>\n";
+
+      $output .= "<tr>\n";
+      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Chassis Information</th>\n";
+      $output .= "</tr>\n";
+      $output .= "<tr>\n";
+      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">Server</th>\n";
+      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">Function</th>\n";
+      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">Platform</th>\n";
+      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">Application</th>\n";
+      $output .= "</tr>\n";
+      
+      while ($a_cluster = mysql_fetch_array($q_cluster)) {
+
+        $q_string  = "select grp_name ";
+        $q_string .= "from groups ";
+        $q_string .= "where grp_id = " . $a_cluster['inv_appadmin'] . " ";
+        $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $a_groups = mysql_fetch_array($q_groups);
+
+        $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
+        $output .= "  <td>" . $a_cluster['inv_name']     . "</td>\n";
+        $output .= "  <td>" . $a_cluster['inv_function'] . "</td>\n";
+        $output .= "  <td>" . $a_cluster['grp_name'] . "</td>\n";
+        $output .= "  <td>" . $a_groups['grp_name'] . "</td>\n";
+        $output .= "</tr>\n";
+
+      }
+      $output .= "</table>\n\n";
+    }
+
+
+# table four: optional: if a cluster id, list the members.
+    $q_string  = "select inv_name,inv_function,grp_name,inv_appadmin ";
+    $q_string .= "from inventory ";
+    $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
+    $q_string .= "where inv_clusterid = " . $a_inventory['inv_id'] . " and inv_status = 0 ";
+    $q_string .= "order by inv_name ";
+    $q_cluster = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    if (mysql_num_rows($q_cluster) > 0) {
+      $output .= "<table width=80%>\n";
+
+      $output .= "<tr>\n";
+      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Cluster Membership Information</th>\n";
+      $output .= "</tr>\n";
+      $output .= "<tr>\n";
+      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">Server</th>\n";
+      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">Function</th>\n";
+      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">Platform</th>\n";
+      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">Application</th>\n";
+      $output .= "</tr>\n";
+      
+      while ($a_cluster = mysql_fetch_array($q_cluster)) {
+
+        $q_string  = "select grp_name ";
+        $q_string .= "from groups ";
+        $q_string .= "where grp_id = " . $a_cluster['inv_appadmin'] . " ";
+        $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $a_groups = mysql_fetch_array($q_groups);
+
+        $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
+        $output .= "  <td>" . $a_cluster['inv_name']     . "</td>\n";
+        $output .= "  <td>" . $a_cluster['inv_function'] . "</td>\n";
+        $output .= "  <td>" . $a_cluster['grp_name'] . "</td>\n";
+        $output .= "  <td>" . $a_groups['grp_name'] . "</td>\n";
+        $output .= "</tr>\n";
+
+      }
+      $output .= "</table>\n\n";
+    }
+
+
+# table five: location information including blade number if it's in a chassis
     $output .= "<table width=80%>\n";
 
     $output .= "<tr>\n";
@@ -637,6 +722,10 @@
 
     $output .= "</table>\n\n";
 
+
+
+
+# all done; now we check for flags if more detail is desired
 # hardware display
     if (substr($action, 0, 1) == 'h' || $action == '*' || substr($action, 0, 1) == 'a') {
       $output .= "<table width=80%>\n";
