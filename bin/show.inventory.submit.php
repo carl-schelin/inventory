@@ -330,16 +330,20 @@
     $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
     $output .= "  <th>Servername</th>\n";
     $output .= "  <th>Function</th>\n";
-    $output .= "  <th>Managed By</th>\n";
+    $output .= "  <th>Platform Managed By</th>\n";
+    $output .= "  <th>Applications Managed By</th>\n";
     $output .= "</tr>\n";
 
-    $q_string  = "select inv_id,inv_name,inv_function,inv_manager ";
+    $q_string  = "select inv_id,inv_name,inv_function,grp_name,inv_appadmin ";
     $q_string .= "from inventory ";
+    $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
     $q_string .= "where inv_status = 0 ";
     $q_string .= "group by inv_name";
     $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     while ($a_inventory = mysql_fetch_array($q_inventory)) {
-      $q_string = "select grp_name from groups where grp_id = " . $a_inventory['inv_manager'];
+      $q_string  = "select grp_name ";
+      $q_string .= "from groups ";
+      $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'];
       $q_groups = mysql_query($q_string) or die($q_string . ":(2): " . mysql_error() . "\n\n");
       $a_groups = mysql_fetch_array($q_groups);
 
@@ -355,9 +359,10 @@
       }
 
       $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
-      $output .= "  <td>" . $a_inventory['inv_name'] . "</td>\n";
+      $output .= "  <td>" . $a_inventory['inv_name']     . "</td>\n";
       $output .= "  <td>" . $a_inventory['inv_function'] . "</td>\n";
-      $output .= "  <td>" . $a_groups['grp_name'] . "</td>\n";
+      $output .= "  <td>" . $a_inventory['grp_name']     . "</td>\n";
+      $output .= "  <td>" . $a_groups['grp_name']        . "</td>\n";
       $output .= "</tr>\n";
     }
     $output .= "</table>\n\n";
@@ -388,7 +393,9 @@
     $output .= "  <th>Function</th>\n";
     $output .= "</tr>\n";
 
-    $q_string = "select prod_name,prod_desc from products order by prod_name";
+    $q_string  = "select prod_name,prod_desc ";
+    $q_string .= "from products ";
+    $q_string .= "order by prod_name";
     $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     while ($a_products = mysql_fetch_array($q_products)) {
       $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
@@ -418,27 +425,38 @@
   if ($product != '') {
     $output .= "<table width=80%>\n";
     $output .= "<tr>\n";
-    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=3>Intrado Product : " . $product . "</th>\n";
+    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"4\">Intrado Product : " . $product . "</th>\n";
     $output .= "</tr>\n";
     $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
     $output .= "  <th>Servername</th>\n";
     $output .= "  <th>Function</th>\n";
-    $output .= "  <th>Managed By</th>\n";
+    $output .= "  <th>Platform Managed By</th>\n";
+    $output .= "  <th>Applications Managed By</th>\n";
     $output .= "</tr>\n";
 
-    $q_string = "select prod_id from products where prod_name = '" . $product . "'";
+    $q_string  = "select prod_id ";
+    $q_string .= "from products ";
+    $q_string .= "where prod_name = '" . $product . "'";
     $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     $a_products = mysql_fetch_array($q_products);
 
-    $q_string  = "select inv_id,inv_name,inv_function,inv_manager from inventory left join software on inventory.inv_id = software.sw_companyid ";
-    $q_string .= "where inv_status = 0 and sw_product = " . $a_products['prod_id'] . " group by inv_name";
+    $q_string  = "select inv_id,inv_name,inv_function,grp_name,inv_appadmin ";
+    $q_string .= "from inventory ";
+    $q_string .= "left join software on inventory.inv_id = software.sw_companyid ";
+    $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
+    $q_string .= "where inv_status = 0 and sw_product = " . $a_products['prod_id'] . " ";
+    $q_string .= "group by inv_name";
     $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     while ($a_inventory = mysql_fetch_array($q_inventory)) {
-      $q_string = "select grp_name from groups where grp_id = " . $a_inventory['inv_manager'];
+      $q_string  = "select grp_name ";
+      $q_string .= "from groups ";
+      $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'];
       $q_groups = mysql_query($q_string) or die($q_string . ":(3): " . mysql_error() . "\n\n");
       $a_groups = mysql_fetch_array($q_groups);
 
-      $q_string = "select hw_active from hardware where hw_primary = 1 and hw_companyid = " . $a_inventory['inv_id'];
+      $q_string  = "select hw_active ";
+      $q_string .= "from hardware ";
+      $q_string .= "where hw_primary = 1 and hw_companyid = " . $a_inventory['inv_id'];
       $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
       $a_hardware = mysql_fetch_array($q_hardware);
       if ($a_hardware['hw_active'] == '0000-00-00') {
@@ -448,9 +466,10 @@
       }
 
       $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
-      $output .= "  <td>" . $a_inventory['inv_name'] . "</td>\n";
+      $output .= "  <td>" . $a_inventory['inv_name']     . "</td>\n";
       $output .= "  <td>" . $a_inventory['inv_function'] . "</td>\n";
-      $output .= "  <td>" . $a_groups['grp_name'] . "</td>\n";
+      $output .= "  <td>" . $a_inventory['grp_name']     . "</td>\n";
+      $output .= "  <td>" . $a_groups['grp_name']        . "</td>\n";
       $output .= "</tr>\n";
     }
     $output .= "</table>\n\n";
@@ -474,17 +493,20 @@
   } else {
     $output .= "<table width=80%>\n";
     $output .= "<tr>\n";
-    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"4\">Inventory Management</th>\n";
+    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Inventory Management</th>\n";
     $output .= "</tr>\n";
 
-    $q_string  = "select inv_id,inv_name,inv_function,inv_location,inv_rack,inv_row,inv_unit,inv_manager,prod_name ";
+    $q_string  = "select inv_id,inv_name,inv_companyid,inv_function,inv_location,inv_rack,inv_row,inv_unit,grp_name,inv_appadmin,prod_name ";
     $q_string .= "from inventory ";
     $q_string .= "left join products on products.prod_id = inventory.inv_product ";
+    $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
     $q_string .= "where inv_name = '" . $servername . "' and inv_status = 0";
     $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     $a_inventory = mysql_fetch_array($q_inventory);
 
-    $q_string = "select grp_name from groups where grp_id = " . $a_inventory['inv_manager'];
+    $q_string  = "select grp_name ";
+    $q_string .= "from groups ";
+    $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'];
     $q_groups = mysql_query($q_string) or die($q_string . ":(4): " . mysql_error() . "\n\n");
     $a_groups = mysql_fetch_array($q_groups);
 
@@ -492,7 +514,8 @@
     $output .= "  <td><strong>Server</strong>: " . $a_inventory['inv_name'] . "</td>\n";
     $output .= "  <td><strong>Function</strong>: " . $a_inventory['inv_function'] . "</td>\n";
     $output .= "  <td><strong>Product</strong>: " . $a_inventory['prod_name'] . "</td>\n";
-    $output .= "  <td><strong>Managed by</strong>: " . $a_groups['grp_name'] . "</td>\n";
+    $output .= "  <td><strong>Platform Managed by</strong>: " . $a_inventory['grp_name'] . "</td>\n";
+    $output .= "  <td><strong>Applications Managed by</strong>: " . $a_groups['grp_name'] . "</td>\n";
     $output .= "</tr>\n";
 
     $output .= "</table>\n\n";
@@ -552,7 +575,7 @@
     $output .= "<table width=80%>\n";
 
     $output .= "<tr>\n";
-    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=5>Primary Hardware Information</th>\n";
+    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Primary Hardware Information</th>\n";
     $output .= "</tr>\n";
 
     $q_string  = "select hw_serial,hw_asset,hw_service,hw_vendorid ";
@@ -581,19 +604,35 @@
     $output .= "<table width=80%>\n";
 
     $output .= "<tr>\n";
-    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=4>Location Information</th>\n";
+    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Location Information</th>\n";
     $output .= "</tr>\n";
 
-    $q_string  = "select loc_name,loc_addr1,loc_city,loc_state,loc_zipcode,loc_country ";
+    $q_string  = "select loc_name,loc_addr1,ct_city,st_acronym,loc_zipcode,cn_acronym ";
     $q_string .= "from locations ";
+    $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
+    $q_string .= "left join states on states.st_id = cities.ct_state ";
+    $q_string .= "left join country on country.cn_id = states.st_country ";
     $q_string .= "where loc_id = " . $a_inventory['inv_location'];
     $q_locations = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     $a_locations = mysql_fetch_array($q_locations);
 
     $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
     $output .= "  <td><strong>Data Center</strong>: " . $a_locations['loc_name'] . "</td>\n";
-    $output .= "  <td><strong>Location</strong>: " . $a_locations['loc_addr1'] . "  " . $a_locations['loc_city'] . ", " . $a_locations['loc_state'] . " " . $a_locations['loc_zipcode'] . " (" . $a_locations['loc_country'] . ")</td>\n";
-    $output .= "  <td><strong>Rack/Unit</strong>: " . $a_inventory['inv_rack'] . "-" . $a_inventory['inv_row'] . "/U" . $a_inventory['inv_unit'] . "</td>\n";
+    $output .= "  <td><strong>Location</strong>: " . $a_locations['loc_addr1'] . "  " . $a_locations['ct_city'] . ", " . $a_locations['st_acronym'] . " " . $a_locations['loc_zipcode'] . " (" . $a_locations['cn_acronym'] . ")</td>\n";
+
+    if ($a_inventory['inv_companyid']) {
+      $q_string  = "select inv_name,inv_rack,inv_row,inv_unit ";
+      $q_string .= "from inventory ";
+      $q_string .= "where inv_id = " . $a_inventory['inv_companyid'] . " ";
+      $q_chassis = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $a_chassis = mysql_fetch_array($q_chassis);
+
+      $output .= "  <td><strong>Chassis</strong>: " . $a_chassis['inv_name'] . "</td>\n";
+      $output .= "  <td><strong>Chassis Rack/Unit</strong>: " . $a_chassis['inv_rack'] . "-" . $a_chassis['inv_row'] . "/U" . $a_chassis['inv_unit'] . "</td>\n";
+      $output .= "  <td><strong>Blade Number</strong>: " . $a_inventory['inv_unit'] . "</td>\n";
+    } else {
+      $output .= "  <td><strong>Rack/Unit</strong>: " . $a_inventory['inv_rack'] . "-" . $a_inventory['inv_row'] . "/U" . $a_inventory['inv_unit'] . "</td>\n";
+    }
     $output .= "</tr>\n";
 
     $output .= "</table>\n\n";
