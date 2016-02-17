@@ -21,7 +21,8 @@
   $q_string .= "from inventory ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
   $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
-  $q_string .= "where (inv_manager = " . $GRP_Backups . " or sw_group = " . $GRP_Backups . ") and inv_status = 0 ";
+  $q_string .= "inner join tags on tags.tag_inv_id = inventory.inv_id " ;
+  $q_string .= "where (inv_manager = " . $GRP_Backups . " or sw_group = " . $GRP_Backups . ") and tag_group = " . $GRP_Backups . " and inv_status = 0 ";
   $q_string .= "group by inv_id ";
   $q_inventory = mysql_query($q_string) or die(mysql_error());
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
@@ -38,6 +39,8 @@
       $tags .= "," . $a_tags['tag_name'] . ",";
     }
 
+# The SBA group (Scott) requested a listing of systems in their changelog that have a group tag.
+# this way the server changelog listing is much shorter as the storage and backup group have backup software on all the servers.
     if (strlen($tags) > 0) {
 # determine operating system
       $os = return_System($a_inventory['inv_id']);
