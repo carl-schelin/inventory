@@ -595,17 +595,38 @@
     $a_models = mysql_fetch_array($q_models);
 
     $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
-    $output .= "  <td><strong>Vendor</strong>: " . $a_models['mod_vendor'] . "</td>\n";
-    $output .= "  <td><strong>Model</strong>: " . $a_models['mod_name'] . "</td>\n";
-    $output .= "  <td><strong>Serial Number</strong>: " . $a_hardware['hw_serial'] . "</td>\n";
-    $output .= "  <td><strong>Asset Tag</strong>: " . $a_hardware['hw_asset'] . "</td>\n";
+    $output .= "  <td><strong>Vendor</strong>: "           . $a_models['mod_vendor']   . "</td>\n";
+    $output .= "  <td><strong>Model</strong>: "            . $a_models['mod_name']     . "</td>\n";
+    $output .= "  <td><strong>Serial Number</strong>: "    . $a_hardware['hw_serial']  . "</td>\n";
+    $output .= "  <td><strong>Asset Tag</strong>: "        . $a_hardware['hw_asset']   . "</td>\n";
     $output .= "  <td><strong>Dell Service Tag</strong>: " . $a_hardware['hw_service'] . "</td>\n";
     $output .= "</tr>\n";
 
     $output .= "</table>\n\n";
 
 
-# table four: optional: if a chassis id, list the members.
+# table four: basic software information
+    $output .= "<table width=80%>\n";
+
+    $output .= "<tr>\n";
+    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Primary Software/Operating System Information</th>\n";
+    $output .= "</tr>\n";
+
+    $q_string  = "select sw_software,sw_vendor ";
+    $q_string .= "from software ";
+    $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'OS' ";
+    $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
+    $a_software = mysql_fetch_array($q_software);
+
+    $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
+    $output .= "  <td><strong>Software</strong>: " . $a_software['sw_software'] . "</td>\n";
+    $output .= "  <td><strong>Vendor</strong>: "   . $a_software['sw_vendor']   . "</td>\n";
+    $output .= "</tr>\n";
+
+    $output .= "</table>\n\n";
+
+
+# table five: optional: if a chassis id, list the members.
     $q_string  = "select inv_name,inv_function,grp_name,inv_appadmin ";
     $q_string .= "from inventory ";
     $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
@@ -645,7 +666,7 @@
     }
 
 
-# table four: optional: if a cluster id, list the members.
+# table six: optional: if a cluster id, list the members.
     $q_string  = "select inv_name,inv_function,grp_name,inv_appadmin ";
     $q_string .= "from inventory ";
     $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
@@ -685,7 +706,7 @@
     }
 
 
-# table five: location information including blade number if it's in a chassis
+# table seven: location information including blade number if it's in a chassis
     $output .= "<table width=80%>\n";
 
     $output .= "<tr>\n";
