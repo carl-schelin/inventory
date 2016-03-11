@@ -100,6 +100,9 @@ $psapid[9699] = 9700;
 $psapid[9695] = 9696;
 $psapid[9697] = 9698;
 
+$psap[10114] = 'default';
+$psapid[10114] = 10114;
+
   $header = 
     "\"PSAP Name\"," . 
     "\"PSAP ID\"," . 
@@ -136,6 +139,7 @@ $psapid[9697] = 9698;
 # psap_circuit_id  | char(255) | NO   |     |         |                |
 # psap_pseudo_cid  | char(255) | NO   |     |         |                |
 # psap_lec         | char(10)  | NO   |     |         |                |
+# psap_texas       | int(10)   | NO   |     | 0       |                |
 
 
 #    "PSAP Name," .                 Intrado: $a_psaps['psap_description'] PSAP Description – CORRECT 
@@ -168,14 +172,14 @@ $psapid[9697] = 9698;
 
   print $header . "\n";
 
-  $q_string  = "select psap_id,psap_description,psap_psap_id,psap_circuit_id,psap_lport,psap_ali_id,inv_name,psap_companyid ";
+  $q_string  = "select psap_id,psap_description,psap_psap_id,psap_circuit_id,psap_lport,psap_ali_id,psap_texas,inv_name,psap_companyid ";
   $q_string .= "from psaps ";
   $q_string .= "left join inventory on inventory.inv_id = psaps.psap_companyid ";
   $q_string .= "where psap_parentid = 0 ";
   $q_psaps = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_psaps = mysql_fetch_array($q_psaps)) {
 
-    $q_string  = "select psap_description,psap_lec,psap_psap_id,psap_circuit_id,psap_lport,psap_ali_id,psap_companyid,psap_pseudo_cid ";
+    $q_string  = "select psap_description,psap_lec,psap_psap_id,psap_circuit_id,psap_lport,psap_ali_id,psap_companyid,psap_texas,psap_pseudo_cid ";
     $q_string .= "from psaps ";
     $q_string .= "where psap_parentid = " . $a_psaps['psap_id'] . " ";
     $q_ctl = mysql_query($q_string) or die($q_string . ": " . mysql_error());
@@ -229,7 +233,11 @@ $psapid[9697] = 9698;
       print "\"" . $psap[$a_psaps['psap_companyid']] . "\",";
       print "\"" . "" . "\",";
       print "\"" . "" . "\",";
-      print "\"" . "No" . "\",";
+      if ($a_ctl['psap_texas']) {
+        print "\"" . "Yes" . "\",";
+      } else {
+        print "\"" . "No" . "\",";
+      }
       print "\"" . "No" . "\"\n";
     } else {
 # need to get the ali-id from the mate
@@ -278,7 +286,11 @@ $psapid[9697] = 9698;
       print "\"" . $psap[$a_psaps['psap_companyid']] . "\",";
       print "\"" . "" . "\",";
       print "\"" . "" . "\",";
-      print "\"" . "No" . "\",";
+      if ($a_psaps['psap_texas']) {
+        print "\"" . "Yes" . "\",";
+      } else {
+        print "\"" . "No" . "\",";
+      }
       print "\"" . "No" . "\"\n";
     }
 
