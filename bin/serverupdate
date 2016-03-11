@@ -1,0 +1,10 @@
+#!/usr/bin/ksh
+
+SERVERS=/usr/local/httpd/htsecure/inventory
+
+for i in unix tandem vtt win lab sba mon net mob se dba web
+do
+  touch $SERVERS/servers.$i
+  chown www-data:sysadmin $SERVERS/servers.$i
+done
+
