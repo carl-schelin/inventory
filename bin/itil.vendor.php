@@ -28,7 +28,7 @@
 
   print "Company,Company Type,Description,Hot Line,Email,Webpage,Deletion Flag\n";
 
-  $q_string  = "select com_name,typ_name,com_description,com_phone,com_email,com_webpage,com_disabled ";
+  $q_string  = "select com_id,com_name,typ_name,com_description,com_phone,com_email,com_webpage,com_disabled ";
   $q_string .= "from company ";
   $q_string .= "left join loc_types on loc_types.typ_id = company.com_type ";
   $q_string .= "order by com_name ";
@@ -42,6 +42,31 @@
     }
 
     print "\"" . $a_company['com_name'] . "\",\"" . $a_company['typ_name'] . "\",\"" . $a_company['com_description'] . "\",\"" . $a_company['com_phone'] . "\",\"" . $a_company['com_email'] . "\",\"" . $a_company['com_webpage'] . "\",\"" . $disabled . "\"\n";
+  }
+
+  $q_string  = "select loc_id,loc_type,loc_name ";
+  $q_string .= "from locations ";
+  $q_string .= "left join loc_types on loc_types.typ_id = locations.loc_type ";
+  $q_string .= "order by loc_name ";
+  $q_locations = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  while ($a_locations = mysql_fetch_array($q_locations)) {
+
+    $type = "Other";
+    $subtype = '';
+    if ($a_locations['loc_type'] == 1) {
+      $type = "Service Provider";
+      $subtype = "Data Center";
+    }
+    if ($a_locations['loc_type'] == 2) {
+      $type = "Customer";
+      $subtype = "PSAP";
+    }
+    if ($a_locations['loc_type'] == 3) {
+      $type = "Vendor";
+      $subtype = "NOC";
+    }
+
+    print "\"" . $a_locations['loc_name'] . "\",\"" . $type . "\",\"" . $subtype . "\",\"\",\"\",\"\",\"No\"\n";
   }
 
 ?>
