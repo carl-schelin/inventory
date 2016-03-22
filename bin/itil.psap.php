@@ -8,6 +8,9 @@
 # Requires:
 # Product Type
 # Product Name
+
+# 
+
 # 
 
   include('settings.php');
@@ -100,7 +103,7 @@ $psapid[9699] = 9700;
 $psapid[9695] = 9696;
 $psapid[9697] = 9698;
 
-$psap[10114] = 'default';
+$psap[10114] = 'Default';
 $psapid[10114] = 10114;
 
   $header = 
@@ -172,13 +175,19 @@ $psapid[10114] = 10114;
 
   print $header . "\n";
 
+  $checking = 'Carl';
+  $checking = 'bob';
+
+#if ($checking == 'Carl') {
+# get the Intrado PSAP information (1319)
   $q_string  = "select psap_id,psap_description,psap_psap_id,psap_circuit_id,psap_lport,psap_ali_id,psap_texas,inv_name,psap_companyid ";
   $q_string .= "from psaps ";
   $q_string .= "left join inventory on inventory.inv_id = psaps.psap_companyid ";
-  $q_string .= "where psap_parentid = 0 ";
+  $q_string .= "where psap_customerid = 1319";                    # only intrado PSAPs.
   $q_psaps = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_psaps = mysql_fetch_array($q_psaps)) {
 
+# get the Partner PSAP information for the Intrado PSAP retrieved
     $q_string  = "select psap_description,psap_lec,psap_psap_id,psap_circuit_id,psap_lport,psap_ali_id,psap_companyid,psap_texas,psap_pseudo_cid ";
     $q_string .= "from psaps ";
     $q_string .= "where psap_parentid = " . $a_psaps['psap_id'] . " ";
@@ -293,7 +302,92 @@ $psapid[10114] = 10114;
       }
       print "\"" . "No" . "\"\n";
     }
-
   }
+
+#}
+
+#if ($checking == 'bob') {
+
+#Need the psap name
+
+# next step is to get the Default entries.
+  $q_string  = "select psap_id,psap_description,psap_psap_id,psap_pseudo_cid,psap_circuit_id,psap_lport,psap_ali_id,psap_texas,inv_name,psap_companyid,psap_customerid,psap_lec ";
+  $q_string .= "from psaps ";
+  $q_string .= "left join inventory on inventory.inv_id = psaps.psap_companyid ";
+  $q_string .= "where psap_parentid = 0 and psap_customerid != 1319";                    # anything but intrado PSAPs.
+  $q_psaps = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  while ($a_psaps = mysql_fetch_array($q_psaps)) {
+
+    $ali_node = "Blank";
+    $q_string  = "select psap_ali_id ";
+    $q_string .= "from psaps ";
+    $q_string .= "where psap_psap_id = '" . $a_psaps['psap_psap_id'] . "' and psap_parentid = 0 and psap_companyid = " . $psapid[$a_psaps['psap_companyid']] . " and psap_id != '" . $a_psaps['psap_id'] . "' ";
+    $q_string .= "order by psap_psap_id ";
+    $q_ali_id = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    if (mysql_num_rows($q_ali_id) == 0) {
+      $ali_node = "None found";
+    }
+    if (mysql_num_rows($q_ali_id) == 1) {
+      $a_ali_id = mysql_fetch_array($q_ali_id);
+      $ali_node = $a_ali_id['psap_ali_id'];
+    }
+    if (mysql_num_rows($q_ali_id) > 1) {
+      $ali_node = "More than One";
+    }
+
+# match the centurylink default psap_psap_id with the existing centurylink non-default info in order to identify the intrado psap.
+# need to match centurylink (41) with centurylink (41) but where parentid != 0 (original data)
+# then and the psap_psap_id (11223) match and the psap_ali_id (Q1) match
+# This provides the intrado match (the parentid) and with that, get the intrado information
+# 
+    $q_string  = "select psap_parentid ";
+    $q_string .= "from psaps ";
+    $q_string .= "where psap_customerid = " . $a_psaps['psap_customerid'] . " and psap_parentid != 0 and psap_psap_id = '" . $a_psaps['psap_psap_id'] . "' and psap_ali_id = '" . $a_psaps['psap_ali_id'] . "' ";
+    $q_partner = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    if (mysql_num_rows($q_partner) > 0) {
+      $a_partner = mysql_fetch_array($q_partner);
+
+      $q_string  = "select psap_id,psap_description,psap_psap_id,psap_circuit_id,psap_lport,psap_ali_id,psap_texas,inv_name,psap_companyid ";
+      $q_string .= "from psaps ";
+      $q_string .= "left join inventory on inventory.inv_id = psaps.psap_companyid ";
+      $q_string .= "where psap_id = " . $a_partner['psap_parentid'] . " ";
+      $q_intrado = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $a_intrado = mysql_fetch_array($q_intrado);
+
+      print "\"" . $a_intrado['psap_description'] . "\",";
+      printf("\"%05d\",", $a_intrado['psap_psap_id']);
+      print "\"" . "" . "\",";
+      printf("\"%05d\",", $a_psaps['psap_psap_id']);
+      print "\"" . $a_psaps['psap_description'] . "\",";
+      print "\"" . $a_psaps['psap_pseudo_cid'] . "\",";
+#      print "\"" . "NULL" . "\",";
+      print "\"" . $a_psaps['psap_circuit_id'] . "\",";
+      print "\"" . $a_psaps['psap_lec'] . "\",";
+      print "\"" . "" . "\",";
+      if (strlen($a_intrado['psap_circuit_id']) > 0) {
+        print "\"" . $a_intrado['psap_circuit_id'] . "\",";
+      } else {
+        print "\"" . "NULL" . "\",";
+      }
+      print "\"" . "" . "\",";
+      print "\"" . $a_intrado['psap_lport'] . "\",";
+      print "\"" . "" . "\",";
+      print "\"" . "" . "\",";
+      print "\"" . "" . "\",";
+      print "\"" . "Default" . "\",";
+      print "\"" . $a_intrado['psap_ali_id'] . "\",";
+      print "\"" . $ali_node . "\",";
+      print "\"" . $psap[$a_psaps['psap_companyid']] . "\",";
+      print "\"" . "" . "\",";
+      print "\"" . "" . "\",";
+      if ($a_intrado['psap_texas']) {
+        print "\"" . "Yes" . "\",";
+      } else {
+        print "\"" . "No" . "\",";
+      }
+      print "\"" . "No" . "\"\n";
+    }
+  }
+#}
 
 ?>
