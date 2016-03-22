@@ -52,7 +52,7 @@ do
   echo "Processing servers.$i"
 
 # ensure file exists regardless
-  $SVRRUN/servers.$i.php > $SERVERS/servers.$i
+  $SVRRUN/servers.$i.php | sort | uniq > $SERVERS/servers.$i
 
 # chown so the web site can write to it
   chown $OWNER $SERVERS/servers.$i
