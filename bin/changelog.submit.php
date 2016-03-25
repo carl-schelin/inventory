@@ -197,7 +197,7 @@
     $body .= "Application: " . $application . ".\n";
     $body .= "Random Number: " . $random . ".\n\n";
 
-    $email .= "carl.schelin@intrado.com";
+    $email .= ",carl.schelin@intrado.com";
 
     mail($email, "Error: Unable to open changelog report", $body, $headers);
 
@@ -281,6 +281,10 @@
             }
           }
         }
+# just end when we get to a standard signature on a plain text message.
+        if (preg_match("/^--/", $process) && $leave == 0) {
+          $leave = 1;
+        }
       }
     }
   }
@@ -297,7 +301,15 @@
     $report = $savedlines;
   }
 
+# enable for magic
+  $magic = 'yes';
+# enable for remedy
+  $remedy = 'no';
 
+#
+# This is the Magic ticket system process.
+#
+  if ($magic == 'yes') {
 ###############################
 ###  Format the mail message
 ###############################
@@ -305,46 +317,122 @@
 # Template:
 # Wrap the specific information in the listed tags
 
-  $headers  = "From: Changelog <changelog@incojs01.scc911.com>\r\n";
-#  $magic = "carl.schelin@intrado.com";
-#  $magic = "svc_MagicAdminDev@intrado.com,carl.schelin@intrado.com";
-  $magic = "svc_magicprodemail@intrado.com,carl.schelin@intrado.com";
+    $headers  = "From: Changelog <changelog@incojs01.scc911.com>\r\n";
+#    $magic = "carl.schelin@intrado.com";
+#    $magic = "svc_MagicAdminDev@intrado.com,carl.schelin@intrado.com";
+    $magic = "svc_magicprodemail@intrado.com,carl.schelin@intrado.com";
 
 #########
 ### Client ID: -u-/*u*
 #########
-  $body = "-u-" . $clientid . "*u*\n\n";
+    $body = "-u-" . $clientid . "*u*\n\n";
 
 #########
 ### Group ID: -g-/*g*
 #########
-  $body .= "-g-" . $groupid . "*g*\n\n";
+    $body .= "-g-" . $groupid . "*g*\n\n";
 
 #########
 ### Server: -s-/*s*
 #########
-  $body .= "-s-" . $server . "*s*\n\n";
+    $body .= "-s-" . $server . "*s*\n\n";
   
 #########
 ### Application: -a-/*a*
 #########
-  $body .= "-a-" . $application . "*a*\n\n";
+    $body .= "-a-" . $application . "*a*\n\n";
 
 #########
 ### Description: -d-/*d*
 #########
-  $body .= "-d-\n" . $report . "*d*\n\n";
+    $body .= "-d-\n" . $report . "*d*\n\n";
 
 #########
 ### Resolution: -r-/*r*
 #########
-  $body .= "-r-" . "Completed" . "*r*\n\n";
+    $body .= "-r-" . "Completed" . "*r*\n\n";
 
 
 ###############################
 ###  Send the mail to magic
 ###############################
 
-  mail($magic, "changelog", $body, $headers);
+    mail($magic, "changelog", $body, $headers);
+  }
+
+  if ($remedy == 'yes') {
+
+    $headers = "From: Carl Schelin <carl.schelin@intrado.com>\r\n";
+    $headers .= "CC: carl.schelin@intrado.com\r\n";
+
+    # send it to the dev for testing
+    $remedyemail  = "carl.schelin@intrado.com";
+    $remedyserver = "Blank";
+    # development server information
+    $remedyemail  = "remedy.helpdesk.dev@intrado.com,carl.schelin@intrado.com";
+    $remedyserver = "LMV08-REMAPPQA.corp.intrado.pri";
+    # production server information
+#    $remedyemail  = "remedy.helpdesk@intrado.com,carl.schelin@intrado.com";
+#    $remedyserver = "LMV08-REMAR01.corp.intrado.pri";
+
+# get the user information for the person in the inventory and will be the one opening the ticket plus group information
+    $q_string  = "select usr_first,usr_last,usr_name,usr_manager,grp_name ";
+    $q_string .= "from users ";
+    $q_string .= "left join groups on groups.grp_id = users.usr_group ";
+    $q_string .= "where (usr_email = '" . $email . "' or usr_altemail like '%" . $email . "%') and usr_id != 1 and usr_disabled = 0 ";
+    $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $a_users = mysql_fetch_array($q_users);
+
+#
+# begin the email message
+#
+
+    $body  = "First Name*+ !1000000019!: " . $a_users['usr_first'] . "\n";
+    $body .= "Last Name*+ !1000000018!: " . $a_users['usr_last'] . "\n";
+    $body .= "(Change Location) Company*+ !1000000001!: Intrado, Inc.\n";
+    $body .= "(Notes) Detailed Description !1000000151!: " . $report . "\n";
+    $body .= "Summary* !1000000000!: Changelog Submission\n";
+    $body .= "Impact* !1000000163!: 4-Minor/Localized\n";
+    $body .= "Urgency* !1000000162!: 4-Low\n";
+    $body .= "Priority !1000000164!: High\n";
+
+    $body .= "#Change Coordinator Details\n";
+    $body .= "Support Company !1000003228!: Intrado, Inc.\n";
+    $body .= "Support Organization !1000003227!: Technical Operations\n";
+    $body .= "Support Group Name+ !1000003229!: " . $a_users['grp_name'] . "\n";
+    $body .= "Change Coordinator+ !1000003230!: " . $a_users['usr_first'] . " " . $a_users['usr_last'] . "\n";
+    $body .= "Change Coordinator Login !1000003231!: " . $a_users['usr_name'] . "\n";
+
+    $q_string  = "select usr_first,usr_last,usr_name ";
+    $q_string .= "from users ";
+    $q_string .= "where usr_id = " . $a_users['usr_manager'] . " ";
+    $q_manager = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    if (mysql_num_rows($q_manager) > 0) {
+      $a_manager = mysql_fetch_array($q_manager);
+
+      $body .= "#Change Manager Details\n";
+      $body .= "Support Company !1000000251!: Intrado, Inc.\n";
+      $body .= "Support Organization !1000000014!: Technical Operations\n";
+      $body .= "Support Group Name !1000000015!: " . $a_users['grp_name'] . "\n";
+      $body .= "Change Manager !1000000403!: " . $a_manager['usr_first'] . " " . $a_manager['usr_last'] . "\n";
+      $body .= "Change Manager Login !1000000408!: " . $a_manager['usr_name'] . "\n";
+    }
+
+    $body .= "# Change Dates in the following format 3/8/2016 1:00:00 AM MST\n";
+    $body .= "Actual Start Date+ !1000000348!: " . date('n/j/Y g:i:s A e', strtotime("Yesterday")) . "\n";
+    $body .= "Actual End Date+ !1000000364!: " . date('n/j/Y g:i:s A e') . "\n";
+
+    $body .= "#PLEASE DO NOT MODIFY THE BELOW MANDATORY VALUES:\n";
+    $body .= "Schema: CHG:ChangeInterface_Create\n";
+    $body .= "Server: " . $remedyserver . "\n";
+    $body .= "Action: Submit\n";
+    $body .= "Status !         7!: Draft\n";
+    $body .= "Risk Level* !1000000180!: Risk Level 1\n";
+    $body .= "Class !1000000568!: Latent\n";
+    $body .= "Change Type* !1000000181!: Change\n\n";
+
+    mail($remedyemail, "Changelog Submission", $body, $headers);
+
+  }
 
 ?>
