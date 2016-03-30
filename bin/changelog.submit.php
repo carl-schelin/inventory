@@ -310,6 +310,21 @@
 # This is the Magic ticket system process.
 #
   if ($magic == 'yes') {
+
+    $target = 'local';
+    $target = 'dev';
+    $target = 'prod';
+
+    if ($target == 'local') {
+      $magicemail = "carl.schelin@intrado.com";
+    }
+    if ($target == 'dev') {
+      $magicemail = "svc_MagicAdminDev@intrado.com,carl.schelin@intrado.com";
+    }
+    if ($target == 'prod') {
+      $magicemail = "svc_magicprodemail@intrado.com,carl.schelin@intrado.com";
+    }
+
 ###############################
 ###  Format the mail message
 ###############################
@@ -318,9 +333,6 @@
 # Wrap the specific information in the listed tags
 
     $headers  = "From: Changelog <changelog@incojs01.scc911.com>\r\n";
-#    $magic = "carl.schelin@intrado.com";
-#    $magic = "svc_MagicAdminDev@intrado.com,carl.schelin@intrado.com";
-    $magic = "svc_magicprodemail@intrado.com,carl.schelin@intrado.com";
 
 #########
 ### Client ID: -u-/*u*
@@ -357,23 +369,34 @@
 ###  Send the mail to magic
 ###############################
 
-    mail($magic, "changelog", $body, $headers);
+    mail($magicemail, "changelog", $body, $headers);
   }
 
   if ($remedy == 'yes') {
 
+    $target = 'prod';
+    $target = 'local';
+    $target = 'dev';
+
+# send it to carl for testing
+    if ($target == 'local') {
+      $remedyemail  = "carl.schelin@intrado.com";
+      $remedyserver = "Blank";
+    }
+# development server information
+    if ($target == 'dev') {
+      $remedyemail  = "remedy.helpdesk.dev@intrado.com,carl.schelin@intrado.com";
+      $remedyserver = "LMV08-REMAPPQA.corp.intrado.pri";
+    }
+# production server information
+    if ($target == 'prod') {
+      $remedyemail  = "remedy.helpdesk@intrado.com,carl.schelin@intrado.com";
+      $remedyserver = "LMV08-REMAR01.corp.intrado.pri";
+    }
+
     $headers = "From: Carl Schelin <carl.schelin@intrado.com>\r\n";
     $headers .= "CC: carl.schelin@intrado.com\r\n";
 
-    # send it to the dev for testing
-    $remedyemail  = "carl.schelin@intrado.com";
-    $remedyserver = "Blank";
-    # development server information
-    $remedyemail  = "remedy.helpdesk.dev@intrado.com,carl.schelin@intrado.com";
-    $remedyserver = "LMV08-REMAPPQA.corp.intrado.pri";
-    # production server information
-#    $remedyemail  = "remedy.helpdesk@intrado.com,carl.schelin@intrado.com";
-#    $remedyserver = "LMV08-REMAR01.corp.intrado.pri";
 
 # get the user information for the person in the inventory and will be the one opening the ticket plus group information
     $q_string  = "select usr_first,usr_last,usr_name,usr_manager,grp_name ";
