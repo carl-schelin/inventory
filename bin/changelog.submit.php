@@ -302,9 +302,9 @@
   }
 
 # enable for magic
-  $magic = 'yes';
+  $magic = 'no';
 # enable for remedy
-  $remedy = 'no';
+  $remedy = 'yes';
 
 #
 # This is the Magic ticket system process.
@@ -374,9 +374,9 @@
 
   if ($remedy == 'yes') {
 
-    $target = 'prod';
     $target = 'local';
     $target = 'dev';
+    $target = 'prod';
 
 # send it to carl for testing
     if ($target == 'local') {
