@@ -467,6 +467,10 @@
     $headers = "From: " . $a_users['usr_first'] . " " . $a_users['usr_last'] . "<" . $a_users['usr_email'] . ">\r\n";
     $headers .= "CC: carl.schelin@intrado.com\r\n";
 
+# need to add the server name and application to the changelog ticket.
+
+    $report = "Server: " . $server . "\nApplication: " . $application . "\n\n" . $report;
+
 #
 # begin the email message
 #
