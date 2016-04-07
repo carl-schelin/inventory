@@ -2,16 +2,16 @@
 
 # patch.count.email
 # Carl Schelin
-# Sends patch report to Windows Sharepoint site once a month on the 1st
-# Original was first Wednesday but report is due on the 1st.
+# Sends patch count report to Sharepoint site but only on the first Wednesday
+# Deletes patch.count.*.csv files older than 90 days
 
-DATE=`date +"%Y-%m-%d"`
-WHOCARES="carl.schelin@intrado.com"
-WHOCARES="UnixServerReport@intradonet.intrado.com,carl.schelin@intrado.com"
+DATE=`date +"%d"`
 
-OUTPUT="`cat /usr/local/httpd/htsecure/remedy/patch.count.csv`
+if [[ $DATE -lt 8 ]]
+then
+  /usr/local/bin/php /usr/local/httpd/bin/patch.email.php
+fi
 
-Daily Report: https://incojs01/remedy/patch.count.csv"
-
-echo $OUTPUT | mailx -s "$DATE Patch Report" $WHOCARES
+find /usr/local/httpd/htsecure/reports -name patch.count.techops.*.csv -ctime +180 -exec rm {} \;
+find /usr/local/httpd/htsecure/reports -name patch.count.engineering.*.csv -ctime +180 -exec rm {} \;
 
