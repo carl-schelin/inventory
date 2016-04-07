@@ -17,11 +17,17 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
+  $manager = 1;
+
+  if ($argc > 1) {
+    $manager = $argv[1];
+  }
+
   print "Server Name,OS,Target OS,Date Reached\n";
 
   $q_string  = "select inv_id,inv_name,inv_kernel ";
   $q_string .= "from inventory ";
-  $q_string .= "where inv_status = 0 and inv_manager = 1 and inv_ssh = 1 ";
+  $q_string .= "where inv_status = 0 and inv_manager = " . $manager . " and inv_ssh = 1 ";
   $q_string .= "order by inv_name ";
   $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n");
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
