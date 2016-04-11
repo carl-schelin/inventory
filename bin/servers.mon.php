@@ -1,6 +1,6 @@
 #!/usr/local/bin/php
 <?php
-# Script: servers.mob.php
+# Script: servers.mon.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
 # See: https://incowk01/makers/index.php/Coding_Standards
@@ -24,7 +24,7 @@
   $q_software = mysql_query($q_string) or die(mysql_error());
   while ($a_software = mysql_fetch_array($q_software)) {
 
-    $q_string  = "select inv_id,inv_name,inv_ssh,zone_name ";
+    $q_string  = "select inv_id,inv_name,inv_fqdn,inv_ssh,zone_name ";
     $q_string .= "from inventory ";
     $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
     $q_string .= "where inv_id = " . $a_software['sw_companyid'] . " and inv_status = 0 ";
@@ -45,11 +45,6 @@
         $tags .= "," . $a_tags['tag_name'] . ",";
       }
 
-      $value = explode("/", $a_inventory['inv_name']);
-      if (!isset($value[1])) {
-        $value[1] = '';
-      }
-
       $os = return_System($a_inventory['inv_id']);
 
       $interfaces = '';
@@ -61,7 +56,7 @@
         $interfaces .= "," . $a_interface['int_server'] . ",";
       }
 
-      print "$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . ":$tags:$interfaces:" . $a_inventory['inv_id'] . "\n";
+      print $a_inventory['inv_name'] . ":" . $a_inventory['inv_fqdn'] . ":$os:" . $a_inventory['zone_name'] . ":$tags:$interfaces:" . $a_inventory['inv_id'] . "\n";
 
     }
   }

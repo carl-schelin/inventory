@@ -17,7 +17,7 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  $q_string  = "select inv_id,inv_name,zone_name,hw_service,inv_notes ";
+  $q_string  = "select inv_id,inv_name,inv_fqdn,zone_name,hw_service,inv_notes ";
   $q_string .= "from inventory ";
   $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
   $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
@@ -28,11 +28,6 @@
 
     $os = '';
     $tags = "";
-
-    $value = explode("/", $a_inventory['inv_name']);
-    if (!isset($value[1])) {
-      $value[1] = '';
-    }
 
     $q_string  = "select tag_name ";
     $q_string .= "from tags ";
@@ -49,7 +44,7 @@
     $a_inventory['zone_name'] = strtolower($a_inventory['zone_name']);
     $a_inventory['inv_notes'] = strtolower($a_inventory['inv_notes']);
 
-    print "$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . ":" . $tags . ":" . $a_inventory['inv_notes'] . ":" . $a_inventory['hw_service'] . "\n";
+    print $a_inventory['inv_name'] . ":" . $a_inventory['inv_fqdn'] . ":$os:" . $a_inventory['zone_name'] . ":" . $tags . ":" . $a_inventory['inv_notes'] . ":" . $a_inventory['hw_service'] . "\n";
 
   }
 
