@@ -17,9 +17,9 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  print "#Server Name(1):Cluster Name(2):Operating System(3):Time Zone(4):,Tag,(5):,Interface Name,(6):Inventory ID(7):Product Name(8)\n";
+  print "#Server Name(1):FQDN(2):Operating System(3):Time Zone(4):,Tag,(5):,Interface Name,(6):Inventory ID(7):Product Name(8)\n";
 
-  $q_string  = "select inv_id,inv_name,inv_ssh,zone_name,prod_name ";
+  $q_string  = "select inv_id,inv_name,inv_fqdn,inv_ssh,zone_name,prod_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
@@ -49,11 +49,6 @@
       $tags .= "," . $a_tags['tag_name'] . ",";
     }
 
-    $value = explode("/", $a_inventory['inv_name']);
-    if (!isset($value[1])) {
-      $value[1] = '';
-    }
-
     $interfaces = '';
     $q_string  = "select int_server ";
     $q_string .= "from interface ";
@@ -68,7 +63,7 @@
       $product = "Unassigned";
     }
 
-    print "$pre$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . ":$tags:$interfaces:" . $a_inventory['inv_id'] . ":" . $product . "\n";
+    print "$pre" . $a_inventory['inv_name'] . ":" . $a_inventory['inv_fqdn'] . ":$os:" . $a_inventory['zone_name'] . ":$tags:$interfaces:" . $a_inventory['inv_id'] . ":" . $product . "\n";
 
   }
 
