@@ -17,7 +17,7 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  $q_string = "select inv_id,inv_name,zone_name,inv_ssh ";
+  $q_string = "select inv_id,inv_name,inv_fqdn,zone_name,inv_ssh ";
   $q_string .= "from inventory ";
   $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
   $q_string .= "where inv_manager = " . $GRP_ICLAdmins . " and inv_status = 0 ";
@@ -36,12 +36,7 @@
       $pre = '#';
     }
 
-    $value = explode("/", $a_inventory['inv_name']);
-    if (!isset($value[1])) {
-      $value[1] = '';
-    }
-
-    print "$pre$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . "::$note:" . $a_inventory['inv_id'] . "\n";
+    print "$pre" . $a_inventory['inv_name'] . ":" . $a_inventory['inv_fqdn'] . ":$os:" . $a_inventory['zone_name'] . "::$note:" . $a_inventory['inv_id'] . "\n";
 
   }
 
