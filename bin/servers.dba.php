@@ -17,7 +17,7 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  $q_string  = "select inv_id,inv_name,inv_ssh,zone_name,prod_name ";
+  $q_string  = "select inv_id,inv_name,inv_ssh,inv_fqdn,zone_name,prod_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
   $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
@@ -41,11 +41,6 @@
       $tags .= "," . $a_tags['tag_name'] . ",";
     }
 
-    $value = explode("/", $a_inventory['inv_name']);
-    if (!isset($value[1])) {
-      $value[1] = '';
-    }
-
     $interfaces = '';
     $q_string  = "select int_server ";
     $q_string .= "from interface ";
@@ -60,7 +55,7 @@
       $product = "Unassigned";
     }
 
-    print "$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . ":$tags:$interfaces:" . $a_inventory['inv_id'] . ":" . $product . "\n";
+    print $a_inventory['inv_name'] . ":" . $a_inventory['inv_fqdn'] . ":$os:" . $a_inventory['zone_name'] . ":$tags:$interfaces:" . $a_inventory['inv_id'] . ":" . $product . "\n";
 
   }
 
