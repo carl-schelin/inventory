@@ -17,7 +17,7 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  $q_string  = "select inv_id,inv_name,zone_name,inv_ssh ";
+  $q_string  = "select inv_id,inv_name,zone_name,inv_ssh,inv_fqdn ";
   $q_string .= "from inventory ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
   $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
@@ -37,12 +37,25 @@
       $pre = '#';
     }
 
-    $value = explode("/", $a_inventory['inv_name']);
-    if (!isset($value[1])) {
-      $value[1] = '';
+    $tags = '';
+    $q_string  = "select tag_name ";
+    $q_string .= "from tags ";
+    $q_string .= "where tag_inv_id = " . $a_inventory['inv_id'];
+    $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    while ($a_tags = mysql_fetch_array($q_tags)) {
+      $tags .= "," . $a_tags['tag_name'] . ",";
     }
 
-    print "$pre$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . ":" . $a_inventory['inv_id'] . "\n";
+    $interfaces = '';
+    $q_string  = "select int_server ";
+    $q_string .= "from interface ";
+    $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_type = 1 || int_type = 2 || int_type = 6)";
+    $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    while ($a_interface = mysql_fetch_array($q_interface)) {
+      $interfaces .= "," . $a_interface['int_server'] . ",";
+    }
+
+    print "$pre" . $a_inventory['inv_name'] . ":" . $a_inventory['inv_fqdn'] . ":" . $a_inventory['zone_name'] . ":" . $tags . ":" . $interfaces . ":" . $a_inventory['inv_id'] . "\n";
 
   }
 
