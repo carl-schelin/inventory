@@ -17,7 +17,7 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  $q_string  = "select inv_id,inv_name,zone_name ";
+  $q_string  = "select inv_id,inv_name,inv_fqdn,zone_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
   $q_string .= "where inv_status = 0 and inv_manager = " . $GRP_Windows . " ";
@@ -28,18 +28,13 @@
     $pre = '';
     $os = '';
 
-    $value = explode("/", $a_inventory['inv_name']);
-    if (!isset($value[1])) {
-      $value[1] = '';
-    }
-
 # Convert all to lowercase
     $value[0]                 = strtolower($value[0]);
     $value[1]                 = strtolower($value[1]);
     $os                       = strtolower(return_System($a_inventory['inv_id']));
     $a_inventory['zone_name'] = strtolower($a_inventory['zone_name']);
 
-    print "$pre$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . ":" . $a_inventory['inv_id'] . "\n";
+    print "$pre" . $a_inventory['inv_name'] . ":" . $a_inventory['inv_fqdn'] . ":$os:" . $a_inventory['zone_name'] . ":" . $a_inventory['inv_id'] . "\n";
 
   }
 
