@@ -388,6 +388,51 @@ $psapid[10114] = 10114;
       print "\"" . "No" . "\"\n";
     }
   }
+
+###############
+###  Generic Centurylink PSAP
+###############
+
+#"PSAP Name","PSAP ID","PSAP Type","Partner PSAP ID","Partner PSAP Name","Partner Pseudo Circuit ID","Partner Circuit ID","LEC","Partner LEC","Primary Circuit ID","Primary IP","Primary Port","Secondary Circuit ID","Secondary IP","Secondary Port","ALI Name","ALI Node","Related ALI Node","Related ALI Name","Status","Description","Texas CSEC?","Deletion Flag"
+
+# this is from the centurylink.20160324.csv file
+#"Q3     ",hpcdfle,13333,237,"   CO BROOMFIELD PD                        ","     20FDDZ481793MS SPLT PSAP 290    ",CO/EVXR/333/MS,CTL East         ,BROOMFIELD PD         ,CO/EVXR/333/MS,
+#         ,       ,13999,   ,Generic PSAP/Wild Card                       ,                                       ,XX/EVXR/999/MS,                 ,Generic PSAP/Wild Card,XX/EVXR/999/MS,     
+# updated input
+#"Q1	"	Default	13999	9999	Generic PSAP/Wild Card	Generic Circuit ID	XX/EVXR/999/MS	CTL Generic	Generic PSAP/Wild Card	XX/EVXR/999/MS	yes							
+#    A       B       C    D                        E                                        F                           G             H                 I                    J
+
+# output:
+#"NM SOCORRO PD","00049","","06444","SOCORRO PD","50/FDDZ/100960/MS","50FDDZ100960MS  172.24.32.73","CTL East","","50FDDZ100960MS  172.24.32.73","","8225","","","","hpcdfle","Q3","Q4","hplgmte","","","No","No"
+
+#input
+#ALI-ID	ALI Name	CTL-ID - Partner PSAP ID	Intrado PSAP ID	Intrado PSAP Name	Circuit ID - 	NEW CircuitID	LEC	CTL-PSAP Name - Partner PSAP Name	CTL-PSAP Circuit ID
+# output will be:
+ 
+  print "\"" . "Default" . "\",";            # Intrado PSAP Name
+  print "\"" . "9999" . "\",";               # Intrado PSAP ID
+  print "\"" . "" . "\",";                   # Intrado PSAP Type
+  printf("\"%05d\",", 13999);                # Centurylink Partner PSAP ID
+  print "\"Generic PSAP/Wild Card\",";       # Centurylink Parter PSAP Name ; Column I/8
+  print "\"" . "Generic Circuit ID" . "\","; # Centurylink Partner Pseudo Circuit ID ; Column F/5
+  print "\"" . "XX/EVXR/999/MS" . "\",";     # Centurylink Partner Circuit ID ; Column G/6
+  print "\"" . "" . "\",";
+  print "\"" . "CTL Generic" . "\",";        # LEC
+  print "\"" . "NULL" . "\",";
+  print "\"" . "" . "\",";
+  print "\"" . "" . "\",";
+  print "\"" . "" . "\",";
+  print "\"" . "" . "\",";
+  print "\"" . "" . "\",";
+  print "\"" . "Default" . "\",";            # Intrado Opposite ALI Name
+  print "\"" . "Q1" . "\",";                 # Intrado ALI ID
+  print "\"" . "Q1" . "\",";                 # Intrado ALI ID
+  print "\"" . "Default" . "\",";            # Intrado Opposite ALI Name
+  print "\"" . "" . "\",";
+  print "\"" . "" . "\",";
+  print "\"" . "No" . "\",";
+  print "\"" . "No" . "\"\n";
+
 #}
 
 ?>
