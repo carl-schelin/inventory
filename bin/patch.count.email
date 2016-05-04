@@ -12,6 +12,6 @@ then
   /usr/local/bin/php /usr/local/httpd/bin/patch.email.php
 fi
 
-find /usr/local/httpd/htsecure/reports -name patch.count.techops.*.csv -ctime +180 -exec rm {} \;
-find /usr/local/httpd/htsecure/reports -name patch.count.engineering.*.csv -ctime +180 -exec rm {} \;
+find /usr/local/httpd/htsecure/reports -name patch.count.techops.\*.csv -ctime +180 -exec rm {} \;
+find /usr/local/httpd/htsecure/reports -name patch.count.engineering.\*.csv -ctime +180 -exec rm {} \;
 
