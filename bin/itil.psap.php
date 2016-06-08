@@ -56,6 +56,7 @@ $psap[9702] = 'miaalnc1';
 $psap[9700] = 'rchalic1';
 $psap[9696] = 'stlalic1';
 $psap[9698] = 'stlalic2';
+$psap[10372] = 'vzienva';
 
 $psapid[9692] = 9691;
 $psapid[9694] = 9693;
@@ -71,6 +72,7 @@ $psapid[9702] = 9701;
 $psapid[9700] = 9699;
 $psapid[9696] = 9695;
 $psapid[9698] = 9697;
+$psapid[10372] = 10373;
 
 # second pair id = first pair name
 $psap[9691] = 'culalic1';
@@ -87,6 +89,7 @@ $psap[9701] = 'lgtalnc1';
 $psap[9699] = 'lgtalic1';
 $psap[9695] = 'dalalic1';
 $psap[9697] = 'dalalic2';
+$psap[10373] = 'vzienva';
 
 $psapid[9691] = 9692;
 $psapid[9693] = 9694;
@@ -102,6 +105,7 @@ $psapid[9701] = 9702;
 $psapid[9699] = 9700;
 $psapid[9695] = 9696;
 $psapid[9697] = 9698;
+$psapid[10373] = 10372;
 
 $psap[10114] = 'Default';
 $psapid[10114] = 10114;
@@ -152,7 +156,7 @@ $psapid[10114] = 10114;
 #    "Partner PSAP Name," .         CenturyLink: $a_ctl['psap_description'] CTL-PSAP Name - CORRECT
 #    "Partner Pseudo Circuit ID," . CenturyLink: $a_ctl['psap_pseudo_cid'] CTL-PSAP Circuit ID - CORRECT
 #    "Partner Circuit ID," .        CenturyLink: $a_ctl['psap_circuit_id'] Circuit ID - CORRECT
-#    "LEC," .                       Unknown – Send it as blank
+#    "LEC," .                       Intrado: $a_psaps['psap_lec'] - LEC - CORRECT - Updated 2016/06/08 for Verizon import
 #    "Partner LEC," .               CenturyLink: $a_ctl['psap_lec'] LEC - CORRECT
 #    "Primary Circuit ID," .        Intrado: $a_psaps['psap_circuit_id'] Circuit ID - CORRECT
 #    "Primary IP," .                Unknown – Send it as blank
@@ -180,7 +184,7 @@ $psapid[10114] = 10114;
 
 #if ($checking == 'Carl') {
 # get the Intrado PSAP information (1319)
-  $q_string  = "select psap_id,psap_description,psap_psap_id,psap_circuit_id,psap_lport,psap_ali_id,psap_texas,inv_name,psap_companyid ";
+  $q_string  = "select psap_id,psap_description,psap_psap_id,psap_circuit_id,psap_lport,psap_ali_id,psap_lec,psap_texas,inv_name,psap_companyid ";
   $q_string .= "from psaps ";
   $q_string .= "left join inventory on inventory.inv_id = psaps.psap_companyid ";
   $q_string .= "where psap_customerid = 1319";                    # only intrado PSAPs.
@@ -270,14 +274,38 @@ $psapid[10114] = 10114;
         $ali_node = "More than One";
       }
 
+#    "PSAP Name," .                 Intrado: $a_psaps['psap_description'] PSAP Description – CORRECT 
+#    "PSAP ID," .                   Intrado: $a_psaps['psap_psap_id'] PSAP ID - CORRECT
+#    "PSAP Type," .                 Unknown – Send it as blank
+#    "Partner PSAP ID," .           CenturyLink: $a_ctl['psap_psap_id'] CTL-ID - CORRECT
+#    "Partner PSAP Name," .         CenturyLink: $a_ctl['psap_description'] CTL-PSAP Name - CORRECT
+#    "Partner Pseudo Circuit ID," . CenturyLink: $a_ctl['psap_pseudo_cid'] CTL-PSAP Circuit ID - CORRECT
+#    "Partner Circuit ID," .        CenturyLink: $a_ctl['psap_circuit_id'] Circuit ID - CORRECT
+#    "LEC," .                       Intrado: $a_psaps['psap_lec'] - LEC - CORRECT - Updated 2016/06/08 for Verizon import
+#    "Partner LEC," .               CenturyLink: $a_ctl['psap_lec'] LEC - CORRECT
+#    "Primary Circuit ID," .        Intrado: $a_psaps['psap_circuit_id'] Circuit ID - CORRECT
+#    "Primary IP," .                Unknown – Send it as blank
+#    "Primary Port," .              Intrado: $a_psaps['psap_lport'] Port - CORRECT
+#    "Secondary Circuit ID," .      Unknown – Send it as blank
+#    "Secondary IP," .              Unknown – Send it as blank
+#    "Secondary Port," .            Unknown – Send it as blank
+#    "ALI Name," .                  Intrado: $a_psaps['inv_name'] ALI Name - CORRECT
+#    "ALI Node," .                  Intrado: $a_psaps['psap_ali_id'] ALI-ID - CORRECT
+#    "Related ALI Node," .          Unknown – Send it as blank
+#    "Related ALI Name," .          $psap[$a_psaps['psap_customerid']] If culalic1 then populate with elmalic1: see data translation table below
+#    "Status," .                    Unknown – Send it as blank
+#    "Description," .               Unknown – Send it as blank
+#    "Texas CSEC?," .               Unknown – This field should be populated as YES for a Texas CSEC PSAP once Pete provides the final data
+#    "Deletion Flag";               (YES|NO)
+
       print "\"" . $a_psaps['psap_description'] . "\",";
       printf("\"%05d\",", $a_psaps['psap_psap_id']);
-      print "\"" . "" . "\",";
-      print "\"" . "" . "\",";
-      print "\"" . "" . "\",";
-      print "\"" . "" . "\",";
-      print "\"" . "NULL" . "\",";
-      print "\"" . "" . "\",";
+      print "\"" . "" . "\",";   # type
+      print "\"" . "" . "\",";   # partner
+      print "\"" . "" . "\",";   # partner
+      print "\"" . "" . "\",";   # partner
+      print "\"" . "NULL" . "\",";   # partner
+      print "\"" . $a_psaps['psap_lec'] . "\",";
       print "\"" . "" . "\",";
       if (strlen($a_psaps['psap_circuit_id']) > 0) {
         print "\"" . $a_psaps['psap_circuit_id'] . "\",";
