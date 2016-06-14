@@ -8,6 +8,8 @@
 
 ADMIN=/usr/local/admin
 SERVERS=/usr/local/httpd/htsecure/inventory
+SERVERLIST="ali dba ienv lab mob mon net sba scm se tandem tss unix vns vtt web win"
+TEMP=/var/tmp
 
 ### Dev:
 SVRRUN=/usr/local/httpd/jsbin
@@ -19,57 +21,61 @@ SVRRUN=/usr/local/httpd/bin
 WHOCARES="unixadmins@intrado.com"
 OWNER="webservd:sysadmin"
 
-##########
-# Unix is special. We were first so we're 'servers' vs others who need postfixes.
-##########
-
-echo "Processing servers.unix"
-
-# ensure file exists regardless
-$SVRRUN/servers.list.php > $SERVERS/servers.unix
-
-# chown so the web site can write to it
-chown $OWNER $SERVERS/servers.unix
-
-if [[ -f $ADMIN/etc/servers ]]
+if [[ ! -z $1 ]]
 then
-  OUTPUT=`/usr/bin/file -h $SERVERS/servers | grep symbolic`
-
-# if the file is NOT a symbolic link then the link has been broken
-# clear it and set it back up
-  if [[ -z $OUTPUT ]]
-  then
-    rm $ADMIN/etc/servers
-    ln -s $SERVERS/servers.unix $ADMIN/etc/servers
-  fi
-else
-  ln -s $SERVERS/servers.unix $ADMIN/etc/servers
+  SERVERLIST=$1
 fi
 
-# now parse through the remaining servers files
-for i in ali dba ienv lab mob mon net sba scm se tandem tss vns vtt web win
+# parse through the servers files
+for i in $SERVERLIST
 do
   echo "Processing servers.$i"
 
-# ensure file exists regardless
-  $SVRRUN/servers.$i.php | sort | uniq > $SERVERS/servers.$i
+# ensure file exists regardless; write to a temporary area to ensure the servers file continues to exist.
+  /usr/local/bin/php $SVRRUN/servers.$i.php | sort | uniq > $TEMP/servers.$i
+
+# now copy it over the existing file.
+  cp $TEMP/servers.$i $SERVERS/servers.$i
+
+# and remove the old file
+  rm $TEMP/servers.$i
 
 # chown so the web site can write to it
   chown $OWNER $SERVERS/servers.$i
 
-  if [[ -f $ADMIN/etc/servers.$i ]]
+  if [[ $i = 'unix' ]]
   then
-    OUTPUT=`/usr/bin/file -h $SERVERS/servers.$i | grep symbolic`
+# unix servers are processed differently because we're just 'servers' vs other groups which are servers.[group]
+    if [[ -f $ADMIN/etc/servers ]]
+    then
+      OUTPUT=`/usr/bin/file -h $SERVERS/servers | grep symbolic`
 
 # if the file is NOT a symbolic link then the link has been broken
 # clear it and set it back up
-    if [[ -z $OUTPUT ]]
-    then
-      rm $ADMIN/etc/servers.$i
-      ln -s $SERVERS/servers.$i $ADMIN/etc/servers.$i
+      if [[ -z $OUTPUT ]]
+      then
+        rm $ADMIN/etc/servers
+        ln -s $SERVERS/servers.unix $ADMIN/etc/servers
+      fi
+    else
+      ln -s $SERVERS/servers.unix $ADMIN/etc/servers
     fi
   else
-    ln -s $SERVERS/servers.$i $ADMIN/etc/servers.$i
+# now check everyone else.
+    if [[ -f $ADMIN/etc/servers.$i ]]
+    then
+      OUTPUT=`/usr/bin/file -h $SERVERS/servers.$i | grep symbolic`
+
+# if the file is NOT a symbolic link then the link has been broken
+# clear it and set it back up
+      if [[ -z $OUTPUT ]]
+      then
+        rm $ADMIN/etc/servers.$i
+        ln -s $SERVERS/servers.$i $ADMIN/etc/servers.$i
+      fi
+    else
+      ln -s $SERVERS/servers.$i $ADMIN/etc/servers.$i
+    fi
   fi
 done
 
