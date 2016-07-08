@@ -8,9 +8,11 @@
     return $db;
   }
 
-  $db = dbconn('localhost','inventory','root','this4now!!');
+  $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  $q_string = "select usr_email from users where usr_id != 1 and usr_disabled = 0 and usr_email like '%intrado.com'";
+  $q_string  = "select usr_email ";
+  $q_string .= "from users ";
+  $q_string .= "where usr_id != 1 and usr_disabled = 0 and usr_email like '%intrado.com'";
   $q_users = mysql_query($q_string, $db) or die($q_string . ": " . mysql_error());
   while ($a_users = mysql_fetch_array($q_users)) {
     print $a_users['usr_email'] . "\n";
