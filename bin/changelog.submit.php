@@ -5,7 +5,8 @@
 # Description: Accepts email input in order to forward e-mail to Magic (or Remedy later)
 #
 
-  include('/usr/local/httpd/htsecure/inventory/function.php');
+  include('settings.php');
+  include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
     $db = mysql_connect($server,$user,$pass);
@@ -13,8 +14,7 @@
     return $db;
   }
 
-  $db = dbconn('localhost','inventory','root','this4now!!');
-
+  $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
 #########################
 ### validate parameter list

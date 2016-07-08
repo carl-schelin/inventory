@@ -9,7 +9,7 @@
     return $db;
   }
 
-  $db = dbconn('localhost','inventory','root','this4now!!');
+  $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
   $debug = 'yes';
   $debug = 'no';

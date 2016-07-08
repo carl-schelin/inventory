@@ -8,7 +8,7 @@
     return $db;
   }
 
-  $db = dbconn('localhost','inventory','root','this4now!!');
+  $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
   $q_string  = "select usr_id,usr_email,grp_email,grp_clserver ";
   $q_string .= "from users ";
