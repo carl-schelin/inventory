@@ -20,7 +20,7 @@
 
   print "\"Asset Family\",\"Asset Class\",\"Asset Name\",\"Cost Center\",\"Model\",\"Location (TZ)\",\"IP Address\",\"Primary Application\",\"Support Group\",\"Oper Sys\",\"Security Risk Rating\",\"App Owner?\",\"Serial\"\n";
 
-  $q_string  = "select inv_id,inv_name,mod_vendor,mod_name,ct_city,inv_zone,inv_function,grp_name,inv_appadmin,part_name,inv_virtual,hw_serial,hw_service,hw_asset ";
+  $q_string  = "select inv_id,inv_name,mod_vendor,mod_name,ct_city,inv_zone,inv_function,grp_name,inv_appadmin,part_name,inv_virtual,hw_serial,hw_service,zone_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
   $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
@@ -28,6 +28,7 @@
   $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+  $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
   $q_string .= "where inv_status = 0 and hw_primary = 1 ";
   $q_string .= "order by inv_name ";
   $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
@@ -72,6 +73,11 @@
       $serial = $a_inventory['hw_service'];
     }
 
+    if (strlen($a_inventory['zone_name']) > 0) {
+      $zone = $a_inventory['ct_city'] . " (" . $a_inventory['zone_name'] . ")";
+    } else {
+      $zone = $a_inventory['ct_city'];
+    }
 # get linux vm vs windows vm for type otherwise hwtype for server;
 
     print "\"\",";
@@ -79,7 +85,7 @@
     print "\"" . $a_inventory['inv_name'] . "\",";
     print "\"\",";
     print "\"" . $a_inventory['mod_vendor'] . " " . $a_inventory['mod_name'] . "\",";
-    print "\"" . $a_inventory['ct_city'] . " (" . $a_inventory['inv_zone'] . ")\",";
+    print "\"" . $zone . "\",";
     print "\"" . $interface . $console . "\",";
     print "\"" . $a_inventory['inv_function'] . "\",";
     print "\"" . $a_inventory['grp_name'] . "\",";
