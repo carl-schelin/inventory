@@ -19,9 +19,9 @@
   $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
   $color[0] = "#ffffcc";  # set to the background color of yellow.
-  $color[1] = "#bced91";
-  $color[2] = "yellow";
-  $color[3] = "#fa8072";
+  $color[1] = "#bced91";  # green
+  $color[2] = "yellow";   # yellow
+  $color[3] = "#fa8072";  # red
 
   $output  = "<html>\n";
   $output .= "<body>\n";
@@ -500,9 +500,9 @@
     $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Inventory Management</th>\n";
     $output .= "</tr>\n";
 
-    $q_string  = "select inv_id,inv_name,inv_companyid,inv_function,inv_location,inv_rack,inv_row,inv_unit,grp_name,inv_appadmin,prod_name ";
+    $q_string  = "select inv_id,inv_name,inv_companyid,inv_function,inv_location,inv_product,inv_rack,inv_row,inv_unit,grp_name,inv_appadmin,inv_callpath,svc_acronym ";
     $q_string .= "from inventory ";
-    $q_string .= "left join products on products.prod_id = inventory.inv_product ";
+    $q_string .= "left join service on service.svc_id = inventory.inv_class ";
     $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
     $q_string .= "where inv_name = '" . $servername . "' and inv_status = 0";
     $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
@@ -516,11 +516,45 @@
 
     $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
     $output .= "  <td><strong>Server</strong>: " . $a_inventory['inv_name'] . "</td>\n";
+    $output .= "  <td><strong>Service Class</strong>: " . $a_inventory['svc_acronym'] . "</td>\n";
     $output .= "  <td><strong>Function</strong>: " . $a_inventory['inv_function'] . "</td>\n";
-    $output .= "  <td><strong>Product</strong>: " . $a_inventory['prod_name'] . "</td>\n";
     $output .= "  <td><strong>Platform Managed by</strong>: " . $a_inventory['grp_name'] . "</td>\n";
     $output .= "  <td><strong>Applications Managed by</strong>: " . $a_groups['grp_name'] . "</td>\n";
     $output .= "</tr>\n";
+
+    $q_string  = "select hw_active ";
+    $q_string .= "from hardware ";
+    $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1";
+    $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
+    $a_hardware = mysql_fetch_array($q_hardware);
+
+    if ($a_hardware['hw_active'] == '0000-00-00') {
+      $output .= "<tr style=\"background-color: " . $color[3] . "; border: 1px solid #000000; font-size: 75%;\">\n";
+      $output .= "  <td colspan=\"5\"><strong>Server is not in Production at this time.</strong></td>\n";
+      $output .= "</tr>\n";
+    } else {
+
+      $q_string = "select prod_name,svc_name ";
+      $q_string .= "from products ";
+      $q_string .= "left join service on service.svc_id = products.prod_service ";
+      $q_string .= "where prod_id = " . $a_inventory['inv_product'] . " ";
+      $q_products = mysql_query($q_string) or die($q_string .= ": " . mysql_error());
+      $a_products = mysql_fetch_array($q_products);
+
+      if ($a_inventory['inv_callpath']) {
+        $bgcolor = $color[3];
+        $service = "Server <strong>is</strong> in the 911 Call Path";
+      } else {
+        $bgcolor = $color[0];
+        $service = "Server <strong>is <u>not</u></strong> in the 911 Call Path";
+      }
+
+      $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+      $output .= "  <td><strong>Product</strong>: " . $a_products['prod_name'] . "</td>\n";
+      $output .= "  <td colspan=\"2\"><strong>Service Class</strong>: " . $a_products['svc_name'] . "</td>\n";
+      $output .= "  <td colspan=\"2\"><strong>Call Path</strong>: " . $service . "</td>\n";
+      $output .= "</tr>\n";
+    }
 
     $output .= "</table>\n\n";
 
@@ -531,7 +565,7 @@
     $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=5>Support Information</th>\n";
     $output .= "</tr>\n";
 
-    $q_string  = "select hw_supportid ";
+    $q_string  = "select hw_supportid,hw_active ";
     $q_string .= "from hardware ";
     $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1";
     $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
