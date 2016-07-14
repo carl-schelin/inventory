@@ -454,6 +454,10 @@
     if ($target == 'prod') {
       $remedyemail  = "remedy.helpdesk@intrado.com,carl.schelin@intrado.com";
       $remedyserver = "LMV08-REMAR01.corp.intrado.pri";
+# 9.1 updates
+      $remedyserver .= ",Remedy91HelpdeskProd@intrado.com";
+      $remedyserver .= ",Remedy91HelpdeskDev@intrado.com";
+      $remedyserver .= ",Remedy91HelpdeskQA@intrado.com";
     }
 
 # get the user information for the person in the inventory and will be the one opening the ticket plus group information
