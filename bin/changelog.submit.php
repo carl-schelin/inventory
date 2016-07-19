@@ -105,6 +105,7 @@
   if ($a_users['usr_clientid'] == '') {
     print "ERROR: RemedyID not set\n";
     $headers  = "From: Changelog <changelog@incojs01.scc911.com>\r\n";
+    $headers .= "CC: " . $Sitedev . "\r\n";
 
     $body  = "Your RemedyID has not been set in the Inventory application. In order for changelog messages ";
     $body .= "to be submitted successfully to Remedy, the RemedyID must be set. This value is the same ";
@@ -116,8 +117,6 @@
 
     $body .= "https://incojs01/inventory/accounts/profile.php\n";
 
-    $email .= ",carl.schelin@intrado.com";
-
     mail($email, "Error: RemedyID Missing", $body, $headers);
 
     unlink($changelog);
@@ -128,13 +127,12 @@
   if ($a_users['usr_manager'] == 0) {
     print "ERROR: Manager not selected\n";
     $headers  = "From: Changelog <changelog@incojs01.scc911.com>\r\n";
+    $headers .= "CC: " . $Sitedev . "\r\n";
 
     $body  = "Remedy requires your manager's login information in order to store your changelog entry. You have not ";
     $body .= "identified your manager in your profile. Log in to your account and select your manager from the list.";
 
     $body .= "https://incojs01/inventory/accounts/profile.php\n";
-
-    $email .= ",carl.schelin@intrado.com";
 
     mail($email, "Error: Manager not selected", $body, $headers);
 
@@ -147,6 +145,7 @@
   if ($a_manager['usr_clientid'] == '') {
     print "ERROR: Manager's RemedyID not set\n";
     $headers  = "From: Changelog <changelog@incojs01.scc911.com>\r\n";
+    $headers .= "CC: " . $Sitedev . "\r\n";
 
     $body  = "Your Manager's RemedyID has not been set in the Inventory application. In order for changelog messages ";
     $body .= "to be submitted successfully to Remedy, your Manager's RemedyID must be set. This value is the same ";
@@ -157,12 +156,11 @@
 
     $body .= "https://incojs01/inventory/accounts/profile.php\n";
 
-    $email .= ",carl.schelin@intrado.com";
-
     mail($email, "Error: Manager's RemedyID Missing", $body, $headers);
 
 # send an email to the manager as well.
     $headers  = "From: Changelog <changelog@incojs01.scc911.com>\r\n";
+    $headers .= "CC: " . $Sitedev . "\r\n";
 
     $body  = "Your RemedyID has not been set in the Inventory application. In order for members of your ";
     $body .= "group to send changelog messages to Remedy, your RemedyID must be set. This value is the same ";
@@ -171,8 +169,6 @@
     $body .= "so they can resend the change to the system.\n\n";
 
     $body .= "https://incojs01/inventory/accounts/profile.php\n";
-
-    $email .= ",carl.schelin@intrado.com";
 
     mail($email, "Error: RemedyID Missing", $body, $headers);
 
@@ -251,6 +247,7 @@
     print "ERROR: Unable to open file.\n";
 
     $headers  = "From: Changelog <changelog@incojs01.scc911.com>\r\n";
+    $headers .= "CC: " . $Sitedev . "\r\n";
 
     $body  = "ERROR: Unable to open " . $changelog . ".\n\n";
     $body .= "Email: " . $email . ".\n";
@@ -258,8 +255,6 @@
     $body .= "Server: " . $server . ".\n";
     $body .= "Application: " . $application . ".\n";
     $body .= "Random Number: " . $random . ".\n\n";
-
-    $email .= ",carl.schelin@intrado.com";
 
     mail($email, "Error: Unable to open changelog report", $body, $headers);
 
@@ -378,13 +373,13 @@
     $target = 'prod';
 
     if ($target == 'local') {
-      $magicemail = "carl.schelin@intrado.com";
+      $magicemail = $Sitedev;
     }
     if ($target == 'dev') {
-      $magicemail = "svc_MagicAdminDev@intrado.com,carl.schelin@intrado.com";
+      $magicemail = "svc_MagicAdminDev@intrado.com";
     }
     if ($target == 'prod') {
-      $magicemail = "svc_magicprodemail@intrado.com,carl.schelin@intrado.com";
+      $magicemail = "svc_magicprodemail@intrado.com";
     }
 
 ###############################
@@ -395,6 +390,7 @@
 # Wrap the specific information in the listed tags
 
     $headers  = "From: Changelog <changelog@incojs01.scc911.com>\r\n";
+    $headers .= "CC: " . $Sitedev . "\r\n";
 
 #########
 ### Client ID: -u-/*u*
@@ -449,7 +445,7 @@
     $a_users = mysql_fetch_array($q_users);
 
     $headers = "From: " . $a_users['usr_first'] . " " . $a_users['usr_last'] . "<" . $a_users['usr_email'] . ">\r\n";
-    $headers .= "CC: carl.schelin@intrado.com\r\n";
+    $headers .= "CC: " . $Sitedev . "\r\n";
 
 # need to add the server name and application to the changelog ticket.
 
@@ -497,9 +493,9 @@
     $bodytail .= "Change Type* !1000000181!: Change\n\n";
 
 
-# send it to carl for testing
+# send it to dev for testing
     if ($target == 'local') {
-      $remedyemail  = "carl.schelin@intrado.com";
+      $remedyemail  = $Sitedev;
       $remedyserver = "Blank";
 
       $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
@@ -508,7 +504,7 @@
     }
 # development server information
     if ($target == 'dev') {
-      $remedyemail  = "remedy.helpdesk.dev@intrado.com,carl.schelin@intrado.com";
+      $remedyemail  = "remedy.helpdesk.dev@intrado.com";
       $remedyserver = "LMV08-REMAPPQA.corp.intrado.pri";
 
       $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
@@ -516,29 +512,41 @@
     }
 # production server information
     if ($target == 'prod') {
-      $remedyemail  = "remedy.helpdesk@intrado.com,carl.schelin@intrado.com";
+      $remedyemail  = "remedy.helpdesk@intrado.com";
       $remedyserver = "LMV08-REMAR01.corp.intrado.pri";
 
       $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
       mail($remedyemail, "Changelog Submission", $body, $headers);
 
 # 9.1 updates
-# production
-      $remedyemail = "Remedy91HelpdeskProd@intrado.com,carl.schelin@intrado.com";
+# Remedy 9.1 - Production
+# UN:     CORP\svc_remedyhd91
+# Email:  Remedy91HelpdeskProd@intrado.com
+# Server: LMV08-MX01.corp.intrado.pri
+
+      $remedyemail = "Remedy91HelpdeskProd@intrado.com";
       $remedyserver = "LMV08-MX01.corp.intrado.pri";
 
       $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
       mail($remedyemail, "Changelog Submission", $body, $headers);
 
-# dev
-      $remedyemail = "Remedy91HelpdeskDev@intrado.com,carl.schelin@intrado.com";
+# Remedy 9.1 - Development
+# UN:     CORP\svc_remedyhd91_dev
+# Email:  Remedy91HelpdeskDev@intrado.com
+# Server: LMV08-MX02.corp.intrado.pri
+ 
+      $remedyemail = "Remedy91HelpdeskDev@intrado.com";
       $remedyserver = "LMV08-MX02.corp.intrado.pri";
 
       $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
       mail($remedyemail, "Changelog Submission", $body, $headers);
 
-# sqa
-      $remedyemail = "Remedy91HelpdeskQA@intrado.com,carl.schelin@intrado.com";
+# Remedy 9.1 - QA
+# UN:     CORP\svc_remedyhd91_qa
+# Email:  Remedy91HelpdeskQA@intrado.com
+# Server: LMV08-MX03.corp.intrado.pri
+
+      $remedyemail = "Remedy91HelpdeskQA@intrado.com";
       $remedyserver = "LMV08-MX03.corp.intrado.pri";
 
       $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
