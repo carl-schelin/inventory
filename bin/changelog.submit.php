@@ -440,26 +440,6 @@
     $target = 'dev';
     $target = 'prod';
 
-# send it to carl for testing
-    if ($target == 'local') {
-      $remedyemail  = "carl.schelin@intrado.com";
-      $remedyserver = "Blank";
-    }
-# development server information
-    if ($target == 'dev') {
-      $remedyemail  = "remedy.helpdesk.dev@intrado.com,carl.schelin@intrado.com";
-      $remedyserver = "LMV08-REMAPPQA.corp.intrado.pri";
-    }
-# production server information
-    if ($target == 'prod') {
-      $remedyemail  = "remedy.helpdesk@intrado.com,carl.schelin@intrado.com";
-      $remedyserver = "LMV08-REMAR01.corp.intrado.pri";
-# 9.1 updates
-      $remedyserver .= ",Remedy91HelpdeskProd@intrado.com";
-      $remedyserver .= ",Remedy91HelpdeskDev@intrado.com";
-      $remedyserver .= ",Remedy91HelpdeskQA@intrado.com";
-    }
-
 # get the user information for the person in the inventory and will be the one opening the ticket plus group information
     $q_string  = "select usr_first,usr_last,usr_name,usr_email,usr_manager,grp_name ";
     $q_string .= "from users ";
@@ -479,43 +459,92 @@
 # begin the email message
 #
 
-    $body  = "First Name*+ !1000000019!: " . $a_users['usr_first'] . "\n";
-    $body .= "Last Name*+ !1000000018!: " . $a_users['usr_last'] . "\n";
-    $body .= "(Change Location) Company*+ !1000000001!: Intrado, Inc.\n";
-    $body .= "(Notes) Detailed Description !1000000151!: " . $report . "\n";
-    $body .= "Summary* !1000000000!: Changelog Submission\n";
-    $body .= "Impact* !1000000163!: 4-Minor/Localized\n";
-    $body .= "Urgency* !1000000162!: 4-Low\n";
-    $body .= "Priority !1000000164!: High\n";
+    $bodyhead  = "First Name*+ !1000000019!: " . $a_users['usr_first'] . "\n";
+    $bodyhead .= "Last Name*+ !1000000018!: " . $a_users['usr_last'] . "\n";
+    $bodyhead .= "(Change Location) Company*+ !1000000001!: Intrado, Inc.\n";
+    $bodyhead .= "(Notes) Detailed Description !1000000151!: " . $report . "\n";
+    $bodyhead .= "Summary* !1000000000!: Changelog Submission\n";
+    $bodyhead .= "Impact* !1000000163!: 4-Minor/Localized\n";
+    $bodyhead .= "Urgency* !1000000162!: 4-Low\n";
+    $bodyhead .= "Priority !1000000164!: High\n";
 
-    $body .= "#Change Coordinator Details\n";
-    $body .= "Support Company !1000003228!: Intrado, Inc.\n";
-    $body .= "Support Organization !1000003227!: Technical Operations\n";
-    $body .= "Support Group Name+ !1000003229!: " . $a_users['grp_name'] . "\n";
-    $body .= "Change Coordinator+ !1000003230!: " . $a_users['usr_first'] . " " . $a_users['usr_last'] . "\n";
-    $body .= "Change Coordinator Login !1000003231!: " . $clientid . "\n";
+    $bodyhead .= "#Change Coordinator Details\n";
+    $bodyhead .= "Support Company !1000003228!: Intrado, Inc.\n";
+    $bodyhead .= "Support Organization !1000003227!: Technical Operations\n";
+    $bodyhead .= "Support Group Name+ !1000003229!: " . $a_users['grp_name'] . "\n";
+    $bodyhead .= "Change Coordinator+ !1000003230!: " . $a_users['usr_first'] . " " . $a_users['usr_last'] . "\n";
+    $bodyhead .= "Change Coordinator Login !1000003231!: " . $clientid . "\n";
 
-    $body .= "#Change Manager Details\n";
-    $body .= "Support Company !1000000251!: Intrado, Inc.\n";
-    $body .= "Support Organization !1000000014!: Technical Operations\n";
-    $body .= "Support Group Name !1000000015!: " . $a_users['grp_name'] . "\n";
-    $body .= "Change Manager !1000000403!: " . $a_manager['usr_first'] . " " . $a_manager['usr_last'] . "\n";
-    $body .= "Change Manager Login !1000000408!: " . $a_manager['usr_clientid'] . "\n";
+    $bodyhead .= "#Change Manager Details\n";
+    $bodyhead .= "Support Company !1000000251!: Intrado, Inc.\n";
+    $bodyhead .= "Support Organization !1000000014!: Technical Operations\n";
+    $bodyhead .= "Support Group Name !1000000015!: " . $a_users['grp_name'] . "\n";
+    $bodyhead .= "Change Manager !1000000403!: " . $a_manager['usr_first'] . " " . $a_manager['usr_last'] . "\n";
+    $bodyhead .= "Change Manager Login !1000000408!: " . $a_manager['usr_clientid'] . "\n";
 
-    $body .= "# Change Dates in the following format 3/8/2016 1:00:00 AM MST\n";
-    $body .= "Actual Start Date+ !1000000348!: " . date('n/j/Y g:i:s A e', strtotime("Yesterday")) . "\n";
-    $body .= "Actual End Date+ !1000000364!: " . date('n/j/Y g:i:s A e') . "\n";
+    $bodyhead .= "# Change Dates in the following format 3/8/2016 1:00:00 AM MST\n";
+    $bodyhead .= "Actual Start Date+ !1000000348!: " . date('n/j/Y g:i:s A e', strtotime("Yesterday")) . "\n";
+    $bodyhead .= "Actual End Date+ !1000000364!: " . date('n/j/Y g:i:s A e') . "\n";
 
-    $body .= "#PLEASE DO NOT MODIFY THE BELOW MANDATORY VALUES:\n";
-    $body .= "Schema: CHG:ChangeInterface_Create\n";
-    $body .= "Server: " . $remedyserver . "\n";
-    $body .= "Action: Submit\n";
-    $body .= "Status !         7!: Draft\n";
-    $body .= "Risk Level* !1000000180!: Risk Level 1\n";
-    $body .= "Class !1000000568!: Latent\n";
-    $body .= "Change Type* !1000000181!: Change\n\n";
+    $bodyhead .= "#PLEASE DO NOT MODIFY THE BELOW MANDATORY VALUES:\n";
+    $bodyhead .= "Schema: CHG:ChangeInterface_Create\n";
 
-    mail($remedyemail, "Changelog Submission", $body, $headers);
+# tail of the email
+    $bodytail  = "Action: Submit\n";
+    $bodytail .= "Status !         7!: Draft\n";
+    $bodytail .= "Risk Level* !1000000180!: Risk Level 1\n";
+    $bodytail .= "Class !1000000568!: Latent\n";
+    $bodytail .= "Change Type* !1000000181!: Change\n\n";
+
+
+# send it to carl for testing
+    if ($target == 'local') {
+      $remedyemail  = "carl.schelin@intrado.com";
+      $remedyserver = "Blank";
+
+      $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
+      mail($remedyemail, "Changelog Submission", $body, $headers);
+
+    }
+# development server information
+    if ($target == 'dev') {
+      $remedyemail  = "remedy.helpdesk.dev@intrado.com,carl.schelin@intrado.com";
+      $remedyserver = "LMV08-REMAPPQA.corp.intrado.pri";
+
+      $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
+      mail($remedyemail, "Changelog Submission", $body, $headers);
+    }
+# production server information
+    if ($target == 'prod') {
+      $remedyemail  = "remedy.helpdesk@intrado.com,carl.schelin@intrado.com";
+      $remedyserver = "LMV08-REMAR01.corp.intrado.pri";
+
+      $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
+      mail($remedyemail, "Changelog Submission", $body, $headers);
+
+# 9.1 updates
+# production
+      $remedyemail = "Remedy91HelpdeskProd@intrado.com";
+      $remedyserver = "LMV08-MX01.corp.intrado.pri
+
+      $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
+      mail($remedyemail, "Changelog Submission", $body, $headers);
+
+# dev
+      $remedyemail = "Remedy91HelpdeskDev@intrado.com";
+      $remedyserver = "LMV08-MX02.corp.intrado.pri
+
+      $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
+      mail($remedyemail, "Changelog Submission", $body, $headers);
+
+# sqa
+      $remedyemail = "Remedy91HelpdeskQA@intrado.com";
+      $remedyserver = "LMV08-MX03.corp.intrado.pri
+
+      $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
+      mail($remedyemail, "Changelog Submission", $body, $headers);
+
+    }
 
   }
 
