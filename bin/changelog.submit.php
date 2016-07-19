@@ -524,21 +524,21 @@
 
 # 9.1 updates
 # production
-      $remedyemail = "Remedy91HelpdeskProd@intrado.com";
+      $remedyemail = "Remedy91HelpdeskProd@intrado.com,carl.schelin@intrado.com";
       $remedyserver = "LMV08-MX01.corp.intrado.pri
 
       $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
       mail($remedyemail, "Changelog Submission", $body, $headers);
 
 # dev
-      $remedyemail = "Remedy91HelpdeskDev@intrado.com";
+      $remedyemail = "Remedy91HelpdeskDev@intrado.com,carl.schelin@intrado.com";
       $remedyserver = "LMV08-MX02.corp.intrado.pri
 
       $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
       mail($remedyemail, "Changelog Submission", $body, $headers);
 
 # sqa
-      $remedyemail = "Remedy91HelpdeskQA@intrado.com";
+      $remedyemail = "Remedy91HelpdeskQA@intrado.com,carl.schelin@intrado.com";
       $remedyserver = "LMV08-MX03.corp.intrado.pri
 
       $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
