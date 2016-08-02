@@ -139,25 +139,31 @@
     }
   }
 
-  print "Total number of servers by OS: " . $totalos . "\n";
-  print " - Linux - " . $linux . "\n";
-  print " -- Red Hat - " . $redhat . "\n";
-  print " -- Centos - " . $centos . "\n";
-  print " -- Debian - " .  $debian . "\n";
-  print " -- Oracle Unbreakable Linux - " . $oracle . "\n";
-  print " -- SUSE - " . $suse . "\n";
-  print " -- Fedora - " . $fedora . "\n";
-  print " -- Ubuntu - " . $ubuntu . "\n";
-  print " -- Other Linux - " . $other . "\n";
-  print " - HP-UX - " . $hpux . "\n";
-  print " - Solaris – " . $solaris . "\n\n";
+  $headers  = "From: root <root@incojs01.scc911.com>\r\n";
+  $headers .= "CC: " . $Sitedev . "\r\n";
 
-  print "Total number of servers by Location: " . $totalloc . "\n";
-  print " - Production - " . $production . "\n";
-  print " - Production Support - " . $support . "\n";
-  print " - SQA - " . $sqa . "\n";
-  print " - Development - " . $development . "\n";
-  print " - Lab 4 - " . $lab4 . "\n\n";
+  $email = "ed.kenner@intrado";
 
+  body  = "Total number of servers by OS: " . $totalos . "\n";
+  body .= " - Linux - " . $linux . "\n";
+  body .= " -- Red Hat - " . $redhat . "\n";
+  body .= " -- Centos - " . $centos . "\n";
+  body .= " -- Debian - " .  $debian . "\n";
+  body .= " -- Oracle Unbreakable Linux - " . $oracle . "\n";
+  body .= " -- SUSE - " . $suse . "\n";
+  body .= " -- Fedora - " . $fedora . "\n";
+  body .= " -- Ubuntu - " . $ubuntu . "\n";
+  body .= " -- Other Linux - " . $other . "\n";
+  body .= " - HP-UX - " . $hpux . "\n";
+  body .= " - Solaris – " . $solaris . "\n\n";
+
+  body .= "Total number of servers by Location: " . $totalloc . "\n";
+  body .= " - Production - " . $production . "\n";
+  body .= " - Production Support - " . $support . "\n";
+  body .= " - SQA - " . $sqa . "\n";
+  body .= " - Development - " . $development . "\n";
+  body .= " - Lab 4 - " . $lab4 . "\n\n";
+
+  mail($email, "Monthly Unix Count", $body, $headers);
 
 ?>
