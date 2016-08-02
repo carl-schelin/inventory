@@ -155,7 +155,7 @@
   $body .= " -- Ubuntu - " . $ubuntu . "\n";
   $body .= " -- Other Linux - " . $other . "\n";
   $body .= " - HP-UX - " . $hpux . "\n";
-  $body .= " - Solaris – " . $solaris . "\n\n";
+  $body .= " - Solaris - " . $solaris . "\n\n";
 
   $body .= "Total number of servers by Location: " . $totalloc . "\n";
   $body .= " - Production - " . $production . "\n";
