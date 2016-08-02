@@ -1,0 +1,7 @@
+#!/bin/ksh
+
+DATE=`/usr/bin/date +"%Y-%m-%d"`
+
+/usr/local/bin/php /usr/local/httpd/bin/patch.count.php 1 > /usr/local/httpd/htsecure/reports/patch.count.techops.$DATE.csv 2>/dev/null
+/usr/local/bin/php /usr/local/httpd/bin/patch.count.php 26 > /usr/local/httpd/htsecure/reports/patch.count.engineering.$DATE.csv 2>/dev/null
+
