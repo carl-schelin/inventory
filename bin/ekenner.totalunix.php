@@ -52,11 +52,17 @@
   $lab4 = 0;
   $totalloc = 0;
 
+  $system = '';
+  $location = '';
+
+  print "\"Server\",\"OS\",\"Location\",\"Group\"\n";
+
 # note: if location is not sqa, dev, or lab, then it's production due to hawaii, alaska, miami, etc...
 
-  $q_string  = "select inv_id,loc_name ";
+  $q_string  = "select inv_id,inv_name,loc_name,grp_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
+  $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
   $q_string .= "where inv_status = 0 ";
   $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
@@ -75,67 +81,79 @@
       $linux++;
       $totalos++;
       $flag = 1;
+      $system = "Linux";
 
       if (preg_match("/centos/i", $a_software['sw_software'])) {
         $centos++;
+        $system .= " (CentOS)";
       }
       if (preg_match("/debian/i", $a_software['sw_software'])) {
         $debian++;
+        $system .= " (Debian)";
       }
       if (preg_match("/oracle.*linux/i", $a_software['sw_software'])) {
         $oracle++;
+        $system .= " (Oracle Unbreakable Linux)";
       }
       if (preg_match("/red hat/i", $a_software['sw_software'])) {
         $redhat++;
+        $system .= " (Red Hat)";
       }
       if (preg_match("/suse/i", $a_software['sw_software'])) {
         $suse++;
+        $system .= " (SUSE)";
       }
       if (preg_match("/fedora/i", $a_software['sw_software'])) {
         $fedora++;
+        $system .= " (Fedora)";
       }
       if (preg_match("/ubuntu/i", $a_software['sw_software'])) {
         $ubuntu++;
+        $system .= " (Ubuntu)";
       }
       if (preg_match("/other.*linux/i", $a_software['sw_software'])) {
         $other++;
+        $system .= " (Other Linux)";
       }
     }
     if ($os == 'HP-UX') {
       $hpux++;
       $totalos++;
       $flag = 1;
-    }
-    if ($os == 'CentOS') {
-      $centos++;
-      $totalos++;
-      $flag = 1;
+      $system = "HP-UX";
     }
     if ($os == 'SunOS') {
       $solaris++;
       $totalos++;
       $flag = 1;
+      $system = "Solaris";
     }
 
     if ($flag) {
       $totalloc++;
       if ($a_inventory['loc_name'] == 'Intrado CIL Data Center - Longmont') {
         $support++;
+        $location = "CIL";
       } else {
         if ($a_inventory['loc_name'] == 'Intrado SQA Data Center - Longmont') {
           $sqa++;
+          $location = "SQA";
         } else {
           if ($a_inventory['loc_name'] == 'Intrado Corp Dev Data Center - Longmont') {
             $development++;
+            $location = "Dev";
           } else {
             if ($a_inventory['loc_name'] == 'Intrado Lab 4 Data Center - Longmont') {
               $lab4++;
+              $location = "Lab 4";
             } else {
               $production++;
+              $location = "Prod";
             }
           }
         }
       }
+      print "\"" . $a_inventory['inv_name'] . "\",\"" . $system . "\",\"" . $location . "\",\"" . $a_inventory['grp_name'] . "\"\n";
     }
   }
 
