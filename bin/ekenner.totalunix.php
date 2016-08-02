@@ -144,25 +144,25 @@
 
   $email = "ed.kenner@intrado";
 
-  body  = "Total number of servers by OS: " . $totalos . "\n";
-  body .= " - Linux - " . $linux . "\n";
-  body .= " -- Red Hat - " . $redhat . "\n";
-  body .= " -- Centos - " . $centos . "\n";
-  body .= " -- Debian - " .  $debian . "\n";
-  body .= " -- Oracle Unbreakable Linux - " . $oracle . "\n";
-  body .= " -- SUSE - " . $suse . "\n";
-  body .= " -- Fedora - " . $fedora . "\n";
-  body .= " -- Ubuntu - " . $ubuntu . "\n";
-  body .= " -- Other Linux - " . $other . "\n";
-  body .= " - HP-UX - " . $hpux . "\n";
-  body .= " - Solaris – " . $solaris . "\n\n";
+  $body  = "Total number of servers by OS: " . $totalos . "\n";
+  $body .= " - Linux - " . $linux . "\n";
+  $body .= " -- Red Hat - " . $redhat . "\n";
+  $body .= " -- Centos - " . $centos . "\n";
+  $body .= " -- Debian - " .  $debian . "\n";
+  $body .= " -- Oracle Unbreakable Linux - " . $oracle . "\n";
+  $body .= " -- SUSE - " . $suse . "\n";
+  $body .= " -- Fedora - " . $fedora . "\n";
+  $body .= " -- Ubuntu - " . $ubuntu . "\n";
+  $body .= " -- Other Linux - " . $other . "\n";
+  $body .= " - HP-UX - " . $hpux . "\n";
+  $body .= " - Solaris – " . $solaris . "\n\n";
 
-  body .= "Total number of servers by Location: " . $totalloc . "\n";
-  body .= " - Production - " . $production . "\n";
-  body .= " - Production Support - " . $support . "\n";
-  body .= " - SQA - " . $sqa . "\n";
-  body .= " - Development - " . $development . "\n";
-  body .= " - Lab 4 - " . $lab4 . "\n\n";
+  $body .= "Total number of servers by Location: " . $totalloc . "\n";
+  $body .= " - Production - " . $production . "\n";
+  $body .= " - Production Support - " . $support . "\n";
+  $body .= " - SQA - " . $sqa . "\n";
+  $body .= " - Development - " . $development . "\n";
+  $body .= " - Lab 4 - " . $lab4 . "\n\n";
 
   mail($email, "Monthly Unix Count", $body, $headers);
 
