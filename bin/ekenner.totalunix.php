@@ -142,7 +142,7 @@
   $headers  = "From: root <root@incojs01.scc911.com>\r\n";
   $headers .= "CC: " . $Sitedev . "\r\n";
 
-  $email = "ed.kenner@intrado";
+  $email = "ed.kenner@intrado.com";
 
   $body  = "Total number of servers by OS: " . $totalos . "\n";
   $body .= " - Linux - " . $linux . "\n";
