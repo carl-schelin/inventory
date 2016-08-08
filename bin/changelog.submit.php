@@ -239,6 +239,7 @@
 # $savedlines = 
 
   $savedlines = '';
+  $firstline = '';
   $boundary = '';
   $leave = 0;
   $report = '';
@@ -291,6 +292,10 @@
              ) {
             print "Loop-Blank: Non-blank line; saving.\n";
             $savedlines .= $process . "\n";
+# save the first line as the 'summary line' for Remedy tickets. Ignore for Magic
+            if ($firstline == '') {
+              $firstline = $process;
+            }
           }
 
 # on the other hand, if it's an outlook message, parse out the mime encoding.
@@ -310,6 +315,10 @@
               if ($process != '') {
                 print "Loop-Content: Non-blank line; removing equals sign and saving.\n";
                 $report .= preg_replace("/=$/", '', $process);
+# save the first line as the 'summary line' for Remedy tickets. Ignore for Magic
+                if ($firstline == '') {
+                  $firstline = preg_replace("/=$/", '', $process);
+                }
               }
             }
           }
@@ -328,6 +337,10 @@
                     break;
                   } else {
                     $report .= $parse[$i] . "\n";
+# save the first line as the 'summary line' for Remedy tickets. Ignore for Magic
+                    if ($firstline == '') {
+                      $firstline = $parse[$i];
+                    }
                   }
                 }
                 $leave = 1;
@@ -335,6 +348,10 @@
               }
               if ($process != '') {
                 $report .= $process . "\n";
+# save the first line as the 'summary line' for Remedy tickets. Ignore for Magic
+                if ($firstline == '') {
+                  $firstline = $process;
+                }
               }
             }
           }
@@ -459,7 +476,7 @@
     $bodyhead .= "Last Name*+ !1000000018!: " . $a_users['usr_last'] . "\n";
     $bodyhead .= "(Change Location) Company*+ !1000000001!: Intrado, Inc.\n";
     $bodyhead .= "(Notes) Detailed Description !1000000151!: " . $report . "\n";
-    $bodyhead .= "Summary* !1000000000!: Changelog Submission\n";
+    $bodyhead .= "Summary* !1000000000!: " . $firstline . "\n";
     $bodyhead .= "Impact* !1000000163!: 4-Minor/Localized\n";
     $bodyhead .= "Urgency* !1000000162!: 4-Low\n";
     $bodyhead .= "Priority !1000000164!: High\n";
