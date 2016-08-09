@@ -294,7 +294,7 @@
             $savedlines .= $process . "\n";
 # save the first line as the 'summary line' for Remedy tickets. Ignore for Magic
             if ($firstline == '') {
-              $firstline = $process;
+              $firstline = clean($process, 95);
             }
           }
 
@@ -317,7 +317,7 @@
                 $report .= preg_replace("/=$/", '', $process);
 # save the first line as the 'summary line' for Remedy tickets. Ignore for Magic
                 if ($firstline == '') {
-                  $firstline = preg_replace("/=$/", '', $process);
+                  $firstline = preg_replace("/=$/", '', clean($process, 95));
                 }
               }
             }
@@ -339,7 +339,7 @@
                     $report .= $parse[$i] . "\n";
 # save the first line as the 'summary line' for Remedy tickets. Ignore for Magic
                     if ($firstline == '') {
-                      $firstline = $parse[$i];
+                      $firstline = clean($parse[$i], 95);
                     }
                   }
                 }
@@ -350,7 +350,7 @@
                 $report .= $process . "\n";
 # save the first line as the 'summary line' for Remedy tickets. Ignore for Magic
                 if ($firstline == '') {
-                  $firstline = $process;
+                  $firstline = clean($process, 95);
                 }
               }
             }
