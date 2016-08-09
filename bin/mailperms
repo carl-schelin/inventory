@@ -4,7 +4,7 @@
 # Owner: Carl Schelin
 # In order for the changelog entries to be visible, the permissions need to be 644 for the Mail directory.
 
-for i in changelog chglogali chglogdba chglogienv chgloglab chglogmob chglogmon chglognet chglogsba chglogse chglogtdm chglogtss chglogvns chglogweb windows
+for i in changelog chglogali chglogdba chglogienv chgloglab chglogmob chglogmon chglognet chglogsba chglogscm chglogse chglogtdm chglogtss chglogvns chglogweb windows
 do
   FILES="`ls /export/home/$i/Mail/*.changelog 2>&1 | grep -v 'No such file or directory'`"
   if [[ -n $FILES ]]
