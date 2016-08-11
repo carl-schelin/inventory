@@ -32,8 +32,9 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  $debug = 'no';
+# just changes who gets the email.
   $debug = 'yes';
+  $debug = 'no';
 
 # initialize number of OS's
   $plinux = 0;
