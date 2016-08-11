@@ -18,6 +18,8 @@
 # 
 #Total servers in DEV, TEST, SQA, CIL (all LABS) - 
 # 
+# Add in a split showing totals for virtual vs physical
+#
 
   include('settings.php');
   include($Sitepath . '/function.php');
@@ -30,27 +32,50 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
+  $debug = 'no';
+  $debug = 'yes';
+
 # initialize number of OS's
-  $linux = 0;
-  $centos = 0;
-  $debian = 0;
-  $oracle = 0; # oracle enterprise linux, oracle linux
-  $redhat = 0;
-  $suse = 0;
-  $fedora = 0;
-  $ubuntu = 0;
-  $other = 0;  # other linux
-  $hpux = 0;
-  $solaris = 0;
-  $totalos = 0;
+  $plinux = 0;
+  $vlinux = 0;
+  $pcentos = 0;
+  $vcentos = 0;
+  $pdebian = 0;
+  $vdebian = 0;
+  $poracle = 0; # oracle enterprise linux, oracle linux
+  $voracle = 0; # oracle enterprise linux, oracle linux
+  $predhat = 0;
+  $vredhat = 0;
+  $psuse = 0;
+  $vsuse = 0;
+  $pfedora = 0;
+  $vfedora = 0;
+  $pubuntu = 0;
+  $vubuntu = 0;
+  $pother = 0;  # other linux
+  $vother = 0;  # other linux
+  $phpux = 0;
+  $vhpux = 0;
+  $psolaris = 0;
+  $vsolaris = 0;
+  $ptotalos = 0;
+  $vtotalos = 0;
+  $pesx = 0;
+  $vesx = 0;
 
 # initialize locations
-  $production = 0;
-  $support = 0;
-  $sqa = 0;
-  $development = 0;
-  $lab4 = 0;
-  $totalloc = 0;
+  $pproduction = 0;
+  $vproduction = 0;
+  $psupport = 0;
+  $vsupport = 0;
+  $psqa = 0;
+  $vsqa = 0;
+  $pdevelopment = 0;
+  $vdevelopment = 0;
+  $plab4 = 0;
+  $vlab4 = 0;
+  $ptotalloc = 0;
+  $vtotalloc = 0;
 
   $system = '';
   $location = '';
@@ -59,11 +84,13 @@
 
 # note: if location is not sqa, dev, or lab, then it's production due to hawaii, alaska, miami, etc...
 
-  $q_string  = "select inv_id,inv_name,loc_name,grp_name ";
+  $q_string  = "select inv_id,inv_name,loc_name,grp_name,mod_virtual ";
   $q_string .= "from inventory ";
-  $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
-  $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
-  $q_string .= "where inv_status = 0 ";
+  $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
+  $q_string .= "left join groups    on groups.grp_id         = inventory.inv_manager ";
+  $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "left join models    on models.mod_id         = hardware.hw_vendorid ";
+  $q_string .= "where inv_status = 0 and hw_primary = 1 ";
   $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
@@ -77,77 +104,156 @@
     $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     $a_software = mysql_fetch_array($q_software);
 
+    if (preg_match("/esx/i", $a_software['sw_software'])) {
+      if ($a_inventory['mod_virtual']) {
+        $vesx++;
+      } else {
+        $pesx++;
+      }
+    }
+
     if ($os == 'Linux') {
-      $linux++;
-      $totalos++;
+      if ($a_inventory['mod_virtual']) {
+        $vlinux++;
+        $vtotalos++;
+      } else {
+        $plinux++;
+        $ptotalos++;
+      }
       $flag = 1;
       $system = "Linux";
 
       if (preg_match("/centos/i", $a_software['sw_software'])) {
-        $centos++;
+        if ($a_inventory['mod_virtual']) {
+          $vcentos++;
+        } else {
+          $pcentos++;
+        }
         $system .= " (CentOS)";
       }
       if (preg_match("/debian/i", $a_software['sw_software'])) {
-        $debian++;
+        if ($a_inventory['mod_virtual']) {
+          $vdebian++;
+        } else {
+          $pdebian++;
+        }
         $system .= " (Debian)";
       }
       if (preg_match("/oracle.*linux/i", $a_software['sw_software'])) {
-        $oracle++;
+        if ($a_inventory['mod_virtual']) {
+          $voracle++;
+        } else {
+          $poracle++;
+        }
         $system .= " (Oracle Unbreakable Linux)";
       }
       if (preg_match("/red hat/i", $a_software['sw_software'])) {
-        $redhat++;
+        if ($a_inventory['mod_virtual']) {
+          $vredhat++;
+        } else {
+          $predhat++;
+        }
         $system .= " (Red Hat)";
       }
       if (preg_match("/suse/i", $a_software['sw_software'])) {
-        $suse++;
+        if ($a_inventory['mod_virtual']) {
+          $vsuse++;
+        } else {
+          $psuse++;
+        }
         $system .= " (SUSE)";
       }
       if (preg_match("/fedora/i", $a_software['sw_software'])) {
-        $fedora++;
+        if ($a_inventory['mod_virtual']) {
+          $vfedora++;
+        } else {
+          $pfedora++;
+        }
         $system .= " (Fedora)";
       }
       if (preg_match("/ubuntu/i", $a_software['sw_software'])) {
-        $ubuntu++;
+        if ($a_inventory['mod_virtual']) {
+          $vubuntu++;
+        } else {
+          $pubuntu++;
+        }
         $system .= " (Ubuntu)";
       }
       if (preg_match("/other.*linux/i", $a_software['sw_software'])) {
-        $other++;
+        if ($a_inventory['mod_virtual']) {
+          $vother++;
+        } else {
+          $pother++;
+        }
         $system .= " (Other Linux)";
       }
     }
     if ($os == 'HP-UX') {
-      $hpux++;
-      $totalos++;
+      if ($a_inventory['mod_virtual']) {
+        $vhpux++;
+        $vtotalos++;
+      } else {
+        $phpux++;
+        $ptotalos++;
+      }
       $flag = 1;
       $system = "HP-UX";
     }
     if ($os == 'SunOS') {
-      $solaris++;
-      $totalos++;
+      if ($a_inventory['mod_virtual']) {
+        $vsolaris++;
+        $vtotalos++;
+      } else {
+        $psolaris++;
+        $ptotalos++;
+      }
       $flag = 1;
       $system = "Solaris";
     }
 
     if ($flag) {
-      $totalloc++;
+      if ($a_inventory['mod_virtual']) {
+        $vtotalloc++;
+      } else {
+        $ptotalloc++;
+      }
       if ($a_inventory['loc_name'] == 'Intrado CIL Data Center - Longmont') {
-        $support++;
+        if ($a_inventory['mod_virtual']) {
+          $vsupport++;
+        } else {
+          $psupport++;
+        }
         $location = "CIL";
       } else {
         if ($a_inventory['loc_name'] == 'Intrado SQA Data Center - Longmont') {
-          $sqa++;
+          if ($a_inventory['mod_virtual']) {
+            $vsqa++;
+          } else {
+            $psqa++;
+          }
           $location = "SQA";
         } else {
           if ($a_inventory['loc_name'] == 'Intrado Corp Dev Data Center - Longmont') {
-            $development++;
+            if ($a_inventory['mod_virtual']) {
+              $vdevelopment++;
+            } else {
+              $pdevelopment++;
+            }
             $location = "Dev";
           } else {
             if ($a_inventory['loc_name'] == 'Intrado Lab 4 Data Center - Longmont') {
-              $lab4++;
+              if ($a_inventory['mod_virtual']) {
+                $vlab4++;
+              } else {
+                $plab4++;
+              }
               $location = "Lab 4";
             } else {
-              $production++;
+              if ($a_inventory['mod_virtual']) {
+                $vproduction++;
+              } else {
+                $pproduction++;
+              }
               $location = "Prod";
             }
           }
@@ -160,27 +266,33 @@
   $headers  = "From: root <root@incojs01.scc911.com>\r\n";
   $headers .= "CC: " . $Sitedev . "\r\n";
 
-  $email = "ed.kenner@intrado.com";
+  if ($debug == 'no') {
+    $email = "ed.kenner@intrado.com";
+  } else {
+    $email = "carl.schelin@intrado.com";
+  }
 
-  $body  = "Total number of servers by OS: " . $totalos . "\n";
-  $body .= " - Linux - " . $linux . "\n";
-  $body .= " -- Red Hat - " . $redhat . "\n";
-  $body .= " -- Centos - " . $centos . "\n";
-  $body .= " -- Debian - " .  $debian . "\n";
-  $body .= " -- Oracle Unbreakable Linux - " . $oracle . "\n";
-  $body .= " -- SUSE - " . $suse . "\n";
-  $body .= " -- Fedora - " . $fedora . "\n";
-  $body .= " -- Ubuntu - " . $ubuntu . "\n";
-  $body .= " -- Other Linux - " . $other . "\n";
-  $body .= " - HP-UX - " . $hpux . "\n";
-  $body .= " - Solaris - " . $solaris . "\n\n";
+  $body  = "Total number of servers by OS: " . $ptotalos . "/" . $vtotalos . " (" . ($ptotalos   + $vtotalos)   . ")\n";
+  $body .= " - Linux - "                     . $plinux   . "/" . $vlinux   . " (" . ($plinux     + $vlinux)     . ")\n";
+  $body .= " -- Red Hat - "                  . $predhat  . "/" . $vredhat  . " (" . ($predhat    + $vredhat)    . ")\n";
+  $body .= " -- Centos - "                   . $pcentos  . "/" . $vcentos  . " (" . ($pcentos    + $vcentos)    . ")\n";
+  $body .= " -- Debian - "                   . $pdebian  . "/" . $vdebian  . " (" . ($pdebian    + $vdebian)    . ")\n";
+  $body .= " -- Oracle Unbreakable Linux - " . $poracle  . "/" . $voracle  . " (" . ($poracle    + $voracle)    . ")\n";
+  $body .= " -- SUSE - "                     . $psuse    . "/" . $vsuse    . " (" . ($psuse      + $vsuse)      . ")\n";
+  $body .= " -- Fedora - "                   . $pfedora  . "/" . $vfedora  . " (" . ($pfedora    + $vfedora)    . ")\n";
+  $body .= " -- Ubuntu - "                   . $pubuntu  . "/" . $vubuntu  . " (" . ($pubuntu    + $vubuntu)    . ")\n";
+  $body .= " -- Other Linux - "              . $pother   . "/" . $vother   . " (" . ($pother     + $vother)     . ")\n";
+  $body .= " - HP-UX - "                     . $phpux    . "/" . $vhpux    . " (" . ($phpux      + $vhpux)      . ")\n";
+  $body .= " - Solaris - "                   . $psolaris . "/" . $vsolaris . " (" . ($psolaris   + $vsolaris)   . ")\n\n";
 
-  $body .= "Total number of servers by Location: " . $totalloc . "\n";
-  $body .= " - Production - " . $production . "\n";
-  $body .= " - Production Support - " . $support . "\n";
-  $body .= " - SQA - " . $sqa . "\n";
-  $body .= " - Development - " . $development . "\n";
-  $body .= " - Lab 4 - " . $lab4 . "\n\n";
+  $body .= "Total number of servers by Location: " . $ptotalloc     . "/" . $vtotalloc    . " (" . ($ptotalloc    + $vtotalloc)    . ")\n";
+  $body .= " - Production - "                      . $pproduction   . "/" . $vproduction  . " (" . ($pproduction  + $vproduction)  . ")\n";
+  $body .= " - Production Support - "              . $psupport      . "/" . $vsupport     . " (" . ($psupport     + $vsupport)     . ")\n";
+  $body .= " - SQA - "                             . $psqa          . "/" . $vsqa         . " (" . ($psqa         + $vsqa)         . ")\n";
+  $body .= " - Development - "                     . $pdevelopment  . "/" . $vdevelopment . " (" . ($pdevelopment + $vdevelopment) . ")\n";
+  $body .= " - Lab 4 - "                           . $plab4         . "/" . $vlab4        . " (" . ($plab4        + $vlab4)        . ")\n\n";
+
+  $body .= "Physical/Virtual (Total)\n\n";
 
   mail($email, "Monthly Unix Count", $body, $headers);
 
