@@ -295,6 +295,6 @@
 
   $body .= "Physical/Virtual (Total)\n\n";
 
-  mail($email, "Monthly Unix Count", $body, $headers);
+  mail($email, "Weekly Unix Count", $body, $headers);
 
 ?>
