@@ -451,6 +451,7 @@
 
     $target = 'local';
     $target = 'dev';
+    $target = 'prodtest';
     $target = 'prod';
 
 # get the user information for the person in the inventory and will be the one opening the ticket plus group information
@@ -529,6 +530,14 @@
     }
 # production server information
     if ($target == 'prod') {
+      $remedyemail  = "remedy.helpdesk@intrado.com";
+      $remedyserver = "LMV08-REMAR01.corp.intrado.pri";
+
+      $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
+      mail($remedyemail, "Changelog Submission", $body, $headers);
+    }
+# production server and sending to the test servers
+    if ($target == 'prodtest') {
       $remedyemail  = "remedy.helpdesk@intrado.com";
       $remedyserver = "LMV08-REMAR01.corp.intrado.pri";
 
