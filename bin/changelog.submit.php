@@ -375,10 +375,10 @@
     $report = $savedlines;
   }
 
-# enable for magic
+# yes for magic
   $magic = 'no';
-# enable for remedy
-  $remedy = 'yes';
+# yes for remedy
+  $remedy = 'no';
 
 #
 # This is the Magic ticket system process.
@@ -451,7 +451,7 @@
 
     $target = 'local';
     $target = 'dev';
-    $target = 'prodtest';
+    $target = 'prodtest';  # this includes sending it to the 9.1 servers for testing purposes.
     $target = 'prod';
 
 # get the user information for the person in the inventory and will be the one opening the ticket plus group information
