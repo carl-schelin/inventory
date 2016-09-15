@@ -449,10 +449,12 @@
 
   if ($remedy == 'yes') {
 
-    $target = 'local';
-    $target = 'dev';
-    $target = 'prodtest';  # this includes sending it to the 9.1 servers for testing purposes.
-    $target = 'prod';
+    $local       = 'no';
+    $development = 'no';
+    $sqa         = 'yes';
+    $production  = 'no';
+    $remedy8     = 'no';	# gone away 8/25/2016
+    $remedy9     = 'yes';
 
 # get the user information for the person in the inventory and will be the one opening the ticket plus group information
     $q_string  = "select usr_first,usr_last,usr_name,usr_email,usr_manager,grp_name ";
@@ -511,8 +513,8 @@
     $bodytail .= "Change Type* !1000000181!: Change\n\n";
 
 
-# send it to dev for testing
-    if ($target == 'local') {
+# send it to the developer for testing
+    if ($local == 'yes') {
       $remedyemail  = $Sitedev;
       $remedyserver = "Blank";
 
@@ -521,65 +523,52 @@
 
     }
 # development server information
-    if ($target == 'dev') {
-      $remedyemail  = "remedy.helpdesk.dev@intrado.com";
-      $remedyserver = "LMV08-REMAPPQA.corp.intrado.pri";
+    if ($development == 'yes') {
+      if ($remedy8 == 'yes') {
+        $remedyemail  = "remedy.helpdesk.dev@intrado.com";
+        $remedyserver = "LMV08-REMAPPQA.corp.intrado.pri";
 
-      $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
-      mail($remedyemail, "Changelog Submission", $body, $headers);
+        $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
+        mail($remedyemail, "Changelog Submission", $body, $headers);
+      }
+
+      if ($remedy9 == 'yes') {
+        $remedyemail = "Remedy91HelpdeskDev@intrado.com";
+        $remedyserver = "LMV08-MX02.corp.intrado.pri";
+
+        $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
+        mail($remedyemail, "Changelog Submission", $body, $headers);
+      }
     }
 # production server information
-    if ($target == 'prod') {
-      $remedyemail  = "remedy.helpdesk@intrado.com";
-      $remedyserver = "LMV08-REMAR01.corp.intrado.pri";
+    if ($production == 'yes') {
+      if ($remedy8 == 'yes') {
+        $remedyemail  = "remedy.helpdesk@intrado.com";
+        $remedyserver = "LMV08-REMAR01.corp.intrado.pri";
 
-      $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
-      mail($remedyemail, "Changelog Submission", $body, $headers);
-    }
-# production server and sending to the test servers
-    if ($target == 'prodtest') {
-      $remedyemail  = "remedy.helpdesk@intrado.com";
-      $remedyserver = "LMV08-REMAR01.corp.intrado.pri";
+        $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
+        mail($remedyemail, "Changelog Submission", $body, $headers);
+      }
 
-      $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
-      mail($remedyemail, "Changelog Submission", $body, $headers);
+      if ($remedy9 == 'yes') {
+        $remedyemail = "Remedy91HelpdeskProd@intrado.com";
+        $remedyserver = "LMV08-MX01.corp.intrado.pri";
 
-# 9.1 updates
-# Remedy 9.1 - Production
-# UN:     CORP\svc_remedyhd91
-# Email:  Remedy91HelpdeskProd@intrado.com
-# Server: LMV08-MX01.corp.intrado.pri
-
-      $remedyemail = "Remedy91HelpdeskProd@intrado.com";
-      $remedyserver = "LMV08-MX01.corp.intrado.pri";
-
-      $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
-      mail($remedyemail, "Changelog Submission", $body, $headers);
-
-# Remedy 9.1 - Development
-# UN:     CORP\svc_remedyhd91_dev
-# Email:  Remedy91HelpdeskDev@intrado.com
-# Server: LMV08-MX02.corp.intrado.pri
- 
-      $remedyemail = "Remedy91HelpdeskDev@intrado.com";
-      $remedyserver = "LMV08-MX02.corp.intrado.pri";
-
-      $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
-      mail($remedyemail, "Changelog Submission", $body, $headers);
-
-# Remedy 9.1 - QA
-# UN:     CORP\svc_remedyhd91_qa
-# Email:  Remedy91HelpdeskQA@intrado.com
-# Server: LMV08-MX03.corp.intrado.pri
-
-      $remedyemail = "Remedy91HelpdeskQA@intrado.com";
-      $remedyserver = "LMV08-MX03.corp.intrado.pri";
-
-      $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
-      mail($remedyemail, "Changelog Submission", $body, $headers);
-
+        $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
+        mail($remedyemail, "Changelog Submission", $body, $headers);
+      }
     }
 
+# qa server information
+    if ($sqa == 'yes') {
+      if ($remedy9 == 'yes') {
+        $remedyemail = "svc_remedyhd91_qa@intrado.com";
+        $remedyserver = "lnmt0cwasrmap10.corp.intrado.pri";
+
+        $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
+        mail($remedyemail, "Changelog Submission", $body, $headers);
+      }
+    }
   }
 
 ?>
