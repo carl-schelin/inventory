@@ -1004,111 +1004,780 @@
     }
   }
 
-  $headers  = "From: System Count <root@incojs01.scc911.com>\r\n";
-  $headers .= "CC: " . $Sitedev . "\r\n";
-
   if ($debug == 'no') {
     $email = "ed.kenner@intrado.com";
   } else {
     $email = "carl.schelin@intrado.com";
   }
 
-  $body  = "Total number of Unix servers by OS: " . $ptotalunix . "/" . $vtotalunix . " (" . ($ptotalunix + $vtotalunix) . ")\n";
-  $body .= " - Linux - "                     . $plinux     . "/" . $vlinux     . " (" . ($plinux     + $vlinux)     . ")\n";
-  $body .= " -- Red Hat - "                  . $predhat    . "/" . $vredhat    . " (" . ($predhat    + $vredhat)    . ")\n";
-  $body .= " -- Centos - "                   . $pcentos    . "/" . $vcentos    . " (" . ($pcentos    + $vcentos)    . ")\n";
-  $body .= " -- Debian - "                   . $pdebian    . "/" . $vdebian    . " (" . ($pdebian    + $vdebian)    . ")\n";
-  $body .= " -- Oracle Unbreakable Linux - " . $poracle    . "/" . $voracle    . " (" . ($poracle    + $voracle)    . ")\n";
-  $body .= " -- SUSE - "                     . $psuse      . "/" . $vsuse      . " (" . ($psuse      + $vsuse)      . ")\n";
-  $body .= " -- Fedora - "                   . $pfedora    . "/" . $vfedora    . " (" . ($pfedora    + $vfedora)    . ")\n";
-  $body .= " -- Ubuntu - "                   . $pubuntu    . "/" . $vubuntu    . " (" . ($pubuntu    + $vubuntu)    . ")\n";
-  $body .= " -- Other Linux - "              . $pother     . "/" . $vother     . " (" . ($pother     + $vother)     . ")\n";
-  $body .= " - HP-UX - "                     . $phpux      . "/" . $vhpux      . " (" . ($phpux      + $vhpux)      . ")\n";
-  $body .= " - Solaris - "                   . $psolaris   . "/" . $vsolaris   . " (" . ($psolaris   + $vsolaris)   . ")\n\n";
+  $color[0] = "#ffffcc";  # set to the background color of yellow.
+  $color[1] = "#bced91";  # green
+  $color[2] = "yellow";   # yellow
+  $color[3] = "#fa8072";  # red
 
-  $body .= "Total number of Unix servers by Location: " . $putotalloc     . "/" . $vutotalloc    . " (" . ($putotalloc    + $vutotalloc)    . ")\n";
-  $body .= " - Production - "                           . $puproduction   . "/" . $vuproduction  . " (" . ($puproduction  + $vuproduction)  . ")\n";
-  $body .= " -- Linux - "                               . $pup_linux      . "/" . $vup_linux     . " (" . ($pup_linux     + $vup_linux)     . ")\n";
-  $body .= " --- Red Hat - "                            . $pup_redhat     . "/" . $vup_redhat    . " (" . ($pup_redhat    + $vup_redhat)    . ")\n";
-  $body .= " --- Centos - "                             . $pup_centos     . "/" . $vup_centos    . " (" . ($pup_centos    + $vup_centos)    . ")\n";
-  $body .= " --- Debian - "                             . $pup_debian     . "/" . $vup_debian    . " (" . ($pup_debian    + $vup_debian)    . ")\n";
-  $body .= " --- Oracle Unbreakable Linux - "           . $pup_oracle     . "/" . $vup_oracle    . " (" . ($pup_oracle    + $vup_oracle)    . ")\n";
-  $body .= " --- SUSE - "                               . $pup_suse       . "/" . $vup_suse      . " (" . ($pup_suse      + $vup_suse)      . ")\n";
-  $body .= " --- Fedora - "                             . $pup_fedora     . "/" . $vup_fedora    . " (" . ($pup_fedora    + $vup_fedora)    . ")\n";
-  $body .= " --- Ubuntu - "                             . $pup_ubuntu     . "/" . $vup_ubuntu    . " (" . ($pup_ubuntu    + $vup_ubuntu)    . ")\n";
-  $body .= " --- Other Linux - "                        . $pup_other      . "/" . $vup_other     . " (" . ($pup_other     + $vup_other)     . ")\n";
-  $body .= " -- HP-UX - "                               . $pup_hpux       . "/" . $vup_hpux      . " (" . ($pup_hpux      + $vup_hpux)      . ")\n";
-  $body .= " -- Solaris - "                             . $pup_solaris    . "/" . $vup_solaris   . " (" . ($pup_solaris   + $vup_solaris)   . ")\n";
-  $body .= " - Production Support - "                   . $pusupport      . "/" . $vusupport     . " (" . ($pusupport     + $vusupport)     . ")\n";
-  $body .= " -- Linux - "                               . $pus_linux      . "/" . $vus_linux     . " (" . ($pus_linux     + $vus_linux)     . ")\n";
-  $body .= " --- Red Hat - "                            . $pus_redhat     . "/" . $vus_redhat    . " (" . ($pus_redhat    + $vus_redhat)    . ")\n";
-  $body .= " --- Centos - "                             . $pus_centos     . "/" . $vus_centos    . " (" . ($pus_centos    + $vus_centos)    . ")\n";
-  $body .= " --- Debian - "                             . $pus_debian     . "/" . $vus_debian    . " (" . ($pus_debian    + $vus_debian)    . ")\n";
-  $body .= " --- Oracle Unbreakable Linux - "           . $pus_oracle     . "/" . $vus_oracle    . " (" . ($pus_oracle    + $vus_oracle)    . ")\n";
-  $body .= " --- SUSE - "                               . $pus_suse       . "/" . $vus_suse      . " (" . ($pus_suse      + $vus_suse)      . ")\n";
-  $body .= " --- Fedora - "                             . $pus_fedora     . "/" . $vus_fedora    . " (" . ($pus_fedora    + $vus_fedora)    . ")\n";
-  $body .= " --- Ubuntu - "                             . $pus_ubuntu     . "/" . $vus_ubuntu    . " (" . ($pus_ubuntu    + $vus_ubuntu)    . ")\n";
-  $body .= " --- Other Linux - "                        . $pus_other      . "/" . $vus_other     . " (" . ($pus_other     + $vus_other)     . ")\n";
-  $body .= " -- HP-UX - "                               . $pus_hpux       . "/" . $vus_hpux      . " (" . ($pus_hpux      + $vus_hpux)      . ")\n";
-  $body .= " -- Solaris - "                             . $pus_solaris    . "/" . $vus_solaris   . " (" . ($pus_solaris   + $vus_solaris)   . ")\n";
-  $body .= " - SQA - "                                  . $pusqa          . "/" . $vusqa         . " (" . ($pusqa         + $vusqa)         . ")\n";
-  $body .= " -- Linux - "                               . $puq_linux      . "/" . $vuq_linux     . " (" . ($puq_linux     + $vuq_linux)     . ")\n";
-  $body .= " --- Red Hat - "                            . $puq_redhat     . "/" . $vuq_redhat    . " (" . ($puq_redhat    + $vuq_redhat)    . ")\n";
-  $body .= " --- Centos - "                             . $puq_centos     . "/" . $vuq_centos    . " (" . ($puq_centos    + $vuq_centos)    . ")\n";
-  $body .= " --- Debian - "                             . $puq_debian     . "/" . $vuq_debian    . " (" . ($puq_debian    + $vuq_debian)    . ")\n";
-  $body .= " --- Oracle Unbreakable Linux - "           . $puq_oracle     . "/" . $vuq_oracle    . " (" . ($puq_oracle    + $vuq_oracle)    . ")\n";
-  $body .= " --- SUSE - "                               . $puq_suse       . "/" . $vuq_suse      . " (" . ($puq_suse      + $vuq_suse)      . ")\n";
-  $body .= " --- Fedora - "                             . $puq_fedora     . "/" . $vuq_fedora    . " (" . ($puq_fedora    + $vuq_fedora)    . ")\n";
-  $body .= " --- Ubuntu - "                             . $puq_ubuntu     . "/" . $vuq_ubuntu    . " (" . ($puq_ubuntu    + $vuq_ubuntu)    . ")\n";
-  $body .= " --- Other Linux - "                        . $puq_other      . "/" . $vuq_other     . " (" . ($puq_other     + $vuq_other)     . ")\n";
-  $body .= " -- HP-UX - "                               . $puq_hpux       . "/" . $vuq_hpux      . " (" . ($puq_hpux      + $vuq_hpux)      . ")\n";
-  $body .= " -- Solaris - "                             . $puq_solaris    . "/" . $vuq_solaris   . " (" . ($puq_solaris   + $vuq_solaris)   . ")\n";
-  $body .= " - Development - "                          . $pudevelopment  . "/" . $vudevelopment . " (" . ($pudevelopment + $vudevelopment) . ")\n";
-  $body .= " -- Linux - "                               . $pud_linux      . "/" . $vud_linux     . " (" . ($pud_linux     + $vud_linux)     . ")\n";
-  $body .= " --- Red Hat - "                            . $pud_redhat     . "/" . $vud_redhat    . " (" . ($pud_redhat    + $vud_redhat)    . ")\n";
-  $body .= " --- Centos - "                             . $pud_centos     . "/" . $vud_centos    . " (" . ($pud_centos    + $vud_centos)    . ")\n";
-  $body .= " --- Debian - "                             . $pud_debian     . "/" . $vud_debian    . " (" . ($pud_debian    + $vud_debian)    . ")\n";
-  $body .= " --- Oracle Unbreakable Linux - "           . $pud_oracle     . "/" . $vud_oracle    . " (" . ($pud_oracle    + $vud_oracle)    . ")\n";
-  $body .= " --- SUSE - "                               . $pud_suse       . "/" . $vud_suse      . " (" . ($pud_suse      + $vud_suse)      . ")\n";
-  $body .= " --- Fedora - "                             . $pud_fedora     . "/" . $vud_fedora    . " (" . ($pud_fedora    + $vud_fedora)    . ")\n";
-  $body .= " --- Ubuntu - "                             . $pud_ubuntu     . "/" . $vud_ubuntu    . " (" . ($pud_ubuntu    + $vud_ubuntu)    . ")\n";
-  $body .= " --- Other Linux - "                        . $pud_other      . "/" . $vud_other     . " (" . ($pud_other     + $vud_other)     . ")\n";
-  $body .= " -- HP-UX - "                               . $pud_hpux       . "/" . $vud_hpux      . " (" . ($pud_hpux      + $vud_hpux)      . ")\n";
-  $body .= " -- Solaris - "                             . $pud_solaris    . "/" . $vud_solaris   . " (" . ($pud_solaris   + $vud_solaris)   . ")\n";
-  $body .= " - Lab 4 - "                                . $pulab4         . "/" . $vulab4        . " (" . ($pulab4        + $vulab4)        . ")\n";
-  $body .= " -- Linux - "                               . $pu4_linux      . "/" . $vu4_linux     . " (" . ($pu4_linux     + $vu4_linux)     . ")\n";
-  $body .= " --- Red Hat - "                            . $pu4_redhat     . "/" . $vu4_redhat    . " (" . ($pu4_redhat    + $vu4_redhat)    . ")\n";
-  $body .= " --- Centos - "                             . $pu4_centos     . "/" . $vu4_centos    . " (" . ($pu4_centos    + $vu4_centos)    . ")\n";
-  $body .= " --- Debian - "                             . $pu4_debian     . "/" . $vu4_debian    . " (" . ($pu4_debian    + $vu4_debian)    . ")\n";
-  $body .= " --- Oracle Unbreakable Linux - "           . $pu4_oracle     . "/" . $vu4_oracle    . " (" . ($pu4_oracle    + $vu4_oracle)    . ")\n";
-  $body .= " --- SUSE - "                               . $pu4_suse       . "/" . $vu4_suse      . " (" . ($pu4_suse      + $vu4_suse)      . ")\n";
-  $body .= " --- Fedora - "                             . $pu4_fedora     . "/" . $vu4_fedora    . " (" . ($pu4_fedora    + $vu4_fedora)    . ")\n";
-  $body .= " --- Ubuntu - "                             . $pu4_ubuntu     . "/" . $vu4_ubuntu    . " (" . ($pu4_ubuntu    + $vu4_ubuntu)    . ")\n";
-  $body .= " --- Other Linux - "                        . $pu4_other      . "/" . $vu4_other     . " (" . ($pu4_other     + $vu4_other)     . ")\n";
-  $body .= " -- HP-UX - "                               . $pu4_hpux       . "/" . $vu4_hpux      . " (" . ($pu4_hpux      + $vu4_hpux)      . ")\n";
-  $body .= " -- Solaris - "                             . $pu4_solaris    . "/" . $vu4_solaris   . " (" . ($pu4_solaris   + $vu4_solaris)   . ")\n\n";
+  $bgcolor = $color[0];
 
-  $body .= "Total number of ESX/VMWare servers: " . $ptotalesx . "/" . $vtotalesx . " (" . ($ptotalesx + $vtotalesx) . ")\n\n";
+  $headers  = "From: System Count <root@incojs01.scc911.com>\r\n";
+  $headers .= "MIME-Version: 1.0\r\n";
+  $headers .= "CC: " . $Sitedev . "\r\n";
+  $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
-  $body .= "Total number of ESX/VMWare servers by Location: " . $petotalloc     . "/" . $vetotalloc    . " (" . ($petotalloc    + $vetotalloc)    . ")\n";
-  $body .= " - Production - "                                 . $peproduction   . "/" . $veproduction  . " (" . ($peproduction  + $veproduction)  . ")\n";
-  $body .= " - Production Support - "                         . $pesupport      . "/" . $vesupport     . " (" . ($pesupport     + $vesupport)     . ")\n";
-  $body .= " - SQA - "                                        . $pesqa          . "/" . $vesqa         . " (" . ($pesqa         + $vesqa)         . ")\n";
-  $body .= " - Development - "                                . $pedevelopment  . "/" . $vedevelopment . " (" . ($pedevelopment + $vedevelopment) . ")\n";
-  $body .= " - Lab 4 - "                                      . $pelab4         . "/" . $velab4        . " (" . ($pelab4        + $velab4)        . ")\n\n";
+  $output  = "<html>\n";
+  $output .= "<body>\n";
 
-  $body .= "Total number of Windows servers: " . $ptotalwindows . "/" . $vtotalwindows . " (" . ($ptotalwindows + $vtotalwindows) . ")\n\n";
+  $output .= "<table width=80%>\n";
+  $output .= "<tr>\n";
+  $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"4\">Unix Servers by Operating System</th>\n";
+  $output .= "</tr>\n";
+  $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <th>Operating System</th>\n";
+  $output .= "  <th>Physical</th>\n";
+  $output .= "  <th>Virtual</th>\n";
+  $output .= "  <th>Total</th>\n";
+  $output .= "</tr>\n";
 
-  $body .= "Total number of Windows servers by Location: " . $pwtotalloc     . "/" . $vwtotalloc    . " (" . ($pwtotalloc    + $vwtotalloc)    . ")\n";
-  $body .= " - Production - "                              . $pwproduction   . "/" . $vwproduction  . " (" . ($pwproduction  + $vwproduction)  . ")\n";
-  $body .= " - Production Support - "                      . $pwsupport      . "/" . $vwsupport     . " (" . ($pwsupport     + $vwsupport)     . ")\n";
-  $body .= " - SQA - "                                     . $pwsqa          . "/" . $vwsqa         . " (" . ($pwsqa         + $vwsqa)         . ")\n";
-  $body .= " - Development - "                             . $pwdevelopment  . "/" . $vwdevelopment . " (" . ($pwdevelopment + $vwdevelopment) . ")\n";
-  $body .= " - Lab 4 - "                                   . $pwlab4         . "/" . $vwlab4        . " (" . ($pwlab4        + $vwlab4)        . ")\n\n";
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Linux"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $plinux             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vlinux             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($plinux + $vlinux) . "</td>\n";
+  $output .= "</tr>\n";
 
-  $body .= "Counts above are Physical/Virtual (Total)\n";
-  $body .= "This excludes systems owned by miscellaneous (TechOps) as they're likely imports from SecuirtyCenter and reference workstations.\n\n";
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Red Hat"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $predhat             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vredhat             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($predhat + $vredhat) . "</td>\n";
+  $output .= "</tr>\n";
 
-  mail($email, "Weekly System Count", $body, $headers);
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "CentOS"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pcentos             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vcentos             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pcentos + $vcentos) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Debian"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pdebian             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vdebian             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pdebian + $vdebian) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Oracle Unbreakable Linux"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $poracle             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $voracle             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($poracle + $voracle) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "SUSE"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $psuse             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vsuse             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($psuse + $vsuse) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Fedora"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pfedora             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vfedora             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pfedora + $vfedora) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Ubuntu"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pubuntu             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vubuntu             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pubuntu + $vubuntu) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Other Linux"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pother             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vother             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pother + $vother) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "HP-UX"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $phpux             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vhpux             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($phpux + $vhpux) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Solaris"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $psolaris             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vsolaris             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($psolaris + $vsolaris) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $color[1] . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>"                  . "<strong>Total Unix Servers</strong>"           . "</td>\n";
+  $output .= "  <td align=\"center\">" . "<strong>" . $ptotalunix . "</strong>"                 . "</td>\n";
+  $output .= "  <td align=\"center\">" . "<strong>" . $vtotalunix . "</strong>"                 . "</td>\n";
+  $output .= "  <td align=\"center\">" . "<strong>" . ($ptotalunix + $vtotalunix) . "</strong>" . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "</table>\n";
+
+  $output .= "<br>\n";
+
+  $output .= "<table width=80%>\n";
+  $output .= "<tr>\n";
+  $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"4\">Unix Servers by Operating System and Location</th>\n";
+  $output .= "</tr>\n";
+  $output .= "<tr>\n";
+  $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"4\">Production Servers</th>\n";
+  $output .= "</tr>\n";
+  $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <th>Operating System</th>\n";
+  $output .= "  <th>Physical</th>\n";
+  $output .= "  <th>Virtual</th>\n";
+  $output .= "  <th>Total</th>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>"                  . "Linux"  . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pup_linux                . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vup_linux                . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pup_linux + $vup_linux) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Red Hat"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pup_redhat             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vup_redhat             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pup_redhat + $vup_redhat) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "CentOS"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pup_centos             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vup_centos             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pup_centos + $vup_centos) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Debian"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pup_debian             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vup_debian             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pup_debian + $vup_debian) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Oracle Unbreakable Linux"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pup_oracle             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vup_oracle             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pup_oracle + $vup_oracle) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "SUSE"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pup_suse             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vup_suse             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pup_suse + $vup_suse) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Fedora"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pup_fedora             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vup_fedora             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pup_fedora + $vup_fedora) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Ubuntu"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pup_ubuntu             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vup_ubuntu             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pup_ubuntu + $vup_ubuntu) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Other Linux"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pup_other             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vup_other             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pup_other + $vup_other) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "HP-UX"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pup_hpux             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vup_hpux             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pup_hpux + $vup_hpux) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Solaris"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pup_solaris             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vup_solaris             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pup_solaris + $vup_solaris) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $color[1] . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "<strong>Total Production Unix Servers</strong>"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $puproduction             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vuproduction             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($puproduction + $vuproduction) . "</td>\n";
+  $output .= "</tr>\n";
+
+
+  $output .= "<tr>\n";
+  $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"4\">Production Support Servers</th>\n";
+  $output .= "</tr>\n";
+  $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <th>Operating System</th>\n";
+  $output .= "  <th>Physical</th>\n";
+  $output .= "  <th>Virtual</th>\n";
+  $output .= "  <th>Total</th>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>"                  . "Linux"  . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pus_linux                . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vus_linux                . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pus_linux + $vus_linux) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Red Hat"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pus_redhat             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vus_redhat             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pus_redhat + $vus_redhat) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "CentOS"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pus_centos             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vus_centos             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pus_centos + $vus_centos) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Debian"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pus_debian             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vus_debian             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pus_debian + $vus_debian) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Oracle Unbreakable Linux"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pus_oracle             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vus_oracle             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pus_oracle + $vus_oracle) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "SUSE"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pus_suse             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vus_suse             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pus_suse + $vus_suse) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Fedora"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pus_fedora             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vus_fedora             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pus_fedora + $vus_fedora) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Ubuntu"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pus_ubuntu             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vus_ubuntu             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pus_ubuntu + $vus_ubuntu) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Other Linux"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pus_other             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vus_other             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pus_other + $vus_other) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "HP-UX"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pus_hpux             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vus_hpux             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pus_hpux + $vus_hpux) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Solaris"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pus_solaris             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vus_solaris             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pus_solaris + $vus_solaris) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $color[1] . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "<strong>Total Production Support Unix Servers</strong>"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pusupport             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vusupport             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pusupport + $vusupport) . "</td>\n";
+  $output .= "</tr>\n";
+
+
+  $output .= "<tr>\n";
+  $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"4\">SQA Servers</th>\n";
+  $output .= "</tr>\n";
+  $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <th>Operating System</th>\n";
+  $output .= "  <th>Physical</th>\n";
+  $output .= "  <th>Virtual</th>\n";
+  $output .= "  <th>Total</th>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>"                  . "Linux"  . "</td>\n";
+  $output .= "  <td align=\"center\">" . $puq_linux                . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vuq_linux                . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($puq_linux + $vuq_linux) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Red Hat"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $puq_redhat             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vuq_redhat             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($puq_redhat + $vuq_redhat) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "CentOS"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $puq_centos             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vuq_centos             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($puq_centos + $vuq_centos) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Debian"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $puq_debian             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vuq_debian             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($puq_debian + $vuq_debian) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Oracle Unbreakable Linux"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $puq_oracle             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vuq_oracle             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($puq_oracle + $vuq_oracle) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "SUSE"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $puq_suse             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vuq_suse             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($puq_suse + $vuq_suse) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Fedora"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $puq_fedora             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vuq_fedora             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($puq_fedora + $vuq_fedora) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Ubuntu"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $puq_ubuntu             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vuq_ubuntu             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($puq_ubuntu + $vuq_ubuntu) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Other Linux"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $puq_other             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vuq_other             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($puq_other + $vuq_other) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "HP-UX"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $puq_hpux             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vuq_hpux             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($puq_hpux + $vuq_hpux) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Solaris"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $puq_solaris             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vuq_solaris             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($puq_solaris + $vuq_solaris) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $color[1] . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "<strong>Total SQA Unix Servers</strong>"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pusqa             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vusqa             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pusqa + $vusqa) . "</td>\n";
+  $output .= "</tr>\n";
+
+
+  $output .= "<tr>\n";
+  $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"4\">Development Servers</th>\n";
+  $output .= "</tr>\n";
+  $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <th>Operating System</th>\n";
+  $output .= "  <th>Physical</th>\n";
+  $output .= "  <th>Virtual</th>\n";
+  $output .= "  <th>Total</th>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>"                  . "Linux"  . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pud_linux                . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vud_linux                . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pud_linux + $vud_linux) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Red Hat"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pud_redhat             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vud_redhat             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pud_redhat + $vud_redhat) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "CentOS"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pud_centos             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vud_centos             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pud_centos + $vud_centos) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Debian"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pud_debian             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vud_debian             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pud_debian + $vud_debian) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Oracle Unbreakable Linux"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pud_oracle             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vud_oracle             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pud_oracle + $vud_oracle) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "SUSE"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pud_suse             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vud_suse             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pud_suse + $vud_suse) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Fedora"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pud_fedora             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vud_fedora             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pud_fedora + $vud_fedora) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Ubuntu"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pud_ubuntu             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vud_ubuntu             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pud_ubuntu + $vud_ubuntu) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Other Linux"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pud_other             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vud_other             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pud_other + $vud_other) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "HP-UX"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pud_hpux             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vud_hpux             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pud_hpux + $vud_hpux) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Solaris"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pud_solaris             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vud_solaris             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pud_solaris + $vud_solaris) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $color[1] . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "<strong>Total Development Unix Servers</strong>"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pudevelopment             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vudevelopment             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pudevelopment + $vudevelopment) . "</td>\n";
+  $output .= "</tr>\n";
+
+
+  $output .= "<tr>\n";
+  $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"4\">Lab 4 Servers</th>\n";
+  $output .= "</tr>\n";
+  $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <th>Operating System</th>\n";
+  $output .= "  <th>Physical</th>\n";
+  $output .= "  <th>Virtual</th>\n";
+  $output .= "  <th>Total</th>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>"                  . "Linux"  . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pu4_linux                . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vu4_linux                . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pu4_linux + $vu4_linux) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Red Hat"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pu4_redhat             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vu4_redhat             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pu4_redhat + $vu4_redhat) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "CentOS"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pu4_centos             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vu4_centos             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pu4_centos + $vu4_centos) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Debian"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pu4_debian             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vu4_debian             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pu4_debian + $vu4_debian) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Oracle Unbreakable Linux"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pu4_oracle             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vu4_oracle             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pu4_oracle + $vu4_oracle) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "SUSE"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pu4_suse             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vu4_suse             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pu4_suse + $vu4_suse) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Fedora"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pu4_fedora             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vu4_fedora             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pu4_fedora + $vu4_fedora) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Ubuntu"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pu4_ubuntu             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vu4_ubuntu             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pu4_ubuntu + $vu4_ubuntu) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Other Linux"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pu4_other             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vu4_other             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pu4_other + $vu4_other) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "HP-UX"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pu4_hpux             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vu4_hpux             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pu4_hpux + $vu4_hpux) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Solaris"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pu4_solaris             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vu4_solaris             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pu4_solaris + $vu4_solaris) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $color[1] . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "<strong>Total Lab 4 Unix Servers</strong>"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pulab4             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vulab4             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pulab4 + $vulab4) . "</td>\n";
+  $output .= "</tr>\n";
+
+
+  $output .= "<tr style=\"background-color: " . $color[1] . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "<strong>Total Unix Servers</strong>"             . "</td>\n";
+  $output .= "  <td align=\"center\"><strong>" . $putotalloc             . "</strong></td>\n";
+  $output .= "  <td align=\"center\"><strong>" . $vutotalloc             . "</strong></td>\n";
+  $output .= "  <td align=\"center\"><strong>" . ($putotalloc + $vutotalloc) . "</strong></td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "</table>\n";
+
+  $output .= "</br>\n";
+
+  $output .= "<table width=80%>\n";
+  $output .= "<tr>\n";
+  $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"4\">ESX/VMWare Servers</th>\n";
+  $output .= "</tr>\n";
+  $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <th>Operating System</th>\n";
+  $output .= "  <th>Physical</th>\n";
+  $output .= "  <th>Virtual</th>\n";
+  $output .= "  <th>Total</th>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $color[1] . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "<strong>Total ESX/VMWare Servers</strong>"             . "</td>\n";
+  $output .= "  <td align=\"center\"><strong>" . $ptotalesx             . "</strong></td>\n";
+  $output .= "  <td align=\"center\"><strong>" . $vtotalesx             . "</strong></td>\n";
+  $output .= "  <td align=\"center\"><strong>" . ($ptotalesx + $vtotalesx) . "</strong></td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "</table>\n";
+
+  $output .= "</br>\n";
+
+  $output .= "<table width=80%>\n";
+  $output .= "<tr>\n";
+  $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"4\">ESX/VMWare Servers by Location</th>\n";
+  $output .= "</tr>\n";
+  $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <th>Operating System</th>\n";
+  $output .= "  <th>Physical</th>\n";
+  $output .= "  <th>Virtual</th>\n";
+  $output .= "  <th>Total</th>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Production"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $peproduction             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $veproduction             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($peproduction + $veproduction) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Production Support"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pesupport             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vesupport             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pesupport + $vesupport) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "SQA"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pesqa             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vesqa             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pesqa + $vesqa) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Development"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pedevelopment             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vedevelopment             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pedevelopment + $vedevelopment) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Lab"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pelab4             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $velab4             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pelab4 + $velab4) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $color[1] . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "<strong>Total ESX/VMWare Servers</strong>"             . "</td>\n";
+  $output .= "  <td align=\"center\"><strong>" . $petotalloc             . "</strong></td>\n";
+  $output .= "  <td align=\"center\"><strong>" . $vetotalloc             . "</strong></td>\n";
+  $output .= "  <td align=\"center\"><strong>" . ($petotalloc + $vetotalloc) . "</strong></td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "</table>\n";
+
+  $output .= "</br>\n";
+
+  $output .= "<table width=80%>\n";
+  $output .= "<tr>\n";
+  $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"4\">Windows Servers</th>\n";
+  $output .= "</tr>\n";
+  $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <th>Operating System</th>\n";
+  $output .= "  <th>Physical</th>\n";
+  $output .= "  <th>Virtual</th>\n";
+  $output .= "  <th>Total</th>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $color[1] . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "<strong>Total Windows Servers</strong>"             . "</td>\n";
+  $output .= "  <td align=\"center\"><strong>" . $ptotalwindows             . "</strong></td>\n";
+  $output .= "  <td align=\"center\"><strong>" . $vtotalwindows             . "</strong></td>\n";
+  $output .= "  <td align=\"center\"><strong>" . ($ptotalwindows + $vtotalwindows) . "</strong></td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "</table>\n";
+
+  $output .= "</br>\n";
+
+  $output .= "<table width=80%>\n";
+  $output .= "<tr>\n";
+  $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"4\">Windows Servers by Location</th>\n";
+  $output .= "</tr>\n";
+  $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <th>Operating System</th>\n";
+  $output .= "  <th>Physical</th>\n";
+  $output .= "  <th>Virtual</th>\n";
+  $output .= "  <th>Total</th>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Production"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pwproduction             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vwproduction             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pwproduction + $vwproduction) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Product Support"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pwsupport             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vwsupport             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pwsupport + $vwsupport) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "SQA"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pwsqa             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vwsqa             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pwsqa + $vwsqa) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Development"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pwdevelopment             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vwdevelopment             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pwdevelopment + $vwdevelopment) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "Lab 4"             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $pwlab4             . "</td>\n";
+  $output .= "  <td align=\"center\">" . $vwlab4             . "</td>\n";
+  $output .= "  <td align=\"center\">" . ($pwlab4 + $vwlab4) . "</td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "<tr style=\"background-color: " . $color[1] . "; border: 1px solid #000000; font-size: 75%;\">\n";
+  $output .= "  <td>" . "<strong>Total Windows Servers</strong>"             . "</td>\n";
+  $output .= "  <td align=\"center\"><strong>" . $pwtotalloc             . "</strong></td>\n";
+  $output .= "  <td align=\"center\"><strong>" . $vwtotalloc             . "</strong></td>\n";
+  $output .= "  <td align=\"center\"><strong>" . ($pwtotalloc + $vwtotalloc) . "</strong></td>\n";
+  $output .= "</tr>\n";
+
+  $output .= "</table>\n";
+
+  $output .= "<p>This excludes systems owned by miscellaneous (TechOps) as they're likely imports from SecurityCenter and reference workstations.</p>\n";
+
+  $output .= "<p>This mail box is not monitored, please do not reply.</p>\n";
+
+  $output .= "</body>\n";
+  $output .= "</html>\n";
+
+
+  mail($email, "Weekly System Count", $output, $headers);
 
 ?>
