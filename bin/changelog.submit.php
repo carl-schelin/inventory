@@ -562,7 +562,7 @@
 # qa server information
     if ($sqa == 'yes') {
       if ($remedy9 == 'yes') {
-        $remedyemail = "svc_remedyhd91_qa@intrado.com";
+        $remedyemail = "Remedy91HelpdeskQA@intrado.com";
         $remedyserver = "lnmt0cwasrmap10.corp.intrado.pri";
 
         $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
