@@ -56,4 +56,13 @@
 
   $insert = mysql_query($q_string) or die($q_string . ": " . mysql_error());
 
+# okay, enable ssh checks for all systems with ssh
+  $q_string  = "update interface ";
+  $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
+  $q_string .= "set ";
+  $q_string .= "int_nagios = 1,int_ping = 1,int_ssh = 1 ";
+  $q_string .= "where int_openview = 0 and (int_type = 1 or int_type = 4 or int_type = 6) and inv_manager = 1 and inv_ssh = 1 ";
+
+  $insert = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+
 ?>
