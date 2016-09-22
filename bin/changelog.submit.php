@@ -378,7 +378,7 @@
 # yes for magic
   $magic = 'no';
 # yes for remedy
-  $remedy = 'yes';
+  $remedy = 'no';
 
 #
 # This is the Magic ticket system process.
