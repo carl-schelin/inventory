@@ -17,6 +17,12 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
+  $manager = 1;
+
+  if ($argc > 1) {
+    $manager = $argv[1];
+  }
+
   $q_string  = "select prod_id,prod_name ";
   $q_string .= "from products ";
   $q_string .= "order by prod_name ";
@@ -25,7 +31,7 @@
 
     $q_string  = "select inv_name,inv_fqdn ";
     $q_string .= "from inventory ";
-    $q_string .= "where inv_manager = 1 and inv_status = 0 and inv_ssh = 1 and inv_product = " . $a_product['prod_id'] . " ";
+    $q_string .= "where inv_manager = " . $manager . " and inv_status = 0 and inv_ssh = 1 and inv_product = " . $a_product['prod_id'] . " ";
     $q_string .= "order by inv_name ";
     $q_inventory = mysql_query($q_string) or die(mysql_error());
     if (mysql_num_rows($q_inventory) > 0) {
