@@ -4,6 +4,8 @@
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
 # See: https://incowk01/makers/index.php/Coding_Standards
+# Cron: 
+# 30 6 * * * /usr/local/bin/php /usr/local/httpd/bin/ekenner.spreadsheet.php > /usr/local/httpd/htsecure/reports/ekenner.spreadsheet.csv 2>/dev/null
 # Description: From email:
 # I know I have ask about this before however I need to be able to pull a list of all the servers 
 # and equipment from inventory based on age. I need this for all Dev, TST, SQA, CIl and Prod 

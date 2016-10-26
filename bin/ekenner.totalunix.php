@@ -4,6 +4,8 @@
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
 # See: https://incowk01/makers/index.php/Coding_Standards
+# Cron:
+# 0 1 * * 5 /usr/local/bin/php /usr/local/httpd/bin/ekenner.totalunix.php > /usr/local/httpd/htsecure/reports/ekenner.totalunix.csv 2>/dev/null
 # Description: 
 #Here is what I am going to need to report on monthly going forward,
 # 
