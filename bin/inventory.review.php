@@ -40,26 +40,28 @@
   $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
-    $body .= $a_inventory['inv_name'] . " - " . $a_inventory['hw_retired'] . "\n";
+    $servers .= $a_inventory['inv_name'] . " - " . $a_inventory['hw_retired'] . "\n";
 
   }
 
-  if ($debug == 'yes') {
-    print $body;
-  } else {
+  if (strlen($servers) > 0) {
+    $body .= $servers;
 
-    $q_string  = "select usr_email ";
-    $q_string .= "from users ";
-    $q_string .= "left join grouplist on grouplist.gpl_user = users.usr_id ";
-    $q_string .= "where gpl_group = " . $manager . " ";
-    $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    while ($a_users = mysql_fetch_array($q_users)) {
-      print $a_users['usr_email'] . "\n";
-#      if ($a_users['usr_email'] != '') {
-#        mail($a_users['usr_email'], $date . " Retirements", $body, $headers);
-#      }
+    if ($debug == 'yes') {
+      print $body;
+    } else {
+
+      $q_string  = "select usr_email ";
+      $q_string .= "from users ";
+      $q_string .= "left join grouplist on grouplist.gpl_user = users.usr_id ";
+      $q_string .= "where gpl_group = " . $manager . " ";
+      $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      while ($a_users = mysql_fetch_array($q_users)) {
+        if ($a_users['usr_email'] != '') {
+          mail($a_users['usr_email'], $date . " Retirements", $body, $headers);
+        }
+      }
     }
-
   }
 
 
