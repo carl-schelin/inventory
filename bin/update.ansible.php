@@ -30,7 +30,14 @@
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
     if (stripos($a_inventory['sw_software'], "red hat") !== false) {
-      if (stripos($a_inventory['sw_software'], " 6") !== false || stripos($a_inventory['sw_software'], " 7") !== false ) {
+      if (
+        stripos($a_inventory['sw_software'], " 5.8 ") !== false || 
+        stripos($a_inventory['sw_software'], " 5.9 ") !== false || 
+        stripos($a_inventory['sw_software'], " 5.10 ") !== false || 
+        stripos($a_inventory['sw_software'], " 5.11 ") !== false || 
+        stripos($a_inventory['sw_software'], " 6") !== false || 
+        stripos($a_inventory['sw_software'], " 7") !== false
+      ) {
 
         $q_string  = "update inventory ";
         $q_string .= "set ";
