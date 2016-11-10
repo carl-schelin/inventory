@@ -29,12 +29,9 @@
   $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
-    if (stripos($a_inventory['sw_software'], "red hat") !== false) {
+    if (stripos($a_inventory['sw_software'], "red hat") !== false || stripos($a_inventory['sw_software'], "centos") !== false ) {
       if (
-        stripos($a_inventory['sw_software'], " 5.8 ") !== false || 
-        stripos($a_inventory['sw_software'], " 5.9 ") !== false || 
-        stripos($a_inventory['sw_software'], " 5.10 ") !== false || 
-        stripos($a_inventory['sw_software'], " 5.11 ") !== false || 
+        stripos($a_inventory['sw_software'], " 5") !== false || 
         stripos($a_inventory['sw_software'], " 6") !== false || 
         stripos($a_inventory['sw_software'], " 7") !== false
       ) {
