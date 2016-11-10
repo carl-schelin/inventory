@@ -4,19 +4,18 @@
 # Owner: Carl Schelin
 # In order for the changelog entries to be visible, the permissions need to be 644 for the Mail directory.
 
-for i in changelog chglogali chglogdba chglogienv chgloglab chglogmob chglogmon chglognet chglogsba chglogscm chglogse chglogtdm chglogtss chglogvns chglogweb windows
+for i in changelog chglogali chglogdba chglogienv chgloglab chglogmob chglogmon chglognet chglogsba chglogscm chglogse chglogtdm chglogtss chglogvns chglogvtt chglogweb windows
 do
-  FILES="`ls /export/home/$i/Mail/*.changelog 2>&1 | grep -v 'No such file or directory'`"
-  if [[ -n $FILES ]]
+# for incojs01 (Solaris)
+  if [[ -d /export/home/$i/Mail ]]
   then
-    /usr/bin/chmod 644 /export/home/$i/Mail/*.changelog
+    /usr/bin/chmod -R 664 /export/home/$i/Mail
+  fi
+
+# for inventory (RHEL)
+  if [[ -d /home/$i/Mail ]]
+  then
+    /bin/chmod -R 664 /home/$i/Mail
   fi
 done
 
-# Virtualization has to be different:
-
-FILES="`ls /export/home/chglogvtt/Mail/*.chglogvtt 2>&1 | grep -v 'No such file or directory'`"
-if [[ -n $FILES ]]
-then
-  /usr/bin/chmod 644 /export/home/chglogvtt/Mail/*.chglogvtt
-fi
