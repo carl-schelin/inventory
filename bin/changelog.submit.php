@@ -16,6 +16,12 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
+# are tickets created?
+# yes for magic
+  $magic = 'no';
+# yes for remedy
+  $remedy = 'no';
+
 #########################
 ### validate parameter list
 #########################
@@ -57,7 +63,7 @@
 ### validate parameter list
 #########################
 
-  $q_string  = "select usr_email,usr_first,usr_last,usr_name,usr_clientid,usr_group,usr_manager ";
+  $q_string  = "select usr_id,usr_email,usr_first,usr_last,usr_name,usr_clientid,usr_group,usr_manager ";
   $q_string .= "from users ";
   $q_string .= "where (usr_email = '" . $email . "' or usr_altemail like '%" . $email . "%') and usr_id != 1 and usr_disabled = 0 ";
   $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
@@ -67,30 +73,42 @@
 #  $email = $a_users['usr_email'];
   $clientid = $a_users['usr_clientid'];
 
+# users can be members of multiple groups.
+# run through the grouplist table for this user
+# and try to locate the saved file.
+
+  $q_string  = "select gpl_group,grp_changelog,grp_magic ";
+  $q_string .= "from grouplist ";
+  $q_string .= "left join groups on groups.grp_id = grouplist.gpl_group ";
+  $q_string .= "where gpl_user = " . $a_users['usr_id'] . " ";
+  $q_grouplist = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  while ($a_grouplist = mysql_fetch_array($q_grouplist)) {
+
+# looking for /export/home/group_changelog_directory/Mail/user@domain.report.random_number
+    if (file_exists('/export/home/' . $a_grouplist['grp_changelog'] . '/Mail/' . $email . '.report.' . $random)) {
+      $groupchangelog = $a_grouplist['grp_changelog'];
+      $groupmagicid   = $a_grouplist['grp_magic'];
+    }
+  }
+
+  if ($groupmagicid == '') {
+    $groupmagicid = "CORP-UNIX SYSADMIN";
+  }
+
+# get the manager information for the user.
   $q_string  = "select usr_first,usr_last,usr_name,usr_clientid ";
   $q_string .= "from users ";
   $q_string .= "where usr_id = " . $a_users['usr_manager'] . " and usr_disabled = 0 ";
   $q_manager = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   $a_manager = mysql_fetch_array($q_manager);
 
-  $q_string  = "select grp_changelog,grp_magic ";
-  $q_string .= "from groups ";
-  $q_string .= "where grp_id = " . $a_users['usr_group'];
-  $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_groups = mysql_fetch_array($q_groups);
-
-  $groupid = $a_groups['grp_magic'];
-  if ($groupid == '') {
-    $groupid = "CORP-UNIX SYSADMIN";
-  }
-
 # added because Josh is in a different group (Mobility) that has their own changelog file.
 # Josh sends changelogs for the Unix group on incojs01 and changelogs for Mobility via Outlook.
   if ($email == 'jjohnson@incojs01.scc911.com') {
-    $a_groups['grp_changelog'] = 'changelog';
+    $groupchangelog = 'changelog';
   }
 
-  $changelog = "/export/home/" . $a_groups['grp_changelog'] . "/Mail/" . $email . ".report." . $random;
+  $changelog = "/export/home/" . $groupchangelog . "/Mail/" . $email . ".report." . $random;
 
 # received an "Out of Office:" message; just exit the script
 # don't forget to delete the .report file or the next report will be whack.
@@ -102,7 +120,7 @@
 
 # bail if clientid not set. Can't submit to remedy without it.
 # this also fails if email is incorrect including alternate emails.
-  if ($a_users['usr_clientid'] == '') {
+  if ($a_users['usr_clientid'] == '' && $remedy == 'yes') {
     print "ERROR: RemedyID not set\n";
     $headers  = "From: Changelog <changelog@incojs01.scc911.com>\r\n";
     $headers .= "CC: " . $Sitedev . "\r\n";
@@ -124,7 +142,7 @@
   }
 
 # bail if manager is not selected. Can't submit to remedy without it.
-  if ($a_users['usr_manager'] == 0) {
+  if ($a_users['usr_manager'] == 0 && $remedy == 'yes') {
     print "ERROR: Manager not selected\n";
     $headers  = "From: Changelog <changelog@incojs01.scc911.com>\r\n";
     $headers .= "CC: " . $Sitedev . "\r\n";
@@ -142,7 +160,7 @@
 
 
 # bail if manager or manager clientid is not set. Can't submit to remedy without it.
-  if ($a_manager['usr_clientid'] == '') {
+  if ($a_manager['usr_clientid'] == '' && $remedy == 'yes') {
     print "ERROR: Manager's RemedyID not set\n";
     $headers  = "From: Changelog <changelog@incojs01.scc911.com>\r\n";
     $headers .= "CC: " . $Sitedev . "\r\n";
@@ -375,11 +393,6 @@
     $report = $savedlines;
   }
 
-# yes for magic
-  $magic = 'no';
-# yes for remedy
-  $remedy = 'no';
-
 #
 # This is the Magic ticket system process.
 #
@@ -417,7 +430,7 @@
 #########
 ### Group ID: -g-/*g*
 #########
-    $body .= "-g-" . $groupid . "*g*\n\n";
+    $body .= "-g-" . $groupmagicid . "*g*\n\n";
 
 #########
 ### Server: -s-/*s*
