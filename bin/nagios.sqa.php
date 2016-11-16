@@ -166,7 +166,7 @@
         print "\t2d_coords\t\t" . $a_inventory['int_xpoint'] . "," . $a_inventory['int_ypoint'] . "\n";
         print "\t3d_coords\t\t" . $a_inventory['int_xpoint'] . "," . $a_inventory['int_ypoint'] . "," . $a_inventory['int_zpoint'] . "\n";
       }
-      print "\tcontact_groups\t\t" . $groupname . "\n";
+      print "\tcontact_groups\t\t" . $groupname . ",Monitoring\n";
       print $disabled;
       if ($a_inventory['int_hours'] == 0) {
         print "\tcheck_period\t\tworkhours\n";
