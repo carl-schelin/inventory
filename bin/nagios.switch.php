@@ -123,9 +123,7 @@
       print "\thost_name\t\t" . $a_inventory['int_addr'] . "\n";
       print "\talias\t\t\t" . $a_inventory['int_addr'] . "\n";
       print "\taddress\t\t\t" . $a_inventory['int_addr'] . "\n";
-      if ($a_inventory['int_gate'] == '10.100.128.1') {
-        print "\tparents\t\t\tincomsu1\n";
-      } else {
+      if ($a_inventory['int_gate'] != '10.100.128.1') {
         print "\tparents\t\t\t" . $a_inventory['int_gate'] . "\n";
       }
       print "\ticon_image\t\tswitch40.png\n";
@@ -136,7 +134,7 @@
         print "\t2d_coords\t\t" . $a_inventory['int_xpoint'] . "," . $a_inventory['int_ypoint'] . "\n";
         print "\t3d_coords\t\t" . $a_inventory['int_xpoint'] . "," . $a_inventory['int_ypoint'] . "," . $a_inventory['int_zpoint'] . "\n";
       }
-      print "\tcontact_groups\t\t" . $groupname . "\n";
+      print "\tcontact_groups\t\t" . $groupname . ",Monitoring\n";
       print $disabled;
       if ($a_inventory['int_hours'] == 0) {
         print "\tcheck_period\t\tworkhours\n";
