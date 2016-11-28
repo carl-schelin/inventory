@@ -43,7 +43,7 @@
   $output .= "<p><b>NOTE: This does not mean the system is not supported</b>. There could be missing (line is highlighted) or invalid ";
   $output .= "Serial or Service Tag numbers. If there is an error in the Serial or Service Tag numbers in the Inventory, updating or ";
   $output .= "adding it will remove it from the listing after the next data load. Errors in Lynda's spreadsheet must be reported ";
-  $otuput .= "to Lynda.</p>\n";
+  $output .= "to Lynda.</p>\n";
 
   $output .= "<table width=80%>\n";
   $output .= "<tr>\n";
