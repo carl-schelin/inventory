@@ -124,7 +124,7 @@
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
   $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
   $q_string .= "left join states on states.st_id = locations.loc_state ";
-  $q_string .= "where inv_status = 1 and mod_virtual = 0 and hw_primary = 1 and hw_supid_verified = 1 and inv_manager = " . $manager . " ";
+  $q_string .= "where inv_status = 1 and mod_virtual = 0 and hw_primary = 1 and hw_supid_verified = 1 and hw_reused = '0000-00-00' and inv_manager = " . $manager . " ";
   $q_string .= "order by inv_name ";
   $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   if (mysql_num_rows($q_hardware) > 0) {
@@ -154,15 +154,15 @@
 
       $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
       $output .= "  <td>" . $a_hardware['inv_name']                                  . "</td>\n";
-      $output .= "  <td>" . $a_inventory['inv_name']                                  . "</td>\n";
-      $output .= "  <td>" . $a_hardware['hw_retired']                                  . "</td>\n";
+      $output .= "  <td>" . $a_inventory['inv_name']                                 . "</td>\n";
+      $output .= "  <td>" . $a_hardware['hw_retired']                                . "</td>\n";
       $output .= "  <td>" . $a_hardware['mod_name']                                  . "</td>\n";
       $output .= "  <td>" . $a_hardware['ct_city'] . ", " . $a_hardware['st_state']  . "</td>\n";
       $output .= "  <td>" . $a_hardware['hw_asset']                                  . "</td>\n";
       $output .= "  <td>" . $a_hardware['hw_serial']                                 . "</td>\n";
       $output .= "  <td>" . $a_hardware['hw_service']                                . "</td>\n";
-      $output .= "  <td>" . $a_hardware['hw_supportstart']                                . "</td>\n";
-      $output .= "  <td>" . $a_hardware['hw_supportend']                                . "</td>\n";
+      $output .= "  <td>" . $a_hardware['hw_supportstart']                           . "</td>\n";
+      $output .= "  <td>" . $a_hardware['hw_supportend']                             . "</td>\n";
       $output .= "</tr>\n";
     }
   }
