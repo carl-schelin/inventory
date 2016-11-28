@@ -24,8 +24,8 @@
   }
 
 # In debug mode, it prints out the email vs sending it.
-  $debug = 'no';
   $debug = 'yes';
+  $debug = 'no';
 
   $headers  = "From: Inventory Management <inventory@incojs01.scc911.com>\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
@@ -176,10 +176,20 @@
 
   $body = $output;
 
+  $q_string  = "select grp_email ";
+  $q_string .= "from groups ";
+  $q_string .= "where grp_id = " . $manager . " ";
+  $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $a_groups = mysql_fetch_array($q_groups);
+
   if ($debug == 'yes') {
     mail($Sitedev, "Unsupported Hardware Report", $body, $headers);
   } else {
-    mail("unixadmins@intrado.com", "Unsupported Hardware Report", $body, $headers);
+    if ($a_groups['grp_email'] != '') {
+      mail($a_groups['grp_email'], "Unsupported Hardware Report", $body, $headers);
+    } else {
+      mail($Sitedev, "Invalid Group Email: " . $manager, $body, $headers);
+    }
   }
 
 ?>
