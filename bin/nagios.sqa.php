@@ -80,7 +80,7 @@
 
   $q_string  = "select inv_id,inv_name,inv_function,";
   $q_string .= "sw_software,";
-  $q_string .= "int_addr,int_gate,inv_ssh,inv_location,int_xpoint,int_ypoint,int_zpoint,int_ssh,int_ping,";
+  $q_string .= "int_addr,int_gate,inv_ssh,inv_location,int_xpoint,int_ypoint,int_zpoint,int_ssh,int_ping,int_http,int_ftp,";
   $q_string .= "grp_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
@@ -198,7 +198,7 @@
       }
 
 # ssh to servers
-      if ($a_inventory['int_ssh'] == 1 && $a_inventory['inv_ssh'] == 1) {
+      if ($a_inventory['int_ssh'] == 1) {
         $sshservers .= $sshcomma . $a_inventory['inv_name'];
         $sshcomma = ",";
       }
@@ -206,6 +206,16 @@
       if ($a_inventory['int_ping'] == 1) {
         $pingservers .= $pingcomma . $a_inventory['inv_name'];
         $pingcomma = ",";
+      }
+# http servers
+      if ($a_inventory['int_http'] == 1) {
+        $httpservers .= $httpcomma . $a_inventory['inv_name'];
+        $httpcomma = ",";
+      }
+# ftp servers
+      if ($a_inventory['int_ping'] == 1) {
+        $ftpservers .= $ftpcomma . $a_inventory['inv_name'];
+        $ftpcomma = ",";
       }
 
     }
@@ -280,6 +290,24 @@
     print "        host_name                       " . $sshservers . "\n";
     print "        service_description             SSH\n";
     print "        check_command                   check_ssh\n";
+    print "        }\n";
+    print "\n";
+  }
+  if (strlen($httpservers) > 0) {
+    print "define service{\n";
+    print "        use                             local-service         ; Name of service template to use\n";
+    print "        host_name                       " . $httpservers . "\n";
+    print "        service_description             HTTP\n";
+    print "        check_command                   check_http\n";
+    print "        }\n";
+    print "\n";
+  }
+  if (strlen($ftpservers) > 0) {
+    print "define service{\n";
+    print "        use                             local-service         ; Name of service template to use\n";
+    print "        host_name                       " . $ftpservers . "\n";
+    print "        service_description             FTP\n";
+    print "        check_command                   check_ftp\n";
     print "        }\n";
     print "\n";
   }
