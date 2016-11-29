@@ -80,7 +80,7 @@
 
   $q_string  = "select inv_id,inv_name,inv_function,";
   $q_string .= "sw_software,";
-  $q_string .= "int_addr,int_gate,inv_ssh,inv_location,int_xpoint,int_ypoint,int_zpoint,int_ssh,int_ping,int_http,int_ftp,";
+  $q_string .= "int_server,int_addr,int_gate,inv_ssh,inv_location,int_xpoint,int_ypoint,int_zpoint,int_ssh,int_ping,int_http,int_ftp,";
   $q_string .= "grp_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
@@ -120,8 +120,8 @@
 
       print "define host{\n";
       print "\tuse\t\t\t" . $os . "\n";
-      print "\thost_name\t\t" . $a_inventory['inv_name'] . "\n";
-      print "\talias\t\t\t" . $a_inventory['inv_name'] . "\n";
+      print "\thost_name\t\t" . $a_inventory['int_addr'] . "\n";
+      print "\talias\t\t\t" . $a_inventory['int_addr'] . "\n";
       print "\taddress\t\t\t" . $a_inventory['int_addr'] . "\n";
       if ($a_inventory['int_gate'] != '10.100.128.1') {
         print "\tparents\t\t\t" . $a_inventory['int_gate'] . "\n";
@@ -175,22 +175,22 @@
 
 # ssh to servers
       if ($a_inventory['int_ssh'] == 1) {
-        $sshservers .= $sshcomma . $a_inventory['inv_name'];
+        $sshservers .= $sshcomma . $a_inventory['int_addr'];
         $sshcomma = ",";
       }
 # ping servers
       if ($a_inventory['int_ping'] == 1) {
-        $pingservers .= $pingcomma . $a_inventory['inv_name'];
+        $pingservers .= $pingcomma . $a_inventory['int_addr'];
         $pingcomma = ",";
       }
 # http servers
       if ($a_inventory['int_http'] == 1) {
-        $httpservers .= $httpcomma . $a_inventory['inv_name'];
+        $httpservers .= $httpcomma . $a_inventory['int_addr'];
         $httpcomma = ",";
       }
 # ftp servers
       if ($a_inventory['int_ftp'] == 1) {
-        $ftpservers .= $ftpcomma . $a_inventory['inv_name'];
+        $ftpservers .= $ftpcomma . $a_inventory['int_addr'];
         $ftpcomma = ",";
       }
 
