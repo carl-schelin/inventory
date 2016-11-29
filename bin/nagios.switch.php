@@ -120,8 +120,8 @@
 
       print "define host{\n";
       print "\tuse\t\t\t" . $os . "\n";
-      print "\thost_name\t\t" . $a_inventory['int_addr'] . "\n";
-      print "\talias\t\t\t" . $a_inventory['int_addr'] . "\n";
+      print "\thost_name\t\t" . $a_inventory['inv_name'] . "\n";
+      print "\talias\t\t\t" . $a_inventory['inv_name'] . "\n";
       print "\taddress\t\t\t" . $a_inventory['int_addr'] . "\n";
       if ($a_inventory['int_gate'] != '10.100.128.1') {
         print "\tparents\t\t\t" . $a_inventory['int_gate'] . "\n";
