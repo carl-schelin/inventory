@@ -189,7 +189,7 @@
         $httpcomma = ",";
       }
 # ftp servers
-      if ($a_inventory['int_ping'] == 1) {
+      if ($a_inventory['int_ftp'] == 1) {
         $ftpservers .= $ftpcomma . $a_inventory['inv_name'];
         $ftpcomma = ",";
       }
