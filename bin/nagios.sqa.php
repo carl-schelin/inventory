@@ -80,7 +80,7 @@
 
   $q_string  = "select inv_id,inv_name,inv_function,";
   $q_string .= "sw_software,";
-  $q_string .= "int_addr,int_gate,inv_ssh,inv_location,int_xpoint,int_ypoint,int_zpoint,int_ssh,int_ping,int_http,int_ftp,";
+  $q_string .= "int_addr,int_gate,inv_ssh,inv_location,int_xpoint,int_ypoint,int_zpoint,int_ssh,int_ping,int_http,int_ftp,int_smtp,";
   $q_string .= "grp_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
@@ -217,6 +217,11 @@
         $ftpservers .= $ftpcomma . $a_inventory['inv_name'];
         $ftpcomma = ",";
       }
+# smtp servers
+      if ($a_inventory['int_smtp'] == 1) {
+        $smtpservers .= $smtpcomma . $a_inventory['inv_name'];
+        $smtpcomma = ",";
+      }
 
     }
   }
@@ -311,5 +316,15 @@
     print "        }\n";
     print "\n";
   }
+  if (strlen($smtpservers) > 0) {
+    print "define service{\n"; 
+    print "        use                             local-service         ; Name of service template to use\n";
+    print "        host_name                       " . $smtpservers . "\n";
+    print "        service_description             SMTP\n";
+    print "        check_command                   check_smtp\n";
+    print "        }\n";
+    print "\n";
+  }
+
 
 ?>
