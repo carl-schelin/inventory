@@ -55,12 +55,11 @@
   $output .= "  <th>Location</th>\n";
   $output .= "  <th>Asset Tag</th>\n";
   $output .= "  <th>Serial #</th>\n";
-  $output .= "  <th>Service Tag</th>\n";
   $output .= "</tr>\n";
 
 # need to get systems that are physical but don't have the flag set
 
-  $q_string  = "select inv_name,mod_name,ct_city,st_state,hw_asset,hw_serial,hw_service ";
+  $q_string  = "select inv_name,mod_name,ct_city,st_state,hw_asset,hw_serial ";
   $q_string .= "from hardware ";
   $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
@@ -73,7 +72,7 @@
   if (mysql_num_rows($q_hardware) > 0) {
     while ($a_hardware = mysql_fetch_array($q_hardware)) {
 
-      if ($a_hardware['hw_serial'] == '' && $a_hardware['hw_service'] == '') {
+      if ($a_hardware['hw_serial'] == '') {
         $bgcolor = $color[0];
       } else {
         $bgcolor = $color[1];
@@ -85,7 +84,6 @@
       $output .= "  <td>" . $a_hardware['ct_city'] . ", " . $a_hardware['st_state']  . "</td>\n";
       $output .= "  <td>" . $a_hardware['hw_asset']                                  . "</td>\n";
       $output .= "  <td>" . $a_hardware['hw_serial']                                 . "</td>\n";
-      $output .= "  <td>" . $a_hardware['hw_service']                                . "</td>\n";
       $output .= "</tr>\n";
     }
   }
@@ -111,13 +109,12 @@
   $output .= "  <th>Location</th>\n";
   $output .= "  <th>Asset Tag</th>\n";
   $output .= "  <th>Serial #</th>\n";
-  $output .= "  <th>Service Tag</th>\n";
   $output .= "  <th>Contract Start</th>\n";
   $output .= "  <th>Contract End</th>\n";
   $output .= "</tr>\n";
 
 # need to get systems that are physical but don't have the flag set
-  $q_string  = "select inv_name,mod_name,ct_city,st_state,hw_asset,hw_serial,hw_service,hw_retired,hw_supportstart,hw_supportend ";
+  $q_string  = "select inv_name,mod_name,ct_city,st_state,hw_asset,hw_serial,hw_retired,hw_supportstart,hw_supportend ";
   $q_string .= "from hardware ";
   $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
@@ -139,9 +136,6 @@
         $q_string .= "(hw_serial = '" . $a_hardware['hw_serial'] . "'";
         $or = ' or ';
       }
-      if ($a_hardware['hw_service'] != '') {
-        $q_string .= $or . "hw_service = '" . $a_hardware['hw_service'] . "'";
-      }
       $q_string .= ") and inv_status = 0 ";
       $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
       if (mysql_num_rows($q_inventory) > 0) {
@@ -160,7 +154,6 @@
       $output .= "  <td>" . $a_hardware['ct_city'] . ", " . $a_hardware['st_state']  . "</td>\n";
       $output .= "  <td>" . $a_hardware['hw_asset']                                  . "</td>\n";
       $output .= "  <td>" . $a_hardware['hw_serial']                                 . "</td>\n";
-      $output .= "  <td>" . $a_hardware['hw_service']                                . "</td>\n";
       $output .= "  <td>" . $a_hardware['hw_supportstart']                           . "</td>\n";
       $output .= "  <td>" . $a_hardware['hw_supportend']                             . "</td>\n";
       $output .= "</tr>\n";
