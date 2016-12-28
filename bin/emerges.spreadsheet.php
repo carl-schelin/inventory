@@ -20,7 +20,7 @@
 
   print "\"Asset Family\",\"Asset Class\",\"Asset Name\",\"Cost Center\",\"Model\",\"Location (TZ)\",\"IP Address\",\"Primary Application\",\"Support Group\",\"Oper Sys\",\"Security Risk Rating\",\"App Owner?\",\"Serial\"\n";
 
-  $q_string  = "select inv_id,inv_name,mod_vendor,mod_name,ct_city,inv_zone,inv_function,grp_name,inv_appadmin,part_name,inv_virtual,hw_serial,hw_service,zone_name ";
+  $q_string  = "select inv_id,inv_name,mod_vendor,mod_name,ct_city,inv_zone,inv_function,grp_name,inv_appadmin,part_name,inv_virtual,hw_serial,zone_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
   $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
@@ -67,10 +67,6 @@
     $serial = '';
     if (strlen($a_inventory['hw_serial']) > 0) {
       $serial = $a_inventory['hw_serial'];
-    }
-# then if dell, it overwrites the serial number
-    if (strlen($a_inventory['hw_service']) > 0) {
-      $serial = $a_inventory['hw_service'];
     }
 
     if (strlen($a_inventory['zone_name']) > 0) {
