@@ -613,10 +613,10 @@
     $output .= "<table width=80%>\n";
 
     $output .= "<tr>\n";
-    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Primary Hardware Information</th>\n";
+    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"4\">Primary Hardware Information</th>\n";
     $output .= "</tr>\n";
 
-    $q_string  = "select hw_serial,hw_asset,hw_service,hw_vendorid ";
+    $q_string  = "select hw_serial,hw_asset,hw_vendorid ";
     $q_string .= "from hardware ";
     $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1";
     $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
@@ -633,7 +633,6 @@
     $output .= "  <td><strong>Model</strong>: "            . $a_models['mod_name']     . "</td>\n";
     $output .= "  <td><strong>Serial Number</strong>: "    . $a_hardware['hw_serial']  . "</td>\n";
     $output .= "  <td><strong>Asset Tag</strong>: "        . $a_hardware['hw_asset']   . "</td>\n";
-    $output .= "  <td><strong>Dell Service Tag</strong>: " . $a_hardware['hw_service'] . "</td>\n";
     $output .= "</tr>\n";
 
     $output .= "</table>\n\n";
@@ -785,12 +784,11 @@
     if (substr($action, 0, 1) == 'h' || $action == '*' || substr($action, 0, 1) == 'a') {
       $output .= "<table width=80%>\n";
       $output .= "<tr>\n";
-      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"9\">Full Hardware Listing</th>\n";
+      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"8\">Full Hardware Listing</th>\n";
       $output .= "</tr>\n";
       $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
       $output .= "  <th>Serial Number</th>\n";
       $output .= "  <th>Asset Tag</th>\n";
-      $output .= "  <th>Service Tag (Dell)</th>\n";
       $output .= "  <th>Vendor</th>\n";
       $output .= "  <th>Model</th>\n";
       $output .= "  <th>Size</th>\n";
@@ -799,7 +797,7 @@
       $output .= "  <th>Last</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select hw_serial,hw_asset,hw_service,hw_vendorid,hw_size,hw_speed,part_name,hw_verified,hw_update ";
+      $q_string  = "select hw_serial,hw_asset,hw_vendorid,hw_size,hw_speed,part_name,hw_verified,hw_update ";
       $q_string .= "from hardware ";
       $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
       $q_string .= "where hw_deleted = 0 and hw_companyid = " . $a_inventory['inv_id'] . " ";
@@ -819,7 +817,6 @@
         $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
         $output .= "  <td>" . $a_hardware['hw_serial']  . "</td>\n";
         $output .= "  <td>" . $a_hardware['hw_asset']   . "</td>\n";
-        $output .= "  <td>" . $a_hardware['hw_service'] . "</td>\n";
         $output .= "  <td>" . $a_models['mod_vendor']   . "</td>\n";
         $output .= "  <td>" . $a_models['mod_name']     . "</td>\n";
         $output .= "  <td>" . $a_hardware['hw_size']    . "</td>\n";
