@@ -17,7 +17,7 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  $q_string  = "select inv_id,inv_name,inv_fqdn,zone_name,hw_service,inv_notes ";
+  $q_string  = "select inv_id,inv_name,inv_fqdn,zone_name,hw_serial,inv_notes ";
   $q_string .= "from inventory ";
   $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
   $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
@@ -44,7 +44,7 @@
     $a_inventory['zone_name'] = strtolower($a_inventory['zone_name']);
     $a_inventory['inv_notes'] = strtolower($a_inventory['inv_notes']);
 
-    print $a_inventory['inv_name'] . ":" . $a_inventory['inv_fqdn'] . ":$os:" . $a_inventory['zone_name'] . ":" . $tags . ":" . $a_inventory['inv_notes'] . ":" . $a_inventory['hw_service'] . "\n";
+    print $a_inventory['inv_name'] . ":" . $a_inventory['inv_fqdn'] . ":$os:" . $a_inventory['zone_name'] . ":" . $tags . ":" . $a_inventory['inv_notes'] . ":" . $a_inventory['hw_serial'] . "\n";
 
   }
 
