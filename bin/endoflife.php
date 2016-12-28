@@ -23,7 +23,7 @@
 
   $product = '';
   $q_string  = "select inv_id,inv_name,inv_function,prod_name,hw_group,mod_vendor,mod_name,mod_virtual,mod_eol,";
-  $q_string .= "hw_service,hw_purchased,grp_name,inv_appadmin,sup_company,sup_contract,hw_eolticket ";
+  $q_string .= "hw_serial,hw_purchased,grp_name,inv_appadmin,sup_company,sup_contract,hw_eolticket ";
   $q_string .= "from inventory ";
   $q_string .= "left join hardware on inventory.inv_id = hardware.hw_companyid ";
   $q_string .= "left join groups   on groups.grp_id    = hardware.hw_group ";
