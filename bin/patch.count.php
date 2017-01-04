@@ -42,134 +42,164 @@
 
     if (strpos($a_software['sw_software'], 'Red Hat') !== false) {
       $target = 'RHEL 6.8';
+      $version = 'RHEL 5.11';
       if (strpos($a_software['sw_software'], ' 5 ') !== false) {
-        $target = 'RHEL 5.11';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 5.1 ') !== false) {
-        $target = 'RHEL 5.11';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 5.2 ') !== false) {
-        $target = 'RHEL 5.11';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 5.3 ') !== false) {
-        $target = 'RHEL 5.11';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 5.4 ') !== false) {
-        $target = 'RHEL 5.11';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 5.5 ') !== false) {
-        $target = 'RHEL 5.11';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 5.6 ') !== false) {
-        $target = 'RHEL 5.11';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 5.7 ') !== false) {
-        $target = 'RHEL 5.11';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 5.8 ') !== false) {
-        $target = 'RHEL 5.11';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 5.9 ') !== false) {
-        $target = 'RHEL 5.11';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 5.10 ') !== false) {
-        $target = 'RHEL 5.11';
+        $target = $version;
       }
+      if (strpos($a_software['sw_software'], ' 5.11 ') !== false) {
+        $target = $version;
+      }
+      $version = 'RHEL 6.8';
       if (strpos($a_software['sw_software'], ' 6 ') !== false) {
-        $target = 'RHEL 6.8';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 6.1 ') !== false) {
-        $target = 'RHEL 6.8';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 6.2 ') !== false) {
-        $target = 'RHEL 6.8';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 6.3 ') !== false) {
-        $target = 'RHEL 6.8';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 6.4 ') !== false) {
-        $target = 'RHEL 6.8';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 6.5 ') !== false) {
-        $target = 'RHEL 6.8';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 6.6 ') !== false) {
-        $target = 'RHEL 6.8';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 6.7 ') !== false) {
-        $target = 'RHEL 6.8';
+        $target = $version;
       }
+      if (strpos($a_software['sw_software'], ' 6.8 ') !== false) {
+        $target = $version;
+      }
+      $version = 'RHEL 7.3';
       if (strpos($a_software['sw_software'], ' 7 ') !== false) {
-        $target = 'RHEL 7.2';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 7.1 ') !== false) {
-        $target = 'RHEL 7.2';
+        $target = $version;
+      }
+      if (strpos($a_software['sw_software'], ' 7.2 ') !== false) {
+        $target = $version;
+      }
+      if (strpos($a_software['sw_software'], ' 7.3 ') !== false) {
+        $target = $version;
       }
     }
     if (strpos($a_software['sw_software'], 'CentOS') !== false) {
       $target = 'CentOS 6.8';
+      $version = 'CentOS 5.11';
       if (strpos($a_software['sw_software'], ' 5 ') !== false) {
-        $target = 'CentOS 5.11';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 5.1 ') !== false) {
-        $target = 'CentOS 5.11';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 5.2 ') !== false) {
-        $target = 'CentOS 5.11';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 5.3 ') !== false) {
-        $target = 'CentOS 5.11';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 5.4 ') !== false) {
-        $target = 'CentOS 5.11';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 5.5 ') !== false) {
-        $target = 'CentOS 5.11';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 5.6 ') !== false) {
-        $target = 'CentOS 5.11';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 5.7 ') !== false) {
-        $target = 'CentOS 5.11';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 5.8 ') !== false) {
-        $target = 'CentOS 5.11';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 5.9 ') !== false) {
-        $target = 'CentOS 5.11';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 5.10 ') !== false) {
-        $target = 'CentOS 5.11';
+        $target = $version;
       }
+      if (strpos($a_software['sw_software'], ' 5.11 ') !== false) {
+        $target = $version;
+      }
+      $version = 'CentOS 6.8';
       if (strpos($a_software['sw_software'], ' 6 ') !== false) {
-        $target = 'CentOS 6.8';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 6.1 ') !== false) {
-        $target = 'CentOS 6.8';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 6.2 ') !== false) {
-        $target = 'CentOS 6.8';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 6.3 ') !== false) {
-        $target = 'CentOS 6.8';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 6.4 ') !== false) {
-        $target = 'CentOS 6.8';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 6.5 ') !== false) {
-        $target = 'CentOS 6.8';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 6.6 ') !== false) {
-        $target = 'CentOS 6.8';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 6.7 ') !== false) {
-        $target = 'CentOS 6.8';
+        $target = $version;
       }
+      if (strpos($a_software['sw_software'], ' 6.8 ') !== false) {
+        $target = $version;
+      }
+      $version = 'CentOS 7.3';
       if (strpos($a_software['sw_software'], ' 7 ') !== false) {
-        $target = 'CentOS 7.2';
+        $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 7.1 ') !== false) {
-        $target = 'CentOS 7.2';
+        $target = $version;
+      }
+      if (strpos($a_software['sw_software'], ' 7.2 ') !== false) {
+        $target = $version;
+      }
+      if (strpos($a_software['sw_software'], ' 7.3 ') !== false) {
+        $target = $version;
       }
     }
     if (strpos($a_software['sw_software'], 'HP-UX') !== false) {
