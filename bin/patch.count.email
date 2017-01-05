@@ -5,6 +5,9 @@
 # Sends patch count report to Sharepoint site but only on the first Wednesday
 # Deletes patch.count.*.csv files older than 90 days
 
+# root.cron: # patch report for Denise. Run every night and on the 1st of each month, emailed to the Windows server for posterity
+# root.cron: 0 7 * * 3 /usr/local/httpd/bin/patch.count.email > /dev/null 2>&1
+
 DATE=`date +"%d"`
 
 if [[ $DATE -lt 8 ]]
