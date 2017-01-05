@@ -6,6 +6,10 @@
 # See: https://incowk01/makers/index.php/Coding_Standards
 # Description: Retrieve the list of open bug and feature requests and email to interested parties.
 
+# root.cron: # send out email reports for the support contracts
+# root.cron: 0 5 * * 1 /usr/local/bin/php /usr/local/httpd/bin/support.email.php 1 > /dev/null 2>&1
+# root.cron: 0 5 * * 1 /usr/local/bin/php /usr/local/httpd/bin/support.email.php 4 > /dev/null 2>&1
+
   include('settings.php');
   include($Sitepath . '/function.php');
 
