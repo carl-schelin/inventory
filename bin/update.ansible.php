@@ -5,6 +5,9 @@
 # See: https://incowk01/makers/index.php/Coding_Standards
 # Description:
 
+# root.cron: # update all RH 6 and 7 ansible setting to 1
+# root.cron: 0 1 * * * /usr/local/bin/php /usr/local/httpd/bin/update.ansible.php > /dev/null 2>&1
+
   include('settings.php');
   include($Sitepath . '/function.php');
 
@@ -31,9 +34,9 @@
 
     if (stripos($a_inventory['sw_software'], "red hat") !== false || stripos($a_inventory['sw_software'], "centos") !== false ) {
       if (
-        stripos($a_inventory['sw_software'], " 5") !== false || 
-        stripos($a_inventory['sw_software'], " 6") !== false || 
-        stripos($a_inventory['sw_software'], " 7") !== false
+        stripos($a_inventory['sw_software'], " 5.") !== false || 
+        stripos($a_inventory['sw_software'], " 6.") !== false || 
+        stripos($a_inventory['sw_software'], " 7.") !== false
       ) {
 
         $q_string  = "update inventory ";
