@@ -1,4 +1,14 @@
 <?php
+# Script: inventory.review.php
+# Owner: Carl Schelin
+# Coding Standard 3.0 Applied
+# See: https://incowk01/makers/index.php/Coding_Standards
+# Description: send out a list of all retired and rsdp systems
+
+# root.cron: # Monthly review of retired systems
+# root.cron: 0 5 1 * * /usr/local/bin/php /usr/local/httpd/bin/inventory.review.php 1
+# root.cron: 0 5 1 * * /usr/local/bin/php /usr/local/httpd/bin/inventory.review.php 26
+
   include('settings.php');
   include($Sitepath . '/function.php');
   date_default_timezone_set('UTC') ;
