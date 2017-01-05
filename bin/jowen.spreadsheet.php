@@ -7,6 +7,9 @@
 # Description: 
 # 
 
+# root.cron: # Josh Owen requesting spreadsheet output
+# root.cron: 30 6 * * * /usr/local/bin/php /usr/local/httpd/bin/jowen.spreadsheet.php > /usr/local/httpd/htsecure/reports/jowen.spreadsheet.csv 2>/dev/null
+
   include('settings.php');
   include($Sitepath . '/function.php');
 

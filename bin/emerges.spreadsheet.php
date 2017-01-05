@@ -5,7 +5,9 @@
 # Coding Standard 3.0 Applied
 # See: https://incowk01/makers/index.php/Coding_Standards
 # Description: Provide a list of all active equipment as a csv
-# 
+
+# root.cron: # Eric Merges requesting spreadsheet output
+# root.cron: 30 6 * * * /usr/local/bin/php /usr/local/httpd/bin/emerges.spreadsheet.php > /usr/local/httpd/htsecure/reports/emerges.spreadsheet.csv 2>/dev/null
 
   include('settings.php');
   include($Sitepath . '/function.php');

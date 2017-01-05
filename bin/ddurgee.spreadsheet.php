@@ -7,6 +7,9 @@
 # Description: 
 # 
 
+# root.cron: # Denise Durgee requesting spreadsheet output
+# root.cron: 30 6 * * * /usr/local/bin/php /usr/local/httpd/bin/ddurgee.spreadsheet.php > /usr/local/httpd/htsecure/reports/ddurgee.spreadsheet.csv 2>/dev/null
+
   include('settings.php');
   include($Sitepath . '/function.php');
 

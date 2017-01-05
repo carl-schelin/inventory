@@ -5,6 +5,10 @@
 # See: https://incowk01/makers/index.php/Coding_Standards
 # Description:
 
+# root.cron: # Jeremy Holck requesting regular end of life info
+# root.cron: 30 3 * * * /usr/local/bin/php /usr/local/httpd/bin/endoflife.php > /usr/local/httpd/htsecure/reports/endoflife.unix.prod.csv 2>/dev/null
+# root.cron: 35 3 * * * /usr/local/bin/php /usr/local/httpd/bin/endoflife.php 26 > /usr/local/httpd/htsecure/reports/endoflife.unix.lab.csv 2>/dev/null
+
   include('settings.php');
   include($Sitepath . '/function.php');
 

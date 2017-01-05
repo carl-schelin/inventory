@@ -7,6 +7,10 @@
 # Description: 
 # 
 
+# root.cron: # Denise Durgee requesting hardware build dates
+# root.cron: 30 5 * * * /usr/local/bin/php /usr/local/httpd/bin/ddurgee.hwage.php > /usr/local/httpd/htsecure/reports/ddurgee.hwage.prod.csv 2>/dev/null
+# root.cron: 45 5 * * * /usr/local/bin/php /usr/local/httpd/bin/ddurgee.hwage.php 26 > /usr/local/httpd/htsecure/reports/ddurgee.hwage.lab.csv 2>/dev/null
+
   include('settings.php');
   include($Sitepath . '/function.php');
 
