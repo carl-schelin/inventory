@@ -1,5 +1,11 @@
 #!/bin/ksh
 
+# Carl Schelin
+# generate patch reports for management
+
+# root.cron: # patch report for Denise. Run every night and on the 1st of each month, emailed to the Windows server for posterity
+# root.cron: 30 6 * * * /usr/local/httpd/bin/patch.count > /dev/null 2>&1
+
 DATE=`/usr/bin/date +"%Y-%m-%d"`
 
 /usr/local/bin/php /usr/local/httpd/bin/patch.count.php 1 > /usr/local/httpd/htsecure/reports/patch.count.techops.$DATE.csv 2>/dev/null
