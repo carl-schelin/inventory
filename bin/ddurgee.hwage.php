@@ -31,7 +31,7 @@
     $manager = "inv_manager = 26 ";
   }
 
-  print "\"Server Name\",\"Function\",\"Operating System\",\"Hardware\",\"Project\",\"Build Date\"\n";
+  print "\"Server Name\",\"Function\",\"Operating System\",\"Hardware\",\"Serial Number\",\"Project\",\"Build Date\"\n";
 
   $q_string  = "select inv_id,inv_name,inv_function,sw_software,prod_name,hw_built,hw_serial,mod_name ";
   $q_string .= "from inventory ";
