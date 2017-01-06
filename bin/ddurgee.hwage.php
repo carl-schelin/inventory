@@ -33,7 +33,7 @@
 
   print "\"Server Name\",\"Function\",\"Operating System\",\"Hardware\",\"Project\",\"Build Date\"\n";
 
-  $q_string  = "select inv_id,inv_name,inv_function,sw_software,prod_name,hw_built,mod_name ";
+  $q_string  = "select inv_id,inv_name,inv_function,sw_software,prod_name,hw_built,hw_serial,mod_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
   $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
@@ -48,6 +48,7 @@
     print "\"" . $a_inventory['inv_function'] . "\",";
     print "\"" . $a_inventory['sw_software'] . "\",";
     print "\"" . $a_inventory['mod_name'] . "\",";
+    print "\"" . $a_inventory['hw_serial'] . "\",";
     print "\"" . $a_inventory['prod_name'] . "\",";
     print "\"" . $a_inventory['hw_built'] . "\"\n";
 
