@@ -1,26 +1,16 @@
 #!/usr/local/bin/php
 <?php
 
-# code bit to load passwords from a file vs hard coding in the script.
-  $pw_array = file("/var/apache2/passwords");
+  include('settings.php');
+  include($Sitepath . '/function.php');
 
-  $linuxdo = "no";
-  $solarisdo = "no";
-  $hpuxdo = "no";
-  $tru64do = "no";
-  $freebsddo = "no";
-
-  for ($i = 0; $i < count($pw_array); $i++) {
-    $value = chop($pw_array[$i]);
-    $list = split(":", $value);
-
-    if ($list[0] == "inventory") {
-      $pw_db = "inventory";
-      $pw_admin = $list[2];
-      $pw_password = $list[3];
-    }
+  function dbconn($server,$database,$user,$pass){
+    $db = mysql_connect($server,$user,$pass);
+    $db_select = mysql_select_db($database,$db);
+    return $db;
   }
 
+  $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
 # build a nagios config file listing:
 #
@@ -37,13 +27,6 @@
 # only get systems that are checked for 'nagios' on the main page.
 # only get interfaces that are marked 'mgt'.
 # only get gateways that are set.
-
-
-
-  $connection = mysql_pconnect("localhost", $pw_admin, $pw_password) or die("Error: ".mysql_error());
-
-  mysql_select_db($pw_db, $connection) or die("Error: ".mysql_error());
-
 
   print "###############################################################################\n";
   print "# LOCALHOST.CFG - SAMPLE OBJECT CONFIG FILE FOR MONITORING THIS MACHINE\n";
@@ -80,7 +63,7 @@
 
   $q_string  = "select inv_id,inv_name,inv_function,";
   $q_string .= "sw_software,";
-  $q_string .= "int_server,int_addr,int_gate,inv_ssh,inv_location,int_xpoint,int_ypoint,int_zpoint,int_ssh,int_ping,int_http,int_ftp,int_smtp,";
+  $q_string .= "int_server,int_addr,int_gate,inv_ssh,inv_location,inv_product,int_xpoint,int_ypoint,int_zpoint,int_ssh,int_ping,int_http,int_ftp,int_smtp,";
   $q_string .= "grp_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
@@ -176,6 +159,15 @@
 
       print "\t}\n\n";
 
+      if (!isset($productcomma[$a_inventory['inv_product']])) {
+        $productcomma[$a_inventory['inv_product']] = '';
+      }
+# add to production hostgroups
+      if ($a_inventory['inv_product'] > 0) {
+        $products[$a_inventory['inv_product']] .= $productcomma[$a_inventory['inv_product']] . $a_inventory['inv_name'];
+        $productcomma[$a_inventory['inv_product']] = ',';
+      }
+
 # production longmont
       if ($a_inventory['inv_location'] == 3) {
         $prodservers .= $prodcomma . $a_inventory['int_server'];
@@ -269,6 +261,26 @@
     print "        }\n";
     print "\n";
   }
+
+  $q_string  = "select prod_id,prod_name ";
+  $q_string .= "from products ";
+  $q_string .= "order by prod_name ";
+  $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  while ($a_products = mysql_fetch_array($q_products)) {
+    if (strlen($products[$a_products['prod_id']]) > 0) {
+
+      $hostgroup = str_replace(" ", "_", $a_products['prod_name']);
+
+      print "define hostgroup{\n";
+      print "        hostgroup_name  loms_" . $hostgroup . " ; The name of the hostgroup\n";
+      print "        alias           " . $a_products['prod_name'] . " ; Long name of the group\n";
+      print "        members         " . $products[$a_products['prod_id']] . "\n";
+      print "        }\n";
+      print "\n";
+
+    }
+  }
+
   print "###############################################################################\n";
   print "###############################################################################\n";
   print "#\n";
