@@ -28,7 +28,12 @@
   }
 
   $month = date('m') - 1;
-  $date = date('Y-' . $month . '-01');
+  $year = date('Y');
+  if ($month == 0) {
+    $month = 12;
+    $year--;
+  }
+  $date = date($year . '-' . $month . '-01');
 
   if ($argc > 2) {
     $date = $argv[2];
@@ -37,8 +42,8 @@
   $debug = 'yes';
   $debug = 'no';
 # for testing; mail me only
-  $email = '';
   $email = 'carl.schelin@intrado.com';
+  $email = '';
 
   $headers  = "From: Inventory Management <inventory@incojs01.scc911.com>\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
@@ -175,7 +180,7 @@
           }
         }
       } else {
-        mail($email, $date . " Inventory Review", $body, $headers);
+        mail($email, "Testing: " . $date . " Inventory Review", $body, $headers);
       }
     }
   }
