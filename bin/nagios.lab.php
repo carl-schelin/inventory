@@ -68,10 +68,15 @@
   $q_string .= "grp_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
-  $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
+  if ($hostname == 'inventory.scc911.com') {
+    $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
+  }
   $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
   $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
-  $q_string .= "where int_nagios = 1 and inv_status = 0 and sw_type = 'OS' and hw_active != '0000-00-00' and int_ip6 = 0 and int_type = 1 and inv_location = 31 and inv_manager != 12 ";
+  $q_string .= "where int_nagios = 1 and inv_status = 0 and sw_type = 'OS' and int_ip6 = 0 and int_type = 1 and inv_location = 31 and inv_manager != 12 ";
+  if ($hostname == 'inventory.scc911.com') {
+    $q_string .= "and hw_active != '0000-00-00' ";
+  }
   $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
