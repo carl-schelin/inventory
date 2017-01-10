@@ -2,9 +2,19 @@
 
 # Copy the configuration files over to the status server to be processed
 
-scp /usr/local/httpd/htsecure/nagios/monitor.sqa.cfg    status.intrado.com:/var/tmp
-scp /usr/local/httpd/htsecure/nagios/monitor.lab.cfg    status.intrado.com:/var/tmp
-scp /usr/local/httpd/htsecure/nagios/monitor.prod.cfg   status.intrado.com:/var/tmp
-scp /usr/local/httpd/htsecure/nagios/monitor.loms.cfg   status.intrado.com:/var/tmp
-scp /usr/local/httpd/htsecure/nagios/monitor.switch.cfg status.intrado.com:/var/tmp
+HOSTNAME=`hostname|cut -f1 -d.`
+if [[ $HOSTNAME = 'incojs01' ]]
+then
+  SOURCE=/usr/local/httpd/htsecure
+fi
+if [[ $HOSTNAME = 'inventory' ]]
+then
+  SOURCE=/var/www/html
+fi
+
+scp $SOURCE/nagios/monitor.sqa.cfg    status.intrado.com:/var/tmp
+scp $SOURCE/nagios/monitor.lab.cfg    status.intrado.com:/var/tmp
+scp $SOURCE/nagios/monitor.prod.cfg   status.intrado.com:/var/tmp
+scp $SOURCE/nagios/monitor.loms.cfg   status.intrado.com:/var/tmp
+scp $SOURCE/nagios/monitor.switch.cfg status.intrado.com:/var/tmp
 
