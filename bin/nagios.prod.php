@@ -12,6 +12,9 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
+  $directory = date('Ym');
+  $date = date('Y-m-01');
+
 # build a nagios config file listing:
 #
 #define host{
@@ -57,14 +60,15 @@
   $labcomma = '';
   $contactonecomma = '';
   $sshcomma = '';
+  $c2hcomma = '';
   $pingcomma = '';
 
 # get systems to be managed through nagios
 
   $q_string  = "select inv_id,inv_name,inv_function,";
   $q_string .= "sw_software,";
-  $q_string .= "int_addr,int_gate,inv_ssh,inv_location,inv_product,int_xpoint,int_ypoint,int_zpoint,int_ssh,int_ping,int_http,int_ftp,int_smtp,";
-  $q_string .= "grp_name ";
+  $q_string .= "int_addr,int_gate,inv_ssh,inv_location,inv_product,int_xpoint,int_ypoint,int_zpoint,";
+  $q_string .= "int_ssh,int_ping,int_http,int_ftp,int_smtp,int_cfg2html,grp_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
   if ($hostname == 'inventory.scc911.com') {
@@ -196,11 +200,15 @@
         $contactoneservers .= $contactonecomma . $a_inventory['inv_name'];
         $contactonecomma = ",";
       }
-
 # ssh to servers; but only if ssh is checked
       if ($a_inventory['int_ssh'] == 1 and $a_inventory['inv_ssh'] == 1) {
         $sshservers .= $sshcomma . $a_inventory['inv_name'];
         $sshcomma = ",";
+      }
+# check cfg2html output but only if ssh is checked
+      if ($a_inventory['int_cfg2html'] == 0 and $a_inventory['int_ssh'] == 1) {
+        $c2hservers .= $c2hcomma . $a_inventory['inv_name'];
+        $c2hcomma = ",";
       }
 # ping servers
       if ($a_inventory['int_ping'] == 1) {
@@ -342,6 +350,15 @@
     print "        host_name                       " . $smtpservers . "\n";
     print "        service_description             SMTP\n";
     print "        check_command                   check_smtp\n";
+    print "        }\n";
+    print "\n";
+  }
+  if (strlen($c2hservers) > 0) {
+    print "define service{\n"; 
+    print "        use                             local-service         ; Name of service template to use\n";
+    print "        host_name                       " . $c2hservers . "\n";
+    print "        service_description             cfg2html\n";
+    print "        check_command                   check_http_content!" . $directory . "!" . $date . "\n";
     print "        }\n";
     print "\n";
   }
