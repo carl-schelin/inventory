@@ -13,7 +13,7 @@
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
   $directory = date('Ym');
-  $date = date('Y-m-01');
+  $date = date('Y-m-');
 
 # build a nagios config file listing:
 #
