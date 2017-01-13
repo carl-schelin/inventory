@@ -170,7 +170,7 @@
       }
 # add to production hostgroups
       if ($a_inventory['inv_product'] > 0) {
-        $products[$a_inventory['inv_product']] .= $productcomma[$a_inventory['inv_product']] . $a_inventory['inv_name'];
+        $products[$a_inventory['inv_product']] .= $productcomma[$a_inventory['inv_product']] . $a_inventory['int_server'];
         $productcomma[$a_inventory['inv_product']] = ',';
       }
 
