@@ -197,27 +197,27 @@
 
 # ssh to servers
       if ($a_inventory['int_ssh'] == 1 && $a_inventory['inv_ssh'] == 1) {
-        $sshservers .= $sshcomma . $a_inventory['inv_name'];
+        $sshservers .= $sshcomma . $a_inventory['int_server'];
         $sshcomma = ",";
       }
 # ping servers
       if ($a_inventory['int_ping'] == 1) {
-        $pingservers .= $pingcomma . $a_inventory['inv_name'];
+        $pingservers .= $pingcomma . $a_inventory['int_server'];
         $pingcomma = ",";
       }
 # http servers
       if ($a_inventory['int_http'] == 1) {
-        $httpservers .= $httpcomma . $a_inventory['inv_name'];
+        $httpservers .= $httpcomma . $a_inventory['int_server'];
         $httpcomma = ",";
       }
 # ftp servers
       if ($a_inventory['int_ftp'] == 1) {
-        $ftpservers .= $ftpcomma . $a_inventory['inv_name'];
+        $ftpservers .= $ftpcomma . $a_inventory['int_server'];
         $ftpcomma = ",";
       }
 # smtp servers
       if ($a_inventory['int_smtp'] == 1) {
-        $smtpservers .= $smtpcomma . $a_inventory['inv_name'];
+        $smtpservers .= $smtpcomma . $a_inventory['int_server'];
         $smtpcomma = ",";
       }
 
