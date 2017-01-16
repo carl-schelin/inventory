@@ -500,7 +500,8 @@
     $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Inventory Management</th>\n";
     $output .= "</tr>\n";
 
-    $q_string  = "select inv_id,inv_name,inv_companyid,inv_function,inv_location,inv_product,inv_rack,inv_row,inv_unit,grp_name,inv_appadmin,inv_callpath,svc_acronym ";
+    $q_string  = "select inv_id,inv_name,inv_companyid,inv_function,inv_location,inv_product,inv_rack,";
+    $q_string .= "inv_row,inv_unit,grp_name,inv_appadmin,inv_callpath,svc_acronym,inv_notes,inv_document ";
     $q_string .= "from inventory ";
     $q_string .= "left join service on service.svc_id = inventory.inv_class ";
     $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
@@ -547,6 +548,18 @@
       } else {
         $bgcolor = $color[0];
         $service = "Server <strong>is <u>not</u></strong> in the 911 Call Path";
+      }
+
+      if (stlen($a_inventory['inv_notes']) > 0) {
+        $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+        $output .= "  <td colspan=\"5\"><strong>Notes</strong>: " . $a_inventory['inv_notes'] . "</td>\n";
+        $output .= "</tr>\n";
+      }
+
+      if (stlen($a_inventory['inv_document']) > 0) {
+        $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+        $output .= "  <td colspan=\"5\"><strong>Team Documentation</strong>: " . $a_inventory['inv_document'] . "</td>\n";
+        $output .= "</tr>\n";
       }
 
       $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
