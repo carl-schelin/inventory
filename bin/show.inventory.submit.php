@@ -90,14 +90,14 @@
 
 # options are: *, Hardware, Filesystems, Software, Network, Route, Issues
 # check the full keyword
-    if ($action != 'hardware' && $action != 'filesystems' && $action != 'software' && $action != 'network' && $action != 'route' && $action != 'routing' && $action != 'issues') {
+    if ($action != 'hardware' && $action != 'filesystems' && $action != 'software' && $action != 'network' && $action != 'route' && $action != 'routing' && $action != 'issues' && $action != 'all') {
       $servername = 'help';
       $error = "<p><strong>Error</strong>: Invalid option.</p>\n\n";
     }
 
 # check the initials as well as the full option isn't necessary
     $firstchar = substr($action, 0, 1);
-    if (strpos("*hfsnri", $firstchar) === false) {
+    if (strpos("*ahfsnri", $firstchar) === false) {
       $servername = 'help';
       $error = "<p><strong>Error</strong>: Invalid option.</p>\n\n";
     }
@@ -325,7 +325,7 @@
     $body .= "  <li><b><u>f</u>ilesystems</b> - An e-mail will be returned containing basic information plus a list of the filesystems.</li>\n";
     $body .= "  <li><b><u>s</u>oftware</b> - An e-mail will be returned containing basic information plus a list of the installed software, not including the list of installed packages.</li>\n";
     $body .= "  <li><b><u>n</u>etwork</b> - An e-mail will be returned containing the basic information plus the network interfaces.</li>\n";
-    $body .= "  <li><b><u>r</u>oute/routing</b> - An e-mail will be returned containing basic information plus a list of the baseline routes.</li>\n";
+    $body .= "  <li><b><u>r</u>oute/<u>r</u>outing</b> - An e-mail will be returned containing basic information plus a list of the baseline routes.</li>\n";
     $body .= "  <li><b><u>i</u>ssues</b> - An e-mail will be returned containing basic information plus a list of open issues.</li>\n";
     $body .= "</ul>\n\n";
 
