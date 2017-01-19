@@ -302,23 +302,24 @@
     $body .= "<p>" . $subjectline . "</p>\n\n";
     $body .= "<p><u>Usage:</u></p>\n";
     $body .= "<p>To: inventory@incojs01.scc911.com\n";
-    $body .= "<br>Subject: [{servername} or {serverip}] [keyword option]\n";
+    $body .= "<br>Subject: {servername} or {serverip} [keyword option]\n";
     $body .= "<br>Subject: {intrado product}\n";
-    $body .= "<br>Subject: help or active or products</p>\n\n";
+    $body .= "<br>Subject: [{empty subject} or {active} or {help} or {products}</p>\n\n";
 
     $body .= "<p>The Subject line consists of up to two keywords. The first can be one of five options;</p>\n";
     $body .= "<ul>\n";
-    $body .= "  <li><b>{blank} or active</b> - If the Subject line is empty or contains 'active', a list of all active servers will be returned via e-mail.</li>\n";
-    $body .= "  <li><b>{servername}</b> - An e-mail will be returned containing information about the identified server.</li>\n";
-
-    $body .= "  <li><b>{serverip}</b> - An e-mail will be returned containing information about the server associated with the IP.</li>\n";
-    $body .= "  <li><b>{intrado product}</b> - An e-mail will be returned containing a list of all servers assigned to this Intrado Product</li>\n";
-    $body .= "  <li><b>products</b> - A list of all Intrado products will be returned.</li>\n";
+    $body .= "  <li><b>{empty subject} or active</b> - If the Subject line is empty or contains the keyword 'active', a list of all active servers will be returned via e-mail.</li>\n";
     $body .= "  <li><b>help</b> - An e-mail will be returned with this message.</li>\n";
+    $body .= "  <li><b>products</b> - A list of all Intrado products will be returned.</li>\n";
+
+    $body .= "  <li><b>{servername}</b> - An e-mail will be returned containing information about the identified server.</li>\n";
+    $body .= "  <li><b>{serverip}</b> - An e-mail will be returned containing information about the server associated with the IP.</li>\n";
+
+    $body .= "  <li><b>{intrado product}</b> - An e-mail will be returned containing a list of all servers assigned to this Intrado Product</li>\n";
     $body .= "</ul>\n\n";
     $body .= "<p>The email request supports Database wildcards (%) so to get a list of servers that start with 'inco', add the wildcard character to the end of the server name, example: 'inco%' or '10.100.78.%' for a list of servers with IP Addresses. You will receive a complete listing of all servers or IP addresses.</p>\n";
 
-    $body .= "<p>The second keyword describes what information you want to retrieve. This only works if the first keyword is the name of a server. ";
+    $body .= "<p>The second <b>keyword option</b> for the passed <b>servername</b> or <b>serverip</b> describes what information in addition to the core server details you want to retrieve. ";
     $body .= "Note that only the first letter of the keyword is necessary to retrieve the requested information.</p>\n";
     $body .= "<ul>\n";
     $body .= "  <li><b>{blank}</b> - An e-mail will be returned containing basic details about the requested server.</li>\n";
