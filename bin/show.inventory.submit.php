@@ -74,21 +74,33 @@
     $servername = $argv[2];
   }
 
+  $servername = strtolower($servername);
+  $productlist = strtolower($productlist);
+  $serverip = $servername;
+  $product = '';
+  $server = '';
+  $error = '';
+
 # if script, e-mail, and server name is sent
   $action = '';
   if ($argc == 3) {
     $action = '';
   } else {
-    $action = $argv[3];
-  }
+    $action = strtolower($argv[3]);
 
-  $servername = strtolower($servername);
-  $productlist = strtolower($productlist);
-  $serverip = $servername;
-  $action = strtolower($action);
-  $product = '';
-  $server = '';
-  $error = '';
+    $firstchar = substr($action, 0, 1);
+# options are: *, Hardware, Filesystems, Software, Network, Route, Issues
+    if (strpos("*hfsnri", $firstchar) === false) {
+      $servername = 'help';
+      $error = "<p><strong>Error</strong>: Invalid option.</p>\n\n";
+    }
+
+    if ($debug == 'yes') {
+      print "FirstChar: " . $firstchar . "\n";
+      print "Error: " . $error . "\n";
+    }
+
+  }
 
   if ($servername == 'help' || $servername == 'active' || $servername == "products") {
     $server = $servername;
@@ -523,6 +535,18 @@
     $output .= "  <td><strong>Applications Managed by</strong>: " . $a_groups['grp_name'] . "</td>\n";
     $output .= "</tr>\n";
 
+    if (strlen($a_inventory['inv_notes']) > 0) {
+      $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
+      $output .= "  <td colspan=\"5\"><strong>Notes</strong>: " . $a_inventory['inv_notes'] . "</td>\n";
+      $output .= "</tr>\n";
+    }
+
+    if (strlen($a_inventory['inv_document']) > 0) {
+      $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
+      $output .= "  <td colspan=\"5\"><strong>Team Documentation</strong>: " . $a_inventory['inv_document'] . "</td>\n";
+      $output .= "</tr>\n";
+    }
+
     $q_string  = "select hw_active ";
     $q_string .= "from hardware ";
     $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1";
@@ -548,18 +572,6 @@
       } else {
         $bgcolor = $color[0];
         $service = "Server <strong>is <u>not</u></strong> in the 911 Call Path";
-      }
-
-      if (stlen($a_inventory['inv_notes']) > 0) {
-        $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
-        $output .= "  <td colspan=\"5\"><strong>Notes</strong>: " . $a_inventory['inv_notes'] . "</td>\n";
-        $output .= "</tr>\n";
-      }
-
-      if (stlen($a_inventory['inv_document']) > 0) {
-        $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
-        $output .= "  <td colspan=\"5\"><strong>Team Documentation</strong>: " . $a_inventory['inv_document'] . "</td>\n";
-        $output .= "</tr>\n";
       }
 
       $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
