@@ -88,8 +88,15 @@
   } else {
     $action = strtolower($argv[3]);
 
-    $firstchar = substr($action, 0, 1);
 # options are: *, Hardware, Filesystems, Software, Network, Route, Issues
+# check the full keyword
+    if ($action != 'hardware' && $action != 'filesystems' && $action != 'software' && $action != 'network' && $action != 'route' && $action != 'routing' && $action != 'issues') {
+      $servername = 'help';
+      $error = "<p><strong>Error</strong>: Invalid option.</p>\n\n";
+    }
+
+# check the initials as well as the full option isn't necessary
+    $firstchar = substr($action, 0, 1);
     if (strpos("*hfsnri", $firstchar) === false) {
       $servername = 'help';
       $error = "<p><strong>Error</strong>: Invalid option.</p>\n\n";
