@@ -302,8 +302,8 @@
     $body .= "<p>" . $subjectline . "</p>\n\n";
     $body .= "<p><u>Usage:</u></p>\n";
     $body .= "<p>To: inventory@incojs01.scc911.com\n";
-    $body .= "<br>Subject: [{servername} or {serverip}] [keyword option]</p>\n";
-    $body .= "<br>Subject: {intrado product}</p>\n";
+    $body .= "<br>Subject: [{servername} or {serverip}] [keyword option]\n";
+    $body .= "<br>Subject: {intrado product}\n";
     $body .= "<br>Subject: help or active or products</p>\n\n";
 
     $body .= "<p>The Subject line consists of up to two keywords. The first can be one of five options;</p>\n";
