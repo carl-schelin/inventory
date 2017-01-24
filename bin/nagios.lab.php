@@ -14,6 +14,8 @@
 
   $directory = date('Ym');
   $date = date('Y-m-');
+  $year = date('Y');
+  $month = date('M');
 
 # build a nagios config file listing:
 #
@@ -356,7 +358,7 @@
     print "        use                             local-service         ; Name of service template to use\n";
     print "        host_name                       " . $c2hservers . "\n";
     print "        service_description             cfg2html\n";
-    print "        check_command                   check_http_content!" . $directory . "!" . $date . "\n";
+    print "        check_command                   check_http_content!" . $directory . "!(Created " . $date . "|" . $month . ".*" . $year . ")\n";
     print "        }\n";
     print "\n";
   }
