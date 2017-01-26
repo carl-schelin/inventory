@@ -303,7 +303,7 @@
     print "        use                             local-service         ; Name of service template to use\n";
     print "        host_name                       " . $pingservers . "\n";
     print "        service_description             PING\n";
-    print "        check_command                   check_ping!100.0,20%!500.0,60%\n";
+    print "        check_command                   check_ping!200.0,20%!500.0,60%\n";
     print "        }\n";
     print "\n";
   }
