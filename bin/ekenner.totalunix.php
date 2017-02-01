@@ -1007,7 +1007,7 @@
   }
 
   if ($debug == 'no') {
-    $email = "ed.kenner@intrado.com";
+    $email = "unixadmins@intrado.com";
   } else {
     $email = "carl.schelin@intrado.com";
   }
