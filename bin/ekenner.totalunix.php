@@ -386,7 +386,7 @@
         }
 
 
-        if ($a_inventory['loc_name'] == 'Intrado CIL Data Center - Longmont') {
+        if (strpos($a_inventory['loc_name'], 'Intrado CIL Data Center') !== false) {
           if ($os == 'Linux') {
             if ($a_inventory['mod_virtual']) {
               $vus_linux++;
@@ -907,7 +907,7 @@
         } else {
           $petotalloc++;
         }
-        if ($a_inventory['loc_name'] == 'Intrado CIL Data Center - Longmont') {
+        if (strpos($a_inventory['loc_name'], 'Intrado CIL Data Center') !== false) {
           if ($a_inventory['mod_virtual']) {
             $vesupport++;
           } else {
@@ -959,7 +959,7 @@
         } else {
           $pwtotalloc++;
         }
-        if ($a_inventory['loc_name'] == 'Intrado CIL Data Center - Longmont') {
+        if (strpos($a_inventory['loc_name'], 'Intrado CIL Data Center') !== false) {
           if ($a_inventory['mod_virtual']) {
             $vwsupport++;
           } else {
