@@ -463,8 +463,8 @@
   if ($remedy == 'yes') {
 
     $local       = 'no';
-    $development = 'no';
-    $sqa         = 'yes';
+    $development = 'yes';
+    $sqa         = 'no';
     $production  = 'no';
     $remedy8     = 'no';	# gone away 8/25/2016
     $remedy9     = 'yes';
@@ -547,7 +547,9 @@
 
       if ($remedy9 == 'yes') {
         $remedyemail = "Remedy91HelpdeskDev@intrado.com";
+        $remedyemail = "remedy.helpdesk.dev.safetyservices@regmail.west.com";
         $remedyserver = "LMV08-MX02.corp.intrado.pri";
+        $remedyserver = "LNMT0CWASRMAP00";
 
         $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
         mail($remedyemail, "Changelog Submission", $body, $headers);
