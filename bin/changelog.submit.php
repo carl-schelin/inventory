@@ -568,6 +568,7 @@
       if ($remedy9 == 'yes') {
         $remedyemail = "Remedy91HelpdeskProd@intrado.com";
         $remedyserver = "LMV08-MX01.corp.intrado.pri";
+        $remedyserver = "LNMT1CWASRMAP01.corp.intrado.pri";
 
         $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
         mail($remedyemail, "Changelog Submission", $body, $headers);
