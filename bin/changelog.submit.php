@@ -20,7 +20,7 @@
 # yes for magic
   $magic = 'no';
 # yes for remedy
-  $remedy = 'no';
+  $remedy = 'yes';
 
 #########################
 ### validate parameter list
@@ -463,9 +463,9 @@
   if ($remedy == 'yes') {
 
     $local       = 'no';
-    $development = 'yes';
+    $development = 'no';
     $sqa         = 'no';
-    $production  = 'no';
+    $production  = 'yes';
     $remedy8     = 'no';	# gone away 8/25/2016
     $remedy9     = 'yes';
 
