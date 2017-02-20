@@ -20,7 +20,7 @@
 # yes for magic
   $magic = 'no';
 # yes for remedy
-  $remedy = 'yes';
+  $remedy = 'no';
 
 #########################
 ### validate parameter list
