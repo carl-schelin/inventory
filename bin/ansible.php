@@ -40,9 +40,9 @@
       while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
         print $a_inventory['inv_name'] . "\n";
-        if (strlen($a_inventory['inv_fqdn']) > 0) {
-          print $a_inventory['inv_name'] . "." . $a_inventory['inv_fqdn'] . "\n";
-        }
+#        if (strlen($a_inventory['inv_fqdn']) > 0) {
+#          print $a_inventory['inv_name'] . "." . $a_inventory['inv_fqdn'] . "\n";
+#        }
 
       }
       print "\n";
