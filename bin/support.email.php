@@ -166,7 +166,7 @@
 
   $output .= "</table>\n\n";
 
-  $output .= "<p>Note that you can find the csv to validate your listing by going to " . $Siteroot . "/uploads and look for the support-YYYYmmdd.csv file.</p>\n\n";
+  $output .= "<p>Note that you can review the raw contract support CSV file by <a href=\"" . $Siteroot . "/uploads/support-current.csv\">clicking here</a>.</p>\n\n";
 
   $output .= "<p>This mail box is not monitored, please do not reply.</p>\n\n";
 
