@@ -43,6 +43,22 @@ do
 # chown so the web site can write to it
   chown $OWNER $SERVERS/servers.$i
 
+  if [[ -f $ADMIN/etc/servers.$i ]]
+  then
+    OUTPUT=`/usr/bin/file -h $SERVERS/servers.$i | grep symbolic`
+
+# if the file is NOT a symbolic link then the link has been broken
+# clear it and set it back up
+    if [[ -z $OUTPUT ]]
+    then
+      rm $ADMIN/etc/servers.$i
+      ln -s $SERVERS/servers.$i $ADMIN/etc/servers.$i
+    fi
+  else
+    ln -s $SERVERS/servers.$i $ADMIN/etc/servers.$i
+  fi
+
+# because many scripts expect to see 'servers' for unix, a second link is created
   if [[ $i = 'unix' ]]
   then
 # unix servers are processed differently because we're just 'servers' vs other groups which are servers.[group]
@@ -60,22 +76,8 @@ do
     else
       ln -s $SERVERS/servers.unix $ADMIN/etc/servers
     fi
-  else
-# now check everyone else.
-    if [[ -f $ADMIN/etc/servers.$i ]]
-    then
-      OUTPUT=`/usr/bin/file -h $SERVERS/servers.$i | grep symbolic`
-
-# if the file is NOT a symbolic link then the link has been broken
-# clear it and set it back up
-      if [[ -z $OUTPUT ]]
-      then
-        rm $ADMIN/etc/servers.$i
-        ln -s $SERVERS/servers.$i $ADMIN/etc/servers.$i
-      fi
-    else
-      ln -s $SERVERS/servers.$i $ADMIN/etc/servers.$i
-    fi
   fi
+
+
 done
 
