@@ -529,7 +529,7 @@
     $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Inventory Management</th>\n";
     $output .= "</tr>\n";
 
-    $q_string  = "select inv_id,inv_name,inv_companyid,inv_function,inv_location,inv_product,inv_rack,";
+    $q_string  = "select inv_id,inv_name,inv_fqdn,inv_companyid,inv_function,inv_location,inv_product,inv_rack,";
     $q_string .= "inv_row,inv_unit,grp_name,inv_appadmin,inv_callpath,svc_acronym,inv_notes,inv_document ";
     $q_string .= "from inventory ";
     $q_string .= "left join service on service.svc_id = inventory.inv_class ";
@@ -538,6 +538,12 @@
     $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     $a_inventory = mysql_fetch_array($q_inventory);
 
+    if ($a_inventory['inv_fqdn'] != '') {
+      $invname = $a_inventory['inv_name'] . "." . $a_inventory['inv_fqdn'];
+    } else {
+      $invname = $a_inventory['inv_name'];
+    }
+
     $q_string  = "select grp_name ";
     $q_string .= "from groups ";
     $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'];
@@ -545,7 +551,7 @@
     $a_groups = mysql_fetch_array($q_groups);
 
     $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
-    $output .= "  <td><strong>Server</strong>: " . $a_inventory['inv_name'] . "</td>\n";
+    $output .= "  <td><strong>Server</strong>: " . $invname . "</td>\n";
     $output .= "  <td><strong>Service Class</strong>: " . $a_inventory['svc_acronym'] . "</td>\n";
     $output .= "  <td><strong>Function</strong>: " . $a_inventory['inv_function'] . "</td>\n";
     $output .= "  <td><strong>Platform Managed by</strong>: " . $a_inventory['grp_name'] . "</td>\n";
@@ -978,7 +984,7 @@
         $output .= "  <th>Port</th>\n";
       }
       $output .= "  <th>Type</th>\n";
-      $output .= "  <th>Updated</th>\n";
+      $output .= "  <th>Last</th>\n";
       $output .= "</tr>\n";
     
       $q_string = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,"
