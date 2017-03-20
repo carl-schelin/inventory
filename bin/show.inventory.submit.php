@@ -74,7 +74,8 @@
     $servername = $argv[2];
   }
 
-  $servername = strtolower($servername);
+  $serverlist = explode('.', $servername);
+  $servername = strtolower($serverlist[0]);
   $productlist = strtolower($productlist);
   $serverip = $servername;
   $product = '';
