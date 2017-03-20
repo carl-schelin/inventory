@@ -791,7 +791,7 @@
     $output .= "<table width=80%>\n";
 
     $output .= "<tr>\n";
-    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Location Information</th>\n";
+    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"3\">Location Information</th>\n";
     $output .= "</tr>\n";
 
     $q_string  = "select loc_name,loc_addr1,ct_city,st_acronym,loc_zipcode,cn_acronym ";
@@ -807,9 +807,8 @@
     $output .= "  <td><strong>Data Center</strong>: " . $a_locations['loc_name'] . "</td>\n";
     $output .= "  <td><strong>Location</strong>: " . $a_locations['loc_addr1'] . "  " . $a_locations['ct_city'] . ", " . $a_locations['st_acronym'] . " " . $a_locations['loc_zipcode'] . " (" . $a_locations['cn_acronym'] . ")</td>\n";
 
-    if (return_Virtual($a_inventory['inv_id'])) {
-      $output .= "  <td><strong>Virtual Machine</strong></td>\n";
-    } else {
+# don't provide info if it's a virtual machine
+    if (return_Virtual($a_inventory['inv_id']) == 0) {
       if ($a_inventory['inv_companyid']) {
         $q_string  = "select inv_name,inv_rack,inv_row,inv_unit ";
         $q_string .= "from inventory ";
