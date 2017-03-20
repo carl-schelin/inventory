@@ -807,18 +807,22 @@
     $output .= "  <td><strong>Data Center</strong>: " . $a_locations['loc_name'] . "</td>\n";
     $output .= "  <td><strong>Location</strong>: " . $a_locations['loc_addr1'] . "  " . $a_locations['ct_city'] . ", " . $a_locations['st_acronym'] . " " . $a_locations['loc_zipcode'] . " (" . $a_locations['cn_acronym'] . ")</td>\n";
 
-    if ($a_inventory['inv_companyid']) {
-      $q_string  = "select inv_name,inv_rack,inv_row,inv_unit ";
-      $q_string .= "from inventory ";
-      $q_string .= "where inv_id = " . $a_inventory['inv_companyid'] . " ";
-      $q_chassis = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_chassis = mysql_fetch_array($q_chassis);
-
-      $output .= "  <td><strong>Chassis</strong>: " . $a_chassis['inv_name'] . "</td>\n";
-      $output .= "  <td><strong>Chassis Rack/Unit</strong>: " . $a_chassis['inv_rack'] . "-" . $a_chassis['inv_row'] . "/U" . $a_chassis['inv_unit'] . "</td>\n";
-      $output .= "  <td><strong>Blade Number</strong>: " . $a_inventory['inv_unit'] . "</td>\n";
+    if (return_Virtual($a_inventory['inv_id'])) {
+      $output .= "  <td><strong>Virtual Machine</strong></td>\n";
     } else {
-      $output .= "  <td><strong>Rack/Unit</strong>: " . $a_inventory['inv_rack'] . "-" . $a_inventory['inv_row'] . "/U" . $a_inventory['inv_unit'] . "</td>\n";
+      if ($a_inventory['inv_companyid']) {
+        $q_string  = "select inv_name,inv_rack,inv_row,inv_unit ";
+        $q_string .= "from inventory ";
+        $q_string .= "where inv_id = " . $a_inventory['inv_companyid'] . " ";
+        $q_chassis = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $a_chassis = mysql_fetch_array($q_chassis);
+
+        $output .= "  <td><strong>Chassis</strong>: " . $a_chassis['inv_name'] . "</td>\n";
+        $output .= "  <td><strong>Chassis Rack/Unit</strong>: " . $a_chassis['inv_rack'] . "-" . $a_chassis['inv_row'] . "/U" . $a_chassis['inv_unit'] . "</td>\n";
+        $output .= "  <td><strong>Blade Number</strong>: " . $a_inventory['inv_unit'] . "</td>\n";
+      } else {
+        $output .= "  <td><strong>Rack/Unit</strong>: " . $a_inventory['inv_rack'] . "-" . $a_inventory['inv_row'] . "/U" . $a_inventory['inv_unit'] . "</td>\n";
+      }
     }
     $output .= "</tr>\n";
 
