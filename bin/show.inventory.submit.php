@@ -358,7 +358,7 @@
     $output .= "  <th>Applications Managed By</th>\n";
     $output .= "</tr>\n";
 
-    $q_string  = "select inv_id,inv_name,inv_function,grp_name,inv_appadmin ";
+    $q_string  = "select inv_id,inv_name,inv_fqdn,inv_function,grp_name,inv_appadmin ";
     $q_string .= "from inventory ";
     $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
     $q_string .= "where inv_status = 0 ";
@@ -382,8 +382,14 @@
         $bgcolor = $color[0];
       }
 
+      if ($a_inventory['inv_fqdn'] != '') {
+        $invname = $a_inventory['inv_name'] . "." . $a_inventory['inv_fqdn'];
+      } else {
+        $invname = $a_inventory['inv_name'];
+      }
+
       $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
-      $output .= "  <td>" . $a_inventory['inv_name']     . "</td>\n";
+      $output .= "  <td>" . $invname                     . "</td>\n";
       $output .= "  <td>" . $a_inventory['inv_function'] . "</td>\n";
       $output .= "  <td>" . $a_inventory['grp_name']     . "</td>\n";
       $output .= "  <td>" . $a_groups['grp_name']        . "</td>\n";
@@ -980,7 +986,7 @@
                 . "from interface "
                 . "left join ip_zones on interface.int_zone = ip_zones.zone_id  "
                 . "left join inttype on interface.int_type = inttype.itp_id "
-                . "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = 0 "
+                . "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = 0 and int_ip6 = 0 "
                 . "order by int_face,int_addr";
       $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     
@@ -1043,7 +1049,7 @@
                   . "from interface "
                   . "left join ip_zones on interface.int_zone = ip_zones.zone_id  "
                   . "left join inttype on interface.int_type = inttype.itp_id "
-                  . "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_interface['int_id'] . " "
+                  . "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_interface['int_id'] . " and int_ip6 = 0 "
                   . "order by int_face,int_addr";
         $q_redundancy = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     
