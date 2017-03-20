@@ -74,8 +74,13 @@
     $servername = $argv[2];
   }
 
-  $serverlist = explode('.', $servername);
-  $servername = strtolower($serverlist[0]);
+# is this a valid IP address? If so, send it intact, otherwise split it to get the server name.
+  if (filter_var($servername, FILTER_VALIDATE_IP)) {
+    $servername = strtolower($servername);
+  } else {
+    $serverlist = explode('.', $servername);
+    $servername = strtolower($serverlist[0]);
+  }
   $productlist = strtolower($productlist);
   $serverip = $servername;
   $product = '';
