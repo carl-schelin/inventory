@@ -318,7 +318,7 @@
     $body .= "<ul>\n";
     $body .= "  <li><b>{empty subject} or active</b> - If the Subject line is empty or contains the keyword 'active', a list of all active servers will be returned via e-mail.</li>\n";
     $body .= "  <li><b>help</b> - An e-mail will be returned with this message.</li>\n";
-    $body .= "  <li><b>products</b> - A list of all Intrado products will be returned.</li>\n";
+    $body .= "  <li><b>products</b> - A list of all Intrado products will be returned. <strong>NOTE:</strong> Replace spaces with underscores on the Subject line for products with more than one word.</li>\n";
 
     $body .= "  <li><b>{servername}</b> - An e-mail will be returned containing information about the identified server.</li>\n";
     $body .= "  <li><b>{serverip}</b> - An e-mail will be returned containing information about the server associated with the IP.</li>\n";
