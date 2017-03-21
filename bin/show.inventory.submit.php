@@ -81,7 +81,7 @@
     $serverlist = explode('.', $servername);
     $servername = strtolower($serverlist[0]);
   }
-  $productlist = strtolower($productlist);
+  $productlist = str_replace("_", " ", strtolower($productlist));
   $serverip = $servername;
   $product = '';
   $server = '';
@@ -153,7 +153,9 @@
       print $q_string . "\n\n";
     }
     if (mysql_num_rows($q_inventory) == 0) {
-      $q_string = "select prod_name from products where prod_name = '" . $productlist . "'";
+      $q_string  = "select prod_name ";
+      $q_string .= "from products ";
+      $q_string .= "where prod_name = '" . $productlist . "'";
       $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
 
       if ($debug == 'yes') {
