@@ -64,6 +64,7 @@
   $sshcomma = '';
   $c2hcomma = '';
   $pingcomma = '';
+  $uptimecomma = '';
 
 # get systems to be managed through nagios
 
@@ -206,6 +207,11 @@
       if ($a_inventory['int_ssh'] == 1 and $a_inventory['inv_ssh'] == 1) {
         $sshservers .= $sshcomma . $a_inventory['inv_name'];
         $sshcomma = ",";
+      }
+# check uptime output but only if ssh is checked
+      if ($a_inventory['int_ssh'] == 1) {
+        $uptimeservers .= $uptimecomma . $a_inventory['inv_name'];
+        $uptimecomma = ",";
       }
 # check cfg2html output but only if ssh is checked
       if ($a_inventory['int_cfg2html'] == 0 and $a_inventory['int_ssh'] == 1) {
@@ -364,6 +370,14 @@
     print "        }\n";
     print "\n";
   }
-
+  if (strlen($uptimeservers) > 0) {
+    print "define service{\n";
+    print "        use                             local-service         ; Name of service template to use\n";
+    print "        host_name                       " . $uptimeservers . "\n";
+    print "        service_description             uptime\n";
+    print "        check_command                   check_http_uptime\n";
+    print "        }\n";
+    print "\n";
+  }
 
 ?>
