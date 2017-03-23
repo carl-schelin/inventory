@@ -80,7 +80,7 @@
   }
   $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
   $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
-  $q_string .= "where int_nagios = 1 and inv_status = 0 and sw_type = 'OS' and int_ip6 = 0 and int_type = 1 and inv_location = 31 and inv_manager != 12 ";
+  $q_string .= "where int_nagios = 1 and inv_status = 0 and sw_type = 'OS' and int_ip6 = 0 and inv_location = 31 and inv_manager != 12 ";
   if ($hostname == 'inventory.scc911.com') {
     $q_string .= "and hw_active != '0000-00-00' ";
   }
