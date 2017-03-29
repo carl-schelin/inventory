@@ -19,7 +19,6 @@
 
 //define the receiver of the email
   $to = "tlcooper@west.com,cschelin@west.com";
-  $to = "cschelin@west.com";
 
 //define the subject of the email
   $subject     = "West Safety Services Asset Report";
@@ -60,8 +59,8 @@ Network Engineering team
 Content-Type: text/html; charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
 
-<h2>TechOps Report</h2>
-<p>West Safety Service Asset report.</p>
+<h2>WSS Asset Report</h2>
+<p>West Safety ServicesAsset report.</p>
 
 <p>Unix team</br>
 Virtualization team</br>
