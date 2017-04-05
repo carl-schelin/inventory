@@ -270,6 +270,7 @@
 
     if ($group != $val) {
       $output .= "</table>\n";
+      $output .= "<p><strong>Note:</strong> This mailbox is not monitored. Do not reply.</p>\n";
 
       if ($group != 0) {
         print "Send email\n";
@@ -344,6 +345,7 @@
 
     if ($users != $val) {
       $output .= "</table>\n";
+      $output .= "<p><strong>Note:</strong> This mailbox is not monitored. Do not reply.</p>\n";
 
       if ($users != 0) {
         if ($debug == 'yes') {
