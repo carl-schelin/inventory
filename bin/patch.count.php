@@ -41,7 +41,7 @@
     $a_software = mysql_fetch_array($q_software);
 
     if (strpos($a_software['sw_software'], 'Red Hat') !== false) {
-      $target = 'RHEL 6.8';
+      $target = 'RHEL 6.9';
       $version = 'RHEL 5.11';
       if (strpos($a_software['sw_software'], ' 5 ') !== false) {
         $target = $version;
@@ -79,7 +79,7 @@
       if (strpos($a_software['sw_software'], ' 5.11 ') !== false) {
         $target = $version;
       }
-      $version = 'RHEL 6.8';
+      $version = 'RHEL 6.9';
       if (strpos($a_software['sw_software'], ' 6 ') !== false) {
         $target = $version;
       }
@@ -122,7 +122,7 @@
       }
     }
     if (strpos($a_software['sw_software'], 'CentOS') !== false) {
-      $target = 'CentOS 6.8';
+      $target = 'CentOS 6.9';
       $version = 'CentOS 5.11';
       if (strpos($a_software['sw_software'], ' 5 ') !== false) {
         $target = $version;
@@ -160,7 +160,7 @@
       if (strpos($a_software['sw_software'], ' 5.11 ') !== false) {
         $target = $version;
       }
-      $version = 'CentOS 6.8';
+      $version = 'CentOS 6.9';
       if (strpos($a_software['sw_software'], ' 6 ') !== false) {
         $target = $version;
       }
