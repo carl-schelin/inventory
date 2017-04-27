@@ -71,15 +71,15 @@
 #   Resource Class = Virtual: Windows_VM, Linux_VM, Firewall, Physical: Windows, Linux, HP-UX, ESXi, Disk Array, Router, Blade Chassis, Multilayer Switch, Sun/Solaris, Other Unix/Linux, Appliance, Solaris_VM
 
 #  inv_name, figure out, Active, TRDO, 
-  print "\"Asset Name\",\"Resource Class\",\"Status\",\"Cost Center\",\"Brand\",\"Model\",\"Serial #\",\"Location\",\"IP Address\",\"Primary Application\",\"Owning Group\",\"Support Group\",\"Environment\",\"Security Risk\",\"Oper. System\",\"Service Pack\"\n";
+  print "\"Asset Name\",\"Resource Class\",\"Status\",\"Cost Center\",\"Brand\",\"Model\",\"Serial #\",\"Location\",\"IP Address\",\"Primary Application\",\"Owning Group\",\"Support Group\",\"Environment\",\"Security Risk\",\"Oper. System\",\"Service Pack\",\"Build Date\",\"Active Date\",\"Retired Date\"\n";
 
-  $q_string  = "select inv_id,inv_name,inv_uuid,inv_function,hw_serial,inv_virtual,mod_vendor,mod_name,loc_west,part_name ";
+  $q_string  = "select inv_id,inv_name,inv_uuid,inv_function,hw_serial,inv_virtual,mod_vendor,mod_name,loc_west,part_name,hw_built,hw_active,hw_retired ";
   $q_string .= "from inventory ";
   $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join models    on models.mod_id         = hardware.hw_vendorid ";
   $q_string .= "left join parts     on parts.part_id         = models.mod_type ";
   $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
-  $q_string .= "where (inv_manager = " . $GRP_Unix . " or inv_manager = " . $GRP_Windows . " or inv_manager = " . $GRP_Virtualization . " or inv_manager = " . $GRP_ICLAdmins . " or inv_manager = " . $GRP_Networking . ") and inv_status = 0 and hw_primary = 1 ";
+  $q_string .= "where (inv_manager = " . $GRP_Unix . " or inv_manager = " . $GRP_Windows . " or inv_manager = " . $GRP_Virtualization . " or inv_manager = " . $GRP_ICLAdmins . " or inv_manager = " . $GRP_Networking . ") and hw_primary = 1 ";
   $q_string .= "order by inv_name ";
   $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
@@ -118,9 +118,15 @@
       $comma = ',';
     }
 
+    if ($a_inventory['hw_retired'] == '0000-00-00') {
+      $status = 'Active';
+    } else {
+      $status = 'Retired';
+    }
+
     print "\"" . $a_inventory['inv_name'] . "\",";
     print "\"" . $resource_class . "\",";
-    print "\"" . "Active" . "\",";
+    print "\"" . $status . "\",";
     print "\"" . "TRDO" . "\",";
     print "\"" . $a_inventory['mod_vendor'] . "\",";
     print "\"" . $a_inventory['mod_name'] . "\",";
@@ -133,7 +139,10 @@
     print "\"" . "" . "\",";
     print "\"" . "" . "\",";
     print "\"" . $a_software['sw_software'] . "\",";
-    print "\"" . "\"\n";
+    print "\"" . "\",";
+    print "\"" . $a_inventory['hw_built'] . "\",";
+    print "\"" . $a_inventory['hw_active'] . "\",";
+    print "\"" . $a_inventory['hw_retired'] . "\"\n";
 
   }
 
