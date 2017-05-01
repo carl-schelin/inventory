@@ -17,18 +17,13 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-# only a few zones so load the up into an array
-  $q_string  = "select zone_id,zone_name ";
-  $q_string .= "from zones ";
-  $q_zones = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_zones = mysql_fetch_array($q_zones)) {
-    $zonename[$a_zones['zone_id']] = $a_zones['zone_name'];
-  }
+  $package            = "servers.web.php";
+  $mygroup            = $GRP_WebApps;
 
   $q_string  = "select inv_id,inv_name,inv_fqdn,inv_zone,inv_ssh ";
   $q_string .= "from software ";
   $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
-  $q_string .= "where (inv_manager = " . $GRP_WebApps . " or inv_appadmin = " . $GRP_WebApps . " or sw_group = " . $GRP_WebApps . ") and inv_status = 0 ";
+  $q_string .= "where (inv_manager = " . $mygroup . " or inv_appadmin = " . $mygroup . " or sw_group = " . $mygroup . ") and inv_status = 0 ";
   $q_string .= "group by inv_name ";
   $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_software = mysql_fetch_array($q_software)) {
@@ -62,19 +57,21 @@
       $interfaces .= "," . $a_interface['int_server'] . ",";
     }
 
-    print "$pre" . $a_software['inv_name'] . ":" . $a_software['inv_fqdn'] . ":" . $zonename[$a_software['inv_zone']] . ":" . $tags . ":" . $interfaces . ":" . $a_inventory['inv_id'] . "\n";
+    $output = $pre . $a_software['inv_name'] . ":" . $a_software['inv_fqdn'] . ":$os:" . $zonename[$a_software['inv_zone']] . ":$tags:$interfaces:" . $a_software['inv_id'] . "\n";
+    print $output;
 
   }
 
 # add applications for changelog work
   $q_string  = "select cl_name ";
   $q_string .= "from changelog ";
-  $q_string .= "where cl_group = " . $GRP_WebApps . " and cl_delete = 0 ";
-  $q_string .= "order by cl_name";
+  $q_string .= "where cl_group = " . $mygroup . " and cl_delete = 0 ";
+  $q_string .= "group by cl_name ";
   $q_changelog = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_changelog = mysql_fetch_array($q_changelog)) {
 
-    print "#" . $a_changelog['cl_name'] . ":::::0\n";
+    $output = '#' . $a_changelog['cl_name'] . ":::::," . $a_changelog['cl_name'] . ",:0\n";
+    print $output;
 
   }
 

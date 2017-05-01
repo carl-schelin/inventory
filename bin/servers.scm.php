@@ -17,23 +17,32 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  $q_string  = "select inv_id,inv_name,zone_name,inv_ssh,inv_fqdn ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
-  $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
-  $q_string .= "where (inv_manager = " . $GRP_SCM . " or sw_group = " . $GRP_SCM . ") and inv_status = 0 ";
+  $package            = "servers.scm.php";
+  $mygroup            = $GRP_SCM;
+
+  $q_string  = "select inv_id,inv_name,inv_fqdn,inv_zone,inv_ssh ";
+  $q_string .= "from software ";
+  $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
+  $q_string .= "where (inv_manager = " . $mygroup . " or inv_appadmin = " . $mygroup . " or sw_group = " . $mygroup . ") and inv_status = 0 ";
   $q_string .= "group by inv_name ";
-  $q_inventory = mysql_query($q_string) or die(mysql_error());
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  while ($a_software = mysql_fetch_array($q_software)) {
 
 # determine operating system
     $os = "";
-    $os = return_System($a_inventory['inv_id']);
+    $os = return_System($a_software['inv_id']);
+
+# add a comment character to the server list for live servers but not ssh'able.
+# scripts use the "^#" part to make sure commented servers are able to use the changelog process
+    $pre = "";
+    if ($a_software['inv_ssh'] == 0) {
+      $pre = '#';
+    }
 
     $tags = '';
     $q_string  = "select tag_name ";
     $q_string .= "from tags ";
-    $q_string .= "where tag_inv_id = " . $a_inventory['inv_id'];
+    $q_string .= "where tag_inv_id = " . $a_software['inv_id'];
     $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     while ($a_tags = mysql_fetch_array($q_tags)) {
       $tags .= "," . $a_tags['tag_name'] . ",";
@@ -42,25 +51,27 @@
     $interfaces = '';
     $q_string  = "select int_server ";
     $q_string .= "from interface ";
-    $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_type = 1 || int_type = 2 || int_type = 6)";
+    $q_string .= "where int_companyid = " . $a_software['inv_id'] . " and int_ip6 = 0 and (int_type = 1 || int_type = 2 || int_type = 6)";
     $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     while ($a_interface = mysql_fetch_array($q_interface)) {
       $interfaces .= "," . $a_interface['int_server'] . ",";
     }
 
-    print $a_inventory['inv_name'] . ":" . $a_inventory['inv_fqdn'] . ":" . $a_inventory['zone_name'] . ":" . $tags . ":" . $interfaces . ":" . $a_inventory['inv_id'] . "\n";
+    $output = $pre . $a_software['inv_name'] . ":" . $a_software['inv_fqdn'] . ":$os:" . $zonename[$a_software['inv_zone']] . ":$tags:$interfaces:" . $a_software['inv_id'] . "\n";
+    print $output;
 
   }
 
 # add applications for changelog work
   $q_string  = "select cl_name ";
   $q_string .= "from changelog ";
-  $q_string .= "where cl_group = " . $GRP_SCM . " and cl_delete = 0 ";
-  $q_string .= "order by cl_name";
+  $q_string .= "where cl_group = " . $mygroup . " and cl_delete = 0 ";
+  $q_string .= "group by cl_name ";
   $q_changelog = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_changelog = mysql_fetch_array($q_changelog)) {
 
-    print "#" . $a_changelog['cl_name'] . ":::::0\n";
+    $output = '#' . $a_changelog['cl_name'] . ":::::," . $a_changelog['cl_name'] . ",:0\n";
+    print $output;
 
   }
 

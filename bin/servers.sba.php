@@ -17,51 +17,64 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  $q_string  = "select inv_id,inv_name,inv_fqdn,zone_name ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
-  $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
-  $q_string .= "inner join tags on tags.tag_inv_id = inventory.inv_id " ;
-  $q_string .= "where (inv_manager = " . $GRP_Backups . " or sw_group = " . $GRP_Backups . ") and tag_group = " . $GRP_Backups . " and inv_status = 0 ";
-  $q_string .= "group by inv_id ";
-  $q_inventory = mysql_query($q_string) or die(mysql_error());
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $package            = "servers.sba.php";
+  $mygroup            = $GRP_Backups;
 
+  $q_string  = "select inv_id,inv_name,inv_fqdn,inv_zone,inv_ssh ";
+  $q_string .= "from software ";
+  $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
+  $q_string .= "where (inv_manager = " . $mygroup . " or inv_appadmin = " . $mygroup . " or sw_group = " . $mygroup . ") and inv_status = 0 ";
+  $q_string .= "group by inv_name ";
+  $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  while ($a_software = mysql_fetch_array($q_software)) {
+
+# determine operating system
     $os = "";
-    $note = "";
+    $os = return_System($a_software['inv_id']);
+
+# add a comment character to the server list for live servers but not ssh'able.
+# scripts use the "^#" part to make sure commented servers are able to use the changelog process
+    $pre = "";
+    if ($a_software['inv_ssh'] == 0) {
+      $pre = '#';
+    }
 
     $tags = '';
     $q_string  = "select tag_name ";
     $q_string .= "from tags ";
-    $q_string .= "where tag_inv_id = " . $a_inventory['inv_id'] . " and tag_group = " . $GRP_Backups . " ";
+    $q_string .= "where tag_inv_id = " . $a_software['inv_id'] . " and tag_group = " . $mygroup . " ";;
     $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     while ($a_tags = mysql_fetch_array($q_tags)) {
       $tags .= "," . $a_tags['tag_name'] . ",";
     }
 
-# The SBA group (Scott) requested a listing of systems in their changelog that have a group tag for the SBA group.
-# this way the server changelog listing is much shorter as the storage and backup group have backup software on all the servers.
-    if (strlen($tags) > 0) {
-# determine operating system
-      $os = return_System($a_inventory['inv_id']);
-
-      print $a_inventory['inv_name'] . ":" . $a_inventory['inv_fqdn'] . ":$os:" . $a_inventory['zone_name'] . ":$tags:$note:" . $a_inventory['inv_id'] . "\n";
-
+    $interfaces = '';
+    $q_string  = "select int_server ";
+    $q_string .= "from interface ";
+    $q_string .= "where int_companyid = " . $a_software['inv_id'] . " and int_ip6 = 0 and (int_type = 1 || int_type = 2 || int_type = 6)";
+    $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    while ($a_interface = mysql_fetch_array($q_interface)) {
+      $interfaces .= "," . $a_interface['int_server'] . ",";
     }
+
+    $output = $pre . $a_software['inv_name'] . ":" . $a_software['inv_fqdn'] . ":$os:" . $zonename[$a_software['inv_zone']] . ":$tags:$interfaces:" . $a_software['inv_id'] . "\n";
+    if (strlen($tags) > 0) {
+      print $output;
+    }
+
   }
 
 # add applications for changelog work
   $q_string  = "select cl_name ";
   $q_string .= "from changelog ";
-  $q_string .= "where cl_group = " . $GRP_Backups . " and cl_delete = 0 ";
-  $q_string .= "order by cl_name";
+  $q_string .= "where cl_group = " . $mygroup . " and cl_delete = 0 ";
+  $q_string .= "group by cl_name ";
   $q_changelog = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_changelog = mysql_fetch_array($q_changelog)) {
 
-    print $a_changelog['cl_name'] . ":::::," . $a_changelog['cl_name'] . ",:0\n";
+    $output = '#' . $a_changelog['cl_name'] . ":::::," . $a_changelog['cl_name'] . ",:0\n";
+    print $output;
 
   }
-
-#  print "$pre$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . ":$tags:$note:" . $a_inventory['inv_id'] . "\n";
 
 ?>
