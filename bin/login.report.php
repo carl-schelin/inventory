@@ -64,8 +64,8 @@
 
 # here is where the output begins
     if ($a_rsdp_server['rsdp_application'] == $GRP_DBAdmins) {
-      $configuration .= $servername . ":Group:dbadmin\n";
-      $configuration .= $servername . ":Sudoers:dbadmin\n";
+      $configuration .= $servername . ":Group:dbadmins\n";
+      $configuration .= $servername . ":Sudoers:dbadmins\n";
     }
     if ($a_rsdp_server['rsdp_application'] == $GRP_Mobility) {
       $configuration .= $servername . ":Group:mobadmins\n";
