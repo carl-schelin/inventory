@@ -58,10 +58,6 @@
       }
     }
 
-    if ($servername == 'eth0' || $servername == "lan901" || $servername == "bond0") {
-      $servername = $hostname;
-    }
-
 # here is where the output begins
     if ($a_rsdp_server['rsdp_application'] == $GRP_DBAdmins) {
       $configuration .= $servername . ":Group:dbadmins\n";
@@ -80,7 +76,7 @@
       $configuration .= $servername . ":Sudoers:scmadmins\n";
     }
 
-    $configuration .= $servername . ":Hostname:" . $hostname . "\n";
+    $configuration .= $servername . ":Hostname:" . $hostname . ":" . $a_rsdp_server['rsdp_id'] . "\n";
     $configuration .= $servername . ":CPU:"      . $a_rsdp_server['rsdp_processors'] . "\n";
     $configuration .= $servername . ":Memory:"   . $a_rsdp_server['rsdp_memory']     . "\n";
     $configuration .= $servername . ":Disk:"     . $a_rsdp_server['rsdp_ossize']     . "\n";
