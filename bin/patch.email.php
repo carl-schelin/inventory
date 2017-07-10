@@ -19,6 +19,10 @@
 
 //define the receiver of the email
   $to = "UnixServerReport@intradonet.intrado.com,carl.schelin@intrado.com,marcus.cotey@intrado.com";
+// Stan Trevino added for Denise as she's on PTO for August.
+  if (date('Y/m') == "2017/08") {
+    $to .= ",etrevino@west.com";
+  }
 
 //define the subject of the email
   $subject     = date('Y-m-d') . " TechOps Patch Report";
