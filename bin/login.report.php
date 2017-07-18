@@ -106,9 +106,11 @@
 
     if ($a_rsdp_server['rsdp_osmonitor']) {
       $configuration .= $servername . ":Openview\n";
+      $configuration .= $servername . ":Service:opc_op\n";
     }
     if ($a_rsdp_server['rsdp_opnet']) {
       $configuration .= $servername . ":OpNet\n";
+      $configuration .= $servername . ":Service:opnet\n";
     }
     if ($a_rsdp_server['rsdp_datapalette']) {
       $configuration .= $servername . ":Datapalette\n";
