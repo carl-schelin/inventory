@@ -19,8 +19,8 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  $debug = 'no';
   $debug = 'yes';
+  $debug = 'no';
 
 # update rsdp_centrify on all systems where inv_domain != ''
 
