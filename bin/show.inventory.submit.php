@@ -14,6 +14,11 @@
   $debug = 'yes';
   $debug = 'no';
 
+  if ($argv[$argc - 1] == 'debug') {
+    $debug = 'yes';
+    $argc--;
+  }
+
   $headers  = "From: Inventory Management <inventory@incojs01.scc911.com>\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
   $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
@@ -79,9 +84,9 @@
     $servername = strtolower($servername);
   } else {
     $serverlist = explode('.', $servername);
-    $servername = strtolower($serverlist[0]);
+    $servername = str_replace("*", "%", strtolower($serverlist[0]));
   }
-  $productlist = str_replace("_", " ", strtolower($productlist));
+  $productlist = str_replace("_", " ", str_replace("*", "%", strtolower($productlist)));
   $serverip = $servername;
   $product = '';
   $server = '';
@@ -98,14 +103,14 @@
 # check the full keyword
     if ($action != 'hardware' && $action != 'filesystems' && $action != 'software' && $action != 'network' && $action != 'route' && $action != 'routing' && $action != 'issues' && $action != 'all') {
       $servername = 'help';
-      $error = "<p><strong>Error</strong>: Invalid option.</p>\n\n";
+      $error = "<p><strong>Error</strong>: Invalid option: " . $action . ".</p>\n\n";
     }
 
 # check the initials as well as the full option isn't necessary
     $firstchar = substr($action, 0, 1);
     if (strpos("*ahfsnri", $firstchar) === false) {
       $servername = 'help';
-      $error = "<p><strong>Error</strong>: Invalid option.</p>\n\n";
+      $error = "<p><strong>Error</strong>: Invalid option: " . $firstchar . ". Options: *ahfsnri</p>\n\n";
     }
 
     if ($debug == 'yes') {
@@ -155,7 +160,7 @@
     if (mysql_num_rows($q_inventory) == 0) {
       $q_string  = "select prod_name ";
       $q_string .= "from products ";
-      $q_string .= "where prod_name = '" . $productlist . "'";
+      $q_string .= "where prod_name like '" . $productlist . "'";
       $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
 
       if ($debug == 'yes') {
@@ -256,11 +261,13 @@
 
         }
       } else {
-        $product = $productlist;
+        $a_products = mysql_fetch_array($q_products);
+        $product = $a_products['prod_name'];
       }
     } else {
       if (mysql_num_rows($q_inventory) == 1) {
-        $server = $servername;
+        $a_inventory = mysql_fetch_array($q_inventory);
+        $server = $a_inventory['inv_name'];
       } else {
         $output .= "<table width=80%>\n";
         $output .= "<tr>\n";
@@ -272,7 +279,9 @@
         $output .= "</tr>\n";
 
         while ($a_inventory = mysql_fetch_array($q_inventory)) {
-          $q_string = "select grp_name from groups where grp_id = " . $a_inventory['inv_manager'];
+          $q_string  = "select grp_name ";
+          $q_strint .= "from groups ";
+          $q_strint .= "where grp_id = " . $a_inventory['inv_manager'];
           $q_groups = mysql_query($q_string) or die($q_string . ":(1): " . mysql_error() . "\n\n");
           $a_groups = mysql_fetch_array($q_groups);
 
@@ -541,7 +550,10 @@
     $q_string .= "from inventory ";
     $q_string .= "left join service on service.svc_id = inventory.inv_class ";
     $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
-    $q_string .= "where inv_name = '" . $servername . "' and inv_status = 0";
+    $q_string .= "where inv_name = '" . $server . "' and inv_status = 0";
+    if ($debug == 'yes') {
+      print $q_string . "\n";
+    }
     $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     $a_inventory = mysql_fetch_array($q_inventory);
 
@@ -554,6 +566,9 @@
     $q_string  = "select grp_name ";
     $q_string .= "from groups ";
     $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'];
+    if ($debug == 'yes') {
+      print $q_string . "\n";
+    }
     $q_groups = mysql_query($q_string) or die($q_string . ":(4): " . mysql_error() . "\n\n");
     $a_groups = mysql_fetch_array($q_groups);
 
@@ -1232,9 +1247,9 @@
     $body = $output;
 
     if ($debug == 'yes') {
-      print "mail($email, \"Inventory: \" . $servername, $body, $headers);\n";
+      print "mail($email, \"Inventory: \" . $server, $body, $headers);\n";
     } else {
-      mail($email, "Inventory: " . $servername, $body, $headers);
+      mail($email, "Inventory: " . $server, $body, $headers);
     }
   }
 
