@@ -228,7 +228,7 @@
               }
               if ($a_inventory['inv_status'] == 0) {
                 $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
-                $output .= "  <td>" . $a_inventory['inv_name'] . "</td>\n";
+                $output .= "  <td><a href=\"mailto:inventory@incojs01.scc911.com?subject=" . $a_inventory['inv_name'] . "\">" . $a_inventory['inv_name'] . "</a></td>\n";
                 $output .= "  <td>" . $a_interface['int_addr'] . "</td>\n";
                 $output .= "  <td>" . $a_interface['int_face'] . "</td>\n";
                 $output .= "  <td>" . $a_interface['int_eth'] . "</td>\n";
@@ -280,7 +280,7 @@
             print $q_string . "\n\n";
           }
           $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
-          $output .= "  <td>" . $a_inventory['inv_name'] . "</td>\n";
+          $output .= "  <td><a href=\"mailto:inventory@incojs01.scc911.com?subject=" . $a_inventory['inv_name'] . "\">" . $a_inventory['inv_name'] . "</a></td>\n";
           $output .= "  <td>" . $a_groups['grp_name'] . "</td>\n";
           $output .= "</tr>\n";
         }
@@ -396,7 +396,7 @@
       }
 
       $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
-      $output .= "  <td>" . $invname                     . "</td>\n";
+      $output .= "  <td><a href=\"mailto:inventory@incojs01.scc911.com?subject=" . $a_inventory['inv_name'] . "\">" . $inv_name . "</a></td>\n";
       $output .= "  <td>" . $a_inventory['inv_function'] . "</td>\n";
       $output .= "  <td>" . $a_inventory['grp_name']     . "</td>\n";
       $output .= "  <td>" . $a_groups['grp_name']        . "</td>\n";
@@ -503,7 +503,7 @@
       }
 
       $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
-      $output .= "  <td>" . $a_inventory['inv_name']     . "</td>\n";
+      $output .= "  <td><a href=\"mailto:inventory@incojs01.scc911.com?subject=" . $a_inventory['inv_name'] . "\">" . $a_inventory['inv_name'] . "</a></td>\n";
       $output .= "  <td>" . $a_inventory['inv_function'] . "</td>\n";
       $output .= "  <td>" . $a_inventory['grp_name']     . "</td>\n";
       $output .= "  <td>" . $a_groups['grp_name']        . "</td>\n";
