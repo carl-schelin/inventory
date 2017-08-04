@@ -56,8 +56,9 @@
       }
 
     }
-# add unixsvc to the email listing. Won't matter to anyone other than the changelog but better than adding logic
+# add unixsvc and root to the email listing. Won't matter to anyone other than the changelog but better than adding logic
     fwrite($handle, "unixsvc\n");
+    fwrite($handle, "root\n");
 
     fclose($handle);
 
