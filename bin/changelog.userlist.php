@@ -29,10 +29,10 @@
 # open file for writing; but not write plus unless the group has already been written to
 # like changelog which has product support and unix.
     if (isset($changelog[$a_groups['grp_changelog']])) {
-      $handle = fopen($path . $a_groups['grp_changelog'] . "/admins.email.new", "a");
+      $handle = fopen($path . $a_groups['grp_changelog'] . "/admins.email", "a");
       print "Updating: " . $a_groups['grp_changelog'] . "\n";
     } else {
-      $handle = fopen($path . $a_groups['grp_changelog'] . "/admins.email.new", "w");
+      $handle = fopen($path . $a_groups['grp_changelog'] . "/admins.email", "w");
       $changelog[$a_groups['grp_changelog']] = "1";
       print "Creating: " . $a_groups['grp_changelog'] . "\n";
     }
@@ -56,6 +56,8 @@
       }
 
     }
+# add unixsvc to the email listing. Won't matter to anyone other than the changelog but better than adding logic
+    fwrite($handle, "unixsvc\n");
 
     fclose($handle);
 
