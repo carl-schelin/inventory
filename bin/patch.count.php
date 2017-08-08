@@ -107,7 +107,7 @@
       if (strpos($a_software['sw_software'], ' 6.8 ') !== false) {
         $target = $version;
       }
-      $version = 'RHEL 7.3';
+      $version = 'RHEL 7.4';
       if (strpos($a_software['sw_software'], ' 7 ') !== false) {
         $target = $version;
       }
@@ -118,6 +118,9 @@
         $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 7.3 ') !== false) {
+        $target = $version;
+      }
+      if (strpos($a_software['sw_software'], ' 7.4 ') !== false) {
         $target = $version;
       }
     }
@@ -188,7 +191,7 @@
       if (strpos($a_software['sw_software'], ' 6.8 ') !== false) {
         $target = $version;
       }
-      $version = 'CentOS 7.3';
+      $version = 'CentOS 7.4';
       if (strpos($a_software['sw_software'], ' 7 ') !== false) {
         $target = $version;
       }
@@ -199,6 +202,9 @@
         $target = $version;
       }
       if (strpos($a_software['sw_software'], ' 7.3 ') !== false) {
+        $target = $version;
+      }
+      if (strpos($a_software['sw_software'], ' 7.4 ') !== false) {
         $target = $version;
       }
     }
