@@ -1,6 +1,6 @@
 #!/usr/local/bin/php
 <?php
-# Script: ddurgee.spreadsheet.php
+# Script: login.report.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
 # See: https://incowk01/makers/index.php/Coding_Standards
@@ -135,6 +135,22 @@
   }
 
   $configuration .= "\n";
+
+# now let's pull from the inventory itself to get more information
+# unix only (inv_manager = 1)
+# check software first for ability to run cron
+
+  $q_string  = "select inv_name,sw_software ";
+  $q_string .= "from software ";
+  $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
+  $q_string .= "where inv_manager = 1 and inv_status = 0 and sw_software like '%Oracle%' and sw_group = " . $GRP_DBAdmins . " ";
+  $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  if (mysql_num_rows($q_software) > 0) {
+    while ($a_software = mysql_fetch_array($q_software)) {
+      $configuration .= $a_software['inv_name'] . ":Cron:oracle\n";
+      $configuration .= $a_software['inv_name'] . ":Service:oracle\n";
+    }
+  }
 
   print $configuration . "\n";
 
