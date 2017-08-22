@@ -193,7 +193,7 @@
             }
             if (mysql_num_rows($q_inventory) > 0) {
               $a_inventory = mysql_fetch_array($q_inventory);
-              $servername = $a_inventory['inv_name'];
+              $server = $a_inventory['inv_name'];
             } else {
               $error = "<p><strong>Error</strong>: Can't find the matching server name in the Inventory database.</p>\n\n";
               $server = "help";
