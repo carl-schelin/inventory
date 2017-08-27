@@ -35,6 +35,7 @@
 #  chk_opened timestamp not null default CURRENT_TIMESTAMP,
 #  chk_closed timestamp not null default '0000-00-00',
 #  chk_text text not null,
+#  chk_import int(10) not null default 0,
 #  primary key(chk_id)
 #);
 #
@@ -65,6 +66,13 @@
   }
 
   print $server . ":";
+
+# In order to automatically close errors, set import to 1. As errors are checked, update the flag
+  $q_string  = "update chkserver ";
+  $q_string .= "set chk_import = 1 ";
+  $q_string .= "where chk_companyid = " . $inv_id . " ";
+  $results = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+
 
   $servername = '/usr/local/admin/servers/' . $server . "/chkserver.output";
 
@@ -141,16 +149,9 @@
         $a_chkerrors = mysql_fetch_array($q_chkerrors);
 
 # the idea is to see if the server and id exists and hasn't been closed yet.
-
-
 # and got the id, now see if the id already exists in the chkserver table
 # if it was in place, update the date.
-
-
-#add a record only when the server was found with the same error but has been closed
-
-
-
+# add a record only when the server was found with the same error but has been closed
         $q_string  = "select chk_id ";
         $q_string .= "from chkserver ";
         $q_string .= "where chk_companyid = " . $inv_id . " and chk_errorid = " . $a_chkerrors['ce_id'] . " and chk_closed = '0000-00-00 00:00:00' ";
@@ -166,10 +167,31 @@
   
           print "s";
           $result = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n");
+        } else {
+          $a_chkserver = mysql_fetch_array($q_chkserver);
+
+          $q_string  = "update chkserver ";
+          $q_string .= "set ";
+          $q_string .= "chk_import = 0 ";
+          $q_string .= "where chk_id = " . $a_chkserver['chk_id'] . " and chk_closed = '0000-00-00 00:00:00' ";
+
+          print "i";
+          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n");
         }
       }
     }
   }
+
+# Auto-close: need to now update any entry that is set to 1 to the current date and time if it's not already set.
+  $q_string  = "update chkserver ";
+  $q_string .= "set ";
+  $q_string .= "chk_closed = '" . date('Y-m-d H:i:s') . "' ";
+  $q_string .= "where chk_import = 1 and chk_companyid = " . $inv_id . " and chk_closed = '0000-00-00 00:00:00' ";
+
+  print "c";
+  $result = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n");
+
+
   print "\n";
 
 ?>
