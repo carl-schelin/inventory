@@ -32,9 +32,10 @@
 
 # labs
     $q_string  = "update inventory ";
+    $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
     $q_string .= "set ";
     $q_string .= "inv_class = 6 ";
-    $q_string .= "where inv_manager = 1 and inv_location = 31 and inv_product = " . $a_products['prod_id'] . " ";
+    $q_string .= "where inv_manager = 1 and loc_instance = 0 and inv_product = " . $a_products['prod_id'] . " ";
     $results = mysql_query($q_string) or die($q_string . ": " . mysql_error());
 
   }
