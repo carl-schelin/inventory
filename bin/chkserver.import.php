@@ -16,29 +16,6 @@
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
 # import doesn't change the entry, just adds if it's not there already.
-#
-#create table chkerrors (
-#  ce_id int(10) not null auto_increment,
-#  ce_error char(200) not null default '',
-#  ce_priority int(10) not null default 0,
-#  primary key(ce_id)
-#);
-#
-#
-#create table chkserver (
-#  chk_id int(10) not null auto_increment,
-#  chk_companyid int(10) not null default 0,
-#  chk_errorid int(10) not null default 0,
-#  chk_userid int(10) not null default 0,
-#  chk_status int(10) not null default 0,
-#  chk_priority int(10) not null default 0,
-#  chk_opened timestamp not null default CURRENT_TIMESTAMP,
-#  chk_closed timestamp not null default '0000-00-00',
-#  chk_text text not null,
-#  chk_import int(10) not null default 0,
-#  primary key(chk_id)
-#);
-#
 
   if ($argc == 1) {
     print "ERROR: invalid command line parameters. Need to pass the import file name.\n";
