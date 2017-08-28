@@ -64,7 +64,7 @@
 # red
     if (strpos($process, "1b5b33316d") !== false) {
       $check = 1;
-      $priority = 1;
+      $priority = 2;
       $process = preg_replace("/1b5b33316d/", "", preg_replace("/1b5b306d/", "", $process));
     }
 # green
