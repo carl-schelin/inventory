@@ -50,50 +50,30 @@
 
   $servername = '/usr/local/admin/servers/' . $server . "/chkpackages.output";
 
+  $q_string  = "delete ";
+  $q_string .= "from packages ";
+  $q_string .= "where pkg_inv_id = " . $inv_id . " ";
+
+  $result = mysql_query($q_string);
+
   $file = fopen($servername, "r") or die;
   while(!feof($file)) {
 
     $process = trim(fgets($file));
 
-# get and update if found or add if not
-    $q_string  = "select pkg_id ";
-    $q_string .= "from packages ";
-    $q_string .= "where pkg_name = '" . $process . "' and pkg_inv_id = " . $inv_id . " ";
-    $q_packages = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_packages = mysql_fetch_array($q_packages);
+    $q_string  = "insert into packages set ";
+    $q_string .= "pkg_inv_id   =   " . $inv_id       . ",";
+    $q_string .= "pkg_name     = \"" . $process      . "\",";
+    $q_string .= "pkg_update   = \"" . $date         . "\",";
+    $q_string .= "pkg_usr_id   =   " . "1"           . ",";
+    $q_string .= "pkg_grp_id   =   " . "1"           . ",";
+    $q_string .= "pkg_os       = \"" . $sw_software  . "\"";
 
-# already exists
-    if (mysql_num_rows($q_packages) > 0) {
-      $q_string  = "update ";
-      $q_string .= "packages ";
-      $q_string .= "set ";
-      $q_string .= "pkg_update = '" . $date . "',";
-      $q_string .= "pkg_os     = '" . $sw_software . "' ";
-      $q_string .= "where pkg_id = " . $a_packages['pkg_id'] . " ";
-
-      if ($debug == 'yes') {
-        print $q_string . "\n";
-      } else {
-        print "u";
-        $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      }
-
-# add new
-    } else {
-      $q_string  = "insert into packages set ";
-      $q_string .= "pkg_inv_id   =   " . $inv_id       . ",";
-      $q_string .= "pkg_name     = \"" . $process      . "\",";
-      $q_string .= "pkg_update   = \"" . $date         . "\",";
-      $q_string .= "pkg_usr_id   =   " . "1"           . ",";
-      $q_string .= "pkg_grp_id   =   " . "1"           . ",";
-      $q_string .= "pkg_os       = \"" . $sw_software  . "\"";
-
-      if ($debug == 'yes') {
-        print $q_string . "\n";
-      }else {
-        print "a";
-        $q_result = mysql_query($q_string) or die($q_string . ":  " . mysql_error());
-      }
+    if ($debug == 'yes') {
+      print $q_string . "\n";
+    }else {
+      print "a";
+      $q_result = mysql_query($q_string) or die($q_string . ":  " . mysql_error());
     }
   }
 
