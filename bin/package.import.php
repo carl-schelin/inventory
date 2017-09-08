@@ -96,25 +96,29 @@
 
         $package = '';
       }
-    }
+    } else {
 
-    if ($uname == "Linux" || $uname == "HP-UX") {
+      if ($uname == "Linux" || $uname == "HP-UX") {
 
-      $process = trim(fgets($file));
+        $process = trim(fgets($file));
 
-      $q_string  = "insert into packages set ";
-      $q_string .= "pkg_inv_id   =   " . $inv_id       . ",";
-      $q_string .= "pkg_name     = \"" . $process      . "\",";
-      $q_string .= "pkg_update   = \"" . $date         . "\",";
-      $q_string .= "pkg_usr_id   =   " . "1"           . ",";
-      $q_string .= "pkg_grp_id   =   " . "1"           . ",";
-      $q_string .= "pkg_os       = \"" . $sw_software  . "\"";
+        $q_string  = "insert into packages set ";
+        $q_string .= "pkg_inv_id   =   " . $inv_id       . ",";
+        $q_string .= "pkg_name     = \"" . $process      . "\",";
+        $q_string .= "pkg_update   = \"" . $date         . "\",";
+        $q_string .= "pkg_usr_id   =   " . "1"           . ",";
+        $q_string .= "pkg_grp_id   =   " . "1"           . ",";
+        $q_string .= "pkg_os       = \"" . $sw_software  . "\"";
 
-      if ($debug == 'yes') {
-        print $q_string . "\n";
+        if ($debug == 'yes') {
+          print $q_string . "\n";
+        } else {
+          print "a";
+          $q_result = mysql_query($q_string) or die($q_string . ":  " . mysql_error());
+        }
       } else {
-        print "a";
-        $q_result = mysql_query($q_string) or die($q_string . ":  " . mysql_error());
+        $process = trim(fgets($file));
+        print "i";
       }
     }
   }
