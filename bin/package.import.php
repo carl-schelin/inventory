@@ -74,7 +74,7 @@
       if ($debug == 'yes') {
         print $q_string . "\n";
       } else {
-        print "i";
+        print "u";
         $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
       }
 
