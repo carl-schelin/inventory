@@ -41,6 +41,9 @@
     $sw_software = $a_inventory['sw_software'];
   }
 
+# return the basic system type; Linux, SunOS, HP-UX, etc
+  $uname = return_System($inv_id);
+
   if ($inv_id == '') {
     print "Error: No server found (" . $server . ")\n";
     exit(1);
@@ -59,21 +62,60 @@
   $file = fopen($servername, "r") or die;
   while(!feof($file)) {
 
-    $process = trim(fgets($file));
+# solaris is a multiline capture
+# looking for package: PKGINST:  SUNWxorg-devel-docs
+# and version:         VERSION:  6.8.2.5.10.0110,REV=0.2005.06.21
+# combine into a single line SUNWxorg-devel-docs 6.8.2.5.10.0110,REV=0.2005.06.21
+    if ($uname == "SunOS") {
 
-    $q_string  = "insert into packages set ";
-    $q_string .= "pkg_inv_id   =   " . $inv_id       . ",";
-    $q_string .= "pkg_name     = \"" . $process      . "\",";
-    $q_string .= "pkg_update   = \"" . $date         . "\",";
-    $q_string .= "pkg_usr_id   =   " . "1"           . ",";
-    $q_string .= "pkg_grp_id   =   " . "1"           . ",";
-    $q_string .= "pkg_os       = \"" . $sw_software  . "\"";
+      $process = trim(fgets($file));
+      $value = split(" ", $process);
 
-    if ($debug == 'yes') {
-      print $q_string . "\n";
-    }else {
-      print "a";
-      $q_result = mysql_query($q_string) or die($q_string . ":  " . mysql_error());
+      if ($value[0] == 'PKGINST:') {
+        $package = $value[2] . " ";
+      }
+
+
+      if ($value[0] == 'VERSION:') {
+        $package .= $value[2];
+
+        $q_string  = "insert into packages set ";
+        $q_string .= "pkg_inv_id   =   " . $inv_id       . ",";
+        $q_string .= "pkg_name     = \"" . $package      . "\",";
+        $q_string .= "pkg_update   = \"" . $date         . "\",";
+        $q_string .= "pkg_usr_id   =   " . "1"           . ",";
+        $q_string .= "pkg_grp_id   =   " . "1"           . ",";
+        $q_string .= "pkg_os       = \"" . $sw_software  . "\"";
+
+        if ($debug == 'yes') {
+          print $q_string . "\n";
+        } else {
+          print "a";
+          $q_result = mysql_query($q_string) or die($q_string . ":  " . mysql_error());
+        }
+
+        $package = '';
+      }
+    }
+
+    if ($uname == "Linux" || $uname == "HP-UX") {
+
+      $process = trim(fgets($file));
+
+      $q_string  = "insert into packages set ";
+      $q_string .= "pkg_inv_id   =   " . $inv_id       . ",";
+      $q_string .= "pkg_name     = \"" . $process      . "\",";
+      $q_string .= "pkg_update   = \"" . $date         . "\",";
+      $q_string .= "pkg_usr_id   =   " . "1"           . ",";
+      $q_string .= "pkg_grp_id   =   " . "1"           . ",";
+      $q_string .= "pkg_os       = \"" . $sw_software  . "\"";
+
+      if ($debug == 'yes') {
+        print $q_string . "\n";
+      } else {
+        print "a";
+        $q_result = mysql_query($q_string) or die($q_string . ":  " . mysql_error());
+      }
     }
   }
 
