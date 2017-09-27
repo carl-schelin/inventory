@@ -50,6 +50,8 @@ $q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where 
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where sw_software = \"CentOS release 6.8 (Final)\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where sw_software = \"CentOS release 6.9 (Final)\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 
 print "Updating Red Hat\n";
 
@@ -200,6 +202,8 @@ $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where sw_software = \"Red Hat Server 6.7 (Santiago)\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where sw_software = \"Red Hat Server 6.8 (Santiago)\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where sw_software = \"Red Hat Server 6.9 (Santiago)\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 
 $q_string = "update software set sw_eol = \"2020-12-31\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux 7 (64-bit)\" ";
