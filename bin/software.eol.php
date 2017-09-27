@@ -191,6 +191,8 @@ $q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where 
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 6.8 (Santiago)\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 6.9 (Santiago)\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where sw_software = \"Red Hat Server 6.2 (Santiago)\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where sw_software = \"Red Hat Server 6.2 (Saratoga)\" ";
