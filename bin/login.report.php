@@ -41,6 +41,7 @@
   while ($a_rsdp_server = mysql_fetch_array($q_rsdp_server)) {
 
     $hostname = $servername = $a_rsdp_server['os_sysname'];
+# type 2 == Application interface
     $q_string  = "select if_name ";
     $q_string .= "from rsdp_interface ";
     $q_string .= "where if_rsdp = " . $a_rsdp_server['rsdp_id'] . " and if_type = 2 ";
@@ -49,6 +50,7 @@
       $a_rsdp_interface = mysql_fetch_array($q_rsdp_interface);
       $servername = $a_rsdp_interface['if_name'];
     } else {
+# type 1 == Management interface
       $q_string  = "select if_name ";
       $q_string .= "from rsdp_interface ";
       $q_string .= "where if_rsdp = " . $a_rsdp_server['rsdp_id'] . " and if_type = 1 ";
@@ -92,9 +94,10 @@
       }
     }
 
+# except console (4) or lom (6)
     $q_string  = "select if_ip,if_vlan,if_ipcheck,if_gate ";
     $q_string .= "from rsdp_interface ";
-    $q_string .= "where if_rsdp = " . $a_rsdp_server['rsdp_id'] . " ";
+    $q_string .= "where if_rsdp = " . $a_rsdp_server['rsdp_id'] . " and if_type != 4 and if_type != 6 ";
     $q_string .= "order by if_interface";
     $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
@@ -118,7 +121,7 @@
     if ($a_rsdp_server['rsdp_centrify']) {
       $configuration .= $servername . ":Centrify\n";
     }
-# if backup checked, then encrypted backups are in place so don't plug netbackup in
+# if backup checkbox is checked, then encrypted backups are in place so don't plug netbackup in
     if ($a_rsdp_server['rsdp_backup'] == 0) {
       $q_string  = "select bu_retention ";
       $q_string .= "from rsdp_backups ";
