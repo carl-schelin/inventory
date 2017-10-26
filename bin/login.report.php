@@ -67,8 +67,8 @@
       $configuration .= $servername . ":Sudoers:dbadmins\n";
     }
     if ($a_rsdp_server['rsdp_application'] == $GRP_Mobility) {
-      $configuration .= $servername . ":Group:mobadmins\n";
-      $configuration .= $servername . ":Sudoers:mobadmins\n";
+      $configuration .= $servername . ":Group:mobadmin\n";
+      $configuration .= $servername . ":Sudoers:mobadmin\n";
     }
     if ($a_rsdp_server['rsdp_application'] == $GRP_WebApps) {
       $configuration .= $servername . ":Group:webapps\n";
