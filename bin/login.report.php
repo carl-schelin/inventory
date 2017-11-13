@@ -107,6 +107,7 @@
       }
     }
 
+# set up the service accounts
     if ($a_rsdp_server['rsdp_osmonitor']) {
       $configuration .= $servername . ":Openview\n";
       $configuration .= $servername . ":Service:opc_op\n";
@@ -141,6 +142,43 @@
 
 # now let's pull from the inventory itself to get more information
 # unix only (inv_manager = 1)
+
+
+# if interface is identified to monitor, set up the openview configuration options properly
+# for the openview configuration check
+  $q_string  = "select inv_id,inv_name,int_addr,int_face ";
+  $q_string .= "from interface ";
+  $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
+  $q_string .= "where inv_manager = 1 and inv_status = 0 and int_openview = 1 and int_ip6 = 0 and int_addr != '' ";
+  $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  while ($a_interface = mysql_fetch_array($q_interface)) {
+
+    $hostname = $servername = $a_interface['inv_name'];
+# type 2 == Application interface
+    $q_string  = "select int_server ";
+    $q_string .= "from interface ";
+    $q_string .= "where int_companyid = " . $a_interface['inv_id'] . " and int_type = 2 ";
+    $q_face = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    if (mysql_num_rows($q_face) > 0) {
+      $a_face = mysql_fetch_array($q_face);
+      $servername = $a_face['int_server'];
+    } else {
+# type 1 == Management interface
+      $q_string  = "select int_server ";
+      $q_string .= "from interface ";
+      $q_string .= "where int_companyid = " . $a_interface['inv_id'] . " and int_type = 1 ";
+      $q_face = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      if (mysql_num_rows($q_face) > 0) {
+        $a_face = mysql_fetch_array($q_face);
+        $servername = $a_face['int_server'];
+      }
+    }
+
+    $configuration .= $servername . ":IPAddressMonitored:" . $a_interface['int_addr'] . "\n";
+    $configuration .= $servername . ":InterfaceMonitored:" . $a_interface['int_face'] . "\n";
+    $configuration .= $servername . ":MonitoringServer:lnmtcodcom1vip.scc911.com\n";
+  }
+
 # check software first for ability to run cron
 
   $q_string  = "select inv_id,inv_name,sw_software ";
