@@ -144,12 +144,12 @@
 # unix only (inv_manager = 1)
 
 
-# if interface is identified to monitor, set up the openview configuration options properly
-# for the openview configuration check
+# if interface is identified as management, set up the management interface and IP properly
+# for the management route check
   $q_string  = "select inv_id,inv_name,int_addr,int_face ";
   $q_string .= "from interface ";
   $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
-  $q_string .= "where inv_manager = 1 and inv_status = 0 and int_openview = 1 and int_ip6 = 0 and int_addr != '' ";
+  $q_string .= "where inv_manager = 1 and inv_status = 0 and int_type = 1 and int_ip6 = 0 and int_addr != '' ";
   $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_interface = mysql_fetch_array($q_interface)) {
 
