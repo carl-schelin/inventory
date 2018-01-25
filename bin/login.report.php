@@ -44,95 +44,84 @@
 # type 2 == Application interface
     $q_string  = "select if_name ";
     $q_string .= "from rsdp_interface ";
-    $q_string .= "where if_rsdp = " . $a_rsdp_server['rsdp_id'] . " and if_type = 2 ";
+    $q_string .= "where if_rsdp = " . $a_rsdp_server['rsdp_id'] . " and (if_type = 2 or if_type = 1) ";
     $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_rsdp_interface) > 0) {
-      $a_rsdp_interface = mysql_fetch_array($q_rsdp_interface);
+    while ($a_rsdp_interface = mysql_fetch_array($q_radp_interface)) {
       $servername = $a_rsdp_interface['if_name'];
-    } else {
-# type 1 == Management interface
-      $q_string  = "select if_name ";
-      $q_string .= "from rsdp_interface ";
-      $q_string .= "where if_rsdp = " . $a_rsdp_server['rsdp_id'] . " and if_type = 1 ";
-      $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_rsdp_interface) > 0) {
-        $a_rsdp_interface = mysql_fetch_array($q_rsdp_interface);
-        $servername = $a_rsdp_interface['if_name'];
-      }
-    }
 
 # here is where the output begins
-    if ($a_rsdp_server['rsdp_application'] == $GRP_DBAdmins) {
-      $configuration .= $servername . ":Group:dbadmins\n";
-      $configuration .= $servername . ":Sudoers:dbadmins\n";
-    }
-    if ($a_rsdp_server['rsdp_application'] == $GRP_Mobility) {
-      $configuration .= $servername . ":Group:mobadmin\n";
-      $configuration .= $servername . ":Sudoers:mobadmin\n";
-    }
-    if ($a_rsdp_server['rsdp_application'] == $GRP_WebApps) {
-      $configuration .= $servername . ":Group:webapps\n";
-      $configuration .= $servername . ":Sudoers:webapps\n";
-    }
-    if ($a_rsdp_server['rsdp_application'] == $GRP_SCM) {
-      $configuration .= $servername . ":Group:scmadmins\n";
-      $configuration .= $servername . ":Sudoers:scmadmins\n";
-    }
-
-    $configuration .= $servername . ":Hostname:" . $hostname . ":" . $a_rsdp_server['rsdp_id'] . "\n";
-    $configuration .= $servername . ":CPU:"      . $a_rsdp_server['rsdp_processors'] . "\n";
-    $configuration .= $servername . ":Memory:"   . $a_rsdp_server['rsdp_memory']     . "\n";
-    $configuration .= $servername . ":Disk:"     . $a_rsdp_server['rsdp_ossize']     . "\n";
-
-    $q_string  = "select fs_volume,fs_size ";
-    $q_string .= "from rsdp_filesystem ";
-    $q_string .= "where fs_rsdp = " . $a_rsdp_server['rsdp_id'];
-    $q_rsdp_filesystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_rsdp_filesystem) > 0) {
-      while ($a_rsdp_filesystem = mysql_fetch_array($q_rsdp_filesystem)) {
-        $configuration .= $servername . ":Disk:" . $a_rsdp_filesystem['fs_size'] . "\n";
+      if ($a_rsdp_server['rsdp_application'] == $GRP_DBAdmins) {
+        $configuration .= $servername . ":Group:dbadmins\n";
+        $configuration .= $servername . ":Sudoers:dbadmins\n";
       }
-    }
+      if ($a_rsdp_server['rsdp_application'] == $GRP_Mobility) {
+        $configuration .= $servername . ":Group:mobadmin\n";
+        $configuration .= $servername . ":Sudoers:mobadmin\n";
+      }
+      if ($a_rsdp_server['rsdp_application'] == $GRP_WebApps) {
+        $configuration .= $servername . ":Group:webapps\n";
+        $configuration .= $servername . ":Sudoers:webapps\n";
+      }
+      if ($a_rsdp_server['rsdp_application'] == $GRP_SCM) {
+        $configuration .= $servername . ":Group:scmadmins\n";
+        $configuration .= $servername . ":Sudoers:scmadmins\n";
+      }
+
+      $configuration .= $servername . ":Hostname:" . $hostname . ":" . $a_rsdp_server['rsdp_id'] . "\n";
+      $configuration .= $servername . ":CPU:"      . $a_rsdp_server['rsdp_processors'] . "\n";
+      $configuration .= $servername . ":Memory:"   . $a_rsdp_server['rsdp_memory']     . "\n";
+      $configuration .= $servername . ":Disk:"     . $a_rsdp_server['rsdp_ossize']     . "\n";
+
+      $q_string  = "select fs_volume,fs_size ";
+      $q_string .= "from rsdp_filesystem ";
+      $q_string .= "where fs_rsdp = " . $a_rsdp_server['rsdp_id'];
+      $q_rsdp_filesystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      if (mysql_num_rows($q_rsdp_filesystem) > 0) {
+        while ($a_rsdp_filesystem = mysql_fetch_array($q_rsdp_filesystem)) {
+          $configuration .= $servername . ":Disk:" . $a_rsdp_filesystem['fs_size'] . "\n";
+        }
+      }
 
 # except console (4) or lom (6)
-    $q_string  = "select if_ip,if_vlan,if_ipcheck,if_gate ";
-    $q_string .= "from rsdp_interface ";
-    $q_string .= "where if_rsdp = " . $a_rsdp_server['rsdp_id'] . " and if_type != 4 and if_type != 6 ";
-    $q_string .= "order by if_interface";
-    $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
+      $q_string  = "select if_ip,if_vlan,if_ipcheck,if_gate ";
+      $q_string .= "from rsdp_interface ";
+      $q_string .= "where if_rsdp = " . $a_rsdp_server['rsdp_id'] . " and if_type != 4 and if_type != 6 ";
+      $q_string .= "order by if_interface";
+      $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
 
-      if ($a_rsdp_interface['if_ipcheck']) {
-        $configuration .= $servername . ":IP:" . $a_rsdp_interface['if_ip'] . ":" . $a_rsdp_interface['if_gate'] . "\n";
+        if ($a_rsdp_interface['if_ipcheck']) {
+          $configuration .= $servername . ":IP:" . $a_rsdp_interface['if_ip'] . ":" . $a_rsdp_interface['if_gate'] . "\n";
+        }
       }
-    }
 
 # set up the service accounts
-    if ($a_rsdp_server['rsdp_osmonitor']) {
-      $configuration .= $servername . ":Openview\n";
-      $configuration .= $servername . ":Service:opc_op\n";
-    }
-    if ($a_rsdp_server['rsdp_opnet']) {
-      $configuration .= $servername . ":OpNet\n";
-      $configuration .= $servername . ":Service:opnet\n";
-    }
-    if ($a_rsdp_server['rsdp_datapalette']) {
-      $configuration .= $servername . ":Datapalette\n";
-    }
-    if ($a_rsdp_server['rsdp_centrify']) {
-      $configuration .= $servername . ":Centrify\n";
-    }
+      if ($a_rsdp_server['rsdp_osmonitor']) {
+        $configuration .= $servername . ":Openview\n";
+        $configuration .= $servername . ":Service:opc_op\n";
+      }
+      if ($a_rsdp_server['rsdp_opnet']) {
+        $configuration .= $servername . ":OpNet\n";
+        $configuration .= $servername . ":Service:opnet\n";
+      }
+      if ($a_rsdp_server['rsdp_datapalette']) {
+        $configuration .= $servername . ":Datapalette\n";
+      }
+      if ($a_rsdp_server['rsdp_centrify']) {
+        $configuration .= $servername . ":Centrify\n";
+      }
 # if backup checkbox is checked, then encrypted backups are in place so don't plug netbackup in
-    if ($a_rsdp_server['rsdp_backup'] == 0) {
-      $q_string  = "select bu_retention ";
-      $q_string .= "from rsdp_backups ";
-      $q_string .= "where bu_rsdp = " . $a_rsdp_server['rsdp_id'] . " ";
-      $q_rsdp_backups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_rsdp_backups) > 0) {
-        $a_rsdp_backups = mysql_fetch_array($q_rsdp_backups);
+      if ($a_rsdp_server['rsdp_backup'] == 0) {
+        $q_string  = "select bu_retention ";
+        $q_string .= "from rsdp_backups ";
+        $q_string .= "where bu_rsdp = " . $a_rsdp_server['rsdp_id'] . " ";
+        $q_rsdp_backups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        if (mysql_num_rows($q_rsdp_backups) > 0) {
+          $a_rsdp_backups = mysql_fetch_array($q_rsdp_backups);
 
-        if ($a_rsdp_backups['bu_retention']) {
-          $configuration .= $servername . ":Netbackup\n";
+          if ($a_rsdp_backups['bu_retention']) {
+            $configuration .= $servername . ":Netbackup\n";
+          }
         }
       }
     }
