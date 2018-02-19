@@ -30,6 +30,7 @@
   $q_string  = "select inv_id,inv_name ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_manager = 1 and inv_status = 0 and inv_ssh = 1 ";
+  $q_string .= "order by inv_name ";
   $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
@@ -43,7 +44,7 @@
 
     $servername = '/usr/local/admin/servers/' . $a_inventory['inv_name'] . "/chkserver.output";
 
-    $file = fopen($servername, "r") or die;
+    $file = fopen($servername, "r");
     while(!feof($file)) {
 
       $process = trim(fgets($file));
