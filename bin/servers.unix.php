@@ -19,10 +19,11 @@
 
   print "#Server Name(1):FQDN(2):Operating System(3):Time Zone(4):,Tag,(5):,Interface Name,(6):Inventory ID(7):Product Name(8)\n";
 
-  $q_string  = "select inv_id,inv_name,inv_fqdn,inv_ssh,zone_name,prod_name ";
+  $q_string  = "select inv_id,inv_name,inv_fqdn,inv_ssh,zone_name,prod_name,prj_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
+  $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where inv_manager = " . $GRP_Unix . " and inv_status = 0 ";
   $q_string .= "order by inv_name";
   $q_inventory = mysql_query($q_string) or die(mysql_error());
@@ -63,7 +64,12 @@
       $product = "Unassigned";
     }
 
-    print "$pre" . $a_inventory['inv_name'] . ":" . $a_inventory['inv_fqdn'] . ":$os:" . $a_inventory['zone_name'] . ":$tags:$interfaces:" . $a_inventory['inv_id'] . ":" . $product . "\n";
+    $project = str_replace(" ", "_", $a_inventory['prj_name']);
+    if ($project == '') {
+      $project = "Unassigned";
+    }
+
+    print "$pre" . $a_inventory['inv_name'] . ":" . $a_inventory['inv_fqdn'] . ":$os:" . $a_inventory['zone_name'] . ":$tags:$interfaces:" . $a_inventory['inv_id'] . ":" . $product . ":" . $project . "\n";
 
   }
 
