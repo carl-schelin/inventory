@@ -45,7 +45,7 @@
 
     $servername = '/usr/local/admin/servers/' . $a_inventory['inv_name'] . "/chkserver.output";
 
-    if (file_exist($servername)) {
+    if (file_exists($servername)) {
       $file = fopen($servername, "r");
       while(!feof($file)) {
 
