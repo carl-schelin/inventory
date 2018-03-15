@@ -133,33 +133,46 @@
 # unix only (inv_manager = 1)
 
 
-# if interface is identified as management, set up the management interface and IP properly
+# Scan through the servers and check for interfaces
 # for the management route check
-  $q_string  = "select inv_id,inv_name,int_server,int_addr,int_face,loc_west,zone_zone ";
-  $q_string .= "from interface ";
-  $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
+  $q_string  = "select inv_id,inv_name,loc_west ";
+  $q_string .= "from inventory ";
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
-  $q_string .= "left join ip_zones on ip_zones.zone_id = interface.int_zone ";
-  $q_string .= "where inv_manager = 1 and inv_status = 0 and (int_type = 1 or int_type = 2) and int_ip6 = 0 and int_addr != '' ";
-  $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_interface = mysql_fetch_array($q_interface)) {
+  $q_string .= "where inv_manager = 1 and inv_status = 0 and inv_ssh = 1 ";
+  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
-    $networkzone = 'Unknown';
-    if ($a_interface['zone_zone'] == 'C') {
-      $networkzone = 'CORP';
-    }
-    if ($a_interface['zone_zone'] == 'E') {
-      $networkzone = 'E911';
-    }
-    if ($a_interface['zone_zone'] == 'D') {
-      $networkzone = 'DMZ';
+# default in case there are no management interfaces
+    $servername = $a_inventory['inv_name'];
+# management interface first
+    $q_string  = "select int_server,int_addr,int_face,zone_zone ";
+    $q_string .= "from interface ";
+    $q_string .= "left join ip_zones on ip_zones.zone_id = interface.int_zone ";
+    $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_type = 1 ";
+    $q_intapp = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    if (mysql_num_rows($q_intapp) > 0) {
+      $a_intapp = mysql_fetch_array($q_intapp);
+
+      $servername = $a_intapp['int_server'];
+    } else {
+# application interface if no management interface
+      $q_string  = "select int_server,int_addr,int_face,zone_zone ";
+      $q_string .= "from interface ";
+      $q_string .= "left join ip_zones on ip_zones.zone_id = interface.int_zone ";
+      $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_type = 2 ";
+      $q_intapp = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      if (mysql_num_rows($q_intapp) > 0) {
+        $a_intapp = mysql_fetch_array($q_intapp);
+
+        $servername = $a_intapp['int_server'];
+      }
     }
 
-    $configuration .= $a_interface['int_server'] . ":IPAddressMonitored:" . $a_interface['int_addr'] . "\n";
-    $configuration .= $a_interface['int_server'] . ":InterfaceMonitored:" . $a_interface['int_face'] . "\n";
-    $configuration .= $a_interface['int_server'] . ":MonitoringServer:lnmtcodcom1vip.scc911.com\n";
-    $configuration .= $a_interface['int_server'] . ":NetworkZone:" . $networkzone . "\n";
-    $configuration .= $a_interface['int_server'] . ":Location:" . $a_interface['loc_west'] . "\n";
+    $configuration .= $servername . ":IPAddressMonitored:" . $a_intapp['int_addr'] . "\n";
+    $configuration .= $servername . ":InterfaceMonitored:" . $a_intapp['int_face'] . "\n";
+    $configuration .= $servername . ":MonitoringServer:lnmtcodcom1vip.scc911.com\n";
+    $configuration .= $servername . ":NetworkZone:" . $a_intapp['zone_zone'] . "\n";
+    $configuration .= $servername . ":Location:" . $a_inventory['loc_west'] . "\n";
   }
 
 # check software first for ability to run cron
