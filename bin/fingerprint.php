@@ -64,7 +64,7 @@
     
     $interfaces .= "," . $a_interface['int_server'] . ",";
   }
-  if ($zone = '') {
+  if ($zone == '') {
     $zone = 'Unknown';
   }
 
