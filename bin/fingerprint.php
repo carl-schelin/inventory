@@ -51,12 +51,21 @@
   }
 
   $interfaces = '';
-  $q_string  = "select int_server ";
+  $zone = '';
+  $q_string  = "select int_server,zone_zone ";
   $q_string .= "from interface ";
+  $q_string .= "left join ip_zones on ip_zones.zone_id = interface.int_zone ";
   $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_type = 1 || int_type = 2 || int_type = 6)";
   $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_interface = mysql_fetch_array($q_interface)) {
+    if ($a_interface['zone_zone'] != '') {
+      $zone = $a_interface['zone_zone'];
+    }
+    
     $interfaces .= "," . $a_interface['int_server'] . ",";
+  }
+  if ($zone = '') {
+    $zone = 'Unknown';
   }
 
   $product = str_replace(" ", "_", $a_inventory['prod_name']);
@@ -74,6 +83,7 @@
   print "OS: " . $os . "\n";
   print "Location: " . $a_inventory['loc_west'] . "\n";
   print "Timezone: " . $a_inventory['zone_name'] . "\n";
+  print "Zone: " . $zone . "\n";
   print "Tags: " . $tags . "\n";
   print "Interfaces: " . $interfaces . "\n";
   print "InventoryID: " . $a_inventory['inv_id'] . "\n";
