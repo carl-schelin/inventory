@@ -21,14 +21,6 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-# Unix wants a csv type output
-# text of what type of line it is
-# followed by the value
-# "Hostname","CPU","CPU"
-# "Hostname","Memory","Memory"
-# "Hostname","Disks","Disks"
-# "Hostname","IP","IP"
-
   $configuration = "";
 
   $q_string  = "select rsdp_id,rsdp_function,rsdp_processors,rsdp_memory,rsdp_ossize,os_sysname,rsdp_osmonitor,";
@@ -129,50 +121,58 @@
 
   $configuration .= "\n";
 
-# now let's pull from the inventory itself to get more information
-# unix only (inv_manager = 1)
+# creating the management interface bit for the inventory.
+# need the actual hostname of the system so the script knows which lines to use
+# need the management ip and interface so we know where management traffic should traverse
+# use the actual inventory vs the RSDP entries for accuracy
 
+# need to get the interface used for management traffic.
+# also need the hostname
+# loop through the live servers
+# give me the management ip and interface of the 'mgt' interface, or the 'app' interface if there is no 'mgt' interface.
+# for the hostname, give me the 'app' interface or if it doesn't exist, the 'mgt' interface
 
-# Scan through the servers and check for interfaces
-# for the management route check
+# just get a list of all the servers
   $q_string  = "select inv_id,inv_name,loc_west ";
   $q_string .= "from inventory ";
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
-  $q_string .= "where inv_manager = 1 and inv_status = 0 and inv_ssh = 1 ";
+  $q_string .= "where inv_manager = " . $GRP_Unix . " and inv_status = 0 and inv_ssh = 1 ";
   $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
 # default in case there are no management interfaces
-    $servername = $a_inventory['inv_name'];
+    $hostname = $servername = $a_inventory['inv_name'];
 # management interface first
-    $q_string  = "select int_server,int_addr,int_face,zone_zone ";
+    $q_string  = "select int_addr,int_face,zone_zone ";
     $q_string .= "from interface ";
     $q_string .= "left join ip_zones on ip_zones.zone_id = interface.int_zone ";
-    $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_type = 1 ";
+    $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and (int_type = 1 or int_type = 2) ";
+    $q_string .= "order by int_type ";
     $q_intapp = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     if (mysql_num_rows($q_intapp) > 0) {
       $a_intapp = mysql_fetch_array($q_intapp);
 
-      $servername = $a_intapp['int_server'];
-    } else {
-# application interface if no management interface
-      $q_string  = "select int_server,int_addr,int_face,zone_zone ";
-      $q_string .= "from interface ";
-      $q_string .= "left join ip_zones on ip_zones.zone_id = interface.int_zone ";
-      $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_type = 2 ";
-      $q_intapp = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_intapp) > 0) {
-        $a_intapp = mysql_fetch_array($q_intapp);
-
-        $servername = $a_intapp['int_server'];
-      }
+      $managementip = $a_intapp['int_addr'];
+      $managementface = $a_intapp['int_face'];
+      $networkzone = $a_intapp['zone_zone'];
     }
 
-    $configuration .= $servername . ":IPAddressMonitored:" . $a_intapp['int_addr'] . "\n";
-    $configuration .= $servername . ":InterfaceMonitored:" . $a_intapp['int_face'] . "\n";
-    $configuration .= $servername . ":MonitoringServer:lnmtcodcom1vip.scc911.com\n";
-    $configuration .= $servername . ":NetworkZone:" . $a_intapp['zone_zone'] . "\n";
-    $configuration .= $servername . ":Location:" . $a_inventory['loc_west'] . "\n";
+    $q_string  = "select int_server ";
+    $q_string .= "from interface ";
+    $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and (int_type = 1 or int_type = 2) ";
+    $q_string .= "order by int_type desc ";
+    $q_intapp = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    if (mysql_num_rows($q_intapp) > 0) {
+      $a_intapp = mysql_fetch_array($q_intapp);
+
+      $hostname = $a_intapp['int_server'];
+    }
+
+    $configuration .= $hostname . ":IPAddressMonitored:" . $managementip . "\n";
+    $configuration .= $hostname . ":InterfaceMonitored:" . $managementface . "\n";
+    $configuration .= $hostname . ":MonitoringServer:lnmtcodcom1vip.scc911.com\n";
+    $configuration .= $hostname . ":NetworkZone:" . $networkzone . "\n";
+    $configuration .= $hostname . ":Location:" . $a_inventory['loc_west'] . "\n";
   }
 
 # check software first for ability to run cron
