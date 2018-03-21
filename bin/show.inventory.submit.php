@@ -101,14 +101,41 @@
 
 # options are: *, Hardware, Filesystems, Software, Network, Route, Issues
 # check the full keyword
-    if ($action != 'hardware' && $action != 'filesystems' && $action != 'software' && $action != 'network' && $action != 'route' && $action != 'routing' && $action != 'issues' && $action != 'all') {
-      $servername = 'help';
-      $error = "<p><strong>Error</strong>: Invalid option: " . $action . ".</p>\n\n";
+    switch ($action) {
+      case 'hardware':
+      case 'h':
+        break;
+      case 'filesystems':
+      case 'f':
+        break;
+      case 'software':
+      case 's':
+        break;
+      case 'network':
+      case 'n':
+        break;
+      case 'route':
+      case 'routing':
+      case 'r':
+        break;
+      case 'issues':
+      case 'i':
+        break;
+      case 'vulnerabilities':
+      case 'v':
+        break;
+      case 'all':
+      case 'a':
+      case '*':
+        break;
+      default:
+        $servername = 'help';
+        $error = "<p><strong>Error</strong>: Invalid option: " . $action . ".</p>\n\n";
     }
 
 # check the initials as well as the full option isn't necessary
     $firstchar = substr($action, 0, 1);
-    if (strpos("*ahfsnri", $firstchar) === false) {
+    if (strpos("*ahfsnriv", $firstchar) === false) {
       $servername = 'help';
       $error = "<p><strong>Error</strong>: Invalid option: " . $firstchar . ". Options: *ahfsnri</p>\n\n";
     }
@@ -1216,11 +1243,11 @@
             $class = "ui-widget-content";
 
             $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
-            $output   .= "  <td>"                  . $a_interface['int_addr']              . "</td>";
-            $output   .= "  <td class=\"delete\">" . $a_vulnerabilities['vuln_securityid'] . "</td>";
-            $output   .= "  <td>"                  . $a_vulnerabilities['sec_name']        . "</td>";
-            $output   .= "  <td>"                  . $a_vulnerabilities['sev_name']        . "</td>";
-            $output   .= "  <td>"                  . $a_vulnerabilities['vuln_date']       . "</td>";
+            $output   .= "  <td>"                  . $a_interface['int_addr']              . "</td>\n";
+            $output   .= "  <td class=\"delete\">" . $a_vulnerabilities['vuln_securityid'] . "</td>\n";
+            $output   .= "  <td>"                  . $a_vulnerabilities['sec_name']        . "</td>\n";
+            $output   .= "  <td>"                  . $a_vulnerabilities['sev_name']        . "</td>\n";
+            $output   .= "  <td>"                  . $a_vulnerabilities['vuln_date']       . "</td>\n";
             $output .= "</tr>\n";
           }
         }
