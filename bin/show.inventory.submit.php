@@ -1213,7 +1213,7 @@
     if (substr($action, 0, 1) == 'v' || $action == "*" || substr($action, 0, 1) == 'a') {
       $output .= "<table width=80%>\n";
       $output .= "<tr>\n";
-      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Issue Tracker</th>\n";
+      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Vulnerability Listing</th>\n";
       $output .= "</tr>\n";
       $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
       $output .= "  <th>IP</th>\n";
