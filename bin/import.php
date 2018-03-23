@@ -58,7 +58,7 @@
     $value = split(",", $process);
 
     if ($value[0] != '') {
-      $q_string  = "select inv_name,inv_id,inv_manager,inv_product ";
+      $q_string  = "select inv_name,inv_id,inv_manager,inv_appadmin,inv_product ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_status = 0 and inv_ssh = 1 and inv_name = '" . $value[0] . "'";
       $q_inventory = mysql_query($q_string, $connection) or die($q_string . ": " . mysql_error());
@@ -78,7 +78,7 @@
         $a_interface = mysql_fetch_array($q_interface);
 
         if ($a_interface['int_companyid'] != '') {
-          $q_string  = "select inv_name,inv_id,inv_manager,inv_product ";
+          $q_string  = "select inv_name,inv_id,inv_manager,inv_appadmin,inv_product ";
           $q_string .= "from inventory ";
           $q_string .= "where inv_id = " . $a_interface['int_companyid'];
           $q_inventory = mysql_query($q_string, $connection) or die($q_string . ": " . mysql_error());
@@ -431,6 +431,7 @@
 # table: software; rows: sw_verified, sw_user, sw_update;
 #sqatxt-vmapp01,software,os,Red Hat Enterprise Linux Server release 6.2 (Santiago)
 # check: sw_type = OS; just update it with the text
+# current software listing: os, backup, monitor, centrify, instance, mysqld, informix, postgres, opnet, datapal, oracle, sudo, httpd, wildfly, vmtoolsd, newrelic
 
 # Operating System
           if ($value[2] == 'os') {
@@ -1027,6 +1028,143 @@
               }
             }
           }
+
+#lnmt1duasneap10,software,wildfly,Installed
+          if ($value[2] == 'wildfly') {
+            if (strlen($value[3]) > 0) {
+              $value[3] = 'Wildfly';
+              $skip = 'no';
+
+# set up query
+              $query = 
+                "sw_companyid =   " . $a_inventory['inv_id']      . "," . 
+                "sw_product   =   " . $a_inventory['inv_product'] . "," . 
+                "sw_software  = \"" . trim($value[3])             . "\"," . 
+                "sw_vendor    = \"" . 'Red Hat'                   . "\"," . 
+                "sw_type      = \"" . 'Open Source'               . "\"," . 
+                "sw_verified  =   " . '1'                         . "," . 
+                "sw_user      =   " . '1'                         . "," . 
+                "sw_update    = \"" . $date                       . "\"";
+
+# is it already in the inventory?
+              $q_string  = "select sw_id ";
+              $q_string .= "from software ";
+              $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Open Source' and sw_software like '%Wildfly%'";
+              $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+              if (mysql_num_rows($q_software) == 0) {
+                $q_string = "insert into software set sw_id = null," . $query . ",sw_group = " . $a_inventory['inv_appadmin'];
+                if ($debug == 'no') {
+                  $result = mysql_query($q_string) or die($q_string . mysql_error());
+                }
+              } else {
+                $a_software = mysql_fetch_array($q_software);
+                $q_string = "update software set " . $query . " where sw_id = " . $a_software['sw_id'];
+                if ($debug == 'no') {
+                  $result = mysql_query($q_string) or die($q_string . mysql_error());
+                }
+              }
+              if ($debug == 'yes') {
+                print $q_string . "\n";
+              }
+            } else {
+              if ($debug == 'yes') {
+                print "Missing Version Information\n";
+              }
+            }
+          }
+
+
+#lnmt1duasneap10,software,vmtoolsd,VMware Tools daemon, version 10.0.6.54238 (build-3560309)
+          if ($value[2] == 'vmtoolsd') {
+            if (strlen($value[3]) > 0) {
+              $skip = 'no';
+
+# set up query
+              $query = 
+                "sw_companyid =   " . $a_inventory['inv_id']      . "," . 
+                "sw_product   =   " . $a_inventory['inv_product'] . "," . 
+                "sw_software  = \"" . trim($value[3])             . "\"," . 
+                "sw_vendor    = \"" . 'VMware'                    . "\"," . 
+                "sw_type      = \"" . 'Commercial'                . "\"," . 
+                "sw_verified  =   " . '1'                         . "," . 
+                "sw_user      =   " . '1'                         . "," . 
+                "sw_update    = \"" . $date                       . "\"";
+
+# is it already in the inventory?
+              $q_string  = "select sw_id ";
+              $q_string .= "from software ";
+              $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Open Source' and sw_software like '%vmtoolsd%'";
+              $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+              if (mysql_num_rows($q_software) == 0) {
+                $q_string = "insert into software set sw_id = null," . $query . ",sw_group = " . $a_inventory['inv_manager'];
+                if ($debug == 'no') {
+                  $result = mysql_query($q_string) or die($q_string . mysql_error());
+                }
+              } else {
+                $a_software = mysql_fetch_array($q_software);
+                $q_string = "update software set " . $query . " where sw_id = " . $a_software['sw_id'];
+                if ($debug == 'no') {
+                  $result = mysql_query($q_string) or die($q_string . mysql_error());
+                }
+              }
+              if ($debug == 'yes') {
+                print $q_string . "\n";
+              }
+            } else {
+              if ($debug == 'yes') {
+                print "Missing Banner\n";
+              }
+            }
+          }
+
+
+#lnmt1duasneap10,software,newrelic,Installed
+          if ($value[2] == 'newrelic') {
+            if (strlen($value[3]) > 0) {
+              $skip = 'no';
+              $value[3] = 'NewRelic';
+
+# set up query
+              $query = 
+                "sw_companyid =   " . $a_inventory['inv_id']      . "," . 
+                "sw_product   =   " . $a_inventory['inv_product'] . "," . 
+                "sw_software  = \"" . trim($value[3])             . "\"," . 
+                "sw_vendor    = \"" . 'NewRelic'         . "\"," . 
+                "sw_type      = \"" . 'Commercial'               . "\"," . 
+                "sw_verified  =   " . '1'                         . "," . 
+                "sw_user      =   " . '1'                         . "," . 
+                "sw_update    = \"" . $date                       . "\"";
+
+# is it already in the inventory?
+              $q_string  = "select sw_id ";
+              $q_string .= "from software ";
+              $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Open Source' and sw_software like '%newrelic%'";
+              $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+              if (mysql_num_rows($q_software) == 0) {
+                $q_string = "insert into software set sw_id = null," . $query . ",sw_group = " . $a_inventory['inv_appadmin'];
+                if ($debug == 'no') {
+                  $result = mysql_query($q_string) or die($q_string . mysql_error());
+                }
+              } else {
+                $a_software = mysql_fetch_array($q_software);
+                $q_string = "update software set " . $query . " where sw_id = " . $a_software['sw_id'];
+                if ($debug == 'no') {
+                  $result = mysql_query($q_string) or die($q_string . mysql_error());
+                }
+              }
+              if ($debug == 'yes') {
+                print $q_string . "\n";
+              }
+            } else {
+              if ($debug == 'yes') {
+                print "Missing Installed String\n";
+              }
+            }
+          }
+
+
+
+
 # Commercial
           if ($value[2] == 'commercial') {
           }
