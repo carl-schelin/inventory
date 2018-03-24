@@ -1,8 +1,9 @@
 #!/usr/local/bin/php
 <?php
-
 # Script: inventory.php
-# By: Carl Schelin
+# Owner: Carl Schelin
+# Coding Standard 3.0 Applied
+# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: This script reads the command line for the server name and optional parameters
 # by default, it shows the main support page
 # Usage: inventory.php -hsnc -p product search|server
@@ -12,6 +13,17 @@
 #  -p product - Product listing
 #  -r serverid - Remove this server from the inventory
 #  search of server or product
+
+  include('settings.php');
+  include($Sitepath . '/function.php');
+
+  function dbconn($server,$database,$user,$pass){
+    $db = mysql_connect($server,$user,$pass);
+    $db_select = mysql_select_db($database,$db);
+    return $db;
+  }
+
+  $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
   $force = '';
   $server = '';
@@ -88,27 +100,9 @@
     }
   }
 
-# code bit to load passwords from a file vs hard coding in the script.
-  $pw_array = file("/var/apache2/passwords");
-
-  for ($i = 0; $i < count($pw_array); $i++) {
-    $value = chop($pw_array[$i]);
-    $list = split(":", $value);
-
-    if ($list[0] == "inventory") {
-      $pw_db = "inventory";
-      $pw_admin = $list[2];
-      $pw_password = $list[3];
-    }
-  }
-
 # if $debug is yes, only print the output. if no, then update the database
   $debug = 'no';
   $debug = 'yes';
-
-  $connection = mysql_pconnect("localhost", $pw_admin, $pw_password) or die("Error: ".mysql_error());
-
-  mysql_select_db($pw_db, $connection) or die("Error: ".mysql_error());
 
 # if removing, query the server to get the server name for the lookup and then remove it after questioned.
 
