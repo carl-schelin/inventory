@@ -1,11 +1,23 @@
 #!/usr/local/bin/php
 <?php
-
 # Script: initialize.php
-# By: Carl Schelin
-# This script creates a skeleton entry in the inventory 
+# Owner: Carl Schelin
+# Coding Standard 3.0 Applied
+# See: https://incowk01/makers/index.php/Coding_Standards
+# Description: This script creates a skeleton entry in the inventory 
 # to be ready for the core import. it's assumed a wrapper script will 
 # validate
+
+  include('settings.php');
+  include($Sitepath . '/function.php');
+
+  function dbconn($server,$database,$user,$pass){
+    $db = mysql_connect($server,$user,$pass);
+    $db_select = mysql_select_db($database,$db);
+    return $db;
+  }
+
+  $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
   if ($argc == 1) {
     print "ERROR: invalid command line parameters. Need to pass the server to be initialized.\n";
@@ -19,20 +31,6 @@
     exit(1);
   }
 
-# code bit to load passwords from a file vs hard coding in the script.
-  $pw_array = file("/var/apache2/passwords");
-
-  for ($i = 0; $i < count($pw_array); $i++) {
-    $value = chop($pw_array[$i]);
-    $list = split(":", $value);
-
-    if ($list[0] == "inventory") {
-      $pw_db = "inventory";
-      $pw_admin = $list[2];
-      $pw_password = $list[3];
-    }
-  }
-
 # if $debug is yes, only print the output. if no, then update the database
   $debug = 'yes';
   $debug = 'no';
@@ -40,10 +38,6 @@
 # so first, get the server names from the inventory table to identify the server id
 
   $date = date('Y-m-d');
-
-  $connection = mysql_pconnect("localhost", $pw_admin, $pw_password) or die("Error: ".mysql_error());
-
-  mysql_select_db($pw_db, $connection) or die("Error: ".mysql_error());
 
   print "Checking inventory to see if $server exists.\n";
 
