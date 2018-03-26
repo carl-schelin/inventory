@@ -146,7 +146,7 @@
     $q_string  = "select int_addr,int_face,zone_zone ";
     $q_string .= "from interface ";
     $q_string .= "left join ip_zones on ip_zones.zone_id = interface.int_zone ";
-    $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and (int_type = 1 or int_type = 2) ";
+    $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_type = 1 or int_type = 2) ";
     $q_string .= "order by int_type ";
     $q_intapp = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     if (mysql_num_rows($q_intapp) > 0) {
@@ -159,7 +159,7 @@
 
     $q_string  = "select int_server ";
     $q_string .= "from interface ";
-    $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and (int_type = 1 or int_type = 2) ";
+    $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_type = 1 or int_type = 2) ";
     $q_string .= "order by int_type desc ";
     $q_intapp = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     if (mysql_num_rows($q_intapp) > 0) {
