@@ -54,7 +54,7 @@
       $q_string  = "select inv_name,inv_id,inv_manager,inv_appadmin,inv_product ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_status = 0 and inv_ssh = 1 and inv_name = '" . $value[0] . "'";
-      $q_inventory = mysql_query($q_string, $connection) or die($q_string . ": " . mysql_error());
+      $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
       $a_inventory = mysql_fetch_array($q_inventory);
 
 
@@ -67,14 +67,14 @@
         $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
         $q_string .= "where inv_status = 0 and inv_ssh = 1 and int_server = '" . $value[0] . "' ";
         $q_string .= "group by int_companyid";
-        $q_interface = mysql_query($q_string, $connection) or die($q_string . ": " . mysql_error());
+        $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
         $a_interface = mysql_fetch_array($q_interface);
 
         if ($a_interface['int_companyid'] != '') {
           $q_string  = "select inv_name,inv_id,inv_manager,inv_appadmin,inv_product ";
           $q_string .= "from inventory ";
           $q_string .= "where inv_id = " . $a_interface['int_companyid'];
-          $q_inventory = mysql_query($q_string, $connection) or die($q_string . ": " . mysql_error());
+          $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
           $a_inventory = mysql_fetch_array($q_inventory);
         }
       }
