@@ -18,6 +18,8 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
+  $date = date('Y-m-d', strtodate('-5 days'));
+
   $q_string  = "select inv_id,inv_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
@@ -30,7 +32,7 @@
 
       $q_string  = "select alarm_id ";
       $q_string .= "from alarms ";
-      $q_string .= "where alarm_timestamp > '" . "2018-03-31" . "' and alarm_companyid = " . $a_inventory['inv_id'] . " ";
+      $q_string .= "where alarm_timestamp > '" . $date . "' and alarm_companyid = " . $a_inventory['inv_id'] . " ";
       $q_alarms = mysql_query($q_string) or die($q_string . ": " . mysql_error());
       if (mysql_num_rows($q_alarms) == 0) {
 
