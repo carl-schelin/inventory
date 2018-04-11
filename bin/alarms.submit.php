@@ -52,7 +52,7 @@
 
     $q_string = "select inv_id ";
     $q_string .= "from inventory ";
-    $q_string .= "where inv_name = '" . $value[1] . "' && inv_status = 0 ";
+    $q_string .= "where inv_name = '" . $value[1] . "' and inv_status = 0 ";
     $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     if (mysql_num_rows($q_inventory) > 0) {
       $a_inventory = mysql_fetch_array($q_inventory);
@@ -71,7 +71,8 @@
 
       $q_string = "select int_companyid ";
       $q_string .= "from interface ";
-      $q_string .= "where int_server = '" . $value[1] . "' ";
+      $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
+      $q_string .= "where int_server = '" . $value[1] . "' and inv_status = 0 ";
       $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
       if (mysql_num_rows($q_interface) > 0) {
         $a_interface = mysql_fetch_array($q_interface);
