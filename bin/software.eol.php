@@ -224,7 +224,9 @@ $q_string = "update software set sw_eol = \"2016-11-03\",sw_type = \"OS\" where 
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2017-07-31\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 7.3 (Maipo)\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2020-12-31\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 7.4 (Maipo)\" ";
+$q_string = "update software set sw_eol = \"2018-04-14\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 7.4 (Maipo)\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2020-12-31\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 7.5 (Maipo)\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 
 print "Updating HP-UX\n";
