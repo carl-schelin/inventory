@@ -1086,7 +1086,7 @@
 # is it already in the inventory?
               $q_string  = "select sw_id ";
               $q_string .= "from software ";
-              $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Open Source' and sw_software like '%vmtoolsd%'";
+              $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Commercial' and sw_software like '%vmtoolsd%'";
               $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
               if (mysql_num_rows($q_software) == 0) {
                 $q_string = "insert into software set sw_id = null," . $query . ",sw_group = " . $a_inventory['inv_manager'];
