@@ -8,7 +8,7 @@
 
 ADMIN=/usr/local/admin
 SERVERS=/usr/local/httpd/htsecure/inventory
-SERVERLIST="ali dba ienv lab mob mon net sba scm se tandem tss unix vns vtt web win"
+SERVERLIST="ali dba i3 ienv lab mob mon net sba scm se tandem tss unix vns vtt web win"
 TEMP=/var/tmp
 
 ### Dev:
