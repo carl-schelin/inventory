@@ -38,7 +38,7 @@
     $q_string .= "from rsdp_interface ";
     $q_string .= "where if_rsdp = " . $a_rsdp_server['rsdp_id'] . " and (if_type = 2 or if_type = 1) ";
     $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    while ($a_rsdp_interface = mysql_fetch_array($q_radp_interface)) {
+    while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
       $servername = $a_rsdp_interface['if_name'];
 
 # here is where the output begins
