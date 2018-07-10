@@ -4,7 +4,7 @@
 # Owner: Carl Schelin
 # In order for the changelog entries to be visible, the permissions need to be 644 for the Mail directory.
 
-for i in changelog chglogali chglogdba chglogienv chgloglab chglogmob chglogmon chglognet chglogsba chglogscm chglogse chglogtdm chglogtss chglogvns chglogvtt chglogweb windows
+for i in changelog chglogali chglogdba chglogienv chgloglab chglogmob chglogmon chglognet chglogsba chglogscm chglogse chglogtdm chglogtss chglogvns chglogvtt chglogweb i3chglog windows
 do
 # for incojs01 (Solaris)
   if [[ -d /export/home/$i/Mail ]]
