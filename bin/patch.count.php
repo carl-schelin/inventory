@@ -23,10 +23,11 @@
     $manager = $argv[1];
   }
 
-  print "Server Name,OS,Target OS,Date Reached\n";
+  print "Server Name,OS,Target OS,Date Reached,Product\n";
 
-  $q_string  = "select inv_id,inv_name,inv_kernel ";
+  $q_string  = "select inv_id,inv_name,inv_kernel,prod_name ";
   $q_string .= "from inventory ";
+  $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "where inv_status = 0 and inv_manager = " . $manager . " and inv_ssh = 1 ";
   $q_string .= "order by inv_name ";
   $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n");
@@ -227,7 +228,7 @@
       $target = 'Solaris 11';
     }
 
-    print "\"" . $a_inventory['inv_name'] . "\",\"" . $a_software['sw_software'] . "\",\"" . $target . "\",\"" . $a_inventory['inv_kernel'] . "\"\n";
+    print "\"" . $a_inventory['inv_name'] . "\",\"" . $a_software['sw_software'] . "\",\"" . $target . "\",\"" . $a_inventory['inv_kernel'] . "\",\"" . $a_inventory['prod_name'] . "\"\n";
   }
 
 ?>
