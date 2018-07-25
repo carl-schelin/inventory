@@ -27,7 +27,7 @@
   $q_string .= "rsdp_application,rsdp_opnet,rsdp_datapalette,rsdp_centrify,rsdp_backup ";
   $q_string .= "from rsdp_server ";
   $q_string .= "left join rsdp_osteam on rsdp_osteam.os_rsdp = rsdp_server.rsdp_id ";
-  $q_string .= "where rsdp_platform = 1 ";
+  $q_string .= "where rsdp_platform = " . $GRP_Unix . " or rsdp_platform = " . $GRP_OpsEng . " ";
   $q_string .= "order by os_sysname ";
   $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_rsdp_server = mysql_fetch_array($q_rsdp_server)) {
@@ -136,7 +136,7 @@
   $q_string  = "select inv_id,inv_name,loc_west ";
   $q_string .= "from inventory ";
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
-  $q_string .= "where inv_manager = " . $GRP_Unix . " and inv_status = 0 and inv_ssh = 1 ";
+  $q_string .= "where inv_status = 0 and inv_ssh = 1 ";
   $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
@@ -180,7 +180,7 @@
   $q_string  = "select inv_id,inv_name,sw_software ";
   $q_string .= "from software ";
   $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
-  $q_string .= "where inv_manager = 1 and inv_status = 0 and sw_software like '%Oracle%' and sw_group = " . $GRP_DBAdmins . " ";
+  $q_string .= "where inv_status = 0 and inv_ssh = 1 and sw_software like '%Oracle%' and sw_group = " . $GRP_DBAdmins . " ";
   $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   if (mysql_num_rows($q_software) > 0) {
     while ($a_software = mysql_fetch_array($q_software)) {
