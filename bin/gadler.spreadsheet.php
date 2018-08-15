@@ -60,7 +60,7 @@
   $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
-  $q_string .= "where inv_virtual = 0 and int_primary = 1 and sw_type = 'OS' and (loc_west = \"CAL02\" or loc_west = \"WDC09\" or loc_west = \"DEN13\" or loc_west = \"DEN15\" or loc_west = \"TOR11\") ";
+  $q_string .= "where inv_virtual = 0 and int_primary = 1 and hw_primary = 1 and sw_type = 'OS' and (loc_west = \"CAL02\" or loc_west = \"WDC09\" or loc_west = \"DEN13\" or loc_west = \"DEN15\" or loc_west = \"TOR11\") ";
   $q_string .= "group by loc_west,inv_name ";
   $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
