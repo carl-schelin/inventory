@@ -20,6 +20,28 @@
   $package            = "servers.se.php";
   $mygroup            = $GRP_SysEng;
 
+# add a header with settings and email target
+  $q_string  = "select grp_email,grp_status,grp_server,grp_import ";
+  $q_string .= "from groups ";
+  $q_string .= "where grp_id = " . $mygroup . " ";
+  $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $a_groups = mysql_fetch_array($q_groups);
+
+  $chkstatus = 'No';
+  if ($a_groups['grp_status']) {
+    $chkstatus = 'Yes';
+  }
+  $chkserver = 'No';
+  if ($a_groups['grp_server']) {
+    $chkserver = 'Yes';
+  }
+  $import = 'No';
+  if ($a_groups['grp_import']) {
+    $import = 'Yes';
+  }
+
+  print "#email: " . $a_groups['grp_email'] . " chkstatus: " . $chkstatus . " chkserver: " . $chkserver . " import: " . $import . "\n";
+
   $q_string  = "select inv_id,inv_name,inv_fqdn,inv_zone,inv_ssh ";
   $q_string .= "from software ";
   $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
