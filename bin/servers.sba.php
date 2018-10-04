@@ -17,12 +17,37 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
+  $package      = "servers.sba.php";
+  $mygroup      = $GRP_Backups;
+
+# add a header with settings and email target
+  $q_string  = "select grp_email,grp_status,grp_server,grp_import ";
+  $q_string .= "from groups ";
+  $q_string .= "where grp_id = " . $mygroup . " ";
+  $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $a_groups = mysql_fetch_array($q_groups);
+
+  $chkstatus = 'No';
+  if ($a_groups['grp_status']) {
+    $chkstatus = 'Yes';
+  }
+  $chkserver = 'No';
+  if ($a_groups['grp_server']) {
+    $chkserver = 'Yes';
+  }
+  $import = 'No';
+  if ($a_groups['grp_import']) {
+    $import = 'Yes';
+  }
+
+  print "#email: " . $a_groups['grp_email'] . " chkstatus: " . $chkstatus . " chkserver: " . $chkserver . " import: " . $import . "\n";
+
   $q_string  = "select inv_id,inv_name,inv_fqdn,zone_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
   $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
   $q_string .= "inner join tags on tags.tag_inv_id = inventory.inv_id " ;
-  $q_string .= "where (inv_manager = " . $GRP_Backups . " or sw_group = " . $GRP_Backups . ") and tag_group = " . $GRP_Backups . " and inv_status = 0 ";
+  $q_string .= "where (inv_manager = " . $mygroup . " or sw_group = " . $mygroup . ") and tag_group = " . $mygroup . " and inv_status = 0 ";
   $q_string .= "group by inv_id ";
   $q_inventory = mysql_query($q_string) or die(mysql_error());
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
@@ -33,7 +58,7 @@
     $tags = '';
     $q_string  = "select tag_name ";
     $q_string .= "from tags ";
-    $q_string .= "where tag_inv_id = " . $a_inventory['inv_id'] . " and tag_group = " . $GRP_Backups . " ";
+    $q_string .= "where tag_inv_id = " . $a_inventory['inv_id'] . " and tag_group = " . $mygroup . " ";
     $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     while ($a_tags = mysql_fetch_array($q_tags)) {
       $tags .= "," . $a_tags['tag_name'] . ",";
@@ -53,7 +78,7 @@
 # add applications for changelog work
   $q_string  = "select cl_name ";
   $q_string .= "from changelog ";
-  $q_string .= "where cl_group = " . $GRP_Backups . " and cl_delete = 0 ";
+  $q_string .= "where cl_group = " . $mygroup . " and cl_delete = 0 ";
   $q_string .= "order by cl_name";
   $q_changelog = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_changelog = mysql_fetch_array($q_changelog)) {
