@@ -7,9 +7,6 @@
 # Description: 
 # 
 
-# root.cron: # Denise Durgee requesting spreadsheet output
-# root.cron: 30 6 * * * /usr/local/bin/php /usr/local/httpd/bin/ddurgee.spreadsheet.php > /usr/local/httpd/htsecure/reports/ddurgee.spreadsheet.csv 2>/dev/null
-
   include('settings.php');
   include($Sitepath . '/function.php');
 
@@ -20,6 +17,11 @@
   }
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
+
+  $debug = 'no';
+  if ($argv[$argc - 1] == 'debug') {
+    $debug = 'yes';
+  }
 
   $configuration = "";
 
@@ -32,15 +34,25 @@
   $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_rsdp_server = mysql_fetch_array($q_rsdp_server)) {
 
+    if ($debug == 'yes') {
+      print "Processing: " . $a_rsdp_server['os_sysname'] . "\n";
+    }
+
     $hostname = $servername = $a_rsdp_server['os_sysname'];
 # type 2 == Application interface
     $q_string  = "select if_name ";
     $q_string .= "from rsdp_interface ";
     $q_string .= "where if_rsdp = " . $a_rsdp_server['rsdp_id'] . " and (if_type = 2 or if_type = 1) ";
+    if ($debug == 'yes') {
+      print "  Query: " . $q_string . "\n";
+    }
     $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
       $servername = $a_rsdp_interface['if_name'];
 
+      if ($debug == 'yes') {
+        print "  Processing: " . $servername . "\n";
+      }
 # here is where the output begins
       if ($a_rsdp_server['rsdp_application'] == $GRP_DBAdmins) {
         $configuration .= $servername . ":Group:dbadmins\n";
@@ -79,11 +91,11 @@
       $q_string .= "from rsdp_interface ";
       $q_string .= "where if_rsdp = " . $a_rsdp_server['rsdp_id'] . " and if_type != 4 and if_type != 6 ";
       $q_string .= "order by if_interface";
-      $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
+      $q_rsdp_console = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      while ($a_rsdp_console = mysql_fetch_array($q_rsdp_console)) {
 
-        if ($a_rsdp_interface['if_ipcheck']) {
-          $configuration .= $servername . ":IP:" . $a_rsdp_interface['if_ip'] . ":" . $a_rsdp_interface['if_gate'] . "\n";
+        if ($a_rsdp_console['if_ipcheck']) {
+          $configuration .= $servername . ":IP:" . $a_rsdp_console['if_ip'] . ":" . $a_rsdp_console['if_gate'] . "\n";
         }
       }
 
