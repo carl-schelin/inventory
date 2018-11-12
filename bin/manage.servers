@@ -10,16 +10,22 @@ ADMIN=/usr/local/admin
 SERVERS=/usr/local/httpd/htsecure/inventory
 SERVERLIST="ali dba i3 ienv lab mob mon net pe sba scm se tandem tss unix vns vtt web win"
 TEMP=/var/tmp
-
-### Dev:
+HOSTNAME=`hostname -s`
 SVRRUN=/usr/local/httpd/bin
 WHOCARES="carl.schelin@intrado.com"
-OWNER="apache:sysadmin"
-
-### QA/Production:
-SVRRUN=/usr/local/httpd/bin
 WHOCARES="unixadmins@intrado.com"
-OWNER="webservd:sysadmin"
+
+### Dev:
+if [[ $HOSTNAME = 'lnmt1cuomrcs1' ]] || [[ $HOSTNAME = 'lnmt1cuomtool10' ]] || [[ $HOSTNAME = 'miam1cuomtool10' ]]
+then
+  OWNER="apache:sysadmin"
+fi
+
+### Production:
+if [[ $HOSTNAME = 'incojs01' ]]
+then
+  OWNER="webservd:sysadmin"
+fi
 
 if [[ ! -z $1 ]]
 then
