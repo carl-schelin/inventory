@@ -80,7 +80,7 @@
       $interfaces .= "," . $a_interface['int_server'] . ",";
     }
 
-    $output = $pre . $a_software['inv_name'] . ":" . $a_software['inv_fqdn'] . ":$os:" . $$a_software['zone_name'] . ":$tags:$interfaces:" . $a_software['inv_id'] . "\n";
+    $output = $pre . $a_software['inv_name'] . ":" . $a_software['inv_fqdn'] . ":$os:" . $a_software['zone_name'] . ":$tags:$interfaces:" . $a_software['inv_id'] . "\n";
     print $output;
 
   }
