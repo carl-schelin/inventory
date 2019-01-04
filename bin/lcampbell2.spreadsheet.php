@@ -26,7 +26,7 @@
 
   print "\"Server Name\",\"Operating System\",\"Location Name\",\"Address\",\"Address\",\"Suite\",\"City\",\"State\",\"Zipcode\",\",\"Make\",\"Model\",\"Function\",\"Serial/VM UUID\",\"CPUs\",\"Architecture\",\"Memory\",\"Disk Storage\",\"IP Address\",\"MAC Address\",\"Interface Name\"\n";
 
-  $q_string  = "select inv_id,inv_name,inv_function,sw_software,mod_vendor,mod_name,loc_name,loc_addr1,loc_addr2,loc_suite,loc_city,ct_city,loc_state,st_state,loc_zipcode,inv_uuid ";
+  $q_string  = "select inv_id,inv_name,inv_fqdn,inv_function,sw_software,mod_vendor,mod_name,loc_name,loc_addr1,loc_addr2,loc_suite,loc_city,ct_city,loc_state,st_state,loc_zipcode,inv_uuid ";
   $q_string .= "from inventory ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
@@ -93,7 +93,12 @@
     if (mysql_num_rows($q_interface) > 0) {
       $a_interface = mysql_fetch_array($q_interface);
 
-      print "\"" . $a_inventory['inv_name'] . "\",";
+      $fqdn = $a_inventory['inv_name'];
+      if ($a_inventory['inv_fqdn'] != '') {
+        $fqdn .= "." . $a_inventory['inv_fqdn'];
+      }
+
+      print "\"" . $fqdn . "\",";
       print "\"" . "\",";
       print "\"" . "\",";
       print "\"" . "\",";
