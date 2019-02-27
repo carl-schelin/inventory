@@ -78,6 +78,15 @@
     $project = "Unassigned";
   }
 
+  $status = "Active";
+  $q_string  = "select hw_active ";
+  $q_string .= "from hardware ";
+  $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_deleted = 0 and hw_primary = 1 and hw_active = '0000-00-00' ";
+  $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  if (mysql_num_rows($q_hardware) > 0) {
+    $status = "Build";
+  }
+
   print "Hostname: " . $a_inventory['inv_name'] . "\n";
   print "Domain: " . $a_inventory['inv_fqdn'] . "\n";
   print "OS: " . $os . "\n";
@@ -89,5 +98,6 @@
   print "InventoryID: " . $a_inventory['inv_id'] . "\n";
   print "Product: " . $product . "\n";
   print "Project: " . $project . "\n";
+  print "Status: " . $status . "\n";
 
 ?>
