@@ -25,12 +25,13 @@
     $server = $argv[1];
   }
 
-  $q_string  = "select inv_id,inv_name,inv_fqdn,inv_ssh,zone_name,prod_name,prj_name,loc_west ";
+  $q_string  = "select inv_id,inv_name,inv_fqdn,inv_ssh,zone_name,prod_name,prj_name,loc_west,grp_name,inv_appadmin ";
   $q_string .= "from inventory ";
   $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
+  $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
   $q_string .= "where inv_name = \"" . $server . "\" and inv_status = 0 and inv_ssh = 1 ";
   $q_string .= "order by inv_name";
   $q_inventory = mysql_query($q_string) or die(mysql_error());
@@ -48,6 +49,16 @@
   $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_tags = mysql_fetch_array($q_tags)) {
     $tags .= "," . $a_tags['tag_name'] . ",";
+  }
+
+  $appadmin = 'Unassigned';
+  $q_string  = "select grp_name ";
+  $q_string .= "from groups ";
+  $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'];
+  $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  if (mysql_num_rows($q_groups) > 0) {
+    $a_groups = mysql_fetch_array($q_groups);
+    $appadmin .= $a_groups['grp_name'];
   }
 
   $interfaces = '';
@@ -94,6 +105,8 @@
   print "Timezone: " . $a_inventory['zone_name'] . "\n";
   print "Zone: " . $zone . "\n";
   print "Tags: " . $tags . "\n";
+  print "System Custodian: " . $a_inventory['grp_name'] . "\n";
+  print "Primary Application Custodian: " . $appadmin . "\n";
   print "Interfaces: " . $interfaces . "\n";
   print "InventoryID: " . $a_inventory['inv_id'] . "\n";
   print "Product: " . $product . "\n";
