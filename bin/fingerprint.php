@@ -58,7 +58,7 @@
   $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   if (mysql_num_rows($q_groups) > 0) {
     $a_groups = mysql_fetch_array($q_groups);
-    $appadmin .= $a_groups['grp_name'];
+    $appadmin = $a_groups['grp_name'];
   }
 
   $interfaces = '';
