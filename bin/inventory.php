@@ -49,6 +49,8 @@
     print "  -d device      - Core Device listing\n";
     print "  -a IP Address  - Core Device listing\n";
     print "  -m MAC Address - Core Device listing\n";
+    print "  -t Asset Tag   - Core Device listing\n";
+    print "  -v Serial Number/Dell Service Tag - Core Device listing\n";
     print "  -r serverid - Remove server from the Inventory. You MUST pass the server ID and not the server NAME! This ensures the correct server is being removed.\n";
 
     exit(1);
@@ -57,7 +59,7 @@
   if ($argc == 2) {
     $server = $argv[1];
   } else {
-    $options = getopt("fhsncp:r:d:a:m:");
+    $options = getopt("fhsncp:r:d:a:m:t:v:");
 
     if (isset($options['f'])) {
       $force = 'yes';
@@ -67,6 +69,8 @@
     }
     if (isset($options['d'])) {
       $server = $options['d'];
+      $serialnumber = '';
+      $assettag = '';
       $ipaddr = '';
       $macaddr = '';
     }
@@ -81,11 +85,29 @@
     }
     if (isset($options['a'])) {
       $ipaddr = $options['a'];
+      $serialnumber = '';
+      $assettag = '';
       $server = '';
       $macaddr = '';
     }
     if (isset($options['m'])) {
       $macaddr = $options['m'];
+      $serialnumber = '';
+      $assettag = '';
+      $ipaddr = '';
+      $server = '';
+    }
+    if (isset($options['t'])) {
+      $assettag = $options['t'];
+      $serialnumber = '';
+      $macaddr = '';
+      $ipaddr = '';
+      $server = '';
+    }
+    if (isset($options['v'])) {
+      $serialnumber = $options['v'];
+      $assettag = '';
+      $macaddr = '';
       $ipaddr = '';
       $server = '';
     }
@@ -134,6 +156,12 @@
   }
   if (strlen($macaddr) > 0) {
     $q_string .= "where int_eth = '" . $macaddr . "' ";
+  }
+  if (strlen($serialnumber) > 0) {
+    $q_string .= "where hw_serial = '" . $serialnumber . "' ";
+  }
+  if (strlen($assettag) > 0) {
+    $q_string .= "where hw_asset = '" . $assettag . "' ";
   }
   if ($force == '') {
     $q_string .= "and inv_status = 0 ";
