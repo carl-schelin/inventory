@@ -1,0 +1,109 @@
+/* from: http://cssmenumaker.com/blog/tutorials/css3-drop-down-menu-tutorial */
+
+.menu{
+  border:none;
+  border:0px;
+  margin:0px;
+  padding:0px;
+  font: 67.5% "Lucida Sans Unicode", "Bitstream Vera Sans", "Trebuchet Unicode MS", "Lucida Grande", Verdana, Helvetica, sans-serif;
+  font-size:12px;
+  font-weight:normal;
+}
+
+.menu ul{
+  background:#F93;
+  height:25px;
+  list-style:none;
+  margin:0;
+  padding:0;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: inset 0px 6px 0px 0px rgba(255, 255, 255, .1);
+  -moz-box-shadow: inset 0px 6px 0px 0px rgba(255, 255, 255, .1);
+  box-shadow: inset 0px 6px 0px 0px rgba(255, 255, 255, .1);
+  box-shadow: 3px 3px 3px #000;
+  -moz-box-shadow: 3px 3px 3px #000;
+  -webkit-box-shadow: 3px 3px 3px #000;
+}
+
+.menu li{
+  float:left;
+  padding:3px 0px 0px 15px; 
+}
+
+.menu li a{
+  color:#000;
+  display:block;
+  font-weight:normal;
+  line-height:25px;
+  margin:-3px;
+  padding:0px 8px;
+  text-align:center;
+  text-decoration:none;
+}
+
+.menu li a:hover{
+  background:#C60;
+  color:#FFFFFF;
+  text-decoration:none;
+  -webkit-box-shadow: inset 0px 0px 7px 2px rgba(0, 0, 0, .3);
+  -moz-box-shadow: inset 0px 0px 7px 2px rgba(0, 0, 0, .3);
+  box-shadow: inset 0px 0px 7px 2px rgba(0, 0, 0, .3);
+}
+
+.menu ul li:hover a{
+  background:#C60;
+  color:#FFFFFF;
+  text-decoration:none;
+}
+
+.menu li ul{
+  display:none;
+  height:auto;
+  padding:5px;
+  margin:0px;
+  border:0px;
+  position:absolute;
+  width:200px;
+  z-index:200;
+}
+
+.menu li:hover ul{
+  display:block; 
+}
+
+.menu li li {
+  display:block;
+  float:none;
+  margin:0px;
+  padding:0px;
+  width:200px;
+  background:#F93;
+/*this is where the rounded corners for the dropdown disappears*/
+}
+
+.menu li:hover li a{
+  background:none;
+}
+
+.menu li ul a{
+  display:block;
+  height:25px;
+  font-size:12px;
+  font-style:normal;
+  margin:0px;
+  padding:0px 5px 0px 5px;
+  text-align:left;
+}
+
+.menu li ul a:hover, .menu li ul li:hover a{
+  border:0px;
+  color:#ffffff;
+  text-decoration:none;
+  background:#C60;
+  -webkit-box-shadow: inset 0px 0px 7px 2px rgba(0, 0, 0, .3);
+  -moz-box-shadow: inset 0px 0px 7px 2px rgba(0, 0, 0, .3);
+  box-shadow: inset 0px 0px 7px 2px rgba(0, 0, 0, .3); 
+}
+

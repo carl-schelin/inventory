@@ -1,0 +1,45 @@
+
+table { 
+  width: 100%;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  border-collapse: collapse;
+}
+
+th {
+  border: 1px solid #000000;
+  font-size: 12px;
+  vertical-align: baseline;
+}
+
+td {
+  border: 1px solid #000000;
+  font-size: 12px;
+  text-align: left;
+  vertical-align: baseline;
+}
+
+td, th, {
+  font-family: sans-serif;
+}
+
+td.prjclass { background-color: #ffffcc; }
+td.proclass { background-color: #ffffcc; }
+td.typclass { background-color: #ffffcc; }
+td.tskclass { background-color: #ffffcc; }
+td.timclass { background-color: #ffffcc; }
+td.dayclass { background-color: #ffffcc; }
+td.svrclass { background-color: #ffffcc; }
+td.sftclass { background-color: #ffffcc; }
+td.grpclass { background-color: #ffffcc; }
+td.done     { background-color: #bced91; }
+td.deleted  { background-color: #fa8072; }
+td.error    { background-color: #fa8072; }
+td.ready    { background-color: #ffffcc; }
+td.red      { background-color: #fa8072; }
+td.green    { background-color: #bced91; }
+td.blue     { background-color: #99ccff; }
+th.green    { background-color: #bced91; }
+

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+for i in `ls vulnerability-2018*csv`
+do
+  egrep "(Critical|High)" $i > vulnerability-sorted.csv
+done
+

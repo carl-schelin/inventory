@@ -1,0 +1,243 @@
+/* Validated css codes */
+
+body, #body {
+/*  font: 62.5% "Lucida Grande", Arial, sans-serif; */
+  font: 75.0% "Lucida Grande", Arial, sans-serif;
+  background-color: #539db1;
+  color: #000000;
+  text-align: center;
+}
+
+
+/* should be a class and not an id */
+
+.main {
+  margin: 0 auto;
+  margin-right: 50px;
+  margin-left: 50px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  padding: 15px;
+  border: 1px solid #cbcbcb;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-box-shadow: 2px 2px 2px #000;
+  -webkit-box-shadow: 2px 2px 2px #000;
+  box-shadow: 2px 2px 2px #000;
+  background:#fff;
+}
+
+.main-help {
+  margin: 0 auto;
+  margin-right: 50px;
+  margin-left: 50px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  padding: 15px;
+  border: 1px solid #cbcbcb;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-box-shadow: 2px 2px 2px #000;
+  -webkit-box-shadow: 2px 2px 2px #000;
+  box-shadow: 2px 2px 2px #000;
+}
+
+/*  width: 910px; */
+
+#main, #header {
+  margin: 0 auto;
+  margin-right: 50px;
+  margin-left: 50px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+#floater {
+  position: fixed;
+  margin: 0 auto;
+  margin-right: 0px;
+  margin-left: 0px;
+  margin-bottom: 0px;
+  overflow: hidden;
+}
+
+/*  width: 900px; */
+
+#main {
+  padding: 15px;
+  border: 1px solid #cbcbcb;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-box-shadow: 2px 2px 2px #000;
+  -webkit-box-shadow: 2px 2px 2px #000;
+  box-shadow: 2px 2px 2px #000;
+  background:#fff;
+}
+
+img {
+  border: 0px;
+}
+
+#login {
+  margin: 5px 0;
+  float: right;
+}
+
+#login a {
+  color: #000000;
+}
+
+#logout {
+  margin: 5px 0;
+  float: right;
+}
+
+#logout a {
+  color: #000000;
+}
+
+/* Specific codes for specific tasks */
+
+h1, h2 { font-family: sans-serif; }
+
+p,li { text-align: left; }
+
+.jsAction {
+  color: #000000;
+  text-decoration: none;
+}
+
+span.jsAction:hover {
+  cursor: pointer;
+  color: #000000;
+  background-color: #fa8072;
+  text-decoration: none;
+}
+
+/*.center { text-align: center; }
+
+h1 { font-size: 150%; }
+h2 { font-size: 125%; }
+.p { text-align: left; }
+.e { background-color: #ccccff; font-weight: bold; color: #000000; }
+.h { background-color: #9999cc; font-weight: bold; color: #000000; }
+.v { background-color: #cccccc; color: #000000; }
+.vr { background-color: #cccccc; text-align: right; color: #000000; }
+
+*/
+/* General tag type stuff */
+
+h1, h2, h3, h5 {
+  font-weight: bold;
+  color:#222;
+}
+
+h1, h2, h3, h4 {
+  text-align: center;
+}
+
+a {
+  text-decoration: underline;
+  color: #000000;
+}
+
+a:hover {
+  text-decoration: none;
+  background-color: #fa8072;
+  color: #000000;
+}
+
+h1 { 
+  font: 30px Arial, Helvetica, sans-serif;
+  letter-spacing: -1px;
+  padding: 0 0 0 0;
+  margin: 0;
+}
+
+h2 {
+  font: 15px Arial, Helvetica, sans-serif;
+  padding: 0 0 3px 0;
+  margin-bottom: 0;
+}
+
+h3 {
+  font: 36px Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  padding: 0 0 0 0;
+  color: #08c;
+  margin-bottom: 0;
+}
+
+h4 {
+  font: 16px Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  padding: 0 0 3px 0;
+  color: #08c;
+  margin-bottom: 0;
+}
+
+.reallocated {
+  background-color: #33ccff;
+}
+
+.retired {
+  background-color: #fa8072
+}
+
+.inactive {
+  background-color: #33cc66;
+}
+
+.activelt {
+  background-color: #cccccc;
+}
+
+.activedk {
+  background-color: #b0b0b0;
+}
+
+.a911 {
+  background-color: #fa8072
+}
+
+.button {
+  text-align: right;
+}
+
+.delete {
+  text-align: center;
+}
+
+.rsdp {
+  text-align: center;
+}
+
+.hidetr {
+  display: none;
+}
+
+
+.alignleft {
+  font: 200% "Lucida Grande", Arial, sans-serif;
+  float: left;
+  width:33.33333%;
+  text-align:left;
+}
+
+.aligncenter {
+  font: 200% "Lucida Grande", Arial, sans-serif;
+  float: left;
+  width:33.33333%;
+  text-align:center;
+}
+
+.alignright {
+  font: 200% "Lucida Grande", Arial, sans-serif;
+  float: left;
+  width:33.33333%;
+  text-align:right;
+}
+

@@ -1,0 +1,50 @@
+<?php
+# Script: support.fill.php
+# Owner: Carl Schelin
+# Coding Standard 3.0 Applied
+# See: https://incowk01/makers/index.php/Coding_Standards
+# Description: 
+
+  header('Content-Type: text/javascript');
+
+  include('settings.php');
+  $called = 'yes';
+  include($Loginpath . '/check.php');
+  include($Sitepath . '/function.php');
+
+  if (isset($_SESSION['username'])) {
+    $package = "support.fill.php";
+
+    $formVars['id'] = 0;
+    if (isset($_GET['id'])) {
+      $formVars['id'] = clean($_GET['id'], 10);
+    }
+
+    if (check_userlevel($AL_Edit)) {
+      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from issue_support");
+
+      $q_string  = "select sup_company,sup_case,sup_contact,sup_email,sup_phone,sup_govid,sup_timestamp,sup_rating ";
+      $q_string .= "from issue_support ";
+      $q_string .= "where sup_id = " . $formVars['id'];
+      $q_issue_support = mysql_query($q_string) or die (mysql_error());
+      $a_issue_support = mysql_fetch_array($q_issue_support);
+
+      print "document.start.sup_company.value = '"   . mysql_real_escape_string($a_issue_support['sup_company'])   . "';\n";
+      print "document.start.sup_case.value = '"      . mysql_real_escape_string($a_issue_support['sup_case'])      . "';\n";
+      print "document.start.sup_contact.value = '"   . mysql_real_escape_string($a_issue_support['sup_contact'])   . "';\n";
+      print "document.start.sup_email.value = '"     . mysql_real_escape_string($a_issue_support['sup_email'])     . "';\n";
+      print "document.start.sup_phone.value = '"     . mysql_real_escape_string($a_issue_support['sup_phone'])     . "';\n";
+      print "document.start.sup_govid.value = '"     . mysql_real_escape_string($a_issue_support['sup_govid'])     . "';\n";
+      print "document.start.sup_timestamp.value = '" . mysql_real_escape_string($a_issue_support['sup_timestamp']) . "';\n";
+
+      print "document.start.sup_rating['" . $a_issue_support['sup_rating'] . "'].checked = true;\n";
+
+      print "document.start.sup_id.value = " . $formVars['id'] . ";\n";
+
+      print "document.start.supupdate.disabled = false;\n";
+
+    } else {
+      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+    }
+  }
+?>

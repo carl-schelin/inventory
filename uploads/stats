@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [[ -f stats.output ]]
+then
+  rm stats.output
+fi
+
+DATES=`ls vulnerability-20*.csv | sed -e "s/vulnerability-//g" -e "s/.csv//g"`
+
+for i in $DATES
+do
+  SYSTEMS=` awk -F, '{print $5}'   vulnerability-$i.csv | sort | uniq | wc -l`
+  INFO=`    grep -c ',"Info",'     vulnerability-$i.csv`
+  LOW=`     grep -c ',"Low",'      vulnerability-$i.csv`
+  MEDIUM=`  grep -c ',"Medium",'   vulnerability-$i.csv`
+  HIGH=`    grep -c ',"High",'     vulnerability-$i.csv`
+  CRITICAL=`grep -c ',"Critical",' vulnerability-$i.csv`
+  TOTAL=`   egrep -c ",\"(High|Critical)\"," vulnerability-$i.csv`
+
+  echo "$i: SYSTEMS: $SYSTEMS INFO: $INFO LOW: $LOW MEDIUM: $MEDIUM HIGH: $HIGH CRITICAL: $CRITICAL TOTAL: $TOTAL"
+done
+
