@@ -98,6 +98,39 @@
     $status = "Build";
   }
 
+  $hardware = "Unset";
+  $software = "Unset";
+  $q_string  = "select hw_eol,sw_eol,hw_supportid ";
+  $q_string .= "from hardware ";
+  $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
+  $q_string .= "left join software on software.sw_companyid = inventory.inv_id  ";
+  $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_deleted = 0 and hw_primary = 1 and sw_type = \"OS\" ";
+  $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  if (mysql_num_rows($q_hardware) > 0) {
+    $a_hardware = mysql_fetch_array($q_hardware);
+
+    $hardware = $a_hardware['hw_eol'];
+    $software = $a_hardware['sw_eol'];
+
+  }
+
+# since mod_virtual checks for not virtual, then all VMs should be N/A.
+  $supported = "N/A";
+  $q_string  = "select hw_supportid ";
+  $q_string .= "from hardware ";
+  $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+  $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_deleted = 0 and hw_primary = 1 and mod_virtual = 0 ";
+  $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  if (mysql_num_rows($q_hardware) > 0) {
+    $a_hardware = mysql_fetch_array($q_hardware);
+
+    if ($a_hardware['hw_supportid'] > 0) {
+      $supported = "Yes";
+    } else {
+      $supported = "No";
+    }
+  }
+
   print "Hostname: " . $a_inventory['inv_name'] . "\n";
   print "Domain: " . $a_inventory['inv_fqdn'] . "\n";
   print "OS: " . $os . "\n";
@@ -111,6 +144,9 @@
   print "InventoryID: " . $a_inventory['inv_id'] . "\n";
   print "Product: " . $product . "\n";
   print "Project: " . $project . "\n";
+  print "Hardware EOL: " . $hardware . "\n";
+  print "Software EOL: " . $software . "\n";
+  print "Support Contract: " . $supported . "\n";
   print "Status: " . $status . "\n";
 
 ?>
