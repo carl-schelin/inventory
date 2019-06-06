@@ -145,21 +145,37 @@
 
   print "</div>\n\n";
 
-  print "<table class=\"ui-styled-table\">\n";
-  print "<tr>\n";
-  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=inv_name"     . $passthrough . "\">System Name</a></th>\n";
-  if ($formVars['group'] == -1) {
-    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=hw_group"     . $passthrough . "\">Device Owner</a></th>\n";
+
+  if ($formVars['csv'] == 'true') {
+    print "\"System Name\",";
+    if ($formVars['group'] == -1) {
+      print "\"Device Owner\",";
+    } else {
+      print "\"Function\",";
+    }
+    print "\"Product\",";
+    print "\"Service Tag\",";
+    print "\"Purchase Date\",";
+    print "\"End of Support\",";
+    print "\"Support Type\",";
+    print "\"Supported\"</br>\n";
   } else {
-    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=inv_function" . $passthrough . "\">Function</a></th>\n";
+    print "<table class=\"ui-styled-table\">\n";
+    print "<tr>\n";
+    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=inv_name"     . $passthrough . "\">System Name</a></th>\n";
+    if ($formVars['group'] == -1) {
+      print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=hw_group"     . $passthrough . "\">Device Owner</a></th>\n";
+    } else {
+      print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=inv_function" . $passthrough . "\">Function</a></th>\n";
+    }
+    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=prod_name"      . $passthrough . "\">Product</a></th>\n";
+    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=hw_serial"      . $passthrough . "\">Service Tag</a></th>\n";
+    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=hw_purchased" . $passthrough . "\">Purchase Date</a></th>\n";
+    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=hw_purchased" . $passthrough . "\">End of Support</a></th>\n";
+    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=sup_contract" . $passthrough . "\">Support Type</a></th>\n";
+    print "  <th class=\"ui-state-default\">Supported</th>\n";
+    print "</tr>\n";
   }
-  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=prod_name"      . $passthrough . "\">Product</a></th>\n";
-  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=hw_serial"      . $passthrough . "\">Service Tag</a></th>\n";
-  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=hw_purchased" . $passthrough . "\">Purchase Date</a></th>\n";
-  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=hw_purchased" . $passthrough . "\">End of Support</a></th>\n";
-  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=sup_contract" . $passthrough . "\">Support Type</a></th>\n";
-  print "  <th class=\"ui-state-default\">Supported</th>\n";
-  print "</tr>\n";
 
   $q_string  = "select inv_id,inv_name,inv_function,prod_name,hw_group,hw_serial,hw_purchased,grp_name,sup_company,sup_contract,hw_supid_verified ";
   $q_string .= "from inventory ";
@@ -195,24 +211,43 @@
       $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"blank_\">";
       $linkend   = "</a>";
 
-      print "<tr>\n";
-      print "  <td class=\"" . $nodate . "\">" . $linkstart . $a_inventory['inv_name']     . $linkend . "</td>\n";
-      if ($formVars['group'] == -1) {
-        print "  <td class=\"" . $nodate . "\">"            . $a_inventory['grp_name']     . "</td>\n";
+      if ($formVars['csv'] == 'true') {
+        print "\"" . $a_inventory['inv_name'] . "\",";
+        if ($formVars['group'] == -1) {
+          print "\"" . $a_inventory['grp_name'] . "\",";
+        } else {
+          print "\"" . $a_inventory['inv_function'] . "\",";
+        }
+        print "\"" . $a_inventory['prod_name'] . "\",";
+        print "\"" . $a_inventory['hw_serial'] . "\",";
+        print "\"" . $a_inventory['hw_purchased'] . "\",";
+        print "\"" . $newdate;
+        print "\"" . $a_inventory['sup_company']  . " - " . $a_inventory['sup_contract'] . "\",";
+        if ($a_inventory['hw_supid_verified']) {
+          print "\"Yes\"</br>\n";
+        } else {
+          print "\"No\"</br>\n";
+        }
       } else {
-        print "  <td class=\"" . $nodate . "\">"            . $a_inventory['inv_function'] . "</td>\n";
+        print "<tr>\n";
+        print "  <td class=\"" . $nodate . "\">" . $linkstart . $a_inventory['inv_name']     . $linkend . "</td>\n";
+        if ($formVars['group'] == -1) {
+          print "  <td class=\"" . $nodate . "\">"            . $a_inventory['grp_name']     . "</td>\n";
+        } else {
+          print "  <td class=\"" . $nodate . "\">"            . $a_inventory['inv_function'] . "</td>\n";
+        }
+        print "  <td class=\"" . $nodate . "\">"              . $a_inventory['prod_name']    . "</td>\n";
+        print "  <td class=\"" . $nodate . "\">"              . $a_inventory['hw_serial']   . "</td>\n";
+        print "  <td class=\"" . $nodate . "\">"              . $a_inventory['hw_purchased'] . "</td>\n";
+        print "  <td class=\"" . $status . "\">"              . $newdate                     . "</td>\n";
+        print "  <td class=\"" . $nodate . "\">"              . $a_inventory['sup_company']  . " - " . $a_inventory['sup_contract']            . "</td>\n";
+        if ($a_inventory['hw_supid_verified']) {
+          print "  <td class=\"" . $nodate . " delete\">"              . "<input type=\"checkbox\" checked>"  . "</td>\n";
+        } else {
+          print "  <td class=\"" . $nodate . " delete\">"              . "<input type=\"checkbox\">"  . "</td>\n";
+        }
+        print "</tr>\n";
       }
-      print "  <td class=\"" . $nodate . "\">"              . $a_inventory['prod_name']    . "</td>\n";
-      print "  <td class=\"" . $nodate . "\">"              . $a_inventory['hw_serial']   . "</td>\n";
-      print "  <td class=\"" . $nodate . "\">"              . $a_inventory['hw_purchased'] . "</td>\n";
-      print "  <td class=\"" . $status . "\">"              . $newdate                     . "</td>\n";
-      print "  <td class=\"" . $nodate . "\">"              . $a_inventory['sup_company']  . " - " . $a_inventory['sup_contract']            . "</td>\n";
-      if ($a_inventory['hw_supid_verified']) {
-        print "  <td class=\"" . $nodate . " delete\">"              . "<input type=\"checkbox\" checked>"  . "</td>\n";
-      } else {
-        print "  <td class=\"" . $nodate . " delete\">"              . "<input type=\"checkbox\">"  . "</td>\n";
-      }
-      print "</tr>\n";
     }
 
   }
