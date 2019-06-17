@@ -220,7 +220,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
 
 <?php
 
-  if ($formVars['csv'] == 'false') {
+  if ($formVars['csv'] == 'true') {
     print "<div class=\"main-help ui-widget-content\">\n";
 
     print "\"System Name\",\"Model\",\"Model\",\"Location\",\"Asset Tag\",\"Serial #\",\"Support\",\"Response\",\"Suggested\",\"Start\",\"End\"</br>\n";
@@ -251,7 +251,8 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join cities       on cities.ct_id          = locations.loc_city ";
   $q_string .= "left join states       on states.st_id          = locations.loc_state ";
-  $q_string .= $where . " and inv_status = 0 and hw_supid_verified = 1 ";
+  $q_string .= $where . " and inv_status = 0 and hw_supportend > '" . date('Y-m-d') . "' and hw_supportend != '0000-00-00' ";
+#and hw_supid_verified = 1 ";
   $q_string .= $orderby;
   $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
 
@@ -264,6 +265,10 @@ needs to be set on the original equipment. If the system is confirmed as retired
       $class = "ui-state-error";
     }
 
+    if ($a_inventory['hw_supportend'] < date('Y-m-d')) {
+      $class = "ui-state-error";
+    }
+
     $q_string  = "select slv_value ";
     $q_string .= "from supportlevel ";
     $q_string .= "where slv_id = " . $a_inventory['inv_response'] . " ";
@@ -273,7 +278,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
     $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\">";
     $linkend   = "</a>";
 
-    if ($formVars['csv'] == 'false') {
+    if ($formVars['csv'] == 'true') {
       print "\"" . $a_inventory['inv_name'] . "\",";
       print "\"" . $a_inventory['mod_vendor'] . "\",";
       print "\"" . $a_inventory['mod_name'] . "\",";
@@ -302,7 +307,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
     }
   }
 
-  if ($formVars['csv'] == 'false') {
+  if ($formVars['csv'] == 'true') {
     print "</div>\n";
   } else {
     print "</table>\n";
@@ -313,10 +318,10 @@ needs to be set on the original equipment. If the system is confirmed as retired
 
   print "<div id=\"unsupported\">\n";
 
-  if ($formVars['csv'] == 'false') {
+  if ($formVars['csv'] == 'true') {
     print "<div class=\"main-help ui-widget-content\">\n";
 
-    print "\"System Name\",\"Model\",\"Model\",\"Location\",\"Asset Tag\",\"Serial #\",\"Suggested\"</br>\n";
+    print "\"System Name\",\"Model\",\"Model\",\"Location\",\"Asset Tag\",\"Serial #\",\"Suggested\",\"Start\",\"End\"</br>\n";
   } else {
     print "<table class=\"ui-styled-table\">\n";
     print "<tr>\n";
@@ -327,11 +332,13 @@ needs to be set on the original equipment. If the system is confirmed as retired
     print "  <th class=\"ui-state-default\">Asset Tag</th>\n";
     print "  <th class=\"ui-state-default\">Serial #</th>\n";
     print "  <th class=\"ui-state-default\">Suggested</th>\n";
+    print "  <th class=\"ui-state-default\">Start</th>\n";
+    print "  <th class=\"ui-state-default\">End</th>\n";
     print "</tr>\n";
   }
 
   $q_string  = "select inv_id,inv_name,inv_status,mod_vendor,mod_name,ct_city,st_acronym,slv_value,sup_company,";
-  $q_string .= "hw_serial,hw_asset,hw_built,hw_active,hw_retired,hw_reused,hw_supid_verified ";
+  $q_string .= "hw_serial,hw_asset,hw_built,hw_active,hw_retired,hw_reused,hw_supid_verified,hw_supportstart,hw_supportend ";
   $q_string .= "from inventory ";
   $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join models       on models.mod_id         = hardware.hw_vendorid ";
@@ -340,7 +347,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join cities       on cities.ct_id          = locations.loc_city ";
   $q_string .= "left join states       on states.st_id          = locations.loc_state ";
-  $q_string .= $where . " and inv_status = 0 and hw_supid_verified = 0 ";
+  $q_string .= $where . " and inv_status = 0 and hw_supportend < '" . date('Y-m-d') . "' ";
   $q_string .= $orderby;
   $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
 
@@ -356,14 +363,16 @@ needs to be set on the original equipment. If the system is confirmed as retired
       $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\">";
       $linkend   = "</a>";
 
-      if ($formVars['csv'] == 'false') {
+      if ($formVars['csv'] == 'true') {
         print "\"" . $a_inventory['inv_name'] . "\",";
         print "\"" . $a_inventory['mod_vendor'] . "\",";
         print "\"" . $a_inventory['mod_name'] . "\",";
         print "\"" . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym'] . "\",";
         print "\"" . $a_inventory['hw_asset'] . "\",";
         print "\"" . $a_inventory['hw_serial'] . "\",";
-        print "\"" . $a_inventory['slv_value'] . "\"</br>";
+        print "\"" . $a_inventory['slv_value'] . "\",";
+        print "\"" . $a_inventory['hw_supportstart'] . "\",";
+        print "\"" . $a_inventory['hw_supportend'] . "\"</br>";
       } else {
         print "<tr>\n";
         print "  <td class=\"" . $class . "\">" . $linkstart . $a_inventory['inv_name']                                    . $linkend . "</td>\n";
@@ -373,12 +382,14 @@ needs to be set on the original equipment. If the system is confirmed as retired
         print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_asset']                                               . "</td>\n";
         print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_serial']                                              . "</td>\n";
         print "  <td class=\"" . $class . "\">"              . $a_inventory['slv_value']                                              . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_supportstart']                                        . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_supportend']                                          . "</td>\n";
         print "</tr>\n";
       }
     }
 
   }
-  if ($formVars['csv'] == 'false') {
+  if ($formVars['csv'] == 'true') {
     print "</div>\n";
   } else {
     print "</table>\n";
@@ -389,7 +400,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
 
   print "<div id=\"error\">\n";
 
-  if ($formVars['csv'] == 'false') {
+  if ($formVars['csv'] == 'true') {
     print "<div class=\"main-help ui-widget-content\">\n";
 
     print "\"System Name\",\"Model\",\"Model\",\"Location\",\"Asset Tag\",\"Serial #\"</br>\n";
@@ -431,7 +442,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
     $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\">";
     $linkend   = "</a>";
 
-    if ($formVars['csv'] == 'false') {
+    if ($formVars['csv'] == 'true') {
       print "\"" . $a_inventory['inv_name'] . "\",";
       print "\"" . $a_inventory['mod_vendor'] . "\",";
       print "\"" . $a_inventory['mod_name'] . "\",";
@@ -449,7 +460,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
       print "</tr>\n";
     }
   }
-  if ($formVars['csv'] == 'false') {
+  if ($formVars['csv'] == 'true') {
     print "</div>\n";
   } else {
     print "</table>\n";
@@ -460,7 +471,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
 
   print "<div id=\"retired\">\n";
 
-  if ($formVars['csv'] == 'false') {
+  if ($formVars['csv'] == 'true') {
     print "<div class=\"main-help ui-widget-content\">\n";
 
     print "\"System Name\",\"Live Name\",\"Retired\",\"Model\",\"Model\",\"Location\",\"Asset Tag\",\"Serial #\",\"Support\",\"Suggested\",\"Start\",\"End\"</br>\n";
@@ -527,7 +538,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
     $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\">";
     $linkend   = "</a>";
 
-    if ($formVars['csv'] == 'false') {
+    if ($formVars['csv'] == 'true') {
       print "\"" . $a_inventory['inv_name'] . "\",";
       print "\"" . $a_inv['inv_name'] . "\",";
       print "\"" . $a_inventory['hw_retired'] . "\",";
@@ -557,7 +568,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
       print "</tr>\n";
     }
   }
-  if ($formVars['csv'] == 'false') {
+  if ($formVars['csv'] == 'true') {
     print "</div>\n";
   } else {
     print "</table>\n";
