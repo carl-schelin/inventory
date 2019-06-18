@@ -210,6 +210,18 @@
 </div>
 
 
+<div class="main ui-widget-content">
+
+<h2>Jennifer Shanahan</h2>
+
+<ul>
+  <li><a href="requests/jshanahan.serial.php">List of all physical servers with Asset Tag and Serial Numbers</a></li>
+  <li><a href="requests/jshanahan.serial.php?csv=true">List of all physical servers with Asset Tag and Serial Numbers</a> - Comma Delimited output</li>
+</ul>
+
+</div>
+
+
 </div>
 
 
