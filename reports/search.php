@@ -150,7 +150,7 @@
         $output .= "</tr>\n";
       }
 
-      $q_string  = "select int_server,int_companyid,int_addr,int_eth,itp_name,grp_name,inv_appadmin,inv_status,inv_function,inv_project,prj_name,inv_product,prod_name ";
+      $q_string  = "select int_server,int_companyid,int_addr,int_eth,itp_name,grp_name,IFNULL(inv_appadmin,0) as inv_appadmin,inv_status,inv_function,inv_project,prj_name,inv_product,prod_name ";
       $q_string .= "from interface ";
       $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
@@ -386,7 +386,7 @@
         $output .= "</tr>\n";
       }
 
-      $q_string  = "select int_server,int_companyid,int_addr,int_eth,itp_name,grp_name,inv_appadmin,inv_status ";
+      $q_string  = "select int_server,int_companyid,int_addr,int_eth,itp_name,grp_name,IFNULL(inv_appadmin, 0) as inv_appadmin,inv_status ";
       $q_string .= "from interface ";
       $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
@@ -1060,7 +1060,7 @@
         $output .= "</tr>\n";
       }
 
-      $q_string  = "select pwd_id,pwd_user,pwd_update,inv_id,inv_name,inv_domain,inv_appadmin,grp_name ";
+      $q_string  = "select pwd_id,pwd_user,pwd_update,inv_id,inv_name,inv_domain,IFNULL(inv_appadmin, 0) as inv_appadmin,grp_name ";
       $q_string .= "from inventory ";
       $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
       $q_string .= "left join syspwd on syspwd.pwd_companyid = inventory.inv_id ";
@@ -1140,7 +1140,7 @@
           $search_on = " or inv_name like '%" . $formVars['search_for'] . "%' ";
         }
 
-        $q_string  = "select pwd_id,pwd_user,pwd_update,inv_id,inv_name,inv_domain,inv_appadmin,grp_name ";
+        $q_string  = "select pwd_id,pwd_user,pwd_update,inv_id,inv_name,inv_domain,IFNULL(inv_appadmin, 0) as inv_appadmin,grp_name ";
         $q_string .= "from inventory ";
         $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
         $q_string .= "left join syspwd on syspwd.pwd_companyid = inventory.inv_id ";
@@ -1295,7 +1295,7 @@
         $output .= "</tr>\n";
       }
 
-      $q_string  = "select inv_name,pkg_inv_id,pkg_name,pkg_os,inv_status,prod_name,grp_name,inv_appadmin ";
+      $q_string  = "select inv_name,pkg_inv_id,pkg_name,pkg_os,inv_status,prod_name,grp_name,IFNULL(inv_appadmin, 0) as inv_appadmin ";
       $q_string .= "from packages ";
       $q_string .= "left join inventory on inventory.inv_id = packages.pkg_inv_id ";
       $q_string .= "left join products  on products.prod_id = inventory.inv_product ";
