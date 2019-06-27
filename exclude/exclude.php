@@ -159,16 +159,15 @@ $(function() {
 
 <p><strong>Overview</strong></p>
 
-<p>The main purpose of the messages.exclude files are to remove all lines that are either application specific and not important to system admins or are expected or aren't issues. This management tool
-lets you clear out unimportant messages from the central view in order to more clearly identify problems that occur on servers that aren't monitored or that were missed by the monitoring tool. Note 
-that if there's a message the team feels they need to be alerted on, as in something that needs to be addressed right away, then by all means, open a ticket and have the message added to the alerting 
-system.</p>
+<p>The main purpose of the messages.exclude files is to make it easy to identify problems that need to be corrected which aren't being caught by the monitoring software. Once such a line is identified, 
+it can be added to the monitoring team's filters so the team can be alerted on the problem. As such, you basically just continue to add lines to this file to reduce the size of the final messages file 
+output.</p>
 
-<p>This page lets you manage the filter file (messages.exclude) in order to identify and remove the unimportant lines from the final message file for the past 24 hours.</p>
+<p>This page lets you manage the two filter files (messages.exclude) in order to identify and remove the unimportant lines from the final message preview file for the past 24 hours.</p>
 
-<p>There are two files that are created. A prefilter file called messages.exclude which is located on each server in the /opt/intrado/etc directory. The script only pulls in lines that begin with 
-the hostname of the server. The second general filter is located on the central server (incojs01) in /usr/local/admin/etc. After all the prefiltered log files are pulled to the central server, the 
-general filter is applied and a single messages file is created which can then be reviewed.
+<p>There are two files that are created. A prefilter file which is also called messages.exclude which is located on each server in the /opt/intrado/etc directory. The script only pulls in lines that 
+begin with the hostname of the server. The second more general filter is located on the central server (incojs01) in /usr/local/admin/etc. After all the prefiltered log files are pulled to the central 
+server, the general filter is applied and a single messages file is created which can then be reviewed.
 
 <p><strong>Adding and Editing</strong></p>
 
@@ -187,8 +186,9 @@ long.</li>
 
 <p><strong>Output</strong></p>
 
-<p>If you selected a server from the drop down, you'll see one or more lines in the output for that. Clicking on any of the entries will edit all lines. Following that are three items in parenthesis, 
-Expiration Date, who entered or edited the line, and a remove button which lets you delete the line from the Inventory.
+<p>If you selected a server from the drop down, you'll see one or more lines in the output for that. Clicking on any of the entries will edit all lines so you only need to edit one of the entries. 
+Following that are three items in parenthesis, Expiration Date, who entered or edited the line, and either a delete button which just marks a filter and prevents it from being added to the filter file 
+or who deleted and a remove button you ultimately remove the line from the Inventory.
 
 <p><strong>Final</strong></p>
 
