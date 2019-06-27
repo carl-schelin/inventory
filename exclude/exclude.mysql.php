@@ -27,6 +27,7 @@
         $formVars['ex_text']            = clean($_GET['ex_text'],       255);
         $formVars['ex_comments']        = clean($_GET['ex_comments'],   255);
         $formVars['ex_expiration']      = clean($_GET['ex_expiration'],  15);
+        $formVars['ex_deleted']         = clean($_GET['ex_deleted'],     10);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
@@ -34,6 +35,11 @@
 
         if ($formVars['ex_expiration'] == '') {
           $formVars['ex_expiration'] = "2038-01-01";
+        }
+        if ($formVars['ex_deleted'] == 'true') {
+          $formVars['ex_deleted'] = $_SESSION['uid'];
+        } else {
+          $formVars['ex_deleted'] = 0;
         }
 
         if (strlen($formVars['ex_text']) > 0) {
@@ -44,7 +50,8 @@
             "ex_text        = \"" . $formVars['ex_text']        . "\"," .
             "ex_comments    = \"" . $formVars['ex_comments']    . "\"," .
             "ex_expiration  = \"" . $formVars['ex_expiration']  . "\"," .
-            "ex_userid      =   " . $_SESSION['uid'];
+            "ex_userid      =   " . $_SESSION['uid']            . "," .
+            "ex_deleted     =   " . $formVars['ex_deleted'];
 
           if ($formVars['update'] == 0) {
             $query = "insert into excludes set ex_id = NULL, " . $q_string;
@@ -95,7 +102,7 @@
 
       $comment = '';
       $comment_test = '';
-      $q_string  = "select ex_id,ex_companyid,inv_name,ex_text,ex_comments,ex_expiration,usr_name ";
+      $q_string  = "select ex_id,ex_companyid,inv_name,ex_text,ex_comments,ex_expiration,usr_name,ex_deleted ";
       $q_string .= "from excludes ";
       $q_string .= "left join inventory on inventory.inv_id = excludes.ex_companyid ";
       $q_string .= "left join users on users.usr_id = excludes.ex_userid ";
@@ -104,8 +111,15 @@
       while ($a_excludes = mysql_fetch_array($q_excludes)) {
 
         $linkstart = "<a href=\"#\" onclick=\"show_file('exclude.fill.php?id=" . $a_excludes['ex_id'] . "');jQuery('#dialogExclude').dialog('open');return false;\">";
-        $linkdel = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_line('exclude.del.php?id=" . $a_excludes['ex_id'] . "');\">";
+        $linkdel = "<input type=\"button\" value=\"Mark As Deleted\" onClick=\"javascript:delete_line('exclude.del.php?id=" . $a_excludes['ex_id'] . "');\">";
+        $linkremove = "<input type=\"button\" value=\"Remove Rule\" onClick=\"javascript:delete_line('exclude.del.php?id=" . $a_excludes['ex_id'] . "');\">";
         $linkend = "</a>";
+
+        $q_string  = "select usr_name ";
+        $q_string .= "from users ";
+        $q_string .= "where usr_id = " . $a_excludes['ex_deleted'] . " ";
+        $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $a_users = mysql_fetch_array($q_users);
 
         if ($a_excludes['ex_comments'] != $comment_test) {
           $comment = $a_excludes['ex_comments'];
@@ -165,7 +179,11 @@
             $output .= " (Expires: " . $a_excludes['ex_expiration'] . ")";
           }
           $output .= " (Entered by: " . $a_excludes['usr_name'] . ")";
-          $output .= " (" . $linkdel . ")\n";
+          if ($a_excludes['ex_deleted'] > 0) {
+            $output .= " (Deleted by: " . $a_users['usr_name'] . " " . $linkremove . ")\n";
+          } else {
+            $output .= " (" . $linkdel . ")\n";
+          }
         }
       }
 
