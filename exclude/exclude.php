@@ -68,6 +68,7 @@ function attach_file( p_script_url, update ) {
   af_url += '&ex_text='        + encode_URI(af_form.ex_text.value);
   af_url += '&ex_comments='    + encode_URI(af_form.ex_comments.value);
   af_url += '&ex_expiration='  + encode_URI(af_form.ex_expiration.value);
+  af_url += '&ex_deleted='     + af_form.ex_deleted.checked;
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
@@ -252,6 +253,9 @@ lines are removed promptly. No point in checking against a server that doesn't e
 </tr>
 <tr>
   <td class="ui-widget-content" colspan="2">Comment <input type="text" name="ex_comments" size="70"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content" colspan="2">Deleted <input type="checkbox" name="ex_deleted"></td>
 </tr>
 </table>
 
