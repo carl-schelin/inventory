@@ -26,7 +26,9 @@
       $q_string .= "from excludes ";
       $q_string .= "where ex_id = " . $formVars['id'] . " ";
       $q_excludes = mysql_query($q_string) or die($q_string . ': ' . mysql_error());
-      if (mysql_num_rows($q_excludes) > 0) {
+      $a_excludes = mysql_fetch_array($q_excludes);
+
+      if ($a_excludes['ex_deleted'] > 0) {
         $q_string  = "delete ";
         $q_string .= "from excludes ";
         $q_string .= "where ex_id = " . $formVars['id'] . " ";
