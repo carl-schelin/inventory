@@ -22,12 +22,26 @@
     if (check_userlevel(2)) {
       logaccess($_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from excludes");
 
-      $q_string  = "delete ";
+      $q_string  = "select ex_deleted ";
       $q_string .= "from excludes ";
-      $q_string .= "where ex_id = " . $formVars['id'];
-      $insert = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_string .= "where ex_id = " . $formVars['id'] . " ";
+      $q_excludes = mysql_query($q_string) or die($q_string . ': ' . mysql_error());
+      if (mysql_num_rows($q_excludes) > 0) {
+        $q_string  = "delete ";
+        $q_string .= "from excludes ";
+        $q_string .= "where ex_id = " . $formVars['id'] . " ";
+        $insert = mysql_query($q_string) or die($q_string . ": " . mysql_error());
 
-      print "alert('Message Exclude line deleted.');\n";
+        print "alert('Message Exclude line removed.');\n";
+      } else {
+        $q_string  = "update ";
+        $q_string .= "excludes ";
+        $q_string .= "set ex_deleted = " . $_SESSION['uid'] . " ";
+        $q_string .= "where ex_id = " . $formVars['id'] . " ";
+        $update = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+
+        print "alert('Message Exclude line marked as deleted.');\n";
+      }
 
       print "clear_fields();\n";
     } else {
