@@ -22,7 +22,7 @@
     if (check_userlevel(2)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from excludes");
 
-      $q_string  = "select ex_id,ex_companyid,ex_text,ex_comments,ex_expiration ";
+      $q_string  = "select ex_id,ex_companyid,ex_text,ex_comments,ex_expiration,ex_deleted ";
       $q_string .= "from excludes ";
       $q_string .= "where ex_id = " . $formVars['id'];
       $q_excludes = mysql_query($q_string) or die($q_string . " " . mysql_error());
@@ -36,6 +36,17 @@
       print "document.exclude.ex_expiration.value = '" . mysql_real_escape_string($a_excludes['ex_expiration']) . "';\n";
 
       print "document.exclude.ex_companyid['" . $server . "'].selected = true;\n";
+
+      if ($a_excludes['ex_expiration'] == '2038-01-01') {
+        print "document.exclude.noexpire.checked = true;\n";
+      } else {
+        print "document.exclude.noexpire.checked = false;\n";
+      }
+      if ($a_excludes['ex_deleted'] > 0) {
+        print "document.exclude.ex_deleted.checked = true;\n";
+      } else {
+        print "document.exclude.ex_deleted.checked = false;\n";
+      }
 
       print "document.exclude.id.value = " . $formVars['id'] . ";\n";
 
