@@ -408,6 +408,9 @@ function return_ShortOS( $p_string ) {
   if ($p_string == "Red Hat Enterprise Linux Server release 6.8 (Santiago)") {
     $ret_string = "RHEL6.8";
   }
+  if ($p_string == "CentOS release 6.8 (Final)") {
+    $ret_string = "COS6.8";
+  }
   if ($p_string == "Red Hat Enterprise Linux Server release 6.9 (Santiago)") {
     $ret_string = "RHEL6.9";
   }
@@ -431,6 +434,21 @@ function return_ShortOS( $p_string ) {
   }
   if ($p_string == "Red Hat Enterprise Linux Server release 7.5 (Maipo)") {
     $ret_string = "RHEL7.5";
+  }
+  if ($p_string == "Red Hat Enterprise Linux Server release 7.6 (Maipo)") {
+    $ret_string = "RHEL7.6";
+  }
+  if ($p_string == "Red Hat Enterprise Linux Server release 7.7 (Maipo)") {
+    $ret_string = "RHEL7.7";
+  }
+  if ($p_string == "Red Hat Enterprise Linux Server release 7.8 (Maipo)") {
+    $ret_string = "RHEL7.8";
+  }
+  if ($p_string == "Red Hat Enterprise Linux Server release 7.9 (Maipo)") {
+    $ret_string = "RHEL7.9";
+  }
+  if ($p_string == "Red Hat Enterprise Linux Server release 8.0 (Ootpa)") {
+    $ret_string = "RHEL8.0";
   }
 
   return $ret_string;
