@@ -69,6 +69,20 @@
     }
   }
 
+# nagios
+  $q_string  = "select inv_name ";
+  $q_string .= "from inventory ";
+  $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
+  $q_string .= "where inv_status = 0 and inv_ssh = 1 and int_nagios = 1 and inv_ansible = 1 ";
+  $q_string .= "group by inv_name ";
+  $q_inventory = mysql_query($q_string) or die(mysql_error());
+  if (mysql_num_rows($q_inventory) > 0) {
+    print "[nagios]\n";
 
+    while ($a_inventory = mysql_fetch_array($q_inventory)) {
+      print $a_inventory['inv_name'] . "\n";
+    }
+    print "\n";
+  }
 
 ?>
