@@ -27,7 +27,7 @@
     if (check_userlevel($AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['id'],            10);
-        $formVars['tag_name']       = str_replace(' ', '_', clean($_GET['tag_name'], 20));
+        $formVars['tag_name']       = str_replace(' ', '_', clean($_GET['tag_name'], 40));
         $formVars['tag_view']       = clean($_GET['tag_view'],      10);
         $formVars['tag_owner']      = clean($_SESSION['uid'],       10);
         $formVars['tag_group']      = clean($_SESSION['group'],     10);
@@ -123,8 +123,8 @@
         $output .= "  <th class=\"ui-state-default\" colspan=\"2\">Tag Form</th>\n";
         $output .= "</tr>\n";
         $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\">Tag Name <input type=\"text\" name=\"tag_name\" size=\"10\"> <input type=\"hidden\" name=\"tag_inv_id\" value=\"" . $formVars['tag_inv_id'] . "\"></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Visibility: <label><input type=\"radio\" checked=\"true\" name=\"tag_view\" value=\"0\"> Private</label> <label><input type=\"radio\" name=\"tag_view\" value=\"1\"> Group</label> <label><input type=\"radio\" name=\"tag_view\" value=\"2\"> Public</label></td>\n";
+        $output .= "  <td class=\"ui-widget-content\">Tag Name <input type=\"text\" name=\"tag_name\" size=\"40\"> <input type=\"hidden\" name=\"tag_inv_id\" value=\"" . $formVars['tag_inv_id'] . "\"></td>\n";
+        $output .= "  <td class=\"ui-widget-content\">Visibility: <label><input type=\"radio\" name=\"tag_view\" value=\"0\"> Private</label> <label><input type=\"radio\" checked=\"true\" name=\"tag_view\" value=\"1\"> Group</label> <label><input type=\"radio\" name=\"tag_view\" value=\"2\"> Public</label></td>\n";
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
