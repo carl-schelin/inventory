@@ -472,6 +472,8 @@ function attach_interface( p_script_url, update ) {
   ai_url += "&int_groupname="  + encode_URI(ai_form.int_groupname.value);
   ai_url += "&int_openview="   + ai_form.int_openview.checked;
   ai_url += "&int_nagios="     + ai_form.int_nagios.checked;
+  ai_url += "&int_backup="     + ai_form.int_backup.checked;
+  ai_url += "&int_management=" + ai_form.int_management.checked;
   ai_url += "&int_xpoint="     + ai_form.int_xpoint.value;
   ai_url += "&int_ypoint="     + ai_form.int_ypoint.value;
   ai_url += "&int_zpoint="     + ai_form.int_zpoint.value;
@@ -480,6 +482,11 @@ function attach_interface( p_script_url, update ) {
   ai_url += "&int_http="       + ai_form.int_http.checked;
   ai_url += "&int_ftp="        + ai_form.int_ftp.checked;
   ai_url += "&int_smtp="       + ai_form.int_smtp.checked;
+  ai_url += "&int_snmp="       + ai_form.int_snmp.checked;
+  ai_url += "&int_load="       + ai_form.int_load.checked;
+  ai_url += "&int_cpu="        + ai_form.int_cpu.checked;
+  ai_url += "&int_swap="       + ai_form.int_swap.checked;
+  ai_url += "&int_memory="     + ai_form.int_memory.checked;
   ai_url += "&int_cfg2html="   + ai_form.int_cfg2html.checked;
   ai_url += "&int_notify="     + radio_Loop(ai_form.int_notify, 3);
   ai_url += "&int_hours="      + radio_Loop(ai_form.int_hours, 2);
@@ -611,12 +618,13 @@ function clear_fields() {
 <?php
   if (check_grouplevel($a_inventory['inv_manager'])) {
 ?>
+  show_file('maintenance.mysql.php' + '?update=-3' + '&id=<?php              print $formVars['server']; ?>');
   show_file('hardware.mysql.php'    + '?update=-3' + '&hw_companyid=<?php    print $formVars['server']; ?>');
   show_file('filesystem.mysql.php'  + '?update=-3' + '&fs_companyid=<?php    print $formVars['server']; ?>');
   show_file('network.mysql.php'     + '?update=-3' + '&int_companyid=<?php   print $formVars['server']; ?>');
   show_file('routing.mysql.php'     + '?update=-3' + '&route_companyid=<?php print $formVars['server']; ?>');
   show_file('firewall.mysql.php'    + '?update=-3' + '&fw_companyid=<?php    print $formVars['server']; ?>');
-  show_file('backups.fill.php'      + '?id=<?php print $formVars['server']; ?>');
+  show_file('backups.fill.php'      + '?id=<?php                             print $formVars['server']; ?>');
   show_file('association.mysql.php' + '?update=-3' + '&clu_companyid=<?php   print $formVars['server']; ?>');
 <?php
 # end inv_manager if
@@ -668,6 +676,7 @@ $(document).ready( function() {
 <?php
   if (check_grouplevel($a_inventory['inv_manager'])) {
 ?>
+  <li><a href="#maintenance">Maintenance</a></li>
   <li><a href="#hardware">Hardware</a></li>
   <li><a href="#filesystem">Filesystem</a></li>
 <?php
@@ -1035,101 +1044,6 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default" colspan="4">Maintenance Window Form</th>
-</tr>
-<tr>
-  <td class="ui-widget-content">Start: <select name="inv_mstart">
-<option value="0">Unassigned</option>
-<option value="1">Midnight</option>
-<option value="2">1 am</option>
-<option value="3">2 am</option>
-<option value="4">3 am</option>
-<option value="5">4 am</option>
-<option value="6">5 am</option>
-<option value="7">6 am</option>
-<option value="8">7 am</option>
-<option value="9">8 am</option>
-<option value="10">9 am</option>
-<option value="11">10 am</option>
-<option value="12">11 am</option>
-<option value="13">Noon</option>
-<option value="14">1 pm</option>
-<option value="15">2 pm</option>
-<option value="16">3 pm</option>
-<option value="17">4 pm</option>
-<option value="18">5 pm</option>
-<option value="19">6 pm</option>
-<option value="20">7 pm</option>
-<option value="21">8 pm</option>
-<option value="22">9 pm</option>
-<option value="23">10 pm</option>
-<option value="24">11 pm</option>
-</select></td>
-  <td class="ui-widget-content">End: <select name="inv_mend">
-<option value="0">Unassigned</option>
-<option value="1">Midnight</option>
-<option value="2">1 am</option>
-<option value="3">2 am</option>
-<option value="4">3 am</option>
-<option value="5">4 am</option>
-<option value="6">5 am</option>
-<option value="7">6 am</option>
-<option value="8">7 am</option>
-<option value="9">8 am</option>
-<option value="10">9 am</option>
-<option value="11">10 am</option>
-<option value="12">11 am</option>
-<option value="13">Noon</option>
-<option value="14">1 pm</option>
-<option value="15">2 pm</option>
-<option value="16">3 pm</option>
-<option value="17">4 pm</option>
-<option value="18">5 pm</option>
-<option value="19">6 pm</option>
-<option value="20">7 pm</option>
-<option value="21">8 pm</option>
-<option value="22">9 pm</option>
-<option value="23">10 pm</option>
-<option value="24">11 pm</option>
-</select></td>
-  <td class="ui-widget-content">Day of the Week: <select name="inv_mdow">
-<option value="0">Unassigned</option>
-<option value="1">Sunday</option>
-<option value="2">Monday</option>
-<option value="3">Tuesday</option>
-<option value="4">Wednesday</option>
-<option value="5">Thursday</option>
-<option value="6">Friday</option>
-<option value="7">Saturday</option>
-</select></td>
-  <td class="ui-widget-content">Interval: <label><input type="radio" checked value="0" name="inv_minterval"> Weekly</label> <label><input type="radio" value="1" name="inv_minterval"> Bi-weekly</label> <label><input type="radio" value="2" name="inv_minterval"> Monthly</label> <label><input type="radio" value="3" name="inv_minterval"> Quarterly</label></td>
-</tr>
-</table>
-
-<table class="ui-styled-table">
-<tr>
-  <th class="ui-state-default" colspan="2">Patching Form</th>
-</tr>
-<tr>
-  <td class="ui-widget-content">Select a Patching Increment: <select name="inv_patchid">
-<option value="0">Unassigned</option>
-<?php
-  $q_string  = "select patch_id,patch_name ";
-  $q_string .= "from patching ";
-  $q_string .= "where patch_group = " . $a_inventory['inv_manager'] . " ";
-  $q_string .= "order by patch_name ";
-  $q_patching = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while($a_patching = mysql_fetch_array($q_patching)) {
-    print "<option value=\"" . $a_patching['patch_id'] . "\">" . $a_patching['patch_name'] . "</option>\n";
-  }
-?>
-</select></td>
-  <td class="ui-widget-content">Enter the Date the system was last patched: <input type="text" name="inv_patched" size="20"></td>
-</tr>
-</table>
-
-<table class="ui-styled-table">
-<tr>
   <th class="ui-state-default" colspan="5">Platform Specific Form</th>
 </tr>
 <tr>
@@ -1199,6 +1113,85 @@ $(document).ready( function() {
 <?php
   if (check_grouplevel($a_inventory['inv_manager'])) {
 ?>
+<div id="maintenance">
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Maintenance and Patching Management</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('maintenance-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="maintenance-help" style="display: none">
+
+<div class="main-help ui-widget-content">
+
+<ul>
+  <li><strong>Buttons</strong>
+  <ul>
+    <li><strong>Refresh Hardware Listing</strong> - Reloads the Hardware Listing table. At times, especially when removing several items, the table fails to refresh.</li>
+    <li><strong>Update Hardware</strong> - After selecting a piece of hardware to edit, click here to save changes.</li>
+    <li><strong>Add New Hardware</strong> - Add a new piece of hardware. You can also select an existing piece, make changes if needed, and click this button to add a second item.</li>
+    <li><strong>Copy Hardware Table From:</strong> - Select a server from the listing to copy the hardware list from.</li>
+  </ul></li>
+</ul>
+
+<ul>
+  <li><strong>Hardware Form</strong>
+  <ul>
+    <li><strong>Asset Tag</strong> - the company Asset tag located somewhere on the device. Set it to asterisk (*) if you found the device but the Asset tag was inaccessible.</li>
+    <li><strong>Serial</strong> - the serial number of the device.</li>
+    <li><strong>Service Tag</strong> - used for Dell equipment in place of the serial number.</li>
+    <li><strong>Delete?</strong> - This checkbox lets identify a piece of hardware as active again. If you deleted a <strong>Primary Container</strong>, you will need to recheck that checkbox when saving changes.</li>
+    <li><strong>Type</strong> - when you select a device type, the Model menu automatically fills in with equipment identified as the selected type</li>
+    <li><strong>Model</strong> - select the appropriate model information.</li>
+    <li><strong>Size</strong> - Enter in the height of the physical device in Units, or the size of the drive or memory, or the number of cores if it's a CPU.</li>
+    <li><strong>Speed</strong> - Enter in the drive speed or CPU speed.</li>
+  </ul></li>
+  <li><strong>Support Form</strong>
+  <ul>
+    <li><strong>Support Company</strong> - Select the support contract/contact information. This is displayed in the Issue Tracker when opening a Vendor Support issue.</li>
+    <li><strong>Response Level</strong> - Select the support contract/contact information. This is displayed in the Issue Tracker when opening a Vendor Support issue.</li>
+    <li><strong>RMA</strong> - If a component is being replaced, the RMA number is here. Generally this is set in the Issue Tracker but should the RMA number need to be moved to the correct component, you can edit it here.</li>
+    <li><strong>Contract Confirmation</strong> - If the Support Company and Response Level information is imported from Contracts, this is set to 'Yes'.</li>
+  </ul></li>
+  <li><strong>Container/Redundancy Form</strong>
+  <ul>
+    <li><strong>Main Hardware Container</strong> - This lists all the unassigned hardware for this system. This provides the ability to manually associate hardware with the main device. This should be done automatically by the import scripts however some systems aren't able to be accessed by the service account.</li>
+    <li><strong>Hard Disk Redundancy</strong> - This lists all the RAID devices associated with this system. You will need to identify RAIDed devices in the Model drop down for a Hard Disk in order for this list to be populated. I recommend entering a Volume number in the Asset, Serial, or Service Tag fields as they will be displayed along with the RAIDed Device in the menu. Selecting the Main Hardware Container is not required as it will assume the main device.</li>
+  </ul></li>
+  <li><strong>Life-Cycle Form</strong>
+  <ul>
+    <li><strong>Purchased</strong> - The date the device was purchased.</li>
+    <li><strong>Built</strong> - The date the device was built and ready for use.</li>
+    <li><strong>Live</strong> - The date the device went live and into production.</li>
+    <li><strong>End of Life</strong> - The date the company expects to retire this device. This is different than the hardware model End of Life which is provided by the vendor.</li>
+    <li><strong>Retired</strong> - The date the server was removed from service.</li>
+    <li><strong>Reused</strong> - The date the server was repurposed. Use the note field here or under the Detail record to identify what the new server name is.</li>
+  </ul></li>
+  <li><strong>Notes Form</strong>
+  <ul>
+    <li><strong>Note</strong> - Enter in any notes for this device. This will be a hover text in the <strong>Show Inventory</strong> pages.</li>
+  </ul></li>
+</ul>
+
+<ul>
+  <li><strong>Notes</strong>
+  <ul>
+    <li>Fields marked with an asterisk (*) are automatically captured where possible.</li>
+    <li>Click the <strong>Hardware Management</strong> title bar to toggle the <strong>Hardware Form</strong>.</li>
+  </ul></li>
+</ul>
+
+</div>
+
+</div>
+
+<span id="maintenance_form"><?php print wait_Process("Please Wait"); ?></span>
+
+</div>
+
+
 <div id="hardware">
 
 <table class="ui-styled-table">
