@@ -25,7 +25,8 @@
       $q_string  = "select int_companyid,int_face,int_int_id,int_server,int_addr,int_eth,int_switch,int_mask,";
       $q_string .= "int_gate,int_note,int_ip6,int_primary,int_type,int_media,int_speed,int_port,int_sysport,";
       $q_string .= "int_duplex,int_role,int_redundancy,int_groupname,int_vlan,int_zone,int_openview,int_nagios,";
-      $q_string .= "int_xpoint,int_virtual,int_ypoint,int_zpoint,int_ping,int_ssh,int_http,int_ftp,int_smtp,";
+      $q_string .= "int_backup,int_management,int_xpoint,int_virtual,int_ypoint,int_zpoint,int_ping,int_ssh,";
+      $q_string .= "int_http,int_ftp,int_smtp,int_snmp,int_load,int_uptime,int_cpu,int_swap,int_memory,";
       $q_string .= "int_cfg2html,int_notify,int_hours ";
       $q_string .= "from interface ";
       $q_string .= "where int_id = " . $formVars['id'];
@@ -91,6 +92,16 @@
       } else {
         print "document.edit.int_nagios.checked = false;\n";
       }
+      if ($a_interface['int_backup']) {
+        print "document.edit.int_backup.checked = true;\n";
+      } else {
+        print "document.edit.int_backup.checked = false;\n";
+      }
+      if ($a_interface['int_management']) {
+        print "document.edit.int_management.checked = true;\n";
+      } else {
+        print "document.edit.int_management.checked = false;\n";
+      }
       if ($a_interface['int_ping']) {
         print "document.edit.int_ping.checked = true;\n";
       } else {
@@ -115,6 +126,36 @@
         print "document.edit.int_smtp.checked = true;\n";
       } else {
         print "document.edit.int_smtp.checked = false;\n";
+      }
+      if ($a_interface['int_snmp']) {
+        print "document.edit.int_snmp.checked = true;\n";
+      } else {
+        print "document.edit.int_snmp.checked = false;\n";
+      }
+      if ($a_interface['int_load']) {
+        print "document.edit.int_load.checked = true;\n";
+      } else {
+        print "document.edit.int_load.checked = false;\n";
+      }
+      if ($a_interface['int_uptime']) {
+        print "document.edit.int_uptime.checked = true;\n";
+      } else {
+        print "document.edit.int_uptime.checked = false;\n";
+      }
+      if ($a_interface['int_cpu']) {
+        print "document.edit.int_cpu.checked = true;\n";
+      } else {
+        print "document.edit.int_cpu.checked = false;\n";
+      }
+      if ($a_interface['int_swap']) {
+        print "document.edit.int_swap.checked = true;\n";
+      } else {
+        print "document.edit.int_swap.checked = false;\n";
+      }
+      if ($a_interface['int_memory']) {
+        print "document.edit.int_memory.checked = true;\n";
+      } else {
+        print "document.edit.int_memory.checked = false;\n";
       }
       if ($a_interface['int_cfg2html']) {
         print "document.edit.int_cfg2html.checked = true;\n";
