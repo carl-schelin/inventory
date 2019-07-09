@@ -85,14 +85,9 @@
         print "document.edit.inv_appadmin['"   . $invappadmin               . "'].selected = true;\n";
         print "document.edit.inv_class['"      . $invclass                  . "'].selected = true;\n";
         print "document.edit.inv_response['"   . $invresponse               . "'].selected = true;\n";
-        print "document.edit.inv_mstart['"     . $a_inventory['inv_mstart'] . "'].selected = true;\n";
-        print "document.edit.inv_mend['"       . $a_inventory['inv_mend']   . "'].selected = true;\n";
-        print "document.edit.inv_mdow['"       . $a_inventory['inv_mdow']   . "'].selected = true;\n";
         print "document.edit.inv_product['"    . $invproduct                . "'].selected = true;\n";
         print "document.edit.inv_project['"    . $invproject                . "'].selected = true;\n";
         print "document.edit.inv_department['" . $invdepartment             . "'].selected = true;\n";
-
-        print "document.edit.inv_minterval['" . $a_inventory['inv_minterval'] . "'].checked = true;\n";
 
         if ($a_inventory['inv_callpath']) {
           print "document.edit.inv_callpath.checked = true;\n";
