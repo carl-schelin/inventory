@@ -26,43 +26,51 @@
 
     if (check_userlevel($AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
-        $formVars['id']             = clean($_GET['id'],             10);
-        $formVars['int_server']     = clean($_GET['int_server'],     60);
-        $formVars['int_face']       = clean($_GET['int_face'],       20);
-        $formVars['int_int_id']     = clean($_GET['int_int_id'],     10);
-        $formVars['int_virtual']    = clean($_GET['int_virtual'],    10);
-        $formVars['int_addr']       = clean($_GET['int_addr'],      100);
-        $formVars['int_eth']        = clean($_GET['int_eth'],        20);
-        $formVars['int_mask']       = clean($_GET['int_mask'],       50);
-        $formVars['int_gate']       = clean($_GET['int_gate'],       50);
-        $formVars['int_note']       = clean($_GET['int_note'],      255);
-        $formVars['int_switch']     = clean($_GET['int_switch'],     50);
-        $formVars['int_port']       = clean($_GET['int_port'],       50);
-        $formVars['int_sysport']    = clean($_GET['int_sysport'],    50);
-        $formVars['int_ip6']        = clean($_GET['int_ip6'],        10);
-        $formVars['int_primary']    = clean($_GET['int_primary'],    10);
-        $formVars['int_type']       = clean($_GET['int_type'],       10);
-        $formVars['int_zone']       = clean($_GET['int_zone'],       10);
-        $formVars['int_vlan']       = clean($_GET['int_vlan'],       10);
-        $formVars['int_media']      = clean($_GET['int_media'],      10);
-        $formVars['int_speed']      = clean($_GET['int_speed'],      10);
-        $formVars['int_duplex']     = clean($_GET['int_duplex'],     10);
-        $formVars['int_role']       = clean($_GET['int_role'],       10);
-        $formVars['int_redundancy'] = clean($_GET['int_redundancy'], 10);
-        $formVars['int_groupname']  = clean($_GET['int_groupname'],  20);
-        $formVars['int_openview']   = clean($_GET['int_openview'],   10);
-        $formVars['int_nagios']     = clean($_GET['int_nagios'],     10);
-        $formVars['int_xpoint']     = clean($_GET['int_xpoint'],     10);
-        $formVars['int_ypoint']     = clean($_GET['int_ypoint'],     10);
-        $formVars['int_zpoint']     = clean($_GET['int_zpoint'],     10);
-        $formVars['int_notify']     = clean($_GET['int_notify'],     10);
-        $formVars['int_hours']      = clean($_GET['int_hours'],      10);
-        $formVars['int_ping']       = clean($_GET['int_ping'],       10);
-        $formVars['int_ssh']        = clean($_GET['int_ssh'],        10);
-        $formVars['int_http']       = clean($_GET['int_http'],       10);
-        $formVars['int_ftp']        = clean($_GET['int_ftp'],        10);
-        $formVars['int_smtp']       = clean($_GET['int_smtp'],       10);
-        $formVars['int_cfg2html']   = clean($_GET['int_cfg2html'],   10);
+        $formVars['id']                 = clean($_GET['id'],                 10);
+        $formVars['int_server']         = clean($_GET['int_server'],         60);
+        $formVars['int_face']           = clean($_GET['int_face'],           20);
+        $formVars['int_int_id']         = clean($_GET['int_int_id'],         10);
+        $formVars['int_virtual']        = clean($_GET['int_virtual'],        10);
+        $formVars['int_addr']           = clean($_GET['int_addr'],          100);
+        $formVars['int_eth']            = clean($_GET['int_eth'],            20);
+        $formVars['int_mask']           = clean($_GET['int_mask'],           50);
+        $formVars['int_gate']           = clean($_GET['int_gate'],           50);
+        $formVars['int_note']           = clean($_GET['int_note'],          255);
+        $formVars['int_switch']         = clean($_GET['int_switch'],         50);
+        $formVars['int_port']           = clean($_GET['int_port'],           50);
+        $formVars['int_sysport']        = clean($_GET['int_sysport'],        50);
+        $formVars['int_ip6']            = clean($_GET['int_ip6'],            10);
+        $formVars['int_primary']        = clean($_GET['int_primary'],        10);
+        $formVars['int_type']           = clean($_GET['int_type'],           10);
+        $formVars['int_zone']           = clean($_GET['int_zone'],           10);
+        $formVars['int_vlan']           = clean($_GET['int_vlan'],           10);
+        $formVars['int_media']          = clean($_GET['int_media'],          10);
+        $formVars['int_speed']          = clean($_GET['int_speed'],          10);
+        $formVars['int_duplex']         = clean($_GET['int_duplex'],         10);
+        $formVars['int_role']           = clean($_GET['int_role'],           10);
+        $formVars['int_redundancy']     = clean($_GET['int_redundancy'],     10);
+        $formVars['int_groupname']      = clean($_GET['int_groupname'],      20);
+        $formVars['int_openview']       = clean($_GET['int_openview'],       10);
+        $formVars['int_nagios']         = clean($_GET['int_nagios'],         10);
+        $formVars['int_backup']         = clean($_GET['int_backup'],         10);
+        $formVars['int_management']     = clean($_GET['int_management'],     10);
+        $formVars['int_xpoint']         = clean($_GET['int_xpoint'],         10);
+        $formVars['int_ypoint']         = clean($_GET['int_ypoint'],         10);
+        $formVars['int_zpoint']         = clean($_GET['int_zpoint'],         10);
+        $formVars['int_notify']         = clean($_GET['int_notify'],         10);
+        $formVars['int_hours']          = clean($_GET['int_hours'],          10);
+        $formVars['int_ping']           = clean($_GET['int_ping'],           10);
+        $formVars['int_ssh']            = clean($_GET['int_ssh'],            10);
+        $formVars['int_http']           = clean($_GET['int_http'],           10);
+        $formVars['int_ftp']            = clean($_GET['int_ftp'],            10);
+        $formVars['int_smtp']           = clean($_GET['int_smtp'],           10);
+        $formVars['int_snmp']           = clean($_GET['int_snmp'],           10);
+        $formVars['int_load']           = clean($_GET['int_load'],           10);
+        $formVars['int_uptime']         = clean($_GET['int_uptime'],         10);
+        $formVars['int_cpu']            = clean($_GET['int_cpu'],            10);
+        $formVars['int_swap']           = clean($_GET['int_swap'],           10);
+        $formVars['int_memory']         = clean($_GET['int_memory'],         10);
+        $formVars['int_cfg2html']       = clean($_GET['int_cfg2html'],       10);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
@@ -89,6 +97,16 @@
           $formVars['int_nagios'] = 1;
         } else {
           $formVars['int_nagios'] = 0;
+        }
+        if ($formVars['int_backup'] == 'true') {
+          $formVars['int_backup'] = 1;
+        } else {
+          $formVars['int_backup'] = 0;
+        }
+        if ($formVars['int_management'] == 'true') {
+          $formVars['int_management'] = 1;
+        } else {
+          $formVars['int_management'] = 0;
         }
         if ($formVars['int_ping'] == 'true') {
           $formVars['int_ping'] = 1;
@@ -119,6 +137,36 @@
           $formVars['int_smtp'] = 1;
         } else {
           $formVars['int_smtp'] = 0;
+        }
+        if ($formVars['int_snmp'] == 'true') {
+          $formVars['int_snmp'] = 1;
+        } else {
+          $formVars['int_snmp'] = 0;
+        }
+        if ($formVars['int_load'] == 'true') {
+          $formVars['int_load'] = 1;
+        } else {
+          $formVars['int_load'] = 0;
+        }
+        if ($formVars['int_uptime'] == 'true') {
+          $formVars['int_uptime'] = 1;
+        } else {
+          $formVars['int_uptime'] = 0;
+        }
+        if ($formVars['int_cpu'] == 'true') {
+          $formVars['int_cpu'] = 1;
+        } else {
+          $formVars['int_cpu'] = 0;
+        }
+        if ($formVars['int_swap'] == 'true') {
+          $formVars['int_swap'] = 1;
+        } else {
+          $formVars['int_swap'] = 0;
+        }
+        if ($formVars['int_memory'] == 'true') {
+          $formVars['int_memory'] = 1;
+        } else {
+          $formVars['int_memory'] = 0;
         }
         if ($formVars['int_xpoint'] == '') {
           $formVars['int_xpoint'] = 0;
@@ -166,6 +214,8 @@
             "int_update     = \"" . date('Y-m-d')               . "\"," . 
             "int_openview   =   " . $formVars['int_openview']   . "," .
             "int_nagios     =   " . $formVars['int_nagios']     . "," .
+            "int_backup     =   " . $formVars['int_backup']     . "," .
+            "int_management =   " . $formVars['int_management'] . "," .
             "int_xpoint     =   " . $formVars['int_xpoint']     . "," .
             "int_ypoint     =   " . $formVars['int_ypoint']     . "," .
             "int_zpoint     =   " . $formVars['int_zpoint']     . "," .
@@ -174,6 +224,12 @@
             "int_http       =   " . $formVars['int_http']       . "," .
             "int_ftp        =   " . $formVars['int_ftp']        . "," .
             "int_smtp       =   " . $formVars['int_smtp']       . "," .
+            "int_snmp       =   " . $formVars['int_snmp']       . "," .
+            "int_load       =   " . $formVars['int_load']       . "," .
+            "int_uptime     =   " . $formVars['int_uptime']     . "," .
+            "int_cpu        =   " . $formVars['int_cpu']        . "," .
+            "int_swap       =   " . $formVars['int_swap']       . "," .
+            "int_memory     =   " . $formVars['int_memory']     . "," .
             "int_cfg2html   =   " . $formVars['int_cfg2html']   . "," .
             "int_notify     =   " . $formVars['int_notify']     . "," .
             "int_hours      =   " . $formVars['int_hours'];
@@ -371,7 +427,7 @@
 
         $output  = "<table class=\"ui-styled-table\">\n";
         $output .= "<tr>\n";
-        $output .= "  <th class=\"ui-state-default\" colspan=\"2\">Monitoring Form</th>\n";
+        $output .= "  <th class=\"ui-state-default\" colspan=\"2\">Management Form</th>\n";
         $output .= "</tr>\n";
         $output .= "<tr>\n";
         $output .= "  <td class=\"ui-widget-content\">How is this interface monitored? <label><input type=\"checkbox\" name=\"int_openview\"> OpenView</label> <label><input type=\"checkbox\" name=\"int_nagios\"> Nagios</label></td>\n";
@@ -381,7 +437,21 @@
           $output .= "<label><input type=\"checkbox\" name=\"int_http\"> HTTP</label> - ";
           $output .= "<label><input type=\"checkbox\" name=\"int_ftp\"> FTP</label> - ";
           $output .= "<label><input type=\"checkbox\" name=\"int_smtp\"> SMTP</label> - ";
+          $output .= "<label><input type=\"checkbox\" name=\"int_snmp\"> SNMP</label> - ";
           $output .= "<label><input type=\"checkbox\" name=\"int_cfg2html\"> Do not validate Cfg2Html</label>";
+        $output .= "</td>\n";
+        $output .= "</tr>\n";
+        $output .= "<tr>\n";
+        $output .= "  <td class=\"ui-widget-content\">";
+          $output .= "<label><input type=\"checkbox\" name=\"int_backup\"> Used for Backup traffic</label> - ";
+          $output .= "<label><input type=\"checkbox\" name=\"int_management\"> Used for Management traffic</label>";
+        $output .= "</td>\n";
+        $output .= "  <td class=\"ui-widget-content\">If snmp is enabled, statistics to monitor: ";
+          $output .= "<label><input type=\"checkbox\" name=\"int_load\"> Load Average</label> - ";
+          $output .= "<label><input type=\"checkbox\" name=\"int_uptime\"> System Uptime</label> - ";
+          $output .= "<label><input type=\"checkbox\" name=\"int_cpu\"> CPU Statistics</label> - ";
+          $output .= "<label><input type=\"checkbox\" name=\"int_swap\"> Swap</label> - ";
+          $output .= "<label><input type=\"checkbox\" name=\"int_memory\"> Memory Usage</label>";
         $output .= "</td>\n";
         $output .= "</tr>\n";
         $output .= "<tr>\n";
