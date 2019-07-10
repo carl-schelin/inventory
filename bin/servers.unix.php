@@ -76,12 +76,19 @@
     }
 
     $interfaces = '';
-    $q_string  = "select int_server ";
+    $q_string  = "select int_server,int_domain,int_management ";
     $q_string .= "from interface ";
     $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_type = 1 || int_type = 2 || int_type = 6)";
     $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     while ($a_interface = mysql_fetch_array($q_interface)) {
       $interfaces .= "," . $a_interface['int_server'] . ",";
+
+# if the management checkbox is checked, then use this interface and not the main interface.
+      if ($a_interface['int_management']) {
+        $a_inventory['inv_name'] = $a_interface['int_server'];
+        $a_inventory['inv_fqdn'] = $a_interface['int_domain'];
+      }
+
     }
 
     $product = str_replace(" ", "_", $a_inventory['prod_name']);
