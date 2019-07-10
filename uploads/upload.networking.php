@@ -117,14 +117,7 @@ if (($handle = fopen($file, "r")) !== FALSE) {
     }
 
 # now break the fqdn into hostname and domain
-
-    $hostname = explode(".", clean(strtolower($data[0]), 255));
-    $domain = '';
-    $dot = '';
-    for ($i = 1; $i < count($hostname); $i++) {
-      $domain .= $dot . $hostname[$i];
-      $dot = '.';
-    }
+    $hostname = explode(".", clean(strtolower($data[0]), 255), 1);
 
 # now see if the record exists
     $q_string  = "select inv_id ";
@@ -138,7 +131,6 @@ if (($handle = fopen($file, "r")) !== FALSE) {
       $q_string  = "update inventory ";
       $q_string .= "set ";
       $q_string .= "inv_name = '" . $hostname[0] . "',";
-      $q_string .= "inv_fqdn = '" . $domain . "',";
       $q_string .= "inv_function = 'Network Device',";
       $q_string .= "inv_manager = " . $GRP_Networking . ",";
       $q_string .= "inv_appadmin = " . $GRP_Networking . ",";
@@ -146,7 +138,7 @@ if (($handle = fopen($file, "r")) !== FALSE) {
       $q_string .= "where inv_id = " . $a_inventory['inv_id'] . " ";
 
       if ($debug == 'yes') {
-        print "Found and updating hostname: " . $hostname[0] . " Domain: " . $domain . "\n";
+        print "Found and updating hostname: " . $hostname[0] . " Domain: " . $hostname[1] . "\n";
         print $q_string . "\n";
       } else {
         $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
@@ -207,6 +199,7 @@ if (($handle = fopen($file, "r")) !== FALSE) {
         $q_string  = "update interface ";
         $q_string .= "set ";
         $q_string .= "int_server = '" . $hostname[0] . "',";
+        $q_string .= "int_domain = '" . $hostname[1] . "',";
         $q_string .= "int_vaddr = 1,";
         $q_string .= "int_type = 1,";
         $q_string .= "int_update = '" . date('Y-m-d') . "' ";
@@ -225,6 +218,7 @@ if (($handle = fopen($file, "r")) !== FALSE) {
         $q_string .= "set ";
         $q_string .= "int_id = null,";
         $q_string .= "int_server = '" . $hostname[0] . "',";
+        $q_string .= "int_domain = '" . $hostname[1] . "',";
         $q_string .= "int_addr = '" . $data[1] . "',";
         $q_string .= "int_type = 1,";
         $q_string .= "int_vaddr = 1,";
@@ -246,14 +240,13 @@ if (($handle = fopen($file, "r")) !== FALSE) {
       $q_string .= "set ";
       $q_string .= "inv_id = null,";
       $q_string .= "inv_name = '" . $hostname[0] . "',";
-      $q_string .= "inv_fqdn = '" . $domain . "',";
       $q_string .= "inv_function = 'Network Device',";
       $q_string .= "inv_manager = " . $GRP_Networking . ",";
       $q_string .= "inv_appadmin = " . $GRP_Networking . ",";
       $q_string .= "inv_status = 0 ";
 
       if ($debug == 'yes') {
-        print "Missing: " . $hostname[0] . " Domain: " . $domain . "\n";
+        print "Missing: " . $hostname[0] . " Domain: " . $hostname[1] . "\n";
         print $q_string . "\n";
       } else {
         $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
@@ -300,6 +293,7 @@ if (($handle = fopen($file, "r")) !== FALSE) {
         $q_string .= "int_id = null,";
         $q_string .= "int_companyid = " . $server . ",";
         $q_string .= "int_server = '" . $hostname[0] . "',";
+        $q_string .= "int_domain = '" . $hostname[1] . "',";
         $q_string .= "int_addr = '" . $data[1] . "',";
         $q_string .= "int_type = 1,";
         $q_string .= "int_vaddr = 1,";
