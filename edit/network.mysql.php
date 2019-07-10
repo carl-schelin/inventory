@@ -635,14 +635,18 @@
           if ($a_interface['int_domain'] != '') {
             $servername .= "." . $a_interface['int_domain'];
           }
-          $actualhost = gethostbyaddr($a_interface['int_addr']);
-          if ($actualhost == $a_interface['int_addr'] || $actualhost != $servername) {
-            $default    = " class=\"ui-state-error\"";
-            $defaultdel = " class=\"ui-state-error delete\"";
-            $actualhost = " (" . $actualhost . ")";
-          } else {
+# verify the interface has a valid IP first. No need to further check if not
+          $actualhost = "";
+          if (filter_var($a_interface['int_addr'], FILTER_VALIDATE_IP)) {
+            $actualhost = gethostbyaddr($a_interface['int_addr']);
+            if ($actualhost == $a_interface['int_addr'] || $actualhost != $servername) {
+              $default    = " class=\"ui-state-error\"";
+              $defaultdel = " class=\"ui-state-error delete\"";
+              $actualhost = " (" . $actualhost . ")";
+            } else {
 # clear it once determined.
-            $actualhost = "";
+              $actualhost = "";
+            }
           }
           if ($a_interface['int_eth'] == '00:00:00:00:00:00') {
             $showmac = '';
@@ -748,14 +752,18 @@
               if ($a_redundancy['int_domain'] != '') {
                 $servername .= "." . $a_redundancy['int_domain'];
               }
-              $actualhost = gethostbyaddr($a_redundancy['int_addr']);
-              if ($actualhost == $a_redundancy['int_addr'] || $actualhost != $servername) {
-                $default    = " class=\"ui-state-error\"";
-                $defaultdel = " class=\"ui-state-error delete\"";
-                $actualhost = " (" . $actualhost . ")";
-              } else {
+# verify the interface has a valid IP first. No need to further check if not
+              $actualhost = "";
+              if (filter_var($a_redundancy['int_addr'], FILTER_VALIDATE_IP)) {
+                $actualhost = gethostbyaddr($a_redundancy['int_addr']);
+                if ($actualhost == $a_redundancy['int_addr'] || $actualhost != $servername) {
+                  $default    = " class=\"ui-state-error\"";
+                  $defaultdel = " class=\"ui-state-error delete\"";
+                  $actualhost = " (" . $actualhost . ")";
+                } else {
 # clear it once determined.
-                $actualhost = "";
+                  $actualhost = "";
+                }
               }
               if ($a_redundancy['int_eth'] == '00:00:00:00:00:00') {
                 $showmac = '';
@@ -858,14 +866,18 @@
                   if ($a_secondary['int_domain'] != '') {
                     $servername .= '.' . $a_secondary['int_domain'];
                   }
-                  $actualhost = gethostbyaddr($a_secondary['int_addr']);
-                  if ($actualhost == $a_secondary['int_addr'] || $actualhost != $servername) {
-                    $default    = " class=\"ui-state-error\"";
-                    $defaultdel = " class=\"ui-state-error delete\"";
-                    $actualhost = " (" . $actualhost . ")";
-                  } else {
+# verify the interface has a valid IP first. No need to further check if not
+                  $actualhost = "";
+                  if (filter_var($a_secondary['int_addr'], FILTER_VALIDATE_IP)) {
+                    $actualhost = gethostbyaddr($a_secondary['int_addr']);
+                    if ($actualhost == $a_secondary['int_addr'] || $actualhost != $servername) {
+                      $default    = " class=\"ui-state-error\"";
+                      $defaultdel = " class=\"ui-state-error delete\"";
+                      $actualhost = " (" . $actualhost . ")";
+                    } else {
 # clear it once determined.
-                    $actualhost = "";
+                      $actualhost = "";
+                    }
                   }
                   if ($a_secondary['int_eth'] == '00:00:00:00:00:00') {
                     $showmac = '';
