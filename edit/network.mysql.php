@@ -566,6 +566,7 @@
       $output .= "  <li><strong>Interface Listing</strong>\n";
       $output .= "  <ul>\n";
       $output .= "    <li><strong>Highlighted</strong> - This interface is the <span class=\"ui-state-highlight\">Default Route</span>.</li>\n";
+      $output .= "    <li><strong>Highlighted</strong> - This hostname either doesn't match the resolved hostname or is simply <span class=\"ui-state-error\">not in DNS</span>. If incorrect or incomplete, the identified DNS entry will be displayed. If no DNS entry, it will show the IP Address. Not all interfaces need to be in DNS but they will be highlighted if not.</li>\n";
       $output .= "    <li><strong>Delete (x)</strong> - Clicking the <strong>x</strong> will delete this interface from this server.</li>\n";
       $output .= "    <li><strong>Virtual Memberships</strong> - If a physical interface is a member of a virtual interface, it will be designated with a &gt; to the left of the name and will listed under the virtual interface. The main virtual interface of the group will be designated with (r). If Group or Teaming names are used, they will be listed next to the physical members of the group.\n";
       $output .= "    <ul>\n";
@@ -575,6 +576,8 @@
       $output .= "      <li><strong>Windows</strong> virtual interfaces.</li>\n";
       $output .= "    </ul></li>\n";
       $output .= "    <li><strong>Virtual</strong> - A Virtual interface will be identified with a (v) next to the Logical Interface name. Not all Virtual interfaces are part of a Redundancy group.</li>\n";
+      $output .= "    <li><strong>Management</strong> - A interface that is designated to pass management traffic will be identified with a (M). There should only be one interface identified as such.</li>\n";
+      $output .= "    <li><strong>Backups</strong> - A interface that is designated to pass backup traffic will be identified with a (B). If it's not designated, by default the (M) interface is assumed to pass backup traffic.</li>\n";
       $output .= "    <li><strong>Editing</strong> - Click on an interface to edit it.</li>\n";
       $output .= "  </ul></li>\n";
       $output .= "</ul>\n";
@@ -593,7 +596,7 @@
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       $output .=   "<th class=\"ui-state-default\">Del</th>\n";
-      $output .=   "<th class=\"ui-state-default\">Interface Name</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Hostname/FQDN</th>\n";
       $output .=   "<th class=\"ui-state-default\">Logical Interface</th>\n";
       if (return_Virtual($formVars['int_companyid']) == 0) {
         $output .=   "<th class=\"ui-state-default\">Physical Port</th>\n";
@@ -609,9 +612,10 @@
       $output .=   "<th class=\"ui-state-default\">Updated</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select int_id,int_server,int_domain,int_companyid,int_redundancy,int_face,int_addr,int_eth,int_mask,int_switch,int_vaddr,int_veth,int_vgate,";
-      $q_string .= "int_redundancy,int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,itp_description,int_gate,int_update,usr_name,";
-      $q_string .= "int_nagios,int_openview ";
+      $q_string  = "select int_id,int_server,int_domain,int_companyid,int_redundancy,int_management,";
+      $q_string .= "int_backup,int_face,int_addr,int_eth,int_mask,int_switch,int_vaddr,int_veth,int_vgate,";
+      $q_string .= "int_redundancy,int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,";
+      $q_string .= "itp_description,int_gate,int_update,usr_name,int_nagios,int_openview ";
       $q_string .= "from interface ";
       $q_string .= "left join inttype on inttype.itp_id = interface.int_type ";
       $q_string .= "left join users on users.usr_id = interface.int_user ";
@@ -630,6 +634,15 @@
           $servername = $a_interface['int_server'];
           if ($a_interface['int_domain'] != '') {
             $servername .= "." . $a_interface['int_domain'];
+          }
+          $actualhost = gethostbyaddr($a_interface['int_addr']);
+          if ($actualhost == $a_interface['int_addr'] || $actualhost != $servername) {
+            $default    = " class=\"ui-state-error\"";
+            $defaultdel = " class=\"ui-state-error delete\"";
+            $actualhost = " (" . $actualhost . ")";
+          } else {
+# clear it once determined.
+            $actualhost = "";
           }
           if ($a_interface['int_eth'] == '00:00:00:00:00:00') {
             $showmac = '';
@@ -665,6 +678,14 @@
           if ($a_interface['int_virtual'] > 0) {
             $virtual = ' (v)';
           }
+          $management = '';
+          if ($a_interface['int_management'] > 0) {
+            $management = ' (M)';
+          }
+          $backups = '';
+          if ($a_interface['int_backup'] > 0) {
+            $backups = ' (B)';
+          }
           $title = " title=\"Updated by: " . $a_interface['usr_name'] . "\"";
 
           $monitor = '';
@@ -685,7 +706,7 @@
 
           $output .= "<tr>\n";
           $output .=   "<td"          . $defaultdel . ">" . $linkdel                                                                      . "</td>\n";
-          $output .= "  <td"          . $default    . ">" . $linkstart . $servername              . $redundancy   . $monitor . $linkend   . "</td>\n";
+          $output .= "  <td"          . $default    . ">" . $linkstart . $servername   . $actualhost . $redundancy   . $monitor . $management . $backups . $linkend   . "</td>\n";
           $output .= "  <td"          . $default    . ">" . $linkstart . $a_interface['int_face'] . $virtual                 . $linkend   . "</td>\n";
           if (return_Virtual($formVars['int_companyid']) == 0) {
             $output .= "  <td"        . $default    . ">" . $linkstart . $a_interface['int_sysport']                         . $linkend   . "</td>\n";
@@ -703,9 +724,11 @@
 
 
 # Display any redundancy memberships here
-          $q_string  = "select int_id,int_server,int_domain,int_companyid,int_face,int_addr,int_eth,int_mask,int_switch,int_groupname,int_vaddr,int_veth,int_vgate,";
-          $q_string .= "int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,itp_description,int_gate,int_update,usr_name,";
-          $q_string .= "int_nagios,int_openview ";
+          $q_string  = "select int_id,int_server,int_domain,int_companyid,int_face,int_addr,";
+          $q_string .= "int_eth,int_mask,int_switch,int_groupname,int_vaddr,int_veth,int_vgate,";
+          $q_string .= "int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,";
+          $q_string .= "itp_description,int_gate,int_update,usr_name,int_nagios,int_openview,";
+          $q_string .= "int_management,int_backup ";
           $q_string .= "from interface ";
           $q_string .= "left join inttype on inttype.itp_id = interface.int_type ";
           $q_string .= "left join users on users.usr_id = interface.int_user ";
@@ -724,6 +747,15 @@
               $servername = $a_redundancy['int_server'];
               if ($a_redundancy['int_domain'] != '') {
                 $servername .= "." . $a_redundancy['int_domain'];
+              }
+              $actualhost = gethostbyaddr($a_redundancy['int_addr']);
+              if ($actualhost == $a_redundancy['int_addr'] || $actualhost != $servername) {
+                $default    = " class=\"ui-state-error\"";
+                $defaultdel = " class=\"ui-state-error delete\"";
+                $actualhost = " (" . $actualhost . ")";
+              } else {
+# clear it once determined.
+                $actualhost = "";
               }
               if ($a_redundancy['int_eth'] == '00:00:00:00:00:00') {
                 $showmac = '';
@@ -755,6 +787,14 @@
               if ($a_redundancy['int_virtual'] > 0) {
                 $virtual = ' (v)';
               }
+              $management = '';
+              if ($a_redundancy['int_management'] > 0) {
+                $management = ' (M)';
+              }
+              $backups = '';
+              if ($a_redundancy['int_backup'] > 0) {
+                $backups = ' (B)';
+              }
               $group = '';
               if ($a_redundancy['int_groupname'] != '') {
                 $group = ' (' . $a_redundancy['int_groupname'] . ')';
@@ -779,7 +819,7 @@
 
               $output .= "<tr>\n";
               $output .=   "<td"          . $defaultdel . ">"   . $linkdel                                                                  . "</td>\n";
-              $output .= "  <td"          . $default    . ">> " . $linkstart . $servername                 . $group   . $monitor . $linkend            . "</td>\n";
+              $output .= "  <td"          . $default    . ">> " . $linkstart . $servername . $actualhost . $group . $monitor . $management . $backups . $linkend . "</td>\n";
               $output .= "  <td"          . $default    . ">"   . $linkstart . $a_redundancy['int_face']   . $virtual . $linkend            . "</td>\n";
               if (return_Virtual($formVars['int_companyid']) == 0) {
                 $output .= "  <td"        . $default    . ">"   . $linkstart . $a_redundancy['int_sysport']           . $linkend            . "</td>\n";
@@ -798,7 +838,7 @@
 # Display any secondary redundancy memberships here
               $q_string  = "select int_id,int_server,int_domain,int_companyid,int_face,int_addr,int_eth,int_mask,int_switch,int_groupname,int_vaddr,int_veth,int_vgate,";
               $q_string .= "int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,itp_description,int_gate,int_update,usr_name,";
-              $q_string .= "int_nagios,int_openview ";
+              $q_string .= "int_nagios,int_openview,int_management,int_backup ";
               $q_string .= "from interface ";
               $q_string .= "left join inttype on inttype.itp_id = interface.int_type ";
               $q_string .= "left join users on users.usr_id = interface.int_user ";
@@ -817,6 +857,15 @@
                   $servername = $a_secondary['int_server'];
                   if ($a_secondary['int_domain'] != '') {
                     $servername .= '.' . $a_secondary['int_domain'];
+                  }
+                  $actualhost = gethostbyaddr($a_secondary['int_addr']);
+                  if ($actualhost == $a_secondary['int_addr'] || $actualhost != $servername) {
+                    $default    = " class=\"ui-state-error\"";
+                    $defaultdel = " class=\"ui-state-error delete\"";
+                    $actualhost = " (" . $actualhost . ")";
+                  } else {
+# clear it once determined.
+                    $actualhost = "";
                   }
                   if ($a_secondary['int_eth'] == '00:00:00:00:00:00') {
                     $showmac = '';
@@ -848,6 +897,14 @@
                   if ($a_secondary['int_virtual'] > 0) {
                     $virtual = ' (v)';
                   }
+                  $management = '';
+                  if ($a_secondary['int_management'] > 0) {
+                    $management = ' (M)';
+                  }
+                  $backups = '';
+                  if ($a_secondary['int_backup'] > 0) {
+                    $backups = ' (B)';
+                  }
                   $group = '';
                   if ($a_secondary['int_groupname'] != '') {
                     $group = ' (' . $a_secondary['int_groupname'] . ')';
@@ -872,7 +929,7 @@
 
                   $output .= "<tr>\n";
                   $output .=   "<td"          . $defaultdel . ">"   . $linkdel                                                                  . "</td>\n";
-                  $output .= "  <td"          . $default    . ">>> " . $linkstart . $a_secondary['int_server'] . $group   . $monitor . $linkend            . "</td>\n";
+                  $output .= "  <td"          . $default    . ">>> " . $linkstart . $a_secondary['int_server'] . $actualhost . $group . $monitor . $management . $backups . $linkend . "</td>\n";
                   $output .= "  <td"          . $default    . ">"   . $linkstart . $a_secondary['int_face']   . $virtual . $linkend            . "</td>\n";
                   if (return_Virtual($formVars['int_companyid']) == 0) {
                     $output .= "  <td"        . $default    . ">"   . $linkstart . $a_secondary['int_sysport']           . $linkend            . "</td>\n";
