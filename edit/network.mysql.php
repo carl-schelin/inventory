@@ -28,6 +28,7 @@
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']                 = clean($_GET['id'],                 10);
         $formVars['int_server']         = clean($_GET['int_server'],         60);
+        $formVars['int_domain']         = clean($_GET['int_domain'],        100);
         $formVars['int_face']           = clean($_GET['int_face'],           20);
         $formVars['int_int_id']         = clean($_GET['int_int_id'],         10);
         $formVars['int_virtual']        = clean($_GET['int_virtual'],        10);
@@ -183,6 +184,7 @@
 
           $q_string = 
             "int_server     = \"" . $formVars['int_server']     . "\"," .
+            "int_domain     = \"" . $formVars['int_domain']     . "\"," .
             "int_companyid  =   " . $formVars['int_companyid']  . "," .
             "int_face       = \"" . $formVars['int_face']       . "\"," .
             "int_int_id     =   " . $formVars['int_int_id']     . "," .
@@ -257,7 +259,7 @@
         $formVars['copyfrom'] = clean($_GET['copyfrom'], 10);
 
         if ($formVars['copyfrom'] > 0) {
-          $q_string  = "select int_server,int_face,int_addr,int_ip6,int_eth,int_mask,int_gate,int_note,int_switch,";
+          $q_string  = "select int_server,int_domain,int_face,int_addr,int_ip6,int_eth,int_mask,int_gate,int_note,int_switch,";
           $q_string .= "int_port,int_sysport,int_primary,int_type,int_zone,int_vlan,int_media,int_speed,int_duplex,";
           $q_string .= "int_role,int_redundancy,int_groupname,int_virtual ";
           $q_string .= "from interface ";
@@ -267,7 +269,8 @@
 
             $q_string = 
               "int_server     = \"" . $a_interface['int_server']     . "\"," .
-              "int_companyid  =   " . $formVars['int_companyid']              . "," .
+              "int_domain     = \"" . $a_interface['int_domain']     . "\"," .
+              "int_companyid  =   " . $formVars['int_companyid']     . "," .
               "int_face       = \"" . $a_interface['int_face']       . "\"," .
               "int_addr       = \"" . $a_interface['int_addr']       . "\"," .
               "int_ip6        =   " . $a_interface['int_ip6']        . "," .
@@ -275,7 +278,7 @@
               "int_mask       = \"" . $a_interface['int_mask']       . "\"," .
               "int_gate       = \"" . $a_interface['int_gate']       . "\"," .
               "int_note       = \"" . $a_interface['int_note']       . "\"," .
-              "int_verified   =   " . "0"                         . "," . 
+              "int_verified   =   " . "0"                            . "," . 
               "int_switch     = \"" . $a_interface['int_switch']     . "\"," . 
               "int_port       = \"" . $a_interface['int_port']       . "\"," . 
               "int_sysport    = \"" . $a_interface['int_sysport']    . "\"," . 
