@@ -22,7 +22,7 @@
     if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inventory");
 
-      $q_string  = "select inv_name,inv_companyid,inv_fqdn,inv_function,inv_callpath,inv_document,inv_centrify,";
+      $q_string  = "select inv_name,inv_companyid,inv_function,inv_callpath,inv_document,inv_centrify,";
       $q_string .= "       inv_adzone,inv_domain,inv_ssh,inv_location,inv_rack,inv_row,inv_unit,inv_zone,inv_front,";
       $q_string .= "       inv_rear,inv_manager,inv_appadmin,inv_class,inv_response,inv_mstart,inv_mend,inv_ansible,";
       $q_string .= "       inv_mdow,inv_minterval,inv_product,inv_project,inv_department,inv_notes,inv_clusterid ";
@@ -64,7 +64,6 @@
         $invdepartment = return_Index($a_inventory['inv_department'], "select dep_id from department order by dep_unit,dep_name");
 
         print "document.edit.inv_name.value = '"     . mysql_real_escape_string($a_inventory['inv_name'])     . "';\n";
-        print "document.edit.inv_fqdn.value = '"     . mysql_real_escape_string($a_inventory['inv_fqdn'])     . "';\n";
         print "document.edit.inv_function.value = '" . mysql_real_escape_string($a_inventory['inv_function']) . "';\n";
         print "document.edit.inv_document.value = '" . mysql_real_escape_string($a_inventory['inv_document']) . "';\n";
         print "document.edit.inv_centrify.value = '" . mysql_real_escape_string($a_inventory['inv_centrify']) . "';\n";
