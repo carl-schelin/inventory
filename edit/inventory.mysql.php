@@ -28,7 +28,6 @@
       if ($formVars['inv_name'] != 'Blank' && ($formVars['update'] == 0 || $formVars['update'] == 1)) {
         $formVars["inv_companyid"]   = clean($_GET["inv_companyid"],   10);
         $formVars["inv_clusterid"]   = clean($_GET["inv_clusterid"],   10);
-        $formVars["inv_fqdn"]        = clean($_GET["inv_fqdn"],       100);
         $formVars["inv_function"]    = clean($_GET["inv_function"],   255);
         $formVars["inv_callpath"]    = clean($_GET["inv_callpath"],    10);
         $formVars["inv_status"]      = clean($_GET["inv_status"],      10);
@@ -92,7 +91,6 @@
             "inv_name        = \"" . $formVars['inv_name']        . "\"," .
             "inv_companyid   =   " . $formVars['inv_companyid']   . "," .
             "inv_clusterid   =   " . $formVars['inv_clusterid']   . "," .
-            "inv_fqdn        = \"" . $formVars['inv_fqdn']        . "\"," .
             "inv_function    = \"" . $formVars['inv_function']    . "\"," .
             "inv_callpath    =   " . $formVars['inv_callpath']    . "," .
             "inv_document    = \"" . $formVars['inv_document']    . "\"," .
@@ -472,7 +470,7 @@ print "alert('All Done!');\n";
         $formVars['copyfrom'] = clean($_GET['copyfrom'], 10);
 
         if ($formVars['copyfrom'] > 0) {
-          $q_string  = "select inv_fqdn,inv_function,inv_callpath,inv_document,inv_centrify,inv_adzone,inv_domain,inv_ssh,inv_location,";
+          $q_string  = "select inv_function,inv_callpath,inv_document,inv_centrify,inv_adzone,inv_domain,inv_ssh,inv_location,";
           $q_string .= "inv_rack,inv_row,inv_unit,inv_zone,inv_front,inv_rear,inv_manager,inv_appadmin,inv_class,inv_response,inv_mstart,";
           $q_string .= "inv_mend,inv_mdow,inv_minterval,inv_product,inv_project,inv_department,inv_ansible,inv_notes ";
           $q_string .= "from inventory ";
@@ -481,7 +479,6 @@ print "alert('All Done!');\n";
           while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
             $q_string =
-              "inv_fqdn           = \"" . $a_inventory['inv_fqdn']           . "\"," .
               "inv_function       = \"" . $a_inventory['inv_function']       . "\"," .
               "inv_callpath       = \"" . $a_inventory['inv_callpath']       . "\"," .
               "inv_document       = \"" . $a_inventory['inv_document']       . "\"," .
