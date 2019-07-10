@@ -337,7 +337,7 @@
         $output .= "  <th class=\"ui-state-default\" colspan=\"3\">Server Form</th>\n";
         $output .= "</tr>\n";
         $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\">Interface Name* <input type=\"text\" name=\"int_server\" size=\"20\"></td>\n";
+        $output .= "  <td class=\"ui-widget-content\">Hostname* <input type=\"text\" name=\"int_server\" size=\"20\"> Domain <input type=\"text\" name=\"int_domain\" size=\"30\"></td>\n";
         $output .= "  <td class=\"ui-widget-content\">Physical Port <input type=\"text\" name=\"int_sysport\" size=\"20\"></td>\n";
         $output .= "  <td class=\"ui-widget-content\">MAC* <input type=\"text\" name=\"int_eth\" value=\"00:00:00:00:00:00\" size=\"18\"></td>\n";
         $output .= "</tr>\n";
@@ -606,7 +606,7 @@
       $output .=   "<th class=\"ui-state-default\">Updated</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select int_id,int_server,int_companyid,int_redundancy,int_face,int_addr,int_eth,int_mask,int_switch,int_vaddr,int_veth,int_vgate,";
+      $q_string  = "select int_id,int_server,int_domain,int_companyid,int_redundancy,int_face,int_addr,int_eth,int_mask,int_switch,int_vaddr,int_veth,int_vgate,";
       $q_string .= "int_redundancy,int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,itp_description,int_gate,int_update,usr_name,";
       $q_string .= "int_nagios,int_openview ";
       $q_string .= "from interface ";
@@ -623,6 +623,10 @@
           if ($a_interface['int_primary'] == 1) {
             $default    = " class=\"ui-state-highlight\"";
             $defaultdel = " class=\"ui-state-highlight delete\"";
+          }
+          $servername = $a_interface['int_server'];
+          if ($a_interface['int_domain'] != '') {
+            $servername .= "." . $a_interface['int_domain'];
           }
           if ($a_interface['int_eth'] == '00:00:00:00:00:00') {
             $showmac = '';
@@ -678,7 +682,7 @@
 
           $output .= "<tr>\n";
           $output .=   "<td"          . $defaultdel . ">" . $linkdel                                                                      . "</td>\n";
-          $output .= "  <td"          . $default    . ">" . $linkstart . $a_interface['int_server'] . $redundancy            . $monitor . $linkend   . "</td>\n";
+          $output .= "  <td"          . $default    . ">" . $linkstart . $servername              . $redundancy   . $monitor . $linkend   . "</td>\n";
           $output .= "  <td"          . $default    . ">" . $linkstart . $a_interface['int_face'] . $virtual                 . $linkend   . "</td>\n";
           if (return_Virtual($formVars['int_companyid']) == 0) {
             $output .= "  <td"        . $default    . ">" . $linkstart . $a_interface['int_sysport']                         . $linkend   . "</td>\n";
@@ -696,7 +700,7 @@
 
 
 # Display any redundancy memberships here
-          $q_string  = "select int_id,int_server,int_companyid,int_face,int_addr,int_eth,int_mask,int_switch,int_groupname,int_vaddr,int_veth,int_vgate,";
+          $q_string  = "select int_id,int_server,int_domain,int_companyid,int_face,int_addr,int_eth,int_mask,int_switch,int_groupname,int_vaddr,int_veth,int_vgate,";
           $q_string .= "int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,itp_description,int_gate,int_update,usr_name,";
           $q_string .= "int_nagios,int_openview ";
           $q_string .= "from interface ";
@@ -713,6 +717,10 @@
               if ($a_redundancy['int_primary'] == 1) {
                 $default    = " class=\"ui-state-highlight\"";
                 $defaultdel = " class=\"ui-state-highlight delete\"";
+              }
+              $servername = $a_redundancy['int_server'];
+              if ($a_redundancy['int_domain'] != '') {
+                $servername .= "." . $a_redundancy['int_domain'];
               }
               if ($a_redundancy['int_eth'] == '00:00:00:00:00:00') {
                 $showmac = '';
@@ -768,7 +776,7 @@
 
               $output .= "<tr>\n";
               $output .=   "<td"          . $defaultdel . ">"   . $linkdel                                                                  . "</td>\n";
-              $output .= "  <td"          . $default    . ">> " . $linkstart . $a_redundancy['int_server'] . $group   . $monitor . $linkend            . "</td>\n";
+              $output .= "  <td"          . $default    . ">> " . $linkstart . $servername                 . $group   . $monitor . $linkend            . "</td>\n";
               $output .= "  <td"          . $default    . ">"   . $linkstart . $a_redundancy['int_face']   . $virtual . $linkend            . "</td>\n";
               if (return_Virtual($formVars['int_companyid']) == 0) {
                 $output .= "  <td"        . $default    . ">"   . $linkstart . $a_redundancy['int_sysport']           . $linkend            . "</td>\n";
@@ -785,7 +793,7 @@
               $output .= "</tr>\n";
 
 # Display any secondary redundancy memberships here
-              $q_string  = "select int_id,int_server,int_companyid,int_face,int_addr,int_eth,int_mask,int_switch,int_groupname,int_vaddr,int_veth,int_vgate,";
+              $q_string  = "select int_id,int_server,int_domain,int_companyid,int_face,int_addr,int_eth,int_mask,int_switch,int_groupname,int_vaddr,int_veth,int_vgate,";
               $q_string .= "int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,itp_description,int_gate,int_update,usr_name,";
               $q_string .= "int_nagios,int_openview ";
               $q_string .= "from interface ";
@@ -802,6 +810,10 @@
                   if ($a_secondary['int_primary'] == 1) {
                     $default    = " class=\"ui-state-highlight\"";
                     $defaultdel = " class=\"ui-state-highlight delete\"";
+                  }
+                  $servername = $a_secondary['int_server'];
+                  if ($a_secondary['int_domain'] != '') {
+                    $servername .= '.' . $a_secondary['int_domain'];
                   }
                   if ($a_secondary['int_eth'] == '00:00:00:00:00:00') {
                     $showmac = '';
