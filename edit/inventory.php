@@ -27,7 +27,7 @@
   }
 
   if (isset($formVars['server'])) {
-    $q_string  = "select inv_id,inv_name,inv_fqdn,inv_manager,inv_product,inv_project,inv_status,hw_active,hw_eol ";
+    $q_string  = "select inv_id,inv_name,inv_manager,inv_product,inv_project,inv_status,hw_active,hw_eol ";
     $q_string .= "from inventory ";
     $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
     $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
@@ -38,7 +38,6 @@
     if (mysql_num_rows($q_inventory) == 0) {
       $a_inventory['inv_id'] = $formVars['server'];
       $a_inventory['inv_name'] = 'Blank';
-      $a_inventory['inv_fqdn'] = '';
       $a_inventory['inv_manager'] = $_SESSION['group'];
       $a_inventory['inv_product'] = 0;
       $a_inventory['inv_project'] = 0;
@@ -49,7 +48,6 @@
     $formVars['server'] = 0;
     $a_inventory['inv_id'] = $formVars['server'];
     $a_inventory['inv_name'] = 'Blank';
-    $a_inventory['inv_fqdn'] = '';
     $a_inventory['inv_manager'] = $_SESSION['group'];
     $a_inventory['inv_product'] = 0;
     $a_inventory['inv_project'] = 0;
@@ -281,7 +279,6 @@ function attach_detail( p_script_url, update ) {
   am_url += "&inv_name="        + encode_URI(am_form.inv_name.value);
   am_url += "&inv_companyid="   + am_form.inv_companyid.value;
   am_url += "&inv_clusterid="   + am_form.inv_clusterid.value;
-  am_url += "&inv_fqdn="        + encode_URI(am_form.inv_fqdn.value);
   am_url += "&inv_function="    + encode_URI(am_form.inv_function.value);
   am_url += "&inv_callpath="    + am_form.inv_callpath.checked;
   am_url += "&inv_status="      + radio_Loop(am_form.inv_status, 3);
@@ -447,6 +444,7 @@ function attach_interface( p_script_url, update ) {
   ai_url += '&copyfrom=' + ai_form.int_copyfrom.value;
 
   ai_url += "&int_server="     + encode_URI(ai_form.int_server.value);
+  ai_url += "&int_domain="     + encode_URI(ai_form.int_domain.value);
   ai_url += "&int_companyid="  + <?php print $formVars['server']; ?>;
   ai_url += "&int_face="       + encode_URI(ai_form.int_face.value);
   ai_url += "&int_int_id="     + ai_form.int_int_id.value;
@@ -824,9 +822,8 @@ $(document).ready( function() {
   <th class="ui-state-default" colspan="8">Server Form</th>
 </tr>
 <tr>
-  <td class="ui-widget-content" colspan="2" id="edit_hn">Server Name <input type="text" name="inv_name" size="20" onkeyup="check_hostname();"></td>
-  <td class="ui-widget-content" colspan="2" id="edit_dn">Domain Name <input type="text" name="inv_fqdn" size="20"></td>
-  <td class="ui-widget-content" colspan="3">Description <input type="text" name="inv_function" size="40"></td>
+  <td class="ui-widget-content" id="edit_hn">Server Name <input type="text" name="inv_name" size="20" onkeyup="check_hostname();"></td>
+  <td class="ui-widget-content" colspan="5">Description <input type="text" name="inv_function" size="60"></td>
   <td class="ui-widget-content" ><label>911 Call Path? <input type="checkbox" name="inv_callpath"></label></td>
 </tr>
 <tr>
