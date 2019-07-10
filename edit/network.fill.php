@@ -27,7 +27,7 @@
       $q_string .= "int_duplex,int_role,int_redundancy,int_groupname,int_vlan,int_zone,int_openview,int_nagios,";
       $q_string .= "int_backup,int_management,int_xpoint,int_virtual,int_ypoint,int_zpoint,int_ping,int_ssh,";
       $q_string .= "int_http,int_ftp,int_smtp,int_snmp,int_load,int_uptime,int_cpu,int_swap,int_memory,";
-      $q_string .= "int_cfg2html,int_notify,int_hours ";
+      $q_string .= "int_cfg2html,int_notify,int_hours,int_domain ";
       $q_string .= "from interface ";
       $q_string .= "where int_id = " . $formVars['id'];
       $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
@@ -45,6 +45,7 @@
 
 
       print "document.edit.int_server.value = '"    . mysql_real_escape_string($a_interface['int_server'])    . "';\n";
+      print "document.edit.int_domain.value = '"    . mysql_real_escape_string($a_interface['int_domain'])    . "';\n";
       print "document.edit.int_face.value = '"      . mysql_real_escape_string($a_interface['int_face'])      . "';\n";
       print "document.edit.int_int_id.value = '"    . mysql_real_escape_string($a_interface['int_int_id'])    . "';\n";
       print "document.edit.int_addr.value = '"      . mysql_real_escape_string($a_interface['int_addr'])      . "';\n";
