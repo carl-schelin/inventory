@@ -402,7 +402,7 @@
     $output .= "  <th>Applications Managed By</th>\n";
     $output .= "</tr>\n";
 
-    $q_string  = "select inv_id,inv_name,inv_fqdn,inv_function,grp_name,inv_appadmin ";
+    $q_string  = "select inv_id,inv_name,inv_function,grp_name,inv_appadmin ";
     $q_string .= "from inventory ";
     $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
     $q_string .= "where inv_status = 0 ";
@@ -424,12 +424,6 @@
         $bgcolor = $color[1];
       } else {
         $bgcolor = $color[0];
-      }
-
-      if ($a_inventory['inv_fqdn'] != '') {
-        $invname = $a_inventory['inv_name'] . "." . $a_inventory['inv_fqdn'];
-      } else {
-        $invname = $a_inventory['inv_name'];
       }
 
       $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
@@ -573,7 +567,7 @@
     $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Inventory Management</th>\n";
     $output .= "</tr>\n";
 
-    $q_string  = "select inv_id,inv_name,inv_fqdn,inv_companyid,inv_function,inv_location,inv_product,inv_rack,";
+    $q_string  = "select inv_id,inv_name,inv_companyid,inv_function,inv_location,inv_product,inv_rack,";
     $q_string .= "inv_row,inv_unit,grp_name,inv_appadmin,inv_callpath,svc_acronym,inv_notes,inv_document ";
     $q_string .= "from inventory ";
     $q_string .= "left join service on service.svc_id = inventory.inv_class ";
@@ -585,12 +579,6 @@
     $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n\n");
     $a_inventory = mysql_fetch_array($q_inventory);
 
-    if ($a_inventory['inv_fqdn'] != '') {
-      $invname = $a_inventory['inv_name'] . "." . $a_inventory['inv_fqdn'];
-    } else {
-      $invname = $a_inventory['inv_name'];
-    }
-
     $q_string  = "select grp_name ";
     $q_string .= "from groups ";
     $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'];
@@ -601,7 +589,7 @@
     $a_groups = mysql_fetch_array($q_groups);
 
     $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
-    $output .= "  <td><strong>Server</strong>: " . $invname . "</td>\n";
+    $output .= "  <td><strong>Server</strong>: " . $a_inventory['inv_name'] . "</td>\n";
     $output .= "  <td><strong>Service Class</strong>: " . $a_inventory['svc_acronym'] . "</td>\n";
     $output .= "  <td><strong>Function</strong>: " . $a_inventory['inv_function'] . "</td>\n";
     $output .= "  <td><strong>Platform Managed by</strong>: " . $a_inventory['grp_name'] . "</td>\n";
@@ -1041,7 +1029,7 @@
       $output .= "</tr>\n";
     
       $q_string = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,"
-                .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name "
+                .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_domain "
                 . "from interface "
                 . "left join ip_zones on interface.int_zone = ip_zones.zone_id  "
                 . "left join inttype on interface.int_type = inttype.itp_id "
@@ -1051,6 +1039,11 @@
     
       while ( $a_interface = mysql_fetch_array($q_interface) ) {
     
+        if ($a_interface['int_domain'] == '') {
+          $domain = $a_interface['int_server'];
+        } else {
+          $domain = $a_interface['int_server'] . "." . $a_interface['int_domain'];
+        }
         $intnote = " title=\"" . $a_interface['int_note'] . "\"";
         if ($a_interface['int_verified'] == 1) {
           $bgcolor = $color[1];
@@ -1085,7 +1078,7 @@
         }
     
         $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
-        $output .= "<td" . $intnote . ">"              . $a_interface['int_server'] . $redundancy            . "</td>\n";
+        $output .= "<td" . $intnote . ">"              . $domain . $redundancy            . "</td>\n";
         $output .= "<td" . $intnote . ">"              . $a_interface['int_face'] . $virtual                 . "</td>\n";
         if (return_Virtual($a_inventory['inv_id']) == 0) {
           $output .= "<td" . $intnote . ">"            . $a_interface['int_sysport']                         . "</td>\n";
@@ -1103,7 +1096,7 @@
         $output .= "</tr>\n";
     
     
-        $q_string = "select int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,"
+        $q_string = "select int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,int_domain,"
                   .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_groupname "
                   . "from interface "
                   . "left join ip_zones on interface.int_zone = ip_zones.zone_id  "
@@ -1114,6 +1107,11 @@
     
         while ( $a_redundancy = mysql_fetch_array($q_redundancy) ) {
     
+          if ($a_redundancy['int_domain'] == '') {
+            $domain = $a_redundancy['int_server'];
+          } else {
+            $domain = $a_redundancy['int_server'] . "." . $a_redundancy['int_domain'];
+          }
           $intnote = " title=\"" . $a_redundancy['int_note'] . "\"";
           if ($a_redundancy['int_verified'] == 1) {
             $bgcolor = $color[1];
@@ -1148,7 +1146,7 @@
           }
     
           $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
-          $output .= "<td" . $intnote . ">> "            . $a_redundancy['int_server'] . $group                 . "</td>\n";
+          $output .= "<td" . $intnote . ">> "            . $domain . $group                 . "</td>\n";
           $output .= "<td" . $intnote . ">"              . $a_redundancy['int_face'] . $virtual                 . "</td>\n";
           if (return_Virtual($a_inventory['inv_id']) == 0) {
             $output .= "<td" . $intnote . ">"            . $a_redundancy['int_sysport']                         . "</td>\n";
@@ -1164,10 +1162,83 @@
           $output .= "<td" . $intnote . ">"              . $a_redundancy['itp_acronym']                         . "</td>\n";
           $output .= "<td" . $intnote . ">"              . $a_redundancy['int_update']                          . "</td>\n";
           $output .= "</tr>\n";
+
+          $q_string = "select int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,int_domain,"
+                    .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_groupname "
+                    . "from interface "
+                    . "left join ip_zones on interface.int_zone = ip_zones.zone_id  "
+                    . "left join inttype on interface.int_type = inttype.itp_id "
+                    . "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_redundancy['int_id'] . " and int_ip6 = 0 "
+                    . "order by int_face,int_addr";
+          $q_secondary = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    
+          while ( $a_secondary = mysql_fetch_array($q_secondary) ) {
+    
+            if ($a_secondary['int_domain'] == '') {
+              $domain = $a_secondary['int_server'];
+            } else {
+              $domain = $a_secondary['int_server'] . "." . $a_secondary['int_domain'];
+            }
+            $intnote = " title=\"" . $a_secondary['int_note'] . "\"";
+            if ($a_secondary['int_verified'] == 1) {
+              $bgcolor = $color[1];
+            } else {
+              $bgcolor = $color[0];
+            }
+            if ($a_secondary['int_eth'] == '00:00:00:00:00:00' ) {
+              $showmac = '';
+            } else {
+              $showmac = $a_secondary['int_eth'];
+            }
+            if ($a_secondary['int_addr'] == '' ) {
+              $showmask = '';
+            } else {
+              $showmask = '/' . $a_secondary['int_mask'];
+            }
+            $group = '';
+            if ($a_secondary['int_groupname'] != '') {
+              $group = ' (' . $a_secondary['int_groupname'] . ')';
+            }
+            $virtual = '';
+            if ($a_secondary['int_virtual'] == 1 ) {
+              $virtual = ' (v)';
+            }
+    
+            if ($a_secondary['int_type'] == 4 || $a_secondary['int_type'] == 6) {
+              $linkstart = "<a href=\"http://" . $a_secondary['int_addr'] . "\" target=\"_blank\">";
+              $linkend = "</a>";
+            } else {
+              $linkstart = "";
+              $linkend = "";
+            }
+    
+            $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
+            $output .= "<td" . $intnote . ">>> "            . $domain . $group                 . "</td>\n";
+            $output .= "<td" . $intnote . ">"              . $a_secondary['int_face'] . $virtual                 . "</td>\n";
+            if (return_Virtual($a_inventory['inv_id']) == 0) {
+              $output .= "<td" . $intnote . ">"            . $a_secondary['int_sysport']                         . "</td>\n";
+            }
+            $output .= "<td" . $intnote . ">"              . $showmac                                            . "</td>\n";
+            $output .= "<td" . $intnote . ">" . $linkstart . $a_secondary['int_addr']     . $showmask . $linkend . "</td>\n";
+            $output .= "<td" . $intnote . ">"              . $a_secondary['zone_name']                           . "</td>\n";
+            $output .= "<td" . $intnote . ">"              . $a_secondary['int_gate']                            . "</td>\n";
+            if (return_Virtual($a_inventory['inv_id']) == 0) {
+              $output .= "<td" . $intnote . ">"            . $a_secondary['int_switch']                          . "</td>\n";
+              $output .= "<td" . $intnote . ">"            . $a_secondary['int_port']                            . "</td>\n";
+            }
+            $output .= "<td" . $intnote . ">"              . $a_secondary['itp_acronym']                         . "</td>\n";
+            $output .= "<td" . $intnote . ">"              . $a_secondary['int_update']                          . "</td>\n";
+            $output .= "</tr>\n";
+          }
         }
       }
+
       $output .= "</table>\n";
     }
+
+
+
+
 
 # routing table
     if (substr($action, 0, 1) == 'r' || $action == "*" || substr($action, 0, 1) == 'a') {
