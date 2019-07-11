@@ -615,7 +615,7 @@
       $q_string  = "select int_id,int_server,int_domain,int_companyid,int_redundancy,int_management,";
       $q_string .= "int_backup,int_face,int_addr,int_eth,int_mask,int_switch,int_vaddr,int_veth,int_vgate,";
       $q_string .= "int_redundancy,int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,";
-      $q_string .= "itp_description,int_gate,int_update,usr_name,int_nagios,int_openview ";
+      $q_string .= "itp_description,int_gate,int_update,usr_name,int_nagios,int_openview,int_ip6 ";
       $q_string .= "from interface ";
       $q_string .= "left join inttype on inttype.itp_id = interface.int_type ";
       $q_string .= "left join users on users.usr_id = interface.int_user ";
@@ -637,15 +637,17 @@
           }
 # verify the interface has a valid IP first. No need to further check if not
           $actualhost = "";
-          if (filter_var($a_interface['int_addr'], FILTER_VALIDATE_IP)) {
-            $actualhost = gethostbyaddr($a_interface['int_addr']);
-            if ($actualhost == $a_interface['int_addr'] || $actualhost != $servername) {
-              $default    = " class=\"ui-state-error\"";
-              $defaultdel = " class=\"ui-state-error delete\"";
-              $actualhost = " (" . $actualhost . ")";
-            } else {
+	  if ($a_interface['int_ip6'] == 0) {
+            if (filter_var($a_interface['int_addr'], FILTER_VALIDATE_IP)) {
+              $actualhost = gethostbyaddr($a_interface['int_addr']);
+              if ($actualhost == $a_interface['int_addr'] || $actualhost != $servername) {
+                $default    = " class=\"ui-state-error\"";
+                $defaultdel = " class=\"ui-state-error delete\"";
+                $actualhost = " (" . $actualhost . ")";
+              } else {
 # clear it once determined.
-              $actualhost = "";
+                $actualhost = "";
+              }
             }
           }
           if ($a_interface['int_eth'] == '00:00:00:00:00:00') {
@@ -732,7 +734,7 @@
           $q_string .= "int_eth,int_mask,int_switch,int_groupname,int_vaddr,int_veth,int_vgate,";
           $q_string .= "int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,";
           $q_string .= "itp_description,int_gate,int_update,usr_name,int_nagios,int_openview,";
-          $q_string .= "int_management,int_backup ";
+          $q_string .= "int_management,int_backup,int_ip6 ";
           $q_string .= "from interface ";
           $q_string .= "left join inttype on inttype.itp_id = interface.int_type ";
           $q_string .= "left join users on users.usr_id = interface.int_user ";
@@ -754,15 +756,17 @@
               }
 # verify the interface has a valid IP first. No need to further check if not
               $actualhost = "";
-              if (filter_var($a_redundancy['int_addr'], FILTER_VALIDATE_IP)) {
-                $actualhost = gethostbyaddr($a_redundancy['int_addr']);
-                if ($actualhost == $a_redundancy['int_addr'] || $actualhost != $servername) {
-                  $default    = " class=\"ui-state-error\"";
-                  $defaultdel = " class=\"ui-state-error delete\"";
-                  $actualhost = " (" . $actualhost . ")";
-                } else {
+	      if ($a_redundancy['int_ip6'] == 0) {
+                if (filter_var($a_redundancy['int_addr'], FILTER_VALIDATE_IP)) {
+                  $actualhost = gethostbyaddr($a_redundancy['int_addr']);
+                  if ($actualhost == $a_redundancy['int_addr'] || $actualhost != $servername) {
+                    $default    = " class=\"ui-state-error\"";
+                    $defaultdel = " class=\"ui-state-error delete\"";
+                    $actualhost = " (" . $actualhost . ")";
+                  } else {
 # clear it once determined.
-                  $actualhost = "";
+                    $actualhost = "";
+                  }
                 }
               }
               if ($a_redundancy['int_eth'] == '00:00:00:00:00:00') {
@@ -846,7 +850,7 @@
 # Display any secondary redundancy memberships here
               $q_string  = "select int_id,int_server,int_domain,int_companyid,int_face,int_addr,int_eth,int_mask,int_switch,int_groupname,int_vaddr,int_veth,int_vgate,";
               $q_string .= "int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,itp_description,int_gate,int_update,usr_name,";
-              $q_string .= "int_nagios,int_openview,int_management,int_backup ";
+              $q_string .= "int_nagios,int_openview,int_management,int_backup,int_ip6 ";
               $q_string .= "from interface ";
               $q_string .= "left join inttype on inttype.itp_id = interface.int_type ";
               $q_string .= "left join users on users.usr_id = interface.int_user ";
@@ -868,15 +872,17 @@
                   }
 # verify the interface has a valid IP first. No need to further check if not
                   $actualhost = "";
-                  if (filter_var($a_secondary['int_addr'], FILTER_VALIDATE_IP)) {
-                    $actualhost = gethostbyaddr($a_secondary['int_addr']);
-                    if ($actualhost == $a_secondary['int_addr'] || $actualhost != $servername) {
-                      $default    = " class=\"ui-state-error\"";
-                      $defaultdel = " class=\"ui-state-error delete\"";
-                      $actualhost = " (" . $actualhost . ")";
-                    } else {
+	          if ($a_secondary['int_ip6'] == 0) {
+                    if (filter_var($a_secondary['int_addr'], FILTER_VALIDATE_IP)) {
+                      $actualhost = gethostbyaddr($a_secondary['int_addr']);
+                      if ($actualhost == $a_secondary['int_addr'] || $actualhost != $servername) {
+                        $default    = " class=\"ui-state-error\"";
+                        $defaultdel = " class=\"ui-state-error delete\"";
+                        $actualhost = " (" . $actualhost . ")";
+                      } else {
 # clear it once determined.
-                      $actualhost = "";
+                        $actualhost = "";
+                      }
                     }
                   }
                   if ($a_secondary['int_eth'] == '00:00:00:00:00:00') {
