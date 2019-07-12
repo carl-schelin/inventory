@@ -635,9 +635,10 @@
           if ($a_interface['int_domain'] != '') {
             $servername .= "." . $a_interface['int_domain'];
           }
-# verify the interface has a valid IP first. No need to further check if not
           $actualhost = "";
+          $actualip = "";
 	  if ($a_interface['int_ip6'] == 0) {
+# verify the interface has a valid IP first. No need to further check if not
             if (filter_var($a_interface['int_addr'], FILTER_VALIDATE_IP)) {
               $actualhost = gethostbyaddr($a_interface['int_addr']);
               if ($actualhost == $a_interface['int_addr'] || $actualhost != $servername) {
@@ -647,6 +648,18 @@
               } else {
 # clear it once determined.
                 $actualhost = "";
+# get the IP Address from the hostname but only if the hostname isn't an IP address and skip if the IP errors out; only show one error at a time.
+                if ($a_interface['int_addr'] != $servername) {
+                  $actualip = gethostbyname($servername);
+                  if ($actualip == $servername) {
+                    $default    = " class=\"ui-state-error\"";
+                    $defaultdel = " class=\"ui-state-error delete\"";
+                    $actualip = " (" . $actualip . ")";
+                  } else {
+# clear it once determined.
+                    $actualip = "";
+                  }
+                }
               }
             }
           }
@@ -712,7 +725,7 @@
 
           $output .= "<tr>\n";
           $output .=   "<td"          . $defaultdel . ">" . $linkdel                                                                      . "</td>\n";
-          $output .= "  <td"          . $default    . ">" . $linkstart . $servername   . $actualhost . $redundancy   . $monitor . $management . $backups . $linkend   . "</td>\n";
+          $output .= "  <td"          . $default    . ">" . $linkstart . $servername   . $actualhost . $actualip . $redundancy   . $monitor . $management . $backups . $linkend   . "</td>\n";
           $output .= "  <td"          . $default    . ">" . $linkstart . $a_interface['int_face'] . $virtual                 . $linkend   . "</td>\n";
           if (return_Virtual($formVars['int_companyid']) == 0) {
             $output .= "  <td"        . $default    . ">" . $linkstart . $a_interface['int_sysport']                         . $linkend   . "</td>\n";
