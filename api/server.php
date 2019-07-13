@@ -51,7 +51,6 @@
 
   class Server {
     public $inventory_name = '';
-    public $inventory_fqdn = '';
     public $inventory_uuid = '';
     public $inventory_sysadmins = '';
     public $inventory_appadmins = '';
@@ -97,6 +96,7 @@
 
   class IP_Address {
     public $interface_name = '';
+    public $interface_fqdn = '';
     public $interface_label = '';
     public $interface_address = '';
     public $interface_ethernet = '';
@@ -147,7 +147,7 @@
   }
 
 
-  $q_string  = "select inv_id,inv_name,inv_fqdn,inv_uuid,inv_satuuid,inv_class,inv_location,inv_function,";
+  $q_string  = "select inv_id,inv_name,inv_uuid,inv_satuuid,inv_class,inv_location,inv_function,";
   $q_string .= "inv_document,inv_power,inv_rack,inv_row,inv_unit,prod_name,prj_name,zone_name,grp_name,inv_appadmin ";
   $q_string .= "from inventory ";
   $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
@@ -160,12 +160,6 @@
   }
   $q_inventory = mysql_query($q_string) or die($q_string  . ": " . mysql_error());
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
-
-    if ($a_inventory['inv_fqdn'] == '') {
-      $fqdn = $a_inventory['inv_name'];
-    } else {
-      $fqdn = $a_inventory['inv_name'] . "." . $a_inventory['inv_fqdn'];
-    }
 
     if (!isset($a_inventory['prod_name'])) {
       $a_inventory['prod_name'] = 'Unknown';
@@ -185,7 +179,6 @@
 
     $servers[$a_inventory['inv_name']] = new Server();
     $servers[$a_inventory['inv_name']]->inventory_name           = $a_inventory['inv_name'];
-    $servers[$a_inventory['inv_name']]->inventory_fqdn           = $fqdn;
     $servers[$a_inventory['inv_name']]->inventory_sysadmins      = $a_inventory['grp_name'];
     $servers[$a_inventory['inv_name']]->inventory_appadmins      = $a_groups['grp_name'];
     $servers[$a_inventory['inv_name']]->inventory_uuid           = $a_inventory['inv_uuid'];
@@ -267,7 +260,7 @@
     
 
     $count = 0;
-    $q_string  = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_gate,int_vlan,itp_name,";
+    $q_string  = "select int_id,int_server,int_domain,int_face,int_addr,int_eth,int_mask,int_gate,int_vlan,itp_name,";
     $q_string .= "int_openview,int_nagios,int_ping,int_ssh,int_http,int_ftp,int_smtp,int_cfg2html,int_notify,int_hours,";
     $q_string .= "int_primary,int_switch,int_port,med_text,spd_text,dup_text,rol_text,";
     $q_string .= "int_redundancy,int_groupname,int_virtual,zone_name,zone_acronym,int_sysport ";
@@ -299,6 +292,11 @@
           $virtual = 'No';
         }
 
+        if ($a_interface['int_domain'] == '') {
+          $fqdn = $a_interface['int_server'];
+        } else {
+          $fqdn = $a_interface['int_server'] . "." . $a_interface['int_domain'];
+        }
         $q_string  = "select red_text ";
         $q_string .= "from int_redundancy ";
         $q_string .= "where red_id = " . $a_interface['int_redundancy'] . " ";
@@ -325,6 +323,7 @@
 
         $servers[$a_inventory['inv_name']]->inventory_network[$index] = new IP_Address();
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_name      = $a_interface['int_server'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_fqdn      = $fqdn;
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_label     = $a_interface['int_face'];
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_address   = $a_interface['int_addr'];
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_ethernet  = $a_interface['int_eth'];
@@ -360,7 +359,7 @@
 
 
         $intcount = 0;
-        $q_string  = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_gate,int_vlan,itp_name,";
+        $q_string  = "select int_id,int_server,int_domain,int_face,int_addr,int_eth,int_mask,int_gate,int_vlan,itp_name,";
         $q_string .= "int_openview,int_nagios,int_ping,int_ssh,int_http,int_ftp,int_smtp,int_cfg2html,int_notify,int_hours,";
         $q_string .= "int_primary,int_switch,int_port,med_text,spd_text,dup_text,rol_text,";
         $q_string .= "int_redundancy,int_groupname,int_virtual,zone_name,int_sysport ";
@@ -391,6 +390,12 @@
             $virtual = 'No';
           }
 
+          if ($a_internal['int_domain'] == '') {
+            $fqdn = $a_internal['int_server'];
+          } else {
+            $fqdn = $a_internal['int_server'] . "." . $a_internal['int_domain'];
+          }
+
           $q_string  = "select red_text ";
           $q_string .= "from int_redundancy ";
           $q_string .= "where red_id = " . $a_internal['int_redundancy'] . " ";
@@ -417,6 +422,7 @@
 
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex] = new IP_Address();
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_name      = $a_internal['int_server'];
+          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_fqdn      = $fqdn;
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_label     = $a_internal['int_face'];
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_address   = $a_internal['int_addr'];
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_ethernet  = $a_internal['int_eth'];
