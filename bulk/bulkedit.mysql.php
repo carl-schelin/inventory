@@ -69,7 +69,6 @@
       $details .= "<table id=\"details-table\" class=\"ui-styled-table\">\n";
       $details .= "<tr>\n";
       $details .= "  <th class=\"ui-state-default\">Server Name</th>\n";
-      $details .= "  <th class=\"ui-state-default\">Domain Name</th>\n";
       $details .= "  <th class=\"ui-state-default\">Function</th>\n";
       $details .= "  <th class=\"ui-state-default\">911 Callpath</th>\n";
       $details .= "  <th class=\"ui-state-default\">Documentation</th>\n";
@@ -84,7 +83,7 @@
       $details .= "  <th class=\"ui-state-default\">Project</th>\n";
       $details .= "</tr>\n";
 
-      $q_string  = "select inv_id,inv_name,inv_fqdn,inv_function,inv_callpath,inv_document,inv_location,inv_row,inv_rack,inv_unit,inv_manager,inv_appadmin,inv_class,inv_product,inv_project ";
+      $q_string  = "select inv_id,inv_name,inv_function,inv_callpath,inv_document,inv_location,inv_row,inv_rack,inv_unit,inv_manager,inv_appadmin,inv_class,inv_product,inv_project ";
       $q_string .= "from inventory ";
       $q_string .= "where ";
       if ($formVars['product'] > 0) {
@@ -105,19 +104,18 @@
         }
 
         $details .= "<tr>\n";
-        $details .= "<td class=\"ui-widget-content\"><u>"                                                                                                                  . $a_inventory['inv_name']     . "</u></td>\n";
-        $details .= "<td class=\"ui-widget-content\"><u>"                                                                                                                  . $a_inventory['inv_fqdn']     . "</u></td>\n";
-        $details .= "<td class=\"ui-widget-content\" id=\"psg" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"systems_Group('psg"        . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $a_inventory['inv_function'] . "</u></td>\n";
-        $details .= "<td class=\"ui-widget-content\" id=\"psa" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"platforms_Admin('psa"      . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $callpath      . "</u></td>\n";
-        $details .= "<td class=\"ui-widget-content\" id=\"pag" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"applications_Group('pag"   . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $a_inventory['inv_document']     . "</u></td>\n";
+        $details .= "<td class=\"ui-widget-content\"><u>"                                                                                                               . $a_inventory['inv_name']               . "</u></td>\n";
+        $details .= "<td class=\"ui-widget-content\" id=\"psg" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"systems_Group('psg"        . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $a_inventory['inv_function']           . "</u></td>\n";
+        $details .= "<td class=\"ui-widget-content\" id=\"psa" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"platforms_Admin('psa"      . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $callpath                              . "</u></td>\n";
+        $details .= "<td class=\"ui-widget-content\" id=\"pag" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"applications_Group('pag"   . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $a_inventory['inv_document']           . "</u></td>\n";
         $details .= "<td class=\"ui-widget-content\" id=\"paa" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"applications_Admin('paa"   . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $locname[$a_inventory['inv_location']] . "</u></td>\n";
-        $details .= "<td class=\"ui-widget-content\" id=\"pss" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"SAN_Admin('pss"            . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $a_inventory['inv_row']      . "</u></td>\n";
-        $details .= "<td class=\"ui-widget-content\" id=\"pna" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"network_Admin('pna"        . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $a_inventory['inv_rack']     . "</u></td>\n";
-        $details .= "<td class=\"ui-widget-content\" id=\"pva" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"virtualization_Admin('pva" . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $a_inventory['inv_unit']     . "</u></td>\n";
+        $details .= "<td class=\"ui-widget-content\" id=\"pss" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"SAN_Admin('pss"            . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $a_inventory['inv_row']                . "</u></td>\n";
+        $details .= "<td class=\"ui-widget-content\" id=\"pna" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"network_Admin('pna"        . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $a_inventory['inv_rack']               . "</u></td>\n";
+        $details .= "<td class=\"ui-widget-content\" id=\"pva" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"virtualization_Admin('pva" . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $a_inventory['inv_unit']               . "</u></td>\n";
         $details .= "<td class=\"ui-widget-content\" id=\"pma" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"monitoring_Admin('pma"     . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $grpname[$a_inventory['inv_manager']]  . "</u></td>\n";
         $details .= "<td class=\"ui-widget-content\" id=\"pba" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"backup_Admin('pba"         . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $grpname[$a_inventory['inv_appadmin']] . "</u></td>\n";
         $details .= "<td class=\"ui-widget-content\" id=\"pba" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"backup_Admin('pba"         . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $svcname[$a_inventory['inv_class']]    . "</u></td>\n";
-        $details .= "<td class=\"ui-widget-content\" id=\"pba" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"backup_Admin('pba"         . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $prodname[$a_inventory['inv_product']]  . "</u></td>\n";
+        $details .= "<td class=\"ui-widget-content\" id=\"pba" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"backup_Admin('pba"         . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $prodname[$a_inventory['inv_product']] . "</u></td>\n";
         $details .= "<td class=\"ui-widget-content\" id=\"pba" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"backup_Admin('pba"         . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $prjname[$a_inventory['inv_project']]  . "</u></td>\n";
         $details .= "</tr>\n";
 
