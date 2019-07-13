@@ -41,7 +41,6 @@
     public $inventory_domain = '';
     public $inventory_operating_system = '';
     public $inventory_patched = '';
-    public $inventory_fqdn = '';
     public $inventory_satellite_uuid = '';
   }
 
@@ -51,7 +50,7 @@
     public $interface_scanned = '';
   }
 
-  $q_string  = "select inv_id,inv_name,loc_instance,loc_west,inv_function,inv_domain,loc_environment,inv_kernel,inv_satuuid,inv_fqdn ";
+  $q_string  = "select inv_id,inv_name,loc_instance,loc_west,inv_function,inv_domain,loc_environment,inv_kernel,inv_satuuid ";
   $q_string .= "from inventory ";
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
   $q_string .= "where inv_status = 0 ";
@@ -86,7 +85,6 @@
     $servers[$a_inventory['inv_name']]->inventory_environment    = $environment;
     $servers[$a_inventory['inv_name']]->inventory_patched        = $a_inventory['inv_kernel'];
     $servers[$a_inventory['inv_name']]->inventory_satellite_uuid = $a_inventory['inv_satuuid'];
-    $servers[$a_inventory['inv_name']]->inventory_fqdn           = $a_inventory['inv_fqdn'];
 
     $q_string  = "select sw_software ";
     $q_string .= "from software ";
