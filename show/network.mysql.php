@@ -102,7 +102,7 @@
   $output .= "<th class=\"ui-state-default\">Updated</th>";
   $output .= "</tr>";
 
-  $q_string  = "select int_id,int_server,int_face,int_addr,int_vaddr,int_eth,int_veth,int_mask,int_verified,";
+  $q_string  = "select int_id,int_server,int_domain,int_face,int_addr,int_vaddr,int_eth,int_veth,int_mask,int_verified,";
   $q_string .= "int_sysport,int_redundancy,int_virtual,int_switch,int_port,int_primary,itp_acronym,int_gate,";
   $q_string .= "int_vgate,int_note,int_update,int_type,zone_name,int_nagios,int_openview ";
   $q_string .= "from interface ";
@@ -130,6 +130,10 @@
     $ethcheckmark = "";
     if ($a_interface['int_veth']) {
       $ethcheckmark = "&#x2713;";
+    }
+    $servername = $a_interface['int_server'];
+    if ($a_interface['int_domain'] != '') {
+      $servername = $a_interface['int_server'] . "." . $a_interface['int_domain'];
     }
     $pristart = " class=\"ui-widget-content\"";
     if ($a_interface['int_primary'] == 1) {
@@ -175,7 +179,7 @@
     }
 
     $output .= "<tr>";
-    $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['int_server'] . $redundancy . $monitor . "</td>";
+    $output .= "<td" . $pristart . $intnote . ">"              . $servername . $redundancy . $monitor . "</td>";
     $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['int_face'] . $virtual                 . "</td>";
     if (return_Virtual($formVars['id']) == 0) {
       $output .= "<td" . $pristart . $intnote . ">"            . $a_interface['int_sysport']                         . "</td>";
@@ -194,7 +198,7 @@
 
 
 # redundant interfaces
-    $q_string  = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,";
+    $q_string  = "select int_id,int_server,int_domain,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,";
     $q_string .= "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_groupname,";
     $q_string .= "int_vaddr,int_veth,int_vgate,int_nagios,int_openview ";
     $q_string .= "from interface ";
@@ -222,6 +226,10 @@
       $gatecheckmark = "";
       if ($a_redundancy['int_vgate']) {
         $gatecheckmark = "&#x2713;";
+      }
+      $servername = $a_redundancy['int_server'];
+      if ($a_redundancy['int_domain'] != '') {
+        $servername = $a_redundancy['int_server'] . "." . $a_redundancy['int_domain'];
       }
       $pristart = " class=\"ui-widget-content\"";
       if ($a_redundancy['int_primary'] == 1) {
@@ -267,7 +275,7 @@
       }
 
       $output .= "<tr>";
-      $output .= "<td" . $pristart . $intnote . ">> "            . $a_redundancy['int_server'] . $group . $monitor      . "</td>";
+      $output .= "<td" . $pristart . $intnote . ">> "            . $servername . $group . $monitor      . "</td>";
       $output .= "<td" . $pristart . $intnote . ">"              . $a_redundancy['int_face'] . $virtual                 . "</td>";
       if (return_Virtual($formVars['id']) == 0) {
         $output .= "<td" . $pristart . $intnote . ">"            . $a_redundancy['int_sysport']                         . "</td>";
@@ -286,7 +294,7 @@
 
 
 # secondary redundant interfaces
-      $q_string  = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,";
+      $q_string  = "select int_id,int_server,int_domain,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,";
       $q_string .= "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_groupname,";
       $q_string .= "int_vaddr,int_veth,int_vgate,int_nagios,int_openview ";
       $q_string .= "from interface ";
@@ -314,6 +322,10 @@
         $gatecheckmark = "";
         if ($a_secondary['int_vgate']) {
           $gatecheckmark = "&#x2713;";
+        }
+        $servername = $a_secondary['int_server'];
+        if ($a_secondary['int_domain'] != '') {
+          $servername = $a_secondary['int_server'] . "." . $a_secondary['int_domain'];
         }
         $pristart = " class=\"ui-widget-content\"";
         if ($a_secondary['int_primary'] == 1) {
@@ -359,7 +371,7 @@
         }
 
         $output .= "<tr>";
-        $output .= "<td" . $pristart . $intnote . ">>> "           . $a_secondary['int_server'] . $group . $monitor      . "</td>";
+        $output .= "<td" . $pristart . $intnote . ">>> "           . $servername . $group . $monitor      . "</td>";
         $output .= "<td" . $pristart . $intnote . ">"              . $a_secondary['int_face'] . $virtual                 . "</td>";
         if (return_Virtual($formVars['id']) == 0) {
           $output .= "<td" . $pristart . $intnote . ">"            . $a_secondary['int_sysport']                         . "</td>";
@@ -406,7 +418,7 @@
   $output .= "<th class=\"ui-state-default\">Updated</th>";
   $output .= "</tr>";
 
-  $q_string = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,"
+  $q_string = "select int_id,int_server,int_domain,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,"
             .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_veth,int_vaddr,int_vgate "
             . "from interface "
             . "left join ip_zones on interface.int_zone = ip_zones.zone_id  "
