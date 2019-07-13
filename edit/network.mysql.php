@@ -648,17 +648,17 @@
               } else {
 # clear it once determined.
                 $actualhost = "";
-# get the IP Address from the hostname but only if the hostname isn't an IP address and skip if the IP errors out; only show one error at a time.
-                if ($a_interface['int_addr'] != $servername) {
-                  $actualip = gethostbyname($servername);
-                  if ($actualip == $servername) {
-                    $default    = " class=\"ui-state-error\"";
-                    $defaultdel = " class=\"ui-state-error delete\"";
-                    $actualip = " (" . $actualip . ")";
-                  } else {
+              }
+# get the IP Address from the hostname but only if the hostname isn't an IP address and skip if the IP errors out
+              if ($a_interface['int_addr'] != $servername) {
+                $actualip = gethostbyname($servername);
+                if ($actualip == $servername) {
+                  $default    = " class=\"ui-state-error\"";
+                  $defaultdel = " class=\"ui-state-error delete\"";
+                  $actualip = " (" . $actualip . ")";
+                } else {
 # clear it once determined.
-                    $actualip = "";
-                  }
+                  $actualip = "";
                 }
               }
             }
@@ -769,6 +769,7 @@
               }
 # verify the interface has a valid IP first. No need to further check if not
               $actualhost = "";
+              $actualip = "";
 	      if ($a_redundancy['int_ip6'] == 0) {
                 if (filter_var($a_redundancy['int_addr'], FILTER_VALIDATE_IP)) {
                   $actualhost = gethostbyaddr($a_redundancy['int_addr']);
@@ -779,6 +780,18 @@
                   } else {
 # clear it once determined.
                     $actualhost = "";
+                  }
+# get the IP Address from the hostname but only if the hostname isn't an IP address and skip if the IP errors out
+                  if ($a_interface['int_addr'] != $servername) {
+                    $actualip = gethostbyname($servername);
+                    if ($actualip == $servername) {
+                      $default    = " class=\"ui-state-error\"";
+                      $defaultdel = " class=\"ui-state-error delete\"";
+                      $actualip = " (" . $actualip . ")";
+                    } else {
+# clear it once determined.
+                      $actualip = "";
+                    }
                   }
                 }
               }
@@ -844,7 +857,7 @@
 
               $output .= "<tr>\n";
               $output .=   "<td"          . $defaultdel . ">"   . $linkdel                                                                  . "</td>\n";
-              $output .= "  <td"          . $default    . ">> " . $linkstart . $servername . $actualhost . $group . $monitor . $management . $backups . $linkend . "</td>\n";
+              $output .= "  <td"          . $default    . ">> " . $linkstart . $servername . $actualhost . $actualip . $group . $monitor . $management . $backups . $linkend . "</td>\n";
               $output .= "  <td"          . $default    . ">"   . $linkstart . $a_redundancy['int_face']   . $virtual . $linkend            . "</td>\n";
               if (return_Virtual($formVars['int_companyid']) == 0) {
                 $output .= "  <td"        . $default    . ">"   . $linkstart . $a_redundancy['int_sysport']           . $linkend            . "</td>\n";
@@ -885,6 +898,7 @@
                   }
 # verify the interface has a valid IP first. No need to further check if not
                   $actualhost = "";
+                  $actualip = "";
 	          if ($a_secondary['int_ip6'] == 0) {
                     if (filter_var($a_secondary['int_addr'], FILTER_VALIDATE_IP)) {
                       $actualhost = gethostbyaddr($a_secondary['int_addr']);
@@ -895,6 +909,18 @@
                       } else {
 # clear it once determined.
                         $actualhost = "";
+                      }
+# get the IP Address from the hostname but only if the hostname isn't an IP address and skip if the IP errors out
+                      if ($a_interface['int_addr'] != $servername) {
+                        $actualip = gethostbyname($servername);
+                        if ($actualip == $servername) {
+                          $default    = " class=\"ui-state-error\"";
+                          $defaultdel = " class=\"ui-state-error delete\"";
+                          $actualip = " (" . $actualip . ")";
+                        } else {
+# clear it once determined.
+                          $actualip = "";
+                        }
                       }
                     }
                   }
@@ -960,7 +986,7 @@
 
                   $output .= "<tr>\n";
                   $output .=   "<td"          . $defaultdel . ">"   . $linkdel                                                                  . "</td>\n";
-                  $output .= "  <td"          . $default    . ">>> " . $linkstart . $a_secondary['int_server'] . $actualhost . $group . $monitor . $management . $backups . $linkend . "</td>\n";
+                  $output .= "  <td"          . $default    . ">>> " . $linkstart . $a_secondary['int_server'] . $actualhost . $actualip . $group . $monitor . $management . $backups . $linkend . "</td>\n";
                   $output .= "  <td"          . $default    . ">"   . $linkstart . $a_secondary['int_face']   . $virtual . $linkend            . "</td>\n";
                   if (return_Virtual($formVars['int_companyid']) == 0) {
                     $output .= "  <td"        . $default    . ">"   . $linkstart . $a_secondary['int_sysport']           . $linkend            . "</td>\n";
