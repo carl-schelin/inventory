@@ -181,7 +181,7 @@
     print "</tr>\n";
   }
 
-  $q_string  = "select int_id,inv_name,inv_fqdn,inv_function,int_companyid,int_server,int_addr,inv_appadmin,grp_name,int_type,int_openview,loc_name,prod_name,sw_software ";
+  $q_string  = "select int_id,inv_name,inv_function,int_companyid,int_server,int_addr,inv_appadmin,grp_name,int_type,int_openview,loc_name,prod_name,sw_software ";
   $q_string .= "from interface ";
   $q_string .= "left join inventory on inventory.inv_id   = interface.int_companyid ";
   $q_string .= "left join groups    on groups.grp_id      = inventory.inv_manager ";
@@ -219,13 +219,8 @@
 
       if ($formVars['csv'] == 'true') {
         if ($a_interface['int_openview']) {
-          if ($a_interface['inv_fqdn'] != '') {
-            $server = $a_interface['inv_name'] . "." . $a_interface['inv_fqdn'];
-          } else {
-            $server = $a_interface['inv_name'];
-          }
           print "\"" . $a_interface['int_addr'] . "\",";
-          print "\"" . $server . "\",";
+          print "\"" . $a_interface['inv_name'] . "\",";
           print "\"" . $a_interface['inv_function'] . "\",";
           print "\"" . $a_interface['loc_name'] . "\",";
           print "\"" . $a_interface['grp_name'] . "\",";
