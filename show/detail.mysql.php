@@ -17,7 +17,7 @@
 
   $formVars['id'] = clean($_GET['id'], 10);
 
-  $q_string = "select inv_name,inv_companyid,inv_fqdn,inv_function,inv_class,inv_manager,inv_appadmin,"
+  $q_string = "select inv_name,inv_companyid,inv_function,inv_class,inv_manager,inv_appadmin,"
             . "grp_name,inv_callpath,inv_rack,inv_row,inv_unit,inv_front,inv_rear,loc_name,loc_addr1,"
             . "loc_addr2,loc_suite,ct_city,st_acronym,loc_zipcode,cn_acronym,loc_details,prod_name,prj_name "
             . "from inventory "
@@ -31,12 +31,6 @@
             . "where inv_id = " . $formVars['id'] . " ";
   $q_inventory = mysql_query($q_string) or die(mysql_error());
   $a_inventory = mysql_fetch_array($q_inventory);
-
-  if (strlen($a_inventory['inv_fqdn']) > 0) {
-    $fqdn = "." . $a_inventory['inv_fqdn'];
-  } else {
-    $fqdn = '';
-  }
 
   if ($a_inventory['inv_companyid'] > 0) {
     $q_string  = "select inv_name ";
@@ -127,7 +121,7 @@
   $output .= "<td class=\"" . $class_header . "\" style=\"text-align: center;\" colspan=\"8\"><strong>" . $e911_detail . "</strong></td>";
   $output .= "</tr>";
   $output .= "<tr>";
-  $output .= "<td class=\"" . $class_detail . "\" colspan=\"3\"><strong>Server</strong>: " . $a_inventory['inv_name'] . $fqdn . "</td>";
+  $output .= "<td class=\"" . $class_detail . "\" colspan=\"3\"><strong>Server</strong>: " . $a_inventory['inv_name'] . "</td>";
   $output .= "<td class=\"" . $class_detail . "\" colspan=\"3\"><strong>Function</strong>: " . $a_inventory['inv_function'] . "</td>";
   $output .= "<td class=\"" . $class_detail . "\"><strong>Product</strong>: " . $a_inventory['prod_name'] . "</td>";
   $output .= "<td class=\"" . $class_detail . "\"><strong>Project</strong>: " . $a_inventory['prj_name'] . "</td>";
