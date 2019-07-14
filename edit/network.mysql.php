@@ -792,12 +792,12 @@
                 $servername = $a_redundancy['int_server'] . "." . $a_redundancy['int_domain'];
                 $fqdn_flag = 1;
               }
-# verify the interface has a valid IP first. No need to further check if not
               $forward = "";
               $fwdtitle = "";
               $reverse = "";
               $revtitle = "";
 	      if ($a_redundancy['int_ip6'] == 0) {
+# verify the interface has a valid IP first. No need to further check if not
                 if (filter_var($a_redundancy['int_addr'], FILTER_VALIDATE_IP)) {
                   $actualhost = gethostbyaddr($a_redundancy['int_addr']);
                   if ($actualhost == $a_redundancy['int_addr'] || $actualhost != $servername) {
@@ -942,12 +942,12 @@
                     $servername = $a_secondary['int_server'] . '.' . $a_secondary['int_domain'];
                     $fqdn_flag = 1;
                   }
-# verify the interface has a valid IP first. No need to further check if not
                   $forward = "";
                   $fwdtitle = "";
                   $reverse = "";
                   $revtitle = "";
 	          if ($a_secondary['int_ip6'] == 0) {
+# verify the interface has a valid IP first. No need to further check if not
                     if (filter_var($a_secondary['int_addr'], FILTER_VALIDATE_IP)) {
                       $actualhost = gethostbyaddr($a_secondary['int_addr']);
                       if ($actualhost == $a_secondary['int_addr'] || $actualhost != $servername) {
