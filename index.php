@@ -834,7 +834,7 @@ clicking on 'pcp-pmda-apache-3.10.6-2.el7.x86_64' will restart the search and re
 <tr>
   <td class="ui-widget-content">Select Search Field: <select name="search_by">
 <option value="0">All Fields</option>
-<option checked="true" value="1">Server Names</option>
+<option selected="true" value="1">Server Names</option>
 <option value="2">IP Addresses</option>
 <option value="3">Software</option>
 <option value="4">Hardware</option>
