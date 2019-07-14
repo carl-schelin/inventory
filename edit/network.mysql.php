@@ -597,6 +597,8 @@
       $output .= "<tr>\n";
       $output .=   "<th class=\"ui-state-default\">Del</th>\n";
       $output .=   "<th class=\"ui-state-default\">Hostname/FQDN</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Fwd</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Rev</th>\n";
       $output .=   "<th class=\"ui-state-default\">Logical Interface</th>\n";
       if (return_Virtual($formVars['int_companyid']) == 0) {
         $output .=   "<th class=\"ui-state-default\">Physical Port</th>\n";
@@ -632,33 +634,52 @@
             $defaultdel = " class=\"ui-state-highlight delete\"";
           }
           $servername = $a_interface['int_server'];
+          $fqdn_flag = 0;
           if ($a_interface['int_domain'] != '') {
-            $servername .= "." . $a_interface['int_domain'];
+            $servername = $a_interface['int_server'] . "." . $a_interface['int_domain'];
+            $fqdn_flag = 1;
           }
-          $actualhost = "";
-          $actualip = "";
+          $forward = "";
+          $fwdtitle = "";
+          $reverse = "";
+          $revtitle = "";
 	  if ($a_interface['int_ip6'] == 0) {
 # verify the interface has a valid IP first. No need to further check if not
             if (filter_var($a_interface['int_addr'], FILTER_VALIDATE_IP)) {
               $actualhost = gethostbyaddr($a_interface['int_addr']);
               if ($actualhost == $a_interface['int_addr'] || $actualhost != $servername) {
-                $default    = " class=\"ui-state-error\"";
-                $defaultdel = " class=\"ui-state-error delete\"";
-                $actualhost = " (" . $actualhost . ")";
+                if ($actualhost == $a_interface['int_addr']) {
+                  $revtitle = "IP Lookup Failed: " . $actualhost . ".\nShould have returned: " . $a_interface['int_addr'] . ".";
+                }
+                if ($actualhost != $servername) {
+                  $revtitle = "Hostname Mismatch: " . $actualhost . ".\nShould have returned: " . $servername . ".";
+                }
+                $reverse = "";
               } else {
 # clear it once determined.
-                $actualhost = "";
+                $revtitle = "";
+                $reverse = "&#x2713;";
               }
 # get the IP Address from the hostname but only if the hostname isn't an IP address and skip if the IP errors out
               if ($a_interface['int_addr'] != $servername) {
-                $actualip = gethostbyname($servername);
-                if ($actualip == $servername) {
-                  $default    = " class=\"ui-state-error\"";
-                  $defaultdel = " class=\"ui-state-error delete\"";
-                  $actualip = " (" . $actualip . ")";
-                } else {
+                if ($fqdn_flag) {
+                  $actualip = gethostbyname($servername);
+                  if ($actualip == $servername || $actualip != $a_interface['int_addr']) {
+                    if ($actualip == $servername) {
+                      $fwdtitle = "Hostname Lookup Failed: " . $actualip . ".\nShould have returned: " . $servername . ".";
+                    }
+                    if ($actualip != $a_interface['int_addr']) {
+                      $fwdtitle = "IP Mismatch: " . $actualip . ".\nShould have returned: " . $a_interface['int_addr'] . ".";
+                    }
+                    $forward = "";
+                  } else {
 # clear it once determined.
-                  $actualip = "";
+                    $fwdtitle = "";
+                    $forward = "&#x2713;";
+                  }
+                } else {
+                  $fwdtitle = "Hostname is not a FQDN.";
+                  $forward = "";
                 }
               }
             }
@@ -725,7 +746,9 @@
 
           $output .= "<tr>\n";
           $output .=   "<td"          . $defaultdel . ">" . $linkdel                                                                      . "</td>\n";
-          $output .= "  <td"          . $default    . ">" . $linkstart . $servername   . $actualhost . $actualip . $redundancy   . $monitor . $management . $backups . $linkend   . "</td>\n";
+          $output .= "  <td"          . $default    . ">" . $linkstart . $servername   . $redundancy   . $monitor . $management . $backups . $linkend   . "</td>\n";
+          $output .= "  <td"          . $defaultdel . " title=\"" . $fwdtitle . "\">" . $linkstart . $forward                 . $linkend   . "</td>\n";
+          $output .= "  <td"          . $defaultdel . " title=\"" . $revtitle . "\">" . $linkstart . $reverse                . $linkend   . "</td>\n";
           $output .= "  <td"          . $default    . ">" . $linkstart . $a_interface['int_face'] . $virtual                 . $linkend   . "</td>\n";
           if (return_Virtual($formVars['int_companyid']) == 0) {
             $output .= "  <td"        . $default    . ">" . $linkstart . $a_interface['int_sysport']                         . $linkend   . "</td>\n";
@@ -764,33 +787,52 @@
                 $defaultdel = " class=\"ui-state-highlight delete\"";
               }
               $servername = $a_redundancy['int_server'];
+              $fqdn_flag = 0;
               if ($a_redundancy['int_domain'] != '') {
-                $servername .= "." . $a_redundancy['int_domain'];
+                $servername = $a_redundancy['int_server'] . "." . $a_redundancy['int_domain'];
+                $fqdn_flag = 1;
               }
 # verify the interface has a valid IP first. No need to further check if not
-              $actualhost = "";
-              $actualip = "";
+              $forward = "";
+              $fwdtitle = "";
+              $reverse = "";
+              $revtitle = "";
 	      if ($a_redundancy['int_ip6'] == 0) {
                 if (filter_var($a_redundancy['int_addr'], FILTER_VALIDATE_IP)) {
                   $actualhost = gethostbyaddr($a_redundancy['int_addr']);
                   if ($actualhost == $a_redundancy['int_addr'] || $actualhost != $servername) {
-                    $default    = " class=\"ui-state-error\"";
-                    $defaultdel = " class=\"ui-state-error delete\"";
-                    $actualhost = " (" . $actualhost . ")";
+                    if ($actualhost == $a_redundancy['int_addr']) {
+                      $revtitle = "IP Lookup Failed: " . $actualhost . ".\nShould have returned: " . $a_redundancy['int_addr'] . ".";
+                    }
+                    if ($actualhost != $servername) {
+                      $revtitle = "Hostname Mismatch: " . $actualhost . ".\nShould have returned: " . $servername . ".";
+                    }
+                    $reverse = "";
                   } else {
 # clear it once determined.
-                    $actualhost = "";
+                    $revtitle = "";
+                    $reverse = "&#x2713;";
                   }
 # get the IP Address from the hostname but only if the hostname isn't an IP address and skip if the IP errors out
-                  if ($a_interface['int_addr'] != $servername) {
-                    $actualip = gethostbyname($servername);
-                    if ($actualip == $servername) {
-                      $default    = " class=\"ui-state-error\"";
-                      $defaultdel = " class=\"ui-state-error delete\"";
-                      $actualip = " (" . $actualip . ")";
-                    } else {
+                  if ($a_redundancy['int_addr'] != $servername) {
+                    if ($fqdn_flag) {
+                      $actualip = gethostbyname($servername);
+                      if ($actualip == $servername) {
+                        if ($actualip == $servername) {
+                          $fwdtitle = "Hostname Lookup Failed: " . $actualip . ".\nShould have returned: " . $servername . ".";
+                        }
+                        if ($actualip != $a_redundancy['int_addr']) {
+                          $fwdtitle = "IP Mismatch: " . $actualip . ".\nShould have returned: " . $a_redundancy['int_addr'] . ".";
+                        }
+                        $forward = "";
+                      } else {
 # clear it once determined.
-                      $actualip = "";
+                        $fwdtitle = "";
+                        $forward = "&#x2713;";
+                      }
+                    } else {
+                      $fwdtitle = "Hostname is not a FQDN.";
+                      $forward = "";
                     }
                   }
                 }
@@ -857,7 +899,9 @@
 
               $output .= "<tr>\n";
               $output .=   "<td"          . $defaultdel . ">"   . $linkdel                                                                  . "</td>\n";
-              $output .= "  <td"          . $default    . ">> " . $linkstart . $servername . $actualhost . $actualip . $group . $monitor . $management . $backups . $linkend . "</td>\n";
+              $output .= "  <td"          . $default    . ">> " . $linkstart . $servername . $group . $monitor . $management . $backups . $linkend . "</td>\n";
+              $output .= "  <td"          . $defaultdel . " title=\"" . $fwdtitle . "\">" . $linkstart . $forward                 . $linkend   . "</td>\n";
+              $output .= "  <td"          . $defaultdel . " title=\"" . $revtitle . "\">" . $linkstart . $reverse                . $linkend   . "</td>\n";
               $output .= "  <td"          . $default    . ">"   . $linkstart . $a_redundancy['int_face']   . $virtual . $linkend            . "</td>\n";
               if (return_Virtual($formVars['int_companyid']) == 0) {
                 $output .= "  <td"        . $default    . ">"   . $linkstart . $a_redundancy['int_sysport']           . $linkend            . "</td>\n";
@@ -893,33 +937,52 @@
                     $defaultdel = " class=\"ui-state-highlight delete\"";
                   }
                   $servername = $a_secondary['int_server'];
+                  $fqdn_flag = 0;
                   if ($a_secondary['int_domain'] != '') {
-                    $servername .= '.' . $a_secondary['int_domain'];
+                    $servername = $a_secondary['int_server'] . '.' . $a_secondary['int_domain'];
+                    $fqdn_flag = 1;
                   }
 # verify the interface has a valid IP first. No need to further check if not
-                  $actualhost = "";
-                  $actualip = "";
+                  $forward = "";
+                  $fwdtitle = "";
+                  $reverse = "";
+                  $revtitle = "";
 	          if ($a_secondary['int_ip6'] == 0) {
                     if (filter_var($a_secondary['int_addr'], FILTER_VALIDATE_IP)) {
                       $actualhost = gethostbyaddr($a_secondary['int_addr']);
                       if ($actualhost == $a_secondary['int_addr'] || $actualhost != $servername) {
-                        $default    = " class=\"ui-state-error\"";
-                        $defaultdel = " class=\"ui-state-error delete\"";
-                        $actualhost = " (" . $actualhost . ")";
+                        if ($actualhost == $a_secondary['int_addr']) {
+                          $revtitle = "IP Lookup Failed: " . $actualhost . ".\nShould have returned: " . $a_secondary['int_addr'] . ".";
+                        }
+                        if ($actualhost != $servername) {
+                          $revtitle = "Hostname Mismatch: " . $actualhost . ".\nShould have returned: " . $servername . ".";
+                        }
+                        $reverse = "";
                       } else {
 # clear it once determined.
-                        $actualhost = "";
+                        $revtitle = "";
+                        $reverse = "&#x2713;";
                       }
 # get the IP Address from the hostname but only if the hostname isn't an IP address and skip if the IP errors out
-                      if ($a_interface['int_addr'] != $servername) {
-                        $actualip = gethostbyname($servername);
-                        if ($actualip == $servername) {
-                          $default    = " class=\"ui-state-error\"";
-                          $defaultdel = " class=\"ui-state-error delete\"";
-                          $actualip = " (" . $actualip . ")";
-                        } else {
+                      if ($a_secondary['int_addr'] != $servername) {
+                        if ($fqdn_flag) {
+                          $actualip = gethostbyname($servername);
+                          if ($actualip == $servername) {
+                            if ($actualip == $servername) {
+                              $fwdtitle = "Hostname Lookup Failed: " . $actualip . ".\nShould have returned: " . $servername . ".";
+                            }
+                            if ($actualip != $a_secondary['int_addr']) {
+                              $fwdtitle = "IP Mismatch: " . $actualip . ".\nShould have returned: " . $a_secondary['int_addr'] . ".";
+                            }
+                            $forward = "";
+                          } else {
 # clear it once determined.
-                          $actualip = "";
+                            $fwdtitle = "";
+                            $forward = "&#x2713;";
+                          }
+                        } else {
+                          $fwdtitle = "Hostname is not a FQDN.";
+                          $forward = "";
                         }
                       }
                     }
@@ -986,7 +1049,9 @@
 
                   $output .= "<tr>\n";
                   $output .=   "<td"          . $defaultdel . ">"   . $linkdel                                                                  . "</td>\n";
-                  $output .= "  <td"          . $default    . ">>> " . $linkstart . $a_secondary['int_server'] . $actualhost . $actualip . $group . $monitor . $management . $backups . $linkend . "</td>\n";
+                  $output .= "  <td"          . $default    . ">>> " . $linkstart . $a_secondary['int_server'] . $group . $monitor . $management . $backups . $linkend . "</td>\n";
+                  $output .= "  <td"          . $defaultdel . " title=\"" . $fwdtitle . "\">" . $linkstart . $forward                 . $linkend   . "</td>\n";
+                  $output .= "  <td"          . $defaultdel . " title=\"" . $revtitle . "\">" . $linkstart . $reverse                . $linkend   . "</td>\n";
                   $output .= "  <td"          . $default    . ">"   . $linkstart . $a_secondary['int_face']   . $virtual . $linkend            . "</td>\n";
                   if (return_Virtual($formVars['int_companyid']) == 0) {
                     $output .= "  <td"        . $default    . ">"   . $linkstart . $a_secondary['int_sysport']           . $linkend            . "</td>\n";
