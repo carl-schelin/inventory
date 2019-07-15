@@ -614,6 +614,7 @@
       $output .=   "<th class=\"ui-state-default\">Updated</th>\n";
       $output .= "</tr>\n";
 
+      $mgtcount = 0;
       $q_string  = "select int_id,int_server,int_domain,int_companyid,int_redundancy,int_management,";
       $q_string .= "int_backup,int_face,int_addr,int_eth,int_mask,int_switch,int_vaddr,int_veth,int_vgate,";
       $q_string .= "int_redundancy,int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,";
@@ -721,6 +722,7 @@
           $management = '';
           if ($a_interface['int_management'] > 0) {
             $management = ' (M)';
+            $mgtcount++;
           }
           $backups = '';
           if ($a_interface['int_backup'] > 0) {
@@ -870,6 +872,7 @@
               $management = '';
               if ($a_redundancy['int_management'] > 0) {
                 $management = ' (M)';
+                $mgtcount++;
               }
               $backups = '';
               if ($a_redundancy['int_backup'] > 0) {
@@ -1020,6 +1023,7 @@
                   $management = '';
                   if ($a_secondary['int_management'] > 0) {
                     $management = ' (M)';
+                    $mgtcount++;
                   }
                   $backups = '';
                   if ($a_secondary['int_backup'] > 0) {
@@ -1105,6 +1109,14 @@
         print "selbox.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_interface['int_face'] . $ip6) . "\"," . $a_interface['int_id'] . ");\n";
       }
 
+# Warn folks if there aren't any management devices
+      if ($mgtcount == 0 && $formVars['int_companyid'] != 0) {
+        print "alert(\"ERROR: No interfaces have been identified to be processing Management Traffic.\\n\\nSelect an interface and under the Monitoring tab, check the Management checkbox.\");\n";
+      }
+# Warn folks if a system has more than 1 interface marked for management traffic.
+      if ($mgtcount > 1 && $formVars['int_companyid'] != 0) {
+        print "alert(\"ERROR: " . $mgtcount . " management interfaces have been associated with this server.\\n\\nIdentify the device that will be permitting Management traffic and uncheck the Management checkbox for the rest of the interfaces.\");\n";
+      }
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
     }
