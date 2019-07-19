@@ -133,6 +133,17 @@
 
   $configuration .= "\n";
 
+
+# there are three bits to check for, for verification of management, backup, and monitoring traffic.
+# int_management
+# int_backup
+# int_openview
+# 
+# int_management is the default one for all management related traffic such as artifactory, etc.
+# If no int_backup set, then backup is management
+# if no openview set, then no monitoring check
+
+# ===What came before; leaving in just in case===
 # creating the management interface bit for the inventory.
 # need the actual hostname of the system so the script knows which lines to use
 # need the management ip and interface so we know where management traffic should traverse
@@ -143,32 +154,54 @@
 # loop through the live servers
 # give me the management ip and interface of the 'mgt' interface, or the 'app' interface if there is no 'mgt' interface.
 # for the hostname, give me the 'app' interface or if it doesn't exist, the 'mgt' interface
+# ===What came before; leaving in just in case===
 
 # just get a list of all the servers
   $q_string  = "select inv_id,inv_name,loc_west ";
   $q_string .= "from inventory ";
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
-  $q_string .= "where inv_status = 0 and inv_ssh = 1 ";
+  $q_string .= "where inv_status = 0 and inv_ssh = 1 and inv_manager = " . $GRP_Unix . " ";
   $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
 # default in case there are no management interfaces
     $hostname = $servername = $a_inventory['inv_name'];
-# management interface first
-    $q_string  = "select int_addr,int_face,zone_zone ";
+    $monitoringip = '';
+    $monitoringface = '';
+    $backupip = '';
+    $backupface = '';
+    $managementip = '';
+    $managementface = '';
+
+# interface information
+    $q_string  = "select int_addr,int_face,int_management,int_backup,int_openview,zone_zone ";
     $q_string .= "from interface ";
     $q_string .= "left join ip_zones on ip_zones.zone_id = interface.int_zone ";
-    $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_type = 1 or int_type = 2) ";
-    $q_string .= "order by int_type ";
-    $q_intapp = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_intapp) > 0) {
-      $a_intapp = mysql_fetch_array($q_intapp);
+    $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_management = 1 or int_backup = 1 or int_openview = 1) ";
+    $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    if (mysql_num_rows($q_interface) > 0) {
+      while ($a_interface = mysql_fetch_array($q_interface)) {
 
-      $managementip = $a_intapp['int_addr'];
-      $managementface = $a_intapp['int_face'];
-      $networkzone = $a_intapp['zone_zone'];
+        if ($a_interface['int_management']) {
+          $managementip = $a_interface['int_addr'];
+          $managementface = $a_interface['int_face'];
+        }
+
+        if ($a_interface['int_openview']) {
+          $monitoringip = $a_interface['int_addr'];
+          $monitoringface = $a_interface['int_face'];
+        }
+
+        if ($a_interface['int_backup']) {
+          $backupip = $a_interface['int_addr'];
+          $backupface = $a_interface['int_face'];
+        }
+
+        $networkzone = $a_interface['zone_zone'];
+      }
     }
 
+# need the actual hostname in order for the host to parse the file. 2 is Application interface, desc shows it first. If no App interface, then type 1 aka Management is selected.
     $q_string  = "select int_server ";
     $q_string .= "from interface ";
     $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_type = 1 or int_type = 2) ";
@@ -180,9 +213,21 @@
       $hostname = $a_intapp['int_server'];
     }
 
-    $configuration .= $hostname . ":IPAddressMonitored:" . $managementip . "\n";
-    $configuration .= $hostname . ":InterfaceMonitored:" . $managementface . "\n";
-    $configuration .= $hostname . ":MonitoringServer:lnmtcodcom1vip.scc911.com\n";
+    if ($monitoringip != '') {
+      $configuration .= $hostname . ":MonitoringIPAddress:" . $monitoringip . "\n";
+      $configuration .= $hostname . ":MonitoringInterface:" . $monitoringface . "\n";
+      $configuration .= $hostname . ":MonitoringServer:lnmtcodcom1vip.scc911.com\n";
+    }
+
+    if ($backupip != '') {
+      $configuration .= $hostname . ":BackupIPAddress:" . $backupip . "\n";
+      $configuration .= $hostname . ":BackupInterface:" . $backupface . "\n";
+    }
+
+    $configuration .= $hostname . ":ManagementIPAddress:" . $managementip . "\n";
+    $configuration .= $hostname . ":ManagementInterface:" . $managementface . "\n";
+
+# adding in network zone for the interface and location, not necessarily needed for the monitoring, etc interface descriptions.
     $configuration .= $hostname . ":NetworkZone:" . $networkzone . "\n";
     $configuration .= $hostname . ":Location:" . $a_inventory['loc_west'] . "\n";
   }
