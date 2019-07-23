@@ -535,6 +535,7 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
 <ul>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/inventory.php');">Server Listing</a> - Lists all in work and live devices based on the filtering criteria.</li>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Invroot; ?>/inventory.php');">Tabular Server Listing</a> - Lists all in work and live devices in a tabular format.</li>
+  <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/locations.php');">Server Location Listing</a> - Lists all in work and live devices and their locations based on the filtering criteria.</li>
   <li><a href="javascript:;" onClick="javascript:attach_product('<?php print $Reportroot; ?>/products.php');">Product and Service Map</a> - List of all installed products and services. Selecting a Product or Service from the filters will bring up that product or service page.</li>
   <li><a href="javascript:;" onClick="javascript:attach_interface('<?php print $Reportroot; ?>/interfaces.php');">Interface Listing</a>: <input type="checkbox" checked name="active"> Active Interfaces <input type="checkbox" name="ip6"> IP6 Interfaces <input type="checkbox" name="loopback"> Loopback Interfaces <input type="checkbox" checked name="virtual"> Virtual Interfaces</li>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/hardware.php');">Hardware Listing</a> - Shows all hardware for the group of devices.</li>
