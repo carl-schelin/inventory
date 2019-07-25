@@ -243,7 +243,7 @@ $q_string = "update software set sw_eol = \"2017-07-31\",sw_type = \"OS\" where 
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2018-04-10\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 7.4 (Maipo)\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2028-10-30\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 7.5 (Maipo)\" ";
+$q_string = "update software set sw_eol = \"2018-10-30\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 7.5 (Maipo)\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2024-06-30\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 7.6 (Maipo)\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
