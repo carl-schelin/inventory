@@ -64,7 +64,7 @@
           $formVars['if_svrmgt'] = 0;
         }
 
-        logaccess($_SESSION['uiuid'], $package, "Building the query.");
+        logaccess($_SESSION['uid'], $package, "Building the query.");
 
         $q_string =
           "if_rsdp      =   " . $formVars['rsdp']         . "," . 
