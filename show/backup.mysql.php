@@ -17,11 +17,12 @@
 
   $formVars['id'] = clean($_GET['id'], 10);
 
-  $q_string = "select inv_name,inv_manager "
-            . "from inventory "
-            . "where inv_id = " . $formVars['id'] . " ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_inventory = mysql_fetch_array($q_inventory);
+  $q_string  = "select int_server,inv_manager ";
+  $q_string .= "from interface ";
+  $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
+  $q_string .= "where inv_id = " . $formVars['id'] . " and int_management = 1 ";
+  $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $a_interface = mysql_fetch_array($q_interface);
 
   $retention[0] = "None";
   $retention[1] = "Less than 6 Months (Details Required)";
@@ -37,13 +38,13 @@
   $output .= "<tr>";
   $output .= "  <th class=\"ui-state-default\">";
   if (check_userlevel($AL_Edit)) {
-    if (check_grouplevel($a_inventory['inv_manager'])) {
+    if (check_grouplevel($a_interface['inv_manager'])) {
       $output .= "<a href=\"" . $Editroot . "/inventory.php?server=" . $formVars['id'] . "#backups\" target=\"_blank\"><img src=\"/inventory/imgs/pencil.gif\">";
     }
   }
   $output .= "Backup Information";
   if (check_userlevel($AL_Edit)) {
-    if (check_grouplevel($a_inventory['inv_manager'])) {
+    if (check_grouplevel($a_interface['inv_manager'])) {
       $output .= "</a>";
     }
   }
@@ -169,13 +170,13 @@ document.getElementById('backup_mysql').innerHTML = '<?php print mysql_real_esca
   $output .= "<tr>";
   $output .= "  <th class=\"ui-state-default\">";
   if (check_userlevel($AL_Edit)) {
-    if (check_grouplevel($a_inventory['inv_manager'])) {
+    if (check_grouplevel($a_interface['inv_manager'])) {
       $output .= "<a href=\"" . $Editroot . "/inventory.php?server=" . $formVars['id'] . "#backup\" target=\"_blank\"><img src=\"/inventory/imgs/pencil.gif\">";
     }
   }
   $output .= "Backup Log Information";
   if (check_userlevel($AL_Edit)) {
-    if (check_grouplevel($a_inventory['inv_manager'])) {
+    if (check_grouplevel($a_interface['inv_manager'])) {
       $output .= "</a>";
     }
   }
@@ -203,9 +204,9 @@ document.getElementById('backup_mysql').innerHTML = '<?php print mysql_real_esca
 
   $output .= "<div class=\"main-help ui-widget-content\">\n";
 
-  if (file_exists($Sitedir . "/servers/" . $a_inventory['inv_name'] . "/backups.output")) {
+  if (file_exists($Sitedir . "/servers/" . $a_interface['int_server'] . "/backups.output")) {
     $row = 1;
-    if (($handle = fopen($Sitedir . "/servers/" . $a_inventory['inv_name'] . "/backups.output", "r")) !== FALSE) {
+    if (($handle = fopen($Sitedir . "/servers/" . $a_interface['int_server'] . "/backups.output", "r")) !== FALSE) {
       $output .= "<pre>";
       while (($data = fgets($handle, 1000)) !== FALSE) {
 
@@ -217,7 +218,7 @@ document.getElementById('backup_mysql').innerHTML = '<?php print mysql_real_esca
       $output .= "</pre>";
     }
   } else {
-    $output .= "<p>FILE NOT FOUND (" . $Sitedir . "/servers/" . $a_inventory['inv_name'] . "/backups.output" . "): Unable to open backup output file.</p>\n";
+    $output .= "<p>FILE NOT FOUND (" . $Sitedir . "/servers/" . $a_interface['int_server'] . "/backups.output" . "): Unable to open backup output file.</p>\n";
   }
 
   $output .= "</div>";
