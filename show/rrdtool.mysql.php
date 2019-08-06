@@ -20,7 +20,7 @@
   $q_string  = "select int_server ";
   $q_string .= "from interface ";
   $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
-  $q_string .= "where inv_id = " . $formVars['id'] . " and int_manager = 1 ";
+  $q_string .= "where inv_id = " . $formVars['id'] . " and int_management = 1 ";
   $q_interface = mysql_query($q_string) or die(mysql_error());
   $a_interface = mysql_fetch_array($q_interface);
 
