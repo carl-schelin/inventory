@@ -17,26 +17,27 @@
 
   $formVars['id'] = clean($_GET['id'], 10);
 
-  $q_string  = "select inv_name ";
-  $q_string .= "from inventory ";
-  $q_string .= "where inv_id = " . $formVars['id'];
-  $q_inventory = mysql_query($q_string) or die(mysql_error());
-  $a_inventory = mysql_fetch_array($q_inventory);
+  $q_string  = "select int_server ";
+  $q_string .= "from interface ";
+  $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
+  $q_string .= "where inv_id = " . $formVars['id'] . " and int_manager = 1 ";
+  $q_interface = mysql_query($q_string) or die(mysql_error());
+  $a_interface = mysql_fetch_array($q_interface);
 
-  $load_day    = "/rrdtool/" . $a_inventory['inv_name'] . "/load-day-thumb.png";
-  $mem_day     = "/rrdtool/" . $a_inventory['inv_name'] . "/mem-day-thumb.png";
-  $cpu_day     = "/rrdtool/" . $a_inventory['inv_name'] . "/cpu-day-thumb.png";
-  $ramswap_day = "/rrdtool/" . $a_inventory['inv_name'] . "/ram-day-thumb.png";
+  $load_day    = "/rrdtool/" . $a_interface['int_server'] . "/load-day-thumb.png";
+  $mem_day     = "/rrdtool/" . $a_interface['int_server'] . "/mem-day-thumb.png";
+  $cpu_day     = "/rrdtool/" . $a_interface['int_server'] . "/cpu-day-thumb.png";
+  $ramswap_day = "/rrdtool/" . $a_interface['int_server'] . "/ram-day-thumb.png";
   $ramswap_title = "Memory Usage";
 
   $os = return_System($formVars['id']);
 
   if ($os == "Linux") {
-    $ramswap_day  = "/rrdtool/" . $a_inventory['inv_name'] . "/ram-day-thumb.png";
+    $ramswap_day  = "/rrdtool/" . $a_interface['int_server'] . "/ram-day-thumb.png";
     $ramswap_title = "Memory Usage";
   }
   if ($os == "SunOS") {
-    $ramswap_day  = "/rrdtool/" . $a_inventory['inv_name'] . "/swap-day-thumb.png";
+    $ramswap_day  = "/rrdtool/" . $a_interface['int_server'] . "/swap-day-thumb.png";
     $ramswap_title = "Swap Usage";
   }
 
@@ -115,7 +116,7 @@
     $output .= "</tr>";
 
     $output .= "</table>";
-    $output .= "<p><a href=\"" . $Siteurl . "/rrdtool/" . $a_inventory['inv_name'] . "\">Go to the full performance report for " . $a_inventory['inv_name'] . "</a></p>";
+    $output .= "<p><a href=\"" . $Siteurl . "/rrdtool/" . $a_interface['int_server'] . "\">Go to the full performance report for " . $a_interface['int_server'] . "</a></p>";
   } else {
     $output .= "<div id=\"performance-help\" style=\"display: none\">";
 
