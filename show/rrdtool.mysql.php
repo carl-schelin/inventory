@@ -116,7 +116,11 @@
     $output .= "</tr>";
 
     $output .= "</table>";
-    $output .= "<p><a href=\"" . $Siteurl . "/rrdtool/" . $a_interface['int_server'] . "\">Go to the full performance report for " . $a_interface['int_server'] . "</a></p>";
+    $output .= "<p><a href=\"" . $Siteurl . "/rrdtool/" . $a_interface['int_server'] . "\" target=\"_blank\">Go to the full performance report for " . $a_interface['int_server'] . "</a></p>";
+    $output .= "<p><strong>Disclaimer</strong>: This information is for the Unix team’s usage for ad hoc review and is not the Official location of performance metrics. The Monitoring team has the ";
+    $output .= "mandate to provide this information for Official requests.</p>\n";
+    $output .= "<p>You are of course welcome to review the pages. Please realize that if there are questions regarding these charts, the Unix team may not be immediately available ";
+    $output .= "to make corrections or research the reason for errors such as missing charts.</p>\n";
   } else {
     $output .= "<div id=\"performance-help\" style=\"display: none\">";
 
