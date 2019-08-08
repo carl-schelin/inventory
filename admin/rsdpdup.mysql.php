@@ -75,12 +75,12 @@
       $q_string  = "delete ";
       $q_string .= "from rsdp_applications ";
       $q_string .= "where app_rsdp = 0";
-      $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $result = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
       $q_string  = "select app_rsdp,count(app_rsdp) ";
       $q_string .= "from rsdp_applications ";
       $q_string .= "group by app_rsdp ";
-      $q_rsdp_applications = mysql_query($q_string) or die (mysql_error());
+      $q_rsdp_applications = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_rsdp_applications) > 0) {
         while ($a_rsdp_applications = mysql_fetch_array($q_rsdp_applications)) {
 
@@ -88,7 +88,7 @@
             $q_string  = "select app_id,app_rsdp,app_installed,app_configured,app_mib,app_process,app_logfile,app_inscheck,app_tested,app_integrated,app_failover,app_concheck,app_monitor,app_verified,app_moncheck ";
             $q_string .= "from rsdp_applications ";
             $q_string .= "where app_rsdp = " . $a_rsdp_applications['app_rsdp'] . " ";
-            $q_applications = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $q_applications = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
             while ($a_applications = mysql_fetch_array($q_applications)) {
 
               $linkdel = "<input type=\"button\" value=\"Remove\" onclick=\"delete_item('rsdpdup.del.php?id=" . $a_applications['app_id'] . "&select=app_id&table=rsdp_applications');\">";
@@ -157,12 +157,12 @@
       $q_string  = "delete ";
       $q_string .= "from rsdp_backups ";
       $q_string .= "where bu_rsdp = 0";
-      $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $result = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
       $q_string  = "select bu_rsdp,count(bu_rsdp) ";
       $q_string .= "from rsdp_backups ";
       $q_string .= "group by bu_rsdp ";
-      $q_rsdp_backups = mysql_query($q_string) or die (mysql_error());
+      $q_rsdp_backups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_rsdp_backups) > 0) {
         while ($a_rsdp_backups = mysql_fetch_array($q_rsdp_backups)) {
 
@@ -170,7 +170,7 @@
             $q_string  = "select bu_id, bu_rsdp, bu_start, bu_include, bu_retention, bu_sunday, bu_monday, bu_tuesday, bu_wednesday, bu_thursday, bu_friday, bu_saturday, bu_suntime, bu_montime, bu_tuetime, bu_wedtime, bu_thutime, bu_fritime, bu_sattime ";
             $q_string .= "from rsdp_backups ";
             $q_string .= "where bu_rsdp = " . $a_rsdp_backups['bu_rsdp'] . " ";
-            $q_backups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $q_backups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
             while ($a_backups = mysql_fetch_array($q_backups)) {
 
               $linkdel = "<input type=\"button\" value=\"Remove\" onclick=\"delete_item('rsdpdup.del.php?id=" . $a_backups['bu_id'] . "&select=bu_id&table=rsdp_backups');\">";
@@ -233,12 +233,12 @@
       $q_string  = "delete ";
       $q_string .= "from rsdp_datacenter ";
       $q_string .= "where dc_rsdp = 0";
-      $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $result = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
       $q_string  = "select dc_rsdp,count(dc_rsdp) ";
       $q_string .= "from rsdp_datacenter ";
       $q_string .= "group by dc_rsdp ";
-      $q_rsdp_datacenter = mysql_query($q_string) or die (mysql_error());
+      $q_rsdp_datacenter = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_rsdp_datacenter) > 0) {
         while ($a_rsdp_datacenter = mysql_fetch_array($q_rsdp_datacenter)) {
 
@@ -246,7 +246,7 @@
             $q_string  = "select dc_id,dc_rsdp,dc_power,dc_cables,dc_infra,dc_received,dc_installed,dc_checklist,dc_path ";
             $q_string .= "from rsdp_datacenter ";
             $q_string .= "where dc_rsdp = " . $a_rsdp_datacenter['dc_rsdp'] . " ";
-            $q_datacenter = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $q_datacenter = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
             while ($a_datacenter = mysql_fetch_array($q_datacenter)) {
 
               $linkdel = "<input type=\"button\" value=\"Remove\" onclick=\"delete_item('rsdpdup.del.php?id=" . $a_datacenter['dc_id'] . "&select=dc_id&table=rsdp_datacenter');\">";
@@ -294,12 +294,12 @@
       $q_string  = "delete ";
       $q_string .= "from rsdp_designed ";
       $q_string .= "where san_rsdp = 0";
-      $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $result = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
       $q_string  = "select san_rsdp,count(san_rsdp) ";
       $q_string .= "from rsdp_designed ";
       $q_string .= "group by san_rsdp ";
-      $q_rsdp_designed = mysql_query($q_string) or die (mysql_error());
+      $q_rsdp_designed = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_rsdp_designed) > 0) {
         while ($a_rsdp_designed = mysql_fetch_array($q_rsdp_designed)) {
 
@@ -307,7 +307,7 @@
             $q_string  = "select san_id,san_rsdp,san_complete,san_checklist ";
             $q_string .= "from rsdp_designed ";
             $q_string .= "where san_rsdp = " . $a_rsdp_designed['san_rsdp'] . " ";
-            $q_designed = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $q_designed = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
             while ($a_designed = mysql_fetch_array($q_designed)) {
 
               $linkdel = "<input type=\"button\" value=\"Remove\" onclick=\"delete_item('rsdpdup.del.php?id=" . $a_designed['san_id'] . "&select=san_id&table=rsdp_designed');\">";
@@ -352,12 +352,12 @@
       $q_string  = "delete ";
       $q_string .= "from rsdp_infosec ";
       $q_string .= "where is_rsdp = 0";
-      $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $result = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
       $q_string  = "select is_rsdp,count(is_rsdp) ";
       $q_string .= "from rsdp_infosec ";
       $q_string .= "group by is_rsdp ";
-      $q_rsdp_infosec = mysql_query($q_string) or die (mysql_error());
+      $q_rsdp_infosec = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_rsdp_infosec) > 0) {
         while ($a_rsdp_infosec = mysql_fetch_array($q_rsdp_infosec)) {
 
@@ -365,7 +365,7 @@
             $q_string  = "select is_id,is_rsdp,is_checklist,is_ticket,is_scan,is_verified ";
             $q_string .= "from rsdp_infosec ";
             $q_string .= "where is_rsdp = " . $a_rsdp_infosec['is_rsdp'] . " ";
-            $q_infosec = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $q_infosec = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
             while ($a_infosec = mysql_fetch_array($q_infosec)) {
 
               $linkdel = "<input type=\"button\" value=\"Remove\" onclick=\"delete_item('rsdpdup.del.php?id=" . $a_infosec['is_id'] . "&select=is_id&table=rsdp_infosec');\">";
@@ -436,12 +436,12 @@
       $q_string  = "delete ";
       $q_string .= "from rsdp_infrastructure ";
       $q_string .= "where if_rsdp = 0";
-      $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $result = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
       $q_string  = "select if_rsdp,count(if_rsdp) ";
       $q_string .= "from rsdp_infrastructure ";
       $q_string .= "group by if_rsdp ";
-      $q_rsdp_infrastructure = mysql_query($q_string) or die (mysql_error());
+      $q_rsdp_infrastructure = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_rsdp_infrastructure) > 0) {
         while ($a_rsdp_infrastructure = mysql_fetch_array($q_rsdp_infrastructure)) {
 
@@ -451,7 +451,7 @@
             $q_string .= "if_sanprov, if_vmprov, if_vmnote ";
             $q_string .= "from rsdp_infrastructure ";
             $q_string .= "where if_rsdp = " . $a_rsdp_infrastructure['if_rsdp'] . " ";
-            $q_infrastructure = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $q_infrastructure = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
             while ($a_infrastructure = mysql_fetch_array($q_infrastructure)) {
 
               $linkdel = "<input type=\"button\" value=\"Remove\" onclick=\"delete_item('rsdpdup.del.php?id=" . $a_infrastructure['if_id'] . "&select=if_id&table=rsdp_infrastructure');\">";
@@ -522,12 +522,12 @@
       $q_string  = "delete ";
       $q_string .= "from rsdp_osteam ";
       $q_string .= "where os_rsdp = 0";
-      $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $result = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
       $q_string  = "select os_rsdp,count(os_rsdp) ";
       $q_string .= "from rsdp_osteam ";
       $q_string .= "group by os_rsdp ";
-      $q_rsdp_osteam = mysql_query($q_string) or die (mysql_error());
+      $q_rsdp_osteam = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_rsdp_osteam) > 0) {
         while ($a_rsdp_osteam = mysql_fetch_array($q_rsdp_osteam)) {
 
@@ -535,7 +535,7 @@
             $q_string  = "select os_id,os_rsdp,os_sysname,os_fqdn,os_software,os_complete ";
             $q_string .= "from rsdp_osteam ";
             $q_string .= "where os_rsdp = " . $a_rsdp_osteam['os_rsdp'] . " ";
-            $q_osteam = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $q_osteam = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
             while ($a_osteam = mysql_fetch_array($q_osteam)) {
 
               $linkdel = "<input type=\"button\" value=\"Remove\" onclick=\"delete_item('rsdpdup.del.php?id=" . $a_osteam['os_id'] . "&select=os_id&table=rsdp_osteam');\">";
@@ -589,12 +589,12 @@
       $q_string  = "delete ";
       $q_string .= "from rsdp_platform ";
       $q_string .= "where pf_rsdp = 0";
-      $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $result = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
       $q_string  = "select pf_rsdp,count(pf_rsdp) ";
       $q_string .= "from rsdp_platform ";
       $q_string .= "group by pf_rsdp ";
-      $q_rsdp_platform = mysql_query($q_string) or die (mysql_error());
+      $q_rsdp_platform = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_rsdp_platform) > 0) {
         while ($a_rsdp_platform = mysql_fetch_array($q_rsdp_platform)) {
 
@@ -602,7 +602,7 @@
             $q_string  = "select pf_id, pf_rsdp, pf_model, pf_asset, pf_serial, pf_hba, pf_redundant, pf_row, pf_rack, pf_unit, pf_special, pf_circuita, pf_circuitb, pf_complete ";
             $q_string .= "from rsdp_platform ";
             $q_string .= "where pf_rsdp = " . $a_rsdp_platform['pf_rsdp'] . " ";
-            $q_platform = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $q_platform = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
             while ($a_platform = mysql_fetch_array($q_platform)) {
 
               $linkdel = "<input type=\"button\" value=\"Remove\" onclick=\"delete_item('rsdpdup.del.php?id=" . $a_platform['pf_id'] . "&select=pf_id&table=rsdp_platform');\">";
@@ -668,12 +668,12 @@
       $q_string  = "delete ";
       $q_string .= "from rsdp_tickets ";
       $q_string .= "where tkt_rsdp = 0";
-      $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $result = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
       $q_string  = "select tkt_rsdp,count(tkt_rsdp) ";
       $q_string .= "from rsdp_tickets ";
       $q_string .= "group by tkt_rsdp ";
-      $q_rsdp_tickets = mysql_query($q_string) or die (mysql_error());
+      $q_rsdp_tickets = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_rsdp_tickets) > 0) {
         while ($a_rsdp_tickets = mysql_fetch_array($q_rsdp_tickets)) {
 
@@ -681,7 +681,7 @@
             $q_string  = "select tkt_id, tkt_rsdp, tkt_build, tkt_san, tkt_network, tkt_datacenter, tkt_virtual, tkt_sysins, tkt_sysdns, tkt_storage, tkt_syscnf, tkt_backups, tkt_monitor, tkt_appins, tkt_appmon, tkt_appcnf, tkt_infosec, tkt_sysscan ";
             $q_string .= "from rsdp_tickets ";
             $q_string .= "where tkt_rsdp = " . $a_rsdp_tickets['tkt_rsdp'] . " ";
-            $q_tickets = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $q_tickets = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
             while ($a_tickets = mysql_fetch_array($q_tickets)) {
 
               $linkdel = "<input type=\"button\" value=\"Remove\" onclick=\"delete_item('rsdpdup.del.php?id=" . $a_tickets['tkt_id'] . "&select=tkt_id&table=rsdp_tickets');\">";
