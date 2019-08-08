@@ -25,7 +25,7 @@
       $q_string  = "select dev_type,dev_description,dev_infrastructure,dev_notes ";
       $q_string .= "from device ";
       $q_string .= "where dev_id = " . $formVars['id'];
-      $q_device = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_device = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_device = mysql_fetch_array($q_device);
       mysql_free_result($q_device);
 
