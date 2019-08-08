@@ -25,7 +25,7 @@
       $q_string  = "select patch_name,patch_user,patch_group,patch_date ";
       $q_string .= "from patching ";
       $q_string .= "where patch_id = " . $formVars['id'];
-      $q_patching = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_patching = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_patching = mysql_fetch_array($q_patching);
       mysql_free_result($q_patching);
 
