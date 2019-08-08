@@ -25,7 +25,7 @@
       $q_string  = "select role_name ";
       $q_string .= "from roles ";
       $q_string .= "where role_id = " . $formVars['id'];
-      $q_roles = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_roles = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_roles = mysql_fetch_array($q_roles);
       mysql_free_result($q_roles);
 
