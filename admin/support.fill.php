@@ -25,7 +25,7 @@
       $q_string  = "select sup_company,sup_phone,sup_email,sup_web,sup_contract,sup_wiki,sup_hwresponse,sup_swresponse ";
       $q_string .= "from support ";
       $q_string .= "where sup_id = " . $formVars['id'];
-      $q_support = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_support = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_support = mysql_fetch_array($q_support);
       mysql_free_result($q_support);
 
