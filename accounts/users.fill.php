@@ -28,7 +28,7 @@
       $q_string .= "usr_manager,usr_title ";
       $q_string .= "from users ";
       $q_string .= "where usr_id = " . $formVars['id'];
-      $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_users = mysql_fetch_array($q_users);
       mysql_free_result($q_users);
 
