@@ -33,7 +33,7 @@
       $q_string  = "delete ";
       $q_string .= "from " . $formVars['table'] . " ";
       $q_string .= "where " . $formVars['select'] . " = " . $formVars['id'];
-      $insert = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $insert = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
       print "alert('Record deleted.');\n";
 
