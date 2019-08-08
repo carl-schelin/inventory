@@ -297,7 +297,7 @@ $(document).ready( function() {
   $q_string .= "from levels ";
   $q_string .= "where lvl_disabled = 0 ";
   $q_string .= "order by lvl_id";
-  $q_levels = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_levels = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_levels = mysql_fetch_array($q_levels)) {
     print "<option value=\"" . $a_levels['lvl_id'] . "\">" . $a_levels['lvl_name'] . "</option>\n";
   }
@@ -308,7 +308,7 @@ $(document).ready( function() {
   $q_string  = "select theme_id,theme_title ";
   $q_string .= "from themes ";
   $q_string .= "order by theme_title";
-  $q_themes = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_themes = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_themes = mysql_fetch_array($q_themes)) {
     print "<option value=\"" . $a_themes['theme_id'] . "\">" . $a_themes['theme_title'] . "</option>\n";
   }
@@ -329,7 +329,7 @@ $(document).ready( function() {
   $q_string .= "from groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name";
-  $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_groups = mysql_fetch_array($q_groups)) {
     print "<option value=\"" . $a_groups['grp_id'] . "\">" . $a_groups['grp_name'] . "</option>\n";
   }
@@ -342,7 +342,7 @@ $(document).ready( function() {
   $q_string .= "from department ";
   $q_string .= "left join business_unit on business_unit.bus_unit = department.dep_unit ";
   $q_string .= "order by bus_name,dep_name";
-  $q_department = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_department = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_department = mysql_fetch_array($q_department)) {
     print "  <option value=\"" . $a_department['dep_id'] . "\">" . htmlspecialchars($a_department['bus_name']) . " " . htmlspecialchars($a_department['dep_name']) . " (" . htmlspecialchars($a_department['dep_unit']) . "-" . htmlspecialchars($a_department['dep_dept']) . ")</option>\n";
   }
@@ -356,7 +356,7 @@ $(document).ready( function() {
   $q_string  = "select tit_id,tit_name ";
   $q_string .= "from titles ";
   $q_string .= "order by tit_id ";
-  $q_titles = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_titles = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_titles = mysql_fetch_array($q_titles)) {
     print "<option value=\"" . $a_titles['tit_id'] . "\">" . $a_titles['tit_name'] . "</option>\n";
   }
@@ -369,7 +369,7 @@ $(document).ready( function() {
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first ";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_users = mysql_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
   }
