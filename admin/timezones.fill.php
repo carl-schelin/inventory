@@ -25,7 +25,7 @@
       $q_string  = "select zone_name,zone_description,zone_offset ";
       $q_string .= "from zones ";
       $q_string .= "where zone_id = " . $formVars['id'];
-      $q_zones = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_zones = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_zones = mysql_fetch_array($q_zones);
       mysql_free_result($q_zones);
 
