@@ -180,7 +180,7 @@ $(document).ready( function() {
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first ";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_users = mysql_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
   }
@@ -193,7 +193,7 @@ $(document).ready( function() {
   $q_string .= "from groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name ";
-  $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_groups = mysql_fetch_array($q_groups)) {
     print "<option value=\"" . $a_groups['grp_id'] . "\">" . $a_groups['grp_name'] . "</option>\n";
   }
