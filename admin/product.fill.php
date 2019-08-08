@@ -25,7 +25,7 @@
       $q_string  = "select prod_name,prod_code,prod_oldcode,prod_desc,prod_group,prod_type,prod_citype,prod_tier1,prod_tier2,prod_tier3,prod_remedy,prod_unit,prod_service ";
       $q_string .= "from products ";
       $q_string .= "where prod_id = " . $formVars['id'];
-      $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_products = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_products = mysql_fetch_array($q_products);
       mysql_free_result($q_products);
 
