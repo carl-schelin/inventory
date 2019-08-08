@@ -66,7 +66,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['rep_package']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -117,7 +117,7 @@
       $q_string .= "where rep_version = '7.2' ";
 #      $q_string .= "where rep_version = '7.2' and (rep_group = 'base' or rep_group = 'core' or rep_group = 'debugging' or rep_group = 'development' or rep_group = 'hardware-monitoring' or rep_group = 'large-systems' or rep_group = 'legacy-unix' or rep_group = 'network-tools' or rep_group = 'performance' or rep_group = 'perl-runtime' or rep_group = 'server-platform' or rep_group = 'server-platform-devel' or rep_group = 'system-admin-tools' or rep_group = 'system-management') ";
       $q_string .= "order by rep_name,rep_package ";
-      $q_repos = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_repos = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_repos) > 0) {
         while ($a_repos = mysql_fetch_array($q_repos)) {
 
