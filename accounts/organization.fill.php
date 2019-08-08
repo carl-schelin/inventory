@@ -25,7 +25,7 @@
       $q_string  = "select org_name ";
       $q_string .= "from organizations ";
       $q_string .= "where org_id = " . $formVars['id'];
-      $q_organizations = mysql_query($q_string) or die (mysql_error());
+      $q_organizations = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_organizations = mysql_fetch_array($q_organizations);
       mysql_free_result($q_organizations);
 
