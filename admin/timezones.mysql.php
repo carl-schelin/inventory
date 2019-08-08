@@ -50,7 +50,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['zone_name']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -97,7 +97,7 @@
       $q_string  = "select zone_id,zone_name,zone_description,zone_offset ";
       $q_string .= "from zones ";
       $q_string .= "order by zone_offset ";
-      $q_zones = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_zones = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_zones) > 0) {
         while ($a_zones = mysql_fetch_array($q_zones)) {
 
