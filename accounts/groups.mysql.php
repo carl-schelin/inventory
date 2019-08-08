@@ -70,7 +70,7 @@
           $q_string  = "select grp_manager ";
           $q_string .= "from groups ";
           $q_string .= "where grp_id = " . $formVars['id'] . " ";
-          $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
           if (mysql_num_rows($q_groups) > 0) {
             $a_groups = mysql_fetch_array($q_groups);
 # got it, now update everyone in the same group with the same old manager assuming the group already exists.
@@ -78,7 +78,7 @@
             $q_string .= "users ";
             $q_string .= "set usr_manager = " . $formVars['grp_manager'] . " ";
             $q_string .= "where usr_group = " . $formVars['id'] . " and usr_manager = " . $a_groups['grp_manager'] . " ";
-            $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $result = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
           }
 
 # all done. now update groups with the new information.
@@ -110,7 +110,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['grp_name']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
 
         } else {
           print "alert('You must input data before saving changes.');\n";
@@ -220,7 +220,7 @@
       $q_string .= "left join roles on roles.role_id = groups.grp_role ";
       $q_string .= "left join users on users.usr_id = groups.grp_manager ";
       $q_string .= "order by grp_name";
-      $q_groups = mysql_query($q_string) or die (mysql_error());
+      $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_groups) > 0) {
         while ($a_groups = mysql_fetch_array($q_groups)) {
 
