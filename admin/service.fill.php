@@ -25,7 +25,7 @@
       $q_string  = "select svc_name,svc_acronym,svc_availability,svc_downtime,svc_mtbf,svc_geographic,svc_mttr,svc_resource,svc_restore ";
       $q_string .= "from service ";
       $q_string .= "where svc_id = " . $formVars['id'];
-      $q_service = mysql_query($q_string) or die (mysql_error());
+      $q_service = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_service = mysql_fetch_array($q_service);
       mysql_free_result($q_service);
 
