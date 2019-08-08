@@ -44,7 +44,7 @@
           if (check_userlevel(1) == 0) {
             $q_string .= "where gpl_user = " . $_SESSION['uid'] . " and gpl_group = " . $formVars['gpl_group'] . " ";
           }
-          $q_grouplist = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_grouplist = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
           if (mysql_num_rows($q_grouplist) > 0) {
 
             $q_string =
@@ -63,7 +63,7 @@
 
             logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['fw_source']);
 
-            mysql_query($query) or die($query . ": " . mysql_error());
+            mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
 
             print "alert('" . $message . "');\n";
           } else {
@@ -126,7 +126,7 @@
       $q_string .= "left join titles on titles.tit_id = users.usr_title ";
       $q_string .= "where grp_disabled = 0 ";
       $q_string .= "order by grp_name,usr_last ";
-      $q_grouplist = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_grouplist = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_grouplist) > 0) {
         while ($a_grouplist = mysql_fetch_array($q_grouplist)) {
 
@@ -137,7 +137,7 @@
           $q_string  = "select gpl_id ";
           $q_string .= "from grouplist ";
           $q_string .= "where gpl_group = " . $a_grouplist['gpl_group'] . " and gpl_user = " . $_SESSION['uid'] . " "; 
-          $q_gltest = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_gltest = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
           if (mysql_num_rows($q_gltest) > 0 || check_userlevel(1)) {
 
             $linkstart = '';
@@ -162,7 +162,7 @@
               $q_string  = "select usr_last,usr_first ";
               $q_string .= "from users ";
               $q_string .= "where usr_id = " . $a_grouplist['usr_manager'] . " ";
-              $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+              $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
               $a_users = mysql_fetch_array($q_users);
             }
 
