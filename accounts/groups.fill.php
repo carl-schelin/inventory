@@ -26,7 +26,7 @@
       $q_string .= "grp_clserver,grp_report,grp_organization,grp_role,grp_clscript,grp_status,grp_server,grp_import ";
       $q_string .= "from groups ";
       $q_string .= "where grp_id = " . $formVars['id'];
-      $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_groups = mysql_fetch_array($q_groups);
       mysql_free_result($q_groups);
 
