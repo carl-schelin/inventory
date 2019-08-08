@@ -96,7 +96,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['usr_last']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
 
           print "alert('" . $message . "');\n";
         } else {
