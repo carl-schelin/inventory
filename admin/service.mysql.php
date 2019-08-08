@@ -73,7 +73,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['svc_name']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -127,7 +127,7 @@
       $q_string .= "svc_mtbf,svc_geographic,svc_mttr,svc_resource,svc_restore ";
       $q_string .= "from service ";
       $q_string .= "order by svc_id ";
-      $q_service = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_service = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_service) > 0) {
         while ($a_service = mysql_fetch_array($q_service)) {
 
