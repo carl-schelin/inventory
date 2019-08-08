@@ -51,7 +51,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['bus_name']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -102,7 +102,7 @@
       $q_string  = "select bus_id,bus_unit,bus_name ";
       $q_string .= "from business_unit ";
       $q_string .= "order by bus_name ";
-      $q_business_unit = mysql_query($q_string) or die (mysql_error());
+      $q_business_unit = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_business_unit) > 0) {
         while ($a_business_unit = mysql_fetch_array($q_business_unit)) {
 
