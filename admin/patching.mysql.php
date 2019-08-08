@@ -52,7 +52,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['dev_type']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -99,7 +99,7 @@
       $q_string .= "left join users on users.usr_id = patching.patch_user ";
       $q_string .= "left join groups on groups.grp_id = patching.patch_group ";
       $q_string .= "order by patch_name";
-      $q_patching = mysql_query($q_string) or die (mysql_error());
+      $q_patching = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_patching) > 0) {
         while ($a_patching = mysql_fetch_array($q_patching)) {
 
