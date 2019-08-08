@@ -111,7 +111,7 @@
             $q_string  = "select usr_group ";
             $q_string .= "from users ";
             $q_string .= "where usr_id = " . $formVars['id'] . " ";
-            $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
             $a_users = mysql_fetch_array($q_users);
 
 # then see if the user is in the grouplist (should be but let's be sure and get the id to be updated)
@@ -119,7 +119,7 @@
               $q_string  = "select gpl_id ";
               $q_string .= "from grouplist ";
               $q_string .= "where gpl_user = " . $formVars['id'] . " and gpl_group = " . $formVars['usr_group'] . " ";
-              $q_grouplist = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+              $q_grouplist = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
               if (mysql_num_rows($q_grouplist) == 1) {
 # and if > 0, they're there; change to read only...
                 $a_grouplist = mysql_fetch_array($q_grouplist);
@@ -129,14 +129,14 @@
                 $q_string .= "gpl_edit = 0 ";
                 $q_string .= "where gpl_id = " . $a_grouplist['gpl_id'] . " ";
 
-                mysql_query($q_string) or die($q_string . ": " . mysql_error());
+                mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
               }
             }
           }
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['usr_name']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
 
           print "alert('" . $message . "');\n";
 
@@ -145,12 +145,12 @@
             $q_string  = "delete ";
             $q_string .= "from grouplist ";
             $q_string .= "where gpl_user = " . $formVars['id'];
-            mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
           } else {
             $q_string  = "select gpl_id ";
             $q_string .= "from grouplist ";
             $q_string .= "where gpl_user = " . $formVars['id'] . " and gpl_group = " . $formVars['usr_group'] . " ";
-            $q_grouplist = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $q_grouplist = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
             if (mysql_num_rows($q_grouplist) == 0) {
 # if not in the grouplist, add them
 # removing them will be done elsewhere.
@@ -162,7 +162,7 @@
               $q_string .= "gpl_user  = " . $formVars['id'] . ",";
               $q_string .= "gpl_edit  = " . "1";
 
-              mysql_query($q_string) or die($q_string . ": " . mysql_error());
+              mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
             } else {
 # if they're already in the system, change user status to manage assets;
@@ -173,7 +173,7 @@
               $q_string .= "gpl_edit = 1 ";
               $q_string .= "where gpl_id = " . $a_grouplist['gpl_id'] . " ";
 
-              mysql_query($q_string) or die($q_string . ": " . mysql_error());
+              mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
             }
           }
 
@@ -248,7 +248,7 @@
       $q_string .= "left join themes on themes.theme_id = users.usr_theme ";
       $q_string .= "where usr_disabled = 0 and usr_group = 0 and usr_level > 1 ";
       $q_string .= "order by usr_last,usr_first";
-      $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_users) > 0) {
         while ($a_users = mysql_fetch_array($q_users)) {
 
@@ -364,7 +364,7 @@ function display_user( $p_title, $p_toggle, $p_query ) {
   $q_string .= "from groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name";
-  $q_groups = mysql_query($q_string);
+  $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));;
   while ($a_groups = mysql_fetch_array($q_groups)) {
 
     $group  = "<table class=\"ui-styled-table\">\n";
@@ -393,7 +393,7 @@ function display_user( $p_title, $p_toggle, $p_query ) {
     $q_string .= "left join themes on themes.theme_id = users.usr_theme ";
     $q_string .= "where usr_group = " . $a_groups['grp_id'] . " " . $p_query;
     $q_string .= "order by usr_last,usr_first";
-    $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
     if (mysql_num_rows($q_users) > 0) {
       while ($a_users = mysql_fetch_array($q_users)) {
 
