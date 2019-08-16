@@ -255,6 +255,16 @@ $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 # Red Hat 7 End of Product is 06/30/2024 so the last release is always set to this date.
 # All point releases are end of support as of the release date of the next point release.
 
+print "Updating Debia\n";
+
+$q_string = "update software set sw_eol = \"2014-05-31\",sw_type = \"OS\" where sw_software = \"Debian 6.0.3\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2012-02-06\",sw_type = \"OS\" where sw_software = \"lenny/sid\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+# There are a couple of Debian servers from the old Contact One days.
+
+
 print "Updating HP-UX\n";
 
 # HP-UX
