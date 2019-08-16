@@ -268,7 +268,7 @@
       $swstatus = " class=\"ui-state-highlight\"";
     }
 
-    if ($a_inventory['hw_purchased'] == '0000-00-00') {
+    if ($a_inventory['hw_purchased'] == '0000-00-00' && $a_inventory['mod_eol'] == '0000-00-00') {
       $hwstatus = " class=\"ui-widget-content\"";
       $newdate = "Purchase Date Unset";
     }
