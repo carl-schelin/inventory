@@ -69,6 +69,8 @@ would have been a better choice.</p>
   <li>Under the <strong>Changelog</strong> menu, select the <strong>Server/Applications Management</strong> option. On the second tab, you can add any server name or application that you want to enter changes for such as Sharepoint or Exchange.</li>
 </ul>
 
+<p>Note that the server listings are automatically generated at 4pm each day. You can regenerate your server listing manually in the <strong>Changelog</strong>, <strong>Server/Applications Management</strong> page by clicking on the <strong>Refresh Listing</strong> button.</p>
+
 
 <p><strong><u>Technical Bits</u></strong></p>
 
