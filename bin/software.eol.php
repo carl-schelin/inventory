@@ -249,10 +249,18 @@ $q_string = "update software set sw_eol = \"2018-04-10\",sw_type = \"OS\" where 
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2018-10-30\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 7.5 (Maipo)\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2024-06-30\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 7.6 (Maipo)\" ";
+$q_string = "update software set sw_eol = \"2019-08-06\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 7.6 (Maipo)\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2024-06-30\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 7.7 (Maipo)\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 
 # Red Hat 7 End of Product is 06/30/2024 so the last release is always set to this date.
+# All point releases are end of support as of the release date of the next point release.
+
+$q_string = "update software set sw_eol = \"2029-05-30\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 8.0 (Oopta)\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+# Red Hat 8 End of Product is 05/30/2029 so the last release is always set to this date.
 # All point releases are end of support as of the release date of the next point release.
 
 print "Updating Debia\n";
