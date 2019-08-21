@@ -323,7 +323,7 @@
     $swpercent = ($software / $total) * 100;
     $hwpercent = ($hardware / $totalhardware) * 100;
     $gtpercent = ($grandtotal / $total) * 100;
-    print "<p class=\"ui-widget-content\">Total Systems: " . $total . " Grand Total EOL: " . $grandtotal . "(" . number_format($gtpercent, 2, ".", ",") . "%) Total Operating System EOL: " . $software . "(" . number_format($swpercent, 2, ".", ",") . "%) Total Hardware EOL: " . $hardware . "(" . number_format($hwpercent, 2, ".", ",") . "%)</p>\n";
+    print "<p class=\"ui-widget-content\">Total Systems: " . number_format($total, 0, ".", ",") . " Grand Total EOL: " . number_format($grandtotal, 0, ".", ",") . " (" . number_format($gtpercent, 2, ".", ",") . "%) Total Operating System EOL: " . number_format($software, 0, ".", ",") . " (" . number_format($swpercent, 2, ".", ",") . "%) Total Hardware EOL: " . number_format($hardware, 0, ".", ",") . " (" . number_format($hwpercent, 2, ".", ",") . "%)</p>\n";
   }
 
 ?>
