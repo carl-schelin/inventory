@@ -124,6 +124,7 @@
 
   $total = 0;
   $grandtotal = 0;
+  $totalhardware = 0;
   $hardware = 0;
   $software = 0;
 
@@ -178,6 +179,8 @@
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
     $total++;
+# vm's are subtracted below
+    $totalhardware++;
 
     if ($a_inventory['prod_name'] == '') {
       $a_inventory['prod_name'] = 'Unassigned';
@@ -276,6 +279,7 @@
       $newdate = "Purchase Date Unset";
     }
     if ($a_inventory['mod_virtual'] == 1) {
+      $totalhardware--;
       $hardware--;
       $grandtotal--;
       $hwstatus = " class=\"ui-widget-content\"";
@@ -317,9 +321,9 @@
   if ($formVars['csv'] == 0) {
     print "</table>\n";
     $swpercent = ($software / $total) * 100;
-    $hwpercent = ($hardware / $total) * 100;
+    $hwpercent = ($hardware / $totalhardware) * 100;
     $gtpercent = ($grandtotal / $total) * 100;
-    print "<p class=\"ui-widget-content\">Total Systems: " . $total . " Grand Total EOL: " . $grandtotal . "(" . number_format($gtpercent, 2, ".", ",") . "%) Total Software EOL: " . $software . "(" . number_format($swpercent, 2, ".", ",") . "%) Total Hardware EOL: " . $hardware . "(" . number_format($hwpercent, 2, ".", ",") . "%)</p>\n";
+    print "<p class=\"ui-widget-content\">Total Systems: " . $total . " Grand Total EOL: " . $grandtotal . "(" . number_format($gtpercent, 2, ".", ",") . "%) Total Operating System EOL: " . $software . "(" . number_format($swpercent, 2, ".", ",") . "%) Total Hardware EOL: " . $hardware . "(" . number_format($hwpercent, 2, ".", ",") . "%)</p>\n";
   }
 
 ?>
