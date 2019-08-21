@@ -58,6 +58,18 @@ would have been a better choice.</p>
 <p>Changelog was created to easily document these little changes for the team. It's simple to shoot an email to your groups changelog account.</p>
 
 
+<p><strong><u>Server Listings</u></strong></p>
+
+<p>The list of servers where you can apply changes is generated automatically. There are four ways of having a server added to your changelog server listing.</p>
+
+<ul>
+  <li>You are the system custodian. This would be the group that manages the Operating System such as the Unix or Windows teams.</li>
+  <li>You are the application admin. Once this server has been identified as being managed by the Application group such as Web Apps or Mobility, the server is added to the list.</li>
+  <li>You have software on the server. Any group can edit a server's software if it's owned by that group. If you're not the Custodian or AppAdmin, if you add software as owend by your group, the server will be added to your server listing.</li>
+  <li>Under the <strong>Changelog</strong> menu, select the <strong>Server/Applications Management</strong> option. On the second tab, you can add any server name or application that you want to enter changes for such as Sharepoint or Exchange.</li>
+</ul>
+
+
 <p><strong><u>Technical Bits</u></strong></p>
 
 <p>Here is the process that occurs when you send a change:</p>
