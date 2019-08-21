@@ -123,6 +123,7 @@
   $where = $product . $group . $inwork . $location . $type . $and . " sw_type = 'OS' ";;
 
   $total = 0;
+  $grandtotal = 0;
   $hardware = 0;
   $software = 0;
 
@@ -250,12 +251,14 @@
     $hwstatus = " class=\"ui-widget-content\"";
     if ($current > $support) {
       $hardware++;
+      $grandtotal++;
       $hwstatus = " class=\"ui-state-error\"";
     }
     if ($a_software['sw_eol'] > date('Y-m-d')) {
       $swstatus = " class=\"ui-widget-content\"";
     } else {
       $software++;
+      $grandtotal++;
       $swstatus = " class=\"ui-state-error\"";
     }
 
@@ -274,6 +277,7 @@
     }
     if ($a_inventory['mod_virtual'] == 1) {
       $hardware--;
+      $grandtotal--;
       $hwstatus = " class=\"ui-widget-content\"";
       $newdate = '----------';
     }
@@ -312,7 +316,10 @@
 
   if ($formVars['csv'] == 0) {
     print "</table>\n";
-    print "<p class=\"ui-widget-content\">Total Systems: " . $total . " Total Software EOL: " . $software . " Total Hardware EOL: " . $hardware . "</p>\n";
+    $swpercent = ($software / $total) * 100;
+    $hwpercent = ($hardware / $total) * 100;
+    $gtpercent = ($grandtotal / $total) * 100;
+    print "<p class=\"ui-widget-content\">Total Systems: " . $total . " Grand Total EOL: " . $grandtotal . "(" . number_format($gtpercent, 2, ".", ",") . "%) Total Software EOL: " . $software . "(" . number_format($swpercent, 2, ".", ",") . "%) Total Hardware EOL: " . $hardware . "(" . number_format($hwpercent, 2, ".", ",") . "%)</p>\n";
   }
 
 ?>
