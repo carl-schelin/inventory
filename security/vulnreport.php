@@ -306,7 +306,7 @@
     if ($formVars['product'] > 0) {
       $q_string  = "select inv_id,inv_name ";
       $q_string .= "from inventory ";
-      $q_string .= "where inv_product = " . $formVars['product'] . " ";
+      $q_string .= "where inv_status = 0 and inv_product = " . $formVars['product'] . " ";
       if ($formVars['project'] > 0) {
         $q_string .= "and inv_project = " . $formVars['project'] . " ";
       }
