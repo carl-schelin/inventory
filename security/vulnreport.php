@@ -203,11 +203,18 @@
   print "<div class=\"main-help ui-widget-content\">\n\n";
 
   print "<p>This report uses the filter system to let you generate a specific report. By default you get a product listing for the selected group, ";
-  print "the number of servers located in that product, and then the number of each type of vulnerability associated with that product.</p>\n";
+  print "the number of servers located in that product, then the number of each type of vulnerability associated with that product, then in parenthesis ";
+  print "the historical number of found vulnerabities since 07-07-2015 when they were first added to the Inventory.</p>\n";
 
   print "<p>Clicking on a product will redisplay the report and list all the servers in that product with the breakdown of vulnerabilities.</p>\n";
 
   print "<p>Finally, clicking on a server in the product listing, will take you to that server's vulnerability tab so you see what the vulnerabilities are.</p>\n";
+
+  print "<p>Note that every vulnerabilty scan will return at least 1 Information result. If all of the vulnerability types are zero, then it's reasonable to assume ";
+  print "the server has not been scanned. With the historical information in parenthesis, the highlights will indicated if the product or server has been scanned in ";
+  print "the past. If the product or server has <span class=\"ui-state-highlight\">been highlighted</span>, then there have been past scans, just no recent ones. If ";
+  print "the product or server has <span class=\"ui-state-error\">been highlighted</span>, then none of the interfaces for the servers in the product or the listed ";
+  print "server has been scanned since scan results have been added to the Inventory.</p>\n";
 
   print "</div>\n\n";
 
@@ -263,7 +270,12 @@
     print "\"Information\"\n";
   }
 
-  $class = "ui-widget-content";
+  $totalcrit = 0;
+  $totalhigh = 0;
+  $totalmed = 0;
+  $totallow = 0;
+  $totalinfo = 0;
+  $totalservers = 0;
 
   $q_string  = "select prod_id,prod_name,COUNT(inv_id) ";
   $q_string .= "from products ";
@@ -289,6 +301,7 @@
     $medhist = 0;
     $lowhist = 0;
     $infohist = 0;
+    $totalservers += $a_products['COUNT(inv_id)'];
 
     if ($formVars['product'] > 0) {
       $q_string  = "select inv_id,inv_name ";
@@ -328,6 +341,7 @@
               $crithist++;
             } else {
               $critical++;
+              $totalcrit++;
             }
           }
           if ($a_interface['sev_name'] == 'High') {
@@ -335,6 +349,7 @@
               $highhist++;
             } else {
               $high++;
+              $totalhigh++;
             }
           }
           if ($a_interface['sev_name'] == 'Medium') {
@@ -342,6 +357,7 @@
               $medhist++;
             } else {
               $medium++;
+              $totalmed++;
             }
           }
           if ($a_interface['sev_name'] == 'Low') {
@@ -349,6 +365,7 @@
               $lowhist++;
             } else {
               $low++;
+              $totallow++;
             }
           }
           if ($a_interface['sev_name'] == 'Info') {
@@ -356,6 +373,7 @@
               $infohist++;
             } else {
               $information++;
+              $totalinfo++;
             }
           }
         }
@@ -363,14 +381,22 @@
         $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inventory['inv_id'] . "#vulnerabilities\" target=\"_blank\">";
         $linkend = "</a>";
 
+        $class = "ui-widget-content";
+        if (($critical + $high + $medium + $low + $information) == 0) {
+          $class = "ui-state-highlight";
+        }
+        if (($crithist + $highhist + $medhist + $lowhist + $infohist) == 0) {
+          $class = "ui-state-error";
+        }
+
         if ($formVars['csv'] == 'false') {
           print "<tr>\n";
           print "  <td class=\"" . $class . "\">"        . $linkstart . $a_inventory['inv_name'] . $linkend . "</td>\n";
-          print "  <td class=\"" . $class . " delete\">" . $critical                                        . "</td>\n";
-          print "  <td class=\"" . $class . " delete\">" . $high                                            . "</td>\n";
-          print "  <td class=\"" . $class . " delete\">" . $medium                                          . "</td>\n";
-          print "  <td class=\"" . $class . " delete\">" . $low                                             . "</td>\n";
-          print "  <td class=\"" . $class . " delete\">" . $information                                     . "</td>\n";
+          print "  <td class=\"" . $class . " delete\">" . $critical . " (" . $crithist . ")"               . "</td>\n";
+          print "  <td class=\"" . $class . " delete\">" . $high . " (" . $highhist . ")"                   . "</td>\n";
+          print "  <td class=\"" . $class . " delete\">" . $medium . " (" . $medhist . ")"                  . "</td>\n";
+          print "  <td class=\"" . $class . " delete\">" . $low . " (" . $lowhist . ")"                     . "</td>\n";
+          print "  <td class=\"" . $class . " delete\">" . $information . " (" . $infohist . ")"            . "</td>\n";
           print "</tr>\n";
         } else {
           print "\"" . $a_inventory['inv_name'] . "\",";
@@ -389,7 +415,10 @@
       $q_string .= "left join vulnerabilities on vulnerabilities.vuln_interface = interface.int_id ";
       $q_string .= "left join security        on security.sec_id                = vulnerabilities.vuln_securityid ";
       $q_string .= "left join severity        on severity.sev_id                = security.sec_severity ";
-      $q_string .= "where inventory.inv_product = " . $a_products['prod_id'] . " and inv_status = 0 ";
+      $q_string .= "where inv_product = " . $a_products['prod_id'] . " and inv_status = 0 ";
+      if ($formVars['group'] > 0) {
+        $q_string .= "and inv_manager = " . $formVars['group'] . " ";
+      }
       $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
       while ($a_interface = mysql_fetch_array($q_interface)) {
         if ($a_interface['sev_name'] == 'Critical') {
@@ -397,6 +426,7 @@
             $crithist++;
           } else {
             $critical++;
+            $totalcrit++;
           }
         }
         if ($a_interface['sev_name'] == 'High') {
@@ -404,6 +434,7 @@
             $highhist++;
           } else {
             $high++;
+            $totalhigh++;
           }
         }
         if ($a_interface['sev_name'] == 'Medium') {
@@ -411,6 +442,7 @@
             $medhist++;
           } else {
             $medium++;
+            $totalmed++;
           }
         }
         if ($a_interface['sev_name'] == 'Low') {
@@ -418,6 +450,7 @@
             $lowhist++;
           } else {
             $low++;
+            $totallow++;
           }
         }
         if ($a_interface['sev_name'] == 'Info') {
@@ -425,6 +458,7 @@
             $infohist++;
           } else {
             $information++;
+            $totalinfo++;
           }
         }
       }
@@ -432,15 +466,23 @@
       $linkstart = "<a href=\"" . $Securityroot . "/vulnreport.php" . $argument . $ampersand . "product=" . $a_products['prod_id'] . "\" target=\"_blank\">";
       $linkend = "</a>";
 
+      $class = "ui-widget-content";
+      if (($critical + $high + $medium + $low + $information) == 0) {
+        $class = "ui-state-highlight";
+      }
+      if (($crithist + $highhist + $medhist + $lowhist + $infohist) == 0) {
+        $class = "ui-state-error";
+      }
+
       if ($formVars['csv'] == 'false') {
         print "<tr>\n";
-        print "  <td class=\"" . $class . "\">"        . $linkstart . $a_products['prod_name'] . $linkend . "</td>\n";
-        print "  <td class=\"" . $class . " delete\">"              . $a_products['COUNT(inv_id)']        . "</td>\n";
-        print "  <td class=\"" . $class . " delete\">"              . $critical                           . "</td>\n";
-        print "  <td class=\"" . $class . " delete\">"              . $high                               . "</td>\n";
-        print "  <td class=\"" . $class . " delete\">"              . $medium                             . "</td>\n";
-        print "  <td class=\"" . $class . " delete\">"              . $low                                . "</td>\n";
-        print "  <td class=\"" . $class . " delete\">"              . $information                        . "</td>\n";
+        print "  <td class=\"" . $class . "\">"        . $linkstart . $a_products['prod_name'] . $linkend   . "</td>\n";
+        print "  <td class=\"" . $class . " delete\">"              . $a_products['COUNT(inv_id)']          . "</td>\n";
+        print "  <td class=\"" . $class . " delete\">"              . $critical . " (" . $crithist . ")"    . "</td>\n";
+        print "  <td class=\"" . $class . " delete\">"              . $high . " (" . $highhist . ")"        . "</td>\n";
+        print "  <td class=\"" . $class . " delete\">"              . $medium . " (" . $medhist . ")"       . "</td>\n";
+        print "  <td class=\"" . $class . " delete\">"              . $low . " (" . $lowhist . ")"          . "</td>\n";
+        print "  <td class=\"" . $class . " delete\">"              . $information . " (" . $infohist . ")" . "</td>\n";
         print "</tr>\n";
       } else {
         print "\"" . $a_products['prod_name']       . "\",";
@@ -454,7 +496,19 @@
     }
   }
 
+  $class = "ui-widget-content";
   if ($formVars['csv'] == 'false') {
+    print "<tr>\n";
+    print "  <td class=\"" . $class . "\">" . "Total" . "</td>\n";
+    print "  <td class=\"" . $class . " delete\">" . $totalcrit . "</td>\n";
+    if ($formVars['product'] == 0) {
+      print "  <td class=\"" . $class . " delete\">" . $totalservers . "</td>\n";
+    }
+    print "  <td class=\"" . $class . " delete\">" . $totalhigh . "</td>\n";
+    print "  <td class=\"" . $class . " delete\">" . $totalmed . "</td>\n";
+    print "  <td class=\"" . $class . " delete\">" . $totallow . "</td>\n";
+    print "  <td class=\"" . $class . " delete\">" . $totalinfo . "</td>\n";
+    print "</tr>\n";
     print "</table>\n";
   } else {
     print "</textarea>\n";
