@@ -263,7 +263,7 @@ $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 # Red Hat 8 End of Product is 05/30/2029 so the last release is always set to this date.
 # All point releases are end of support as of the release date of the next point release.
 
-print "Updating Debia\n";
+print "Updating Debian\n";
 
 $q_string = "update software set sw_eol = \"2014-05-31\",sw_type = \"OS\" where sw_software = \"Debian 6.0.3\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
@@ -343,6 +343,84 @@ $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2018-01-01\",sw_type = \"OS\" where sw_software = \"Solaris 10 8/07\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2018-01-01\",sw_type = \"OS\" where sw_software = \"Solaris 10 8/07 s10x_u4wos_12b X86\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+print "Updating Netbackup\n";
+
+# Netbackup 5
+$q_string = "update software set sw_eol = \"2008-03-31\" where sw_software = \"NetBackup-RedHat2.4 5.1MP1\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2008-03-31\" where sw_software = \"NetBackup-RedHat2.4 5.1MP3S0949\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2008-03-31\" where sw_software = \"NetBackup-RedHat2.4 5.1MP5\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2008-03-31\" where sw_software = \"NetBackup-Solaris7 5.1MP5\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2008-03-31\" where sw_software = \"NetBackup-Solaris9 5.1\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2008-03-31\" where sw_software = \"NetBackup-Solaris9 5.1MP5\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2008-03-31\" where sw_software = \"NetBackup-Solaris_x86_9 5.1MP5\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+# Netbackup 6
+$q_string = "update software set sw_eol = \"2012-08-01\" where sw_software = \"NetBackup-HP-UX11.23 6.5\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2012-08-01\" where sw_software = \"NetBackup-OSF1_V5 6.5.4\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2012-08-01\" where sw_software = \"NetBackup-OSF1_V5 6.5.4\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2012-08-01\" where sw_software = \"NetBackup-RedHat2.4 6.5.4\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2012-08-01\" where sw_software = \"NetBackup-RedHat2.6 6.5\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2012-08-01\" where sw_software = \"NetBackup-RedHat2.6 6.5.3\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2012-08-01\" where sw_software = \"NetBackup-RedHat2.6 6.5.3.1\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2012-08-01\" where sw_software = \"NetBackup-RedHat2.6 6.5.4\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2012-08-01\" where sw_software = \"NetBackup-Solaris10 6.5.4\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2012-08-01\" where sw_software = \"NetBackup-Solaris8 6.5.4\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+# Netbackup 7
+
+$q_string = "update software set sw_eol = \"2019-05-05\" where sw_software = \"NetBackup-RedHat2.6 7.1\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2019-05-05\" where sw_software = \"NetBackup-RedHat2.6 7.1.0.4\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2019-05-05\" where sw_software = \"NetBackup-RedHat2.6.18 7.5.0.5\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2019-05-05\" where sw_software = \"NetBackup-RedHat2.6.18 7.6.0.1\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2019-05-05\" where sw_software = \"NetBackup-RedHat2.6.18 7.6.0.2\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2019-05-05\" where sw_software = \"NetBackup-RedHat2.6.18 7.7.1\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2019-05-05\" where sw_software = \"NetBackup-RedHat2.6.18 7.7.3\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2019-05-05\" where sw_software = \"NetBackup-Solaris10 7.1.0.4\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2019-05-05\" where sw_software = \"NetBackup-Solaris10 7.7.3\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2019-05-05\" where sw_software = \"NetBackup-Solaris9 7.1.0.4\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2019-05-05\" where sw_software = \"NetBackup-Solaris_x86_10_64 7.1\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2019-05-05\" where sw_software = \"NetBackup-Solaris_x86_10_64 7.1.0.4\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2019-05-05\" where sw_software = \"NetBackup-Solaris_x86_10_64 7.6.0.2\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2019-05-05\" where sw_software = \"NetBackup-Solaris_x86_10_64 7.7.3\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+# Netbackup 8
+
+$q_string = "update software set sw_eol = \"2020-03-26\" where sw_software = \"NetBackup-RedHat2.6.18 8.0\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2020-03-26\" where sw_software = \"NetBackup-RedHat2.6.18 8.1\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 
 ?>
