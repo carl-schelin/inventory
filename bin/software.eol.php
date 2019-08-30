@@ -563,8 +563,6 @@ $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 
 print "Updating Apache\n";
 
-July 2017
-
 $q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Apache 1.3.22\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Apache 1.3.41\" ";
@@ -612,6 +610,18 @@ $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Server version: Apache/2.2.4 (Unix)\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Server version: Oracle HTTP Server Powered by Apache/1.3.19 (Unix)\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+print "Updating Data Palette\n";
+# was merged with some HP software which we don't use. Picking July 2016 as an arbitrary date.
+
+$q_string = "update software set sw_eol = \"2016-07-01\" where sw_software = \"Data Palette\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2016-07-01\" where sw_software = \"Data Palette Collector 6.0.14\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2016-07-01\" where sw_software = \"Data Palette Expert Engine 6.0.14\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2016-07-01\" where sw_software = \"Data Palette Web Server 6.0.14\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 
 ?>
