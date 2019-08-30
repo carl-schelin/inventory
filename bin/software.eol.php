@@ -496,7 +496,7 @@ $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.6.0_22\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 
-print "VMWare ESX\n";
+print "Updating VMWare ESX\n";
 
 $q_string = "update software set sw_eol = \"2018-09-22\" where sw_software = \"ESXi vSphere4.1\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
@@ -559,6 +559,59 @@ $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2020-03-12\" where sw_software = \"ESXi v6.0 u1a\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2020-03-12\" where sw_software = \"ESXi v6.0 u2\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+print "Updating Apache\n";
+
+July 2017
+
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Apache 1.3.22\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Apache 1.3.41\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Apache/2.0.52\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Apache/2.0.63\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"apache/2.2.11\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Apache/2.2.3\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Oracle HTTP Server Powered by Apache/1.3.19\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Oracle HTTP Server Powered by Apache/1.3.9\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Server version: Apache/1.3.41 (Unix)\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Server version: Apache/2.0.46\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Server version: Apache/2.0.52\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Server version: Apache/2.0.59  HP-UX_Apache-based_Web_Server\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Server version: Apache/2.0.63\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Server version: Apache/2.2.0\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Server version: Apache/2.2.14 (Unix)\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Server version: Apache/2.2.15  HP-UX_Apache-based_Web_Server (Unix)\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Server version: Apache/2.2.15 (Unix)\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Server version: Apache/2.2.22 (Unix)\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Server version: Apache/2.2.27 (Unix)\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Server version: Apache/2.2.29  HP-UX_Apache-based_Web_Server (Unix)\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Server version: Apache/2.2.29 (Unix)\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Server version: Apache/2.2.3\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Server version: Apache/2.2.4 (Unix)\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-07-01\" where sw_software = \"Server version: Oracle HTTP Server Powered by Apache/1.3.19 (Unix)\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 
 ?>
