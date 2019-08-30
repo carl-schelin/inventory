@@ -496,4 +496,69 @@ $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.6.0_22\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 
+print "VMWare ESX\n";
+
+$q_string = "update software set sw_eol = \"2018-09-22\" where sw_software = \"ESXi vSphere4.1\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+# setting everything at 5.5 and earlier to the same EOL date. The ones before 5.5 aren't even listed
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESX v3.5\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESX v4.0 U1\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESX v5.1 U1\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESX v5.1 U2\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESX v5.1U1\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESXi 4.1 U1\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESXi 5.0 Update 1\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESXi 5.1 U1\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESXi 5.1 Update 1\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESXi 5.1 Update 2\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESXi v3.5\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESXi v4.1 U1\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESXi v5.0\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESXi v5.0 U1\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESXi v5.1 U1\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESXi v5.1 U2\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESXi v5.1u1\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESXi v5.1u2\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESX v5.5 U2\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESXi 5.5\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESXi 5.5 Update 2\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESXi v5.5\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2018-09-19\" where sw_software = \"ESXi v5.5 U2\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+$q_string = "update software set sw_eol = \"2020-03-12\" where sw_software = \"ESX v6.0 U2\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2020-03-12\" where sw_software = \"ESXi 6.0 Update 1\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2020-03-12\" where sw_software = \"ESXi v6.0 U1\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2020-03-12\" where sw_software = \"ESXi v6.0 u1a\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2020-03-12\" where sw_software = \"ESXi v6.0 u2\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
 ?>
