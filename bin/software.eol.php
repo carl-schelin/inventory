@@ -666,4 +666,13 @@ $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2013-07-01\" where sw_software = \"11.14.014\" and sw_vendor = \"HP\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 
+print "Updating HP Nonstop OS\n";
+
+$q_string = "update software set sw_eol = \"2014-07-01\" where sw_software = \"J06.14.00\" and sw_vendor = \"HP\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2015-07-01\" where sw_software = \"J06.16.02\" and sw_vendor = \"HP\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2016-07-01\" where sw_software = \"J06.18.01\" and sw_vendor = \"HP\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
 ?>
