@@ -615,6 +615,8 @@ $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 print "Updating Data Palette\n";
 # was merged with some HP software which we don't use. Picking July 2016 as an arbitrary date.
 
+$q_string = "update software set sw_eol = \"2016-07-01\" where sw_software = \"DataPalette\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2016-07-01\" where sw_software = \"Data Palette\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2016-07-01\" where sw_software = \"Data Palette Collector 6.0.14\" ";
@@ -622,6 +624,46 @@ $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2016-07-01\" where sw_software = \"Data Palette Expert Engine 6.0.14\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2016-07-01\" where sw_software = \"Data Palette Web Server 6.0.14\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+print "Updating HP Monitoring\n";
+# more arbitrary dates. Plus "2 years" from the original number; so 06 is 08, 08 is 10, 11 is 13. Leaving 12 alone for now.
+
+$q_string = "update software set sw_eol = \"2003-07-01\" where sw_software = \"HP OpenView Control 01.50.241\" and sw_vendor = \"HP\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+$q_string = "update software set sw_eol = \"2005-07-01\" where sw_software = \"HP OpenView Control 03.10.010\" and sw_vendor = \"HP\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2005-07-01\" where sw_software = \"HP OpenView Control 03.10.011\" and sw_vendor = \"HP\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+$q_string = "update software set sw_eol = \"2008-07-01\" where sw_software = \"HP Software Control 06.00.051\" and sw_vendor = \"HP\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2008-07-01\" where sw_software = \"HP Software Control 06.00.075\" and sw_vendor = \"HP\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2008-07-01\" where sw_software = \"HP Software Control 06.00.080\" and sw_vendor = \"HP\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2008-07-01\" where sw_software = \"HP Software Control 06.20.052\" and sw_vendor = \"HP\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+$q_string = "update software set sw_eol = \"2010-07-01\" where sw_software = \"08.06.501\" and sw_vendor = \"HP\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2010-07-01\" where sw_software = \"08.16.000\" and sw_vendor = \"HP\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2010-07-01\" where sw_software = \"08.51.102\" and sw_vendor = \"HP\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2010-07-01\" where sw_software = \"08.53.006\" and sw_vendor = \"HP\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2010-07-01\" where sw_software = \"08.60.005\" and sw_vendor = \"HP\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2010-07-01\" where sw_software = \"08.60.501\" and sw_vendor = \"HP\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+$q_string = "update software set sw_eol = \"2013-07-01\" where sw_software = \"11.00.044\" and sw_vendor = \"HP\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2013-07-01\" where sw_software = \"11.13.007\" and sw_vendor = \"HP\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2013-07-01\" where sw_software = \"11.14.014\" and sw_vendor = \"HP\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 
 ?>
