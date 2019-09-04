@@ -705,4 +705,9 @@ $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2021-11-11\" where sw_software = \"psql (PostgreSQL) 9.6.6\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 
+print "Updating IBM BPMS\n";
+
+$q_string = "update software set sw_eol = \"2019-09-30\" where sw_software = \"BPMS 8.5\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
 ?>
