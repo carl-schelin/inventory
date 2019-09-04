@@ -371,14 +371,14 @@
             print "  <td class=\"" . $class . " delete\">" . "Hardware"                                       . "</td>\n";
             print "  <td class=\"" . $class . "\">"        . $a_models['mod_vendor']                          . "</td>\n";
             print "  <td class=\"" . $class . "\">"        . $a_models['mod_name']                            . "</td>\n";
-            print "  <td class=\"" . $class . " delete\">" . $a_models['mod_eol']                             . "</td>\n";
+            print "  <td class=\"" . $class . " delete\">" . $newdate                                         . "</td>\n";
             print "</tr>\n";
           } else {
             print "\"" . $a_inventory['inv_name'] . "\",";
             print "\"" . "Hardware"               . "\",";
             print "\"" . $a_models['mod_vendor']  . "\",";
             print "\"" . $a_models['mod_name']    . "\",";
-            print "\"" . $a_models['mod_eol']     . "\"\n";
+            print "\"" . $newdate                 . "\"\n";
           }
 
         }
@@ -412,17 +412,17 @@
           if ($formVars['csv'] == 'false') {
             print "<tr>\n";
             print "  <td class=\"" . $class . "\">"        . $linkstart . $inv_name . $linkend . "</td>\n";
-            print "  <td class=\"" . $class . " delete\">" . "Software"                . "</td>\n";
-            print "  <td class=\"" . $class . "\">" . $a_software['sw_vendor']                   . "</td>\n";
-            print "  <td class=\"" . $class . "\">" . $a_software['sw_software']                   . "</td>\n";
-            print "  <td class=\"" . $class . " delete\">" . $a_software['sw_eol'] . "</td>\n";
+            print "  <td class=\"" . $class . " delete\">" . "Software"                        . "</td>\n";
+            print "  <td class=\"" . $class . "\">"        . $a_software['sw_vendor']          . "</td>\n";
+            print "  <td class=\"" . $class . "\">"        . $a_software['sw_software']        . "</td>\n";
+            print "  <td class=\"" . $class . " delete\">" . $a_software['sw_eol']             . "</td>\n";
             print "</tr>\n";
           } else {
-            print "\"" . $a_inventory['inv_name'] . "\",";
-            print "\"" . "Software" . "\",";
-            print "\"" . $a_software['sw_vendor']                    . "\",";
-            print "\"" . $a_software['sw_software']                    . "\",";
-            print "\"" . $a_software['sw_eol']                  . "\"\n";
+            print "\"" . $a_inventory['inv_name']     . "\",";
+            print "\"" . "Software"                   . "\",";
+            print "\"" . $a_software['sw_vendor']     . "\",";
+            print "\"" . $a_software['sw_software']   . "\",";
+            print "\"" . $a_software['sw_eol']        . "\"\n";
           }
         }
       }
@@ -500,20 +500,20 @@
         print "<tr>\n";
         print "  <td class=\"" . $class . "\">"        . $linkstart . $a_products['prod_name'] . $linkend   . "</td>\n";
         print "  <td class=\"" . $class . " delete\">"              . $a_products['COUNT(inv_id)']          . "</td>\n";
-        print "  <td class=\"" . $class . " delete\">"              . $sweol . "</td>\n";
-        print "  <td class=\"" . $class . " delete\">"              . $swuncounted . "</td>\n";
-        print "  <td class=\"" . $class . " delete\">"              . $hwtotal . "</td>\n";
-        print "  <td class=\"" . $class . " delete\">"              . $hweol . "</td>\n";
-        print "  <td class=\"" . $class . " delete\">"              . $hwuncounted . "</td>\n";
+        print "  <td class=\"" . $class . " delete\">"              . $sweol                                . "</td>\n";
+        print "  <td class=\"" . $class . " delete\">"              . $swuncounted                          . "</td>\n";
+        print "  <td class=\"" . $class . " delete\">"              . $hwtotal                              . "</td>\n";
+        print "  <td class=\"" . $class . " delete\">"              . $hweol                                . "</td>\n";
+        print "  <td class=\"" . $class . " delete\">"              . $hwuncounted                          . "</td>\n";
         print "</tr>\n";
       } else {
         print "\"" . $a_products['prod_name']       . "\",";
         print "\"" . $a_products['COUNT(inv_id)']   . "\",";
-        print "\"" . $sweol                      . "\",";
-        print "\"" . $swuncounted                      . "\",";
-        print "\"" . $hwtotal                      . "\",";
-        print "\"" . $hweol                          . "\",";
-        print "\"" . $hwuncounted                          . "\",";
+        print "\"" . $sweol                         . "\",";
+        print "\"" . $swuncounted                   . "\",";
+        print "\"" . $hwtotal                       . "\",";
+        print "\"" . $hweol                         . "\",";
+        print "\"" . $hwuncounted                   . "\"\n";
       }
     }
   }
@@ -522,23 +522,23 @@
   if ($formVars['csv'] == 'false') {
     if ($formVars['product'] == 0) {
       print "<tr>\n";
-      print "  <td class=\"" . $class . "\">" . "Total" . "</td>\n";
-      print "  <td class=\"" . $class . " delete\">" . $totalservers . "</td>\n";
-      print "  <td class=\"" . $class . " delete\">" . $totalsweol . "</td>\n";
+      print "  <td class=\"" . $class . "\">"        . "Total"           . "</td>\n";
+      print "  <td class=\"" . $class . " delete\">" . $totalservers     . "</td>\n";
+      print "  <td class=\"" . $class . " delete\">" . $totalsweol       "</td>\n";
       print "  <td class=\"" . $class . " delete\">" . $totalswuncounted . "</td>\n";
-      print "  <td class=\"" . $class . " delete\">" . $totalhardware . "</td>\n";
-      print "  <td class=\"" . $class . " delete\">" . $totalhweol . "</td>\n";
+      print "  <td class=\"" . $class . " delete\">" . $totalhardware    . "</td>\n";
+      print "  <td class=\"" . $class . " delete\">" . $totalhweol       . "</td>\n";
       print "  <td class=\"" . $class . " delete\">" . $totalhwuncounted . "</td>\n";
       print "</tr>\n";
     } else {
       print "<tr>\n";
       print "  <td class=\"" . $class . "\" colspan=\"5\">" . "Total";
-      print " <strong>Servers</strong>: " . $totalservers;
-      print ", <strong>End of Life</strong>: " . $sweol;
-      print ", <strong>Uncounted</strong>: " . $swuncounted;
+      print " <strong>Servers</strong>: "           . $totalservers;
+      print ", <strong>End of Life</strong>: "      . $sweol;
+      print ", <strong>Uncounted</strong>: "        . $swuncounted;
       print ", <strong>Physical Servers</strong>: " . $hardware;
-      print ", <strong>End of Life</strong>: " . $hweol;
-      print ", <strong>Uncounted</strong>: " . $hwuncounted . "</td>\n";
+      print ", <strong>End of Life</strong>: "      . $hweol;
+      print ", <strong>Uncounted</strong>: "        . $hwuncounted . "</td>\n";
     }
     print "</table>\n";
   } else {
