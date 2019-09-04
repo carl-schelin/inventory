@@ -524,7 +524,7 @@
       print "<tr>\n";
       print "  <td class=\"" . $class . "\">"        . "Total"           . "</td>\n";
       print "  <td class=\"" . $class . " delete\">" . $totalservers     . "</td>\n";
-      print "  <td class=\"" . $class . " delete\">" . $totalsweol       "</td>\n";
+      print "  <td class=\"" . $class . " delete\">" . $totalsweol       . "</td>\n";
       print "  <td class=\"" . $class . " delete\">" . $totalswuncounted . "</td>\n";
       print "  <td class=\"" . $class . " delete\">" . $totalhardware    . "</td>\n";
       print "  <td class=\"" . $class . " delete\">" . $totalhweol       . "</td>\n";
