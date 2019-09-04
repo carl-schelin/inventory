@@ -706,8 +706,15 @@ $q_string = "update software set sw_eol = \"2021-11-11\" where sw_software = \"p
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 
 print "Updating IBM BPMS\n";
+# https://www-01.ibm.com/support/docview.wss?uid=swg3x618741x22680p31
 
 $q_string = "update software set sw_eol = \"2019-09-30\" where sw_software = \"BPMS 8.5\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+print "Updating Riverbed OpNet\n";
+#https://support.riverbed.com/content/support/eos_eoa.html
+
+$q_string = "update software set sw_eol = \"2018-08-31\" where sw_software = \"OpNet\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 
 ?>
