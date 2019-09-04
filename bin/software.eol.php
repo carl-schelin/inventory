@@ -717,4 +717,10 @@ print "Updating Riverbed OpNet\n";
 $q_string = "update software set sw_eol = \"2018-08-31\" where sw_software = \"OpNet\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 
+print "Updating Centrify\n";
+# marking as EOL as the company has moved away and we haven't replaced the agents
+
+$q_string = "update software set sw_eol = \"2015-04-01\" where sw_software = \"Centrify\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
 ?>
