@@ -675,4 +675,34 @@ $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 $q_string = "update software set sw_eol = \"2016-07-01\" where sw_software = \"J06.18.01\" and sw_vendor = \"HP\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 
+print "Updating PostgreSQL\n";
+# https://www.postgresql.org/support/versioning/
+
+$q_string = "update software set sw_eol = \"2010-10-01\" where sw_software = \"psql (PostgreSQL) 7.4.17\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2010-10-01\" where sw_software = \"psql (PostgreSQL) 7.4.2\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+$q_string = "update software set sw_eol = \"2014-07-24\" where sw_software = \"psql (PostgreSQL) 8.4.20\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2014-07-24\" where sw_software = \"psql (PostgreSQL) 8.4.9\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+$q_string = "update software set sw_eol = \"2016-10-27\" where sw_software = \"psql (PostgreSQL) 9.1.6\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+$q_string = "update software set sw_eol = \"2017-11-09\" where sw_software = \"psql (PostgreSQL) 9.2.15\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+$q_string = "update software set sw_eol = \"2017-11-09\" where sw_software = \"psql (PostgreSQL) 9.2.24\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+$q_string = "update software set sw_eol = \"2018-11-08\" where sw_software = \"psql (PostgreSQL) 9.3.4\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+$q_string = "update software set sw_eol = \"2021-02-11\" where sw_software = \"psql (PostgreSQL) 9.5.3\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
+$q_string = "update software set sw_eol = \"2021-11-11\" where sw_software = \"psql (PostgreSQL) 9.6.6\" ";
+$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
 ?>
