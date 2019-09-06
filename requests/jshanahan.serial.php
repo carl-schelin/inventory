@@ -19,6 +19,11 @@
     $formVars['csv'] = 'false';
   }
 
+  $formVars['group'] = 0;
+  if (isset($_GET["group"])) {
+    $formVars['group'] = clean($_GET["group"], 10);
+  }
+
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -84,6 +89,9 @@
   $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
   $q_string .= "where inv_status = 0 and mod_virtual = 0 and hw_primary = 1 and hw_deleted = 0 ";
+  if ($formVars['group'] > 0) {
+    $q_string .= "and inv_manager = " . $formVars['group'] . " ";
+  }
   $q_string .= "order by inv_name ";
   $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_hardware = mysql_fetch_array($q_hardware)) {
