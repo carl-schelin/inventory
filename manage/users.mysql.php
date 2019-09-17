@@ -422,8 +422,6 @@
       print "document.users.mu_comment.value = '';\n";
       print "document.users.mu_locked.checked = false;\n";
       print "document.users.mu_ticket.value = '';\n";
-      print "document.users.mu_exclude.checked = false;\n";
-      print "document.users.mu_expire.value = '';\n";
 
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
