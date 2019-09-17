@@ -41,6 +41,7 @@
     if (check_userlevel($AL_Admin)) {
 ?>
       <li><a href="<?php print $Assetroot;  ?>/assets.php" target="_blank">Bulk Upload</a></li>
+      <li><a href="<?php print $Manageroot; ?>/users.php" target="_blank">User Manager</a></li>
 <?php
   }
 ?>
