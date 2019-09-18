@@ -44,6 +44,7 @@
 <ul>
   <li><a href="changelog.php">Changelog, how does it work?!</a></li>
   <li><a href="emailquery.php">E-Mail Query, how does it work?!</a></li>
+  <li><a href="users.php">User Management, how does it work?!</a></li>
 </ul>
 
 </div>
