@@ -1096,7 +1096,7 @@
         $output .= "</tr>\n";
     
     
-        $q_string = "select int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,int_domain,"
+        $q_string = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,int_domain,"
                   .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_groupname "
                   . "from interface "
                   . "left join ip_zones on interface.int_zone = ip_zones.zone_id  "
