@@ -30,6 +30,8 @@
   $ipaddr = '';
   $macaddr = '';
   $project = '';
+  $serialnumber = '';
+  $assettag = '';
   $hardware = 'no';
   $software = 'no';
   $network = 'no';
@@ -871,7 +873,9 @@
 
     }
   } else {
-    print "Inventory: Unable to locate " . $server . $macaddr . $ipaddr . "\n";
+    print "Inventory: Unable to locate " . $server . $macaddr . $ipaddr . $serialnumber . $assettag . "\n";
+    exit(1);
   }
+  exit(0);
 
 ?>
