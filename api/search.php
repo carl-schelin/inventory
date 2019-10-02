@@ -75,6 +75,8 @@
     public $interface_virtual = '';
     public $interface_netzone = '';
     public $interface_scanned = '';
+    public $interface_management = '';
+    public $interface_backup = '';
 
     public $physical_port = '';
     public $physical_switch = '';
@@ -213,7 +215,7 @@
     $count = 0;
     $q_string  = "select int_id,int_server,int_domain,int_face,int_addr,int_eth,int_mask,int_gate,int_vlan,itp_name,";
     $q_string .= "int_openview,int_nagios,int_ping,int_ssh,int_http,int_ftp,int_smtp,int_cfg2html,int_notify,int_hours,";
-    $q_string .= "int_primary,int_switch,int_port,med_text,spd_text,dup_text,rol_text,";
+    $q_string .= "int_primary,int_switch,int_port,med_text,spd_text,dup_text,rol_text,int_management,int_backup,";
     $q_string .= "int_redundancy,int_groupname,int_virtual,zone_name,zone_acronym,int_sysport ";
     $q_string .= "from interface ";
     $q_string .= "left join ip_zones   on ip_zones.zone_id  = interface.int_zone ";
@@ -274,22 +276,24 @@
         $index = "interface_" . $count++;
 
         $servers[$a_inventory['inv_name']]->inventory_network[$index] = new IP_Address();
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_name      = $a_interface['int_server'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_fqdn      = $fqdn;
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_label     = $a_interface['int_face'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_address   = $a_interface['int_addr'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_ethernet  = $a_interface['int_eth'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_netmask   = $a_interface['int_mask'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_gateway   = $a_interface['int_gate'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_vlan      = $a_interface['int_vlan'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_type      = $a_interface['itp_name'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_default   = ($a_interface['int_primary'] ? "Default Route" : "");
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_role      = $a_interface['rol_text'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_redundant = $a_int_redundancy['red_text'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_groupname = $a_interface['int_groupname'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_virtual   = $virtual;
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_netzone   = $a_interface['zone_name'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_scanned   = $scanned;
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_name         = $a_interface['int_server'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_fqdn         = $fqdn;
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_label        = $a_interface['int_face'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_address      = $a_interface['int_addr'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_ethernet     = $a_interface['int_eth'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_netmask      = $a_interface['int_mask'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_gateway      = $a_interface['int_gate'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_vlan         = $a_interface['int_vlan'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_type         = $a_interface['itp_name'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_default      = ($a_interface['int_primary'] ? "Default Route" : "");
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_role         = $a_interface['rol_text'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_redundant    = $a_int_redundancy['red_text'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_groupname    = $a_interface['int_groupname'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_virtual      = $virtual;
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_netzone      = $a_interface['zone_name'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_scanned      = $scanned;
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_management   = ($a_interface['int_management'] ? 'Yes' : 'No');
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_backup       = ($a_interface['int_backup'] ? 'Yes' : 'No');
 
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->physical_port        = $a_interface['int_sysport'];
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->physical_switch      = $a_interface['int_switch'];
@@ -298,6 +302,7 @@
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->physical_speed       = $a_interface['spd_text'];
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->physical_duplex      = $a_interface['dup_text'];
 
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->monitor_openview  = ($a_interface['int_openview'] ? 'Monitored' : 'No');
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->monitor_openview  = ($a_interface['int_openview'] ? 'Monitored' : 'No');
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->monitor_nagios    = ($a_interface['int_nagios'] ? 'Monitored' : 'No');
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->monitor_ping      = ($a_interface['int_ping'] ? 'Monitored' : 'No');
@@ -313,7 +318,7 @@
         $intcount = 0;
         $q_string  = "select int_id,int_server,int_domain,int_face,int_addr,int_eth,int_mask,int_gate,int_vlan,itp_name,";
         $q_string .= "int_openview,int_nagios,int_ping,int_ssh,int_http,int_ftp,int_smtp,int_cfg2html,int_notify,int_hours,";
-        $q_string .= "int_primary,int_switch,int_port,med_text,spd_text,dup_text,rol_text,";
+        $q_string .= "int_primary,int_switch,int_port,med_text,spd_text,dup_text,rol_text,int_management,int_backup,";
         $q_string .= "int_redundancy,int_groupname,int_virtual,zone_name,int_sysport ";
         $q_string .= "from interface ";
         $q_string .= "left join ip_zones   on ip_zones.zone_id  = interface.int_zone ";
@@ -373,22 +378,24 @@
           $cindex = "child_" . $intcount++;
 
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex] = new IP_Address();
-          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_name      = $a_internal['int_server'];
-          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_fqdn      = $fqdn;
-          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_label     = $a_internal['int_face'];
-          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_address   = $a_internal['int_addr'];
-          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_ethernet  = $a_internal['int_eth'];
-          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_netmask   = $a_internal['int_mask'];
-          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_gateway   = $a_internal['int_gate'];
-          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_vlan      = $a_internal['int_vlan'];
-          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_type      = $a_internal['itp_name'];
-          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_default   = ($a_internal['int_primary'] ? "Default Route" : "");
-          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_role      = $a_internal['rol_text'];
-          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_redundant = $a_int_redundancy['red_text'];
-          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_groupname = $a_internal['int_groupname'];
-          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_virtual   = $virtual;
-          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_netzone   = $a_internal['zone_name'];
-          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_scanned   = $scanned;
+          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_name         = $a_internal['int_server'];
+          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_fqdn         = $fqdn;
+          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_label        = $a_internal['int_face'];
+          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_address      = $a_internal['int_addr'];
+          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_ethernet     = $a_internal['int_eth'];
+          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_netmask      = $a_internal['int_mask'];
+          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_gateway      = $a_internal['int_gate'];
+          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_vlan         = $a_internal['int_vlan'];
+          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_type         = $a_internal['itp_name'];
+          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_default      = ($a_internal['int_primary'] ? "Default Route" : "");
+          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_role         = $a_internal['rol_text'];
+          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_redundant    = $a_int_redundancy['red_text'];
+          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_groupname    = $a_internal['int_groupname'];
+          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_virtual      = $virtual;
+          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_netzone      = $a_internal['zone_name'];
+          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_scanned      = $scanned;
+          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_management   = ($a_interface['int_management'] ? 'Yes' : 'No');
+          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_backup       = ($a_interface['int_backup'] ? 'Yes' : 'No');
 
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->physical_port        = $a_internal['int_sysport'];
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->physical_switch      = $a_internal['int_switch'];
