@@ -20,6 +20,7 @@
   $formVars['state']     = clean($_GET['state'],    10);
   $formVars['city']      = clean($_GET['city'],     10);
   $formVars['location']  = clean($_GET['location'], 10);
+  $formVars['csv']       = clean($_GET['csv'],      10);
 
   if (isset($_GET['type'])) {
     $formVars['type'] = clean($_GET['type'], 10);
@@ -27,7 +28,7 @@
     $formVars['type'] = '';
   }
 
-if ($formVars['inwork'] == '') {
+  if ($formVars['inwork'] == '') {
     $formVars['inwork'] = 'false';
   }
   if ($formVars['project'] == '') {
