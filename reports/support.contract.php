@@ -224,7 +224,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
   if ($formVars['csv'] == 'true') {
     print "<div class=\"main-help ui-widget-content\">\n";
 
-    print "\"System Name\",\"Model\",\"Model\",\"Location\",\"Asset Tag\",\"Serial #\",\"Support\",\"Response\",\"Suggested\",\"Start\",\"End\"</br>\n";
+    print "<p style=\"text-align: left;\">\"System Name\",\"Model\",\"Model\",\"Location\",\"Asset Tag\",\"Serial #\",\"Support\",\"Response\",\"Suggested\",\"Start\",\"End\"</br>\n";
   } else {
     print "<table class=\"ui-styled-table\">\n";
     print "<tr>\n";
@@ -309,7 +309,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
   }
 
   if ($formVars['csv'] == 'true') {
-    print "</div>\n";
+    print "</p></div>\n";
   } else {
     print "</table>\n";
     print "<p class=\"ui-widget-content\">Total: " . mysql_num_rows($q_inventory) . "</td>\n";
@@ -322,7 +322,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
   if ($formVars['csv'] == 'true') {
     print "<div class=\"main-help ui-widget-content\">\n";
 
-    print "\"System Name\",\"Model\",\"Model\",\"Location\",\"Asset Tag\",\"Serial #\",\"Suggested\",\"Start\",\"End\"</br>\n";
+    print "<p style=\"text-align: left;\">\"System Name\",\"Model\",\"Model\",\"Location\",\"Asset Tag\",\"Serial #\",\"Suggested\",\"Start\",\"End\"</br>\n";
   } else {
     print "<table class=\"ui-styled-table\">\n";
     print "<tr>\n";
@@ -391,7 +391,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
 
   }
   if ($formVars['csv'] == 'true') {
-    print "</div>\n";
+    print "</p></div>\n";
   } else {
     print "</table>\n";
     print "<p class=\"ui-widget-content\">Total: " . mysql_num_rows($q_inventory) . "</td>\n";
@@ -404,7 +404,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
   if ($formVars['csv'] == 'true') {
     print "<div class=\"main-help ui-widget-content\">\n";
 
-    print "\"System Name\",\"Model\",\"Model\",\"Location\",\"Asset Tag\",\"Serial #\"</br>\n";
+    print "<p style=\"text-align: left;\">\"System Name\",\"Model\",\"Model\",\"Location\",\"Asset Tag\",\"Serial #\"</br>\n";
   } else {
     print "<table class=\"ui-styled-table\">\n";
     print "<tr>\n";
@@ -462,7 +462,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
     }
   }
   if ($formVars['csv'] == 'true') {
-    print "</div>\n";
+    print "</p></div>\n";
   } else {
     print "</table>\n";
     print "<p class=\"ui-widget-content\">Total: " . mysql_num_rows($q_inventory) . "</td>\n";
@@ -475,7 +475,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
   if ($formVars['csv'] == 'true') {
     print "<div class=\"main-help ui-widget-content\">\n";
 
-    print "\"System Name\",\"Live Name\",\"Retired\",\"Model\",\"Model\",\"Location\",\"Asset Tag\",\"Serial #\",\"Support\",\"Suggested\",\"Start\",\"End\"</br>\n";
+    print "<p style=\"text-align: left;\">\"System Name\",\"Live Name\",\"Retired\",\"Model\",\"Model\",\"Location\",\"Asset Tag\",\"Serial #\",\"Support\",\"Suggested\",\"Start\",\"End\"</br>\n";
   } else {
     print "<table class=\"ui-styled-table\">\n";
     print "<tr>\n";
@@ -570,7 +570,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
     }
   }
   if ($formVars['csv'] == 'true') {
-    print "</div>\n";
+    print "</p></div>\n";
   } else {
     print "</table>\n";
     print "<p class=\"ui-widget-content\">Total: " . mysql_num_rows($q_inventory) . "</td>\n";
