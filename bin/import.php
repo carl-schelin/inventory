@@ -1156,6 +1156,96 @@
           }
 
 
+#lnmt1duasneap10,software,newrelic,Installed
+          if ($value[2] == 'java') {
+            if (strlen($value[3]) > 0) {
+              $skip = 'no';
+              $value[3] = 'java ' . $value[3];
+
+# set up query
+              $query = 
+                "sw_companyid =   " . $a_inventory['inv_id']      . "," . 
+                "sw_product   =   " . $a_inventory['inv_product'] . "," . 
+                "sw_software  = \"" . trim($value[3])             . "\"," . 
+                "sw_vendor    = \"" . 'Oracle'                    . "\"," . 
+                "sw_type      = \"" . 'Commercial'               . "\"," . 
+                "sw_verified  =   " . '1'                         . "," . 
+                "sw_user      =   " . '1'                         . "," . 
+                "sw_update    = \"" . $date                       . "\"";
+
+# is it already in the inventory?
+              $q_string  = "select sw_id ";
+              $q_string .= "from software ";
+              $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Commercial' and sw_software like '%java%'";
+              $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+              if (mysql_num_rows($q_software) == 0) {
+                $q_string = "insert into software set sw_id = null," . $query . ",sw_group = " . $a_inventory['inv_appadmin'];
+                if ($debug == 'no') {
+                  $result = mysql_query($q_string) or die($q_string . mysql_error());
+                }
+              } else {
+                $a_software = mysql_fetch_array($q_software);
+                $q_string = "update software set " . $query . " where sw_id = " . $a_software['sw_id'];
+                if ($debug == 'no') {
+                  $result = mysql_query($q_string) or die($q_string . mysql_error());
+                }
+              }
+              if ($debug == 'yes') {
+                print $q_string . "\n";
+              }
+            } else {
+              if ($debug == 'yes') {
+                print "Missing Installed String\n";
+              }
+            }
+          }
+
+
+#lnmt1duasneap10,software,newrelic,Installed
+          if ($value[2] == 'openjdk') {
+            if (strlen($value[3]) > 0) {
+              $skip = 'no';
+              $value[3] = 'openjdk ' . $value[3];
+
+# set up query
+              $query = 
+                "sw_companyid =   " . $a_inventory['inv_id']      . "," . 
+                "sw_product   =   " . $a_inventory['inv_product'] . "," . 
+                "sw_software  = \"" . trim($value[3])             . "\"," . 
+                "sw_vendor    = \"" . 'Oracle'                    . "\"," . 
+                "sw_type      = \"" . 'Commercial'               . "\"," . 
+                "sw_verified  =   " . '1'                         . "," . 
+                "sw_user      =   " . '1'                         . "," . 
+                "sw_update    = \"" . $date                       . "\"";
+
+# is it already in the inventory?
+              $q_string  = "select sw_id ";
+              $q_string .= "from software ";
+              $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Commercial' and sw_software like '%openjdk%'";
+              $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+              if (mysql_num_rows($q_software) == 0) {
+                $q_string = "insert into software set sw_id = null," . $query . ",sw_group = " . $a_inventory['inv_appadmin'];
+                if ($debug == 'no') {
+                  $result = mysql_query($q_string) or die($q_string . mysql_error());
+                }
+              } else {
+                $a_software = mysql_fetch_array($q_software);
+                $q_string = "update software set " . $query . " where sw_id = " . $a_software['sw_id'];
+                if ($debug == 'no') {
+                  $result = mysql_query($q_string) or die($q_string . mysql_error());
+                }
+              }
+              if ($debug == 'yes') {
+                print $q_string . "\n";
+              }
+            } else {
+              if ($debug == 'yes') {
+                print "Missing Installed String\n";
+              }
+            }
+          }
+
+
 
 
 # Commercial
