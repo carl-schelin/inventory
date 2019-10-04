@@ -19,29 +19,8 @@
   $debug = 'yes';
   $debug = 'no';
 
+  $file = 'nnmiServerReport.current.txt';
   $date = date('Y-m-d');
-
-
-  $file = 'nnmiServerReport.20191002.txt';
-  $date = "2019-10-02";
-
-  $file = 'nnmiServerReport.20191001.txt';
-  $date = "2019-10-01";
-
-  $file = 'nnmiServerReport.20190930.txt';
-  $date = "2019-09-30";
-
-  $file = 'nnmiServerReport.20190929.txt';
-  $date = "2019-09-29";
-
-  $file = 'nnmiServerReport.20190928.txt';
-  $date = "2019-09-28";
-
-  $file = 'nnmiServerReport.20190927.txt';
-  $date = "2019-09-27";
-
-  $file = 'nnmiServerReport.20191003.txt';
-  $date = "2019-10-03";
 
 # legend
   print "Usage:\n";
