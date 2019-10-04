@@ -425,76 +425,43 @@ $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 
 print "Updating Java\n";
 
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.4.2\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.4.2_04\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.4.2_05\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.4.2_10\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.4.2_11\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.4.2_13\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.4.2_14\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.4.2_16\" ";
+$q_string = "update software set sw_eol = \"2015-12-01\" where sw_software like \"Java 1.4%\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.5.0_07\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.5.0_09\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.5.0_10\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.5.0_12\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.5.0_13\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.5.0_14\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.5.0_15\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.5.0_16\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.5.0_17\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.5.0_18\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.5.0_20\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.5.0_22\" ";
+$q_string = "update software set sw_eol = \"2015-12-01\" where sw_software like \"Java 1.5.0%\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
 
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.6.0\" ";
+$q_string = "update software set sw_eol = \"2015-12-01\" where sw_software like \"Java 1.6.0%\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.6.0_01\" ";
+
+$q_string = "update software set sw_eol = \"2019-07-01\" where sw_software like \"Java 1.7.0%\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.6.0_02\" ";
+
+$q_string = "update software set sw_eol = \"2022-03-01\" where sw_software like \"Java 1.8.0%\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.6.0_05\" ";
+
+# date change because Oracle said that once the next release is available (10 here), the current release is EOL
+$q_string = "update software set sw_eol = \"2018-03-01\" where sw_software like \"Java 1.9.0%\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.6.0_12\" ";
+
+$q_string = "update software set sw_eol = \"2018-09-01\" where sw_software like \"Java 1.10.0%\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.6.0_13\" ";
+
+$q_string = "update software set sw_eol = \"2023-09-01\" where sw_software like \"Java 1.11.0%\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.6.0_14\" ";
+
+$q_string = "update software set sw_eol = \"2019-09-01\" where sw_software like \"Java 1.12.0%\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.6.0_15\" ";
+
+$q_string = "update software set sw_eol = \"2020-03-01\" where sw_software like \"Java 1.13.0%\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.6.0_16\" ";
+
+
+print "Updating OpenJDK\n";
+
+$q_string = "update software set sw_eol = \"2022-03-01\" where sw_software like \"openjdk 1.8.0%\" ";
 $result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.6.0_17\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.6.0_18\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.6.0_19\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.6.0_20\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
-$q_string = "update software set sw_eol = \"2008-12-01\" where sw_software = \"Java 1.6.0_22\" ";
-$result = mysql_query($q_string)or die($q_string . ": " . mysql_error());
+
 
 print "Updating VMWare ESX\n";
 
