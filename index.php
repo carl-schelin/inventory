@@ -596,6 +596,7 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
     <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/monitorvers.php');">OpenView Version Listing</a> - List of servers and the version of Openview installed.</li>
     <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/ovstatus.php');">OpenView Notification Status</a> - List of servers and a count of alarms per server since 2009.</li>
     <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/ovpolicy.php');">OpenView Policy Listing</a> - List of servers and the associated policies.</li>
+    <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/status.php');">Current Monitoring Status</a> - List of servers and their current status.</li>
     </li></ul>
 <?php
   if (check_grouplevel($GRP_Unix)) {
