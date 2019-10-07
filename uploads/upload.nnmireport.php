@@ -19,7 +19,7 @@
   $debug = 'yes';
   $debug = 'no';
 
-  $file = 'nnmiServerReport.current.txt';
+  $file = 'nnmiServerReport.current.csv';
   $date = date('Y-m-d');
 
 # legend
