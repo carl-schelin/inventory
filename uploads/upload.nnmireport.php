@@ -22,12 +22,6 @@
   $file = 'nnmiServerReport.current.csv';
   $date = date('Y-m-d');
 
-# legend
-  print "Usage:\n";
-  print "php upload.support.php\n";
-  print "f - Found the hardware\n";
-  print ". - Found the Serial Number but did not find the hardware.\n";
-
 # Report from the monitoring team
 # servername/ip address - ignore really as the last field is the list of IPs monitored. only use if the last column is blank
 # status - CRITICAL MINOR NORMAL NOSTATUS UNKNOWN
@@ -73,6 +67,8 @@ if (($handle = fopen($file, "r")) !== FALSE) {
               $result = mysql_query($query) or die($query . ": " . mysql_error());
             }
           }
+        } else {
+          print "Not found: $address: $data[0],$data[1],$data[2],$data[3]\n";
         }
       }
     }
