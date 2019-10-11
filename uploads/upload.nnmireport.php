@@ -66,9 +66,10 @@ if (($handle = fopen($file, "r")) !== FALSE) {
             } else {
               $result = mysql_query($query) or die($query . ": " . mysql_error());
             }
+            print "IP found: $data[0],$data[1],$data[2],$address\n";
           }
         } else {
-          print "Not found: $address: $data[0],$data[1],$data[2],$data[3]\n";
+          print "Not found: $data[0],$data[1],$data[2],$address\n";
         }
       }
     }
