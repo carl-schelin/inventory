@@ -114,7 +114,7 @@
     $process = trim(fgets($file));
     $value = split(":", $process);
 
-    $value[4] = str_replace('"', "", $value[0]);
+    $value[4] = str_replace('"', "", $value[4]);
 
     if ($filetype == 'p') {
 #+---------------+-----------+------+-----+------------+----------------+
