@@ -658,11 +658,13 @@
         $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=mod_vendor');\">Vendor</a></th>\n";
         $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=mod_name');\">Model</a></th>\n";
         $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=mod_type');\">Type</a></th>\n";
+        $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=mod_type');\">Asset Tag</a></th>\n";
+        $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=mod_type');\">Serial Number</a></th>\n";
         $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=grp_name');\">Platform Managed By</a></th>\n";
         $output .= "</tr>\n";
       }
 
-      $q_string  = "select hw_companyid,inv_name,grp_name,mod_vendor,mod_name,part_name,mod_type,inv_status ";
+      $q_string  = "select hw_companyid,inv_name,grp_name,mod_vendor,mod_name,part_name,mod_type,inv_status,hw_serial,hw_asset ";
       $q_string .= "from hardware ";
       $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
@@ -698,6 +700,8 @@
             $output .= "\"" . $a_hardware['mod_vendor'] . "\",";
             $output .= "\"" . $a_hardware['mod_name']   . "\",";
             $output .= "\"" . $a_hardware['part_name']  . "\",";
+            $output .= "\"" . $a_hardware['hw_asset']  . "\",";
+            $output .= "\"" . $a_hardware['hw_serial']  . "\",";
             $output .= "\"" . $a_hardware['grp_name']   . "\"<br>";
           } else {
             $output .= "<tr>\n";
@@ -705,6 +709,8 @@
             $output .= "  <td class=\"" . $class . "\">" . $link_vendor . $a_hardware['mod_vendor'] . $linkend . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">" . $link_name   . $a_hardware['mod_name']   . $linkend . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">" . $link_type   . $a_hardware['part_name']  . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"                . $a_hardware['hw_asset']              . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"                . $a_hardware['hw_serial']             . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"                . $a_hardware['grp_name']              . "</td>\n";
             $output .= "</tr>\n";
           }
