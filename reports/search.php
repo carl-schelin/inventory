@@ -648,6 +648,8 @@
         $output .= "\"Vendor\",";
         $output .= "\"Model\",";
         $output .= "\"Type\",";
+        $output .= "\"Asset Tag\",";
+        $output .= "\"Serial Number\",";
         $output .= "\"Platform Managed By\"<br>";
       } else {
         $linkstart = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=4&search_for=" . $formVars['search_for'] . "&retired=" . $formVars['retired'];
