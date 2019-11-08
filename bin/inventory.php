@@ -66,7 +66,6 @@
 
     if (isset($options['f'])) {
       $force = 'yes';
-      $retired = " == RETIRED ==";
     }
     if (isset($options['c'])) {
       $csv = 'yes';
@@ -142,7 +141,7 @@
   }
 
   $q_string  = "select inv_id,inv_name,inv_companyid,inv_function,prod_name,grp_name,inv_appadmin,mod_vendor,mod_name,hw_serial,";
-  $q_string .= "hw_asset,hw_service,loc_name,loc_addr1,ct_city,st_state,loc_zipcode,inv_rack,inv_row,inv_unit ";
+  $q_string .= "hw_asset,hw_service,loc_name,loc_addr1,ct_city,st_state,loc_zipcode,inv_status,inv_rack,inv_row,inv_unit ";
   $q_string .= "from inventory ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
@@ -177,6 +176,10 @@
   $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   if (mysql_num_rows($q_inventory) > 0) {
     $a_inventory = mysql_fetch_array($q_inventory);
+
+    if ($a_inventory['inv_status'] == 1 ) {
+      $retired = " == RETIRED ==";
+    }
 
     $q_string  = "select grp_name ";
     $q_string .= "from groups ";
