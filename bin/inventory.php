@@ -26,6 +26,7 @@
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
   $force = '';
+  $retired = '';
   $server = '';
   $ipaddr = '';
   $macaddr = '';
@@ -65,6 +66,7 @@
 
     if (isset($options['f'])) {
       $force = 'yes';
+      $retired = " == RETIRED ==";
     }
     if (isset($options['c'])) {
       $csv = 'yes';
@@ -193,7 +195,7 @@
         print "\"Rack/Unit\"\n";
       }
       print "\"" . $a_inventory['inv_id']       . "\",";
-      print "\"" . $a_inventory['inv_name']     . "\",";
+      print "\"" . $a_inventory['inv_name'] . $retired . "\",";
       print "\"" . $a_inventory['inv_function'] . "\",";
       print "\"" . $a_inventory['prod_name']    . "\",";
       print "\"" . $a_inventory['grp_name']     . "\",";
@@ -220,7 +222,7 @@
       }
     } else {
       print "Server ID: " . $a_inventory['inv_id'] . "\n";
-      print "Server: " . $a_inventory['inv_name'] . "\n";
+      print "Server: " . $a_inventory['inv_name'] . $retired . "\n";
       print "Function: " . $a_inventory['inv_function'] . "\n";
       print "Product: " . $a_inventory['prod_name'] . "\n";
       print "Platform Managed By: " . $a_inventory['grp_name'] . "\n";
