@@ -123,6 +123,7 @@ function delete_comment( p_script_url ) {
     script = document.createElement('script');
     script.src = p_script_url;
     document.getElementsByTagName('head')[0].appendChild(script);
+    show_file('comments.mysql.php'    + '?update=-1' + '&com_companyid=<?php    print $formVars['server']; ?>');
   }
 }
 
@@ -288,12 +289,12 @@ function attach_comment( p_script_url, update ) {
   var ac_url;
 
   ac_url  = '?update='   + update;
-  ac_url += '&id='       + <?php print $formVars['server']; ?>;
+  ac_url += '&id='       + ac_form.com_id.value;
 
-  ac_url += '&com_id='        + ac_form.com_id.value;
-  ac_url += "&com_text="      + encode_URI(ac_form.com_text.value);
-  ac_url += "&com_timestamp=" + encode_URI(ac_form.com_timestamp.value);
-  ac_url += "&com_user="      + ac_form.com_user.value;
+  ac_url += "&com_companyid="    + <?php print $formVars['server']; ?>;
+  ac_url += "&com_text="         + encode_URI(ac_form.com_text.value);
+  ac_url += "&com_timestamp="    + encode_URI(ac_form.com_timestamp.value);
+  ac_url += "&com_user="         + ac_form.com_user.value;
 
   script = document.createElement('script');
   script.src = p_script_url + ac_url;
@@ -634,12 +635,12 @@ function attach_association( p_script_url, update ) {
 
 
 function reset_detail() {
-  document.edit.bug_text.value = '';
+  document.edit.com_text.value = '';
   document.edit.remLen.value = 1800;
-  document.edit.bug_user[0].selected = true;
-  document.edit.bug_timestamp.value = 'Current Time';
-  document.edit.bugupdate.disabled = true;
-  document.edit.bug_id.value = 0;
+  document.edit.com_user[0].selected = true;
+  document.edit.com_timestamp.value = 'Current Time';
+  document.edit.comupdate.disabled = true;
+  document.edit.com_id.value = 0;
   document.edit.format_bold.value = 0;
   document.edit.format_italic.value = 0;
   document.edit.format_underline.value = 0;
@@ -669,10 +670,10 @@ function textCounter(field,cntfield,maxlimit) {
 // the purpose here is to permit the insertion/replacement of formatted text
 function formatText(p_format) {
   var ft_form = document.edit;
-  var ft_text = ft_form.bug_text.value;
+  var ft_text = ft_form.com_text.value;
 
-  ft_form.bug_text.focus();
-  var ft_cursor = getInputSelection(ft_form.bug_text);
+  ft_form.com_text.focus();
+  var ft_cursor = getInputSelection(ft_form.com_text);
 
   var ft_st_start  = ft_text.substring(0, ft_cursor.start);
   var ft_st_middle = ft_text.substring(ft_cursor.start, ft_cursor.end);
@@ -684,20 +685,20 @@ function formatText(p_format) {
       if (ft_cursor.start == ft_cursor.end) {
         document.getElementById('show_bold').value = 'BOLD';
         ft_form.format_bold.value = 1;
-        ft_bug_text = ft_st_start + "<b>" + ft_st_end;
+        ft_com_text = ft_st_start + "<b>" + ft_st_end;
         ft_cursor.end += 3;
       } else {
-        ft_bug_text = ft_st_start + "<b>" + ft_st_middle + "</b>" + ft_st_end;
+        ft_com_text = ft_st_start + "<b>" + ft_st_middle + "</b>" + ft_st_end;
         ft_cursor.end += 7;
       }
     } else {
       if (ft_cursor.start == ft_cursor.end) {
         document.getElementById('show_bold').value = 'Bold';
         ft_form.format_bold.value = 0;
-        ft_bug_text = ft_st_start + "</b>" + ft_st_end;
+        ft_com_text = ft_st_start + "</b>" + ft_st_end;
         ft_cursor.end += 4;
       } else {
-        ft_bug_text = ft_st_start + "</b>" + ft_st_middle + "<b>" + ft_st_end;
+        ft_com_text = ft_st_start + "</b>" + ft_st_middle + "<b>" + ft_st_end;
         ft_cursor.end += 7;
       }
     }
@@ -709,20 +710,20 @@ function formatText(p_format) {
       if (ft_cursor.start == ft_cursor.end) {
         document.getElementById('show_italic').value = 'ITALIC';
         ft_form.format_italic.value = 1;
-        ft_bug_text = ft_st_start + "<i>" + ft_st_end;
+        ft_com_text = ft_st_start + "<i>" + ft_st_end;
         ft_cursor.end += 3;
       } else {
-        ft_bug_text = ft_st_start + "<i>" + ft_st_middle + "</i>" + ft_st_end;
+        ft_com_text = ft_st_start + "<i>" + ft_st_middle + "</i>" + ft_st_end;
         ft_cursor.end += 7;
       }
     } else {
       if (ft_cursor.start == ft_cursor.end) {
         document.getElementById('show_italic').value = 'Italic';
         ft_form.format_italic.value = 0;
-        ft_bug_text = ft_st_start + "</i>" + ft_st_end;
+        ft_com_text = ft_st_start + "</i>" + ft_st_end;
         ft_cursor.end += 4;
       } else {
-        ft_bug_text = ft_st_start + "</i>" + ft_st_middle + "<i>" + ft_st_end;
+        ft_com_text = ft_st_start + "</i>" + ft_st_middle + "<i>" + ft_st_end;
         ft_cursor.end += 7;
       }
     }
@@ -734,20 +735,20 @@ function formatText(p_format) {
       if (ft_cursor.start == ft_cursor.end) {
         document.getElementById('show_underline').value = 'UNDERLINE';
         ft_form.format_underline.value = 1;
-        ft_bug_text = ft_st_start + "<u>" + ft_st_end;
+        ft_com_text = ft_st_start + "<u>" + ft_st_end;
         ft_cursor.end += 3;
       } else {
-        ft_bug_text = ft_st_start + "<u>" + ft_st_middle + "</u>" + ft_st_end;
+        ft_com_text = ft_st_start + "<u>" + ft_st_middle + "</u>" + ft_st_end;
         ft_cursor.end += 7;
       }
     } else {
       if (ft_cursor.start == ft_cursor.end) {
         document.getElementById('show_underline').value = 'Underline';
         ft_form.format_underline.value = 0;
-        ft_bug_text = ft_st_start + "</u>" + ft_st_end;
+        ft_com_text = ft_st_start + "</u>" + ft_st_end;
         ft_cursor.end += 4;
       } else {
-        ft_bug_text = ft_st_start + "</u>" + ft_st_middle + "<u>" + ft_st_end;
+        ft_com_text = ft_st_start + "</u>" + ft_st_middle + "<u>" + ft_st_end;
         ft_cursor.end += 7;
       }
     }
@@ -759,28 +760,28 @@ function formatText(p_format) {
       if (ft_cursor.start == ft_cursor.end) {
         document.getElementById('show_preserve').value = 'PRESERVE FORMATTING';
         ft_form.format_preserve.value = 1;
-        ft_bug_text = ft_st_start + "<pre>" + ft_st_end;
+        ft_com_text = ft_st_start + "<pre>" + ft_st_end;
         ft_cursor.end += 5;
       } else {
-        ft_bug_text = ft_st_start + "<pre>" + ft_st_middle + "</pre>" + ft_st_end;
+        ft_com_text = ft_st_start + "<pre>" + ft_st_middle + "</pre>" + ft_st_end;
         ft_cursor.end += 11;
       }
     } else {
       if (ft_cursor.start == ft_cursor.end) {
         document.getElementById('show_preserve').value = 'Preserve Formatting';
         ft_form.format_preserve.value = 0;
-        ft_bug_text = ft_st_start + "</pre>" + ft_st_end;
+        ft_com_text = ft_st_start + "</pre>" + ft_st_end;
         ft_cursor.end += 6;
       } else {
-        ft_bug_text = ft_st_start + "</pre>" + ft_st_middle + "<pre>" + ft_st_end;
+        ft_com_text = ft_st_start + "</pre>" + ft_st_middle + "<pre>" + ft_st_end;
         ft_cursor.end += 11;
       }
     }
 
   }
 
-  ft_form.bug_text.value = ft_bug_text;
-  setCaretPosition('bug_text', ft_cursor.end);
+  ft_form.com_text.value = ft_com_text;
+  setCaretPosition('com_text', ft_cursor.end);
 }
 
 function getInputSelection(el) {
@@ -874,7 +875,13 @@ function clear_fields() {
   show_file('routing.mysql.php'     + '?update=-3' + '&route_companyid=<?php print $formVars['server']; ?>');
   show_file('backups.fill.php'      + '?id=<?php                             print $formVars['server']; ?>');
   show_file('association.mysql.php' + '?update=-3' + '&clu_companyid=<?php   print $formVars['server']; ?>');
+<?php
+  if (check_userlevel($AL_Admin)) {
+?>
   show_file('config.mysql.php'      + '?update=-3' + '&cfg_companyid=<?php   print $formVars['server']; ?>');
+<?php
+  }
+?>
   show_file('comments.mysql.php'    + '?update=-3' + '&com_companyid=<?php   print $formVars['server']; ?>');
   show_file('firewall.mysql.php'    + '?update=-3' + '&fw_companyid=<?php    print $formVars['server']; ?>');
 <?php
@@ -2130,6 +2137,9 @@ software support date exceeds the company requirements for support.</li>
 </div>
 
 
+<?php
+  if (check_userlevel($AL_Admin)) {
+?>
 
 <div id="config">
 
@@ -2188,6 +2198,9 @@ software support date exceeds the company requirements for support.</li>
 
 </div>
 
+<?php
+  }
+?>
 
 <div id="comments">
 
