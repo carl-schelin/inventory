@@ -94,6 +94,7 @@ function clear_fields() {
   show_file('openview.mysql.php?id=<?php print $formVars['id']; ?>&start=<?php print $formVars['start']; ?>&end=<?php print $formVars['end']; ?>');
   show_file('policies.mysql.php?id=<?php print $formVars['id']; ?>');
   show_file('vulnerabilities.mysql.php?id=<?php print $formVars['id']; ?>');
+  show_file('comments.mysql.php?id=<?php print $formVars['id']; ?>');
   show_file('logs.mysql.php?id=<?php print $formVars['id']; ?>');
   show_file('<?php print $Issueroot; ?>/issue.open.mysql.php?server=<?php print $formVars['id']; ?>');
   show_file('<?php print $Issueroot; ?>/issue.closed.mysql.php?server=<?php print $formVars['id']; ?>');
@@ -132,6 +133,7 @@ $(document).ready( function() {
   <li><a href="#hardware">Hardware</a></li>
   <li><a href="#software">Software</a></li>
   <li><a href="#network">Network</a></li>
+  <li><a href="#comments">Comments</a></li>
   <li><a href="#backup">Backup</a></li>
   <li><a href="#changelog">Changelog</a></li>
   <li><a href="#performance">Performance</a></li>
@@ -191,6 +193,13 @@ $(document).ready( function() {
 <span id="ipv6routing_mysql"><?php print wait_Process('IPv6 Routing Waiting...')?></span>
 
 <span id="firewall_mysql"><?php print wait_Process('Firewall Waiting...')?></span>
+
+</div>
+
+
+<div id="comments">
+
+<span id="comments_mysql"><?php print wait_Process('Comments Waiting...')?></span>
 
 </div>
 
