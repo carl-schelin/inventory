@@ -27,7 +27,7 @@
   }
 
   if (isset($formVars['server'])) {
-    $q_string  = "select inv_id,inv_name,inv_manager,inv_product,inv_project,inv_status,hw_active,hw_eol ";
+    $q_string  = "select inv_id,inv_name,inv_rsdp,inv_manager,inv_product,inv_project,inv_status,hw_active,hw_eol ";
     $q_string .= "from inventory ";
     $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
     $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
@@ -38,6 +38,7 @@
     if (mysql_num_rows($q_inventory) == 0) {
       $a_inventory['inv_id'] = $formVars['server'];
       $a_inventory['inv_name'] = 'Blank';
+      $a_inventory['inv_rsdp'] = 0;
       $a_inventory['inv_manager'] = $_SESSION['group'];
       $a_inventory['inv_product'] = 0;
       $a_inventory['inv_project'] = 0;
@@ -48,6 +49,7 @@
     $formVars['server'] = 0;
     $a_inventory['inv_id'] = $formVars['server'];
     $a_inventory['inv_name'] = 'Blank';
+    $a_inventory['inv_rsdp'] = 0;
     $a_inventory['inv_manager'] = $_SESSION['group'];
     $a_inventory['inv_product'] = 0;
     $a_inventory['inv_project'] = 0;
@@ -113,6 +115,17 @@ function delete_software( p_script_url ) {
 <?php
   if (check_grouplevel($a_inventory['inv_manager'])) {
 ?>
+
+function delete_comment( p_script_url ) {
+  var answer = confirm("Delete Comment?")
+
+  if (answer) {
+    script = document.createElement('script');
+    script.src = p_script_url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+}
+
 function remove_hardware( p_script_url ) {
   var answer;
   var rh_answer;
@@ -269,6 +282,24 @@ function attach_software( p_script_url, update ) {
 <?php
   if (check_grouplevel($a_inventory['inv_manager'])) {
 ?>
+
+function attach_comment( p_script_url, update ) {
+  var ac_form = document.edit;
+  var ac_url;
+
+  ac_url  = '?update='   + update;
+  ac_url += '&id='       + <?php print $formVars['server']; ?>;
+
+  ac_url += '&com_id='        + ac_form.com_id.value;
+  ac_url += "&com_text="      + encode_URI(ac_form.com_text.value);
+  ac_url += "&com_timestamp=" + encode_URI(ac_form.com_timestamp.value);
+  ac_url += "&com_user="      + ac_form.com_user.value;
+
+  script = document.createElement('script');
+  script.src = p_script_url + ac_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
+}
+
 function attach_detail( p_script_url, update ) {
   var am_form = document.edit;
   var am_url;
@@ -600,6 +631,226 @@ function attach_association( p_script_url, update ) {
   script.src = p_script_url + aa_url;
   document.getElementsByTagName('head')[0].appendChild(script);
 }
+
+
+function reset_detail() {
+  document.edit.bug_text.value = '';
+  document.edit.remLen.value = 1800;
+  document.edit.bug_user[0].selected = true;
+  document.edit.bug_timestamp.value = 'Current Time';
+  document.edit.bugupdate.disabled = true;
+  document.edit.bug_id.value = 0;
+  document.edit.format_bold.value = 0;
+  document.edit.format_italic.value = 0;
+  document.edit.format_underline.value = 0;
+  document.edit.format_preserve.value = 0;
+<?php
+  if (!preg_match('/MSIE/i',$_SERVER['HTTP_USER_AGENT'])) {
+?>
+  document.getElementById('show_bold').innerHTML = 'Bold';
+  document.getElementById('show_italic').innerHTML = 'Italic';
+  document.getElementById('show_underline').innerHTML = 'Underline';
+  document.getElementById('show_preserve').innerHTML = 'Preserve Formatting';
+<?php
+  }
+?>
+}
+
+function textCounter(field,cntfield,maxlimit) {
+  if (field.value.length > maxlimit)
+    field.value = field.value.substring(0, maxlimit);
+  else
+    cntfield.value = maxlimit - field.value.length;
+}
+
+<?php
+  if (!preg_match('/MSIE/i',$_SERVER['HTTP_USER_AGENT'])) {
+?>
+// the purpose here is to permit the insertion/replacement of formatted text
+function formatText(p_format) {
+  var ft_form = document.edit;
+  var ft_text = ft_form.bug_text.value;
+
+  ft_form.bug_text.focus();
+  var ft_cursor = getInputSelection(ft_form.bug_text);
+
+  var ft_st_start  = ft_text.substring(0, ft_cursor.start);
+  var ft_st_middle = ft_text.substring(ft_cursor.start, ft_cursor.end);
+  var ft_st_end    = ft_text.substring(ft_cursor.end);
+
+  if (p_format == "bold") {
+
+    if (ft_form.format_bold.value == 0) {
+      if (ft_cursor.start == ft_cursor.end) {
+        document.getElementById('show_bold').value = 'BOLD';
+        ft_form.format_bold.value = 1;
+        ft_bug_text = ft_st_start + "<b>" + ft_st_end;
+        ft_cursor.end += 3;
+      } else {
+        ft_bug_text = ft_st_start + "<b>" + ft_st_middle + "</b>" + ft_st_end;
+        ft_cursor.end += 7;
+      }
+    } else {
+      if (ft_cursor.start == ft_cursor.end) {
+        document.getElementById('show_bold').value = 'Bold';
+        ft_form.format_bold.value = 0;
+        ft_bug_text = ft_st_start + "</b>" + ft_st_end;
+        ft_cursor.end += 4;
+      } else {
+        ft_bug_text = ft_st_start + "</b>" + ft_st_middle + "<b>" + ft_st_end;
+        ft_cursor.end += 7;
+      }
+    }
+
+  }
+  if (p_format == "italic") {
+
+    if (ft_form.format_italic.value == 0) {
+      if (ft_cursor.start == ft_cursor.end) {
+        document.getElementById('show_italic').value = 'ITALIC';
+        ft_form.format_italic.value = 1;
+        ft_bug_text = ft_st_start + "<i>" + ft_st_end;
+        ft_cursor.end += 3;
+      } else {
+        ft_bug_text = ft_st_start + "<i>" + ft_st_middle + "</i>" + ft_st_end;
+        ft_cursor.end += 7;
+      }
+    } else {
+      if (ft_cursor.start == ft_cursor.end) {
+        document.getElementById('show_italic').value = 'Italic';
+        ft_form.format_italic.value = 0;
+        ft_bug_text = ft_st_start + "</i>" + ft_st_end;
+        ft_cursor.end += 4;
+      } else {
+        ft_bug_text = ft_st_start + "</i>" + ft_st_middle + "<i>" + ft_st_end;
+        ft_cursor.end += 7;
+      }
+    }
+
+  }
+  if (p_format == "underline") {
+
+    if (ft_form.format_underline.value == 0) {
+      if (ft_cursor.start == ft_cursor.end) {
+        document.getElementById('show_underline').value = 'UNDERLINE';
+        ft_form.format_underline.value = 1;
+        ft_bug_text = ft_st_start + "<u>" + ft_st_end;
+        ft_cursor.end += 3;
+      } else {
+        ft_bug_text = ft_st_start + "<u>" + ft_st_middle + "</u>" + ft_st_end;
+        ft_cursor.end += 7;
+      }
+    } else {
+      if (ft_cursor.start == ft_cursor.end) {
+        document.getElementById('show_underline').value = 'Underline';
+        ft_form.format_underline.value = 0;
+        ft_bug_text = ft_st_start + "</u>" + ft_st_end;
+        ft_cursor.end += 4;
+      } else {
+        ft_bug_text = ft_st_start + "</u>" + ft_st_middle + "<u>" + ft_st_end;
+        ft_cursor.end += 7;
+      }
+    }
+
+  }
+  if (p_format == "preserve") {
+
+    if (ft_form.format_preserve.value == 0) {
+      if (ft_cursor.start == ft_cursor.end) {
+        document.getElementById('show_preserve').value = 'PRESERVE FORMATTING';
+        ft_form.format_preserve.value = 1;
+        ft_bug_text = ft_st_start + "<pre>" + ft_st_end;
+        ft_cursor.end += 5;
+      } else {
+        ft_bug_text = ft_st_start + "<pre>" + ft_st_middle + "</pre>" + ft_st_end;
+        ft_cursor.end += 11;
+      }
+    } else {
+      if (ft_cursor.start == ft_cursor.end) {
+        document.getElementById('show_preserve').value = 'Preserve Formatting';
+        ft_form.format_preserve.value = 0;
+        ft_bug_text = ft_st_start + "</pre>" + ft_st_end;
+        ft_cursor.end += 6;
+      } else {
+        ft_bug_text = ft_st_start + "</pre>" + ft_st_middle + "<pre>" + ft_st_end;
+        ft_cursor.end += 11;
+      }
+    }
+
+  }
+
+  ft_form.bug_text.value = ft_bug_text;
+  setCaretPosition('bug_text', ft_cursor.end);
+}
+
+function getInputSelection(el) {
+  var start = 0, end = 0, normalizedValue, range, textInputRange, len, endRange;
+
+  if (typeof el.selectionStart == "number" && typeof el.selectionEnd == "number") {
+    start = el.selectionStart;
+    end = el.selectionEnd;
+  } else {
+    range = document.selection.createRange();
+
+    if (range && range.parentElement() == el) {
+      len = el.value.length;
+      normalizedValue = el.value.replace(/\r\n/g, "\n");
+
+      // Create a working TextRange that lives only in the input
+      textInputRange = el.createTextRange();
+      textInputRange.moveToBookmark(range.getBookmark());
+
+      // Check if the start and end of the selection are at the very end
+      // of the input, since moveStart/moveEnd doesn't return what we want
+      // in those cases
+      endRange = el.createTextRange();
+      endRange.collapse(false);
+
+      if (textInputRange.compareEndPoints("StartToEnd", endRange) > -1) {
+        start = end = len;
+      } else {
+        start = -textInputRange.moveStart("character", -len);
+        start += normalizedValue.slice(0, start).split("\n").length - 1;
+
+        if (textInputRange.compareEndPoints("EndToEnd", endRange) > -1) {
+          end = len;
+        } else {
+          end = -textInputRange.moveEnd("character", -len);
+          end += normalizedValue.slice(0, end).split("\n").length - 1;
+        }
+      }
+    }
+  }
+
+  return {
+    start: start,
+    end: end
+  };
+}
+
+function setCaretPosition(elemId, caretPos) {
+  var elem = document.getElementById(elemId);
+
+  if (elem != null) {
+    if (elem.createTextRange) {
+      var range = elem.createTextRange();
+      range.move('character', caretPos);
+      range.select();
+    } else {
+      if (elem.selectionStart) {
+        elem.focus();
+        elem.setSelectionRange(caretPos, caretPos);
+      } else {
+        elem.focus();
+      }
+    }
+  }
+}
+<?php
+  }
+?>
+
+
 <?php
   }
 ?>
@@ -621,9 +872,11 @@ function clear_fields() {
   show_file('filesystem.mysql.php'  + '?update=-3' + '&fs_companyid=<?php    print $formVars['server']; ?>');
   show_file('network.mysql.php'     + '?update=-3' + '&int_companyid=<?php   print $formVars['server']; ?>');
   show_file('routing.mysql.php'     + '?update=-3' + '&route_companyid=<?php print $formVars['server']; ?>');
-  show_file('firewall.mysql.php'    + '?update=-3' + '&fw_companyid=<?php    print $formVars['server']; ?>');
   show_file('backups.fill.php'      + '?id=<?php                             print $formVars['server']; ?>');
   show_file('association.mysql.php' + '?update=-3' + '&clu_companyid=<?php   print $formVars['server']; ?>');
+  show_file('config.mysql.php'      + '?update=-3' + '&cfg_companyid=<?php   print $formVars['server']; ?>');
+  show_file('comments.mysql.php'    + '?update=-3' + '&com_companyid=<?php   print $formVars['server']; ?>');
+  show_file('firewall.mysql.php'    + '?update=-3' + '&fw_companyid=<?php    print $formVars['server']; ?>');
 <?php
 # end inv_manager if
   }
@@ -638,6 +891,7 @@ function clear_fields() {
 $(document).ready( function() {
   $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
   $( "#networktab" ).tabs( ).addClass( "tab-shadow" );
+  $( "#configtab" ).tabs( ).addClass( "tab-shadow" );
 
   $( "#sstatus" ).buttonset();
 });
@@ -689,6 +943,8 @@ $(document).ready( function() {
   <li><a href="#firewall">Firewall</a></li>
   <li><a href="#backup">Backup</a></li>
   <li><a href="#association">Association</a></li>
+  <li><a href="#config">Configuration</a></li>
+  <li><a href="#comments">Comments</a></li>
 <?php
   }
 ?>
@@ -1687,6 +1943,8 @@ software support date exceeds the company requirements for support.</li>
 </div>
 
 
+
+
 <div id="backup">
 
 <table class="ui-styled-table">
@@ -1822,6 +2080,7 @@ software support date exceeds the company requirements for support.</li>
 </div>
 
 
+
 <div id="association">
 
 <table class="ui-styled-table">
@@ -1867,6 +2126,199 @@ software support date exceeds the company requirements for support.</li>
 </div>
 
 <span id="association_table"><?php print wait_Process("Please Wait"); ?></span>
+
+</div>
+
+
+
+<div id="config">
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default"><a href="javascript:;" onmousedown="toggleDiv('config-hide');">Configuration Management</a></th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('config-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="config-help" style="display: none">
+
+<div class="main-help ui-widget-content">
+
+
+</div>
+
+</div>
+
+
+<div id="config-hide" style="display: none">
+
+<span id="config_form"><?php print wait_Process("Please Wait"); ?></span>
+
+</div>
+
+<div id="configtab">
+
+<ul>
+  <li><a href="#cfg_detail">Detail</a></li>
+  <li><a href="#cfg_hardware">Hardware</a></li>
+  <li><a href="#cfg_network">Network</a></li>
+</ul>
+
+<div id="cfg_detail">
+
+<span id="cfg_detail_table"><?php print wait_Process("Please Wait"); ?></span>
+
+</div>
+
+
+<div id="cfg_hardware">
+
+<span id="cfg_hardware_table"><?php print wait_Process("Please Wait"); ?></span>
+
+</div>
+
+
+<div id="cfg_network">
+
+<span id="cfg_network_table"><?php print wait_Process("Please Wait"); ?></span>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div id="comments">
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default"><a href="javascript:;" onmousedown="toggleDiv('comments-hide');">Comments</a></th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('comments-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="comments-help" style="display: none">
+
+<div class="main-help ui-widget-content">
+
+<ul>
+  <li><strong>Buttons</strong>
+  <ul>
+    <li><strong>Reset</strong> - Reset the data entry form clearing the textarea and resetting the formatting buttons and data entry fields.</li>
+    <li><strong>Update Detail</strong> - After selecting a detail record to edit, click here to save any changes.</li>
+    <li><strong>Save New Detail</strong> - Add a new detail record. You can also select an existing record, make changes if needed, and click this button to add a second detail.</li>
+  </ul></li>
+</ul>
+
+<ul>
+  <li><strong>Problem Form</strong>
+  <ul>
+    <li><strong>Data Entry</strong> - Enter data about the issue here. The Bold, Italic, Underline, 
+and Preserve Formatting buttons let you format the output of the data. The <strong>character count</strong> 
+field shows you the limit of the number of characters. This limit is set by the browser.</li>
+    <li><strong>Timestamp</strong> - The time the work was done.</li>
+    <li><strong>Support Tech</strong> - The person performing the work.</li>
+    <li><strong>Generate Wiki Page</strong> - Generates a formated page for insertion into a wiki.</li>
+    <li><strong>Generate Text Page</strong> - Generates a formated log suitable for emailing to a support technician.</li>
+  </ul></li>
+</ul>
+
+<ul>
+  <li><strong>Notes</strong>
+  <ul>
+    <li>Click the <strong>Problem Management</strong> title bar to toggle the <strong>Problem Form</strong>.</li>
+  </ul></li>
+</ul>
+
+</div>
+
+</div>
+
+
+
+<div id="comments-hide" style="display: none">
+
+<table class="ui-styled-table">
+<tr>
+  <td colspan="7" class="ui-widget-content button">
+<input type="button"                 name="reset"       value="Reset"           onClick="javascript:reset_detail();">
+<input type="button" disabled="true" name="comupdate"   value="Update Comment"   onClick="javascript:attach_comment('comments.mysql.php', 1);hideDiv('comments-hide');">
+<input type="hidden" name="com_id" value="0">
+<input type="hidden" name="format_bold" value="0">
+<input type="hidden" name="format_italic" value="0">
+<input type="hidden" name="format_underline" value="0">
+<input type="hidden" name="format_preserve" value="0">
+<input type="button"                 name="combutton" value="Save New Comment" onClick="javascript:attach_comment('comments.mysql.php', 0);"></td>
+</tr>
+</table>
+
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default" colspan="7">Comment Form</th>
+</tr>
+<?php
+  if (!preg_match('/MSIE/i',$_SERVER['HTTP_USER_AGENT'])) {
+?>
+<tr>
+  <td class="ui-widget-content delete"><input type="button" id="show_bold"      value="Bold"                onclick="javascript:formatText('bold');"></td>
+  <td class="ui-widget-content delete"><input type="button" id="show_italic"    value="Italic"              onclick="javascript:formatText('italic');"></td>
+  <td class="ui-widget-content delete"><input type="button" id="show_underline" value="Underline"           onclick="javascript:formatText('underline');"></td>
+  <td class="ui-widget-content delete"><input type="button" id="show_preserve"  value="Preserve Formatting" onclick="javascript:formatText('preserve');"></td>
+  <td class="ui-widget-content" colspan="3">&nbsp;</td>
+</tr>
+<?php
+  }
+?>
+<tr>
+  <td class="ui-widget-content" colspan="7">
+<textarea id="com_text" name="com_text" cols="130" rows="10" 
+  onKeyDown="textCounter(document.edit.com_text, document.edit.remLen, 1800);" 
+  onKeyUp  ="textCounter(document.edit.com_text, document.edit.remLen, 1800);">
+</textarea>
+
+<br><input readonly type="text" name="remLen" size="5" maxlength="5" value="1800"> characters left
+</td>
+</tr>
+<tr>
+  <td class="ui-widget-content" title="Leave Timestamp field set to Current Time to use current time, otherwise use YYYY-MM-DD HH:MM:SS." colspan="4">Timestamp: <input type="text" name="com_timestamp" value="Current Time" size=23></td>
+  <td class="ui-widget-content">Comment by: <select name="com_user">
+<?php
+  $q_string  = "select usr_first,usr_last ";
+  $q_string .= "from users ";
+  $q_string .= "where usr_id = " . $_SESSION['uid'];
+  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $a_users = mysql_fetch_array($q_users);
+
+  print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_users['usr_first'] . " " . $a_users['usr_last'] . "</option>\n";
+
+  $q_string  = "select usr_id,usr_first,usr_last ";
+  $q_string .= "from users ";
+  $q_string .= "where usr_disabled = 0 ";
+  $q_string .= "order by usr_last,usr_first";
+  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  while ($a_users = mysql_fetch_array($q_users)) {
+    print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . " " . $a_users['usr_first'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+</table>
+
+</div>
+
+<span id="comments_mysql"><?php print wait_Process("Please Wait"); ?></span>
+
+</div>
+
+
+</div>
+
+</div>
+
+</div>
 
 </div>
 
