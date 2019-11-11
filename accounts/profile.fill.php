@@ -32,7 +32,7 @@
 
       $theme    = return_Index($a_users['usr_theme'],    "select theme_id from themes order by theme_title") - 1;
       $manager  = return_Index($a_users['usr_manager'],  "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
-      $title    = return_Index($a_users['usr_title'],    "select tit_id from titles order by tit_id");
+      $title    = return_Index($a_users['usr_title'],    "select tit_id from titles order by tit_name");
 
       $count = 1;
       $deptname = 0;
