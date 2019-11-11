@@ -183,7 +183,7 @@ $(document).ready( function() {
 <?php
   $q_string  = "select tit_id,tit_name ";
   $q_string .= "from titles ";
-  $q_string .= "order by tit_id ";
+  $q_string .= "order by tit_name ";
   $q_titles = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_titles = mysql_fetch_array($q_titles)) {
     print "<option value=\"" . $a_titles['tit_id'] . "\">" . $a_titles['tit_name'] . "</option>\n";
