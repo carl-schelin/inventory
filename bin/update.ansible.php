@@ -24,6 +24,8 @@
 
 # update inv_ansible on all systems where OS == Red Hat and version is 6 or 7
 # future to enable ansible if system == 5
+#        stripos($a_inventory['sw_software'], " 5.") !== false || 
+# turns out even if we add the rpm, rh5 isn't working everywhere. Make it a manual update if someone wants to add it in.
 
   $q_string  = "select inv_id,sw_software ";
   $q_string .= "from inventory ";
@@ -34,7 +36,6 @@
 
     if (stripos($a_inventory['sw_software'], "red hat") !== false || stripos($a_inventory['sw_software'], "centos") !== false ) {
       if (
-        stripos($a_inventory['sw_software'], " 5.") !== false || 
         stripos($a_inventory['sw_software'], " 6.") !== false || 
         stripos($a_inventory['sw_software'], " 7.") !== false
       ) {
