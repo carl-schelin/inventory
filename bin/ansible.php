@@ -30,16 +30,17 @@
   $q_product = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_product = mysql_fetch_array($q_product)) {
 
-    $q_string  = "select inv_name ";
+    $q_string  = "select int_server ";
     $q_string .= "from inventory ";
-    $q_string .= "where inv_manager = " . $manager . " and inv_status = 0 and inv_ssh = 1 and inv_product = " . $a_product['prod_id'] . " and inv_ansible = 1 ";
+    $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
+    $q_string .= "where inv_manager = " . $manager . " and inv_status = 0 and inv_ssh = 1 and inv_product = " . $a_product['prod_id'] . " and inv_ansible = 1 and int_management = 1 ";
     $q_string .= "order by inv_name ";
     $q_inventory = mysql_query($q_string) or die(mysql_error());
     if (mysql_num_rows($q_inventory) > 0) {
       print "[" . str_replace(" ", "_", str_replace("/", "_", $a_product['prod_name'])) . "]\n";
 
       while ($a_inventory = mysql_fetch_array($q_inventory)) {
-        print $a_inventory['inv_name'] . "\n";
+        print $a_inventory['int_server'] . "\n";
       }
       print "\n";
     }
@@ -53,34 +54,35 @@
   $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_tags = mysql_fetch_array($q_tags)) {
 
-    $q_string  = "select inv_name ";
+    $q_string  = "select int_server ";
     $q_string .= "from inventory ";
     $q_string .= "left join tags on tags.tag_inv_id = inventory.inv_id ";
-    $q_string .= "where inv_status = 0 and inv_ssh = 1 and tag_name = \"" . $a_tags['tag_name'] . "\" and inv_ansible = 1 ";
+    $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
+    $q_string .= "where inv_status = 0 and inv_ssh = 1 and tag_name = \"" . $a_tags['tag_name'] . "\" and inv_ansible = 1 and int_management = 1 ";
     $q_string .= "order by inv_name ";
     $q_inventory = mysql_query($q_string) or die(mysql_error());
     if (mysql_num_rows($q_inventory) > 0) {
       print "[" . str_replace(" ", "_", str_replace("/", "_", $a_tags['tag_name'])) . "]\n";
 
       while ($a_inventory = mysql_fetch_array($q_inventory)) {
-        print $a_inventory['inv_name'] . "\n";
+        print $a_inventory['int_server'] . "\n";
       }
       print "\n";
     }
   }
 
 # nagios
-  $q_string  = "select inv_name ";
+  $q_string  = "select int_server ";
   $q_string .= "from inventory ";
   $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
-  $q_string .= "where inv_status = 0 and inv_ssh = 1 and int_nagios = 1 and inv_ansible = 1 ";
-  $q_string .= "group by inv_name ";
+  $q_string .= "where inv_status = 0 and inv_ssh = 1 and int_nagios = 1 and inv_ansible = 1 and int_management = 1 ";
+  $q_string .= "group by int_server ";
   $q_inventory = mysql_query($q_string) or die(mysql_error());
   if (mysql_num_rows($q_inventory) > 0) {
     print "[nagios]\n";
 
     while ($a_inventory = mysql_fetch_array($q_inventory)) {
-      print $a_inventory['inv_name'] . "\n";
+      print $a_inventory['int_server'] . "\n";
     }
     print "\n";
   }
