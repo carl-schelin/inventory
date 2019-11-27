@@ -330,10 +330,6 @@ function attach_detail( p_script_url, update ) {
   am_url += "&inv_appadmin="    + am_form.inv_appadmin.value;
   am_url += "&inv_class="       + am_form.inv_class.value;
   am_url += "&inv_response="    + am_form.inv_response.value;
-  am_url += "&inv_mstart="      + am_form.inv_mstart.value;
-  am_url += "&inv_mend="        + am_form.inv_mend.value;
-  am_url += "&inv_mdow="        + am_form.inv_mdow.value;
-  am_url += "&inv_minterval="   + radio_Loop(am_form.inv_minterval, 4);
   am_url += "&inv_product="     + am_form.inv_product.value;
   am_url += "&inv_project="     + am_form.inv_project.value;
   am_url += "&inv_department="  + am_form.inv_department.value;
