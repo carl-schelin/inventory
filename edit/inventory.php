@@ -334,8 +334,6 @@ function attach_detail( p_script_url, update ) {
   am_url += "&inv_project="     + am_form.inv_project.value;
   am_url += "&inv_department="  + am_form.inv_department.value;
   am_url += "&inv_notes="       + encode_URI(am_form.inv_notes.value);
-  am_url += "&inv_patchid="     + am_form.inv_patchid.value;
-  am_url += "&inv_patched="     + encode_URI(am_form.inv_patched.value);
   am_url += "&inv_ansible="     + am_form.inv_ansible.checked;
 
   script = document.createElement('script');
