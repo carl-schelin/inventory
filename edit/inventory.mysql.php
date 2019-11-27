@@ -47,10 +47,6 @@
         $formVars["inv_appadmin"]    = clean($_GET["inv_appadmin"],    10);
         $formVars["inv_class"]       = clean($_GET["inv_class"],       10);
         $formVars["inv_response"]    = clean($_GET["inv_response"],    10);
-        $formVars["inv_mstart"]      = clean($_GET["inv_mstart"],      10);
-        $formVars["inv_mend"]        = clean($_GET["inv_mend"],        10);
-        $formVars["inv_mdow"]        = clean($_GET["inv_mdow"],        10);
-        $formVars["inv_minterval"]   = clean($_GET["inv_minterval"],   10);
         $formVars["inv_product"]     = clean($_GET["inv_product"],     10);
         $formVars["inv_project"]     = clean($_GET["inv_project"],     10);
         $formVars["inv_department"]  = clean($_GET["inv_department"],  10);
@@ -110,10 +106,6 @@
             "inv_appadmin    =   " . $formVars['inv_appadmin']    . "," .
             "inv_class       = \"" . $formVars['inv_class']       . "\"," .
             "inv_response    = \"" . $formVars['inv_response']    . "\"," .
-            "inv_mstart      =   " . $formVars['inv_mstart']      . "," . 
-            "inv_mend        =   " . $formVars['inv_mend']        . "," . 
-            "inv_mdow        =   " . $formVars['inv_mdow']        . "," . 
-            "inv_minterval   =   " . $formVars['inv_minterval']   . "," . 
             "inv_product     =   " . $formVars['inv_product']     . "," .
             "inv_project     =   " . $formVars['inv_project']     . "," .
             "inv_department  =   " . $formVars['inv_department']  . "," . 
