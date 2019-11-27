@@ -1,5 +1,5 @@
 <?php
-# Script: contacts.php
+# Script: grouplist.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
 # See: https://incowk01/makers/index.php/Coding_Standards
@@ -11,9 +11,9 @@
   include($Sitepath . '/function.php');
   check_login('2');
 
-  $package = "contacts.php";
+  $package = "grouplist.php";
 
-  logaccess($_SESSION['uid'], $package, "Viewing the Contact table");
+  logaccess($_SESSION['uid'], $package, "Viewing the Grouplist table");
 
   if (isset($_GET['group'])) {
     $formVars['group'] = clean($_GET['group'], 10);
