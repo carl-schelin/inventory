@@ -116,7 +116,7 @@ function check_grouplevel( $p_group ) {
     $q_string  = "select gpl_id ";
     $q_string .= "from grouplist ";
     $q_string .= "where gpl_user = " . $_SESSION['uid'] . " and gpl_group = " . $p_group . " ";
-    $q_grouplist = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+    $q_grouplist = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=function.php&error=" . $q_string . "&mysql=" . mysql_error()));
     if (mysql_num_rows($q_grouplist) > 0) {
       return(1);
     }
