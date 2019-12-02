@@ -66,7 +66,7 @@
 
   $q_string  = "select tag_name ";
   $q_string .= "from tags ";
-  $q_string .= "where tag_inv_id = " . $formVars['id'] . " and tag_view = 0 and tag_owner = " . $formVars['uid'] . " ";
+  $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_view = 0 and tag_owner = " . $formVars['uid'] . " ";
   $q_string .= "group by tag_name ";
   $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_tags = mysql_fetch_array($q_tags)) {
@@ -88,7 +88,7 @@
 
   $q_string  = "select tag_name ";
   $q_string .= "from tags ";
-  $q_string .= "where tag_inv_id = " . $formVars['id'] . " and tag_view = 1 and tag_group = " . $formVars['group'] . " ";
+  $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_view = 1 and tag_group = " . $formVars['group'] . " ";
   $q_string .= "group by tag_name ";
   $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_tags = mysql_fetch_array($q_tags)) {
@@ -110,7 +110,7 @@
 
   $q_string  = "select tag_name ";
   $q_string .= "from tags ";
-  $q_string .= "where tag_inv_id = " . $formVars['id'] . " and tag_view = 2 ";
+  $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_view = 2 ";
   $q_string .= "group by tag_name ";
   $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_tags = mysql_fetch_array($q_tags)) {
