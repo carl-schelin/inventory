@@ -46,17 +46,22 @@
     }
   }
 
+# find tags with 0 which apply to all servers
+# ignore any server with a '-[tag]'
+# 
+
+
 # by tags
   $q_string  = "select tag_name ";
   $q_string .= "from tags ";
-  $q_string .= "where tag_group = " . $GRP_Unix . " ";
+  $q_string .= "where tag_group = " . $manager . " ";
   $q_string .= "group by tag_name ";
   $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_tags = mysql_fetch_array($q_tags)) {
 
     $q_string  = "select int_server ";
     $q_string .= "from inventory ";
-    $q_string .= "left join tags on tags.tag_inv_id = inventory.inv_id ";
+    $q_string .= "left join tags on tags.tag_companyid = inventory.inv_id ";
     $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
     $q_string .= "where inv_status = 0 and inv_ssh = 1 and tag_name = \"" . $a_tags['tag_name'] . "\" and inv_ansible = 1 and int_management = 1 ";
     $q_string .= "order by inv_name ";
