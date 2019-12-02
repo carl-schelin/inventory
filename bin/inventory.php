@@ -446,7 +446,7 @@
 #software.sql:      `sw_companyid`    int(10) NOT NULL default '0',
 #sysgrp.sql:        `grp_companyid`   int(10) NOT NULL default '0',
 #syspwd.sql:        `pwd_companyid`   int(10) NOT NULL default '0',
-#tags.sql:          `tag_inv_id`      int(10) NOT NULL default '0',
+#tags.sql:          `tag_companyid`   int(10) NOT NULL default '0',
 
       print "\n\n=========================[REMOVE SERVER]=========================\n\n";
       print "You have indicated you want to remove this server from the inventory.\n\n";
@@ -685,9 +685,9 @@
       }
 
       $tags = 0;
-      $q_string  = "select tag_inv_id ";
+      $q_string  = "select tag_companyid ";
       $q_string .= "from tags ";
-      $q_string .= "where tag_inv_id = " . $remove . " ";
+      $q_string .= "where tag_companyid = " . $remove . " ";
       $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
       if (mysql_num_rows($q_tags) > 0) {
         print "There are " . mysql_num_rows($q_tags) . " tags records for " . $a_inventory['inv_name'] . "\n";
@@ -870,7 +870,7 @@
 
       if ($tags > 0) {
         print "Tags ";
-        $q_string = "delete from tags       where tag_inv_id      = " . $remove;
+        $q_string = "delete from tags       where tag_companyid    = " . $remove;
         $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
       }
 
