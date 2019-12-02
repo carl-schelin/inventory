@@ -97,7 +97,7 @@ function delete_tags( p_script_url ) {
     script = document.createElement('script');
     script.src = p_script_url;
     document.getElementsByTagName('head')[0].appendChild(script);
-    show_file('tags.mysql.php' + '?update=-1' + '&tag_inv_id=<?php print $formVars['server']; ?>');
+    show_file('tags.mysql.php' + '?update=-1' + '&tag_companyid=<?php print $formVars['server']; ?>');
   }
 }
 
@@ -226,9 +226,9 @@ function attach_tags(p_script_url, update) {
   var at_url;
   
   at_url  = '?update='   + update;
-  at_url += "&id="       + at_form.tag_inv_id.value;
+  at_url += "&id="       + at_form.tag_companyid.value;
 
-  at_url += "&tag_inv_id=" + <?php print $formVars['server']; ?>;
+  at_url += "&tag_companyid=" + <?php print $formVars['server']; ?>;
   at_url += "&tag_name="   + encode_URI(at_form.tag_name.value);
   at_url += "&tag_view="   + radio_Loop(at_form.tag_view, 3);
 
@@ -242,9 +242,9 @@ function insert_tags(p_script_url, update) {
   var at_url;
   
   at_url  = '&update='   + update;
-  at_url += "&id="       + at_form.tag_inv_id.value;
+  at_url += "&id="       + at_form.tag_companyid.value;
 
-  at_url += "&tag_inv_id=" + <?php print $formVars['server']; ?>;
+  at_url += "&tag_companyid=" + <?php print $formVars['server']; ?>;
 
   script = document.createElement('script');
   script.src = p_script_url + at_url;
@@ -857,7 +857,7 @@ function clear_fields() {
 # if a blank server, don't populate the tabs
   if ($a_inventory['inv_name'] != 'Blank') {
 ?>
-  show_file('tags.mysql.php'        + '?update=-3' + '&tag_inv_id=<?php print $formVars['server']; ?>');
+  show_file('tags.mysql.php'        + '?update=-3' + '&tag_companyid=<?php print $formVars['server']; ?>');
   show_file('software.mysql.php'    + '?update=-3' + '&sw_companyid=<?php    print $formVars['server']; ?>');
 <?php
   if (check_grouplevel($a_inventory['inv_manager'])) {
