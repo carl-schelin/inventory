@@ -99,7 +99,7 @@
             $tags = '';
             $q_string  = "select tag_name ";
             $q_string .= "from tags ";
-            $q_string .= "where tag_inv_id = " . $a_software['inv_id'];
+            $q_string .= "where tag_companyid = " . $a_software['inv_id'];
             $q_tags = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
             while ($a_tags = mysql_fetch_array($q_tags)) {
               $tags .= "," . $a_tags['tag_name'] . ",";
@@ -180,7 +180,7 @@
           $tags = '';
           $q_string  = "select tag_name ";
           $q_string .= "from tags ";
-          $q_string .= "where tag_inv_id = " . $a_software['inv_id'];
+          $q_string .= "where tag_companyid = " . $a_software['inv_id'];
           $q_tags = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
           while ($a_tags = mysql_fetch_array($q_tags)) {
             $tags .= "," . $a_tags['tag_name'] . ", ";
