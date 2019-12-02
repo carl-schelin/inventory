@@ -255,7 +255,7 @@ $(document).ready( function () {
             . "left join cities    on cities.ct_id          = locations.loc_city "
             . "left join groups    on groups.grp_id         = inventory.inv_manager "
             . "left join zones     on zones.zone_id         = inventory.inv_zone "
-            . "left join tags      on tags.tag_inv_id       = inventory.inv_id "
+            . "left join tags      on tags.tag_companyid    = inventory.inv_id "
             . $where
             . "order by inv_name";
   $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
