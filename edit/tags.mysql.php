@@ -14,14 +14,14 @@
 
   if (isset($_SESSION['username'])) {
     $package = "tags.mysql.php";
-    $formVars['update']         = clean($_GET['update'],        10);
-    $formVars['tag_inv_id']     = clean($_GET['tag_inv_id'],    10);
+    $formVars['update']         = clean($_GET['update'],            10);
+    $formVars['tag_companyid']  = clean($_GET['tag_companyid'],    10);
 
     if ($formVars['update'] == '') {
       $formVars['update'] = -1;
     }
-    if ($formVars['tag_inv_id'] == '') {
-      $formVars['tag_inv_id'] = 0;
+    if ($formVars['tag_companyid'] == '') {
+      $formVars['tag_companyid'] = 0;
     }
 
     if (check_userlevel($AL_Edit)) {
@@ -40,7 +40,7 @@
           logaccess($_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
-            "tag_inv_id    =   " . $formVars['tag_inv_id']    . "," .
+            "tag_companyid =   " . $formVars['tag_companyid'] . "," .
             "tag_name      = \"" . $formVars['tag_name']      . "\"," .
             "tag_view      =   " . $formVars['tag_view']      . "," .
             "tag_owner     =   " . $formVars['tag_owner']     . "," .
@@ -71,16 +71,16 @@
         if ($formVars['copyfrom'] > 0) {
           $q_string  = "select tag_name,tag_view,tag_owner,tag_group ";
           $q_string .= "from tags ";
-          $q_string .= "where tag_inv_id = " . $formVars['copyfrom'] . " and tag_view = " . $a_tags['tag_view'] . " ";
+          $q_string .= "where tag_companyid = " . $formVars['copyfrom'] . " and tag_view = " . $a_tags['tag_view'] . " ";
           $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
           while ($a_tags = mysql_fetch_array($q_tags)) {
 
             $q_string =
-              "tag_inv_id   =   " . $formVars['tag_inv_id']   . "," .
-              "tag_name     = \"" . $a_firewall['tag_name']   . "\"," .
-              "tag_view     =   " . $a_firewall['tag_view']   . "," .
-              "tag_owner    =   " . $a_firewall['tag_owner']  . "," .
-              "tag_group    =   " . $a_firewall['tag_group'];
+              "tag_companyid   =   " . $formVars['tag_companyid']   . "," .
+              "tag_name        = \"" . $a_firewall['tag_name']      . "\"," .
+              "tag_view        =   " . $a_firewall['tag_view']      . "," .
+              "tag_owner       =   " . $a_firewall['tag_owner']     . "," .
+              "tag_group       =   " . $a_firewall['tag_group'];
 
             $query = "insert into tags set tag_id = NULL, " . $q_string;
             mysql_query($query) or die($query . ": " . mysql_error());
@@ -123,7 +123,7 @@
         $output .= "  <th class=\"ui-state-default\" colspan=\"2\">Tag Form</th>\n";
         $output .= "</tr>\n";
         $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\">Tag Name <input type=\"text\" name=\"tag_name\" size=\"40\"> <input type=\"hidden\" name=\"tag_inv_id\" value=\"" . $formVars['tag_inv_id'] . "\"></td>\n";
+        $output .= "  <td class=\"ui-widget-content\">Tag Name <input type=\"text\" name=\"tag_name\" size=\"40\"> <input type=\"hidden\" name=\"tag_companyid\" value=\"" . $formVars['tag_companyid'] . "\"></td>\n";
         $output .= "  <td class=\"ui-widget-content\">Visibility: <label><input type=\"radio\" name=\"tag_view\" value=\"0\"> Private</label> <label><input type=\"radio\" checked=\"true\" name=\"tag_view\" value=\"1\"> Group</label> <label><input type=\"radio\" name=\"tag_view\" value=\"2\"> Public</label></td>\n";
         $output .= "</tr>\n";
         $output .= "</table>\n";
@@ -232,10 +232,10 @@
 
       $q_string  = "select tag_id,tag_name,tag_view,tag_group,usr_first,usr_last,grp_name ";
       $q_string .= "from tags ";
-      $q_string .= "left join inventory on inventory.inv_id = tags.tag_inv_id ";
+      $q_string .= "left join inventory on inventory.inv_id = tags.tag_companyid ";
       $q_string .= "left join groups on groups.grp_id = tags.tag_group ";
       $q_string .= "left join users on users.usr_id = tags.tag_owner ";
-      $q_string .= "where tag_inv_id = " . $formVars['tag_inv_id'] . " ";
+      $q_string .= "where tag_companyid = " . $formVars['tag_companyid'] . " ";
       $q_string .= "order by tag_view,tag_name";
       $q_tags = mysql_query($q_string) or die ($q_string . ": " . mysql_error());
       if (mysql_num_rows($q_tags) > 0) {
