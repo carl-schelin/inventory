@@ -82,7 +82,7 @@
 
   $q_string  = "select tag_id,inv_name,tag_name,tag_view,usr_name,grp_name ";
   $q_string .= "from tags ";
-  $q_string .= "left join inventory on inventory.inv_id = tags.tag_inv_id ";
+  $q_string .= "left join inventory on inventory.inv_id = tags.tag_companyid ";
   $q_string .= "left join users     on users.usr_id     = tags.tag_owner ";
   $q_string .= "left join groups    on groups.grp_id    = tags.tag_group ";
   $q_string .= "where inv_status = 0 ";
