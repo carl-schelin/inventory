@@ -36,6 +36,7 @@
       <li><a href="<?php print $Reportroot;  ?>/hostname.php">Hostname Encode/Decode</a></li>
       <li><a href="<?php print $Excluderoot; ?>/exclude.php">Exclusion Manager</a></li>     
       <li><a href="<?php print $Imageroot;   ?>/image.php">Image Manager</a></li>     
+      <li><a href="<?php print $Adminroot;   ?>/tags.php">Tag Manager</a></li>     
       <li><a href="<?php print $Statusroot;  ?>/home.php" target="_blank">Status Management</a></li>
 <?php
     if (check_userlevel($AL_Admin)) {
