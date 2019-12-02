@@ -108,7 +108,7 @@
 
   $q_string  = "select inv_id,inv_name ";
   $q_string .= "from inventory ";
-  $q_string .= "left join tags on tags.tag_inv_id = inventory.inv_id ";
+  $q_string .= "left join tags on tags.tag_companyid = inventory.inv_id ";
   if ($formVars['locations'] != 'no') {
     $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
   }
