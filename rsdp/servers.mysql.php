@@ -33,7 +33,7 @@
       $formVars['myrsdp'] = 'yes';
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
 
       logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
 
@@ -54,7 +54,7 @@
       $output .= "  <li><strong>Product</strong> - The primary Product this Project is building servers for.</li>\n";
       $output .= "  <li><strong>Server</strong> - The server in work.</li>\n";
       $output .= "  <li><strong>Tasks Completed</strong> - How many of the tasks have been completed.</li>\n";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $output .= "  <li><strong>Delete Server</strong> - This deletes all data for this server.</li>\n";
         $output .= "  <li><strong>Close Tasks</strong> - This marks the server build as complete, closing all tasks.</li>\n";
       }
@@ -73,7 +73,7 @@
       $output .= "  <th class=\"ui-state-default\">Product</th>\n";
       $output .= "  <th class=\"ui-state-default\">Tasks Completed</th>\n";
 #      $output .= "  <th class=\"ui-state-default\">Duplicate</th>\n";
-      if (check_userlevel(1) || $a_rsdp_server['rsdp_requestor'] == $_SESSION['uid'] || $a_rsdp_server['rsdp_platformspoc'] == $_SESSION['uid']) {
+      if (check_userlevel($AL_Admin) || $a_rsdp_server['rsdp_requestor'] == $_SESSION['uid'] || $a_rsdp_server['rsdp_platformspoc'] == $_SESSION['uid']) {
         $output .= "  <th class=\"ui-state-default\">Complete</th>\n";
         $output .= "  <th class=\"ui-state-default\">Delete</th>\n";
       }
@@ -175,7 +175,7 @@
           $linkstart = "<a href=\"tasks.php?id=" . $a_rsdp_server['rsdp_id'] . "&myrsdp=" . $formVars['myrsdp'] . "\">";
           $linkclose = "<a href=\"#\" onclick=\"duplicate_line('build/servers.done.php?id=" . $a_rsdp_server['rsdp_id'] . "');\">";
           $linkend   = "</a>";
-          if (check_userlevel(1) || $a_rsdp_server['rsdp_requestor'] == $_SESSION['uid'] || $a_rsdp_server['rsdp_platformspoc'] == $_SESSION['uid']) {
+          if (check_userlevel($AL_Admin) || $a_rsdp_server['rsdp_requestor'] == $_SESSION['uid'] || $a_rsdp_server['rsdp_platformspoc'] == $_SESSION['uid']) {
             $linkdel   = "<a href=\"#\" onclick=\"delete_line('servers.del.php?id=" . $a_rsdp_server['rsdp_id'] . "');\">";
             $linkclose = "<a href=\"#\" onclick=\"close_line('servers.done.php?id=" . $a_rsdp_server['rsdp_id'] . "');\">";
           }
@@ -205,7 +205,7 @@
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_rsdp_server['prod_name']           . $linkend . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"                       . $a_rsdp_status['COUNT(*)'] . " of 14"            . "</td>\n";
 #          $output .= "  <td class=\"ui-widget-content delete\">"   . $linkdup   . "Duplicate Server"                    . $linkend . "</td>\n";
-          if (check_userlevel(1) || $a_rsdp_server['rsdp_requestor'] == $_SESSION['uid'] || $a_rsdp_server['rsdp_platformspoc'] == $_SESSION['uid']) {
+          if (check_userlevel($AL_Admin) || $a_rsdp_server['rsdp_requestor'] == $_SESSION['uid'] || $a_rsdp_server['rsdp_platformspoc'] == $_SESSION['uid']) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkclose . "Close Tasks"                         . $linkend . "</td>\n";
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "Delete Server"                       . $linkend . "</td>\n";
           }

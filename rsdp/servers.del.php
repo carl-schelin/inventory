@@ -21,7 +21,7 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel(1)) {
+    if (check_userlevel($AL_Admin)) {
       $tables = array(
         0 => "rsdp_server",
         1 => "rsdp_applications",

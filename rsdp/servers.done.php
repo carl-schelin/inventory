@@ -20,7 +20,7 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel(1)) {
+    if (check_userlevel($AL_Admin)) {
       logaccess($_SESSION['uid'], $package, "Completing RSDP " . $formVars['id']);
 
       for ($i = 1; $i < 19; $i++) {
