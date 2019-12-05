@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['id'],             10);
         $formVars['tag_name']       = clean($_GET['tag_name'],       40);
@@ -157,7 +157,7 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\">Del</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Server</th>\n";
@@ -192,7 +192,7 @@
           }
 
           $output .= "<tr>";
-          if (check_userlevel(1)) {
+          if (check_userlevel($AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\" width=\"6\">" . $linkdel   . "</td>";
           }
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $inv_name                                        . $linkend . "</td>";
@@ -240,7 +240,7 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\">Del</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Server</th>\n";
@@ -275,7 +275,7 @@
           }
 
           $output .= "<tr>";
-          if (check_userlevel(1)) {
+          if (check_userlevel($AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\" width=\"6\">" . $linkdel   . "</td>";
           }
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $inv_name                                        . $linkend . "</td>";
@@ -322,7 +322,7 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\">Del</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Server</th>\n";
@@ -357,7 +357,7 @@
           }
 
           $output .= "<tr>";
-          if (check_userlevel(1)) {
+          if (check_userlevel($AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\" width=\"6\">" . $linkdel   . "</td>";
           }
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $inv_name                                        . $linkend . "</td>";
