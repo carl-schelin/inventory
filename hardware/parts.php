@@ -34,7 +34,7 @@
 <script type="text/javascript">
 
 <?php
-  if (check_userlevel(1)) {
+  if (check_userlevel($AL_Admin)) {
 ?>
 function delete_line( p_script_url ) {
   var answer = confirm("Deleting a part could orphan hardware parts in the \ninventory. Deleting a part should only be done when \nyou're sure there are no associated equipment.\n\nDelete this Part?")
