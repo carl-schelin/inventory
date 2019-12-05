@@ -182,7 +182,7 @@ $(document).ready( function() {
   $q_string  = "select grp_id,grp_name ";
   $q_string .= "from groups ";
   $q_string .= "left join grouplist on grouplist.gpl_group = groups.grp_id ";
-  if (check_userlevel(1) == 0) {
+  if (check_userlevel($AL_Admin) == 0) {
     $q_string .= "where gpl_user = " . $_SESSION['uid'] . " ";
   }
   $q_string .= "group by grp_name ";
