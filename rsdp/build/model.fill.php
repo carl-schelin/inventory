@@ -20,7 +20,7 @@
       $formVars['pf_model'] = clean($_GET['pf_model'], 10);
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['pf_model'] . " from models");
 
       $q_string  = "select mod_vendor,mod_name,mod_type,mod_size,mod_plugs,mod_plugtype,mod_volts,mod_draw,mod_start,mod_virtual ";
