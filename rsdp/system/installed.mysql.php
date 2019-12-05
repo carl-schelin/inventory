@@ -26,7 +26,7 @@
       $formVars['if_complete'] = -1;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['if_complete'] == 0 || $formVars['if_complete'] == 1 || $formVars['if_complete'] == 2) {
         $formVars['if_inscheck']   = clean($_GET['if_inscheck'],  10);
         $formVars['if_config']     = clean($_GET['if_config'],    10);
