@@ -20,7 +20,7 @@
       $formVars['id'] = 0;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from licenses");
 
       $q_string  = "select lic_id,lic_vendor,lic_product,lic_date,lic_vendorpo,lic_po,lic_project,lic_quantity,lic_key,lic_serial,lic_domain ";
