@@ -25,7 +25,7 @@
       $formVars['product'] = 0;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
 
       logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
 
