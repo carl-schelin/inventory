@@ -23,7 +23,7 @@
       $formVars['id'] = 0;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['is_complete'] == 0 || $formVars['is_complete'] == 1 || $formVars['is_complete'] == 2) {
         $formVars['is_ticket']    = clean($_GET['is_ticket'],    30);
         $formVars['is_scan']      = clean($_GET['is_scan'],      10);
