@@ -19,7 +19,7 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel(1)) {
+    if (check_userlevel($AL_Admin)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from levels");
 
       $q_string  = "select lvl_name,lvl_level,lvl_disabled ";
