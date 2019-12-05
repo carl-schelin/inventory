@@ -19,7 +19,7 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel(1)) {
+    if (check_userlevel($AL_Admin)) {
       logaccess($_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from grouplist");
 
 # get the guy you're trying to delete's group id
@@ -32,7 +32,7 @@
 # now check to see if the deleter is in the same group as the deletee
       $q_string  = "select gpl_id ";
       $q_string .= "from grouplist ";
-      if (check_userlevel(1) == 0) {
+      if (check_userlevel($AL_Admin) == 0) {
         $q_string .= "where gpl_user = " . $_SESSION['uid'] . " and gpl_group = " . $a_grouplist['gpl_group'] . " ";
       }
       $q_gltest = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
