@@ -25,7 +25,7 @@
       $formVars['myrsdp'] = 'yes';
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
 
       logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
 
@@ -57,7 +57,7 @@
       $output .= "<tr>\n";
       $output .= "  <th class=\"ui-state-default\">Project</th>\n";
       $output .= "  <th class=\"ui-state-default\">Product</th>\n";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\">Delete</th>\n";
       }
       $output .= "</tr>\n";
@@ -197,7 +197,7 @@
             $linkdel = '';
             $linktext = '--';
             $linkend   = "</a>";
-            if (check_userlevel(1)) {
+            if (check_userlevel($AL_Admin)) {
               $linkdel   = "<a href=\"#\" onclick=\"delete_line('index.del.php?projectid=" . $a_rsdp_server['rsdp_project'] . "');\">";
               $linktext = 'Delete Project';
             }
@@ -214,7 +214,7 @@
             $output .= "  <tr>\n";
             $output .= "    <td class=\"ui-widget-content\">"        . $projectstart . $a_rsdp_server['prj_name']  . $linkend . "</td>\n";
             $output .= "    <td class=\"ui-widget-content\">"        . $productstart . $a_rsdp_server['prod_name'] . $linkend . "</td>\n";
-            if (check_userlevel(1)) {
+            if (check_userlevel($AL_Admin)) {
               $output .= "    <td class=\"ui-widget-content delete\">" . $linkdel   . $linktext                   . $linkend . "</td>\n";
             }
             $output .= "  </tr>\n";
