@@ -97,7 +97,7 @@
       $linkstart = "<a href=\"" . $Bugroot . "/ticket.php?id=" . $a_bugs['bug_id']     . "#problem\">";
       $linklist  = "<a href=\"" . $Bugroot . "/bugs.php?id="   . $a_bugs['bug_module'] . "#open\">";
       $linkend   = "</a>";
-      if ($a_bugs['bug_openby'] == $_SESSION['uid'] || check_userlevel(1)) {
+      if ($a_bugs['bug_openby'] == $_SESSION['uid'] || check_userlevel($AL_Admin)) {
         $delstart = "<a href=\"#\" onclick=\"javascript:delete_bug('" . $Bugroot . "/bugs.open.del.php?id=" . $a_bugs['bug_id'] . "');\">";
         $delend   = "</a>";
         $deltext  = 'x';
