@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
 
 # update the issue
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
