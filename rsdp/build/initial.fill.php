@@ -26,7 +26,7 @@
     $ticket = 'yes';
     $ticket = 'no';
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from rsdp_server");
 
       $userid = $_SESSION['uid'];
