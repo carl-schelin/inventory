@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['id'],           10);
         $formVars['mod_vendor']     = clean($_GET['mod_vendor'],   24);
@@ -172,7 +172,7 @@
 
       $header .= "<table class=\"ui-styled-table\">\n";
       $header .= "<tr>\n";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $header .= "  <th class=\"ui-state-default\">Del</th>\n";
       }
       $header .= "  <th class=\"ui-state-default\">Id</th>\n";
@@ -215,7 +215,7 @@
         $linkend   = "</a>";
 
         $table  = "<tr>";
-        if (check_userlevel(1)) {
+        if (check_userlevel($AL_Admin)) {
           $table .= "  <td class=\"" . $class . " delete\">" . $linkdel . 'x'                     . $linkend . "</td>";
         }
         $table .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_models['mod_id']     . $linkend . "</td>";
