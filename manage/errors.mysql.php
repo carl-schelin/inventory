@@ -15,7 +15,7 @@
   if (isset($_SESSION['username'])) {
     $package = "errors.mysql.php";
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       $formVars['update']       = clean($_GET['update'],    10);
 
       if ($formVars['update'] == 1) {
