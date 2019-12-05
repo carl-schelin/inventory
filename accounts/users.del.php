@@ -19,7 +19,7 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel(1)) {
+    if (check_userlevel($AL_Admin)) {
       if ($formVars['id'] == $_SESSION['uid']) {
         print "alert('You cannot delete yourself.');\n";
         exit;
