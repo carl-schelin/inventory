@@ -26,7 +26,7 @@
     }
     $orderby .= "lic_date";
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['id'],             10);
         $formVars['lic_vendor']     = clean($_GET['lic_vendor'],     30);
@@ -123,7 +123,7 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $output .= "<th class=\"ui-state-default\">Del</th>\n";
       }
       $output .= "<th class=\"ui-state-default\">" . $linksort . "&sort=lic_vendor');\">Vendor</a></th>\n";
@@ -151,7 +151,7 @@
           $linkend   = "</a>";
 
           $output .= "<tr>\n";
-          if (check_userlevel(1)) {
+          if (check_userlevel($AL_Admin)) {
             $output .= "<td class=\"ui-widget-content delete\">" . $linkdel   . "x"                         . $linkend . "</td>\n";
           }
           $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_licenses['lic_vendor']   . $linkend . "</td>\n";
