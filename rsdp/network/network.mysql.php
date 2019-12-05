@@ -30,7 +30,7 @@
       $formVars['if_netcheck'] = 0;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['if_complete'] == 0 || $formVars['if_complete'] == 1 || $formVars['if_complete'] == 2) {
         logaccess($_SESSION['uid'], $package, "Building the query.");
 
