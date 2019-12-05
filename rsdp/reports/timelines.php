@@ -83,7 +83,7 @@
 
 <script type="text/javascript">
 <?php
-  if (check_userlevel(1)) {
+  if (check_userlevel($AL_Admin)) {
 ?>
 function delete_line( p_script_url ) {
   var answer = confirm("Delete this Server?")
