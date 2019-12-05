@@ -26,7 +26,7 @@
       $formVars['san_complete'] = 0;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['san_complete'] == 0 || $formVars['san_complete'] == 1 || $formVars['san_complete'] == 2) {
         $formVars["san_checklist"]    = clean($_GET["san_checklist"], 10);
 
