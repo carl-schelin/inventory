@@ -14,7 +14,7 @@
   if (isset($_SESSION['username'])) {
     $package = "timelines.hours.csv.php";
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       $formVars['start'] = clean($_GET['start'], 15);
       $formVars['end']   = clean($_GET['end'],   15);
       $formVars['group'] = clean($_GET['group'], 10);
