@@ -22,7 +22,7 @@
 
     $formVars['interface'] = substr($formVars['id'], 3);
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
 
 # get the rsdp id for a quick test
       $q_string  = "select if_rsdp ";
