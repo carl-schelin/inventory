@@ -15,9 +15,48 @@
 
   logaccess($_SESSION['uid'], $package, "Accessing script");
 
-  $formVars['group'] = clean($_GET['group'], 10);
-  if ($formVars['group'] == '') {
-    $formVars['group'] = $_SESSION['group'];
+  $_SESSION['p_product']   = clean($_GET['product'],  10);
+  $_SESSION['p_project']   = clean($_GET['project'],  10);
+  $_SESSION['p_group']     = clean($_GET['group'],    10);
+  $_SESSION['p_inwork']    = clean($_GET['inwork'],   10);
+  $_SESSION['p_country']   = clean($_GET['country'],  10);
+  $_SESSION['p_state']     = clean($_GET['state'],    10);
+  $_SESSION['p_city']      = clean($_GET['city'],     10);
+  $_SESSION['p_location']  = clean($_GET['location'], 10);
+  $_SESSION['p_csv']       = clean($_GET['csv'],      10);
+
+  if (isset($_GET['type'])) {
+    $_SESSION['p_type'] = clean($_GET['type'], 10);
+  } else {
+    $_SESSION['p_type'] = '';
+  }
+
+  if ($_SESSION['p_product'] == '') {
+    $_SESSION['p_product'] = 0;
+  }
+  if ($_SESSION['p_project'] == '') {
+    $_SESSION['p_project'] = 0;
+  }
+  if ($_SESSION['p_group'] == '') {
+    $_SESSION['p_group'] = 1;
+  }
+  if ($_SESSION['p_inwork'] == '') {
+    $_SESSION['p_inwork'] = 'false';
+  }
+  if ($_SESSION['p_country'] == '') {
+    $_SESSION['p_country'] = 0;
+  }
+  if ($_SESSION['p_state'] == '') {
+    $_SESSION['p_state'] = 0;
+  }
+  if ($_SESSION['p_city'] == '') {
+    $_SESSION['p_city'] = 0;
+  }
+  if ($_SESSION['p_location'] == '') {
+    $_SESSION['p_location'] = 0;
+  }
+  if ($_SESSION['p_csv'] == '') {
+    $_SESSION['p_csv'] = 'false';
   }
 
 ?>
@@ -73,7 +112,7 @@ function attach_file( p_script_url, update ) {
 }
 
 function clear_fields() {
-  show_file('tags.mysql.php?update=-1&group=<?php print $formVars['group']; ?>');
+  show_file('tags.mysql.php?update=-1');
 }
 
 $(document).ready( function() {
@@ -86,8 +125,8 @@ $(document).ready( function() {
   $( "#dialogTags" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 250,
-    width: 1100,
+    height: 200,
+    width: 900,
     show: 'slide',
     hide: 'slide',
     closeOnEscape: true,
@@ -119,6 +158,25 @@ $(document).ready( function() {
       }
     ]
   });
+
+
+  $( "#dialog-confirm" ).dialog({
+    resizable: false,
+    height: "auto",
+    width: 400,
+    modal: true,
+    buttons: {
+      "Delete this tag": function() {
+        $( this ).dialog( "close" );
+      },
+      "Delete all tags": function() {
+        $( this ).dialog( "close" );
+      },
+      Cancel: function() {
+        $( this ).dialog( "close" );
+      }
+    }
+  });
 });
 
 </script>
@@ -144,6 +202,14 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
+
+Tag Management
+
+This page is intended to provide a view into a list of servers based on the selection via filters both to show all the tags and to let you verify that all servers for the selection have received the necessary tags.
+
+In the Tag View page, you can select a tag and it will show you all the servers that have that tag assigned to it but unless you know all the servers that should be 
+
+
 <ul>
   <li><strong>Buttons</strong>
   <ul>
@@ -165,7 +231,37 @@ $(document).ready( function() {
 </form>
 
 
-<span id="table_mysql"><?php print wait_Process('Waiting...')?></span>
+<div id="tabs">
+
+<ul>
+  <li><a href="#private_tag">Private Tags</a></li>
+  <li><a href="#group_tag">Group Tags</a></li>
+  <li><a href="#public_tag">Public Tags</a></li>
+</ul>
+
+
+<div id="private_tag">
+
+<span id="view_mysql"><?php print wait_Process('Waiting...')?></span>
+
+</div>
+
+
+<div id="group_tag">
+
+<span id="group_mysql"><?php print wait_Process('Waiting...')?></span>
+
+</div>
+
+
+<div id="public_tag">
+
+<span id="public_mysql"><?php print wait_Process('Waiting...')?></span>
+
+</div>
+
+</div>
+
 
 </div>
 
@@ -188,14 +284,17 @@ $(document).ready( function() {
 <?php
   $q_string  = "select inv_id,inv_name ";
   $q_string .= "from inventory ";
-  $q_string .= "where inv_status = 0 and inv_manager = " . $formVars['group'] . " ";
+  $q_string .= "where inv_status = 0 ";
+  if ($_SESSION['p_group'] > 0) {
+    $q_string .= "and inv_manager = " . $_SESSION['p_group'] . " ";
+  }
   $q_string .= "order by inv_name ";
   $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
     print "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . "</option>\n";
   }
 ?>
-</select></td>
+</select> Select All Servers to create a Master Tag.</td>
 </tr>
 <tr>
   <td class="ui-widget-content">View: <select name="tag_view">
@@ -229,6 +328,9 @@ $(document).ready( function() {
   }
 ?>
 </select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content" colspan="3"><input type="checkbox" name="applytoall"> Add this Tag definition to all servers in this listing?</td>
 </tr>
 </table>
 
