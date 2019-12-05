@@ -13,7 +13,7 @@
   if (isset($_SESSION['username'])) {
     $package = "image.upload.php";
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       $formVars['id'] = clean($_SESSION['uid'], 10);
       $errorString = "";
 
