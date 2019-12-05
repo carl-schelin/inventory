@@ -19,7 +19,7 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel(4)) {
+    if (check_userlevel($AL_Guest)) {
       $q_string  = "select bug_id ";
       $q_string .= "from bugs_detail ";
       $q_string .= "where bug_bug_id = " . $formVars['id'];
