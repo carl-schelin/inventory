@@ -120,7 +120,7 @@
   $q_hardware = mysql_query($q_string) or die("Inventory test: " . $q_string . ": " . mysql_error());
   while ($a_hardware = mysql_fetch_array($q_hardware)) {
 
-    if (check_userlevel('2')) {
+    if (check_userlevel($AL_Edit)) {
       if (check_grouplevel($a_hardware['inv_manager'])) {
         $linkedit = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_hardware['hw_companyid'] . "\"><img src=\"" . $Siteroot . "/imgs/pencil.gif\"></a>";
       }
