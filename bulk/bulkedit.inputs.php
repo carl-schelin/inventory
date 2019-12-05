@@ -22,7 +22,7 @@
 
     $formVars['rsdp'] = substr($formVars['id'], 3);
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
 
 # next check to see if the person is a requestor, platform POC, or an admin; if not, zero out 'type' so no changes can be made.
       $q_string  = "select rsdp_requestor,rsdp_platformspoc,rsdp_platform ";
