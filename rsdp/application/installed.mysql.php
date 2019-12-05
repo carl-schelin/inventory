@@ -26,7 +26,7 @@
       $formVars['app_complete'] = 0;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
 # save, submit, and save and exit
       if ($formVars['app_complete'] == 0 || $formVars['app_complete'] == 1 || $formVars['app_complete'] == 2) {
         $formVars['app_inscheck']   = clean($_GET['app_inscheck'],     10);
