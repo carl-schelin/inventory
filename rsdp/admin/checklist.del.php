@@ -23,7 +23,7 @@
       $formVars['task'] = clean($_GET['task'], 10);
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
 # get the group info from the id entry
       $q_string  = "select chk_group ";
       $q_string .= "from checklist ";
