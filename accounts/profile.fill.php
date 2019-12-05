@@ -19,7 +19,7 @@
       $formVars['id'] = clean($_SESSION['uid'], 10);
     }
 
-    if (check_userlevel(4)) {
+    if (check_userlevel($AL_Guest)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from users");
 
       $q_string  = "select usr_id,usr_first,usr_last,usr_email,usr_phone,usr_freq,usr_notify,usr_deptname,";
