@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']        = clean($_GET['id'],        10);
         $formVars['role_name'] = clean($_GET['role_name'], 60);
@@ -72,7 +72,7 @@
       $output .= "<ul>\n";
       $output .= "  <li><strong>Role Listing</strong>\n";
       $output .= "  <ul>\n";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $output .= "    <li><strong>Delete (x)</strong> - Click here to delete this role from the Inventory.</li>\n";
       }
       $output .= "    <li><strong>Editing</strong> - Click on a role to toggle the form and edit the role.</li>\n";
@@ -86,7 +86,7 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\">Del</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Id</th>\n";
@@ -105,7 +105,7 @@
           $linkend   = "</a>";
 
           $output .= "<tr>\n";
-          if (check_userlevel(1)) {
+          if (check_userlevel($AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>\n";
           }
           $output .= "  <td class=\"ui-widget-content delete\">" . $linkstart . $a_roles['role_id']   . $linkend . "</td>\n";
