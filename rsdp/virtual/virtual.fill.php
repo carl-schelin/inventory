@@ -20,7 +20,7 @@
       $formVars['rsdp'] = clean($_GET['rsdp'], 10);
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['rsdp'] . " from rsdp_infrastructure");
 
       $q_string  = "select if_id,if_netprov,if_sanprov,if_vmprov,if_vmnote,if_vmcheck ";
