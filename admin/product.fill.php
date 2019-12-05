@@ -19,7 +19,7 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from products");
 
       $q_string  = "select prod_name,prod_code,prod_oldcode,prod_desc,prod_group,prod_type,prod_citype,prod_tier1,prod_tier2,prod_tier3,prod_remedy,prod_unit,prod_service ";
