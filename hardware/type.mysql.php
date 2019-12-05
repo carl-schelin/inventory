@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']              = clean($_GET['id'],               10);
         $formVars['itp_name']        = clean($_GET['itp_name'],         30);
@@ -92,7 +92,7 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\">Del</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Id</th>\n";
@@ -113,7 +113,7 @@
           $linkend   = "</a>";
 
           $output .= "<tr>\n";
-          if (check_userlevel(1)) {
+          if (check_userlevel($AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel . "x"                           . $linkend . "</td>\n";
           }
           $output .= "  <td class=\"ui-widget-content delete\">" . $linkstart . $a_inttype['itp_id']          . $linkend . "</td>\n";
