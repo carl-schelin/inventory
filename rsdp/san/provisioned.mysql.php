@@ -26,7 +26,7 @@
       $formVars['if_complete'] = 0;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
 # save, submit, and save and exit
       if ($formVars['if_complete'] == 0 || $formVars['if_complete'] == 1 || $formVars['if_complete'] == 2) {
         $formVars['if_procheck']    = clean($_GET['if_procheck'],    10);
