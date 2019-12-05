@@ -168,7 +168,7 @@
 
     $editstart = '';
     $editend = '';
-    if (check_userlevel('2')) {
+    if (check_userlevel($AL_Edit)) {
       $editpencil = "<img class=\"ui-icon-edit\" src=\"" . $Imgsroot . "/pencil.gif\" height=\"10\"></a>";
       if (check_grouplevel($a_inventory['inv_manager'])) {
         $editstart = $editpencil . "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\"          target=\"_blank\">";
