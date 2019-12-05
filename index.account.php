@@ -60,7 +60,7 @@
 </div>
 
 <?php
-    if (check_userlevel(1)) {
+    if (check_userlevel($AL_Admin)) {
 ?>
 <div class="main ui-widget-content">
 
