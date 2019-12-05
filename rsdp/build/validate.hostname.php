@@ -24,7 +24,7 @@
       $formVars['os_sysname'] = clean($_GET['os_sysname'], 60);
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Requesting server " . $formVars['os_sysname'] . " from inventory");
 
       $q_string  = "select inv_name ";
