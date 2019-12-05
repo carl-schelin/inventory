@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']               = clean($_GET['id'],              10);
         $formVars['loc_name']         = clean($_GET['loc_name'],        60);
@@ -201,7 +201,7 @@
 
       $header .= "<table class=\"ui-styled-table\">\n";
       $header .= "<tr>\n";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $header .= "  <th class=\"ui-state-default\">Del</th>\n";
       }
       $header .= "  <th class=\"ui-state-default\">Descriptive Label</th>\n";
@@ -258,7 +258,7 @@
           }
 
           $output  = "<tr>";
-          if (check_userlevel(1)) {
+          if (check_userlevel($AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel                                            . "</td>";
           }
           $output .= "  <td class=\"" . $class . "\" title=\"ID=" . $a_locations['loc_id'] . "\">"          . $linkstart . $a_locations['loc_name']       . $linkend . "</td>";
