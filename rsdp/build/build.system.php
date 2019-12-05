@@ -16,7 +16,7 @@
   if (isset($_SESSION['username'])) {
     $package = "build.system.php";
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Populating system field with derived and selected values");
 
       $formVars['name_location']   = clean($_GET['name_location'],     4);
