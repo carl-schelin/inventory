@@ -20,7 +20,7 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from chkserver");
 
       $q_string  = "select chk_id,chk_companyid,chk_errorid,chk_userid,chk_status,chk_text,chk_priority,chk_closed ";
