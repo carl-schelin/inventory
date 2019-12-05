@@ -19,7 +19,7 @@
     $formVars['filter']   = clean($_GET['filter'],    255);
     $formVars['status']   = clean($_GET['status'],     10);
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
 
       if ($formVars['status'] == 'true') {
         if (strlen($formVars['filter']) == 0) {
