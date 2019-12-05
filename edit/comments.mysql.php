@@ -24,7 +24,7 @@
       $formVars['com_companyid'] = 0;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars["id"]              = clean($_GET["id"],              10);
         $formVars["com_text"]        = clean($_GET["com_text"],      2000);
