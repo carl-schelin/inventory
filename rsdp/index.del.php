@@ -19,7 +19,7 @@
       $formVars['id'] = clean($_GET['projectid'], 10);
     }
 
-    if (check_userlevel(1)) {
+    if (check_userlevel($AL_Admin)) {
 
       print "document.getElementById('table_mysql').innerHTML = '" . wait_Process("Please Wait") . "';\n";
 
