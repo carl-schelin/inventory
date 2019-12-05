@@ -29,14 +29,14 @@
   </li>
   <li id="tm_applications"><a href="<?php print $Siteroot; ?>/index.apps.php">Applications</a>
     <ul>
-      <li><a href="<?php print $Issueroot;   ?>/issue.php">Issue Tracker</a></li>     
-      <li><a href="<?php print $Certsroot;   ?>/certs.php">Web Certificate Management</a></li>     
-      <li><a href="<?php print $Certsroot;   ?>/webapps.certs.php">-View Certificates</a></li>     
+      <li><a href="<?php print $Issueroot;   ?>/issue.php">Issue Tracker</a></li>
+      <li><a href="<?php print $Certsroot;   ?>/certs.php">Web Certificate Management</a></li>
+      <li><a href="<?php print $Certsroot;   ?>/webapps.certs.php">-View Certificates</a></li>
       <li><a href="<?php print $DCroot;      ?>/datacenter.php">Location Manager</a></li>
       <li><a href="<?php print $Reportroot;  ?>/hostname.php">Hostname Encode/Decode</a></li>
-      <li><a href="<?php print $Excluderoot; ?>/exclude.php">Exclusion Manager</a></li>     
-      <li><a href="<?php print $Imageroot;   ?>/image.php">Image Manager</a></li>     
-      <li><a href="<?php print $Adminroot;   ?>/tags.php">Tag Manager</a></li>     
+      <li><a href="<?php print $Excluderoot; ?>/exclude.php">Exclusion Manager</a></li>
+      <li><a href="<?php print $Imageroot;   ?>/image.php">Image Manager</a></li>
+      <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Adminroot; ?>/tags.php');">Tag Manager</a></li>
       <li><a href="<?php print $Statusroot;  ?>/home.php" target="_blank">Status Management</a></li>
 <?php
     if (check_userlevel($AL_Admin)) {
