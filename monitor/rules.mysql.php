@@ -26,7 +26,7 @@
       $orderby = "order by rule_description ";
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']                    = clean($_GET['id'],                  10);
         $formVars['rule_parent']           = clean($_GET['rule_parent'],         10);
