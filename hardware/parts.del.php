@@ -19,7 +19,7 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel(1)) {
+    if (check_userlevel($AL_Admin)) {
       logaccess($_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from parts");
 
       $q_string  = "delete ";
