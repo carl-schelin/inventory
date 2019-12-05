@@ -19,7 +19,7 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from source_node");
 
       $q_string  = "select src_node,src_deleted ";
