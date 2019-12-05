@@ -24,7 +24,7 @@
       $formVars['id'] = 0;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars["bug_id"]          = clean($_GET["bug_id"],          10);
         $formVars["bug_text"]        = clean($_GET["bug_text"],      2000);
