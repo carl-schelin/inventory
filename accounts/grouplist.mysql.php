@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']            = clean($_GET['id'],            10);
         $formVars['gpl_group']     = clean($_GET['gpl_group'],     10);
@@ -41,7 +41,7 @@
 
           $q_string  = "select gpl_id ";
           $q_string .= "from grouplist ";
-          if (check_userlevel(1) == 0) {
+          if (check_userlevel($AL_Admin) == 0) {
             $q_string .= "where gpl_user = " . $_SESSION['uid'] . " and gpl_group = " . $formVars['gpl_group'] . " ";
           }
           $q_grouplist = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
@@ -138,7 +138,7 @@
           $q_string .= "from grouplist ";
           $q_string .= "where gpl_group = " . $a_grouplist['gpl_group'] . " and gpl_user = " . $_SESSION['uid'] . " "; 
           $q_gltest = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          if (mysql_num_rows($q_gltest) > 0 || check_userlevel(1)) {
+          if (mysql_num_rows($q_gltest) > 0 || check_userlevel($AL_Admin)) {
 
             $linkstart = '';
             $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_grouplist('grouplist.del.php?id=" . $a_grouplist['gpl_id'] . "');\">";
