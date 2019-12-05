@@ -17,7 +17,7 @@
     $package = "network.checked.php";
     $formVars['id'] = clean($_GET['id'], 10);
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
 
       $q_string  = "select if_monitored ";
       $q_string .= "from rsdp_interface ";
