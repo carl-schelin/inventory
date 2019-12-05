@@ -24,7 +24,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['img_title']    = clean($_GET['img_title'],    255);
         $formVars['img_file']     = clean($_GET['img_file'],     255);
@@ -130,7 +130,7 @@
           }
 
           $output .= "<tr>";
-          if ($a_images['img_owner'] == $_SESSION['uid'] || check_userlevel(1)) {
+          if ($a_images['img_owner'] == $_SESSION['uid'] || check_userlevel($AL_Admin)) {
             $output .= "  <td class=\"" . $class . " delete\">" . $linkdel   . 'x'                          . $linkend . "</td>";
           } else {
             $output .= "  <td class=\"" . $class . " delete\">" .              '--'                                    . "</td>";
