@@ -26,7 +26,7 @@
       $orderby = "order by msg_group ";
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['id'],               10);
         $formVars['msg_group']      = clean($_GET['msg_group'],       255);
