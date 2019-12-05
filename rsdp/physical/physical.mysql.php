@@ -34,7 +34,7 @@
       $formVars['pf_complete'] = 0;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
 # save, submit, and save and exit
       if ($formVars['pf_complete'] == 0 || $formVars['pf_complete'] == 1 || $formVars['pf_complete'] == 2) {
         $formVars["pf_row"]      = clean($_GET["pf_row"],            20);
