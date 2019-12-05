@@ -19,7 +19,7 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from cities");
 
       $q_string  = "select ct_city,ct_state,ct_clli ";
