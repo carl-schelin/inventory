@@ -21,7 +21,7 @@
     $formVars["rsdp_complete"]     = clean($_GET["complete"],          10);
     $formVars["rsdp_requestor"]    = clean($_GET["rsdp_requestor"],    10);
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
 # save, submit, and save and exit
       if ($formVars['rsdp_complete'] == 0 || $formVars['rsdp_complete'] == 1 || $formVars['rsdp_complete'] == 2) {
         $formVars["usr_phone"]         = clean($_GET["usr_phone"],    15);
