@@ -16,7 +16,7 @@
     $package = "exclude.checked.php";
     $formVars['noexpire'] = clean($_GET['noexpire'], 10);
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['noexpire'] == 'true') {
         $expire = "2038-01-01";
       }
