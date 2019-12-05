@@ -19,7 +19,7 @@
       $formVars['product'] = clean($_GET['product'], 10);
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Building a project list: product=" . $formVars['product']);
 
       print "var selbox = document.index.project;\n\n";
