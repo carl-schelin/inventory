@@ -62,7 +62,7 @@
       $formVars['usr_confirm'] = 0;
     }
 
-    if (check_userlevel(4)) {
+    if (check_userlevel($AL_Guest)) {
       if ($formVars['update'] == 1) {
         if (strlen($formVars['usr_last']) > 0) {
           logaccess($_SESSION['uid'], $package, "Building the query.");
