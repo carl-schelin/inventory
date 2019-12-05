@@ -27,7 +27,7 @@
       $formVars['table'] = clean($_GET['table'], 30);
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from " . $formVars['table']);
 
       $q_string  = "delete ";
