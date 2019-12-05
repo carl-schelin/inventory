@@ -15,7 +15,7 @@
   if (isset($_SESSION['username'])) {
     $package = "manage.mysql.php";
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       $formVars['update']       = clean($_GET['update'],      10);
       $formVars['product']      = clean($_GET['product'],     10);
       $formVars['project']      = clean($_GET['project'],     10);
