@@ -33,7 +33,7 @@
     $pages = $formVars['pagination'];
     $formVars['pagination'] *= 20;
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']               = clean($_GET['id'],                 10);
         $formVars['psap_ali_id']      = clean($_GET['psap_ali_id'],        10);
