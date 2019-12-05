@@ -21,7 +21,7 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Checking interface " . $formVars['id']);
 
 # checking for the existance of a requirement to get an IP or switch 
