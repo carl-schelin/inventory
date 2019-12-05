@@ -24,7 +24,7 @@
       $formVars['rsdp'] = clean($_GET['rsdp'], 10);
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Emailing Storage about " . $formVars['id']);
 
       $headers  = "From: RSDP <rsdp@incojs01.scc911.com>\r\n";
