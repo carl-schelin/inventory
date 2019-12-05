@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel(1)) {
+    if (check_userlevel($AL_Admin)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']               = clean($_GET['id'],                10);
         $formVars['grp_name']         = clean($_GET['grp_name'],         100);
@@ -163,7 +163,7 @@
 
       $title  = "<table class=\"ui-styled-table\">";
       $title .= "<tr>";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $title .= "  <th class=\"ui-state-default\">Del</th>";
       }
       $title .= "  <th class=\"ui-state-default\">Id</th>";
@@ -183,7 +183,7 @@
 
       $title  = "<table class=\"ui-styled-table\">";
       $title .= "<tr>";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $title .= "  <th class=\"ui-state-default\">Del</th>";
       }
       $title .= "  <th class=\"ui-state-default\">Id</th>";
@@ -198,7 +198,7 @@
 
       $title  = "<table class=\"ui-styled-table\">";
       $title .= "<tr>";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $title .= "  <th class=\"ui-state-default\">Del</th>";
       }
       $title .= "  <th class=\"ui-state-default\">Id</th>";
@@ -247,7 +247,7 @@
           }
 
           $group .= "<tr>";
-          if (check_userlevel(1)) {
+          if (check_userlevel($AL_Admin)) {
             $group .= "  <td class=\"" . $class . " delete\">" . $linkdel   . "</td>";
           }
           $group .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['grp_id']           . $linkend . "</td>";
@@ -263,7 +263,7 @@
           $group .= "</tr>";
 
           $magic .= "<tr>";
-          if (check_userlevel(1)) {
+          if (check_userlevel($AL_Admin)) {
             $magic .= "  <td class=\"" . $class . " delete\">" . $linkdel   . "</td>";
           }
           $magic .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['grp_id']           . $linkend . "</td>";
@@ -274,7 +274,7 @@
           $magic .= "</tr>";
 
           $changelog .= "<tr>";
-          if (check_userlevel(1)) {
+          if (check_userlevel($AL_Admin)) {
             $changelog .= "  <td class=\"" . $class . " delete\">" . $linkdel   . "</td>";
           }
           $changelog .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['grp_id']           . $linkend . "</td>";
