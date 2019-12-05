@@ -20,7 +20,7 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from rsdp_san");
 
       $q_string  = "delete ";
