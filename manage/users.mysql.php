@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']            = clean($_GET['id'],           10);
         $formVars['mu_username']   = clean($_GET['mu_username'],  60);
@@ -104,7 +104,7 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\">Del</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Id</th>\n";
@@ -137,7 +137,7 @@
           }
 
           $output .= "<tr>\n";
-          if (check_userlevel(1)) {
+          if (check_userlevel($AL_Admin)) {
             $output .= "  <td class=\"" . $class . " delete\" width=\"60\">" . $linkdel   . "</td>\n";
           }
           $output .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_manageusers['mu_id']   . $linkend . "</td>\n";
@@ -188,7 +188,7 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\">Del</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Id</th>\n";
@@ -222,7 +222,7 @@
           }
 
           $output .= "<tr>\n";
-          if (check_userlevel(1)) {
+          if (check_userlevel($AL_Admin)) {
             $output .= "  <td class=\"" . $class . " delete\" width=\"60\">" . $linkdel   . "</td>\n";
           }
           $output .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_manageusers['mu_id']   . $linkend . "</td>\n";
@@ -275,7 +275,7 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\">Del</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Id</th>\n";
@@ -307,7 +307,7 @@
           }
 
           $output .= "<tr>\n";
-          if (check_userlevel(1)) {
+          if (check_userlevel($AL_Admin)) {
             $output .= "  <td class=\"" . $class . " delete\" width=\"60\">" . $linkdel   . "</td>\n";
           }
           $output .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_manageusers['mu_id']   . $linkend . "</td>\n";
@@ -360,7 +360,7 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\">Del</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Id</th>\n";
@@ -393,7 +393,7 @@
           }
 
           $output .= "<tr>\n";
-          if (check_userlevel(1)) {
+          if (check_userlevel($AL_Admin)) {
             $output .= "  <td class=\"" . $class . " delete\" width=\"60\">" . $linkdel   . "</td>\n";
           }
           $output .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_manageusers['mu_id']   . $linkend . "</td>\n";
