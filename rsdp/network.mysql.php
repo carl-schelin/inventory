@@ -62,7 +62,7 @@
       $formVars['URL'] .= "\">Link</a></p>";
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
 
 # prepopulate the small tables to increase lookup time.
       $q_string  = "select zone_id,zone_name ";
