@@ -24,7 +24,7 @@
       $formVars['prj_group'] = $_SESSION['group'];
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']            = clean($_GET['id'],           10);
         $formVars['prj_name']      = clean($_GET['prj_name'],     30);
@@ -112,7 +112,7 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\">Del</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Id</th>\n";
@@ -140,7 +140,7 @@
           }
 
           $output .= "<tr>";
-          if (check_userlevel(1)) {
+          if (check_userlevel($AL_Admin)) {
             $output .= "  <td class=\"" . $class . " delete\">" . $linkdel                                        . "</td>";
           }
           $output .= "  <td class=\"" . $class . " delete\">"   . $linkstart . $a_projects['prj_id']      . $linkend . "</td>";
