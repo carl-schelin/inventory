@@ -22,7 +22,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
 # Note: This is used for editing interfaces so there will be no new entries (no 'insert into' db calls).
       if ($formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['if_id'],       10);
