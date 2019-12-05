@@ -20,7 +20,7 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from rsdp_filesystem");
 
       $q_string  = "select fs_id,fs_volume,fs_size,fs_backup ";
