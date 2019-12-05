@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']       = clean($_GET['id'],             10);
         $formVars['dep_unit'] = clean($_GET['dep_unit'],       10);
@@ -81,7 +81,7 @@
       $output .= "<ul>\n";
       $output .= "  <li><strong>Department Listing</strong>\n";
       $output .= "  <ul>\n";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $output .= "    <li><strong>Delete (x)</strong> - Click here to delete this department from the Inventory.</li>\n";
       }
       $output .= "    <li><strong>Editing</strong> - Click on a department to toggle the form and edit the department.</li>\n";
@@ -95,7 +95,7 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\">Del</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Id</th>\n";
@@ -116,7 +116,7 @@
           $linkend   = "</a>";
 
           $output .= "<tr>";
-          if (check_userlevel(1)) {
+          if (check_userlevel($AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>";
           }
           $output .= "  <td class=\"ui-widget-content delete\">" . $linkstart . $a_department['dep_id']                                            . $linkend . "</td>";
