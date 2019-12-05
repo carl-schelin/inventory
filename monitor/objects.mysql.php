@@ -26,7 +26,7 @@
       $orderby = "order by obj_name ";
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['id'],               10);
         $formVars['obj_name']       = clean($_GET['obj_name'],        255);
