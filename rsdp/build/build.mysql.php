@@ -22,7 +22,7 @@
       $formVars['complete'] = -1;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['complete'] == 0 || $formVars['complete'] == 1 || $formVars['complete'] == 2) {
 
 ############
