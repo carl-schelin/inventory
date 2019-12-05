@@ -19,7 +19,7 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from rules");
 
       $q_string  = "select rule_description,rule_annotate,rule_group,rule_source,rule_application,rule_object,rule_message,rule_page,";
