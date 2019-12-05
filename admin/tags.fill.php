@@ -29,12 +29,18 @@
       $a_tags = mysql_fetch_array($q_tags);
       mysql_free_result($q_tags);
 
-      $tag_view        = return_Index($a_tags['tag_view'],      "select slv_id from supportlevel order by slv_value");
-      $tag_owner       = return_Index($a_tags['tag_owner'],     "select slv_id from supportlevel order by slv_value");
-      $tag_companyid   = return_Index($a_tags['tag_companyid'], "select slv_id from supportlevel order by slv_value");
-      $tag_group       = return_Index($a_tags['tag_group'],     "select slv_id from supportlevel order by slv_value");
+      $tag_owner       = return_Index($a_tags['tag_owner'],     "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
+      $q_string  = "select inv_id ";
+      $q_string .= "from inventory ";
+      $q_string .= "where inv_status = 0 ";
+      if ($_SESSION['p_group'] > 0) {
+        $q_string .= "and inv_manager = " . $_SESSION['p_group'] . " ";
+      }
+      $q_string .= "order by inv_name ";
+      $tag_companyid   = return_Index($a_tags['tag_companyid'], $q_string);
+      $tag_group       = return_Index($a_tags['tag_group'],     "select grp_id from groups where grp_disabled = 0 order by grp_name");
 
-      print "document.tags.tag_view['"      . $tag_view      . "'].selected = true;\n";
+      print "document.tags.tag_view['"      . $a_tags['tag_view'] . "'].selected = true;\n";
       print "document.tags.tag_owner['"     . $tag_owner     . "'].selected = true;\n";
       print "document.tags.tag_companyid['" . $tag_companyid . "'].selected = true;\n";
       print "document.tags.tag_group['"     . $tag_group     . "'].selected = true;\n";
