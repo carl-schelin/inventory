@@ -20,7 +20,7 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from rsdp_interface");
 
       $q_string  = "select if_id,if_if_id,if_rsdp,if_name,if_sysport,if_interface,if_ipcheck,if_swcheck,";
