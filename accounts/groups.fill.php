@@ -19,7 +19,7 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel(1)) {
+    if (check_userlevel($AL_Admin)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from groups");
 
       $q_string  = "select grp_disabled,grp_name,grp_email,grp_magic,grp_category,grp_changelog,grp_manager,grp_clfile,";
