@@ -20,7 +20,7 @@
       $formVars['rsdp_requestor'] = clean($_GET['rsdp_requestor'], 10);
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['rsdp_requestor'] . " from users");
 
       $q_string  = "select usr_phone,usr_email,usr_deptname ";
