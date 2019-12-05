@@ -16,7 +16,7 @@
   if (isset($_SESSION['username'])) {
     $package = "servers.mysql.php";
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if (isset($_GET['start'])) {
         $formVars['start'] = clean($_GET['start'], 15);
       } else {
@@ -58,7 +58,7 @@
       $output .= "  <li><strong>Product</strong> - The primary Product this Project is building servers for.</li>\n";
       $output .= "  <li><strong>Server</strong> - The server in work.</li>\n";
       $output .= "  <li><strong>Tasks Completed</strong> - How many of the tasks have been completed.</li>\n";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $output .= "  <li><strong>Delete Server</strong> - This deletes all data for this server.</li>\n";
         $output .= "  <li><strong>Close Tasks</strong> - This marks the server build as complete, closing all tasks.</li>\n";
       }
@@ -77,7 +77,7 @@
       $output .= "  <th class=\"ui-state-default\">Project</th>\n";
       $output .= "  <th class=\"ui-state-default\">Product</th>\n";
       $output .= "  <th class=\"ui-state-default\">Tasks Completed</th>\n";
-      if (check_userlevel(1)) {
+      if (check_userlevel($AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\">Complete</th>\n";
         $output .= "  <th class=\"ui-state-default\">Delete</th>\n";
       }
@@ -98,7 +98,7 @@
 
         $linkstart = "<a href=\"" . $RSDProot . "/tasks.php?id=" . $a_rsdp_server['rsdp_id'] . "&myrsdp=" . $formVars['myrsdp'] . "\">";
         $linkend   = "</a>";
-        if (check_userlevel(1)) {
+        if (check_userlevel($AL_Admin)) {
           $linkdel   = "<a href=\"#\" onclick=\"delete_line('" . $RSDProot . "/servers.del.php?id=" . $a_rsdp_server['rsdp_id'] . "');\">";
           $linkclose = "<a href=\"#\" onclick=\"close_line('" . $RSDProot . "/servers.done.php?id=" . $a_rsdp_server['rsdp_id'] . "');\">";
         }
@@ -132,7 +132,7 @@
         $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $project                              . $linkend . "</td>\n";
         $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_rsdp_server['prod_name']           . $linkend . "</td>\n";
         $output .= "  <td class=\"" . $class . "\">"                     . $a_rsdp_status['COUNT(*)'] . " of 14"            . "</td>\n";
-        if (check_userlevel(1)) {
+        if (check_userlevel($AL_Admin)) {
           $output .= "  <td class=\"" . $class . " delete\">" . $linkclose . "Close Tasks"                         . $linkend . "</td>\n";
           $output .= "  <td class=\"" . $class . " delete\">" . $linkdel   . "Delete Server"                       . $linkend . "</td>\n";
         }
