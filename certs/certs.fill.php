@@ -19,7 +19,7 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from certs");
 
       $q_string  = "select cert_id,cert_desc,cert_url,cert_expire,cert_authority,cert_group,cert_ca,cert_memo,cert_isca ";
