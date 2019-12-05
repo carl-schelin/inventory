@@ -27,7 +27,7 @@
       $formVars['rsdp_apppoc'] = clean($_GET['rsdp_apppoc'], 10);
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from users");
 
       $q_string  = "select usr_group ";
