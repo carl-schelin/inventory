@@ -19,7 +19,7 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from tags");
 
       $q_string  = "select tag_companyid,tag_name,tag_view,tag_owner,tag_group ";
