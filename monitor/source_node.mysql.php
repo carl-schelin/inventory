@@ -26,7 +26,7 @@
       $orderby = "order by src_node ";
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['id'],               10);
         $formVars['src_node']       = clean($_GET['src_node'],        255);
