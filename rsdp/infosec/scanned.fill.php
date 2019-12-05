@@ -20,7 +20,7 @@
       $formVars['rsdp'] = clean($_GET['rsdp'], 10);
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['rsdp'] . " from rsdp_infosec");
 
       $q_string  = "select is_id,is_ticket,is_scan,is_verified,is_checklist ";
