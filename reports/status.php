@@ -185,6 +185,9 @@
 
   print "</div>\n\n";
 
+  $managed = 0;
+  $notmanaged = 0;
+  $outofservice = 0;
 
   print "<table class=\"ui-styled-table\">\n";
   print "<tr>\n";
@@ -211,12 +214,17 @@
   $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_interface = mysql_fetch_array($q_interface)) {
 
+    $managed++;
     $class = " class=\"ui-widget-content\"";
     if ($a_interface['int_monservice'] == 'NOTMANAGED') {
       $class = " class=\"ui-state-highlighted\"";
+      $notmanaged++;
+      $managed--;
     }
     if ($a_interface['int_monservice'] == 'OUTOFSERVICE') {
       $class = " class=\"ui-state-error\"";
+      $outofservice++;
+      $managed--;
     }
 
     $openview = 'No';
@@ -242,8 +250,12 @@
   }
 
   mysql_free_result($q_interface);
+
+  print "</table>\n";
+
+  print "<p>Managed: " . $managed . ", Not Managed: " . $notmanaged . ", Out of Service: " . $outofservice . "</p>\n";
+
 ?>
-</table>
 </div>
 
 <?php include($Sitepath . '/footer.php'); ?>
