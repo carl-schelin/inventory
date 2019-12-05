@@ -16,7 +16,7 @@
   $formVars['custodian'] = clean($_GET['custodian'], 10);
 
 # update the system custodian to match the passed group
-  if (check_userlevel(1)) {
+  if (check_userlevel($AL_Admin)) {
     $q_string  = "update inventory ";
     $q_string .= "set inv_manager = " . $formVars['custodian'] . " ";
     $q_string .= "where inv_id = " . $formVars['id'] . " ";
