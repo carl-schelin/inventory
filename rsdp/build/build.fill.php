@@ -20,7 +20,7 @@
       $formVars['rsdp'] = clean($_GET['rsdp'], 10);
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['rsdp'] . " from rsdp_platform");
 
       $q_string  = "select pf_id,pf_model,pf_asset,pf_serial,pf_redundant,pf_row,pf_rack,pf_unit,pf_special ";
