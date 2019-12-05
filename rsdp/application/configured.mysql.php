@@ -23,7 +23,7 @@
       $formVars['id'] = 0;
     }
 
-    if (check_userlevel(2)) {
+    if (check_userlevel($AL_Edit)) {
       if ($formVars['app_complete'] == 0 || $formVars['app_complete'] == 1 || $formVars['app_complete'] == 2) {
         $formVars['app_concheck']   = clean($_GET['app_concheck'],     10);
         $formVars['app_tested']     = clean($_GET['app_tested'],       10);
