@@ -72,7 +72,7 @@
           $q_string  = "select hw_id ";
           $q_string .= "from hardware ";
           $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_primary = 1 ";
-          $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_hardware = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
           if (mysql_num_rows($q_hardware) > 0) {
             $a_hardware = mysql_fetch_array($q_hardware);
 
@@ -88,7 +88,7 @@
         $q_string .= "from models ";
         $q_string .= "left join parts on parts.part_id = models.mod_type ";
         $q_string .= "where mod_id = " . $formVars['hw_vendorid'] . " ";
-        $q_models = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_models = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         if (mysql_num_rows($q_models) > 0) {
           $a_models = mysql_fetch_array($q_models);
           $formVars['hw_primary'] = $a_models['part_type'];
@@ -149,7 +149,7 @@
               $q_hwtable  = "select hw_serial,hw_vendorid ";
               $q_hwtable .= "from hardware ";
               $q_hwtable .= "where hw_id = " . $formVars['id'];
-              $q_hardware = mysql_query($q_hwtable) or die($q_hwtable . ": " . mysql_error());
+              $q_hardware = mysql_query($q_hwtable) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
               $a_hardware = mysql_fetch_array($q_hardware);
 
 # for changelog requirements, compare old hw_serial with new hw_serial. If changed, save the old data before it changes
@@ -169,7 +169,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
 
           print "alert('" . $message . "');\n";
 # One additional bit is to set the status bit to 0 if a server is live and 1 if it's retired. Flip off the ssh bit if retired.
@@ -184,7 +184,7 @@
             $q_string  = "update inventory ";
             $q_string .= "set inv_status = " . $invstatus . $invssh . " ";
             $q_string .= "where inv_id = " . $formVars['hw_companyid'];
-            mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
           }
         } else {
           print "alert('You must input data before saving changes.');\n";
@@ -200,7 +200,7 @@
 #    if ($formVars['id'] > 0 && $formVars['hw_primary'] == 1) {
 #      $q_string  = "select hw_built,hw_active,hw_retired,hw_reused,hw_vendorid from hardware ";
 #      $q_string .= "where hw_id = " . $formVars['id'];
-#      $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+#      $q_hardware = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 #      $a_hardware = mysql_fetch_array($q_hardware);
 
 # get model info as well to make sure she's not notified of virtual machine activity.
@@ -209,7 +209,7 @@
 #      if ($a_hardware['hw_active'] == '0000-00-00' && $formVars['hw_active'] != '0000-00-00') {
 #
 #        $q_string = "select inv_name from inventory where inv_id = " . $formVars['hw_companyid'];
-#        $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+#        $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 #        $a_inventory = mysql_fetch_array($q_inventory);
 #
 #        $headers  = "From: Inventory DB <root@" . $Sitehttp . ">\r\n";
@@ -227,7 +227,7 @@
 
 # send e-mail to Lynda Lilly
 #      $q_string = "select usr_email from users where usr_id = 13";
-#      $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+#      $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 #      $a_users = mysql_fetch_array($q_users);
 #
 #      mail($a_users['usr_email'], "Inventory: Production System Active", $body, $headers);
@@ -243,7 +243,7 @@
           $q_string  = "select hw_type,hw_vendorid,hw_speed,hw_supportid,hw_size,hw_primary ";
           $q_string .= "from hardware ";
           $q_string .= "where hw_companyid = " . $formVars['copyfrom'];
-          $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_hardware = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
           while ($a_hardware = mysql_fetch_array($q_hardware)) {
 
             $q_string =
@@ -258,7 +258,7 @@
               "hw_primary   =   " . $a_hardware['hw_primary'];
 
             $query = "insert into hardware set hw_id = NULL, " . $q_string;
-            mysql_query($query) or die($query . ": " . mysql_error());
+            mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
           }
         }
       }
@@ -285,7 +285,7 @@
         $q_string .= "from inventory ";
         $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name";
-        $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         while ($a_inventory = mysql_fetch_array($q_inventory)) {
           $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . "</option>\n";
         }
@@ -310,7 +310,7 @@
         $q_string  = "select part_id,part_name ";
         $q_string .= "from parts ";
         $q_string .= "order by part_name ";
-        $q_parts = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_parts = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         while ($a_parts = mysql_fetch_array($q_parts)) {
           $output .= "<option value=\"" . $a_parts['part_id'] . "\">" . $a_parts['part_name'] . "</option>\n";
         }
@@ -336,7 +336,7 @@
         $q_string  = "select sup_id,sup_company,sup_contract ";
         $q_string .= "from support ";
         $q_string .= "order by sup_company,sup_contract ";
-        $q_support = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_support = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         while  ($a_support = mysql_fetch_array($q_support)) {
           $output .= "<option value=\"" . $a_support['sup_id'] . "\">" . $a_support['sup_company'] . " (" . $a_support['sup_contract'] . ")</option>\n";
         }
@@ -348,7 +348,7 @@
         $q_string  = "select slv_id,slv_value ";
         $q_string .= "from supportlevel ";
         $q_string .= "order by slv_value";
-        $q_supportlevel = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_supportlevel = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         while ($a_supportlevel = mysql_fetch_array($q_supportlevel)) {
           $output .= "<option value=\"" . $a_supportlevel['slv_id'] . "\">" . $a_supportlevel['slv_value'] . "</option>\n";
         }
@@ -371,7 +371,7 @@
         $q_string .= "from hardware ";
         $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
         $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = 0 ";
-        $q_hwselect = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_hwselect = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         while ($a_hwselect = mysql_fetch_array($q_hwselect)) {
           $output .= "<option value=\"" . $a_hwselect['hw_id'] . "\">" . $a_hwselect['mod_vendor'] . ": " . $a_hwselect['mod_name'] . "</option>\n";
         }
@@ -384,7 +384,7 @@
         $q_string .= "from hardware ";
         $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
         $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and mod_name like \"RAID%\" ";
-        $q_hwselect = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_hwselect = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         while ($a_hwselect = mysql_fetch_array($q_hwselect)) {
           $output .= "<option value=\"" . $a_hwselect['hw_id'] . "\">" . $a_hwselect['hw_asset'] . $a_hwselect['hw_serial'] . " " . $a_hwselect['mod_name'] . "</option>\n";
         }
@@ -435,7 +435,7 @@
       $q_string .= "from hardware ";
       $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
       $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = 0 ";
-      $q_hwselect = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_hwselect = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
 # create the javascript bit for populating the hardware dropdown box.
       while ($a_hwselect = mysql_fetch_array($q_hwselect)) {
@@ -453,7 +453,7 @@
       $q_string .= "from hardware ";
       $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
       $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and mod_name like \"RAID%\" ";
-      $q_hwselect = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_hwselect = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
 # create the javascript bit for populating the model dropdown box.
       while ($a_hwselect = mysql_fetch_array($q_hwselect)) {
@@ -516,7 +516,7 @@
       $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
       $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = 0 and hw_hd_id = 0 ";
       $q_string .= "order by hw_type,hw_size,hw_vendorid,hw_serial,hw_asset ";
-      $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_hardware = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_hardware) > 0) {
         while ($a_hardware = mysql_fetch_array($q_hardware)) {
 
@@ -577,7 +577,7 @@
           $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
           $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " and hw_hd_id = 0 ";
           $q_string .= "order by hw_type,hw_size,hw_vendorid,hw_serial,hw_asset ";
-          $q_hwselect = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_hwselect = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
           if (mysql_num_rows($q_hwselect) > 0) {
             while ($a_hwselect = mysql_fetch_array($q_hwselect)) {
 
@@ -639,7 +639,7 @@
               $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
               $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " and hw_hd_id = " . $a_hwselect['hw_id'] . " ";
               $q_string .= "order by hw_type,hw_size,hw_vendorid,hw_serial,hw_asset ";
-              $q_hwdisk = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+              $q_hwdisk = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
               if (mysql_num_rows($q_hwdisk) > 0) {
                 while ($a_hwdisk = mysql_fetch_array($q_hwdisk)) {
 
