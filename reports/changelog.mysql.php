@@ -21,14 +21,14 @@
   $q_string = "select cl_name "
             . "from changelog "
             . "where cl_id = " . $formVars['id'];
-  $q_changelog = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_changelog = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   $a_changelog = mysql_fetch_array($q_changelog);
 
   $grpcount = 0;
   $q_string = "select grp_changelog,grp_clfile "
             . "from groups "
             . "where grp_changelog != ''";
-  $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_groups = mysql_fetch_array($q_groups)) {
     $grouplist[$grpcount] = $a_groups['grp_changelog'];
     $filename[$grpcount++] = "." . $a_groups['grp_clfile'];
