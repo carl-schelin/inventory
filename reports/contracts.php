@@ -242,7 +242,7 @@ $(document).ready( function() {
   $q_string .= "left join states       on states.st_id          = locations.loc_state ";
   $q_string .= $where . " and inv_status = 0 and hw_supid_verified = 1 ";
   $q_string .= $orderby;
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
   while ( $a_inventory = mysql_fetch_array($q_inventory) ) {
     $class = "ui-widget-content";
@@ -256,13 +256,13 @@ $(document).ready( function() {
     $q_string  = "select slv_value ";
     $q_string .= "from supportlevel ";
     $q_string .= "where slv_id = " . $a_inventory['inv_response'] . " ";
-    $q_supportlevel = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_supportlevel = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
     $a_supportlevel = mysql_fetch_array($q_supportlevel);
 
     $q_string  = "select usr_first,usr_last ";
     $q_string .= "from users ";
     $q_string .= "where usr_id = " . $a_inventory['hw_custodian'] . " ";
-    $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
     if (mysql_num_rows($q_users) > 0) {
       $a_users = mysql_fetch_array($q_users);
       $custodian = $a_users['usr_first'] . " " . $a_users['usr_last'];
@@ -273,7 +273,7 @@ $(document).ready( function() {
     $q_string  = "select usr_first,usr_last ";
     $q_string .= "from users ";
     $q_string .= "where usr_id = " . $a_inventory['hw_buc'] . " ";
-    $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
     if (mysql_num_rows($q_users) > 0) {
       $a_users = mysql_fetch_array($q_users);
       $buc = $a_users['usr_first'] . " " . $a_users['usr_last'];
@@ -284,7 +284,7 @@ $(document).ready( function() {
     $q_string  = "select bus_name ";
     $q_string .= "from business_unit ";
     $q_string .= "where bus_id = " . $a_inventory['hw_business'] . " ";
-    $q_business_unit = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_business_unit = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
     if (mysql_num_rows($q_business_unit) > 0) {
       $a_business_unit = mysql_fetch_array($q_business_unit);
       $business_unit = $a_business_unit['bus_name'];
@@ -295,7 +295,7 @@ $(document).ready( function() {
     $q_string  = "select po_number ";
     $q_string .= "from purchaseorder ";
     $q_string .= "where po_id = " . $a_inventory['hw_poid'] . " ";
-    $q_purchaseorder = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_purchaseorder = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
     if (mysql_num_rows($q_purchaseorder) > 0) {
       $a_purchaseorder = mysql_fetch_array($q_purchaseorder);
       $purchaseorder = $a_purchaseorder['po_number'];
@@ -306,7 +306,7 @@ $(document).ready( function() {
     $q_string  = "select dep_name ";
     $q_string .= "from department ";
     $q_string .= "where dep_unit = " . $a_inventory['hw_business'] . " and dep_dept = " . $a_inventory['hw_dept'] . " ";
-    $q_department = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_department = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
     if (mysql_num_rows($q_department) > 0) {
       $a_department = mysql_fetch_array($q_department);
       $department = $a_department['dep_name'];
@@ -318,7 +318,7 @@ $(document).ready( function() {
       $q_string  = "select prod_name ";
       $q_string .= "from products ";
       $q_string .= "where prod_id = " . $a_inventory['hw_product'] . " ";
-      $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_products = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_products) > 0) {
         $a_products = mysql_fetch_array($q_products);
         $products = $a_products['prod_name'];
