@@ -107,7 +107,7 @@ $(document).ready( function() {
       $q_string  = "select alarm_level ";
       $q_string .= "from alarms ";
       $q_string .= "where alarm_timestamp < '" . $ptryear . "-" . $ptrmon . "-31' and alarm_timestamp > '" . $ptryear . "-" . $ptrmon . "-01' ";
-      $q_alarms = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_alarms = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       while ($a_alarms = mysql_fetch_array($q_alarms)) {
 
         if ($a_alarms['alarm_level'] == 5) {
