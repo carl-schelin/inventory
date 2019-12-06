@@ -17,7 +17,7 @@
   $q_string  = "select inv_id ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_name = \"" . $formVars['server'] . "\" and inv_status = 0";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
 # search for the name in the database of live servers
 # if the server is found then leave it at the default
