@@ -25,7 +25,7 @@
       $q_string  = "select tag_name,tag_view ";
       $q_string .= "from tags ";
       $q_string .= "where tag_id = " . $formVars['id'];
-      $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_tags = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_tags = mysql_fetch_array($q_tags);
       mysql_free_result($q_tags);
 
