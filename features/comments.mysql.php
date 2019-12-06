@@ -69,7 +69,7 @@
       $q_string  = "select feat_closed ";
       $q_string .= "from features ";
       $q_string .= "where feat_id = " . $formVars['id'];
-      $q_features = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_features = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_features = mysql_fetch_array($q_features);
 
 
@@ -118,7 +118,7 @@
       $q_string .= "left join users on users.usr_id = features_detail.feat_user ";
       $q_string .= "where feat_feat_id = " . $formVars['id'] . " ";
       $q_string .= "order by feat_timestamp desc ";
-      $q_features_detail = mysql_query($q_string) or die ($q_string . ": " . mysql_error());
+      $q_features_detail = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       while ($a_features_detail = mysql_fetch_array($q_features_detail)) {
 
         if ($a_features['feat_closed'] == '0000-00-00') {
