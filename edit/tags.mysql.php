@@ -57,7 +57,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['tag_name']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -72,7 +72,7 @@
           $q_string  = "select tag_name,tag_view,tag_owner,tag_group ";
           $q_string .= "from tags ";
           $q_string .= "where tag_companyid = " . $formVars['copyfrom'] . " and tag_view = " . $a_tags['tag_view'] . " ";
-          $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_tags = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
           while ($a_tags = mysql_fetch_array($q_tags)) {
 
             $q_string =
@@ -83,7 +83,7 @@
               "tag_group       =   " . $a_firewall['tag_group'];
 
             $query = "insert into tags set tag_id = NULL, " . $q_string;
-            mysql_query($query) or die($query . ": " . mysql_error());
+            mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
           }
         }
       }
@@ -110,7 +110,7 @@
         $q_string .= "from inventory ";
         $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name";
-        $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         while ($a_inventory = mysql_fetch_array($q_inventory)) {
           $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . "</option>\n";
         }
@@ -136,7 +136,7 @@
         $q_string .= "from tags ";
         $q_string .= "where tag_view = 0 and tag_owner = " . $_SESSION['uid'] . " ";
         $q_string .= "group by tag_name ";
-        $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_tags = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         while ($a_tags = mysql_fetch_array($q_tags)) {
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('tags.fill.php?id="  . $a_tags['tag_id'] . "');\">";
           $linkend   = "</a>";
@@ -155,7 +155,7 @@
         $q_string .= "from tags ";
         $q_string .= "where tag_view = 1 and tag_group = " . $_SESSION['group'] . " ";
         $q_string .= "group by tag_name ";
-        $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_tags = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         while ($a_tags = mysql_fetch_array($q_tags)) {
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('tags.fill.php?id="  . $a_tags['tag_id'] . "');\">";
           $linkend   = "</a>";
@@ -174,7 +174,7 @@
         $q_string .= "from tags ";
         $q_string .= "where tag_view = 2 ";
         $q_string .= "group by tag_name ";
-        $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_tags = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         while ($a_tags = mysql_fetch_array($q_tags)) {
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('tags.fill.php?id="  . $a_tags['tag_id'] . "');\">";
           $linkend   = "</a>";
@@ -237,7 +237,7 @@
       $q_string .= "left join users on users.usr_id = tags.tag_owner ";
       $q_string .= "where tag_companyid = " . $formVars['tag_companyid'] . " ";
       $q_string .= "order by tag_view,tag_name";
-      $q_tags = mysql_query($q_string) or die ($q_string . ": " . mysql_error());
+      $q_tags = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_tags) > 0) {
         while ($a_tags = mysql_fetch_array($q_tags)) {
 
