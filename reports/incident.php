@@ -229,7 +229,7 @@
             . "left join groups    on groups.grp_id         = inventory.inv_manager "
             . $where . " " 
             . $orderby;
-  $q_inventory = mysql_query($q_string) or die(mysql_error());
+  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   if (mysql_num_rows($q_inventory) > 0) {
     while ($a_inventory = mysql_fetch_array($q_inventory) ) {
 
