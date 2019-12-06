@@ -25,7 +25,7 @@
       $q_string  = "select fs_backup,fs_device,fs_mount,fs_size,fs_wwid,fs_subsystem,fs_lun,fs_volume,fs_volid,fs_path ";
       $q_string .= "from filesystem ";
       $q_string .= "where fs_id = " . $formVars['id'];
-      $q_filesystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_filesystem = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_filesystem = mysql_fetch_array($q_filesystem);
       mysql_free_result($q_filesystem);
 
