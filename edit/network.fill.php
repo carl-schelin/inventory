@@ -30,7 +30,7 @@
       $q_string .= "int_cfg2html,int_notify,int_hours,int_domain ";
       $q_string .= "from interface ";
       $q_string .= "where int_id = " . $formVars['id'];
-      $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_interface = mysql_fetch_array($q_interface);
       mysql_free_result($q_interface);
 
