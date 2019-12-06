@@ -102,7 +102,7 @@ is managed by the Windows team. The other domains are managed by the Unix team.<
   $q_string .= "from inventory ";
   $q_string .= "where inv_status = 0 and inv_adzone != '' ";
   $q_string .= $orderby;
-  $q_inventory = mysql_query($q_string) or die(mysql_error());
+  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ( $a_inventory = mysql_fetch_array($q_inventory) ) {
 
     $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\">";
