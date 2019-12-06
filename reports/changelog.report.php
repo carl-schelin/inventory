@@ -127,7 +127,7 @@ $(document).ready( function() {
   $q_string  = "select grp_changelog,grp_clfile ";
   $q_string .= "from groups ";
   $q_string .= "where grp_changelog != ''";
-  $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_groups = mysql_fetch_array($q_groups)) {
     $grouplist[$grpcount] = $a_groups['grp_changelog'];
     $filename[$grpcount++] = "." . $a_groups['grp_clfile'];
@@ -144,7 +144,7 @@ $(document).ready( function() {
     $q_string  = "select inv_name ";
     $q_string .= "from inventory ";
     $q_string .= "where inv_status = 0 ";
-    $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
     while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
       if (file_exists( $Sitedir . "/" . $grouplist[$i] . "/" . $a_inventory['inv_name'] . $filename[$i])) {
@@ -245,7 +245,7 @@ $(document).ready( function() {
     $q_string  = "select cl_name ";
     $q_string .= "from changelog ";
     $q_string .= "where cl_delete = 0 ";
-    $q_changelog = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_changelog = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
     while ($a_changelog = mysql_fetch_array($q_changelog)) {
 
       if (file_exists( $Sitedir . "/" . $grouplist[$i] . "/" . $a_changelog['cl_name'] . $filename[$i])) {
