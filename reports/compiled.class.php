@@ -209,7 +209,7 @@ $(document).ready( function() {
   $q_string .= "left join service   on service.svc_id   = inventory.inv_class ";
   $q_string .= $where . " and sw_type = 'OS' ";
   $q_string .= $orderby;
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
     $class = " class=\"ui-widget-content\"";
@@ -289,7 +289,7 @@ $(document).ready( function() {
   $q_string .= "left join service   on service.svc_id   = inventory.inv_class ";
   $q_string .= $where . " and hw_primary = 1 and hw_deleted = 0 ";
   $q_string .= $orderby;
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
     $class = " class=\"ui-widget-content\"";
