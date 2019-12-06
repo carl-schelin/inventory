@@ -25,7 +25,7 @@
       $q_string  = "select feat_discovered,feat_closed,feat_subject ";
       $q_string .= "from features ";
       $q_string .= "where feat_id = " . $formVars['id'];
-      $q_features = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_features = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_features = mysql_fetch_array($q_features);
 
       print "document.start.feat_discovered.value = '" . mysql_real_escape_string($a_features['feat_discovered']) . "';\n";
