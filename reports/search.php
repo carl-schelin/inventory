@@ -166,14 +166,14 @@
         $q_string .= "where inv_status = 0 and " . $search_on . " ";
       }
       $q_string .= $orderby;
-      $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_interface) > 0) {
         while ($a_interface = mysql_fetch_array($q_interface)) {
 
           $q_string  = "select grp_name ";
           $q_string .= "from groups ";
           $q_string .= "where grp_id = " . $a_interface['inv_appadmin'] . " ";
-          $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
           $a_groups = mysql_fetch_array($q_groups);
 
           $editstart     = "<a href=\"" . $Editroot   . "/inventory.php?server=" . $a_interface['int_companyid'] . "\" target=\"_blank\">" . $editpencil . "</a> ";
@@ -263,7 +263,7 @@
       $q_string .= "left join inttype on inttype.itp_id = rsdp_interface.if_type ";
       $q_string .= "where if_name like \"%" . $formVars['search_for'] . "%\" or if_ip like \"%" . $formVars['search_for'] . "%\" ";
       $q_string .= "order by if_name ";
-      $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_rsdp_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_rsdp_interface) > 0) {
         while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
 
@@ -271,7 +271,7 @@
             $q_string  = "select grp_name ";
             $q_string .= "from groups ";
             $q_string .= "where grp_id = " . $a_rsdp_interface['rsdp_application'] . " ";
-            $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
             $a_groups = mysql_fetch_array($q_groups);
           }
 
@@ -400,14 +400,14 @@
         $q_string .= "where inv_status = 0 and " . $search_on . " ";
       }
       $q_string .= $orderby;
-      $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_interface) > 0) {
         while ($a_interface = mysql_fetch_array($q_interface)) {
 
           $q_string  = "select grp_name ";
           $q_string .= "from groups ";
           $q_string .= "where grp_id = " . $a_interface['inv_appadmin'] . " ";
-          $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
           $a_groups = mysql_fetch_array($q_groups);
 
           $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_interface['int_companyid'] . "\" target=\"_blank\">";
@@ -540,7 +540,7 @@
         $q_string .= "where inv_status = 0 and " . $search_on . " ";
       }
       $q_string .= $orderby;
-      $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_software = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_software) > 0) {
         while ($a_software = mysql_fetch_array($q_software)) {
 
@@ -681,7 +681,7 @@
         $q_string .= "where inv_status = 0 and " . $search_on . " ";
       }
       $q_string .= $orderby;
-      $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_hardware = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_hardware) > 0) {
         while ($a_hardware = mysql_fetch_array($q_hardware)) {
 
@@ -814,7 +814,7 @@
       $q_string .= "left join groups    on groups.grp_id    = inventory.inv_manager ";
       $q_string .= "where " . $search_on . " ";
       $q_string .= $orderby;
-      $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_hardware = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_hardware) > 0) {
         while ($a_hardware = mysql_fetch_array($q_hardware)) {
 
@@ -951,7 +951,7 @@
         $q_string .= "where inv_status = 0 and " . $search_on . " ";
       }
       $q_string .= $orderby;
-      $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_inventory) > 0) {
         while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
@@ -1078,14 +1078,14 @@
         $q_string .= "where inv_status = 0 and " . $search_on . " ";
       }
       $q_string .= $orderby;
-      $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_inventory) > 0) {
         while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
           $q_string  = "select grp_name ";
           $q_string .= "from groups ";
           $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
-          $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
           $a_groups = mysql_fetch_array($q_groups);
 
           $groups = '';
@@ -1093,7 +1093,7 @@
           $q_string .= "from sysgrp_members ";
           $q_string .= "left join sysgrp on sysgrp.grp_id = sysgrp_members.mem_gid ";
           $q_string .= "where mem_uid = " . $a_inventory['pwd_id'] . " ";
-          $q_sysgrp_members = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_sysgrp_members = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
           while ($a_sysgrp_members = mysql_fetch_array($q_sysgrp_members)) {
             $groups .= " " . $a_sysgrp_members['grp_name'];
           }
@@ -1158,14 +1158,14 @@
           $q_string .= "where inv_status = 0 and " . $search_on . " ";
         }
         $q_string .= str_replace('order by ', 'order by pwd_user,', $orderby);
-        $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         if (mysql_num_rows($q_inventory) > 0) {
           while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
             $q_string  = "select grp_name ";
             $q_string .= "from groups ";
             $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
-            $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
             $a_groups = mysql_fetch_array($q_groups);
 
             $groups = '';
@@ -1176,7 +1176,7 @@
             $q_string .= "from sysgrp_members ";
             $q_string .= "left join sysgrp on sysgrp.grp_id = sysgrp_members.mem_gid ";
             $q_string .= "where mem_uid = " . $a_inventory['pwd_id'] . " ";
-            $q_sysgrp_members = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $q_sysgrp_members = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
             while ($a_sysgrp_members = mysql_fetch_array($q_sysgrp_members)) {
               $groups .= " " . $a_sysgrp_members['grp_name'];
             }
@@ -1317,7 +1317,7 @@
         $q_string .= "where inv_status = 0 and " . $search_on . " ";
       }
       $q_string .= $orderby;
-      $q_packages = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_packages = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_packages) > 0) {
         while ($a_packages = mysql_fetch_array($q_packages)) {
 
@@ -1333,7 +1333,7 @@
           $q_string  = "select grp_name ";
           $q_string .= "from groups ";
           $q_string .= "where grp_id = " . $a_packages['inv_appadmin'] . " ";
-          $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
           $a_groups = mysql_fetch_array($q_groups);
 
           if ($formVars['csv']) {
