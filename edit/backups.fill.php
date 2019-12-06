@@ -27,7 +27,7 @@
       $q_string .= "bu_suntime,bu_montime,bu_tuetime,bu_wedtime,bu_thutime,bu_fritime,bu_sattime,bu_notes ";
       $q_string .= "from backups ";
       $q_string .= "where bu_companyid = " . $formVars['id'];
-      $q_backups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_backups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_backups = mysql_fetch_array($q_backups);
 
       if (mysql_num_rows($q_backups) > 0) {
