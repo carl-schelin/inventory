@@ -26,7 +26,7 @@
       $q_string  = "select com_text,com_timestamp,com_user ";
       $q_string .= "from comments ";
       $q_string .= "where com_id = " . $formVars['id'];
-      $q_comments = mysql_query($q_string) or die (mysql_error());
+      $q_comments = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_comments = mysql_fetch_array($q_comments);
       mysql_free_result($q_comments);
 
