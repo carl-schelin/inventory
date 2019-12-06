@@ -85,7 +85,7 @@
 
   $q_string  = "select zone_id,zone_name ";
   $q_string .= "from ip_zones";
-  $q_ip_zones = mysql_query($q_string) or die($q_string . ': ' . mysql_error());
+  $q_ip_zones = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_ip_zones = mysql_fetch_array($q_ip_zones)) {
     $zoneval[$a_ip_zones['zone_id']] = $a_ip_zones['zone_name'];
   }
@@ -135,7 +135,7 @@ function flip_Bit( p_id, p_bit ) {
 
   $q_string  = "select itp_id,itp_acronym ";
   $q_string .= "from inttype ";
-  $q_inttype = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_inttype = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_inttype = mysql_fetch_array($q_inttype)) {
     $inttype[$a_inttype['itp_id']] = $a_inttype['itp_acronym'];
   }
@@ -247,7 +247,7 @@ monitoring checkbox for the server interface that was identified as being monito
   $q_string .= "order by alarm_timestamp ";
   $q_string .= "desc ";
   $q_string .= "limit 1 ";
-  $q_alarms = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_alarms = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   $a_alarms = mysql_fetch_array($q_alarms);
   $alarm_baseline = $a_alarms['alarm_timestamp'];
 
@@ -286,7 +286,7 @@ monitoring checkbox for the server interface that was identified as being monito
   $q_string .= "left join service on service.svc_id = inventory.inv_class ";
   $q_string .= $where . " and int_openview = 1 and hw_primary = 1 and int_ip6 = 0 ";
   $q_string .= $orderby;
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   if (mysql_num_rows($q_inventory) > 0) {
     while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
@@ -301,7 +301,7 @@ monitoring checkbox for the server interface that was identified as being monito
       $q_string .= "from alarms ";
       $q_string .= "where alarm_timestamp > '" . $date . "' and alarm_companyid = " . $a_inventory['inv_id'] . " ";
       $q_string .= "limit 1 ";
-      $q_alarms = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_alarms = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_alarms) == 0) {
       
         $class = "ui-state-highlight";
@@ -313,7 +313,7 @@ monitoring checkbox for the server interface that was identified as being monito
         $q_string .= "order by alarm_timestamp ";
         $q_string .= "desc ";
         $q_string .= "limit 1 ";
-        $q_alarmtext = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_alarmtext = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         if (mysql_num_rows($q_alarmtext) > 0) {
           $a_alarmtext = mysql_fetch_array($q_alarmtext);
           $test_alarm = $a_alarmtext['alarm_timestamp'];
@@ -326,7 +326,7 @@ monitoring checkbox for the server interface that was identified as being monito
         $q_string .= "order by alarm_timestamp ";
         $q_string .= "desc ";
         $q_string .= "limit 1 ";
-        $q_alarmtext = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_alarmtext = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         if (mysql_num_rows($q_alarmtext) > 0) {
           $a_alarmtext = mysql_fetch_array($q_alarmtext);
           if ($alarm_baseline < $a_alarmtext['alarm_timestamp']) {
