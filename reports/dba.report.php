@@ -143,7 +143,7 @@
   $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
   $q_string .= $where;
   $q_string .= "order by inv_name";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
@@ -155,7 +155,7 @@
     $q_string .= "left join inttype on inttype.itp_id = interface.int_type ";
     $q_string .= "where int_companyid = " . $a_inventory['sw_companyid'] . " and int_type != 7 and int_type != 6 and int_addr != '' and int_ip6 = 0 ";
     $q_string .= "order by itp_acronym ";
-    $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
     while ($a_interface = mysql_fetch_array($q_interface)) {
       $interface .= $a_interface['itp_acronym'] . "=" . $a_interface['int_addr'] . " ";
     }
@@ -163,7 +163,7 @@
     $q_string  = "select sw_software ";
     $q_string .= "from software ";
     $q_string .= "where sw_type = 'OS' and sw_companyid = " . $a_inventory['sw_companyid'];
-    $q_os = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_os = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
     $a_os = mysql_fetch_array($q_os);
 
     $instances = "";
@@ -172,7 +172,7 @@
     $q_string .= "from software ";
     $q_string .= "where sw_type = 'Instance' and sw_companyid = " . $a_inventory['sw_companyid'] . " ";
     $q_string .= "order by sw_software";
-    $q_instance = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_instance = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
     while ($a_instance = mysql_fetch_array($q_instance)) {
       $instances .= $comma . $a_instance['sw_software'];
       $comma = ", ";
@@ -181,14 +181,14 @@
     $q_string  = "select hw_vendorid ";
     $q_string .= "from hardware ";
     $q_string .= "where hw_companyid = " . $a_inventory['sw_companyid'] . " and hw_type = 15 ";
-    $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_hardware = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
     $a_hardware = mysql_fetch_array($q_hardware);
 
     if ($a_hardware['hw_vendorid'] != '') {
       $q_string  = "select mod_name ";
       $q_string .= "from models ";
       $q_string .= "where mod_id = " . $a_hardware['hw_vendorid'];
-      $q_models = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_models = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_models = mysql_fetch_array($q_models);
     }
 
