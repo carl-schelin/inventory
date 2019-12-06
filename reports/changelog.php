@@ -108,7 +108,7 @@
   $q_string .= "left join groups on groups.grp_id = changelog.cl_group ";
   $q_string .= $where . " ";
   $q_string .= $orderby;
-  $q_changelog = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_changelog = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   if (mysql_num_rows($q_changelog) > 0) {
     while ($a_changelog = mysql_fetch_array($q_changelog)) {
 
