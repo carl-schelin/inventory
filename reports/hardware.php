@@ -193,7 +193,7 @@
   $q_string .= "left join products  on products.prod_id = hardware.hw_product ";
   $q_string .= $where;
   $q_string .= $orderby;
-  $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_hardware = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_hardware = mysql_fetch_array($q_hardware)) {
 
     if ($a_hardware['hw_deleted'] == 1) {
