@@ -62,7 +62,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['fs_companyid']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -77,7 +77,7 @@
           $q_string  = "select fs_backup,fs_device,fs_mount,fs_size,fs_wwid,fs_subsystem,fs_volume,fs_lun,fs_volid,fs_path,fs_switch,fs_port,fs_sysport ";
           $q_string .= "from filesystem ";
           $q_string .= "where fs_companyid = " . $formVars['copyfrom'];
-          $q_filesystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_filesystem = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
           while ($a_filesystem = mysql_fetch_array($q_filesystem)) {
 
             $q_string = 
@@ -97,7 +97,7 @@
               "fs_sysport   = \"" . $a_filesystem['fs_sysport']   . "\"";
 
             $query = "insert into filesystem set fs_id = NULL, " . $q_string;
-            mysql_query($query) or die($query . ": " . mysql_error());
+            mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
           }
         }
       }
@@ -121,7 +121,7 @@
         $q_string .= "from inventory ";
         $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name";
-        $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         while ($a_inventory = mysql_fetch_array($q_inventory)) {
           $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . htmlspecialchars($a_inventory['inv_name']) . "</option>\n";
         }
@@ -181,14 +181,14 @@
       $q_string  = "select inv_name ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_id = " . $formVars['ret_companyid'] . " ";
-      $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_inventory = mysql_fetch_array($q_inventory);
       $output .= "Server Name: " . $a_inventory['inv_name'] . "<br>\n";
       $output .= "----------<br>\n";
       $q_string  = "select int_server,int_addr ";
       $q_string .= "from interface ";
       $q_string .= "where int_companyid = " . $formVars['ret_companyid'] . " ";
-      $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       while ($a_interface = mysql_fetch_array($q_interface)) {
         if ($a_interface['int_addr'] != '' && $a_interface['int_server'] != 'localhost') {
           $output .= $a_interface['int_server'] . " - " . $a_interface['int_addr'] . "<br>\n";
@@ -208,14 +208,14 @@
       $q_string  = "select inv_name ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_id = " . $formVars['ret_companyid'] . " ";
-      $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_inventory = mysql_fetch_array($q_inventory);
       $output .= "Server Name: " . $a_inventory['inv_name'] . "<br>\n";
       $output .= "----------<br>\n";
       $q_string  = "select int_server,int_addr ";
       $q_string .= "from interface ";
       $q_string .= "where int_companyid = " . $formVars['ret_companyid'] . " ";
-      $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       while ($a_interface = mysql_fetch_array($q_interface)) {
         if ($a_interface['int_addr'] != '' && $a_interface['int_server'] != 'localhost') {
           $output .= $a_interface['int_server'] . " - " . $a_interface['int_addr'] . "<br>\n";
@@ -235,7 +235,7 @@
       $q_string  = "select int_server,int_addr ";
       $q_string .= "from interface ";
       $q_string .= "where int_companyid = " . $formVars['ret_companyid'] . " ";
-      $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       while ($a_interface = mysql_fetch_array($q_interface)) {
         if ($a_interface['int_addr'] != '' && $a_interface['int_server'] != 'localhost') {
           $output .= $a_interface['int_server'] . " - " . $a_interface['int_addr'] . "<br>\n";
@@ -255,7 +255,7 @@
       $q_string  = "select int_server,int_addr ";
       $q_string .= "from interface ";
       $q_string .= "where int_companyid = " . $formVars['ret_companyid'] . " ";
-      $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       while ($a_interface = mysql_fetch_array($q_interface)) {
         if ($a_interface['int_addr'] != '' && $a_interface['int_server'] != 'localhost') {
           $output .= $a_interface['int_server'] . " - " . $a_interface['int_addr'] . "<br>\n";
@@ -276,7 +276,7 @@
       $q_string .= "from interface ";
       $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
       $q_string .= "where int_companyid = " . $formVars['ret_companyid'] . " ";
-      $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       while ($a_interface = mysql_fetch_array($q_interface)) {
         if ($a_interface['int_addr'] != '' && $a_interface['int_server'] != 'localhost') {
           $output .= $a_interface['int_server'] . "." . $a_interface['int_domain'] . " - " . $a_interface['int_addr'] . "<br>\n";
@@ -297,7 +297,7 @@
       $q_string .= "from interface ";
       $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
       $q_string .= "where int_companyid = " . $formVars['ret_companyid'] . " ";
-      $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       while ($a_interface = mysql_fetch_array($q_interface)) {
         if ($a_interface['int_addr'] != '' && $a_interface['int_server'] != 'localhost') {
           $output .= $a_interface['int_server'] . "." . $a_interface['int_domain'] . " - " . $a_interface['int_addr'] . "<br>\n";
@@ -321,7 +321,7 @@
       $q_string .= "left join models   on models.mod_id         = hardware.hw_vendorid ";
       $q_string .= "left join locations   on locations.loc_id         = inventory.inv_location ";
       $q_string .= "where inv_id = " . $formVars['ret_companyid'] . " ";
-      $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_inventory = mysql_fetch_array($q_inventory);
 
 
@@ -340,7 +340,7 @@
       $q_string  = "select inv_name ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_id = " . $formVars['ret_companyid'] . " ";
-      $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_inventory = mysql_fetch_array($q_inventory);
       $output .= $a_inventory['inv_name'] . "<br>\n";
       $output .= "</td>\n";
@@ -357,7 +357,7 @@
       $q_string  = "select inv_name ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_id = " . $formVars['ret_companyid'] . " ";
-      $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_inventory = mysql_fetch_array($q_inventory);
       $output .= $a_inventory['inv_name'] . "<br>\n";
       $output .= "</tr>\n";
