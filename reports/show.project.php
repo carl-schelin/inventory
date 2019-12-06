@@ -18,13 +18,13 @@
   $q_string  = "select prj_name,prj_product ";
   $q_string .= "from projects ";
   $q_string .= "where prj_id = " . $formVars['id'] . " ";
-  $q_projects = mysql_query($q_string) or die(mysql_error());
+  $q_projects = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   $a_projects = mysql_fetch_array($q_projects);
 
   $q_string  = "select prod_name ";
   $q_string .= "from products ";
   $q_string .= "where prod_id = " . $a_projects['prj_product'] . " ";
-  $q_products = mysql_query($q_string) or die(mysql_error());
+  $q_products = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   $a_products = mysql_fetch_array($q_products);
 
 # if help has not been seen yet,
@@ -130,7 +130,7 @@ $(document).ready( function() {
   $q_string .= "left join models on hardware.hw_vendorid = models.mod_id ";
   $q_string .= "where inv_project = " . $formVars['id'] . " and inv_status = 0 and hw_primary = 1 ";
   $q_string .= "order by inv_name";
-  $q_hardware = mysql_query($q_string) or die (mysql_error());
+  $q_hardware = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_hardware = mysql_fetch_array($q_hardware)) {
 
     $ssh = "";
@@ -165,7 +165,7 @@ $(document).ready( function() {
 # this is the gather from all systems for the changelog part of the listing
     $grpcount = 0;
     $q_string = "select grp_changelog,grp_clfile from groups where grp_changelog != ''";
-    $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
     while ($a_groups = mysql_fetch_array($q_groups)) {
       $grouplist[$grpcount] = $a_groups['grp_changelog'];
       $filename[$grpcount++] = "." . $a_groups['grp_clfile'];
@@ -282,7 +282,7 @@ $(document).ready( function() {
   $q_string .= "left join groups on software.sw_group = groups.grp_id ";
   $q_string .= "where inv_project = " . $formVars['id'] . " and inv_status = 0 ";
   $q_string .= "order by inv_name,sw_software";
-  $q_software = mysql_query($q_string) or die(mysql_error());
+  $q_software = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_software = mysql_fetch_array($q_software)) {
 
     $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_software['sw_companyid'] . "\" target=\"_blank\">";
