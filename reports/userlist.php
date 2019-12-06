@@ -79,13 +79,13 @@
   $q_string .= "left join titles on titles.tit_id = users.usr_title ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_manager,usr_group,usr_last,usr_first ";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_users = mysql_fetch_array($q_users)) {
 
     $q_string  = "select usr_first,usr_last ";
     $q_string .= "from users ";
     $q_string .= "where usr_id = " . $a_users['usr_manager'] . " ";
-    $q_managers = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_managers = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
     $a_managers = mysql_fetch_array($q_managers);
 
     print "<tr>\n";
