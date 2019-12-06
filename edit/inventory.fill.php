@@ -28,7 +28,7 @@
       $q_string .= "       inv_mdow,inv_minterval,inv_product,inv_project,inv_department,inv_notes,inv_clusterid ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_id = " . $formVars['id'];
-      $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_inventory = mysql_fetch_array($q_inventory);
 
       if (mysql_num_rows($q_inventory) > 0) {
