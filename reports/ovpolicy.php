@@ -197,7 +197,7 @@
   $q_string .= "left join policy_description on policy_description.pd_id = policy.pol_description ";
   $q_string .= $where;
   $q_string .= $orderby;
-  $q_policy = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_policy = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   if (mysql_num_rows($q_policy) == 0) {
     print "<tr>";
     print "  <td" . $class . ">" . $a_policy['inv_name']       . "</td>";
