@@ -26,7 +26,7 @@
       $q_string .= "changelog ";
       $q_string .= "set cl_delete = 1,cl_whodel = " . $_SESSION['uid'] . " ";
       $q_string .= "where cl_id = " . $formVars['id'];
-      $insert = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $insert = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
       print "alert('Listing deleted.');\n";
 
