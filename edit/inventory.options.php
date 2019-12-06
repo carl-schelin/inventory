@@ -31,7 +31,7 @@
       $q_string  = "select inv_product,inv_project ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_id = " . $formVars['server'] . " ";
-      $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_inventory = mysql_fetch_array($q_inventory);
 
       print "var selbox = document.edit.inv_project;\n\n";
@@ -43,7 +43,7 @@
       $q_string .= "from projects ";
       $q_string .= "where prj_product = " . $formVars['product'] . " ";
       $q_string .= "order by prj_name ";
-      $q_projects = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_projects = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
 // create the javascript bit for populating the model dropdown box.
       while ($a_projects = mysql_fetch_array($q_projects) ) {
