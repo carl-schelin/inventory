@@ -25,7 +25,7 @@
       $q_string  = "delete ";
       $q_string .= "from software ";
       $q_string .= "where sw_id = " . $formVars['id'];
-      $insert = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $insert = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
       print "alert('Software deleted.');\n";
     } else {
