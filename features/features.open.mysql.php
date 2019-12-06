@@ -77,7 +77,7 @@
   $q_string .= "left join modules on modules.mod_id = features.feat_module ";
   $q_string .= "where feat_closed = '0000-00-00' " . $where;
   $q_string .= "order by feat_discovered desc,mod_name ";
-  $q_features = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_features = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   if (mysql_num_rows($q_features) > 0) {
     while ($a_features = mysql_fetch_array($q_features)) {
 
@@ -86,7 +86,7 @@
       $q_string .= "where feat_feat_id = " . $a_features['feat_id'] . " ";
       $q_string .= "order by feat_timestamp ";
       $q_string .= "limit 1 ";
-      $q_features_detail = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_features_detail = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_features_detail) > 0) {
         $a_features_detail = mysql_fetch_array($q_features_detail);
         $detail_time = explode(" ", $a_features_detail['feat_timestamp']);
