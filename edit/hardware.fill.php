@@ -27,7 +27,7 @@
       $q_string .= "hw_deleted,hw_note,hw_response,hw_supid_verified,hw_eolticket,hw_hw_id,hw_hd_id ";
       $q_string .= "from hardware ";
       $q_string .= "where hw_id = " . $formVars['id'];
-      $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_hardware = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_hardware = mysql_fetch_array($q_hardware);
       mysql_free_result($q_hardware);
 
@@ -40,7 +40,7 @@
       $q_string  = "select mod_id,mod_vendor,mod_name from models ";
       $q_string .= "where mod_type = " . $a_hardware['hw_type'] . " ";
       $q_string .= "order by mod_vendor,mod_name";
-      $q_models = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_models = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
 // create the javascript bit for populating the model dropdown box.
       while ($a_models = mysql_fetch_array($q_models) ) {
@@ -58,7 +58,7 @@
       $q_string .= "from hardware ";
       $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
       $q_string .= "where hw_companyid = " . $a_hardware['hw_companyid'] . " and hw_hw_id = 0 and hw_id != " . $formVars['id'] . " ";
-      $q_hwselect = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_hwselect = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
 # create the javascript bit for populating the hardware dropdown box.
       while ($a_hwselect = mysql_fetch_array($q_hwselect)) {
@@ -76,7 +76,7 @@
       $q_string .= "from hardware ";
       $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
       $q_string .= "where hw_companyid = " . $a_hardware['hw_companyid'] . " and mod_name like \"RAID%\" and hw_id != " . $formVars['id'] . " ";
-      $q_hwselect = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_hwselect = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
 # create the javascript bit for populating the model dropdown box.
       while ($a_hwselect = mysql_fetch_array($q_hwselect)) {
