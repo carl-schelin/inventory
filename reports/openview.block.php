@@ -39,7 +39,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['block_text']);
 
-          mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
           print "alert('Block added.');\n";
 
@@ -47,7 +47,7 @@
           $q_string .= "alarms ";
           $q_string .= "set alarm_disabled = 1 ";
           $q_string .= "where alarm_text like \"%" . $formVars['block_text'] . "%\"";
-          mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
           print "alert('Block replicated.');\n";
 
@@ -91,7 +91,7 @@
       $q_string  = "select block_id,block_text,usr_first,usr_last ";
       $q_string .= "from alarm_blocks ";
       $q_string .= "left join users on users.usr_id = alarm_blocks.block_user ";
-      $q_alarm_blocks = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_alarm_blocks = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       while ($a_alarm_blocks = mysql_fetch_array($q_alarm_blocks)) {
 
         $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_block('openview.del.php?id=" . $a_alarm_blocks['block_id'] . "');\">";
