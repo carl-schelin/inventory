@@ -174,7 +174,7 @@
   $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
   $q_string .= $where . " and sw_licenseid > 0 ";
   $q_string .= $orderby;
-  $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_software = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   if (mysql_num_rows($q_software) > 0) {
     while ($a_software = mysql_fetch_array($q_software)) {
 
