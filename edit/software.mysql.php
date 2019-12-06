@@ -96,7 +96,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['sw_companyid']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -111,7 +111,7 @@
           $q_string  = "select inv_appadmin ";
           $q_string .= "from inventory ";
           $q_string .= "where inv_id = " . $formVars['sw_companyid'];
-          $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
           $a_inventory = mysql_fetch_array($q_inventory);
 
 # so if you manage the system (inv_manager), copy everything. If you manage the applications (inv_appadmin), only copy the software managed by your group.
@@ -123,7 +123,7 @@
           if ($_SESSION['group'] == $a_inventory['inv_appadmin']) {
             $q_string .= " and sw_group = " . $_SESSION['group'] . " ";
           }
-          $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_software = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
           while ($a_software = mysql_fetch_array($q_software)) {
 
             $q_string =
@@ -143,7 +143,7 @@
                 "sw_primary      =   " . $a_software['sw_primary'];
 
             $query = "insert into software set sw_id = NULL, " . $q_string;
-            mysql_query($query) or die($query . ": " . mysql_error());
+            mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
           }
         }
       }
@@ -170,7 +170,7 @@
         $q_string .= "from inventory ";
         $q_string .= "where inv_status = 0 and (inv_manager = " . $_SESSION['group'] . " or inv_appadmin = " . $_SESSION['group'] . ") ";
         $q_string .= "order by inv_name";
-        $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         while ($a_inventory = mysql_fetch_array($q_inventory)) {
           $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . "</option>\n";
         }
@@ -191,7 +191,7 @@
         $q_string .= "from groups ";
         $q_string .= "where grp_disabled = 0 ";
         $q_string .= "order by grp_name";
-        $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         while ($a_groups = mysql_fetch_array($q_groups)) {
           if ($_SESSION['group'] == $a_groups['grp_id']) {
             $output .= "<option selected value=\"" . $a_groups['grp_id'] . "\">" . $a_groups['grp_name'] . "</option>\n";
@@ -211,7 +211,7 @@
         $q_string .= "from products ";
         $q_string .= "where prod_id != 0 ";
         $q_string .= "order by prod_name";
-        $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_products = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         while ($a_products = mysql_fetch_array($q_products)) {
           $output .= "<option value=\"" . $a_products['prod_id'] . "\">" . $a_products['prod_name'] . "</option>\n";
         }
@@ -227,13 +227,13 @@
         $q_string .= "from licenses ";
         $q_string .= "left join products on products.prod_id = licenses.lic_project ";
         $q_string .= "order by prod_name,lic_key,lic_id";
-        $q_licenses = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_licenses = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         while ($a_licenses = mysql_fetch_array($q_licenses)) {
 
           $q_string  = "select count(*) ";
           $q_string .= "from software ";
           $q_string .= "where sw_licenseid = " . $a_licenses['lic_id'];
-          $q_software = mysql_query($q_string);
+          $q_software = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
           $a_software = mysql_fetch_array($q_software);
 
           $available = $a_licenses['lic_quantity'] - $a_software['count(*)'];
@@ -252,7 +252,7 @@
         $q_string .= "from certs ";
         $q_string .= "where cert_ca = 0 ";
         $q_string .= "order by cert_desc";
-        $q_certs = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_certs = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         while ($a_certs = mysql_fetch_array($q_certs)) {
           $output .= "<option value=\"" . $a_certs['cert_id'] . "\">" . $a_certs['cert_desc'] . "</option>\n";
         }
@@ -264,7 +264,7 @@
         $q_string  = "select sup_id,sup_company,sup_contract ";
         $q_string .= "from support ";
         $q_string .= "order by sup_company,sup_contract";
-        $q_support = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_support = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         while  ($a_support = mysql_fetch_array($q_support)) {
           $output .= "<option value=\"" . $a_support['sup_id'] . "\">" . $a_support['sup_company'] . " (" . $a_support['sup_contract'] . ")</option>\n";
         }
@@ -279,7 +279,7 @@
         $q_string .= "from department ";
         $q_string .= "left join business_unit on business_unit.bus_unit = department.dep_unit ";
         $q_string .= "order by dep_unit,dep_name";
-        $q_department = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_department = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         while ($a_department = mysql_fetch_array($q_department)) {
           $output .= "<option value=\"" . $a_department['dep_id'] . "\">" . $a_department['dep_unit'] . "-" . $a_department['dep_dept'] . " - " . $a_department['bus_name'] . "-" . $a_department['dep_name'] . "</option>\n";
         }
@@ -353,7 +353,7 @@
       $q_string .= "left join products on products.prod_id = software.sw_product ";
       $q_string .= "where sw_companyid = " . $formVars['sw_companyid'] . " ";
       $q_string .= "order by sw_software ";
-      $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_software = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       while ($a_software = mysql_fetch_array($q_software)) {
 
         if (check_grouplevel($a_software['inv_manager']) || check_grouplevel($a_software['sw_group'])) {
