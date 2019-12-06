@@ -87,7 +87,7 @@
   $q_string .= "left join groups    on groups.grp_id    = tags.tag_group ";
   $q_string .= "where inv_status = 0 ";
   $q_string .= $orderby;
-  $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_tags = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_tags = mysql_fetch_array($q_tags)) {
 
     if ($a_tags['tag_view'] == 0) {
