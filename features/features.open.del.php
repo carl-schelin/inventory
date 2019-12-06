@@ -23,7 +23,7 @@
       $q_string  = "select feat_id ";
       $q_string .= "from features_detail ";
       $q_string .= "where feat_feat_id = " . $formVars['id'];
-      $q_features_detail = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_features_detail = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       while ($a_features_detail = mysql_fetch_array($q_features_detail)) {
 
         logaccess($_SESSION['uid'], $package, "Deleting " . $a_features_detail['feat_id'] . " from features_detail");
@@ -31,7 +31,7 @@
         $q_string  = "delete ";
         $q_string .= "from features_detail ";
         $q_string .= "where feat_id = " . $a_features_detail['feat_id'];
-        $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $result = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       }
 
       logaccess($_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from features");
@@ -39,7 +39,7 @@
       $q_string  = "delete ";
       $q_string .= "from features ";
       $q_string .= "where feat_id = " . $formVars['id'];
-      $insert = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $insert = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
       print "alert('Feature Request deleted.');\n";
 
