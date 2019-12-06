@@ -31,7 +31,7 @@
       $q_string .= "from models ";
       $q_string .= "where mod_type = " . $formVars['hw_type'] . " ";
       $q_string .= "order by mod_vendor,mod_name";
-      $q_models = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_models = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
 
 // create the javascript bit for populating the model dropdown box.
       while ($a_models = mysql_fetch_array($q_models) ) {
