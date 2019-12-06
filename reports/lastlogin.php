@@ -76,7 +76,7 @@ tabs displaying all the hardware associated with the product, the installed soft
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 1 and usr_checkin = '0000-00-00 00:00:00' ";
   $q_string .= "order by usr_last,usr_first";
-  $q_users = mysql_query($q_string) or die (mysql_error());
+  $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_users = mysql_fetch_array($q_users)) {
 
     $class = 'ui-widget-content';
@@ -88,14 +88,14 @@ tabs displaying all the hardware associated with the product, the installed soft
     $q_string  = "select log_id ";
     $q_string .= "from log ";
     $q_string .= "where log_user = '" . $a_users['usr_id'] . "' ";
-    $q_log = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_log = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
     $logs = mysql_num_rows($q_log);
 
     $logins = 0;
     $q_string  = "select log_id ";
     $q_string .= "from log ";
     $q_string .= "where log_detail like '%has logged in.' and log_user = '" . $a_users['usr_id'] . "' ";
-    $q_log = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_log = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
     $logins = mysql_num_rows($q_log);
 
     if ($logs > 0) {
