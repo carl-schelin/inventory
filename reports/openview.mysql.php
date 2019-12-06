@@ -104,7 +104,7 @@
       $q_string .= "left join alarm_type on alarm_type.atype_id = alarms.alarm_level ";
       $q_string .= "where alarm_disabled = 0 and alarm_timestamp >= '" . $formVars['start'] . "' and alarm_timestamp <= '" . $formVars['end'] . "' " . $where;
       $q_string .= $orderby;
-      $q_alarms = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_alarms = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       while ($a_alarms = mysql_fetch_array($q_alarms)) {
 
         $class = "ui-widget-content";
