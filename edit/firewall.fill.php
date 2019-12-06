@@ -26,7 +26,7 @@
       $q_string .= "fw_port,fw_protocol,fw_description,fw_timeout,fw_ticket,fw_portdesc ";
       $q_string .= "from firewall ";
       $q_string .= "where fw_id = " . $formVars['id'];
-      $q_firewall = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_firewall = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       $a_firewall = mysql_fetch_array($q_firewall);
       mysql_free_result($q_firewall);
 
