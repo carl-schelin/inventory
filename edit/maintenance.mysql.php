@@ -30,7 +30,7 @@
           $q_string  = "select hw_type,hw_vendorid,hw_speed,hw_supportid,hw_size,hw_primary ";
           $q_string .= "from hardware ";
           $q_string .= "where hw_companyid = " . $formVars['copyfrom'];
-          $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_hardware = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
           while ($a_hardware = mysql_fetch_array($q_hardware)) {
 
             $q_string =
@@ -45,7 +45,7 @@
               "hw_primary   =   " . $a_hardware['hw_primary'];
 
             $query = "insert into hardware set hw_id = NULL, " . $q_string;
-            mysql_query($query) or die($query . ": " . mysql_error());
+            mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
           }
         }
       }
@@ -72,7 +72,7 @@
         $q_string .= "from inventory ";
         $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name";
-        $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         while ($a_inventory = mysql_fetch_array($q_inventory)) {
           $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . "</option>\n";
         }
@@ -170,14 +170,14 @@
         $q_string  = "select inv_manager ";
         $q_string .= "from inventory ";
         $q_string .= "where inv_id = " . $formVars['id'] . " ";
-        $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         $a_inventory = mysql_fetch_array($q_inventory);
 
         $q_string  = "select patch_id,patch_name ";
         $q_string .= "from patching ";
         $q_string .= "where patch_group = " . $a_inventory['inv_manager'] . " ";
         $q_string .= "order by patch_name ";
-        $q_patching = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_patching = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
         while($a_patching = mysql_fetch_array($q_patching)) {
           print "<option value=\"" . $a_patching['patch_id'] . "\">" . $a_patching['patch_name'] . "</option>\n";
         }
