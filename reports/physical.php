@@ -186,7 +186,7 @@
 #  $q_string .= $where . " and mod_virtual = 0 and sw_type = 'OS' and sw_software like \"Red Hat%\" ";
   $q_string .= $where . " and mod_virtual = 0 ";
   $q_string .= $orderby;
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
     $linkstart = "<a href=\"" . $Siteroot . "/show/inventory.php?server=" . $a_inventory['inv_id'] . "\">";
