@@ -290,6 +290,7 @@
         $hardware .= "\"Type\",";
         $hardware .= "\"Date Built\",";
         $hardware .= "\"Date Live\",";
+        $hardware .= "\"Date Verified\",";
         $hardware .= "\"Vendor\",";
         $hardware .= "\"Model\",";
         $hardware .= "\"Size\",";
@@ -304,6 +305,7 @@
         $hardware .= "  <th class=\"ui-state-default\">Type</th>\n";
         $hardware .= "  <th class=\"ui-state-default\">Date Built</th>\n";
         $hardware .= "  <th class=\"ui-state-default\">Date Live</th>\n";
+        $hardware .= "  <th class=\"ui-state-default\">Date Verified</th>\n";
         $hardware .= "  <th class=\"ui-state-default\">Vendor</th>\n";
         $hardware .= "  <th class=\"ui-state-default\">Model</th>\n";
         $hardware .= "  <th class=\"ui-state-default\">Size</th>\n";
@@ -335,7 +337,7 @@
 
         $servername = $a_inventory['inv_name'];
 
-        $q_string  = "select hw_id,hw_built,hw_active,hw_asset,hw_serial,hw_size,hw_speed,part_name,mod_vendor,mod_name,mod_size,mod_speed ";
+        $q_string  = "select hw_id,hw_built,hw_active,hw_update,hw_verified,hw_asset,hw_serial,hw_size,hw_speed,part_name,mod_vendor,mod_name,mod_size,mod_speed ";
         $q_string .= "from hardware ";
         $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
         $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
@@ -349,6 +351,7 @@
             $hardware .= "\"" . $a_hardware['part_name']  . "\",";
             $hardware .= "\"" . $a_hardware['hw_built']   . "\",";
             $hardware .= "\"" . $a_hardware['hw_active']  . "\",";
+            $hardware .= "\"" . $a_hardware['hw_update']  . "\",";
             $hardware .= "\"" . $a_hardware['mod_vendor'] . "\",";
             $hardware .= "\"" . $a_hardware['mod_name']   . "\",";
             $hardware .= "\"" . $a_hardware['hw_size']    . "\",";
@@ -361,6 +364,7 @@
             $hardware .= "  <td class=\"ui-widget-content\" id=\"hpn" . $a_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hardware['hw_id'] . ",'hpn');\">" . $a_hardware['part_name']  . "</td>\n";
             $hardware .= "  <td class=\"ui-widget-content\" id=\"hpb" . $a_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hardware['hw_id'] . ",'hpb');\"><u>" . $a_hardware['hw_built']   . "</u></td>\n";
             $hardware .= "  <td class=\"ui-widget-content\" id=\"hpa" . $a_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hardware['hw_id'] . ",'hpa');\"><u>" . $a_hardware['hw_active']  . "</u></td>\n";
+            $hardware .= "  <td class=\"ui-widget-content\">" . $a_hardware['hw_update']  . "</td>\n";
             $hardware .= "  <td class=\"ui-widget-content\" id=\"hmv" . $a_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hardware['hw_id'] . ",'hmv');\">" . $a_hardware['mod_vendor'] . "</td>\n";
             $hardware .= "  <td class=\"ui-widget-content\" id=\"hmn" . $a_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hardware['hw_id'] . ",'hmn');\">" . $a_hardware['mod_name']   . "</td>\n";
             $hardware .= "  <td class=\"ui-widget-content\" id=\"hsz" . $a_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hardware['hw_id'] . ",'hsz');\">" . $a_hardware['hw_size']    . "</td>\n";
@@ -373,7 +377,7 @@
           }
 
 
-          $q_string  = "select hw_id,hw_built,hw_active,hw_asset,hw_serial,hw_size,hw_speed,part_name,mod_vendor,mod_name,mod_size,mod_speed ";
+          $q_string  = "select hw_id,hw_built,hw_active,hw_update,hw_verified,hw_asset,hw_serial,hw_size,hw_speed,part_name,mod_vendor,mod_name,mod_size,mod_speed ";
           $q_string .= "from hardware ";
           $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
           $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
@@ -387,6 +391,7 @@
               $hardware .= "\"" . $a_hw_child['part_name']  . "\",";
               $hardware .= "\"" . $a_hw_child['hw_built']   . "\",";
               $hardware .= "\"" . $a_hw_child['hw_active']  . "\",";
+              $hardware .= "\"" . $a_hw_child['hw_update']  . "\",";
               $hardware .= "\"" . $a_hw_child['mod_vendor'] . "\",";
               $hardware .= "\"" . $a_hw_child['mod_name']   . "\",";
               $hardware .= "\"" . $a_hw_child['hw_size']    . "\",";
@@ -399,6 +404,7 @@
               $hardware .= "  <td class=\"ui-widget-content\" id=\"hpn" . $a_hw_child['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hw_child['hw_id'] . ",'hpn');\">&gt;" . $a_hw_child['part_name']  . "</td>\n";
               $hardware .= "  <td class=\"ui-widget-content\" id=\"hpb" . $a_hw_child['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hw_child['hw_id'] . ",'hpb');\"><u>" . $a_hw_child['hw_built']   . "</u></td>\n";
               $hardware .= "  <td class=\"ui-widget-content\" id=\"hpa" . $a_hw_child['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hw_child['hw_id'] . ",'hpa');\"><u>" . $a_hw_child['hw_active']  . "</u></td>\n";
+              $hardware .= "  <td class=\"ui-widget-content\">" . $a_hw_child['hw_update']  . "</td>\n";
               $hardware .= "  <td class=\"ui-widget-content\" id=\"hmv" . $a_hw_child['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hw_child['hw_id'] . ",'hmv');\">" . $a_hw_child['mod_vendor'] . "</td>\n";
               $hardware .= "  <td class=\"ui-widget-content\" id=\"hmn" . $a_hw_child['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hw_child['hw_id'] . ",'hmn');\">" . $a_hw_child['mod_name']   . "</td>\n";
               $hardware .= "  <td class=\"ui-widget-content\" id=\"hsz" . $a_hw_child['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hw_child['hw_id'] . ",'hsz');\">" . $a_hw_child['hw_size']    . "</td>\n";
