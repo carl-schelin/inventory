@@ -17,8 +17,6 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  $path = "/export/home/";
-
   $q_string  = "select grp_id,grp_changelog ";
   $q_string .= "from groups ";
   $q_string .= "where grp_disabled = 0 and grp_changelog != '' ";
@@ -29,10 +27,10 @@
 # open file for writing; but not write plus unless the group has already been written to
 # like changelog which has product support and unix.
     if (isset($changelog[$a_groups['grp_changelog']])) {
-      $handle = fopen($path . $a_groups['grp_changelog'] . "/admins.email", "a");
+      $handle = fopen($Changehome . "/" . $a_groups['grp_changelog'] . "/admins.email", "a");
       print "Updating: " . $a_groups['grp_changelog'] . "\n";
     } else {
-      $handle = fopen($path . $a_groups['grp_changelog'] . "/admins.email", "w");
+      $handle = fopen($Changehome . "/" . $a_groups['grp_changelog'] . "/admins.email", "w");
       $changelog[$a_groups['grp_changelog']] = "1";
       print "Creating: " . $a_groups['grp_changelog'] . "\n";
     }
