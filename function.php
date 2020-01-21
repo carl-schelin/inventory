@@ -98,6 +98,10 @@ function changelog( $p_serverid, $p_changed, $p_notes, $p_user, $p_table, $p_col
 # if the group matches or the user is an admin
 # return yes.
 function check_grouplevel( $p_group ) {
+# somewhere it's passing a blank value for 'p_group' so for now; if blank set to 0.
+  if ($p_group == '') {
+    $p_group = 0;
+  }
   if (isset($_SESSION['username'])) {
     include('settings.php');
 
