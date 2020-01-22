@@ -168,7 +168,7 @@
 
         $output .= "<t4>Public Tag Cloud</t4>\n";
 
-        $output .= "<ul id=\"cloud\">\n";
+        $output .= "<p>\n";
 
         $q_string  = "select tag_id,tag_name ";
         $q_string .= "from tags ";
@@ -179,10 +179,10 @@
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('tags.fill.php?id="  . $a_tags['tag_id'] . "');\">";
           $linkend   = "</a>";
 
-          $output .= "  <li>" . $linkstart . $a_tags['tag_name'] . $linkend . "</li>\n";
+          $output .= $linkstart . $a_tags['tag_name'] . $linkend . "&nbsp;&nbsp;";
         }
 
-        $output .= "</ul>\n";
+        $output .= "</p>\n";
 
 
         print "document.getElementById('tags_form').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
