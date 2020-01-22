@@ -128,9 +128,9 @@
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
-        $output .= "<t4>Private Tag Cloud</t4>\n";
+        $output .= "<t4>Private Tags</t4>\n";
 
-        $output .= "<ul id=\"cloud\">\n";
+        $output .= "<p>\n";
 
         $q_string  = "select tag_id,tag_name ";
         $q_string .= "from tags ";
@@ -141,15 +141,15 @@
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('tags.fill.php?id="  . $a_tags['tag_id'] . "');\">";
           $linkend   = "</a>";
 
-          $output .= "  <li>" . $linkstart . $a_tags['tag_name'] . $linkend . "</li>\n";
+          $output .= $linkstart . $a_tags['tag_name'] . $linkend . "&nbsp;&nbsp;";
         }
 
-        $output .= "</ul>\n";
+        $output .= "</p>\n";
 
 
-        $output .= "<t4>Group Tag Cloud</t4>\n";
+        $output .= "<t4>Group Tags</t4>\n";
 
-        $output .= "<ul id=\"cloud\">\n";
+        $output .= "<p>\n";
 
         $q_string  = "select tag_id,tag_name ";
         $q_string .= "from tags ";
@@ -160,13 +160,13 @@
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('tags.fill.php?id="  . $a_tags['tag_id'] . "');\">";
           $linkend   = "</a>";
 
-          $output .= "  <li>" . $linkstart . $a_tags['tag_name'] . $linkend . "</li>\n";
+          $output .= $linkstart . $a_tags['tag_name'] . $linkend . "&nbsp;&nbsp;";
         }
 
-        $output .= "</ul>\n";
+        $output .= "</p>\n";
 
 
-        $output .= "<t4>Public Tag Cloud</t4>\n";
+        $output .= "<t4>Public Tags</t4>\n";
 
         $output .= "<p>\n";
 
