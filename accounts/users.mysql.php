@@ -423,6 +423,15 @@ function display_user( $p_title, $p_toggle, $p_query ) {
           $pwreset = 'No';
         }
 
+        $missing = "";
+        $q_string  = "select mail_id ";
+        $q_string .= "from email ";
+        $q_string .= "where mail_address = \"" . $a_users['usr_email'] . "\" and mail_disabled = 0 ";
+        $q_email = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+        if (mysql_num_rows($q_email) == 0) {
+          $missing = "*";
+        }
+
         $group .= "<tr>\n";
         $group .=   "<td" . $defaultdel . ">" . $linkdel   . "</td>\n";
         $group .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_id']                 . $linkend . "</td>\n";
@@ -430,7 +439,7 @@ function display_user( $p_title, $p_toggle, $p_query ) {
         $group .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_name']               . $linkend . "</td>\n";
         $group .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_first']              . $linkend . "</td>\n";
         $group .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_last']               . $linkend . "</td>\n";
-        $group .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_email']              . $linkend . "</td>\n";
+        $group .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_email'] . $missing   . $linkend . "</td>\n";
         $group .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_altemail']           . $linkend . "</td>\n";
         $group .= "  <td" . $default    . ">" . $linkstart . $pwreset                           . $linkend . "</td>\n";
         $group .= "  <td" . $default    . ">" . $linkstart . $reg_date                          . $linkend . "</td>\n";
