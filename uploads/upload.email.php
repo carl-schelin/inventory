@@ -16,8 +16,8 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  $debug = 'no';
   $debug = 'yes';
+  $debug = 'no';
 
 # read in the uploaded file
 
@@ -55,6 +55,7 @@
             $result = mysql_query($query) or die($query . ": " . mysql_error());
           }
         } else {
+          $a_email = mysql_fetch_array($q_email);
           $q_string  = 
             "mail_address      = \"" . $data         . "\"," . 
             "mail_disabled     = "   . 0             . "," . 
