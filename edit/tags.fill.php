@@ -35,7 +35,7 @@
 
       print "document.edit.tag_id.value = " . $formVars['id'] . ";\n";
 
-      print "document.edit.tag_id.disabled = false;\n";
+      print "document.edit.tag_update.disabled = false;\n";
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
     }
