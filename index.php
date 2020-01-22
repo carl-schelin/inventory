@@ -689,7 +689,7 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
 <div class="main-help ui-widget-content">
 
 <ul>
-  <li><strong>Tag Cloud</strong>
+  <li><strong>Tags</strong>
   <ul>
     <li><strong>Private Tags</strong> - Shows tags that only you can manipulate. These tags are only visible to you so they let you create personalized device lists.</li>
     <li><strong>Group Tags</strong> - Shows group tags manageable by your group. These tags are visible by your group. They are also added to the listing for each team. External scripts may be run using these tags.</li>
@@ -703,9 +703,9 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
 
 <div class="main ui-widget-content">
 
-<t4>Private Tag Cloud</t4>
+<t4>Private Tags</t4>
 
-<ul id="cloud">
+<p>
 <?php
   $q_string  = "select tag_name,count(tag_name) ";
   $q_string .= "from tags ";
@@ -716,18 +716,18 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
     $linkstart = "<a href=\"javascript:;\" onClick=\"javascript:attach_tag('" . $Reportroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "&type=0');\">";
     $linkend   = "</a>";
 
-    print "  <li>" . $linkstart . $a_tags['tag_name'] . " (" . $a_tags['count(tag_name)'] . ")" . $linkend . "</li>\n";
+    print $linkstart . $a_tags['tag_name'] . " (" . $a_tags['count(tag_name)'] . ")" . $linkend . "&nbsp;&nbsp;";
   }
 ?>
-</ul>
+</p>
 
 </div>
 
 <div class="main ui-widget-content">
 
-<t4>Group Tag Cloud</t4>
+<t4>Group Tags</t4>
 
-<ul id="cloud">
+<p>
 <?php
   $q_string  = "select tag_name,count(tag_name) ";
   $q_string .= "from tags ";
@@ -738,18 +738,18 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
     $linkstart = "<a href=\"javascript:;\" onClick=\"javascript:attach_tag('" . $Reportroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "&type=1');\">";
     $linkend   = "</a>";
 
-    print "  <li>" . $linkstart . $a_tags['tag_name'] . " (" . $a_tags['count(tag_name)'] . ")" . $linkend . "</li>\n";
+    print $linkstart . $a_tags['tag_name'] . " (" . $a_tags['count(tag_name)'] . ")" . $linkend . "&nbsp;&nbsp;";
   }
 ?>
-</ul>
+</p>
 
 </div>
 
 <div class="main ui-widget-content">
 
-<t4>Public Tag Cloud</t4>
+<t4>Public Tags</t4>
 
-<ul id="cloud">
+<p>
 <?php
   $q_string  = "select tag_name,count(tag_name) ";
   $q_string .= "from tags ";
@@ -760,10 +760,10 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
     $linkstart = "<a href=\"javascript:;\" onClick=\"javascript:attach_tag('" . $Reportroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "&type=2');\">";
     $linkend   = "</a>";
 
-    print "  <li>" . $linkstart . $a_tags['tag_name'] . " (" . $a_tags['count(tag_name)'] . ")" . $linkend . "</li>\n";
+    print $linkstart . $a_tags['tag_name'] . " (" . $a_tags['count(tag_name)'] . ")" . $linkend . "&nbsp;&nbsp;";
   }
 ?>
-</ul>
+</p>
 
 </div>
 
