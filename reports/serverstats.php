@@ -116,6 +116,7 @@ to software and hardware section.</p>
   <li><a href="#products">Product Listing</a></li>
   <li><a href="#software">Software Listing</a></li>
   <li><a href="#hardware">Hardware Listing</a></li>
+  <li><a href="#service">Service Class Count</a></li>
 </ul>
 
 
@@ -561,6 +562,138 @@ to software and hardware section.</p>
 </table>
 
 </div>
+
+
+<div id="service">
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Service Class Listing</th>
+</tr>
+</table>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Name</th>
+  <th class="ui-state-default">Acronym</th>
+  <th class="ui-state-default">Availability</th>
+  <th class="ui-state-default">Downtime</th>
+  <th class="ui-state-default">MTBF</th>
+  <th class="ui-state-default">Geographically Redundant</th>
+  <th class="ui-state-default">MTTR</th>
+  <th class="ui-state-default">Shared Resources</th>
+  <th class="ui-state-default">Time to Restore</th>
+  <th class="ui-state-default">Total Devices</th>
+</tr>
+<?php
+  if ($formVars['group'] == -1) {
+    $admin = '';
+  } else {
+    $admin = ' and inv_manager = ' . $formVars['group'];
+  }
+  $total = 0;
+
+  $undefined = 0;
+  $lmcs = 0;
+  $callpath = 0;
+  $bcs = 0;
+  $bes = 0;
+  $bss = 0;
+  $ubs = 0;
+  $lab = 0;
+
+  $q_string  = "select inv_class,inv_callpath ";
+  $q_string .= "from inventory ";
+  $q_string .= "where inv_status = 0 " . $admin . " ";
+  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+
+    if ($a_inventory['inv_class'] == 0) {
+      $undefined++;
+    }
+    if ($a_inventory['inv_class'] == 1) {
+      $lmcs++;
+    }
+    if ($a_inventory['inv_callpath'] == 1) {
+      $callpath++;
+    }
+    if ($a_inventory['inv_class'] == 2) {
+      $bcs++;
+    }
+    if ($a_inventory['inv_class'] == 3) {
+      $bes++;
+    }
+    if ($a_inventory['inv_class'] == 4) {
+      $bss++;
+    }
+    if ($a_inventory['inv_class'] == 5) {
+      $ubs++;
+    }
+    if ($a_inventory['inv_class'] == 6) {
+      $lab++;
+    }
+
+  }
+
+  $q_string  = "select svc_id,svc_name,svc_acronym,svc_availability,svc_downtime,svc_mtbf,svc_geographic,svc_mttr,svc_resource,svc_restore ";
+  $q_string .= "from service ";
+  $q_string .= "order by svc_id ";
+  $q_service = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+  while ($a_service = mysql_fetch_array($q_service)) {
+  
+    $geographic = 'No';
+    if ($a_service['svc_geographic'] == 1) {
+      $geographic = 'Yes';
+    }
+    $resource = 'No';
+    if ($a_service['svc_resource'] == 1) {
+      $resource = 'Yes';
+    }
+
+    print "<tr>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_service['svc_name'] . "</td>\n";
+    print "  <td class=\"ui-widget-content delete\">" . $a_service['svc_acronym'] . "</td>\n";
+    print "  <td class=\"ui-widget-content delete\">" . $a_service['svc_availability'] . "</td>\n";
+    print "  <td class=\"ui-widget-content delete\">" . $a_service['svc_downtime'] . "</td>\n";
+    print "  <td class=\"ui-widget-content delete\">" . $a_service['svc_mtbf'] . "</td>\n";
+    print "  <td class=\"ui-widget-content delete\">" . $geographic . "</td>\n";
+    print "  <td class=\"ui-widget-content delete\">" . $a_service['svc_mttr'] . "</td>\n";
+    print "  <td class=\"ui-widget-content delete\">" . $resource . "</td>\n";
+    print "  <td class=\"ui-widget-content delete\">" . $a_service['svc_restore'] . "</td>\n";
+
+
+    if ($a_service['svc_id'] == 1) {
+      print "  <td class=\"ui-widget-content delete\">" . $lmcs . "/" . $callpath . "</td>\n";
+    }
+    if ($a_service['svc_id'] == 2) {
+      print "  <td class=\"ui-widget-content delete\">" . $bcs . "</td>\n";
+    }
+    if ($a_service['svc_id'] == 3) {
+      print "  <td class=\"ui-widget-content delete\">" . $bes . "</td>\n";
+    }
+    if ($a_service['svc_id'] == 4) {
+      print "  <td class=\"ui-widget-content delete\">" . $bss . "</td>\n";
+    }
+    if ($a_service['svc_id'] == 5) {
+      print "  <td class=\"ui-widget-content delete\">" . $ubs . "</td>\n";
+    }
+    if ($a_service['svc_id'] == 6) {
+      print "  <td class=\"ui-widget-content delete\">" . $lab . "</td>\n";
+    }
+
+    print "</tr>\n";
+  }
+  print "<tr>\n";
+  print "  <td class=\"ui-widget-content button\" colspan=\"9\">Undefined:</td>\n";
+  print "  <td class=\"ui-widget-content delete\">" . $undefined . "</td>\n";
+  print "</tr>\n";
+
+?>
+</table>
+
+</div>
+
+
 
 </div>
 
