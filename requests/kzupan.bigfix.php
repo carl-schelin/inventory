@@ -74,6 +74,9 @@
     print "\"Function\",";
     print "\"Product\",";
     print "\"Vendor\",";
+    print "\"Network Zone\",";
+    print "\"Service Class\",";
+    print "\"In 911 Carl Path\",";
     print "\"Operating System\",";
     print "\"Application Custodian\"</br>\n";
   } else {
@@ -83,29 +86,44 @@
     print "  <th class=\"ui-state-default\">Function</th>\n";
     print "  <th class=\"ui-state-default\">Product</th>\n";
     print "  <th class=\"ui-state-default\">Vendor</th>\n";
+    print "  <th class=\"ui-state-default\">Network Zone</th>\n";
+    print "  <th class=\"ui-state-default\">Service Class</th>\n";
+    print "  <th class=\"ui-state-default\">In 911 Carl Path</th>\n";
     print "  <th class=\"ui-state-default\">Operating System</th>\n";
     print "  <th class=\"ui-state-default\">Application Custodian</th>\n";
     print "</tr>";
   }
 
-  $q_string  = "select inv_id,inv_name,inv_function,prod_name,mod_name,sw_software,grp_name ";
+  $q_string  = "select inv_id,inv_name,inv_function,prod_name,mod_name,sw_software,grp_name,zone_zone,svc_acronym,inv_callpath ";
   $q_string .= "from inventory ";
+  $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
+  $q_string .= "left join ip_zones on ip_zones.zone_id = interface.int_zone ";
+  $q_string .= "left join service on service.svc_id = inventory.inv_class ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
   $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
   $q_string .= "left join groups    on groups.grp_id         = inventory.inv_appadmin ";
   $q_string .= "left join products  on products.prod_id      = software.sw_product ";
-  $q_string .= "where inv_status = 0 and inv_manager = " . $GRP_Unix . " and sw_type = 'OS' and hw_primary = 1 ";
+  $q_string .= "where inv_status = 0 and inv_manager = " . $GRP_Unix . " and sw_type = 'OS' and hw_primary = 1 and int_primary = 1 ";
   $q_string .= "order by inv_name ";
   $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
     if (return_System($a_inventory['inv_id']) == 'Linux') {
+
+      $callpath = "No";
+      if ($a_inventory['inv_callpath']) {
+        $callpath = "Yes";
+      }
+
       if ($formVars['csv']) {
         print "\"" . $a_inventory['inv_name'] . "\",";
         print "\"" . $a_inventory['inv_function'] . "\",";
         print "\"" . $a_inventory['prod_name'] . "\",";
         print "\"" . $a_inventory['mod_name'] . "\",";
+        print "\"" . $a_inventory['zone_zone'] . "\",";
+        print "\"" . $a_inventory['svc_acronym'] . "\",";
+        print "\"" . $callpath . "\",";
         print "\"" . $a_inventory['sw_software'] . "\",";
         print "\"" . $a_inventory['grp_name'] . "\"</br>\n";
       } else {
@@ -114,6 +132,9 @@
         print "  <td class=\"ui-widget-content\">" . $a_inventory['inv_function'] . "</td>\n";
         print "  <td class=\"ui-widget-content\">" . $a_inventory['prod_name']    . "</td>\n";
         print "  <td class=\"ui-widget-content\">" . $a_inventory['mod_name']   . "</td>\n";
+        print "  <td class=\"ui-widget-content\">" . $a_inventory['zone_zone']    . "</td>\n";
+        print "  <td class=\"ui-widget-content\">" . $a_inventory['svc_acronym']    . "</td>\n";
+        print "  <td class=\"ui-widget-content\">" . $callpath    . "</td>\n";
         print "  <td class=\"ui-widget-content\">" . $a_inventory['sw_software']  . "</td>\n";
         print "  <td class=\"ui-widget-content\">" . $a_inventory['grp_name']     . "</td>\n";
         print "</tr>";
