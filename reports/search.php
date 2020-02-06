@@ -12,7 +12,7 @@
   include($Sitepath . '/guest.php');
 
   $package = "search.php";
-  $editpencil = "<img class=\"ui-icon-edit\" height=\"10\" src=\"" . $Siteroot . "/imgs/pencil.gif\">";
+  $editpencil = "<img class=\"ui-icon-edit\" height=\"10\" src=\"" . $Imgsroot . "/pencil.gif\">";
   $formVars['search_by']   = clean($_GET['search_by'],    10);
   $formVars['search_for']  = clean($_GET['search_for'],  255);
 
