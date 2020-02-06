@@ -216,7 +216,7 @@
     $linkedit = '';
     if (check_userlevel($AL_Edit)) {
       if ($a_inventory['inv_manager'] == $_SESSION['group']) {
-        $linkedit = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\"><img src=\"" . $Siteroot . "/imgs/pencil.gif\" height=10></a>";
+        $linkedit = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\"><img src=\"" . $Imgsroot . "/pencil.gif\" height=10></a>";
       }
     }
 
@@ -255,7 +255,7 @@
       $linkedit = '';
       if (check_userlevel($AL_Edit)) {
         if ($a_child['inv_manager'] == $_SESSION['group']) {
-          $linkedit = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_child['inv_id'] . "\" target=\"_blank\"><img src=\"" . $Siteroot . "/imgs/pencil.gif\" height=10></a>";
+          $linkedit = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_child['inv_id'] . "\" target=\"_blank\"><img src=\"" . $Imgsroot . "/pencil.gif\" height=10></a>";
         }
       }
 
