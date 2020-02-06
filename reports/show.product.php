@@ -141,7 +141,7 @@ $(document).ready( function() {
       $checkmark = "&#x2713;";
     }
 
-    $editpencil = "<img class=\"ui-icon-edit\" src=\"" . $Sitepath . "/imgs/pencil.gif\" height=\"10\">";
+    $editpencil = "<img class=\"ui-icon-edit\" src=\"" . $Siteroot . "/imgs/pencil.gif\" height=\"10\">";
     $editstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_hardware['inv_id'] . "\" target=\"_blank\">";
     $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_hardware['inv_id'] . "\" target=\"_blank\">";
     $linkend   = "</a>";
