@@ -459,7 +459,7 @@ $(document).ready( function () {
       $edipstart = '';
       $edswstart = '';
       if (check_userlevel($AL_Edit)) {
-        $editpencil = "<img class=\"ui-icon-edit\" src=\"" . $Siteroot . "/imgs/pencil.gif\" height=\"10\"></a>";
+        $editpencil = "<img class=\"ui-icon-edit\" src=\"" . $Imgsroot . "/pencil.gif\" height=\"10\"></a>";
         if (check_grouplevel($a_inventory['inv_manager'])) {
           $editstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\"          target=\"_blank\">" . $editpencil;
           $edhwstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "#hardware\" target=\"_blank\">" . $editpencil;
