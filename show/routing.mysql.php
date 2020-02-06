@@ -29,7 +29,7 @@
   $output .= "  <th class=\"ui-state-default\">";
   if (check_userlevel($AL_Edit)) {
     if (check_grouplevel($a_inventory['inv_manager'])) {
-      $output .= "<a href=\"" . $Editroot . "/inventory.php?server=" . $formVars['id'] . "#routing\" target=\"_blank\"><img src=\"/inventory/imgs/pencil.gif\">";
+      $output .= "<a href=\"" . $Editroot . "/inventory.php?server=" . $formVars['id'] . "#routing\" target=\"_blank\"><img src=\"" . $Imgsroot . "/pencil.gif\">";
     }
   }
   $output .= "Routing Information";
