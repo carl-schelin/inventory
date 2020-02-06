@@ -28,7 +28,7 @@
   $output .= "<tr>";
   $output .= "  <th class=\"ui-state-default\">";
   if (check_userlevel($AL_Edit)) {
-    $output .= "<a href=\"" . $Editroot . "/inventory.php?server=" . $formVars['id'] . "#tags\" target=\"_blank\"><img src=\"/inventory/imgs/pencil.gif\">";
+    $output .= "<a href=\"" . $Editroot . "/inventory.php?server=" . $formVars['id'] . "#tags\" target=\"_blank\"><img src=\"" . $Imgsroot . "/pencil.gif\">";
   }
   $output .= "Tag Information";
   if (check_userlevel($AL_Edit)) {
