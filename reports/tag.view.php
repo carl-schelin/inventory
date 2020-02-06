@@ -319,7 +319,7 @@ $(document).ready( function () {
 # Set edit options
 #####
     if (check_userlevel($AL_Edit)) {
-      $editpencil = "<img class=\"ui-icon-edit\" src=\"/inventory/imgs/pencil.gif\"></a>";
+      $editpencil = "<img class=\"ui-icon-edit\" src=\"" . $Siteroot . "/imgs/pencil.gif\"></a>";
       if (check_grouplevel($a_inventory['inv_manager'])) {
         $editmain     = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">" . $editpencil;
         $edithwstart  = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "#hardware\" target=\"_blank\">" . $editpencil;
