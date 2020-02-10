@@ -63,52 +63,68 @@
 ### validate parameter list
 #########################
 
-  $q_string  = "select usr_id,usr_email,usr_first,usr_last,usr_name,usr_clientid,usr_group,usr_manager ";
-  $q_string .= "from users ";
-  $q_string .= "where (usr_email = '" . $email . "' or usr_altemail like '%" . $email . "%') and usr_id != 1 and usr_disabled = 0 ";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_users = mysql_fetch_array($q_users);
+# NOTE: There are now automated processes where changelogs come from root@ or unixsvc@.
+# these two should bypass the validation steps as they're going to belong to the Unix team's 'changelog'
+
+  $service = explode("@", $email);
+
+  if ($service[0] == 'root' || $service[0] == 'unixsvc') {
+# for Remedy; not doing it so just set it so the checks will pass
+    $clientid = '';
+    $groupmagicid = 'CORP-UNIX SYSADMIN';
+
+# really just looking for this so the automatic serviceaccounts can apply changelogs
+    $groupchangelog = 'changelog';
+
+  } else {
+    $q_string  = "select usr_id,usr_email,usr_first,usr_last,usr_name,usr_clientid,usr_group,usr_manager ";
+    $q_string .= "from users ";
+    $q_string .= "where (usr_email = '" . $email . "' or usr_altemail like '%" . $email . "%') and usr_id != 1 and usr_disabled = 0 ";
+    $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $a_users = mysql_fetch_array($q_users);
 
 # reset the email if using an alternate email address (like incojs01).
 #  $email = $a_users['usr_email'];
-  $clientid = $a_users['usr_clientid'];
+    $clientid = $a_users['usr_clientid'];
 
 # users can be members of multiple groups.
 # run through the grouplist table for this user
 # and try to locate the saved file.
 
-  $q_string  = "select gpl_group,grp_changelog,grp_magic ";
-  $q_string .= "from grouplist ";
-  $q_string .= "left join groups on groups.grp_id = grouplist.gpl_group ";
-  $q_string .= "where gpl_user = " . $a_users['usr_id'] . " ";
-  $q_grouplist = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_grouplist = mysql_fetch_array($q_grouplist)) {
+    $q_string  = "select gpl_group,grp_changelog,grp_magic ";
+    $q_string .= "from grouplist ";
+    $q_string .= "left join groups on groups.grp_id = grouplist.gpl_group ";
+    $q_string .= "where gpl_user = " . $a_users['usr_id'] . " ";
+    $q_grouplist = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    while ($a_grouplist = mysql_fetch_array($q_grouplist)) {
 
-# looking for /export/home/group_changelog_directory/Mail/user@domain.report.random_number
-    if (file_exists('/export/home/' . $a_grouplist['grp_changelog'] . '/Mail/' . $email . '.report.' . $random)) {
-      $groupchangelog = $a_grouplist['grp_changelog'];
-      $groupmagicid   = $a_grouplist['grp_magic'];
+# looking for $Changehome/$groupchangelog/Mail/user@domain.report.random_number
+      if (file_exists($Changehome . "/" . $a_grouplist['grp_changelog'] . '/Mail/' . $email . '.report.' . $random)) {
+        $groupchangelog = $a_grouplist['grp_changelog'];
+        $groupmagicid   = $a_grouplist['grp_magic'];
+      }
     }
-  }
 
-  if ($groupmagicid == '') {
-    $groupmagicid = "CORP-UNIX SYSADMIN";
-  }
+    if ($groupmagicid == '') {
+      $groupmagicid = "CORP-UNIX SYSADMIN";
+    }
 
 # get the manager information for the user.
-  $q_string  = "select usr_first,usr_last,usr_name,usr_clientid ";
-  $q_string .= "from users ";
-  $q_string .= "where usr_id = " . $a_users['usr_manager'] . " and usr_disabled = 0 ";
-  $q_manager = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_manager = mysql_fetch_array($q_manager);
+    $q_string  = "select usr_first,usr_last,usr_name,usr_clientid ";
+    $q_string .= "from users ";
+    $q_string .= "where usr_id = " . $a_users['usr_manager'] . " and usr_disabled = 0 ";
+    $q_manager = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $a_manager = mysql_fetch_array($q_manager);
 
 # added because Josh is in a different group (Mobility) that has their own changelog file.
 # Josh sends changelogs for the Unix group on incojs01 and changelogs for Mobility via Outlook.
-  if ($email == 'jjohnson@incojs01.scc911.com') {
-    $groupchangelog = 'changelog';
+    if ($email == 'jjohnson@incojs01.scc911.com') {
+      $groupchangelog = 'changelog';
+    }
+
   }
 
-  $changelog = "/export/home/" . $groupchangelog . "/Mail/" . $email . ".report." . $random;
+  $changelog = $Changehome . "/" . $groupchangelog . "/Mail/" . $email . ".report." . $random;
 
 # received an "Out of Office:" message; just exit the script
 # don't forget to delete the .report file or the next report will be whack.
