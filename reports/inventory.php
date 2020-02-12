@@ -247,6 +247,7 @@ $(document).ready( function () {
   print "  <li><strong>Model</strong> Shows the server hardware.</li>\n";
   print "  <li><strong>Operating System</strong> Shows the server operating system.</li>\n";
   print "  <li><strong>Location (TZ)</strong> Shows the server location and time zone (TZ).</li>\n";
+  print "  <li><strong>West</strong> Displays the 5 character data center code used by West.</li>\n";
   print "  <li><strong>IP Address</strong> Shows the assigned interface and IPs for servers. A Default Route is identified with an asterisk (*)\n";
   print "  <ul>\n";
   print "    <li><strong>Mgt</strong> Management IP used for remote access plus maintenance traffic such as backups and monitoring</li>\n";
@@ -297,6 +298,7 @@ $(document).ready( function () {
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=mod_vendor,mod_name" . $passed . "\">Model</a></th>\n";
     print "  <th class=\"ui-state-default\">Operating System</th>\n";
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=ct_city" . $passed . "\">Location (TZ)</a></th>\n";
+    print "  <th class=\"ui-state-default\">West</th>\n";
     print "  <th class=\"ui-state-default\">IP Address</th>\n";
     print "</tr>\n";
   } else {
@@ -309,6 +311,7 @@ $(document).ready( function () {
     print "\"Model\",";
     print "\"Operating System\",";
     print "\"Location (TZ)\",";
+    print "\"West\"";
     print "\"IP Address\"";
     print "</br>\n";
   }
@@ -384,7 +387,7 @@ $(document).ready( function () {
 
   $total_servers = 0;
   $q_string = "select inv_id,inv_name,inv_function,inv_document,inv_manager,inv_appadmin,grp_name,"
-            . "ct_city,zone_name,inv_ssh,hw_active,hw_retired,hw_reused,mod_vendor,mod_name,inv_status "
+            . "ct_city,loc_west,zone_name,inv_ssh,hw_active,hw_retired,hw_reused,mod_vendor,mod_name,inv_status "
             . "from inventory "
             . "left join hardware  on hardware.hw_companyid = inventory.inv_id "
             . "left join locations on locations.loc_id      = inventory.inv_location "
@@ -496,6 +499,7 @@ $(document).ready( function () {
         print "  <td " . $class . "><nobr>" . $edhwstart . $shhwstart . $a_inventory['mod_vendor'] . " " . $a_inventory['mod_name']         . $showend                     . "</nobr></td>\n";
         print "  <td " . $class . "><nobr>" . $edswstart . $shswstart . return_ShortOS($a_software['sw_software'])                          . $showend                     . "</nobr></td>\n";
         print "  <td " . $class . "><nobr>"              . $showstart . $a_inventory['ct_city']    . " (" . $a_inventory['zone_name'] . ")" . $showend                     . "</nobr></td>\n";
+        print "  <td " . $class . "><nobr>"              . $showstart . $a_inventory['loc_west']                                            . $showend                     . "</nobr></td>\n";
         print "  <td " . $class . ">" . $edipstart . $shipstart . $interface                                                          . $showend . "<br>" . $console . "</td>\n";
         print "</tr>\n";
       } else {
@@ -508,6 +512,7 @@ $(document).ready( function () {
         print "\"" . $a_inventory['mod_vendor'] . " " . $a_inventory['mod_name'] . "\",";
         print "\"" . $a_software['sw_software'] . "\",";
         print "\"" . $a_inventory['ct_city']    . " (" . $a_inventory['zone_name'] . ")\",";
+        print "\"" . $a_inventory['loc_west'] . "\",";
         print "\"" . $interface . " " . $console . "\"";
         print "</br>\n";
       }
