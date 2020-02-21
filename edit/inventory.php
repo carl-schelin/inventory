@@ -335,6 +335,7 @@ function attach_detail( p_script_url, update ) {
   am_url += "&inv_department="  + am_form.inv_department.value;
   am_url += "&inv_notes="       + encode_URI(am_form.inv_notes.value);
   am_url += "&inv_ansible="     + am_form.inv_ansible.checked;
+  am_url += "&inv_env="         + am_form.inv_env.value;
 
   script = document.createElement('script');
   script.src = p_script_url + am_url;
@@ -1123,7 +1124,7 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default" colspan="5">Location Form</th>
+  <th class="ui-state-default" colspan="6">Location Form</th>
 </tr>
 <tr>
   <td class="ui-widget-content">Location <select type="text" name="inv_location">
@@ -1136,6 +1137,18 @@ $(document).ready( function() {
   $q_locations = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   while ($a_locations = mysql_fetch_array($q_locations)) {
     print "<option value=\"" . $a_locations['loc_id'] . "\">" . htmlspecialchars($a_locations['ct_city']) . " (" . htmlspecialchars($a_locations['loc_name']) . ")\n";
+  }
+?>
+</select></td>
+  <td class="ui-widget-content">Environment <select type="text" name="inv_env">
+<option value="0">Unassigned</option>
+<?php
+  $q_string  = "select env_id,env_name ";
+  $q_string .= "from environment ";
+  $q_string .= "order by env_name ";
+  $q_environment = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+  while ($a_environment = mysql_fetch_array($q_environment)) {
+    print "<option value=\"" . $a_environment['env_id'] . "\">" . htmlspecialchars($a_environment['env_name']) . "</option>\n";
   }
 ?>
 </select></td>
