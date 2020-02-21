@@ -23,7 +23,8 @@
     if (check_userlevel($AL_Admin)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']               = clean($_GET['id'],                10);
-        $formVars['grp_name']         = clean($_GET['grp_name'],         100);
+        $formVars['grp_name']         = clean($_GET['grp_name'],          60);
+        $formVars['grp_snow']         = clean($_GET['grp_snow'],         100);
         $formVars['grp_manager']      = clean($_GET['grp_manager'],       10);
         $formVars['grp_organization'] = clean($_GET['grp_organization'],  10);
         $formVars['grp_role']         = clean($_GET['grp_role'],         100);
@@ -84,6 +85,7 @@
 # all done. now update groups with the new information.
           $q_string =
             "grp_name          = \"" . $formVars['grp_name']          . "\"," . 
+            "grp_snow          = \"" . $formVars['grp_snow']          . "\"," . 
             "grp_manager       =   " . $formVars['grp_manager']       . "," . 
             "grp_organization  =   " . $formVars['grp_organization']  . "," . 
             "grp_role          =   " . $formVars['grp_role']          . "," . 
@@ -169,6 +171,7 @@
       $title .= "  <th class=\"ui-state-default\">Id</th>";
       $title .= "  <th class=\"ui-state-default\">Organization</th>";
       $title .= "  <th class=\"ui-state-default\">Group</th>";
+      $title .= "  <th class=\"ui-state-default\">Snow</th>";
       $title .= "  <th class=\"ui-state-default\">Role</th>";
       $title .= "  <th class=\"ui-state-default\">Group EMail</th>";
       $title .= "  <th class=\"ui-state-default\">Group Manager</th>";
@@ -213,7 +216,7 @@
       $changelog .= $header . $title;
 
 
-      $q_string  = "select grp_id,grp_name,org_name,role_name,grp_email,grp_magic,grp_category,grp_clscript,usr_last,";
+      $q_string  = "select grp_id,grp_name,grp_snow,org_name,role_name,grp_email,grp_magic,grp_category,grp_clscript,usr_last,";
       $q_string .= "usr_first,grp_disabled,grp_changelog,grp_clfile,grp_clserver,grp_report,grp_status,grp_server,grp_import ";
       $q_string .= "from groups ";
       $q_string .= "left join organizations on organizations.org_id = groups.grp_organization ";
@@ -253,6 +256,7 @@
           $group .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['grp_id']           . $linkend . "</td>";
           $group .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['org_name']         . $linkend . "</td>";
           $group .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['grp_name']         . $linkend . "</td>";
+          $group .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['grp_snow']         . $linkend . "</td>";
           $group .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['role_name']        . $linkend . "</td>";
           $group .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['grp_email']        . $linkend . "</td>";
           $group .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['usr_first'] . " " . $a_groups['usr_last'] . $linkend . "</td>";
@@ -314,6 +318,7 @@
 
       print "document.groups.grp_organization[0].selected = true;\n";
       print "document.groups.grp_name.value = '';\n";
+      print "document.groups.grp_snow.value = '';\n";
       print "document.groups.grp_role[0].selected = true;\n";
       print "document.groups.grp_email.value = '';\n";
       print "document.groups.grp_manager[0].selected = true;\n";
