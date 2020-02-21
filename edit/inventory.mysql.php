@@ -52,6 +52,7 @@
         $formVars["inv_department"]  = clean($_GET["inv_department"],  10);
         $formVars["inv_ansible"]     = clean($_GET["inv_ansible"],     10);
         $formVars["inv_notes"]       = clean($_GET["inv_notes"],      255);
+        $formVars["inv_env"]         = clean($_GET["inv_env"],         10);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
@@ -109,6 +110,7 @@
             "inv_product     =   " . $formVars['inv_product']     . "," .
             "inv_project     =   " . $formVars['inv_project']     . "," .
             "inv_department  =   " . $formVars['inv_department']  . "," . 
+            "inv_env         =   " . $formVars['inv_env']         . "," . 
             "inv_notes       = \"" . $formVars['inv_notes']       . "\"";
 
           if ($formVars['update'] == 1) {
@@ -497,6 +499,7 @@ print "alert('All Done!');\n";
               "inv_project        = \"" . $a_inventory['inv_project']        . "\"," .
               "inv_department     = \"" . $a_inventory['inv_department']     . "\"," .
               "inv_ansible        = \"" . $a_inventory['inv_ansible']        . "\"," .
+              "inv_env            = \"" . $a_inventory['inv_env']            . "\"," .
               "inv_notes          = \"" . $a_inventory['inv_notes']          . "\"";
 
             $query = "update inventory set " . $q_string . " where inv_id = " . $formVars['id'];;
