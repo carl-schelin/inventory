@@ -22,7 +22,7 @@
     if (check_userlevel($AL_Admin)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from groups");
 
-      $q_string  = "select grp_disabled,grp_name,grp_email,grp_magic,grp_category,grp_changelog,grp_manager,grp_clfile,";
+      $q_string  = "select grp_disabled,grp_name,grp_snow,grp_magic,grp_category,grp_changelog,grp_manager,grp_clfile,";
       $q_string .= "grp_clserver,grp_report,grp_organization,grp_role,grp_clscript,grp_status,grp_server,grp_import ";
       $q_string .= "from groups ";
       $q_string .= "where grp_id = " . $formVars['id'];
@@ -35,6 +35,7 @@
       $manager      = return_Index($a_groups['grp_manager'],      "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
 
       print "document.groups.grp_name.value = '"      . mysql_real_escape_string($a_groups['grp_name'])      . "';\n";
+      print "document.groups.grp_snow.value = '"      . mysql_real_escape_string($a_groups['grp_snow'])      . "';\n";
       print "document.groups.grp_email.value = '"     . mysql_real_escape_string($a_groups['grp_email'])     . "';\n";
       print "document.groups.grp_magic.value = '"     . mysql_real_escape_string($a_groups['grp_magic'])     . "';\n";
       print "document.groups.grp_category.value = '"  . mysql_real_escape_string($a_groups['grp_category'])  . "';\n";
