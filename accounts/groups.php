@@ -67,6 +67,7 @@ function attach_file( p_script_url, update ) {
 
   af_url += "&grp_organization="  + af_form.grp_organization.value;
   af_url += "&grp_name="          + encode_URI(af_form.grp_name.value);
+  af_url += "&grp_snow="          + encode_URI(af_form.grp_snow.value);
   af_url += "&grp_manager="       + af_form.grp_manager.value;
   af_url += "&grp_role="          + af_form.grp_role.value;
   af_url += "&grp_email="         + encode_URI(af_form.grp_email.value);
@@ -262,6 +263,7 @@ $(document).ready( function() {
   }
 ?></select></td>
   <td class="ui-widget-content">Group Name: <input type="text" name="grp_name" size="40"></td>
+  <td class="ui-widget-content">Service Now Name: <input type="text" name="grp_snow" size="40"></td>
   <td class="ui-widget-content">Group Role: <select name="grp_role">
 <option value="0">Unassigned</option>
 <?php
