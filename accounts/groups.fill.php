@@ -22,7 +22,7 @@
     if (check_userlevel($AL_Admin)) {
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from groups");
 
-      $q_string  = "select grp_disabled,grp_name,grp_snow,grp_magic,grp_category,grp_changelog,grp_manager,grp_clfile,";
+      $q_string  = "select grp_disabled,grp_name,grp_snow,grp_email,grp_magic,grp_category,grp_changelog,grp_manager,grp_clfile,";
       $q_string .= "grp_clserver,grp_report,grp_organization,grp_role,grp_clscript,grp_status,grp_server,grp_import ";
       $q_string .= "from groups ";
       $q_string .= "where grp_id = " . $formVars['id'];
