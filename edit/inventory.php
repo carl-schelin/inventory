@@ -1080,7 +1080,7 @@ $(document).ready( function() {
   <th class="ui-state-default" colspan="8">Server Form</th>
 </tr>
 <tr>
-  <td class="ui-widget-content" id="edit_hn">Server Name <input type="text" name="inv_name" size="20" onkeyup="check_hostname();"></td>
+  <td class="ui-widget-content" id="edit_hn">Server Name <input type="text" name="inv_name" size="20" onkeyup="check_hostname();"><span id="gohere"></span></td>
   <td class="ui-widget-content" colspan="5">Description <input type="text" name="inv_function" size="60"></td>
   <td class="ui-widget-content" ><label>911 Call Path? <input type="checkbox" name="inv_callpath"></label></td>
 </tr>
