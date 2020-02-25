@@ -248,7 +248,7 @@
           if ($a_inventory['inv_ansible']) {
             $is_ansible = 'checked';
           }
-          $is_ssh = '';
+          $is_unixsvc = '';
           if ($a_inventory['inv_ssh']) {
             $is_unixsvc = 'checked';
           }
