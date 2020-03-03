@@ -91,6 +91,8 @@
   <li><a href="requests/kzupan.openview.php?csv=true">CSV Listing of Openview Servers by Location and Operating System</a></li>
   <li><a href="requests/kzupan.bigfix.php">Big Fix server listing</a></li>
   <li><a href="requests/kzupan.bigfix.php?csv=true">CSV Big Fix server listing</a></li>
+  <li><a href="requests/kzupan.cmdb.input.php">CMDB Input listing</a></li>
+  <li><a href="requests/kzupan.cmdb.input.php?csv=true">CMDB Input listing</a></li>
 </ul>
 
 </div>
