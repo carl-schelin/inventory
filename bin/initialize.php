@@ -44,7 +44,7 @@
   $q_string  = "select inv_id,inv_manager,inv_product ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_status = 0 and inv_name = '" . $server . "'";
-  $q_inventory = mysql_query($q_string, $connection) or die($q_string . ": " . mysql_error());
+  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   if (mysql_num_rows($q_inventory) > 0) {
 
     echo "ERROR: $server already exists in the inventory.\n";
@@ -58,7 +58,7 @@
     $q_string .= "from interface ";
     $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
     $q_string .= "where inv_status = 0 and int_server = '" . $server . "'";
-    $q_interface = mysql_query($q_string, $connection) or die($q_string . ": " . mysql_error());
+    $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     if (mysql_num_rows($q_interface) > 0) {
       $a_interface = mysql_fetch_array($q_interface);
 
