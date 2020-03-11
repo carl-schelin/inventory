@@ -93,6 +93,8 @@
   <li><a href="requests/kzupan.bigfix.php?csv=true">CSV Big Fix server listing</a></li>
   <li><a href="requests/kzupan.cmdb.input.php">CMDB Input listing</a></li>
   <li><a href="requests/kzupan.cmdb.input.php?csv=true">CSV CMDB Input listing</a></li>
+  <li><a href="requests/kzupan.interfaces.php">Servers with no interfaces</a></li>
+  <li><a href="requests/kzupan.interfaces.php?csv=true">CSV Servers with no interfaces</a></li>
 </ul>
 
 </div>
