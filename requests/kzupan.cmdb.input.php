@@ -120,7 +120,7 @@
   $q_string .= "left join parts    on parts.part_id           = models.mod_type ";
   $q_string .= "left join groups    on groups.grp_id           = inventory.inv_manager ";
   $q_string .= "left join products  on products.prod_id        = software.sw_product ";
-  $q_string .= "where inv_status = 0 and inv_manager = " . $formVars['group'] . " and sw_type = 'OS' and hw_primary = 1 ";
+  $q_string .= "where inv_status = 0 and inv_manager = " . $formVars['group'] . " and hw_primary = 1 ";
   $q_string .= "group by inv_name ";
   $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_inventory = mysql_fetch_array($q_inventory)) {
