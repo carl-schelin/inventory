@@ -107,7 +107,7 @@
     print "</tr>";
   }
 
-  $q_string  = "select inv_id,inv_name,inv_function,inv_manager,inv_appadmin,loc_west,mod_name,part_name,env_name,hw_serial,inv_uuid,sw_software,grp_name,grp_snow ";
+  $q_string  = "select inv_id,inv_name,inv_function,inv_manager,inv_appadmin,loc_west,mod_name,part_name,env_name,hw_serial,inv_uuid,sw_software,grp_name,grp_snow,hw_active ";
   $q_string .= "from inventory ";
   $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
   $q_string .= "left join locations  on locations.loc_id        = inventory.inv_location ";
@@ -200,6 +200,11 @@
       $serial = $a_inventory['inv_uuid'];
     }
 
+    $status = 'In Use';
+    if ($a_inventory['hw_active'] == '0000-00-00') {
+      $status = 'Build in Progress';
+    }
+
     if ($a_inventory['mod_name'] != 'Virtual Interface') {
       if ($formVars['csv']) {
         print "\"" . $a_inventory['inv_name'] . "\",";
@@ -210,7 +215,7 @@
         print "\"" . $inv_appadmin . "\",";
         print "\"" . $inv_group . "\",";
         print "\"" . $a_inventory['env_name'] . "\",";
-        print "\"" . "In-Use" . "\",";
+        print "\"" . $status . "\",";
         print "\"" . "&nbsp;" . "\",";
         print "\"" . "&nbsp;" . "\",";
         print "\"" . $a_inventory['inv_function'] . "\",";
@@ -226,7 +231,7 @@
         print "  <td class=\"" . $class . "\">"             . $inv_appadmin                           . "</td>\n";
         print "  <td class=\"" . $class . "\">"             . $inv_group                              . "</td>\n";
         print "  <td class=\"" . $class . "\">"             . $a_inventory['env_name']                . "</td>\n";
-        print "  <td class=\"" . $class . "\">"             . "In-Use"                                . "</td>\n";
+        print "  <td class=\"" . $class . "\">"             . $status                                 . "</td>\n";
         print "  <td class=\"" . $class . "\">"             . "&nbsp;"                                . "</td>\n";
         print "  <td class=\"" . $class . "\">"             . "&nbsp;"                                . "</td>\n";
         print "  <td class=\"" . $class . "\">"             . $a_inventory['inv_function']            . "</td>\n";
