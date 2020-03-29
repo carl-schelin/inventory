@@ -209,11 +209,28 @@
 
           $display = $a_groups['grp_name'];
 
+# Update the main listing
           $q_string  = "update ";
           $q_string .= "inventory ";
           $q_string .= "set ";
           $q_string .= "inv_manager = " . $a_groups['grp_id'] . " ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
+          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+
+# update the hardware listing; all hardware for this server
+          $q_string  = "update ";
+          $q_string .= "hardware ";
+          $q_string .= "set ";
+          $q_string .= "hw_group = " . $a_groups['grp_id'] . " ";          
+          $q_string .= "where hw_companyid = " . $formVars['id'] . " ";
+          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+
+# update the software listing; only software that's owned by the old group
+          $q_string  = "update ";
+          $q_string .= "software ";
+          $q_string .= "set ";
+          $q_string .= "sw_group = " . $a_groups['grp_id'] . " ";          
+          $q_string .= "where sw_companyid = " . $formVars['id'] . " and sw_group = " . $formVars['select'] . " ";
           $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
 
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
