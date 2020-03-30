@@ -233,6 +233,14 @@
           $q_string .= "where sw_companyid = " . $formVars['id'] . " and sw_group = " . $formVars['select'] . " ";
           $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
 
+# update file system ownershps
+          $q_string  = "update ";
+          $q_string .= "filesystem ";
+          $q_string .= "set ";
+          $q_string .= "fs_group = " . $a_groups['grp_id'] . " ";          
+          $q_string .= "where fs_companyid = " . $formVars['id'] . " and fs_group = " . $formVars['select'] . " ";
+          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
 
         }
@@ -312,6 +320,14 @@
           $q_string .= "set ";
           $q_string .= "sw_group = " . $a_groups['grp_id'] . " ";          
           $q_string .= "where sw_companyid = " . $formVars['id'] . " and sw_group = " . $formVars['select'] . " ";
+          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+
+# update file system ownershps
+          $q_string  = "update ";
+          $q_string .= "filesystem ";
+          $q_string .= "set ";
+          $q_string .= "fs_group = " . $a_groups['grp_id'] . " ";          
+          $q_string .= "where fs_companyid = " . $formVars['id'] . " and fs_group = " . $formVars['select'] . " ";
           $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
 
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
