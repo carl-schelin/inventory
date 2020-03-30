@@ -30,6 +30,7 @@
         $formVars['fs_backup']    = clean($_GET['fs_backup'],    10);
         $formVars['fs_device']    = clean($_GET['fs_device'],    60);
         $formVars['fs_mount']     = clean($_GET['fs_mount'],     60);
+        $formVars['fs_group']     = clean($_GET['fs_group'],     10);
         $formVars['fs_size']      = clean($_GET['fs_size'],      10);
         $formVars['fs_wwid']      = clean($_GET['fs_wwid'],     100);
         $formVars['fs_subsystem'] = clean($_GET['fs_subsystem'], 30);
@@ -64,6 +65,7 @@
             "fs_backup    =   " . $formVars['fs_backup']    . "," .
             "fs_device    = \"" . $formVars['fs_device']    . "\"," .
             "fs_mount     = \"" . $formVars['fs_mount']     . "\"," .
+            "fs_group     =   " . $formVars['fs_group']     . "," .
             "fs_size      =   " . $formVars['fs_size']      . "," .
             "fs_wwid      = \"" . $formVars['fs_wwid']      . "\"," .
             "fs_subsystem = \"" . $formVars['fs_subsystem'] . "\"," .
@@ -112,6 +114,7 @@
               "fs_backup    =   " . $a_filesystem['fs_backup']    . "," .
               "fs_device    = \"" . $a_filesystem['fs_device']    . "\"," .
               "fs_mount     = \"" . $a_filesystem['fs_mount']     . "\"," .
+              "fs_group     =   " . $a_filesystem['fs_group']     . "," .
               "fs_size      =   " . $a_filesystem['fs_size']      . "," .
               "fs_wwid      = \"" . $a_filesystem['fs_wwid']      . "\"," .
               "fs_subsystem = \"" . $a_filesystem['fs_subsystem'] . "\"," .
@@ -169,6 +172,21 @@
         $output .= "  <td class=\"ui-widget-content\">Device:* <input type=\"text\" name=\"fs_device\" size=\"20\"></td>\n";
         $output .= "  <td class=\"ui-widget-content\">Mount Point:* <input type=\"text\" name=\"fs_mount\" size=\"20\"></td>\n";
         $output .= "  <td class=\"ui-widget-content\">Size:* <input type=\"text\" name=\"fs_size\" size=\"10\"></td>\n";
+        $output .= "</tr>\n";
+        $output .= "<tr>\n";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"4\">Managed by: <select name=\"fs_group\">\n";
+        $output .= "<option value=\"0\">Unassigned</option>\n";
+
+        $q_string  = "select grp_id,grp_name ";
+        $q_string .= "from groups ";
+        $q_string .= "where grp_disabled = 0 ";
+        $q_string .= "order by grp_name ";
+        $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+        while ($a_groups = mysql_fetch_array($q_groups)) {
+          $output .= "<option value=\"" . $a_groups['grp_id'] . "\">" . htmlspecialchars($a_groups['grp_name']) . "</option>\n";
+        }
+
+        $output .= "</select></td>\n";
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
@@ -240,6 +258,7 @@
       $output .=   "<th class=\"ui-state-default\">Del</th>\n";
       $output .=   "<th class=\"ui-state-default\">Device</th>\n";
       $output .=   "<th class=\"ui-state-default\">Mount</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Managed By</th>\n";
       $output .=   "<th class=\"ui-state-default\">Size</th>\n";
       $output .=   "<th class=\"ui-state-default\">Volume Name</th>\n";
       $output .=   "<th class=\"ui-state-default\">WWNN</th>\n";
@@ -256,9 +275,10 @@
         $a_backups['bu_include'] = 0;
       }
 
-      $q_string  = "select fs_id,fs_backup,fs_wwid,fs_volume,fs_device,fs_size,fs_mount,fs_verified,fs_update,inv_manager ";
+      $q_string  = "select fs_id,fs_backup,fs_wwid,fs_volume,fs_device,fs_size,fs_mount,fs_verified,fs_update,grp_name ";
       $q_string .= "from filesystem ";
       $q_string .= "left join inventory on inventory.inv_id = filesystem.fs_companyid ";
+      $q_string .= "left join groups on groups.grp_id = filesystem.fs_group ";
       $q_string .= "where fs_companyid = " . $formVars['fs_companyid'] . " ";
       $q_string .= "order by fs_device";
       $q_filesystem = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
@@ -286,6 +306,7 @@
           $output .= "  <td class=\"" . $class . " delete\">" . $linkdel                                                      . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['fs_device']            . $linkend . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['fs_mount']             . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['grp_name']             . $linkend . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['fs_size']              . $linkend . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['fs_volume']            . $linkend . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['fs_wwid']              . $linkend . "</td>\n";
@@ -295,7 +316,7 @@
         }
       } else {
           $output .= "<tr>\n";
-          $output .= "  <td class=\"ui-widget-content\" colspan=\"7\">No Filesystems defined.</td>\n";
+          $output .= "  <td class=\"ui-widget-content\" colspan=\"8\">No Filesystems defined.</td>\n";
           $output .= "</tr>\n";
       }
 
