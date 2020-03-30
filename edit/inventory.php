@@ -432,6 +432,7 @@ function attach_filesystem( p_script_url, update ) {
   af_url += "&fs_backup="    + af_form.fs_backup.checked;
   af_url += "&fs_device="    + encode_URI(af_form.fs_device.value);
   af_url += "&fs_mount="     + encode_URI(af_form.fs_mount.value);
+  af_url += "&fs_group="     + af_form.fs_group.value;
   af_url += "&fs_size="      + encode_URI(af_form.fs_size.value);
   af_url += "&fs_wwid="      + encode_URI(af_form.fs_wwid.value);
   af_url += "&fs_subsystem=" + encode_URI(af_form.fs_subsystem.value);
@@ -867,6 +868,7 @@ function clear_fields() {
   show_file('hardware.mysql.php'    + '?update=-3' + '&hw_companyid=<?php    print $formVars['server']; ?>');
   show_file('filesystem.mysql.php'  + '?update=-3' + '&fs_companyid=<?php    print $formVars['server']; ?>');
   show_file('network.mysql.php'     + '?update=-3' + '&int_companyid=<?php   print $formVars['server']; ?>');
+  show_file('users.mysql.php'       + '?update=-3' + '&pwd_companyid=<?php   print $formVars['server']; ?>');
   show_file('routing.mysql.php'     + '?update=-3' + '&route_companyid=<?php print $formVars['server']; ?>');
   show_file('backups.fill.php'      + '?id=<?php                             print $formVars['server']; ?>');
   show_file('association.mysql.php' + '?update=-3' + '&clu_companyid=<?php   print $formVars['server']; ?>');
@@ -941,6 +943,7 @@ $(document).ready( function() {
   if (check_grouplevel($a_inventory['inv_manager'])) {
 ?>
   <li><a href="#network">Network</a></li>
+  <li><a href="#users">Users</a></li>
   <li><a href="#routing">Routing</a></li>
   <li><a href="#firewall">Firewall</a></li>
   <li><a href="#backup">Backup</a></li>
@@ -1818,6 +1821,36 @@ software support date exceeds the company requirements for support.</li>
 </div>
 
 <span id="network_table"><?php print wait_Process("Please Wait"); ?></span>
+
+</div>
+
+
+<div id="users">
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default"><a href="javascript:;" onmousedown="toggleDiv('users-hide');">User Management</a></th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('users-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="routing-help" style="display: none">
+
+<div class="main-help ui-widget-content">
+
+
+</div>
+
+</div>
+
+
+<div id="users-hide" style="display: none">
+
+<span id="users_form"><?php print wait_Process("Please Wait"); ?></span>
+
+</div>
+
+<span id="users_table"><?php print wait_Process("Please Wait"); ?></span>
 
 </div>
 
