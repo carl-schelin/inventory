@@ -148,12 +148,12 @@
             }
 
 # update file system ownershps
-          $q_string  = "update ";
-          $q_string .= "filesystem ";
-          $q_string .= "set ";
-          $q_string .= "fs_group = " . $formVars['inv_manager'] . " ";
-          $q_string .= "where fs_companyid = " . $formVars['id'] . " and fs_group = " . $a_inventory['inv_manager'] . " ";
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $query  = "update ";
+            $query .= "filesystem ";
+            $query .= "set ";
+            $query .= "fs_group = " . $formVars['inv_manager'] . " ";
+            $query .= "where fs_companyid = " . $formVars['id'] . " and fs_group = " . $a_inventory['inv_manager'] . " ";
+            $result = mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
 
 # for changelog requirements, compare old inv_name with new inv_name. If changed, save the old name before changing it
             if ($a_inventory['inv_name'] != $formVars['inv_name']) {
