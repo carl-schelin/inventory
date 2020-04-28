@@ -432,7 +432,11 @@
       if ($formVars['csv'] == 'true') {
         $interface  = "<p>\"Server Name\",";
         $interface .= "\"Interface Name\",";
-        $interface .= "\"Monitor\",";
+        $interface .= "\"Management\",";
+        $interface .= "\"Secure Shell\",";
+        $interface .= "\"Backup\",";
+        $interface .= "\"OMI\",";
+        $interface .= "\"Nagios\",";
         $interface .= "\"Type\",";
         $interface .= "\"Logical Interface\",";
         $interface .= "\"IP Address\",";
@@ -449,7 +453,11 @@
         $interface .= "<tr>\n";
         $interface .= "  <th class=\"ui-state-default\">Server Name</th>\n";
         $interface .= "  <th class=\"ui-state-default\">Interface Name</th>\n";
-        $interface .= "  <th class=\"ui-state-default\">Monitor</th>\n";
+        $interface .= "  <th class=\"ui-state-default\">Mgt</th>\n";
+        $interface .= "  <th class=\"ui-state-default\">SSH</th>\n";
+        $interface .= "  <th class=\"ui-state-default\">Bkup</th>\n";
+        $interface .= "  <th class=\"ui-state-default\">OMI</th>\n";
+        $interface .= "  <th class=\"ui-state-default\">Nag</th>\n";
         $interface .= "  <th class=\"ui-state-default\">Type</th>\n";
         $interface .= "  <th class=\"ui-state-default\">Logical Interface</th>\n";
         $interface .= "  <th class=\"ui-state-default\">IP Address</th>\n";
@@ -465,7 +473,7 @@
       }
 
       $servername = '&nbsp;';
-      $q_string  = "select inv_id,inv_fqdn,inv_name,inv_function,inv_appadmin,grp_name,prod_name,prj_name,svc_name,loc_name,inv_row,inv_rack,inv_unit,inv_callpath,inv_ansible,inv_ssh ";
+      $q_string  = "select inv_id,inv_fqdn,inv_name,inv_function,inv_appadmin,inv_ssh,grp_name,prod_name,prj_name,svc_name,loc_name,inv_row,inv_rack,inv_unit,inv_callpath,inv_ansible,inv_ssh ";
       $q_string .= "from inventory ";
       $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
       $q_string .= "left join products on products.prod_id = inventory.inv_product ";
@@ -491,8 +499,8 @@
         $linkend   = "</a>";
         $servername = $a_inventory['inv_name'];
 
-        $q_string  = "select int_id,int_server,int_openview,int_face,int_sysport,int_addr,int_mask,zone_name,";
-        $q_string .= "int_gate,int_switch,int_port,itp_acronym,int_virtual,med_text,int_vlan ";
+        $q_string  = "select int_id,int_server,int_openview,int_nagios,int_management,int_backup,int_face,int_login,";
+        $q_string .= "int_sysport,int_addr,int_mask,zone_name,int_gate,int_switch,int_port,itp_acronym,int_virtual,med_text,int_vlan ";
         $q_string .= "from interface ";
         $q_string .= "left join ip_zones  on ip_zones.zone_id = interface.int_zone ";
         $q_string .= "left join inttype   on inttype.itp_id   = interface.int_type ";
@@ -511,14 +519,34 @@
             }
 
             if ($formVars['csv'] == 'true') {
-              $is_monitored = "No";
+              $is_management = "No";
+              if ($a_interface['int_management']) {
+                $is_management = "Yes";
+              }
+              $is_ssh = "No";
+              if ($a_interface['int_login']) {
+                $is_ssh = "Yes";
+              }
+              $is_backedup = "No";
+              if ($a_interface['int_backup']) {
+                $is_backedup = "Yes";
+              }
+              $is_omi = "No";
               if ($a_interface['int_openview']) {
-                $is_monitored = "Yes";
+                $is_omi = "Yes";
+              }
+              $is_nagios = "No";
+              if ($a_interface['int_nagios']) {
+                $is_nagios = "Yes";
               }
 
               $interface .= "\"" . $servername                  . "\",";
               $interface .= "\"" . $a_interface['int_server']   . "\",";
-              $interface .= "\"" . $is_monitored                . "\",";
+              $interface .= "\"" . $is_management               . "\",";
+              $interface .= "\"" . $is_ssh                      . "\",";
+              $interface .= "\"" . $is_backedup                 . "\",";
+              $interface .= "\"" . $is_omi                      . "\",";
+              $interface .= "\"" . $is_nagios                   . "\",";
               $interface .= "\"" . $a_interface['itp_acronym']  . "\",";
               $interface .= "\"" . $a_interface['int_face']     . "\",";
               $interface .= "\"" . $a_interface['int_addr']     . "\",";
@@ -534,10 +562,27 @@
               if ($a_interface['int_server'] == '') {
                 $a_interface['int_server'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
               }
-              $is_monitored = "";
-              if ($a_interface['int_openview']) {
-                $is_monitored = " checked";
+              $is_management = "";
+              if ($a_interface['int_management']) {
+                $is_management = " checked";
               }
+              $is_ssh = "";
+              if ($a_interface['int_login']) {
+                $is_ssh = " checked";
+              }
+              $is_backedup = "";
+              if ($a_interface['int_backup']) {
+                $is_backedup = " checked";
+              }
+              $is_omi = "";
+              if ($a_interface['int_openview']) {
+                $is_omi = " checked";
+              }
+              $is_nagios = "";
+              if ($a_interface['int_nagios']) {
+                $is_nagios = " checked";
+              }
+
               if ($a_interface['itp_acronym'] == '') {
                 $a_interface['itp_acronym'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
               }
@@ -572,7 +617,11 @@
               $interface .= "<tr>\n";
               $interface .= "  <td class=\"" . $class . "\">" . $linkstart . $servername                       . $linkend . "</td>\n";
               $interface .= "  <td class=\"" . $class . "\" id=\"fsn" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fsn');\"><u>" . $a_interface['int_server']       . "</u>" . $virtual . "</td>\n";
-              $interface .= "  <td class=\"" . $class . " delete\"><input type=\"checkbox\"" . $is_monitored . " id=\"fmn" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fmn');\"></td>\n";
+              $interface .= "  <td class=\"" . $class . " delete\"><input type=\"checkbox\"" . $is_management . " id=\"fmg" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fmg');\"></td>\n";
+              $interface .= "  <td class=\"" . $class . " delete\"><input type=\"checkbox\"" . $is_ssh        . " id=\"fsh" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fsh');\"></td>\n";
+              $interface .= "  <td class=\"" . $class . " delete\"><input type=\"checkbox\"" . $is_backedup   . " id=\"fbu" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fbu');\"></td>\n";
+              $interface .= "  <td class=\"" . $class . " delete\"><input type=\"checkbox\"" . $is_omi        . " id=\"fov" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fov');\"></td>\n";
+              $interface .= "  <td class=\"" . $class . " delete\"><input type=\"checkbox\"" . $is_nagios     . " id=\"fng" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fng');\"></td>\n";
               $interface .= "  <td class=\"" . $class . "\" id=\"fia" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fia');\"><u>" . $a_interface['itp_acronym']      . "</u></td>\n";
               $interface .= "  <td class=\"" . $class . "\" id=\"ffc" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'ffc');\"><u>" . $a_interface['int_face']         . "</u></td>\n";
               $interface .= "  <td class=\"" . $class . "\" id=\"fad" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fad');\"><u>" . $a_interface['int_addr']         . "</u></td>\n";
@@ -591,8 +640,8 @@
               $interface .= "</tr>\n";
             }
 
-            $q_string  = "select int_id,int_server,int_face,int_sysport,int_addr,int_mask,zone_name,int_gate,int_openview,";
-            $q_string .= "int_switch,int_port,itp_acronym,int_virtual,med_text,int_vlan ";
+            $q_string  = "select int_id,int_server,int_face,int_sysport,int_addr,int_mask,zone_name,int_gate,int_openview,int_login,";
+            $q_string .= "int_switch,int_port,itp_acronym,int_virtual,med_text,int_vlan,int_management,int_backup,int_nagios ";
             $q_string .= "from interface ";
             $q_string .= "left join ip_zones  on ip_zones.zone_id = interface.int_zone ";
             $q_string .= "left join inttype   on inttype.itp_id   = interface.int_type ";
@@ -611,14 +660,34 @@
                 }
 
                 if ($formVars['csv'] == 'true') {
-                  $is_monitored = "No";
+                  $is_management = "No";
+                  if ($a_int_child['int_management']) {
+                    $is_management = "Yes";
+                  }
+                  $is_ssh = "No";
+                  if ($a_int_child['int_login']) {
+                    $is_ssh = "Yes";
+                  }
+                  $is_backedup = "No";
+                  if ($a_int_child['int_backup']) {
+                    $is_backedup = "Yes";
+                  }
+                  $is_omi = "No";
                   if ($a_int_child['int_openview']) {
-                    $is_monitored = "Yes";
+                    $is_omi = "Yes";
+                  }
+                  $is_nagios = "No";
+                  if ($a_int_child['int_nagios']) {
+                    $is_nagios = "Yes";
                   }
 
                   $interface .= "\"" . $servername                   . "\",";
                   $interface .= "\"" . $a_int_child['int_server']    . "\",";
-                  $interface .= "\"" . $is_monitored                 . "\",";
+                  $interface .= "\"" . $is_management                . "\",";
+                  $interface .= "\"" . $is_ssh                       . "\",";
+                  $interface .= "\"" . $is_backedup                  . "\",";
+                  $interface .= "\"" . $is_omi                       . "\",";
+                  $interface .= "\"" . $is_nagios                    . "\",";
                   $interface .= "\"" . $a_int_child['itp_acronym']   . "\",";
                   $interface .= "\"" . $a_int_child['int_face']      . "\",";
                   $interface .= "\"" . $a_int_child['int_addr']      . "\",";
@@ -634,10 +703,27 @@
                   if ($a_int_child['int_server'] == '') {
                     $a_int_child['int_server'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
                   }
-                  $checked = "";
-                  if ($a_int_child['int_openview']) {
-                    $checked = " checked";
+                  $is_management = "";
+                  if ($a_int_child['int_management']) {
+                    $is_management = " checked";
                   }
+                  $is_ssh = "";
+                  if ($a_int_child['int_login']) {
+                    $is_ssh = " checked";
+                  }
+                  $is_backedup = "";
+                  if ($a_int_child['int_backup']) {
+                    $is_backedup = " checked";
+                  }
+                  $is_omi = "";
+                  if ($a_int_child['int_openview']) {
+                    $is_omi = " checked";
+                  }
+                  $is_nagios = "";
+                  if ($a_int_child['int_nagios']) {
+                    $is_nagios = " checked";
+                  }
+
                   if ($a_int_child['itp_acronym'] == '') {
                     $a_int_child['itp_acronym'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
                   }
@@ -672,7 +758,11 @@
                   $interface .= "<tr>\n";
                   $interface .= "  <td class=\"" . $class . "\">"      . $servername                              . "</td>\n";
                   $interface .= "  <td class=\"" . $class . "\" id=\"fsn" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fsn');\">&gt; <u>" . $a_int_child['int_server']      . "</u>" . $virtual . "</td>\n";
-                  $interface .= "  <td class=\"" . $class . " delete\"><input type=\"checkbox\"" . $is_monitored . " id=\"fmn" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fmn');\"></td>\n";
+                  $interface .= "  <td class=\"" . $class . " delete\"><input type=\"checkbox\"" . $is_management . " id=\"fmg" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fmg');\"></td>\n";
+                  $interface .= "  <td class=\"" . $class . " delete\"><input type=\"checkbox\"" . $is_ssh        . " id=\"fsh" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fsh');\"></td>\n";
+                  $interface .= "  <td class=\"" . $class . " delete\"><input type=\"checkbox\"" . $is_backedup   . " id=\"fbu" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fbu');\"></td>\n";
+                  $interface .= "  <td class=\"" . $class . " delete\"><input type=\"checkbox\"" . $is_omi        . " id=\"fov" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fov');\"></td>\n";
+                  $interface .= "  <td class=\"" . $class . " delete\"><input type=\"checkbox\"" . $is_nagios     . " id=\"fng" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fng');\"></td>\n";
                   $interface .= "  <td class=\"" . $class . "\" id=\"fia" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fia');\"><u>"      . $a_int_child['itp_acronym']             . "</u></td>\n";
                   $interface .= "  <td class=\"" . $class . "\" id=\"ffc" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'ffc');\"><u>"      . $a_int_child['int_face']            . "</u></td>\n";
                   $interface .= "  <td class=\"" . $class . "\" id=\"fad" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fad');\"><u>"      . $a_int_child['int_addr']                   . "</u></td>\n";
