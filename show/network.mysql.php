@@ -104,7 +104,7 @@
 
   $q_string  = "select int_id,int_server,int_domain,int_face,int_addr,int_vaddr,int_eth,int_veth,int_mask,int_verified,";
   $q_string .= "int_sysport,int_redundancy,int_virtual,int_switch,int_port,int_primary,itp_acronym,int_gate,";
-  $q_string .= "int_vgate,int_note,int_update,int_type,zone_name,int_nagios,int_openview ";
+  $q_string .= "int_vgate,int_note,int_update,int_type,zone_name,int_nagios,int_openview,int_backup,int_management,int_login ";
   $q_string .= "from interface ";
   $q_string .= "left join ip_zones on interface.int_zone = ip_zones.zone_id  ";
   $q_string .= "left join inttype  on interface.int_type = inttype.itp_id ";
@@ -157,6 +157,18 @@
     if ($a_interface['int_virtual'] == 1 ) {
       $virtual = ' (v)';
     }
+    $management = '';
+    if ($a_interface['int_management'] == 1 ) {
+      $management = ' (M)';
+    }
+    $backup = '';
+    if ($a_interface['int_backup'] == 1 ) {
+      $backup = ' (B)';
+    }
+    $login = '';
+    if ($a_interface['int_login'] == 1 ) {
+      $login = ' (sh)';
+    }
 
     if ($a_interface['int_type'] == 4 || $a_interface['int_type'] == 6) {
       $linkstart = "<a href=\"http://" . $a_interface['int_addr'] . "\" target=\"_blank\">";
@@ -179,7 +191,7 @@
     }
 
     $output .= "<tr>";
-    $output .= "<td" . $pristart . $intnote . ">"              . $servername . $redundancy . $monitor . "</td>";
+    $output .= "<td" . $pristart . $intnote . ">"              . $servername . $redundancy . $monitor . $management . $backup . $login . "</td>";
     $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['int_face'] . $virtual                 . "</td>";
     if (return_Virtual($formVars['id']) == 0) {
       $output .= "<td" . $pristart . $intnote . ">"            . $a_interface['int_sysport']                         . "</td>";
@@ -200,7 +212,7 @@
 # redundant interfaces
     $q_string  = "select int_id,int_server,int_domain,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,";
     $q_string .= "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_groupname,";
-    $q_string .= "int_vaddr,int_veth,int_vgate,int_nagios,int_openview ";
+    $q_string .= "int_vaddr,int_veth,int_vgate,int_nagios,int_openview,int_management,int_backup,int_login ";
     $q_string .= "from interface ";
     $q_string .= "left join ip_zones on interface.int_zone = ip_zones.zone_id  ";
     $q_string .= "left join inttype on interface.int_type = inttype.itp_id ";
@@ -253,6 +265,18 @@
       if ($a_redundancy['int_virtual'] == 1 ) {
         $virtual = ' (v)';
       }
+      $management = '';
+      if ($a_redundancy['int_management'] == 1 ) {
+        $management = ' (M)';
+      }
+      $backup = '';
+      if ($a_redundancy['int_backup'] == 1 ) {
+        $backup = ' (B)';
+      }
+      $login = '';
+      if ($a_redundancy['int_login'] == 1 ) {
+        $login = ' (sh)';
+      }
 
       if ($a_redundancy['int_type'] == 4 || $a_redundancy['int_type'] == 6) {
         $linkstart = "<a href=\"http://" . $a_redundancy['int_addr'] . "\" target=\"_blank\">";
@@ -275,7 +299,7 @@
       }
 
       $output .= "<tr>";
-      $output .= "<td" . $pristart . $intnote . ">> "            . $servername . $group . $monitor      . "</td>";
+      $output .= "<td" . $pristart . $intnote . ">> "            . $servername . $group . $monitor . $management . $backup . $login . "</td>";
       $output .= "<td" . $pristart . $intnote . ">"              . $a_redundancy['int_face'] . $virtual                 . "</td>";
       if (return_Virtual($formVars['id']) == 0) {
         $output .= "<td" . $pristart . $intnote . ">"            . $a_redundancy['int_sysport']                         . "</td>";
@@ -296,7 +320,7 @@
 # secondary redundant interfaces
       $q_string  = "select int_id,int_server,int_domain,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,";
       $q_string .= "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_groupname,";
-      $q_string .= "int_vaddr,int_veth,int_vgate,int_nagios,int_openview ";
+      $q_string .= "int_vaddr,int_veth,int_vgate,int_nagios,int_openview,int_management,int_backup,int_login ";
       $q_string .= "from interface ";
       $q_string .= "left join ip_zones on interface.int_zone = ip_zones.zone_id  ";
       $q_string .= "left join inttype on interface.int_type = inttype.itp_id ";
@@ -349,6 +373,18 @@
         if ($a_secondary['int_virtual'] == 1 ) {
           $virtual = ' (v)';
         }
+        $management = '';
+        if ($a_secondary['int_management'] == 1 ) {
+          $management = ' (M)';
+        }
+        $backup = '';
+        if ($a_secondary['int_backup'] == 1 ) {
+          $backup = ' (B)';
+        }
+        $login = '';
+        if ($a_secondary['int_login'] == 1 ) {
+          $login = ' (sh)';
+        }
 
         if ($a_secondary['int_type'] == 4 || $a_secondary['int_type'] == 6) {
           $linkstart = "<a href=\"http://" . $a_secondary['int_addr'] . "\" target=\"_blank\">";
@@ -371,7 +407,7 @@
         }
 
         $output .= "<tr>";
-        $output .= "<td" . $pristart . $intnote . ">>> "           . $servername . $group . $monitor      . "</td>";
+        $output .= "<td" . $pristart . $intnote . ">>> "           . $servername . $group . $monitor . $management . $backup . $login . "</td>";
         $output .= "<td" . $pristart . $intnote . ">"              . $a_secondary['int_face'] . $virtual                 . "</td>";
         if (return_Virtual($formVars['id']) == 0) {
           $output .= "<td" . $pristart . $intnote . ">"            . $a_secondary['int_sysport']                         . "</td>";
