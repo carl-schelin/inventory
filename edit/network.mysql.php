@@ -55,6 +55,7 @@
         $formVars['int_nagios']         = clean($_GET['int_nagios'],         10);
         $formVars['int_backup']         = clean($_GET['int_backup'],         10);
         $formVars['int_management']     = clean($_GET['int_management'],     10);
+        $formVars['int_login']          = clean($_GET['int_login'],          10);
         $formVars['int_xpoint']         = clean($_GET['int_xpoint'],         10);
         $formVars['int_ypoint']         = clean($_GET['int_ypoint'],         10);
         $formVars['int_zpoint']         = clean($_GET['int_zpoint'],         10);
@@ -108,6 +109,11 @@
           $formVars['int_management'] = 1;
         } else {
           $formVars['int_management'] = 0;
+        }
+        if ($formVars['int_login'] == 'true') {
+          $formVars['int_login'] = 1;
+        } else {
+          $formVars['int_login'] = 0;
         }
         if ($formVars['int_ping'] == 'true') {
           $formVars['int_ping'] = 1;
@@ -218,6 +224,7 @@
             "int_nagios     =   " . $formVars['int_nagios']     . "," .
             "int_backup     =   " . $formVars['int_backup']     . "," .
             "int_management =   " . $formVars['int_management'] . "," .
+            "int_login      =   " . $formVars['int_login']      . "," .
             "int_xpoint     =   " . $formVars['int_xpoint']     . "," .
             "int_ypoint     =   " . $formVars['int_ypoint']     . "," .
             "int_zpoint     =   " . $formVars['int_zpoint']     . "," .
@@ -446,8 +453,9 @@
         $output .= "</tr>\n";
         $output .= "<tr>\n";
         $output .= "  <td class=\"ui-widget-content\">";
+          $output .= "<label><input type=\"checkbox\" name=\"int_management\"> Used for Management traffic</label> - ";
           $output .= "<label><input type=\"checkbox\" name=\"int_backup\"> Used for Backup traffic</label> - ";
-          $output .= "<label><input type=\"checkbox\" name=\"int_management\"> Used for Management traffic</label>";
+          $output .= "<label><input type=\"checkbox\" name=\"int_login\"> Used for Secure Shell traffic</label>";
         $output .= "</td>\n";
         $output .= "  <td class=\"ui-widget-content\">If snmp is enabled, statistics to monitor: ";
           $output .= "<label><input type=\"checkbox\" name=\"int_load\"> Load Average</label> - ";
