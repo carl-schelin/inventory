@@ -623,7 +623,7 @@
       $output .= "</tr>\n";
 
       $mgtcount = 0;
-      $q_string  = "select int_id,int_server,int_domain,int_companyid,int_redundancy,int_management,";
+      $q_string  = "select int_id,int_server,int_domain,int_companyid,int_redundancy,int_management,int_login,";
       $q_string .= "int_backup,int_face,int_addr,int_eth,int_mask,int_switch,int_vaddr,int_veth,int_vgate,";
       $q_string .= "int_redundancy,int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,";
       $q_string .= "itp_description,int_gate,int_update,usr_name,int_nagios,int_openview,int_ip6 ";
@@ -727,6 +727,10 @@
           if ($a_interface['int_virtual'] > 0) {
             $virtual = ' (v)';
           }
+          $login = '';
+          if ($a_interface['int_login'] > 0) {
+            $login = ' (sh)';
+          }
           $management = '';
           if ($a_interface['int_management'] > 0) {
             $management = ' (M)';
@@ -756,7 +760,7 @@
 
           $output .= "<tr>\n";
           $output .=   "<td"          . $defaultdel . ">" . $linkdel                                                                      . "</td>\n";
-          $output .= "  <td"          . $default    . ">" . $linkstart . $servername   . $redundancy   . $monitor . $management . $backups . $linkend   . "</td>\n";
+          $output .= "  <td"          . $default    . ">" . $linkstart . $servername   . $redundancy   . $monitor . $management . $backups . $login . $linkend   . "</td>\n";
           $output .= "  <td"          . $defaultdel . " title=\"" . $fwdtitle . "\">" . $linkstart . $forward                 . $linkend   . "</td>\n";
           $output .= "  <td"          . $defaultdel . " title=\"" . $revtitle . "\">" . $linkstart . $reverse                . $linkend   . "</td>\n";
           $output .= "  <td"          . $default    . ">" . $linkstart . $a_interface['int_face'] . $virtual                 . $linkend   . "</td>\n";
@@ -780,7 +784,7 @@
           $q_string .= "int_eth,int_mask,int_switch,int_groupname,int_vaddr,int_veth,int_vgate,";
           $q_string .= "int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,";
           $q_string .= "itp_description,int_gate,int_update,usr_name,int_nagios,int_openview,";
-          $q_string .= "int_management,int_backup,int_ip6 ";
+          $q_string .= "int_management,int_backup,int_ip6,int_login ";
           $q_string .= "from interface ";
           $q_string .= "left join inttype on inttype.itp_id = interface.int_type ";
           $q_string .= "left join users on users.usr_id = interface.int_user ";
@@ -877,6 +881,10 @@
               if ($a_redundancy['int_virtual'] > 0) {
                 $virtual = ' (v)';
               }
+              $login = '';
+              if ($a_redundancy['int_login'] > 0) {
+                $login = ' (sh)';
+              }
               $management = '';
               if ($a_redundancy['int_management'] > 0) {
                 $management = ' (M)';
@@ -910,7 +918,7 @@
 
               $output .= "<tr>\n";
               $output .=   "<td"          . $defaultdel . ">"   . $linkdel                                                                  . "</td>\n";
-              $output .= "  <td"          . $default    . ">> " . $linkstart . $servername . $group . $monitor . $management . $backups . $linkend . "</td>\n";
+              $output .= "  <td"          . $default    . ">> " . $linkstart . $servername . $group . $monitor . $management . $backups . $login . $linkend . "</td>\n";
               $output .= "  <td"          . $defaultdel . " title=\"" . $fwdtitle . "\">" . $linkstart . $forward                 . $linkend   . "</td>\n";
               $output .= "  <td"          . $defaultdel . " title=\"" . $revtitle . "\">" . $linkstart . $reverse                . $linkend   . "</td>\n";
               $output .= "  <td"          . $default    . ">"   . $linkstart . $a_redundancy['int_face']   . $virtual . $linkend            . "</td>\n";
@@ -931,7 +939,7 @@
 # Display any secondary redundancy memberships here
               $q_string  = "select int_id,int_server,int_domain,int_companyid,int_face,int_addr,int_eth,int_mask,int_switch,int_groupname,int_vaddr,int_veth,int_vgate,";
               $q_string .= "int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,itp_description,int_gate,int_update,usr_name,";
-              $q_string .= "int_nagios,int_openview,int_management,int_backup,int_ip6 ";
+              $q_string .= "int_nagios,int_openview,int_management,int_backup,int_ip6,int_login ";
               $q_string .= "from interface ";
               $q_string .= "left join inttype on inttype.itp_id = interface.int_type ";
               $q_string .= "left join users on users.usr_id = interface.int_user ";
@@ -1028,6 +1036,10 @@
                   if ($a_secondary['int_virtual'] > 0) {
                     $virtual = ' (v)';
                   }
+                  $login = '';
+                  if ($a_secondary['int_login'] > 0) {
+                    $login = ' (sh)';
+                  }
                   $management = '';
                   if ($a_secondary['int_management'] > 0) {
                     $management = ' (M)';
@@ -1061,7 +1073,7 @@
 
                   $output .= "<tr>\n";
                   $output .=   "<td"          . $defaultdel . ">"   . $linkdel                                                                  . "</td>\n";
-                  $output .= "  <td"          . $default    . ">>> " . $linkstart . $a_secondary['int_server'] . $group . $monitor . $management . $backups . $linkend . "</td>\n";
+                  $output .= "  <td"          . $default    . ">>> " . $linkstart . $a_secondary['int_server'] . $group . $monitor . $management . $backups . $login . $linkend . "</td>\n";
                   $output .= "  <td"          . $defaultdel . " title=\"" . $fwdtitle . "\">" . $linkstart . $forward                 . $linkend   . "</td>\n";
                   $output .= "  <td"          . $defaultdel . " title=\"" . $revtitle . "\">" . $linkstart . $reverse                . $linkend   . "</td>\n";
                   $output .= "  <td"          . $default    . ">"   . $linkstart . $a_secondary['int_face']   . $virtual . $linkend            . "</td>\n";
