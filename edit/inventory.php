@@ -500,6 +500,7 @@ function attach_interface( p_script_url, update ) {
   ai_url += "&int_nagios="     + ai_form.int_nagios.checked;
   ai_url += "&int_backup="     + ai_form.int_backup.checked;
   ai_url += "&int_management=" + ai_form.int_management.checked;
+  ai_url += "&int_login="      + ai_form.int_login.checked;
   ai_url += "&int_xpoint="     + ai_form.int_xpoint.value;
   ai_url += "&int_ypoint="     + ai_form.int_ypoint.value;
   ai_url += "&int_zpoint="     + ai_form.int_zpoint.value;
