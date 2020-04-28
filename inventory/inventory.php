@@ -188,19 +188,35 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<p>This page gives you a filtered listing of all servers and devices. Filters will give you a shorter list of servers to view which might also make it a bit easier to make the changes.</p>
+<p>This page gives you a filtered listing of all servers and devices. Filters will give you a shorter list of servers to view which 
+might also make it a bit easier to make the changes.</p>
 
-<p><u><strong>NOTE</strong> - Changing the data on this page <strong>actually changes the live data in the inventory WITH NO CONFIRMATION DIALOG BOX.</strong>. When you change it, it's changed.</u> It is restricted to just the team that can manage the server.</p>
+<p><u><strong>NOTE</strong> - Changing the data on this page <strong>actually changes the live data in the inventory WITH NO 
+CONFIRMATION DIALOG BOX.</strong>. When you change it, it's changed.</u> It is restricted to just the team that can manage the server.</p>
 
-<p>In many cases, if the server is managed by the Unix System Administration team, the server information is automatically captured and added to the inventory. Making changes here will be temporary in such cases.</p>
+<p>In many cases, if the server is managed by the Unix System Administration team, the server information is automatically 
+retrieved from each server and the inventory is updated. Regarding those fields, making changes here will be temporary in such cases.</p>
 
 <p>The System Tree tab shows all the parent servers and chassis and under that are the children (blades for example) for that main device.</p>
 
-<p>The System Information tab shows the main detail record for the server or device. This information isn't automatically captured from the system.</p>
+<p>The System Information tab shows the main detail record for the server or device. This information isn't automatically captured 
+from the system.</p>
 
-<p>The Hardware Details tab shows the hardware associated with this server in a parent/child relationship. The primary device and all unassociated devices will be at the top of each server's line with child devices listed under the primary device. Child devices are very likely being automatically captured from the system so making changes here will be overwritten.</p>
+<p>The Hardware Details tab shows the hardware associated with this server in a parent/child relationship. The primary device and all 
+unassociated devices will be at the top of each server's line with child devices listed under the primary device. Child devices are very 
+likely being automatically captured from the system so making changes here will be overwritten.</p>
 
-<p>The Interface Information tab shows all the interfaces associated with this server in a parent/child relationship. The IPMI, Bonded, or APA virtual interfaces are displayed and any child interfaces are displayed under the appropriate interface.</p>
+<p>The Interface Information tab shows all the interfaces associated with this server in a parent/child relationship. The IPMI, Bonded, 
+or APA virtual interfaces are displayed and any child interfaces are displayed under the appropriate interface. Several checkboxes are 
+provided.</p>
+
+<ul>
+  <li>Management (Mgt) - All servers must have an interface identified as a Management interface. This is where all backups, monitoring, system level logins, and such are allowed.</li>
+  <li>Secure Shell (SSH) - If the Management interface is not used for ssh access, this checkbox identifies the alternate interface used for logging in via ssh.</li>
+  <li>Backups (Bkup) - If the Management interface is not used for backups, this checkbox identifies the alternate interface used for backups.</li>
+  <li>Monitoring (OMI) - If the Management interface is not used for monitoring, this checkbox identifies the alternate interface used for monitoring.</li>
+  <li>Nagios (Nag) - This is a special case used by the Unix team to monitor servers that aren't Production or otherwise monitored by the monitoring team.</li>
+</ul>
 
 <p>Note: The server names are clickable links to the server detail pages. Fields that are <u>underscored</u> are editable.</p>
 
