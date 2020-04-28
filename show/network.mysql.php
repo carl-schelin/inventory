@@ -72,6 +72,9 @@
 
   $output .= "<ul>\n";
   $output .= "  <li><strong>&gt;</strong> The interfaces that are children of a virtual interface. Two (&gt;&gt;) indicate a grandchild interface. These are typically grouped to form a redundant network connection.</li>\n";
+  $output .= "  <li><strong>(M)</strong> The (M) indicates this is interface is a default Management interface.</li>\n";
+  $output .= "  <li><strong>(B)</strong> The (B) indicates this is interface is used for backups.</li>\n";
+  $output .= "  <li><strong>(sh)</strong> The (sh) indicates this is interface is used by Secure Shell when logging in to a server.</li>\n";
   $output .= "  <li><strong>(O)</strong> The (O) indicates this is interface is monitored through OpenView.</li>\n";
   $output .= "  <li><strong>(N)</strong> The (N) indicates this is interface is monitored through <a href=\"" . $Nagiosurl . "\" target=\"_blank\">Nagios</a>.</li>\n";
   $output .= "  <li><strong>(r)</strong> The (r) designates an interface is part of a redundancy. A group of interfaces intended on ensuring uptime.</li>\n";
