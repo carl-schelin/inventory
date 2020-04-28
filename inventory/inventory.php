@@ -213,8 +213,8 @@ provided.</p>
 <ul>
   <li>Management (Mgt) - All servers must have an interface identified as a Management interface. This is where all backups, monitoring, system level logins, and such are allowed.</li>
   <li>Secure Shell (SSH) - If the Management interface is not used for ssh access, this checkbox identifies the alternate interface used for logging in via ssh.</li>
-  <li>Backups (Bkup) - If the Management interface is not used for backups, this checkbox identifies the alternate interface used for backups.</li>
-  <li>Monitoring (OMI) - If the Management interface is not used for monitoring, this checkbox identifies the alternate interface used for monitoring.</li>
+  <li>Backups (Bkup) - If the Management interface is not used for backups, this checkbox identifies the alternate interface used for backups. Note that the backup tab identifies which systems are backed up.</li>
+  <li>Monitoring (OMI) - This checkbox identifies the interface used to officially monitor the system.</li>
   <li>Nagios (Nag) - This is a special case used by the Unix team to monitor servers that aren't Production or otherwise monitored by the monitoring team.</li>
 </ul>
 
