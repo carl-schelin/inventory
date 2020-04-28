@@ -111,8 +111,92 @@
         }
       }
 
-# check or uncheck the monitoring checkbox
-      if ($formVars['function'] == 'fmn') {
+# check or uncheck the management checkbox
+      if ($formVars['function'] == 'fmg') {
+        $q_string  = "select int_management ";
+        $q_string .= "from interface ";
+        $q_string .= "where int_id = " . $formVars['id'] . " ";
+        $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $a_interface = mysql_fetch_array($q_interface);
+
+        if ($a_interface['int_management']) {
+          $a_interface['int_management'] = 0;
+        } else {
+          $a_interface['int_management'] = 1;
+        }
+
+        $q_string  = "update ";
+        $q_string .= "interface ";
+        $q_string .= "set ";
+        $q_string .= "int_management = " . $a_interface['int_management'] . " ";
+        $q_string .= "where int_id = " . $formVars['id'] . " ";
+        $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+
+        if ($a_interface['int_management']) {
+          print "document.getElementById('" . $cellid . "').checked = true;\n";
+        } else {
+          print "document.getElementById('" . $cellid . "').checked = false;\n";
+        }
+      }
+
+# check or uncheck the ssh checkbox
+      if ($formVars['function'] == 'fsh') {
+        $q_string  = "select int_login ";
+        $q_string .= "from interface ";
+        $q_string .= "where int_id = " . $formVars['id'] . " ";
+        $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $a_interface = mysql_fetch_array($q_interface);
+
+        if ($a_interface['int_login']) {
+          $a_interface['int_login'] = 0;
+        } else {
+          $a_interface['int_login'] = 1;
+        }
+
+        $q_string  = "update ";
+        $q_string .= "interface ";
+        $q_string .= "set ";
+        $q_string .= "int_login = " . $a_interface['int_login'] . " ";
+        $q_string .= "where int_id = " . $formVars['id'] . " ";
+        $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+
+        if ($a_interface['int_login']) {
+          print "document.getElementById('" . $cellid . "').checked = true;\n";
+        } else {
+          print "document.getElementById('" . $cellid . "').checked = false;\n";
+        }
+      }
+
+# check or uncheck the backup checkbox
+      if ($formVars['function'] == 'fbu') {
+        $q_string  = "select int_backup ";
+        $q_string .= "from interface ";
+        $q_string .= "where int_id = " . $formVars['id'] . " ";
+        $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $a_interface = mysql_fetch_array($q_interface);
+
+        if ($a_interface['int_backup']) {
+          $a_interface['int_backup'] = 0;
+        } else {
+          $a_interface['int_backup'] = 1;
+        }
+
+        $q_string  = "update ";
+        $q_string .= "interface ";
+        $q_string .= "set ";
+        $q_string .= "int_backup = " . $a_interface['int_backup'] . " ";
+        $q_string .= "where int_id = " . $formVars['id'] . " ";
+        $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+
+        if ($a_interface['int_backup']) {
+          print "document.getElementById('" . $cellid . "').checked = true;\n";
+        } else {
+          print "document.getElementById('" . $cellid . "').checked = false;\n";
+        }
+      }
+
+# check or uncheck the openview checkbox
+      if ($formVars['function'] == 'fov') {
         $q_string  = "select int_openview ";
         $q_string .= "from interface ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
@@ -133,6 +217,34 @@
         $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
 
         if ($a_interface['int_openview']) {
+          print "document.getElementById('" . $cellid . "').checked = true;\n";
+        } else {
+          print "document.getElementById('" . $cellid . "').checked = false;\n";
+        }
+      }
+
+# check or uncheck the nagios checkbox
+      if ($formVars['function'] == 'fng') {
+        $q_string  = "select int_nagios ";
+        $q_string .= "from interface ";
+        $q_string .= "where int_id = " . $formVars['id'] . " ";
+        $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $a_interface = mysql_fetch_array($q_interface);
+
+        if ($a_interface['int_nagios']) {
+          $a_interface['int_nagios'] = 0;
+        } else {
+          $a_interface['int_nagios'] = 1;
+        }
+
+        $q_string  = "update ";
+        $q_string .= "interface ";
+        $q_string .= "set ";
+        $q_string .= "int_nagios = " . $a_interface['int_nagios'] . " ";
+        $q_string .= "where int_id = " . $formVars['id'] . " ";
+        $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+
+        if ($a_interface['int_nagios']) {
           print "document.getElementById('" . $cellid . "').checked = true;\n";
         } else {
           print "document.getElementById('" . $cellid . "').checked = false;\n";
