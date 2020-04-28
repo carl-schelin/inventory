@@ -27,7 +27,7 @@
       $q_string .= "int_duplex,int_role,int_redundancy,int_groupname,int_vlan,int_zone,int_openview,int_nagios,";
       $q_string .= "int_backup,int_management,int_xpoint,int_virtual,int_ypoint,int_zpoint,int_ping,int_ssh,";
       $q_string .= "int_http,int_ftp,int_smtp,int_snmp,int_load,int_uptime,int_cpu,int_swap,int_memory,";
-      $q_string .= "int_cfg2html,int_notify,int_hours,int_domain ";
+      $q_string .= "int_cfg2html,int_notify,int_hours,int_domain,int_login ";
       $q_string .= "from interface ";
       $q_string .= "where int_id = " . $formVars['id'];
       $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
@@ -102,6 +102,11 @@
         print "document.edit.int_management.checked = true;\n";
       } else {
         print "document.edit.int_management.checked = false;\n";
+      }
+      if ($a_interface['int_login']) {
+        print "document.edit.int_login.checked = true;\n";
+      } else {
+        print "document.edit.int_login.checked = false;\n";
       }
       if ($a_interface['int_ping']) {
         print "document.edit.int_ping.checked = true;\n";
