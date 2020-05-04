@@ -25,7 +25,8 @@
       $q_string  = "select inv_name,inv_companyid,inv_function,inv_callpath,inv_document,inv_centrify,";
       $q_string .= "       inv_adzone,inv_domain,inv_ssh,inv_location,inv_rack,inv_row,inv_unit,inv_zone,inv_front,";
       $q_string .= "       inv_rear,inv_manager,inv_appadmin,inv_class,inv_response,inv_mstart,inv_mend,inv_ansible,";
-      $q_string .= "       inv_mdow,inv_minterval,inv_product,inv_project,inv_department,inv_notes,inv_clusterid,inv_env,inv_appliance ";
+      $q_string .= "       inv_mdow,inv_minterval,inv_product,inv_project,inv_department,inv_notes,inv_clusterid,inv_env,";
+      $q_string .= "       inv_appliance,inv_bigfix,inv_ciscoamp ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_id = " . $formVars['id'];
       $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
@@ -109,6 +110,16 @@
           print "document.edit.inv_appliance.checked = true;\n";
         } else {
           print "document.edit.inv_appliance.checked = false;\n";
+        }
+        if ($a_inventory['inv_bigfix']) {
+          print "document.edit.inv_bigfix.checked = true;\n";
+        } else {
+          print "document.edit.inv_bigfix.checked = false;\n";
+        }
+        if ($a_inventory['inv_ciscoamp']) {
+          print "document.edit.inv_ciscoamp.checked = true;\n";
+        } else {
+          print "document.edit.inv_ciscoamp.checked = false;\n";
         }
 
         print "document.edit.id.value = " . $formVars['id'] . ";\n";
