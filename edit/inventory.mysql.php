@@ -54,6 +54,8 @@
         $formVars["inv_notes"]       = clean($_GET["inv_notes"],      255);
         $formVars["inv_env"]         = clean($_GET["inv_env"],         10);
         $formVars["inv_appliance"]   = clean($_GET["inv_appliance"],   10);
+        $formVars["inv_bigfix"]      = clean($_GET["inv_bigfix"],      10);
+        $formVars["inv_ciscoamp"]    = clean($_GET["inv_ciscoamp"],    10);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
@@ -118,6 +120,8 @@
             "inv_department  =   " . $formVars['inv_department']  . "," . 
             "inv_env         =   " . $formVars['inv_env']         . "," . 
             "inv_appliance   =   " . $formVars['inv_appliance']   . "," . 
+            "inv_bigfix      =   " . $formVars['inv_bigfix']      . "," . 
+            "inv_ciscoamp    =   " . $formVars['inv_ciscoamp']    . "," . 
             "inv_notes       = \"" . $formVars['inv_notes']       . "\"";
 
           if ($formVars['update'] == 1) {
@@ -516,6 +520,8 @@ print "alert('All Done!');\n";
               "inv_ansible        = \"" . $a_inventory['inv_ansible']        . "\"," .
               "inv_env            = \"" . $a_inventory['inv_env']            . "\"," .
               "inv_appliance      = \"" . $a_inventory['inv_appliance']      . "\"," .
+              "inv_bigfix         = \"" . $a_inventory['inv_bigfix']         . "\"," .
+              "inv_ciscoamp       = \"" . $a_inventory['inv_ciscoamp']       . "\"," .
               "inv_notes          = \"" . $a_inventory['inv_notes']          . "\"";
 
             $query = "update inventory set " . $q_string . " where inv_id = " . $formVars['id'];;
