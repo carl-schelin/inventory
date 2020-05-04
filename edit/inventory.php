@@ -336,6 +336,7 @@ function attach_detail( p_script_url, update ) {
   am_url += "&inv_notes="       + encode_URI(am_form.inv_notes.value);
   am_url += "&inv_ansible="     + am_form.inv_ansible.checked;
   am_url += "&inv_env="         + am_form.inv_env.value;
+  am_url += "&inv_appliance="   + am_form.inv_appliance.checked;
 
   script = document.createElement('script');
   script.src = p_script_url + am_url;
@@ -1089,7 +1090,8 @@ $(document).ready( function() {
   <td class="ui-widget-content" ><label>911 Call Path? <input type="checkbox" name="inv_callpath"></label></td>
 </tr>
 <tr>
-  <td class="ui-widget-content"  colspan="4">Link to Documentation: <input type="text" name="inv_document" size="80"></td>
+  <td class="ui-widget-content"  colspan="3">Link to Documentation: <input type="text" name="inv_document" size="80"></td>
+  <td class="ui-widget-content">Server is an Appliance? <input type="checkbox" name="inv_appliance"></td>
   <td class="ui-widget-content"  colspan="2">Blade Chassis: <select name="inv_companyid">
 <option value="0">Unassigned</option>
 <?php
