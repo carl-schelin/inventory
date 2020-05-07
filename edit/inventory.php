@@ -1093,7 +1093,7 @@ $(document).ready( function() {
 </tr>
 <tr>
   <td class="ui-widget-content"  colspan="3">Link to Documentation: <input type="text" name="inv_document" size="80"></td>
-  <td class="ui-widget-content">Server is an Appliance? <input type="checkbox" name="inv_appliance"></td>
+  <td class="ui-widget-content">Server is an Appliance? <input type="checkbox" name="inv_appliance" onchange="show_file('inventory.security.php?server=<?php print $formVars['server']; ?>');"></td>
   <td class="ui-widget-content"  colspan="2">Blade Chassis: <select name="inv_companyid">
 <option value="0">Unassigned</option>
 <?php
