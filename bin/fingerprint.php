@@ -25,7 +25,7 @@
     $server = $argv[1];
   }
 
-  $q_string  = "select inv_id,inv_name,inv_fqdn,inv_ssh,zone_name,prod_name,prj_name,loc_west,grp_name,inv_appadmin ";
+  $q_string  = "select inv_id,inv_name,inv_fqdn,inv_ssh,zone_name,prod_name,prj_name,loc_west,grp_name,inv_appadmin,inv_appliance ";
   $q_string .= "from inventory ";
   $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
@@ -89,6 +89,11 @@
     $project = "Unassigned";
   }
 
+  $appliance = 'No';
+  if ($a_inventory['inv_appliance']) {
+    $appliance = 'Yes';
+  }
+
   $status = "Active";
   $q_string  = "select hw_active ";
   $q_string .= "from hardware ";
@@ -140,6 +145,7 @@
   print "Tags: " . $tags . "\n";
   print "System Custodian: " . $a_inventory['grp_name'] . "\n";
   print "Primary Application Custodian: " . $appadmin . "\n";
+  print "Appliance: " . $appliance . "\n";
   print "Interfaces: " . $interfaces . "\n";
   print "InventoryID: " . $a_inventory['inv_id'] . "\n";
   print "Product: " . $product . "\n";
