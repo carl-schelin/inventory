@@ -122,6 +122,7 @@
             "inv_appliance   =   " . $formVars['inv_appliance']   . "," . 
             "inv_bigfix      =   " . $formVars['inv_bigfix']      . "," . 
             "inv_ciscoamp    =   " . $formVars['inv_ciscoamp']    . "," . 
+            "inv_ticket      = \"" . $formVars['inv_ticket']      . "\"," . 
             "inv_notes       = \"" . $formVars['inv_notes']       . "\"";
 
           if ($formVars['update'] == 1) {
