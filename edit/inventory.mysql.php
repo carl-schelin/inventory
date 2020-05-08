@@ -56,6 +56,7 @@
         $formVars["inv_appliance"]   = clean($_GET["inv_appliance"],   10);
         $formVars["inv_bigfix"]      = clean($_GET["inv_bigfix"],      10);
         $formVars["inv_ciscoamp"]    = clean($_GET["inv_ciscoamp"],    10);
+        $formVars["inv_ticket"]      = clean($_GET["inv_ticket"],      30);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
