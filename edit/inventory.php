@@ -1091,7 +1091,7 @@ $(document).ready( function() {
   <td class="ui-widget-content" id="edit_hn">Server Name <input type="text" name="inv_name" size="20" onkeyup="check_hostname();"><span id="gohere"></span></td>
   <td class="ui-widget-content" colspan="5">Description <input type="text" name="inv_function" size="60"></td>
   <td class="ui-widget-content" ><label>911 Call Path? <input type="checkbox" name="inv_callpath"></label></td>
-  <td class="ui-widget-content" ><label>Decommission Ticket Number: <input type="checkbox" name="inv_ticket"></label></td>
+  <td class="ui-widget-content" ><label>Decommission Ticket Number: <input type="text" name="inv_ticket" size="20"></label></td>
 </tr>
 <tr>
   <td class="ui-widget-content"  colspan="3">Link to Documentation: <input type="text" name="inv_document" size="80"></td>
