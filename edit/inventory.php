@@ -339,6 +339,7 @@ function attach_detail( p_script_url, update ) {
   am_url += "&inv_appliance="   + am_form.inv_appliance.checked;
   am_url += "&inv_bigfix="      + am_form.inv_bigfix.checked;
   am_url += "&inv_ciscoamp="    + am_form.inv_ciscoamp.checked;
+  am_url += "&inv_ticket="      + encode_URI(am_form.inv_ticket.value);
 
   script = document.createElement('script');
   script.src = p_script_url + am_url;
@@ -1090,11 +1091,12 @@ $(document).ready( function() {
   <td class="ui-widget-content" id="edit_hn">Server Name <input type="text" name="inv_name" size="20" onkeyup="check_hostname();"><span id="gohere"></span></td>
   <td class="ui-widget-content" colspan="5">Description <input type="text" name="inv_function" size="60"></td>
   <td class="ui-widget-content" ><label>911 Call Path? <input type="checkbox" name="inv_callpath"></label></td>
+  <td class="ui-widget-content" ><label>Decommission Ticket Number: <input type="checkbox" name="inv_ticket"></label></td>
 </tr>
 <tr>
   <td class="ui-widget-content"  colspan="3">Link to Documentation: <input type="text" name="inv_document" size="80"></td>
   <td class="ui-widget-content">Server is an Appliance? <input type="checkbox" name="inv_appliance" onchange="show_file('inventory.security.php?server=<?php print $formVars['server']; ?>');"></td>
-  <td class="ui-widget-content"  colspan="2">Blade Chassis: <select name="inv_companyid">
+  <td class="ui-widget-content"  colspan="3">Blade Chassis: <select name="inv_companyid">
 <option value="0">Unassigned</option>
 <?php
   $q_string  = "select inv_id,inv_name ";
@@ -1187,7 +1189,7 @@ $(document).ready( function() {
 </select></td>
 </tr>
 <tr>
-  <td class="ui-widget-content" colspan="5">Front photo filename <select name="inv_front">
+  <td class="ui-widget-content" colspan="6">Front photo filename <select name="inv_front">
 <option value="0">Unassigned</option>
 <?php
   $q_string  = "select img_id,img_title,img_file ";
@@ -1202,7 +1204,7 @@ $(document).ready( function() {
 </select></td>
 </tr>
 <tr>
-  <td class="ui-widget-content" colspan="5">Rear photo filename <select name="inv_rear">
+  <td class="ui-widget-content" colspan="6">Rear photo filename <select name="inv_rear">
 <option value="0">Unassigned</option>
 <?php
   $q_string  = "select img_id,img_title,img_file ";
