@@ -26,7 +26,7 @@
       $q_string .= "       inv_adzone,inv_domain,inv_ssh,inv_location,inv_rack,inv_row,inv_unit,inv_zone,inv_front,";
       $q_string .= "       inv_rear,inv_manager,inv_appadmin,inv_class,inv_response,inv_mstart,inv_mend,inv_ansible,";
       $q_string .= "       inv_mdow,inv_minterval,inv_product,inv_project,inv_department,inv_notes,inv_clusterid,inv_env,";
-      $q_string .= "       inv_appliance,inv_bigfix,inv_ciscoamp ";
+      $q_string .= "       inv_appliance,inv_bigfix,inv_ciscoamp,inv_ticket ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_id = " . $formVars['id'];
       $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
@@ -75,6 +75,7 @@
         print "document.edit.inv_row.value = '"      . mysql_real_escape_string($a_inventory['inv_row'])      . "';\n";
         print "document.edit.inv_unit.value = '"     . mysql_real_escape_string($a_inventory['inv_unit'])     . "';\n";
         print "document.edit.inv_notes.value = '"    . mysql_real_escape_string($a_inventory['inv_notes'])    . "';\n";
+        print "document.edit.inv_ticket.value = '"   . mysql_real_escape_string($a_inventory['inv_ticket'])   . "';\n";
 
         print "document.edit.inv_companyid['"  . $invcompanyid              . "'].selected = true;\n";
         print "document.edit.inv_clusterid['"  . $invclusterid              . "'].selected = true;\n";
