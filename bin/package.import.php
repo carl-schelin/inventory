@@ -87,18 +87,22 @@
           $q_string .= "pkg_usr_id   =   " . "1"           . ",";
           $q_string .= "pkg_grp_id   =   " . "1"           . ",";
           $q_string .= "pkg_os       = \"" . $sw_software  . "\"";
+
+          $status = "i";
         } else {
           $a_packages = mysql_fetch_array($q_packages);
 
           $q_string  = "update packages set ";
-          $q_string .= "pkg_update = \"" . $date . \" ";
+          $q_string .= "pkg_update = \"" . $date . "\" ";
           $q_string .= "where pkg_id = " . $a_packages['pkg_id'] . " ";
+
+          $status = "u";
         }
 
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          print "a";
+          print $status;
           $q_result = mysql_query($q_string) or die($q_string . ":  " . mysql_error());
         }
 
@@ -122,18 +126,22 @@
           $q_string .= "pkg_usr_id   =   " . "1"           . ",";
           $q_string .= "pkg_grp_id   =   " . "1"           . ",";
           $q_string .= "pkg_os       = \"" . $sw_software  . "\"";
+
+          $status = "i";
         } else {
           $a_packages = mysql_fetch_array($q_packages);
 
           $q_string  = "update packages set ";
           $q_string .= "pkg_update = \"" . $date . "\" ";
           $q_string .= "where pkg_id = " . $a_packages['pkg_id'] . " ";
+
+          $status = "u";
         }
 
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          print "a";
+          print $status;
           $q_result = mysql_query($q_string) or die($q_string . ":  " . mysql_error());
         }
       } else {
