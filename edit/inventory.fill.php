@@ -64,7 +64,8 @@
         $invproject    = return_Index($a_inventory['inv_project'],    "select prj_id from projects where prj_product = " . $a_inventory['inv_product'] . " order by prj_name");
         $invdepartment = return_Index($a_inventory['inv_department'], "select dep_id from department order by dep_unit,dep_name");
         $invenv        = return_Index($a_inventory['inv_env'],        "select env_id from environment order by env_name");
-        $invmaint      = return_Index($a_inventory['inv_maint'],      "select win_id from window order by win_text");
+# no zero in the selection window so off by one each time
+        $invmaint      = return_Index($a_inventory['inv_maint'],      "select win_id from window order by win_text") - 1;
 
         print "document.edit.inv_name.value = '"     . mysql_real_escape_string($a_inventory['inv_name'])     . "';\n";
         print "document.edit.inv_function.value = '" . mysql_real_escape_string($a_inventory['inv_function']) . "';\n";
