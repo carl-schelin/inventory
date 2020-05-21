@@ -249,11 +249,15 @@ $(document).ready( function() {
 </select></td>
 <td class="ui-widget-content">Environment: <select name="loc_environment">
 <option value="0">Unassigned</option>
-<option value="1">Production</option>
-<option value="2">Customer Integration</option>
-<option value="3">Quality Assurance</option>
-<option value="4">Engineering</option>
-<option value="5">Development</option>
+<?php
+  $q_string  = "select env_id,env_name ";
+  $q_string .= "from environment ";
+  $q_string .= "order by env_id ";
+  $q_environment = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  while ($a_environment = mysql_fetch_array($q_environment)) {
+    print "<option value=\"" . $a_environment['env_id'] . "\">" . $a_environment['env_name'] . "</option>\n";
+  }
+?>
 </select></td>
 </tr>
 <tr>
