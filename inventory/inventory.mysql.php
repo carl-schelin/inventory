@@ -132,6 +132,7 @@
         $detail .= "\"Product\",";
         $detail .= "\"Project\",";
         $detail .= "\"Service Class\",";
+        $detail .= "\"Maintenance Window\",";
         $detail .= "\"Location\",";
         $detail .= "\"Row\",";
         $detail .= "\"Rack\",";
@@ -152,6 +153,7 @@
         $detail .= "  <th class=\"ui-state-default\">Product</th>\n";
         $detail .= "  <th class=\"ui-state-default\">Project</th>\n";
         $detail .= "  <th class=\"ui-state-default\">Service Class</th>\n";
+        $detail .= "  <th class=\"ui-state-default\">Maintenance Window</th>\n";
         $detail .= "  <th class=\"ui-state-default\">Location</th>\n";
         $detail .= "  <th class=\"ui-state-default\">Row</th>\n";
         $detail .= "  <th class=\"ui-state-default\">Rack</th>\n";
@@ -163,12 +165,13 @@
         $detail .= "</tr>\n";
       }
 
-      $q_string  = "select inv_id,inv_fqdn,inv_name,inv_function,inv_appadmin,grp_name,prod_name,prj_name,svc_name,loc_name,inv_row,inv_rack,inv_unit,inv_callpath,inv_ansible,inv_ssh ";
+      $q_string  = "select inv_id,inv_fqdn,inv_name,inv_function,inv_appadmin,grp_name,prod_name,prj_name,svc_name,loc_name,inv_row,inv_rack,inv_unit,inv_callpath,inv_ansible,inv_ssh,win_text ";
       $q_string .= "from inventory ";
       $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
       $q_string .= "left join products on products.prod_id = inventory.inv_product ";
       $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
       $q_string .= "left join service on service.svc_id = inventory.inv_class ";
+      $q_string .= "left join window on window.win_id = inventory.inv_maint ";
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
       $q_string .= "where inv_status = 0 and inv_manager = " . $formVars['group'] . " ";
       if ($formVars['location'] > 0) {
@@ -226,6 +229,7 @@
           $detail .= "\"" . $a_inventory['prod_name']    . "\",";
           $detail .= "\"" . $a_inventory['prj_name']     . "\",";
           $detail .= "\"" . $a_inventory['svc_name']     . "\",";
+          $detail .= "\"" . $a_inventory['win_text']     . "\",";
           $detail .= "\"" . $a_inventory['loc_name']     . "\",";
           $detail .= "\"" . $a_inventory['inv_row']      . "\",";
           $detail .= "\"" . $a_inventory['inv_rack']     . "\",";
@@ -262,6 +266,7 @@
           $detail .= "<td class=\"ui-widget-content\" id=\"ipr" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'ipr');\"><u>" . $a_inventory['prod_name']    . "</u></td>\n";
           $detail .= "<td class=\"ui-widget-content\" id=\"ipj" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'ipj');\"><u>" . $a_inventory['prj_name']     . "</u></td>\n";
           $detail .= "<td class=\"ui-widget-content\" id=\"isc" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'isc');\"><u>" . $a_inventory['svc_name']     . "</u></td>\n";
+          $detail .= "<td class=\"ui-widget-content\" id=\"imw" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'imw');\"><u>" . $a_inventory['win_text']     . "</u></td>\n";
           $detail .= "<td class=\"ui-widget-content\" id=\"ilc" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'ilc');\"><u>" . $a_inventory['loc_name']     . "</u></td>\n";
           $detail .= "<td class=\"ui-widget-content\" id=\"irw" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'irw');\"><u>" . $a_inventory['inv_row']      . "</u></td>\n";
           $detail .= "<td class=\"ui-widget-content\" id=\"irk" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'irk');\"><u>" . $a_inventory['inv_rack']     . "</u></td>\n";
