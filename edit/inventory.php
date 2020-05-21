@@ -340,6 +340,7 @@ function attach_detail( p_script_url, update ) {
   am_url += "&inv_bigfix="      + am_form.inv_bigfix.checked;
   am_url += "&inv_ciscoamp="    + am_form.inv_ciscoamp.checked;
   am_url += "&inv_ticket="      + encode_URI(am_form.inv_ticket.value);
+  am_url += "&inv_maint="       + am_form.inv_maint.value;
 
   script = document.createElement('script');
   script.src = p_script_url + am_url;
@@ -1323,6 +1324,25 @@ $(document).ready( function() {
       print htmlspecialchars($a_department['dep_unit']) . "-" . htmlspecialchars($a_department['dep_dept']) . " - ";
       print htmlspecialchars($a_department['bus_name']) . "-" . htmlspecialchars($a_department['dep_name']);
     print "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+</table>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Maintenance Window Form</th>
+</tr>
+<tr>
+  <td class="ui-widget-content">Maintenance Window <select name="inv_maint">
+<?php
+  $q_string  = "select win_id,win_text ";
+  $q_string .= "from window  ";
+  $q_string .= "order by win_text";
+  $q_window = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+  while ($a_window = mysql_fetch_array($q_window)) {
+    print "<option value=\"" . $a_window['win_id'] . "\">" . htmlspecialchars($a_window['win_text']) . "</option>\n";
   }
 ?>
 </select></td>
