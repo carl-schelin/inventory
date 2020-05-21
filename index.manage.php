@@ -59,6 +59,7 @@
   <li><a href="<?php print $Usersroot; ?>/department.php">Manage Department Names table</a></li>
   <li><a href="<?php print $Usersroot; ?>/organization.php">Manage Organizations table</a></li>
   <li><a href="<?php print $Usersroot; ?>/roles.php">Manage Roles table</a></li>
+  <li><a href="<?php print $Adminroot; ?>/maintenance.windows.php">Manage Maintenance Windows table</a></li>
 </ul>
 
 <ul>
