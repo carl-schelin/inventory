@@ -57,6 +57,7 @@
         $formVars["inv_bigfix"]      = clean($_GET["inv_bigfix"],      10);
         $formVars["inv_ciscoamp"]    = clean($_GET["inv_ciscoamp"],    10);
         $formVars["inv_ticket"]      = clean($_GET["inv_ticket"],      30);
+        $formVars["inv_maint"]       = clean($_GET["inv_maint"],       10);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
@@ -123,6 +124,7 @@
             "inv_appliance   =   " . $formVars['inv_appliance']   . "," . 
             "inv_bigfix      =   " . $formVars['inv_bigfix']      . "," . 
             "inv_ciscoamp    =   " . $formVars['inv_ciscoamp']    . "," . 
+            "inv_maint       =   " . $formVars['inv_maint']       . "," . 
             "inv_ticket      = \"" . $formVars['inv_ticket']      . "\"," . 
             "inv_notes       = \"" . $formVars['inv_notes']       . "\"";
 
