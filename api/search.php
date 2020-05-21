@@ -50,6 +50,7 @@
     public $inventory_function = '';
     public $inventory_documentation = '';
     public $inventory_service_class = '';
+    public $inventory_maintenance_window = '';
     public $inventory_product = '';
     public $inventory_project = '';
     public $inventory_location = '';
@@ -156,10 +157,11 @@
     }
   }
 
-  $q_string  = "select inv_id,inv_name,inv_uuid,inv_satuuid,inv_class,inv_location,inv_function,";
+  $q_string  = "select inv_id,inv_name,inv_uuid,inv_satuuid,inv_class,inv_location,inv_function,win_text,";
   $q_string .= "inv_document,inv_power,inv_rack,inv_row,inv_unit,prod_name,prj_name,zone_name,grp_name,inv_appadmin ";
   $q_string .= "from inventory ";
   $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
+  $q_string .= "left join window on window.win_id = inventory.inv_maint ";
   $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
@@ -184,17 +186,18 @@
     $a_groups = mysql_fetch_array($q_groups);
 
     $servers[$a_inventory['inv_name']] = new Server();
-    $servers[$a_inventory['inv_name']]->inventory_name           = $a_inventory['inv_name'];
-    $servers[$a_inventory['inv_name']]->inventory_fqdn           = $fqdn;
-    $servers[$a_inventory['inv_name']]->inventory_sysadmins      = $a_inventory['grp_name'];
-    $servers[$a_inventory['inv_name']]->inventory_appadmins      = $a_groups['grp_name'];
-    $servers[$a_inventory['inv_name']]->inventory_uuid           = $a_inventory['inv_uuid'];
-    $servers[$a_inventory['inv_name']]->inventory_satellite_uuid = $a_inventory['inv_satuuid'];
-    $servers[$a_inventory['inv_name']]->inventory_function       = $a_inventory['inv_function'];
-    $servers[$a_inventory['inv_name']]->inventory_documentation  = $a_inventory['inv_document'];
-    $servers[$a_inventory['inv_name']]->inventory_product        = $a_inventory['prod_name'];
-    $servers[$a_inventory['inv_name']]->inventory_project        = $a_inventory['prj_name'];
-    $servers[$a_inventory['inv_name']]->inventory_timezone       = $a_inventory['zone_name'];
+    $servers[$a_inventory['inv_name']]->inventory_name               = $a_inventory['inv_name'];
+    $servers[$a_inventory['inv_name']]->inventory_fqdn               = $fqdn;
+    $servers[$a_inventory['inv_name']]->inventory_sysadmins          = $a_inventory['grp_name'];
+    $servers[$a_inventory['inv_name']]->inventory_appadmins          = $a_groups['grp_name'];
+    $servers[$a_inventory['inv_name']]->inventory_uuid               = $a_inventory['inv_uuid'];
+    $servers[$a_inventory['inv_name']]->inventory_satellite_uuid     = $a_inventory['inv_satuuid'];
+    $servers[$a_inventory['inv_name']]->inventory_function           = $a_inventory['inv_function'];
+    $servers[$a_inventory['inv_name']]->inventory_documentation      = $a_inventory['inv_document'];
+    $servers[$a_inventory['inv_name']]->inventory_product            = $a_inventory['prod_name'];
+    $servers[$a_inventory['inv_name']]->inventory_project            = $a_inventory['prj_name'];
+    $servers[$a_inventory['inv_name']]->inventory_timezone           = $a_inventory['zone_name'];
+    $servers[$a_inventory['inv_name']]->inventory_maintenance_window = $a_inventory['win_text'];
 
     $q_string  = "select loc_west ";
     $q_string .= "from locations ";
