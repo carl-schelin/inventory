@@ -220,11 +220,12 @@
 
       $q_string  = "select loc_id,loc_name,loc_addr1,loc_addr2,loc_suite,ct_city,loc_type,loc_west,";
       $q_string .= "st_acronym,loc_zipcode,cn_acronym,loc_details,loc_default,ct_clli,loc_instance,";
-      $q_string .= "loc_environment ";
+      $q_string .= "env_abb ";
       $q_string .= "from locations ";
       $q_string .= "left join cities  on cities.ct_id  = locations.loc_city ";
       $q_string .= "left join states  on states.st_id  = cities.ct_state ";
       $q_string .= "left join country on country.cn_id = states.st_country ";
+      $q_string .= "left join environment on environment.env_id = locations.loc_environment ";
       $q_string .= "order by loc_west,loc_name,ct_city ";
       $q_locations = mysql_query($q_string) or die($q_string . ": " . mysql_error());
       if (mysql_num_rows($q_locations) > 0) {
@@ -238,23 +239,6 @@
             $class = "ui-state-highlight";
           } else {
             $class = "ui-widget-content";
-          }
-
-          $environment = '';
-          if ($a_locations['loc_environment'] == 1) {
-            $environment = "Prod";
-          }
-          if ($a_locations['loc_environment'] == 2) {
-            $environment = "CIL";
-          }
-          if ($a_locations['loc_environment'] == 3) {
-            $environment = "SQA";
-          }
-          if ($a_locations['loc_environment'] == 4) {
-            $environment = "Eng";
-          }
-          if ($a_locations['loc_environment'] == 5) {
-            $environment = "Dev";
           }
 
           $output  = "<tr>";
@@ -272,7 +256,7 @@
           $output .= "  <td class=\"" . $class . "\">"          . $linkstart . $a_locations['ct_clli']        . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . "\">"          . $linkstart . $a_locations['loc_west']       . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . "\">"          . $linkstart . $a_locations['loc_instance']   . $linkend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"          . $linkstart . $environment                   . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"          . $linkstart . $a_locations['env_abb']        . $linkend . "</td>";
           $output .= "</tr>";
 
           if ($a_locations['loc_type'] == 1) {
