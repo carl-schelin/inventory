@@ -71,6 +71,7 @@ $ curl -s -k https://incojs01.scc911.com/inventory/api/server.php?server=alde0du
         "inventory_project": "NEAD/NEAM",
         "inventory_satellite_uuid": "a395bb48-c3a7-42f0-a3fe-4ffa40fb5a7d",
         "inventory_service_class": "Lab Services",
+        "inventory_maintenance_window": "Prod Grp A (Mon 2300 - Tue 0500 CT)",
         "inventory_sysadmins": "UNIX System Administration",
         "inventory_timezone": "UTC",
         "inventory_uuid": "42196A91-746E-3C34-728E-B174B6A236D9"
@@ -311,6 +312,7 @@ $ curl -s -k https://incojs01.scc911.com/inventory/api/server.php?server=alde0du
             "service_restore": "None",
             "service_sharing": "No"
         },
+        "inventory_maintenance_window": "Prod Grp A (Mon 2300 - Tue 0500 CT)",
         "inventory_sysadmins": "UNIX System Administration",
         "inventory_timezone": "UTC",
         "inventory_uuid": "42190C4D-2A58-9072-B57A-27DA0698857E"
