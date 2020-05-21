@@ -340,6 +340,7 @@ $ curl -s -k https://incojs01.scc911.com/inventory/api/search.php?ip=10.100.78.1
         "inventory_project": "Unknown",
         "inventory_satellite_uuid": "",
         "inventory_service_class": "Business Support Services",
+        "inventory_maintenanc_window": "Prod Grp A (Mon 2300 - Tue 0500 CT)",
         "inventory_sysadmins": "UNIX System Administration",
         "inventory_timezone": "MST/MDT",
         "inventory_uuid": "ff200008-ffff-ffff-ffff-465310282100"
