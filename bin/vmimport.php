@@ -42,9 +42,17 @@
   $error = 'ERROR: ';
   $output = '';
 
+  if ($debug == 'yes') {
+    print "input: " . $argv[1] . "\n";
+  }
+
   $file = fopen($argv[1], "r") or die;
   while(!feof($file)) {
     $process = trim(fgets($file));
+
+    if ($debug == 'yes') {
+      print $process . "\n";
+    }
 
     $value = explode(":", $process);
     $value[0] = trim($value[0]);
@@ -58,6 +66,12 @@
     }
     if ($value[0] == 'Application') {
       $product = $value[1];
+    }
+    if ($value[0] == 'Location') {
+      $location = $value[1];
+    }
+    if ($value[0] == 'Environment') {
+      $environment = $value[1];
     }
     if ($value[0] == 'Project') {
       $project = $value[1];
@@ -77,6 +91,19 @@
     if ($value[0] == 'gw') {
       $gateway = $value[1];
     }
+  }
+
+  if ($debug == 'yes') {
+    print "FQDN: " . $fqdn . "\n";
+    print "Function: " . $function . "\n";
+    print "Application: " . $product . "\n";
+    print "Location: " . $location . "\n";
+    print "Environment: " . $environment . "\n";
+    print "Project: " . $project . "\n";
+    print "AppSupport: " . $appadmin . "\n";
+    print "IP Address: " . $ipaddr . "\n";
+    print "Netmask: " . $mask . "\n";
+    print "Gateway: " . $gateway . "\n";
   }
 
   if ($fqdn[0] != '') {
@@ -117,6 +144,36 @@
       } else {
         $a_groups = mysql_fetch_array($q_groups);
         $inv_appadmin = $a_groups['inv_id'];
+      }
+
+# get the environment. need to get this before we get the location
+      $inv_environment = 0;
+      $q_string  = "select env_id ";
+      $q_string .= "from environment ";
+      $q_string .= "where env_name = \"" . $environment . "\" ";
+      $q_environment = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      if (mysql_num_rows($q_environment) == 0) {
+        $error .= "Unable to locate environment: " . $environment . " ";
+      } else {
+        $a_environment = mysql_fetch_array($q_environment);
+
+        $inv_environment = $a_environment['env_id'];
+      }
+
+# get the location. need to compare to the environment and just get the first instance since most earlier servers were L&S data center.
+      $inv_location = 0;
+      $q_string  = "select loc_id ";
+      $q_string .= "from locations ";
+      $q_string .= "where loc_west = \"" . $location . "\" and loc_environment = " . $inv_environment . " and loc_type = 1 ";
+      $q_string .= "order by loc_id ";
+      $q_string .= "limit 1 ";
+      $q_locations = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      if (mysql_num_rows($q_locations) == 0) {
+        $error .= "Unable to identify location: " . $location . " ";
+      } else {
+        $a_locations = mysql_fetch_array($q_locations);
+
+        $inv_location = $a_locations['loc_id'];
       }
 
 # get the product id
@@ -165,20 +222,24 @@
         print "Hostname: " . $fqdn[0] . "\n";
         print "Domain: " . $fqdn[1] . "\n";
         print "Function: " . $function . "\n";
-        print "Application: " . $product . " ID:" . $inv_product . "\n";
+        print "Location: " . $location . " ID: " . $inv_location . "\n";
+        print "Environment: " . $environment . " ID: " . $inv_environment . "\n";
+        print "Application: " . $product . " ID: " . $inv_product . "\n";
         print "Project: " . $project . " ID: " . $inv_project . "\n";
-        print "AppAdmin: " . $appadmin . " ID:" . $inv_appadmin . "\n";
+        print "AppAdmin: " . $appadmin . " ID: " . $inv_appadmin . "\n";
         print "IP Address: " . $ipaddr . "/" . $mask . "\n";
         print "Gateway: " . $gateway . "\n\n";
    
         print "Adding Server...\n";
         $q_string  = "insert into inventory set inv_id = null,inv_manager = 1,";
-        $q_string .= "inv_name = \"" . $fqdn[0] . "\",";
-        $q_string .= "inv_function = \"" . $function . "\",";
-        $q_string .= "inv_product = " . $inv_product . ",";
-        $q_string .= "inv_project = " . $inv_project . ",";
-        $q_string .= "inv_appadmin = " . $inv_appadmin . ",";
-        $q_string .= "inv_status = " . "0";
+        $q_string .= "inv_name           = \"" . $fqdn[0]          . "\",";
+        $q_string .= "inv_function       = \"" . $function         . "\",";
+        $q_string .= "inv_product        =   " . $inv_product      . ",";
+        $q_string .= "inv_project        =   " . $inv_project      . ",";
+        $q_string .= "inv_location       =   " . $inv_location     . ",";
+        $q_string .= "inv_environment    =   " . $inv_environment  . ",";
+        $q_string .= "inv_appadmin       =   " . $inv_appadmin     . ",";
+        $q_string .= "inv_status         =   " . "0";
 
         if ($debug == 'yes') {
           print $q_string . "\n";
@@ -196,19 +257,19 @@
           $a_inventory = mysql_fetch_array($q_inventory);
 
           $q_string  = "insert into interface set int_id = null,";
-          $q_string .= "int_server     = \"" . $fqdn[0]               . "\",";
-          $q_string .= "int_domain     = \"" . $fqdn[1]               . "\",";
-          $q_string .= "int_companyid  =   " . $a_inventory['inv_id'] . ",";
-          $q_string .= "int_face       = \"" . "ens192"               . "\",";
-          $q_string .= "int_addr       = \"" . $ipaddr                . "\",";
-          $q_string .= "int_mask       =   " . $mask                  . ",";
-          $q_string .= "int_eth        = \"" . "00:00:00:00:00:00"    . "\",";
-          $q_string .= "int_gate       = \"" . $gateway               . "\",";
-          $q_string .= "int_management =   " . "1"                    . ",";
-          $q_string .= "int_nagios     =   " . "1"                    . ",";
-          $q_string .= "int_ping       =   " . "1"                    . ",";
-          $q_string .= "int_ssh        =   " . "1";
-
+          $q_string .= "int_server      = \"" . $fqdn[0]               . "\",";
+          $q_string .= "int_domain      = \"" . $fqdn[1]               . "\",";
+          $q_string .= "int_companyid   =   " . $a_inventory['inv_id'] . ",";
+          $q_string .= "int_face        = \"" . "ens192"               . "\",";
+          $q_string .= "int_addr        = \"" . $ipaddr                . "\",";
+          $q_string .= "int_mask        =   " . $mask                  . ",";
+          $q_string .= "int_eth         = \"" . "00:00:00:00:00:00"    . "\",";
+          $q_string .= "int_gate        = \"" . $gateway               . "\",";
+          $q_string .= "int_management  =   " . "1"                    . ",";
+          $q_string .= "int_nagios      =   " . "1"                    . ",";
+          $q_string .= "int_ping        =   " . "1"                    . ",";
+          $q_string .= "int_ssh         =   " . "1";
+ 
           $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
 
           $q_string  = "insert into hardware set hw_id = null,";
