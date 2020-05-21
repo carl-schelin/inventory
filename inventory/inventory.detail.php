@@ -579,6 +579,72 @@
         }
       }
 
+# maintenance window
+# this will be a drop down.
+      if ($formVars['function'] == 'imw') {
+        if ($formVars['status'] == 1) {
+          print "var cell = document.getElementById('" . $cellid . "');\n";
+          print "var celltext = document.getElementById('" . $cellid . "').innerHTML;\n";
+
+          print "celltext = celltext.replace(\"<u>\", \"\");\n";
+          print "celltext = celltext.replace(\"</u>\", \"\");\n";
+
+          print "cell.innerHTML = '&nbsp;';\n";
+          print "cell.setAttribute(\"onclick\", \"\");\n";
+
+          print "var selbox = document.createElement('select');\n";
+          print "selbox.setAttribute(\"id\",\"edit_data\");\n";
+          print "selbox.setAttribute(\"name\",\"edit_data\");\n";
+          print "selbox.setAttribute(\"onchange\",\"detail_Completed(" . $formVars['id'] . ",'" . $formVars['function'] . "');\");\n";
+          print "selbox.setAttribute(\"onblur\",\"detail_Completed(" . $formVars['id'] . ",'" . $formVars['function'] . "');\");\n";
+
+          print "selbox.options.length = 0;\n";
+
+          $q_string  = "select win_id,win_text ";
+          $q_string .= "from window ";
+          $q_string .= "order by win_text ";
+          $q_window = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+
+          while ($a_window = mysql_fetch_array($q_window) ) {
+            print "if (celltext == \"" . $a_window['win_text'] . "\") {\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysql_real_escape_string($a_window['win_text']) . "\"," . $a_window['win_id'] . ",1,1);\n";
+            print "} else {\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysql_real_escape_string($a_window['win_text']) . "\"," . $a_window['win_id'] . ",0,0);\n";
+            print "}\n";
+          }
+
+          print "cell.appendChild(selbox);\n";
+
+          print "document.getElementById('edit_data').focus();\n";
+
+        }
+# close down the cell and put the text in plus update rsdp
+        if ($formVars['status'] == 0) {
+
+          print "var cell = document.getElementById('" . $cellid . "');\n";
+
+          print "cell.setAttribute(\"onclick\", \"edit_Detail(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
+
+          $q_string  = "select win_id,win_text ";
+          $q_string .= "from window ";
+          $q_string .= "where win_id = " . $formVars['select'] . " ";
+          $q_window = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $a_window = mysql_fetch_array($q_window);
+
+          $display = $a_window['win_text'];
+
+          $q_string  = "update ";
+          $q_string .= "inventory ";
+          $q_string .= "set ";
+          $q_string .= "inv_maint = " . $a_window['win_id'] . " ";
+          $q_string .= "where inv_id = " . $formVars['id'] . " ";
+          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+
+          print "cell.innerHTML = '<u>" . $display . "</u>';\n";
+        }
+      }
+
+
 # data center locations
 # this will be a drop down.
       if ($formVars['function'] == 'ilc') {
