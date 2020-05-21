@@ -26,7 +26,7 @@
       $q_string .= "       inv_adzone,inv_domain,inv_ssh,inv_location,inv_rack,inv_row,inv_unit,inv_zone,inv_front,";
       $q_string .= "       inv_rear,inv_manager,inv_appadmin,inv_class,inv_response,inv_mstart,inv_mend,inv_ansible,";
       $q_string .= "       inv_mdow,inv_minterval,inv_product,inv_project,inv_department,inv_notes,inv_clusterid,inv_env,";
-      $q_string .= "       inv_appliance,inv_bigfix,inv_ciscoamp,inv_ticket ";
+      $q_string .= "       inv_appliance,inv_bigfix,inv_ciscoamp,inv_ticket,inv_maint ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_id = " . $formVars['id'];
       $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
@@ -64,6 +64,7 @@
         $invproject    = return_Index($a_inventory['inv_project'],    "select prj_id from projects where prj_product = " . $a_inventory['inv_product'] . " order by prj_name");
         $invdepartment = return_Index($a_inventory['inv_department'], "select dep_id from department order by dep_unit,dep_name");
         $invenv        = return_Index($a_inventory['inv_env'],        "select env_id from environment order by env_name");
+        $invmaint      = return_Index($a_inventory['inv_maint'],      "select win_id from window order by win_text");
 
         print "document.edit.inv_name.value = '"     . mysql_real_escape_string($a_inventory['inv_name'])     . "';\n";
         print "document.edit.inv_function.value = '" . mysql_real_escape_string($a_inventory['inv_function']) . "';\n";
@@ -91,6 +92,7 @@
         print "document.edit.inv_project['"    . $invproject                . "'].selected = true;\n";
         print "document.edit.inv_department['" . $invdepartment             . "'].selected = true;\n";
         print "document.edit.inv_env['"        . $invenv                    . "'].selected = true;\n";
+        print "document.edit.inv_maint['"      . $invmaint                  . "'].selected = true;\n";
 
         if ($a_inventory['inv_callpath']) {
           print "document.edit.inv_callpath.checked = true;\n";
