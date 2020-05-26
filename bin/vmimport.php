@@ -94,7 +94,7 @@
   }
 
   if ($debug == 'yes') {
-    print "FQDN: " . $fqdn . "\n";
+    print "FQDN: " . $fqdn[0] . "." . $fqdn[1] . "\n";
     print "Function: " . $function . "\n";
     print "Application: " . $product . "\n";
     print "Location: " . $location . "\n";
@@ -115,16 +115,20 @@
       print "Error: Server already exists in the Inventory\n";
     } else {
 # get the appadmin group id
+      $inv_appadmin = 0;
       $q_string  = "select grp_id ";
       $q_string .= "from groups ";
-      $q_string .= "where grp_name = \"" . $appadmin . "\" or grp_snow = \"" . $appadmin . "\" ";
+      $q_string .= "where grp_name = \"" . $appadmin . "\" or grp_snow = \"" . $appadmin . "\" and grp_disabled = 0 ";
       $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
       if (mysql_num_rows($q_groups) == 0) {
         $grp_test = explode(" ", $appadmin);
+        if ($debug == 'yes') {
+           print "Unable to locate this group: " . $appadmin . ", trying " . $grp_test[0] . "\n";
+        }
 
         $q_string  = "select grp_id,grp_name ";
         $q_string .= "from groups ";
-        $q_string .= "where grp_name like \"%" . $grp_test[0] . "%\" ";
+        $q_string .= "where grp_name like \"%" . $grp_test[0] . "%\" and grp_disabled = 0 ";
         $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
         if (mysql_num_rows($q_groups) == 0) {
           $error .= "Unable to locate AppSupport group: " . $appadmin . " ";
@@ -143,7 +147,10 @@
         }
       } else {
         $a_groups = mysql_fetch_array($q_groups);
-        $inv_appadmin = $a_groups['inv_id'];
+        $inv_appadmin = $a_groups['grp_id'];
+        if ($debug == 'yes') {
+           print "Found this group: " . $appadmin . ", ID " . $inv_appadmin . "\n";
+        }
       }
 
 # get the environment. need to get this before we get the location
@@ -229,8 +236,18 @@
         print "AppAdmin: " . $appadmin . " ID: " . $inv_appadmin . "\n";
         print "IP Address: " . $ipaddr . "/" . $mask . "\n";
         print "Gateway: " . $gateway . "\n\n";
-   
+
+        echo "Does this look good to you?  Type 'yes' to continue: ";
+        $handle = fopen ("php://stdin","r");
+        $line = fgets($handle);
+        if(trim($line) != 'yes'){
+            echo "Exiting!\n";
+            exit;
+        }
+        fclose($handle);
+        echo "\n"; 
         print "Adding Server...\n";
+
         $q_string  = "insert into inventory set inv_id = null,inv_manager = 1,";
         $q_string .= "inv_name           = \"" . $fqdn[0]          . "\",";
         $q_string .= "inv_function       = \"" . $function         . "\",";
