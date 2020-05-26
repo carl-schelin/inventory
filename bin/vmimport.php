@@ -154,7 +154,7 @@
       }
 
 # get the environment. need to get this before we get the location
-      $inv_environment = 0;
+      $inv_env = 0;
       $q_string  = "select env_id ";
       $q_string .= "from environment ";
       $q_string .= "where env_name = \"" . $environment . "\" ";
@@ -164,14 +164,14 @@
       } else {
         $a_environment = mysql_fetch_array($q_environment);
 
-        $inv_environment = $a_environment['env_id'];
+        $inv_env = $a_environment['env_id'];
       }
 
 # get the location. need to compare to the environment and just get the first instance since most earlier servers were L&S data center.
       $inv_location = 0;
       $q_string  = "select loc_id ";
       $q_string .= "from locations ";
-      $q_string .= "where loc_west = \"" . $location . "\" and loc_environment = " . $inv_environment . " and loc_type = 1 ";
+      $q_string .= "where loc_west = \"" . $location . "\" and loc_environment = " . $inv_env . " and loc_type = 1 ";
       $q_string .= "order by loc_id ";
       $q_string .= "limit 1 ";
       $q_locations = mysql_query($q_string) or die($q_string . ": " . mysql_error());
@@ -230,22 +230,25 @@
         print "Domain: " . $fqdn[1] . "\n";
         print "Function: " . $function . "\n";
         print "Location: " . $location . " ID: " . $inv_location . "\n";
-        print "Environment: " . $environment . " ID: " . $inv_environment . "\n";
+        print "Environment: " . $environment . " ID: " . $inv_env . "\n";
         print "Application: " . $product . " ID: " . $inv_product . "\n";
         print "Project: " . $project . " ID: " . $inv_project . "\n";
         print "AppAdmin: " . $appadmin . " ID: " . $inv_appadmin . "\n";
         print "IP Address: " . $ipaddr . "/" . $mask . "\n";
         print "Gateway: " . $gateway . "\n\n";
 
-        echo "Does this look good to you?  Type 'yes' to continue: ";
-        $handle = fopen ("php://stdin","r");
-        $line = fgets($handle);
-        if(trim($line) != 'yes'){
-            echo "Exiting!\n";
-            exit;
+        if ($debug == 'yes') {
+          echo "Does this look good to you?  Type 'yes' to continue: ";
+          $handle = fopen ("php://stdin","r");
+          $line = fgets($handle);
+          if(trim($line) != 'yes'){
+              echo "Exiting!\n";
+              exit;
+          }
+          fclose($handle);
+          echo "\n"; 
         }
-        fclose($handle);
-        echo "\n"; 
+
         print "Adding Server...\n";
 
         $q_string  = "insert into inventory set inv_id = null,inv_manager = 1,";
@@ -254,7 +257,7 @@
         $q_string .= "inv_product        =   " . $inv_product      . ",";
         $q_string .= "inv_project        =   " . $inv_project      . ",";
         $q_string .= "inv_location       =   " . $inv_location     . ",";
-        $q_string .= "inv_environment    =   " . $inv_environment  . ",";
+        $q_string .= "inv_env            =   " . $inv_env          . ",";
         $q_string .= "inv_appadmin       =   " . $inv_appadmin     . ",";
         $q_string .= "inv_status         =   " . "0";
 
