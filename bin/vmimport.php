@@ -259,6 +259,7 @@
         $q_string .= "inv_location       =   " . $inv_location     . ",";
         $q_string .= "inv_env            =   " . $inv_env          . ",";
         $q_string .= "inv_appadmin       =   " . $inv_appadmin     . ",";
+        $q_string .= "inv_ssh            =   " . "1"               . ",";
         $q_string .= "inv_status         =   " . "0";
 
         if ($debug == 'yes') {
