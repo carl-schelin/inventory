@@ -81,6 +81,15 @@
 
       if ($a_inventory['inv_id'] != '') {
 # okay, found an existing server.
+# now delete any CPU from the system where the date is older than today.
+# in general, memory is a single entry and drive sizes don't change.
+# when a system is moved though, the cpu matches the ESX host cpu so needs to be refreshed.
+# since there's no way to know if it goes from 1 2 core to 2 1 core cpus, the best bet is to remove the old ones.
+        $q_string  = "delete ";
+        $q_string .= "from hardware ";
+        $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_type = 8 and hw_update < \"" . date('Y-m-d') . "\" ";
+        $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+
 # now check for sub processes
 # don't want to delete and add since other information might have been added
 # so check to see if a key piece already exists and update the record
