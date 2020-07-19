@@ -23,7 +23,7 @@
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from users");
 
       $q_string  = "select usr_id,usr_first,usr_last,usr_email,usr_phone,usr_freq,usr_notify,usr_deptname,";
-      $q_string .= "usr_altemail,usr_theme,usr_reset,usr_clientid,usr_report,usr_confirm,usr_manager,usr_title ";
+      $q_string .= "usr_altemail,usr_theme,usr_reset,usr_clientid,usr_report,usr_confirm,usr_manager,usr_title,usr_bigfix ";
       $q_string .= "from users ";
       $q_string .= "where usr_id = " . $formVars['id'];
       $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
@@ -76,6 +76,11 @@
         print "document.user.usr_confirm.checked = true;\n";
       } else {
         print "document.user.usr_confirm.checked = false;\n";
+      }
+      if ($a_users['usr_bigfix']) {
+        print "document.user.usr_bigfix.checked = true;\n";
+      } else {
+        print "document.user.usr_bigfix.checked = false;\n";
       }
 
       print "document.user.update.disabled = false;\n\n";
