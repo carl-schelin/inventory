@@ -25,7 +25,7 @@
       $q_string  = "select usr_id,usr_disabled,usr_first,usr_last,usr_name,usr_level,";
       $q_string .= "usr_phone,usr_email,usr_altemail,usr_deptname,usr_group,usr_theme,";
       $q_string .= "usr_reset,usr_clientid,usr_notify,usr_freq,usr_report,usr_confirm,";
-      $q_string .= "usr_manager,usr_title ";
+      $q_string .= "usr_manager,usr_title,usr_bigfix ";
       $q_string .= "from users ";
       $q_string .= "where usr_id = " . $formVars['id'];
       $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
@@ -37,7 +37,7 @@
       $levels   = return_Index($a_users['usr_level'],    "select lvl_id from levels where lvl_disabled = 0 order by lvl_id");
       $theme    = return_Index($a_users['usr_theme'],    "select theme_id from themes order by theme_title") - 1;
       $manager  = return_Index($a_users['usr_manager'],  "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
-      $title    = return_Index($a_users['usr_title'],    "select tit_id from titles order by tit_id");
+      $title    = return_Index($a_users['usr_title'],    "select tit_id from titles order by tit_name");
 
       $q_string  = "select dep_id,dep_unit,dep_dept,dep_name,bus_name ";
       $q_string .= "from department ";
@@ -78,6 +78,11 @@
         print "document.user.usr_confirm.checked = true;\n";
       } else {
         print "document.user.usr_confirm.checked = false;\n";
+      }
+      if ($a_users['usr_bigfix']) {
+        print "document.user.usr_bigfix.checked = true;\n";
+      } else {
+        print "document.user.usr_bigfix.checked = false;\n";
       }
 
       print "document.user.id.value = '" . $formVars['id'] . "'\n";
