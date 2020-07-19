@@ -56,6 +56,7 @@ function attach_users(p_script_url, update) {
   au_url += "&usr_freq="       + encode_URI(au_form.usr_freq.value);
   au_url += "&usr_report="     + au_form.usr_report.checked;
   au_url += "&usr_confirm="    + au_form.usr_confirm.checked;
+  au_url += "&usr_bigfix="     + au_form.usr_bigfix.checked;
 
   script = document.createElement('script');
   script.src = p_script_url + au_url;
@@ -123,6 +124,10 @@ $(document).ready( function() {
   <ul>
     <li><strong>Number of Days Prior to Expiration</strong> - If a user has been identified by the Web Applications team as being responsible for a web site certificate, they will need to be notified when the certificate is going to expire. This should be set to a sufficiently large number to ensure notifications are made in a timely manner. To disable notifications, set to -1.</li>
     <li><strong>Reminder Increment</strong> - Once the initial notification goes out, the user will want to be notified regularly until the certificate has been updated. This value is the number of days after the initial notification you wish to be notified about the pending expiration. This continues every X days until the certificate is renewed. Set to -1 to disable.</li>
+  </ul></li>
+  <li><strong>BigFix Patch Form</strong>
+  <ul>
+    <li><strong>Receive BigFix Patch Email</strong> - Receive a daily email listing all the servers for your group that are listed to be patched in the next 24 hours.</li>
   </ul></li>
 </ul>
 
@@ -244,6 +249,15 @@ onKeyUp="javascript:show_file('validate.password.php?password=' + usr_passwd.val
 <tr>
   <td class="ui-widget-content">Number of Days Prior to Expiration: <input type="number" name="usr_notify" size="20"></td>
   <td class="ui-widget-content">Reminder Increment: <input type="number" name="usr_freq" size="20"></td>
+</tr>
+</table>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">BigFix Patching Form</th>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label>Receive an email each day that lists the servers being patched by BigFix in the next 24 hours: <input type="checkbox" name="usr_bigfix"></label></td>
 </tr>
 </table>
 
