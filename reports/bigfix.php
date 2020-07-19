@@ -9,7 +9,7 @@
   $called = 'no';
   include($Sitepath . '/guest.php');
 
-  $package = "firewall.php";
+  $package = "bigfix.php";
 
   logaccess($formVars['uid'], $package, "Checking out the Bigfix listing.");
 
