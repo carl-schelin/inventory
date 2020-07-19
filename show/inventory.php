@@ -99,6 +99,7 @@ function clear_fields() {
   show_file('<?php print $Issueroot; ?>/issue.open.mysql.php?server=<?php print $formVars['id']; ?>');
   show_file('<?php print $Issueroot; ?>/issue.closed.mysql.php?server=<?php print $formVars['id']; ?>');
   show_file('errors.mysql.php?id=<?php print $formVars['id']; ?>');
+  show_file('patches.mysql.php?id=<?php print $formVars['id']; ?>');
 }
 
 $(document).ready( function() {
@@ -143,6 +144,7 @@ $(document).ready( function() {
   <li><a href="#logs">Logs</a></li>
   <li><a href="#issues">Issue Tracker</a></li>
   <li><a href="#chkserver">Errors</a></li>
+  <li><a href="#bigfix">Patches</a></li>
 </ul>
 
 
@@ -337,6 +339,13 @@ $(document).ready( function() {
 <div id="chkserver">
 
 <span id="chkserver_mysql"><?php print wait_Process('Errors Waiting...')?></span>
+
+</div>
+
+
+<div id="bigfix">
+
+<span id="bigfix_mysql"><?php print wait_Process('BigFix Waiting...')?></span>
 
 </div>
 
