@@ -154,7 +154,7 @@ $(document).ready( function() {
     while ($a_bigfix = mysql_fetch_array($q_bigfix)) {
 
 
-      $linkstart = "<a href=\"#\" onclick=\"show_file('bigfix.fill.php?id=" . $a_bigfix['inv_id'] . "&scheduled=" . $formVars['scheduled'] . "');jQuery('#dialogBigFix').dialog('open');\">";
+      $linkstart = "<a href=\"#\" onclick=\"show_file('bigfix.fill.php?id=" . $a_bigfix['inv_id'] . "&scheduled=" . $formVars['scheduled'] . "');jQuery('#dialogBigFix').dialog('open');return false;\">";
       $linkend   = "</a>";
 
       print "<tr>\n";
