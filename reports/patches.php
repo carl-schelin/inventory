@@ -147,13 +147,34 @@ $(document).ready( function() {
   if (mysql_num_rows($q_bigfix) > 0) {
     while ($a_bigfix = mysql_fetch_array($q_bigfix)) {
 
-
       $linkstart = "<a href=\"#\" onclick=\"show_file('patches.fill.php?id=" . $a_bigfix['big_id'] . "&scheduled=" . $formVars['scheduled'] . "');jQuery('#dialogBigFix').dialog('open');return false;\">";
       $linkend   = "</a>";
 
+      $class = "ui-widget-content";
+      if ($a_bigfix['big_severity'] == 1) {
+        $bigfix = "Unspecified";
+        $class = "ui-widget-content";
+      }
+      if ($a_bigfix['big_severity'] == 2) {
+        $bigfix = "Critical";
+        $class = "ui-state-error";
+      }
+      if ($a_bigfix['big_severity'] == 3) {
+        $bigfix = "Important";
+        $class = "ui-state-highlight";
+      }
+      if ($a_bigfix['big_severity'] == 4) {
+        $bigfix = "Moderate";
+        $class = "ui-widget-content";
+      }
+      if ($a_bigfix['big_severity'] == 5) {
+        $bigfix = "Low";
+        $class = "ui-widget-content";
+      }
+
       print "<tr>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_bigfix['big_fixlet']     . $linkend . "</td>\n";
-      print "  <td class=\"ui-widget-content\">"              . $a_bigfix['big_severity']            . "</td>\n";
+      print "  <td class=\"" . $class . "\">" . $linkstart . $a_bigfix['big_fixlet']     . $linkend . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $bigfix            . "</td>\n";
       print "</tr>\n";
     }
   } else {
