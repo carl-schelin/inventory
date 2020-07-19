@@ -33,6 +33,7 @@
     $formVars['usr_freq']       = clean($_GET['usr_freq'],       10);
     $formVars['usr_report']     = clean($_GET['usr_report'],     10);
     $formVars['usr_confirm']    = clean($_GET['usr_confirm'],    10);
+    $formVars['usr_bigfix']     = clean($_GET['usr_bigfix'],     10);
 
     if ($formVars['id'] == '') {
       $formVars['id'] = 0;
@@ -61,6 +62,11 @@
     } else {
       $formVars['usr_confirm'] = 0;
     }
+    if ($formVars['usr_bigfix'] == 'true') {
+      $formVars['usr_bigfix'] = 1;
+    } else {
+      $formVars['usr_bigfix'] = 0;
+    }
 
     if (check_userlevel($AL_Guest)) {
       if ($formVars['update'] == 1) {
@@ -82,7 +88,8 @@
             "usr_notify      =   " . $formVars['usr_notify']    . "," .
             "usr_freq        =   " . $formVars['usr_freq']      . "," . 
             "usr_report      =   " . $formVars['usr_report']    . "," . 
-            "usr_confirm     =   " . $formVars['usr_confirm'];
+            "usr_confirm     =   " . $formVars['usr_confirm']   . "," . 
+            "usr_bigfix      =   " . $formVars['usr_bigfix'];
 
           if (strlen($formVars['usr_passwd']) > 0 && $formVars['usr_passwd'] === $formVars['usr_reenter']) {
             logaccess($_SESSION['uid'], $package, "Resetting user " . $formVars['usr_last'] . " password.");
