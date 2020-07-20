@@ -138,11 +138,12 @@ $(document).ready( function() {
   print "  <th class=\"ui-state-default\">Severity</th>\n";
   print "</tr>\n";
 
+  $flagged = '';
   $q_string  = "select big_id,big_fixlet,big_severity ";
   $q_string .= "from bigfix ";
   $q_string .= "left join inventory on inventory.inv_id       = bigfix.big_companyid ";
   $q_string .= "where (inv_manager = " . $formVars['group'] . " or inv_appadmin = " . $formVars['group'] . ") and big_scheduled = \"" . $formVars['scheduled'] . "\" ";
-  $q_string .= "group by big_fixlet ";
+  $q_string .= "order by big_severity,big_fixlet ";
   $q_bigfix = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   if (mysql_num_rows($q_bigfix) > 0) {
     while ($a_bigfix = mysql_fetch_array($q_bigfix)) {
@@ -172,10 +173,13 @@ $(document).ready( function() {
         $class = "ui-widget-content";
       }
 
-      print "<tr>\n";
-      print "  <td class=\"" . $class . "\">" . $linkstart . $a_bigfix['big_fixlet']     . $linkend . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $bigfix            . "</td>\n";
-      print "</tr>\n";
+      if ($flagged != $a_bigfix['big_fixlet']) {
+        print "<tr>\n";
+        print "  <td class=\"" . $class . "\">" . $linkstart . $a_bigfix['big_fixlet']     . $linkend . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $bigfix            . "</td>\n";
+        print "</tr>\n";
+        $flagged = $a_bigfix['big_fixlet'];
+      }
     }
   } else {
     print "<tr>\n";
