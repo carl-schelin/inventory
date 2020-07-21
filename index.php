@@ -542,6 +542,7 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/software.php');">Software Listing</a> - Shows all software for the group of devices.</li>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/firewall.php');">Firewall Rules</a> - Shows firewall rule listing.</li>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/routing.php');">Routing Table</a> - Shows all routes.</li>
+  <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/filesystems.php');">Filesystem Listing</a> - Shows filesystems as owned the the filtered group.</li>
 </ul>
 
 </div>
