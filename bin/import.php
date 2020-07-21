@@ -199,14 +199,14 @@
             print "filesystem found:\n";
 # table: filesystem; rows: fs_verified, fs_user, fs_update;
 # check the device itself and update if exists or add if it doesn't exist
-#sqatxt-vmapp01,filesystem,/dev/mapper/vg00-root,2064208,/
-#sqatxt-vmapp01,filesystem,/dev/sda1,495844,/boot
-#sqatxt-vmapp01,filesystem,/dev/mapper/vg00-home,8256952,/home
-#sqatxt-vmapp01,filesystem,/dev/mapper/vg00-opt,41286208,/opt
-#sqatxt-vmapp01,filesystem,/dev/mapper/vg00-tmp,4128448,/tmp
-#sqatxt-vmapp01,filesystem,/dev/mapper/vg00-usr,4128448,/usr
-#sqatxt-vmapp01,[system],filesystem,/dev/mapper/vg00-var, 4128448,/var
-#tato0eudcnedb30,system, filesystem,/dev/mapper/vg00-root,1998672,/
+#sqatxt-vmapp01,filesystem,/dev/mapper/vg00-root,2064208,/,20000,10000,20%
+#sqatxt-vmapp01,filesystem,/dev/sda1,495844,/boot,20000,10000,20%
+#sqatxt-vmapp01,filesystem,/dev/mapper/vg00-home,8256952,/home,20000,10000,20%
+#sqatxt-vmapp01,filesystem,/dev/mapper/vg00-opt,41286208,/opt,20000,10000,20%
+#sqatxt-vmapp01,filesystem,/dev/mapper/vg00-tmp,4128448,/tmp,20000,10000,20%
+#sqatxt-vmapp01,filesystem,/dev/mapper/vg00-usr,4128448,/usr,20000,10000,20%
+#sqatxt-vmapp01,[system],filesystem,/dev/mapper/vg00-var, 4128448,/var,20000,10000,20%
+#tato0eudcnedb30,system, filesystem,/dev/mapper/vg00-root,1998672,/,20000,10000,20%
 #    0              1      2            3                    4     5
 # checking fs_device
 
@@ -218,6 +218,9 @@
                 "fs_device    = \"" . $value[3]              . "\"," . 
                 "fs_size      =   " . $value[4]              . "," . 
                 "fs_mount     = \"" . $value[5]              . "\"," . 
+                "fs_used      =   " . $value[6]              . "," . 
+                "fs_avail     =   " . $value[7]              . "," . 
+                "fs_percent   = \"" . $value[8]              . "\"," . 
                 "fs_verified  =   " . '1'                    . "," . 
                 "fs_user      =   " . '1'                    . "," . 
                 "fs_update    = \"" . $date                  . "\"";
