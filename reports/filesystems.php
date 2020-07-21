@@ -54,9 +54,14 @@
   }
 
   $group = '';
-  if ($formVars['group'] > 0) {
-    $group = $and . " fs_group = " . $formVars['group'] . " ";
+  if ($formVars['group'] == 1) {
+    $group = $and . " (fs_group = " . $formVars['group'] . " or fs_group = 0) ";
     $and = " and";
+  } else {
+    if ($formVars['group'] > 0) {
+      $group = $and . " fs_group = " . $formVars['group'] . " ";
+      $and = " and";
+    }
   }
 
   if ($formVars['inwork'] == 'false') {
