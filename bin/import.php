@@ -213,6 +213,16 @@
             if (strlen($value[3]) > 0 && strlen($value[4]) > 0 && strlen($value[5]) > 0) {
               $skip = 'no';
 
+              if ($value[4] == '') {
+                $value[4] = 0;
+              }
+              if ($value[6] == '') {
+                $value[6] = 0;
+              }
+              if ($value[7] == '') {
+                $value[7] = 0;
+              }
+
               $query = 
                 "fs_companyid =   " . $a_inventory['inv_id'] . "," . 
                 "fs_device    = \"" . $value[3]              . "\"," . 
