@@ -49,7 +49,7 @@
 
     $output .= "<table width=80%>\n";
     $output .= "<tr>\n";
-    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"4\">BigFix Server Listing</th>\n";
+    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"6\">BigFix Server Listing</th>\n";
     $output .= "</tr>\n";
     $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
     $output .= "  <th>Servername</th>\n";
@@ -67,10 +67,11 @@
     $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
     while ($a_inventory = mysql_fetch_array($q_inventory)) {
 
+      $bgcolor = '';
       $numpatches = 0;
       $reboot = "No";
       $flagged = '';
-      $q_string  = "select big_id,big_fixlet ";
+      $q_string  = "select big_id,big_fixlet,big_severity ";
       $q_string .= "from bigfix ";
       $q_string .= "where big_companyid = " . $a_inventory['inv_id'] . " and big_scheduled > \"" . $formVars['back'] . "\" and big_scheduled < \"" . $formVars['forward'] . "\" ";
       $q_bigfix = mysql_query($q_string) or die($q_string . ": " . mysql_error());
@@ -80,6 +81,18 @@
           if ($a_bigfix['big_fixlet'] == "Restart Server") {
              $reboot = "Yes";
           }
+# 2 == Critical
+          if ($a_bigfix['big_severity'] == "2") {
+             $bgcolor = $color[3];
+          }
+# 3 == Important but only if Critical hasn't already been selected
+          if ($a_bigfix['big_severity'] == "3" && $bgcolor == '') {
+             $bgcolor = $color[3];
+          }
+        }
+
+        if ($bgcolor == '') {
+          $bgcolor = $color[0];
         }
 
         $q_string  = "select grp_name ";
@@ -93,8 +106,6 @@
         $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
         $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
         $a_appadmin = mysql_fetch_array($q_groups);
-
-        $bgcolor = $color[2];
 
         $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
         $output .= "  <td>" . $a_inventory['inv_name']     . "</td>\n";
