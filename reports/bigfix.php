@@ -65,7 +65,7 @@ $(document).ready( function() {
   $( "#dialogBigFix" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 600,
+    height: 610,
     width: 1200,
     show: 'slide',
     hide: 'slide',
@@ -189,7 +189,9 @@ $(document).ready( function() {
 </tr>
 </table>
 
-<textarea id="big_patches" name="big_patches" cols="130" rows="30"></textarea>
+<textarea id="big_patches" name="big_patches" cols="130" rows="28"></textarea>
+
+<p>You can go to: https://access.redhat.com/errata/RHSA-[value] to review the Red Hat patch listed above.</p>
 
 </form>
 
