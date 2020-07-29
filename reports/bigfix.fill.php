@@ -22,6 +22,10 @@
     if (isset($_GET['scheduled'])) {
       $formVars['scheduled'] = clean($_GET['scheduled'], 12);
     }
+    $formVars['enddate'] = date('Y-m-d');
+    if (isset($_GET['enddate'])) {
+      $formVars['enddate'] = clean($_GET['enddate'], 12);
+    }
 
     if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Requesting all records for " . $formVars['id'] . " from bigfix");
@@ -36,11 +40,16 @@
         print "document.getElementById('big_servername').innerHTML = '" . mysql_real_escape_string($a_inventory['inv_name']) . "';";
       }
 
+      if ($formVars['scheduled'] == $formVars['enddate']) {
+        $daterange = "and big_scheduled = \"" . $formVars['scheduled'] . "\" ";
+      } else {
+        $daterange = "and big_scheduled >= \"" . $formVars['scheduled'] . "\" and big_scheduled <= \"" . $formVars['enddate'] . "\" ";
+      }
       $patches = '';
       $flagged = '';
       $q_string  = "select big_fixlet,big_severity ";
       $q_string .= "from bigfix ";
-      $q_string .= "where big_companyid = " . $formVars['id'] . " and big_scheduled = \"" . $formVars['scheduled'] . "\" ";
+      $q_string .= "where big_companyid = " . $formVars['id'] . " " . $daterange;
       $q_string .= "order by big_severity,big_fixlet ";
       $q_bigfix = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_bigfix) > 0) {
@@ -69,6 +78,7 @@
             $patches .= "\n";
             $flagged = $severity;
           }
+
           $patches .= $a_bigfix['big_fixlet'] . "\n";
         }
       }
