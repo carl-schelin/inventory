@@ -18,11 +18,36 @@
   } else {
     $formVars['scheduled'] = date('Y-m-d');
   }
+  $daterange = "and big_scheduled = \"" . $formVars['scheduled'] . "\" ";
+
+# if a range of dates, change the search to include both.
+  if (isset($_GET['enddate'])) {
+    $formVars['enddate'] = clean($_GET['enddate'], 10);
+    $daterange = "and big_scheduled >= \"" . $formVars['scheduled'] . "\" and big_scheduled <= \"" . $formVars['enddate'] . "\" ";
+  } else {
+    $formVars['enddate'] = date('Y-m-d');
+  }
 
   if (isset($_GET['group'])) {
     $formVars['group'] = clean($_GET['group'], 10);
   } else {
     $formVars['group'] = 1;
+  }
+
+  if (isset($_GET['product'])) {
+    $formVars['product'] = clean($_GET['product'], 10);
+    $product = "and inv_product = " . $formVars['product'] . " ";
+  } else {
+    $formVars['product'] = 0;
+    $product = '';
+  }
+
+  if (isset($_GET['project'])) {
+    $formVars['project'] = clean($_GET['project'], 10);
+    $project = "and inv_project = " . $formVars['project'] . " ";
+  } else {
+    $formVars['project'] = 0;
+    $project = '';
   }
 
   $current_date = $formVars['scheduled'];
@@ -126,7 +151,9 @@ $(document).ready( function() {
 
   print "<p>This page lists all the servers that are scheduled to be patched and possibly rebooted on " . $formVars['scheduled'] . ".</p>\n";
 
-  print "<p>Select the date in the drop down.</p>\n";
+  print "<p>Currently the date drop down isn't working. If you click the forward or backward button, it adds the &date option to the URL. ";
+  print "You can then change the date there without clicking the link over and over. In addition, you can select a range of dates by added ";
+  print "a &enddate=YYYY-mm-dd to the URL. Of course it needs to be farther ahead than the current or selected date.</p>\n";
 
   print "</div>\n\n";
 
@@ -147,14 +174,13 @@ $(document).ready( function() {
   $q_string .= "left join window on window.win_id             = inventory.inv_maint ";
   $q_string .= "left join products on products.prod_id        = inventory.inv_product ";
   $q_string .= "left join service on service.svc_id           = inventory.inv_class ";
-  $q_string .= "where (inv_manager = " . $formVars['group'] . " or inv_appadmin = " . $formVars['group'] . ") and big_scheduled = \"" . $formVars['scheduled'] . "\" ";
+  $q_string .= "where (inv_manager = " . $formVars['group'] . " or inv_appadmin = " . $formVars['group'] . ") " . $daterange . $product . $project;
   $q_string .= "group by inv_name ";
   $q_bigfix = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
   if (mysql_num_rows($q_bigfix) > 0) {
     while ($a_bigfix = mysql_fetch_array($q_bigfix)) {
 
-
-      $linkstart = "<a href=\"#\" onclick=\"show_file('bigfix.fill.php?id=" . $a_bigfix['inv_id'] . "&scheduled=" . $formVars['scheduled'] . "');jQuery('#dialogBigFix').dialog('open');return false;\">";
+      $linkstart = "<a href=\"#\" onclick=\"show_file('bigfix.fill.php?id=" . $a_bigfix['inv_id'] . "&scheduled=" . $formVars['scheduled'] . "&enddate=" . $formVars['enddate'] . "');jQuery('#dialogBigFix').dialog('open');return false;\">";
       $linkend   = "</a>";
 
       print "<tr>\n";
