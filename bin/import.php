@@ -90,6 +90,15 @@
         $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_type = 8 and hw_update < \"" . date('Y-m-d') . "\" ";
         $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
 
+# Since we're not adding to routing tables, just documenting them, let's delete any routes that in the table
+# that are older than today's date for this server.
+# this way we aren't clearing ancient stuff so I don't have to muck with the database
+# plus Kubernetes adds a ton of routes for the pods on the servers and they come and go.
+        $q_string  = "delete ";
+        $q_string .= "from routing ";
+        $q_string .= "where route_companyid = " . $a_inventory['inv_id'] . " and route_update < \"" . date('Y-m-d') . "\" ";
+        $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+
 # now check for sub processes
 # don't want to delete and add since other information might have been added
 # so check to see if a key piece already exists and update the record
