@@ -23,7 +23,7 @@
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from software");
 
       $q_string  = "select sw_id,sw_companyid,sw_vendor,sw_product,sw_software,sw_type,sw_group,sw_eol,sw_cert,";
-      $q_string .= "sw_licenseid,sw_supportid,sw_department,sw_facing,sw_notification,sw_primary,sw_eolticket ";
+      $q_string .= "sw_licenseid,sw_supportid,sw_department,sw_facing,sw_notification,sw_primary,sw_eolticket,sw_locked ";
       $q_string .= "from software ";
       $q_string .= "where sw_id = " . $formVars['id'];
       $q_software = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
@@ -60,6 +60,11 @@
         print "document.edit.sw_primary.checked = true;\n";
       } else {
         print "document.edit.sw_primary.checked = false;\n";
+      }
+      if ($a_software['sw_locked']) {
+        print "document.edit.sw_locked.checked = true;\n";
+      } else {
+        print "document.edit.sw_locked.checked = false;\n";
       }
 
       print "document.edit.sw_id.value = " . $formVars['id'] . ";\n";
