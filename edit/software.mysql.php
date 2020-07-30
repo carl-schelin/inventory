@@ -41,6 +41,7 @@
         $formVars['sw_facing']       = clean($_GET['sw_facing'],        10);
         $formVars['sw_notification'] = clean($_GET['sw_notification'], 120);
         $formVars['sw_primary']      = clean($_GET['sw_primary'],       10);
+        $formVars['sw_locked']       = clean($_GET['sw_locked'],        10);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
@@ -60,6 +61,11 @@
           $formVars['sw_primary'] = 1;
         } else {
           $formVars['sw_primary'] = 0;
+        }
+        if ($formVars['sw_locked'] == 'true') {
+          $formVars['sw_locked'] = 1;
+        } else {
+          $formVars['sw_locked'] = 0;
         }
 
         if ($formVars['sw_companyid'] > 0) {
@@ -83,7 +89,8 @@
               "sw_department   =   " . $formVars['sw_department']   . "," . 
               "sw_facing       =   " . $formVars['sw_facing']       . "," .
               "sw_notification = \"" . $formVars['sw_notification'] . "\"," .
-              "sw_primary      =   " . $formVars['sw_primary'];
+              "sw_primary      =   " . $formVars['sw_primary']      . "," . 
+              "sw_locked       =   " . $formVars['sw_locked'];
 
           if ($formVars['update'] == 0) {
             $query = "insert into software set sw_id = NULL, " . $q_string;
@@ -201,7 +208,8 @@
         }
 
         $output .= "</select></td>\n";
-        $output .= "  <td class=\"ui-widget-content\" title=\"Software Title and Version Number\" colspan=\"2\">Software <input type=\"text\" name=\"sw_software\" size=\"40\"></td>\n";
+        $output .= "  <td class=\"ui-widget-content\" title=\"Software Title and Version Number\">Software <input type=\"text\" name=\"sw_software\" size=\"40\"></td>\n";
+        $output .= "  <td class=\"ui-widget-content\" title=\"Yum Versionlock\">RHEL Yum Versionlocked? <input type=\"checkbox\" name=\"sw_locked\"></td>\n";
         $output .= "</tr>\n";
         $output .= "<tr>\n";
         $output .= "  <td class=\"ui-widget-content\" colspan=\"2\">Product <select name=\"sw_product\">\n";
@@ -341,12 +349,13 @@
       $output .=   "<th class=\"ui-state-default\">Product</th>\n";
       $output .=   "<th class=\"ui-state-default\">Vendor</th>\n";
       $output .=   "<th class=\"ui-state-default\">Software</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Locked</th>\n";
       $output .=   "<th class=\"ui-state-default\">Type</th>\n";
       $output .=   "<th class=\"ui-state-default\">Group</th>\n";
       $output .=   "<th class=\"ui-state-default\">Updated</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select sw_id,sw_software,sw_vendor,sw_product,sw_type,sw_verified,sw_update,inv_manager,sw_group,sw_facing,grp_name,prod_name,sw_primary ";
+      $q_string  = "select sw_id,sw_software,sw_vendor,sw_product,sw_type,sw_verified,sw_update,inv_manager,sw_group,sw_facing,grp_name,prod_name,sw_primary,sw_locked ";
       $q_string .= "from software ";
       $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
       $q_string .= "left join groups on groups.grp_id = software.sw_group ";
@@ -379,11 +388,17 @@
           $checked = "&#x2713;";
         }
 
+        $locked = "No";
+        if ($a_software['sw_locked']) {
+          $locked = "Yes";
+        }
+
         $output .= "<tr>";
         $output .= "  <td class=\"" . $class . " delete\">"           . $linkdel                                                                   . "</td>";
         $output .= "  <td class=\"" . $class . "\">"        . $strong . $linkstart . $a_software['prod_name']   . $linkend            . $strongend . "</td>";
         $output .= "  <td class=\"" . $class . "\">"        . $strong . $linkstart . $a_software['sw_vendor']   . $linkend            . $strongend . "</td>";
         $output .= "  <td class=\"" . $class . "\">"        . $strong . $linkstart . $a_software['sw_software'] . $linkend            . $strongend . "</td>";
+        $output .= "  <td class=\"" . $class . "\">"        . $strong . $linkstart . $locked                    . $linkend            . $strongend . "</td>";
         $output .= "  <td class=\"" . $class . "\">"        . $strong . $linkstart . $a_software['sw_type']     . $linkend            . $strongend . "</td>";
         $output .= "  <td class=\"" . $class . "\">"        . $strong . $linkstart . $a_software['grp_name']    . $linkend            . $strongend . "</td>";
         $output .= "  <td class=\"" . $class . "\">"        . $strong . $linkstart . $a_software['sw_update']   . $linkend . $checked . $strongend . "</td>";
