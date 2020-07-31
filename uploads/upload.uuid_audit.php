@@ -57,7 +57,7 @@
         $a_inventory = mysql_fetch_array($q_inventory);
 
 # update the inventory with the companyid and uuid of the cluster.
-        $q_string = "update inventory set inv_companyid = " . $hostid . ",inv_uuid='" . $data[2] . "' where inv_id = " . $a_inventory['inv_id'];
+        $q_string = "update inventory set inv_companyid = " . $hostid . ",inv_uuid='" . $data[2] . "',inv_vmname = '" . $data[0] . "' where inv_id = " . $a_inventory['inv_id'];
           
         if ($debug == 'yes') {
           print $q_string . "\n";
@@ -75,7 +75,7 @@
           $a_inventory = mysql_fetch_array($q_inventory);
 
 # update the inventory with the companyid and uuid of the cluster.
-          $q_string = "update inventory set inv_companyid = " . $hostid . ",inv_uuid='" . $data[2] . "' where inv_id = " . $a_inventory['inv_id'];
+          $q_string = "update inventory set inv_companyid = " . $hostid . ",inv_uuid='" . $data[2] . "',inv_vmname = '" . $data[0] . "' where inv_id = " . $a_inventory['inv_id'];
           
           if ($debug == 'yes') {
             print $q_string . "\n";
@@ -93,7 +93,7 @@
           if (mysql_num_rows($q_interface) > 0) {
             $a_interface = mysql_fetch_array($q_interface);
 
-            $q_string = "update inventory set inv_companyid = " . $hostid . ",inv_uuid='" . $data[2] . "' where inv_id = " . $a_inventory['inv_id'];
+            $q_string = "update inventory set inv_companyid = " . $hostid . ",inv_uuid='" . $data[2] . "',inv_vmname = '" . $data[0] . "' where inv_id = " . $a_inventory['inv_id'];
           
             if ($debug == 'yes') {
               print $q_string . "\n";
