@@ -202,7 +202,7 @@
             }
 
             $locked = 'No';
-            if ($a_syspwd['mu_locked']) {
+            if ($a_manageusers['mu_locked']) {
               $locked = 'Yes';
             }
           }
