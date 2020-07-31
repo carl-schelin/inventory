@@ -1902,7 +1902,7 @@ In addition are columns for managing the user such as whether or not to lock the
 and/or updating the GECOS information.</p>
 
 <p>When this information is updated, the following three files are also updated which subsequently change the information 
-on all servers.</p>
+on all servers during the following server script run.</p>
 
 <ul>
   <li>valid.email - This changes the GECOS field on all servers to match the GECOS settings made here.</li>
@@ -1912,6 +1912,10 @@ on all servers.</p>
 
 <p>While you can fill out the fields and "create" a new user in this listing, adding the user does not add the user 
 on the server.</p>
+
+<p>Any user account with a '--' in the Account Type column indicates it is not currently being managed and is likely 
+being reported if a service or system account as it's not being found in the intrado.email file. Click on the user 
+to modify it and then click the Add User button to begin managing the account.</p>
 
 </div>
 
