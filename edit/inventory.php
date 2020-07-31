@@ -274,6 +274,7 @@ function attach_software( p_script_url, update ) {
   as_url += "&sw_facing="       + as_form.sw_facing.checked;
   as_url += "&sw_notification=" + encode_URI(as_form.sw_notification.value);
   as_url += "&sw_primary="      + as_form.sw_primary.checked;
+  as_url += "&sw_locked="       + as_form.sw_locked.checked;
 
   script = document.createElement('script');
   script.src = p_script_url + as_url;
@@ -530,6 +531,27 @@ function attach_interface( p_script_url, update ) {
     script.src = p_script_url + ai_url;
     document.getElementsByTagName('head')[0].appendChild(script);
   }
+}
+
+function attach_user(p_script_url, update) {
+  var au_form = document.edit;
+  var au_url;
+  
+  au_url  = '?update='   + update;
+  au_url += "&id="       + au_form.mu_id.value;
+
+  au_url += "&pwd_companyid=" + <?php print $formVars['server']; ?>;
+  au_url += "&mu_username="   + encode_URI(au_form.mu_username.value);
+  au_url += "&mu_name="       + encode_URI(au_form.mu_name.value);
+  au_url += "&mu_email="      + encode_URI(au_form.mu_email.value);
+  au_url += "&mu_account="    + radio_Loop(au_form.mu_account, 3);
+  au_url += "&mu_comment="    + encode_URI(au_form.mu_comment.value);
+  au_url += "&mu_locked="     + au_form.mu_locked.checked;
+  au_url += "&mu_ticket="     + encode_URI(au_form.mu_ticket.value);
+
+  script = document.createElement('script');
+  script.src = p_script_url + au_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
 }
 
 function attach_route(p_script_url, update) {
@@ -1161,7 +1183,7 @@ $(document).ready( function() {
   }
 ?>
 </select></td>
-  <td class="ui-widget-content">Environment <select type="text" name="inv_env">
+  <td class="ui-widget-content">Environment <select name="inv_env">
 <option value="0">Unassigned</option>
 <?php
   $q_string  = "select env_id,env_name ";
@@ -1871,10 +1893,25 @@ software support date exceeds the company requirements for support.</li>
 </tr>
 </table>
 
-<div id="routing-help" style="display: none">
+<div id="users-help" style="display: none">
 
 <div class="main-help ui-widget-content">
 
+<p>In general what you're seeing are the list of users, system accounts, and service accounts that are on this server. 
+In addition are columns for managing the user such as whether or not to lock the user, updating the type of account, 
+and/or updating the GECOS information.</p>
+
+<p>When this information is updated, the following three files are also updated which subsequently change the information 
+on all servers.</p>
+
+<ul>
+  <li>valid.email - This changes the GECOS field on all servers to match the GECOS settings made here.</li>
+  <li>lockuser.dat - This file identifes who needs to be locked on a server due to departure from the company.</li>
+  <li>users.exclude - This file lists service accounts that aren't listed in the intrado.email file used to identify people who are still in the company.</li>
+</ul>
+
+<p>While you can fill out the fields and "create" a new user in this listing, adding the user does not add the user 
+on the server.</p>
 
 </div>
 
