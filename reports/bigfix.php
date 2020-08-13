@@ -28,6 +28,14 @@
     $formVars['enddate'] = date('Y-m-d');
   }
 
+# to compare two dates (like preprod and prod), pass 'anddate'
+  if (isset($_GET['anddate'])) {
+    $formVars['anddate'] = clean($_GET['anddate'], 10);
+    $daterange = "and (big_scheduled = \"" . $formVars['scheduled'] . "\" or big_scheduled = \"" . $formVars['anddate'] . "\" ";
+  } else {
+    $formVars['anddate'] = date('Y-m-d');
+  }
+
   if (isset($_GET['group'])) {
     $formVars['group'] = clean($_GET['group'], 10);
   } else {
@@ -152,8 +160,12 @@ $(document).ready( function() {
   print "<p>This page lists all the servers that are scheduled to be patched and possibly rebooted on " . $formVars['scheduled'] . ".</p>\n";
 
   print "<p>Currently the date drop down isn't working. If you click the forward or backward button, it adds the &date option to the URL. ";
-  print "You can then change the date there without clicking the link over and over. In addition, you can select a range of dates by added ";
-  print "a &enddate=YYYY-mm-dd to the URL. Of course it needs to be farther ahead than the current or selected date.</p>\n";
+  print "You can then change the date there without clicking the link over and over.</p>\n";
+
+  print "<p>In addition, you can select a range of dates by added a &enddate=YYYY-mm-dd to the URL. Of course it needs to be farther ahead ";
+  print "than the current or selected date.</p>\n";
+
+  print "<p>Finally, you can compare two dates by adding an &anddate=YYYY-mm-dd to the URL.</p>\n";
 
   print "</div>\n\n";
 
