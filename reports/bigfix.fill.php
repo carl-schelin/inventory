@@ -26,6 +26,10 @@
     if (isset($_GET['enddate'])) {
       $formVars['enddate'] = clean($_GET['enddate'], 12);
     }
+    $formVars['anddate'] = date('Y-m-d');
+    if (isset($_GET['anddate'])) {
+      $formVars['anddate'] = clean($_GET['anddate'], 12);
+    }
 
     if (check_userlevel($AL_Edit)) {
       logaccess($_SESSION['uid'], $package, "Requesting all records for " . $formVars['id'] . " from bigfix");
@@ -40,10 +44,12 @@
         print "document.getElementById('big_servername').innerHTML = '" . mysql_real_escape_string($a_inventory['inv_name']) . "';";
       }
 
-      if ($formVars['scheduled'] == $formVars['enddate']) {
-        $daterange = "and big_scheduled = \"" . $formVars['scheduled'] . "\" ";
-      } else {
+      $daterange = "and big_scheduled = \"" . $formVars['scheduled'] . "\" ";
+      if ($formVars['scheduled'] != $formVars['enddate']) {
         $daterange = "and big_scheduled >= \"" . $formVars['scheduled'] . "\" and big_scheduled <= \"" . $formVars['enddate'] . "\" ";
+      }
+      if ($formVars['scheduled'] != $formVars['anddate']) {
+        $daterange = "and (big_scheduled = \"" . $formVars['scheduled'] . "\" or big_scheduled = \"" . $formVars['anddate'] . "\") ";
       }
       $patches = '';
       $flagged = '';
