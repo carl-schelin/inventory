@@ -25,15 +25,15 @@
     $formVars['enddate'] = clean($_GET['enddate'], 10);
     $daterange = "and big_scheduled >= \"" . $formVars['scheduled'] . "\" and big_scheduled <= \"" . $formVars['enddate'] . "\" ";
   } else {
-    $formVars['enddate'] = date('Y-m-d');
+    $formVars['enddate'] = $formVars['scheduled'];
   }
 
 # to compare two dates (like preprod and prod), pass 'anddate'
   if (isset($_GET['anddate'])) {
     $formVars['anddate'] = clean($_GET['anddate'], 10);
-    $daterange = "and (big_scheduled = \"" . $formVars['scheduled'] . "\" or big_scheduled = \"" . $formVars['anddate'] . "\" ";
+    $daterange = "and (big_scheduled = \"" . $formVars['scheduled'] . "\" or big_scheduled = \"" . $formVars['anddate'] . "\") ";
   } else {
-    $formVars['anddate'] = date('Y-m-d');
+    $formVars['anddate'] = $formVars['scheduled'];
   }
 
   if (isset($_GET['group'])) {
@@ -192,7 +192,7 @@ $(document).ready( function() {
   if (mysql_num_rows($q_bigfix) > 0) {
     while ($a_bigfix = mysql_fetch_array($q_bigfix)) {
 
-      $linkstart = "<a href=\"#\" onclick=\"show_file('bigfix.fill.php?id=" . $a_bigfix['inv_id'] . "&scheduled=" . $formVars['scheduled'] . "&enddate=" . $formVars['enddate'] . "');jQuery('#dialogBigFix').dialog('open');return false;\">";
+      $linkstart = "<a href=\"#\" onclick=\"show_file('bigfix.fill.php?id=" . $a_bigfix['inv_id'] . "&scheduled=" . $formVars['scheduled'] . "&enddate=" . $formVars['enddate'] . "&anddate=" . $formVars['anddate'] . "');jQuery('#dialogBigFix').dialog('open');return false;\">";
       $linkend   = "</a>";
 
       print "<tr>\n";
