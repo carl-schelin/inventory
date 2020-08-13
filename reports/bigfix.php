@@ -46,26 +46,32 @@
     $formVars['product'] = clean($_GET['product'], 10);
     if ($formVars['product'] > 0) {
       $product = "and inv_product = " . $formVars['product'] . " ";
+      $prodlink = "&product=" . $formVars['product'];
     } else {
       $formVars['product'] = 0;
       $product = '';
+      $prodlink = '';
     }
   } else {
     $formVars['product'] = 0;
     $product = '';
+    $prodlink = '';
   }
 
   if (isset($_GET['project'])) {
     $formVars['project'] = clean($_GET['project'], 10);
     if ($formVars['project'] > 0) {
       $project = "and inv_project = " . $formVars['project'] . " ";
+      $projlink = "&project=" . $formVars['projuct'];
     } else {
       $formVars['project'] = 0;
       $project = '';
+      $projlink = '';
     }
   } else {
     $formVars['project'] = 0;
     $project = '';
+    $projlink = '';
   }
 
   $current_date = $formVars['scheduled'];
@@ -144,7 +150,7 @@ $(document).ready( function() {
 <tr>
   <th class="ui-state-default" colspan="3">BigFix Patch Form</th>
 </tr>
-  <td class="ui-widget-content button"><a href="<?php print $Reportroot . "/bigfix.php?group=" . $formVars['group'] . "&date=" . $formVars['back']; ?>">Back One Day</a> Select Patch Date: <input type="date" name="big_scheduled" id="scheduled" size="10" value="<?php print $formVars['scheduled']; ?>"><a href="<?php print $Reportroot . "/bigfix.php?group=" . $formVars['group'] . "&date=" . $formVars['forward']; ?>">Forward One Day</a></td>
+  <td class="ui-widget-content button"><a href="<?php print $Reportroot . "/bigfix.php?group=" . $formVars['group'] . "&date=" . $formVars['back'] . $product . $project; ?>">Back One Day</a> Select Patch Date: <input type="date" name="big_scheduled" id="scheduled" size="10" value="<?php print $formVars['scheduled']; ?>"><a href="<?php print $Reportroot . "/bigfix.php?group=" . $formVars['group'] . "&date=" . $formVars['forward'] . $product . $project; ?>">Forward One Day</a></td>
 </tr>
 </table>
 
