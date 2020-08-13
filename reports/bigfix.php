@@ -150,7 +150,7 @@ $(document).ready( function() {
 <tr>
   <th class="ui-state-default" colspan="3">BigFix Patch Form</th>
 </tr>
-  <td class="ui-widget-content button"><a href="<?php print $Reportroot . "/bigfix.php?group=" . $formVars['group'] . "&date=" . $formVars['back'] . $product . $project; ?>">Back One Day</a> Select Patch Date: <input type="date" name="big_scheduled" id="scheduled" size="10" value="<?php print $formVars['scheduled']; ?>"><a href="<?php print $Reportroot . "/bigfix.php?group=" . $formVars['group'] . "&date=" . $formVars['forward'] . $product . $project; ?>">Forward One Day</a></td>
+  <td class="ui-widget-content button"><a href="<?php print $Reportroot . "/bigfix.php?group=" . $formVars['group'] . "&date=" . $formVars['back'] . $prodlink . $projlink; ?>">Back One Day</a> Select Patch Date: <input type="date" name="big_scheduled" id="scheduled" size="10" value="<?php print $formVars['scheduled']; ?>"><a href="<?php print $Reportroot . "/bigfix.php?group=" . $formVars['group'] . "&date=" . $formVars['forward'] . $prodlink . $projlink; ?>">Forward One Day</a></td>
 </tr>
 </table>
 
