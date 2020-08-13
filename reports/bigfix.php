@@ -245,7 +245,7 @@ $(document).ready( function() {
 
 <textarea id="big_patches" name="big_patches" cols="130" rows="28"></textarea>
 
-<p>You can go to: https://access.redhat.com/errata/RHSA-[value] to review the Red Hat patch listed above.</p>
+<p>You can go to: <input type="text" value="https://access.redhat.com/errata/RHSA-[value]" size="60"> to review the Red Hat patch listed above.</p>
 
 </form>
 
