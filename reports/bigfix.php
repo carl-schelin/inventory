@@ -62,7 +62,7 @@
     $formVars['project'] = clean($_GET['project'], 10);
     if ($formVars['project'] > 0) {
       $project = "and inv_project = " . $formVars['project'] . " ";
-      $projlink = "&project=" . $formVars['projuct'];
+      $projlink = "&project=" . $formVars['project'];
     } else {
       $formVars['project'] = 0;
       $project = '';
