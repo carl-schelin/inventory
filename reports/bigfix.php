@@ -44,7 +44,12 @@
 
   if (isset($_GET['product'])) {
     $formVars['product'] = clean($_GET['product'], 10);
-    $product = "and inv_product = " . $formVars['product'] . " ";
+    if ($formVars['product'] > 0) {
+      $product = "and inv_product = " . $formVars['product'] . " ";
+    } else {
+      $formVars['product'] = 0;
+      $product = '';
+    }
   } else {
     $formVars['product'] = 0;
     $product = '';
@@ -52,7 +57,12 @@
 
   if (isset($_GET['project'])) {
     $formVars['project'] = clean($_GET['project'], 10);
-    $project = "and inv_project = " . $formVars['project'] . " ";
+    if ($formVars['project'] > 0) {
+      $project = "and inv_project = " . $formVars['project'] . " ";
+    } else {
+      $formVars['project'] = 0;
+      $project = '';
+    }
   } else {
     $formVars['project'] = 0;
     $project = '';
