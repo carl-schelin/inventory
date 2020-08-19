@@ -170,7 +170,7 @@
       $q_string .= "from rights ";
       $q_string .= "left join apigroups on apigroups.api_id = rights.rgt_apigroup ";
       $q_string .= "left join resources on resources.res_id = rights.rgt_resource ";
-      $q_string .= "order by api_name,res_name ";
+      $q_string .= "order by api_name,res_name,rgt_type ";
       $q_rights = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
       if (mysql_num_rows($q_rights) > 0) {
         while ($a_rights = mysql_fetch_array($q_rights)) {
