@@ -95,7 +95,7 @@
       if (mysql_num_rows($q_apigroups) > 0) {
         while ($a_apigroups = mysql_fetch_array($q_apigroups)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('apigroups.fill.php?id=" . $a_apigroups['api_id'] . "');jQuery('#dialogapiGroups').dialog('open');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('apigroups.fill.php?id=" . $a_apigroups['api_id'] . "');jQuery('#dialogapiGroups').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('apigroups.del.php?id="  . $a_apigroups['api_id'] . "');\">";
           $linkend   = "</a>";
 
