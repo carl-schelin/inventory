@@ -181,7 +181,7 @@
 
           if ($a_rights['rgt_type'] == 0) {
             $type = 'Admin';
-            $class = "ui-state-error\;
+            $class = "ui-state-error";
             $admin_rgt_get              = ($a_rights['rgt_get'] ? "X" : " ");
             $admin_rgt_list             = ($a_rights['rgt_list'] ? "X" : " ");
             $admin_rgt_watch            = ($a_rights['rgt_watch'] ? "X" : " ");
