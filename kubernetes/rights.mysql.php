@@ -181,6 +181,7 @@
 
           if ($a_rights['rgt_type'] == 0) {
             $type = 'Admin';
+            $class = "ui-state-error\;
             $admin_rgt_get              = ($a_rights['rgt_get'] ? "X" : " ");
             $admin_rgt_list             = ($a_rights['rgt_list'] ? "X" : " ");
             $admin_rgt_watch            = ($a_rights['rgt_watch'] ? "X" : " ");
@@ -194,6 +195,7 @@
 
           if ($a_rights['rgt_type'] == 1) {
             $type = 'Edit';
+            $class = "ui-state-highlight";
             $edit_rgt_get              = ($a_rights['rgt_get'] ? "X" : " ");
             $edit_rgt_list             = ($a_rights['rgt_list'] ? "X" : " ");
             $edit_rgt_watch            = ($a_rights['rgt_watch'] ? "X" : " ");
@@ -207,6 +209,7 @@
 
           if ($a_rights['rgt_type'] == 2) {
             $type = 'View';
+            $class = "ui-widget-content";
             $view_rgt_get              = ($a_rights['rgt_get'] ? "X" : " ");
             $view_rgt_list             = ($a_rights['rgt_list'] ? "X" : " ");
             $view_rgt_watch            = ($a_rights['rgt_watch'] ? "X" : " ");
@@ -222,19 +225,19 @@
           if (check_userlevel($AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>";
           }
-          $output .= "  <td class=\"ui-widget-content delete\">"   . $linkstart . $a_rights['rgt_id']          . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"                       . $type                                   . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_rights['api_name']        . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_rights['res_name']        . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content delete\">"                . ($a_rights['rgt_get']              ? "X" : " ") . "</td>";
-          $output .= "  <td class=\"ui-widget-content delete\">"                . ($a_rights['rgt_list']             ? "X" : " ") . "</td>";
-          $output .= "  <td class=\"ui-widget-content delete\">"                . ($a_rights['rgt_watch']            ? "X" : " ") . "</td>";
-          $output .= "  <td class=\"ui-widget-content delete\">"                . ($a_rights['rgt_impersonate']      ? "X" : " ") . "</td>";
-          $output .= "  <td class=\"ui-widget-content delete\">"                . ($a_rights['rgt_create']           ? "X" : " ") . "</td>";
-          $output .= "  <td class=\"ui-widget-content delete\">"                . ($a_rights['rgt_delete']           ? "X" : " ") . "</td>";
-          $output .= "  <td class=\"ui-widget-content delete\">"                . ($a_rights['rgt_deletecollection'] ? "X" : " ") . "</td>";
-          $output .= "  <td class=\"ui-widget-content delete\">"                . ($a_rights['rgt_patch']            ? "X" : " ") . "</td>";
-          $output .= "  <td class=\"ui-widget-content delete\">"                . ($a_rights['rgt_update']           ? "X" : " ") . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"   . $linkstart . $a_rights['rgt_id']          . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"                       . $type                                   . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"          . $linkstart . $a_rights['api_name']        . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"          . $linkstart . $a_rights['res_name']        . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"                . ($a_rights['rgt_get']              ? "X" : " ") . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"                . ($a_rights['rgt_list']             ? "X" : " ") . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"                . ($a_rights['rgt_watch']            ? "X" : " ") . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"                . ($a_rights['rgt_impersonate']      ? "X" : " ") . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"                . ($a_rights['rgt_create']           ? "X" : " ") . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"                . ($a_rights['rgt_delete']           ? "X" : " ") . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"                . ($a_rights['rgt_deletecollection'] ? "X" : " ") . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"                . ($a_rights['rgt_patch']            ? "X" : " ") . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"                . ($a_rights['rgt_update']           ? "X" : " ") . "</td>";
           $output .= "</tr>";
         }
       } else {
