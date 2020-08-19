@@ -222,10 +222,10 @@
           if (check_userlevel($AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>";
           }
+          $output .= "  <td class=\"ui-widget-content\">"                       . $type                                   . "</td>";
           $output .= "  <td class=\"ui-widget-content delete\">"   . $linkstart . $a_rights['rgt_id']          . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_rights['api_name']        . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_rights['res_name']        . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"                       . $type                                   . "</td>";
           $output .= "  <td class=\"ui-widget-content delete\">"                . ($a_rights['rgt_get']              ? "X" : " ") . "</td>";
           $output .= "  <td class=\"ui-widget-content delete\">"                . ($a_rights['rgt_list']             ? "X" : " ") . "</td>";
           $output .= "  <td class=\"ui-widget-content delete\">"                . ($a_rights['rgt_watch']            ? "X" : " ") . "</td>";
