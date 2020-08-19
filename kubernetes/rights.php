@@ -207,18 +207,18 @@ $(document).ready( function() {
 </select></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Type: <input type="radio" checked value="0" name="rgt_type"> Admin <input type="radio" value="1" name="rgt_type"> Edit <input type="radio" value="2", name="rgt_type"> View</td>
-  <td class="ui-widget-content">get: <input type="checkbox" name="rgt_get"></td>
-  <td class="ui-widget-content">list: <input type="checkbox" name="rgt_list"></td>
-  <td class="ui-widget-content">watch: <input type="checkbox" name="rgt_watch"></td>
-  <td class="ui-widget-content">impersonate: <input type="checkbox" name="rgt_impersonate"></td>
+  <td class="ui-widget-content">Type: <label><input type="radio" checked value="0" name="rgt_type"> Admin</label> <label><input type="radio" value="1" name="rgt_type"> Edit</label> <label><input type="radio" value="2", name="rgt_type"> View</label></td>
+  <td class="ui-widget-content"><label>get: <input type="checkbox" name="rgt_get"></label></td>
+  <td class="ui-widget-content"><label>list: <input type="checkbox" name="rgt_list"></label></td>
+  <td class="ui-widget-content"><label>watch: <input type="checkbox" name="rgt_watch"></label></td>
+  <td class="ui-widget-content"><label>impersonate: <input type="checkbox" name="rgt_impersonate"></label></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">create: <input type="checkbox" name="rgt_create"></td>
-  <td class="ui-widget-content">delete: <input type="checkbox" name="rgt_delete"></td>
-  <td class="ui-widget-content">deletecollection: <input type="checkbox" name="rgt_deletecollection"></td>
-  <td class="ui-widget-content">patch: <input type="checkbox" name="rgt_patch"></td>
-  <td class="ui-widget-content">update: <input type="checkbox" name="rgt_update"></td>
+  <td class="ui-widget-content"><label>create: <input type="checkbox" name="rgt_create"></label></td>
+  <td class="ui-widget-content"><label>delete: <input type="checkbox" name="rgt_delete"></label></td>
+  <td class="ui-widget-content"><label>deletecollection: <input type="checkbox" name="rgt_deletecollection"></label></td>
+  <td class="ui-widget-content"><label>patch: <input type="checkbox" name="rgt_patch"></label></td>
+  <td class="ui-widget-content"><label>update: <input type="checkbox" name="rgt_update"></label></td>
 </tr>
 </table>
 
