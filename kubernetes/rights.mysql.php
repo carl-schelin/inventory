@@ -175,7 +175,7 @@
       if (mysql_num_rows($q_rights) > 0) {
         while ($a_rights = mysql_fetch_array($q_rights)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('rights.fill.php?id=" . $a_rights['rgt_id'] . "');jQuery('#dialogRights').dialog('open');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('rights.fill.php?id=" . $a_rights['rgt_id'] . "');jQuery('#dialogRights').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('rights.del.php?id="  . $a_rights['rgt_id'] . "');\">";
           $linkend   = "</a>";
 
