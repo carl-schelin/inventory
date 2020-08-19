@@ -95,7 +95,7 @@
       if (mysql_num_rows($q_resources) > 0) {
         while ($a_resources = mysql_fetch_array($q_resources)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('resources.fill.php?id=" . $a_resources['res_id'] . "');jQuery('#dialogResources').dialog('open');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('resources.fill.php?id=" . $a_resources['res_id'] . "');jQuery('#dialogResources').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('resources.del.php?id="  . $a_resources['res_id'] . "');\">";
           $linkend   = "</a>";
 
