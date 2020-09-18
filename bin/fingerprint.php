@@ -176,7 +176,7 @@
 # numbers to be correct.
 
     $maintstart = $a_window['win_start'];
-    $maintstop = $a_window['win_stop'];
+    $maintstop = $a_window['win_end'];
 
   }
 
