@@ -25,7 +25,7 @@
     $server = $argv[1];
   }
 
-  $q_string  = "select inv_id,inv_name,inv_fqdn,inv_ssh,svc_acronym,inv_callpath,zone_name,prod_name,prj_name,loc_west,grp_name,inv_appadmin,inv_appliance,inv_managebigfix ";
+  $q_string  = "select inv_id,inv_name,inv_fqdn,inv_ssh,svc_acronym,inv_callpath,zone_name,prod_name,prj_name,loc_west,grp_name,inv_appadmin,inv_appliance,inv_maint,inv_managebigfix ";
   $q_string .= "from inventory ";
   $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
   $q_string .= "left join service on service.svc_id = inventory.inv_class ";
