@@ -25,9 +25,10 @@
     $server = $argv[1];
   }
 
-  $q_string  = "select inv_id,inv_name,inv_fqdn,inv_ssh,zone_name,prod_name,prj_name,loc_west,grp_name,inv_appadmin,inv_appliance ";
+  $q_string  = "select inv_id,inv_name,inv_fqdn,inv_ssh,svc_acronym,inv_callpath,zone_name,prod_name,prj_name,loc_west,grp_name,inv_appadmin,inv_appliance,inv_managebigfix ";
   $q_string .= "from inventory ";
   $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
+  $q_string .= "left join service on service.svc_id = inventory.inv_class ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
@@ -36,6 +37,15 @@
   $q_string .= "order by inv_name";
   $q_inventory = mysql_query($q_string) or die(mysql_error());
   $a_inventory = mysql_fetch_array($q_inventory);
+
+  $managebigfix = 'No';
+  if ($a_inventory['inv_managebigfix']) {
+    $managebigfix = 'Yes';
+  }
+  $callpath = 'No';
+  if ($a_inventory['inv_callpath']) {
+    $callpath = 'Yes';
+  }
 
   $os = "";
   $tags = "";
@@ -136,11 +146,48 @@
     }
   }
 
+# the goal here is to populate the maintenance bits when it's time for the server to be updated
+# and also to let you individually identify servers that should be disabling the bigfix agent
+# once patching is done.
+
+# first off, get the bigfix bit from the inventory
+# second, get the timezone the server is using
+# then calculate the window, 11pm Central to 5am Central
+# the set the maintenance start and end times
+
+
+  $dayname = array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+  $maintday = $dayname['0'];
+  $maintstart = 0;
+  $maintend = 0;
+  $q_string  = "select win_day,win_start,win_end ";
+  $q_string .= "from window ";
+  $q_string .= "where win_id = " . $a_inventory['inv_maint'] . " ";
+  $q_window = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  if (mysql_num_rows($q_window) > 0) {
+    $a_window = mysql_fetch_array($q_window);
+
+# getting the day for the maintenance window, not today's day
+    $maintday = $dayname[$a_window['win_day']];
+
+# while we know the central time zone for the patching, we need to match it up with 
+# the system's designated timezone, which we do pull from the server and the inventory.
+# we want to convert the current time to Central Time in order for the maint start and end 
+# numbers to be correct.
+
+    $maintstart = $a_window['win_start'];
+    $maintstop = $a_window['win_start'];
+
+  }
+
+
   print "Hostname: " . $a_inventory['inv_name'] . "\n";
   print "Domain: " . $a_inventory['inv_fqdn'] . "\n";
   print "OS: " . $os . "\n";
   print "Location: " . $a_inventory['loc_west'] . "\n";
   print "Timezone: " . $a_inventory['zone_name'] . "\n";
+  print "Service Class: " . $a_inventory['svc_acronym'] . "\n";
+  print "911 Call Path: " . $callpath . "\n";
   print "Zone: " . $zone . "\n";
   print "Tags: " . $tags . "\n";
   print "System Custodian: " . $a_inventory['grp_name'] . "\n";
@@ -154,5 +201,9 @@
   print "Software EOL: " . $software . "\n";
   print "Support Contract: " . $supported . "\n";
   print "Status: " . $status . "\n";
+  print "Manage BigFix: " . $managebigfix . "\n";
+  print "Maintenance Day: " . $maintday . "\n";
+  print "Maintenance Start: " . $maintstart . "\n";
+  print "Maintenance Stop: " . $maintstop . "\n";
 
 ?>
