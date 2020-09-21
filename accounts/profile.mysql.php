@@ -34,6 +34,8 @@
     $formVars['usr_report']     = clean($_GET['usr_report'],     10);
     $formVars['usr_confirm']    = clean($_GET['usr_confirm'],    10);
     $formVars['usr_bigfix']     = clean($_GET['usr_bigfix'],     10);
+    $formVars['usr_page']       = clean($_GET['usr_page'],       20);
+    $formVars['usr_pagemail']   = clean($_GET['usr_pagemail'],  255);
 
     if ($formVars['id'] == '') {
       $formVars['id'] = 0;
@@ -89,6 +91,8 @@
             "usr_freq        =   " . $formVars['usr_freq']      . "," . 
             "usr_report      =   " . $formVars['usr_report']    . "," . 
             "usr_confirm     =   " . $formVars['usr_confirm']   . "," . 
+            "usr_page        = \"" . $formVars['usr_page']      . "\"," . 
+            "usr_pagemail    = \"" . $formVars['usr_pagemail']  . "\"," . 
             "usr_bigfix      =   " . $formVars['usr_bigfix'];
 
           if (strlen($formVars['usr_passwd']) > 0 && $formVars['usr_passwd'] === $formVars['usr_reenter']) {
