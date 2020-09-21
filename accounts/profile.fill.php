@@ -23,7 +23,8 @@
       logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from users");
 
       $q_string  = "select usr_id,usr_first,usr_last,usr_email,usr_phone,usr_freq,usr_notify,usr_deptname,";
-      $q_string .= "usr_altemail,usr_theme,usr_reset,usr_clientid,usr_report,usr_confirm,usr_manager,usr_title,usr_bigfix ";
+      $q_string .= "usr_altemail,usr_theme,usr_reset,usr_clientid,usr_report,usr_confirm,usr_manager,usr_title,";
+      $q_string .= "usr_bigfix,usr_page,usr_pagemail ";
       $q_string .= "from users ";
       $q_string .= "where usr_id = " . $formVars['id'];
       $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
@@ -56,6 +57,8 @@
       print "document.user.usr_phone.value = '"      . mysql_real_escape_string($a_users['usr_phone'])    . "';\n";
       print "document.user.usr_notify.value = '"     . mysql_real_escape_string($a_users['usr_notify'])   . "';\n";
       print "document.user.usr_freq.value = '"       . mysql_real_escape_string($a_users['usr_freq'])     . "';\n";
+      print "document.user.usr_page.value = '"       . mysql_real_escape_string($a_users['usr_page'])     . "';\n";
+      print "document.user.usr_pagemail.value = '"   . mysql_real_escape_string($a_users['usr_pagemail']) . "';\n";
 
       print "document.user.usr_theme['"    . $theme     . "'].selected = true;\n";
       print "document.user.usr_deptname['" . $deptname  . "'].selected = true;\n";
