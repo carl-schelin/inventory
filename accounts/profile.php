@@ -57,6 +57,8 @@ function attach_users(p_script_url, update) {
   au_url += "&usr_report="     + au_form.usr_report.checked;
   au_url += "&usr_confirm="    + au_form.usr_confirm.checked;
   au_url += "&usr_bigfix="     + au_form.usr_bigfix.checked;
+  au_url += "&usr_page="       + encode_URI(au_form.usr_page.value);
+  au_url += "&usr_pagemail="   + encode_URI(au_form.usr_pagemail.value);
 
   script = document.createElement('script');
   script.src = p_script_url + au_url;
@@ -258,6 +260,16 @@ onKeyUp="javascript:show_file('validate.password.php?password=' + usr_passwd.val
 </tr>
 <tr>
   <td class="ui-widget-content"><label>Receive an email each day that lists the servers being patched by BigFix in the next 24 hours: <input type="checkbox" name="usr_bigfix"></label></td>
+</tr>
+</table>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default" colspan="2">Oncall Form</th>
+</tr>
+<tr>
+  <td class="ui-widget-content">Pager Number: <input type="text" name="usr_page" size="20"></td>
+  <td class="ui-widget-content">Pager Email Address: <input type="text" name="usr_pagemail" size="50"></td>
 </tr>
 </table>
 
