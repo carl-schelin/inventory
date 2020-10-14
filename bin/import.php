@@ -178,6 +178,31 @@
             }
           }
 
+
+# mark the hostname in the interface table as a hostname
+          if ($value[2] == 'hostname') {
+            print "hostname found:\n";
+
+# clear all the old 'int_hostname' entries as it'll break things.
+            $q_string = "update interface set int_hostname = 0 where int_companyid = " . $a_inventory['inv_id'] . " ";
+            if ($debug == 'no') {
+              $result = mysql_query($q_string) or die($q_string . mysql_error());
+            }
+            if ($debug == 'yes') {
+              print $q_string . "\n";
+            }
+
+# then no matter what, only the actual hostname will be marked as a hostname as there should be just one hostname entry in the file.
+            $q_string = "update interface set int_hostname = 1 where int_companyid = " . $a_inventory['inv_id'] . " and int_server = \"" . $value[3] . "\" ";
+            if ($debug == 'no') {
+              $result = mysql_query($q_string) or die($q_string . mysql_error());
+            }
+            if ($debug == 'yes') {
+              print $q_string . "\n";
+            }
+          }
+
+
 # updates the last time the system was updated
 # inv_kernel holds the yyyy-mm-dd
 ####lnmtcodcerl10,system,kernel,2012-10-08
