@@ -1515,8 +1515,8 @@ $value[11] = '';
               }
 
 # check for static routes; if an old chksys script or for some reason a blank static route field
-              if (!isset($value[7]) || $value[7] == '') {
-                $value[7] = 0;
+              if (!isset($value[8]) || $value[8] == '') {
+                $value[8] = 0;
               }
 
               $query = 
@@ -1528,7 +1528,7 @@ $value[11] = '';
                 "route_interface =   " . $a_interface['int_id'] . "," . 
                 "route_verified  =   " . '1'                    . "," . 
                 "route_user      =   " . '1'                    . "," . 
-                "route_static    =   " . $value[7]              . "," . 
+                "route_static    =   " . $value[8]              . "," . 
                 "route_update    = \"" . $date                  . "\"";
 
               if ($a_routing['route_id'] == '') {
