@@ -90,13 +90,14 @@
         $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_type = 8 and hw_update < \"" . date('Y-m-d') . "\" ";
         $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
 
-# Since we're not adding to routing tables, just documenting them, let's delete any routes that in the table
-# that are older than today's date for this server.
+# Since we're not adding to routing tables, just documenting them, let's delete any routes that are in the table 
+# that are older than today's date for this server and aren't static routes..
 # this way we aren't clearing ancient stuff so I don't have to muck with the database
+# and any manually managed routes (static) stick around, 
 # plus Kubernetes adds a ton of routes for the pods on the servers and they come and go.
         $q_string  = "delete ";
         $q_string .= "from routing ";
-        $q_string .= "where route_companyid = " . $a_inventory['inv_id'] . " and route_update < \"" . date('Y-m-d') . "\" ";
+        $q_string .= "where route_companyid = " . $a_inventory['inv_id'] . " and route_update < \"" . date('Y-m-d') . "\" and route_static = 0 ";
         $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
 
 # now check for sub processes
@@ -1487,6 +1488,11 @@ $value[11] = '';
                 $mask = $value[6];
               }
 
+# check for static routes; if an old chksys script or for some reason a blank static route field
+              if (unset($value[7]) || $value[7] == '') {
+                $value[7] = 0;
+              }
+
               $query = 
                 "route_companyid =   " . $a_inventory['inv_id'] . "," . 
                 "route_address   = \"" . $value[4]              . "\"," . 
@@ -1496,6 +1502,7 @@ $value[11] = '';
                 "route_interface =   " . $a_interface['int_id'] . "," . 
                 "route_verified  =   " . '1'                    . "," . 
                 "route_user      =   " . '1'                    . "," . 
+                "route_static    =   " . $value[7]              . "," . 
                 "route_update    = \"" . $date                  . "\"";
 
               if ($a_routing['route_id'] == '') {
