@@ -1514,7 +1514,7 @@ $value[11] = '';
               }
 
 # check for static routes; if an old chksys script or for some reason a blank static route field
-              if (unset($value[7]) || $value[7] == '') {
+              if (isset($value[7]) || $value[7] == '') {
                 $value[7] = 0;
               }
 
