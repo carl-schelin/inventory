@@ -182,6 +182,7 @@
 # mark the hostname in the interface table as a hostname
           if ($value[2] == 'hostname') {
             print "hostname found:\n";
+            $skip = 'no';
 
 # clear all the old 'int_hostname' entries as it'll break things.
             $q_string = "update interface set int_hostname = 0 where int_companyid = " . $a_inventory['inv_id'] . " ";
