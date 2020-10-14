@@ -204,6 +204,27 @@
           }
 
 
+# found the fqdn. Now just add the domain to the interface.
+          if ($value[2] == 'fqdn') {
+            print "fqdn found:\n";
+            $skip = 'no';
+
+# this should give me server and domain.com as two values
+            $fqdn = explode('.', $value[3], 2);
+
+# update the table.
+            if (isset($fqdn[1])) {
+              $q_string = "update interface set int_domain = \"" . $fqdn[1] . "\"  where int_companyid = " . $a_inventory['inv_id'] . " and int_server = \"" . $fqdn[0] . "\" ";
+              if ($debug == 'no') {
+                $result = mysql_query($q_string) or die($q_string . mysql_error());
+              }
+              if ($debug == 'yes') {
+                print $q_string . "\n";
+              }
+            }
+          }
+
+
 # updates the last time the system was updated
 # inv_kernel holds the yyyy-mm-dd
 ####lnmtcodcerl10,system,kernel,2012-10-08
