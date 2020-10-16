@@ -23,17 +23,15 @@
     $debug = 'yes';
   }
 
-  $q_string  = "select inv_name,fs_mount,fs_group,grp_name ";
+  $q_string  = "select inv_name,fs_mount,fs_group,grp_email ";
   $q_string .= "from filesystem ";
   $q_string .= "left join inventory on inventory.inv_id = filesystem.fs_companyid ";
   $q_string .= "left join groups on groups.grp_id = filesystem.fs_group ";
-  $q_string .= "where inv_manager = " . $GRP_Unix . " and inv_status = 0 ";
+  $q_string .= "where inv_manager = " . $GRP_Unix . " and inv_status = 0 and fs_mount != '' and grp_email != '' and fs_group != " . $GRP_Unix . " and fs_group != 0 ";
   $q_filesystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
   while ($a_filesystem = mysql_fetch_array($q_filesystem)) {
 
-    if ($a_filesystem['fs_group'] != $GRP_Unix && $a_filesystem['fs_group'] != 0) {
-      print $a_filesystem['inv_name'] . ":" . $a_filesystem['fs_mount'] . ":" . $a_filesystem['grp_name'] . "\n";
-    }
+    print $a_filesystem['inv_name'] . ":" . $a_filesystem['fs_mount'] . ":" . $a_filesystem['grp_email'] . "\n";
 
   }
 
