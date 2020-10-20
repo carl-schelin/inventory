@@ -30,8 +30,10 @@
         $formVars['route_address']   = clean($_GET['route_address'],   60);
         $formVars['route_mask']      = clean($_GET['route_mask'],      10);
         $formVars['route_gateway']   = clean($_GET['route_gateway'],   60);
+        $formVars['route_source']    = clean($_GET['route_source'],    60);
         $formVars['route_interface'] = clean($_GET['route_interface'], 10);
         $formVars['route_desc']      = clean($_GET['route_desc'],      60);
+        $formVars['route_static']    = clean($_GET['route_static'],    10);
         $formVars['route_propagate'] = clean($_GET['route_propagate'], 10);
 
         if ($formVars['id'] == '') {
@@ -39,6 +41,11 @@
         }
         if ($formVars['route_propagate'] == '') {
           $formVars['route_propagate'] = "no";
+        }
+        if ($formVars['route_static'] == 'true') {
+          $formVars['route_static'] = 1;
+        } else {
+          $formVars['route_static'] = 0;
         }
 
         if (strlen($formVars['route_address']) > 0) {
@@ -49,9 +56,11 @@
             "route_address   = \"" . $formVars['route_address']   . "\"," .
             "route_mask      =   " . $formVars['route_mask']      . "," .
             "route_gateway   = \"" . $formVars['route_gateway']   . "\"," .
+            "route_source    = \"" . $formVars['route_source']    . "\"," .
             "route_interface =   " . $formVars['route_interface'] . "," .
             "route_desc      = \"" . $formVars['route_desc']      . "\"," . 
             "route_verified  =   " . 0                            . "," .
+            "route_static    =   " . $formVars['route_static']    . "," .
             "route_user      =   " . $_SESSION['uid']             . "," .
             "route_update    = \"" . date('Y-m-d')                . "\"";
 
@@ -93,7 +102,7 @@
         $formVars['copyfrom'] = clean($_GET['copyfrom'], 10);
 
         if ($formVars['copyfrom'] > 0) {
-          $q_string  = "select route_address,route_mask,route_gateway,route_interface,route_desc ";
+          $q_string  = "select route_address,route_mask,route_gateway,route_source,route_interface,route_desc,route_static ";
           $q_string .= "from routing ";
           $q_string .= "where route_companyid = " . $formVars['copyfrom'];
           $q_routing = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
@@ -122,7 +131,9 @@
               "route_address   = \"" . $a_routing['route_address']   . "\"," .
               "route_mask      =   " . $a_routing['route_mask']      . "," .
               "route_gateway   = \"" . $a_routing['route_gateway']   . "\"," .
+              "route_soruce    = \"" . $a_routing['route_source']    . "\"," .
               "route_interface =   " . $a_interface2['int_id']       . "," .
+              "route_static    =   " . $a_routing['route_static']    . "," .
               "route_desc      = \"" . $a_routing['route_desc']      . "\"";
 
             $query = "insert into routing set route_id = NULL," . $q_string;
@@ -175,7 +186,7 @@
         $output .= "  <th class=\"ui-state-default\" colspan=\"4\">Route Form</th>\n";
         $output .= "</tr>\n";
         $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\">Route <input type=\"text\" name=\"route_address\" size=\"20\"></td>\n";
+        $output .= "  <td class=\"ui-widget-content\">Route <input type=\"text\" name=\"route_address\" size=\"20\"> Static Route? <input type=\"checkbox\" name=\"route_static\"></td>\n";
         $output .= "  <td class=\"ui-widget-content\">Gateway <input type=\"text\" name=\"route_gateway\" size=\"20\"></td>\n";
         $output .= "  <td class=\"ui-widget-content\">Subnet Mask: <select name=\"route_mask\">\n";
 
@@ -208,7 +219,8 @@
         $output .= "</tr>\n";
         $output .= "<tr>\n";
         $output .= "  <td class=\"ui-widget-content\">Interface <input disabled type=\"text\" name=\"interface\" size=\"20\"></td>\n";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"3\">Description: <input type=\"text\" name=\"route_desc\" size=\"80\"></td>\n";
+        $output .= "  <td class=\"ui-widget-content\">Source IP <input type=\"text\" name=\"route_source\" size=\"20\"></td>\n";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"2\">Description: <input type=\"text\" name=\"route_desc\" size=\"80\"></td>\n";
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
@@ -257,17 +269,19 @@
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       $output .=   "<th class=\"ui-state-default\">Del</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Static</th>\n";
       $output .=   "<th class=\"ui-state-default\">Destination</th>\n";
-      $output .=   "<th class=\"ui-state-default\">DNS</th>\n";
+#      $output .=   "<th class=\"ui-state-default\">DNS</th>\n";
       $output .=   "<th class=\"ui-state-default\">Gateway</th>\n";
       $output .=   "<th class=\"ui-state-default\">Iface</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Source IP</th>\n";
       $output .=   "<th class=\"ui-state-default\">Description</th>\n";
       $output .=   "<th class=\"ui-state-default\">Updated</th>\n";
       $output .= "</tr>\n";
 
       $interface = array();
       $sunroute = '';
-      $q_string  = "select route_id,route_address,route_mask,route_gateway,route_interface,route_verified,route_desc,route_update,inv_manager ";
+      $q_string  = "select route_id,route_address,route_mask,route_source,route_gateway,route_interface,route_verified,route_desc,route_update,route_static,inv_manager ";
       $q_string .= "from routing ";
       $q_string .= "left join inventory on inventory.inv_id = routing.route_companyid ";
       $q_string .= "where route_companyid = " . $formVars['route_companyid'] . " ";
@@ -287,19 +301,23 @@
           $linkend   = "</a>";
 
           $ping = ' class="ui-widget-content"';
-          $dns = '';
+#          $dns = '';
 # validate the IP before trying to ping or look it up (unnecessary delays)
-          if (filter_var($a_routing['route_address'], FILTER_VALIDATE_IP) && ($a_interface['int_face'] != 'lo' || $a_interface['int_face'] != 'lo0')) {
+#          if (filter_var($a_routing['route_address'], FILTER_VALIDATE_IP) && ($a_interface['int_face'] != 'lo' || $a_interface['int_face'] != 'lo0')) {
 # ensure it's a -host based ip, no need to ping or look up -net ranges.
-            if ($a_routing['route_mask'] == 32) {
-              $ping = ' class="ui-state-error" ';
-              if (ping($a_routing['route_address'])) {
-                $ping = ' class="ui-state-highlight" ';
-              }
-              $dns = gethostbyaddr($a_routing['route_address']);
-            }
-          }
+#            if ($a_routing['route_mask'] == 32) {
+#              $ping = ' class="ui-state-error" ';
+#              if (ping($a_routing['route_address'])) {
+#                $ping = ' class="ui-state-highlight" ';
+#              }
+#              $dns = gethostbyaddr($a_routing['route_address']);
+#            }
+#          }
 
+          $static = 'No';
+          if ($a_routing['route_static']) {
+            $static = 'Yes';
+          }
           $checked = "";
           if ($a_routing['route_verified']) {
             $checked = "&#x2713;";
@@ -307,17 +325,22 @@
 
           $output .= "<tr>\n";
           $output .=   "<td class=\"ui-widget-content delete\">" . $linkdel                                                                             . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $static                                                      . $linkend . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_routing['route_address'] . "/" . $a_routing['route_mask'] . $linkend . "</td>\n";
-          $output .= "  <td" . $ping . ">"                       . $linkstart . $dns                                                         . $linkend . "</td>\n";
+#          $output .= "  <td" . $ping . ">"                       . $linkstart . $dns                                                         . $linkend . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_routing['route_gateway']                                  . $linkend . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_interface['int_face']                                     . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_routing['route_source']                                   . $linkend . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_routing['route_desc']                                     . $linkend . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_routing['route_update'] . $checked                        . $linkend . "</td>\n";
           $output .= "</tr>\n";
 
           if ($os == "Linux") {
-            if ($a_routing['route_address'] != '0.0.0.0' && $a_routing['route_gateway'] != '0.0.0.0') {
+            if ($a_routing['route_address'] != '0.0.0.0' && $a_routing['route_gateway'] != '0.0.0.0' && $a_routing['route_static']) {
               $interface[$a_interface['int_face']] .= "<br>" . $a_routing['route_address'] . "/" . $a_routing['route_mask'] . " via " . $a_routing['route_gateway'] . " dev " . $a_interface['int_face'];
+              if ($a_routing['route_source'] != '') {
+                $interface[$a_interface['int_face']] .= " src " . $a_routing['route_source'];
+              }
             }
           }
           if ($os == "SunOS") {
