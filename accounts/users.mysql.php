@@ -151,8 +151,21 @@
 # clear from grouplist
             $q_string  = "delete ";
             $q_string .= "from grouplist ";
-            $q_string .= "where gpl_user = " . $formVars['id'];
+            $q_string .= "where gpl_user = " . $formVars['id'] . " ";
             mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+
+# also clear any managerial duties.
+            $q_string  = "update users ";
+            $q_string .= "set usr_manager = 0 ";
+            $q_string .= "where usr_manager = " . $formVars['id'] . " ";
+            mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+
+# and clear from groups as well.
+            $q_string  = "update groups ";
+            $q_string .= "set grp_manager = 0 ";
+            $q_string .= "where grp_manager = " . $formVars['id'] . " ";
+            mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+
           } else {
             $q_string  = "select gpl_id ";
             $q_string .= "from grouplist ";
