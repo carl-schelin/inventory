@@ -78,7 +78,7 @@
             $q_string  = "update ";
             $q_string .= "users ";
             $q_string .= "set usr_manager = " . $formVars['grp_manager'] . " ";
-            $q_string .= "where usr_group = " . $formVars['id'] . " and usr_manager = " . $a_groups['grp_manager'] . " ";
+            $q_string .= "where usr_group = " . $formVars['id'] . " and (usr_manager = " . $a_groups['grp_manager'] . " or usr_manager = 0) ";
             $result = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
           }
 
