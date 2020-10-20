@@ -568,7 +568,9 @@ function attach_route(p_script_url, update) {
   ar_url += "&route_address="   + encode_URI(ar_form.route_address.value);
   ar_url += "&route_gateway="   + encode_URI(ar_form.route_gateway.value);
   ar_url += "&route_mask="      + ar_form.route_mask.value;
+  ar_url += "&route_source="    + encode_URI(ar_form.route_source.value);
   ar_url += "&route_interface=" + ar_form.route_interface.value;
+  ar_url += "&route_static="    + ar_form.route_static.checked;
   ar_url += "&route_desc="      + encode_URI(ar_form.route_desc.value);
 
   answer = confirm(ar_answer);
@@ -1960,10 +1962,12 @@ to modify it and then click the Add User button to begin managing the account.</
   <li><strong>Route Form</strong>
   <ul>
     <li><strong>Route</strong> - Enter the route.</li>
+    <li><strong>Static Route?</strong> - Is this a static route? A script will extract the static routes and create a Ansible Playbook vars file.</li>
     <li><strong>Gateway</strong> - Enter the gateway traffic for this route will traverse.</li>
     <li><strong>Subnet Mask</strong> - Select the subnet mask for this route.</li>
     <li><strong>Interface</strong> - Select the appropriate interface for the traffic.</li>
     <li><strong>Interface (2)</strong> - Disabled. This provides a free form field for entering interfaces that may not exist on the server but need to be added.</li>
+    <li><strong>Source IP</strong> - If you want to ensure traffic is coming from a specific IP when routing traffic out, add the IP here..</li>
     <li><strong>Description</strong> - Add a brief description for this route. You will be prompted to see if you want to copy this description to similar routes on other systems.</li>
   </ul></li>
 </ul>
