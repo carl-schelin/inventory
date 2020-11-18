@@ -213,8 +213,8 @@ $(function() {
   $q_string .= "from certs ";
   $q_string .= "where cert_isca = 1 ";
   $q_string .= "order by cert_desc";
-  $q_certs = mysql_query($q_string) or die(q_string . ": " . mysql_error());
-  while ($a_certs = mysql_fetch_array($q_certs)) {
+  $q_certs = mysqli_query($db, $q_string) or die(q_string . ": " . mysqli_error($db));
+  while ($a_certs = mysqli_fetch_array($q_certs)) {
     print "<option value=\"" . $a_certs['cert_id'] . "\">" . htmlspecialchars($a_certs['cert_desc']) . "</option>\n";
   }
 ?>
@@ -230,8 +230,8 @@ $(function() {
   $q_string .= "from groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name";
-  $q_groups = mysql_query($q_string) or die(mysql_error());
-  while ($a_groups = mysql_fetch_array($q_groups)) {
+  $q_groups = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_groups = mysqli_fetch_array($q_groups)) {
     print "<option value=\"" . $a_groups['grp_id'] . "\">" . htmlspecialchars($a_groups['grp_name']) . "</option>\n";
   }
 ?>
