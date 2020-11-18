@@ -25,15 +25,15 @@
       $q_string  = "select clu_companyid,clu_association,clu_notes ";
       $q_string .= "from cluster ";
       $q_string .= "where clu_id = " . $formVars['id'];
-      $q_cluster = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_cluster = mysql_fetch_array($q_cluster);
-      mysql_free_result($q_cluster);
+      $q_cluster = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_cluster = mysqli_fetch_array($q_cluster);
+      mysqli_free_result($q_cluster);
 
       $association = return_Index($a_cluster['clu_association'], "select inv_id from inventory where inv_status = 0 order by inv_name");
 
       print "document.edit.clu_association['" . $association . "'].selected = true;\n";
 
-      print "document.edit.clu_notes.value = '"    . mysql_real_escape_string($a_cluster['clu_notes'])    . "';\n\n";
+      print "document.edit.clu_notes.value = '"    . mysqli_real_escape_string($a_cluster['clu_notes'])    . "';\n\n";
 
       print "document.edit.clu_id.value = " . $formVars['id'] . ";\n";
       print "document.edit.clu_update.disabled = false;\n\n";
