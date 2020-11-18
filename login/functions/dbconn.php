@@ -12,8 +12,11 @@ $db  = dbconn( 'localhost', $DBname, $DBuser, $DBpassword);
 // Connect and select database.
 
 function dbconn($server,$database,$user,$pass){
-  $db = mysql_connect($server,$user,$pass);
-  $db_select = mysql_select_db($database,$db);
+
+  $db = mysqli_connect($server,$user,$pass, $database);
+
+  $db_select = mysqli_select_db($db, $database);
+
   return $db;
 }
 
