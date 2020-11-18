@@ -58,7 +58,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['vlan_name']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -116,8 +116,8 @@
       $q_string  = "select vlan_id,vlan_vlan,vlan_zone,vlan_name,vlan_description,vlan_range,vlan_gateway,vlan_netmask ";
       $q_string .= "from vlans ";
       $q_string .= "order by vlan_zone+0 asc,vlan_vlan";
-      $q_vlans = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_vlans = mysql_fetch_array($q_vlans)) {
+      $q_vlans = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_vlans = mysqli_fetch_array($q_vlans)) {
 
         $linkstart = "<a href=\"#\" onclick=\"show_file('vlans.fill.php?id="  . $a_vlans['vlan_id'] . "');showDiv('vlan-hide');\">";
         $linkdel   = "<a href=\"#\" onclick=\"delete_line('vlans.del.php?id=" . $a_vlans['vlan_id'] . "');\">";
@@ -140,9 +140,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_vlans);
+      mysqli_free_result($q_vlans);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.vlans.update.disabled = true;\n";
 
