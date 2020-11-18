@@ -79,8 +79,8 @@
       $q_string  = "select prod_name ";
       $q_string .= "from products ";
       $q_string .= "where prod_id = " . $formVars['product'] . " ";
-      $q_products = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_products = mysql_fetch_array($q_products);
+      $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_products = mysqli_fetch_array($q_products);
       $product_name = $a_products['prod_name'];
 
       if ($formVars['project'] > 0) {
@@ -91,8 +91,8 @@
         $q_string  = "select prj_name ";
         $q_string .= "from projects ";
         $q_string .= "where prj_id = " . $formVars['project'] . " ";
-        $q_projects = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        $a_projects = mysql_fetch_array($q_projects);
+        $q_projects = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_projects = mysqli_fetch_array($q_projects);
         $project_name = $a_projects['prj_name'];
 
       }
@@ -301,8 +301,8 @@
   $q_string .= "left join groups    on groups.grp_id         = inventory.inv_manager ";
   $q_string .= $group . $product . $inwork . $location . $type . " ";
   $q_string .= "group by prod_name ";
-  $q_products = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_products = mysql_fetch_array($q_products)) {
+  $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_products = mysqli_fetch_array($q_products)) {
 
     $sweol = 0;
     $swuncounted = 0;
@@ -323,15 +323,15 @@
         $q_string .= "and inv_manager = " . $formVars['group'] . " ";
       }
       $q_string .= "order by inv_name ";
-      $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      while ($a_inventory = mysql_fetch_array($q_inventory)) {
+      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
         $q_string  = "select mod_vendor,mod_name,mod_eol,mod_virtual,hw_purchased ";
         $q_string .= "from models ";
         $q_string .= "left join hardware on hardware.hw_vendorid = models.mod_id ";
         $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1 and hw_deleted = 0 ";
-        $q_models = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_models = mysql_fetch_array($q_models)) {
+        $q_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_models = mysqli_fetch_array($q_models)) {
           $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inventory['inv_id'] . "#hardware\" target=\"_blank\">";
           $linkend = "</a>";
 
@@ -388,8 +388,8 @@
         $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
         $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " ";
         $q_string .= "order by sw_software ";
-        $q_software = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_software = mysql_fetch_array($q_software)) {
+        $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_software = mysqli_fetch_array($q_software)) {
 
           $inv_name = '';
 
@@ -435,8 +435,8 @@
       if ($formVars['group'] > 0) {
         $q_string .= "and inv_manager = " . $formVars['group'] . " ";
       }
-      $q_software = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      while ($a_software = mysql_fetch_array($q_software)) {
+      $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_software = mysqli_fetch_array($q_software)) {
         if ($a_software['sw_eol'] == '0000-00-00') {
           $swuncounted++;
           $totalswuncounted++;
@@ -455,8 +455,8 @@
       if ($formVars['group'] > 0) {
         $q_string .= "and inv_manager = " . $formVars['group'] . " ";
       }
-      $q_hardware = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      while ($a_hardware = mysql_fetch_array($q_hardware)) {
+      $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
         $hwtotal++;
         $totalhardware++;
