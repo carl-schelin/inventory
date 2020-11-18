@@ -25,14 +25,14 @@
       $q_string  = "select st_state,st_acronym,st_country ";
       $q_string .= "from states ";
       $q_string .= "where st_id = " . $formVars['id'];
-      $q_states = mysql_query($q_string) or die (mysql_error());
-      $a_states = mysql_fetch_array($q_states);
-      mysql_free_result($q_states);
+      $q_states = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      $a_states = mysqli_fetch_array($q_states);
+      mysqli_free_result($q_states);
 
       $country = return_Index($a_states['st_country'], "select cn_id from country order by cn_country");
 
-      print "document.states.st_acronym.value = '"  . mysql_real_escape_string($a_states['st_acronym'])   . "';\n";
-      print "document.states.st_state.value = '"    . mysql_real_escape_string($a_states['st_state'])    . "';\n";
+      print "document.states.st_acronym.value = '"  . mysqli_real_escape_string($a_states['st_acronym'])   . "';\n";
+      print "document.states.st_state.value = '"    . mysqli_real_escape_string($a_states['st_state'])    . "';\n";
 
       print "document.states.st_country['" . $country . "'].selected = true;\n";
 
