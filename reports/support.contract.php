@@ -257,9 +257,9 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= $where . " and inv_status = 0 and hw_supportend > '" . date('Y-m-d') . "' and hw_supportend != '0000-00-00' ";
 #and hw_supid_verified = 1 ";
   $q_string .= $orderby;
-  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
-  while ( $a_inventory = mysql_fetch_array($q_inventory) ) {
+  while ( $a_inventory = mysqli_fetch_array($q_inventory) ) {
     $class = "ui-widget-content";
     if ($a_inventory['hw_supid_verified'] == 0) {
       $class = "ui-state-highlight";
@@ -275,8 +275,8 @@ needs to be set on the original equipment. If the system is confirmed as retired
     $q_string  = "select slv_value ";
     $q_string .= "from supportlevel ";
     $q_string .= "where slv_id = " . $a_inventory['inv_response'] . " ";
-    $q_supportlevel = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-    $a_supportlevel = mysql_fetch_array($q_supportlevel);
+    $q_supportlevel = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_supportlevel = mysqli_fetch_array($q_supportlevel);
 
     $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\">";
     $linkend   = "</a>";
@@ -315,7 +315,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
     print "</p>\n";
   } else {
     print "</table>\n";
-    print "<p class=\"ui-widget-content\">Total: " . mysql_num_rows($q_inventory) . "</td>\n";
+    print "<p class=\"ui-widget-content\">Total: " . mysqli_num_rows($q_inventory) . "</td>\n";
   }
 
   print "</div>\n";
@@ -357,9 +357,9 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "left join states       on states.st_id          = locations.loc_state ";
   $q_string .= $where . " and inv_status = 0 and hw_supportend < '" . date('Y-m-d') . "' and hw_active != \"0000-00-00\" ";
   $q_string .= $orderby;
-  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
-  while ( $a_inventory = mysql_fetch_array($q_inventory) ) {
+  while ( $a_inventory = mysqli_fetch_array($q_inventory) ) {
     $class = "ui-widget-content";
     if ($a_inventory['hw_supid_verified'] == 0) {
       $class = "ui-state-highlight";
@@ -404,7 +404,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
     print "</p>\n";
   } else {
     print "</table>\n";
-    print "<p class=\"ui-widget-content\">Total: " . mysql_num_rows($q_inventory) . "</td>\n";
+    print "<p class=\"ui-widget-content\">Total: " . mysqli_num_rows($q_inventory) . "</td>\n";
   }
 
   print "</div>\n";
@@ -445,9 +445,9 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "left join states       on states.st_id          = locations.loc_state ";
   $q_string .= $where . " and inv_status = 0 and hw_supportend < '" . date('Y-m-d') . "' and hw_active = \"0000-00-00\" ";
   $q_string .= $orderby;
-  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
-  while ( $a_inventory = mysql_fetch_array($q_inventory) ) {
+  while ( $a_inventory = mysqli_fetch_array($q_inventory) ) {
     $class = "ui-widget-content";
     if ($a_inventory['hw_supid_verified'] == 0) {
       $class = "ui-state-highlight";
@@ -492,7 +492,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
     print "</p>\n";
   } else {
     print "</table>\n";
-    print "<p class=\"ui-widget-content\">Total: " . mysql_num_rows($q_inventory) . "</td>\n";
+    print "<p class=\"ui-widget-content\">Total: " . mysqli_num_rows($q_inventory) . "</td>\n";
   }
 
   print "</div>\n";
@@ -530,9 +530,9 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "left join states       on states.st_id          = locations.loc_state ";
   $q_string .= $where . " and inv_status = 0 and hw_supid_verified = 0 and hw_serial = '' ";
   $q_string .= $orderby;
-  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
-  while ( $a_inventory = mysql_fetch_array($q_inventory) ) {
+  while ( $a_inventory = mysqli_fetch_array($q_inventory) ) {
     $class = "ui-widget-content";
     if ($a_inventory['hw_supid_verified'] == 0) {
       $class = "ui-state-highlight";
@@ -567,7 +567,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
     print "</p>\n";
   } else {
     print "</table>\n";
-    print "<p class=\"ui-widget-content\">Total: " . mysql_num_rows($q_inventory) . "</td>\n";
+    print "<p class=\"ui-widget-content\">Total: " . mysqli_num_rows($q_inventory) . "</td>\n";
   }
 
   print "</div>\n";
@@ -611,8 +611,8 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "left join states       on states.st_id          = locations.loc_state ";
   $q_string .= $where . " and inv_status = 1 and hw_supid_verified = 1 and hw_reused = '0000-00-00' ";
   $q_string .= $orderby;
-  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ( $a_inventory = mysql_fetch_array($q_inventory) ) {
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ( $a_inventory = mysqli_fetch_array($q_inventory) ) {
 
     $a_inv['inv_name'] = '';
     $class = "ui-widget-content";
@@ -634,9 +634,9 @@ needs to be set on the original equipment. If the system is confirmed as retired
         $and = 'and ';
       }
       $q_string .= $tail . $and . "inv_status = 0 ";
-      $q_inv = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_inv) > 0) {
-        $a_inv = mysql_fetch_array($q_inv);
+      $q_inv = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv) > 0) {
+        $a_inv = mysqli_fetch_array($q_inv);
         $class = "ui-state-highlight";
       }
     }
@@ -679,7 +679,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
     print "</p>\n";
   } else {
     print "</table>\n";
-    print "<p class=\"ui-widget-content\">Total: " . mysql_num_rows($q_inventory) . "</td>\n";
+    print "<p class=\"ui-widget-content\">Total: " . mysqli_num_rows($q_inventory) . "</td>\n";
   }
 
 ?>
