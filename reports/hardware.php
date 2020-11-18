@@ -197,8 +197,8 @@
   $q_string .= "left join supportlevel   on supportlevel.slv_id = hardware.hw_response ";
   $q_string .= $where;
   $q_string .= $orderby;
-  $q_hardware = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_hardware = mysql_fetch_array($q_hardware)) {
+  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
     if ($a_hardware['hw_deleted'] == 1) {
       $class = " class=\"ui-state-highlight\"";
@@ -231,7 +231,7 @@
 
   }
 
-  mysql_free_result($q_hardware);
+  mysqli_free_result($q_hardware);
 ?>
 </table>
 </div>
