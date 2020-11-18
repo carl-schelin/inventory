@@ -30,9 +30,9 @@
         $q_string  = "select pwd_user,pwd_gecos ";
         $q_string .= "from syspwd ";
         $q_string .= "where pwd_id = " . $formVars['pwd_id'] . " ";
-        $q_syspwd = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        $a_syspwd = mysql_fetch_array($q_syspwd);
-        mysql_free_result($q_syspwd);
+        $q_syspwd = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_syspwd = mysqli_fetch_array($q_syspwd);
+        mysqli_free_result($q_syspwd);
 
         $gecos = explode(",", $a_syspwd['pwd_gecos']);
 
@@ -51,9 +51,9 @@
         $q_string  = "select mu_username,mu_name,mu_email,mu_account,mu_comment,mu_locked,mu_ticket ";
         $q_string .= "from manageusers ";
         $q_string .= "where mu_id = " . $formVars['id'];
-        $q_manageusers = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        $a_manageusers = mysql_fetch_array($q_manageusers);
-        mysql_free_result($q_manageusers);
+        $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_manageusers = mysqli_fetch_array($q_manageusers);
+        mysqli_free_result($q_manageusers);
 
         $username = $a_manageusers['mu_username'];
         $name     = $a_manageusers['mu_name'];
@@ -68,11 +68,11 @@
         print "document.edit.mu_update.disabled = false;\n";
       }
 
-      print "document.edit.mu_username.value = '" . mysql_real_escape_string($username) . "';\n";
-      print "document.edit.mu_name.value = '"     . mysql_real_escape_string($name)     . "';\n";
-      print "document.edit.mu_email.value = '"    . mysql_real_escape_string($email)    . "';\n";
-      print "document.edit.mu_comment.value = '"  . mysql_real_escape_string($comment)  . "';\n";
-      print "document.edit.mu_ticket.value = '"   . mysql_real_escape_string($ticket)   . "';\n";
+      print "document.edit.mu_username.value = '" . mysqli_real_escape_string($username) . "';\n";
+      print "document.edit.mu_name.value = '"     . mysqli_real_escape_string($name)     . "';\n";
+      print "document.edit.mu_email.value = '"    . mysqli_real_escape_string($email)    . "';\n";
+      print "document.edit.mu_comment.value = '"  . mysqli_real_escape_string($comment)  . "';\n";
+      print "document.edit.mu_ticket.value = '"   . mysqli_real_escape_string($ticket)   . "';\n";
 
       if ($locked) {
         print "document.edit.mu_locked.checked = true;\n";
