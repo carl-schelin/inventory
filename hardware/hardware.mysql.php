@@ -64,8 +64,8 @@
           $q_string  = "select part_type ";
           $q_string .= "from parts ";
           $q_string .= "where part_id = " . $formVars['mod_type'];
-          $q_parts = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_parts = mysql_fetch_array($q_parts);
+          $q_parts = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_parts = mysqli_fetch_array($q_parts);
 
           $formVars['mod_primary'] = $a_parts['part_type'];
 
@@ -98,7 +98,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['mod_name']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -201,8 +201,8 @@
       $q_string .= "left join parts on parts.part_id = models.mod_type ";
       $q_string .= "left join int_volts on int_volts.volt_id = models.mod_volts ";
       $q_string .= "order by mod_vendor,mod_name";
-      $q_models = mysql_query($q_string) or die ($q_string . ": " . mysql_error());
-      while ($a_models = mysql_fetch_array($q_models)) {
+      $q_models = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+      while ($a_models = mysqli_fetch_array($q_models)) {
 
         if ($a_models['part_type']) {
           $class = "ui-state-highlight";
@@ -260,13 +260,13 @@
       $memory .= $footer;
       $misc   .= $footer;
 
-      mysql_free_result($q_models);
+      mysqli_free_result($q_models);
 
-      print "document.getElementById('server_mysql').innerHTML = '" . mysql_real_escape_string($server) . "';\n\n";
-      print "document.getElementById('disk_mysql').innerHTML = '"   . mysql_real_escape_string($disk) . "';\n\n";
-      print "document.getElementById('cpu_mysql').innerHTML = '"    . mysql_real_escape_string($cpu) . "';\n\n";
-      print "document.getElementById('memory_mysql').innerHTML = '" . mysql_real_escape_string($memory) . "';\n\n";
-      print "document.getElementById('misc_mysql').innerHTML = '"   . mysql_real_escape_string($misc) . "';\n\n";
+      print "document.getElementById('server_mysql').innerHTML = '" . mysqli_real_escape_string($server) . "';\n\n";
+      print "document.getElementById('disk_mysql').innerHTML = '"   . mysqli_real_escape_string($disk) . "';\n\n";
+      print "document.getElementById('cpu_mysql').innerHTML = '"    . mysqli_real_escape_string($cpu) . "';\n\n";
+      print "document.getElementById('memory_mysql').innerHTML = '" . mysqli_real_escape_string($memory) . "';\n\n";
+      print "document.getElementById('misc_mysql').innerHTML = '"   . mysqli_real_escape_string($misc) . "';\n\n";
 
       print "document.hardware.update.disabled = true;\n";
       print "document.hardware.mod_vendor.focus();\n";
