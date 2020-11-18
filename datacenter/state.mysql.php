@@ -50,7 +50,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['st_state']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -97,9 +97,9 @@
       $q_string .= "from states ";
       $q_string .= "left join country on country.cn_id = states.st_country ";
       $q_string .= "order by st_state ";
-      $q_states = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_states) > 0) {
-        while ($a_states = mysql_fetch_array($q_states)) {
+      $q_states = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_states) > 0) {
+        while ($a_states = mysqli_fetch_array($q_states)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('state.fill.php?id="  . $a_states['st_id'] . "');jQuery('#dialogState').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('state.del.php?id=" . $a_states['st_id'] . "');\">";
@@ -122,9 +122,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_states);
+      mysqli_free_result($q_states);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
