@@ -189,8 +189,8 @@ $(document).ready( function() {
   $q_string  = "select part_id,part_name ";
   $q_string .= "from parts ";
   $q_string .= "order by part_name";
-  $q_parts = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_parts = mysql_fetch_array($q_parts)) {
+  $q_parts = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_parts = mysqli_fetch_array($q_parts)) {
     print "<option value=\"" . $a_parts['part_id'] . "\">" . $a_parts['part_name'] . "</option>\n";
   }
 ?>
@@ -224,8 +224,8 @@ $(document).ready( function() {
   $q_string  = "select plug_id,plug_text ";
   $q_string .= "from int_plugtype ";
   $q_string .= "order by plug_id";
-  $q_int_plugtype = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_int_plugtype = mysql_fetch_array($q_int_plugtype)) {
+  $q_int_plugtype = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_int_plugtype = mysqli_fetch_array($q_int_plugtype)) {
     print "<option value=\"" . $a_int_plugtype['plug_id'] . "\">" . $a_int_plugtype['plug_text'] . "</option>\n";
   }
 ?>
@@ -236,8 +236,8 @@ $(document).ready( function() {
   $q_string  = "select volt_id,volt_text ";
   $q_string .= "from int_volts ";
   $q_string .= "order by volt_id";
-  $q_int_volts = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_int_volts = mysql_fetch_array($q_int_volts)) {
+  $q_int_volts = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_int_volts = mysqli_fetch_array($q_int_volts)) {
     print "<option value=\"" . $a_int_volts['volt_id'] . "\">" . $a_int_volts['volt_text'] . "</option>\n";
   }
 ?>
