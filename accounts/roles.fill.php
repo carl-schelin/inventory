@@ -25,11 +25,11 @@
       $q_string  = "select role_name ";
       $q_string .= "from roles ";
       $q_string .= "where role_id = " . $formVars['id'];
-      $q_roles = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_roles = mysql_fetch_array($q_roles);
-      mysql_free_result($q_roles);
+      $q_roles = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_roles = mysqli_fetch_array($q_roles);
+      mysqli_free_result($q_roles);
 
-      print "document.role.role_name.value = '" . mysql_real_escape_string($a_roles['role_name']) . "';\n";
+      print "document.role.role_name.value = '" . mysqli_real_escape_string($a_roles['role_name']) . "';\n";
 
       print "document.role.id.value = " . $formVars['id'] . ";\n";
 
