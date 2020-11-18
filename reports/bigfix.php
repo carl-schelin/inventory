@@ -204,9 +204,9 @@ $(document).ready( function() {
   $q_string .= "left join service on service.svc_id           = inventory.inv_class ";
   $q_string .= "where (inv_manager = " . $formVars['group'] . " or inv_appadmin = " . $formVars['group'] . ") " . $daterange . $product . $project;
   $q_string .= "group by inv_name ";
-  $q_bigfix = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  if (mysql_num_rows($q_bigfix) > 0) {
-    while ($a_bigfix = mysql_fetch_array($q_bigfix)) {
+  $q_bigfix = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_bigfix) > 0) {
+    while ($a_bigfix = mysqli_fetch_array($q_bigfix)) {
 
       $linkstart = "<a href=\"#\" onclick=\"show_file('bigfix.fill.php?id=" . $a_bigfix['inv_id'] . "&scheduled=" . $formVars['scheduled'] . "&enddate=" . $formVars['enddate'] . "&anddate=" . $formVars['anddate'] . "');jQuery('#dialogBigFix').dialog('open');return false;\">";
       $linkend   = "</a>";
