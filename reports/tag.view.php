@@ -258,8 +258,8 @@ $(document).ready( function () {
             . "left join tags      on tags.tag_companyid    = inventory.inv_id "
             . $where
             . "order by inv_name";
-  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
 #####
 # Get interface information
@@ -271,8 +271,8 @@ $(document).ready( function () {
               . "left join inttype on inttype.itp_id = interface.int_type "
               . "where int_companyid = \"" . $a_inventory['inv_id'] . "\" and int_type != 7 and int_addr != '' and int_ip6 = 0 "
               . "order by int_face";
-    $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-    while ($a_interface = mysql_fetch_array($q_interface)) {
+    $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    while ($a_interface = mysqli_fetch_array($q_interface)) {
 
 # if a console or LOM interface type
       if ($a_interface['int_type'] == 4 || $a_interface['int_type'] == 6) {
@@ -288,8 +288,8 @@ $(document).ready( function () {
     $q_string = "select sw_software "
               . "from software "
               . "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'OS' ";
-    $q_software = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-    $a_software = mysql_fetch_array($q_software);
+    $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_software = mysqli_fetch_array($q_software);
     
 #####
 # Set visuals
