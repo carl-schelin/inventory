@@ -257,8 +257,8 @@ $(document).ready( function() {
   $q_string  = "select org_id,org_name ";
   $q_string .= "from organizations ";
   $q_string .= "order by org_name ";
-  $q_organizations = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_organizations = mysql_fetch_array($q_organizations)) {
+  $q_organizations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_organizations = mysqli_fetch_array($q_organizations)) {
     print "<option value=\"" . $a_organizations['org_id'] . "\">" . $a_organizations['org_name'] . "</option>\n";
   }
 ?></select></td>
@@ -270,8 +270,8 @@ $(document).ready( function() {
   $q_string  = "select role_id,role_name ";
   $q_string .= "from roles ";
   $q_string .= "order by role_name ";
-  $q_roles = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_roles = mysql_fetch_array($q_roles)) {
+  $q_roles = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_roles = mysqli_fetch_array($q_roles)) {
     print "<option value=\"" . $a_roles['role_id'] . "\">" . $a_roles['role_name'] . "</option>\n";
   }
 ?></select></td>
@@ -285,8 +285,8 @@ $(document).ready( function() {
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first ";
-  $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_users = mysqli_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
   }
 ?>
