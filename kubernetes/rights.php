@@ -187,8 +187,8 @@ $(document).ready( function() {
   $q_string  = "select api_id,api_name ";
   $q_string .= "from apigroups ";
   $q_string .= "order by api_name ";
-  $q_apigroups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_apigroups = mysql_fetch_array($q_apigroups)) {
+  $q_apigroups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_apigroups = mysqli_fetch_array($db, $q_apigroups)) {
     print "<option value=\"" . $a_apigroups['api_id'] . "\">" . $a_apigroups['api_name'] . "</option>\n";
   }
 ?>
@@ -199,8 +199,8 @@ $(document).ready( function() {
   $q_string  = "select res_id,res_name ";
   $q_string .= "from resources ";
   $q_string .= "order by res_name ";
-  $q_resources = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_resources = mysql_fetch_array($q_resources)) {
+  $q_resources = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_resources = mysqli_fetch_array($db, $q_resources)) {
     print "<option value=\"" . $a_resources['res_id'] . "\">" . $a_resources['res_name'] . "</option>\n";
   }
 ?>
