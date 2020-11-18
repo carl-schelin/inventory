@@ -25,11 +25,11 @@
       $q_string  = "select cl_id,cl_name ";
       $q_string .= "from changelog ";
       $q_string .= "where cl_id = " . $formVars['id'];
-      $q_changelog = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_changelog = mysql_fetch_array($q_changelog);
-      mysql_free_result($q_changelog);
+      $q_changelog = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_changelog = mysqli_fetch_array($q_changelog);
+      mysqli_free_result($q_changelog);
 
-      print "document.changelog.cl_name.value = '" . mysql_real_escape_string($a_changelog['cl_name']) . "';\n";
+      print "document.changelog.cl_name.value = '" . mysqli_real_escape_string($a_changelog['cl_name']) . "';\n";
 
       print "document.changelog.id.value = " . $formVars['id'] . ";\n";
 
