@@ -25,11 +25,11 @@
       $q_string  = "select spd_text ";
       $q_string .= "from int_speed ";
       $q_string .= "where spd_id = " . $formVars['id'];
-      $q_int_speed = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_int_speed = mysql_fetch_array($q_int_speed);
-      mysql_free_result($q_int_speed);
+      $q_int_speed = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_int_speed = mysqli_fetch_array($q_int_speed);
+      mysqli_free_result($q_int_speed);
 
-      print "document.speed.spd_text.value = '" . mysql_real_escape_string($a_int_speed['spd_text']) . "';\n";
+      print "document.speed.spd_text.value = '" . mysqli_real_escape_string($a_int_speed['spd_text']) . "';\n";
 
       print "document.speed.id.value = " . $formVars['id'] . ";\n";
 
