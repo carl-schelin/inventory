@@ -189,8 +189,8 @@
             . "left join inttype   on inttype.itp_id          = interface.int_type "
             . $where
             . $orderby;
-  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "#routing\" target=\"_blank\">";
     $linkend = "</a>";
@@ -248,13 +248,13 @@
             . "left join groups    on groups.grp_id           = inventory.inv_manager "
             . $where
             . "order by inv_name";
-  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $q_string  = "select route_id from routing ";
     $q_string .= "where route_companyid = " . $a_inventory['inv_id'];
-    $q_routing = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-    $a_routing = mysql_fetch_array($q_routing);
+    $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_routing = mysqli_fetch_array($q_routing);
 
     $linkstart = "<a href=\"" . $Editroot . "/routing.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">";
     $linkend   = "</a>";
