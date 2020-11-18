@@ -46,7 +46,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['role_name']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -96,9 +96,9 @@
       $q_string  = "select role_id,role_name ";
       $q_string .= "from roles ";
       $q_string .= "order by role_name ";
-      $q_roles = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_roles) > 0) {
-        while ($a_roles = mysql_fetch_array($q_roles)) {
+      $q_roles = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_roles) > 0) {
+        while ($a_roles = mysqli_fetch_array($q_roles)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('roles.fill.php?id="  . $a_roles['role_id'] . "');jQuery('#dialogRole').dialog('open');\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('roles.del.php?id=" . $a_roles['role_id'] . "');\">";
@@ -120,9 +120,9 @@
 
       $output .= "</table>\n";
 
-      mysql_free_result($q_roles);
+      mysqli_free_result($q_roles);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
       print "document.role.role_name.value = '';\n";
 
