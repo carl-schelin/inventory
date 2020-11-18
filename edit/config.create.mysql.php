@@ -56,7 +56,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['clu_association']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -90,8 +90,8 @@
         $q_string .= "from inventory ";
         $q_string .= "where inv_status = 0 ";
         $q_string .= "order by inv_name ";
-        $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_inventory = mysql_fetch_array($q_inventory)) {
+        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inventory = mysqli_fetch_array($q_inventory)) {
           $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . "</option>\n";
         }
 
@@ -102,7 +102,7 @@
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
-        print "document.getElementById('config_form').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('config_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       }
 
@@ -150,8 +150,8 @@
       $q_string  = "select inv_rsdp ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_id = " . $formVars['cfg_companyid'] . " ";
-      $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_inventory = mysql_fetch_array($q_inventory);
+      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inventory = mysqli_fetch_array($q_inventory);
 
 # The intention here is to show the items currently being set in the chkserver.input file
 # Server:Group: [dbadmins|mobadmin|webapps|scmadmins]
@@ -231,9 +231,9 @@
       $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
       $q_string .= "where clu_companyid = " . $formVars['clu_companyid'] . " ";
       $q_string .= "order by inv_name,clu_association,clu_port";
-      $q_cluster = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_cluster) > 0) {
-        while ($a_cluster = mysql_fetch_array($q_cluster)) {
+      $q_cluster = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_cluster) > 0) {
+        while ($a_cluster = mysqli_fetch_array($q_cluster)) {
 
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('association.fill.php?id=" . $a_cluster['clu_id'] . "');showDiv('association-hide');\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_association('association.del.php?id="  . $a_cluster['clu_id'] . "');\">";
@@ -252,18 +252,18 @@
       }
       $output .= "</table>\n";
 
-      mysql_free_result($q_cluster);
+      mysqli_free_result($q_cluster);
 
-      print "document.getElementById('cfg_detail_form').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('cfg_detail_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
       print "document.edit.clu_update.disabled = true;\n";
 
 
 
-      print "document.getElementById('cfg_network_form').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('cfg_network_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
       print "document.edit.clu_update.disabled = true;\n";
 
 
-      print "document.getElementById('cfg_server_form').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('cfg_server_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
       print "document.edit.clu_update.disabled = true;\n";
 
 
