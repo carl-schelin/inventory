@@ -25,7 +25,7 @@
       $q_string  = "delete ";
       $q_string .= "from interface ";
       $q_string .= "where int_id = " . $formVars['id'];
-      $insert = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+      $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
       print "alert('Interface deleted.');\n";
 # Check all interfaces with this int_int_id and revert to 0 so they aren't lost
@@ -33,7 +33,7 @@
       $q_string .= "interface ";
       $q_string .= "set int_int_id = 0 ";
       $q_string .= "where int_int_id = " . $formVars['id'];
-      $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
     } else {
       logaccess($_SESSION['uid'], $package, "Access denied");
