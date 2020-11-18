@@ -63,8 +63,8 @@
   $q_string  = "select grp_changelog,grp_clserver,grp_clscript ";
   $q_string .= "from groups ";
   $q_string .= "where grp_id = " . $_SESSION['group'] . " ";
-  $q_tmgroups = mysql_query($q_string);
-  $a_tmgroups = mysql_fetch_array($q_tmgroups);
+  $q_tmgroups = mysqli_query($db, $q_string);
+  $a_tmgroups = mysqli_fetch_array($q_tmgroups);
 ?>
       <li><a href="/<?php print $a_tmgroups['grp_changelog']; ?>">Server Changelog Pages</a></li>
       <li><a href="/<?php print $a_tmgroups['grp_changelog']; ?>/listing.php">Sorted Changelog Pages</a></li>
