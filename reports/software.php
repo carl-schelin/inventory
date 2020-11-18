@@ -187,8 +187,8 @@
   $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
   $q_string .= $where;
   $q_string .= $orderby;
-  $q_software = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_software = mysql_fetch_array($q_software)) {
+  $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_software = mysqli_fetch_array($q_software)) {
 
     $checkmark = '';
     if ($a_software['sw_verified']) {
@@ -207,7 +207,7 @@
 
   }
 
-  mysql_free_result($q_software);
+  mysqli_free_result($q_software);
 
 ?>
 </table>
