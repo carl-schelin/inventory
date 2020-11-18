@@ -46,7 +46,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['spd_text']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -98,9 +98,9 @@
       $q_string  = "select spd_id,spd_text ";
       $q_string .= "from int_speed ";
       $q_string .= "order by spd_text";
-      $q_int_speed = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_int_speed) > 0) {
-        while ($a_int_speed = mysql_fetch_array($q_int_speed)) {
+      $q_int_speed = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_int_speed) > 0) {
+        while ($a_int_speed = mysqli_fetch_array($q_int_speed)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('speed.fill.php?id="  . $a_int_speed['spd_id'] . "');showDiv('speed-hide');\">";
           $linkdel   = "<a href=\"#\" onclick=\"delete_line('speed.del.php?id=" . $a_int_speed['spd_id'] . "');\">";
@@ -122,9 +122,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_int_speed);
+      mysqli_free_result($q_int_speed);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.speed.update.disabled = true;\n";
 
