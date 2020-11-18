@@ -29,8 +29,8 @@
 # only a few zones so load the up into an array
       $q_string  = "select zone_id,zone_name ";
       $q_string .= "from zones ";
-      $q_zones = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      while ($a_zones = mysql_fetch_array($q_zones)) {
+      $q_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_zones = mysqli_fetch_array($q_zones)) {
         $zonename[$a_zones['zone_id']] = $a_zones['zone_name'];
       }
 
@@ -63,7 +63,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['cl_name']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -82,8 +82,8 @@
           $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
           $q_string .= "where (inv_manager = " . $mygroup . " or inv_appadmin = " . $mygroup . " or sw_group = " . $mygroup . ") and inv_status = 0 ";
           $q_string .= "group by inv_name ";
-          $q_software = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          while ($a_software = mysql_fetch_array($q_software)) {
+          $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_software = mysqli_fetch_array($q_software)) {
 
 # determine operating system
             $os = "";
@@ -100,8 +100,8 @@
             $q_string  = "select tag_name ";
             $q_string .= "from tags ";
             $q_string .= "where tag_companyid = " . $a_software['inv_id'];
-            $q_tags = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-            while ($a_tags = mysql_fetch_array($q_tags)) {
+            $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            while ($a_tags = mysqli_fetch_array($q_tags)) {
               $tags .= "," . $a_tags['tag_name'] . ",";
             }
 
@@ -109,8 +109,8 @@
             $q_string  = "select int_server ";
             $q_string .= "from interface ";
             $q_string .= "where int_companyid = " . $a_software['inv_id'] . " and int_ip6 = 0 and (int_type = 1 || int_type = 2 || int_type = 6)";
-            $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-            while ($a_interface = mysql_fetch_array($q_interface)) {
+            $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            while ($a_interface = mysqli_fetch_array($q_interface)) {
               $interfaces .= "," . $a_interface['int_server'] . ",";
             }
 
@@ -124,8 +124,8 @@
           $q_string .= "from changelog ";
           $q_string .= "where cl_group = " . $mygroup . " and cl_delete = 0 ";
           $q_string .= "group by cl_name ";
-          $q_changelog = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          while ($a_changelog = mysql_fetch_array($q_changelog)) {
+          $q_changelog = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_changelog = mysqli_fetch_array($q_changelog)) {
 
             $output = '#' . $a_changelog['cl_name'] . ":::::," . $a_changelog['cl_name'] . ",:0\n";
             fwrite($handle, $output);
@@ -161,8 +161,8 @@
         $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
         $q_string .= "where (inv_manager = " . $mygroup . " or inv_appadmin = " . $mygroup . " or sw_group = " . $mygroup . ") and inv_status = 0 ";
         $q_string .= "group by inv_name ";
-        $q_software = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_software = mysql_fetch_array($q_software)) {
+        $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_software = mysqli_fetch_array($q_software)) {
 
           $serverexists[$a_software['inv_name']] = 1;
 
@@ -181,8 +181,8 @@
           $q_string  = "select tag_name ";
           $q_string .= "from tags ";
           $q_string .= "where tag_companyid = " . $a_software['inv_id'];
-          $q_tags = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          while ($a_tags = mysql_fetch_array($q_tags)) {
+          $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_tags = mysqli_fetch_array($q_tags)) {
             $tags .= "," . $a_tags['tag_name'] . ", ";
           }
 
@@ -190,8 +190,8 @@
           $q_string  = "select int_server ";
           $q_string .= "from interface ";
           $q_string .= "where int_companyid = " . $a_software['inv_id'] . " and int_ip6 = 0 and (int_type = 1 || int_type = 2 || int_type = 6)";
-          $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          while ($a_interface = mysql_fetch_array($q_interface)) {
+          $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_interface = mysqli_fetch_array($q_interface)) {
             $interfaces .= "," . $a_interface['int_server'] . ", ";
           }
 
@@ -209,7 +209,7 @@
 
         $output .= "</table>\n";
 
-        print "document.getElementById('automatic_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('automatic_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
       }
 
 # manual listing
@@ -255,8 +255,8 @@
       $q_string .= "from changelog ";
       $q_string .= "where cl_group = " . $mygroup . " and cl_delete = 0 ";
       $q_string .= "group by cl_name ";
-      $q_changelog = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      while ($a_changelog = mysql_fetch_array($q_changelog)) {
+      $q_changelog = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_changelog = mysqli_fetch_array($q_changelog)) {
 
         $linkstart = "<a href=\"#\" onclick=\"show_file('" . $myfill . "?id="  . $a_changelog['cl_id'] . "');jQuery('#dialogListing').dialog('open');\">";
         $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('" . $mydel . "?id=" . $a_changelog['cl_id'] . "');\">";
@@ -282,7 +282,7 @@
 
       $output .= "</table>\n";
 
-      print "document.getElementById('manual_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('manual_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
