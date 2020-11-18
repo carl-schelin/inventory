@@ -25,12 +25,12 @@
       $q_string  = "select bus_unit,bus_name ";
       $q_string .= "from business_unit ";
       $q_string .= "where bus_id = " . $formVars['id'];
-      $q_business_unit = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_business_unit = mysql_fetch_array($q_business_unit);
-      mysql_free_result($q_business_unit);
+      $q_business_unit = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_business_unit = mysqli_fetch_array($q_business_unit);
+      mysqli_free_result($q_business_unit);
 
-      print "document.business.bus_unit.value = '" . mysql_real_escape_string($a_business_unit['bus_unit']) . "';\n";
-      print "document.business.bus_name.value = '" . mysql_real_escape_string($a_business_unit['bus_name']) . "';\n";
+      print "document.business.bus_unit.value = '" . mysqli_real_escape_string($a_business_unit['bus_unit']) . "';\n";
+      print "document.business.bus_name.value = '" . mysqli_real_escape_string($a_business_unit['bus_name']) . "';\n";
 
       print "document.business.id.value = " . $formVars['id'] . ";\n";
 
