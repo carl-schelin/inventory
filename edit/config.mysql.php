@@ -56,7 +56,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['clu_association']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -90,8 +90,8 @@
         $q_string .= "from inventory ";
         $q_string .= "where inv_status = 0 ";
         $q_string .= "order by inv_name ";
-        $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_inventory = mysql_fetch_array($q_inventory)) {
+        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inventory = mysqli_fetch_array($q_inventory)) {
           $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . "</option>\n";
         }
 
@@ -102,7 +102,7 @@
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
-        print "document.getElementById('config_form').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('config_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       }
 
@@ -153,8 +153,8 @@
       $q_string .= "left join products on products.prod_id = inventory.inv_product ";
       $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
       $q_string .= "where inv_id = " . $formVars['cfg_companyid'] . " ";
-      $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_inventory = mysql_fetch_array($q_inventory);
+      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inventory = mysqli_fetch_array($q_inventory);
 
 # The intention here is to show the items currently being set in the chkserver.input file
 # Server:Group: [dbadmins|mobadmin|webapps|scmadmins]
@@ -222,8 +222,8 @@
         $q_string  = "select os_sysname ";
         $q_string .= "from rsdp_osteam ";
         $q_string .= "where os_rsdp = " . $a_inventory['inv_rsdp'] . " ";
-        $q_rsdp_osteam = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        $a_rsdp_osteam = mysql_fetch_array($q_rsdp_osteam);
+        $q_rsdp_osteam = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
 
         $q_string  = "select rsdp_function,grp_name,rsdp_platform,rsdp_application,loc_name,loc_west,rsdp_location,prod_name,rsdp_product,prj_name,rsdp_project ";
         $q_string .= "from rsdp_server ";
@@ -232,14 +232,14 @@
         $q_string .= "left join products on products.prod_id = rsdp_server.rsdp_product ";
         $q_string .= "left join projects on projects.prj_id = rsdp_server.rsdp_project ";
         $q_string .= "where rsdp_id = " . $a_inventory['inv_rsdp'] . " ";
-        $q_rsdp_server = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+        $q_rsdp_server = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
         $q_string  = "select grp_name ";
         $q_string .= "from groups ";
         $q_string .= "where grp_id = " . $a_rsdp_server['rsdp_application'] . " ";
-        $q_application = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        $a_application = mysql_fetch_array($q_application);
+        $q_application = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_application = mysqli_fetch_array($q_application);
 
         $output .= "<table class=\"ui-styled-table\">\n";
 
@@ -334,7 +334,7 @@
         $output .= "</table>\n";
       }
 
-      print "document.getElementById('cfg_detail_table').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('cfg_detail_table').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
 
 # the hardware form
@@ -371,8 +371,8 @@
         $q_string  = "select rsdp_processors,rsdp_memory,rsdp_ossize ";
         $q_string .= "from rsdp_server ";
         $q_string .= "where rsdp_id = " . $a_inventory['inv_rsdp'] . " ";
-        $q_rsdp_server = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+        $q_rsdp_server = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
         $output .= "<table class=\"ui-styled-table\">\n";
         $output .= "</tr>\n";
@@ -389,8 +389,8 @@
         $q_string  = "select fs_volume,fs_size ";
         $q_string .= "from rsdp_filesystem ";
         $q_string .= "where fs_rsdp = " . $a_inventory['inv_rsdp'] . " ";
-        $q_rsdp_filesystem = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_rsdp_filesystem = mysql_fetch_array($q_rsdp_filesystem)) {
+        $q_rsdp_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_rsdp_filesystem = mysqli_fetch_array($q_rsdp_filesystem)) {
           $output .= "<tr>\n";
           $output .=   "<td class=\"ui-widget-content\">Subsequent Drives: " . $a_rsdp_filesystem['fs_volume'] . ", " . $a_rsdp_filesystem['fs_size'] . "G" . "</td>\n";
           $output .= "</tr>\n";
@@ -399,7 +399,7 @@
         $output .= "</table>\n";
       }
 
-      print "document.getElementById('cfg_hardware_table').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('cfg_hardware_table').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
 
 # the network interface form
@@ -450,9 +450,9 @@
         $q_string .= "left join inttype on inttype.itp_id = rsdp_interface.if_type ";
         $q_string .= "where if_rsdp = " . $a_inventory['inv_rsdp'] . " ";
         $q_string .= "order by if_name ";
-        $q_rsdp_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        if (mysql_num_rows($q_rsdp_interface) > 0) {
-          while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
+        $q_rsdp_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        if (mysqli_num_rows($q_rsdp_interface) > 0) {
+          while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
 
             $output .= "<tr>\n";
             $output .= "  <td class=\"ui-widget-content\">" . $a_rsdp_interface['if_name'] . "</td>\n";
@@ -469,13 +469,13 @@
         $output .= "</table>\n";
       }
 
-      print "document.getElementById('cfg_network_table').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('cfg_network_table').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
 
 # the backups form
 # need backup information associated with locations and zones
 # see chkserver for how to determine from location and network zone.
-#      print "document.getElementById('cfg_backup_table').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+#      print "document.getElementById('cfg_backup_table').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
