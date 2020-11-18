@@ -178,8 +178,8 @@ $(document).ready( function() {
   $q_string  = "select cn_id,cn_country ";
   $q_string .= "from country ";
   $q_string .= "order by cn_country ";
-  $q_country = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_country = mysql_fetch_array($q_country)) {
+  $q_country = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_country = mysqli_fetch_array($q_country)) {
     print "<option value=\"" . $a_country['cn_id'] . "\">" . $a_country['cn_country'] . "</option>\n";
   }
 ?>
