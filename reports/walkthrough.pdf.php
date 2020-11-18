@@ -83,8 +83,8 @@
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
   $q_string .= "where inv_companyid = 0 and hw_primary = 1 and hw_deleted = 0 and mod_virtual = 0 and inv_status = 0 " . $group . $location . " ";
   $q_string .= $orderby;
-  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     if ($a_inventory['inv_unit'] == 0) {
       $unit = '';
@@ -114,8 +114,8 @@
     $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
     $q_string .= "where inv_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1 and hw_deleted = 0 and mod_virtual = 0 and inv_status = 0 " . $group . $location . " ";
     $q_string .= $orderby;
-    $q_child = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-    while ($a_child = mysql_fetch_array($q_child)) {
+    $q_child = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    while ($a_child = mysqli_fetch_array($q_child)) {
 
       $output .= "<tr>\n";
       $output .= "  <td>&gt; " . $a_child['inv_name']   . "</td>\n";
