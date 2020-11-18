@@ -50,7 +50,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['ct_city']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -98,9 +98,9 @@
       $q_string .= "from cities ";
       $q_string .= "left join states on states.st_id = cities.ct_state ";
       $q_string .= "order by ct_city ";
-      $q_cities = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_cities) > 0) {
-        while ($a_cities = mysql_fetch_array($q_cities)) {
+      $q_cities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_cities) > 0) {
+        while ($a_cities = mysqli_fetch_array($q_cities)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('city.fill.php?id="  . $a_cities['ct_id'] . "');jQuery('#dialogCity').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('city.del.php?id=" . $a_cities['ct_id'] . "');\">";
@@ -124,9 +124,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_cities);
+      mysqli_free_result($q_cities);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
