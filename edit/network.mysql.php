@@ -254,7 +254,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -271,8 +271,8 @@
           $q_string .= "int_role,int_redundancy,int_groupname,int_virtual ";
           $q_string .= "from interface ";
           $q_string .= "where int_companyid = " . $formVars['copyfrom'];
-          $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          while ($a_interface = mysql_fetch_array($q_interface)) {
+          $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_interface = mysqli_fetch_array($q_interface)) {
 
             $q_string = 
               "int_server     = \"" . $a_interface['int_server']     . "\"," .
@@ -303,7 +303,7 @@
               "int_update     = \"" . date('Y-m-d')                  . "\"";
 
             $query = "insert into interface set int_id = NULL, " . $q_string;
-            mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+            mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
           }
         }
       }
@@ -330,8 +330,8 @@
         $q_string .= "from inventory ";
         $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name";
-        $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_inventory = mysql_fetch_array($q_inventory)) {
+        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inventory = mysqli_fetch_array($q_inventory)) {
           $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . "</option>\n";
         }
 
@@ -339,7 +339,7 @@
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
-        print "document.getElementById('network_form').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('network_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
 
         $output  = "<table class=\"ui-styled-table\">\n";
@@ -377,8 +377,8 @@
         $q_string  = "select itp_id,itp_name ";
         $q_string .= "from inttype ";
         $q_string .= "order by itp_id";
-        $q_inttype = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_inttype = mysql_fetch_array($q_inttype)) {
+        $q_inttype = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inttype = mysqli_fetch_array($q_inttype)) {
           $output .= "<option value=\"" . $a_inttype['itp_id'] . "\">" . $a_inttype['itp_name'] . "</option>\n";
         }
 
@@ -391,7 +391,7 @@
         $output .= "</tr>\n"; 
         $output .= "</table>\n";
 
-        print "document.getElementById('nwserver_form').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('nwserver_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
 
         $output  = "<table class=\"ui-styled-table\">\n";
@@ -405,8 +405,8 @@
         $q_string  = "select red_id,red_text ";
         $q_string .= "from int_redundancy ";
         $q_string .= "order by red_text";
-        $q_int_redundancy = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_int_redundancy = mysql_fetch_array($q_int_redundancy)) {
+        $q_int_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_int_redundancy = mysqli_fetch_array($q_int_redundancy)) {
           $output .= "<option value=\"" . $a_int_redundancy['red_id'] . "\">" . $a_int_redundancy['red_text'] . "</option>\n";
         }
         $output .= "</select></td>\n"; 
@@ -432,7 +432,7 @@
         $output .= "</tr>\n"; 
         $output .= "</table>\n";
 
-        print "document.getElementById('nwredundancy').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('nwredundancy').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
 
         $output  = "<table class=\"ui-styled-table\">\n";
@@ -474,7 +474,7 @@
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
-        print "document.getElementById('nwmonitoring_form').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('nwmonitoring_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
 
 
@@ -486,8 +486,8 @@
         $output .= "<option value=\"0\">N/A</option>\n";
 
         $q_string = "select med_id,med_text from int_media order by med_text";
-        $q_int_media = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_int_media = mysql_fetch_array($q_int_media)) {
+        $q_int_media = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_int_media = mysqli_fetch_array($q_int_media)) {
           $output .= "<option value=\"" . $a_int_media['med_id'] . "\">" . $a_int_media['med_text'] . "</option>\n";
         }
 
@@ -496,8 +496,8 @@
         $output .= "<option value=\"0\">N/A</option>\n";
 
         $q_string = "select spd_id,spd_text from int_speed order by spd_text";
-        $q_int_speed = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_int_speed = mysql_fetch_array($q_int_speed)) {
+        $q_int_speed = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_int_speed = mysqli_fetch_array($q_int_speed)) {
           $output .= "<option value=\"" . $a_int_speed['spd_id'] . "\">" . $a_int_speed['spd_text'] . "</option>\n";
         }
 
@@ -506,15 +506,15 @@
         $output .= "<option value=\"0\">N/A</option>\n";
 
         $q_string = "select dup_id,dup_text from int_duplex order by dup_text";
-        $q_int_duplex = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_int_duplex = mysql_fetch_array($q_int_duplex)) {
+        $q_int_duplex = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_int_duplex = mysqli_fetch_array($q_int_duplex)) {
           $output .= "<option value=\"" . $a_int_duplex['dup_id'] . "\">" . $a_int_duplex['dup_text'] . "</option>\n";
         }
 
         $output .= "</select></td>\n";
         $output .= "</table>\n";
 
-        print "document.getElementById('nwtransport_form').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('nwtransport_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
 
         $output  = "<table class=\"ui-styled-table\">\n";
@@ -533,8 +533,8 @@
         $q_string  = "select zone_id,zone_name ";
         $q_string .= "from ip_zones ";
         $q_string .= "order by zone_name";
-        $q_ip_zones = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_ip_zones = mysql_fetch_array($q_ip_zones)) {
+        $q_ip_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_ip_zones = mysqli_fetch_array($q_ip_zones)) {
           $output .= "<option value=\"" . $a_ip_zones['zone_id'] . "\">" . $a_ip_zones['zone_name'] . "</option>\n";
         }
 
@@ -543,8 +543,8 @@
         $output .= "<option value=\"0\">N/A</option>\n";
 
         $q_string = "select rol_id,rol_text from int_role order by rol_text";
-        $q_int_role = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_int_role = mysql_fetch_array($q_int_role)) {
+        $q_int_role = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_int_role = mysqli_fetch_array($q_int_role)) {
           $output .= "<option value=\"" . $a_int_role['rol_id'] . "\">" . $a_int_role['rol_text'] . "</option>\n";
         }
 
@@ -552,7 +552,7 @@
         $output .= "  <td class=\"ui-widget-content\">&nbsp;</td>\n";
         $output .= "</table>\n";
 
-        print "document.getElementById('nwswitch_form').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('nwswitch_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
       }
 
 
@@ -632,9 +632,9 @@
       $q_string .= "left join users on users.usr_id = interface.int_user ";
       $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = 0 ";
       $q_string .= "order by int_face,int_addr,int_server";
-      $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_interface) > 0) {
-        while ($a_interface = mysql_fetch_array($q_interface)) {
+      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_interface) > 0) {
+        while ($a_interface = mysqli_fetch_array($q_interface)) {
 
           $default    = " class=\"ui-widget-content\"";
           $defaultdel = " class=\"ui-widget-content delete\"";
@@ -790,9 +790,9 @@
           $q_string .= "left join users on users.usr_id = interface.int_user ";
           $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = " . $a_interface['int_id'] . " ";
           $q_string .= "order by int_face,int_addr,int_server";
-          $q_redundancy = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          if (mysql_num_rows($q_redundancy) > 0) {
-            while ($a_redundancy = mysql_fetch_array($q_redundancy)) {
+          $q_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_redundancy) > 0) {
+            while ($a_redundancy = mysqli_fetch_array($q_redundancy)) {
 
               $default    = " class=\"ui-widget-content\"";
               $defaultdel = " class=\"ui-widget-content delete\"";
@@ -945,9 +945,9 @@
               $q_string .= "left join users on users.usr_id = interface.int_user ";
               $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = " . $a_redundancy['int_id'] . " ";
               $q_string .= "order by int_face,int_addr,int_server";
-              $q_secondary = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-              if (mysql_num_rows($q_secondary) > 0) {
-                while ($a_secondary = mysql_fetch_array($q_secondary)) {
+              $q_secondary = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              if (mysqli_num_rows($q_secondary) > 0) {
+                while ($a_secondary = mysqli_fetch_array($q_secondary)) {
 
                   $default    = " class=\"ui-widget-content\"";
                   $defaultdel = " class=\"ui-widget-content delete\"";
@@ -1099,11 +1099,11 @@
         $output .= "  <td class=\"ui-widget-content\" colspan=\"10\">No Network Interfaces added.</td>\n";
       }
 
-      mysql_free_result($q_interface);
+      mysqli_free_result($q_interface);
 
       $output .= "</table>\n";
 
-      print "document.getElementById('network_table').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('network_table').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.edit.int_update.disabled = true;\n";
 
@@ -1119,8 +1119,8 @@
       $q_string .= "from interface ";
       $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_redundancy > 0 ";
       $q_string .= "order by int_ip6,int_face";
-      $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      while ($a_interface = mysql_fetch_array($q_interface)) {
+      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_interface = mysqli_fetch_array($q_interface)) {
         if ($a_interface['int_ip6'] == 1) {
           $ip6 = " (ipv6)";
         } else {
