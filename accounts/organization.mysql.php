@@ -46,7 +46,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['org_name']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -96,9 +96,9 @@
       $q_string  = "select org_id,org_name ";
       $q_string .= "from organizations ";
       $q_string .= "order by org_name ";
-      $q_organizations = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_organizations) > 0) {
-        while ($a_organizations = mysql_fetch_array($q_organizations)) {
+      $q_organizations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_organizations) > 0) {
+        while ($a_organizations = mysqli_fetch_array($q_organizations)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('organization.fill.php?id=" . $a_organizations['org_id'] . "');jQuery('#dialogOrganization').dialog('open');\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('organization.del.php?id=" . $a_organizations['org_id'] . "');\">";
@@ -120,9 +120,9 @@
 
       $output .= "</table>\n";
 
-      mysql_free_result($q_organizations);
+      mysqli_free_result($q_organizations);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
       print "document.organization.org_name.value = '';\n";
 
