@@ -25,12 +25,12 @@
       $q_string  = "select part_name,part_type,part_acronym ";
       $q_string .= "from parts ";
       $q_string .= "where part_id = " . $formVars['id'];
-      $q_parts = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_parts = mysql_fetch_array($q_parts);
-      mysql_free_result($q_parts);
+      $q_parts = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_parts = mysqli_fetch_array($q_parts);
+      mysqli_free_result($q_parts);
 
-      print "document.parts.part_name.value = '"    . mysql_real_escape_string($a_parts['part_name'])    . "';\n";
-      print "document.parts.part_acronym.value = '" . mysql_real_escape_string($a_parts['part_acronym']) . "';\n";
+      print "document.parts.part_name.value = '"    . mysqli_real_escape_string($a_parts['part_name'])    . "';\n";
+      print "document.parts.part_acronym.value = '" . mysqli_real_escape_string($a_parts['part_acronym']) . "';\n";
 
       if ($a_parts['part_type']) {
         print "document.parts.part_type.checked = true;\n";
