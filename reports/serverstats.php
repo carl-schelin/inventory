@@ -23,8 +23,8 @@
     $q_string  = "select grp_name ";
     $q_string .= "from groups ";
     $q_string .= "where grp_id = " . $formVars['group'];
-    $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-    $a_groups = mysql_fetch_array($q_groups);
+    $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_groups = mysqli_fetch_array($q_groups);
   }
 
 # if help has not been seen yet,
@@ -156,8 +156,8 @@ to software and hardware section.</p>
   $q_string .= "from hardware ";
   $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
   $q_string .= "where hw_primary = 1 " . $admin . " ";
-  $q_hardware = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_hardware = mysql_fetch_array($q_hardware)) {
+  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
     if ($a_hardware['inv_status'] == 0) {
       $total_live++;
@@ -315,8 +315,8 @@ to software and hardware section.</p>
   $q_string .= "from hardware ";
   $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
   $q_string .= "where hw_built != '0000-00-00' and hw_primary = 1 " . $admin . " ";
-  $q_hardware = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_hardware = mysql_fetch_array($q_hardware)) {
+  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
     $dbyear = explode("-", $a_hardware['hw_built']);
     $dbyear[1] = $dbyear[1] + 0;
@@ -353,7 +353,7 @@ to software and hardware section.</p>
   $q_string .= "where hw_companyid != 0 " . $admin . " ";
   $q_string .= "and hw_built = '0000-00-00' ";
   $q_string .= "and hw_primary = 1";
-  $q_hardware = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   $a_hardware = mysql_fetch_row($q_hardware);
 
   print "<p>Note: There are " . $a_hardware[0] . " servers with 0000-00-00 build dates which weren't counted.</p>\n";
@@ -389,8 +389,8 @@ to software and hardware section.</p>
   $q_string .= "left join products on products.prod_id = inventory.inv_product  ";
   $q_string .= "where inv_status = 0 " . $admin . " ";
   $q_string .= "group by prod_name";
-  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $linkstart = "<a href=\"" . $Siteroot . "/reports/show.product.php?id=" . $a_inventory['inv_product']  . "\">";
     $linkend   = "</a>";
@@ -437,10 +437,10 @@ to software and hardware section.</p>
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
   $q_string .= "where inv_status = 0 and sw_type = 'OS' " . $admin . " ";
   $q_string .= "group by sw_software";
-  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
-    $linkstart = "<a href=\"" . $Siteroot . "/reports/search.software.php?search_for=" . mysql_real_escape_string($a_inventory['sw_software']) . "\">";
+    $linkstart = "<a href=\"" . $Siteroot . "/reports/search.software.php?search_for=" . mysqli_real_escape_string($a_inventory['sw_software']) . "\">";
     $linkend   = "</a>";
 
     print "<tr>\n";
@@ -465,8 +465,8 @@ to software and hardware section.</p>
   $q_string  = "select inv_id ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_status = 0 " . $admin . " ";
-  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
     $os = return_System($a_inventory['inv_id']);
     if (strlen($os) == 0) {
       $os = "Unknown OS";
@@ -535,12 +535,12 @@ to software and hardware section.</p>
   $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
   $q_string .= "where mod_primary = 1 and inv_status = 0 " . $admin . " ";
   $q_string .= "group by mod_vendor,mod_name ";
-  $q_hardware = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_hardware = mysql_fetch_array($q_hardware)) {
+  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
-    $linkvendor = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysql_real_escape_string($a_hardware['mod_vendor']) . "\">";
-    $linkname   = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysql_real_escape_string($a_hardware['mod_name'])   . "\">";
-    $linktype   = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysql_real_escape_string($a_hardware['part_name'])  . "\">";
+    $linkvendor = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysqli_real_escape_string($a_hardware['mod_vendor']) . "\">";
+    $linkname   = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysqli_real_escape_string($a_hardware['mod_name'])   . "\">";
+    $linktype   = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysqli_real_escape_string($a_hardware['part_name'])  . "\">";
     $linkend    = "</a>";
 
     print "<tr>\n";
@@ -605,8 +605,8 @@ to software and hardware section.</p>
   $q_string  = "select inv_class,inv_callpath ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_status = 0 " . $admin . " ";
-  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     if ($a_inventory['inv_class'] == 0) {
       $undefined++;
@@ -638,8 +638,8 @@ to software and hardware section.</p>
   $q_string  = "select svc_id,svc_name,svc_acronym,svc_availability,svc_downtime,svc_mtbf,svc_geographic,svc_mttr,svc_resource,svc_restore ";
   $q_string .= "from service ";
   $q_string .= "order by svc_id ";
-  $q_service = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_service = mysql_fetch_array($q_service)) {
+  $q_service = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_service = mysqli_fetch_array($q_service)) {
   
     $geographic = 'No';
     if ($a_service['svc_geographic'] == 1) {
