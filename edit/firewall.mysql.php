@@ -72,7 +72,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['fw_source']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -88,8 +88,8 @@
           $q_string .= "fw_protocol,fw_description,fw_timeout,fw_ticket,fw_portdesc ";
           $q_string .= "from firewall ";
           $q_string .= "where fw_companyid = " . $formVars['copyfrom'];
-          $q_firewall = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          while ($a_firewall = mysql_fetch_array($q_firewall)) {
+          $q_firewall = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_firewall = mysqli_fetch_array($q_firewall)) {
 
             $q_string =
               "fw_companyid       =   " . $formVars['fw_companyid']         . "," .
@@ -105,7 +105,7 @@
               "fw_portdesc        = \"" . $a_firewall['fw_portdesc']        . "\"";
 
             $query = "insert into firewall set fw_id = NULL, " . $q_string;
-            mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+            mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
           }
         }
       }
@@ -132,13 +132,13 @@
         $q_string .= "from inventory ";
         $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name";
-        $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_inventory = mysql_fetch_array($q_inventory)) {
+        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inventory = mysqli_fetch_array($q_inventory)) {
           $q_string  = "select fw_id ";
           $q_string .= "from firewall ";
           $q_string .= "where fw_companyid = " . $a_inventory['inv_id'] . " ";
-          $q_firewall = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          $fw_total = mysql_num_rows($q_firewall);
+          $q_firewall = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $fw_total = mysqli_num_rows($q_firewall);
 
           if ($fw_total > 0) {
             $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . " (" . $fw_total . ")</option>\n";
@@ -161,8 +161,8 @@
         $q_string  = "select zone_id,zone_name ";
         $q_string .= "from ip_zones ";
         $q_string .= "order by zone_name";
-        $q_ip_zones = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_ip_zones = mysql_fetch_array($q_ip_zones)) {
+        $q_ip_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_ip_zones = mysqli_fetch_array($q_ip_zones)) {
           $output .= "<option value=\"" . $a_ip_zones['zone_id'] . "\">" . $a_ip_zones['zone_name'] . "</option>\n";
         }
 
@@ -177,8 +177,8 @@
         $q_string  = "select zone_id,zone_name ";
         $q_string .= "from ip_zones ";
         $q_string .= "order by zone_name";
-        $q_ip_zones = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_ip_zones = mysql_fetch_array($q_ip_zones)) {
+        $q_ip_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_ip_zones = mysqli_fetch_array($q_ip_zones)) {
           $output .= "<option value=\"" . $a_ip_zones['zone_id'] . "\">" . $a_ip_zones['zone_name'] . "</option>\n";
         }
 
@@ -195,7 +195,7 @@
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
-        print "document.getElementById('firewall_form').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('firewall_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
       }
 
 
@@ -203,8 +203,8 @@
 
       $q_string  = "select zone_id,zone_name ";
       $q_string .= "from ip_zones";
-      $q_ip_zones = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      while ($a_ip_zones = mysql_fetch_array($q_ip_zones)) {
+      $q_ip_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_ip_zones = mysqli_fetch_array($q_ip_zones)) {
         $zone[$a_ip_zones['zone_id']] = $a_ip_zones['zone_name'];
       }
 
@@ -261,9 +261,9 @@
       $q_string .= "left join inventory on inventory.inv_id = firewall.fw_companyid ";
       $q_string .= "where fw_companyid = " . $formVars['fw_companyid'] . " ";
       $q_string .= "order by fw_source,fw_destination,fw_port";
-      $q_firewall = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_firewall) > 0) {
-        while ($a_firewall = mysql_fetch_array($q_firewall)) {
+      $q_firewall = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_firewall) > 0) {
+        while ($a_firewall = mysqli_fetch_array($q_firewall)) {
 
           if (filter_var($a_firewall['fw_source'], FILTER_VALIDATE_IP)) {
             $sourcevalid = ' class="ui-widget-content"';
@@ -331,16 +331,16 @@
       $q_string .= "from interface ";
       $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
       $q_string .= "where int_companyid = " . $formVars['fw_companyid'];
-      $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      while ($a_interface = mysql_fetch_array($q_interface)) {
+      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_interface = mysqli_fetch_array($q_interface)) {
         $q_string  = "select fw_id,fw_source,fw_sourcezone,fw_destination,fw_destinationzone,";
         $q_string .= "fw_port,fw_protocol,fw_timeout,fw_ticket,fw_description,fw_portdesc,inv_name ";
         $q_string .= "from firewall ";
         $q_string .= "left join inventory on inventory.inv_id = firewall.fw_companyid ";
         $q_string .= "where fw_source = '" . $a_interface['int_addr'] . "' or fw_destination = '" . $a_interface['int_addr'] . "' ";
         $q_string .= "order by fw_source,fw_destination,fw_port";
-        $q_firewall = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_firewall = mysql_fetch_array($q_firewall)) {
+        $q_firewall = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_firewall = mysqli_fetch_array($q_firewall)) {
 
           if ($a_interface['inv_name'] != $a_firewall['inv_name']) {
             $output .= "<tr>\n";
@@ -367,9 +367,9 @@
       }
       $output .= "</table>\n";
 
-      mysql_free_result($q_firewall);
+      mysqli_free_result($q_firewall);
 
-      print "document.getElementById('firewall_table').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('firewall_table').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.edit.fw_update.disabled = true;\n";
     } else {
