@@ -23,8 +23,8 @@
         $q_string  = "select int_openview ";
         $q_string .= "from interface ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
-        $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        $a_interface = mysql_fetch_array($q_interface);
+        $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_interface = mysqli_fetch_array($q_interface);
 
         if ($a_interface['int_openview']) {
           $a_interface['int_openview'] = 0;
@@ -38,7 +38,7 @@
         $q_string .= "set ";
         $q_string .= "int_openview = " . $a_interface['int_openview'] . " ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
-        $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+        $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
         print "document.getElementById('ov_" . $formVars['id'] . "').innerHTML = '<u>" . $display . "</u>';\n";
       }
@@ -48,8 +48,8 @@
         $q_string  = "select int_nagios ";
         $q_string .= "from interface ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
-        $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        $a_interface = mysql_fetch_array($q_interface);
+        $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_interface = mysqli_fetch_array($q_interface);
 
         if ($a_interface['int_nagios']) {
           $a_interface['int_nagios'] = 0;
@@ -63,7 +63,7 @@
         $q_string .= "set ";
         $q_string .= "int_nagios = " . $a_interface['int_nagios'] . " ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
-        $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+        $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
         print "document.getElementById('nag_" . $formVars['id'] . "').innerHTML = '<u>" . $display . "</u>';\n";
       }
@@ -73,8 +73,8 @@
         $q_string  = "select int_ping ";
         $q_string .= "from interface ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
-        $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        $a_interface = mysql_fetch_array($q_interface);
+        $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_interface = mysqli_fetch_array($q_interface);
 
         if ($a_interface['int_ping']) {
           $a_interface['int_ping'] = 0;
@@ -88,7 +88,7 @@
         $q_string .= "set ";
         $q_string .= "int_ping = " . $a_interface['int_ping'] . " ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
-        $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+        $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
         print "document.getElementById('ping_" . $formVars['id'] . "').innerHTML = '<u>" . $display . "</u>';\n";
       }
@@ -98,8 +98,8 @@
         $q_string  = "select int_ssh ";
         $q_string .= "from interface ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
-        $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        $a_interface = mysql_fetch_array($q_interface);
+        $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_interface = mysqli_fetch_array($q_interface);
 
         if ($a_interface['int_ssh']) {
           $a_interface['int_ssh'] = 0;
@@ -113,7 +113,7 @@
         $q_string .= "set ";
         $q_string .= "int_ssh = " . $a_interface['int_ssh'] . " ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
-        $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+        $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
         print "document.getElementById('ssh_" . $formVars['id'] . "').innerHTML = '<u>" . $display . "</u>';\n";
       }
@@ -123,8 +123,8 @@
         $q_string  = "select int_http ";
         $q_string .= "from interface ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
-        $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        $a_interface = mysql_fetch_array($q_interface);
+        $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_interface = mysqli_fetch_array($q_interface);
 
         if ($a_interface['int_http']) {
           $a_interface['int_http'] = 0;
@@ -138,7 +138,7 @@
         $q_string .= "set ";
         $q_string .= "int_http = " . $a_interface['int_http'] . " ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
-        $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+        $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
         print "document.getElementById('http_" . $formVars['id'] . "').innerHTML = '<u>" . $display . "</u>';\n";
       }
@@ -148,8 +148,8 @@
         $q_string  = "select int_ftp ";
         $q_string .= "from interface ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
-        $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        $a_interface = mysql_fetch_array($q_interface);
+        $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_interface = mysqli_fetch_array($q_interface);
 
         if ($a_interface['int_ftp']) {
           $a_interface['int_ftp'] = 0;
@@ -163,7 +163,7 @@
         $q_string .= "set ";
         $q_string .= "int_ftp = " . $a_interface['int_ftp'] . " ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
-        $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+        $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
         print "document.getElementById('ftp_" . $formVars['id'] . "').innerHTML = '<u>" . $display . "</u>';\n";
       }
@@ -173,8 +173,8 @@
         $q_string  = "select int_smtp ";
         $q_string .= "from interface ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
-        $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        $a_interface = mysql_fetch_array($q_interface);
+        $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_interface = mysqli_fetch_array($q_interface);
 
         if ($a_interface['int_smtp']) {
           $a_interface['int_smtp'] = 0;
@@ -188,7 +188,7 @@
         $q_string .= "set ";
         $q_string .= "int_smtp = " . $a_interface['int_smtp'] . " ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
-        $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+        $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
         print "document.getElementById('smtp_" . $formVars['id'] . "').innerHTML = '<u>" . $display . "</u>';\n";
       }
@@ -198,8 +198,8 @@
         $q_string  = "select int_cfg2html ";
         $q_string .= "from interface ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
-        $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        $a_interface = mysql_fetch_array($q_interface);
+        $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_interface = mysqli_fetch_array($q_interface);
 
         if ($a_interface['int_cfg2html']) {
           $a_interface['int_cfg2html'] = 0;
@@ -213,7 +213,7 @@
         $q_string .= "set ";
         $q_string .= "int_smtp = " . $a_interface['int_cfg2html'] . " ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
-        $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+        $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
         print "document.getElementById('cfg_" . $formVars['id'] . "').innerHTML = '<u>" . $display . "</u>';\n";
       }
