@@ -48,7 +48,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['zone_name']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -101,9 +101,9 @@
       $q_string  = "select zone_id,zone_name,zone_desc ";
       $q_string .= "from ip_zones ";
       $q_string .= "order by zone_name "; 
-      $q_ip_zones = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_ip_zones) > 0) {
-        while ($a_ip_zones = mysql_fetch_array($q_ip_zones)) {
+      $q_ip_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_ip_zones) > 0) {
+        while ($a_ip_zones = mysqli_fetch_array($q_ip_zones)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('zones.fill.php?id="  . $a_ip_zones['zone_id'] . "');showDiv('zone-hide');\">";
           $linkdel   = "<a href=\"#\" onclick=\"delete_line('zones.del.php?id=" . $a_ip_zones['zone_id'] . "');\">";
@@ -127,9 +127,9 @@
 
       $output .= "</table>\n";
 
-      mysql_free_result($q_ip_zones);
+      mysqli_free_result($q_ip_zones);
 
-      print "document.getElementById('table_mysql').innerHTML = '"   . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '"   . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.zones.update.disabled = true;\n";
 
