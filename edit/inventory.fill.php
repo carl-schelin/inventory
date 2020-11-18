@@ -29,10 +29,10 @@
       $q_string .= "       inv_appliance,inv_bigfix,inv_ciscoamp,inv_ticket,inv_maint ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_id = " . $formVars['id'];
-      $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_inventory = mysql_fetch_array($q_inventory);
+      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inventory = mysqli_fetch_array($q_inventory);
 
-      if (mysql_num_rows($q_inventory) > 0) {
+      if (mysqli_num_rows($q_inventory) > 0) {
 
         $q_string  = "select inv_id,inv_name ";
         $q_string .= "from inventory ";
@@ -67,17 +67,17 @@
 # no zero in the selection window so off by one each time
         $invmaint      = return_Index($a_inventory['inv_maint'],      "select win_id from window order by win_text") - 1;
 
-        print "document.edit.inv_name.value = '"     . mysql_real_escape_string($a_inventory['inv_name'])     . "';\n";
-        print "document.edit.inv_function.value = '" . mysql_real_escape_string($a_inventory['inv_function']) . "';\n";
-        print "document.edit.inv_document.value = '" . mysql_real_escape_string($a_inventory['inv_document']) . "';\n";
-        print "document.edit.inv_centrify.value = '" . mysql_real_escape_string($a_inventory['inv_centrify']) . "';\n";
-        print "document.edit.inv_adzone.value = '"   . mysql_real_escape_string($a_inventory['inv_adzone'])   . "';\n";
-        print "document.edit.inv_domain.value = '"   . mysql_real_escape_string($a_inventory['inv_domain'])   . "';\n";
-        print "document.edit.inv_rack.value = '"     . mysql_real_escape_string($a_inventory['inv_rack'])     . "';\n";
-        print "document.edit.inv_row.value = '"      . mysql_real_escape_string($a_inventory['inv_row'])      . "';\n";
-        print "document.edit.inv_unit.value = '"     . mysql_real_escape_string($a_inventory['inv_unit'])     . "';\n";
-        print "document.edit.inv_notes.value = '"    . mysql_real_escape_string($a_inventory['inv_notes'])    . "';\n";
-        print "document.edit.inv_ticket.value = '"   . mysql_real_escape_string($a_inventory['inv_ticket'])   . "';\n";
+        print "document.edit.inv_name.value = '"     . mysqli_real_escape_string($a_inventory['inv_name'])     . "';\n";
+        print "document.edit.inv_function.value = '" . mysqli_real_escape_string($a_inventory['inv_function']) . "';\n";
+        print "document.edit.inv_document.value = '" . mysqli_real_escape_string($a_inventory['inv_document']) . "';\n";
+        print "document.edit.inv_centrify.value = '" . mysqli_real_escape_string($a_inventory['inv_centrify']) . "';\n";
+        print "document.edit.inv_adzone.value = '"   . mysqli_real_escape_string($a_inventory['inv_adzone'])   . "';\n";
+        print "document.edit.inv_domain.value = '"   . mysqli_real_escape_string($a_inventory['inv_domain'])   . "';\n";
+        print "document.edit.inv_rack.value = '"     . mysqli_real_escape_string($a_inventory['inv_rack'])     . "';\n";
+        print "document.edit.inv_row.value = '"      . mysqli_real_escape_string($a_inventory['inv_row'])      . "';\n";
+        print "document.edit.inv_unit.value = '"     . mysqli_real_escape_string($a_inventory['inv_unit'])     . "';\n";
+        print "document.edit.inv_notes.value = '"    . mysqli_real_escape_string($a_inventory['inv_notes'])    . "';\n";
+        print "document.edit.inv_ticket.value = '"   . mysqli_real_escape_string($a_inventory['inv_ticket'])   . "';\n";
 
         print "document.edit.inv_companyid['"  . $invcompanyid              . "'].selected = true;\n";
         print "document.edit.inv_clusterid['"  . $invclusterid              . "'].selected = true;\n";
@@ -137,7 +137,7 @@
 
       print "check_hostname();\n";
 
-      mysql_free_result($q_inventory);
+      mysqli_free_result($q_inventory);
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
     }
