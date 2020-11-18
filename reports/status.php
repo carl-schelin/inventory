@@ -211,8 +211,8 @@
   $q_string .= "left join products  on products.prod_id = hardware.hw_product ";
   $q_string .= $where;
   $q_string .= $orderby;
-  $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_interface = mysql_fetch_array($q_interface)) {
+  $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_interface = mysqli_fetch_array($q_interface)) {
 
     $managed++;
     $class = " class=\"ui-widget-content\"";
@@ -249,7 +249,7 @@
 
   }
 
-  mysql_free_result($q_interface);
+  mysqli_free_result($q_interface);
 
   print "</table>\n";
 
