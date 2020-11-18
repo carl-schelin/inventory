@@ -181,9 +181,9 @@
   $q_string .= "left join ip_zones  on ip_zones.zone_id      = interface.int_zone ";
   $q_string .= $where . " and int_ip6 = 0 and int_addr != '' and int_addr != '0.0.0.0' and int_addr != '127.0.0.1' and (int_type = 1 or int_type = 2 or int_type = 4 or int_type = 6) ";
   $q_string .= "order by prod_name,zone_zone ";
-  $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  if (mysql_num_rows($q_interface) > 0) {
-    while ($a_interface = mysql_fetch_array($q_interface)) {
+  $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_interface) > 0) {
+    while ($a_interface = mysqli_fetch_array($q_interface)) {
 
       $class = "ui-widget-content";
 
