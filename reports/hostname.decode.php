@@ -47,21 +47,21 @@
     $q_string  = "select inv_id,inv_function ";
     $q_string .= "from inventory ";
     $q_string .= "where inv_name = '" . $formVars['server'] . "' ";
-    $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-    if (mysql_num_rows($q_inventory) == 0) {
+    $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    if (mysqli_num_rows($q_inventory) == 0) {
       $q_string  = "select inv_id,inv_name,inv_function ";
       $q_string .= "from interface "; 
       $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
       $q_string .= "where int_server = '" . $formVars['server'] . "' ";
-      $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_interface) > 0) {
-        $a_interface = mysql_fetch_array($q_interface);
+      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_interface) > 0) {
+        $a_interface = mysqli_fetch_array($q_interface);
         print "document.getElementById('gohere').innerHTML = ' Server found! <a href=\"" . $Showroot . "/inventory.php?server=" . $a_interface['inv_id'] . "\" target=\"_blank\">" . $a_interface['inv_name'] . "</a> Function: " . $a_interface['inv_function'] . "';\n";
       } else {
         print "document.getElementById('gohere').innerHTML = '';\n";
       }
     } else {
-      $a_inventory = mysql_fetch_array($q_inventory);
+      $a_inventory = mysqli_fetch_array($q_inventory);
       print "document.getElementById('gohere').innerHTML = ' Server found! <a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">" . $formVars['server'] . "</a> Function: " . $a_inventory['inv_function'] . "';\n";
     }
 
@@ -79,8 +79,8 @@
         $q_string .= "from locations ";
         $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
         $q_string .= "where ct_clli = '" . $os_location . "' and loc_instance = " . $os_instance . " and loc_type = 1 ";
-        $q_locations = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        $a_locations = mysql_fetch_array($q_locations);
+        $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_locations = mysqli_fetch_array($q_locations);
 
         $formVars['i15location'] = $a_locations['loc_name'];
 
@@ -107,8 +107,8 @@
         if (strlen($os_device) > 0) {
           $q_string  = "select dev_id,dev_type,dev_description,dev_infrastructure ";
           $q_string .= "from device ";
-          $q_device = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          while ($a_device = mysql_fetch_array($q_device)) {
+          $q_device = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_device = mysqli_fetch_array($q_device)) {
             if ($os_device == strtolower($a_device['dev_type'])) {
               $formVars['i15device'] = $a_device['dev_type'] . " (" . $a_device['dev_description'] . ")";
               $os_infrastructure = $a_device['dev_infrastructure'];
@@ -120,8 +120,8 @@
           $q_string  = "select prod_name ";
           $q_string .= "from products ";
           $q_string .= "where prod_code = '" . $os_service . "' ";
-          $q_products = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          $a_products = mysql_fetch_array($q_products);
+          $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_products = mysqli_fetch_array($q_products);
 
           if ($os_infrastructure) {
             $formVars['i15service'] = 'Infrastructure';
@@ -167,16 +167,16 @@
           $q_string .= "from locations ";
           $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
           $q_string .= "where ct_clli = '" . $os_location . "' and loc_type = 1 ";
-          $q_locations = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          $a_locations = mysql_fetch_array($q_locations);
+          $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_locations = mysqli_fetch_array($q_locations);
 
           $formVars['08location']  = $a_locations['loc_name'];
 
           $q_string  = "select st_state ";
           $q_string .= "from states ";
           $q_string .= "where st_acronym = '" . $os_state . "' ";
-          $q_states = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          $a_states = mysql_fetch_array($q_states);
+          $q_states = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_states = mysqli_fetch_array($q_states);
 
           $formVars['08state']     = $a_states['st_state'];
 
@@ -204,8 +204,8 @@
           $q_string .= "left join products on products.prod_id = inventory.inv_product ";
           $q_string .= "where inv_name like '" . $os_location . $os_state . $os_site . $os_service . "%' ";
           $q_string .= "limit 1 ";
-          $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          $a_inventory = mysql_fetch_array($q_inventory);
+          $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_inventory = mysqli_fetch_array($q_inventory);
 
           $formVars['08device']    = $a_inventory['prod_name'];
 
@@ -251,8 +251,8 @@
                 $q_string  = "select st_state ";
                 $q_string .= "from states ";
                 $q_string .= "where st_acronym = '" . $os_state . "' ";
-                $q_states = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-                $a_states = mysql_fetch_array($q_states);
+                $q_states = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+                $a_states = mysqli_fetch_array($q_states);
 
                 $formVars['state'] = $a_states['st_state'];
               }
@@ -263,9 +263,9 @@
             $q_string  = "select prod_name ";
             $q_string .= "from products ";
             $q_string .= "where prod_oldcode = '" . $os_producttwo . "' ";
-            $q_products = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-            if (mysql_num_rows($q_products) > 0) {
-              $a_products = mysql_fetch_array($q_products);
+            $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            if (mysqli_num_rows($q_products) > 0) {
+              $a_products = mysqli_fetch_array($q_products);
 
               $formVars['product'] = $a_products['prod_name'];
               $formVars['instance']  = $os_instancetwo;
@@ -274,9 +274,9 @@
             $q_string  = "select prod_name ";
             $q_string .= "from products ";
             $q_string .= "where prod_oldcode = '" . $os_productthree . "' ";
-            $q_products = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-            if (mysql_num_rows($q_products) > 0) {
-              $a_products = mysql_fetch_array($q_products);
+            $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            if (mysqli_num_rows($q_products) > 0) {
+              $a_products = mysqli_fetch_array($q_products);
 
               $formVars['product'] = $a_products['prod_name'];
               $formVars['instance']  = $os_instanceone;
@@ -293,30 +293,30 @@
     }
 
 
-  print "document.getElementById('i15location').innerHTML = '" . mysql_real_escape_string($formVars['i15location']) . "';\n";
-  print "document.getElementById('i15instance').innerHTML = '" . mysql_real_escape_string($formVars['i15instance']) . "';\n";
-  print "document.getElementById('i15zone').innerHTML = '"     . mysql_real_escape_string($formVars['i15zone'])     . "';\n";
-  print "document.getElementById('i15device').innerHTML = '"   . mysql_real_escape_string($formVars['i15device'])   . "';\n";
-  print "document.getElementById('i15service').innerHTML = '"  . mysql_real_escape_string($formVars['i15service'])  . "';\n";
-  print "document.getElementById('i15freeform').innerHTML = '" . mysql_real_escape_string($formVars['i15freeform']) . "';\n";
+  print "document.getElementById('i15location').innerHTML = '" . mysqli_real_escape_string($formVars['i15location']) . "';\n";
+  print "document.getElementById('i15instance').innerHTML = '" . mysqli_real_escape_string($formVars['i15instance']) . "';\n";
+  print "document.getElementById('i15zone').innerHTML = '"     . mysqli_real_escape_string($formVars['i15zone'])     . "';\n";
+  print "document.getElementById('i15device').innerHTML = '"   . mysqli_real_escape_string($formVars['i15device'])   . "';\n";
+  print "document.getElementById('i15service').innerHTML = '"  . mysqli_real_escape_string($formVars['i15service'])  . "';\n";
+  print "document.getElementById('i15freeform').innerHTML = '" . mysqli_real_escape_string($formVars['i15freeform']) . "';\n";
 
-  print "document.getElementById('c15location').innerHTML = '" . mysql_real_escape_string($formVars['c15location']) . "';\n";
-  print "document.getElementById('c15state').innerHTML = '"    . mysql_real_escape_string($formVars['c15state'])    . "';\n";
-  print "document.getElementById('c15type').innerHTML = '"     . mysql_real_escape_string($formVars['c15type'])     . "';\n";
-  print "document.getElementById('c15device').innerHTML = '"   . mysql_real_escape_string($formVars['c15device'])   . "';\n";
-  print "document.getElementById('c15instance').innerHTML = '" . mysql_real_escape_string($formVars['c15instance']) . "';\n";
+  print "document.getElementById('c15location').innerHTML = '" . mysqli_real_escape_string($formVars['c15location']) . "';\n";
+  print "document.getElementById('c15state').innerHTML = '"    . mysqli_real_escape_string($formVars['c15state'])    . "';\n";
+  print "document.getElementById('c15type').innerHTML = '"     . mysqli_real_escape_string($formVars['c15type'])     . "';\n";
+  print "document.getElementById('c15device').innerHTML = '"   . mysqli_real_escape_string($formVars['c15device'])   . "';\n";
+  print "document.getElementById('c15instance').innerHTML = '" . mysqli_real_escape_string($formVars['c15instance']) . "';\n";
 
-  print "document.getElementById('08location').innerHTML = '"  . mysql_real_escape_string($formVars['08location'])  . "';\n";
-  print "document.getElementById('08state').innerHTML = '"     . mysql_real_escape_string($formVars['08state'])     . "';\n";
-  print "document.getElementById('08type').innerHTML = '"      . mysql_real_escape_string($formVars['08type'])      . "';\n";
-  print "document.getElementById('08device').innerHTML = '"    . mysql_real_escape_string($formVars['08device'])    . "';\n";
-  print "document.getElementById('08instance').innerHTML = '"  . mysql_real_escape_string($formVars['08instance'])  . "';\n";
-  print "document.getElementById('08interface').innerHTML = '" . mysql_real_escape_string($formVars['08interface']) . "';\n";
+  print "document.getElementById('08location').innerHTML = '"  . mysqli_real_escape_string($formVars['08location'])  . "';\n";
+  print "document.getElementById('08state').innerHTML = '"     . mysqli_real_escape_string($formVars['08state'])     . "';\n";
+  print "document.getElementById('08type').innerHTML = '"      . mysqli_real_escape_string($formVars['08type'])      . "';\n";
+  print "document.getElementById('08device').innerHTML = '"    . mysqli_real_escape_string($formVars['08device'])    . "';\n";
+  print "document.getElementById('08instance').innerHTML = '"  . mysqli_real_escape_string($formVars['08instance'])  . "';\n";
+  print "document.getElementById('08interface').innerHTML = '" . mysqli_real_escape_string($formVars['08interface']) . "';\n";
 
-  print "document.getElementById('location').innerHTML = '"    . mysql_real_escape_string($formVars['location'])    . "';\n";
-  print "document.getElementById('company').innerHTML = '"     . mysql_real_escape_string($formVars['company'])     . "';\n";
-  print "document.getElementById('state').innerHTML = '"       . mysql_real_escape_string($formVars['state'])       . "';\n";
-  print "document.getElementById('product').innerHTML = '"     . mysql_real_escape_string($formVars['product'])     . "';\n";
-  print "document.getElementById('instance').innerHTML = '"    . mysql_real_escape_string($formVars['instance'])    . "';\n";
+  print "document.getElementById('location').innerHTML = '"    . mysqli_real_escape_string($formVars['location'])    . "';\n";
+  print "document.getElementById('company').innerHTML = '"     . mysqli_real_escape_string($formVars['company'])     . "';\n";
+  print "document.getElementById('state').innerHTML = '"       . mysqli_real_escape_string($formVars['state'])       . "';\n";
+  print "document.getElementById('product').innerHTML = '"     . mysqli_real_escape_string($formVars['product'])     . "';\n";
+  print "document.getElementById('instance').innerHTML = '"    . mysqli_real_escape_string($formVars['instance'])    . "';\n";
 
 ?>
