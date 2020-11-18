@@ -79,14 +79,14 @@
   $q_string .= "left join titles on titles.tit_id = users.usr_title ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_manager,usr_group,usr_last,usr_first ";
-  $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_users = mysqli_fetch_array($q_users)) {
 
     $q_string  = "select usr_first,usr_last ";
     $q_string .= "from users ";
     $q_string .= "where usr_id = " . $a_users['usr_manager'] . " ";
-    $q_managers = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-    $a_managers = mysql_fetch_array($q_managers);
+    $q_managers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_managers = mysqli_fetch_array($q_managers);
 
     print "<tr>\n";
     print "  <td class=\"ui-widget-content\">" . $a_users['usr_name']  . "</a></td>\n";
@@ -99,7 +99,7 @@
 
   }
 
-  mysql_free_result($q_users);
+  mysqli_free_result($q_users);
 
 ?>
 </table>
