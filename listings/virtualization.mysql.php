@@ -51,7 +51,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['cl_name']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -71,8 +71,8 @@
           $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
           $q_string .= "where inv_status = 0 and inv_manager = " . $GRP_Virtualization . " and hw_primary = 1 ";
           $q_string .= "order by inv_name";
-          $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          while ($a_inventory = mysql_fetch_array($q_inventory)) {
+          $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
             $os = '';
             $tags = "";
@@ -86,8 +86,8 @@
             $q_string  = "select tag_name ";
             $q_string .= "from tags ";
             $q_string .= "where tag_companyid = " . $a_inventory['inv_id'];
-            $q_tags = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-            while ($a_tags = mysql_fetch_array($q_tags)) {
+            $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            while ($a_tags = mysqli_fetch_array($q_tags)) {
               $tags .= "," . $a_tags['tag_name'] . ",";
             }
 
@@ -108,8 +108,8 @@
           $q_string .= "from changelog ";
           $q_string .= "where cl_group = " . $GRP_Virtualization . " and cl_delete = 0 ";
           $q_string .= "order by cl_name";
-          $q_changelog = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          while ($a_changelog = mysql_fetch_array($q_changelog)) {
+          $q_changelog = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_changelog = mysqli_fetch_array($q_changelog)) {
 
             $output = $a_changelog['cl_name'] . ":::::::\n";
             fwrite($handle, $output);
@@ -145,8 +145,8 @@
         $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
         $q_string .= "where inv_status = 0 and inv_manager = " . $GRP_Virtualization . " and hw_primary = 1 ";
         $q_string .= "order by inv_name";
-        $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_inventory = mysql_fetch_array($q_inventory)) {
+        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
 # set a variable indicating the server is being monitored
 # in order to mark an entry in the manual list as already
@@ -167,8 +167,8 @@
           $q_string  = "select tag_name ";
           $q_string .= "from tags ";
           $q_string .= "where tag_companyid = " . $a_inventory['inv_id'];
-          $q_tags = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          while ($a_tags = mysql_fetch_array($q_tags)) {
+          $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_tags = mysqli_fetch_array($q_tags)) {
             $tags .= "," . $a_tags['tag_name'] . ", ";
           }
 
@@ -193,7 +193,7 @@
 
         $output .= "</table>\n";
 
-        print "document.getElementById('automatic_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('automatic_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       }
 
@@ -241,8 +241,8 @@
       $q_string .= "from changelog ";
       $q_string .= "where cl_group = " . $GRP_Virtualization . " and cl_delete = 0 ";
       $q_string .= "order by cl_name";
-      $q_changelog = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      while ($a_changelog = mysql_fetch_array($q_changelog)) {
+      $q_changelog = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_changelog = mysqli_fetch_array($q_changelog)) {
 
         $linkstart = "<a href=\"#\" onclick=\"show_file('virtualization.fill.php?id="  . $a_changelog['cl_id'] . "');jQuery('#dialogListing').dialog('open');\">";
         $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('virtualization.del.php?id=" . $a_changelog['cl_id'] . "');\">";
@@ -268,7 +268,7 @@
 
       $output .= "</table>\n";
 
-      print "document.getElementById('manual_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('manual_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
