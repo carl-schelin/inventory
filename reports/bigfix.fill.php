@@ -37,11 +37,11 @@
       $q_string  = "select inv_name ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_id = " . $formVars['id'] . " ";
-      $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_inventory) > 0) {
-        $a_inventory = mysql_fetch_array($q_inventory);
+      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inventory) > 0) {
+        $a_inventory = mysqli_fetch_array($q_inventory);
 
-        print "document.getElementById('big_servername').innerHTML = '" . mysql_real_escape_string($a_inventory['inv_name']) . "';";
+        print "document.getElementById('big_servername').innerHTML = '" . mysqli_real_escape_string($a_inventory['inv_name']) . "';";
       }
 
       $daterange = "and big_scheduled = \"" . $formVars['scheduled'] . "\" ";
@@ -57,10 +57,10 @@
       $q_string .= "from bigfix ";
       $q_string .= "where big_companyid = " . $formVars['id'] . " " . $daterange;
       $q_string .= "order by big_severity,big_fixlet ";
-      $q_bigfix = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_bigfix) > 0) {
+      $q_bigfix = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_bigfix) > 0) {
 
-        while ($a_bigfix = mysql_fetch_array($q_bigfix)) {
+        while ($a_bigfix = mysqli_fetch_array($q_bigfix)) {
 
           if ($a_bigfix['big_severity'] == 1) {
             $severity = "Unspecified";
@@ -88,9 +88,9 @@
           $patches .= $a_bigfix['big_fixlet'] . "\n";
         }
       }
-      mysql_free_result($q_bigfix);
+      mysqli_free_result($q_bigfix);
 
-      print "document.bigfix.big_patches.value = '" . mysql_real_escape_string($patches) . "';\n";
+      print "document.bigfix.big_patches.value = '" . mysqli_real_escape_string($patches) . "';\n";
 
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
