@@ -51,7 +51,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['bus_name']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -102,9 +102,9 @@
       $q_string  = "select bus_id,bus_unit,bus_name ";
       $q_string .= "from business_unit ";
       $q_string .= "order by bus_name ";
-      $q_business_unit = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_business_unit) > 0) {
-        while ($a_business_unit = mysql_fetch_array($q_business_unit)) {
+      $q_business_unit = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_business_unit) > 0) {
+        while ($a_business_unit = mysqli_fetch_array($q_business_unit)) {
 
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('business.fill.php?id="  . $a_business_unit['bus_id'] . "');jQuery('#dialogBusiness').dialog('open');\">";
@@ -128,9 +128,9 @@
 
       $output .= "</table>\n";
 
-      mysql_free_result($q_business_unit);
+      mysqli_free_result($q_business_unit);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
       print "document.business.bus_unit.value = '';\n";
       print "document.business.bus_name.value = '';\n";
