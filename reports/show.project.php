@@ -18,14 +18,14 @@
   $q_string  = "select prj_name,prj_product ";
   $q_string .= "from projects ";
   $q_string .= "where prj_id = " . $formVars['id'] . " ";
-  $q_projects = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  $a_projects = mysql_fetch_array($q_projects);
+  $q_projects = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_projects = mysqli_fetch_array($q_projects);
 
   $q_string  = "select prod_name ";
   $q_string .= "from products ";
   $q_string .= "where prod_id = " . $a_projects['prj_product'] . " ";
-  $q_products = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  $a_products = mysql_fetch_array($q_products);
+  $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_products = mysqli_fetch_array($q_products);
 
 # if help has not been seen yet,
   if (show_Help($Reportpath . "/" . $package)) {
@@ -130,8 +130,8 @@ $(document).ready( function() {
   $q_string .= "left join models on hardware.hw_vendorid = models.mod_id ";
   $q_string .= "where inv_project = " . $formVars['id'] . " and inv_status = 0 and hw_primary = 1 ";
   $q_string .= "order by inv_name";
-  $q_hardware = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_hardware = mysql_fetch_array($q_hardware)) {
+  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
     $ssh = "";
     if ($a_hardware['inv_ssh']) {
@@ -165,8 +165,8 @@ $(document).ready( function() {
 # this is the gather from all systems for the changelog part of the listing
     $grpcount = 0;
     $q_string = "select grp_changelog,grp_clfile from groups where grp_changelog != ''";
-    $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-    while ($a_groups = mysql_fetch_array($q_groups)) {
+    $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    while ($a_groups = mysqli_fetch_array($q_groups)) {
       $grouplist[$grpcount] = $a_groups['grp_changelog'];
       $filename[$grpcount++] = "." . $a_groups['grp_clfile'];
     }
@@ -217,12 +217,12 @@ $(document).ready( function() {
             }
             $finalname = $from . "</td>";
             if ($svrlist[$j + $add + 1] != "\n") {
-              $finaltext = mysql_real_escape_string(rtrim($svrlist[$j + $add + 1])) . "</td>\n";
+              $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 1])) . "</td>\n";
             } else {
               if ($svrlist[$j + $add + 2] != "\n") {
-                $finaltext = mysql_real_escape_string(rtrim($svrlist[$j + $add + 2])) . "</td>\n";
+                $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 2])) . "</td>\n";
               } else {
-                $finaltext = mysql_real_escape_string(rtrim($svrlist[$j + $add + 3])) . "</td>\n";
+                $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 3])) . "</td>\n";
               }
             }
             $allservers[$count++] = $finaldate . "<td class=\"ui-widget-content\">" . $finalname . "<td class=\"ui-widget-content\">" . $finalserver . $a_hardware['inv_name'] . "</a></td>\n<td class=\"ui-widget-content\">" . $finaltext . "</tr>\n";
@@ -282,8 +282,8 @@ $(document).ready( function() {
   $q_string .= "left join groups on software.sw_group = groups.grp_id ";
   $q_string .= "where inv_project = " . $formVars['id'] . " and inv_status = 0 ";
   $q_string .= "order by inv_name,sw_software";
-  $q_software = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_software = mysql_fetch_array($q_software)) {
+  $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_software = mysqli_fetch_array($q_software)) {
 
     $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_software['sw_companyid'] . "\" target=\"_blank\">";
     $linkend   = "</a>";
@@ -304,7 +304,7 @@ $(document).ready( function() {
 
   }
 
-  mysql_free_result($q_software);
+  mysqli_free_result($q_software);
 
 ?>
 </table>
