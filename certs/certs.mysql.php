@@ -65,7 +65,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['cert_desc']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -79,8 +79,8 @@
       $q_string  = "select usr_notify ";
       $q_string .= "from users ";
       $q_string .= "where usr_id = " . $_SESSION['uid'];
-      $q_users = mysql_query($q_string) or die($q_string . ": " . $mysql_error());
-      $a_users = mysql_fetch_array($q_users);
+      $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . $mysqli_error($db));
+      $a_users = mysqli_fetch_array($q_users);
 
       if ($a_users['usr_notify'] == 0) {
         $a_users['usr_notify'] = 90;
@@ -138,8 +138,8 @@
       $q_string .= "from certs ";
       $q_string .= "left join groups on groups.grp_id = certs.cert_group ";
       $q_string .= "order by cert_desc,cert_expire";
-      $q_certs = mysql_query($q_string) or die ($q_string . ": " . mysql_error());
-      while ($a_certs = mysql_fetch_array($q_certs)) {
+      $q_certs = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+      while ($a_certs = mysqli_fetch_array($q_certs)) {
 
         $certtime = strtotime($a_certs['cert_expire']);
 
@@ -183,7 +183,7 @@
       $output .= "</div>";
       $output .= "</table>";
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.dialog.cert_desc.value = '';\n";
       print "document.dialog.cert_url.value = '';\n";
