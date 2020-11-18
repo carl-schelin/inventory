@@ -26,14 +26,14 @@
       $q_string  = "select com_text,com_timestamp,com_user ";
       $q_string .= "from comments ";
       $q_string .= "where com_id = " . $formVars['id'];
-      $q_comments = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_comments = mysql_fetch_array($q_comments);
-      mysql_free_result($q_comments);
+      $q_comments = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_comments = mysqli_fetch_array($q_comments);
+      mysqli_free_result($q_comments);
 
       $selected = return_Index($a_comments['com_user'],       "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
 
-      print "document.edit.com_text.value = '"      . mysql_real_escape_string($a_comments['com_text'])      . "';\n";
-      print "document.edit.com_timestamp.value = '" . mysql_real_escape_string($a_comments['com_timestamp']) . "';\n";
+      print "document.edit.com_text.value = '"      . mysqli_real_escape_string($a_comments['com_text'])      . "';\n";
+      print "document.edit.com_timestamp.value = '" . mysqli_real_escape_string($a_comments['com_timestamp']) . "';\n";
 
       print "document.edit.com_user['" . $selected . "'].selected = true;\n";
 
