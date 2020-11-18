@@ -76,7 +76,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['var_name']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
           print "alert('" . $message . "');\n";
 
@@ -85,10 +85,10 @@
             $q_string  = "select route_id ";
             $q_string .= "from routing ";
             $q_string .= "where route_address = '" . $formVars['route_address'] . "' ";
-            $q_routing = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-            while ($a_routing = mysql_fetch_array($q_routing)) {
+            $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            while ($a_routing = mysqli_fetch_array($q_routing)) {
               $query = "update routing set route_desc = '" . $formVars['route_desc'] . "' where route_id = " . $a_routing['route_id'];
-              mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+              mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
             }
           }
 
@@ -105,22 +105,22 @@
           $q_string  = "select route_address,route_mask,route_gateway,route_source,route_interface,route_desc,route_static ";
           $q_string .= "from routing ";
           $q_string .= "where route_companyid = " . $formVars['copyfrom'];
-          $q_routing = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          while ($a_routing = mysql_fetch_array($q_routing)) {
+          $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_routing = mysqli_fetch_array($q_routing)) {
 
 # so try to match the copied server's interface name with the current server.
 # They should be close to the same, otherwise default to 0
             $q_string  = "select int_face ";
             $q_string .= "from interface ";
             $q_string .= "where int_id = " . $a_routing['route_interface'];
-            $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-            $a_interface = mysql_fetch_array($q_interface);
+            $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $a_interface = mysqli_fetch_array($q_interface);
 
             $q_string  = "select int_id ";
             $q_string .= "from interface ";
             $q_string .= "where int_companyid = " . $formVars['route_companyid'] . " and int_face = '" . $a_interface['int_face'] . "'";
-            $q_interface2 = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-            $a_interface2 = mysql_fetch_array($q_interface2);
+            $q_interface2 = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $a_interface2 = mysqli_fetch_array($q_interface2);
 
             if ($a_interface2['int_id'] == '') {
               $a_interface2['int_id'] = 0;
@@ -137,7 +137,7 @@
               "route_desc      = \"" . $a_routing['route_desc']      . "\"";
 
             $query = "insert into routing set route_id = NULL," . $q_string;
-            mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+            mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
           }
         }
       }
@@ -164,13 +164,13 @@
         $q_string .= "from inventory ";
         $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name";
-        $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_inventory = mysql_fetch_array($q_inventory)) {
+        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inventory = mysqli_fetch_array($q_inventory)) {
           $q_string  = "select route_id ";
           $q_string .= "from routing ";
           $q_string .= "where route_companyid = " . $a_inventory['inv_id'] . " ";
-          $q_routing = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          $route_total = mysql_num_rows($q_routing);
+          $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $route_total = mysqli_num_rows($q_routing);
 
           if ($route_total > 0) {
             $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . " (" . $route_total . ")</option>\n";
@@ -206,8 +206,8 @@
         $q_string .= "from interface ";
         $q_string .= "where int_companyid = " . $formVars['route_companyid'] . " ";
         $q_string .= "order by int_face";
-        $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_interface = mysql_fetch_array($q_interface)) {
+        $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_interface = mysqli_fetch_array($q_interface)) {
           if ($a_interface['int_ip6']) {
             $output .= "<option value=\"" . $a_interface['int_id'] . "\">" . $a_interface['int_face'] . " (ip6)</option>\n";
           } else {
@@ -224,7 +224,7 @@
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
-        print "document.getElementById('routing_form').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('routing_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
       }
 
 
@@ -286,15 +286,15 @@
       $q_string .= "left join inventory on inventory.inv_id = routing.route_companyid ";
       $q_string .= "where route_companyid = " . $formVars['route_companyid'] . " ";
       $q_string .= "order by route_address";
-      $q_routing = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_routing) > 0) {
-        while ($a_routing = mysql_fetch_array($q_routing)) {
+      $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_routing) > 0) {
+        while ($a_routing = mysqli_fetch_array($q_routing)) {
 
           $q_string  = "select int_face ";
           $q_string .= "from interface ";
           $q_string .= "where int_id = " . $a_routing['route_interface'];
-          $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          $a_interface = mysql_fetch_array($q_interface);
+          $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_interface = mysqli_fetch_array($q_interface);
 
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('routing.fill.php?id=" . $a_routing['route_id'] . "');showDiv('routing-hide');\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_route('routing.del.php?id=" . $a_routing['route_id'] . "');\">";
@@ -360,7 +360,7 @@
         $output .= "</tr>\n";
       }
 
-      mysql_free_result($q_routing);
+      mysqli_free_result($q_routing);
 
       $output .= "</table>\n";
 
@@ -375,7 +375,7 @@
         $output .= "<p class=\"ui-widget-content\">/etc/inet/static_routes: " . $sunroute . "</p>";
       }
 
-      print "document.getElementById('routing_table').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('routing_table').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.edit.route_update.disabled = true;\n";
     } else {
