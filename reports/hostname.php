@@ -127,8 +127,8 @@ $(document).ready( function() {
   $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
   $q_string .= "where loc_type = 1 and ct_clli != '' ";
   $q_string .= "order by ct_clli,loc_instance ";
-  $q_locations = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_locations = mysql_fetch_array($q_locations)) {
+  $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_locations = mysqli_fetch_array($q_locations)) {
     print "<option value=\"" . $a_locations['loc_id'] . "\">" . $a_locations['ct_clli'] . $a_locations['loc_instance'] . " (" . $a_locations['loc_name'] . ")</option>\n";
   }
 ?>
@@ -151,8 +151,8 @@ $(document).ready( function() {
   $q_string  = "select dev_id,dev_type,dev_description ";
   $q_string .= "from device ";
   $q_string .= "order by dev_type ";
-  $q_device = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_device = mysql_fetch_array($q_device)) {
+  $q_device = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_device = mysqli_fetch_array($q_device)) {
     print "<option value=\"" . $a_device['dev_id'] . "\">" . $a_device['dev_type'] . " (" . $a_device['dev_description'] . ")</option>\n";
   }
 ?>
@@ -166,8 +166,8 @@ $(document).ready( function() {
   $q_string .= "from products ";
   $q_string .= "where prod_code != '' ";
   $q_string .= "order by prod_code ";
-  $q_products = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_products = mysql_fetch_array($q_products)) {
+  $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_products = mysqli_fetch_array($q_products)) {
     print "<option value=\"" . $a_products['prod_id'] . "\">" . $a_products['prod_code'] . " (" . $a_products['prod_name'] . ")</option>\n";
   }
 ?>
