@@ -30,9 +30,9 @@
       $q_string .= "int_cfg2html,int_notify,int_hours,int_domain,int_login ";
       $q_string .= "from interface ";
       $q_string .= "where int_id = " . $formVars['id'];
-      $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_interface = mysql_fetch_array($q_interface);
-      mysql_free_result($q_interface);
+      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_interface = mysqli_fetch_array($q_interface);
+      mysqli_free_result($q_interface);
 
       $inttype       = return_Index($a_interface['int_type'],       "select itp_id from inttype order by itp_id");
       $intzone       = return_Index($a_interface['int_zone'],       "select zone_id from ip_zones order by zone_name");
@@ -44,23 +44,23 @@
       $intredundancy = return_Index($a_interface['int_redundancy'], "select red_id from int_redundancy order by red_text");
 
 
-      print "document.edit.int_server.value = '"    . mysql_real_escape_string($a_interface['int_server'])    . "';\n";
-      print "document.edit.int_domain.value = '"    . mysql_real_escape_string($a_interface['int_domain'])    . "';\n";
-      print "document.edit.int_face.value = '"      . mysql_real_escape_string($a_interface['int_face'])      . "';\n";
-      print "document.edit.int_int_id.value = '"    . mysql_real_escape_string($a_interface['int_int_id'])    . "';\n";
-      print "document.edit.int_addr.value = '"      . mysql_real_escape_string($a_interface['int_addr'])      . "';\n";
-      print "document.edit.int_eth.value = '"       . mysql_real_escape_string($a_interface['int_eth'])       . "';\n";
-      print "document.edit.int_mask.value = '"      . mysql_real_escape_string($a_interface['int_mask'])      . "';\n";
-      print "document.edit.int_gate.value = '"      . mysql_real_escape_string($a_interface['int_gate'])      . "';\n";
-      print "document.edit.int_note.value = '"      . mysql_real_escape_string($a_interface['int_note'])      . "';\n";
-      print "document.edit.int_switch.value = '"    . mysql_real_escape_string($a_interface['int_switch'])    . "';\n";
-      print "document.edit.int_port.value = '"      . mysql_real_escape_string($a_interface['int_port'])      . "';\n";
-      print "document.edit.int_sysport.value = ' "  . mysql_real_escape_string($a_interface['int_sysport'])   . "';\n";
-      print "document.edit.int_vlan.value = '"      . mysql_real_escape_string($a_interface['int_vlan'])      . "';\n";
-      print "document.edit.int_groupname.value = '" . mysql_real_escape_string($a_interface['int_groupname']) . "';\n";
-      print "document.edit.int_xpoint.value = '"    . mysql_real_escape_string($a_interface['int_xpoint'])    . "';\n";
-      print "document.edit.int_ypoint.value = '"    . mysql_real_escape_string($a_interface['int_ypoint'])    . "';\n";
-      print "document.edit.int_zpoint.value = '"    . mysql_real_escape_string($a_interface['int_zpoint'])    . "';\n";
+      print "document.edit.int_server.value = '"    . mysqli_real_escape_string($a_interface['int_server'])    . "';\n";
+      print "document.edit.int_domain.value = '"    . mysqli_real_escape_string($a_interface['int_domain'])    . "';\n";
+      print "document.edit.int_face.value = '"      . mysqli_real_escape_string($a_interface['int_face'])      . "';\n";
+      print "document.edit.int_int_id.value = '"    . mysqli_real_escape_string($a_interface['int_int_id'])    . "';\n";
+      print "document.edit.int_addr.value = '"      . mysqli_real_escape_string($a_interface['int_addr'])      . "';\n";
+      print "document.edit.int_eth.value = '"       . mysqli_real_escape_string($a_interface['int_eth'])       . "';\n";
+      print "document.edit.int_mask.value = '"      . mysqli_real_escape_string($a_interface['int_mask'])      . "';\n";
+      print "document.edit.int_gate.value = '"      . mysqli_real_escape_string($a_interface['int_gate'])      . "';\n";
+      print "document.edit.int_note.value = '"      . mysqli_real_escape_string($a_interface['int_note'])      . "';\n";
+      print "document.edit.int_switch.value = '"    . mysqli_real_escape_string($a_interface['int_switch'])    . "';\n";
+      print "document.edit.int_port.value = '"      . mysqli_real_escape_string($a_interface['int_port'])      . "';\n";
+      print "document.edit.int_sysport.value = ' "  . mysqli_real_escape_string($a_interface['int_sysport'])   . "';\n";
+      print "document.edit.int_vlan.value = '"      . mysqli_real_escape_string($a_interface['int_vlan'])      . "';\n";
+      print "document.edit.int_groupname.value = '" . mysqli_real_escape_string($a_interface['int_groupname']) . "';\n";
+      print "document.edit.int_xpoint.value = '"    . mysqli_real_escape_string($a_interface['int_xpoint'])    . "';\n";
+      print "document.edit.int_ypoint.value = '"    . mysqli_real_escape_string($a_interface['int_ypoint'])    . "';\n";
+      print "document.edit.int_zpoint.value = '"    . mysqli_real_escape_string($a_interface['int_zpoint'])    . "';\n";
 
       print "document.edit.int_type['"       . $inttype       . "'].selected = true;\n";
       print "document.edit.int_zone['"       . $intzone       . "'].selected = true;\n";
