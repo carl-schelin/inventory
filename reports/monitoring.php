@@ -143,8 +143,8 @@
 
   $q_string  = "select zone_id,zone_name ";
   $q_string .= "from ip_zones";
-  $q_ip_zones = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_ip_zones = mysql_fetch_array($q_ip_zones)) {
+  $q_ip_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_ip_zones = mysqli_fetch_array($q_ip_zones)) {
     $zoneval[$a_ip_zones['zone_id']] = $a_ip_zones['zone_name'];
   }
 
@@ -193,8 +193,8 @@ function flip_Bit( p_id, p_bit ) {
 
   $q_string  = "select itp_id,itp_acronym ";
   $q_string .= "from inttype ";
-  $q_inttype = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_inttype = mysql_fetch_array($q_inttype)) {
+  $q_inttype = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inttype = mysqli_fetch_array($q_inttype)) {
     $inttype[$a_inttype['itp_id']] = $a_inttype['itp_acronym'];
   }
 
@@ -245,9 +245,9 @@ function flip_Bit( p_id, p_bit ) {
 # don't want to see signaling, serial, loopback, interconnect, or backup interfaces as they won't be monitored regardless.
   $q_string .= $where . " and int_ip6 = 0 and int_addr != '' and int_type != 3 and int_type != 5 and int_type != 7 and int_type != 8 and int_type != 16 ";
   $q_string .= $orderby;
-  $q_interface = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  if (mysql_num_rows($q_interface) > 0) {
-    while ($a_interface = mysql_fetch_array($q_interface)) {
+  $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_interface) > 0) {
+    while ($a_interface = mysqli_fetch_array($q_interface)) {
 
       $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_interface['int_companyid'] . "#network\" target=\"blank\">";
       $linkend   = "</a>";
