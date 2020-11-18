@@ -69,7 +69,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['mu_username']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
           print "alert('" . $message . "');\n";
 
@@ -113,7 +113,7 @@
         $output .= "</table>\n";
         $output .= "<p>NOTE: Editing this form makes changes to the servers. See the Help for details.</p>\n";
 
-        print "document.getElementById('users_form').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('users_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
       }
 
 
@@ -172,15 +172,15 @@
       $q_string .= "from syspwd ";
       $q_string .= "where pwd_companyid = " . $formVars['pwd_companyid'] . " ";
       $q_string .= "order by pwd_user";
-      $q_syspwd = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_syspwd) > 0) {
-        while ($a_syspwd = mysql_fetch_array($q_syspwd)) {
+      $q_syspwd = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_syspwd) > 0) {
+        while ($a_syspwd = mysqli_fetch_array($q_syspwd)) {
 
           $q_string  = "select mu_id,mu_account,mu_comment,mu_locked,mu_ticket ";
           $q_string .= "from manageusers ";
           $q_string .= "where mu_username = \"" . $a_syspwd['pwd_user'] . "\" ";
-          $q_manageusers = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          if (mysql_num_rows($q_manageusers) == 0) {
+          $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_manageusers) == 0) {
             $account = "--";
             $locked = "--";
             $a_manageusers['mu_id'] = 0;
@@ -188,7 +188,7 @@
             $a_manageusers['mu_comment'] = '';
             $a_manageusers['mu_ticket'] = '';
           } else {
-            $a_manageusers = mysql_fetch_array($q_manageusers);
+            $a_manageusers = mysqli_fetch_array($q_manageusers);
 
             $account = "--";
             if ($a_manageusers['mu_account'] == 0) {
@@ -217,8 +217,8 @@
           $q_string  = "select grp_name ";
           $q_string .= "from sysgrp ";
           $q_string .= "where grp_companyid = " . $formVars['pwd_companyid'] . " and grp_gid = " . $a_syspwd['pwd_gid'] . " ";
-          $q_sysgrp = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          $a_sysgrp = mysql_fetch_array($q_sysgrp);
+          $q_sysgrp = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_sysgrp = mysqli_fetch_array($q_sysgrp);
 
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('users.fill.php?id=" . $a_manageusers['mu_id'] . "&pwd_id=" . $a_syspwd['pwd_id'] . "');showDiv('users-hide');\">";
           $linkend   = "</a>";
@@ -246,11 +246,11 @@
         $output .= "</tr>\n";
       }
 
-      mysql_free_result($q_syspwd);
+      mysqli_free_result($q_syspwd);
 
       $output .= "</table>\n";
 
-      print "document.getElementById('users_table').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('users_table').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.edit.mu_update.disabled = true;\n";
     } else {
