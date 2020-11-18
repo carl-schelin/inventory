@@ -127,8 +127,8 @@ $(document).ready( function() {
   $q_string  = "select grp_changelog,grp_clfile ";
   $q_string .= "from groups ";
   $q_string .= "where grp_changelog != ''";
-  $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_groups = mysql_fetch_array($q_groups)) {
+  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_groups = mysqli_fetch_array($q_groups)) {
     $grouplist[$grpcount] = $a_groups['grp_changelog'];
     $filename[$grpcount++] = "." . $a_groups['grp_clfile'];
   }
@@ -144,8 +144,8 @@ $(document).ready( function() {
     $q_string  = "select inv_name ";
     $q_string .= "from inventory ";
     $q_string .= "where inv_status = 0 ";
-    $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-    while ($a_inventory = mysql_fetch_array($q_inventory)) {
+    $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
       if (file_exists( $Sitedir . "/" . $grouplist[$i] . "/" . $a_inventory['inv_name'] . $filename[$i])) {
         $svrlist = file($Sitedir . "/" . $grouplist[$i] . "/" . $a_inventory['inv_name'] . $filename[$i]);
@@ -194,12 +194,12 @@ $(document).ready( function() {
             }
             $finalname = $from;
             if ($svrlist[$j + $add + 1] != "\n") {
-              $finaltext = mysql_real_escape_string(rtrim($svrlist[$j + $add + 1]));
+              $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 1]));
             } else {
               if ($svrlist[$j + $add + 2] != "\n") {
-                $finaltext = mysql_real_escape_string(rtrim($svrlist[$j + $add + 2]));
+                $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 2]));
               } else {
-                $finaltext = mysql_real_escape_string(rtrim($svrlist[$j + $add + 3]));
+                $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 3]));
               }
             }
 
@@ -245,8 +245,8 @@ $(document).ready( function() {
     $q_string  = "select cl_name ";
     $q_string .= "from changelog ";
     $q_string .= "where cl_delete = 0 ";
-    $q_changelog = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-    while ($a_changelog = mysql_fetch_array($q_changelog)) {
+    $q_changelog = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    while ($a_changelog = mysqli_fetch_array($q_changelog)) {
 
       if (file_exists( $Sitedir . "/" . $grouplist[$i] . "/" . $a_changelog['cl_name'] . $filename[$i])) {
         $svrlist = file($Sitedir . "/" . $grouplist[$i] . "/" . $a_changelog['cl_name'] . $filename[$i]);
@@ -295,12 +295,12 @@ $(document).ready( function() {
             }
             $finalname = $from;
             if ($svrlist[$j + $add + 1] != "\n") {
-              $finaltext = mysql_real_escape_string(rtrim($svrlist[$j + $add + 1]));
+              $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 1]));
             } else {
               if ($svrlist[$j + $add + 2] != "\n") {
-                $finaltext = mysql_real_escape_string(rtrim($svrlist[$j + $add + 2]));
+                $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 2]));
               } else {
-                $finaltext = mysql_real_escape_string(rtrim($svrlist[$j + $add + 3]));
+                $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 3]));
               }
             }
 
