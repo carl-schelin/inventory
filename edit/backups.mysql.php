@@ -90,7 +90,7 @@
 
         logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
 
-        mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+        mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
       }
 
@@ -102,8 +102,8 @@
         $q_string .= "bu_notes ";
         $q_string .= "from backups ";
         $q_string .= "where bu_companyid = " . $formVars['copyfrom'];
-        $q_backups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_backups = mysql_fetch_array($q_backups)) {
+        $q_backups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_backups = mysqli_fetch_array($q_backups)) {
 
           $q_string =
             "bu_companyid =   " . $formVars['bu_companyid']  . "," .
@@ -127,7 +127,7 @@
             "bu_notes     = \"" . $a_backups['bu_notes']     . "\"";
 
           $query = "insert into backups set bu_id = NULL, " . $q_string;
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
         }
       }
     } else {
