@@ -162,8 +162,8 @@
   $q_string .= $leftjoin;
   $q_string .= $where;
   $q_string .= $orderby;
-  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">";
     $linkend   = "</a>";
@@ -178,9 +178,9 @@
       $q_string  = "select slv_value ";
       $q_string .= "from supportlevel ";
       $q_string .= "where slv_id = " . $a_inventory['inv_response'];
-      $q_supportlevel = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_supportlevel) > 0) {
-        $a_supportlevel = mysql_fetch_array($q_supportlevel);
+      $q_supportlevel = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_supportlevel) > 0) {
+        $a_supportlevel = mysqli_fetch_array($q_supportlevel);
         $inv_response = $a_supportlevel['slv_value'];
         
       } else {
@@ -193,9 +193,9 @@
       $q_string  = "select slv_value ";
       $q_string .= "from supportlevel ";
       $q_string .= "where slv_id = " . $a_inventory['hw_response'];
-      $q_supportlevel = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_supportlevel) > 0) {
-        $a_supportlevel = mysql_fetch_array($q_supportlevel);
+      $q_supportlevel = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_supportlevel) > 0) {
+        $a_supportlevel = mysqli_fetch_array($q_supportlevel);
         $hw_response = $a_supportlevel['slv_value'];
       } else {
         $hw_response = "Unassigned";
