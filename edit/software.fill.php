@@ -26,9 +26,9 @@
       $q_string .= "sw_licenseid,sw_supportid,sw_department,sw_facing,sw_notification,sw_primary,sw_eolticket,sw_locked ";
       $q_string .= "from software ";
       $q_string .= "where sw_id = " . $formVars['id'];
-      $q_software = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_software = mysql_fetch_array($q_software);
-      mysql_free_result($q_software);
+      $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_software = mysqli_fetch_array($q_software);
+      mysqli_free_result($q_software);
 
       $group         = return_Index($a_software['sw_group'],       "select grp_id from groups where grp_disabled = 0 order by grp_name");
       $product       = return_Index($a_software['sw_product'],     "select prod_id from products where prod_id != 0 order by prod_name");
@@ -37,12 +37,12 @@
       $license       = return_Index($a_software['sw_licenseid'],   "select lic_id from licenses left join products on products.prod_id = licenses.lic_project order by prod_name,lic_key,lic_id");
       $department    = return_Index($a_software['sw_department'],  "select dep_id from department order by dep_unit,dep_name");
 
-      print "document.edit.sw_vendor.value = '"       . mysql_real_escape_string($a_software['sw_vendor'])       . "';\n";
-      print "document.edit.sw_software.value = '"     . mysql_real_escape_string($a_software['sw_software'])     . "';\n";
-      print "document.edit.sw_type.value = '"         . mysql_real_escape_string($a_software['sw_type'])         . "';\n";
-      print "document.edit.sw_notification.value = '" . mysql_real_escape_string($a_software['sw_notification']) . "';\n";
-      print "document.edit.sw_eol.value = '"          . mysql_real_escape_string($a_software['sw_eol'])          . "';\n";
-      print "document.edit.sw_eolticket.value = '"    . mysql_real_escape_string($a_software['sw_eolticket'])    . "';\n";
+      print "document.edit.sw_vendor.value = '"       . mysqli_real_escape_string($a_software['sw_vendor'])       . "';\n";
+      print "document.edit.sw_software.value = '"     . mysqli_real_escape_string($a_software['sw_software'])     . "';\n";
+      print "document.edit.sw_type.value = '"         . mysqli_real_escape_string($a_software['sw_type'])         . "';\n";
+      print "document.edit.sw_notification.value = '" . mysqli_real_escape_string($a_software['sw_notification']) . "';\n";
+      print "document.edit.sw_eol.value = '"          . mysqli_real_escape_string($a_software['sw_eol'])          . "';\n";
+      print "document.edit.sw_eolticket.value = '"    . mysqli_real_escape_string($a_software['sw_eolticket'])    . "';\n";
 
       print "document.edit.sw_group['"      . $group      . "'].selected = true;\n";
       print "document.edit.sw_product['"    . $product    . "'].selected = true;\n";
