@@ -78,16 +78,16 @@
           $q_string  = "select usr_id ";
           $q_string .= "from users ";
           $q_string .= "where usr_name = '" . $usr_name . "' and usr_passwd = '" . $usr_passwd . "' ";
-          $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 # Check that at least one row was returned 
-          if (mysql_num_rows($q_users) > 0) { 
+          if (mysqli_num_rows($q_users) > 0) { 
 
             $q_string  = "update ";
             $q_string .= "users ";
             $q_string .= "set usr_passwd = '" . $new_passwd . "',usr_reset = 0 ";
             $q_string .= "where usr_name = '" . $usr_name . "' and usr_passwd = '" . $usr_passwd . "'";
-            $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
             logaccess($_SESSION['uid'], "pwreset.inc.php", $_SESSION['username'] . " has reset their password.");
 
