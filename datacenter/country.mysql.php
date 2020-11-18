@@ -48,7 +48,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['cn_country']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -94,9 +94,9 @@
       $q_string  = "select cn_id,cn_acronym,cn_country ";
       $q_string .= "from country ";
       $q_string .= "order by cn_country ";
-      $q_country = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_country) > 0) {
-        while ($a_country = mysql_fetch_array($q_country)) {
+      $q_country = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_country) > 0) {
+        while ($a_country = mysqli_fetch_array($q_country)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('country.fill.php?id="  . $a_country['cn_id'] . "');jQuery('#dialogCountry').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('country.del.php?id=" . $a_country['cn_id'] . "');\">";
@@ -119,9 +119,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_country);
+      mysqli_free_result($q_country);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
