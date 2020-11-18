@@ -177,8 +177,8 @@ $(document).ready( function() {
   $q_string  = "select st_id,st_state ";
   $q_string .= "from states ";
   $q_string .= "order by st_state ";
-  $q_states = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_states = mysql_fetch_array($q_states)) {
+  $q_states = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_states = mysqli_fetch_array($q_states)) {
     print "<option value=\"" . $a_states['st_id'] . "\">" . $a_states['st_state'] . "</option>\n";
   }
 
