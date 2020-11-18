@@ -25,11 +25,11 @@
       $q_string  = "select res_name ";
       $q_string .= "from resources ";
       $q_string .= "where res_id = " . $formVars['id'];
-      $q_resources = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_resources = mysql_fetch_array($q_resources);
-      mysql_free_result($q_resources);
+      $q_resources = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_resources = mysqli_fetch_array($q_resources);
+      mysqli_free_result($q_resources);
 
-      print "document.resources.res_name.value = '" . mysql_real_escape_string($a_resources['res_name'])        . "';\n";
+      print "document.resources.res_name.value = '" . mysqli_real_escape_string($a_resources['res_name'])        . "';\n";
 
       print "document.resources.id.value = " . $formVars['id'] . ";\n";
 
