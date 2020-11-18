@@ -91,7 +91,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['fs_companyid']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -106,8 +106,8 @@
           $q_string  = "select fs_backup,fs_device,fs_mount,fs_size,fs_wwid,fs_subsystem,fs_volume,fs_lun,fs_volid,fs_path,fs_switch,fs_port,fs_sysport ";
           $q_string .= "from filesystem ";
           $q_string .= "where fs_companyid = " . $formVars['copyfrom'];
-          $q_filesystem = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          while ($a_filesystem = mysql_fetch_array($q_filesystem)) {
+          $q_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_filesystem = mysqli_fetch_array($q_filesystem)) {
 
             $q_string = 
               "fs_companyid =   " . $formVars['fs_companyid']     . "," .
@@ -127,7 +127,7 @@
               "fs_sysport   = \"" . $a_filesystem['fs_sysport']   . "\"";
 
             $query = "insert into filesystem set fs_id = NULL, " . $q_string;
-            mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+            mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
           }
         }
       }
@@ -154,8 +154,8 @@
         $q_string .= "from inventory ";
         $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name";
-        $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_inventory = mysql_fetch_array($q_inventory)) {
+        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inventory = mysqli_fetch_array($q_inventory)) {
           $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . htmlspecialchars($a_inventory['inv_name']) . "</option>\n";
         }
 
@@ -181,8 +181,8 @@
         $q_string .= "from groups ";
         $q_string .= "where grp_disabled = 0 ";
         $q_string .= "order by grp_name ";
-        $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        while ($a_groups = mysql_fetch_array($q_groups)) {
+        $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_groups = mysqli_fetch_array($q_groups)) {
           $output .= "<option value=\"" . $a_groups['grp_id'] . "\">" . htmlspecialchars($a_groups['grp_name']) . "</option>\n";
         }
 
@@ -211,7 +211,7 @@
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
-        print "document.getElementById('filesystem_form').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('filesystem_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       }
 
@@ -268,9 +268,9 @@
       $q_string  = "select bu_include ";
       $q_string .= "from backups ";
       $q_string .= "where bu_companyid = " . $formVars['fs_companyid'] . " ";
-      $q_backups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_backups) > 0) {
-        $a_backups = mysql_fetch_array($q_backups);
+      $q_backups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_backups) > 0) {
+        $a_backups = mysqli_fetch_array($q_backups);
       } else {
         $a_backups['bu_include'] = 0;
       }
@@ -281,9 +281,9 @@
       $q_string .= "left join groups on groups.grp_id = filesystem.fs_group ";
       $q_string .= "where fs_companyid = " . $formVars['fs_companyid'] . " ";
       $q_string .= "order by fs_device";
-      $q_filesystem = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_filesystem) > 0) {
-        while ($a_filesystem = mysql_fetch_array($q_filesystem)) {
+      $q_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_filesystem) > 0) {
+        while ($a_filesystem = mysqli_fetch_array($q_filesystem)) {
 
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('filesystem.fill.php?id=" . $a_filesystem['fs_id'] . "');showDiv('filesystem-hide');\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_filesystem('filesystem.del.php?id=" . $a_filesystem['fs_id'] . "');\">";
@@ -320,11 +320,11 @@
           $output .= "</tr>\n";
       }
 
-      mysql_free_result($q_filesystem);
+      mysqli_free_result($q_filesystem);
 
       $output .= "</table>\n";
 
-      print "document.getElementById('filesystem_table').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('filesystem_table').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.edit.fs_update.disabled = true;\n";
     } else {
