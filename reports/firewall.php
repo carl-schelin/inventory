@@ -107,8 +107,8 @@
 
   $q_string  = "select zone_id,zone_name ";
   $q_string .= "from ip_zones";
-  $q_ip_zones = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_ip_zones = mysql_fetch_array($q_ip_zones)) {
+  $q_ip_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_ip_zones = mysqli_fetch_array($q_ip_zones)) {
     $zoneval[$a_ip_zones['zone_id']] = $a_ip_zones['zone_name'];
   }
 
@@ -187,9 +187,9 @@
   $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= $where . " ";
   $q_string .= $orderby;
-  $q_firewall = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  if (mysql_num_rows($q_firewall) > 0) {
-    while ($a_firewall = mysql_fetch_array($q_firewall)) {
+  $q_firewall = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_firewall) > 0) {
+    while ($a_firewall = mysqli_fetch_array($q_firewall)) {
 
       $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_firewall['inv_id'] . "#network\">";
       $linkend   = "</a>";
