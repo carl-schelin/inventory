@@ -23,7 +23,7 @@ function logaccess($user, $source, $detail) {
     "log_source    = \"" . $source . "\", " .
     "log_detail    = \"" . $detail . "\"";
 
-  $insert = mysqli_query($db, "$query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $insert = mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 }
 
 function check_userlevel( $p_level ) {
@@ -32,7 +32,7 @@ function check_userlevel( $p_level ) {
     $q_string  = "select usr_level ";
     $q_string .= "from users ";
     $q_string .= "where usr_id = " . $_SESSION['uid'];
-    $q_user_level = mysqli_query($db, "$q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $q_user_level = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_user_level = mysqli_fetch_array($q_user_level);
 
     if ($a_user_level['usr_level'] <= $p_level) {
@@ -49,7 +49,7 @@ function last_insert_id() {
   include('settings.php');
 
   $query = "select last_insert_id()";
-  $q_result = mysqli_query($db, "$query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
+  $q_result = mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
   $a_result = mysqli_fetch_array($q_result);
 
   return ($a_result['last_insert_id()']);
@@ -75,7 +75,7 @@ function changelog( $p_serverid, $p_changed, $p_notes, $p_user, $p_table, $p_col
       "and mod_table  = \"" . $p_table  . "\" " . 
       "and mod_column = \"" . $p_column . "\" " .
       "and mod_companyid =   " . $p_serverid;
-#  $result = mysqli_query($db, "$cl_query);
+#  $result = mysqli_query($db, $cl_query);
 
   $cl_query  = 
     "mod_companyid    =   " . $p_serverid     . "," . 
@@ -89,7 +89,7 @@ function changelog( $p_serverid, $p_changed, $p_notes, $p_user, $p_table, $p_col
 
   $query = "insert into modified set mod_id = null," . $cl_query;
 
-  $result = mysqli_query($db, "$query);
+  $result = mysqli_query($db, $query);
 
 }
 
@@ -109,7 +109,7 @@ function check_grouplevel( $p_group ) {
     $q_string  = "select usr_level,usr_group ";
     $q_string .= "from users ";
     $q_string .= "where usr_id = " . $_SESSION['uid'];
-    $q_users = mysqli_query($db, "$q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_users = mysqli_fetch_array($q_users);
 
     if ($p_group == $a_users['usr_group'] || $a_users['usr_level'] == $AL_Admin) {
@@ -120,7 +120,7 @@ function check_grouplevel( $p_group ) {
     $q_string  = "select gpl_id ";
     $q_string .= "from grouplist ";
     $q_string .= "where gpl_user = " . $_SESSION['uid'] . " and gpl_group = " . $p_group . " ";
-    $q_grouplist = mysqli_query($db, "$q_string) or die(header("Location: " . $Siteroot . "/error.php?script=function.php&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=function.php&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     if (mysqli_num_rows($q_grouplist) > 0) {
       return(1);
     }
@@ -212,7 +212,7 @@ function return_Index($p_check, $p_string) {
 
   $r_index = 0;
   $count = 1;
-  $q_table = mysqli_query($db, "$p_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_table = mysqli_query($db, $p_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_table = mysqli_fetch_row($q_table)) {
     if ($p_check == $a_table[0]) {
       $r_index = $count;
@@ -266,14 +266,14 @@ function return_ServerID( $p_string ) {
   $q_string  = "select inv_id ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_status = 0 and inv_name = '" . $p_hostname[0] . "' ";
-  $q_inventory = mysqli_query($db, "$q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
   if (mysqli_num_rows($q_inventory) == 0) {
     $q_string  = "select inv_id ";
     $q_string .= "from inventory ";
     $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
     $q_string .= "where inv_status = 0 and int_server = '" . $p_hostname[0] . "' ";
-    $q_inventory = mysqli_query($db, "$q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
     if (mysqli_num_rows($q_inventory) > 0) {
       $a_inventory = mysqli_fetch_array($q_inventory);
@@ -291,14 +291,14 @@ function return_ServerID( $p_string ) {
     $q_string  = "select inv_id ";
     $q_string .= "from inventory ";
     $q_string .= "where inv_name = '" . $p_hostname[0] . "' ";
-    $q_inventory = mysqli_query($db, "$q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
     if (mysqli_num_rows($q_inventory) == 0) {
       $q_string  = "select inv_id ";
       $q_string .= "from inventory ";
       $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
       $q_string .= "where int_server = '" . $p_hostname[0] . "' ";
-      $q_inventory = mysqli_query($db, "$q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
       if (mysqli_num_rows($q_inventory) > 0) {
         $a_inventory = mysqli_fetch_array($q_inventory);
@@ -324,7 +324,7 @@ function return_Virtual( $p_string ) {
   $q_string .= "from hardware ";
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
   $q_string .= "where hw_companyid = " . $p_string . " and mod_primary = 1 and mod_virtual = 1 ";
-  $q_hardware = mysqli_query($db, "$q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 # if there are any rows, then the server is a virtual machine.
   if (mysqli_num_rows($q_hardware) > 0) {
@@ -467,7 +467,7 @@ function return_System( $p_string ) {
   $q_string = "select sw_software ";
   $q_string .= "from software ";
   $q_string .= "where sw_type = 'OS' and sw_companyid = " . $p_string;
-  $q_software = mysqli_query($db, "$q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   $a_software = mysqli_fetch_array($q_software);
 
   $output = $a_software['sw_software'];
@@ -583,7 +583,7 @@ function show_Help( $p_script ) {
   $q_string  = "select help_id ";
   $q_string .= "from help ";
   $q_string .= "where help_user = " . $_SESSION['uid'] . " and help_screen = '" . $p_script . "' ";
-  $q_help = mysqli_query($db, "$q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_help = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_help) == 0) {
     $q_string  = "insert ";
     $q_string .= "into help ";
@@ -591,7 +591,7 @@ function show_Help( $p_script ) {
     $q_string .= "help_user = " . $_SESSION['uid'] . ",";
     $q_string .= "help_screen = '" . $p_script . "' ";
 
-    $result = mysqli_query($db, "$q_string) or die($q_string . ": " . mysqli_error($db));
+    $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
     return 1;
   } else {
