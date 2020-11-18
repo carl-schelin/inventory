@@ -241,8 +241,8 @@ $(document).ready( function() {
   $q_string  = "select typ_id,typ_name ";
   $q_string .= "from loc_types ";
   $q_string .= "order by typ_name ";
-  $q_loc_types = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_loc_types = mysql_fetch_array($q_loc_types)) {
+  $q_loc_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_loc_types = mysqli_fetch_array($q_loc_types)) {
     print "<option value=\"" . $a_loc_types['typ_id'] . "\">" . $a_loc_types['typ_name'] . "</option>\n";
   }
 ?>
@@ -253,8 +253,8 @@ $(document).ready( function() {
   $q_string  = "select env_id,env_name ";
   $q_string .= "from environment ";
   $q_string .= "order by env_id ";
-  $q_environment = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_environment = mysql_fetch_array($q_environment)) {
+  $q_environment = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_environment = mysqli_fetch_array($q_environment)) {
     print "<option value=\"" . $a_environment['env_id'] . "\">" . $a_environment['env_name'] . "</option>\n";
   }
 ?>
@@ -277,8 +277,8 @@ $(document).ready( function() {
   $q_string .= "left join states on states.st_id = cities.ct_state ";
   $q_string .= "left join country on country.cn_id = states.st_country ";
   $q_string .= "order by ct_city,st_acronym,cn_acronym ";
-  $q_cities = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_cities = mysql_fetch_array($q_cities)) {
+  $q_cities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_cities = mysqli_fetch_array($q_cities)) {
     print "<option value=\"" . $a_cities['ct_id'] . "\">" . $a_cities['ct_city'] . ", " . $a_cities['st_acronym'] . ", " . $a_cities['cn_acronym'] . "</option>";
   }
 ?>
