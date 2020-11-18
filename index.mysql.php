@@ -34,9 +34,9 @@
       $q_string .= "from states ";
       $q_string .= "where st_country = " . $formVars['country'] . " ";
       $q_string .= "order by st_state ";
-      $q_states = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_states) > 0) {
-        while ($a_states = mysql_fetch_array($q_states)) {
+      $q_states = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_states) > 0) {
+        while ($a_states = mysqli_fetch_array($q_states)) {
           print "selbox.options[selbox.options.length] = new Option(\"" . $a_states['st_state'] . "\"," . $a_states['st_id'] . ");\n";
           if ($formVars['state'] == $a_states['st_id']) {
             print "selbox.options[selbox.options.length - 1].selected = true;\n";
@@ -63,9 +63,9 @@
       $q_string .= "from cities ";
       $q_string .= "where ct_state = " . $formVars['state'] . " ";
       $q_string .= "order by ct_city ";
-      $q_cities = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_cities) > 0) {
-        while ($a_cities = mysql_fetch_array($q_cities)) {
+      $q_cities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_cities) > 0) {
+        while ($a_cities = mysqli_fetch_array($q_cities)) {
           print "selbox.options[selbox.options.length] = new Option(\"" . $a_cities['ct_city'] . "\"," . $a_cities['ct_id'] . ");\n";
           if ($formVars['city'] == $a_cities['ct_id']) {
             print "selbox.options[selbox.options.length - 1].selected = true;\n";
@@ -92,9 +92,9 @@
       $q_string .= "from locations ";
       $q_string .= "where loc_city = " . $formVars['city'] . " ";
       $q_string .= "order by loc_name ";
-      $q_locations = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_locations) > 0) {
-        while ($a_locations = mysql_fetch_array($q_locations)) {
+      $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_locations) > 0) {
+        while ($a_locations = mysqli_fetch_array($q_locations)) {
           print "selbox.options[selbox.options.length] = new Option(\"" . $a_locations['loc_name'] . "\"," . $a_locations['loc_id'] . ");\n";
           if ($formVars['location'] == $a_locations['loc_id']) {
             print "selbox.options[selbox.options.length - 1].selected = true;\n";
@@ -113,9 +113,9 @@
         $q_string .= "from locations ";
         $q_string .= "where loc_type = 1 ";
         $q_string .= "order by loc_name ";
-        $q_locations = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-        if (mysql_num_rows($q_locations) > 0) {
-          while ($a_locations = mysql_fetch_array($q_locations)) {
+        $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        if (mysqli_num_rows($q_locations) > 0) {
+          while ($a_locations = mysqli_fetch_array($q_locations)) {
             print "selbox.options[selbox.options.length] = new Option(\"" . $a_locations['loc_name'] . "\"," . $a_locations['loc_id'] . ");\n";
             if ($formVars['location'] == $a_locations['loc_id']) {
               print "selbox.options[selbox.options.length - 1].selected = true;\n";
