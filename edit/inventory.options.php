@@ -31,8 +31,8 @@
       $q_string  = "select inv_product,inv_project ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_id = " . $formVars['server'] . " ";
-      $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_inventory = mysql_fetch_array($q_inventory);
+      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inventory = mysqli_fetch_array($q_inventory);
 
       print "var selbox = document.edit.inv_project;\n\n";
       print "selbox.options.length = 0;\n";
@@ -43,10 +43,10 @@
       $q_string .= "from projects ";
       $q_string .= "where prj_product = " . $formVars['product'] . " ";
       $q_string .= "order by prj_name ";
-      $q_projects = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+      $q_projects = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 // create the javascript bit for populating the model dropdown box.
-      while ($a_projects = mysql_fetch_array($q_projects) ) {
+      while ($a_projects = mysqli_fetch_array($q_projects) ) {
         if ($formVars['product'] > 0) {
           if ($formVars['product'] == $a_inventory['inv_product'] && $a_projects['prj_id'] == $a_inventory['inv_project']) {
             print "selbox.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_projects['prj_name']) . "\"," . $a_projects['prj_id'] . ", 1);\n";
