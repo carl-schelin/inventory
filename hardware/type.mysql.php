@@ -50,7 +50,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['itp_name']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -104,9 +104,9 @@
       $q_string  = "select itp_id,itp_name,itp_acronym,itp_description ";
       $q_string .= "from inttype ";
       $q_string .= "order by itp_name ";
-      $q_inttype = mysql_query($q_string) or die (mysql_error());
-      if (mysql_num_rows($q_inttype) > 0) {
-        while ($a_inttype = mysql_fetch_array($q_inttype)) {
+      $q_inttype = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      if (mysqli_num_rows($q_inttype) > 0) {
+        while ($a_inttype = mysqli_fetch_array($q_inttype)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('type.fill.php?id="  . $a_inttype['itp_id'] . "');showDiv('type-hide');\">";
           $linkdel   = "<a href=\"#\" onclick=\"delete_line('type.del.php?id=" . $a_inttype['itp_id'] . "');\">";
@@ -131,9 +131,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_inttype);
+      mysqli_free_result($q_inttype);
 
-      print "document.getElementById('table_mysql').innerHTML = '"   . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '"   . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.interfacetype.update.disabled = true;\n";
 
