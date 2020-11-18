@@ -31,10 +31,10 @@
       $q_string .= "from models ";
       $q_string .= "where mod_type = " . $formVars['hw_type'] . " ";
       $q_string .= "order by mod_vendor,mod_name";
-      $q_models = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+      $q_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 // create the javascript bit for populating the model dropdown box.
-      while ($a_models = mysql_fetch_array($q_models) ) {
+      while ($a_models = mysqli_fetch_array($q_models) ) {
         print "selbox.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_models['mod_name']) . " (" . htmlspecialchars($a_models['mod_vendor']) . ")\"," . $a_models['mod_id'] . ");\n";
       }
     } else {
