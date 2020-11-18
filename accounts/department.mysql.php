@@ -56,7 +56,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['dep_name']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -107,9 +107,9 @@
       $q_string  = "select dep_id,dep_unit,dep_dept,dep_name,bus_name ";
       $q_string .= "from department ";
       $q_string .= "left join business_unit on business_unit.bus_unit = department.dep_unit ";
-      $q_department = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_department) > 0) {
-        while ($a_department = mysql_fetch_array($q_department)) {
+      $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_department) > 0) {
+        while ($a_department = mysqli_fetch_array($q_department)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('department.fill.php?id="  . $a_department['dep_id'] . "');jQuery('#dialogDepartment').dialog('open');\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('department.del.php?id=" . $a_department['dep_id'] . "');\">";
@@ -131,11 +131,11 @@
         $output .= "</tr>";
       }
 
-      mysql_free_result($q_department);
+      mysqli_free_result($q_department);
 
       $output .= "</table>";
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.department.dep_unit.value = 0;\n";
       print "document.department.dep_dept.value = 0;\n";
