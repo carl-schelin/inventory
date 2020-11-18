@@ -104,20 +104,20 @@ if (isset($_POST['login'])) {
       $q_string  = "select usr_id,usr_first,usr_last,usr_group,usr_deptname,usr_email,usr_disposition ";
       $q_string .= "from users ";
       $q_string .= "where usr_name='$user' and usr_passwd='$pass'"; 
-      $q_users = mysql_query($q_string);
+      $q_users = mysqli_query($db, $q_string);
 
 // Check that at least one row was returned 
-      $c_users = mysql_num_rows($q_users); 
+      $c_users = mysqli_num_rows($q_users); 
 
       if ($c_users > 0) { 
-        while ($a_users = mysql_fetch_array($q_users)) { 
+        while ($a_users = mysqli_fetch_array($q_users)) { 
 
           $q_string  = "update users ";
           $q_string .= "set ";
           $q_string .= "usr_checkin = '" . $checkin . "',";
           $q_string .= "usr_ipaddr = '" . $ipaddr . "' ";
           $q_string .= "where usr_id = " . $a_users['usr_id'] . " ";
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 // Start the session and register a variable 
           session_start(); 
