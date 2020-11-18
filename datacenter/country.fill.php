@@ -25,12 +25,12 @@
       $q_string  = "select cn_acronym,cn_country ";
       $q_string .= "from country ";
       $q_string .= "where cn_id = " . $formVars['id'];
-      $q_country = mysql_query($q_string) or die (mysql_error());
-      $a_country = mysql_fetch_array($q_country);
-      mysql_free_result($q_country);
+      $q_country = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      $a_country = mysqli_fetch_array($q_country);
+      mysqli_free_result($q_country);
 
-      print "document.country.cn_acronym.value = '" . mysql_real_escape_string($a_country['cn_acronym']) . "';\n";
-      print "document.country.cn_country.value = '" . mysql_real_escape_string($a_country['cn_country']) . "';\n";
+      print "document.country.cn_acronym.value = '" . mysqli_real_escape_string($a_country['cn_acronym']) . "';\n";
+      print "document.country.cn_country.value = '" . mysqli_real_escape_string($a_country['cn_country']) . "';\n";
 
       print "document.country.id.value = " . $formVars['id'] . ";\n";
 
