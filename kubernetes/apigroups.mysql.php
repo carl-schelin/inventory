@@ -117,7 +117,7 @@
 
       mysqli_free_result($q_apigroups);
 
-      print "document.getElementById('apigroups_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('apigroups_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.apigroups.api_name.value = '';\n";
 
