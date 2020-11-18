@@ -242,9 +242,9 @@ $(document).ready( function() {
   $q_string .= "left join states       on states.st_id          = locations.loc_state ";
   $q_string .= $where . " and inv_status = 0 and hw_supid_verified = 1 ";
   $q_string .= $orderby;
-  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
-  while ( $a_inventory = mysql_fetch_array($q_inventory) ) {
+  while ( $a_inventory = mysqli_fetch_array($q_inventory) ) {
     $class = "ui-widget-content";
     if ($a_inventory['hw_supid_verified'] == 0) {
       $class = "ui-state-highlight";
@@ -256,15 +256,15 @@ $(document).ready( function() {
     $q_string  = "select slv_value ";
     $q_string .= "from supportlevel ";
     $q_string .= "where slv_id = " . $a_inventory['inv_response'] . " ";
-    $q_supportlevel = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-    $a_supportlevel = mysql_fetch_array($q_supportlevel);
+    $q_supportlevel = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_supportlevel = mysqli_fetch_array($q_supportlevel);
 
     $q_string  = "select usr_first,usr_last ";
     $q_string .= "from users ";
     $q_string .= "where usr_id = " . $a_inventory['hw_custodian'] . " ";
-    $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-    if (mysql_num_rows($q_users) > 0) {
-      $a_users = mysql_fetch_array($q_users);
+    $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    if (mysqli_num_rows($q_users) > 0) {
+      $a_users = mysqli_fetch_array($q_users);
       $custodian = $a_users['usr_first'] . " " . $a_users['usr_last'];
     } else {
       $custodian = 'Unknown';
@@ -273,9 +273,9 @@ $(document).ready( function() {
     $q_string  = "select usr_first,usr_last ";
     $q_string .= "from users ";
     $q_string .= "where usr_id = " . $a_inventory['hw_buc'] . " ";
-    $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-    if (mysql_num_rows($q_users) > 0) {
-      $a_users = mysql_fetch_array($q_users);
+    $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    if (mysqli_num_rows($q_users) > 0) {
+      $a_users = mysqli_fetch_array($q_users);
       $buc = $a_users['usr_first'] . " " . $a_users['usr_last'];
     } else {
       $buc = 'Unknown';
@@ -284,9 +284,9 @@ $(document).ready( function() {
     $q_string  = "select bus_name ";
     $q_string .= "from business_unit ";
     $q_string .= "where bus_id = " . $a_inventory['hw_business'] . " ";
-    $q_business_unit = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-    if (mysql_num_rows($q_business_unit) > 0) {
-      $a_business_unit = mysql_fetch_array($q_business_unit);
+    $q_business_unit = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    if (mysqli_num_rows($q_business_unit) > 0) {
+      $a_business_unit = mysqli_fetch_array($q_business_unit);
       $business_unit = $a_business_unit['bus_name'];
     } else {
       $business_unit = 'Unknown';
@@ -295,9 +295,9 @@ $(document).ready( function() {
     $q_string  = "select po_number ";
     $q_string .= "from purchaseorder ";
     $q_string .= "where po_id = " . $a_inventory['hw_poid'] . " ";
-    $q_purchaseorder = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-    if (mysql_num_rows($q_purchaseorder) > 0) {
-      $a_purchaseorder = mysql_fetch_array($q_purchaseorder);
+    $q_purchaseorder = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    if (mysqli_num_rows($q_purchaseorder) > 0) {
+      $a_purchaseorder = mysqli_fetch_array($q_purchaseorder);
       $purchaseorder = $a_purchaseorder['po_number'];
     } else {
       $purchaseorder = 'Unknown';
@@ -306,9 +306,9 @@ $(document).ready( function() {
     $q_string  = "select dep_name ";
     $q_string .= "from department ";
     $q_string .= "where dep_unit = " . $a_inventory['hw_business'] . " and dep_dept = " . $a_inventory['hw_dept'] . " ";
-    $q_department = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-    if (mysql_num_rows($q_department) > 0) {
-      $a_department = mysql_fetch_array($q_department);
+    $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    if (mysqli_num_rows($q_department) > 0) {
+      $a_department = mysqli_fetch_array($q_department);
       $department = $a_department['dep_name'];
     } else {
       $department = 'Unknown';
@@ -318,9 +318,9 @@ $(document).ready( function() {
       $q_string  = "select prod_name ";
       $q_string .= "from products ";
       $q_string .= "where prod_id = " . $a_inventory['hw_product'] . " ";
-      $q_products = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_products) > 0) {
-        $a_products = mysql_fetch_array($q_products);
+      $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_products) > 0) {
+        $a_products = mysqli_fetch_array($q_products);
         $products = $a_products['prod_name'];
       } else {
         $products = 'Unknown';
