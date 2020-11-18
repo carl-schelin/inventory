@@ -25,14 +25,14 @@
       $q_string  = "select ct_city,ct_state,ct_clli ";
       $q_string .= "from cities ";
       $q_string .= "where ct_id = " . $formVars['id'];
-      $q_cities = mysql_query($q_string) or die (mysql_error());
-      $a_cities = mysql_fetch_array($q_cities);
-      mysql_free_result($q_cities);
+      $q_cities = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      $a_cities = mysqli_fetch_array($q_cities);
+      mysqli_free_result($q_cities);
 
       $state = return_Index($a_cities['ct_state'], "select st_id from states order by st_state");
 
-      print "document.cities.ct_city.value = '"    . mysql_real_escape_string($a_cities['ct_city'])    . "';\n";
-      print "document.cities.ct_clli.value = '"    . mysql_real_escape_string($a_cities['ct_clli'])    . "';\n";
+      print "document.cities.ct_city.value = '"    . mysqli_real_escape_string($a_cities['ct_city'])    . "';\n";
+      print "document.cities.ct_clli.value = '"    . mysqli_real_escape_string($a_cities['ct_clli'])    . "';\n";
 
       print "document.cities.ct_state['" . $state . "'].selected = true;\n";
 
