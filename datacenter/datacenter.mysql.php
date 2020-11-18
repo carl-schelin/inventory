@@ -76,18 +76,18 @@
           $q_string  = "select ct_state ";
           $q_string .= "from cities ";
           $q_string .= "where ct_id = " . $formVars['loc_city'];
-          $q_cities = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          if (mysql_num_rows($q_cities) > 0) {
-            $a_cities = mysql_fetch_array($q_cities);
+          $q_cities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_cities) > 0) {
+            $a_cities = mysqli_fetch_array($q_cities);
           } else {
             $a_cities['ct_state'] = 0;
           }
           $q_string  = "select st_country ";
           $q_string .= "from states ";
           $q_string .= "where st_id = " . $a_cities['ct_state'];
-          $q_states = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          if (mysql_num_rows($q_states) > 0) {
-            $a_states = mysql_fetch_array($q_states);
+          $q_states = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_states) > 0) {
+            $a_states = mysqli_fetch_array($q_states);
           } else {
             $a_states['st_country'] = 0;
           }
@@ -125,7 +125,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['loc_name']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -227,9 +227,9 @@
       $q_string .= "left join country on country.cn_id = states.st_country ";
       $q_string .= "left join environment on environment.env_id = locations.loc_environment ";
       $q_string .= "order by loc_west,loc_name,ct_city ";
-      $q_locations = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_locations) > 0) {
-        while ($a_locations = mysql_fetch_array($q_locations)) {
+      $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_locations) > 0) {
+        while ($a_locations = mysqli_fetch_array($q_locations)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('datacenter.fill.php?id="  . $a_locations['loc_id'] . "');jQuery('#dialogDatacenter').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('datacenter.del.php?id=" . $a_locations['loc_id'] . "');\">";
@@ -281,17 +281,17 @@
 
       $footer = "</table>";
 
-      mysql_free_result($q_locations);
+      mysqli_free_result($q_locations);
 
       $datacenter_output = $datacenterheader . $header . $datacenter . $footer;
       $psap_output       = $psapheader       . $header . $psap       . $footer;
       $noc_output        = $nocheader        . $header . $noc        . $footer;
       $customer_output   = $customerheader   . $header . $customer   . $footer;
 
-      print "document.getElementById('datacenter_mysql').innerHTML = '" . mysql_real_escape_string($datacenter_output) . "';\n\n";
-      print "document.getElementById('psap_mysql').innerHTML = '"       . mysql_real_escape_string($psap_output)       . "';\n\n";
-      print "document.getElementById('noc_mysql').innerHTML = '"        . mysql_real_escape_string($noc_output)        . "';\n\n";
-      print "document.getElementById('customer_mysql').innerHTML = '"   . mysql_real_escape_string($customer_output)   . "';\n\n";
+      print "document.getElementById('datacenter_mysql').innerHTML = '" . mysqli_real_escape_string($datacenter_output) . "';\n\n";
+      print "document.getElementById('psap_mysql').innerHTML = '"       . mysqli_real_escape_string($psap_output)       . "';\n\n";
+      print "document.getElementById('noc_mysql').innerHTML = '"        . mysqli_real_escape_string($noc_output)        . "';\n\n";
+      print "document.getElementById('customer_mysql').innerHTML = '"   . mysqli_real_escape_string($customer_output)   . "';\n\n";
 
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
