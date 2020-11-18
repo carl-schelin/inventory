@@ -21,15 +21,15 @@
   $q_string = "select cl_name "
             . "from changelog "
             . "where cl_id = " . $formVars['id'];
-  $q_changelog = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  $a_changelog = mysql_fetch_array($q_changelog);
+  $q_changelog = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_changelog = mysqli_fetch_array($q_changelog);
 
   $grpcount = 0;
   $q_string = "select grp_changelog,grp_clfile "
             . "from groups "
             . "where grp_changelog != ''";
-  $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_groups = mysql_fetch_array($q_groups)) {
+  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_groups = mysqli_fetch_array($q_groups)) {
     $grouplist[$grpcount] = $a_groups['grp_changelog'];
     $filename[$grpcount++] = "." . $a_groups['grp_clfile'];
   }
@@ -87,12 +87,12 @@
           }
           $finalname = $from . "</td>";
           if ($svrlist[$j + $add + 1] != "\n") {
-            $finaltext = mysql_real_escape_string(rtrim($svrlist[$j + $add + 1])) . "</td>";
+            $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 1])) . "</td>";
           } else {
             if ($svrlist[$j + $add + 2] != "\n") {
-              $finaltext = mysql_real_escape_string(rtrim($svrlist[$j + $add + 2])) . "</td>";
+              $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 2])) . "</td>";
             } else {
-              $finaltext = mysql_real_escape_string(rtrim($svrlist[$j + $add + 3])) . "</td>";
+              $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 3])) . "</td>";
             }
           }
           $allservers[$count++] = $finaldate . "<td class=\"ui-widget-content\">" . $finalserver . $finalname . "</a><td class=\"ui-widget-content\">" . $finaltext . "</tr>";
@@ -149,5 +149,5 @@
   $output .= "</table>";
 ?>
 
-document.getElementById('changelog_mysql').innerHTML = '<?php print mysql_real_escape_string($output); ?>';
+document.getElementById('changelog_mysql').innerHTML = '<?php print mysqli_real_escape_string($output); ?>';
 
