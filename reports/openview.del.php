@@ -25,19 +25,19 @@
       $q_string  = "select block_text ";
       $q_string .= "from alarm_blocks ";
       $q_string .= "where block_id = " . $formVars['id'] . " ";
-      $q_alarm_blocks = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_alarm_blocks = mysql_fetch_array($q_alarm_blocks) or die($q_string . ": " . mysql_error());
+      $q_alarm_blocks = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_alarm_blocks = mysqli_fetch_array($q_alarm_blocks) or die($q_string . ": " . mysqli_error($db));
 
       $q_string  = "update ";
       $q_string .= "alarms ";
       $q_string .= "set alarm_disabled = 0 ";
       $q_string .= "where alarm_text like \"%" . $a_alarm_blocks['block_text'] . "%\"";
-      $insert = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+      $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
       $q_string  = "delete ";
       $q_string .= "from alarm_blocks ";
       $q_string .= "where block_id= " . $formVars['id'];
-      $insert = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+      $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
       print "alert('Block deleted.');\n";
 
