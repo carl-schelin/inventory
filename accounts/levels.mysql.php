@@ -55,7 +55,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['lvl_name']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -104,9 +104,9 @@
       $q_string  = "select lvl_id,lvl_name,lvl_level,lvl_disabled ";
       $q_string .= "from levels ";
       $q_string .= "order by lvl_level,lvl_name";
-      $q_levels = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_levels) > 0) {
-        while ($a_levels = mysql_fetch_array($q_levels)) {
+      $q_levels = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_levels) > 0) {
+        while ($a_levels = mysqli_fetch_array($q_levels)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('levels.fill.php?id=" . $a_levels['lvl_id'] . "');jQuery('#dialogLevel').dialog('open');\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_level('levels.del.php?id=" . $a_levels['lvl_id'] . "');\">";
@@ -134,9 +134,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_levels);
+      mysqli_free_result($q_levels);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.levels.lvl_name.value = '';\n";
       print "document.levels.lvl_level.value = '';\n";
