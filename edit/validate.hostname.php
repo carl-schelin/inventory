@@ -17,8 +17,8 @@
   $q_string  = "select inv_id ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_name = \"" . $formVars['server'] . "\" and inv_status = 0";
-  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  $a_inventory = mysql_fetch_array($q_inventory);
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inventory = mysqli_fetch_array($q_inventory);
 
 # search for the name in the database of live servers
 # if the server is found then leave it at the default
@@ -28,7 +28,7 @@
 # change is approved and activate the button that 
 # permits the creation of the new server
 
-  if (mysql_num_rows($q_inventory) > 0) {
+  if (mysqli_num_rows($q_inventory) > 0) {
     print "document.getElementById('gohere').innerHTML = ' Server by that name already exists: <a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">" . $formVars['server'] . "</a>'\n";
 ?>
     document.edit.addnew.disabled = true;
