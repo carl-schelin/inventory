@@ -46,7 +46,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['api_name']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
 #          print "alert('" . $message . "');\n";
         } else {
@@ -91,9 +91,9 @@
       $q_string  = "select api_id,api_name ";
       $q_string .= "from apigroups ";
       $q_string .= "order by api_name ";
-      $q_apigroups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_apigroups) > 0) {
-        while ($a_apigroups = mysql_fetch_array($q_apigroups)) {
+      $q_apigroups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_apigroups) > 0) {
+        while ($a_apigroups = mysqli_fetch_array($db, $q_apigroups)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('apigroups.fill.php?id=" . $a_apigroups['api_id'] . "');jQuery('#dialogapiGroups').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('apigroups.del.php?id="  . $a_apigroups['api_id'] . "');\">";
@@ -115,9 +115,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_apigroups);
+      mysqli_free_result($q_apigroups);
 
-      print "document.getElementById('apigroups_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('apigroups_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.apigroups.api_name.value = '';\n";
 
