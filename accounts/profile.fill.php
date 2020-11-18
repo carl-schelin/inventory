@@ -27,9 +27,9 @@
       $q_string .= "usr_bigfix,usr_page,usr_pagemail ";
       $q_string .= "from users ";
       $q_string .= "where usr_id = " . $formVars['id'];
-      $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_users = mysql_fetch_array($q_users);
-      mysql_free_result($q_users);
+      $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_users = mysqli_fetch_array($q_users);
+      mysqli_free_result($q_users);
 
       $theme    = return_Index($a_users['usr_theme'],    "select theme_id from themes order by theme_title") - 1;
       $manager  = return_Index($a_users['usr_manager'],  "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
@@ -41,24 +41,24 @@
       $q_string .= "from department ";
       $q_string .= "left join business_unit on business_unit.bus_unit = department.dep_unit ";
       $q_string .= "order by bus_name,dep_name";
-      $q_department = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      while ($a_department = mysql_fetch_array($q_department)) {
+      $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_department = mysqli_fetch_array($q_department)) {
         if ($a_users['usr_deptname'] == $a_department['dep_id']) {
           $deptname = $count;
         }
         $count++;
       }
 
-      print "document.user.usr_first.value = '"      . mysql_real_escape_string($a_users['usr_first'])    . "';\n";
-      print "document.user.usr_last.value = '"       . mysql_real_escape_string($a_users['usr_last'])     . "';\n";
-      print "document.user.usr_email.value = '"      . mysql_real_escape_string($a_users['usr_email'])    . "';\n";
-      print "document.user.usr_altemail.value = '"   . mysql_real_escape_string($a_users['usr_altemail']) . "';\n";
-      print "document.user.usr_clientid.value = '"   . mysql_real_escape_string($a_users['usr_clientid']) . "';\n";
-      print "document.user.usr_phone.value = '"      . mysql_real_escape_string($a_users['usr_phone'])    . "';\n";
-      print "document.user.usr_notify.value = '"     . mysql_real_escape_string($a_users['usr_notify'])   . "';\n";
-      print "document.user.usr_freq.value = '"       . mysql_real_escape_string($a_users['usr_freq'])     . "';\n";
-      print "document.user.usr_page.value = '"       . mysql_real_escape_string($a_users['usr_page'])     . "';\n";
-      print "document.user.usr_pagemail.value = '"   . mysql_real_escape_string($a_users['usr_pagemail']) . "';\n";
+      print "document.user.usr_first.value = '"      . mysqli_real_escape_string($a_users['usr_first'])    . "';\n";
+      print "document.user.usr_last.value = '"       . mysqli_real_escape_string($a_users['usr_last'])     . "';\n";
+      print "document.user.usr_email.value = '"      . mysqli_real_escape_string($a_users['usr_email'])    . "';\n";
+      print "document.user.usr_altemail.value = '"   . mysqli_real_escape_string($a_users['usr_altemail']) . "';\n";
+      print "document.user.usr_clientid.value = '"   . mysqli_real_escape_string($a_users['usr_clientid']) . "';\n";
+      print "document.user.usr_phone.value = '"      . mysqli_real_escape_string($a_users['usr_phone'])    . "';\n";
+      print "document.user.usr_notify.value = '"     . mysqli_real_escape_string($a_users['usr_notify'])   . "';\n";
+      print "document.user.usr_freq.value = '"       . mysqli_real_escape_string($a_users['usr_freq'])     . "';\n";
+      print "document.user.usr_page.value = '"       . mysqli_real_escape_string($a_users['usr_page'])     . "';\n";
+      print "document.user.usr_pagemail.value = '"   . mysqli_real_escape_string($a_users['usr_pagemail']) . "';\n";
 
       print "document.user.usr_theme['"    . $theme     . "'].selected = true;\n";
       print "document.user.usr_deptname['" . $deptname  . "'].selected = true;\n";
