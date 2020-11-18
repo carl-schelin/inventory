@@ -84,8 +84,8 @@ tabs displaying all the hardware associated with the product, the installed soft
   $q_string  = "select prod_id,prod_name,prod_desc ";
   $q_string .= "from products ";
   $q_string .= "order by prod_name";
-  $q_products = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_products = mysql_fetch_array($q_products)) {
+  $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_products = mysqli_fetch_array($q_products)) {
 
     if ($formVars['csv'] == 'false') {
       print "<tr>\n";
@@ -100,7 +100,7 @@ tabs displaying all the hardware associated with the product, the installed soft
 
   }
 
-  mysql_free_result($q_products);
+  mysqli_free_result($q_products);
 
 ?>
 </table>
