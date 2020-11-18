@@ -25,7 +25,7 @@
       $q_string  = "select rgt_type,rgt_apigroup,rgt_resource,rgt_get,rgt_list,rgt_watch,rgt_impersonate,rgt_create,rgt_delete,rgt_deletecollection,rgt_patch,rgt_update ";
       $q_string .= "from rights ";
       $q_string .= "where rgt_id = " . $formVars['id'];
-      $q_rights = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error($db)));
+      $q_rights = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_rights = mysqli_fetch_array($q_rights);
       mysqli_free_result($q_rights);
 
