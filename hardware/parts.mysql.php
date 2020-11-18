@@ -53,7 +53,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['part_name']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
         } else {
           print "alert('You must input data before saving changes.');\n";
@@ -107,8 +107,8 @@
       $q_string  = "select part_id,part_name,part_type,part_acronym ";
       $q_string .= "from parts ";
       $q_string .= "order by part_name";
-      $q_parts = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_parts = mysql_fetch_array($q_parts)) {
+      $q_parts = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_parts = mysqli_fetch_array($q_parts)) {
 
         $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('parts.fill.php?id="     . $a_parts['part_id']   . "');jQuery('#dialogPart').dialog('open');\">";
         $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('parts.del.php?id=" . $a_parts['part_id'] . "');\">";
@@ -133,9 +133,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_parts);
+      mysqli_free_result($q_parts);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.parts.part_name.value = '';\n";
       print "document.parts.part_acronym.value = '';\n";
