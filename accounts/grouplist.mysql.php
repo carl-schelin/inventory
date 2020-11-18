@@ -44,8 +44,8 @@
           if (check_userlevel($AL_Admin) == 0) {
             $q_string .= "where gpl_user = " . $_SESSION['uid'] . " and gpl_group = " . $formVars['gpl_group'] . " ";
           }
-          $q_grouplist = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          if (mysql_num_rows($q_grouplist) > 0) {
+          $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_grouplist) > 0) {
 
             $q_string =
               "gpl_group   =   " . $formVars['gpl_group'] . "," .
@@ -63,7 +63,7 @@
 
             logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['fw_source']);
 
-            mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+            mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
             print "alert('" . $message . "');\n";
           } else {
@@ -126,9 +126,9 @@
       $q_string .= "left join titles on titles.tit_id = users.usr_title ";
       $q_string .= "where grp_disabled = 0 ";
       $q_string .= "order by grp_name,usr_last ";
-      $q_grouplist = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_grouplist) > 0) {
-        while ($a_grouplist = mysql_fetch_array($q_grouplist)) {
+      $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_grouplist) > 0) {
+        while ($a_grouplist = mysqli_fetch_array($q_grouplist)) {
 
 # essentially list all the groups and members of the groups you belong to
 # so if the user being selected is in one of the groups you're a member of
@@ -137,8 +137,8 @@
           $q_string  = "select gpl_id ";
           $q_string .= "from grouplist ";
           $q_string .= "where gpl_group = " . $a_grouplist['gpl_group'] . " and gpl_user = " . $_SESSION['uid'] . " "; 
-          $q_gltest = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          if (mysql_num_rows($q_gltest) > 0 || check_userlevel($AL_Admin)) {
+          $q_gltest = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_gltest) > 0 || check_userlevel($AL_Admin)) {
 
             $linkstart = '';
             $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_grouplist('grouplist.del.php?id=" . $a_grouplist['gpl_id'] . "');\">";
@@ -162,8 +162,8 @@
               $q_string  = "select usr_last,usr_first ";
               $q_string .= "from users ";
               $q_string .= "where usr_id = " . $a_grouplist['usr_manager'] . " ";
-              $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-              $a_users = mysql_fetch_array($q_users);
+              $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              $a_users = mysqli_fetch_array($q_users);
             }
 
             $output .= "<tr>\n";
@@ -183,9 +183,9 @@
 
       $output .= "</table>\n";
 
-      mysql_free_result($q_grouplist);
+      mysqli_free_result($q_grouplist);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.grouplist.gpl_group[0].selected = true;\n";
       print "document.grouplist.gpl_user[0].selected = true;\n";
