@@ -58,8 +58,8 @@
   $q_string .= "from certs ";
   $q_string .= "left join groups on groups.grp_id = certs.cert_group ";
   $q_string .= "order by cert_url,cert_expire";
-  $q_certs = mysql_query($q_string) or die (mysql_error());
-  while ($a_certs = mysql_fetch_array($q_certs)) {
+  $q_certs = mysqli_query($db, $q_string) or die (mysqli_error($db));
+  while ($a_certs = mysqli_fetch_array($q_certs)) {
 
     $certtime = strtotime($a_certs['cert_expire']);
 
@@ -85,8 +85,8 @@
     $q_string .= "left join products on products.prod_id = software.sw_product ";
     $q_string .= "left join groups on groups.grp_id = software.sw_group ";
     $q_string .= "where sw_cert = " . $a_certs['cert_id'];
-    $q_software = mysql_query($q_string) or die(mysql_error());
-    while ($a_software = mysql_fetch_array($q_software)) {
+    $q_software = mysqli_query($db, $q_string) or die(mysqli_error($db));
+    while ($a_software = mysqli_fetch_array($q_software)) {
 
       print "<tr>\n";
       print "  <td class=\"ui-widget-content\">--" . $a_software['inv_name']    . "</a></td>";
@@ -98,7 +98,7 @@
     }
   }
 
-  mysql_free_result($q_certs);
+  mysqli_free_result($q_certs);
 
   print "</table>\n";
 ?>
