@@ -87,8 +87,8 @@
   $q_string .= "left join groups    on groups.grp_id    = tags.tag_group ";
   $q_string .= "where inv_status = 0 ";
   $q_string .= $orderby;
-  $q_tags = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_tags = mysql_fetch_array($q_tags)) {
+  $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_tags = mysqli_fetch_array($q_tags)) {
 
     if ($a_tags['tag_view'] == 0) {
       $tagview = 'Private';
@@ -110,7 +110,7 @@
 
   }
 
-  mysql_free_result($q_tags);
+  mysqli_free_result($q_tags);
 ?>
 </table>
 </div>
