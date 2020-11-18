@@ -25,13 +25,13 @@
       $q_string  = "select dep_unit,dep_dept,dep_name ";
       $q_string .= "from department ";
       $q_string .= "where dep_id = " . $formVars['id'];
-      $q_department = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_department = mysql_fetch_array($q_department);
-      mysql_free_result($q_department);
+      $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_department = mysqli_fetch_array($q_department);
+      mysqli_free_result($q_department);
 
-      print "document.department.dep_unit.value = '" . mysql_real_escape_string($a_department['dep_unit']) . "';\n";
-      print "document.department.dep_dept.value = '" . mysql_real_escape_string($a_department['dep_dept']) . "';\n";
-      print "document.department.dep_name.value = '" . mysql_real_escape_string($a_department['dep_name']) . "';\n";
+      print "document.department.dep_unit.value = '" . mysqli_real_escape_string($a_department['dep_unit']) . "';\n";
+      print "document.department.dep_dept.value = '" . mysqli_real_escape_string($a_department['dep_dept']) . "';\n";
+      print "document.department.dep_name.value = '" . mysqli_real_escape_string($a_department['dep_name']) . "';\n";
 
       print "document.department.id.value = '" . $formVars['id'] . "'\n";
 
