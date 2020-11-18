@@ -418,8 +418,8 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
   $q_string .= "from groups ";
   $q_string .= "where grp_id = " . $formVars['group'] . " ";
   $q_string .= "order by grp_name";
-  $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  $a_groups = mysql_fetch_array($q_groups);
+  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_groups = mysqli_fetch_array($q_groups);
 
   print "<option value=\"" . $a_groups['grp_id'] . "\">" . $a_groups['grp_name'] . "</option>\n";
 
@@ -433,8 +433,8 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
   $q_string .= "from groups ";
   $q_string .= "where grp_disabled = 0 and grp_id != " . $formVars['group'] . " ";
   $q_string .= "order by grp_name";
-  $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_groups = mysql_fetch_array($q_groups)) {
+  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_groups = mysqli_fetch_array($q_groups)) {
     print "<option value=\"" . $a_groups['grp_id'] . "\">" . $a_groups ['grp_name'] . "</option>\n";
   }
 ?>
@@ -446,8 +446,8 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
   $q_string  = "select prod_id,prod_name ";
   $q_string .= "from products ";
   $q_string .= "order by prod_name";
-  $q_products = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_products = mysql_fetch_array($q_products)) {
+  $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_products = mysqli_fetch_array($q_products)) {
     print "<option value=\"" . $a_products['prod_id'] . "\">" . $a_products['prod_name'] . "</option>\n";
   }
 ?>
@@ -465,16 +465,16 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
   $q_string = "select cn_id,cn_country "
             . "from country "
             . "where cn_acronym = 'US' ";
-  $q_country = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  $a_country = mysql_fetch_array($q_country);
+  $q_country = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_country = mysqli_fetch_array($q_country);
   print "<option value=\"" . $a_country['cn_id'] . "\">" . $a_country['cn_country'] . "</option>";
 
   $q_string = "select cn_id,cn_country "
             . "from country "
             . "where cn_acronym != 'US' "
             . "order by cn_country ";
-  $q_country = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_country = mysql_fetch_array($q_country)) {
+  $q_country = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_country = mysqli_fetch_array($q_country)) {
     print "<option value=\"" . $a_country['cn_id'] . "\">" . $a_country['cn_country'] . "</option>";
   }
 ?>
@@ -495,8 +495,8 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
   $q_string .= "from locations ";
   $q_string .= "where loc_type = 1 ";
   $q_string .= "order by loc_name ";
-  $q_locations = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_locations = mysql_fetch_array($q_locations)) {
+  $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_locations = mysqli_fetch_array($q_locations)) {
     print "<option value=\"" . $a_locations['loc_id'] . "\">" . $a_locations['loc_name'] . " (" . $a_locations['loc_west'] . ")</option>";
   }
 ?>
@@ -720,8 +720,8 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
   $q_string .= "from tags ";
   $q_string .= "where tag_view = 0 and tag_owner = " . $formVars['uid'] . " ";
   $q_string .= "group by tag_name ";
-  $q_tags = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_tags = mysql_fetch_array($q_tags)) {
+  $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_tags = mysqli_fetch_array($q_tags)) {
     $linkstart = "<a href=\"javascript:;\" onClick=\"javascript:attach_tag('" . $Reportroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "&type=0');\">";
     $linkend   = "</a>";
 
@@ -742,8 +742,8 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
   $q_string .= "from tags ";
   $q_string .= "where tag_view = 1 and tag_group = " . $formVars['group'] . " ";
   $q_string .= "group by tag_name ";
-  $q_tags = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_tags = mysql_fetch_array($q_tags)) {
+  $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_tags = mysqli_fetch_array($q_tags)) {
     $linkstart = "<a href=\"javascript:;\" onClick=\"javascript:attach_tag('" . $Reportroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "&type=1');\">";
     $linkend   = "</a>";
 
@@ -764,8 +764,8 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
   $q_string .= "from tags ";
   $q_string .= "where tag_view = 2 ";
   $q_string .= "group by tag_name ";
-  $q_tags = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_tags = mysql_fetch_array($q_tags)) {
+  $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_tags = mysqli_fetch_array($q_tags)) {
     $linkstart = "<a href=\"javascript:;\" onClick=\"javascript:attach_tag('" . $Reportroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "&type=2');\">";
     $linkend   = "</a>";
 
