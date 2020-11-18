@@ -55,7 +55,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -111,8 +111,8 @@
       $q_string .= "left join users on users.usr_id = comments.com_user ";
       $q_string .= "where com_companyid = " . $formVars['com_companyid'] . " ";
       $q_string .= "order by com_timestamp desc ";
-      $q_comments = mysql_query($q_string) or die ($q_string . ": " . mysql_error());
-      while ($a_comments = mysql_fetch_array($q_comments)) {
+      $q_comments = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+      while ($a_comments = mysqli_fetch_array($q_comments)) {
 
         $linkstart = "<a href=\"#comments\" onclick=\"show_file('comments.fill.php?id=" . $a_comments['com_id'] . "');showDiv('comments-hide');\">";
         $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_comment('comments.del.php?id="  . $a_comments['com_id'] . "');\">";
@@ -126,11 +126,11 @@
         $output .= "</tr>";
       }
 
-      mysql_free_result($q_comments);
+      mysqli_free_result($q_comments);
 
       $output .= "</table>";
 
-      print "document.getElementById('comments_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('comments_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
       print "document.edit.com_text.value = '';\n";
       print "document.edit.com_timestamp.value = 'Current Time';\n";
