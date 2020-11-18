@@ -25,16 +25,16 @@
       $q_string  = "select vlan_vlan,vlan_zone,vlan_name,vlan_description,vlan_range,vlan_gateway,vlan_netmask ";
       $q_string .= "from vlans ";
       $q_string .= "where vlan_id = " . $formVars['id'];
-      $q_vlans = mysql_query($q_string) or die (mysql_error());
-      $a_vlans = mysql_fetch_array($q_vlans);
+      $q_vlans = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      $a_vlans = mysqli_fetch_array($q_vlans);
 
-      print "document.vlans.vlan_vlan.value = '"        . mysql_real_escape_string($a_vlans['vlan_vlan'])        . "';\n";
-      print "document.vlans.vlan_zone.value = '"        . mysql_real_escape_string($a_vlans['vlan_zone'])        . "';\n";
-      print "document.vlans.vlan_name.value = '"        . mysql_real_escape_string($a_vlans['vlan_name'])        . "';\n";
-      print "document.vlans.vlan_description.value = '" . mysql_real_escape_string($a_vlans['vlan_description']) . "';\n";
-      print "document.vlans.vlan_range.value = '"       . mysql_real_escape_string($a_vlans['vlan_range'])       . "';\n";
-      print "document.vlans.vlan_netmask.value = '"     . mysql_real_escape_string($a_vlans['vlan_netmask'])     . "';\n";
-      print "document.vlans.vlan_gateway.value = '"     . mysql_real_escape_string($a_vlans['vlan_gateway'])     . "';\n";
+      print "document.vlans.vlan_vlan.value = '"        . mysqli_real_escape_string($a_vlans['vlan_vlan'])        . "';\n";
+      print "document.vlans.vlan_zone.value = '"        . mysqli_real_escape_string($a_vlans['vlan_zone'])        . "';\n";
+      print "document.vlans.vlan_name.value = '"        . mysqli_real_escape_string($a_vlans['vlan_name'])        . "';\n";
+      print "document.vlans.vlan_description.value = '" . mysqli_real_escape_string($a_vlans['vlan_description']) . "';\n";
+      print "document.vlans.vlan_range.value = '"       . mysqli_real_escape_string($a_vlans['vlan_range'])       . "';\n";
+      print "document.vlans.vlan_netmask.value = '"     . mysqli_real_escape_string($a_vlans['vlan_netmask'])     . "';\n";
+      print "document.vlans.vlan_gateway.value = '"     . mysqli_real_escape_string($a_vlans['vlan_gateway'])     . "';\n";
 
       print "document.vlans.id.value = '" . $formVars['id'] . "';\n";
 
