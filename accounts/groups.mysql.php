@@ -71,15 +71,15 @@
           $q_string  = "select grp_manager ";
           $q_string .= "from groups ";
           $q_string .= "where grp_id = " . $formVars['id'] . " ";
-          $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          if (mysql_num_rows($q_groups) > 0) {
-            $a_groups = mysql_fetch_array($q_groups);
+          $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_groups) > 0) {
+            $a_groups = mysqli_fetch_array($q_groups);
 # got it, now update everyone in the same group with the same old manager assuming the group already exists.
             $q_string  = "update ";
             $q_string .= "users ";
             $q_string .= "set usr_manager = " . $formVars['grp_manager'] . " ";
             $q_string .= "where usr_group = " . $formVars['id'] . " and (usr_manager = " . $a_groups['grp_manager'] . " or usr_manager = 0) ";
-            $result = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+            $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           }
 
 # all done. now update groups with the new information.
@@ -112,7 +112,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['grp_name']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
         } else {
           print "alert('You must input data before saving changes.');\n";
@@ -223,9 +223,9 @@
       $q_string .= "left join roles on roles.role_id = groups.grp_role ";
       $q_string .= "left join users on users.usr_id = groups.grp_manager ";
       $q_string .= "order by grp_name";
-      $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_groups) > 0) {
-        while ($a_groups = mysql_fetch_array($q_groups)) {
+      $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_groups) > 0) {
+        while ($a_groups = mysqli_fetch_array($q_groups)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('groups.fill.php?id="  . $a_groups['grp_id'] . "');jQuery('#dialogGroup').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('groups.del.php?id=" . $a_groups['grp_id'] . "');\">";
@@ -306,15 +306,15 @@
         $changelog .= "</tr>";
       }
 
-      mysql_free_result($q_groups);
+      mysqli_free_result($q_groups);
 
       $group .= "</table>";
       $magic .= "</table>";
       $changelog .= "</table>";
 
-      print "document.getElementById('group_mysql').innerHTML = '"     . mysql_real_escape_string($group)     . "';\n\n";
-      print "document.getElementById('magic_mysql').innerHTML = '"     . mysql_real_escape_string($magic)     . "';\n\n";
-      print "document.getElementById('changelog_mysql').innerHTML = '" . mysql_real_escape_string($changelog) . "';\n\n";
+      print "document.getElementById('group_mysql').innerHTML = '"     . mysqli_real_escape_string($group)     . "';\n\n";
+      print "document.getElementById('magic_mysql').innerHTML = '"     . mysqli_real_escape_string($magic)     . "';\n\n";
+      print "document.getElementById('changelog_mysql').innerHTML = '" . mysqli_real_escape_string($changelog) . "';\n\n";
 
       print "document.groups.grp_organization[0].selected = true;\n";
       print "document.groups.grp_name.value = '';\n";
