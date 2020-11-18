@@ -264,8 +264,8 @@ reviewed and worked on.</li>
   $q_string .= "left join software  on software.sw_companyid = inventory.inv_id ";
   $q_string .= $where . " and sw_type = 'OS' and int_management = 1 ";
   $q_string .= $orderby;
-  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $os = return_System($a_inventory['inv_id']);
 
