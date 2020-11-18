@@ -25,18 +25,18 @@
       $q_string  = "select cert_id,cert_desc,cert_url,cert_expire,cert_authority,cert_group,cert_ca,cert_memo,cert_isca ";
       $q_string .= "from certs ";
       $q_string .= "where cert_id = " . $formVars['id'];
-      $q_certs = mysql_query($q_string) or die($q_string. ": " . mysql_error());
-      $a_certs = mysql_fetch_array($q_certs);
-      mysql_free_result($q_certs);
+      $q_certs = mysqli_query($db, $q_string) or die($q_string. ": " . mysqli_error($db));
+      $a_certs = mysqli_fetch_array($q_certs);
+      mysqli_free_result($q_certs);
 
       $group = return_Index($a_certs['cert_group'], "select grp_id from groups where grp_disabled = 0 order by grp_name");
       $cert  = return_Index($a_certs['cert_ca'],    "select cert_id from certs where cert_isca = 1 order by cert_desc");
 
-      print "document.dialog.cert_desc.value = '"      . mysql_real_escape_string($a_certs['cert_desc'])      . "';\n";
-      print "document.dialog.cert_url.value = '"       . mysql_real_escape_string($a_certs['cert_url'])       . "';\n";
-      print "document.dialog.cert_expire.value = '"    . mysql_real_escape_string($a_certs['cert_expire'])    . "';\n";
-      print "document.dialog.cert_authority.value = '" . mysql_real_escape_string($a_certs['cert_authority']) . "';\n";
-      print "document.dialog.cert_memo.value = '"      . mysql_real_escape_string($a_certs['cert_memo'])      . "';\n";
+      print "document.dialog.cert_desc.value = '"      . mysqli_real_escape_string($a_certs['cert_desc'])      . "';\n";
+      print "document.dialog.cert_url.value = '"       . mysqli_real_escape_string($a_certs['cert_url'])       . "';\n";
+      print "document.dialog.cert_expire.value = '"    . mysqli_real_escape_string($a_certs['cert_expire'])    . "';\n";
+      print "document.dialog.cert_authority.value = '" . mysqli_real_escape_string($a_certs['cert_authority']) . "';\n";
+      print "document.dialog.cert_memo.value = '"      . mysqli_real_escape_string($a_certs['cert_memo'])      . "';\n";
 
       if ($a_certs['cert_isca']) {
         print "document.dialog.cert_isca.checked = true;\n";
