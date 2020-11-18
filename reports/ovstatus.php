@@ -85,8 +85,8 @@
 
   $q_string  = "select zone_id,zone_name ";
   $q_string .= "from ip_zones";
-  $q_ip_zones = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_ip_zones = mysql_fetch_array($q_ip_zones)) {
+  $q_ip_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_ip_zones = mysqli_fetch_array($q_ip_zones)) {
     $zoneval[$a_ip_zones['zone_id']] = $a_ip_zones['zone_name'];
   }
 
@@ -135,8 +135,8 @@ function flip_Bit( p_id, p_bit ) {
 
   $q_string  = "select itp_id,itp_acronym ";
   $q_string .= "from inttype ";
-  $q_inttype = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_inttype = mysql_fetch_array($q_inttype)) {
+  $q_inttype = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inttype = mysqli_fetch_array($q_inttype)) {
     $inttype[$a_inttype['itp_id']] = $a_inttype['itp_acronym'];
   }
 
@@ -268,9 +268,9 @@ function flip_Bit( p_id, p_bit ) {
   $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
   $q_string .= $where . " and int_openview = 1 ";
   $q_string .= $orderby;
-  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  if (mysql_num_rows($q_inventory) > 0) {
-    while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inventory) > 0) {
+    while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
       $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "#alarms\" target=\"blank\">";
       $linkend   = "</a>";
@@ -278,8 +278,8 @@ function flip_Bit( p_id, p_bit ) {
       $q_string  = "select count(alarm_id) ";
       $q_string .= "from alarms ";
       $q_string .= "where alarm_companyid = " . $a_inventory['inv_id'] . " ";
-      $q_alarms = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_alarms = mysql_fetch_array($q_alarms);
+      $q_alarms = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_alarms = mysqli_fetch_array($q_alarms);
 
       if ($a_alarms['count(alarm_id)'] == 0) {
         $main_class = "ui-state-error";
@@ -290,8 +290,8 @@ function flip_Bit( p_id, p_bit ) {
       $q_string  = "select hw_built ";
       $q_string .= "from hardware ";
       $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1 ";
-      $q_hardware = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_hardware = mysql_fetch_array($q_hardware);
+      $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_hardware = mysqli_fetch_array($q_hardware);
 
       print "<tr>\n";
       print "  <td class=\"" . $main_class . "\">" . $linkstart . $a_inventory['inv_name'] . $linkend . "</td>\n";
@@ -305,8 +305,8 @@ function flip_Bit( p_id, p_bit ) {
           $q_string  = "select count(alarm_level) ";
           $q_string .= "from alarms ";
           $q_string .= "where alarm_companyid = " . $a_inventory['inv_id'] . " and alarm_timestamp > \"" . ($year - 1) . "-12-31\" and alarm_timestamp < \"" . ($year + 1) . "-01-01\" and alarm_level = 1 ";
-          $q_alarms = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          $a_alarms = mysql_fetch_array($q_alarms);
+          $q_alarms = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_alarms = mysqli_fetch_array($q_alarms);
           $normal = $a_alarms['count(alarm_level)'];
           if ($normal == 0) {
             $class = "ui-state-highlight";
@@ -322,8 +322,8 @@ function flip_Bit( p_id, p_bit ) {
           $q_string  = "select count(alarm_level) ";
           $q_string .= "from alarms ";
           $q_string .= "where alarm_companyid = " . $a_inventory['inv_id'] . " and alarm_timestamp > \"" . ($year - 1) . "-12-31\" and alarm_timestamp < \"" . ($year + 1) . "-01-01\" and alarm_level = 2 ";
-          $q_alarms = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          $a_alarms = mysql_fetch_array($q_alarms);
+          $q_alarms = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_alarms = mysqli_fetch_array($q_alarms);
           $warning = $a_alarms['count(alarm_level)'];
           if ($warning == 0) {
             $class = "ui-state-highlight";
@@ -339,8 +339,8 @@ function flip_Bit( p_id, p_bit ) {
           $q_string  = "select count(alarm_level) ";
           $q_string .= "from alarms ";
           $q_string .= "where alarm_companyid = " . $a_inventory['inv_id'] . " and alarm_timestamp > \"" . ($year - 1) . "-12-31\" and alarm_timestamp < \"" . ($year + 1) . "-01-01\" and alarm_level = 3 ";
-          $q_alarms = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          $a_alarms = mysql_fetch_array($q_alarms);
+          $q_alarms = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_alarms = mysqli_fetch_array($q_alarms);
           $minor = $a_alarms['count(alarm_level)'];
           if ($minor == 0) {
             $class = "ui-state-highlight";
@@ -356,8 +356,8 @@ function flip_Bit( p_id, p_bit ) {
           $q_string  = "select count(alarm_level) ";
           $q_string .= "from alarms ";
           $q_string .= "where alarm_companyid = " . $a_inventory['inv_id'] . " and alarm_timestamp > \"" . ($year - 1) . "-12-31\" and alarm_timestamp < \"" . ($year + 1) . "-01-01\" and alarm_level = 4 ";
-          $q_alarms = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          $a_alarms = mysql_fetch_array($q_alarms);
+          $q_alarms = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_alarms = mysqli_fetch_array($q_alarms);
           $major = $a_alarms['count(alarm_level)'];
           if ($major == 0) {
             $class = "ui-state-highlight";
@@ -373,8 +373,8 @@ function flip_Bit( p_id, p_bit ) {
           $q_string  = "select count(alarm_level) ";
           $q_string .= "from alarms ";
           $q_string .= "where alarm_companyid = " . $a_inventory['inv_id'] . " and alarm_timestamp > \"" . ($year - 1) . "-12-31\" and alarm_timestamp < \"" . ($year + 1) . "-01-01\" and alarm_level = 5 ";
-          $q_alarms = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          $a_alarms = mysql_fetch_array($q_alarms);
+          $q_alarms = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_alarms = mysqli_fetch_array($q_alarms);
           $critical = $a_alarms['count(alarm_level)'];
           if ($critical == 0) {
             $class = "ui-state-highlight";
