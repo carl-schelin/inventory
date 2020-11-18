@@ -30,14 +30,14 @@
       $q_string .= "from bigfix ";
       $q_string .= "left join inventory on inventory.inv_id = bigfix.big_companyid ";
       $q_string .= "where big_id = " . $formVars['id'] . " ";
-      $q_bigfix = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_bigfix) > 0) {
-        $a_bigfix = mysql_fetch_array($q_bigfix);
+      $q_bigfix = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_bigfix) > 0) {
+        $a_bigfix = mysqli_fetch_array($q_bigfix);
 
         $big_fixlet = $a_bigfix['big_fixlet'];
         $inv_manager = $a_bigfix['inv_manager'];
         $inv_appadmin = $a_bigfix['inv_appadmin'];
-#        print "document.getElementById('big_servername').innerHTML = '" . mysql_real_escape_string($a_inventory['inv_name']) . "';";
+#        print "document.getElementById('big_servername').innerHTML = '" . mysqli_real_escape_string($a_inventory['inv_name']) . "';";
       }
 
       $patches = '';
@@ -47,17 +47,17 @@
       $q_string .= "left join inventory on inventory.inv_id = bigfix.big_companyid ";
       $q_string .= "where big_fixlet = \"" . $big_fixlet . "\" and big_scheduled = \"" . $formVars['scheduled'] . "\" and (inv_manager = " . $inv_manager . " or inv_appadmin = " . $inv_appadmin . ") ";
       $q_string .= "group by inv_name ";
-      $q_bigfix = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_bigfix) > 0) {
+      $q_bigfix = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_bigfix) > 0) {
 
-        while ($a_bigfix = mysql_fetch_array($q_bigfix)) {
+        while ($a_bigfix = mysqli_fetch_array($q_bigfix)) {
 
           $patches .= $a_bigfix['inv_name'] . "\n";
         }
       }
-      mysql_free_result($q_bigfix);
+      mysqli_free_result($q_bigfix);
 
-      print "document.bigfix.big_patches.value = '" . mysql_real_escape_string($patches) . "';\n";
+      print "document.bigfix.big_patches.value = '" . mysqli_real_escape_string($patches) . "';\n";
 
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
