@@ -23,13 +23,13 @@
 
 # once a database connection is made, all the other data pulls work as expected
 # make sure you don't write any changes until someone logs in.
-    $db = mysql_connect($DBserver,$DBuser,$DBpassword);
+    $db = mysqli_connect($DBserver,$DBuser,$DBpassword,$DBname);
     if (!$db) {
-      die('Couldn\'t connect: ' . mysql_error());
+      die('Couldn\'t connect: ' . mysqli_error($db));
     } else {
-      $DBlogout = mysql_select_db($DBname,$db);
+      $DBlogout = mysqli_select_db($db,$DBname);
       if (!$DBlogout) {
-        die('Not connected : ' . mysql_error());
+        die('Not connected : ' . mysqli_error($db));
       }
     }
   }
