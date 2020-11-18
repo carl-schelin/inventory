@@ -25,7 +25,7 @@
       $q_string  = "delete ";
       $q_string .= "from models ";
       $q_string .= "where mod_id = " . $formVars['id'];
-      $insert = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
       print "alert('Hardware Model deleted.');\n";
 
