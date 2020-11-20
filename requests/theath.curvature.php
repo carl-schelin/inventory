@@ -107,8 +107,8 @@
   $q_string .= "left join support on support.sup_id = hardware.hw_supportid ";
   $q_string .= "where inv_status = 0 and sup_company = \"Curvature\" and hw_primary = 1 " . $formVars['group'];
   $q_string .= $orderby;
-  $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_hardware = mysql_fetch_array($q_hardware)) {
+  $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
     if ($formVars['csv'] == 'true') {
       print "\"" . $a_hardware['inv_name'] . "\",";
@@ -127,7 +127,7 @@
     }
   }
 
-  mysql_free_result($q_hardware);
+  mysqli_free_result($q_hardware);
 
   if ($formVars['csv'] == 'true') {
     print "</p>\n";
