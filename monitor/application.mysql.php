@@ -58,7 +58,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['app_description']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -106,8 +106,8 @@
       $q_string  = "select app_id,app_description,app_deleted ";
       $q_string .= "from application ";
       $q_string .= $orderby;
-      $q_application = mysql_query($q_string) or die (mysql_error());
-      while ($a_application = mysql_fetch_array($q_application)) {
+      $q_application = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      while ($a_application = mysqli_fetch_array($q_application)) {
 
         $linkstart = "<a href=\"#\" onclick=\"show_file('application.fill.php?id="  . $a_application['app_id'] . "');jQuery('#dialogApplication').dialog('open');\">";
         $linkdel   = "<input type=\"button\" value=\"Delete\" onclick=\"delete_line('application.del.php?id=" . $a_application['app_id'] . "');\">";
@@ -130,9 +130,9 @@
       }
       $output .= "</table>";
 
-      mysql_free_result($q_application);
+      mysqli_free_result($q_application);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.application.app_description.value = '';\n";
       print "document.application.app_deleted.checked = false;\n";
