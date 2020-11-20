@@ -67,8 +67,8 @@
   $q_string .= "join software on software.sw_companyid = inventory.inv_id ";
   $q_string .= "where int_ip6 = 0 and inv_manager = 1 and inv_status = 0 and int_openview = 1 and sw_type = 'OS' ";
   $q_string .= "order by ct_city,sw_software,inv_name ";
-  $q_interface = mysql_query($q_string) or die(mysql_error());
-  while ( $a_interface = mysql_fetch_array($q_interface) ) {
+  $q_interface = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ( $a_interface = mysqli_fetch_array($q_interface) ) {
 
     if ($a_interface['ct_city'] != $location && $count != 0) {
       if ($formVars['csv'] == 1) {
