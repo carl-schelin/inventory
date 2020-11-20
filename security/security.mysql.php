@@ -50,7 +50,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['sec_name']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -105,9 +105,9 @@
       $q_string .= "left join family on family.fam_id = security.sec_family ";
       $q_string .= "left join severity on severity.sev_id = security.sec_severity ";
       $q_string .= "order by sec_name";
-      $q_security = mysql_query($q_string) or die ($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_security) > 0) {
-        while ($a_security = mysql_fetch_array($q_security)) {
+      $q_security = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_security) > 0) {
+        while ($a_security = mysqli_fetch_array($q_security)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('security.fill.php?id="  . $a_security['sec_id'] . "');showDiv('security-hide');\">";
           $linkdel   = "<a href=\"#\" onclick=\"delete_line('security.del.php?id=" . $a_security['sec_id'] . "');\">";
@@ -131,9 +131,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_security);
+      mysqli_free_result($q_security);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.security.update.disabled = true;\n";
       print "document.security.sec_name.value = '';\n";
