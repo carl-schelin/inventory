@@ -77,18 +77,18 @@
   $q_string .= "left join modules on modules.mod_id = bugs.bug_module ";
   $q_string .= "where bug_closed = '0000-00-00' " . $where;
   $q_string .= "order by bug_discovered desc,mod_name ";
-  $q_bugs = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_bugs) > 0) {
-    while ($a_bugs = mysql_fetch_array($q_bugs)) {
+  $q_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_bugs) > 0) {
+    while ($a_bugs = mysqli_fetch_array($q_bugs)) {
 
       $q_string  = "select bug_timestamp ";
       $q_string .= "from bugs_detail ";
       $q_string .= "where bug_bug_id = " . $a_bugs['bug_id'] . " ";
       $q_string .= "order by bug_timestamp ";
       $q_string .= "limit 1 ";
-      $q_bugs_detail = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_bugs_detail) > 0) {
-        $a_bugs_detail = mysql_fetch_array($q_bugs_detail);
+      $q_bugs_detail = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_bugs_detail) > 0) {
+        $a_bugs_detail = mysqli_fetch_array($q_bugs_detail);
         $detail_time = explode(" ", $a_bugs_detail['bug_timestamp']);
       } else {
         $detail_time[0] = 'No Details';
@@ -141,8 +141,8 @@
 
   $output .= "</table>";
 
-  mysql_free_result($q_bugs);
+  mysqli_free_result($q_bugs);
 
-  print "document.getElementById('open_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+  print "document.getElementById('open_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
 ?>
