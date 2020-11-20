@@ -83,7 +83,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['rule_description']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -138,8 +138,8 @@
       $q_string .= "left join objects       on objects.obj_id       = rules.rule_object ";
       $q_string .= "left join message_group on message_group.msg_id = rules.rule_message ";
       $q_string .= $orderby;
-      $q_rules = mysql_query($q_string) or die (mysql_error());
-      while ($a_rules = mysql_fetch_array($q_rules)) {
+      $q_rules = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      while ($a_rules = mysqli_fetch_array($q_rules)) {
 
         $linkstart = "<a href=\"#\" onclick=\"show_file('rules.fill.php?id="  . $a_rules['rule_id'] . "');jQuery('#dialogRule').dialog('open');\">";
         $linkdel   = "<input type=\"button\" value=\"Delete\" onclick=\"delete_line('rules.del.php?id=" . $a_rules['rule_id'] . "');\">";
@@ -222,9 +222,9 @@
       }
       $output .= "</table>";
 
-      mysql_free_result($q_rules);
+      mysqli_free_result($q_rules);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.rules.rule_description.value = '';\n";
       print "document.rules.rule_annotate.value = '';\n";
