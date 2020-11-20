@@ -72,8 +72,8 @@
   $q_string .= "where " . $support . "inv_status = 0 ";
   $q_string .= "and hw_group = " . $formVars['group'] . " and hw_primary = 1 and inv_ssh = 1 and inv_virtual = 0 ";
   $q_string .= "order by inv_name";
-  $q_hardware = mysql_query($q_string) or die (mysql_error());
-  while ($a_hardware = mysql_fetch_array($q_hardware)) {
+  $q_hardware = mysqli_query($db, $q_string) or die (mysqli_error($db));
+  while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
     print "<tr>\n";
     print "  <td class=\"ui-widget-content\">" . $a_hardware['inv_name']    . "</td>\n";
