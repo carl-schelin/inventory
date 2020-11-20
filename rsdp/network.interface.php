@@ -28,15 +28,15 @@
       $q_string  = "select if_rsdp ";
       $q_string .= "from rsdp_interface ";
       $q_string .= "where if_id = " . $formVars['interface'] . " ";
-      $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_rsdp_interface = mysql_fetch_array($q_rsdp_interface);
+      $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface);
 
 # next check to see if the person is a requestor, platform POC, or an admin; if not, zero out 'type' so no changes can be made.
       $q_string  = "select rsdp_requestor,rsdp_platformspoc,rsdp_networkpoc,rsdp_platform ";
       $q_string .= "from rsdp_server ";
       $q_string .= "where rsdp_id = " . $a_rsdp_interface['if_rsdp'] . " ";
-      $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+      $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
       $flag = 0;
       if ($_SESSION['uid'] == $a_rsdp_server['rsdp_requestor']) {
@@ -111,7 +111,7 @@
           $q_string .= "set ";
           $q_string .= "if_name = '" . $formVars['select'] . "' ";
           $q_string .= "where if_id = " . $formVars['interface'] . " ";
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           if ($formVars['select'] == '') {
             $formVars['select'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -146,14 +146,14 @@
           $q_string  = "select itp_id,itp_name,itp_acronym ";
           $q_string .= "from inttype ";
           $q_string .= "order by itp_name ";
-          $q_inttype = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_inttype = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 // create the javascript bit for populating the user dropdown box.
-          while ($a_inttype = mysql_fetch_array($q_inttype) ) {
+          while ($a_inttype = mysqli_fetch_array($q_inttype) ) {
             print "if (celltext == \"" . $a_inttype['itp_acronym'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysql_real_escape_string($a_inttype['itp_name']) . "\"," . $a_inttype['itp_id'] . ",1,1);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($a_inttype['itp_name']) . "\"," . $a_inttype['itp_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysql_real_escape_string($a_inttype['itp_name']) . "\"," . $a_inttype['itp_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($a_inttype['itp_name']) . "\"," . $a_inttype['itp_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -172,9 +172,9 @@
           $q_string  = "select itp_id,itp_acronym ";
           $q_string .= "from inttype ";
           $q_string .= "where itp_id = " . $formVars['select'] . " ";
-          $q_inttype = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          if (mysql_num_rows($q_inttype) > 0) {
-            $a_inttype = mysql_fetch_array($q_inttype);
+          $q_inttype = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inttype) > 0) {
+            $a_inttype = mysqli_fetch_array($q_inttype);
           } else {
             $a_inttype['itp_id']   = 0;
             $a_inttype['itp_acronym'] = "Unassigned";
@@ -187,7 +187,7 @@
           $q_string .= "set ";
           $q_string .= "if_type = " . $a_inttype['itp_id'] . " ";
           $q_string .= "where if_id = " . $formVars['interface'] . " ";
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
         }
@@ -231,7 +231,7 @@
           $q_string .= "set ";
           $q_string .= "if_interface = '" . $formVars['select'] . "' ";
           $q_string .= "where if_id = " . $formVars['interface'] . " ";
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           if ($formVars['select'] == '') {
             $formVars['select'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -279,7 +279,7 @@
           $q_string .= "set ";
           $q_string .= "if_ip = '" . $formVars['select'] . "' ";
           $q_string .= "where if_id = " . $formVars['interface'] . " ";
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           if ($formVars['select'] == '') {
             $formVars['select'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -314,14 +314,14 @@
           $q_string  = "select zone_id,zone_name ";
           $q_string .= "from ip_zones ";
           $q_string .= "order by zone_name ";
-          $q_ip_zones = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_ip_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 // create the javascript bit for populating the user dropdown box.
-          while ($a_ip_zones = mysql_fetch_array($q_ip_zones) ) {
+          while ($a_ip_zones = mysqli_fetch_array($q_ip_zones) ) {
             print "if (celltext == \"" . $a_ip_zones['zone_name'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysql_real_escape_string($a_ip_zones['zone_name']) . "\"," . $a_ip_zones['zone_id'] . ",1,1);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($a_ip_zones['zone_name']) . "\"," . $a_ip_zones['zone_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysql_real_escape_string($a_ip_zones['zone_name']) . "\"," . $a_ip_zones['zone_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($a_ip_zones['zone_name']) . "\"," . $a_ip_zones['zone_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -340,9 +340,9 @@
           $q_string  = "select zone_id,zone_name ";
           $q_string .= "from ip_zones ";
           $q_string .= "where zone_id = " . $formVars['select'] . " ";
-          $q_ip_zones = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          if (mysql_num_rows($q_ip_zones) > 0) {
-            $a_ip_zones = mysql_fetch_array($q_ip_zones);
+          $q_ip_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_ip_zones) > 0) {
+            $a_ip_zones = mysqli_fetch_array($q_ip_zones);
           } else {
             $a_ip_zones['zone_id']   = 0;
             $a_ip_zones['zone_name'] = "Unassigned";
@@ -355,7 +355,7 @@
           $q_string .= "set ";
           $q_string .= "if_zone = " . $a_ip_zones['zone_id'] . " ";
           $q_string .= "where if_id = " . $formVars['interface'] . " ";
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
         }
@@ -399,7 +399,7 @@
           $q_string .= "set ";
           $q_string .= "if_gate = '" . $formVars['select'] . "' ";
           $q_string .= "where if_id = " . $formVars['interface'] . " ";
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           if ($formVars['select'] == '') {
             $formVars['select'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -447,7 +447,7 @@
           $q_string .= "set ";
           $q_string .= "if_sysport = '" . $formVars['select'] . "' ";
           $q_string .= "where if_id = " . $formVars['interface'] . " ";
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           if ($formVars['select'] == '') {
             $formVars['select'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -482,14 +482,14 @@
           $q_string  = "select med_id,med_text ";
           $q_string .= "from int_media ";
           $q_string .= "order by med_text ";
-          $q_int_media = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_int_media = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 // create the javascript bit for populating the user dropdown box.
-          while ($a_int_media = mysql_fetch_array($q_int_media) ) {
+          while ($a_int_media = mysqli_fetch_array($q_int_media) ) {
             print "if (celltext == \"" . $a_int_media['med_text'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysql_real_escape_string($a_int_media['med_text']) . "\"," . $a_int_media['med_id'] . ",1,1);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($a_int_media['med_text']) . "\"," . $a_int_media['med_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysql_real_escape_string($a_int_media['med_text']) . "\"," . $a_int_media['med_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($a_int_media['med_text']) . "\"," . $a_int_media['med_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -508,9 +508,9 @@
           $q_string  = "select med_id,med_text ";
           $q_string .= "from int_media ";
           $q_string .= "where med_id = " . $formVars['select'] . " ";
-          $q_int_media = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          if (mysql_num_rows($q_int_media) > 0) {
-            $a_int_media = mysql_fetch_array($q_int_media);
+          $q_int_media = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_int_media) > 0) {
+            $a_int_media = mysqli_fetch_array($q_int_media);
           } else {
             $a_int_media['med_id']   = 0;
             $a_int_media['med_text'] = "Unassigned";
@@ -523,7 +523,7 @@
           $q_string .= "set ";
           $q_string .= "if_media = " . $a_int_media['med_id'] . " ";
           $q_string .= "where if_id = " . $formVars['interface'] . " ";
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
         }
@@ -567,7 +567,7 @@
           $q_string .= "set ";
           $q_string .= "if_switch = '" . $formVars['select'] . "' ";
           $q_string .= "where if_id = " . $formVars['interface'] . " ";
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           if ($formVars['select'] == '') {
             $formVars['select'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -615,7 +615,7 @@
           $q_string .= "set ";
           $q_string .= "if_port = '" . $formVars['select'] . "' ";
           $q_string .= "where if_id = " . $formVars['interface'] . " ";
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           if ($formVars['select'] == '') {
             $formVars['select'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -655,15 +655,15 @@
           for ($i = 0; $i < 129; $i++) {
             print "if (celltext == " . $i . ") {\n";
             if ($i > 32) {
-              print "  selbox.options[selbox.options.length] = new Option(\"" . mysql_real_escape_string("IPv6/" . $i) . "\"," . $i . ",1,1);\n";
+              print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string("IPv6/" . $i) . "\"," . $i . ",1,1);\n";
             } else {
-              print "  selbox.options[selbox.options.length] = new Option(\"" . mysql_real_escape_string(createNetmaskAddr($i) . "/" . $i) . "\"," . $i . ",1,1);\n";
+              print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string(createNetmaskAddr($i) . "/" . $i) . "\"," . $i . ",1,1);\n";
             }
             print "} else {\n";
             if ($i > 32) {
-              print "  selbox.options[selbox.options.length] = new Option(\"" . mysql_real_escape_string("IPv6/" . $i) . "\"," . $i . ",0,0);\n";
+              print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string("IPv6/" . $i) . "\"," . $i . ",0,0);\n";
             } else {
-              print "  selbox.options[selbox.options.length] = new Option(\"" . mysql_real_escape_string(createNetmaskAddr($i) . "/" . $i) . "\"," . $i . ",0,0);\n";
+              print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string(createNetmaskAddr($i) . "/" . $i) . "\"," . $i . ",0,0);\n";
             }
             print "}\n";
           }
@@ -687,7 +687,7 @@
           $q_string .= "set ";
           $q_string .= "if_mask = " . $formVars['select'] . " ";
           $q_string .= "where if_id = " . $formVars['interface'] . " ";
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
         }
@@ -731,7 +731,7 @@
           $q_string .= "set ";
           $q_string .= "if_vlan = '" . $formVars['select'] . "' ";
           $q_string .= "where if_id = " . $formVars['interface'] . " ";
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           if ($formVars['select'] == '') {
             $formVars['select'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
