@@ -68,7 +68,7 @@
 
         logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['rsdp']);
 
-        mysql_query($query) or die($query . ": " . mysql_error());
+        mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
         print "alert('" . $message . "');\n";
       }
@@ -112,10 +112,10 @@
         $q_string  = "select st_completed ";
         $q_string .= "from rsdp_status ";
         $q_string .= "where st_rsdp = " . $formVars['rsdp'] . " and st_step = 13";
-        $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_rsdp_status = mysql_fetch_array($q_rsdp_status);
+        $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_rsdp_status = mysqli_fetch_array($q_rsdp_status);
 
-        if (mysql_num_rows($q_rsdp_status) > 0) {
+        if (mysqli_num_rows($q_rsdp_status) > 0) {
           $backups = 1;
         }
 
@@ -124,10 +124,10 @@
         $q_string = "select st_completed ";
         $q_string .= "from rsdp_status ";
         $q_string .= "where st_rsdp = " . $formVars['rsdp'] . " and st_step = 15";
-        $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_rsdp_status = mysql_fetch_array($q_rsdp_status);
+        $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_rsdp_status = mysqli_fetch_array($q_rsdp_status);
 
-        if (mysql_num_rows($q_rsdp_status) > 0) {
+        if (mysqli_num_rows($q_rsdp_status) > 0) {
           $application = 1;
         }
 
@@ -137,8 +137,8 @@
           $q_string = "select rsdp_appmonitor ";
           $q_string .= "from rsdp_server ";
           $q_string .= "where rsdp_id = " . $formVars['rsdp'];
-          $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+          $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
           if ($a_rsdp_server['rsdp_appmonitor'] == 0) {
             setstatus($formVars['rsdp'], 2, 16);
@@ -147,8 +147,8 @@
             $q_string = "select rsdp_application ";
             $q_string .= "from rsdp_server ";
             $q_string .= "where rsdp_id = " . $formVars['rsdp'];
-            $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+            $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
             generateEmail(
               $formVars['rsdp'],
@@ -163,8 +163,8 @@
             $q_string  = "select tkt_appcnf ";
             $q_string .= "from rsdp_tickets ";
             $q_string .= "where tkt_rsdp = " . $formVars['rsdp'];
-            $q_rsdp_tickets = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            $a_rsdp_tickets = mysql_fetch_array($q_rsdp_tickets);
+            $q_rsdp_tickets = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
             if ($a_rsdp_tickets['tkt_appcnf']) {
               submit_Ticket(
                 $formVars['rsdp'],
@@ -191,8 +191,8 @@
             $q_string  = "select tkt_appmon ";
             $q_string .= "from rsdp_tickets ";
             $q_string .= "where tkt_rsdp = " . $formVars['rsdp'];
-            $q_rsdp_tickets = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            $a_rsdp_tickets = mysql_fetch_array($q_rsdp_tickets);
+            $q_rsdp_tickets = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
             if ($a_rsdp_tickets['tkt_appmon']) {
               submit_Ticket(
                 $formVars['rsdp'],
