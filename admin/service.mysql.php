@@ -73,7 +73,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['svc_name']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -127,9 +127,9 @@
       $q_string .= "svc_mtbf,svc_geographic,svc_mttr,svc_resource,svc_restore ";
       $q_string .= "from service ";
       $q_string .= "order by svc_id ";
-      $q_service = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_service) > 0) {
-        while ($a_service = mysql_fetch_array($q_service)) {
+      $q_service = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_service) > 0) {
+        while ($a_service = mysqli_fetch_array($q_service)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('service.fill.php?id=" . $a_service['svc_id'] . "');jQuery('#dialogService').dialog('open');\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('service.del.php?id="  . $a_service['svc_id'] . "');\">";
@@ -168,9 +168,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_service);
+      mysqli_free_result($q_service);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.service.svc_name.value = '';\n";
       print "document.service.svc_acronym.value = '';\n";
