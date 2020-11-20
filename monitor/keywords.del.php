@@ -26,7 +26,7 @@
       $q_string .= "keywords ";
       $q_string .= "set key_deleted = 1 ";
       $q_string .= "where key_id = " . $formVars['id'];
-      $insert = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
       print "alert('Keyword marked as deleted.');\n";
 
