@@ -20,8 +20,8 @@
   $q_string = "select inv_manager "
             . "from inventory "
             . "where inv_id = " . $formVars['id'] . " ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_inventory = mysql_fetch_array($q_inventory);
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inventory = mysqli_fetch_array($q_inventory);
 
   $output  = "<table class=\"ui-styled-table\">";
   $output .= "<tr>";
@@ -77,8 +77,8 @@
              . "left join groups on groups.grp_id = software.sw_group "
              . "where sw_companyid = " . $formVars['id'] . " and sw_type != \"Package\" "
              . "order by sw_type,sw_software";
-  $q_software = mysql_query($q_string) or die(mysql_error());
-  while ($a_software = mysql_fetch_array($q_software)) {
+  $q_software = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_software = mysqli_fetch_array($q_software)) {
 
     $link_vendor = "<a href=\"" . $Reportroot . "/search.software.php?search_by=3&search_for=" . $a_software['sw_vendor']   . "\" target=\"_blank\">";
     $link_name   = "<a href=\"" . $Reportroot . "/search.software.php?search_by=3&search_for=" . $a_software['sw_software'] . "\" target=\"_blank\">";
@@ -137,17 +137,19 @@
 
   $package .= "<table class=\"ui-styled-table\">";
   $package .= "<tr>";
-  $package .= "<th class=\"ui-state-default\">Package</th>";
+  $package .= "<th class=\"ui-state-default\">Package Name</th>";
+  $package .= "<th class=\"ui-state-default\">Last Updated</th>";
   $package .= "<th class=\"ui-state-default\">Group</th>";
+  $package .= "<th class=\"ui-state-default\">Operating System</th>";
   $package .= "</tr>";
 
-  $q_string  = "select pkg_name,grp_name "
-             . "from packages "
-             . "left join groups on groups.grp_id = packages.pkg_grp_id "
-             . "where pkg_inv_id = " . $formVars['id'] . " "
-             . "order by pkg_name";
-  $q_packages = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_packages = mysql_fetch_array($q_packages)) {
+  $q_string  = "select pkg_name,pkg_update,pkg_os,grp_name ";
+  $q_string .= "from packages ";
+  $q_string .= "left join groups on groups.grp_id = packages.pkg_grp_id ";
+  $q_string .= "where pkg_inv_id = " . $formVars['id'] . " ";
+  $q_string .= "order by pkg_name,pkg_update ";
+  $q_packages = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_packages = mysqli_fetch_array($q_packages)) {
 
     $checkmark = "";
     if ($a_software['sw_verified']) {
@@ -155,7 +157,9 @@
     }
     $package .= "<tr>";
     $package .= "<td class=\"ui-widget-content\">" . $a_packages['pkg_name'] . "</td>";
+    $package .= "<td class=\"ui-widget-content\">" . $a_packages['pkg_update'] . "</td>";
     $package .= "<td class=\"ui-widget-content\">" . $a_packages['grp_name'] . "</td>";
+    $package .= "<td class=\"ui-widget-content\">" . $a_packages['pkg_os'] . "</td>";
     $package .= "</tr>";
 
   }
@@ -164,7 +168,7 @@
 
 ?>
 
-document.getElementById('software_mysql').innerHTML = '<?php print mysql_real_escape_string($output); ?>';
+document.getElementById('software_mysql').innerHTML = '<?php print mysqli_real_escape_string($output); ?>';
 
-document.getElementById('package_mysql').innerHTML = '<?php print mysql_real_escape_string($package); ?>';
+document.getElementById('package_mysql').innerHTML = '<?php print mysqli_real_escape_string($package); ?>';
 
