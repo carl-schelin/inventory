@@ -45,8 +45,8 @@
           $q_string  = "select chk_id,chk_closed ";
           $q_string .= "from chkserver ";
           $q_string .= "where chk_id = " . $formVars['id'] . " ";
-          $q_chkserver = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_chkserver = mysql_fetch_array($q_chkserver);
+          $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_chkserver = mysqli_fetch_array($q_chkserver);
 
           if ($a_chkserver['chk_closed'] == '0000-00-00 00:00:00') {
             $formVars['chk_closed'] = date('Y-m-d H:i:s');
@@ -73,7 +73,7 @@
 
         logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $a_inventory['inv_name']);
 
-        mysql_query($query) or die($query . ": " . mysql_error());
+        mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
       }
 
 
@@ -129,8 +129,8 @@
       $q_string .= "left join service on service.svc_id = inventory.inv_class ";
       $q_string .= "where ce_priority = 1 and chk_status = 0 and chk_closed = '0000-00-00 00:00:00' " . $where;
       $q_string .= $orderby;
-      $q_chkserver = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_chkserver = mysql_fetch_array($q_chkserver)) {
+      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
         if (check_grouplevel($GRP_Unix)) {
@@ -169,8 +169,8 @@
       $output .= "</form>\n";
 
       if ($count > 0) {
-        print "document.getElementById('priority1').innerHTML = '" . mysql_real_escape_string($count) . "';\n";
-        print "document.getElementById('pri1_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+        print "document.getElementById('priority1').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
+        print "document.getElementById('pri1_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
       }
 
 
@@ -196,8 +196,8 @@
       $q_string .= "left join service on service.svc_id = inventory.inv_class ";
       $q_string .= "where ce_priority = 2 and chk_status = 0 and chk_closed = '0000-00-00 00:00:00' " . $where;
       $q_string .= $orderby;
-      $q_chkserver = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_chkserver = mysql_fetch_array($q_chkserver)) {
+      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
         if (check_grouplevel($GRP_Unix)) {
@@ -236,8 +236,8 @@
       $output .= "</form>\n";
 
       if ($count > 0) {
-        print "document.getElementById('priority2').innerHTML = '" . mysql_real_escape_string($count) . "';\n";
-        print "document.getElementById('pri2_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+        print "document.getElementById('priority2').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
+        print "document.getElementById('pri2_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
       }
 
 
@@ -263,8 +263,8 @@
       $q_string .= "left join service on service.svc_id = inventory.inv_class ";
       $q_string .= "where ce_priority = 3 and chk_status = 0 and chk_closed = '0000-00-00 00:00:00' " . $where;
       $q_string .= $orderby;
-      $q_chkserver = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_chkserver = mysql_fetch_array($q_chkserver)) {
+      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
         if (check_grouplevel($GRP_Unix)) {
@@ -303,8 +303,8 @@
       $output .= "</form>\n";
 
       if ($count > 0) {
-        print "document.getElementById('priority3').innerHTML = '" . mysql_real_escape_string($count) . "';\n";
-        print "document.getElementById('pri3_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+        print "document.getElementById('priority3').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
+        print "document.getElementById('pri3_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
       }
 
 
@@ -330,8 +330,8 @@
       $q_string .= "left join service on service.svc_id = inventory.inv_class ";
       $q_string .= "where ce_priority = 4 and chk_status = 0 and chk_closed = '0000-00-00 00:00:00' " . $where;
       $q_string .= $orderby;
-      $q_chkserver = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_chkserver = mysql_fetch_array($q_chkserver)) {
+      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
         if (check_grouplevel($GRP_Unix)) {
@@ -370,8 +370,8 @@
       $output .= "</form>\n";
 
       if ($count > 0) {
-        print "document.getElementById('priority4').innerHTML = '" . mysql_real_escape_string($count) . "';\n";
-        print "document.getElementById('pri4_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+        print "document.getElementById('priority4').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
+        print "document.getElementById('pri4_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
       }
 
 
@@ -397,8 +397,8 @@
       $q_string .= "left join service on service.svc_id = inventory.inv_class ";
       $q_string .= "where ce_priority = 5 and chk_status = 0 and chk_closed = '0000-00-00 00:00:00' " . $where;
       $q_string .= $orderby;
-      $q_chkserver = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_chkserver = mysql_fetch_array($q_chkserver)) {
+      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
         if (check_grouplevel($GRP_Unix)) {
@@ -437,8 +437,8 @@
       $output .= "</form>\n";
 
       if ($count > 0) {
-        print "document.getElementById('priority5').innerHTML = '" . mysql_real_escape_string($count) . "';\n";
-        print "document.getElementById('pri5_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+        print "document.getElementById('priority5').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
+        print "document.getElementById('pri5_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
       }
 
 
@@ -468,8 +468,8 @@
       $q_string .= "left join users on users.usr_id = chkserver.chk_userid ";
       $q_string .= "where chk_closed != '0000-00-00 00:00:00' " . $where;
       $q_string .= "order by inv_class,ce_error,inv_name ";
-      $q_chkserver = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_chkserver = mysql_fetch_array($q_chkserver)) {
+      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
         if (check_grouplevel($GRP_Unix)) {
@@ -515,8 +515,8 @@
       $output .= "</form>\n";
 
       if ($count > 0) {
-        print "document.getElementById('is_closed').innerHTML = '" . mysql_real_escape_string($count) . "';\n";
-        print "document.getElementById('closed_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+        print "document.getElementById('is_closed').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
+        print "document.getElementById('closed_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
       }
     }
 # adding closing brace to block closed; a lot and it's killing the page
@@ -547,8 +547,8 @@
       $q_string .= "left join users on users.usr_id = chkserver.chk_userid ";
       $q_string .= "where chk_status = 1 and chk_closed = '0000-00-00 00:00:00' " . $where;
       $q_string .= "order by inv_class,ce_error,inv_name ";
-      $q_chkserver = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_chkserver = mysql_fetch_array($q_chkserver)) {
+      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
         if (check_grouplevel($GRP_Unix)) {
@@ -588,8 +588,8 @@
       $output .= "</form>\n";
 
       if ($count > 0) {
-        print "document.getElementById('is_claimed').innerHTML = '" . mysql_real_escape_string($count) . "';\n";
-        print "document.getElementById('claimed_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+        print "document.getElementById('is_claimed').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
+        print "document.getElementById('claimed_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
       }
 
 
@@ -618,8 +618,8 @@
       $q_string .= "left join users on users.usr_id = chkserver.chk_userid ";
       $q_string .= "where chk_status = 2 and chk_closed = '0000-00-00 00:00:00' " . $where;
       $q_string .= "order by inv_class,ce_error,inv_name ";
-      $q_chkserver = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_chkserver = mysql_fetch_array($q_chkserver)) {
+      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
         if (check_grouplevel($GRP_Unix)) {
@@ -659,8 +659,8 @@
       $output .= "</form>\n";
 
       if ($count > 0) {
-        print "document.getElementById('is_pending').innerHTML = '" . mysql_real_escape_string($count) . "';\n";
-        print "document.getElementById('pending_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+        print "document.getElementById('is_pending').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
+        print "document.getElementById('pending_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
       }
 
     } else {
