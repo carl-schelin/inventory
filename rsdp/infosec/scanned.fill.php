@@ -26,11 +26,11 @@
       $q_string  = "select is_id,is_ticket,is_scan,is_verified,is_checklist ";
       $q_string .= "from rsdp_infosec ";
       $q_string .= "where is_rsdp = " . $formVars['rsdp'];
-      $q_rsdp_infosec = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_rsdp_infosec) > 0) {
-        $a_rsdp_infosec = mysql_fetch_array($q_rsdp_infosec);
+      $q_rsdp_infosec = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_rsdp_infosec) > 0) {
+        $a_rsdp_infosec = mysqli_fetch_array($q_rsdp_infosec);
 
-        print "document.rsdp.is_ticket.value = '" . mysql_real_escape_string($a_rsdp_infosec['is_ticket']) . "';\n";
+        print "document.rsdp.is_ticket.value = '" . mysqli_real_escape_string($a_rsdp_infosec['is_ticket']) . "';\n";
 
         if ($a_rsdp_infosec['is_checklist']) {
           print "document.rsdp.is_checklist.checked = true;\n";
@@ -52,7 +52,7 @@
 
       }
 
-      mysql_free_result($q_rsdp_infosec);
+      mysqli_free_result($q_rsdp_infosec);
 
       print "validate_Form();\n";
 
