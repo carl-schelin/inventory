@@ -9,8 +9,8 @@
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -33,29 +33,29 @@ print "h - Update hardware record\n";
   $q_string  = "select inv_id ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_manager = " . $GRP_Networking . " and inv_status = 0 and inv_id != 10805 ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $q_string  = "update inventory ";
     $q_string .= "set ";
     $q_string .= "inv_status = 1 ";
     $q_string .= "where inv_id = " . $a_inventory['inv_id'] . " ";
-    $results = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $results = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     print "i";
 
     $q_string  = "select hw_id ";
     $q_string .= "from hardware ";
     $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1 and hw_retired = '0000-00-00' ";
-    $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_hardware) > 0) {
-      $a_hardware = mysql_fetch_array($q_hardware);
+    $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_hardware) > 0) {
+      $a_hardware = mysqli_fetch_array($q_hardware);
       print "f";
 
       $q_string  = "update hardware ";
       $q_string .= "set ";
       $q_string .= "hw_retired = '" . date('Y-m-d') . "' ";
       $q_string .= "where hw_id = " . $a_hardware['hw_id'] . " ";
-      $results = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $results = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       print "h";
 
     }
@@ -95,8 +95,8 @@ if (($handle = fopen($file, "r")) !== FALSE) {
     $q_string  = "select mod_id ";
     $q_string .= "from models ";
     $q_string .= "where mod_vendor = '" . $data[5] . "' and mod_name = '" . $data[3] . "' ";
-    $q_models = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_models) == 0) {
+    $q_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_models) == 0) {
 
       $q_string  = "insert ";
       $q_string .= "into models ";
@@ -111,7 +111,7 @@ if (($handle = fopen($file, "r")) !== FALSE) {
         print "Missing, adding: Vendor: " . $data[5] . " Model: " . $data[3] . "\n";
         print $q_string . "\n";
       } else {
-        $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         print "M";
       }
     }
@@ -123,9 +123,9 @@ if (($handle = fopen($file, "r")) !== FALSE) {
     $q_string  = "select inv_id ";
     $q_string .= "from inventory ";
     $q_string .= "where inv_name = '" . $hostname[0] . "' ";
-    $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_inventory) > 0) {
-      $a_inventory = mysql_fetch_array($q_inventory);
+    $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_inventory) > 0) {
+      $a_inventory = mysqli_fetch_array($q_inventory);
 
 # found it. now update the inventory record for name, domain, owner and app owner (same group)
       $q_string  = "update inventory ";
@@ -141,7 +141,7 @@ if (($handle = fopen($file, "r")) !== FALSE) {
         print "Found and updating hostname: " . $hostname[0] . " Domain: " . $hostname[1] . "\n";
         print $q_string . "\n";
       } else {
-        $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         print "u";
       }
 
@@ -150,16 +150,16 @@ if (($handle = fopen($file, "r")) !== FALSE) {
       $q_string  = "select mod_id ";
       $q_string .= "from models ";
       $q_string .= "where mod_vendor = '" . $data[5] . "' and mod_name = '" . $data[3] . "' ";
-      $q_models = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_models = mysql_fetch_array($q_models);
+      $q_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_models = mysqli_fetch_array($q_models);
 
 # got the model info. Now get the hardware info and set it.
       $q_string  = "select hw_id,hw_built,hw_active ";
       $q_string .= "from hardware ";
       $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1 and hw_deleted = 0 ";
-      $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_hardware) > 0) {
-        $a_hardware = mysql_fetch_array($q_hardware);
+      $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_hardware) > 0) {
+        $a_hardware = mysqli_fetch_array($q_hardware);
 
 # now update the hardware information
         $q_string  = "update hardware ";
@@ -182,7 +182,7 @@ if (($handle = fopen($file, "r")) !== FALSE) {
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           print "h";
         }
       }
@@ -192,9 +192,9 @@ if (($handle = fopen($file, "r")) !== FALSE) {
       $q_string  = "select int_id ";
       $q_string .= "from interface ";
       $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_addr = '" . $data[1] . "' ";
-      $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_interface) > 0) {
-        $a_interface = mysql_fetch_array($q_interface);
+      $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_interface) > 0) {
+        $a_interface = mysqli_fetch_array($q_interface);
 
         $q_string  = "update interface ";
         $q_string .= "set ";
@@ -208,7 +208,7 @@ if (($handle = fopen($file, "r")) !== FALSE) {
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           print "i";
         }
       } else {
@@ -227,7 +227,7 @@ if (($handle = fopen($file, "r")) !== FALSE) {
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           print "I";
         }
       }
@@ -249,7 +249,7 @@ if (($handle = fopen($file, "r")) !== FALSE) {
         print "Missing: " . $hostname[0] . " Domain: " . $hostname[1] . "\n";
         print $q_string . "\n";
       } else {
-        $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $server = last_insert_id();
         print "N";
       }
@@ -260,8 +260,8 @@ if (($handle = fopen($file, "r")) !== FALSE) {
         $q_string  = "select mod_id ";
         $q_string .= "from models ";
         $q_string .= "where mod_vendor = '" . $data[5] . "' and mod_name = '" . $data[3] . "' ";
-        $q_models = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_models = mysql_fetch_array($q_models);
+        $q_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_models = mysqli_fetch_array($q_models);
 
 # now insert the hardware information
         $q_string  = "insert ";
@@ -282,7 +282,7 @@ if (($handle = fopen($file, "r")) !== FALSE) {
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           print "H";
         }
 
@@ -302,7 +302,7 @@ if (($handle = fopen($file, "r")) !== FALSE) {
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           print "I";
         }
       }
