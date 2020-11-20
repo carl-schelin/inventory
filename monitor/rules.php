@@ -188,8 +188,8 @@ $(document).ready( function() {
   $q_string .= "from rules ";
   $q_string .= "where rule_deleted = 0 ";
   $q_string .= "order by rule_description ";
-  $q_rules = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_rules = mysql_fetch_array($q_rules)) {
+  $q_rules = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_rules = mysqli_fetch_array($q_rules)) {
     print "<option value=\"" . $a_rules['rule_id'] . "\">" . $a_rules['rule_description'] . "</option>\n";
   }
 ?>
@@ -214,8 +214,8 @@ $(document).ready( function() {
   $q_string .= "from keywords ";
   $q_string .= "where key_deleted = 0 ";
   $q_string .= "order by key_description ";
-  $q_keywords = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_keywords = mysql_fetch_array($q_keywords)) {
+  $q_keywords = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_keywords = mysqli_fetch_array($q_keywords)) {
     print "<option value=\"" . $a_keywords['key_id'] . "\">" . $a_keywords['key_description'] . "</option>\n";
   }
 ?>
@@ -227,8 +227,8 @@ $(document).ready( function() {
   $q_string .= "from source_node ";
   $q_string .= "where src_deleted = 0 ";
   $q_string .= "order by src_node ";
-  $q_source_node = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_source_node = mysql_fetch_array($q_source_node)) {
+  $q_source_node = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_source_node = mysqli_fetch_array($q_source_node)) {
     print "<option value=\"" . $a_source_node['src_id'] . "\">" . $a_source_node['src_node'] . "</option>\n";
   }
 ?>
@@ -248,8 +248,8 @@ $(document).ready( function() {
   $q_string .= "from application ";
   $q_string .= "where app_deleted = 0 ";
   $q_string .= "order by app_description ";
-  $q_application = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_application = mysql_fetch_array($q_application)) {
+  $q_application = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_application = mysqli_fetch_array($q_application)) {
     print "<option value=\"" . $a_application['app_id'] . "\">" . $a_application['app_description'] . "</option>\n";
   }
 ?>
@@ -261,8 +261,8 @@ $(document).ready( function() {
   $q_string .= "from objects ";
   $q_string .= "where obj_deleted = 0 ";
   $q_string .= "order by obj_name ";
-  $q_objects = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_objects = mysql_fetch_array($q_objects)) {
+  $q_objects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_objects = mysqli_fetch_array($q_objects)) {
     print "<option value=\"" . $a_objects['obj_id'] . "\">" . $a_objects['obj_name'] . "</option>\n";
   }
 ?>
@@ -274,8 +274,8 @@ $(document).ready( function() {
   $q_string .= "from message_group ";
   $q_string .= "where msg_deleted = 0 ";
   $q_string .= "order by msg_group ";
-  $q_message_group = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_message_group = mysql_fetch_array($q_message_group)) {
+  $q_message_group = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_message_group = mysqli_fetch_array($q_message_group)) {
     print "<option value=\"" . $a_message_group['msg_id'] . "\">" . $a_message_group['msg_group'] . "</option>\n";
   }
 ?>
