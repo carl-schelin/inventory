@@ -30,27 +30,27 @@
     $q_string  = "select usr_last,usr_first,usr_phone,usr_email ";
     $q_string .= "from users ";
     $q_string .= "where usr_id = " . $_SESSION['uid'];
-    $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_users = mysql_fetch_array($q_users);
+    $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_users = mysqli_fetch_array($q_users);
   } else {
     $q_string  = "select iss_discovered,iss_closed,iss_subject,iss_user ";
     $q_string .= "from issue ";
     $q_string .= "where iss_id = " . $formVars['id'];
-    $q_issue = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_issue = mysql_fetch_array($q_issue);
+    $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_issue = mysqli_fetch_array($q_issue);
 
     $q_string  = "select usr_last,usr_first,usr_phone,usr_email ";
     $q_string .= "from users ";
     $q_string .= "where usr_id = " . $a_issue['iss_user'];
-    $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_users = mysql_fetch_array($q_users);
+    $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_users = mysqli_fetch_array($q_users);
   }
 
   $q_string  = "select inv_name ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_id = " . $formVars['server'];
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_inventory = mysql_fetch_array($q_inventory);
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inventory = mysqli_fetch_array($q_inventory);
 
 ?>
 <!DOCTYPE HTML>
@@ -539,9 +539,9 @@ $(document).ready( function() {
   $q_string .= "from hardware ";
   $q_string .= "left join support on hardware.hw_supportid = support.sup_id ";
   $q_string .= "where hw_companyid = " . $formVars['server'] . " and hw_primary = 1";
-  $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_hardware) > 0) {
-    while ($a_hardware = mysql_fetch_array($q_hardware)) {
+  $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_hardware) > 0) {
+    while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
       print "<tr>\n";
       print "  <td class=\"ui-widget-content\" colspan=\"2\"><strong>Company</strong>: <a href=\"" . $a_hardware['sup_web'] . "\">" . $a_hardware['sup_company'] . "</a></td>\n";
@@ -563,15 +563,15 @@ $(document).ready( function() {
   $q_string  = "select sw_software,sw_supportid ";
   $q_string .= "from software ";
   $q_string .= "where sw_companyid = " . $formVars['server'] . " ";
-  $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_software) > 0) {
-    while ($a_software = mysql_fetch_array($q_software)) {
+  $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_software) > 0) {
+    while ($a_software = mysqli_fetch_array($q_software)) {
       if ($a_software['sw_supportid'] != 0) {
         $q_string  = "select sup_company,sup_phone,sup_email,sup_web,sup_contract ";
         $q_string .= "from support ";
         $q_string .= "where sup_id = " . $a_software['sw_supportid'];
-        $q_support = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_support = mysql_fetch_array($q_support);
+        $q_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_support = mysqli_fetch_array($q_support);
 
         print "<tr>\n";
         print "  <td class=\"ui-widget-content\"><strong>Software</strong>: " . $a_software['sw_software'] . "</td>\n";
@@ -599,8 +599,8 @@ $(document).ready( function() {
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
   $q_string .= "where hw_primary = 1 and hw_companyid = " . $formVars['server'] . " ";
   $q_string .= "order by hw_type,hw_vendorid";
-  $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_hardware = mysql_fetch_array($q_hardware);
+  $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_hardware = mysqli_fetch_array($q_hardware);
 
   print "<tr>\n";
   print "  <td class=\"ui-widget-content\"><strong>Type</strong>: "    . $a_hardware['part_name']  . "</td>\n";
@@ -623,8 +623,8 @@ $(document).ready( function() {
   $q_string .= "left join states on states.st_id = locations.loc_state ";
   $q_string .= "left join country on country.cn_id = locations.loc_country ";
   $q_string .= "where inv_id = " . $formVars['server'];
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_inventory = mysql_fetch_array($q_inventory);
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inventory = mysqli_fetch_array($q_inventory);
 
   print "<tr>\n";
   print "  <td class=\"ui-widget-content\">" . $a_inventory['loc_name'] . "</td>\n";
@@ -652,8 +652,8 @@ $(document).ready( function() {
   $q_string  = "select iss_discovered,iss_closed,iss_subject ";
   $q_string .= "from issue ";
   $q_string .= "where iss_id = " . $formVars['id'];
-  $q_issue = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_issue = mysql_fetch_array($q_issue);
+  $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_issue = mysqli_fetch_array($q_issue);
 
   if ($a_issue['iss_closed'] == '0000-00-00') {
     print "  <td class=\"ui-widget-content\"><strong>Discovered</strong>: <input type=\"text\" name=\"iss_discovered\" size=\"10\" value=\"" . $a_issue['iss_discovered'] . "\"></td>\n";
@@ -834,8 +834,8 @@ to the first line and <strong>Update</strong> is added to subsequent updates.</p
   $q_string  = "select usr_first,usr_last ";
   $q_string .= "from users ";
   $q_string .= "where usr_id = " . $_SESSION['uid'];
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_users = mysql_fetch_array($q_users);
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_users = mysqli_fetch_array($q_users);
 
   print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
 
@@ -843,8 +843,8 @@ to the first line and <strong>Update</strong> is added to subsequent updates.</p
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
   }
 ?>
@@ -967,8 +967,8 @@ field shows you the limit of the number of characters. This limit is set by the 
   $q_string  = "select usr_first,usr_last ";
   $q_string .= "from users ";
   $q_string .= "where usr_id = " . $_SESSION['uid'];
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_users = mysql_fetch_array($q_users);
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_users = mysqli_fetch_array($q_users);
 
   print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
 
@@ -976,8 +976,8 @@ field shows you the limit of the number of characters. This limit is set by the 
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
   }
 ?>
