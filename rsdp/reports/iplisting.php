@@ -134,8 +134,8 @@ $(document).ready( function() {
   $q_string .= "left join rsdp_interface on rsdp_server.rsdp_id = rsdp_interface.if_rsdp ";
   $q_string .= "left join users on users.usr_id = rsdp_server.rsdp_requestor ";
   $q_string .= "order by if_ip,if_name";
-  $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_rsdp_server = mysql_fetch_array($q_rsdp_server)) {
+  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_rsdp_server = mysqli_fetch_array($q_rsdp_server)) {
     print "<tr>\n";
     print "  <td class=\"ui-widget-content\">" . $a_rsdp_server['rsdp_id']  . "</td>\n";
     print "  <td class=\"ui-widget-content\">" . $a_rsdp_server['usr_name'] . "</td>\n";
