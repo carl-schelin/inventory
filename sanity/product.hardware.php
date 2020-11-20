@@ -165,8 +165,8 @@
   $q_string .= "left join products  on products.prod_id        = inventory.inv_product ";
   $q_string .= $where;
   $q_string .= $orderby;
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
    $editstart = '';
     $editend = '';
@@ -183,8 +183,8 @@
     $q_string .= "left join products on products.prod_id = hardware.hw_product ";
     $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
     $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_product = 0 ";
-    $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    while ($a_hardware = mysql_fetch_array($q_hardware)) {
+    $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_hardware = mysqli_fetch_array($q_hardware)) {
       print "<tr>\n";
       print "  <td class=\"ui-widget-content\">" . $editstart . $a_inventory['inv_name']  . $editend . "</td>\n";
       print "  <td class=\"ui-widget-content\">" . $editstart . $a_inventory['prod_name'] . $editend . "</td>\n";
