@@ -49,7 +49,7 @@
 
         logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['rsdp']);
 
-        mysql_query($query) or die($query . ": " . mysql_error());
+        mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
         print "alert('" . $message . "');\n";
       }
@@ -87,10 +87,10 @@
         $q_string  = "select st_id,st_completed ";
         $q_string .= "from rsdp_status ";
         $q_string .= "where st_rsdp = " . $formVars['rsdp'] . " and st_step = 3";
-        $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 # if step 3 is complete
-        if (mysql_num_rows($q_rsdp_status) > 0) {
+        if (mysqli_num_rows($q_rsdp_status) > 0) {
 
 # special bit for systems that are virtual machines. Make sure the e-mail is properly sent
           $virtual = rsdp_Virtual($formVars['rsdp']);
@@ -110,8 +110,8 @@
             $q_string  = "select tkt_virtual ";
             $q_string .= "from rsdp_tickets ";
             $q_string .= "where tkt_rsdp = " . $formVars['rsdp'];
-            $q_rsdp_tickets = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            $a_rsdp_tickets = mysql_fetch_array($q_rsdp_tickets);
+            $q_rsdp_tickets = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
             if ($a_rsdp_tickets['tkt_virtual']) {
               submit_Ticket(
                 $formVars['rsdp'],
@@ -137,8 +137,8 @@
             $q_string  = "select tkt_datacenter ";
             $q_string .= "from rsdp_tickets ";
             $q_string .= "where tkt_rsdp = " . $formVars['rsdp'];
-            $q_rsdp_tickets = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            $a_rsdp_tickets = mysql_fetch_array($q_rsdp_tickets);
+            $q_rsdp_tickets = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
             if ($a_rsdp_tickets['tkt_datacenter']) {
               submit_Ticket(
                 $formVars['rsdp'],
