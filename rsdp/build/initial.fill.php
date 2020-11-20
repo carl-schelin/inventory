@@ -38,9 +38,9 @@
       $q_string .= "rsdp_newrelic,rsdp_centrify,rsdp_backup ";
       $q_string .= "from rsdp_server ";
       $q_string .= "where rsdp_id = " . $formVars['rsdp'];
-      $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_rsdp_server) > 0) {
-        $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+      $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_rsdp_server) > 0) {
+        $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
         $userid = $a_rsdp_server['rsdp_requestor'];
 
@@ -52,8 +52,8 @@
         $q_string .= "from users ";
         $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group = " . $GRP_SAN . " ";
         $q_string .= "order by usr_last";
-        $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        while ($a_users = mysql_fetch_array($q_users)) {
+        $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_users = mysqli_fetch_array($q_users)) {
           if ($a_rsdp_server['rsdp_sanpoc'] == $a_users['usr_id']) {
             $sanpoc = $count;
           }
@@ -63,8 +63,8 @@
         $q_string .= "from users ";
         $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group != " . $GRP_SAN . " ";
         $q_string .= "order by usr_last";
-        $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        while ($a_users = mysql_fetch_array($q_users)) {
+        $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_users = mysqli_fetch_array($q_users)) {
           if ($a_rsdp_server['rsdp_sanpoc'] == $a_users['usr_id']) {
             $sanpoc = $count;
           }
@@ -77,8 +77,8 @@
         $q_string .= "from users ";
         $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group = " . $GRP_Networking . " ";
         $q_string .= "order by usr_last";
-        $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        while ($a_users = mysql_fetch_array($q_users)) {
+        $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_users = mysqli_fetch_array($q_users)) {
           if ($a_rsdp_server['rsdp_networkpoc'] == $a_users['usr_id']) {
             $networkpoc = $count;
           }
@@ -88,8 +88,8 @@
         $q_string .= "from users ";
         $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group != " . $GRP_Networking . " ";
         $q_string .= "order by usr_last";
-        $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        while ($a_users = mysql_fetch_array($q_users)) {
+        $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_users = mysqli_fetch_array($q_users)) {
           if ($a_rsdp_server['rsdp_networkpoc'] == $a_users['usr_id']) {
             $networkpoc = $count;
           }
@@ -102,8 +102,8 @@
         $q_string .= "from users ";
         $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group = " . $GRP_Virtualization . " ";
         $q_string .= "order by usr_last";
-        $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        while ($a_users = mysql_fetch_array($q_users)) {
+        $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_users = mysqli_fetch_array($q_users)) {
           if ($a_rsdp_server['rsdp_virtpoc'] == $a_users['usr_id']) {
             $virtpoc = $count;
           }
@@ -113,8 +113,8 @@
         $q_string .= "from users ";
         $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group != " . $GRP_Virtualization . " ";
         $q_string .= "order by usr_last";
-        $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        while ($a_users = mysql_fetch_array($q_users)) {
+        $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_users = mysqli_fetch_array($q_users)) {
           if ($a_rsdp_server['rsdp_virtpoc'] == $a_users['usr_id']) {
             $virtpoc = $count;
           }
@@ -127,8 +127,8 @@
         $q_string .= "from users ";
         $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group = " . $GRP_DataCenter . " ";
         $q_string .= "order by usr_last";
-        $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        while ($a_users = mysql_fetch_array($q_users)) {
+        $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_users = mysqli_fetch_array($q_users)) {
           if ($a_rsdp_server['rsdp_dcpoc'] == $a_users['usr_id']) {
             $dcpoc = $count;
           }
@@ -138,8 +138,8 @@
         $q_string .= "from users ";
         $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group != " . $GRP_DataCenter . " ";
         $q_string .= "order by usr_last";
-        $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        while ($a_users = mysql_fetch_array($q_users)) {
+        $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_users = mysqli_fetch_array($q_users)) {
           if ($a_rsdp_server['rsdp_dcpoc'] == $a_users['usr_id']) {
             $dcpoc = $count;
           }
@@ -152,8 +152,8 @@
         $q_string .= "from users ";
         $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group = " . $GRP_Monitoring . " ";
         $q_string .= "order by usr_last";
-        $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        while ($a_users = mysql_fetch_array($q_users)) {
+        $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_users = mysqli_fetch_array($q_users)) {
           if ($a_rsdp_server['rsdp_monitorpoc'] == $a_users['usr_id']) {
             $monitorpoc = $count;
           }
@@ -163,8 +163,8 @@
         $q_string .= "from users ";
         $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group != " . $GRP_Monitoring . " ";
         $q_string .= "order by usr_last";
-        $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        while ($a_users = mysql_fetch_array($q_users)) {
+        $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_users = mysqli_fetch_array($q_users)) {
           if ($a_rsdp_server['rsdp_monitorpoc'] == $a_users['usr_id']) {
             $monitorpoc = $count;
           }
@@ -177,8 +177,8 @@
         $q_string .= "from users ";
         $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group = " . $GRP_Backups . " ";
         $q_string .= "order by usr_last";
-        $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        while ($a_users = mysql_fetch_array($q_users)) {
+        $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_users = mysqli_fetch_array($q_users)) {
           if ($a_rsdp_server['rsdp_backuppoc'] == $a_users['usr_id']) {
             $backuppoc = $count;
           }
@@ -188,8 +188,8 @@
         $q_string .= "from users ";
         $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group != " . $GRP_Backups . " ";
         $q_string .= "order by usr_last";
-        $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        while ($a_users = mysql_fetch_array($q_users)) {
+        $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_users = mysqli_fetch_array($q_users)) {
           if ($a_rsdp_server['rsdp_backuppoc'] == $a_users['usr_id']) {
             $backuppoc = $count;
           }
@@ -224,11 +224,11 @@
         print "document.rsdp.rsdp_vendor['"       . $vendor       . "'].selected = true;\n";
         print "document.rsdp.rsdp_location['"     . $location     . "'].selected = true;\n";
 
-        print "document.rsdp.rsdp_completion.value = '" . mysql_real_escape_string($a_rsdp_server['rsdp_completion']) . "';\n";
-        print "document.rsdp.rsdp_function.value = '"   . mysql_real_escape_string($a_rsdp_server['rsdp_function'])   . "';\n";
-        print "document.rsdp.rsdp_processors.value ='"  . mysql_real_escape_string($a_rsdp_server['rsdp_processors']) . "';\n";
-        print "document.rsdp.rsdp_memory.value = '"     . mysql_real_escape_string($a_rsdp_server['rsdp_memory'])     . "';\n";
-        print "document.rsdp.rsdp_ossize.value = '"     . mysql_real_escape_string($a_rsdp_server['rsdp_ossize'])     . "';\n";
+        print "document.rsdp.rsdp_completion.value = '" . mysqli_real_escape_string($a_rsdp_server['rsdp_completion']) . "';\n";
+        print "document.rsdp.rsdp_function.value = '"   . mysqli_real_escape_string($a_rsdp_server['rsdp_function'])   . "';\n";
+        print "document.rsdp.rsdp_processors.value ='"  . mysqli_real_escape_string($a_rsdp_server['rsdp_processors']) . "';\n";
+        print "document.rsdp.rsdp_memory.value = '"     . mysqli_real_escape_string($a_rsdp_server['rsdp_memory'])     . "';\n";
+        print "document.rsdp.rsdp_ossize.value = '"     . mysqli_real_escape_string($a_rsdp_server['rsdp_ossize'])     . "';\n";
 
         if ($a_rsdp_server['rsdp_osmonitor']) {
           print "document.rsdp.rsdp_osmonitor.checked = true;\n";
@@ -268,15 +268,15 @@
 
       }
 
-      mysql_free_result($q_rsdp_server);
+      mysqli_free_result($q_rsdp_server);
 
 # block to retrieve user data
       $q_string  = "select usr_phone,usr_email,usr_deptname ";
       $q_string .= "from users ";
       $q_string .= "where usr_id = " . $userid;
-      $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_users) > 0) {
-        $a_users = mysql_fetch_array($q_users);
+      $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_users) > 0) {
+        $a_users = mysqli_fetch_array($q_users);
 
         $requestor = return_Index($userid,                  "select usr_id from users where usr_disabled = 0 order by usr_last");
         $deptname  = return_Index($a_users['usr_deptname'], "select dep_id from department left join business_unit on business_unit.bus_unit = department.dep_unit order by bus_name,dep_name");
@@ -284,12 +284,12 @@
         print "document.rsdp.rsdp_requestor['"    . $requestor    . "'].selected = true;\n";
         print "document.rsdp.usr_deptname['"      . $deptname     . "'].selected = true;\n";
 
-        print "document.rsdp.usr_phone.value = '"       . mysql_real_escape_string($a_users['usr_phone'])             . "';\n";
-        print "document.rsdp.usr_email.value = '"       . mysql_real_escape_string($a_users['usr_email'])             . "';\n";
+        print "document.rsdp.usr_phone.value = '"       . mysqli_real_escape_string($a_users['usr_phone'])             . "';\n";
+        print "document.rsdp.usr_email.value = '"       . mysqli_real_escape_string($a_users['usr_email'])             . "';\n";
 
       }
 
-      mysql_free_result($q_users);
+      mysqli_free_result($q_users);
 
 # block to retrieve ticket data
       if ($ticket == 'yes') {
@@ -298,9 +298,9 @@
         $q_string .= "tkt_appcnf,tkt_infosec,tkt_sysscan ";
         $q_string .= "from rsdp_tickets ";
         $q_string .= "where tkt_rsdp = " . $formVars['rsdp'];
-        $q_rsdp_tickets = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        if (mysql_num_rows($q_rsdp_tickets) > 0) {
-          $a_rsdp_tickets = mysql_fetch_array($q_rsdp_tickets);
+        $q_rsdp_tickets = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_rsdp_tickets) > 0) {
+          $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
 
           if ($a_rsdp_tickets['tkt_build']) {
             print "document.rsdp.tkt_build.checked = true;\n";
@@ -386,7 +386,7 @@
 
         }
 
-        mysql_free_result($q_rsdp_tickets);
+        mysqli_free_result($q_rsdp_tickets);
       }
 
 
@@ -396,9 +396,9 @@
       $q_string .= "bu_fritime,bu_sattime ";
       $q_string .= "from rsdp_backups ";
       $q_string .= "where bu_rsdp = " . $formVars['rsdp'];
-      $q_rsdp_backups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_rsdp_backups) > 0) {
-        $a_rsdp_backups = mysql_fetch_array($q_rsdp_backups);
+      $q_rsdp_backups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_rsdp_backups) > 0) {
+        $a_rsdp_backups = mysqli_fetch_array($q_rsdp_backups);
 
 # process the backup information
         print "document.rsdp.bu_retention['" . $a_rsdp_backups['bu_retention'] . "'].selected = true;\n";
@@ -411,14 +411,14 @@
         print "document.rsdp.bu_friday['"    . $a_rsdp_backups['bu_friday']    . "'].checked = true;\n";
         print "document.rsdp.bu_saturday['"  . $a_rsdp_backups['bu_saturday']  . "'].checked = true;\n";
 
-        print "document.rsdp.bu_start.value = '"   . mysql_real_escape_string($a_rsdp_backups['bu_start'])   . "';\n";
-        print "document.rsdp.bu_suntime.value = '" . mysql_real_escape_string($a_rsdp_backups['bu_suntime']) . "';\n";
-        print "document.rsdp.bu_montime.value = '" . mysql_real_escape_string($a_rsdp_backups['bu_montime']) . "';\n";
-        print "document.rsdp.bu_tuetime.value = '" . mysql_real_escape_string($a_rsdp_backups['bu_tuetime']) . "';\n";
-        print "document.rsdp.bu_wedtime.value = '" . mysql_real_escape_string($a_rsdp_backups['bu_wedtime']) . "';\n";
-        print "document.rsdp.bu_thutime.value = '" . mysql_real_escape_string($a_rsdp_backups['bu_thutime']) . "';\n";
-        print "document.rsdp.bu_fritime.value = '" . mysql_real_escape_string($a_rsdp_backups['bu_fritime']) . "';\n";
-        print "document.rsdp.bu_sattime.value = '" . mysql_real_escape_string($a_rsdp_backups['bu_sattime']) . "';\n";
+        print "document.rsdp.bu_start.value = '"   . mysqli_real_escape_string($a_rsdp_backups['bu_start'])   . "';\n";
+        print "document.rsdp.bu_suntime.value = '" . mysqli_real_escape_string($a_rsdp_backups['bu_suntime']) . "';\n";
+        print "document.rsdp.bu_montime.value = '" . mysqli_real_escape_string($a_rsdp_backups['bu_montime']) . "';\n";
+        print "document.rsdp.bu_tuetime.value = '" . mysqli_real_escape_string($a_rsdp_backups['bu_tuetime']) . "';\n";
+        print "document.rsdp.bu_wedtime.value = '" . mysqli_real_escape_string($a_rsdp_backups['bu_wedtime']) . "';\n";
+        print "document.rsdp.bu_thutime.value = '" . mysqli_real_escape_string($a_rsdp_backups['bu_thutime']) . "';\n";
+        print "document.rsdp.bu_fritime.value = '" . mysqli_real_escape_string($a_rsdp_backups['bu_fritime']) . "';\n";
+        print "document.rsdp.bu_sattime.value = '" . mysqli_real_escape_string($a_rsdp_backups['bu_sattime']) . "';\n";
 
         if ($a_rsdp_backups['bu_include']) {
           print "document.rsdp.bu_include.checked = true;\n";
@@ -428,7 +428,7 @@
 
         print "document.rsdp.bu_id.value = '" . $a_rsdp_backups['bu_id'] . "';\n";
 
-        mysql_free_result($q_rsdp_backups);
+        mysqli_free_result($q_rsdp_backups);
       }
 
       print "validate_Form();\n";
