@@ -67,7 +67,7 @@
         $q_string .= "from " . $tables[$i] . " ";
         $q_string .= "where " . $key[$i] . " = " . $formVars['id'];
 
-        $delete = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $delete = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 
       print "alert('Server deleted.');\n";
