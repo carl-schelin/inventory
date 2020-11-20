@@ -20,12 +20,12 @@
     $q_string  = "update inventory ";
     $q_string .= "set inv_manager = " . $formVars['custodian'] . " ";
     $q_string .= "where inv_id = " . $formVars['id'] . " ";
-    $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
     $q_string  = "update hardware ";
     $q_string .= "set hw_group = " . $formVars['custodian'] . " ";
     $q_string .= "where hw_companyid = " . $formVars['id'] . " ";
-    $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   }
 
 ?>
