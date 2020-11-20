@@ -25,7 +25,7 @@
       $q_string  = "delete ";
       $q_string .= "from security ";
       $q_string .= "where sec_id = " . $formVars['id'];
-      $insert = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
       print "alert('Security deleted.');\n";
 
