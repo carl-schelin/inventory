@@ -25,12 +25,12 @@
       $q_string  = "select os_vendor,os_software,os_exception ";
       $q_string .= "from operatingsystem ";
       $q_string .= "where os_id = " . $formVars['id'];
-      $q_operatingsystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_operatingsystem = mysql_fetch_array($q_operatingsystem);
-      mysql_free_result($q_operatingsystem);
+      $q_operatingsystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_operatingsystem = mysqli_fetch_array($q_operatingsystem);
+      mysqli_free_result($q_operatingsystem);
 
-      print "document.dialog.os_vendor.value = '"    . mysql_real_escape_string($a_operatingsystem['os_vendor'])   . "';\n";
-      print "document.dialog.os_software.value  = '" . mysql_real_escape_string($a_operatingsystem['os_software']) . "';\n";
+      print "document.dialog.os_vendor.value = '"    . mysqli_real_escape_string($a_operatingsystem['os_vendor'])   . "';\n";
+      print "document.dialog.os_software.value  = '" . mysqli_real_escape_string($a_operatingsystem['os_software']) . "';\n";
 
       if ($a_operatingsystem['os_exception']) {
         print "document.dialog.os_exception.checked = true;\n";
