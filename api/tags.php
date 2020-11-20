@@ -11,8 +11,8 @@
   $package = "tags.php";
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -127,17 +127,17 @@
   }
   $q_string .= $where;
   $q_string .= "order by inv_name ";
-  $q_inventory = mysql_query($q_string) or die($q_string  . ": " . mysql_error());
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string  . ": " . mysqli_error($db));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     if ($formVars['zone'] != '') {
       $q_string  = "select int_zone ";
       $q_string .= "from interface ";
       $q_string .= "left join ip_zones on ip_zones.zone_id = interface.int_zone ";
       $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and zone_zone = \"" . $formVars['zone'] . "\" ";
-      $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-      if (mysql_num_rows($q_interface) > 0) {
+      if (mysqli_num_rows($q_interface) > 0) {
         $servers[$a_inventory['inv_name']] = new Server();
         $servers[$a_inventory['inv_name']]->servername = $a_inventory['inv_name'];
       }
