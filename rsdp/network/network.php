@@ -35,9 +35,9 @@
   $q_string  = "select os_sysname ";
   $q_string .= "from rsdp_osteam ";
   $q_string .= "where os_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_osteam = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_rsdp_osteam) > 0) {
-    $a_rsdp_osteam = mysql_fetch_array($q_rsdp_osteam);
+  $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_rsdp_osteam) > 0) {
+    $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
   } else {
     $a_rsdp_osteam['os_sysname'] = "New Server";
   }
@@ -317,10 +317,10 @@ Checklist, and a comments page for passing information to various teams.</p>
   $q_string  = "select count(*) ";
   $q_string .= "from rsdp_comments ";
   $q_string .= "where com_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_comments = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_comments = mysql_fetch_array($q_rsdp_comments);
+  $q_rsdp_comments = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_comments = mysqli_fetch_array($q_rsdp_comments);
 
-  if (mysql_num_rows($q_rsdp_comments)) {
+  if (mysqli_num_rows($q_rsdp_comments)) {
     print " (" . $a_rsdp_comments['count(*)'] . ")";
   } else {
     print " (0)";
@@ -377,8 +377,8 @@ Checklist, and a comments page for passing information to various teams.</p>
   $q_string .= "left join int_redundancy on int_redundancy.red_id = rsdp_interface.if_redundant ";
   $q_string .= "where if_rsdp = " . $formVars['rsdp'] . " and if_if_id = 0 ";
   $q_string .= "order by if_interface";
-  $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
+  $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
 
     print "<tr>\n";
     print "  <td class=\"ui-widget-content\">" . $a_rsdp_interface['if_name']      . "</td>\n";
@@ -407,8 +407,8 @@ Checklist, and a comments page for passing information to various teams.</p>
     $q_string .= "left join int_redundancy on int_redundancy.red_id = rsdp_interface.if_redundant ";
     $q_string .= "where if_rsdp = " . $formVars['rsdp'] . " and if_if_id = " . $a_rsdp_interface['if_id'] . " ";
     $q_string .= "order by if_interface";
-    $q_redundant = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    while ($a_redundant = mysql_fetch_array($q_redundant)) {
+    $q_redundant = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_redundant = mysqli_fetch_array($q_redundant)) {
 
       print "<tr>\n";
       print "  <td class=\"ui-widget-content\">&gt; " . $a_redundant['if_name']   . "</td>\n";
