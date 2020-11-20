@@ -85,8 +85,8 @@
   $q_string .= "left join service on service.svc_id = inventory.inv_class ";
   $q_string .= "where inv_manager = 1 and inv_status = 0 and sw_type = 'OS' and hw_primary = 1 and mod_virtual = 0 ";
   $q_string .= "order by prod_name,inv_name";
-  $q_inventory = mysql_query($q_string) or die(mysql_error());
-  while ( $a_inventory = mysql_fetch_array($q_inventory) ) {
+  $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ( $a_inventory = mysqli_fetch_array($q_inventory) ) {
 
     $newdate = "";
 
