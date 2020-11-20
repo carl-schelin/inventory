@@ -46,7 +46,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['sev_name']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -97,9 +97,9 @@
       $q_string  = "select sev_id,sev_name ";
       $q_string .= "from severity ";
       $q_string .= "order by sev_name";
-      $q_severity = mysql_query($q_string) or die ($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_severity) > 0) {
-        while ($a_severity = mysql_fetch_array($q_severity)) {
+      $q_severity = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_severity) > 0) {
+        while ($a_severity = mysqli_fetch_array($q_severity)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('severity.fill.php?id="  . $a_severity['sev_id'] . "');showDiv('severity-hide');\">";
           $linkdel   = "<a href=\"#\" onclick=\"delete_line('severity.del.php?id=" . $a_severity['sev_id'] . "');\">";
@@ -121,9 +121,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_severity);
+      mysqli_free_result($q_severity);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.severity.update.disabled = true;\n";
       print "document.severity.sev_name.value = '';\n";
