@@ -21,8 +21,8 @@
   $q_string .= "from interface ";
   $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
   $q_string .= "where inv_id = " . $formVars['id'] . " and int_management = 1 ";
-  $q_interface = mysql_query($q_string) or die(mysql_error());
-  $a_interface = mysql_fetch_array($q_interface);
+  $q_interface = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  $a_interface = mysqli_fetch_array($q_interface);
 
   $load_day    = "/rrdtool/" . $a_interface['int_server'] . "/load-day-thumb.png";
   $mem_day     = "/rrdtool/" . $a_interface['int_server'] . "/mem-day-thumb.png";
@@ -143,5 +143,5 @@
   }
 ?>
 
-document.getElementById('performance_mysql').innerHTML = '<?php print mysql_real_escape_string($output); ?>';
+document.getElementById('performance_mysql').innerHTML = '<?php print mysqli_real_escape_string($output); ?>';
 
