@@ -25,8 +25,8 @@
       $q_string  = "select img_file ";
       $q_string .= "from images ";
       $q_string .= "where img_id = " . $formVars['id'];
-      $q_images = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_images = mysql_fetch_array($q_images);
+      $q_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_images = mysqli_fetch_array($q_images);
 
       if (file_exists($Picturepath . "/" . $a_images['img_file'])) {
         unlink($Picturepath . "/" . $a_images['img_file']);
@@ -35,7 +35,7 @@
       $q_string  = "delete ";
       $q_string .= "from images ";
       $q_string .= "where img_id = " . $formVars['id'];
-      $insert = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
       print "alert('Image file and data deleted.');\n";
 
