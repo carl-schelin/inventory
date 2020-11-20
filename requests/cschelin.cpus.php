@@ -77,8 +77,8 @@
   $q_string .= "left join users     on users.usr_id     = hardware.hw_user ";
   $q_string .= "where inv_manager = " . $formVars['group'] . " and inv_status = 0 and hw_type = 8 and hw_verified = 0 " . $formVars['filter'];
   $q_string .= "order by inv_name ";
-  $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_hardware = mysql_fetch_array($q_hardware) ) {
+  $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_hardware = mysqli_fetch_array($q_hardware) ) {
 
     if ($a_hardware['inv_ssh']) {
       $ssh = "*";
