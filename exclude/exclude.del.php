@@ -25,14 +25,14 @@
       $q_string  = "select ex_deleted ";
       $q_string .= "from excludes ";
       $q_string .= "where ex_id = " . $formVars['id'] . " ";
-      $q_excludes = mysql_query($q_string) or die($q_string . ': ' . mysql_error());
-      $a_excludes = mysql_fetch_array($q_excludes);
+      $q_excludes = mysqli_query($db, $q_string) or die($q_string . ': ' . mysqli_error($db));
+      $a_excludes = mysqli_fetch_array($q_excludes);
 
       if ($a_excludes['ex_deleted'] > 0) {
         $q_string  = "delete ";
         $q_string .= "from excludes ";
         $q_string .= "where ex_id = " . $formVars['id'] . " ";
-        $insert = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
         print "alert('Message Exclude line removed.');\n";
       } else {
@@ -40,7 +40,7 @@
         $q_string .= "excludes ";
         $q_string .= "set ex_deleted = " . $_SESSION['uid'] . " ";
         $q_string .= "where ex_id = " . $formVars['id'] . " ";
-        $update = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $update = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
         print "alert('Message Exclude line marked as deleted.');\n";
       }
