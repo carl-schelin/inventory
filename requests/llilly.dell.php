@@ -88,8 +88,8 @@
   $q_string .= "left join states on states.st_id = cities.ct_state ";
   $q_string .= "where inv_status = 0 and mod_vendor = 'Dell' ";
   $q_string .= "order by inv_name";
-  $q_inventory = mysql_query($q_string) or die(mysql_error());
-  while ( $a_inventory = mysql_fetch_array($q_inventory) ) {
+  $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ( $a_inventory = mysqli_fetch_array($q_inventory) ) {
 
     if ($formVars['csv'] == 0) {
       $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\">";
