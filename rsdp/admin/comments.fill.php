@@ -26,12 +26,12 @@
       $q_string  = "select com_text ";
       $q_string .= "from rsdp_comments ";
       $q_string .= "where com_id = " . $formVars['id'];
-      $q_rsdp_comments = mysql_query($q_string) or die (mysql_error());
-      $a_rsdp_comments = mysql_fetch_array($q_rsdp_comments);
-      mysql_free_result($q_rsdp_comments);
+      $q_rsdp_comments = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      $a_rsdp_comments = mysqli_fetch_array($q_rsdp_comments);
+      mysqli_free_result($q_rsdp_comments);
 
       $updated = str_replace("<br />", "\n", $a_rsdp_comments['com_text']);
-      print "document.comments.com_text.value = '" . mysql_real_escape_string($updated) . "';\n";
+      print "document.comments.com_text.value = '" . mysqli_real_escape_string($updated) . "';\n";
 
       print "document.comments.com_id.value = '" . $formVars['id'] . "'\n";
 
