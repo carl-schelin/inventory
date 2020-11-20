@@ -74,8 +74,8 @@
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
   $q_string .= "where mod_virtual = 1 and sw_type = 'OS' ";
   $q_string .= $orderby;
-  $q_inventory = mysql_query($q_string) or die(mysql_error());
-  while ( $a_inventory = mysql_fetch_array($q_inventory) ) {
+  $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ( $a_inventory = mysqli_fetch_array($q_inventory) ) {
 
     print "<tr>\n";
     print "  <td class=\"ui-widget-content\">" . $a_inventory['inv_name']                                         . "</td>\n";
@@ -90,9 +90,9 @@
     $q_string .= "from software ";
     $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type != 'RPM' and sw_type != 'PKG' and sw_type != 'OS' ";
     $q_string .= "order by sw_software";
-    $q_software = mysql_query($q_string) or die(mysql_error());
+    $q_software = mysqli_query($db, $q_string) or die(mysqli_error($db));
     $software = "";
-    while ($a_software = mysql_fetch_array($q_software)) {
+    while ($a_software = mysqli_fetch_array($q_software)) {
       $software .= $a_software['sw_software'] . " ";
     }
     if ($software == "") {
