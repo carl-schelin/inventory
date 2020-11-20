@@ -155,15 +155,15 @@
           $q_string .= "from rsdp_status ";
           $q_string .= "left join users on users.usr_id = rsdp_status.st_user ";
           $q_string .= "where st_rsdp = " . $formVars['id'] . " and st_step = " . $i . " ";
-          $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           $linkstart = "<a href=\"" . $RSDProot . "/" . $script[$i] . "?rsdp=" . $formVars['id'] . "\">";
           $linkend = "</a>";
 
           $output .= "<tr>\n";
 
-          if (mysql_num_rows($q_rsdp_status) > 0) {
-            $a_rsdp_status = mysql_fetch_array($q_rsdp_status);
+          if (mysqli_num_rows($q_rsdp_status) > 0) {
+            $a_rsdp_status = mysqli_fetch_array($q_rsdp_status);
             $linkdel = "<a href=\"#\" onclick=\"javascript:clear_task('" . $RSDProot . "/tasks.del.php?id=" . $a_rsdp_status['st_id'] . "');\">";
 
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "Reset Task" . $linkend . "</td>\n";
@@ -193,8 +193,8 @@
             $q_string .= "from rsdp_server ";
             $q_string .= "left join users on users.usr_id = rsdp_server." . $waiting[$i] . " ";
             $q_string .= "where rsdp_id = " . $formVars['id'];
-            $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+            $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
             if ($a_rsdp_server[$waiting[$i]] == 0) {
               $output .= "  <td class=\"ui-widget-content\">Waiting on: " . $group[$i] . "</td>\n";
@@ -212,7 +212,7 @@
 
       $output .= "</table>\n";
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
