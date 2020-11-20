@@ -35,9 +35,9 @@
   $q_string  = "select os_sysname ";
   $q_string .= "from rsdp_osteam ";
   $q_string .= "where os_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_osteam = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_rsdp_osteam) > 0) {
-    $a_rsdp_osteam = mysql_fetch_array($q_rsdp_osteam);
+  $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_rsdp_osteam) > 0) {
+    $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
   } else {
     $a_rsdp_osteam = "New System";
   }
@@ -333,10 +333,10 @@ the next task and an email will be sent notifying the responsible team or indivi
   $q_string  = "select count(*) ";
   $q_string .= "from rsdp_comments ";
   $q_string .= "where com_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_comments = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_comments = mysql_fetch_array($q_rsdp_comments);
+  $q_rsdp_comments = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_comments = mysqli_fetch_array($q_rsdp_comments);
 
-  if (mysql_num_rows($q_rsdp_comments)) {
+  if (mysqli_num_rows($q_rsdp_comments)) {
     print " (" . $a_rsdp_comments['count(*)'] . ")";
   } else {
     print " (0)";
@@ -376,9 +376,9 @@ copy and paste the following text into a new ticket and submit it.</p>
   $q_string  = "select rsdp_project ";
   $q_string .= "from rsdp_server ";
   $q_string .= "where rsdp_id = " . $formVars['rsdp'];
-  $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_rsdp_server) > 0) {
-    $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_rsdp_server) > 0) {
+    $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
   } else {
     $a_rsdp_server['rsdp_project'] = 0;
   }
@@ -390,15 +390,15 @@ copy and paste the following text into a new ticket and submit it.</p>
   $q_string .= "left join rsdp_osteam on rsdp_osteam.os_rsdp = rsdp_server.rsdp_id ";
   $q_string .= "where rsdp_project = " . $a_rsdp_server['rsdp_project'] . " and if_ipcheck = 1 ";
   $q_string .= "group by if_ip";
-  $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_rsdp_interface) > 0) {
+  $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_rsdp_interface) > 0) {
 
     print "<p>Request a forward and reverse DNS record for the following hostnames and IP addresses.</p>\n";
 
 # set the start variable for the display of the information
     $start = "<p>";
 
-    while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
+    while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
 
       print $start . $a_rsdp_interface['if_name'] . "." . $a_rsdp_interface['os_fqdn'] . " - " . $a_rsdp_interface['if_ip'] . "\n";
       $start = "<br>";
