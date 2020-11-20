@@ -11,8 +11,8 @@
   $package = "west.php";
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -57,8 +57,8 @@
   if ($formVars['server'] != '') {
     $q_string .= "and inv_name = \"" . $formVars['server'] . "\" ";
   }
-  $q_inventory = mysql_query($q_string) or die($q_string  . ": " . mysql_error());
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string  . ": " . mysqli_error($db));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $environment = '';
     if ($a_inventory['loc_environment'] == 1) {
@@ -89,8 +89,8 @@
     $q_string  = "select sw_software ";
     $q_string .= "from software ";
     $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'OS' ";
-    $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_software = mysql_fetch_array($q_software);
+    $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_software = mysqli_fetch_array($q_software);
 
     $servers[$a_inventory['inv_name']]->inventory_operating_system   = $a_software['sw_software'];
 
@@ -98,14 +98,14 @@
     $q_string  = "select int_id,int_addr,int_eth ";
     $q_string .= "from interface ";
     $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " ";
-    $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    while ($a_interface = mysql_fetch_array($q_interface)) {
+    $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_interface = mysqli_fetch_array($q_interface)) {
 
       $q_string  = "select vul_id ";
       $q_string .= "from vulnowner ";
       $q_string .= "where vul_interface = " . $a_interface['int_id'] . " ";
-      $q_vulnowner = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_vulnowner) > 0) {
+      $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_vulnowner) > 0) {
         $scanned = 'Yes';
       } else {
         $scanned = 'No';
