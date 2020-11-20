@@ -25,11 +25,11 @@
       $q_string  = "select app_description,app_deleted ";
       $q_string .= "from application ";
       $q_string .= "where app_id = " . $formVars['id'];
-      $q_application = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_application = mysql_fetch_array($q_application);
-      mysql_free_result($q_application);
+      $q_application = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_application = mysqli_fetch_array($q_application);
+      mysqli_free_result($q_application);
 
-      print "document.application.app_description.value = '" . mysql_real_escape_string($a_application['app_description'])       . "';\n";
+      print "document.application.app_description.value = '" . mysqli_real_escape_string($a_application['app_description'])       . "';\n";
 
       if ($a_application['app_deleted']) {
         print "document.application.app_deleted.checked = true;\n";
