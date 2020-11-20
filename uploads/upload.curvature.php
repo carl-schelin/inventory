@@ -9,8 +9,8 @@
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -56,9 +56,9 @@ $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
 $q_string .= "set hw_supportid = 0,hw_supid_verified = 0 ";
 $q_string .= "where inv_manager = 1 and hw_supportid = 177 ";
 if ($debug == 'no') {
-  $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 } else {
-  print "Nnumber that could be changed: " . mysql_num_rows($q_hardware) . "\n";
+  print "Nnumber that could be changed: " . mysqli_num_rows($q_hardware) . "\n";
 }
 
 $unix = 0;
@@ -82,10 +82,10 @@ if (($handle = fopen($file, "r")) !== FALSE) {
     $q_string .= "from hardware ";
     $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
     $q_string .= "where hw_serial = \"" . $data[8] . "\" ";
-    $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-    if (mysql_num_rows($q_hardware) > 0) {
-      while ($a_hardware = mysql_fetch_array($q_hardware)) {
+    if (mysqli_num_rows($q_hardware) > 0) {
+      while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
         if ($a_hardware['inv_manager'] == $GRP_Unix) {
           $unix++;
@@ -116,7 +116,7 @@ if (($handle = fopen($file, "r")) !== FALSE) {
         } else {
           print "f";
           $found++;
-          $result = mysql_query($output) or die($output . ": " . mysql_error());
+          $result = mysqli_query($db, $output) or die($output . ": " . mysqli_error($db));
         }
       }
     }
