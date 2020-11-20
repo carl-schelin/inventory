@@ -17,36 +17,36 @@
   $q_string  = "select count(ce_id) ";
   $q_string .= "from chkerrors ";
   $q_string .= "where ce_priority = 1 and ce_delete = 0 ";
-  $q_chkerrors = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_chkerrors = mysql_fetch_array($q_chkerrors);
+  $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_chkerrors = mysqli_fetch_array($q_chkerrors);
   $priority1 = $a_chkerrors['count(ce_id)'];
 
   $q_string  = "select count(ce_id) ";
   $q_string .= "from chkerrors ";
   $q_string .= "where ce_priority = 2 and ce_delete = 0 ";
-  $q_chkerrors = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_chkerrors = mysql_fetch_array($q_chkerrors);
+  $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_chkerrors = mysqli_fetch_array($q_chkerrors);
   $priority2 = $a_chkerrors['count(ce_id)'];
 
   $q_string  = "select count(ce_id) ";
   $q_string .= "from chkerrors ";
   $q_string .= "where ce_priority = 3 and ce_delete = 0 ";
-  $q_chkerrors = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_chkerrors = mysql_fetch_array($q_chkerrors);
+  $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_chkerrors = mysqli_fetch_array($q_chkerrors);
   $priority3 = $a_chkerrors['count(ce_id)'];
 
   $q_string  = "select count(ce_id) ";
   $q_string .= "from chkerrors ";
   $q_string .= "where ce_priority = 4 and ce_delete = 0 ";
-  $q_chkerrors = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_chkerrors = mysql_fetch_array($q_chkerrors);
+  $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_chkerrors = mysqli_fetch_array($q_chkerrors);
   $priority4 = $a_chkerrors['count(ce_id)'];
 
   $q_string  = "select count(ce_id) ";
   $q_string .= "from chkerrors ";
   $q_string .= "where ce_priority = 5 and ce_delete = 0 ";
-  $q_chkerrors = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_chkerrors = mysql_fetch_array($q_chkerrors);
+  $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_chkerrors = mysqli_fetch_array($q_chkerrors);
   $priority5 = $a_chkerrors['count(ce_id)'];
 
 # if help has not been seen yet,
