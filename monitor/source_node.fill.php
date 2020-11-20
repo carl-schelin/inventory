@@ -25,11 +25,11 @@
       $q_string  = "select src_node,src_deleted ";
       $q_string .= "from source_node ";
       $q_string .= "where src_id = " . $formVars['id'];
-      $q_source_node = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_source_node = mysql_fetch_array($q_source_node);
-      mysql_free_result($q_source_node);
+      $q_source_node = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_source_node = mysqli_fetch_array($q_source_node);
+      mysqli_free_result($q_source_node);
 
-      print "document.nodes.src_node.value = '"       . mysql_real_escape_string($a_source_node['src_node'])       . "';\n";
+      print "document.nodes.src_node.value = '"       . mysqli_real_escape_string($a_source_node['src_node'])       . "';\n";
 
       if ($a_source_node['src_deleted']) {
         print "document.nodes.src_deleted.checked = true;\n";
