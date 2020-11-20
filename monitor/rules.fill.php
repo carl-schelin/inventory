@@ -26,9 +26,9 @@
       $q_string .= "rule_email,rule_autoack,rule_deleted ";
       $q_string .= "from rules ";
       $q_string .= "where rule_id = " . $formVars['id'];
-      $q_rules = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_rules = mysql_fetch_array($q_rules);
-      mysql_free_result($q_rules);
+      $q_rules = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_rules = mysqli_fetch_array($q_rules);
+      mysqli_free_result($q_rules);
 
       $rule_parent      = return_Index($a_rules['rule_parent'],      "select rule_id from rules         where rule_deleted = 0 order by rule_description ");
       $rule_group       = return_Index($a_rules['rule_group'],       "select key_id  from keywords      where key_deleted = 0  order by key_description  ");
@@ -37,8 +37,8 @@
       $rule_object      = return_Index($a_rules['rule_object'],      "select obj_id  from objects       where obj_deleted = 0  order by obj_name         ");
       $rule_message     = return_Index($a_rules['rule_message'],     "select msg_id  from message_group where msg_deleted = 0  order by msg_group        ");
 
-      print "document.rules.rule_description.value = '" . mysql_real_escape_string($a_rules['rule_description']) . "';\n";
-      print "document.rules.rule_annotate.value = '"    . mysql_real_escape_string($a_rules['rule_annotate']) . "';\n";
+      print "document.rules.rule_description.value = '" . mysqli_real_escape_string($a_rules['rule_description']) . "';\n";
+      print "document.rules.rule_annotate.value = '"    . mysqli_real_escape_string($a_rules['rule_annotate']) . "';\n";
 
       print "document.rules.rule_parent['"       . $rule_parent       . "'].selected = true;\n";
       print "document.rules.rule_group['"        . $rule_group        . "'].selected = true;\n";
