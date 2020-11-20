@@ -20,8 +20,8 @@
   $q_string = "select inv_manager "
             . "from inventory "
             . "where inv_id = " . $formVars['id'] . " ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_inventory = mysql_fetch_array($q_inventory);
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inventory = mysqli_fetch_array($q_inventory);
 
 # get the misc hardware info
 
@@ -88,8 +88,8 @@
   $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
   $q_string .= "where hw_deleted = 0 and hw_companyid = " . $formVars['id'] . " and hw_hw_id = 0 and hw_hd_id = 0 ";
   $q_string .= "order by hw_type,hw_serial";
-  $q_hardware = mysql_query($q_string) or die("Hardware:" . mysql_error());
-  while ($a_hardware = mysql_fetch_array($q_hardware)) {
+  $q_hardware = mysqli_query($db, $q_string) or die("Hardware:" . mysqli_error($db));
+  while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
     $link_name   = "<a href=\"" . $Reportroot . "/search.hardware.php?search_by=4&search_for=" . $a_hardware['mod_name']  . "\" target=\"_blank\">";
     $link_type   = "<a href=\"" . $Reportroot . "/search.hardware.php?search_by=4&search_for=" . $a_hardware['part_name'] . "\" target=\"_blank\">";
@@ -123,8 +123,8 @@
     $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
     $q_string .= "where hw_deleted = 0 and hw_companyid = " . $formVars['id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " and hw_hd_id = 0 ";
     $q_string .= "order by hw_type,hw_serial";
-    $q_hwselect = mysql_query($q_string) or die("Hardware:" . mysql_error());
-    while ($a_hwselect = mysql_fetch_array($q_hwselect)) {
+    $q_hwselect = mysqli_query($db, $q_string) or die("Hardware:" . mysqli_error($db));
+    while ($a_hwselect = mysqli_fetch_array($q_hwselect)) {
 
       $link_name   = "<a href=\"" . $Reportroot . "/search.hardware.php?search_by=4&search_for=" . $a_hwselect['mod_name']  . "\" target=\"_blank\">";
       $link_type   = "<a href=\"" . $Reportroot . "/search.hardware.php?search_by=4&search_for=" . $a_hwselect['part_name'] . "\" target=\"_blank\">";
@@ -158,8 +158,8 @@
       $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
       $q_string .= "where hw_companyid = " . $formVars['id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " and hw_hd_id = " . $a_hwselect['hw_id'] . " ";
       $q_string .= "order by hw_type,hw_serial";
-      $q_hwdisk = mysql_query($q_string) or die("Hardware:" . mysql_error());
-      while ($a_hwdisk = mysql_fetch_array($q_hwdisk)) {
+      $q_hwdisk = mysqli_query($db, $q_string) or die("Hardware:" . mysqli_error($db));
+      while ($a_hwdisk = mysqli_fetch_array($q_hwdisk)) {
 
         $link_name   = "<a href=\"" . $Reportroot . "/search.hardware.php?search_by=4&search_for=" . $a_hwdisk['mod_name']  . "\" target=\"_blank\">";
         $link_type   = "<a href=\"" . $Reportroot . "/search.hardware.php?search_by=4&search_for=" . $a_hwdisk['part_name'] . "\" target=\"_blank\">";
@@ -194,5 +194,5 @@
 
 ?>
 
-document.getElementById('hardware_mysql').innerHTML = '<?php print mysql_real_escape_string($output); ?>';
+document.getElementById('hardware_mysql').innerHTML = '<?php print mysqli_real_escape_string($output); ?>';
 
