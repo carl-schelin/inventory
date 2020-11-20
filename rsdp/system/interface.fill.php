@@ -26,14 +26,14 @@
       $q_string  = "select if_name,if_ip,if_mac ";
       $q_string .= "from rsdp_interface ";
       $q_string .= "where if_id = " . $formVars['id'];
-      $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_rsdp_interface = mysql_fetch_array($q_rsdp_interface);
-      mysql_free_result($q_rsdp_interface);
+      $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface);
+      mysqli_free_result($q_rsdp_interface);
 
-      print "document.getElementById('if_name').innerHTML = '" . mysql_real_escape_string($a_rsdp_interface['if_name']) . "';\n";
-      print "document.getElementById('if_ip').innerHTML = '"   . mysql_real_escape_string($a_rsdp_interface['if_ip']) . "';\n";
+      print "document.getElementById('if_name').innerHTML = '" . mysqli_real_escape_string($a_rsdp_interface['if_name']) . "';\n";
+      print "document.getElementById('if_ip').innerHTML = '"   . mysqli_real_escape_string($a_rsdp_interface['if_ip']) . "';\n";
 
-      print "document.interface.if_mac.value = '"  . mysql_real_escape_string($a_rsdp_interface['if_mac'])  . "';\n";
+      print "document.interface.if_mac.value = '"  . mysqli_real_escape_string($a_rsdp_interface['if_mac'])  . "';\n";
 
       print "document.interface.if_id.value = " . $formVars['id'] . ";\n";
 
