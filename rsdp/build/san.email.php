@@ -32,23 +32,23 @@
       $q_string  = "select rsdp_sanpoc ";
       $q_string .= "from rsdp_server ";
       $q_string .= "where rsdp_id = " . $formVars['rsdp'];
-      $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+      $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
       if ($a_rsdp_server['rsdp_sanpoc'] > 0) {
         $q_string  = "select usr_email ";
         $q_string .= "from users ";
         $q_string .= "where usr_id = " . $a_rsdp_server['rsdp_sanpoc'];
-        $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_users = mysql_fetch_array($q_users);
+        $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_users = mysqli_fetch_array($q_users);
 
         $email = $a_users['usr_email'];
       } else {
         $q_string  = "select grp_email ";
         $q_string .= "from groups ";
         $q_string .= "where grp_id = " . $GRP_SAN . " ";
-        $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_groups = mysql_fetch_array($q_groups);
+        $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_groups = mysqli_fetch_array($q_groups);
 
         $email = $a_groups['grp_email'];
       }
@@ -56,8 +56,8 @@
       $q_string  = "select san_switch,san_port ";
       $q_string .= "from rsdp_san ";
       $q_string .= "where san_id = " . $formVars['id'];
-      $q_rsdp_san = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_rsdp_san = mysql_fetch_array($q_rsdp_interface);
+      $q_rsdp_san = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_rsdp_san = mysqli_fetch_array($q_rsdp_interface);
 
       $body = "An RSDP SAN interface has been deleted and the following configuration can now be returned to availability:\n\n";
 
