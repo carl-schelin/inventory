@@ -26,14 +26,14 @@
       $q_string  = "select feat_text,feat_timestamp,feat_user ";
       $q_string .= "from features_detail ";
       $q_string .= "where feat_id = " . $formVars['id'];
-      $q_features_detail = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_features_detail = mysql_fetch_array($q_features_detail);
-      mysql_free_result($q_features_detail);
+      $q_features_detail = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_features_detail = mysqli_fetch_array($q_features_detail);
+      mysqli_free_result($q_features_detail);
 
       $selected = return_Index($a_features_detail['feat_user'],       "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
 
-      print "document.start.feat_text.value = '"      . mysql_real_escape_string($a_features_detail['feat_text'])      . "';\n";
-      print "document.start.feat_timestamp.value = '" . mysql_real_escape_string($a_features_detail['feat_timestamp']) . "';\n";
+      print "document.start.feat_text.value = '"      . mysqli_real_escape_string($a_features_detail['feat_text'])      . "';\n";
+      print "document.start.feat_timestamp.value = '" . mysqli_real_escape_string($a_features_detail['feat_timestamp']) . "';\n";
 
       print "document.start.feat_user['" . $selected . "'].selected = true;\n";
 
