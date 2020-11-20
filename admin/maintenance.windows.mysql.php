@@ -46,7 +46,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['win_text']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -91,9 +91,9 @@
       $q_string  = "select win_id,win_text ";
       $q_string .= "from window ";
       $q_string .= "order by win_text ";
-      $q_window = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_window) > 0) {
-        while ($a_window = mysql_fetch_array($q_window)) {
+      $q_window = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_window) > 0) {
+        while ($a_window = mysqli_fetch_array($q_window)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('maintenance.windows.fill.php?id=" . $a_window['win_id'] . "');jQuery('#dialogWindow').dialog('open');\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('maintenance.windows.del.php?id="  . $a_window['win_id'] . "');\">";
@@ -115,9 +115,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_window);
+      mysqli_free_result($q_window);
 
-      print "document.getElementById('window_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('window_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.window.win_text.value = '';\n";
 
