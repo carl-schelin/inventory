@@ -26,9 +26,9 @@
       $q_string  = "select mod_vendor,mod_name,mod_type,mod_size,mod_plugs,mod_plugtype,mod_volts,mod_draw,mod_start,mod_virtual ";
       $q_string .= "from models ";
       $q_string .= "where mod_id = " . $formVars['pf_model'];
-      $q_models = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_models = mysql_fetch_array($q_models);
-      mysql_free_result($q_models);
+      $q_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_models = mysqli_fetch_array($q_models);
+      mysqli_free_result($q_models);
 
       $mod_type     = return_Index($a_models['mod_type'],     "select part_id from parts order by part_name");
       $mod_plugtype = return_Index($a_models['mod_plugtype'], "select plug_id from int_plugtype order by plug_id");
@@ -38,11 +38,11 @@
       print "document.rsdp.mod_plugtype['" . $mod_plugtype . "'].selected = true;\n";
       print "document.rsdp.mod_volts['"    . $mod_volts    . "'].selected = true;\n";
 
-      print "document.rsdp.mod_size.value = '"  . mysql_real_escape_string($a_models['mod_size'])    . "';\n";
-      print "document.rsdp.mod_draw.value = '"  . mysql_real_escape_string($a_models['mod_draw'])    . "';\n";
-      print "document.rsdp.mod_start.value = '" . mysql_real_escape_string($a_models['mod_start'])   . "';\n";
-      print "document.rsdp.mod_plugs.value = '" . mysql_real_escape_string($a_models['mod_plugs'])   . "';\n";
-      print "document.rsdp.virtual.value = '"   . mysql_real_escape_string($a_models['mod_virtual']) . "';\n";
+      print "document.rsdp.mod_size.value = '"  . mysqli_real_escape_string($a_models['mod_size'])    . "';\n";
+      print "document.rsdp.mod_draw.value = '"  . mysqli_real_escape_string($a_models['mod_draw'])    . "';\n";
+      print "document.rsdp.mod_start.value = '" . mysqli_real_escape_string($a_models['mod_start'])   . "';\n";
+      print "document.rsdp.mod_plugs.value = '" . mysqli_real_escape_string($a_models['mod_plugs'])   . "';\n";
+      print "document.rsdp.virtual.value = '"   . mysqli_real_escape_string($a_models['mod_virtual']) . "';\n";
 
       print "validate_Form();\n";
     } else {
