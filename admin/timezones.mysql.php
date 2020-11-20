@@ -50,7 +50,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['zone_name']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -97,9 +97,9 @@
       $q_string  = "select zone_id,zone_name,zone_description,zone_offset ";
       $q_string .= "from zones ";
       $q_string .= "order by zone_offset ";
-      $q_zones = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_zones) > 0) {
-        while ($a_zones = mysql_fetch_array($q_zones)) {
+      $q_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_zones) > 0) {
+        while ($a_zones = mysqli_fetch_array($q_zones)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('timezones.fill.php?id=" . $a_zones['zone_id'] . "');jQuery('#dialogZone').dialog('open');\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('timezones.del.php?id="  . $a_zones['zone_id'] . "');\">";
@@ -123,9 +123,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_zones);
+      mysqli_free_result($q_zones);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.zones.zone_name.value = '';\n";
       print "document.zones.zone_description.value = '';\n";
