@@ -48,7 +48,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['rsdp']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -102,8 +102,8 @@
       $q_string .= "from rsdp_interface ";
       $q_string .= "where if_rsdp = " . $formVars['rsdp'] . " and if_if_id = 0 ";
       $q_string .= "order by if_interface";
-      $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
+      $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
 
         $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('interface.fill.php?id=" . $a_rsdp_interface['if_id'] . "');jQuery('#dialogInterface').dialog('open');\">";
         $linkend   = "</a>";
@@ -134,8 +134,8 @@
         $q_string .= "from rsdp_interface ";
         $q_string .= "where if_rsdp = " . $formVars['rsdp'] . " and if_if_id = " . $a_rsdp_interface['if_id'] . " ";
         $q_string .= "order by if_interface";
-        $q_redundant = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        while ($a_redundant = mysql_fetch_array($q_redundant)) {
+        $q_redundant = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_redundant = mysqli_fetch_array($q_redundant)) {
 
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('interface.fill.php?id=" . $a_redundant['if_id'] . "');jQuery('#dialogInterface').dialog('open');\">";
           $linkend   = "</a>";
@@ -166,9 +166,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_rsdp_interface);
+      mysqli_free_result($q_rsdp_interface);
 
-      print "document.getElementById('interface_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('interface_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.getElementById('if_name').innerHTML = '';\n";
       print "document.getElementById('if_ip').innerHTML = '';\n";
