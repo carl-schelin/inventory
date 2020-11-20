@@ -58,7 +58,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['msg_group']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -106,8 +106,8 @@
       $q_string  = "select msg_id,msg_group,msg_deleted ";
       $q_string .= "from message_group ";
       $q_string .= $orderby;
-      $q_message_group = mysql_query($q_string) or die (mysql_error());
-      while ($a_message_group = mysql_fetch_array($q_message_group)) {
+      $q_message_group = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      while ($a_message_group = mysqli_fetch_array($q_message_group)) {
 
         $linkstart = "<a href=\"#\" onclick=\"show_file('message_group.fill.php?id="  . $a_message_group['msg_id'] . "');jQuery('#dialogGroup').dialog('open');\">";
         $linkdel   = "<input type=\"button\" value=\"Delete\" onclick=\"delete_line('message_group.del.php?id=" . $a_message_group['msg_id'] . "');\">";
@@ -130,9 +130,9 @@
       }
       $output .= "</table>";
 
-      mysql_free_result($q_message_group);
+      mysqli_free_result($q_message_group);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.groups.msg_group.value = '';\n";
       print "document.groups.msg_deleted.checked = false;\n";
