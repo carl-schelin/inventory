@@ -33,7 +33,7 @@
 
         logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $a_inventory['inv_name']);
 
-        mysql_query($query) or die($query . ": " . mysql_error());
+        mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
       }
 
 
@@ -52,8 +52,8 @@
       $q_string .= "from chkerrors ";
       $q_string .= "where ce_priority = 1 and ce_delete = 0 ";
       $q_string .= "order by ce_error ";
-      $q_chkerrors = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_chkerrors = mysql_fetch_array($q_chkerrors)) {
+      $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_chkerrors = mysqli_fetch_array($q_chkerrors)) {
 
         $count++;
         $output .= "<tr>\n";
@@ -72,8 +72,8 @@
       $output .= "</table>\n";
       $output .= "</form>\n";
 
-      print "document.getElementById('priority1').innerHTML = '" . mysql_real_escape_string($count) . "';\n";
-      print "document.getElementById('pri1_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('priority1').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
+      print "document.getElementById('pri1_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
 
 # priority 2
@@ -89,8 +89,8 @@
       $q_string .= "from chkerrors ";
       $q_string .= "where ce_priority = 2 and ce_delete = 0 ";
       $q_string .= "order by ce_error ";
-      $q_chkerrors = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_chkerrors = mysql_fetch_array($q_chkerrors)) {
+      $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_chkerrors = mysqli_fetch_array($q_chkerrors)) {
 
         $count++;
         $output .= "<tr>\n";
@@ -109,8 +109,8 @@
       $output .= "</table>\n";
       $output .= "</form>\n";
 
-      print "document.getElementById('priority2').innerHTML = '" . mysql_real_escape_string($count) . "';\n";
-      print "document.getElementById('pri2_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('priority2').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
+      print "document.getElementById('pri2_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
 
 # priority 3
@@ -126,8 +126,8 @@
       $q_string .= "from chkerrors ";
       $q_string .= "where ce_priority = 3 and ce_delete = 0 ";
       $q_string .= "order by ce_error ";
-      $q_chkerrors = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_chkerrors = mysql_fetch_array($q_chkerrors)) {
+      $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_chkerrors = mysqli_fetch_array($q_chkerrors)) {
 
         $count++;
         $output .= "<tr>\n";
@@ -146,8 +146,8 @@
       $output .= "</table>\n";
       $output .= "</form>\n";
 
-      print "document.getElementById('priority3').innerHTML = '" . mysql_real_escape_string($count) . "';\n";
-      print "document.getElementById('pri3_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('priority3').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
+      print "document.getElementById('pri3_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
 
 # priority 4
@@ -163,8 +163,8 @@
       $q_string .= "from chkerrors ";
       $q_string .= "where ce_priority = 4 and ce_delete = 0 ";
       $q_string .= "order by ce_error ";
-      $q_chkerrors = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_chkerrors = mysql_fetch_array($q_chkerrors)) {
+      $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_chkerrors = mysqli_fetch_array($q_chkerrors)) {
 
         $count++;
         $output .= "<tr>\n";
@@ -183,8 +183,8 @@
       $output .= "</table>\n";
       $output .= "</form>\n";
 
-      print "document.getElementById('priority4').innerHTML = '" . mysql_real_escape_string($count) . "';\n";
-      print "document.getElementById('pri4_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('priority4').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
+      print "document.getElementById('pri4_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
 
 # priority 5
@@ -200,8 +200,8 @@
       $q_string .= "from chkerrors ";
       $q_string .= "where ce_priority = 5 and ce_delete = 0 ";
       $q_string .= "order by ce_error ";
-      $q_chkerrors = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_chkerrors = mysql_fetch_array($q_chkerrors)) {
+      $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_chkerrors = mysqli_fetch_array($q_chkerrors)) {
 
         $count++;
         $output .= "<tr>\n";
@@ -220,8 +220,8 @@
       $output .= "</table>\n";
       $output .= "</form>\n";
 
-      print "document.getElementById('priority5').innerHTML = '" . mysql_real_escape_string($count) . "';\n";
-      print "document.getElementById('pri5_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('priority5').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
+      print "document.getElementById('pri5_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
 
     } else {
