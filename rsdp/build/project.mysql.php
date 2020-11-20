@@ -65,7 +65,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['prj_name']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -85,8 +85,8 @@
       $q_string .= "from projects ";
       $q_string .= "where prj_group = " . $_SESSION['group'] . " and prj_close = 0 ";
       $q_string .= "group by prj_name";
-      $q_projects = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_projects = mysql_fetch_array($q_projects)) {
+      $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_projects = mysqli_fetch_array($q_projects)) {
         print "selbox.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_projects['prj_name']) . "\"," . $a_projects['prj_id'] . ");\n";
       }
 
