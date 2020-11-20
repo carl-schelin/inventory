@@ -89,7 +89,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['psap_ali_id']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -150,8 +150,8 @@
       $q_string .= "where psap_customerid = 1319 ";
       $q_string .= $orderby;
       $q_string .= "limit " . $formVars['pagination'] . ", 20 ";
-      $q_psaps = mysql_query($q_string) or die (mysql_error());
-      while ($a_psaps = mysql_fetch_array($q_psaps)) {
+      $q_psaps = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      while ($a_psaps = mysqli_fetch_array($q_psaps)) {
 
         $linkstart = "<a href=\"#\" onclick=\"show_file('psaps.fill.php?id="  . $a_psaps['psap_id'] . "');jQuery('#dialogPSAP').dialog('open');\">";
         $linkdel   = "<input type=\"button\" value=\"Delete\" onclick=\"delete_line('psaps.del.php?id=" . $a_psaps['psap_id'] . "');\">";
@@ -187,18 +187,18 @@
       }
       $output .= "</table>";
 
-      mysql_free_result($q_psaps);
+      mysqli_free_result($q_psaps);
 
 # need how many rows there are;
       $q_string  = "select psap_id ";
       $q_string .= "from psaps ";
       $q_string .= "where psap_customerid = 1319 ";
-      $q_psaps = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $numpsaps = mysql_num_rows($q_psaps);
+      $q_psaps = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $numpsaps = mysqli_num_rows($q_psaps);
 
       $output .= return_Pagination( "psaps.mysql.php", $pages, $numpsaps, 20 );
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
