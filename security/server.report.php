@@ -201,48 +201,48 @@ if ($formVars['inwork'] == '') {
   $q_string .= "left join states    on states.st_id          = locations.loc_state ";
   $q_string .= $where . " and int_ip6 = 0 and int_type != 7 and inv_status = 0 ";
   $q_string .= "order by int_server,int_addr ";
-  $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_interface = mysql_fetch_array($q_interface)) {
+  $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_interface = mysqli_fetch_array($q_interface)) {
 
 # check for Info
     $q_string  = "select count(sec_severity) ";
     $q_string .= "from vulnerabilities ";
     $q_string .= "left join security on security.sec_id = vulnerabilities.vuln_securityid ";
     $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " and sec_severity = 5 ";
-    $q_vulnerabilities = mysql_query($q_string) or die($q_vulnerabilities . ": " . mysql_error());
-    $a_vulnerabilities = mysql_fetch_array($q_vulnerabilities);
+    $q_vulnerabilities = mysqli_query($db, $q_string) or die($q_vulnerabilities . ": " . mysqli_error($db));
+    $a_vulnerabilities = mysqli_fetch_array($q_vulnerabilities);
     $info = $a_vulnerabilities['count(sec_severity)'];
 # check for Low
     $q_string  = "select count(sec_severity) ";
     $q_string .= "from vulnerabilities ";
     $q_string .= "left join security on security.sec_id = vulnerabilities.vuln_securityid ";
     $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " and sec_severity = 4 ";
-    $q_vulnerabilities = mysql_query($q_string) or die($q_vulnerabilities . ": " . mysql_error());
-    $a_vulnerabilities = mysql_fetch_array($q_vulnerabilities);
+    $q_vulnerabilities = mysqli_query($db, $q_string) or die($q_vulnerabilities . ": " . mysqli_error($db));
+    $a_vulnerabilities = mysqli_fetch_array($q_vulnerabilities);
     $low = $a_vulnerabilities['count(sec_severity)'];
 # check for medium
     $q_string  = "select count(sec_severity) ";
     $q_string .= "from vulnerabilities ";
     $q_string .= "left join security on security.sec_id = vulnerabilities.vuln_securityid ";
     $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " and sec_severity = 3 ";
-    $q_vulnerabilities = mysql_query($q_string) or die($q_vulnerabilities . ": " . mysql_error());
-    $a_vulnerabilities = mysql_fetch_array($q_vulnerabilities);
+    $q_vulnerabilities = mysqli_query($db, $q_string) or die($q_vulnerabilities . ": " . mysqli_error($db));
+    $a_vulnerabilities = mysqli_fetch_array($q_vulnerabilities);
     $medium = $a_vulnerabilities['count(sec_severity)'];
 # check for high
     $q_string  = "select count(sec_severity) ";
     $q_string .= "from vulnerabilities ";
     $q_string .= "left join security on security.sec_id = vulnerabilities.vuln_securityid ";
     $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " and sec_severity = 2 ";
-    $q_vulnerabilities = mysql_query($q_string) or die($q_vulnerabilities . ": " . mysql_error());
-    $a_vulnerabilities = mysql_fetch_array($q_vulnerabilities);
+    $q_vulnerabilities = mysqli_query($db, $q_string) or die($q_vulnerabilities . ": " . mysqli_error($db));
+    $a_vulnerabilities = mysqli_fetch_array($q_vulnerabilities);
     $high = $a_vulnerabilities['count(sec_severity)'];
 # check for critical
     $q_string  = "select count(sec_severity) ";
     $q_string .= "from vulnerabilities ";
     $q_string .= "left join security on security.sec_id = vulnerabilities.vuln_securityid ";
     $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " and sec_severity = 1 ";
-    $q_vulnerabilities = mysql_query($q_string) or die($q_vulnerabilities . ": " . mysql_error());
-    $a_vulnerabilities = mysql_fetch_array($q_vulnerabilities);
+    $q_vulnerabilities = mysqli_query($db, $q_string) or die($q_vulnerabilities . ": " . mysqli_error($db));
+    $a_vulnerabilities = mysqli_fetch_array($q_vulnerabilities);
     $critical = $a_vulnerabilities['count(sec_severity)'];
 
     $total += $info + $low + $warning + $high + $critical;
