@@ -43,9 +43,9 @@
           $q_string .= "where chk_task = " . $formVars['chk_task'] . " and chk_group = " . $formVars['chk_group'] . " ";
           $q_string .= "order by chk_index desc ";
           $q_string .= "limit 1 ";
-          $q_checklist = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          if (mysql_num_rows($q_checklist) > 0) {
-            $a_checklist = mysql_fetch_array($q_checklist);
+          $q_checklist = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_checklist) > 0) {
+            $a_checklist = mysqli_fetch_array($q_checklist);
             $formVars['chk_index'] = $a_checklist['chk_index'] + 1;
           } else {
             $formVars['chk_index'] = 1;
@@ -64,11 +64,11 @@
             $q_string  = "select chk_index ";
             $q_string .= "from checklist ";
             $q_string .= "where chk_task = " . $formVars['chk_task'] . " and chk_group = " . $formVars['chk_group'] . " and chk_index = " . $formVars['chk_index'];
-            $q_checklist = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $q_checklist = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 # if it is in use already, increment all following indexes by one
-            if (mysql_num_rows($q_checklist) > 0) {
-              $a_checklist = mysql_fetch_array($q_checklist);
+            if (mysqli_num_rows($q_checklist) > 0) {
+              $a_checklist = mysqli_fetch_array($q_checklist);
 
               $q_string  = "select chk_id,chk_index ";
               $q_string .= "from checklist ";
@@ -76,10 +76,10 @@
               $q_string .= "and chk_task = " . $formVars['chk_task'] . " ";
               $q_string .= "and chk_index >= " . $a_checklist['chk_index'] . " ";
               $q_string .= "order by chk_index";
-              $q_checklist = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-              while ($a_checklist = mysql_fetch_array($q_checklist)) {
+              $q_checklist = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              while ($a_checklist = mysqli_fetch_array($q_checklist)) {
                 $q_string = "update checklist set chk_index = " . ($a_checklist['chk_index'] + 1) . " where chk_id = " . $a_checklist['chk_id'];
-                $q_updatecl = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+                $q_updatecl = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
               }
             }
           }
@@ -101,7 +101,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['chk_name']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
         } else {
           print "alert('You must input data before saving changes.');\n";
@@ -115,8 +115,8 @@
       $q_string  = "select grp_name ";
       $q_string .= "from groups ";
       $q_string .= "where grp_id = " . $formVars['chk_group'] . " ";
-      $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_groups = mysql_fetch_array($q_groups);
+      $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_groups = mysqli_fetch_array($q_groups);
 
 # need to loop through the various checklist possibilities and display them.
 # The display is only for the group selected for display.
@@ -198,9 +198,9 @@
           $q_string .= "left join groups on groups.grp_id = checklist.chk_group ";
           $q_string .= "where chk_group = " . $formVars['chk_group'] . " and chk_task = " . $i . " ";
           $q_string .= "order by chk_group,chk_index";
-          $q_checklist = mysql_query($q_string) or die (mysql_error());
-          if (mysql_num_rows($q_checklist) > 0) {
-            while ($a_checklist = mysql_fetch_array($q_checklist)) {
+          $q_checklist = mysqli_query($db, $q_string) or die (mysqli_error($db));
+          if (mysqli_num_rows($q_checklist) > 0) {
+            while ($a_checklist = mysqli_fetch_array($q_checklist)) {
 
               $linkstart = "<a href=\"#\" onclick=\"show_file('checklist.fill.php?id=" . $a_checklist['chk_id'] . "');showDiv('checklist-hide');\">";
               $linkend   = "</a>";
@@ -219,7 +219,7 @@
 
             }
 
-            mysql_free_result($q_checklist);
+            mysqli_free_result($q_checklist);
 
           } else {
             $output .= "<tr>";
@@ -229,7 +229,7 @@
 
           $output .= "</table>";
 
-          print "document.getElementById('" . $task[$i] . "_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+          print "document.getElementById('" . $task[$i] . "_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
         }
       }
 
