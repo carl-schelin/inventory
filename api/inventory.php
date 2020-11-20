@@ -11,8 +11,8 @@
   $package = "inventory.php";
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -41,14 +41,14 @@
     $q_string .= "and grp_name like \"%" . $formVars['group'] . "%\" ";
   }
   $q_string .= "order by inv_name ";
-  $q_inventory = mysql_query($q_string) or die($q_string  . ": " . mysql_error());
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string  . ": " . mysqli_error($db));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $q_string  = "select grp_name ";
     $q_string .= "from groups ";
     $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
-    $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_groups = mysql_fetch_array($q_groups);
+    $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_groups = mysqli_fetch_array($q_groups);
 
 
     $servers[$a_inventory['inv_name']] = new Server();
