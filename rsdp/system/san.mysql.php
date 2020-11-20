@@ -48,7 +48,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['rsdp']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -101,10 +101,10 @@
       $q_string .= "from rsdp_san ";
       $q_string .= "left join int_media on int_media.med_id = rsdp_san.san_media ";
       $q_string .= "where san_rsdp = " . $formVars['rsdp'];
-      $q_rsdp_san = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_rsdp_san = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-      if (mysql_num_rows($q_rsdp_san) > 0) {
-        while ($a_rsdp_san = mysql_fetch_array($q_rsdp_san)) {
+      if (mysqli_num_rows($q_rsdp_san) > 0) {
+        while ($a_rsdp_san = mysqli_fetch_array($q_rsdp_san)) {
 
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('san.fill.php?id=" . $a_rsdp_san['san_id'] . "');jQuery('#dialogSAN').dialog('open');\">";
           $linkend   = "</a>";
@@ -123,11 +123,11 @@
         $output .= "</tr>";
       }
 
-      mysql_free_result($q_rsdp_san);
+      mysqli_free_result($q_rsdp_san);
 
       $output .= "</table>";
 
-      print "document.getElementById('san_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('san_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.getElementById('san_sysport').innerHTML = '';\n";
       print "document.getElementById('san_switch').innerHTML = '';\n";
