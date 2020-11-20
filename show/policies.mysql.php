@@ -32,8 +32,8 @@
   $q_string .= "left join policy_description on policy_description.pd_id = policy.pol_description ";
   $q_string .= "where pol_companyid = " . $serverid . " ";
   $q_string .= "order by pt_type,pd_description ";
-  $q_policy = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_policy = mysql_fetch_array($q_policy)) {
+  $q_policy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_policy = mysqli_fetch_array($q_policy)) {
 
     $status = "disabled";
     $class = "ui-state-error";
@@ -55,5 +55,5 @@
   $output .= "</table>";
 ?>
 
-document.getElementById('policies_mysql').innerHTML = '<?php print mysql_real_escape_string($output); ?>';
+document.getElementById('policies_mysql').innerHTML = '<?php print mysqli_real_escape_string($output); ?>';
 
