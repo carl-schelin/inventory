@@ -80,8 +80,8 @@
   $q_string .= "left join users     on users.usr_id     = interface.int_user ";
   $q_string .= "where inv_manager = " . $formVars['group'] . " and inv_status = 0 and int_user != 2 and int_ip6 = 0 " . $formVars['filter'];
   $q_string .= "order by int_addr,inv_name,int_server ";
-  $q_interface = mysql_query($q_string) or die(mysql_error());
-  while ($a_interface = mysql_fetch_array($q_interface) ) {
+  $q_interface = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_interface = mysqli_fetch_array($q_interface) ) {
 
     if ($a_interface['int_verified']) {
       $checked = "&#x2713;";
