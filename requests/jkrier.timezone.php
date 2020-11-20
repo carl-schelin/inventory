@@ -65,8 +65,8 @@
   $q_string .= "inv_product = 2 or inv_product = 83) ";
   $q_string .= "and hw_primary = 1 and (hw_retired = '0000-00-00' and hw_reused = '0000-00-00') ";
   $q_string .= $orderby;
-  $q_inventory = mysql_query($q_string) or die("Inventory: " . $q_string . ": " . mysql_error());
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die("Inventory: " . $q_string . ": " . mysqli_error($db));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     if ($product != $a_inventory['prod_name']) {
       $product = $a_inventory['prod_name'];
