@@ -105,23 +105,23 @@
   $q_string .= "left join products  on products.prod_id      = software.sw_product ";
   $q_string .= "where inv_status = 0 and inv_manager = 1 and grp_name = 'DBA Admin' and sw_software like '%oracle%' ";
   $q_string .= $orderby;
-  $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_software = mysql_fetch_array($q_software)) {
+  $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_software = mysqli_fetch_array($q_software)) {
 
     $q_string  = "select mod_name,mod_vendor ";
     $q_string .= "from hardware "; 
     $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
     $q_string .= "where hw_companyid = " . $a_software['inv_id'] . " and hw_primary = 1 and hw_deleted = 0 ";
-    $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_hardware = mysql_fetch_array($q_hardware);
+    $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_hardware = mysqli_fetch_array($q_hardware);
 
     $q_string  = "select mod_name,mod_vendor,mod_size ";
     $q_string .= "from hardware "; 
     $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
     $q_string .= "where hw_companyid = " . $a_software['inv_id'] . " and hw_type = 8 and hw_deleted = 0 ";
-    $q_cpu = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_cpu = mysql_fetch_array($q_cpu);
-    $count = mysql_num_rows($q_cpu);
+    $q_cpu = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_cpu = mysqli_fetch_array($q_cpu);
+    $count = mysqli_num_rows($q_cpu);
 
     $count_name = " CPU";
     if ($count > 1) {
@@ -153,7 +153,7 @@
     }
   }
 
-  mysql_free_result($q_software);
+  mysqli_free_result($q_software);
 
   if ($formVars['csv'] == 'true') {
     print "</div>\n";
