@@ -147,9 +147,9 @@ task completion charts due to the tasks all being identified as completed in a s
     $q_string .= "and st_user = " . $formVars['user'] . " ";
   }
   $q_string .= "order by rsdp_created ";
-  $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_rsdp_server) > 0) {
-    while ($a_rsdp_server = mysql_fetch_array($q_rsdp_server)) {
+  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_rsdp_server) > 0) {
+    while ($a_rsdp_server = mysqli_fetch_array($q_rsdp_server)) {
 
       if ($a_rsdp_server['st_user'] == 1) {
         $class = "ui-state-error";
@@ -164,8 +164,8 @@ task completion charts due to the tasks all being identified as completed in a s
         $q_string .= "from rsdp_status ";
         $q_string .= "where st_rsdp = " . $a_rsdp_server['rsdp_id'] . " and st_step = " . $i . " ";
         $q_string .= "order by st_step ";
-        $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_rsdp_status = mysql_fetch_array($q_rsdp_status);
+        $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_rsdp_status = mysqli_fetch_array($q_rsdp_status);
 
         $linkstart = "<a href=\"" . $rsdptask[$i] . "?rsdp=" . $a_rsdp_server['rsdp_id'] . "\" target=\"_blank\">";
         $userstart = "<a href=\"completed.php?user=" . $a_rsdp_server['st_user'] . "\" target=\"_blank\">";
