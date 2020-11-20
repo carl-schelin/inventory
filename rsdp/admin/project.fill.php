@@ -25,14 +25,14 @@
       $q_string  = "select prj_name,prj_code,prj_close,prj_product ";
       $q_string .= "from projects ";
       $q_string .= "where prj_id = " . $formVars['id'];
-      $q_projects = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_projects = mysql_fetch_array($q_projects);
-      mysql_free_result($q_projects);
+      $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_projects = mysqli_fetch_array($q_projects);
+      mysqli_free_result($q_projects);
 
       $product = return_Index($a_projects['prj_product'], "select prod_id from products order by prod_name");
 
-      print "document.dialog.prj_name.value = '"  . mysql_real_escape_string($a_projects['prj_name']) . "';\n";
-      print "document.dialog.prj_code.value  = '" . mysql_real_escape_string($a_projects['prj_code']) . "';\n";
+      print "document.dialog.prj_name.value = '"  . mysqli_real_escape_string($a_projects['prj_name']) . "';\n";
+      print "document.dialog.prj_code.value  = '" . mysqli_real_escape_string($a_projects['prj_code']) . "';\n";
 
       print "document.dialog.prj_product['" . $product . "'].selected = true;\n";
 
