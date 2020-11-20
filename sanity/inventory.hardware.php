@@ -163,8 +163,8 @@
   $q_string .= "left join groups    on groups.grp_id           = inventory.inv_manager ";
   $q_string .= $where;
   $q_string .= $orderby;
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $editstart = '';
     $editend = '';
@@ -180,8 +180,8 @@
     $q_string .= "from hardware ";
     $q_string .= "left join groups on groups.grp_id = hardware.hw_group ";
     $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_group != " . $a_inventory['inv_manager'] . " ";
-    $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    while ($a_hardware = mysql_fetch_array($q_hardware)) {
+    $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
 # pass the server id. all hardware will be modified to match the inv_manager of the system
       $hardware  = "<a href=\"#\" onclick=\"javascript:show_file('change.hardware.php?id="  . $a_inventory['inv_id'] . "');\">";
