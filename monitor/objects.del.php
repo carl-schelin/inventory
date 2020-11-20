@@ -26,7 +26,7 @@
       $q_string .= "objects ";
       $q_string .= "set obj_deleted = 1 ";
       $q_string .= "where obj_id = " . $formVars['id'];
-      $insert = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
       print "alert('Object marked as deleted.');\n";
 
