@@ -74,8 +74,8 @@
   $q_string .= "left join inventory on software.sw_companyid = inventory.inv_id ";
   $q_string .= "where sw_group = " . $formVars['group'] . " and sw_type = \"Commercial\" ";
   $q_string .= "order by inv_name";
-  $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ( $a_software = mysql_fetch_array($q_software) ) {
+  $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ( $a_software = mysqli_fetch_array($q_software) ) {
 
     $interface = "";
     $console = "";
@@ -83,24 +83,24 @@
     $q_string .= "from interface ";
     $q_string .= "where int_companyid = \"" . $a_software['sw_companyid'] . "\" and int_ip6 = 0 and int_eth != 'loopback' and int_face != 'netmgt:' ";
     $q_string .= "order by int_face";
-    $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    while ($a_interface = mysql_fetch_array($q_interface)) {
+    $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_interface = mysqli_fetch_array($q_interface)) {
       $interface .= $a_interface['int_face'] . "=" . $a_interface['int_addr'] . " ";
     }
 
     $q_string  = "select sw_software ";
     $q_string .= "from software ";
     $q_string .= "where sw_type = 'OS' and sw_companyid = " . $a_software['sw_companyid'];
-    $q_os = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_os = mysql_fetch_array($q_os);
+    $q_os = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_os = mysqli_fetch_array($q_os);
 
     $instances = "";
     $q_string  = "select sw_software ";
     $q_string .= "from software ";
     $q_string .= "where sw_type = 'Instance' and sw_companyid = " . $a_software['sw_companyid'] . " ";
     $q_string .= "order by sw_software";
-    $q_instance = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    while ($a_instance = mysql_fetch_array($q_instance)) {
+    $q_instance = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_instance = mysqli_fetch_array($q_instance)) {
       $instances .= $a_instance['sw_software'] . ", ";
     }
 
@@ -108,8 +108,8 @@
     $q_string .= "from hardware ";
     $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
     $q_string .= "where hw_companyid = " . $a_software['sw_companyid'] . " and hw_type = 15";
-    $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_hardware = mysql_fetch_array($q_hardware);
+    $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_hardware = mysqli_fetch_array($q_hardware);
 
     print "<tr>\n";
     print "  <td class=\"ui-widget-content\">" . $a_software['inv_name'] . "</td>\n";
