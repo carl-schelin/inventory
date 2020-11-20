@@ -27,12 +27,12 @@
       $q_string .= "left join interface on interface.int_id = vulnowner.vul_interface ";
       $q_string .= "left join security  on security.sec_id  = vulnowner.vul_security ";
       $q_string .= "where vul_id = " . $formVars['id'];
-      $q_vulnowner = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_vulnowner = mysql_fetch_array($q_vulnowner);
-      mysql_free_result($q_vulnowner);
+      $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_vulnowner = mysqli_fetch_array($q_vulnowner);
+      mysqli_free_result($q_vulnowner);
 
-      print "document.getElementById('vuln_interface').innerHTML = '"  . mysql_real_escape_string($a_vulnowner['int_addr']) . "';\n";
-      print "document.getElementById('vuln_securityid').innerHTML = '" . mysql_real_escape_string($a_vulnowner['sec_name']) . "';\n";
+      print "document.getElementById('vuln_interface').innerHTML = '"  . mysqli_real_escape_string($a_vulnowner['int_addr']) . "';\n";
+      print "document.getElementById('vuln_securityid').innerHTML = '" . mysqli_real_escape_string($a_vulnowner['sec_name']) . "';\n";
 
       print "document.owner.int_id.value = " . $a_vulnowner['int_id'] . ";\n";
       print "document.owner.sec_id.value = " . $a_vulnowner['sec_id'] . ";\n";
@@ -42,12 +42,12 @@
       $q_string .= "from vulnowner ";
       $q_string .= "left join groups on groups.grp_id = vulnowner.vul_group ";
       $q_string .= "where vul_security = " . $a_vulnowner['sec_id'] . " and vul_interface = " . $a_vulnowner['int_id'] . " ";
-      $q_vulnowner = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_vulnowner) > 0) {
-        $a_vulnowner = mysql_fetch_array($q_vulnowner);
+      $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_vulnowner) > 0) {
+        $a_vulnowner = mysqli_fetch_array($q_vulnowner);
 
-        print "document.owner.vul_ticket.value = '"      . mysql_real_escape_string($a_vulnowner['vul_ticket'])      . "';\n";
-        print "document.owner.vul_description.value = '" . mysql_real_escape_string($a_vulnowner['vul_description']) . "';\n";
+        print "document.owner.vul_ticket.value = '"      . mysqli_real_escape_string($a_vulnowner['vul_ticket'])      . "';\n";
+        print "document.owner.vul_description.value = '" . mysqli_real_escape_string($a_vulnowner['vul_description']) . "';\n";
 
         $group = return_Index($a_vulnowner['vul_group'], "select grp_id from groups where grp_disabled = 0 order by grp_name");
 
