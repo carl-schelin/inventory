@@ -26,9 +26,9 @@
       $q_string  = "select san_id,san_checklist ";
       $q_string .= "from rsdp_designed ";
       $q_string .= "where san_rsdp = " . $formVars['rsdp'];
-      $q_rsdp_designed = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_rsdp_designed) > 0) {
-        $a_rsdp_designed = mysql_fetch_array($q_rsdp_designed);
+      $q_rsdp_designed = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_rsdp_designed) > 0) {
+        $a_rsdp_designed = mysqli_fetch_array($q_rsdp_designed);
 
         if ($a_rsdp_designed['san_checklist']) {
           print "document.rsdp.san_checklist.checked = true;\n";
@@ -40,7 +40,7 @@
 
       }
 
-      mysql_free_result($q_rsdp_designed);
+      mysqli_free_result($q_rsdp_designed);
 
       print "validate_Form();\n";
 
