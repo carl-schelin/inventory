@@ -20,8 +20,8 @@
   $q_string = "select inv_manager "
             . "from inventory "
             . "where inv_id = " . $formVars['id'] . " ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_inventory = mysql_fetch_array($q_inventory);
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inventory = mysqli_fetch_array($q_inventory);
 
 # get the filesystem information
 
@@ -76,9 +76,9 @@
   $q_string .= "from filesystem ";
   $q_string .= "where fs_companyid = " . $formVars['id'] . " ";
   $q_string .= "order by fs_device,fs_mount";
-  $q_filesystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-  while ( $a_filesystem = mysql_fetch_array($q_filesystem) ) {
+  while ( $a_filesystem = mysqli_fetch_array($q_filesystem) ) {
 
     $checkmark = "";
     if ($a_filesystem['fs_verified']) {
@@ -99,5 +99,5 @@
   $output .= "</table>";
 ?>
 
-document.getElementById('filesystem_mysql').innerHTML = '<?php print mysql_real_escape_string($output); ?>';
+document.getElementById('filesystem_mysql').innerHTML = '<?php print mysqli_real_escape_string($output); ?>';
 
