@@ -62,7 +62,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['prj_name']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -76,8 +76,8 @@
       $q_string  = "select grp_name ";
       $q_string .= "from groups ";
       $q_string .= "where grp_id = " . $formVars['prj_group'] . " ";
-      $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_groups = mysql_fetch_array($q_groups);
+      $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_groups = mysqli_fetch_array($q_groups);
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">\n";
@@ -126,9 +126,9 @@
       $q_string .= "left join products on products.prod_id = projects.prj_product ";
       $q_string .= "where prj_group = " . $formVars['prj_group'] . " ";
       $q_string .= "order by prj_name ";
-      $q_projects = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_projects) > 0) {
-        while ($a_projects = mysql_fetch_array($q_projects)) {
+      $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_projects) > 0) {
+        while ($a_projects = mysqli_fetch_array($q_projects)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('project.fill.php?id="  . $a_projects['prj_id'] . "');jQuery('html,body').scrollTop(0);jQuery('#dialogProject').dialog('open');\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('project.del.php?id=" . $a_projects['prj_id'] . "');\">";
@@ -157,9 +157,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_projects);
+      mysqli_free_result($q_projects);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.dialog.prj_name.value = '';\n";
       print "document.dialog.prj_code.value = '';\n";
