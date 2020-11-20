@@ -28,8 +28,8 @@
       $q_string  = "select chk_group ";
       $q_string .= "from checklist ";
       $q_string .= "where chk_id = " . $formVars['id'];
-      $q_checklist = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_checklist = mysql_fetch_array($q_checklist);
+      $q_checklist = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_checklist = mysqli_fetch_array($q_checklist);
 
       $groupid = $a_checklist['chk_group'];
 
@@ -41,20 +41,20 @@
       $q_string .= "from checklist ";
       $q_string .= "where chk_group = " . $groupid . " and chk_task = " . $formVars['task'] . " ";
       $q_string .= "order by chk_index";
-      $q_checklist = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_checklist = mysql_fetch_array($q_checklist)) {
+      $q_checklist = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_checklist = mysqli_fetch_array($q_checklist)) {
         if ($delflag) {
           $q_string  = "update checklist ";
           $q_string .= "set chk_index = " . ($a_checklist['chk_index'] - 1) . " ";
           $q_string .= "where chk_id = " . $a_checklist['chk_id'];
-          $q_fixindexcl = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_fixindexcl = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         }
 
         if ($a_checklist['chk_id'] == $formVars['id']) {
           $q_string  = "delete ";
           $q_string .= "from checklist ";
           $q_string .= "where chk_id = " . $formVars['id'];
-          $q_delfromcl = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_delfromcl = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           $delflag = 1;
         }
       }
