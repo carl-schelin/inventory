@@ -25,11 +25,11 @@
       $q_string  = "select fam_name ";
       $q_string .= "from family ";
       $q_string .= "where fam_id = " . $formVars['id'];
-      $q_family = mysql_query($q_string) or die (mysql_error());
-      $a_family = mysql_fetch_array($q_family);
-      mysql_free_result($q_family);
+      $q_family = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      $a_family = mysqli_fetch_array($q_family);
+      mysqli_free_result($q_family);
 
-      print "document.family.fam_name.value = '"   . mysql_real_escape_string($a_family['fam_name'])   . "';\n";
+      print "document.family.fam_name.value = '"   . mysqli_real_escape_string($a_family['fam_name'])   . "';\n";
 
       print "document.family.id.value = " . $formVars['id'] . ";\n";
 
