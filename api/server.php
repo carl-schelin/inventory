@@ -11,8 +11,8 @@
   $package = "server.php";
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -162,8 +162,8 @@
   if ($formVars['server'] != '') {
     $q_string .= "and inv_name = \"" . $formVars['server'] . "\" ";
   }
-  $q_inventory = mysql_query($q_string) or die($q_string  . ": " . mysql_error());
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string  . ": " . mysqli_error($db));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     if (!isset($a_inventory['prod_name'])) {
       $a_inventory['prod_name'] = 'Unknown';
@@ -178,8 +178,8 @@
     $q_string  = "select grp_name ";
     $q_string .= "from groups ";
     $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
-    $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_groups = mysql_fetch_array($q_groups);
+    $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_groups = mysqli_fetch_array($q_groups);
 
     $servers[$a_inventory['inv_name']] = new Server();
     $servers[$a_inventory['inv_name']]->inventory_name               = $a_inventory['inv_name'];
@@ -201,8 +201,8 @@
     $q_string .= "left join country on country.cn_id = states.st_country ";
     $q_string .= "left join loc_types on loc_types.typ_id = locations.loc_type ";
     $q_string .= "where loc_id = " . $a_inventory['inv_location'] . " ";
-    $q_locations = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_locations = mysql_fetch_array($q_locations);
+    $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_locations = mysqli_fetch_array($q_locations);
 
     $environment = '';
     if ($a_locations['loc_environment'] == 1) {
@@ -245,8 +245,8 @@
     $q_string  = "select svc_name,svc_acronym,svc_availability,svc_downtime,svc_mtbf,svc_geographic,svc_mttr,svc_resource,svc_restore ";
     $q_string .= "from service ";
     $q_string .= "where svc_id = " . $a_inventory['inv_class'] . " ";
-    $q_service = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_service = mysql_fetch_array($q_service);
+    $q_service = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_service = mysqli_fetch_array($q_service);
 
     if ($formVars['service'] == 'yes') {
       $servers[$a_inventory['inv_name']]->inventory_service_class = new ServiceClass();
@@ -276,15 +276,15 @@
     $q_string .= "left join int_speed  on int_speed.spd_id  = interface.int_speed ";
     $q_string .= "left join int_role   on int_role.rol_id   = interface.int_role ";
     $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = 0 ";
-    $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    while ($a_interface = mysql_fetch_array($q_interface)) {
+    $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_interface = mysqli_fetch_array($q_interface)) {
 
       if ($formVars['interfaces'] == 'yes') {
         $q_string  = "select vul_id ";
         $q_string .= "from vulnowner ";
         $q_string .= "where vul_interface = " . $a_interface['int_id'] . " ";
-        $q_vulnowner = mysql_query($q_string) or die($q_string . "p: " . mysql_error());
-        if (mysql_num_rows($q_vulnowner) > 0) {
+        $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . "p: " . mysqli_error($db));
+        if (mysqli_num_rows($q_vulnowner) > 0) {
           $scanned = 'Yes';
         } else {
           $scanned = 'No';
@@ -304,8 +304,8 @@
         $q_string  = "select red_text ";
         $q_string .= "from int_redundancy ";
         $q_string .= "where red_id = " . $a_interface['int_redundancy'] . " ";
-        $q_int_redundancy = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_int_redundancy = mysql_fetch_array($q_int_redundancy);
+        $q_int_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_int_redundancy = mysqli_fetch_array($q_int_redundancy);
         if ($a_int_redundancy['red_text'] == '') {
           $a_int_redundancy['red_text'] = "None";
         }
@@ -377,14 +377,14 @@
         $q_string .= "left join int_speed  on int_speed.spd_id  = interface.int_speed ";
         $q_string .= "left join int_role   on int_role.rol_id   = interface.int_role ";
         $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_interface['int_id'] . " ";
-        $q_internal = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        while ($a_internal = mysql_fetch_array($q_internal)) {
+        $q_internal = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_internal = mysqli_fetch_array($q_internal)) {
 
           $q_string  = "select vul_id ";
           $q_string .= "from vulnowner ";
           $q_string .= "where vul_interface = " . $a_internal['int_id'] . " ";
-          $q_vulnowner = mysql_query($q_string) or die($q_string . "c: " . mysql_error());
-          if (mysql_num_rows($q_vulnowner) > 0) {
+          $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . "c: " . mysqli_error($db));
+          if (mysqli_num_rows($q_vulnowner) > 0) {
             $scanned = 'Yes';
           } else {
             $scanned = 'No';
@@ -405,8 +405,8 @@
           $q_string  = "select red_text ";
           $q_string .= "from int_redundancy ";
           $q_string .= "where red_id = " . $a_internal['int_redundancy'] . " ";
-          $q_int_redundancy = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_int_redundancy = mysql_fetch_array($q_int_redundancy);
+          $q_int_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_int_redundancy = mysqli_fetch_array($q_int_redundancy);
           if ($a_int_redundancy['red_text'] == '') {
             $a_int_redundancy['red_text'] = "Child";
           }
@@ -490,21 +490,21 @@
     $q_string .= "left join projects on projects.prj_id = hardware.hw_projectid ";
     $q_string .= "left join products on products.prod_id = hardware.hw_product ";
     $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = 0 and hw_deleted = 0 ";
-    $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    while ($a_hardware = mysql_fetch_array($q_hardware)) {
+    $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
       $q_string  = "select grp_name ";
       $q_string .= "from groups ";
       $q_string .= "where grp_id = " . $a_hardware['hw_group'] . " ";
-      $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_groups = mysql_fetch_array($q_groups);
+      $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_groups = mysqli_fetch_array($q_groups);
 
       if ($a_hardware['mod_type'] != '') {
         $q_string  = "select part_name ";
         $q_string .= "from parts ";
         $q_string .= "where part_id = " . $a_hardware['mod_type'] . " ";
-        $q_parts = mysql_query($q_string) or die($q_string . "p: " . mysql_error());
-        $a_parts = mysql_fetch_array($q_parts);
+        $q_parts = mysqli_query($db, $q_string) or die($q_string . "p: " . mysqli_error($db));
+        $a_parts = mysqli_fetch_array($q_parts);
       } else {
         $a_parts['part_name'] = 'Unknown';
       }
@@ -540,21 +540,21 @@
         $q_string .= "left join projects on projects.prj_id = hardware.hw_projectid ";
         $q_string .= "left join products on products.prod_id = hardware.hw_product ";
         $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " ";
-        $q_internal = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        while ($a_internal = mysql_fetch_array($q_internal)) {
+        $q_internal = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_internal = mysqli_fetch_array($q_internal)) {
 
           $q_string  = "select grp_name ";
           $q_string .= "from groups ";
           $q_string .= "where grp_id = " . $a_internal['hw_group'] . " ";
-          $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_groups = mysql_fetch_array($q_groups);
+          $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_groups = mysqli_fetch_array($q_groups);
 
           if ($a_internal['mod_type'] != '') {
             $q_string  = "select part_name ";
             $q_string .= "from parts ";
             $q_string .= "where part_id = " . $a_internal['mod_type'] . " ";
-            $q_parts = mysql_query($q_string) or die($q_string . "c: " . mysql_error());
-            $a_parts = mysql_fetch_array($q_parts);
+            $q_parts = mysqli_query($db, $q_string) or die($q_string . "c: " . mysqli_error($db));
+            $a_parts = mysqli_fetch_array($q_parts);
           } else {
             $a_parts['part_name'] = 'Unknown';
           }
