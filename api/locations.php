@@ -11,8 +11,8 @@
   $package = "locations.php";
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -63,8 +63,8 @@
   $q_string .= "left join country on country.cn_id = states.st_country ";
   $q_string .= "left join loc_types on loc_types.typ_id = locations.loc_type ";
   $q_string .= $where;
-  $q_locations = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_locations = mysql_fetch_array($q_locations)) {
+  $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_locations = mysqli_fetch_array($q_locations)) {
 
     $environment = '';
     if ($a_locations['loc_environment'] == 1) {
