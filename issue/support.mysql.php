@@ -71,7 +71,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['sup_case']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -85,8 +85,8 @@
       $q_string  = "select iss_closed ";
       $q_string .= "from issue ";
       $q_string .= "where iss_id = " . $formVars['id'];
-      $q_issue = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_issue = mysql_fetch_array($q_issue);
+      $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_issue = mysqli_fetch_array($q_issue);
 
       $output  = "<p></p>";
       $output .= "<table class=\"ui-styled-table\">";
@@ -134,9 +134,9 @@
       $q_string .= "from issue_support ";
       $q_string .= "where sup_issue = " . $formVars['id'] . " ";
       $q_string .= "order by sup_timestamp";
-      $q_issue_support = mysql_query($q_string) or die ($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_issue_support) > 0) {
-        while ($a_issue_support = mysql_fetch_array($q_issue_support)) {
+      $q_issue_support = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_issue_support) > 0) {
+        while ($a_issue_support = mysqli_fetch_array($q_issue_support)) {
 
           if ($a_issue['iss_closed'] == '0000-00-00') {
             $linkstart = "<a href=\"#\" onclick=\"show_file('"     . $Issueroot . "/support.fill.php?id=" . $a_issue_support['sup_id'] . "');showDiv('support-hide');\">";
@@ -167,11 +167,11 @@
         $output .= "</tr>";
       }
 
-      mysql_free_result($q_issue_support);
+      mysqli_free_result($q_issue_support);
 
       $output .= "</table>";
 
-      print "document.getElementById('support_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('support_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
       if ($a_issue['iss_closed'] == '0000-00-00') {
         print "document.start.sup_company.value = '';";
