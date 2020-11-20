@@ -187,8 +187,8 @@ $(document).ready( function() {
   $q_string  = "select slv_id,slv_value ";
   $q_string .= "from supportlevel ";
   $q_string .= "order by slv_value";
-  $q_supportlevel = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_supportlevel = mysql_fetch_array($q_supportlevel)) {
+  $q_supportlevel = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_supportlevel = mysqli_fetch_array($q_supportlevel)) {
     print "<option value=\"" . $a_supportlevel['slv_id'] . "\">" . htmlspecialchars($a_supportlevel['slv_value']) . "</option>\n";
   }
 ?>
@@ -199,8 +199,8 @@ $(document).ready( function() {
   $q_string  = "select slv_id,slv_value ";
   $q_string .= "from supportlevel ";
   $q_string .= "order by slv_value";
-  $q_supportlevel = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_supportlevel = mysql_fetch_array($q_supportlevel)) {
+  $q_supportlevel = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_supportlevel = mysqli_fetch_array($q_supportlevel)) {
     print "<option value=\"" . $a_supportlevel['slv_id'] . "\">" . htmlspecialchars($a_supportlevel['slv_value']) . "</option>\n";
   }
 ?>
