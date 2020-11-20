@@ -56,7 +56,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['prj_name']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -112,8 +112,8 @@
       $q_string .= "from operatingsystem ";
       $q_string .= "left join users on users.usr_id = operatingsystem.os_user ";
       $q_string .= "order by os_vendor,os_software ";
-      $q_operatingsystem = mysql_query($q_string) or die (mysql_error());
-      while ($a_operatingsystem = mysql_fetch_array($q_operatingsystem)) {
+      $q_operatingsystem = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      while ($a_operatingsystem = mysqli_fetch_array($q_operatingsystem)) {
 
         $linkstart = "<a href=\"#\" onclick=\"show_file('system.fill.php?id="  . $a_operatingsystem['os_id'] . "');jQuery('html,body').scrollTop(0);jQuery('#dialogSystem').dialog('open');\">";
         $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('system.del.php?id=" . $a_operatingsystem['os_id'] . "');\">";
@@ -148,9 +148,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_operatingsystem);
+      mysqli_free_result($q_operatingsystem);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.dialog.os_vendor.value = '';\n";
       print "document.dialog.os_software.value = '';\n";
