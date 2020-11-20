@@ -20,8 +20,8 @@
   $q_string = "select inv_manager "
             . "from inventory "
             . "where inv_id = " . $formVars['id'] . " ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_inventory = mysql_fetch_array($q_inventory);
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inventory = mysqli_fetch_array($q_inventory);
 
   $output  = "<p></p>";
   $output .= "<table class=\"ui-styled-table\">";
@@ -68,8 +68,8 @@
   $q_string .= "from tags ";
   $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_view = 0 and tag_owner = " . $formVars['uid'] . " ";
   $q_string .= "group by tag_name ";
-  $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_tags = mysql_fetch_array($q_tags)) {
+  $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_tags = mysqli_fetch_array($q_tags)) {
     $linkstart = "<a href=\"" . $Reportroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "\">";
     $linkend   = "</a>";
 
@@ -90,8 +90,8 @@
   $q_string .= "from tags ";
   $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_view = 1 and tag_group = " . $formVars['group'] . " ";
   $q_string .= "group by tag_name ";
-  $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_tags = mysql_fetch_array($q_tags)) {
+  $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_tags = mysqli_fetch_array($q_tags)) {
     $linkstart = "<a href=\"" . $Reportroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "\">";
     $linkend   = "</a>";
 
@@ -112,8 +112,8 @@
   $q_string .= "from tags ";
   $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_view = 2 ";
   $q_string .= "group by tag_name ";
-  $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_tags = mysql_fetch_array($q_tags)) {
+  $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_tags = mysqli_fetch_array($q_tags)) {
     $linkstart = "<a href=\"" . $Reportroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "\">";
     $linkend   = "</a>";
 
@@ -126,5 +126,5 @@
 
 ?>
 
-document.getElementById('tags_mysql').innerHTML = '<?php print mysql_real_escape_string($output); ?>';
+document.getElementById('tags_mysql').innerHTML = '<?php print mysqli_real_escape_string($output); ?>';
 
