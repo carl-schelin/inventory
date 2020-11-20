@@ -9,8 +9,8 @@
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -51,9 +51,9 @@ if (($handle = fopen($file, "r")) !== FALSE) {
         $q_string  = "select int_id ";
         $q_string .= "from interface ";
         $q_string .= "where int_addr = \"" . $address . "\" ";
-        $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        if (mysql_num_rows($q_interface) > 0) {
-          while ($a_interface = mysql_fetch_array($q_interface)) {
+        $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_interface) > 0) {
+          while ($a_interface = mysqli_fetch_array($q_interface)) {
 
             $q_string  = 
               "int_monstatus   = \"" . $data[1] . "\"," . 
@@ -64,7 +64,7 @@ if (($handle = fopen($file, "r")) !== FALSE) {
             if ($debug == 'yes') {
               print $query . "\n";
             } else {
-              $result = mysql_query($query) or die($query . ": " . mysql_error());
+              $result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
             }
             print "IP found: $data[0],$data[1],$data[2],$address\n";
           }
