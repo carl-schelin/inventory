@@ -50,7 +50,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['sw_software']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -96,9 +96,9 @@
 
       $q_string  = "select sw_id,sw_software,sw_eol,sw_eos ";
       $q_string .= "from sw_support";
-      $q_sw_support = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_sw_support) > 0) {
-        while ($a_sw_support = mysql_fetch_array($q_sw_support)) {
+      $q_sw_support = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_sw_support) > 0) {
+        while ($a_sw_support = mysqli_fetch_array($q_sw_support)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('software.fill.php?id="  . $a_sw_support['sw_id'] . "');jQuery('#dialogSoftware').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('software.del.php?id=" . $a_sw_support['sw_id'] . "');\">";
@@ -122,9 +122,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_sw_support);
+      mysqli_free_result($q_sw_support);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.software.sw_software.value = '';\n";
       print "document.software.sw_eol.value = '';\n";
