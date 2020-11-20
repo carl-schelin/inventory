@@ -80,14 +80,14 @@
   $q_string .= "join zones on zones.zone_id = inventory.inv_zone ";
   $q_string .= "join service on service.svc_id = inventory.inv_class ";
   $q_string .= "where inv_manager = 1 and sw_group = 7 order by inv_name";
-  $q_inventory = mysql_query($q_string) or die(mysql_error());
-  while ( $a_inventory = mysql_fetch_array($q_inventory) ) {
+  $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ( $a_inventory = mysqli_fetch_array($q_inventory) ) {
 
     $q_string  = "select sw_software ";
     $q_strinb .= "from software ";
     $q_strinb .= "where sw_type = 'OS' and sw_companyid = " . $a_inventory['inv_id'];
-    $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_software = mysql_fetch_array($q_software);
+    $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_software = mysqli_fetch_array($q_software);
 
     $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\">";
     $linkend   = "</a>";
@@ -105,9 +105,9 @@
     $q_string .= "from software ";
     $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_group = 7 and sw_type != 'OS' ";
     $q_string .= "order by sw_software";
-    $q_software = mysql_query($q_string) or die(mysql_error());
+    $q_software = mysqli_query($db, $q_string) or die(mysqli_error($db));
     $software = "";
-    while ($a_software = mysql_fetch_array($q_software)) {
+    while ($a_software = mysqli_fetch_array($q_software)) {
       $software .= $a_software['sw_software'] . " ";
     }
     if ($software == "") {
