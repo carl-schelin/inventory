@@ -105,8 +105,8 @@
         $q_string .= ") ";
       }
       $q_string .= "group by os_sysname ";
-      $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_rsdp_server = mysql_fetch_array($q_rsdp_server)) {
+      $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_rsdp_server = mysqli_fetch_array($q_rsdp_server)) {
         $mystep = 0;
 
         if ($a_rsdp_server['rsdp_requestor'] == $_SESSION['uid'] || $a_rsdp_server['rsdp_platformspoc'] == $_SESSION['uid']) {
@@ -117,9 +117,9 @@
           $q_string  = "select st_step ";
           $q_string .= "from rsdp_status ";
           $q_string .= "where st_rsdp = " . $a_rsdp_server['rsdp_id'] . " and st_step = " . $i;
-          $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-          if (mysql_num_rows($q_rsdp_status) == 0) {
+          if (mysqli_num_rows($q_rsdp_status) == 0) {
             if ($formVars['myrsdp'] == 'yes') {
               if ($i == 3 || $i == 11) {
                 if ($a_rsdp_server['rsdp_sanpoc'] == $_SESSION['uid']) {
@@ -168,9 +168,9 @@
         $q_string  = "select st_step ";
         $q_string .= "from rsdp_status ";
         $q_string .= "where st_rsdp = " . $a_rsdp_server['rsdp_id'] . " and st_step = 18 ";
-        $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-        if (mysql_num_rows($q_rsdp_status) == 0 && $mystep == 1) {
+        if (mysqli_num_rows($q_rsdp_status) == 0 && $mystep == 1) {
 
           $linkstart = "<a href=\"tasks.php?id=" . $a_rsdp_server['rsdp_id'] . "&myrsdp=" . $formVars['myrsdp'] . "\">";
           $linkclose = "<a href=\"#\" onclick=\"duplicate_line('build/servers.done.php?id=" . $a_rsdp_server['rsdp_id'] . "');\">";
@@ -195,8 +195,8 @@
           $q_string  = "select COUNT(*) ";
           $q_string .= "from rsdp_status ";
           $q_string .= "where st_rsdp = " . $a_rsdp_server['rsdp_id'] . " ";
-          $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_rsdp_status = mysql_fetch_array($q_rsdp_status);
+          $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_rsdp_status = mysqli_fetch_array($q_rsdp_status);
 
           $output .= "<tr>\n";
           $output .= "  <td class=\"ui-widget-content delete\">"   . $linkstart . $a_rsdp_server['rsdp_id']             . $linkend . "</td>\n";
@@ -221,7 +221,7 @@
         $output .= "<p class=\"ui-widget-content\">Click <a href=\"network.php?productid=" . $formVars['productid'] . "\" target=\"_blank\">here</a> for a view of all servers for this product.</p>\n";
       }
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
