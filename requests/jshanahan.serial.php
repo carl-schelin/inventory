@@ -93,8 +93,8 @@
     $q_string .= "and inv_manager = " . $formVars['group'] . " ";
   }
   $q_string .= "order by inv_name ";
-  $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_hardware = mysql_fetch_array($q_hardware)) {
+  $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
     $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_hardware['hw_companyid'] . "\">";
     $linkend = "</a>";
@@ -114,7 +114,7 @@
     }
   }
 
-  mysql_free_result($q_hardware);
+  mysqli_free_result($q_hardware);
 
   if ($formVars['csv'] == 'true') {
     print "</div>\n";
