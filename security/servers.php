@@ -245,8 +245,8 @@ $(document).ready( function() {
     $q_string .= "and inv_status = 0 ";
   }
   $q_string .= $orderby;
-  $q_vulnerabilities = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_vulnerabilities = mysql_fetch_array($q_vulnerabilities)) {
+  $q_vulnerabilities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_vulnerabilities = mysqli_fetch_array($q_vulnerabilities)) {
 
     $class = "ui-widget-content";
     if ($a_vulnerabilities['sev_name'] == 'High') {
