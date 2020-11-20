@@ -54,7 +54,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving OS Changes to: " . $formVars['os_sysname']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
         }
 
 
@@ -106,7 +106,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Platform Changes to: " . $formVars['pf_model']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
         }
 
 
@@ -144,7 +144,7 @@
 
           $query = "update models set " . $q_string . " where mod_id = " . $formVars['pf_model'];
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
         }
       }
 
@@ -161,8 +161,8 @@
         $q_string  = "select rsdp_platform ";
         $q_string .= "from rsdp_server ";
         $q_string .= "where rsdp_id = " . $formVars['rsdp'];
-        $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+        $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
         generateEmail(
           $formVars['rsdp'],
@@ -201,11 +201,11 @@
           $q_string  = "select san_id ";
           $q_string .= "from rsdp_san ";
           $q_string .= "where san_rsdp = " . $formVars['rsdp'];
-          $q_rsdp_san = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_rsdp_san = mysql_fetch_array($q_rsdp_san);
+          $q_rsdp_san = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_rsdp_san = mysqli_fetch_array($q_rsdp_san);
 
 # if there aren't any HBA ports configured, skip it
-          if (mysql_num_rows($q_rsdp_san) == 0) {
+          if (mysqli_num_rows($q_rsdp_san) == 0) {
             setstatus($formVars['rsdp'], 2, 3);
           } else {
 
@@ -222,8 +222,8 @@
             $q_string  = "select tkt_san ";
             $q_string .= "from rsdp_tickets ";
             $q_string .= "where tkt_rsdp = " . $formVars['rsdp'];
-            $q_rsdp_tickets = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            $a_rsdp_tickets = mysql_fetch_array($q_rsdp_tickets);
+            $q_rsdp_tickets = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
             if ($a_rsdp_tickets['tkt_san']) {
               submit_Ticket(
                 $formVars['rsdp'],
@@ -249,8 +249,8 @@
         $q_string  = "select tkt_network ";
         $q_string .= "from rsdp_tickets ";
         $q_string .= "where tkt_rsdp = " . $formVars['rsdp'];
-        $q_rsdp_tickets = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_rsdp_tickets = mysql_fetch_array($q_rsdp_tickets);
+        $q_rsdp_tickets = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
         if ($a_rsdp_tickets['tkt_network']) {
           submit_Ticket(
             $formVars['rsdp'],
