@@ -64,9 +64,9 @@
       $q_string  = "select rsdp_id ";
       $q_string .= "from rsdp_server ";
       $q_string .= "where rsdp_project = " . $formVars['id'] . " ";
-      $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_rsdp_server) > 0) {
-        while ($a_rsdp_server = mysql_fetch_array($q_rsdp_server)) {
+      $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_rsdp_server) > 0) {
+        while ($a_rsdp_server = mysqli_fetch_array($q_rsdp_server)) {
 
           for ($i = 0; $i < count($tables); $i++) {
             logaccess($_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from rsdp_server");
@@ -75,7 +75,7 @@
             $q_string .= "from " . $tables[$i] . " ";
             $q_string .= "where " . $key[$i] . " = " . $formVars['id'];
 
-            $delete = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $delete = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           }
 
         }
