@@ -58,7 +58,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['obj_name']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -106,8 +106,8 @@
       $q_string  = "select obj_id,obj_name,obj_deleted ";
       $q_string .= "from objects ";
       $q_string .= $orderby;
-      $q_objects = mysql_query($q_string) or die (mysql_error());
-      while ($a_objects = mysql_fetch_array($q_objects)) {
+      $q_objects = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      while ($a_objects = mysqli_fetch_array($q_objects)) {
 
         $linkstart = "<a href=\"#\" onclick=\"show_file('objects.fill.php?id="  . $a_objects['obj_id'] . "');jQuery('#dialogObject').dialog('open');\">";
         $linkdel   = "<input type=\"button\" value=\"Delete\" onclick=\"delete_line('objects.del.php?id=" . $a_objects['obj_id'] . "');\">";
@@ -130,9 +130,9 @@
       }
       $output .= "</table>";
 
-      mysql_free_result($q_objects);
+      mysqli_free_result($q_objects);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.objects.obj_name.value = '';\n";
       print "document.objects.obj_deleted.checked = false;\n";
