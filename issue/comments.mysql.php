@@ -55,7 +55,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['det_id']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -69,8 +69,8 @@
       $q_string  = "select iss_closed ";
       $q_string .= "from issue ";
       $q_string .= "where iss_id = " . $formVars['id'];
-      $q_issue = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_issue = mysql_fetch_array($q_issue);
+      $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_issue = mysqli_fetch_array($q_issue);
 
 
       $output  = "<p></p>\n";
@@ -118,8 +118,8 @@
       $q_string .= "left join users on users.usr_id = issue_detail.det_user ";
       $q_string .= "where det_issue = " . $formVars['id'] . " ";
       $q_string .= "order by det_timestamp desc ";
-      $q_issue_detail = mysql_query($q_string) or die ($q_string . ": " . mysql_error());
-      while ($a_issue_detail = mysql_fetch_array($q_issue_detail)) {
+      $q_issue_detail = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+      while ($a_issue_detail = mysqli_fetch_array($q_issue_detail)) {
 
         $updated = preg_replace("/\[:hash:\]/", "#", $a_issue_detail['det_text']);
 
@@ -143,11 +143,11 @@
         $output .= "</tr>";
       }
 
-      mysql_free_result($q_issue_detail);
+      mysqli_free_result($q_issue_detail);
 
       $output .= "</table>";
 
-      print "document.getElementById('detail_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('detail_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
       if ($a_issue['iss_closed'] == '0000-00-00') {
         print "document.start.det_text.value = '';\n";
