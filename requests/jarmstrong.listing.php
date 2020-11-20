@@ -88,8 +88,8 @@
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
   $q_string .= "where inv_status = 0 and sw_type = 'OS' and hw_primary = 1 and hw_deleted = 0 ";
   $q_string .= "order by inv_name";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_inventory = mysql_fetch_array($q_inventory) ) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inventory = mysqli_fetch_array($q_inventory) ) {
 
     if ($a_inventory['hw_active'] == '0000-00-00') {
       $active = "In Progress";
@@ -113,23 +113,23 @@
     $q_string  = "select int_addr ";
     $q_string .= "from interface ";
     $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_primary = 1";
-    $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_interface = mysql_fetch_array($q_interface);
+    $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_interface = mysqli_fetch_array($q_interface);
 
     if ($a_interface['int_addr'] == '') {
       $q_string  = "select int_addr ";
       $q_string .= "from interface ";
       $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_type = 2";
-      $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_interface = mysql_fetch_array($q_interface);
+      $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_interface = mysqli_fetch_array($q_interface);
     }
 
     if ($a_interface['int_addr'] == '') {
       $q_string  = "select int_addr ";
       $q_string .= "from interface ";
       $q_string .= "where int_companyid = " . $a_inventory['inv_id'];
-      $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_interface = mysql_fetch_array($q_interface);
+      $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_interface = mysqli_fetch_array($q_interface);
     }
 
     if ($formVars['csv']) {
