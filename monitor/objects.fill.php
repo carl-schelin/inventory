@@ -25,11 +25,11 @@
       $q_string  = "select obj_name,obj_deleted ";
       $q_string .= "from objects ";
       $q_string .= "where obj_id = " . $formVars['id'];
-      $q_objects = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_objects = mysql_fetch_array($q_objects);
-      mysql_free_result($q_objects);
+      $q_objects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_objects = mysqli_fetch_array($q_objects);
+      mysqli_free_result($q_objects);
 
-      print "document.objects.obj_name.value = '"       . mysql_real_escape_string($a_objects['obj_name'])       . "';\n";
+      print "document.objects.obj_name.value = '"       . mysqli_real_escape_string($a_objects['obj_name'])       . "';\n";
 
       if ($a_objects['obj_deleted']) {
         print "document.objects.obj_deleted.checked = true;\n";
