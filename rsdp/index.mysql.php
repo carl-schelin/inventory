@@ -82,8 +82,8 @@
       $q_string .= "left join products on products.prod_id = rsdp_server.rsdp_product ";
       $q_string .= "left join projects on projects.prj_id = rsdp_server.rsdp_project ";
       $q_string .= "group by rsdp_project ";
-      $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_rsdp_server = mysql_fetch_array($q_rsdp_server)) {
+      $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_rsdp_server = mysqli_fetch_array($q_rsdp_server)) {
 
 # set the "there can be only one" flag
         $onlyone[$a_rsdp_server['rsdp_project']] = 0;
@@ -95,8 +95,8 @@
         $q_string .= "rsdp_virtpoc,rsdp_dcpoc,rsdp_dcpoc,rsdp_srpoc,rsdp_monitorpoc,rsdp_apppoc,rsdp_backuppoc ";
         $q_string .= "from rsdp_server ";
         $q_string .= "where rsdp_project = " . $a_rsdp_server['rsdp_project'];
-        $q_rsdp_server_2 = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        while ($a_rsdp_server_2 = mysql_fetch_array($q_rsdp_server_2)) {
+        $q_rsdp_server_2 = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_rsdp_server_2 = mysqli_fetch_array($q_rsdp_server_2)) {
 
 # if viewing only my tasks, select the last completed or skipped task from the rsdp_status table
           $mystep = 0;  # by default, it's not my step
@@ -118,8 +118,8 @@
               $q_string  = "select st_step ";
               $q_string .= "from rsdp_status ";
               $q_string .= "where st_rsdp = " . $a_rsdp_server_2['rsdp_id'] . " and st_step = " . $i;
-              $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-              $a_rsdp_status = mysql_fetch_array($q_rsdp_status);
+              $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              $a_rsdp_status = mysqli_fetch_array($q_rsdp_status);
 
 # let's see if this is a virtual machine or a physical machine
               $virtual = rsdp_Virtual($a_rsdp_server_2['rsdp_id']);
@@ -186,10 +186,10 @@
           $q_string  = "select st_step ";
           $q_string .= "from rsdp_status ";
           $q_string .= "where st_rsdp = " . $a_rsdp_server_2['rsdp_id'] . " and st_step = 18";
-          $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 # we have at least _one_ incomplete server
-          if (mysql_num_rows($q_rsdp_status) == 0 && $onlyone[$a_rsdp_server['rsdp_project']] == 0 && $mystep == 1) {
+          if (mysqli_num_rows($q_rsdp_status) == 0 && $onlyone[$a_rsdp_server['rsdp_project']] == 0 && $mystep == 1) {
             $onlyone[$a_rsdp_server['rsdp_project']] = 1;
 
             $projectstart = "<a href=\"servers.php?projectid=" . $a_rsdp_server['rsdp_project'] . "&myrsdp=" . $formVars['myrsdp'] . "\" target=\"_blank\">";
@@ -224,7 +224,7 @@
 
       $output .= "</table>";
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
