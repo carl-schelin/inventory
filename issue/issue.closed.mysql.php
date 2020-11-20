@@ -96,8 +96,8 @@
   $q_string .= $leftjoin;
   $q_string .= "where iss_closed != '0000-00-00' " . $where;
   $q_string .= "order by inv_name,iss_discovered desc";
-  $q_issue = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_issue = mysql_fetch_array($q_issue)) {
+  $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_issue = mysqli_fetch_array($q_issue)) {
 
     $linkstart = "<a href=\"" . $Issueroot . "/ticket.php?id="    . $a_issue['iss_id']        . "&server=" . $a_issue['iss_companyid'] . "\">";
     $linklist  = "<a href=\"" . $Issueroot . "/issue.php?server=" . $a_issue['iss_companyid'] . "#closed\">";
@@ -118,8 +118,8 @@
     $output .= "<p><a href=\"" . $Issueroot . "/issue.php?server=" . $formVars['server'] . "\" target=\"_blank\">Link to Issue Tracker</a></p>";
   }
 
-  mysql_free_result($q_issue);
+  mysqli_free_result($q_issue);
 
-  print "document.getElementById('closed_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+  print "document.getElementById('closed_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
 ?>
