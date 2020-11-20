@@ -25,9 +25,9 @@
       $q_string  = "select sup_company,sup_phone,sup_email,sup_web,sup_contract,sup_wiki,sup_hwresponse,sup_swresponse ";
       $q_string .= "from support ";
       $q_string .= "where sup_id = " . $formVars['id'];
-      $q_support = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_support = mysql_fetch_array($q_support);
-      mysql_free_result($q_support);
+      $q_support = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_support = mysqli_fetch_array($q_support);
+      mysqli_free_result($q_support);
 
       $hwresponse   = return_Index($a_support['sup_hwresponse'],  "select slv_id from supportlevel order by slv_value");
       $swresponse   = return_Index($a_support['sup_swresponse'],  "select slv_id from supportlevel order by slv_value");
