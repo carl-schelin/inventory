@@ -70,8 +70,8 @@
             $q_vulstr  = "select vul_id ";
             $q_vulstr .= "from vulnowner ";
             $q_vulstr .= "where vul_interface = " . $formVars['int_id'] . " and vul_security = " . $formVars['sec_id'] . " ";
-            $q_vulnowner = mysql_query($q_vulstr) or die($q_vulstr . ": " . mysql_error());
-            $a_vulnowner = mysql_fetch_array($q_vulnowner);
+            $q_vulnowner = mysqli_query($db, $q_vulstr) or die($q_vulstr . ": " . mysqli_error($db));
+            $a_vulnowner = mysqli_fetch_array($q_vulnowner);
             $formVars['id'] = $a_vulnowner['vul_id'];
 
             $query = "update vulnowner set " . $q_string . " where vul_id = " . $formVars['id'];
@@ -80,7 +80,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -237,9 +237,9 @@
 #        $q_string .= $where;
 #        $q_string .= $orderby;
         $q_string .= "order by vul_interface,vul_security ";
-        $q_vulnowner = mysql_query($q_string) or die ($q_string . ": " . mysql_error());
-        if (mysql_num_rows($q_vulnowner) > 0) {
-          while ($a_vulnowner = mysql_fetch_array($q_vulnowner)) {
+        $q_vulnowner = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_vulnowner) > 0) {
+          while ($a_vulnowner = mysqli_fetch_array($q_vulnowner)) {
 
             $linkstart = "<a href=\"#\" onclick=\"show_file('vulnowner.fill.php?id="  . $a_vulnowner['vul_id'] . "');showDiv('vulnerability-hide');\">";
             $linkend   = "</a>";
@@ -291,9 +291,9 @@
 
         $output .= "</table>";
 
-        mysql_free_result($q_vulnowner);
+        mysqli_free_result($q_vulnowner);
 
-        print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($help . $header . $output) . "';\n\n";
+        print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($help . $header . $output) . "';\n\n";
 
       } else {
         logaccess($_SESSION['uid'], $package, "Unauthorized access.");
