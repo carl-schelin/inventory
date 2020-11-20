@@ -9,8 +9,8 @@
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -31,10 +31,10 @@ if (($handle = fopen($file, "r")) !== FALSE) {
     $q_string  = "select inv_id ";
     $q_string .= "from inventory ";
     $q_string .= "where inv_name = \"" . $data[0] . "\" ";
-    $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-    if (mysql_num_rows($q_inventory) > 0) {
-      $a_inventory = mysql_fetch_array($q_inventory);
+    if (mysqli_num_rows($q_inventory) > 0) {
+      $a_inventory = mysqli_fetch_array($q_inventory);
 
       $inv_env = 0;
       if ($data[7] == 'App Dev') {
@@ -62,7 +62,7 @@ if (($handle = fopen($file, "r")) !== FALSE) {
 #        print "Server: " . $data[0] . ", Environment: " . $data[7] . "\n";
 #        print $q_string . "\n";
       } else {
-        $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
     } else {
       print "Error: Unable to locate " . $data[0] . " in the inventory: line: $lineno \n";
