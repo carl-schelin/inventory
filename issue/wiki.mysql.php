@@ -29,8 +29,8 @@
   $q_string .= "left join users on users.usr_id = issue_detail.det_user ";
   $q_string .= "where det_issue = " . $formVars['id'] . " ";
   $q_string .= "order by det_timestamp";
-  $q_issue_detail = mysql_query($q_string) or die ($q_string . ": " . mysql_error());
-  while ($a_issue_detail = mysql_fetch_array($q_issue_detail)) {
+  $q_issue_detail = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+  while ($a_issue_detail = mysqli_fetch_array($q_issue_detail)) {
 
     print "|-<br>";
     print "|" . $a_issue_detail['det_timestamp'];
@@ -38,7 +38,7 @@
     print "||" . $a_issue_detail['det_text'] . "<br>";
   }
 
-  mysql_free_result($q_issue_detail);
+  mysqli_free_result($q_issue_detail);
 
   print  "|}<br>";
 
