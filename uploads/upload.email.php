@@ -9,8 +9,8 @@
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -27,7 +27,7 @@
   if ($debug == 'yes') {
     print "Marked all email as disabled.\n";
   } else {
-    $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   }
 
   if (($handle = fopen($file, "r")) !== FALSE) {
@@ -39,9 +39,9 @@
         $q_string  = "select mail_id ";
         $q_string .= "from email ";
         $q_string .= "where mail_address = \"" . $data . "\" ";
-        $q_email = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_email = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 # if it doesn't exist, add it.
-        if (mysql_num_rows($q_email) == 0) {
+        if (mysqli_num_rows($q_email) == 0) {
           $q_string  = 
             "mail_address      = \"" . $data         . "\"," . 
             "mail_disabled     = "   . 0             . "," . 
@@ -52,10 +52,10 @@
           if ($debug == 'yes') {
             print $query . "\n";
           } else {
-            $result = mysql_query($query) or die($query . ": " . mysql_error());
+            $result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
           }
         } else {
-          $a_email = mysql_fetch_array($q_email);
+          $a_email = mysqli_fetch_array($q_email);
           $q_string  = 
             "mail_address      = \"" . $data         . "\"," . 
             "mail_disabled     = "   . 0             . "," . 
@@ -66,7 +66,7 @@
           if ($debug == 'yes') {
             print $query . "\n";
           } else {
-            $result = mysql_query($query) or die($query . ": " . mysql_error());
+            $result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
           }
         }
       }
