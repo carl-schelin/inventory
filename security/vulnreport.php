@@ -79,8 +79,8 @@
       $q_string  = "select prod_name ";
       $q_string .= "from products ";
       $q_string .= "where prod_id = " . $formVars['product'] . " ";
-      $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_products = mysql_fetch_array($q_products);
+      $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_products = mysqli_fetch_array($q_products);
       $product_name = $a_products['prod_name'];
 
       if ($formVars['project'] > 0) {
@@ -91,8 +91,8 @@
         $q_string  = "select prj_name ";
         $q_string .= "from projects ";
         $q_string .= "where prj_id = " . $formVars['project'] . " ";
-        $q_projects = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_projects = mysql_fetch_array($q_projects);
+        $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_projects = mysqli_fetch_array($q_projects);
         $project_name = $a_projects['prj_name'];
 
       }
@@ -288,8 +288,8 @@
   $q_string .= "left join groups    on groups.grp_id         = inventory.inv_manager ";
   $q_string .= $group . $product . $inwork . $location . $type . " ";
   $q_string .= "group by prod_name ";
-  $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_products = mysql_fetch_array($q_products)) {
+  $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_products = mysqli_fetch_array($q_products)) {
 
     $critical = 0;
     $high = 0;
@@ -314,8 +314,8 @@
         $q_string .= "and inv_manager = " . $formVars['group'] . " ";
       }
       $q_string .= "order by inv_name ";
-      $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_inventory = mysql_fetch_array($q_inventory)) {
+      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
         $critical = 0;
         $high = 0;
@@ -334,8 +334,8 @@
         $q_string .= "left join security        on security.sec_id                = vulnerabilities.vuln_securityid ";
         $q_string .= "left join severity        on severity.sev_id                = security.sec_severity ";
         $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " ";
-        $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        while ($a_interface = mysql_fetch_array($q_interface)) {
+        $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_interface = mysqli_fetch_array($q_interface)) {
           if ($a_interface['sev_name'] == 'Critical') {
             if ($a_interface['vuln_delete']) {
               $crithist++;
@@ -419,8 +419,8 @@
       if ($formVars['group'] > 0) {
         $q_string .= "and inv_manager = " . $formVars['group'] . " ";
       }
-      $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_interface = mysql_fetch_array($q_interface)) {
+      $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_interface = mysqli_fetch_array($q_interface)) {
         if ($a_interface['sev_name'] == 'Critical') {
           if ($a_interface['vuln_delete']) {
             $crithist++;
