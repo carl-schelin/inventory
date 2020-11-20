@@ -85,14 +85,14 @@
   $q_string .= "left join products  on products.prod_id      = inventory.inv_product ";
   $q_string .= "where inv_status = 0 and inv_manager = " . $GRP_Unix . " ";
   $q_string .= "order by inv_name ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $q_string  = "select int_id ";
     $q_string .= "from interface ";
     $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " ";
-    $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_query());
-    if (mysql_num_rows($q_interface) == 0) {
+    $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_query($db, ));
+    if (mysqli_num_rows($q_interface) == 0) {
 
       if ($formVars['csv']) {
         print "\"" . $a_inventory['inv_name'] . "\",";
@@ -108,7 +108,7 @@
     }
   }
 
-  mysql_free_result($q_inventory);
+  mysqli_free_result($q_inventory);
 
   if ($formVars['csv']) {
     print "</p>\n";
