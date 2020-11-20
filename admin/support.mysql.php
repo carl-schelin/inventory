@@ -60,7 +60,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['sup_company']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -109,21 +109,21 @@
 
       $q_string  = "select sup_id,sup_company,sup_phone,sup_email,sup_web,sup_contract,sup_wiki,sup_hwresponse,sup_swresponse ";
       $q_string .= "from support";
-      $q_support = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_support) > 0) {
-        while ($a_support = mysql_fetch_array($q_support)) {
+      $q_support = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_support) > 0) {
+        while ($a_support = mysqli_fetch_array($q_support)) {
 
           $q_string  = "select slv_value ";
           $q_string .= "from supportlevel ";
           $q_string .= "where slv_id = " . $a_support['sup_hwresponse'];
-          $q_hwsupport = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          $a_hwsupport = mysql_fetch_array($q_hwsupport);
+          $q_hwsupport = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_hwsupport = mysqli_fetch_array($q_hwsupport);
 
           $q_string  = "select slv_value ";
           $q_string .= "from supportlevel ";
           $q_string .= "where slv_id = " . $a_support['sup_swresponse'];
-          $q_swsupport = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-          $a_swsupport = mysql_fetch_array($q_swsupport);
+          $q_swsupport = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_swsupport = mysqli_fetch_array($q_swsupport);
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('support.fill.php?id="  . $a_support['sup_id'] . "');jQuery('#dialogSupport').dialog('open');\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('support.del.php?id=" . $a_support['sup_id'] . "');\">";
@@ -150,9 +150,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_support);
+      mysqli_free_result($q_support);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.support.sup_company.value = '';\n";
       print "document.support.sup_hwresponse[0].selected = true;\n";
