@@ -22,8 +22,8 @@
       $q_string  = "select if_monitored ";
       $q_string .= "from rsdp_interface ";
       $q_string .= "where if_id = " . $formVars['id'] . " ";
-      $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_rsdp_interface = mysql_fetch_array($q_rsdp_interface);
+      $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface);
 
       if ($a_rsdp_interface['if_monitored']) {
         $a_rsdp_interface['if_monitored'] = 0;
@@ -36,7 +36,7 @@
       $q_string .= "set ";
       $q_string .= "if_monitored = " . $a_rsdp_interface['if_monitored'] . " ";
       $q_string .= "where if_id = " . $formVars['id'] . " ";
-      $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
       if ($a_rsdp_interface['if_monitored']) {
         print "document.getElementById('if_mon_" . $formVars['id'] . "').checked = true;\n";
