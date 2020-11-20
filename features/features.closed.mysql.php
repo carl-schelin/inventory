@@ -67,15 +67,15 @@
   $q_string .= "left join users   on users.usr_id   = features.feat_openby ";
   $q_string .= "where feat_closed != '0000-00-00' " . $where;
   $q_string .= "order by mod_name,feat_discovered desc";
-  $q_features = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  if (mysql_num_rows($q_features) > 0) {
-    while ($a_features = mysql_fetch_array($q_features)) {
+  $q_features = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_features) > 0) {
+    while ($a_features = mysqli_fetch_array($q_features)) {
 
       $q_string  = "select usr_name ";
       $q_string .= "from users ";
       $q_string .= "where usr_id = " . $a_features['feat_closeby'] . " ";
-      $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_users = mysql_fetch_array($q_users);
+      $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_users = mysqli_fetch_array($q_users);
 
       $linkstart = "<a href=\"" . $Featureroot . "/ticket.php?id="   . $a_features['feat_id']     . "\">";
       $linklist  = "<a href=\"" . $Featureroot . "/features.php?id=" . $a_features['feat_module'] . "#closed\">";
@@ -98,8 +98,8 @@
 
   $output .= "</table>";
 
-  mysql_free_result($q_features);
+  mysqli_free_result($q_features);
 
-  print "document.getElementById('closed_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+  print "document.getElementById('closed_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
 ?>
