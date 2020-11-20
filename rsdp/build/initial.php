@@ -40,9 +40,9 @@
   $q_string  = "select os_sysname ";
   $q_string .= "from rsdp_osteam ";
   $q_string .= "where os_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_osteam = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_rsdp_osteam) > 0) {
-    $a_rsdp_osteam = mysql_fetch_array($q_rsdp_osteam);
+  $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_rsdp_osteam) > 0) {
+    $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
   } else {
     $a_rsdp_osteam['os_sysname'] = "New Server";
   }
@@ -595,8 +595,8 @@ build an appropriate system. There are ten tabs which will require information b
   $q_string  = "select st_completed,st_timestamp,st_user ";
   $q_string .= "from rsdp_status ";
   $q_string .= "where st_step = 1 and st_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_status = mysql_fetch_array($q_rsdp_status);
+  $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_status = mysqli_fetch_array($q_rsdp_status);
 
   print "<input type=\"button\" name=\"addnew\"   value=\"Save Changes\"     onClick=\"javascript:attach_file('initial.mysql.php', 0);\">\n";
   print "<input type=\"button\" name=\"addexit\"   value=\"Save and Exit\"    onClick=\"javascript:attach_file('initial.mysql.php', 2);\">\n";
@@ -607,7 +607,7 @@ build an appropriate system. There are ten tabs which will require information b
   }
   print "<input type=\"hidden\" name=\"rsdp\" value=\"" . $formVars['rsdp'] . "\">\n";
 
-  if (mysql_num_rows($q_rsdp_status) == 0 || $a_rsdp_status['st_completed'] == 0) {
+  if (mysqli_num_rows($q_rsdp_status) == 0 || $a_rsdp_status['st_completed'] == 0) {
     print "<input type=\"button\" disabled name=\"addbtn\" value=\"Request Completed\" onClick=\"javascript:attach_file('initial.mysql.php', 1);\">\n";
   } else {
     print "<input type=\"hidden\" name=\"addbtn\">\n";
@@ -615,8 +615,8 @@ build an appropriate system. There are ten tabs which will require information b
     $q_string  = "select usr_last,usr_first ";
     $q_string .= "from users ";
     $q_string .= "where usr_id = " . $a_rsdp_status['st_user'];
-    $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_users = mysql_fetch_array($q_users);
+    $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_users = mysqli_fetch_array($q_users);
 
     print "<br><a href=\"" . $RSDProot . "/index.php\">Task was completed by " . $a_users['usr_first'] . " " . $a_users['usr_last'] . " on " . $a_rsdp_status['st_timestamp'] . ".</a>";
   }
@@ -642,10 +642,10 @@ build an appropriate system. There are ten tabs which will require information b
   $q_string  = "select count(*) ";
   $q_string .= "from rsdp_comments ";
   $q_string .= "where com_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_comments = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_comments = mysql_fetch_array($q_rsdp_comments);
+  $q_rsdp_comments = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_comments = mysqli_fetch_array($q_rsdp_comments);
 
-  if (mysql_num_rows($q_rsdp_comments)) {
+  if (mysqli_num_rows($q_rsdp_comments)) {
     print " (" . $a_rsdp_comments['count(*)'] . ")";
   } else {
     print " (0)";
@@ -693,8 +693,8 @@ saved in the Requestor's profile when the server is saved or submitted as comple
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
     print "  <option value=\"" . $a_users['usr_id'] . "\">" . htmlspecialchars($a_users['usr_last']) . ", " . htmlspecialchars($a_users['usr_first']) . "</option>\n";
   }
 ?>
@@ -710,8 +710,8 @@ saved in the Requestor's profile when the server is saved or submitted as comple
   $q_string .= "from department ";
   $q_string .= "left join business_unit on business_unit.bus_unit = department.dep_unit ";
   $q_string .= "order by bus_name,dep_name";
-  $q_department = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_department = mysql_fetch_array($q_department)) {
+  $q_department = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_department = mysqli_fetch_array($q_department)) {
     print "  <option value=\"" . $a_department['dep_id'] . "\">" . htmlspecialchars($a_department['bus_name']) . " " . htmlspecialchars($a_department['dep_name']) . " (" . htmlspecialchars($a_department['dep_unit']) . "-" . htmlspecialchars($a_department['dep_dept']) . ")</option>\n";
   }
 ?>
@@ -762,8 +762,8 @@ Click the <strong>Add New Project</strong> button to add a new Project to the li
     $q_string  = "select prod_id,prod_name ";
     $q_string .= "from products ";
     $q_string .= "order by prod_name";
-    $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    while ($a_products = mysql_fetch_array($q_products)) {
+    $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_products = mysqli_fetch_array($q_products)) {
       print "  <option value=\"" . $a_products['prod_id'] . "\">" . $a_products['prod_name'] . "</option>\n";
     }
 ?>
@@ -774,8 +774,8 @@ Click the <strong>Add New Project</strong> button to add a new Project to the li
   $q_string  = "select rsdp_project ";
   $q_string .= "from rsdp_server ";
   $q_string .= "where rsdp_id = " . $formVars['rsdp'];
-  $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
   if ($a_rsdp_server['rsdp_project'] == '') {
     $a_rsdp_server['rsdp_project'] = 0;
@@ -783,8 +783,8 @@ Click the <strong>Add New Project</strong> button to add a new Project to the li
     $q_string  = "select prj_name ";
     $q_string .= "from projects ";
     $q_string .= "where prj_id = " . $a_rsdp_server['rsdp_project'];
-    $q_projects = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_projects = mysql_fetch_array($q_projects);
+    $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_projects = mysqli_fetch_array($q_projects);
 
     print "  <option selected value=\"" . $a_rsdp_server['rsdp_project'] . "\">" . htmlspecialchars($a_projects['prj_name']) . "</option>\n";
   }
@@ -792,8 +792,8 @@ Click the <strong>Add New Project</strong> button to add a new Project to the li
   $q_string .= "from projects ";
   $q_string .= "where prj_group = " . $_SESSION['group'] . " and prj_id != " . $a_rsdp_server['rsdp_project'] . " and prj_close = 0 ";
   $q_string .= "group by prj_name";
-  $q_projects = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_projects = mysql_fetch_array($q_projects)) {
+  $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_projects = mysqli_fetch_array($q_projects)) {
     print "<option value=\"" . $a_projects['prj_id'] . "\">" . htmlspecialchars($a_projects['prj_name']) . "</option>\n";
   }
 ?>
@@ -947,8 +947,8 @@ the Platforms and Applications selections at the default, the groups selected un
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 and usr_id != 1 ";
   $q_string .= "order by usr_last";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . htmlspecialchars($a_users['usr_last']) . ", " . htmlspecialchars($a_users['usr_first']) . "</option>\n";
   }
 ?>
@@ -960,8 +960,8 @@ the Platforms and Applications selections at the default, the groups selected un
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group = " . $GRP_SAN . " ";
   $q_string .= "order by usr_last";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . htmlspecialchars($a_users['usr_last']) . ", " . htmlspecialchars($a_users['usr_first']) . "</option>\n";
   }
 
@@ -969,8 +969,8 @@ the Platforms and Applications selections at the default, the groups selected un
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group != " . $GRP_SAN . " ";
   $q_string .= "order by usr_last";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . htmlspecialchars($a_users['usr_last']) . ", " . htmlspecialchars($a_users['usr_first']) . "</option>\n";
   }
 ?>
@@ -982,8 +982,8 @@ the Platforms and Applications selections at the default, the groups selected un
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group = " . $GRP_Networking . " ";
   $q_string .= "order by usr_last";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . htmlspecialchars($a_users['usr_last']) . ", " . htmlspecialchars($a_users['usr_first']) . "</option>\n";
   }
 
@@ -991,8 +991,8 @@ the Platforms and Applications selections at the default, the groups selected un
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group != " . $GRP_Networking . " ";
   $q_string .= "order by usr_last";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . htmlspecialchars($a_users['usr_last']) . ", " . htmlspecialchars($a_users['usr_first']) . "</option>\n";
   }
 ?>
@@ -1004,8 +1004,8 @@ the Platforms and Applications selections at the default, the groups selected un
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group = " . $GRP_Virtualization . " ";
   $q_string .= "order by usr_last";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . htmlspecialchars($a_users['usr_last']) . ", " . htmlspecialchars($a_users['usr_first']) . "</option>\n";
   }
 
@@ -1013,8 +1013,8 @@ the Platforms and Applications selections at the default, the groups selected un
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group != " . $GRP_Virtualization . " ";
   $q_string .= "order by usr_last";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . htmlspecialchars($a_users['usr_last']) . ", " . htmlspecialchars($a_users['usr_first']) . "</option>\n";
   }
 ?>
@@ -1028,8 +1028,8 @@ the Platforms and Applications selections at the default, the groups selected un
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group = " . $GRP_DataCenter . " ";
   $q_string .= "order by usr_last";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . htmlspecialchars($a_users['usr_last']) . ", " . htmlspecialchars($a_users['usr_first']) . "</option>\n";
   }
 
@@ -1037,8 +1037,8 @@ the Platforms and Applications selections at the default, the groups selected un
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group != " . $GRP_DataCenter . " ";
   $q_string .= "order by usr_last";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . htmlspecialchars($a_users['usr_last']) . ", " . htmlspecialchars($a_users['usr_first']) . "</option>\n";
   }
 ?>
@@ -1050,8 +1050,8 @@ the Platforms and Applications selections at the default, the groups selected un
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group = " . $GRP_Monitoring . " ";
   $q_string .= "order by usr_last";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . htmlspecialchars($a_users['usr_last']) . ", " . htmlspecialchars($a_users['usr_first']) . "</option>\n";
   }
 
@@ -1059,8 +1059,8 @@ the Platforms and Applications selections at the default, the groups selected un
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group != " . $GRP_Monitoring . " ";
   $q_string .= "order by usr_last";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . htmlspecialchars($a_users['usr_last']) . ", " . htmlspecialchars($a_users['usr_first']) . "</option>\n";
   }
 ?>
@@ -1072,8 +1072,8 @@ the Platforms and Applications selections at the default, the groups selected un
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 and usr_id != 1 ";
   $q_string .= "order by usr_last";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . htmlspecialchars($a_users['usr_last']) . ", " . htmlspecialchars($a_users['usr_first']) . "</option>\n";
   }
 ?>
@@ -1085,8 +1085,8 @@ the Platforms and Applications selections at the default, the groups selected un
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group = " . $GRP_Backups . " ";
   $q_string .= "order by usr_last";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . htmlspecialchars($a_users['usr_last']) . ", " . htmlspecialchars($a_users['usr_first']) . "</option>\n";
   }
 
@@ -1094,8 +1094,8 @@ the Platforms and Applications selections at the default, the groups selected un
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 and usr_id != 1 and usr_group != " . $GRP_Backups . " ";
   $q_string .= "order by usr_last";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . htmlspecialchars($a_users['usr_last']) . ", " . htmlspecialchars($a_users['usr_first']) . "</option>\n";
   }
 ?>
@@ -1145,8 +1145,8 @@ the Platforms and Applications selections at the default, the groups selected un
   $q_string .= "from groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name";
-  $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_groups = mysql_fetch_array($q_groups)) {
+  $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_groups = mysqli_fetch_array($q_groups)) {
     print "<option value=\"" . $a_groups['grp_id'] . "\">" . htmlspecialchars($a_groups['grp_name']) . "</option>\n";
   }
 ?>
@@ -1158,8 +1158,8 @@ the Platforms and Applications selections at the default, the groups selected un
   $q_string .= "from groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name";
-  $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_groups = mysql_fetch_array($q_groups)) {
+  $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_groups = mysqli_fetch_array($q_groups)) {
     print "<option value=\"" . $a_groups['grp_id'] . "\">" . htmlspecialchars($a_groups['grp_name']) . "</option>\n";
   }
 ?>
@@ -1171,8 +1171,8 @@ the Platforms and Applications selections at the default, the groups selected un
 <?php
   $q_string  = "select svc_id,svc_name ";
   $q_string .= "from service";
-  $q_service = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_service = mysql_fetch_array($q_service)) {
+  $q_service = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_service = mysqli_fetch_array($q_service)) {
     print "<option value=\"" . $a_service['svc_id'] . "\">" . htmlspecialchars($a_service['svc_name']) . "</option>\n";
   }
 ?>
@@ -1183,8 +1183,8 @@ the Platforms and Applications selections at the default, the groups selected un
   $q_string  = "select slv_id,slv_value ";
   $q_string .= "from supportlevel ";
   $q_string .= "order by slv_value";
-  $q_supportlevel = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_supportlevel = mysql_fetch_array($q_supportlevel)) {
+  $q_supportlevel = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_supportlevel = mysqli_fetch_array($q_supportlevel)) {
     print "<option value=" . $a_supportlevel['slv_id'] . ">" . htmlspecialchars($a_supportlevel['slv_value']) . "</option>\n";
   }
 ?>
@@ -1214,9 +1214,9 @@ the Platforms and Applications selections at the default, the groups selected un
   $q_string .= "svc_mtbf,svc_geographic,svc_mttr,svc_resource,svc_restore ";
   $q_string .= "from service ";
   $q_string .= "order by svc_id ";
-  $q_service = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_service) > 0) {
-    while ($a_service = mysql_fetch_array($q_service)) {
+  $q_service = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_service) > 0) {
+    while ($a_service = mysqli_fetch_array($q_service)) {
 
       $geographic = "No";
       if ($a_service['svc_geographic']) {
@@ -1289,8 +1289,8 @@ respectively).</li>
   $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
   $q_string .= "where loc_type = 1 ";
   $q_string .= "order by ct_city,loc_name";
-  $q_locations = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_locations = mysql_fetch_array($q_locations)) {
+  $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_locations = mysqli_fetch_array($q_locations)) {
     print "<option value=\"" . $a_locations['loc_id'] . "\">" . htmlspecialchars($a_locations['ct_city']) . " (" . htmlspecialchars($a_locations['loc_name']) . ")</option>\n";
   }
 ?>
@@ -1601,8 +1601,8 @@ backups.</li>
   $q_string  = "select prod_id,prod_name ";
   $q_string .= "from products ";
   $q_string .= "order by prod_name ";
-  $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_products = mysql_fetch_array($q_products)) {
+  $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_products = mysqli_fetch_array($q_products)) {
     print "<option value=\"" . $a_products['prod_id'] . "\">" . $a_products['prod_name'] . "</option>\n";
   }
 ?></select></td>
