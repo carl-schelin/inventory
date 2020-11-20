@@ -67,43 +67,43 @@
 # prepopulate the small tables to increase lookup time.
       $q_string  = "select zone_id,zone_name ";
       $q_string .= "from ip_zones ";
-      $q_ip_zones = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_ip_zones = mysql_fetch_array($q_ip_zones)) {
+      $q_ip_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_ip_zones = mysqli_fetch_array($q_ip_zones)) {
         $ip_zones[$a_ip_zones['zone_id']] = $a_ip_zones['zone_name'];
       }
 
       $q_string  = "select med_id,med_text ";
       $q_string .= "from int_media ";
-      $q_int_media = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_int_media = mysql_fetch_array($q_int_media)) {
+      $q_int_media = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_int_media = mysqli_fetch_array($q_int_media)) {
         $int_media[$a_int_media['med_id']] = $a_int_media['med_text'];
       }
 
       $q_string  = "select itp_id,itp_acronym ";
       $q_string .= "from inttype ";
-      $q_inttype = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_inttype = mysql_fetch_array($q_inttype)) {
+      $q_inttype = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inttype = mysqli_fetch_array($q_inttype)) {
         $inttype[$a_inttype['itp_id']] = $a_inttype['itp_acronym'];
       }
 
       $q_string  = "select spd_id,spd_text ";
       $q_string .= "from int_speed ";
-      $q_int_speed = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_int_speed = mysql_fetch_array($q_int_speed)) {
+      $q_int_speed = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_int_speed = mysqli_fetch_array($q_int_speed)) {
         $int_speed[$a_int_speed['spd_id']] = $a_int_speed['spd_text'];
       }
 
       $q_string  = "select dup_id,dup_text ";
       $q_string .= "from int_duplex ";
-      $q_int_duplex = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_int_duplex = mysql_fetch_array($q_int_duplex)) {
+      $q_int_duplex = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_int_duplex = mysqli_fetch_array($q_int_duplex)) {
         $int_duplex[$a_int_duplex['dup_id']] = $a_int_duplex['dup_text'];
       }
 
       $q_string  = "select red_id,red_text ";
       $q_string .= "from int_redundancy ";
-      $q_int_redundancy = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_int_redundancy = mysql_fetch_array($q_int_redundancy)) {
+      $q_int_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_int_redundancy = mysqli_fetch_array($q_int_redundancy)) {
         $int_redundancy[$a_int_redundancy['red_id']] = $a_int_redundancy['red_text'];
       }
 
@@ -138,14 +138,14 @@
       }
       $q_string .= $filter;
       $q_string .= "order by os_sysname ";
-      $q_rsdp_id = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_rsdp_id = mysql_fetch_array($q_rsdp_id)) {
+      $q_rsdp_id = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_rsdp_id = mysqli_fetch_array($q_rsdp_id)) {
 
         $q_string  = "select st_id ";
         $q_string .= "from rsdp_status ";
         $q_string .= "where st_rsdp = " . $a_rsdp_id['rsdp_id'] . " and st_step = 18 ";
-        $q_rsdp_status = mysql_query($q_string) or die($q_string . " :" . mysql_error());
-        if (mysql_num_rows($q_rsdp_status) == 0) {
+        $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . " :" . mysqli_error($db));
+        if (mysqli_num_rows($q_rsdp_status) == 0) {
 
           $linkstart = "<a href=\"" . $RSDProot . "/tasks.php?id=" . $a_rsdp_id['rsdp_id'] . "\" target=\"_blank\">";
           $linkend   = "</a>";
@@ -160,27 +160,27 @@
           $q_string .= "left join groups on groups.grp_id = rsdp_server.rsdp_platform ";
           $q_string .= "left join projects on projects.prj_id = rsdp_server.rsdp_project ";
           $q_string .= "where rsdp_id = " . $a_rsdp_id['rsdp_id'] . " ";
-          $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+          $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
           $q_string  = "select grp_name ";
           $q_string .= "from groups ";
           $q_string .= "where grp_id = " . $a_rsdp_server['rsdp_application'];
-          $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_groups = mysql_fetch_array($q_groups);
+          $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_groups = mysqli_fetch_array($q_groups);
 
           $q_string  = "select os_sysname ";
           $q_string .= "from rsdp_osteam ";
           $q_string .= "where os_rsdp = " . $a_rsdp_id['rsdp_id'] . " ";
-          $q_rsdp_osteam = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_rsdp_osteam = mysql_fetch_array($q_rsdp_osteam);
+          $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
 
           $q_string  = "select usr_last,usr_first ";
           $q_string .= "from rsdp_server ";
           $q_string .= "left join users on users.usr_id = rsdp_server.rsdp_platformspoc ";
           $q_string .= "where rsdp_id = " . $a_rsdp_id['rsdp_id'] . " ";
-          $q_platformadmin = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_platformadmin = mysql_fetch_array($q_platformadmin);
+          $q_platformadmin = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_platformadmin = mysqli_fetch_array($q_platformadmin);
           if ($a_platformadmin['usr_last'] == '') {
             $platformadmin = "--";
           } else {
@@ -191,8 +191,8 @@
           $q_string .= "from rsdp_server ";
           $q_string .= "left join users on users.usr_id = rsdp_server.rsdp_apppoc ";
           $q_string .= "where rsdp_id = " . $a_rsdp_id['rsdp_id'] . " ";
-          $q_appadmin = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_appadmin = mysql_fetch_array($q_appadmin);
+          $q_appadmin = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_appadmin = mysqli_fetch_array($q_appadmin);
           if ($a_appadmin['usr_last'] == '') {
             $appadmin = "--";
           } else {
@@ -203,8 +203,8 @@
           $q_string .= "from rsdp_server ";
           $q_string .= "left join users on users.usr_id = rsdp_server.rsdp_sanpoc ";
           $q_string .= "where rsdp_id = " . $a_rsdp_id['rsdp_id'] . " ";
-          $q_sanadmin = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_sanadmin = mysql_fetch_array($q_sanadmin);
+          $q_sanadmin = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_sanadmin = mysqli_fetch_array($q_sanadmin);
           if ($a_sanadmin['usr_last'] == '') {
             $sanadmin = "--";
           } else {
@@ -215,8 +215,8 @@
           $q_string .= "from rsdp_server ";
           $q_string .= "left join users on users.usr_id = rsdp_server.rsdp_networkpoc ";
           $q_string .= "where rsdp_id = " . $a_rsdp_id['rsdp_id'] . " ";
-          $q_networkadmin = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_networkadmin = mysql_fetch_array($q_networkadmin);
+          $q_networkadmin = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_networkadmin = mysqli_fetch_array($q_networkadmin);
           if ($a_networkadmin['usr_last'] == '') {
             $networkadmin = "--";
           } else {
@@ -227,8 +227,8 @@
           $q_string .= "from rsdp_server ";
           $q_string .= "left join users on users.usr_id = rsdp_server.rsdp_virtpoc ";
           $q_string .= "where rsdp_id = " . $a_rsdp_id['rsdp_id'] . " ";
-          $q_virtualizationadmin = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_virtualizationadmin = mysql_fetch_array($q_virtualizationadmin);
+          $q_virtualizationadmin = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_virtualizationadmin = mysqli_fetch_array($q_virtualizationadmin);
           if ($a_virtualizationadmin['usr_last'] == '') {
             $virtualizationadmin = "--";
           } else {
@@ -239,8 +239,8 @@
           $q_string .= "from rsdp_server ";
           $q_string .= "left join users on users.usr_id = rsdp_server.rsdp_dcpoc ";
           $q_string .= "where rsdp_id = " . $a_rsdp_id['rsdp_id'] . " ";
-          $q_datacenteradmin = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_datacenteradmin = mysql_fetch_array($q_datacenteradmin);
+          $q_datacenteradmin = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_datacenteradmin = mysqli_fetch_array($q_datacenteradmin);
           if ($a_datacenteradmin['usr_last'] == '') {
             $datacenteradmin = "--";
           } else {
@@ -251,8 +251,8 @@
           $q_string .= "from rsdp_server ";
           $q_string .= "left join users on users.usr_id = rsdp_server.rsdp_monitorpoc ";
           $q_string .= "where rsdp_id = " . $a_rsdp_id['rsdp_id'] . " ";
-          $q_monitoringadmin = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_monitoringadmin = mysql_fetch_array($q_monitoringadmin);
+          $q_monitoringadmin = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_monitoringadmin = mysqli_fetch_array($q_monitoringadmin);
           if ($a_monitoringadmin['usr_last'] == '') {
             $monitoringadmin = "--";
           } else {
@@ -263,8 +263,8 @@
           $q_string .= "from rsdp_server ";
           $q_string .= "left join users on users.usr_id = rsdp_server.rsdp_backuppoc ";
           $q_string .= "where rsdp_id = " . $a_rsdp_id['rsdp_id'] . " ";
-          $q_backupadmin = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_backupadmin = mysql_fetch_array($q_backupadmin);
+          $q_backupadmin = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_backupadmin = mysqli_fetch_array($q_backupadmin);
           if ($a_backupadmin['usr_last'] == '') {
             $backupadmin = "--";
           } else {
@@ -293,7 +293,7 @@
       $project .= $formVars['URL'];
       $project .= "</form>\n";
 
-      print "document.getElementById('project_mysql').innerHTML = '" . mysql_real_escape_string($project) . "';\n";
+      print "document.getElementById('project_mysql').innerHTML = '" . mysqli_real_escape_string($project) . "';\n";
 
 # system
       $carl = 'yes';
@@ -384,14 +384,14 @@
       }
       $q_string .= $filter;
       $q_string .= "order by os_sysname ";
-      $q_rsdp_id = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_rsdp_id = mysql_fetch_array($q_rsdp_id)) {
+      $q_rsdp_id = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_rsdp_id = mysqli_fetch_array($q_rsdp_id)) {
 
         $q_string  = "select st_id ";
         $q_string .= "from rsdp_status ";
         $q_string .= "where st_rsdp = " . $a_rsdp_id['rsdp_id'] . " and st_step = 18 ";
-        $q_rsdp_status = mysql_query($q_string) or die($q_string . " :" . mysql_error());
-        if (mysql_num_rows($q_rsdp_status) == 0) {
+        $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . " :" . mysqli_error($db));
+        if (mysqli_num_rows($q_rsdp_status) == 0) {
 
           $linkstart = "<a href=\"" . $RSDProot . "/tasks.php?id=" . $a_rsdp_id['rsdp_id'] . "\" target=\"_blank\">";
           $taskstart = "<a href=\"" . $RSDProot . $current_script[$a_rsdp_status['st_step']] . "?rsdp=" . $a_rsdp_id['rsdp_id'] . "\" target=\"_blank\">";
@@ -402,8 +402,8 @@
           $q_string .= "left join service   on service.svc_id   = rsdp_server.rsdp_service ";
           $q_string .= "left join locations on locations.loc_id = rsdp_server.rsdp_location ";
           $q_string .= "where rsdp_id = " . $a_rsdp_id['rsdp_id'] . " " ;
-          $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+          $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
           if ($a_rsdp_server['rsdp_location'] == 0) {
             $a_rsdp_server['loc_name'] = '--';
           }
@@ -414,14 +414,14 @@
           $q_string  = "select os_sysname,os_software ";
           $q_string .= "from rsdp_osteam ";
           $q_string .= "where os_rsdp = " . $a_rsdp_id['rsdp_id'] . " " ;
-          $q_rsdp_osteam = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_rsdp_osteam = mysql_fetch_array($q_rsdp_osteam);
+          $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
 
           $q_string  = "select os_software ";
           $q_string .= "from operatingsystem ";
           $q_string .= "where os_id = " . $a_rsdp_osteam['os_software'] . " " ;
-          $q_operatingsystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_operatingsystem = mysql_fetch_array($q_operatingsystem);
+          $q_operatingsystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_operatingsystem = mysqli_fetch_array($q_operatingsystem);
           if ($a_rsdp_osteam['os_software'] == 0) {
             $a_operatingsystem['os_software'] = '--';
           }
@@ -431,8 +431,8 @@
             $q_string .= "from rsdp_status ";
             $q_string .= "where st_rsdp = " . $a_rsdp_id['rsdp_id'] . " ";
             $q_string .= "order by st_step desc limit 1 ";
-            $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            $a_rsdp_status = mysql_fetch_array($q_rsdp_status);
+            $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $a_rsdp_status = mysqli_fetch_array($q_rsdp_status);
             $tasks = $taskstart . $current_task[$a_rsdp_status['st_step']] . $linkend;
           } else {
             $tasks = '';
@@ -444,12 +444,12 @@
                 $q_string  = "select st_step ";
                 $q_string .= "from rsdp_status ";
                 $q_string .= "where st_rsdp = " . $a_rsdp_id['rsdp_id'] . " and st_step = " . $i . " ";
-                $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-                if (mysql_num_rows($q_rsdp_status) == 0) {
+                $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+                if (mysqli_num_rows($q_rsdp_status) == 0) {
                   $tasks .= $comma . $taskstart . $i . $linkend;
                   $comma = ',';
                 } else {
-                  $a_rsdp_status = mysql_fetch_array($q_rsdp_status);
+                  $a_rsdp_status = mysqli_fetch_array($q_rsdp_status);
                   $tasks .= $comma . "<b>" . $taskstart . $a_rsdp_status['st_step'] . $linkend . "</b>";
                   $comma = ',';
                 }
@@ -474,7 +474,7 @@
       $system .= $formVars['URL'] . $systemurl;
       $system .= "</form>\n";
 
-      print "document.getElementById('system_mysql').innerHTML = '" . mysql_real_escape_string($system) . "';\n";
+      print "document.getElementById('system_mysql').innerHTML = '" . mysqli_real_escape_string($system) . "';\n";
 
 
 # hardware
@@ -512,14 +512,14 @@
       }
       $q_string .= $filter;
       $q_string .= "order by os_sysname ";
-      $q_rsdp_id = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_rsdp_id = mysql_fetch_array($q_rsdp_id)) {
+      $q_rsdp_id = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_rsdp_id = mysqli_fetch_array($q_rsdp_id)) {
 
         $q_string  = "select st_id ";
         $q_string .= "from rsdp_status ";
         $q_string .= "where st_rsdp = " . $a_rsdp_id['rsdp_id'] . " and st_step = 18 ";
-        $q_rsdp_status = mysql_query($q_string) or die($q_string . " :" . mysql_error());
-        if (mysql_num_rows($q_rsdp_status) == 0) {
+        $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . " :" . mysqli_error($db));
+        if (mysqli_num_rows($q_rsdp_status) == 0) {
 
           $linkstart       = "<a href=\"" . $RSDProot . "/tasks.php?id=" . $a_rsdp_id['rsdp_id'] . "\" target=\"_blank\">";
           $filesystemstart = "<a href=\"" . $RSDProot . "/build/initial.php?rsdp=" . $a_rsdp_id['rsdp_id'] . "#filesystems\" target=\"_blank\">";
@@ -534,20 +534,20 @@
           $q_string  = "select rsdp_processors,rsdp_memory,rsdp_ossize,rsdp_function ";
           $q_string .= "from rsdp_server ";
           $q_string .= "where rsdp_id = " . $a_rsdp_id['rsdp_id'] . " " ;
-          $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+          $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
           $q_string  = "select os_sysname,os_software ";
           $q_string .= "from rsdp_osteam ";
           $q_string .= "where os_rsdp = " . $a_rsdp_id['rsdp_id'] . " " ;
-          $q_rsdp_osteam = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_rsdp_osteam = mysql_fetch_array($q_rsdp_osteam);
+          $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
 
           $q_string  = "select os_software ";
           $q_string .= "from operatingsystem ";
           $q_string .= "where os_id = " . $a_rsdp_osteam['os_software'];
-          $q_operatingsystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_operatingsystem = mysql_fetch_array($q_operatingsystem);
+          $q_operatingsystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_operatingsystem = mysqli_fetch_array($q_operatingsystem);
 
           $q_string  = "select pf_special,mod_vendor,mod_name,part_name,volt_text,mod_plugs,pf_redundant,plug_text,mod_draw,mod_start,pf_rack,pf_row,pf_unit,mod_size ";
           $q_string .= "from rsdp_platform ";
@@ -556,8 +556,8 @@
           $q_string .= "left join int_plugtype on int_plugtype.plug_id = models.mod_plugtype ";
           $q_string .= "left join parts on parts.part_id = models.mod_type ";
           $q_string .= "where pf_rsdp = " . $a_rsdp_id['rsdp_id'] . " ";
-          $q_rsdp_platform = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_rsdp_platform = mysql_fetch_array($q_rsdp_platform);
+          $q_rsdp_platform = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_rsdp_platform = mysqli_fetch_array($q_rsdp_platform);
 
           $fstitle = '';
           $filesystems = '';
@@ -565,9 +565,9 @@
           $q_string  = "select fs_volume,fs_size ";
           $q_string .= "from rsdp_filesystem ";
           $q_string .= "where fs_rsdp = " . $a_rsdp_id['rsdp_id'];
-          $q_rsdp_filesystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          if (mysql_num_rows($q_rsdp_filesystem) > 0) {
-            while ($a_rsdp_filesystem = mysql_fetch_array($q_rsdp_filesystem)) {
+          $q_rsdp_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_rsdp_filesystem) > 0) {
+            while ($a_rsdp_filesystem = mysqli_fetch_array($q_rsdp_filesystem)) {
               $fstitle .= $comma . $a_rsdp_filesystem['fs_volume'];
               $filesystems .= $comma . $a_rsdp_filesystem['fs_size'] . " GB";
               $comma = ", ";
@@ -627,9 +627,9 @@
             $q_string .= "left join int_media on int_media.med_id = rsdp_san.san_media ";
             $q_string .= "where san_rsdp = " . $a_rsdp_id['rsdp_id'] . " ";
             $q_string .= "order by san_sysport";
-            $q_rsdp_san = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            if (mysql_num_rows($q_rsdp_san) > 0) {
-              while ($a_rsdp_san = mysql_fetch_array($q_rsdp_san)) {
+            $q_rsdp_san = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            if (mysqli_num_rows($q_rsdp_san) > 0) {
+              while ($a_rsdp_san = mysqli_fetch_array($q_rsdp_san)) {
                 $hardware .= "<tr>\n";
                 $hardware .= "  <td class=\"ui-widget-content\">" . $a_rsdp_san['san_sysport']  . "</td>\n";
                 $hardware .= "  <td class=\"ui-widget-content\">" . $a_rsdp_san['san_switch']   . "</td>\n";
@@ -651,7 +651,7 @@
       $hardware .= $formVars['URL'] . $hardwareurl;
       $hardware .= "</form>\n";
 
-      print "document.getElementById('hardware_mysql').innerHTML = '" . mysql_real_escape_string($hardware) . "';\n";
+      print "document.getElementById('hardware_mysql').innerHTML = '" . mysqli_real_escape_string($hardware) . "';\n";
 
 
 # interfaces
@@ -685,14 +685,14 @@
       }
       $q_string .= $filter;
       $q_string .= "order by os_sysname ";
-      $q_rsdp_id = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_rsdp_id = mysql_fetch_array($q_rsdp_id)) {
+      $q_rsdp_id = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_rsdp_id = mysqli_fetch_array($q_rsdp_id)) {
 
         $q_string  = "select st_id ";
         $q_string .= "from rsdp_status ";
         $q_string .= "where st_rsdp = " . $a_rsdp_id['rsdp_id'] . " and st_step = 18 ";
-        $q_rsdp_status = mysql_query($q_string) or die($q_string . " :" . mysql_error());
-        if (mysql_num_rows($q_rsdp_status) == 0) {
+        $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . " :" . mysqli_error($db));
+        if (mysqli_num_rows($q_rsdp_status) == 0) {
 
           $linkstart = "<a href=\"" . $RSDProot . "/build/build.php?rsdp=" . $a_rsdp_id['rsdp_id'] . "#tabs-5\" target=\"_blank\">";
           $linkend   = "</a>";
@@ -706,9 +706,9 @@
           $q_string .= "left join int_media on int_media.med_id = rsdp_interface.if_media ";
           $q_string .= "where if_rsdp = " . $a_rsdp_id['rsdp_id'] . " and if_if_id = 0 ";
           $q_string .= "order by if_name,if_interface";
-          $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          if (mysql_num_rows($q_rsdp_interface) > 0) {
-            while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
+          $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_rsdp_interface) > 0) {
+            while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
 
               $class = "ui-widget-content";
               $virtual = '';
@@ -784,9 +784,9 @@
               $q_string .= "left join int_media on int_media.med_id = rsdp_interface.if_media ";
               $q_string .= "where if_rsdp = " . $a_rsdp_id['rsdp_id'] . " and if_if_id = " . $a_rsdp_interface['if_id'] . " ";
               $q_string .= "order by if_name,if_interface";
-              $q_rsdp_child = mysql_query($q_string);
-              if (mysql_num_rows($q_rsdp_child) > 0) {
-                while ($a_rsdp_child = mysql_fetch_array($q_rsdp_child)) {
+              $q_rsdp_child = mysqli_query($db, $q_string);
+              if (mysqli_num_rows($q_rsdp_child) > 0) {
+                while ($a_rsdp_child = mysqli_fetch_array($q_rsdp_child)) {
 
                   $class = "ui-widget-content";
                   $virtual = '';
@@ -865,7 +865,7 @@
       $interface .= "</table>\n";
       $interface .= $formVars['URL'] . $interfaceurl;
 
-      print "document.getElementById('interface_mysql').innerHTML = '" . mysql_real_escape_string($interface) . "';\n";
+      print "document.getElementById('interface_mysql').innerHTML = '" . mysqli_real_escape_string($interface) . "';\n";
 
 # kickstart
       $parameters = '<p>';
@@ -881,14 +881,14 @@
       }
       $q_string .= $filter;
       $q_string .= "order by os_sysname ";
-      $q_rsdp_id = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_rsdp_id = mysql_fetch_array($q_rsdp_id)) {
+      $q_rsdp_id = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_rsdp_id = mysqli_fetch_array($q_rsdp_id)) {
 
         $q_string  = "select st_id ";
         $q_string .= "from rsdp_status ";
         $q_string .= "where st_rsdp = " . $a_rsdp_id['rsdp_id'] . " and st_step = 18 ";
-        $q_rsdp_status = mysql_query($q_string) or die($q_string . " :" . mysql_error());
-        if (mysql_num_rows($q_rsdp_status) == 0) {
+        $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . " :" . mysqli_error($db));
+        if (mysqli_num_rows($q_rsdp_status) == 0) {
 
           if ($a_rsdp_server['pf_model'] == 45) {
             $virtual = 1;
@@ -901,8 +901,8 @@
           $q_string .= "from rsdp_interface ";
           $q_string .= "where if_rsdp = " . $a_rsdp_id['rsdp_id'] . " and if_if_id = 0 ";
           $q_string .= "order by if_interface desc";
-          $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
+          $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
             if ($a_rsdp_interface['if_ipcheck']) {
               if ($inttype[$a_rsdp_interface['if_type']] == 'Mgt') {
                 $parameters .= "DOMAIN="   . $a_rsdp_id['os_fqdn']         . "</br>";
@@ -954,7 +954,7 @@
 
       $parameters .= "</p>";
 
-      print "document.getElementById('kickstart_mysql').innerHTML = '" . mysql_real_escape_string($parameters) . "';\n";
+      print "document.getElementById('kickstart_mysql').innerHTML = '" . mysqli_real_escape_string($parameters) . "';\n";
 
 
 # dns field
@@ -973,14 +973,14 @@
       $q_string .= $filter;
       $q_string .= "and if_ipcheck = 1 and (if_type = 1 or if_type = 2) ";
       $q_string .= "order by if_ip ";
-      $q_rsdp_id = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_rsdp_id = mysql_fetch_array($q_rsdp_id)) {
+      $q_rsdp_id = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_rsdp_id = mysqli_fetch_array($q_rsdp_id)) {
 
         $q_string  = "select st_id ";
         $q_string .= "from rsdp_status ";
         $q_string .= "where st_rsdp = " . $a_rsdp_id['rsdp_id'] . " and st_step = 18 ";
-        $q_rsdp_status = mysql_query($q_string) or die($q_string . " :" . mysql_error());
-        if (mysql_num_rows($q_rsdp_status) == 0) {
+        $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . " :" . mysqli_error($db));
+        if (mysqli_num_rows($q_rsdp_status) == 0) {
 
           $dns .= $a_rsdp_id['if_ip'] . "\t" . $a_rsdp_id['if_name'] . "." . $a_rsdp_id['os_fqdn'] . "\n";
 
@@ -989,7 +989,7 @@
 
       $dns .= "</pre></p>";
 
-      print "document.getElementById('dns_mysql').innerHTML = '" . mysql_real_escape_string($dns) . "';\n";
+      print "document.getElementById('dns_mysql').innerHTML = '" . mysqli_real_escape_string($dns) . "';\n";
 
 
 # hosts field
@@ -1008,22 +1008,22 @@
       $q_string .= $filter;
       $q_string .= "and if_ipcheck = 1 and (if_type = 1 or if_type = 2) ";
       $q_string .= "order by if_ip ";
-      $q_rsdp_id = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_rsdp_id = mysql_fetch_array($q_rsdp_id)) {
+      $q_rsdp_id = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_rsdp_id = mysqli_fetch_array($q_rsdp_id)) {
 
         $q_string  = "select st_id ";
         $q_string .= "from rsdp_status ";
         $q_string .= "where st_rsdp = " . $a_rsdp_id['rsdp_id'] . " and st_step = 18 ";
-        $q_rsdp_status = mysql_query($q_string) or die($q_string . " :" . mysql_error());
+        $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . " :" . mysqli_error($db));
 
-        if (mysql_num_rows($q_rsdp_status) == 0) {
+        if (mysqli_num_rows($q_rsdp_status) == 0) {
           $hosts .= $a_rsdp_id['if_ip'] . "\t" . $a_rsdp_id['if_name'] . "." . $a_rsdp_id['os_fqdn'] . "\t" . $a_rsdp_id['if_name'] . "\n";
         }
       }
 
       $hosts .= "</pre></p>";
 
-      print "document.getElementById('hosts_mysql').innerHTML = '" . mysql_real_escape_string($hosts) . "';\n";
+      print "document.getElementById('hosts_mysql').innerHTML = '" . mysqli_real_escape_string($hosts) . "';\n";
 
 # vulnerability listing
       $address = '';
@@ -1042,19 +1042,19 @@
       $q_string .= "and if_ipcheck = 1 and if_zone != 31 ";
       $q_string .= $filter;
       $q_string .= "order by if_name,if_interface";
-      $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_rsdp_interface) > 0) {
+      $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_rsdp_interface) > 0) {
 
         $address = "<p>List of IP Addresses: ";
         $hostname = "<p>List of DNS Entries: ";
-        while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
+        while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
 
           $q_string  = "select st_id ";
           $q_string .= "from rsdp_status ";
           $q_string .= "where st_rsdp = " . $a_rsdp_interface['rsdp_id'] . " and st_step = 18 ";
-          $q_rsdp_status = mysql_query($q_string) or die($q_string . " :" . mysql_error());
+          $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . " :" . mysqli_error($db));
 
-          if (mysql_num_rows($q_rsdp_status) == 0) {
+          if (mysqli_num_rows($q_rsdp_status) == 0) {
             $address .= $comma . $a_rsdp_interface['if_ip'];
             $hostname .= $comma . $a_rsdp_interface['if_name'] . "." . $a_rsdp_interface['os_fqdn'];
             $comma = ", ";
@@ -1065,7 +1065,7 @@
         $hostname .= "</p>";
       }
 
-      print "document.getElementById('vulnerability_mysql').innerHTML = '" . mysql_real_escape_string($address . $hostname) . "';\n";
+      print "document.getElementById('vulnerability_mysql').innerHTML = '" . mysqli_real_escape_string($address . $hostname) . "';\n";
 
 
 # Virtualization wants a csv type output
@@ -1083,23 +1083,23 @@
       }
       $q_string .= $filter;
       $q_string .= "order by os_sysname ";
-      $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_rsdp_server = mysql_fetch_array($q_rsdp_server)) {
+      $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_rsdp_server = mysqli_fetch_array($q_rsdp_server)) {
 
         $q_string  = "select st_id ";
         $q_string .= "from rsdp_status ";
         $q_string .= "where st_rsdp = " . $a_rsdp_server['rsdp_id'] . " and st_step = 18 ";
-        $q_rsdp_status = mysql_query($q_string) or die($q_string . " :" . mysql_error());
+        $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . " :" . mysqli_error($db));
 
-        if (mysql_num_rows($q_rsdp_status) == 0) {
+        if (mysqli_num_rows($q_rsdp_status) == 0) {
           $virtualization .= "\"" . $a_rsdp_server['os_sysname'] . "\",\"" . $a_rsdp_server['rsdp_function'] . "\",\"" . $a_rsdp_server['rsdp_processors'] . "\",\"" . $a_rsdp_server['rsdp_memory'] . "\",\"" . $a_rsdp_server['rsdp_ossize'] . "\"";
 
           $q_string  = "select fs_volume,fs_size ";
           $q_string .= "from rsdp_filesystem ";
           $q_string .= "where fs_rsdp = " . $a_rsdp_server['rsdp_id'];
-          $q_rsdp_filesystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          if (mysql_num_rows($q_rsdp_filesystem) > 0) {
-            while ($a_rsdp_filesystem = mysql_fetch_array($q_rsdp_filesystem)) {
+          $q_rsdp_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_rsdp_filesystem) > 0) {
+            while ($a_rsdp_filesystem = mysqli_fetch_array($q_rsdp_filesystem)) {
               $virtualization .= ",\"" . $a_rsdp_filesystem['fs_size'] . "\"";
             }
           }
@@ -1108,8 +1108,8 @@
           $q_string .= "from rsdp_interface ";
           $q_string .= "where if_rsdp = " . $a_rsdp_server['rsdp_id'] . " ";
           $q_string .= "order by if_interface";
-          $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
+          $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
 
             if ($a_rsdp_interface['if_ipcheck']) {
               $virtualization .= ",\"" . $a_rsdp_interface['if_ip'] . "\",\"" . $a_rsdp_interface['if_vlan'] . "\"";
@@ -1123,7 +1123,7 @@
 
       $virtualization .= "</pre></p>";
 
-      print "document.getElementById('virtualization_mysql').innerHTML = '" . mysql_real_escape_string($virtualization) . "';\n";
+      print "document.getElementById('virtualization_mysql').innerHTML = '" . mysqli_real_escape_string($virtualization) . "';\n";
 
 
 # list servers and interfaces that will be monitored
@@ -1146,15 +1146,15 @@
       }
       $q_string .= $filter . " and if_monitored = 1 ";
       $q_string .= "order by os_sysname ";
-      $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_rsdp_server = mysql_fetch_array($q_rsdp_server)) {
+      $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_rsdp_server = mysqli_fetch_array($q_rsdp_server)) {
 
         $q_string  = "select st_id ";
         $q_string .= "from rsdp_status ";
         $q_string .= "where st_rsdp = " . $a_rsdp_server['rsdp_id'] . " and st_step = 18 ";
-        $q_rsdp_status = mysql_query($q_string) or die($q_string . " :" . mysql_error());
+        $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . " :" . mysqli_error($db));
 
-        if (mysql_num_rows($q_rsdp_status) == 0) {
+        if (mysqli_num_rows($q_rsdp_status) == 0) {
           $monitoring .= "<tr>\n";
           $monitoring .= "  <td class=\"ui-widget-content\">" . $a_rsdp_server['os_sysname'] . "</td>\n";
           $monitoring .= "  <td class=\"ui-widget-content\">" . $a_rsdp_server['rsdp_function'] . "</td>\n";
@@ -1165,7 +1165,7 @@
 
       $monitoring .= "</table>";
 
-      print "document.getElementById('monitoring_mysql').innerHTML = '" . mysql_real_escape_string($monitoring) . "';\n";
+      print "document.getElementById('monitoring_mysql').innerHTML = '" . mysqli_real_escape_string($monitoring) . "';\n";
 
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
