@@ -45,7 +45,7 @@
             $q_string  = "insert ";
             $q_string .= "into rsdp_server ";
             $q_string .= "set rsdp_id = null,rsdp_requestor = " . $_SESSION['uid'];
-            $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
             $formVars['rsdp'] = last_insert_id();
           }
@@ -66,7 +66,7 @@
           }
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['fs_volume']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
         } else {
           print "alert('You must input data before saving changes.');\n";
@@ -116,8 +116,8 @@
       $q_string  = "select fs_id,fs_volume,fs_size,fs_backup ";
       $q_string .= "from rsdp_filesystem ";
       $q_string .= "where fs_rsdp = " . $formVars['rsdp'];
-      $q_rsdp_filesystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_rsdp_filesystem = mysql_fetch_array($q_rsdp_filesystem)) {
+      $q_rsdp_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_rsdp_filesystem = mysqli_fetch_array($q_rsdp_filesystem)) {
 
         if ($a_rsdp_filesystem['fs_backup'] == 1) {
           $backup = "Yes";
@@ -136,9 +136,9 @@
         $output .= "</tr>\n";
       }
       $output .= "</table>\n";
-      mysql_free_result($q_rsdp_filesystem);
+      mysqli_free_result($q_rsdp_filesystem);
 
-      print "document.getElementById('filesystem_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('filesystem_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.rsdp.rsdp.value = " . $formVars['rsdp'] . ";\n";
 
