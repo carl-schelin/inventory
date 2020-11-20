@@ -52,7 +52,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['tag_name']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -178,9 +178,9 @@
       $q_string .= "left join states       on states.st_id          = locations.loc_state ";
       $q_string .= $where . "and tag_view = 0 ";
       $q_string .= "order by tag_name,inv_name,grp_name,usr_last,usr_first ";
-      $q_tags = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_tags) > 0) {
-        while ($a_tags = mysql_fetch_array($q_tags)) {
+      $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_tags) > 0) {
+        while ($a_tags = mysqli_fetch_array($q_tags)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('tags.fill.php?id="  . $a_tags['tag_id'] . "');jQuery('#dialogTags').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('tags.del.php?id=" . $a_tags['tag_id'] . "');\">";
@@ -209,9 +209,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_tags);
+      mysqli_free_result($q_tags);
 
-      print "document.getElementById('view_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('view_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
 
 # show group specific tags here
@@ -261,9 +261,9 @@
       $q_string .= "left join states       on states.st_id          = locations.loc_state ";
       $q_string .= $where . "and tag_view = 1 ";
       $q_string .= "order by tag_name,inv_name,grp_name,usr_last,usr_first ";
-      $q_tags = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_tags) > 0) {
-        while ($a_tags = mysql_fetch_array($q_tags)) {
+      $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_tags) > 0) {
+        while ($a_tags = mysqli_fetch_array($q_tags)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('tags.fill.php?id="  . $a_tags['tag_id'] . "');jQuery('#dialogTags').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('tags.del.php?id=" . $a_tags['tag_id'] . "');\">";
@@ -292,9 +292,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_tags);
+      mysqli_free_result($q_tags);
 
-      print "document.getElementById('group_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('group_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
 
 # show public tags here
@@ -343,9 +343,9 @@
       $q_string .= "left join states       on states.st_id          = locations.loc_state ";
       $q_string .= $where . "and tag_view = 2 ";
       $q_string .= "order by tag_name,inv_name,grp_name,usr_last,usr_first ";
-      $q_tags = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_tags) > 0) {
-        while ($a_tags = mysql_fetch_array($q_tags)) {
+      $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_tags) > 0) {
+        while ($a_tags = mysqli_fetch_array($q_tags)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('tags.fill.php?id="  . $a_tags['tag_id'] . "');jQuery('#dialogTags').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('tags.del.php?id=" . $a_tags['tag_id'] . "');\">";
@@ -374,9 +374,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_tags);
+      mysqli_free_result($q_tags);
 
-      print "document.getElementById('public_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('public_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
 
       print "document.tags.tag_name.value = '';\n";
