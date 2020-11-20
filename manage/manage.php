@@ -60,8 +60,8 @@
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where ce_priority = 1 and chk_status = 0 and chk_closed = '0000-00-00 00:00:00' " . $where;
-  $q_chkserver = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_chkserver = mysql_fetch_array($q_chkserver);
+  $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_chkserver = mysqli_fetch_array($q_chkserver);
   $priority1 = $a_chkserver['count(chk_id)'];
 
   $q_string  = "select count(chk_id) ";
@@ -72,8 +72,8 @@
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where ce_priority = 2 and chk_status = 0 and chk_closed = '0000-00-00 00:00:00' " . $where;
-  $q_chkserver = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_chkserver = mysql_fetch_array($q_chkserver);
+  $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_chkserver = mysqli_fetch_array($q_chkserver);
   $priority2 = $a_chkserver['count(chk_id)'];
 
   $q_string  = "select count(chk_id) ";
@@ -84,8 +84,8 @@
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where ce_priority = 3 and chk_status = 0 and chk_closed = '0000-00-00 00:00:00' " . $where;
-  $q_chkserver = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_chkserver = mysql_fetch_array($q_chkserver);
+  $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_chkserver = mysqli_fetch_array($q_chkserver);
   $priority3 = $a_chkserver['count(chk_id)'];
 
   $q_string  = "select count(chk_id) ";
@@ -96,8 +96,8 @@
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where ce_priority = 4 and chk_status = 0 and chk_closed = '0000-00-00 00:00:00' " . $where;
-  $q_chkserver = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_chkserver = mysql_fetch_array($q_chkserver);
+  $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_chkserver = mysqli_fetch_array($q_chkserver);
   $priority4 = $a_chkserver['count(chk_id)'];
 
   $q_string  = "select count(chk_id) ";
@@ -108,8 +108,8 @@
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where ce_priority = 5 and chk_status = 0 and chk_closed = '0000-00-00 00:00:00' " . $where;
-  $q_chkserver = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_chkserver = mysql_fetch_array($q_chkserver);
+  $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_chkserver = mysqli_fetch_array($q_chkserver);
   $priority5 = $a_chkserver['count(chk_id)'];
 
   $q_string  = "select count(chk_id) ";
@@ -120,8 +120,8 @@
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where chk_closed != '0000-00-00 00:00:00' " . $where;
-  $q_chkserver = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_chkserver = mysql_fetch_array($q_chkserver);
+  $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_chkserver = mysqli_fetch_array($q_chkserver);
   $closed = $a_chkserver['count(chk_id)'];
 
 # chk_status = 1 == claimed
@@ -133,8 +133,8 @@
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where chk_status = 1 and chk_closed = '0000-00-00 00:00:00' " . $where;
-  $q_chkserver = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_chkserver = mysql_fetch_array($q_chkserver);
+  $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_chkserver = mysqli_fetch_array($q_chkserver);
   $claimed = $a_chkserver['count(chk_id)'];
 
 # chk_status = 2 == pending
@@ -146,8 +146,8 @@
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where chk_status = 2 and chk_closed = '0000-00-00 00:00:00' " . $where;
-  $q_chkserver = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_chkserver = mysql_fetch_array($q_chkserver);
+  $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_chkserver = mysqli_fetch_array($q_chkserver);
   $pending = $a_chkserver['count(chk_id)'];
 
 # if help has not been seen yet,
@@ -388,8 +388,8 @@ new warnings. Use this page to set specific server and error priorities. In orde
   $q_string .= "left join grouplist on grouplist.gpl_user = users.usr_id ";
   $q_string .= "where gpl_group = 1 and usr_disabled = 0 ";
   $q_string .= "order by usr_last ";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
   }
 ?></select></td>
