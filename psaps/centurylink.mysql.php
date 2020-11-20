@@ -69,7 +69,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['psap_ali_id']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -132,8 +132,8 @@
       $q_string .= "left join inventory on inventory.inv_id = psaps.psap_companyid ";
       $q_string .= "where psap_customerid = 41 ";
       $q_string .= "order by psap_description ";
-      $q_psaps = mysql_query($q_string) or die (mysql_error());
-      while ($a_psaps = mysql_fetch_array($q_psaps)) {
+      $q_psaps = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      while ($a_psaps = mysqli_fetch_array($q_psaps)) {
 
         $linkstart = "<a href=\"#\" onclick=\"show_file('centurylink.fill.php?id="  . $a_psaps['psap_id'] . "');jQuery('#dialogPSAP').dialog('open');\">";
         $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('centurylink.del.php?id=" . $a_psaps['psap_id'] . "');\">";
@@ -158,9 +158,9 @@
       }
       $output .= "</table>";
 
-      mysql_free_result($q_psaps);
+      mysqli_free_result($q_psaps);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
