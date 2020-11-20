@@ -26,7 +26,7 @@
       $q_string .= "application ";
       $q_string .= "set app_deleted = 1 ";
       $q_string .= "where app_id = " . $formVars['id'];
-      $insert = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
       print "alert('Application marked as deleted.');\n";
 
