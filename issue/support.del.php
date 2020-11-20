@@ -25,7 +25,7 @@
       $q_string  = "delete ";
       $q_string .= "from issue_support ";
       $q_string .= "where sup_id = " . $formVars['id'];
-      $insert = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
       print "alert('Support record deleted.');\n";
 
