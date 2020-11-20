@@ -29,8 +29,8 @@
       $q_string  = "select san_switch ";
       $q_string .= "from rsdp_san ";
       $q_string .= "where san_id = " . $formVars['id'];
-      $q_rsdp_san = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_rsdp_san = mysql_fetch_array($q_rsdp_san);
+      $q_rsdp_san = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_rsdp_san = mysqli_fetch_array($q_rsdp_san);
 
       if (strlen($a_rsdp_san['san_switch']) > 0) {
 # if switch is set, then set to 1
