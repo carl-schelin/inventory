@@ -25,9 +25,9 @@
       $q_string  = "select tag_companyid,tag_name,tag_view,tag_owner,tag_group ";
       $q_string .= "from tags ";
       $q_string .= "where tag_id = " . $formVars['id'];
-      $q_tags = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_tags = mysql_fetch_array($q_tags);
-      mysql_free_result($q_tags);
+      $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_tags = mysqli_fetch_array($q_tags);
+      mysqli_free_result($q_tags);
 
       $tag_owner       = return_Index($a_tags['tag_owner'],     "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
       $q_string  = "select inv_id ";
