@@ -25,15 +25,15 @@
       $q_string  = "select img_title,img_file,img_facing,img_owner,img_date ";
       $q_string .= "from images ";
       $q_string .= "where img_id = " . $formVars['id'];
-      $q_images = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_images = mysql_fetch_array($q_images);
-      mysql_free_result($q_images);
+      $q_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_images = mysqli_fetch_array($q_images);
+      mysqli_free_result($q_images);
 
       $users = return_Index($a_images['img_owner'], "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
 
-      print "document.images.img_title.value = '" . mysql_real_escape_string($a_images['img_title'])    . "';\n";
-      print "document.images.img_file.value = '"  . mysql_real_escape_string($a_images['img_file'])     . "';\n";
-      print "document.images.img_date.value = '"  . mysql_real_escape_string($a_images['img_date'])     . "';\n";
+      print "document.images.img_title.value = '" . mysqli_real_escape_string($a_images['img_title'])    . "';\n";
+      print "document.images.img_file.value = '"  . mysqli_real_escape_string($a_images['img_file'])     . "';\n";
+      print "document.images.img_date.value = '"  . mysqli_real_escape_string($a_images['img_date'])     . "';\n";
 
       print "document.images.img_owner['"  . $users                  . "'].selected = true;\n";
       print "document.images.img_facing['" . $a_images['img_facing'] . "'].checked  = true;\n";
