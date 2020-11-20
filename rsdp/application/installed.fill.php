@@ -26,15 +26,15 @@
       $q_string  = "select rsdp_appmonitor ";
       $q_string .= "from rsdp_server ";
       $q_string .= "where rsdp_id = " . $formVars['rsdp'];
-      $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+      $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
       $q_string  = "select app_id,app_installed,app_configured,app_mib,app_process,app_logfile,app_inscheck ";
       $q_string .= "from rsdp_applications ";
       $q_string .= "where app_rsdp = " . $formVars['rsdp'];
-      $q_rsdp_applications = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_rsdp_applications) > 0) {
-        $a_rsdp_applications = mysql_fetch_array($q_rsdp_applications);
+      $q_rsdp_applications = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_rsdp_applications) > 0) {
+        $a_rsdp_applications = mysqli_fetch_array($q_rsdp_applications);
 
         if ($a_rsdp_applications['app_inscheck']) {
           print "document.rsdp.app_inscheck.checked = true;\n";
@@ -76,7 +76,7 @@
 
       }
 
-      mysql_free_result($q_rsdp_applications);
+      mysqli_free_result($q_rsdp_applications);
 
       print "validate_Form();\n";
 
