@@ -9,8 +9,8 @@
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -33,9 +33,9 @@ if (($handle = fopen("vulnerability-sorted.csv", "r")) !== FALSE) {
     $q_string  = "select fam_name ";
     $q_string .= "from family ";
     $q_string .= "where fam_name = \"" . $data[2] . "\" ";
-    $q_family = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_family = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-    if (mysql_num_rows($q_family) == 0) {
+    if (mysqli_num_rows($q_family) == 0) {
       $q_string  = "insert ";
       $q_string .= "into family ";
       $q_string .= "set fam_id = null,";
@@ -44,7 +44,7 @@ if (($handle = fopen("vulnerability-sorted.csv", "r")) !== FALSE) {
       if ($debug == 'yes') {
         print $q_string . "\n";
       } else {
-        $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
     }
   }
