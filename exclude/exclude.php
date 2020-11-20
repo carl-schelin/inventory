@@ -238,8 +238,8 @@ lines are removed promptly. No point in checking against a server that doesn't e
   $q_string .= "from inventory ";
   $q_string .= "where inv_ssh = 1 and inv_status = 0 and inv_manager = " . $GRP_Unix . " ";
   $q_string .= "order by inv_name ";
-  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
     print "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . "</option>\n";
   }
 ?>
