@@ -81,7 +81,7 @@
 
         logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['rsdp']);
 
-        mysql_query($query) or die($query . ": " . mysql_error());
+        mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
         print "alert('" . $message . "');\n";
       }
@@ -99,8 +99,8 @@
         $q_string  = "select rsdp_platform ";
         $q_string .= "from rsdp_server ";
         $q_string .= "where rsdp_id = " . $formVars['rsdp'];
-        $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+        $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
         generateEmail(
           $formVars['rsdp'],
@@ -126,11 +126,11 @@
         $q_string  = "select fs_id ";
         $q_string .= "from rsdp_filesystem ";
         $q_string .= "where fs_rsdp = " . $formVars['rsdp'];
-        $q_rsdp_filesystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_rsdp_filesystem = mysql_fetch_array($q_rsdp_filesystem);
+        $q_rsdp_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_rsdp_filesystem = mysqli_fetch_array($q_rsdp_filesystem);
 
 # greater than zero and a physical system, tell the SAN guys they're up.
-        if (mysql_num_rows($q_rsdp_filesystem) > 0 && $virtual == 0) {
+        if (mysqli_num_rows($q_rsdp_filesystem) > 0 && $virtual == 0) {
           generateEmail(
             $formVars['rsdp'],
             "<p>The Server hardware has been configured and documented, the Operating System installed. The SAN mounts need to be provisioned and presented.</p>", 
@@ -144,8 +144,8 @@
           $q_string  = "select tkt_storage ";
           $q_string .= "from rsdp_tickets ";
           $q_string .= "where tkt_rsdp = " . $formVars['rsdp'];
-          $q_rsdp_tickets = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_rsdp_tickets = mysql_fetch_array($q_rsdp_tickets);
+          $q_rsdp_tickets = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
           if ($a_rsdp_tickets['tkt_storage']) {
             submit_Ticket(
               $formVars['rsdp'],
@@ -162,8 +162,8 @@
           $q_string  = "select rsdp_platform ";
           $q_string .= "from rsdp_server ";
           $q_string .= "where rsdp_id = " . $formVars['rsdp'];
-          $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+          $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
           generateEmail(
             $formVars['rsdp'],
@@ -178,8 +178,8 @@
           $q_string  = "select tkt_syscnf ";
           $q_string .= "from rsdp_tickets ";
           $q_string .= "where tkt_rsdp = " . $formVars['rsdp'];
-          $q_rsdp_tickets = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_rsdp_tickets = mysql_fetch_array($q_rsdp_tickets);
+          $q_rsdp_tickets = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
           if ($a_rsdp_tickets['tkt_syscnf']) {
             submit_Ticket(
               $formVars['rsdp'],
@@ -195,8 +195,8 @@
         $q_string  = "select tkt_sysdns ";
         $q_string .= "from rsdp_tickets ";
         $q_string .= "where tkt_rsdp = " . $formVars['rsdp'];
-        $q_rsdp_tickets = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_rsdp_tickets = mysql_fetch_array($q_rsdp_tickets);
+        $q_rsdp_tickets = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
         if ($a_rsdp_tickets['tkt_sysdns']) {
           submit_DNS($formVars['rsdp']);
         }
