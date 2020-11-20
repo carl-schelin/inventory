@@ -50,7 +50,7 @@
 
   $top .= "</div>";
 
-  print "document.getElementById('vulnerability_mysql').innerHTML = '" . mysql_real_escape_string($top) . "';\n\n";
+  print "document.getElementById('vulnerability_mysql').innerHTML = '" . mysqli_real_escape_string($top) . "';\n\n";
 
   $header  = "<table class=\"ui-styled-table\">\n";
   $header .= "<tr>\n";
@@ -73,9 +73,9 @@
   $q_string .= "from interface ";
   $q_string .= "where int_companyid = " . $formVars['id'] . " ";
   $q_string .= "order by int_server ";
-  $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_interface) > 0) {
-    while ($a_interface = mysql_fetch_array($q_interface)) {
+  $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_interface) > 0) {
+    while ($a_interface = mysqli_fetch_array($q_interface)) {
 
       $q_string  = "select vuln_interface,vuln_securityid,vuln_duplicate,vuln_date,grp_name,sev_name,sec_name ";
       $q_string .= "from vulnerabilities "; 
@@ -84,17 +84,17 @@
       $q_string .= "left join severity  on severity.sev_id            = security.sec_severity ";
       $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " and sec_severity = 1 and vuln_delete = 0 ";
       $q_string .= "order by vuln_securityid ";
-      $q_vulnerabilities = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_vulnerabilities = mysql_fetch_array($q_vulnerabilities)) {
+      $q_vulnerabilities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_vulnerabilities = mysqli_fetch_array($q_vulnerabilities)) {
 
         $count++;
         $q_string  = "select vul_id,grp_name,vul_ticket,vul_exception,vul_description ";
         $q_string .= "from vulnowner "; 
         $q_string .= "left join groups on groups.grp_id = vulnowner.vul_group ";
         $q_string .= "where vul_security = " . $a_vulnerabilities['vuln_securityid'] . " and vul_interface = " . $a_vulnerabilities['vuln_interface'] . " ";
-        $q_vulnowner = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        if (mysql_num_rows($q_vulnowner) > 0) {
-          $a_vulnowner = mysql_fetch_array($q_vulnowner);
+        $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_vulnowner) > 0) {
+          $a_vulnowner = mysqli_fetch_array($q_vulnowner);
         } else {
           $a_vulnowner['vul_id'] = 0;
           $a_vulnowner['grp_name'] = '';
@@ -155,8 +155,8 @@
 
   $output .= "</table>";
 
-  print "document.getElementById('critical_count').innerHTML = ' (" . mysql_real_escape_string($count) . ")';\n\n";
-  print "document.getElementById('critical_vuln_mysql').innerHTML = '" . mysql_real_escape_string($header . $output) . "';\n\n";
+  print "document.getElementById('critical_count').innerHTML = ' (" . mysqli_real_escape_string($count) . ")';\n\n";
+  print "document.getElementById('critical_vuln_mysql').innerHTML = '" . mysqli_real_escape_string($header . $output) . "';\n\n";
 
 
 # high vulnerabilities
@@ -167,9 +167,9 @@
   $q_string .= "from interface ";
   $q_string .= "where int_companyid = " . $formVars['id'] . " ";
   $q_string .= "order by int_server ";
-  $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_interface) > 0) {
-    while ($a_interface = mysql_fetch_array($q_interface)) {
+  $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_interface) > 0) {
+    while ($a_interface = mysqli_fetch_array($q_interface)) {
 
       $q_string  = "select vuln_interface,vuln_securityid,vuln_duplicate,vuln_date,grp_name,sev_name,sec_name ";
       $q_string .= "from vulnerabilities "; 
@@ -178,17 +178,17 @@
       $q_string .= "left join severity  on severity.sev_id            = security.sec_severity ";
       $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " and sec_severity = 2 and vuln_delete = 0 ";
       $q_string .= "order by vuln_securityid ";
-      $q_vulnerabilities = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_vulnerabilities = mysql_fetch_array($q_vulnerabilities)) {
+      $q_vulnerabilities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_vulnerabilities = mysqli_fetch_array($q_vulnerabilities)) {
 
         $count++;
         $q_string  = "select vul_id,grp_name,vul_ticket,vul_exception,vul_description ";
         $q_string .= "from vulnowner "; 
         $q_string .= "left join groups on groups.grp_id = vulnowner.vul_group ";
         $q_string .= "where vul_security = " . $a_vulnerabilities['vuln_securityid'] . " and vul_interface = " . $a_vulnerabilities['vuln_interface'] . " ";
-        $q_vulnowner = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        if (mysql_num_rows($q_vulnowner) > 0) {
-          $a_vulnowner = mysql_fetch_array($q_vulnowner);
+        $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_vulnowner) > 0) {
+          $a_vulnowner = mysqli_fetch_array($q_vulnowner);
         } else {
           $a_vulnowner['vul_id'] = 0;
           $a_vulnowner['grp_name'] = '';
@@ -250,8 +250,8 @@
 
   $output .= "</table>";
 
-  print "document.getElementById('high_count').innerHTML = ' (" . mysql_real_escape_string($count) . ")';\n\n";
-  print "document.getElementById('high_vuln_mysql').innerHTML = '" . mysql_real_escape_string($header . $output) . "';\n\n";
+  print "document.getElementById('high_count').innerHTML = ' (" . mysqli_real_escape_string($count) . ")';\n\n";
+  print "document.getElementById('high_vuln_mysql').innerHTML = '" . mysqli_real_escape_string($header . $output) . "';\n\n";
 
 
 # medium vulnerabilities
@@ -262,9 +262,9 @@
   $q_string .= "from interface ";
   $q_string .= "where int_companyid = " . $formVars['id'] . " ";
   $q_string .= "order by int_server ";
-  $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_interface) > 0) {
-    while ($a_interface = mysql_fetch_array($q_interface)) {
+  $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_interface) > 0) {
+    while ($a_interface = mysqli_fetch_array($q_interface)) {
 
       $q_string  = "select vuln_interface,vuln_securityid,vuln_duplicate,vuln_date,grp_name,sev_name,sec_name ";
       $q_string .= "from vulnerabilities "; 
@@ -273,17 +273,17 @@
       $q_string .= "left join severity  on severity.sev_id            = security.sec_severity ";
       $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " and sec_severity = 3 and vuln_delete = 0 ";
       $q_string .= "order by vuln_securityid ";
-      $q_vulnerabilities = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_vulnerabilities = mysql_fetch_array($q_vulnerabilities)) {
+      $q_vulnerabilities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_vulnerabilities = mysqli_fetch_array($q_vulnerabilities)) {
 
         $count++;
         $q_string  = "select vul_id,grp_name,vul_ticket,vul_exception,vul_description ";
         $q_string .= "from vulnowner "; 
         $q_string .= "left join groups on groups.grp_id = vulnowner.vul_group ";
         $q_string .= "where vul_security = " . $a_vulnerabilities['vuln_securityid'] . " and vul_interface = " . $a_vulnerabilities['vuln_interface'] . " ";
-        $q_vulnowner = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        if (mysql_num_rows($q_vulnowner) > 0) {
-          $a_vulnowner = mysql_fetch_array($q_vulnowner);
+        $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_vulnowner) > 0) {
+          $a_vulnowner = mysqli_fetch_array($q_vulnowner);
         } else {
           $a_vulnowner['vul_id'] = 0;
           $a_vulnowner['grp_name'] = '';
@@ -345,8 +345,8 @@
 
   $output .= "</table>";
 
-  print "document.getElementById('medium_count').innerHTML = ' (" . mysql_real_escape_string($count) . ")';\n\n";
-  print "document.getElementById('medium_vuln_mysql').innerHTML = '" . mysql_real_escape_string($header . $output) . "';\n\n";
+  print "document.getElementById('medium_count').innerHTML = ' (" . mysqli_real_escape_string($count) . ")';\n\n";
+  print "document.getElementById('medium_vuln_mysql').innerHTML = '" . mysqli_real_escape_string($header . $output) . "';\n\n";
 
 
 # low vulnerabilities
@@ -357,9 +357,9 @@
   $q_string .= "from interface ";
   $q_string .= "where int_companyid = " . $formVars['id'] . " ";
   $q_string .= "order by int_server ";
-  $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_interface) > 0) {
-    while ($a_interface = mysql_fetch_array($q_interface)) {
+  $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_interface) > 0) {
+    while ($a_interface = mysqli_fetch_array($q_interface)) {
 
       $q_string  = "select vuln_interface,vuln_securityid,vuln_duplicate,vuln_date,grp_name,sev_name,sec_name ";
       $q_string .= "from vulnerabilities "; 
@@ -368,17 +368,17 @@
       $q_string .= "left join severity  on severity.sev_id            = security.sec_severity ";
       $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " and sec_severity = 4 and vuln_delete = 0 ";
       $q_string .= "order by vuln_securityid ";
-      $q_vulnerabilities = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_vulnerabilities = mysql_fetch_array($q_vulnerabilities)) {
+      $q_vulnerabilities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_vulnerabilities = mysqli_fetch_array($q_vulnerabilities)) {
 
         $count++;
         $q_string  = "select vul_id,grp_name,vul_ticket,vul_exception,vul_description ";
         $q_string .= "from vulnowner "; 
         $q_string .= "left join groups on groups.grp_id = vulnowner.vul_group ";
         $q_string .= "where vul_security = " . $a_vulnerabilities['vuln_securityid'] . " and vul_interface = " . $a_vulnerabilities['vuln_interface'] . " ";
-        $q_vulnowner = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        if (mysql_num_rows($q_vulnowner) > 0) {
-          $a_vulnowner = mysql_fetch_array($q_vulnowner);
+        $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_vulnowner) > 0) {
+          $a_vulnowner = mysqli_fetch_array($q_vulnowner);
         } else {
           $a_vulnowner['vul_id'] = 0;
           $a_vulnowner['grp_name'] = '';
@@ -440,8 +440,8 @@
 
   $output .= "</table>";
 
-  print "document.getElementById('low_count').innerHTML = ' (" . mysql_real_escape_string($count) . ")';\n\n";
-  print "document.getElementById('low_vuln_mysql').innerHTML = '" . mysql_real_escape_string($header . $output) . "';\n\n";
+  print "document.getElementById('low_count').innerHTML = ' (" . mysqli_real_escape_string($count) . ")';\n\n";
+  print "document.getElementById('low_vuln_mysql').innerHTML = '" . mysqli_real_escape_string($header . $output) . "';\n\n";
 
 
 # info vulnerabilities
@@ -452,9 +452,9 @@
   $q_string .= "from interface ";
   $q_string .= "where int_companyid = " . $formVars['id'] . " ";
   $q_string .= "order by int_server ";
-  $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_interface) > 0) {
-    while ($a_interface = mysql_fetch_array($q_interface)) {
+  $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_interface) > 0) {
+    while ($a_interface = mysqli_fetch_array($q_interface)) {
 
       $q_string  = "select vuln_interface,vuln_securityid,vuln_duplicate,vuln_date,grp_name,sev_name,sec_name ";
       $q_string .= "from vulnerabilities "; 
@@ -463,17 +463,17 @@
       $q_string .= "left join severity  on severity.sev_id            = security.sec_severity ";
       $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " and sec_severity = 5 and vuln_delete = 0 ";
       $q_string .= "order by vuln_securityid ";
-      $q_vulnerabilities = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_vulnerabilities = mysql_fetch_array($q_vulnerabilities)) {
+      $q_vulnerabilities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_vulnerabilities = mysqli_fetch_array($q_vulnerabilities)) {
 
         $count++;
         $q_string  = "select vul_id,grp_name,vul_ticket,vul_exception,vul_description ";
         $q_string .= "from vulnowner "; 
         $q_string .= "left join groups on groups.grp_id = vulnowner.vul_group ";
         $q_string .= "where vul_security = " . $a_vulnerabilities['vuln_securityid'] . " and vul_interface = " . $a_vulnerabilities['vuln_interface'] . " ";
-        $q_vulnowner = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        if (mysql_num_rows($q_vulnowner) > 0) {
-          $a_vulnowner = mysql_fetch_array($q_vulnowner);
+        $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_vulnowner) > 0) {
+          $a_vulnowner = mysqli_fetch_array($q_vulnowner);
         } else {
           $a_vulnowner['vul_id'] = 0;
           $a_vulnowner['grp_name'] = '';
@@ -537,10 +537,10 @@
 
   $mysql = $header . $output;
 
-  print "document.getElementById('info_count').innerHTML = ' (" . mysql_real_escape_string($count) . ")';\n\n";
-  print "document.getElementById('info_vuln_mysql').innerHTML = '" . mysql_real_escape_string($mysql) . "';\n\n";
+  print "document.getElementById('info_count').innerHTML = ' (" . mysqli_real_escape_string($count) . ")';\n\n";
+  print "document.getElementById('info_vuln_mysql').innerHTML = '" . mysqli_real_escape_string($mysql) . "';\n\n";
 
-  mysql_free_result($q_interface);
+  mysqli_free_result($q_interface);
 
 
 ?>
