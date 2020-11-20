@@ -51,8 +51,8 @@
   $q_string .= "inner join products on inventory.inv_product = products.prod_id ";
   $q_string .= "where inv_manager = 1 and inv_status = 0 and (inv_location = 31 or inv_location = 33 or inv_location = 34) ";
   $q_string .= "order by inv_name";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $comma = "";
     $application = '';
@@ -63,8 +63,8 @@
     $q_string .= "left join products on products.prod_id = software.sw_product ";
     $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type != 'OS' and sw_group != 1 ";
     $q_string .= "order by prod_name,grp_name";
-    $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    while ($a_software = mysql_fetch_array($q_software)) {
+    $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_software = mysqli_fetch_array($q_software)) {
       $application .= $comma . $a_software['sw_software'] . " (" . $a_software['prod_name'] . ":" . $a_software['grp_name'] . ")";
       $comma = "<br>";
     }
