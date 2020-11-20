@@ -71,8 +71,8 @@
   $q_string .= "left join support   on support.sup_id          = hardware.hw_supportid ";
   $q_string .= "left join products  on products.prod_id        = inventory.inv_product ";
   $q_string .= "where inv_manager = 1 and inv_status = 0 and mod_virtual = 1 and hw_primary = 1 and sw_software like '%red hat%' ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_inventory = mysql_fetch_array($q_inventory);
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inventory = mysqli_fetch_array($q_inventory);
 
   $virtual = $a_inventory['count(*)'];
 
@@ -85,8 +85,8 @@
   $q_string .= "left join support   on support.sup_id          = hardware.hw_supportid ";
   $q_string .= "left join products  on products.prod_id        = inventory.inv_product ";
   $q_string .= "where inv_manager = 1 and inv_status = 0 and mod_virtual = 0 and hw_primary = 1 and sw_software like '%red hat%' ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_inventory = mysql_fetch_array($q_inventory);
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inventory = mysqli_fetch_array($q_inventory);
 
   $physical = $a_inventory['count(*)'];
 
