@@ -53,7 +53,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['img_file']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -110,9 +110,9 @@
       $q_string .= "from images ";
       $q_string .= "left join users on users.usr_id = images.img_owner ";
       $q_string .= "order by img_title,img_file";
-      $q_images = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_images) > 0) {
-        while ($a_images = mysql_fetch_array($q_images)) {
+      $q_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_images) > 0) {
+        while ($a_images = mysqli_fetch_array($q_images)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('image.fill.php?id="  . $a_images['img_id'] . "');showDiv('image-hide');\">";
           $linkdel   = "<a href=\"#\" onclick=\"delete_line('image.del.php?id=" . $a_images['img_id'] . "');\">";
@@ -151,9 +151,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_images);
+      mysqli_free_result($q_images);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       if ($formVars['id'] == 0) {
         print "document.images.update.disabled = true;\n";
