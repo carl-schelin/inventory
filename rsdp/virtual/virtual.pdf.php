@@ -35,15 +35,15 @@
   $q_string .= "left join country       on country.cn_id        = locations.loc_country ";
   $q_string .= "left join projects      on projects.prj_id      = rsdp_server.rsdp_project ";
   $q_string .= "where rsdp_id = " . $formVars['rsdp'];
-  $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
   $q_string  = "select os_sysname,operatingsystem.os_software ";
   $q_string .= "from rsdp_osteam ";
   $q_string .= "left join operatingsystem on operatingsystem.os_id = rsdp_osteam.os_software ";
   $q_string .= "where os_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_osteam = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_osteam = mysql_fetch_array($q_rsdp_osteam);
+  $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
 
 
   $output  = "<h1>New Virtual Machine Server Request</h1>";
@@ -82,10 +82,10 @@
   $q_string  = "select fs_size ";
   $q_string .= "from rsdp_filesystem ";
   $q_string .= "where fs_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_filesystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_rsdp_filesystem) > 0) {
+  $q_rsdp_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_rsdp_filesystem) > 0) {
     $output .= "<ul>";
-    while ($a_rsdp_filesystem = mysql_fetch_array($q_rsdp_filesystem)) {
+    while ($a_rsdp_filesystem = mysqli_fetch_array($q_rsdp_filesystem)) {
       $output .= "  <li><strong>Additional Disk Storage</strong>: " . $a_rsdp_filesystem['fs_size'] . " GB</li>";
     }
     $output .= "</ul>";
@@ -98,8 +98,8 @@
   $q_string  = "select if_ip,if_mask,if_gate,if_vlan ";
   $q_string .= "from rsdp_interface ";
   $q_string .= "where if_rsdp = " . $formVars['rsdp'] . " and if_ipcheck = 1 ";
-  $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_rsdp_interface) > 0) {
+  $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_rsdp_interface) > 0) {
 
     $output .= "<table cellspacing=\"0\" cellpadding=\"1\" border=\"1\">\n";
     $output .= "<tr>\n";
@@ -109,7 +109,7 @@
     $output .= "<th><strong>VLAN</strong></th>\n";
     $output .= "</tr>\n";
 
-    while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
+    while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
 
       $output .= "<tr>\n";
       $output .= "<td>" . $a_rsdp_interface['if_ip'] . "</td>\n";
