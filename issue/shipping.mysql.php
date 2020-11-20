@@ -47,14 +47,14 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['hw_rma']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           $q_string =
             "hw_rma      = \"" . $formVars['hw_rma'] . "\"";
 
           $query = "update hardware set " . $q_string . " where hw_id = " . $formVars['hw_id'];
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
 ##########
 # Notify Shipping and Receiving of an incoming package
@@ -64,15 +64,15 @@
           $q_string  = "select grp_email ";
           $q_string .= "from groups ";
           $q_string .= "where grp_id = " . $GRP_Shipping . " ";
-          $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_groups = mysql_fetch_array($q_groups);
+          $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_groups = mysqli_fetch_array($q_groups);
 
 // get the e-mail address of the user
           $q_string  = "select usr_first,usr_last,usr_email ";
           $q_string .= "from users ";
           $q_string .= "where usr_id = " . $_SESSION['uid'];
-          $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_users = mysql_fetch_array($q_users);
+          $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_users = mysqli_fetch_array($q_users);
 
 // set the subject line
           $subject = "Notice: Hardware replacement in progress.";
@@ -95,8 +95,8 @@
           $q_string .= "left join states on states.st_id = locations.loc_state ";
           $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
           $q_string .= "where inv_id = " . $formVars['hw_server'] . " and hw_primary = 1 and hw_deleted = 0 ";
-          $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_inventory = mysql_fetch_array($q_inventory);
+          $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_inventory = mysqli_fetch_array($q_inventory);
 
           $body .= "<ul>\n";
           $body .= "  <li>Affected System\n";
@@ -113,8 +113,8 @@
           $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
           $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
           $q_string .= "where hw_id = " . $formVars['hw_id'];
-          $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_hardware = mysql_fetch_array($q_hardware);
+          $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_hardware = mysqli_fetch_array($q_hardware);
 
           $body .= "  <li>Failed Hardware\n";
           $body .= "  <ul>\n";
@@ -202,8 +202,8 @@
       $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
       $q_string .= "where hw_deleted = 0 and hw_companyid = " . $formVars['hw_server'] . " ";
       $q_string .= "order by hw_type,hw_vendorid";
-      $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_hardware = mysql_fetch_array($q_hardware)) {
+      $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
         if ($a_hardware['hw_primary'] == 1) {
           $class = "ui-state-highlight";
@@ -238,7 +238,7 @@
 
       $output .= "</table>";
 
-      print "document.getElementById('mysql_hardware').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('mysql_hardware').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
       print "document.start.hw_count.value = '" . $count . "';\n";
       print "document.start.hw_rma.value = '';\n";
