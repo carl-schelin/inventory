@@ -25,14 +25,14 @@
       $q_string  = "select sec_name,sec_family.sec_severity ";
       $q_string .= "from security ";
       $q_string .= "where sec_id = " . $formVars['id'];
-      $q_security = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_security = mysql_fetch_array($a_security);
-      mysql_free_result($q_security);
+      $q_security = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_security = mysqli_fetch_array($a_security);
+      mysqli_free_result($q_security);
 
       $family   = return_Index($a_security['sec_family'],   "select fam_id from family order by fam_name");
       $severity = return_Index($a_security['sec_severity'], "select sev_id from severity order by sev_name");
 
-      print "document.security.sec_name.value = '"   . mysql_real_escape_string($a_security['sec_name'])   . "';\n";
+      print "document.security.sec_name.value = '"   . mysqli_real_escape_string($a_security['sec_name'])   . "';\n";
 
       print "document.security.sec_family['"   . $family   . "'].selected = true;\n";
       print "document.security.sec_severity['" . $severity . "'].selected = true;\n";
