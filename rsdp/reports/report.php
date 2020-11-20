@@ -227,36 +227,36 @@
   $q_string .= "from rsdp_server ";
   $q_string .= "left join rsdp_osteam on rsdp_osteam.os_rsdp = rsdp_server.rsdp_id ";
   $q_string .= "order by rsdp_id";
-  $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_rsdp_server = mysql_fetch_array($q_rsdp_server)) {
+  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_rsdp_server = mysqli_fetch_array($q_rsdp_server)) {
 
     $link = $linkstart . $a_rsdp_server['rsdp_id'] . $rsdplabel . "\" target=\"_blank\">";
 
     $q_string  = "select st_id ";
     $q_string .= "from rsdp_status ";
     $q_string .= "where st_rsdp = " . $a_rsdp_server['rsdp_id'] . " and st_step = " . $formVars['id'];
-    $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   
-    if (mysql_num_rows($q_rsdp_status) == 0) {
+    if (mysqli_num_rows($q_rsdp_status) == 0) {
 
       if ($formVars['id'] == 5 || $formVars['id'] == 6) {
         $q_string  = "select mod_name,mod_virtual ";
         $q_string .= "from rsdp_platform ";
         $q_string .= "left join models on models.mod_id = rsdp_platform.pf_model ";
         $q_string .= "where pf_rsdp = " . $a_rsdp_server['rsdp_id'];
-        $q_rsdp_platform = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_rsdp_platform = mysql_fetch_array($q_rsdp_platform);
+        $q_rsdp_platform = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_rsdp_platform = mysqli_fetch_array($q_rsdp_platform);
 
         if ($formVars['id'] == 5 && $a_rsdp_platform['mod_virtual'] == 1) {
           $q_string  = "select st_timestamp ";
           $q_string .= "from rsdp_status ";
           $q_string .= "where st_rsdp = " . $a_rsdp_server['rsdp_id'] . " and " . $taskdepend;
-          $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-          if (mysql_num_rows($q_rsdp_status) == 2) {
+          if (mysqli_num_rows($q_rsdp_status) == 2) {
             $timestamp = '';
             $and = '';
-            while ($a_rsdp_status = mysql_fetch_array($q_rsdp_status)) {
+            while ($a_rsdp_status = mysqli_fetch_array($q_rsdp_status)) {
               $timestamp .= $and . $a_rsdp_status['st_timestamp'];
               $and = " and ";
             }
@@ -266,8 +266,8 @@
             $q_string  = "select usr_last,usr_first ";
             $q_string .= "from users ";
             $q_string .= "where usr_id = " . $a_rsdp_server['rsdp_requestor'];
-            $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            $a_users = mysql_fetch_array($q_users);
+            $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $a_users = mysqli_fetch_array($q_users);
   
             print "  <td class=\"ui-widget-content\">" . $a_users['usr_first'] . " " . $a_users['usr_last'] . "</td>\n";
 
@@ -277,16 +277,16 @@
                 $q_string  = "select grp_name ";
                 $q_string .= "from groups ";
                 $q_string .= "where grp_id = " . $a_rsdp_server['rsdp_application'];
-                $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-                $a_groups = mysql_fetch_array($q_groups);
+                $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+                $a_groups = mysqli_fetch_array($q_groups);
 
                 $taskgroup = $a_groups['grp_name'];
               } else {
                 $q_string  = "select usr_last,usr_first ";
                 $q_string .= "from users ";
                 $q_string .= "where usr_id = " . $a_rsdp_server[$taskpoc];
-                $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-                $a_users = mysql_fetch_array($q_users);
+                $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+                $a_users = mysqli_fetch_array($q_users);
 
                 $taskgroup = $a_users['usr_first'] . " " . $a_users['usr_last'];
               }
@@ -298,8 +298,8 @@
             $q_string  = "select prj_name,prj_code ";
             $q_string .= "from projects ";
             $q_string .= "where prj_id = " . $a_rsdp_server['rsdp_project'];
-            $q_projects = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            $a_projects = mysql_fetch_array($q_projects);
+            $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $a_projects = mysqli_fetch_array($q_projects);
 
             print "  <td class=\"ui-widget-content\"><a href=\"" . $RSDProot . "/network.php?projectid=" . $a_rsdp_server['rsdp_project'] . $tasklabel . "\" target=\"_blank\">" . $a_projects['prj_name'] . " (" . $a_projects['prj_code'] . ")</a></td>\n";
 
@@ -312,13 +312,13 @@
           $q_string  = "select st_timestamp ";
           $q_string .= "from rsdp_status ";
           $q_string .= "where st_rsdp = " . $a_rsdp_server['rsdp_id'] . " and " . $taskdepend;
-          $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_rsdp_status = mysql_fetch_array($q_rsdp_status);
+          $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_rsdp_status = mysqli_fetch_array($q_rsdp_status);
 
-          if (mysql_num_rows($q_rsdp_status) == 2) {
+          if (mysqli_num_rows($q_rsdp_status) == 2) {
             $timestamp = '';
             $and = '';
-            while ($a_rsdp_status = mysql_fetch_array($q_rsdp_status)) {
+            while ($a_rsdp_status = mysqli_fetch_array($q_rsdp_status)) {
               $timestamp .= $and . $a_rsdp_status['st_timestamp'];
               $and = " and ";
             }
@@ -328,8 +328,8 @@
             $q_string  = "select usr_last,usr_first ";
             $q_string .= "from users ";
             $q_string .= "where usr_id = " . $a_rsdp_server['rsdp_requestor'];
-            $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            $a_users = mysql_fetch_array($q_users);
+            $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $a_users = mysqli_fetch_array($q_users);
   
             print "  <td class=\"ui-widget-content\">" . $a_users['usr_first'] . " " . $a_users['usr_last'] . "</td>\n";
 
@@ -338,8 +338,8 @@
               $q_string  = "select usr_last,usr_first ";
               $q_string .= "from users ";
               $q_string .= "where usr_id = " . $a_rsdp_server[$taskpoc];
-              $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-              $a_users = mysql_fetch_array($q_users);
+              $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              $a_users = mysqli_fetch_array($q_users);
     
               $taskgroup = $a_users['usr_first'] . " " . $a_users['usr_last'];
             }
@@ -350,16 +350,16 @@
             $q_string  = "select prj_name,prj_code ";
             $q_string .= "from projects ";
             $q_string .= "where prj_id = " . $a_rsdp_server['rsdp_project'];
-            $q_projects = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            $a_projects = mysql_fetch_array($q_projects);
+            $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $a_projects = mysqli_fetch_array($q_projects);
 
             print "  <td class=\"ui-widget-content\"><a href=\"" . $RSDProot . "/network.php?projectid=" . $a_rsdp_server['rsdp_project'] . $tasklabel . "\" target=\"_blank\">" . $a_projects['prj_name'] . " (" . $a_projects['prj_code'] . ")</a></td>\n";
 
             $q_string  = "select st_timestamp ";
             $q_string .= "from rsdp_status ";
             $q_string .= "where st_rsdp = " . $a_rsdp_server['rsdp_id'] . " and " . $taskdepend;
-            $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            $a_rsdp_status = mysql_fetch_array($q_rsdp_status);
+            $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $a_rsdp_status = mysqli_fetch_array($q_rsdp_status);
 
             print "  <td class=\"ui-widget-content\">" . $a_rsdp_status['st_timestamp'] . "</td>\n";
 
@@ -370,18 +370,18 @@
         $q_string  = "select st_timestamp ";
         $q_string .= "from rsdp_status ";
         $q_string .= "where st_rsdp = " . $a_rsdp_server['rsdp_id'] . " and " . $taskdepend;
-        $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_rsdp_status = mysql_fetch_array($q_rsdp_status);
+        $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_rsdp_status = mysqli_fetch_array($q_rsdp_status);
 
-        if (mysql_num_rows($q_rsdp_status) > 0) {
+        if (mysqli_num_rows($q_rsdp_status) > 0) {
           print "<tr>\n";
           print "  <td class=\"ui-widget-content\">" . $link . $a_rsdp_server['rsdp_id'] . "</a></td>\n";
 
           $q_string  = "select usr_last,usr_first ";
           $q_string .= "from users ";
           $q_string .= "where usr_id = " . $a_rsdp_server['rsdp_requestor'];
-          $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_users = mysql_fetch_array($q_users);
+          $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_users = mysqli_fetch_array($q_users);
 
           print "  <td class=\"ui-widget-content\">" . $a_users['usr_first'] . " " . $a_users['usr_last'] . "</td>\n";
 
@@ -390,8 +390,8 @@
             $q_string  = "select usr_last,usr_first ";
             $q_string .= "from users ";
             $q_string .= "where usr_id = " . $a_rsdp_server[$taskpoc];
-            $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            $a_users = mysql_fetch_array($q_users);
+            $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $a_users = mysqli_fetch_array($q_users);
 
             $taskgroup = $a_users['usr_first'] . " " . $a_users['usr_last'];
           }
@@ -402,16 +402,16 @@
           $q_string = "select prj_name,prj_code ";
           $q_string .= "from projects ";
           $q_string .= "where prj_id = " . $a_rsdp_server['rsdp_project'];
-          $q_projects = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_projects = mysql_fetch_array($q_projects);
+          $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_projects = mysqli_fetch_array($q_projects);
 
           print "  <td class=\"ui-widget-content\"><a href=\"" . $RSDProot . "/network.php?projectid=" . $a_rsdp_server['rsdp_project'] . $tasklabel . "\" target=\"_blank\">" . $a_projects['prj_name'] . " (" . $a_projects['prj_code'] . ")</a></td>\n";
 
           $q_string  = "select st_timestamp ";
           $q_string .= "from rsdp_status ";
           $q_string .= "where st_rsdp = " . $a_rsdp_server['rsdp_id'] . " and " . $taskdepend;
-          $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_rsdp_status = mysql_fetch_array($q_rsdp_status);
+          $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_rsdp_status = mysqli_fetch_array($q_rsdp_status);
 
           print "  <td class=\"ui-widget-content\">" . $a_rsdp_status['st_timestamp'] . "</td>\n";
 
