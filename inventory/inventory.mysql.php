@@ -80,43 +80,43 @@
 # prepopulate the small tables to increase lookup time.
       $q_string  = "select zone_id,zone_name ";
       $q_string .= "from ip_zones ";
-      $q_ip_zones = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_ip_zones = mysql_fetch_array($q_ip_zones)) {
+      $q_ip_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_ip_zones = mysqli_fetch_array($q_ip_zones)) {
         $ip_zones[$a_ip_zones['zone_id']] = $a_ip_zones['zone_name'];
       }
 
       $q_string  = "select med_id,med_text ";
       $q_string .= "from int_media ";
-      $q_int_media = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_int_media = mysql_fetch_array($q_int_media)) {
+      $q_int_media = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_int_media = mysqli_fetch_array($q_int_media)) {
         $int_media[$a_int_media['med_id']] = $a_int_media['med_text'];
       }
 
       $q_string  = "select itp_id,itp_acronym ";
       $q_string .= "from inttype ";
-      $q_inttype = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_inttype = mysql_fetch_array($q_inttype)) {
+      $q_inttype = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inttype = mysqli_fetch_array($q_inttype)) {
         $inttype[$a_inttype['itp_id']] = $a_inttype['itp_acronym'];
       }
 
       $q_string  = "select spd_id,spd_text ";
       $q_string .= "from int_speed ";
-      $q_int_speed = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_int_speed = mysql_fetch_array($q_int_speed)) {
+      $q_int_speed = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_int_speed = mysqli_fetch_array($q_int_speed)) {
         $int_speed[$a_int_speed['spd_id']] = $a_int_speed['spd_text'];
       }
 
       $q_string  = "select dup_id,dup_text ";
       $q_string .= "from int_duplex ";
-      $q_int_duplex = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_int_duplex = mysql_fetch_array($q_int_duplex)) {
+      $q_int_duplex = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_int_duplex = mysqli_fetch_array($q_int_duplex)) {
         $int_duplex[$a_int_duplex['dup_id']] = $a_int_duplex['dup_text'];
       }
 
       $q_string  = "select red_id,red_text ";
       $q_string .= "from int_redundancy ";
-      $q_int_redundancy = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_int_redundancy = mysql_fetch_array($q_int_redundancy)) {
+      $q_int_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_int_redundancy = mysqli_fetch_array($q_int_redundancy)) {
         $int_redundancy[$a_int_redundancy['red_id']] = $a_int_redundancy['red_text'];
       }
 
@@ -185,8 +185,8 @@
       }
       $q_string .= $filter;
       $q_string .= "order by inv_name ";
-      $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_inventory = mysql_fetch_array($q_inventory)) {
+      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
         $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">";
         $linkend   = "</a>";
@@ -194,14 +194,14 @@
         $q_string  = "select grp_name ";
         $q_string .= "from groups ";
         $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'];
-        $q_appadmin = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_appadmin = mysql_fetch_array($q_appadmin);
+        $q_appadmin = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_appadmin = mysqli_fetch_array($q_appadmin);
 
         $q_string  = "select hw_active ";
         $q_string .= "from hardware ";
         $q_string .= "where hw_primary = 1 and hw_deleted = 0 and hw_companyid = " . $a_inventory['inv_id'] . " ";
-        $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_hardware = mysql_fetch_array($q_hardware);
+        $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_hardware = mysqli_fetch_array($q_hardware);
 
         if ($formVars['csv'] == 'true') {
           $is_live = 'No';
@@ -287,7 +287,7 @@
         $detail .= "</form>\n";
       }
 
-      print "document.getElementById('detail_mysql').innerHTML = '" . mysql_real_escape_string($detail) . "';\n";
+      print "document.getElementById('detail_mysql').innerHTML = '" . mysqli_real_escape_string($detail) . "';\n";
 
 # hardware
       if ($formVars['csv'] == 'true') {
@@ -334,8 +334,8 @@
       }
       $q_string .= $filter;
       $q_string .= "order by inv_name ";
-      $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_inventory = mysql_fetch_array($q_inventory)) {
+      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
         $linkstart       = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">";
         $linkend         = "</a>";
@@ -348,8 +348,8 @@
         $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
         $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = 0 ";
         $q_string .= "order by hw_primary desc,part_id,hw_size ";
-        $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        while ($a_hardware = mysql_fetch_array($q_hardware)) {
+        $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
           if ($formVars['csv'] == 'true') {
             $hardware .= "\"" . $servername               . "\",";
@@ -388,8 +388,8 @@
           $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
           $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " ";
           $q_string .= "order by hw_primary desc,part_id,hw_size ";
-          $q_hw_child = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          while ($a_hw_child = mysql_fetch_array($q_hw_child)) {
+          $q_hw_child = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          while ($a_hw_child = mysqli_fetch_array($q_hw_child)) {
 
             if ($formVars['csv'] == 'true') {
               $hardware .= "\"" . $servername               . "\",";
@@ -430,7 +430,7 @@
         $hardware .= "</form>\n";
       }
 
-      print "document.getElementById('hardware_mysql').innerHTML = '" . mysql_real_escape_string($hardware) . "';\n";
+      print "document.getElementById('hardware_mysql').innerHTML = '" . mysqli_real_escape_string($hardware) . "';\n";
 
 
 # interfaces
@@ -497,8 +497,8 @@
       }
       $q_string .= $filter;
       $q_string .= "order by inv_name ";
-      $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_inventory = mysql_fetch_array($q_inventory)) {
+      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
         $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">";
         $linkend   = "</a>";
@@ -512,9 +512,9 @@
         $q_string .= "left join int_media on int_media.med_id = interface.int_media ";
         $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = 0 ";
         $q_string .= "order by int_server,int_face";
-        $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        if (mysql_num_rows($q_interface) > 0) {
-          while ($a_interface = mysql_fetch_array($q_interface)) {
+        $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_interface) > 0) {
+          while ($a_interface = mysqli_fetch_array($q_interface)) {
 
             $class = "ui-widget-content";
             $virtual = '';
@@ -653,9 +653,9 @@
             $q_string .= "left join int_media on int_media.med_id = interface.int_media ";
             $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_interface['int_id'] . " ";
             $q_string .= "order by int_server,int_face";
-            $q_int_child = mysql_query($q_string);
-            if (mysql_num_rows($q_int_child) > 0) {
-              while ($a_int_child = mysql_fetch_array($q_int_child)) {
+            $q_int_child = mysqli_query($db, $q_string);
+            if (mysqli_num_rows($q_int_child) > 0) {
+              while ($a_int_child = mysqli_fetch_array($q_int_child)) {
 
                 $class = "ui-widget-content";
                 $virtual = '';
@@ -801,9 +801,9 @@
         $interface .= $formVars['URL'] . $interfaceurl;
       }
 
-      print "document.getElementById('interface_mysql').innerHTML = '" . mysql_real_escape_string($interface) . "';\n";
+      print "document.getElementById('interface_mysql').innerHTML = '" . mysqli_real_escape_string($interface) . "';\n";
 
-      print "document.getElementById('tree_mysql').innerHTML = '" . mysql_real_escape_string("testing") . "';\n";
+      print "document.getElementById('tree_mysql').innerHTML = '" . mysqli_real_escape_string("testing") . "';\n";
 
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
