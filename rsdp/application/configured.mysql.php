@@ -71,7 +71,7 @@
 
         logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['rsdp']);
 
-        mysql_query($query) or die($query . ": " . mysql_error());
+        mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
         print "alert('" . $message . "');\n";
       }
@@ -90,8 +90,8 @@
         $q_string  = "select rsdp_application ";
         $q_string .= "from rsdp_server ";
         $q_string .= "where rsdp_id = " . $formVars['rsdp'];
-        $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+        $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
         generateEmail(
           $formVars['rsdp'],
@@ -115,8 +115,8 @@
         $q_string  = "select rsdp_platform ";
         $q_string .= "from rsdp_server ";
         $q_string .= "where rsdp_id = " . $formVars['rsdp'];
-        $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+        $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
         generateEmail(
           $formVars['rsdp'],
@@ -131,8 +131,8 @@
         $q_string  = "select tkt_infosec ";
         $q_string .= "from rsdp_tickets ";
         $q_string .= "where tkt_rsdp = " . $formVars['rsdp'];
-        $q_rsdp_tickets = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_rsdp_tickets = mysql_fetch_array($q_rsdp_tickets);
+        $q_rsdp_tickets = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
         if ($a_rsdp_tickets['tkt_infosec']) {
           submit_Ticket(
             $formVars['rsdp'],
@@ -146,8 +146,8 @@
         $q_string  = "select tkt_sysscan ";
         $q_string .= "from rsdp_tickets ";
         $q_string .= "where tkt_rsdp = " . $formVars['rsdp'];
-        $q_rsdp_tickets = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_rsdp_tickets = mysql_fetch_array($q_rsdp_tickets);
+        $q_rsdp_tickets = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
         if ($a_rsdp_tickets['tkt_sysscan']) {
           submit_Scan($formVars['rsdp']);
         }
