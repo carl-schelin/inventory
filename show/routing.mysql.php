@@ -20,8 +20,8 @@
   $q_string = "select inv_manager "
             . "from inventory "
             . "where inv_id = " . $formVars['id'] . " ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_inventory = mysql_fetch_array($q_inventory);
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inventory = mysqli_fetch_array($q_inventory);
 
   $output  = "<p></p>";
   $output .= "<table class=\"ui-styled-table\">";
@@ -83,8 +83,8 @@
   $q_string .= "left join interface on interface.int_id = routing.route_interface ";
   $q_string .= "where route_companyid = " . $formVars['id'] . " and route_ipv6 = 0 ";
   $q_string .= "order by route_address";
-  $q_routing = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_routing = mysql_fetch_array($q_routing)) {
+  $q_routing = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_routing = mysqli_fetch_array($q_routing)) {
 
     $checkmark = "";
     if ($a_routing['route_verified']) {
@@ -120,7 +120,7 @@
   }
   $output .= "</table>";
 
-  print "document.getElementById('routing_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+  print "document.getElementById('routing_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
 
 # ipv6 output
@@ -143,8 +143,8 @@
   $q_string .= "left join interface on interface.int_id = routing.route_interface ";
   $q_string .= "where route_companyid = " . $formVars['id'] . " and route_ipv6 = 1 ";
   $q_string .= "order by route_address";
-  $q_routing = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_routing = mysql_fetch_array($q_routing)) {
+  $q_routing = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_routing = mysqli_fetch_array($q_routing)) {
 
     $ipv6 = 1;
 
@@ -183,7 +183,7 @@
   $output .= "</table>";
 
   if ($ipv6) {
-    print "document.getElementById('ipv6routing_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+    print "document.getElementById('ipv6routing_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
   } else {
     print "document.getElementById('ipv6routing_mysql').innerHTML = '';\n";
   }
