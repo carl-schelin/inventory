@@ -35,9 +35,9 @@
   $q_string  = "select os_sysname ";
   $q_string .= "from rsdp_osteam ";
   $q_string .= "where os_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_osteam = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_rsdp_osteam) > 0) {
-    $a_rsdp_osteam = mysql_fetch_array($q_rsdp_osteam);
+  $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_rsdp_osteam) > 0) {
+    $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
   } else {
     $a_rsdp_osteam['os_sysname'] = "New Server";
   }
@@ -542,10 +542,10 @@ their task is ready to be worked.</li>
   $q_string  = "select count(*) ";
   $q_string .= "from rsdp_comments ";
   $q_string .= "where com_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_comments = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_comments = mysql_fetch_array($q_rsdp_comments);
+  $q_rsdp_comments = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_comments = mysqli_fetch_array($q_rsdp_comments);
 
-  if (mysql_num_rows($q_rsdp_comments)) {
+  if (mysqli_num_rows($q_rsdp_comments)) {
     print " (" . $a_rsdp_comments['count(*)'] . ")";
   } else {
     print " (0)";
@@ -593,8 +593,8 @@ their task is ready to be worked.</li>
   $q_string .= "from operatingsystem ";
   $q_string .= "where os_delete = 0 ";
   $q_string .= "order by os_software";
-  $q_operatingsystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_operatingsystem = mysql_fetch_array($q_operatingsystem)) {
+  $q_operatingsystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_operatingsystem = mysqli_fetch_array($q_operatingsystem)) {
       print "<option value=\"" . $a_operatingsystem['os_id'] . "\">" . htmlspecialchars($a_operatingsystem['os_software']) . "</option>\n";
   }
 ?>
@@ -609,8 +609,8 @@ their task is ready to be worked.</li>
   $q_string  = "select os_sysname ";
   $q_string .= "from rsdp_osteam ";
   $q_string .= "where os_rsdp = " . $formVars['rsdp'] . " ";
-  $q_rsdp_osteam = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_osteam = mysql_fetch_array($q_rsdp_osteam);
+  $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
 
   if (strlen($a_rsdp_osteam['os_sysname']) > 0) {
     $os_location = strtolower(substr($a_rsdp_osteam['os_sysname'],  0, 4));
@@ -633,8 +633,8 @@ their task is ready to be worked.</li>
   $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
   $q_string .= "left join products on products.prod_id = rsdp_server.rsdp_product ";
   $q_string .= "where rsdp_id = " . $formVars['rsdp'] . " ";
-  $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
 ?>
 
@@ -712,8 +712,8 @@ System Name. Once you click one of the task buttons at the top, the name is save
   $q_string  = "select dev_id,dev_type,dev_description ";
   $q_string .= "from device ";
   $q_string .= "order by dev_type ";
-  $q_device = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_device = mysql_fetch_array($q_device)) {
+  $q_device = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_device = mysqli_fetch_array($q_device)) {
     if ($os_device == strtolower($a_device['dev_type'])) {
       print "<option selected=\"true\" value=\"" . $a_device['dev_id'] . "\">" . $a_device['dev_type'] . " (" . $a_device['dev_description'] . ")</option>\n";
     } else {
@@ -772,8 +772,8 @@ System Name. Once you click one of the task buttons at the top, the name is save
   $q_string .= "from models ";
   $q_string .= "where mod_primary = 1 ";
   $q_string .= "order by mod_vendor,mod_name";
-  $q_models = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_models = mysql_fetch_array($q_models)) {
+  $q_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_models = mysqli_fetch_array($q_models)) {
     print "<option value=\"" . $a_models['mod_id'] . "\">" . htmlspecialchars($a_models['mod_vendor']) . " " . htmlspecialchars($a_models['mod_name']) . "</option>\n";
   }
 ?>
@@ -784,8 +784,8 @@ System Name. Once you click one of the task buttons at the top, the name is save
   $q_string  = "select part_id,part_name ";
   $q_string .= "from parts ";
   $q_string .= "order by part_name";
-  $q_parts = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_parts = mysql_fetch_array($q_parts)) {
+  $q_parts = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_parts = mysqli_fetch_array($q_parts)) {
     print "<option value=\"" . $a_parts['part_id'] . "\">" . htmlspecialchars($a_parts['part_name']) . "</option>\n";
   }
 ?>
@@ -843,8 +843,8 @@ System Name. Once you click one of the task buttons at the top, the name is save
 <?php
   $q_string  = "select plug_id,plug_text ";
   $q_string .= "from int_plugtype";
-  $q_int_plugtype = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_int_plugtype = mysql_fetch_array($q_int_plugtype)) {
+  $q_int_plugtype = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_int_plugtype = mysqli_fetch_array($q_int_plugtype)) {
     print "<option value=\"" . $a_int_plugtype['plug_id'] . "\">" . htmlspecialchars($a_int_plugtype['plug_text']) . "</option>\n";
   }
 ?>
@@ -857,8 +857,8 @@ System Name. Once you click one of the task buttons at the top, the name is save
 <?php
   $q_string  = "select volt_id,volt_text ";
   $q_string .= "from int_volts";
-  $q_int_volts = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_int_volts = mysql_fetch_array($q_int_volts)) {
+  $q_int_volts = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_int_volts = mysqli_fetch_array($q_int_volts)) {
     print "<option value=\"" . $a_int_volts['volt_id'] . "\">" . htmlspecialchars($a_int_volts['volt_text']) . "</option>\n";
   }
 ?>
@@ -1091,8 +1091,8 @@ system, use a permanent marker to clearly identify the location for the Data Cen
   $q_string  = "select itp_id,itp_name ";
   $q_string .= "from inttype ";
   $q_string .= "order by itp_id";
-  $q_inttype = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_inttype = mysql_fetch_array($q_inttype)) {
+  $q_inttype = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inttype = mysqli_fetch_array($q_inttype)) {
     print "<option value=\"" . $a_inttype['itp_id'] . "\">" . $a_inttype['itp_name'] . "</option>\n";
   }
 ?>
@@ -1105,8 +1105,8 @@ system, use a permanent marker to clearly identify the location for the Data Cen
   $q_string  = "select zone_id,zone_name ";
   $q_string .= "from ip_zones ";
   $q_string .= "order by zone_name";
-  $q_ip_zones = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_ip_zones = mysql_fetch_array($q_ip_zones)) {
+  $q_ip_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_ip_zones = mysqli_fetch_array($q_ip_zones)) {
     print "<option value=\"" . $a_ip_zones['zone_id'] . "\">" . $a_ip_zones['zone_name'] . "</option>\n";
   }
 ?>
@@ -1134,8 +1134,8 @@ system, use a permanent marker to clearly identify the location for the Data Cen
   $q_string  = "select red_id,red_text ";
   $q_string .= "from int_redundancy ";
   $q_string .= "order by red_text";
-  $q_int_redundancy = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_int_redundancy = mysql_fetch_array($q_int_redundancy)) {
+  $q_int_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_int_redundancy = mysqli_fetch_array($q_int_redundancy)) {
     print "<option value=\"" . $a_int_redundancy['red_id'] . "\">" . $a_int_redundancy['red_text'] . "</option>\n";
   }
 ?>
@@ -1181,8 +1181,8 @@ Assignment <select name="if_if_id" onchange="validate_Form();">
   $q_string  = "select med_id,med_text ";
   $q_string .= "from int_media ";
   $q_string .= "order by med_text";
-  $q_int_media = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_int_media = mysql_fetch_array($q_int_media)) {
+  $q_int_media = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_int_media = mysqli_fetch_array($q_int_media)) {
     print "<option value=\"" . $a_int_media['med_id'] . "\">" . $a_int_media['med_text'] . "</option>\n";
   }
 ?>
@@ -1193,8 +1193,8 @@ Assignment <select name="if_if_id" onchange="validate_Form();">
   $q_string  = "select spd_id,spd_text ";
   $q_string .= "from int_speed ";
   $q_string .= "order by spd_text";
-  $q_int_speed = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_int_speed = mysql_fetch_array($q_int_speed)) {
+  $q_int_speed = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_int_speed = mysqli_fetch_array($q_int_speed)) {
     print "<option value=\"" . $a_int_speed['spd_id'] . "\">" . $a_int_speed['spd_text'] . "</option>\n";
   }
 ?>
@@ -1205,8 +1205,8 @@ Assignment <select name="if_if_id" onchange="validate_Form();">
   $q_string  = "select dup_id,dup_text ";
   $q_string .= "from int_duplex ";
   $q_string .= "order by dup_text";
-  $q_int_duplex = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_int_duplex = mysql_fetch_array($q_int_duplex)) {
+  $q_int_duplex = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_int_duplex = mysqli_fetch_array($q_int_duplex)) {
     print "<option value=\"" . $a_int_duplex['dup_id'] . "\">" . $a_int_duplex['dup_text'] . "</option>\n";
   }
 ?>
@@ -1238,8 +1238,8 @@ Assignment <select name="if_if_id" onchange="validate_Form();">
   $q_string  = "select med_id,med_text ";
   $q_string .= "from int_media ";
   $q_string .= "order by med_text";
-  $q_int_media = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_int_media = mysql_fetch_array($q_int_media)) {
+  $q_int_media = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_int_media = mysqli_fetch_array($q_int_media)) {
     print "<option value=\"" . $a_int_media['med_id'] . "\">" . $a_int_media['med_text'] . "</option>\n";
   }
 ?>
