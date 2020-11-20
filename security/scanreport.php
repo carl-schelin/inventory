@@ -92,8 +92,8 @@
   $q_string .= "left join interface on interface.int_id = vulnerabilities.vuln_interface ";
   $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
   $q_string .= "left join vulnowner on vulnowner.vul_interface = vulnerabilities.vuln_interface and vulnowner.vul_security = vulnerabilities.vuln_securityid ";
-  $q_vulnerabilities = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_vulnerabilities = mysql_fetch_array($q_vulnerabilities)) {
+  $q_vulnerabilities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_vulnerabilities = mysqli_fetch_array($q_vulnerabilities)) {
     if (!isset($group[$a_vulnerabilities['vul_group']])) {
       $group[$a_vulnerabilities['vul_group']] = 0;
     }
@@ -195,20 +195,20 @@
   $q_string .= "from vulnowner ";
   $q_string .= "left join interface on interface.int_id = vulnowner.vul_interface ";
   $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
-  $q_vulnowner = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_vulnowner = mysql_fetch_array($q_vulnowner)) {
+  $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_vulnowner = mysqli_fetch_array($q_vulnowner)) {
     $q_string  = "select vuln_id ";
     $q_string .= "from vulnerabilities ";
     $q_string .= "where vuln_securityid = " . $a_vulnowner['vul_security'] . " and vuln_interface = " . $a_vulnowner['vul_interface'] . " ";
-    $q_vulnerabilities = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_vulnerabilities) == 0) {
+    $q_vulnerabilities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_vulnerabilities) == 0) {
 
       $q_string  = "select sev_name ";
       $q_string .= "from security ";
       $q_string .= "left join severity on severity.sev_id = security.sec_severity ";
       $q_string .= "where sec_id = " . $a_vulnowner['vul_security'] . " ";
-      $q_security = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_security = mysql_fetch_array($q_security);
+      $q_security = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_security = mysqli_fetch_array($q_security);
 
       if (isset($group_res[$a_vulnowner['vul_group']])) {
         $group_res[$a_vulnowner['vul_group']]++;
@@ -315,8 +315,8 @@
   $q_string .= "from groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name ";
-  $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_groups = mysql_fetch_array($q_groups)) {
+  $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_groups = mysqli_fetch_array($q_groups)) {
     $groupset = 0;
 
     $output  = "<tr>\n";
@@ -366,8 +366,8 @@
   $q_string  = "select prod_id,prod_name ";
   $q_string .= "from products ";
   $q_string .= "order by prod_name ";
-  $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_products = mysql_fetch_array($q_products)) {
+  $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_products = mysqli_fetch_array($q_products)) {
     $productset = 0;
 
     $output  = "<tr>\n";
@@ -408,7 +408,7 @@
 
   $q_string  = "select count(vul_id) ";
   $q_string .= "from vulnowner ";
-  $q_vulnowner = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_vulnowner = mysql_fetch_row($q_vulnowner);
 
   $total_entries = $a_vulnowner[0];
@@ -416,7 +416,7 @@
   $q_string  = "select count(vul_id) ";
   $q_string .= "from vulnowner ";
   $q_string .= "where vul_ticket != '' ";
-  $q_vulnowner = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_vulnowner = mysql_fetch_row($q_vulnowner);
 
   $total_tickets = $a_vulnowner[0];
@@ -426,7 +426,7 @@
   $q_string .= "from vulnowner ";
   $q_string .= "where vul_ticket != '' ";
   $q_string .= "group by vul_ticket ";
-  $q_vulnowner = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_vulnowner = mysql_fetch_row($q_vulnowner)) {
     $total_unique++;
   }
