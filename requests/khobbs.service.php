@@ -117,8 +117,8 @@
   $q_string .= "left join service on service.svc_id = inventory.inv_class ";
   $q_string .= "where hw_companyid != 0 and hw_primary = 1 and inv_status = 0 " . $admin . $type;
   $q_string .= $orderby;
-  $q_hardware = mysql_query($q_string) or die("Inventory test: " . $q_string . ": " . mysql_error());
-  while ($a_hardware = mysql_fetch_array($q_hardware)) {
+  $q_hardware = mysqli_query($db, $q_string) or die("Inventory test: " . $q_string . ": " . mysqli_error($db));
+  while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
     if (check_userlevel($AL_Edit)) {
       if (check_grouplevel($a_hardware['inv_manager'])) {
