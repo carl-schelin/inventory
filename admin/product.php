@@ -197,8 +197,8 @@ $(document).ready( function() {
   $q_string .= "from groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name ";
-  $q_groups = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_groups = mysql_fetch_array($q_groups)) {
+  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_groups = mysqli_fetch_array($q_groups)) {
     print "<option value=\"" . $a_groups['grp_id'] . "\">" . $a_groups['grp_name'] . "</option>\n";
   }
 ?></select></td>
@@ -208,8 +208,8 @@ $(document).ready( function() {
   $q_string  = "select bus_id,bus_name ";
   $q_string .= "from business_unit ";
   $q_string .= "order by bus_name ";
-  $q_business_unit = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_business_unit = mysql_fetch_array($q_business_unit)) {
+  $q_business_unit = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_business_unit = mysqli_fetch_array($q_business_unit)) {
     print "<option value=\"" . $a_business_unit['bus_id'] . "\">" . $a_business_unit['bus_name'] . "</option>\n";
   }
 ?>
@@ -221,8 +221,8 @@ $(document).ready( function() {
   $q_string  = "select svc_id,svc_acronym ";
   $q_string .= "from service ";
   $q_string .= "order by svc_id";
-  $q_service = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_service = mysql_fetch_array($q_service)) {
+  $q_service = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_service = mysqli_fetch_array($q_service)) {
     print "<option value=\"" . $a_service['svc_id'] . "\">" . $a_service['svc_acronym'] . "</option>\n";
   }
 ?>
