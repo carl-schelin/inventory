@@ -38,29 +38,29 @@
   $q_string .= "left join locations     on locations.loc_id     = rsdp_server.rsdp_location ";
   $q_string .= "left join projects      on projects.prj_id      = rsdp_server.rsdp_project ";
   $q_string .= "where rsdp_id = " . $formVars['rsdp'];
-  $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
   $q_string  = "select os_sysname,operatingsystem.os_software ";
   $q_string .= "from rsdp_osteam ";
   $q_string .= "left join operatingsystem on operatingsystem.os_id = rsdp_osteam.os_software ";
   $q_string .= "where os_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_osteam = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_osteam = mysql_fetch_array($q_rsdp_osteam);
+  $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
 
   $q_string  = "select if_ip ";
   $q_string .= "from rsdp_interface ";
   $q_string .= "where if_rsdp = " . $formVars['rsdp'] . " and if_type = 1";
-  $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_interface = mysql_fetch_array($q_rsdp_interface);
+  $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface);
 
   $q_string  = "select bu_id,bu_rsdp,bu_start,bu_include,bu_retention,bu_sunday,bu_monday,";
   $q_string .= "bu_tuesday,bu_wednesday,bu_thursday,bu_friday,bu_saturday,bu_suntime,";
   $q_string .= "bu_montime,bu_tuetime,bu_wedtime,bu_thutime,bu_fritime,bu_sattime ";
   $q_string .= "from rsdp_backups ";
   $q_string .= "where bu_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_backups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_backups = mysql_fetch_array($q_rsdp_backups);
+  $q_rsdp_backups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_backups = mysqli_fetch_array($q_rsdp_backups);
 
 
 
@@ -92,8 +92,8 @@
   $q_string  = "select fs_volume,fs_size ";
   $q_string .= "from rsdp_filesystem ";
   $q_string .= "where fs_rsdp = " . $formVars['rsdp'] . " and fs_backup = 1";
-  $q_rsdp_filesystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_rsdp_filesystem = mysql_fetch_array($q_rsdp_filesystem)) {
+  $q_rsdp_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_rsdp_filesystem = mysqli_fetch_array($q_rsdp_filesystem)) {
     $output .= "<br>" . $a_rsdp_filesystem['fs_volume'] . " (" . $a_rsdp_filesystem['fs_size'] . ")\n";
   }
 
@@ -102,8 +102,8 @@
   $q_string  = "select fs_volume,fs_size ";
   $q_string .= "from rsdp_filesystem ";
   $q_string .= "where fs_rsdp = " . $formVars['rsdp'] . " and fs_backup = 0";
-  $q_rsdp_filesystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_rsdp_filesystem = mysql_fetch_array($q_rsdp_filesystem)) {
+  $q_rsdp_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_rsdp_filesystem = mysqli_fetch_array($q_rsdp_filesystem)) {
     $output .= "<br>" . $a_rsdp_filesystem['fs_volume'] . " (" . $a_rsdp_filesystem['fs_size'] . ")\n";
   }
 
