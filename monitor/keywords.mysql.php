@@ -66,7 +66,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['key_email']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -118,8 +118,8 @@
       $q_string  = "select key_id,key_description,key_page,key_email,key_annotate,key_critical_annotate,key_deleted ";
       $q_string .= "from keywords ";
       $q_string .= $orderby;
-      $q_keywords = mysql_query($q_string) or die (mysql_error());
-      while ($a_keywords = mysql_fetch_array($q_keywords)) {
+      $q_keywords = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      while ($a_keywords = mysqli_fetch_array($q_keywords)) {
 
         $linkstart = "<a href=\"#\" onclick=\"show_file('keywords.fill.php?id="  . $a_keywords['key_id'] . "');jQuery('#dialogKeyword').dialog('open');\">";
         $linkdel   = "<input type=\"button\" value=\"Delete\" onclick=\"delete_line('keywords.del.php?id=" . $a_keywords['key_id'] . "');\">";
@@ -146,9 +146,9 @@
       }
       $output .= "</table>";
 
-      mysql_free_result($q_keywords);
+      mysqli_free_result($q_keywords);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.keywords.key_description.value = '';\n";
       print "document.keywords.key_page.value = '';\n";
