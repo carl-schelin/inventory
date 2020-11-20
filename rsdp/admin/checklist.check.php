@@ -34,8 +34,8 @@
   $q_string  = "select chk_id,chk_checked ";
   $q_string .= "from rsdp_check ";
   $q_string .= "where chk_rsdp = " . $formVars['chk_rsdp'] . " and chk_index = " . $formVars['chk_index'] . " and chk_task = " . $formVars['chk_task'] . " and chk_group = " . $formVars['chk_group'] . " ";
-  $q_rsdp_check = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_check = mysql_fetch_array($q_rsdp_check);
+  $q_rsdp_check = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_check = mysqli_fetch_array($q_rsdp_check);
 
   $q_string = 
     "chk_rsdp    =   " . $formVars['chk_rsdp']    . "," . 
@@ -52,6 +52,6 @@
     $query = "update rsdp_check set " . $q_string . " where chk_id = " . $a_rsdp_check['chk_id'];
   }
 
-  mysql_query($query) or die($query . ": " . mysql_error());
+  mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
 ?>
