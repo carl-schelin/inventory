@@ -26,14 +26,14 @@
       $q_string  = "select bug_text,bug_timestamp,bug_user ";
       $q_string .= "from bugs_detail ";
       $q_string .= "where bug_id = " . $formVars['id'];
-      $q_bugs_detail = mysql_query($q_string) or die (mysql_error());
-      $a_bugs_detail = mysql_fetch_array($q_bugs_detail);
-      mysql_free_result($q_bugs_detail);
+      $q_bugs_detail = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      $a_bugs_detail = mysqli_fetch_array($q_bugs_detail);
+      mysqli_free_result($q_bugs_detail);
 
       $selected = return_Index($a_bugs_detail['bug_user'],       "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
 
-      print "document.start.bug_text.value = '"      . mysql_real_escape_string($a_bugs_detail['bug_text'])      . "';\n";
-      print "document.start.bug_timestamp.value = '" . mysql_real_escape_string($a_bugs_detail['bug_timestamp']) . "';\n";
+      print "document.start.bug_text.value = '"      . mysqli_real_escape_string($a_bugs_detail['bug_text'])      . "';\n";
+      print "document.start.bug_timestamp.value = '" . mysqli_real_escape_string($a_bugs_detail['bug_timestamp']) . "';\n";
 
       print "document.start.bug_user['" . $selected . "'].selected = true;\n";
 
