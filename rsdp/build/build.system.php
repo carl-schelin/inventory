@@ -39,8 +39,8 @@
       $q_string  = "select dev_type ";
       $q_string .= "from device ";
       $q_string .= "where dev_id = " . $formVars['name_device'] . " ";
-      $q_device = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_device = mysql_fetch_array($q_device);
+      $q_device = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_device = mysqli_fetch_array($q_device);
 
       print "document.rsdp.os_sysname.value = '" . strtolower($formVars['name_location'] . $formVars['name_instance'] . $formVars['name_zone'] . $a_device['dev_type'] . $formVars['name_service'] . $formVars['name_freeform']) . "';\n";
 
