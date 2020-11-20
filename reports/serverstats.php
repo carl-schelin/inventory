@@ -354,7 +354,7 @@ to software and hardware section.</p>
   $q_string .= "and hw_built = '0000-00-00' ";
   $q_string .= "and hw_primary = 1";
   $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_hardware = mysql_fetch_row($q_hardware);
+  $a_hardware = mysqli_fetch_row($q_hardware);
 
   print "<p>Note: There are " . $a_hardware[0] . " servers with 0000-00-00 build dates which weren't counted.</p>\n";
 
