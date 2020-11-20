@@ -25,11 +25,11 @@
       $q_string  = "select win_text ";
       $q_string .= "from window ";
       $q_string .= "where win_id = " . $formVars['id'];
-      $q_window = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_window = mysql_fetch_array($q_window);
-      mysql_free_result($q_window);
+      $q_window = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_window = mysqli_fetch_array($q_window);
+      mysqli_free_result($q_window);
 
-      print "document.window.win_text.value = '" . mysql_real_escape_string($a_window['win_text'])        . "';\n";
+      print "document.window.win_text.value = '" . mysqli_real_escape_string($a_window['win_text'])        . "';\n";
 
       print "document.window.id.value = " . $formVars['id'] . ";\n";
 
