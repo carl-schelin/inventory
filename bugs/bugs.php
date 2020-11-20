@@ -154,8 +154,8 @@ $(document).ready( function() {
   $q_string  = "select mod_id,mod_name ";
   $q_string .= "from modules ";
   $q_string .= "order by mod_name ";
-  $q_modules = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_modules = mysql_fetch_array($q_modules)) {
+  $q_modules = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_modules = mysqli_fetch_array($q_modules)) {
     if ($formVars['id'] == $a_modules['mod_id']) {
       print "<option selected value=\"" . $a_modules['mod_id'] . "\">" . $a_modules['mod_name'] . "</option>\n";
     } else {
@@ -181,8 +181,8 @@ $(document).ready( function() {
   $q_string  = "select usr_first,usr_last ";
   $q_string .= "from users ";
   $q_string .= "where usr_id = " . $_SESSION['uid'];
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_users = mysql_fetch_array($q_users);
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_users = mysqli_fetch_array($q_users);
 
   print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_users['usr_first'] . " " . $a_users['usr_last'] . "</option>\n";
 
@@ -190,8 +190,8 @@ $(document).ready( function() {
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_first'] . " " . $a_users['usr_last'] . "</option>\n";
   }
 ?>
