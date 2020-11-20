@@ -38,7 +38,7 @@
         $query  = "update users ";
         $query .= "set " . $q_string . " ";
         $query .= "where usr_id = \"" . $formVars['rsdp_requestor'] . "\"";
-        mysql_query($query) or die($query . ": " . mysql_error());
+        mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
 
         $formVars["rsdp_location"]     = clean($_GET["rsdp_location"],     10);
@@ -147,12 +147,12 @@
 
         if ($formVars['rsdp'] > 0) {
           $query = "update rsdp_server set " . $q_string . " where rsdp_id = " . $formVars['rsdp'];
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
         }
 
         if ($formVars['rsdp'] == 0) {
           $query = "insert into rsdp_server set rsdp_id = null," . $q_string;
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
           $formVars['rsdp'] = last_insert_id();
           print "document.rsdp.rsdp.value = "          . $formVars['rsdp'] . ";\n";
           print "document.comments.com_rsdp.value = "  . $formVars['rsdp'] . ";\n";
@@ -200,14 +200,14 @@
 
           if ($formVars['tkt_id'] == 0) {
             $query = "insert into rsdp_tickets set tkt_id = null," . $q_string;
-            mysql_query($query) or die($query . ": " . mysql_error());
+            mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
             $formVars['tkt_id'] = last_insert_id();
             print "document.rsdp.tkt_id.value = " . $formVars['tkt_id'] . ";\n";
           }
           if ($formVars['tkt_id'] > 0) {
             $query = "update rsdp_tickets set " . $q_string . " where tkt_id = " . $formVars['tkt_id'];
-            mysql_query($query) or die($query . ": " . mysql_error());
+            mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
           }
         }
 
@@ -241,9 +241,9 @@
         $q_backup  = "select bu_id ";
         $q_backup .= "from rsdp_backups ";
         $q_backup .= "where bu_rsdp = " . $formVars['rsdp'] . " ";
-        $q_rsdp_backups = mysql_query($q_backup) or die($q_backup . ": " . mysql_error());
-        if (mysql_num_rows($q_rsdp_backups) > 0) {
-          $a_rsdp_backups = mysql_fetch_array($q_rsdp_backups);
+        $q_rsdp_backups = mysqli_query($db, $q_backup) or die($q_backup . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_rsdp_backups) > 0) {
+          $a_rsdp_backups = mysqli_fetch_array($q_rsdp_backups);
           $formVars['bu_id'] = $a_rsdp_backups['bu_id'];
         }
 
@@ -269,13 +269,13 @@
 
         if ($formVars['bu_id'] == 0) {
           $query = "insert into rsdp_backups set bu_id = null," . $q_string;
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           $formVars['bu_id'] = last_insert_id();
         }
         if ($formVars['bu_id'] > 0) {
           $query = "update rsdp_backups set " . $q_string . " where bu_id = " . $formVars['bu_id'];
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
         }
         print "document.rsdp.bu_id.value = " . $formVars['bu_id'] . ";\n";
       }
@@ -287,9 +287,9 @@
       $q_string  = "select os_id ";
       $q_string .= "from rsdp_osteam ";
       $q_string .= "where os_rsdp = " . $formVars['rsdp'] . " ";
-      $q_rsdp_osteam = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 # if a system record does not exist for this server, make one.
-      if (mysql_num_rows($q_rsdp_osteam) == 0) {
+      if (mysqli_num_rows($q_rsdp_osteam) == 0) {
         $q_string  = "insert ";
         $q_string .= "into rsdp_osteam ";
         $q_string .= "set ";
@@ -297,16 +297,16 @@
         $q_string .= "os_rsdp = " . $formVars['rsdp'] . ",";
         $q_string .= "os_sysname = \"Unnamed-" . $formVars['rsdp'] . "\"";
 
-        $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
       }
 
       $q_string  = "select pf_id ";
       $q_string .= "from rsdp_platform ";
       $q_string .= "where pf_rsdp = " . $formVars['rsdp'] . " ";
-      $q_rsdp_platform = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_rsdp_platform = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 # if a platform record does not exist for this server, make one.
-      if (mysql_num_rows($q_rsdp_platform) == 0) {
+      if (mysqli_num_rows($q_rsdp_platform) == 0) {
         $q_string  = "insert ";
         $q_string .= "into rsdp_platform ";
         $q_string .= "set ";
@@ -314,7 +314,7 @@
         $q_string .= "pf_rsdp = " . $formVars['rsdp'] . ",";
         $q_string .= "pf_model = 45";
 
-        $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
       }
 
@@ -322,9 +322,9 @@
       $q_string  = "select if_id ";
       $q_string .= "from rsdp_interface ";
       $q_string .= "where if_rsdp = " . $formVars['rsdp'] . " ";
-      $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 # if an interface record does not exist for this server, make one.
-      if (mysql_num_rows($q_rsdp_interface) == 0) {
+      if (mysqli_num_rows($q_rsdp_interface) == 0) {
         $q_string  = "insert ";
         $q_string .= "into rsdp_interface ";
         $q_string .= "set ";
@@ -332,7 +332,7 @@
         $q_string .= "if_rsdp = " . $formVars['rsdp'] . ",";
         $q_string .= "if_name = \"Unnamed-" . $formVars['rsdp'] . "\"";
 
-        $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
       }
 
@@ -345,8 +345,8 @@
         $q_string  = "select rsdp_platform ";
         $q_string .= "from rsdp_server ";
         $q_string .= "where rsdp_id = " . $formVars['rsdp'];
-        $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+        $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
         generateEmail(
           $formVars['rsdp'], 
@@ -361,8 +361,8 @@
         $q_string  = "select tkt_build ";
         $q_string .= "from rsdp_tickets ";
         $q_string .= "where tkt_rsdp = " . $formVars['rsdp'];
-        $q_rsdp_tickets = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_rsdp_tickets = mysql_fetch_array($q_rsdp_tickets);
+        $q_rsdp_tickets = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
         if ($a_rsdp_tickets['tkt_build']) {
           submit_Ticket(
             $formVars['rsdp'],
