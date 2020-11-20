@@ -53,7 +53,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['san_sysport']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
         } else {
           print "alert('You must input data before saving changes.');\n";
@@ -68,15 +68,15 @@
           $q_string  = "select san_sysport ";
           $q_string .= "from rsdp_san ";
           $q_string .= "where san_rsdp = " . $formVars['copyfrom'];
-          $q_rsdp_san = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          while ($a_rsdp_san = mysql_fetch_array($q_rsdp_san)) {
+          $q_rsdp_san = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          while ($a_rsdp_san = mysqli_fetch_array($q_rsdp_san)) {
 
             $q_string =
               "san_rsdp     =   " . $formVars['san_rsdp']      . "," .
               "san_sysport  = \"" . $a_rsdp_san['san_sysport'] . "\"";
 
             $query = "insert into rsdp_san set san_id = NULL, " . $q_string;
-            mysql_query($query) or die($query . ": " . mysql_error());
+            mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
           }
         }
       }
@@ -128,10 +128,10 @@
       $q_string .= "from rsdp_san ";
       $q_string .= "left join int_media on int_media.med_id = rsdp_san.san_media ";
       $q_string .= "where san_rsdp = " . $formVars['san_rsdp'];
-      $q_rsdp_san = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_rsdp_san = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-      if (mysql_num_rows($q_rsdp_san) > 0) {
-        while ($a_rsdp_san = mysql_fetch_array($q_rsdp_san)) {
+      if (mysqli_num_rows($q_rsdp_san) > 0) {
+        while ($a_rsdp_san = mysqli_fetch_array($q_rsdp_san)) {
 
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('san.fill.php?id=" . $a_rsdp_san['san_id'] . "');jQuery('#dialogSAN').dialog('open');\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_san('san.del.php?id=" . $a_rsdp_san['san_id'] . "');\">";
@@ -153,9 +153,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_rsdp_san);
+      mysqli_free_result($q_rsdp_san);
 
-      print "document.getElementById('san_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('san_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.san.san_sysport.value = '';\n";
       print "document.san.san_switch.value = '';\n";
