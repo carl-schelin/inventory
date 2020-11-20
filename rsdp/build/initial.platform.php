@@ -33,16 +33,16 @@
       $q_string  = "select usr_group ";
       $q_string .= "from users ";
       $q_string .= "where usr_id = " . $formVars['rsdp_platformspoc'];
-      $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_users) > 0) {
-        $a_users = mysql_fetch_array($q_users);
+      $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_users) > 0) {
+        $a_users = mysqli_fetch_array($q_users);
 
         $q_string  = "update "; 
         $q_string .= "rsdp_server ";
         $q_string .= "set ";
         $q_string .= "rsdp_platform = " . $a_users['usr_group'] . " ";
         $q_string .= "where rsdp_id = " . $formVars['rsdp'] . " ";
-        $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 # retrieve index values
         $platform     = return_Index($a_users['usr_group'],     "select grp_id from groups where grp_disabled = 0 order by grp_name");
@@ -51,7 +51,7 @@
 
       }
 
-      mysql_free_result($q_users);
+      mysqli_free_result($q_users);
 
       print "validate_Form();\n";
 
