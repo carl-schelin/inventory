@@ -62,9 +62,9 @@
   $q_string .= "left join int_volts on int_volts.volt_id = models.mod_volts ";
   $q_string .= "where mod_primary = 1 and mod_virtual = 0 ";
   $q_string .= $orderby;
-  $q_models = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_models) > 0) {
-    while ($a_models = mysql_fetch_array($q_models)) {
+  $q_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_models) > 0) {
+    while ($a_models = mysqli_fetch_array($q_models)) {
 
       print "<tr>\n";
       print "  <td class=\"ui-widget-content\">" . $a_models['mod_id']     . "</td>\n";
@@ -84,7 +84,7 @@
     print "</tr>\n";
   }
 
-  mysql_free_result($q_models);
+  mysqli_free_result($q_models);
 
 ?>
 </table>
