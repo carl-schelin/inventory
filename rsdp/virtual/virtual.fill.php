@@ -26,9 +26,9 @@
       $q_string  = "select if_id,if_netprov,if_sanprov,if_vmprov,if_vmnote,if_vmcheck ";
       $q_string .= "from rsdp_infrastructure ";
       $q_string .= "where if_rsdp = " . $formVars['rsdp'];
-      $q_rsdp_infrastructure = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_rsdp_infrastructure) > 0) {
-        $a_rsdp_infrastructure = mysql_fetch_array($q_rsdp_infrastructure);
+      $q_rsdp_infrastructure = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_rsdp_infrastructure) > 0) {
+        $a_rsdp_infrastructure = mysqli_fetch_array($q_rsdp_infrastructure);
 
         if ($a_rsdp_infrastructure['if_vmcheck']) {
           print "document.rsdp.if_vmcheck.checked = true;\n";
@@ -51,13 +51,13 @@
           print "document.rsdp.if_vmprov.checked = false;\n";
         }
 
-        print "document.rsdp.if_vmnote.value = '" . mysql_real_escape_string($a_rsdp_infrastructure['if_vmnote']) . "';\n";
+        print "document.rsdp.if_vmnote.value = '" . mysqli_real_escape_string($a_rsdp_infrastructure['if_vmnote']) . "';\n";
 
         print "document.rsdp.id.value = " . $a_rsdp_infrastructure['if_id'] . ";\n";
 
       }
 
-      mysql_free_result($q_rsdp_infrastructure);
+      mysqli_free_result($q_rsdp_infrastructure);
 
       print "validate_Form();\n";
 
