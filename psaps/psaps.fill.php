@@ -27,9 +27,9 @@
       $q_string .= "from psaps ";
       $q_string .= "left join inventory on inventory.inv_id = psaps.psap_companyid ";
       $q_string .= "where psap_id = " . $formVars['id'];
-      $q_psaps = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_psaps = mysql_fetch_array($q_psaps);
-      mysql_free_result($q_psaps);
+      $q_psaps = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_psaps = mysqli_fetch_array($q_psaps);
+      mysqli_free_result($q_psaps);
 
       $q_string  = "select inv_id,inv_name ";
       $q_string .= "from inventory ";
@@ -41,12 +41,12 @@
 
       print "document.psaps.psap_companyid[" . $companyid . "].selected = true;\n";
 
-      print "document.psaps.psap_ali_id.value = '"        . mysql_real_escape_string($a_psaps['psap_ali_id'])        . "';\n";
-      print "document.psaps.psap_psap_id.value = '"       . mysql_real_escape_string($a_psaps['psap_psap_id'])       . "';\n";
-      print "document.psaps.psap_description.value = '"   . mysql_real_escape_string($a_psaps['psap_description'])   . "';\n";
-      print "document.psaps.psap_lport.value = '"         . mysql_real_escape_string($a_psaps['psap_lport'])         . "';\n";
-      print "document.psaps.psap_circuit_id.value = '"    . mysql_real_escape_string($a_psaps['psap_circuit_id'])    . "';\n";
-      print "document.psaps.psap_updated.value = '"       . mysql_real_escape_string($a_psaps['psap_updated'])       . "';\n";
+      print "document.psaps.psap_ali_id.value = '"        . mysqli_real_escape_string($a_psaps['psap_ali_id'])        . "';\n";
+      print "document.psaps.psap_psap_id.value = '"       . mysqli_real_escape_string($a_psaps['psap_psap_id'])       . "';\n";
+      print "document.psaps.psap_description.value = '"   . mysqli_real_escape_string($a_psaps['psap_description'])   . "';\n";
+      print "document.psaps.psap_lport.value = '"         . mysqli_real_escape_string($a_psaps['psap_lport'])         . "';\n";
+      print "document.psaps.psap_circuit_id.value = '"    . mysqli_real_escape_string($a_psaps['psap_circuit_id'])    . "';\n";
+      print "document.psaps.psap_updated.value = '"       . mysqli_real_escape_string($a_psaps['psap_updated'])       . "';\n";
 
       if ($a_psaps['psap_texas']) {
         print "document.psaps.psap_texas.checked = true;\n";
