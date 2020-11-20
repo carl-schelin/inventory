@@ -38,14 +38,14 @@
   $q_string .= "left join country       on country.cn_id        = locations.loc_country ";
   $q_string .= "left join projects      on projects.prj_id      = rsdp_server.rsdp_project ";
   $q_string .= "where rsdp_id = " . $formVars['rsdp'];
-  $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
   $q_string  = "select os_sysname ";
   $q_string .= "from rsdp_osteam ";
   $q_string .= "where os_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_osteam = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_osteam = mysql_fetch_array($q_rsdp_osteam);
+  $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
 
   $q_string  = "select pf_serial,pf_asset,pf_redundant,pf_row,pf_rack,pf_unit,pf_circuita,pf_circuitb,";
   $q_string .= "mod_vendor,mod_name,part_name,mod_size,mod_plugs,plug_text,volt_text,mod_draw,mod_start ";
@@ -55,14 +55,14 @@
   $q_string .= "left join int_volts on int_volts.volt_id = models.mod_volts ";
   $q_string .= "left join int_plugtype on int_plugtype.plug_id = models.mod_plugtype ";
   $q_string .= "where pf_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_platform = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_platform = mysql_fetch_array($q_rsdp_platform);
+  $q_rsdp_platform = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_platform = mysqli_fetch_array($q_rsdp_platform);
 
   $q_string  = "select grp_name ";
   $q_string .= "from groups ";
   $q_string .= "where grp_id = " . $a_rsdp_server['rsdp_application'];
-  $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_groups = mysql_fetch_array($q_groups);
+  $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_groups = mysqli_fetch_array($q_groups);
 
   $output  = "<h1>Data Center Request</h1>\n";
 
@@ -127,8 +127,8 @@
   $q_string .= "from rsdp_interface ";
   $q_string .= "left join int_media on int_media.med_id = rsdp_interface.if_media ";
   $q_string .= "where if_rsdp = " . $formVars['rsdp'] . " and if_swcheck = 1 ";
-  $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_rsdp_interface) > 0) {
+  $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_rsdp_interface) > 0) {
 
     $output .= "<table cellspacing=\"0\" cellpadding=\"1\" border=\"1\">\n";
     $output .= "<tr>\n";
@@ -143,7 +143,7 @@
     $output .= "<th>Cable #</th>\n";
     $output .= "</tr>\n";
 
-    while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
+    while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
 
       $output .= "<tr>\n";
       $output .= "<td>&nbsp;</td>\n";
@@ -168,8 +168,8 @@
   $q_string .= "from rsdp_san ";
   $q_string .= "left join int_media on int_media.med_id = rsdp_san.san_media ";
   $q_string .= "where san_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_san = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_rsdp_san) > 0) {
+  $q_rsdp_san = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_rsdp_san) > 0) {
 
     $output .= "<table cellspacing=\"0\" cellpadding=\"1\" border=\"1\">\n";
     $output .= "<tr>\n";
@@ -184,7 +184,7 @@
     $output .= "<th>Cable #</th>\n";
     $output .= "</tr>\n";
 
-    while ($a_rsdp_san = mysql_fetch_array($q_rsdp_san)) {
+    while ($a_rsdp_san = mysqli_fetch_array($q_rsdp_san)) {
 
       $output .= "<tr>\n";
       $output .= "<td>&nbsp;</td>\n";
