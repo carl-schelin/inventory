@@ -25,7 +25,7 @@
       $q_string  = "update operatingsystem ";
       $q_string .= "set os_delete = 0,os_user = " . $_SESSION['uid'] . " ";
       $q_string .= "where os_id = " . $formVars['id'];
-      $update = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $update = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
       print "alert('Operating System undeleted.');\n";
 
