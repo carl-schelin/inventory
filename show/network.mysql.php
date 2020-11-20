@@ -27,8 +27,8 @@
   $q_string  = "select inv_manager ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_id = " . $formVars['id'] . " ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_inventory = mysql_fetch_array($q_inventory);
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inventory = mysqli_fetch_array($q_inventory);
 
   $output  = "<table class=\"ui-styled-table\">";
   $output .= "<tr>";
@@ -113,9 +113,9 @@
   $q_string .= "left join inttype  on interface.int_type = inttype.itp_id ";
   $q_string .= "where int_companyid = " . $formVars['id'] . " and int_int_id = 0 and int_ip6 = 0 ";
   $q_string .= "order by int_face,int_addr";
-  $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-  while ( $a_interface = mysql_fetch_array($q_interface) ) {
+  while ( $a_interface = mysqli_fetch_array($q_interface) ) {
 
     $intnote = " title=\"" . $a_interface['int_note'] . "\"";
     $checkmark = "";
@@ -221,9 +221,9 @@
     $q_string .= "left join inttype on interface.int_type = inttype.itp_id ";
     $q_string .= "where int_companyid = " . $formVars['id'] . " and int_int_id = " . $a_interface['int_id'] . " and int_ip6 = 0 ";
     $q_string .= "order by int_face,int_addr";
-    $q_redundancy = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-    while ( $a_redundancy = mysql_fetch_array($q_redundancy) ) {
+    while ( $a_redundancy = mysqli_fetch_array($q_redundancy) ) {
 
       $intnote = " title=\"" . $a_redundancy['int_note'] . "\"";
       $checkmark = "";
@@ -329,9 +329,9 @@
       $q_string .= "left join inttype on interface.int_type = inttype.itp_id ";
       $q_string .= "where int_companyid = " . $formVars['id'] . " and int_int_id = " . $a_redundancy['int_id'] . " and int_ip6 = 0 ";
       $q_string .= "order by int_face,int_addr";
-      $q_secondary = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_secondary = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-      while ( $a_secondary = mysql_fetch_array($q_secondary) ) {
+      while ( $a_secondary = mysqli_fetch_array($q_secondary) ) {
 
         $intnote = " title=\"" . $a_secondary['int_note'] . "\"";
         $checkmark = "";
@@ -431,7 +431,7 @@
   }
   $output .= "</table>";
 
-  print "document.getElementById('network_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+  print "document.getElementById('network_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
 
 # IP6 table
@@ -464,9 +464,9 @@
             . "left join inttype on interface.int_type = inttype.itp_id "
             . "where int_companyid = " . $formVars['id'] . " and int_int_id = 0 and int_ip6 = 1 "
             . "order by int_face,int_addr";
-  $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-  while ( $a_interface = mysql_fetch_array($q_interface) ) {
+  while ( $a_interface = mysqli_fetch_array($q_interface) ) {
 
     $ipv6 = 1;
 
@@ -545,9 +545,9 @@
               . "left join inttype on interface.int_type = inttype.itp_id "
               . "where int_companyid = " . $formVars['id'] . " and int_int_id = " . $a_interface['int_id'] . " and int_ip6 = 1 "
               . "order by int_face,int_addr";
-    $q_redundancy = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-    while ( $a_redundancy = mysql_fetch_array($q_redundancy) ) {
+    while ( $a_redundancy = mysqli_fetch_array($q_redundancy) ) {
 
       $intnote = " title=\"" . $a_redundancy['int_note'] . "\"";
       $checkmark = "";
@@ -623,9 +623,9 @@
                 . "left join inttype on interface.int_type = inttype.itp_id "
                 . "where int_companyid = " . $formVars['id'] . " and int_int_id = " . $a_redundancy['int_id'] . " and int_ip6 = 1 "
                 . "order by int_face,int_addr";
-      $q_secondary = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_secondary = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-      while ( $a_secondary = mysql_fetch_array($q_secondary) ) {
+      while ( $a_secondary = mysqli_fetch_array($q_secondary) ) {
 
         $intnote = " title=\"" . $a_secondary['int_note'] . "\"";
         $checkmark = "";
@@ -699,7 +699,7 @@
 
 # only throw a table if ipv6 exists
   if ($ipv6) {
-    print "document.getElementById('ipv6network_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+    print "document.getElementById('ipv6network_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
   } else {
     print "document.getElementById('ipv6network_mysql').innerHTML = '';\n";
   }
