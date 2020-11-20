@@ -25,7 +25,7 @@
       $q_string  = "delete ";
       $q_string .= "from issue_detail ";
       $q_string .= "where det_id = " . $formVars['id'];
-      $insert = mysql_query($query) or die(mysql_error());
+      $insert = mysqli_query($db, $query) or die(mysqli_error($db));
 
       print "alert('Comment deleted.');\n";
 
