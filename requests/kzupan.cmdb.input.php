@@ -122,8 +122,8 @@
   $q_string .= "left join products  on products.prod_id        = software.sw_product ";
   $q_string .= "where inv_status = 0 and inv_manager = " . $formVars['group'] . " and hw_primary = 1 ";
   $q_string .= "group by inv_name ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $svrclass = '';
     if (return_System($a_inventory['inv_id']) == 'Linux') {
@@ -169,8 +169,8 @@
     $q_string  = "select int_addr ";
     $q_string .= "from interface ";
     $q_string .= "where int_ip6 = 0 and int_type != 7 and int_type != 12 and int_addr != \"\" and int_companyid = " . $a_inventory['inv_id'] . " ";
-    $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    while ($a_interface = mysql_fetch_array($q_interface)) {
+    $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_interface = mysqli_fetch_array($q_interface)) {
       $ip_address .= $comma . $a_interface['int_addr'];
       $comma = ", ";
     }
@@ -179,8 +179,8 @@
     $q_string  = "select grp_name,grp_snow ";
     $q_string .= "from groups ";
     $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
-    $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_groups = mysql_fetch_array($q_groups);
+    $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_groups = mysqli_fetch_array($q_groups);
 
     $class = "ui-widget-content";
     $inv_group = $a_inventory['grp_snow'];
@@ -242,7 +242,7 @@
     }
   }
 
-  mysql_free_result($q_inventory);
+  mysqli_free_result($q_inventory);
 
   if ($formVars['csv']) {
     print "</p>\n";
