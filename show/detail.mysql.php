@@ -29,15 +29,15 @@
             . "left join states on states.st_id = locations.loc_state "
             . "left join country on country.cn_id = locations.loc_country "
             . "where inv_id = " . $formVars['id'] . " ";
-  $q_inventory = mysql_query($q_string) or die(mysql_error());
-  $a_inventory = mysql_fetch_array($q_inventory);
+  $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  $a_inventory = mysqli_fetch_array($q_inventory);
 
   if ($a_inventory['inv_companyid'] > 0) {
     $q_string  = "select inv_name ";
     $q_string .= "from inventory ";
     $q_string .= "where inv_id = " . $a_inventory['inv_companyid'];
-    $q_chassis = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_chassis = mysql_fetch_array($q_chassis);
+    $q_chassis = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_chassis = mysqli_fetch_array($q_chassis);
   } else {
     $a_chassis['inv_name'] = '';
   }
@@ -132,8 +132,8 @@
   $q_string  = "select grp_name ";
   $q_string .= "from groups ";
   $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
-  $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_groups = mysql_fetch_array($q_groups);
+  $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_groups = mysqli_fetch_array($q_groups);
 
   $output .= "<td class=\"" . $class_detail . "\" colspan=\"5\"><strong>Application Managed By</strong>: " . $a_groups['grp_name'] . "</td>";
   $output .= "</tr>";
@@ -141,8 +141,8 @@
   $q_string  = "select svc_name,svc_availability,svc_downtime,svc_mtbf,svc_geographic,svc_mttr,svc_resource,svc_restore ";
   $q_string .= "from service ";
   $q_string .= "where svc_id = " . $a_inventory['inv_class'];
-  $q_service = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_service = mysql_fetch_array($q_service);
+  $q_service = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_service = mysqli_fetch_array($q_service);
 
   $geographic = 'No';
   if ($a_service['svc_geographic']) {
@@ -210,8 +210,8 @@
     $q_string .= "left join products on products.prod_id = inventory.inv_product ";
     $q_string .= "where inv_companyid = " . $formVars['id'] . " and inv_status = 0 ";
     $q_string .= "order by inv_unit ";
-    $q_children = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_children) > 0) {
+    $q_children = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_children) > 0) {
       $output .= "<table class=\"ui-styled-table\">";
       $output .= "<tr>";
       $output .= "<th class=\"ui-state-default\" colspan=\"6\">Children</th>";
@@ -224,15 +224,15 @@
       $output .= "<th class=\"ui-state-default\">Platform</th>";
       $output .= "<th class=\"ui-state-default\">Application</th>";
       $output .= "</tr>";
-      while ($a_children = mysql_fetch_array($q_children)) {
+      while ($a_children = mysqli_fetch_array($q_children)) {
         $linkstart = "<a href=\"inventory.php?server=" . $a_children['inv_id'] . "\" target=\"_blank\">";
         $linkend   = "</a>";
 
         $q_string  = "select grp_name ";
         $q_string .= "from groups ";
         $q_string .= "where grp_id = " . $a_children['inv_appadmin'] . " ";
-        $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_groups = mysql_fetch_array($q_groups);
+        $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_groups = mysqli_fetch_array($q_groups);
 
         $output .= "<tr>";
         $output .= "<td class=\"ui-widget-content delete\">" . $linkstart . $a_children['inv_unit'] . $linkend . "</td>";
@@ -258,8 +258,8 @@
       $q_string  = "select img_file ";
       $q_string .= "from images ";
       $q_string .= "where img_id = " . $a_inventory['inv_front'];
-      $q_images = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_images = mysql_fetch_array($q_images);
+      $q_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_images = mysqli_fetch_array($q_images);
 
       $output .= "<td class=\"ui-widget-content\" style=\"text-align: center;\">";
         $output .= "<a href=\"" . $Siteroot . "/pictures/" . $a_images['img_file'] . "\">";
@@ -276,8 +276,8 @@
       $q_string  = "select img_file ";
       $q_string .= "from images ";
       $q_string .= "where img_id = " . $a_inventory['inv_rear'];
-      $q_images = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_images = mysql_fetch_array($q_images);
+      $q_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_images = mysqli_fetch_array($q_images);
 
       $output .= "<td class=\"ui-widget-content\" style=\"text-align: center;\">";
         $output .= "<a href=\"" . $Siteroot . "/pictures/" . $a_images['img_file']  . "\">";
@@ -316,8 +316,8 @@
   $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
   $q_string .= "where inv_clusterid = " . $formVars['id'] . " and inv_status = 0 ";
   $q_string .= "order by inv_name ";
-  $q_children = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_children) > 0) {
+  $q_children = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_children) > 0) {
     $output .= "<table class=\"ui-styled-table\">";
     $output .= "<tr>";
     $output .= "<th class=\"ui-state-default\" colspan=\"4\">Cluster Membership Information</th>";
@@ -328,15 +328,15 @@
     $output .= "<th class=\"ui-state-default\">Platform</th>";
     $output .= "<th class=\"ui-state-default\">Application</th>";
     $output .= "</tr>";
-    while ($a_children = mysql_fetch_array($q_children)) {
+    while ($a_children = mysqli_fetch_array($q_children)) {
       $linkstart = "<a href=\"inventory.php?server=" . $a_children['inv_id'] . "\" target=\"_blank\">";
       $linkend   = "</a>";
 
       $q_string  = "select grp_name ";
       $q_string .= "from groups ";
       $q_string .= "where grp_id = " . $a_children['inv_appadmin'] . " ";
-      $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_groups = mysql_fetch_array($q_groups);
+      $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_groups = mysqli_fetch_array($q_groups);
 
       $output .= "<tr>";
       $output .= "<td class=\"ui-widget-content\">" . $linkstart . $a_children['inv_name']     . $linkend . "</td>";
@@ -352,8 +352,8 @@
             . "from hardware "
             . "where hw_companyid = " . $formVars['id'] . " "
             . "and hw_primary = 1";
-  $q_hardware = mysql_query($q_string) or die(mysql_error());
-  $a_hardware = mysql_fetch_array($q_hardware);
+  $q_hardware = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  $a_hardware = mysqli_fetch_array($q_hardware);
 
   if ($a_hardware['hw_active'] == '0000-00-00') {
     $class = "ui-state-error";
@@ -379,8 +379,8 @@
   $q_string = "select inv_name,inv_ssh,inv_centrify,inv_document,inv_adzone,inv_domain,inv_notes "
             . "from inventory "
             . "where inv_id = " . $formVars['id'];
-  $q_inventory = mysql_query($q_string) or die(mysql_error());
-  $a_inventory = mysql_fetch_array($q_inventory);
+  $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  $a_inventory = mysqli_fetch_array($q_inventory);
 
   $output .= "<table class=\"ui-styled-table\">";
   $output .= "<tr>";
@@ -425,5 +425,5 @@
 
 ?>
 
-document.getElementById('detail_mysql').innerHTML = '<?php print mysql_real_escape_string($output); ?>';
+document.getElementById('detail_mysql').innerHTML = '<?php print mysqli_real_escape_string($output); ?>';
 
