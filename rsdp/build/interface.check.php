@@ -29,8 +29,8 @@
       $q_string  = "select if_ip,if_ipcheck,if_switch,if_swcheck ";
       $q_string .= "from rsdp_interface ";
       $q_string .= "where if_id = " . $formVars['id'];
-      $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_rsdp_interface = mysql_fetch_array($q_rsdp_interface);
+      $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface);
 
 # if check and ip or switch is configured, tell the main page to ask
       if ($a_rsdp_interface['if_ipcheck'] && strlen($a_rsdp_interface['if_ip']) > 0) {
