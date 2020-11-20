@@ -62,7 +62,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['dev_type']);
 
-          mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -110,9 +110,9 @@
       $q_string .= "from device ";
       $q_string .= "left join users on users.usr_id = device.dev_userid ";
       $q_string .= "order by dev_type";
-      $q_device = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_device) > 0) {
-        while ($a_device = mysql_fetch_array($q_device)) {
+      $q_device = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_device) > 0) {
+        while ($a_device = mysqli_fetch_array($q_device)) {
 
           if ($a_device['dev_infrastructure']) {
             $infrastructure = 'Yes';
@@ -148,9 +148,9 @@
         $output .= "</tr>";
       }
 
-      mysql_free_result($q_device);
+      mysqli_free_result($q_device);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
   if ($_SESSION['uid'] == 2) {
 
