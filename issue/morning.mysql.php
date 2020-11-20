@@ -63,7 +63,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['morn_id']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -78,8 +78,8 @@
         $q_string  = "select inv_name,inv_function ";
         $q_string .= "from inventory ";
         $q_string .= "where inv_id = " . $formVars['server'] . " ";
-        $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_inventory = mysql_fetch_array($q_inventory);
+        $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_inventory = mysqli_fetch_array($q_inventory);
 
         $initial = "<strong>" . $a_inventory['inv_name'] . "</strong> - " . $a_inventory['inv_function'] . " - ";
 
@@ -87,8 +87,8 @@
         $q_string .= "from issue_morning ";
         $q_string .= "where morn_issue = " . $formVars['id'] . " ";
         $q_string .= "order by morn_timestamp ";
-        $q_issue_morning = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        while ($a_issue_morning = mysql_fetch_array($q_issue_morning)) {
+        $q_issue_morning = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_issue_morning = mysqli_fetch_array($q_issue_morning)) {
 
           $output .= $initial . $a_issue_morning['morn_text'];
 
@@ -112,15 +112,15 @@
         $q_string .= "order by rep_date ";
         $q_string .= "desc ";
         $q_string .= "limit 1 ";
-        $q_report = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        if (mysql_num_rows($q_report) > 0) {
-          $a_report = mysql_fetch_array($q_report);
+        $q_report = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_report) > 0) {
+          $a_report = mysqli_fetch_array($q_report);
           $query = "update report set " . $q_morning_report . " where rep_id = " . $a_report['rep_id'];
         } else {
           $query = "insert into report set rep_id = null," . $q_morning_report;
         }
 
-        $result = mysql_query($query) or die($query . ": " . mysql_error());
+        $result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
         print "alert('Morning Report published.');\n";
       }
@@ -137,8 +137,8 @@
       $q_string  = "select inv_name,inv_function ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_id = " . $formVars['server'] . " ";
-      $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_inventory = mysql_fetch_array($q_inventory);
+      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_inventory = mysqli_fetch_array($q_inventory);
 
       $initial = "<p><strong>" . $a_inventory['inv_name'] . "</strong> - " . $a_inventory['inv_function'] . " - ";
 
@@ -148,8 +148,8 @@
       $q_string .= "from issue_morning ";
       $q_string .= "where morn_issue = " . $formVars['id'] . " ";
       $q_string .= "order by morn_timestamp ";
-      $q_issue_morning = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_issue_morning = mysql_fetch_array($q_issue_morning)) {
+      $q_issue_morning = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_issue_morning = mysqli_fetch_array($q_issue_morning)) {
 
         $output .= $initial . $a_issue_morning['morn_text'];
 
@@ -208,8 +208,8 @@
       $q_string .= "left join users on users.usr_id = issue_morning.morn_user ";
       $q_string .= "where morn_issue = " . $formVars['id'] . " ";
       $q_string .= "order by morn_timestamp ";
-      $q_issue_morning = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_issue_morning = mysql_fetch_array($q_issue_morning)) {
+      $q_issue_morning = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_issue_morning = mysqli_fetch_array($q_issue_morning)) {
 
         $linkstart = "<a href=\"#\" onclick=\"show_file('"      . $Issueroot . "/morning.fill.php?id=" . $a_issue_morning['morn_id'] . "');showDiv('morning-hide');\">";
         $linkdel   = "<a href=\"#\" onclick=\"delete_morning('" . $Issueroot . "/morning.del.php?id="  . $a_issue_morning['morn_id'] . "');\">";
@@ -225,11 +225,11 @@
         $output .= "</tr>";
       }
 
-      mysql_free_result($q_issue_morning);
+      mysqli_free_result($q_issue_morning);
 
       $output .= "</table>";
 
-      print "document.getElementById('morning_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('morning_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
