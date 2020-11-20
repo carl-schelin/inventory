@@ -36,9 +36,9 @@
   $q_string  = "select os_sysname ";
   $q_string .= "from rsdp_osteam ";
   $q_string .= "where os_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_osteam = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_rsdp_osteam) > 0) {
-    $a_rsdp_osteam = mysql_fetch_array($q_rsdp_osteam);
+  $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_rsdp_osteam) > 0) {
+    $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
   } else {
     $a_rsdp_osteam['os_sysname'] = "New Server";
   }
@@ -220,10 +220,10 @@ the next task and an email will be sent notifying the responsible team or indivi
   $q_string  = "select count(*) ";
   $q_string .= "from rsdp_comments ";
   $q_string .= "where com_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_comments = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_comments = mysql_fetch_array($q_rsdp_comments);
+  $q_rsdp_comments = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_comments = mysqli_fetch_array($q_rsdp_comments);
 
-  if (mysql_num_rows($q_rsdp_comments)) {
+  if (mysqli_num_rows($q_rsdp_comments)) {
     print " (" . $a_rsdp_comments['count(*)'] . ")";
   } else {
     print " (0)";
@@ -263,16 +263,16 @@ the next task and an email will be sent notifying the responsible team or indivi
   $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
   $q_string .= "left join states on states.st_id = locations.loc_state ";
   $q_string .= "where rsdp_id = " . $formVars['rsdp'];
-  $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
   $q_string  = "select bu_id,bu_rsdp,bu_start,bu_include,bu_retention,bu_sunday,bu_monday,";
   $q_string .= "bu_tuesday,bu_wednesday,bu_thursday,bu_friday,bu_saturday,bu_suntime,bu_montime,";
   $q_string .= "bu_tuetime,bu_wedtime,bu_thutime,bu_fritime,bu_sattime ";
   $q_string .= "from rsdp_backups ";
   $q_string .= "where bu_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_backups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_backups = mysql_fetch_array($q_rsdp_backups);
+  $q_rsdp_backups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_backups = mysqli_fetch_array($q_rsdp_backups);
 ?>
 
 <table class="ui-styled-table">
@@ -294,8 +294,8 @@ the next task and an email will be sent notifying the responsible team or indivi
   $q_string  = "select fs_volume,fs_size ";
   $q_string .= "from rsdp_filesystem where ";
   $q_string .= "fs_rsdp = " . $formVars['rsdp'] . " and fs_backup = 1";
-  $q_rsdp_filesystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_rsdp_filesystem = mysql_fetch_array($q_rsdp_filesystem)) {
+  $q_rsdp_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_rsdp_filesystem = mysqli_fetch_array($q_rsdp_filesystem)) {
     print "  <tr>\n";
     print "    <td class=\"ui-widget-content\" colspan=\"3\">" . $a_rsdp_filesystem['fs_volume'] . " (" . $a_rsdp_filesystem['fs_size'] . " GB)</td>\n";
     print "  </tr>\n";
@@ -308,8 +308,8 @@ the next task and an email will be sent notifying the responsible team or indivi
   $q_string  = "select fs_volume,fs_size ";
   $q_string .= "from rsdp_filesystem ";
   $q_string .= "where fs_rsdp = " . $formVars['rsdp'] . " and fs_backup = 0";
-  $q_rsdp_filesystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_rsdp_filesystem = mysql_fetch_array($q_rsdp_filesystem)) {
+  $q_rsdp_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_rsdp_filesystem = mysqli_fetch_array($q_rsdp_filesystem)) {
     print "  <tr>\n";
     print "    <td class=\"ui-widget-content\" colspan=\"3\">" . $a_rsdp_filesystem['fs_volume'] . " (" . $a_rsdp_filesystem['fs_size'] . " GB)</td>\n";
     print "  </tr>\n";
