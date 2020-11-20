@@ -20,8 +20,8 @@
   $q_string  = "select inv_id,inv_name ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_id = " . $formVars['id'] . " ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_inventory = mysql_fetch_array($q_inventory);
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inventory = mysqli_fetch_array($q_inventory);
 
   if (isset($_GET["sort"])) {
     $orderby = "order by " . $formVars['sort'] . $_SESSION['sort'];
@@ -127,8 +127,8 @@
   $q_string .= "left join users on users.usr_id = log.log_user ";
   $q_string .= $where;
   $q_string .= $orderby;
-  $q_log = mysql_query($q_string) or die(mysql_error());
-  while ($a_log = mysql_fetch_array($q_log)) {
+  $q_log = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_log = mysqli_fetch_array($q_log)) {
 
     $output .= "<tr>\n";
     $output .= "  <td class=\"ui-widget-content\">" . $a_log['log_id']     . "</td>\n";
@@ -140,8 +140,8 @@
 
   }
 
-  mysql_free_result($q_log);
+  mysqli_free_result($q_log);
 
-  print "document.getElementById('logs_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+  print "document.getElementById('logs_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
 ?>
