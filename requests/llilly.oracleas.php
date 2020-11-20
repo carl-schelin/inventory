@@ -49,8 +49,8 @@
   $q_string .= "from software ";
   $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
   $q_string .= "where sw_software like 'Oracle Enterprise Linux Enterprise Linux%' and sw_type = 'OS' and inv_status = 0 ";
-  $q_software = mysql_query($q_string) or die(mysql_error());
-  while ( $a_software = mysql_fetch_array($q_software) ) {
+  $q_software = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ( $a_software = mysqli_fetch_array($q_software) ) {
 
     $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_software['sw_companyid'] . "\">";
     $linkend   = "</a>";
