@@ -61,7 +61,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -92,7 +92,7 @@
 
             $query = "update issue set " . $q_string . " where iss_id = " . $formVars['id'];
 
-            mysql_query($query) or die($query . ": " . mysql_error());
+            mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
             $q_string = 
               "det_issue =  " . $formVars['id']                              . "," . 
@@ -101,7 +101,7 @@
 
             $query = "insert into issue_detail set det_id=null," . $q_string;
 
-            mysql_query($query) or die($query . ": " . mysql_error());
+            mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           } else {
             $formVars['iss_closed'] = '0000-00-00';
@@ -114,7 +114,7 @@
 
             $query = "update issue set " . $q_string . " where iss_id = " . $formVars['id'];
 
-            mysql_query($query) or die($query . ": " . mysql_error());
+            mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
             $q_string = 
               "det_issue =  " . $formVars['id']                              . "," . 
@@ -123,7 +123,7 @@
 
             $query = "insert into issue_detail set det_id=null," . $q_string;
 
-            mysql_query($query) or die($query . ": " . mysql_error());
+            mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
           }
         }
       }
