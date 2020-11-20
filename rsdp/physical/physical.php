@@ -35,9 +35,9 @@
   $q_string  = "select os_sysname ";
   $q_string .= "from rsdp_osteam ";
   $q_string .= "where os_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_osteam = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_rsdp_osteam) > 0) {
-    $a_rsdp_osteam = mysql_fetch_array($q_rsdp_osteam);
+  $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_rsdp_osteam) > 0) {
+    $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
   } else {
     $a_rsdp_osteam['os_sysname'] = "New Server";
   }
@@ -290,10 +290,10 @@ ready to be worked.</li>
   $q_string  = "select count(*) ";
   $q_string .= "from rsdp_comments ";
   $q_string .= "where com_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_comments = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_comments = mysql_fetch_array($q_rsdp_comments);
+  $q_rsdp_comments = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_comments = mysqli_fetch_array($q_rsdp_comments);
 
-  if (mysql_num_rows($q_rsdp_comments)) {
+  if (mysqli_num_rows($q_rsdp_comments)) {
     print " (" . $a_rsdp_comments['count(*)'] . ")";
   } else {
     print " (0)";
