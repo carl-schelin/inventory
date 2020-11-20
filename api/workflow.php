@@ -11,8 +11,8 @@
   $package = "workflow.php";
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -105,26 +105,26 @@
   $q_string .= "left join rsdp_osteam on rsdp_osteam.os_rsdp = rsdp_server.rsdp_id ";
   $q_string .= $where;
   $q_string .= "order by os_sysname ";
-  $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_rsdp_server = mysql_fetch_array($q_rsdp_server)) {
+  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_rsdp_server = mysqli_fetch_array($q_rsdp_server)) {
 
     $hostname = $servername = $a_rsdp_server['os_sysname'];
 # type 2 == Application interface
     $q_string  = "select if_name ";
     $q_string .= "from rsdp_interface ";
     $q_string .= "where if_rsdp = " . $a_rsdp_server['rsdp_id'] . " and if_type = 2 ";
-    $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_rsdp_interface) > 0) {
-      $a_rsdp_interface = mysql_fetch_array($q_rsdp_interface);
+    $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_rsdp_interface) > 0) {
+      $a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface);
       $servername = $a_rsdp_interface['if_name'];
     } else {
 # type 1 == Management interface
       $q_string  = "select if_name ";
       $q_string .= "from rsdp_interface ";
       $q_string .= "where if_rsdp = " . $a_rsdp_server['rsdp_id'] . " and if_type = 1 ";
-      $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_rsdp_interface) > 0) {
-        $a_rsdp_interface = mysql_fetch_array($q_rsdp_interface);
+      $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_rsdp_interface) > 0) {
+        $a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface);
         $servername = $a_rsdp_interface['if_name'];
       }
     }
@@ -173,9 +173,9 @@
     $q_string  = "select fs_id,fs_volume,fs_size ";
     $q_string .= "from rsdp_filesystem ";
     $q_string .= "where fs_rsdp = " . $a_rsdp_server['rsdp_id'];
-    $q_rsdp_filesystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_rsdp_filesystem) > 0) {
-      while ($a_rsdp_filesystem = mysql_fetch_array($q_rsdp_filesystem)) {
+    $q_rsdp_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_rsdp_filesystem) > 0) {
+      while ($a_rsdp_filesystem = mysqli_fetch_array($q_rsdp_filesystem)) {
         $index = $a_rsdp_filesystem['fs_volume'];
         $servers[$a_rsdp_server['os_sysname']]->config_disk[$index] = new Disk();
         $servers[$a_rsdp_server['os_sysname']]->config_disk[$index]->disk_size   = $a_rsdp_filesystem['fs_size'];
@@ -212,8 +212,8 @@
     $q_string .= "from rsdp_interface ";
     $q_string .= "where if_rsdp = " . $a_rsdp_server['rsdp_id'] . " and if_type != 4 and if_type != 6 ";
     $q_string .= "order by if_interface";
-    $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
+    $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
 
       if ($a_rsdp_interface['if_ipcheck']) {
         $index = $a_rsdp_interface['if_interface'];
@@ -258,9 +258,9 @@
       $q_string  = "select bu_retention ";
       $q_string .= "from rsdp_backups ";
       $q_string .= "where bu_rsdp = " . $a_rsdp_server['rsdp_id'] . " ";
-      $q_rsdp_backups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_rsdp_backups) > 0) {
-        $a_rsdp_backups = mysql_fetch_array($q_rsdp_backups);
+      $q_rsdp_backups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_rsdp_backups) > 0) {
+        $a_rsdp_backups = mysqli_fetch_array($q_rsdp_backups);
 
         if ($a_rsdp_backups['bu_retention']) {
           $servers[$a_rsdp_server['os_sysname']]->config_agent['netbackup'] = new Agent();
@@ -275,9 +275,9 @@
     $q_string .= "from software ";
     $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
     $q_string .= "where inv_manager = 1 and inv_status = 0 and sw_software like '%Oracle%' and sw_group = " . $GRP_DBAdmins . " ";
-    $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_software) > 0) {
-      while ($a_software = mysql_fetch_array($q_software)) {
+    $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_software) > 0) {
+      while ($a_software = mysqli_fetch_array($q_software)) {
 
         $configuration .= $servername . ":Cron:oracle\n";
         $configuration .= $servername . ":Service:oracle\n";
