@@ -2,9 +2,9 @@
   $q_string  = "select rsdp_project ";
   $q_string .= "from rsdp_server ";
   $q_string .= "where rsdp_id = " . $formVars['rsdp'];
-  $q_rsdpmenu = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_rsdpmenu) > 0) {
-    $a_rsdpmenu = mysql_fetch_array($q_rsdpmenu);
+  $q_rsdpmenu = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_rsdpmenu) > 0) {
+    $a_rsdpmenu = mysqli_fetch_array($q_rsdpmenu);
 
     print "  <li><a href=\"" . $RSDProot . "/servers.php?projectid="             . $a_rsdpmenu['rsdp_project'] . "\">" . $task[0] . "RSDP Servers</a>\n";
     print "    <ul>\n";
