@@ -143,8 +143,8 @@ $(document).ready( function() {
   $q_string  = "select prod_id,prod_name ";
   $q_string .= "from products ";
   $q_string .= "order by prod_name";
-  $q_products = mysql_query($q_string) or die(mysql_error());
-  while ($a_products = mysql_fetch_array($q_products)) {
+  $q_products = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_products = mysqli_fetch_array($q_products)) {
     print "<option value=\"" . $a_products['prod_id'] . "\">" . $a_products['prod_name'] . "</option>\n";
   }
 ?>
