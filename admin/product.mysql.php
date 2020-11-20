@@ -50,9 +50,9 @@
         $q_string  = "select prod_code ";
         $q_string .= "from products ";
         $q_string .= "where prod_code = \"" . $formVars['prod_code'] . "\" ";
-        $q_products = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+        $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
-        if (mysql_num_rows($q_products) > 0 && $formVars['prod_code'] != '' && $formVars['update'] == 0) {
+        if (mysqli_num_rows($q_products) > 0 && $formVars['prod_code'] != '' && $formVars['update'] == 0) {
           print "alert(\"Product Code must be unique!\");\n";
         } else {
           if (strlen($formVars['prod_name']) > 0) {
@@ -84,7 +84,7 @@
 
             logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['prod_name']);
 
-            mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+            mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
             print "alert('" . $message . "');\n";
           } else {
@@ -148,8 +148,8 @@
       $q_string .= "left join business_unit on business_unit.bus_id = products.prod_unit ";
       $q_string .= "left join service on service.svc_id = products.prod_service ";
       $q_string .= "order by prod_name ";
-      $q_products = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      while ($a_products = mysql_fetch_array($q_products)) {
+      $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_products = mysqli_fetch_array($q_products)) {
 
         $linkstart = "<a href=\"#\" onclick=\"show_file('product.fill.php?id="  . $a_products['prod_id'] . "');jQuery('#dialogProduct').dialog('open');return false;\">";
         $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('product.del.php?id=" . $a_products['prod_id'] . "');\">";
@@ -180,9 +180,9 @@
       }
       $output .= "</table>";
 
-      mysql_free_result($q_products);
+      mysqli_free_result($q_products);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.products.prod_name.value = '';\n";
       print "document.products.prod_code.value = '';\n";
