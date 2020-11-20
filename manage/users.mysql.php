@@ -67,7 +67,7 @@
 
         logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['mu_username']);
 
-        mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
+        mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
         print "alert('" . $message . "');\n";
       }
@@ -117,9 +117,9 @@
       $q_string .= "from manageusers ";
       $q_string .= "where (mu_account = 0 or mu_account = 2) and mu_name != \"\" and mu_email != \"\" ";
       $q_string .= "order by mu_username ";
-      $q_manageusers = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_manageusers) > 0) {
-        while ($a_manageusers = mysql_fetch_array($q_manageusers)) {
+      $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_manageusers) > 0) {
+        while ($a_manageusers = mysqli_fetch_array($q_manageusers)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('users.fill.php?id=" . $a_manageusers['mu_id'] . "');jQuery('#dialogUsers').dialog('open');\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_users('users.del.php?id=" . $a_manageusers['mu_id'] . "');\">";
@@ -129,8 +129,8 @@
           $q_string .= "from syspwd ";
           $q_string .= "left join inventory on inventory.inv_id = syspwd.pwd_companyid ";
           $q_string .= "where pwd_user = \"" . $a_manageusers['mu_username'] . "\" and inv_status = 0 ";
-          $q_syspwd = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          if (mysql_num_rows($q_syspwd) > 0) {
+          $q_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_syspwd) > 0) {
             $class = "ui-widget-content";
           } else {
             $class = "ui-state-highlight";
@@ -154,9 +154,9 @@
 
       $output .= "</table>\n";
 
-      mysql_free_result($q_manageusers);
+      mysqli_free_result($q_manageusers);
 
-      print "document.getElementById('gecos_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('gecos_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
 
 
@@ -202,9 +202,9 @@
       $q_string .= "from manageusers ";
       $q_string .= "where mu_locked = 1 ";
       $q_string .= "order by mu_username ";
-      $q_manageusers = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_manageusers) > 0) {
-        while ($a_manageusers = mysql_fetch_array($q_manageusers)) {
+      $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_manageusers) > 0) {
+        while ($a_manageusers = mysqli_fetch_array($q_manageusers)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('users.fill.php?id=" . $a_manageusers['mu_id'] . "');jQuery('#dialogUsers').dialog('open');\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_users('users.del.php?id=" . $a_manageusers['mu_id'] . "');\">";
@@ -214,8 +214,8 @@
           $q_string .= "from syspwd ";
           $q_string .= "left join inventory on inventory.inv_id = syspwd.pwd_companyid ";
           $q_string .= "where pwd_user = \"" . $a_manageusers['mu_username'] . "\" and inv_status = 0 ";
-          $q_syspwd = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          if (mysql_num_rows($q_syspwd) > 0) {
+          $q_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_syspwd) > 0) {
             $class = "ui-widget-content";
           } else {
             $class = "ui-state-highlight";
@@ -240,9 +240,9 @@
 
       $output .= "</table>\n";
 
-      mysql_free_result($q_manageusers);
+      mysqli_free_result($q_manageusers);
 
-      print "document.getElementById('lockuser_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('lockuser_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
 
       $output  = "<p></p>\n";
@@ -287,9 +287,9 @@
       $q_string .= "from manageusers ";
       $q_string .= "where mu_account = 1 ";
       $q_string .= "order by mu_username ";
-      $q_manageusers = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_manageusers) > 0) {
-        while ($a_manageusers = mysql_fetch_array($q_manageusers)) {
+      $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_manageusers) > 0) {
+        while ($a_manageusers = mysqli_fetch_array($q_manageusers)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('users.fill.php?id=" . $a_manageusers['mu_id'] . "');jQuery('#dialogUsers').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_users('users.del.php?id=" . $a_manageusers['mu_id'] . "');\">";
@@ -299,8 +299,8 @@
           $q_string .= "from syspwd ";
           $q_string .= "left join inventory on inventory.inv_id = syspwd.pwd_companyid ";
           $q_string .= "where pwd_user = \"" . $a_manageusers['mu_username'] . "\" and inv_status = 0 ";
-          $q_syspwd = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          if (mysql_num_rows($q_syspwd) > 0) {
+          $q_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_syspwd) > 0) {
             $class = "ui-widget-content";
           } else {
             $class = "ui-state-highlight";
@@ -323,9 +323,9 @@
 
       $output .= "</table>\n";
 
-      mysql_free_result($q_manageusers);
+      mysqli_free_result($q_manageusers);
 
-      print "document.getElementById('system_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('system_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
 
       $output  = "<p></p>\n";
@@ -373,9 +373,9 @@
       $q_string .= "from manageusers ";
       $q_string .= "where mu_account = 2 ";
       $q_string .= "order by mu_username ";
-      $q_manageusers = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      if (mysql_num_rows($q_manageusers) > 0) {
-        while ($a_manageusers = mysql_fetch_array($q_manageusers)) {
+      $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_manageusers) > 0) {
+        while ($a_manageusers = mysqli_fetch_array($q_manageusers)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('users.fill.php?id=" . $a_manageusers['mu_id'] . "');jQuery('#dialogUsers').dialog('open');\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_users('users.del.php?id=" . $a_manageusers['mu_id'] . "');\">";
@@ -385,8 +385,8 @@
           $q_string .= "from syspwd ";
           $q_string .= "left join inventory on inventory.inv_id = syspwd.pwd_companyid ";
           $q_string .= "where pwd_user = \"" . $a_manageusers['mu_username'] . "\" and inv_status = 0 ";
-          $q_syspwd = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          if (mysql_num_rows($q_syspwd) > 0) {
+          $q_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_syspwd) > 0) {
             $class = "ui-widget-content";
           } else {
             $class = "ui-state-highlight";
@@ -410,9 +410,9 @@
 
       $output .= "</table>\n";
 
-      mysql_free_result($q_manageusers);
+      mysqli_free_result($q_manageusers);
 
-      print "document.getElementById('service_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('service_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
 
       print "document.users.mu_username.value = '';\n";
