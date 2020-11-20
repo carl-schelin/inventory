@@ -20,8 +20,8 @@
   $slvval[0] = '';
   $q_string  = "select slv_id,slv_value ";
   $q_string .= "from supportlevel";
-  $q_supportlevel = mysql_query($q_string);
-  while ($a_supportlevel = mysql_fetch_array($q_supportlevel)) {
+  $q_supportlevel = mysqli_query($db, $q_string);
+  while ($a_supportlevel = mysqli_fetch_array($q_supportlevel)) {
     $slvval[$a_supportlevel['slv_id']] = $a_supportlevel['slv_value'];
   }
 
@@ -58,10 +58,10 @@
             . "from support "
             . "left join hardware on hardware.hw_supportid = support.sup_id "
             . "where hw_companyid = " . $formVars['id'] . " and hw_primary = 1 ";
-  $q_support = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-  if (mysql_num_rows($q_support) > 0) {
-    while ($a_support = mysql_fetch_array($q_support)) {
+  if (mysqli_num_rows($q_support) > 0) {
+    while ($a_support = mysqli_fetch_array($q_support)) {
 
       if ($a_support['hw_supid_verified']) {
         $class = "ui-state-highlight";
@@ -119,10 +119,10 @@
             . "from support "
             . "left join software on software.sw_supportid = support.sup_id "
             . "where sw_companyid = " . $formVars['id'];
-  $q_support = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  $q_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-  if (mysql_num_rows($q_support) > 0) {
-    while ($a_support = mysql_fetch_array($q_support)) {
+  if (mysqli_num_rows($q_support) > 0) {
+    while ($a_support = mysqli_fetch_array($q_support)) {
 
       $software .= "<tr>";
       $software .= "<td class=\"ui-widget-content\" title=\"Link to Company website\"><a href=\"" . $a_support['sup_web'] . "\">" . $a_support['sup_company'] . "</a></td>";
@@ -143,7 +143,7 @@
 
 ?>
 
-document.getElementById('hardware_support_mysql').innerHTML = '<?php print mysql_real_escape_string($hardware); ?>';
+document.getElementById('hardware_support_mysql').innerHTML = '<?php print mysqli_real_escape_string($hardware); ?>';
 
-document.getElementById('software_support_mysql').innerHTML = '<?php print mysql_real_escape_string($software); ?>';
+document.getElementById('software_support_mysql').innerHTML = '<?php print mysqli_real_escape_string($software); ?>';
 
