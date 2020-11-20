@@ -31,36 +31,36 @@
 
       $q_string  = "select grp_id,grp_name ";
       $q_string .= "from groups ";
-      $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_groups = mysql_fetch_array($q_groups)) {
+      $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_groups = mysqli_fetch_array($q_groups)) {
         $grpname[$a_groups['grp_id']] = $a_groups['grp_name'];
       }
 
       $q_string  = "select prod_id,prod_name ";
       $q_string .= "from products ";
-      $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_products = mysql_fetch_array($q_products)) {
+      $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_products = mysqli_fetch_array($q_products)) {
         $prodname[$a_products['prod_id']] = $a_products['prod_name'];
       }
 
       $q_string  = "select prj_id,prj_name ";
       $q_string .= "from projects ";
-      $q_projects = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_projects = mysql_fetch_array($q_projects)) {
+      $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_projects = mysqli_fetch_array($q_projects)) {
         $prjname[$a_projects['prj_id']] = $a_projects['prj_name'];
       }
 
       $q_string  = "select svc_id,svc_acronym ";
       $q_string .= "from service ";
-      $q_service = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_service = mysql_fetch_array($q_service)) {
+      $q_service = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_service = mysqli_fetch_array($q_service)) {
         $svcname[$a_service['svc_id']] = $a_service['svc_acronym'];
       }
 
       $q_string  = "select loc_id,loc_name ";
       $q_string .= "from locations ";
-      $q_locations = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_locations = mysql_fetch_array($q_locations)) {
+      $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_locations = mysqli_fetch_array($q_locations)) {
         $locname[$a_locations['loc_id']] = $a_locations['loc_name'];
       }
 
@@ -94,8 +94,8 @@
       }
       $q_string .= "inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
       $q_string .= "order by inv_name ";
-      $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_inventory = mysql_fetch_array($q_inventory)) {
+      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
         if ($a_inventory['inv_callpath']) {
           $callpath = 'Yes';
@@ -124,7 +124,7 @@
       $details .= "</table>\n";
       $details .= "</form>\n";
 
-      print "document.getElementById('details_mysql').innerHTML = '" . mysql_real_escape_string($details) . "';\n";
+      print "document.getElementById('details_mysql').innerHTML = '" . mysqli_real_escape_string($details) . "';\n";
 
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
