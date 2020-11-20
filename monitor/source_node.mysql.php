@@ -58,7 +58,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['src_node']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -106,8 +106,8 @@
       $q_string  = "select src_id,src_node,src_deleted ";
       $q_string .= "from source_node ";
       $q_string .= $orderby;
-      $q_source_node = mysql_query($q_string) or die (mysql_error());
-      while ($a_source_node = mysql_fetch_array($q_source_node)) {
+      $q_source_node = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      while ($a_source_node = mysqli_fetch_array($q_source_node)) {
 
         $linkstart = "<a href=\"#\" onclick=\"show_file('source_node.fill.php?id="  . $a_source_node['src_id'] . "');jQuery('#dialogNode').dialog('open');\">";
         $linkdel   = "<input type=\"button\" value=\"Delete\" onclick=\"delete_line('source_node.del.php?id=" . $a_source_node['src_id'] . "');\">";
@@ -130,9 +130,9 @@
       }
       $output .= "</table>";
 
-      mysql_free_result($q_source_node);
+      mysqli_free_result($q_source_node);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.nodes.src_node.value = '';\n";
       print "document.nodes.src_deleted.checked = false;\n";
