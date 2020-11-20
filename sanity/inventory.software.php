@@ -162,8 +162,8 @@
   $q_string .= "left join groups    on groups.grp_id           = inventory.inv_manager ";
   $q_string .= $where;
   $q_string .= $orderby;
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
    $editstart = '';
     $editend = '';
@@ -179,8 +179,8 @@
     $q_string .= "from software ";
     $q_string .= "left join groups on groups.grp_id = software.sw_group ";
     $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'OS' and sw_group != " . $a_inventory['inv_manager'] . " ";
-    $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    while ($a_software = mysql_fetch_array($q_software)) {
+    $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_software = mysqli_fetch_array($q_software)) {
       print "<tr>\n";
       print "  <td class=\"ui-widget-content\">" . $editstart . $a_inventory['inv_name']   . $editend . "</td>\n";
       print "  <td class=\"ui-widget-content\">" . $editstart . $a_inventory['grp_name']   . $editend . "</td>\n";
