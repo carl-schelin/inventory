@@ -25,15 +25,15 @@
       $q_string  = "select patch_name,patch_user,patch_group,patch_date ";
       $q_string .= "from patching ";
       $q_string .= "where patch_id = " . $formVars['id'];
-      $q_patching = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-      $a_patching = mysql_fetch_array($q_patching);
-      mysql_free_result($q_patching);
+      $q_patching = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_patching = mysqli_fetch_array($q_patching);
+      mysqli_free_result($q_patching);
 
       $user  = return_Index($a_patching['patch_user'],   "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
       $group = return_Index($a_patching['patch_group'],  "select grp_id from groups where grp_disabled = 0 order by grp_name");
 
-      print "document.patching.patch_name.value = '" . mysql_real_escape_string($a_patching['patch_name']) . "';\n";
-      print "document.patching.patch_date.value = '" . mysql_real_escape_string($a_patching['patch_date']) . "';\n";
+      print "document.patching.patch_name.value = '" . mysqli_real_escape_string($a_patching['patch_name']) . "';\n";
+      print "document.patching.patch_date.value = '" . mysqli_real_escape_string($a_patching['patch_date']) . "';\n";
 
       print "document.patching.patch_user['"  . $user  . "'].selected = true;\n";
       print "document.patching.patch_group['" . $group . "'].selected = true;\n";
