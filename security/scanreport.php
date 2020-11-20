@@ -409,7 +409,7 @@
   $q_string  = "select count(vul_id) ";
   $q_string .= "from vulnowner ";
   $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_vulnowner = mysql_fetch_row($q_vulnowner);
+  $a_vulnowner = mysqli_fetch_row($q_vulnowner);
 
   $total_entries = $a_vulnowner[0];
 
@@ -417,7 +417,7 @@
   $q_string .= "from vulnowner ";
   $q_string .= "where vul_ticket != '' ";
   $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_vulnowner = mysql_fetch_row($q_vulnowner);
+  $a_vulnowner = mysqli_fetch_row($q_vulnowner);
 
   $total_tickets = $a_vulnowner[0];
 
@@ -427,7 +427,7 @@
   $q_string .= "where vul_ticket != '' ";
   $q_string .= "group by vul_ticket ";
   $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_vulnowner = mysql_fetch_row($q_vulnowner)) {
+  while ($a_vulnowner = mysqli_fetch_row($q_vulnowner)) {
     $total_unique++;
   }
 
