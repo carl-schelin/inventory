@@ -106,8 +106,8 @@
   $q_string .= "left join products  on products.prod_id      = software.sw_product ";
   $q_string .= "where inv_status = 0 and inv_manager = " . $GRP_Unix . " and sw_type = 'OS' and hw_primary = 1 and int_primary = 1 ";
   $q_string .= "order by inv_name ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     if (return_System($a_inventory['inv_id']) == 'Linux') {
 
@@ -142,7 +142,7 @@
     }
   }
 
-  mysql_free_result($q_inventory);
+  mysqli_free_result($q_inventory);
 
   if ($formVars['csv']) {
     print "</p>\n";
