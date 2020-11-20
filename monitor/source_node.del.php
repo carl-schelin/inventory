@@ -26,7 +26,7 @@
       $q_string .= "source_node ";
       $q_string .= "set src_deleted = 1 ";
       $q_string .= "where src_id = " . $formVars['id'];
-      $insert = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
       print "alert('Source Node marked as deleted.');\n";
 
