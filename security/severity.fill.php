@@ -25,11 +25,11 @@
       $q_string  = "select sev_name ";
       $q_string .= "from severity ";
       $q_string .= "where sev_id = " . $formVars['id'];
-      $q_severity = mysql_query($q_string) or die (mysql_error());
-      $a_severity = mysql_fetch_array($q_severity);
-      mysql_free_result($q_severity);
+      $q_severity = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      $a_severity = mysqli_fetch_array($q_severity);
+      mysqli_free_result($q_severity);
 
-      print "document.severity.sev_name.value = '"   . mysql_real_escape_string($a_severity['sev_name'])   . "';\n";
+      print "document.severity.sev_name.value = '"   . mysqli_real_escape_string($a_severity['sev_name'])   . "';\n";
 
       print "document.severity.id.value = " . $formVars['id'] . ";\n";
 
