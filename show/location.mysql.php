@@ -18,13 +18,13 @@
   $serverid = clean($_GET['id'], 10);
 
   $q_string = "select inv_location,inv_rack,inv_row,inv_unit,inv_front,inv_rear from inventory where inv_id = $serverid";
-  $q_inventory = mysql_query($q_string) or die(mysql_error());
-  $a_inventory = mysql_fetch_array($q_inventory);
+  $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  $a_inventory = mysqli_fetch_array($q_inventory);
 
   $q_string  = "select loc_name,loc_addr1,loc_addr2,loc_suite,loc_city,loc_state,";
   $q_string .= "loc_zipcode,loc_country,loc_details from locations where loc_id = " . $a_inventory['inv_location'];
-  $q_locations = mysql_query($q_string) or die(mysql_error());
-  $a_locations = mysql_fetch_array($q_locations);
+  $q_locations = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  $a_locations = mysqli_fetch_array($q_locations);
 
   if ($a_locations['loc_details'] == '') {
     $details = "&nbsp;";
@@ -65,8 +65,8 @@
     $q_string  = "select img_file ";
     $q_string .= "from images ";
     $q_string .= "where img_id = " . $a_inventory['inv_front'];
-    $q_images = mysql_query($q_string . ": " . mysql_error());
-    $a_images = mysql_fetch_array($q_images);
+    $q_images = mysqli_query($db, $q_string . ": " . mysqli_error($db));
+    $a_images = mysqli_fetch_array($q_images);
 
     $output .= "<td class=\"ui-widget-content\" colspan=3><a href=\"" . $Siteroot . "/pictures/" . $a_images['img_file'] . "\"><img src=\"" . $Siteroot . "/pictures/" . $a_images['img_file'] . "\" width=800></a></td>";
     $output .= "</tr>";
@@ -79,8 +79,8 @@
     $q_string  = "select img_file ";
     $q_string .= "from images ";
     $q_string .= "where img_id = " . $a_inventory['inv_rear'];
-    $q_images = mysql_query($q_string . ": " . mysql_error());
-    $a_images = mysql_fetch_array($q_images);
+    $q_images = mysqli_query($db, $q_string . ": " . mysqli_error($db));
+    $a_images = mysqli_fetch_array($q_images);
 
     $output .= "<td class=\"ui-widget-content\" colspan=3><a href=\"" . $Siteroot . "/pictures/" . $a_images['img_file']  . "\"><img src=\"" . $Siteroot . "/pictures/" . $a_images['img_file']  . "\" width=800></a></td>";
     $output .= "</tr>";
@@ -89,5 +89,5 @@
   $output .= "</table>";
 ?>
 
-document.getElementById('location_mysql').innerHTML = '<?php print mysql_real_escape_string($output); ?>';
+document.getElementById('location_mysql').innerHTML = '<?php print mysqli_real_escape_string($output); ?>';
 
