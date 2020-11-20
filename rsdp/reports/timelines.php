@@ -60,8 +60,8 @@
   $q_string .= "left join users on usr_id = st_user ";
   $q_string .= "left join groups on groups.grp_id = users.usr_group ";
   $q_string .= $where;
-  $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_status = mysql_fetch_array($q_rsdp_status);
+  $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_status = mysqli_fetch_array($q_rsdp_status);
 
   $total = $a_rsdp_status['count(st_id)'];
 
@@ -218,8 +218,8 @@ $(document).ready( function() {
   $q_string .= "from groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name ";
-  $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_groups = mysql_fetch_array($q_groups)) {
+  $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_groups = mysqli_fetch_array($q_groups)) {
     if ($formVars['group'] == $a_groups['grp_id']) {
       print "<option selected value=\"" . $a_groups['grp_id'] . "\">" . $a_groups['grp_name'] . "</option>\n";
     } else {
