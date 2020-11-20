@@ -26,7 +26,7 @@
       $q_string .= "message_group ";
       $q_string .= "set msg_deleted = 1 ";
       $q_string .= "where msg_id = " . $formVars['id'];
-      $insert = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
       print "alert('Message Group marked as deleted.');\n";
 
