@@ -27,16 +27,16 @@
       $q_string .= "from rsdp_san ";
       $q_string .= "left join int_media on int_media.med_id = rsdp_san.san_media ";
       $q_string .= "where san_id = " . $formVars['id'];
-      $q_rsdp_san = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_rsdp_san = mysql_fetch_array($q_rsdp_san);
-      mysql_free_result($q_rsdp_san);
+      $q_rsdp_san = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_rsdp_san = mysqli_fetch_array($q_rsdp_san);
+      mysqli_free_result($q_rsdp_san);
 
-      print "document.getElementById('san_sysport').innerHTML = '" . mysql_real_escape_string($a_rsdp_san['san_sysport']) . "';\n";
-      print "document.getElementById('san_switch').innerHTML = '"  . mysql_real_escape_string($a_rsdp_san['san_switch'])  . "';\n";
-      print "document.getElementById('san_port').innerHTML = '"    . mysql_real_escape_string($a_rsdp_san['san_port'])    . "';\n";
-      print "document.getElementById('san_media').innerHTML = '"   . mysql_real_escape_string($a_rsdp_san['san_media'])   . "';\n";
+      print "document.getElementById('san_sysport').innerHTML = '" . mysqli_real_escape_string($a_rsdp_san['san_sysport']) . "';\n";
+      print "document.getElementById('san_switch').innerHTML = '"  . mysqli_real_escape_string($a_rsdp_san['san_switch'])  . "';\n";
+      print "document.getElementById('san_port').innerHTML = '"    . mysqli_real_escape_string($a_rsdp_san['san_port'])    . "';\n";
+      print "document.getElementById('san_media').innerHTML = '"   . mysqli_real_escape_string($a_rsdp_san['san_media'])   . "';\n";
 
-      print "document.san.san_wwnnzone.value = '"    . mysql_real_escape_string($a_rsdp_san['san_wwnnzone']) . "';\n";
+      print "document.san.san_wwnnzone.value = '"    . mysqli_real_escape_string($a_rsdp_san['san_wwnnzone']) . "';\n";
 
       print "document.san.san_id.value = " . $formVars['id'] . ";\n";
 
