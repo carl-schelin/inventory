@@ -162,8 +162,8 @@
   $q_string .= "left join groups    on groups.grp_id           = inventory.inv_manager ";
   $q_string .= $where;
   $q_string .= $orderby;
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $editstart = '';
     $editend = '';
