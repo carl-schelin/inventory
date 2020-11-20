@@ -27,8 +27,8 @@
         $q_string  = "select st_id ";
         $q_string .= "from rsdp_status ";
         $q_string .= "where st_rsdp = " . $formVars['id'] . " and st_step = " . $i;
-        $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_rsdp_status = mysql_fetch_array($q_rsdp_status);
+        $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_rsdp_status = mysqli_fetch_array($q_rsdp_status);
 
         if ($a_rsdp_status['st_id'] == '') {
           $q_string  = "insert into rsdp_status set ";
@@ -37,7 +37,7 @@
           $q_string .= "st_completed = 1, ";
           $q_string .= "st_user      = 1, ";
           $q_string .= "st_step      = " . $i;
-          $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         }
       }
 
