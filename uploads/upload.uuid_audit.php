@@ -9,8 +9,8 @@
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -35,9 +35,9 @@
       $q_string  = "select inv_id ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_name = '" . $hostname[0] . "' ";
-      $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_inventory) > 0) {
-        $a_inventory = mysql_fetch_array($q_inventory);
+      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inventory) > 0) {
+        $a_inventory = mysqli_fetch_array($q_inventory);
 
         $hostid = $a_inventory['inv_id'];
       } else {
@@ -52,9 +52,9 @@
       $q_string  = "select inv_id ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_uuid = '" . $data[2] . "' ";
-      $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_inventory) > 0) {
-        $a_inventory = mysql_fetch_array($q_inventory);
+      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inventory) > 0) {
+        $a_inventory = mysqli_fetch_array($q_inventory);
 
 # update the inventory with the companyid and uuid of the cluster.
         $q_string = "update inventory set inv_companyid = " . $hostid . ",inv_uuid='" . $data[2] . "',inv_vmname = '" . $data[0] . "' where inv_id = " . $a_inventory['inv_id'];
@@ -62,7 +62,7 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         }
 
       } else {
@@ -70,9 +70,9 @@
         $q_string  = "select inv_id ";
         $q_string .= "from inventory ";
         $q_string .= "where inv_name = '" . $data[0] . "' ";
-        $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        if (mysql_num_rows($q_inventory) > 0) {
-          $a_inventory = mysql_fetch_array($q_inventory);
+        $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_inventory) > 0) {
+          $a_inventory = mysqli_fetch_array($q_inventory);
 
 # update the inventory with the companyid and uuid of the cluster.
           $q_string = "update inventory set inv_companyid = " . $hostid . ",inv_uuid='" . $data[2] . "',inv_vmname = '" . $data[0] . "' where inv_id = " . $a_inventory['inv_id'];
@@ -80,7 +80,7 @@
           if ($debug == 'yes') {
             print $q_string . "\n";
           } else {
-            $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           }
 
         } else {
@@ -89,16 +89,16 @@
           $q_string .= "from interface ";
           $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
           $q_string .= "where int_server = '" . $data[0] . "' ";
-          $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          if (mysql_num_rows($q_interface) > 0) {
-            $a_interface = mysql_fetch_array($q_interface);
+          $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_interface) > 0) {
+            $a_interface = mysqli_fetch_array($q_interface);
 
             $q_string = "update inventory set inv_companyid = " . $hostid . ",inv_uuid='" . $data[2] . "',inv_vmname = '" . $data[0] . "' where inv_id = " . $a_inventory['inv_id'];
           
             if ($debug == 'yes') {
               print $q_string . "\n";
             } else {
-              $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+              $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
             }
           } else {
             print "Missing: " . $data[0] . "\n";
