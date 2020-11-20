@@ -70,8 +70,8 @@
   $q_string .= "sw_vendor,sw_responsible,sw_support ";
   $q_string .= "from swbackup ";
   $q_string .= $orderby;
-  $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_software = mysql_fetch_array($q_software)) {
+  $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_software = mysqli_fetch_array($q_software)) {
 
     print "<tr>\n";
     print "  <td class=\"ui-widget-content\">" . $a_software['sw_name']         . "</td>\n";
