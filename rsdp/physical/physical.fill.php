@@ -26,29 +26,29 @@
       $q_string  = "select pf_id,pf_row,pf_rack,pf_unit,pf_circuita,pf_circuitb ";
       $q_string .= "from rsdp_platform ";
       $q_string .= "where pf_rsdp = " . $formVars['rsdp'];
-      $q_rsdp_platform = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_rsdp_platform) > 0) {
-        $a_rsdp_platform = mysql_fetch_array($q_rsdp_platform);
+      $q_rsdp_platform = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_rsdp_platform) > 0) {
+        $a_rsdp_platform = mysqli_fetch_array($q_rsdp_platform);
 
-        print "document.rsdp.pf_row.value = '"      . mysql_real_escape_string($a_rsdp_platform['pf_row'])      . "';\n";
-        print "document.rsdp.pf_rack.value = '"     . mysql_real_escape_string($a_rsdp_platform['pf_rack'])     . "';\n";
-        print "document.rsdp.pf_unit.value = '"     . mysql_real_escape_string($a_rsdp_platform['pf_unit'])     . "';\n";
-        print "document.rsdp.pf_circuita.value = '" . mysql_real_escape_string($a_rsdp_platform['pf_circuita']) . "';\n";
-        print "document.rsdp.pf_circuitb.value = '" . mysql_real_escape_string($a_rsdp_platform['pf_circuitb']) . "';\n";
+        print "document.rsdp.pf_row.value = '"      . mysqli_real_escape_string($a_rsdp_platform['pf_row'])      . "';\n";
+        print "document.rsdp.pf_rack.value = '"     . mysqli_real_escape_string($a_rsdp_platform['pf_rack'])     . "';\n";
+        print "document.rsdp.pf_unit.value = '"     . mysqli_real_escape_string($a_rsdp_platform['pf_unit'])     . "';\n";
+        print "document.rsdp.pf_circuita.value = '" . mysqli_real_escape_string($a_rsdp_platform['pf_circuita']) . "';\n";
+        print "document.rsdp.pf_circuitb.value = '" . mysqli_real_escape_string($a_rsdp_platform['pf_circuitb']) . "';\n";
 
         print "document.rsdp.pf_id.value = " . $a_rsdp_platform['pf_id'] . ";\n";
 
       }
 
-      mysql_free_result($q_rsdp_platform);
+      mysqli_free_result($q_rsdp_platform);
 
 
       $q_string  = "select if_id,if_dcrack,if_dccabled ";
       $q_string .= "from rsdp_infrastructure ";
       $q_string .= "where if_rsdp = " . $formVars['rsdp'];
-      $q_rsdp_infrastructure = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_rsdp_infrastructure) > 0) {
-        $a_rsdp_infrastructure = mysql_fetch_array($q_rsdp_infrastructure);
+      $q_rsdp_infrastructure = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_rsdp_infrastructure) > 0) {
+        $a_rsdp_infrastructure = mysqli_fetch_array($q_rsdp_infrastructure);
 
         if ($a_rsdp_infrastructure['if_dcrack']) {
           print "document.rsdp.if_dcrack.checked = true;\n";
@@ -65,15 +65,15 @@
 
       }
 
-      mysql_free_result($q_rsdp_infrastructure);
+      mysqli_free_result($q_rsdp_infrastructure);
 
 
       $q_string  = "select dc_id,dc_power,dc_cables,dc_infra,dc_received,dc_installed,dc_checklist,dc_path ";
       $q_string .= "from rsdp_datacenter ";
       $q_string .= "where dc_rsdp = " . $formVars['rsdp'];
-      $q_rsdp_datacenter = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_rsdp_datacenter) > 0) {
-        $a_rsdp_datacenter = mysql_fetch_array($q_rsdp_datacenter);
+      $q_rsdp_datacenter = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_rsdp_datacenter) > 0) {
+        $a_rsdp_datacenter = mysqli_fetch_array($q_rsdp_datacenter);
 
         if ($a_rsdp_datacenter['dc_power']) {
           print "document.rsdp.dc_power.checked = true;\n";
@@ -106,13 +106,13 @@
           print "document.rsdp.dc_checklist.checked = false;\n";
         }
 
-        print "document.rsdp.dc_path.value = '" . mysql_real_escape_string($a_rsdp_datacenter['dc_path']) . "';\n";
+        print "document.rsdp.dc_path.value = '" . mysqli_real_escape_string($a_rsdp_datacenter['dc_path']) . "';\n";
 
         print "document.rsdp.dc_id.value = " . $a_rsdp_datacenter['dc_id'] . ";\n";
 
       }
 
-      mysql_free_result($q_rsdp_datacenter);
+      mysqli_free_result($q_rsdp_datacenter);
 
 
       print "validate_Form();\n";
