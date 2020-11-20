@@ -56,8 +56,8 @@
   $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
   $q_string .= "where inv_status = 0 and mod_vendor = 'Sun' and ct_city = 'Miami' ";
   $q_string .= "order by hw_serial";
-  $q_inventory = mysql_query($q_string) or die(mysql_error());
-  while ( $a_inventory = mysql_fetch_array($q_inventory) ) {
+  $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ( $a_inventory = mysqli_fetch_array($q_inventory) ) {
     $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\">";
     $linkend   = "</a>";
 
