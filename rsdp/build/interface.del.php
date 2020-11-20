@@ -26,7 +26,7 @@
       $q_string  = "delete ";
       $q_string .= "from rsdp_interface ";
       $q_string .= "where if_id = " . $formVars['id'];
-      $insert = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
       print "alert('Interface deleted.');\n";
 
@@ -35,7 +35,7 @@
       $q_string .= "rsdp_interface ";
       $q_string .= "set if_if_id = 0 ";
       $q_string .= "where if_if_id = " . $formVars['id'];
-      $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
       print "clear_fields();\n";
     } else {
