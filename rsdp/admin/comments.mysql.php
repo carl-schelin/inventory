@@ -42,7 +42,7 @@
             $q_string  = "insert ";
             $q_string .= "into rsdp_server ";
             $q_string .= "set rsdp_id = null,rsdp_requestor = " . $_SESSION['uid'];
-            $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
             $formVars['com_rsdp'] = last_insert_id();
 
@@ -70,7 +70,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['com_rsdp']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
         } else {
           print "alert('You must input data before saving changes.');\n";
@@ -121,9 +121,9 @@
       $q_string .= "left join users on users.usr_id = rsdp_comments.com_user ";
       $q_string .= "where com_rsdp = " . $formVars['com_rsdp'] . " ";
       $q_string .= "order by com_timestamp";
-      $q_rsdp_comments = mysql_query($q_string) or die ($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_rsdp_comments) > 0) {
-        while ($a_rsdp_comments = mysql_fetch_array($q_rsdp_comments)) {
+      $q_rsdp_comments = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_rsdp_comments) > 0) {
+        while ($a_rsdp_comments = mysqli_fetch_array($q_rsdp_comments)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('" . $RSDProot . "/admin/comments.fill.php?id="     . $a_rsdp_comments['com_id'] . "');jQuery('html,body').scrollTop(0);jQuery('#dialogComment').dialog('open');\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_comment('" . $RSDProot . "/admin/comments.del.php?id=" . $a_rsdp_comments['com_id'] . "');\">";
@@ -143,9 +143,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_rsdp_comments);
+      mysqli_free_result($q_rsdp_comments);
 
-      print "document.getElementById('comment_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('comment_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.comments.com_text.value = '';\n";
       print "document.comments.com_rsdp.value = " . $formVars['com_rsdp'] . ";\n";
