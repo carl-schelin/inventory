@@ -21,8 +21,8 @@
   $q_string .= "from interface ";
   $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
   $q_string .= "where inv_id = " . $formVars['id'] . " and int_management = 1 ";
-  $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_interface = mysql_fetch_array($q_interface);
+  $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_interface = mysqli_fetch_array($q_interface);
 
   $retention[0] = "None";
   $retention[1] = "Less than 6 Months (Details Required)";
@@ -75,9 +75,9 @@
   $q_string .= "bu_thutime,bu_fritime,bu_sattime,bu_notes ";
   $q_string .= "from backups ";
   $q_string .= "where bu_companyid = " . $formVars['id'] . " ";
-  $q_backups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_backups) > 0) {
-    $a_backups = mysql_fetch_array($q_backups);
+  $q_backups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_backups) > 0) {
+    $a_backups = mysqli_fetch_array($q_backups);
 
     $output .= "<table class=\"ui-styled-table\">";
     $output .= "<tr>";
@@ -160,7 +160,7 @@
 
 ?>
 
-document.getElementById('backup_mysql').innerHTML = '<?php print mysql_real_escape_string($output); ?>';
+document.getElementById('backup_mysql').innerHTML = '<?php print mysqli_real_escape_string($output); ?>';
 
 
 <?php
@@ -225,5 +225,5 @@ document.getElementById('backup_mysql').innerHTML = '<?php print mysql_real_esca
 
 ?>
 
-document.getElementById('backuplog_mysql').innerHTML = '<?php print mysql_real_escape_string($output); ?>';
+document.getElementById('backuplog_mysql').innerHTML = '<?php print mysqli_real_escape_string($output); ?>';
 
