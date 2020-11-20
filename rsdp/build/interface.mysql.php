@@ -97,7 +97,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['if_name']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
         } else {
           print "alert('You must input data before saving changes.');\n";
@@ -113,8 +113,8 @@
           $q_string .= "if_speed,if_duplex,if_redundant,if_groupname,if_media,if_type,if_cid,if_description ";
           $q_string .= "from rsdp_interface ";
           $q_string .= "where if_rsdp = " . $formVars['copyfrom'] . " and if_if_id = 0 ";
-          $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
+          $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
 
             $q_string =
               "if_rsdp        =   " . $formVars['if_rsdp']                . "," .
@@ -136,7 +136,7 @@
               "if_description = \"" . $a_rsdp_interface['if_description'] . "\"";
 
             $query = "insert into rsdp_interface set if_id = NULL, " . $q_string;
-            mysql_query($query) or die($query . ": " . mysql_error());
+            mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
             $response = last_insert_id();
 
@@ -144,8 +144,8 @@
             $q_string .= "if_speed,if_duplex,if_redundant,if_groupname,if_media,if_type,if_cid,if_description ";
             $q_string .= "from rsdp_interface ";
             $q_string .= "where if_rsdp = " . $formVars['copyfrom'] . " and if_if_id = " . $a_rsdp_interface['if_id'] . " ";
-            $q_redundant = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            while ($a_redundant = mysql_fetch_array($q_redundant)) {
+            $q_redundant = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            while ($a_redundant = mysqli_fetch_array($q_redundant)) {
 
               $q_string =
                 "if_rsdp        =   " . $formVars['if_rsdp']           . "," .
@@ -168,7 +168,7 @@
                 "if_description = \"" . $a_redundant['if_description'] . "\"";
 
               $query = "insert into rsdp_interface set if_id = NULL, " . $q_string;
-              mysql_query($query) or die($query . ": " . mysql_error());
+              mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
             }
           }
         }
@@ -246,9 +246,9 @@
       $q_string .= "left join int_redundancy on int_redundancy.red_id = rsdp_interface.if_redundant ";
       $q_string .= "where if_rsdp = " . $formVars['if_rsdp'] . " and if_if_id = 0 ";
       $q_string .= "order by if_name,if_interface";
-      $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_rsdp_interface) > 0) {
-        while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
+      $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_rsdp_interface) > 0) {
+        while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
 
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('interface.fill.php?id=" . $a_rsdp_interface['if_id'] . "');jQuery('#dialogInterface').dialog('open');\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_interface('interface.del.php?id=" . $a_rsdp_interface['if_id'] . "');\">";
@@ -309,9 +309,9 @@
           $q_string .= "left join int_redundancy on int_redundancy.red_id = rsdp_interface.if_redundant ";
           $q_string .= "where if_rsdp = " . $formVars['if_rsdp'] . " and if_if_id = " . $a_rsdp_interface['if_id'] . " ";
           $q_string .= "order by if_name,if_interface";
-          $q_redundant = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          if (mysql_num_rows($q_redundant) > 0) {
-            while ($a_redundant = mysql_fetch_array($q_redundant)) {
+          $q_redundant = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_redundant) > 0) {
+            while ($a_redundant = mysqli_fetch_array($q_redundant)) {
 
               $linkstart = "<a href=\"#\" onClick=\"javascript:show_file('interface.fill.php?id=" . $a_redundant['if_id'] . "');jQuery('#dialogInterface').dialog('open');\">";
               $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_interface('interface.del.php?id=" . $a_redundant['if_id'] . "');\">";
@@ -369,9 +369,9 @@
 
       $output .= "</table>\n";
 
-      mysql_free_result($q_rsdp_interface);
+      mysqli_free_result($q_rsdp_interface);
 
-      print "document.getElementById('interface_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('interface_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.interface.if_name.value = '';\n";
       print "document.interface.if_sysport.value = '';\n";
@@ -399,8 +399,8 @@
       $q_string .= "from rsdp_interface ";
       $q_string .= "where if_rsdp = " . $formVars['if_rsdp'] . " and if_redundant > 0 ";
       $q_string .= "order by if_interface";
-      $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
+      $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
         print "selbox.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_rsdp_interface['if_interface']) . "\"," . $a_rsdp_interface['if_id'] . ");\n";
       }
 
