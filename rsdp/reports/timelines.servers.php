@@ -93,8 +93,8 @@
       $q_string .= "left join groups on groups.grp_id = users.usr_group ";
       $q_string .= $where;
       $q_string .= "group by os_sysname ";
-      $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_rsdp_server = mysql_fetch_array($q_rsdp_server)) {
+      $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_rsdp_server = mysqli_fetch_array($q_rsdp_server)) {
 
         $linkstart = "<a href=\"" . $RSDProot . "/tasks.php?id=" . $a_rsdp_server['rsdp_id'] . "&myrsdp=" . $formVars['myrsdp'] . "\">";
         $linkend   = "</a>";
@@ -118,8 +118,8 @@
         $q_string  = "select COUNT(*) ";
         $q_string .= "from rsdp_status ";
         $q_string .= "where st_rsdp = " . $a_rsdp_server['rsdp_id'] . " ";
-        $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_rsdp_status = mysql_fetch_array($q_rsdp_status);
+        $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_rsdp_status = mysqli_fetch_array($q_rsdp_status);
 
         if ($a_rsdp_status['COUNT(*)'] > 13) {
           $class = "ui-state-highlight";
@@ -144,7 +144,7 @@
 
       $output .= "</table>\n";
 
-      print "document.getElementById('server_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('server_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
     } else {
       logaccess($_SESSION['uid'], $package, "Unauthorized access.");
