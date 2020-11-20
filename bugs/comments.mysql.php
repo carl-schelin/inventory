@@ -55,7 +55,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['bug_id']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -69,8 +69,8 @@
       $q_string  = "select bug_closed ";
       $q_string .= "from bugs ";
       $q_string .= "where bug_id = " . $formVars['id'];
-      $q_bugs = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_bugs = mysql_fetch_array($q_bugs);
+      $q_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_bugs = mysqli_fetch_array($q_bugs);
 
 
       $output  = "<p></p>\n";
@@ -118,8 +118,8 @@
       $q_string .= "left join users on users.usr_id = bugs_detail.bug_user ";
       $q_string .= "where bug_bug_id = " . $formVars['id'] . " ";
       $q_string .= "order by bug_timestamp desc ";
-      $q_bugs_detail = mysql_query($q_string) or die ($q_string . ": " . mysql_error());
-      while ($a_bugs_detail = mysql_fetch_array($q_bugs_detail)) {
+      $q_bugs_detail = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+      while ($a_bugs_detail = mysqli_fetch_array($q_bugs_detail)) {
 
         if ($a_bugs['bug_closed'] == '0000-00-00') {
           $linkstart = "<a href=\"#details\" onclick=\"show_file('"     . $Bugroot . "/comments.fill.php?id=" . $a_bugs_detail['bug_id'] . "');showDiv('problem-hide');\">";
@@ -141,11 +141,11 @@
         $output .= "</tr>";
       }
 
-      mysql_free_result($q_bugs_detail);
+      mysqli_free_result($q_bugs_detail);
 
       $output .= "</table>";
 
-      print "document.getElementById('detail_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('detail_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
       if ($a_bugs['bug_closed'] == '0000-00-00') {
         print "document.start.bug_text.value = '';\n";
