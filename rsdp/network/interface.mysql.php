@@ -55,7 +55,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['if_ip']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
         } else {
           print "alert('A required field has not been populated.');\n";
@@ -147,8 +147,8 @@
       $q_string .= "left join int_redundancy on int_redundancy.red_id = rsdp_interface.if_redundant ";
       $q_string .= "where if_rsdp = " . $formVars['rsdp'] . " and if_if_id = 0 ";
       $q_string .= "order by if_interface";
-      $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
+      $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
 
         $class = " class=\"ui-widget-content\"";
         if (filter_var($a_rsdp_interface['if_ip'], FILTER_VALIDATE_IP)) {
@@ -269,8 +269,8 @@
         $q_string .= "left join int_redundancy on int_redundancy.red_id = rsdp_interface.if_redundant ";
         $q_string .= "where if_rsdp = " . $formVars['rsdp'] . " and if_if_id = " . $a_rsdp_interface['if_id'] . " ";
         $q_string .= "order by if_interface";
-        $q_redundant = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        while ($a_redundant = mysql_fetch_array($q_redundant)) {
+        $q_redundant = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_redundant = mysqli_fetch_array($q_redundant)) {
 
           $class = " class=\"ui-widget-content\"";
           if (filter_var($a_redundant['if_ip'], FILTER_VALIDATE_IP)) {
@@ -383,9 +383,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_rsdp_interface);
+      mysqli_free_result($q_rsdp_interface);
 
-      print "document.getElementById('interface_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+      print "document.getElementById('interface_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
       print "document.rsdp.if_save.value = " . $submit . ";\n";
 
