@@ -100,17 +100,17 @@
   $q_string .= $leftjoin;
   $q_string .= "where iss_closed = '0000-00-00' " . $where . " ";
   $q_string .= "order by iss_discovered desc,inv_name";
-  $q_issue = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_issue = mysql_fetch_array($q_issue)) {
+  $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_issue = mysqli_fetch_array($q_issue)) {
 
     $q_string  = "select det_timestamp ";
     $q_string .= "from issue_detail ";
     $q_string .= "where det_issue = " . $a_issue['iss_id'] . " ";
     $q_string .= "order by det_timestamp ";
     $q_string .= "limit 1 ";
-    $q_issue_detail = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_issue_detail) > 0) {
-      $a_issue_detail = mysql_fetch_array($q_issue_detail);
+    $q_issue_detail = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_issue_detail) > 0) {
+      $a_issue_detail = mysqli_fetch_array($q_issue_detail);
       $detail_time = explode(" ", $a_issue_detail['det_timestamp']);
     } else {
       $detail_time[0] = 'No Details';
@@ -146,8 +146,8 @@
     $output .= "<p><a href=\"" . $Issueroot . "/issue.php?server=" . $formVars['server'] . "\" target=\"_blank\">Link to Issue Tracker</a></p>";
   }
 
-  mysql_free_result($q_issue);
+  mysqli_free_result($q_issue);
 
-  print "document.getElementById('open_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n";
+  print "document.getElementById('open_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
 ?>
