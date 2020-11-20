@@ -20,12 +20,12 @@
   $q_string = "select inv_manager "
             . "from inventory "
             . "where inv_id = " . $formVars['id'] . " ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_inventory = mysql_fetch_array($q_inventory);
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inventory = mysqli_fetch_array($q_inventory);
 
   $q_string = "select zone_id,zone_name from ip_zones";
-  $q_ip_zones = mysql_query($q_string) or die($q_string . ': ' . mysql_error());
-  while ($a_ip_zones = mysql_fetch_array($q_ip_zones)) {
+  $q_ip_zones = mysqli_query($db, $q_string) or die($q_string . ': ' . mysqli_error($db));
+  while ($a_ip_zones = mysqli_fetch_array($q_ip_zones)) {
     $zoneval[$a_ip_zones['zone_id']] = $a_ip_zones['zone_name'];
   }
 
@@ -65,9 +65,9 @@
   $q_string .= "from bigfix ";
   $q_string .= "where big_companyid = " . $formVars['id'] . " ";
   $q_string .= "order by big_scheduled desc,big_severity,big_fixlet";
-  $q_bigfix = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_bigfix) > 0) {
-    while ($a_bigfix = mysql_fetch_array($q_bigfix)) {
+  $q_bigfix = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_bigfix) > 0) {
+    while ($a_bigfix = mysqli_fetch_array($q_bigfix)) {
 
       if ($flagged != $a_bigfix['big_scheduled']) {
         if ($first == 1) {
@@ -114,5 +114,5 @@
 
 ?>
 
-document.getElementById('bigfix_mysql').innerHTML = '<?php print mysql_real_escape_string($output); ?>';
+document.getElementById('bigfix_mysql').innerHTML = '<?php print mysqli_real_escape_string($output); ?>';
 
