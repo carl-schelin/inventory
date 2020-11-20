@@ -34,22 +34,22 @@
   $q_string .= "left join locations     on locations.loc_id     = rsdp_server.rsdp_location ";
   $q_string .= "left join projects      on projects.prj_id      = rsdp_server.rsdp_project ";
   $q_string .= "where rsdp_id = " . $formVars['rsdp'];
-  $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
   $q_string  = "select os_sysname,operatingsystem.os_software ";
   $q_string .= "from rsdp_osteam ";
   $q_string .= "left join operatingsystem on operatingsystem.os_id = rsdp_osteam.os_software ";
   $q_string .= "where os_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_osteam = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_osteam = mysql_fetch_array($q_rsdp_osteam);
+  $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
 
   $q_string = "select mod_size,pf_row,pf_rack,pf_unit ";
   $q_string .= "from rsdp_platform ";
   $q_string .= "left join models on models.mod_id = rsdp_platform.pf_model ";
   $q_string .= "where pf_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_platform = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_platform = mysql_fetch_array($q_rsdp_platform);
+  $q_rsdp_platform = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_platform = mysqli_fetch_array($q_rsdp_platform);
 
 
   $output  = "<h1>Storage Request</h1>";
@@ -82,8 +82,8 @@
   $q_string  = "select fs_volume,fs_size ";
   $q_string .= "from rsdp_filesystem ";
   $q_string .= "where fs_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_filesystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_rsdp_filesystem) > 0) {
+  $q_rsdp_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_rsdp_filesystem) > 0) {
 
     $output .= "<table cellspacing=\"0\" cellpadding=\"1\" border=\"1\">\n";
     $output .= "<tr>\n";
@@ -95,7 +95,7 @@
     $output .= "<th><strong>Volume Purpose</strong></th>\n";
     $output .= "</tr>\n";
 
-    while ($a_rsdp_filesystem = mysql_fetch_array($q_rsdp_filesystem)) {
+    while ($a_rsdp_filesystem = mysqli_fetch_array($q_rsdp_filesystem)) {
 
       $output .= "<tr>\n";
       $output .= "<td>" . $a_rsdp_filesystem['fs_volume'] . "</td>\n";
