@@ -36,9 +36,9 @@
   $q_string  = "select os_sysname ";
   $q_string .= "from rsdp_osteam ";
   $q_string .= "where os_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_osteam = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_rsdp_osteam) > 0) {
-    $a_rsdp_osteam = mysql_fetch_array($q_rsdp_osteam);
+  $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_rsdp_osteam) > 0) {
+    $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
   } else {
     $a_rsdp_osteam = "New System";
   }
@@ -243,10 +243,10 @@ individuals that their task is ready to be worked.</li>
   $q_string  = "select count(*) ";
   $q_string .= "from rsdp_comments ";
   $q_string .= "where com_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_comments = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_comments = mysql_fetch_array($q_rsdp_comments);
+  $q_rsdp_comments = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_comments = mysqli_fetch_array($q_rsdp_comments);
 
-  if (mysql_num_rows($q_rsdp_comments)) {
+  if (mysqli_num_rows($q_rsdp_comments)) {
     print " (" . $a_rsdp_comments['count(*)'] . ")";
   } else {
     print " (0)";
@@ -308,9 +308,9 @@ individuals that their task is ready to be worked.</li>
   $q_string  = "select inv_id,inv_name ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_name = \"" . $a_rsdp_osteam['os_sysname'] . "\" and inv_status = 0 ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_inventory) > 0) {
-    $a_inventory = mysql_fetch_array($q_inventory);
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inventory) > 0) {
+    $a_inventory = mysqli_fetch_array($q_inventory);
 
 #    print "To update the Inventory entry for " . $a_inventory['inv_name'] . " ";
     print $a_inventory['inv_name'] . " added to Inventory";
