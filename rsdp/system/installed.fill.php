@@ -26,10 +26,10 @@
       $q_string  = "select if_id,if_config,if_built,if_network,if_dns,if_inscheck ";
       $q_string .= "from rsdp_infrastructure ";
       $q_string .= "where if_rsdp = " . $formVars['rsdp'];
-      $q_rsdp_infrastructure = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $q_rsdp_infrastructure = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-      if (mysql_num_rows($q_rsdp_infrastructure) > 0) {
-        $a_rsdp_infrastructure = mysql_fetch_array($q_rsdp_infrastructure);
+      if (mysqli_num_rows($q_rsdp_infrastructure) > 0) {
+        $a_rsdp_infrastructure = mysqli_fetch_array($q_rsdp_infrastructure);
 
         if ($a_rsdp_infrastructure['if_inscheck']) {
           print "document.rsdp.if_inscheck.checked = true;\n";
@@ -61,7 +61,7 @@
 
       }
 
-      mysql_free_result($q_rsdp_infrastructure);
+      mysqli_free_result($q_rsdp_infrastructure);
 
       print "validate_Form();\n";
 
