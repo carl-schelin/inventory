@@ -9,8 +9,8 @@
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -59,7 +59,7 @@ print "Clearing Support ID Verification Flag.\n";
 $q_string  = "update ";
 $q_string .= "hardware ";
 $q_string .= "set hw_supid_verified = 0 ";
-$q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+$q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 $unix = 0;
 $windows = 0;
@@ -91,15 +91,15 @@ if (($handle = fopen($file, "r")) !== FALSE) {
     $q_string  = "select po_id ";
     $q_string .= "from purchaseorder ";
     $q_string .= "where po_number = '" . $data[2] . "' ";
-    $q_purchaseorder = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_purchaseorder) == 0) {
+    $q_purchaseorder = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_purchaseorder) == 0) {
       $q_string = "insert into purchaseorder set po_id = null,po_number = '" . $data[2] . "' ";
-      $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     } else {
-      $a_purchaseorder = mysql_fetch_array($q_purchaseorder);
+      $a_purchaseorder = mysqli_fetch_array($q_purchaseorder);
 
       $q_string = "update purchaseorder set po_number = '" . $data[2] . "' where po_id = " . $a_purchaseorder['po_id'] . " ";
-      $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     }
 
     if (isset($data[16]) && strlen($data[16]) > 0) {
@@ -114,10 +114,10 @@ if (($handle = fopen($file, "r")) !== FALSE) {
         $q_string .= "from hardware ";
         $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
         $q_string .= "where hw_serial = \"" . $data[16] . "\" ";
-        $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-        if (mysql_num_rows($q_hardware) > 0) {
-          while ($a_hardware = mysql_fetch_array($q_hardware)) {
+        if (mysqli_num_rows($q_hardware) > 0) {
+          while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
             if ($a_hardware['inv_manager'] == $GRP_Unix) {
               $unix++;
@@ -142,17 +142,17 @@ if (($handle = fopen($file, "r")) !== FALSE) {
             $q_string  = "select po_id ";
             $q_string .= "from purchaseorder ";
             $q_string .= "where po_number = '" . $data[2] . "' ";
-            $q_purchaseorder = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            $a_purchaseorder = mysql_fetch_array($q_purchaseorder);
+            $q_purchaseorder = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $a_purchaseorder = mysqli_fetch_array($q_purchaseorder);
 
             $output .= "hw_poid = " . $a_purchaseorder['po_id'] . ",";
 
             $q_string  = "select sup_id,sup_company ";
             $q_string .= "from support ";
             $q_string .= "where sup_company = \"" . $data[0] . "\" ";
-            $q_support = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            if (mysql_num_rows($q_support ) > 0) {
-              $a_support = mysql_fetch_array($q_support);
+            $q_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            if (mysqli_num_rows($q_support ) > 0) {
+              $a_support = mysqli_fetch_array($q_support);
               $output .= "hw_supportid = " . $a_support['sup_id'] . ",";
             } else {
               $output .= "hw_supportid = 0,";
@@ -162,9 +162,9 @@ if (($handle = fopen($file, "r")) !== FALSE) {
             $q_string  = "select slv_id,slv_value ";
             $q_string .= "from supportlevel ";
             $q_string .= "where slv_translate like \"%" . $data[18] . "%\" ";
-            $q_supportlevel = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            if (mysql_num_rows($q_supportlevel) > 0) {
-              $a_supportlevel = mysql_fetch_array($q_supportlevel);
+            $q_supportlevel = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            if (mysqli_num_rows($q_supportlevel) > 0) {
+              $a_supportlevel = mysqli_fetch_array($q_supportlevel);
               $output .= "hw_response = " . $a_supportlevel['slv_id'] . ",";
             } else {
               $output .= "hw_response = 0,";
@@ -192,12 +192,12 @@ if (($handle = fopen($file, "r")) !== FALSE) {
             $q_string  = "select usr_id ";
             $q_string .= "from users ";
             $q_string .= "where usr_last = \"" . $checkuser . "\" and usr_disabled = 0 ";
-            $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            if (mysql_num_rows($q_users) > 1) {
+            $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            if (mysqli_num_rows($q_users) > 1) {
 # more than one; check for first name?
             } else {
-              if (mysql_num_rows($q_users) == 1) {
-                $a_users = mysql_fetch_array($q_users);
+              if (mysqli_num_rows($q_users) == 1) {
+                $a_users = mysqli_fetch_array($q_users);
 
                 $output .= "hw_custodian = " . $a_users['usr_id'] . ",";
               } else {
@@ -224,12 +224,12 @@ if (($handle = fopen($file, "r")) !== FALSE) {
             $q_string  = "select usr_id ";
             $q_string .= "from users ";
             $q_string .= "where usr_last = \"" . $checkuser . "\" and usr_disabled = 0 ";
-            $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            if (mysql_num_rows($q_users) > 1) {
+            $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            if (mysqli_num_rows($q_users) > 1) {
 # more than one; check for first name?
             } else {
-              if (mysql_num_rows($q_users) == 1) {
-                $a_users = mysql_fetch_array($q_users);
+              if (mysqli_num_rows($q_users) == 1) {
+                $a_users = mysqli_fetch_array($q_users);
 
                 $output .= "hw_buc = " . $a_users['usr_id'] . ",";
               } else {
@@ -267,7 +267,7 @@ if (($handle = fopen($file, "r")) !== FALSE) {
               print "f";
               $found++;
               $total++;
-              $result = mysql_query($output) or die($output . ": " . mysql_error());
+              $result = mysqli_query($db, $output) or die($output . ": " . mysqli_error($db));
             }
           }
         } else {
