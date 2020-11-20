@@ -63,21 +63,21 @@
   $q_string = "select rsdp_location,rsdp_product,rsdp_project,rsdp_platform,rsdp_application,rsdp_service,rsdp_vendor,rsdp_function ";
   $q_string .= "from rsdp_server ";
   $q_string .= "where rsdp_id = " . $formVars['rsdp'];
-  $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
   $q_string  = "select bu_start,bu_include,bu_retention,bu_sunday,bu_monday,bu_tuesday,bu_wednesday,bu_thursday,bu_friday,bu_saturday, ";
   $q_string .= "bu_suntime,bu_montime,bu_tuetime,bu_wedtime,bu_thutime,bu_fritime,bu_sattime ";
   $q_string .= "from rsdp_backups ";
   $q_string .= "where bu_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_backups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_backups = mysql_fetch_array($q_rsdp_backups);
+  $q_rsdp_backups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_backups = mysqli_fetch_array($q_rsdp_backups);
 
   $q_string = "select os_sysname,os_fqdn,os_software ";
   $q_string .= "from rsdp_osteam ";
   $q_string .= "where os_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_osteam = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_osteam = mysql_fetch_array($q_rsdp_osteam);
+  $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
 
   $servername = $a_rsdp_osteam['os_sysname'];
   $fqdn = $a_rsdp_osteam['os_fqdn'];
@@ -85,14 +85,14 @@
   $q_string  = "select pf_model,pf_asset,pf_serial,pf_row,pf_rack,pf_unit ";
   $q_string .= "from rsdp_platform ";
   $q_string .= "where pf_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_platform = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_rsdp_platform = mysql_fetch_array($q_rsdp_platform);
+  $q_rsdp_platform = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_rsdp_platform = mysqli_fetch_array($q_rsdp_platform);
 
 ##################################################
 # 1, create a new inventory table record and retrieve the inv_id number
 
   $q_string = "insert into inventory set inv_id = NULL";
-  mysql_query($q_string) or die($q_string . ": " . mysql_error());
+  mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $newinvid = last_insert_id();
 
   if ($newinvid == 0) {
@@ -127,7 +127,7 @@
     "bu_sattime   = \"" . $a_rsdp_backups['bu_sattime']   . "\"";
 
   $query = "insert into backups set bu_id = null," . $q_string;
-  mysql_query($query) or die($query . ": " . mysql_error());
+  mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 ##################################################
 
 ##################################################
@@ -144,8 +144,8 @@
   $q_string .= "if_cid,if_switch,if_port,if_description,if_virtual ";
   $q_string .= "from rsdp_interface ";
   $q_string .= "where if_rsdp = " . $formVars['rsdp'] . " and if_if_id = 0 ";
-  $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
+  $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
 
 #####
 # insert production interface table here for review (delete when done)
@@ -176,7 +176,7 @@
       "int_zone       =   " . $a_rsdp_interface['if_zone'];
 
     $query = "insert into interface set int_id = null," . $q_string;
-    mysql_query($query) or die($query . ": " . mysql_error());
+    mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
     $newinterface = last_insert_id();
 
 # insert any child interfaces into the inventory
@@ -185,8 +185,8 @@
     $q_string .= "if_cid,if_switch,if_port,if_description,if_virtual ";
     $q_string .= "from rsdp_interface ";
     $q_string .= "where if_rsdp = " . $formVars['rsdp'] . " and if_if_id = " . $a_rsdp_interface['if_id'] . " ";
-    $q_redundancy = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    while ($a_redundancy = mysql_fetch_array($q_redundancy)) {
+    $q_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_redundancy = mysqli_fetch_array($q_redundancy)) {
 
       $q_string =
         "int_server     = \"" . $a_redundancy['if_name']       . "\"," .
@@ -213,7 +213,7 @@
         "int_zone       =   " . $a_redundancy['if_zone'];
 
       $query = "insert into interface set int_id = null," . $q_string;
-      mysql_query($query) or die($query . ": " . mysql_error());
+      mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
     }
   }
@@ -229,8 +229,8 @@
   $q_string  = "select os_vendor,os_software ";
   $q_string .= "from operatingsystem ";
   $q_string .= "where os_id = " . $a_rsdp_osteam['os_software'];
-  $q_operatingsystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_operatingsystem = mysql_fetch_array($q_operatingsystem);
+  $q_operatingsystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_operatingsystem = mysqli_fetch_array($q_operatingsystem);
 
 #####
 # insert production software table here for review (delete when done)
@@ -247,7 +247,7 @@
     "sw_update    = '" . $date                             . "'";
 
   $query = "insert into software set sw_id = NULL," . $q_string;
-  mysql_query($query) or die($query . ": " . mysql_error());
+  mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 ##################################################
 
 ##################################################
@@ -277,7 +277,7 @@
     "hw_update    = '" . $date                           . "'";
 
   $query = "insert into hardware set hw_id = NULL," . $q_string;
-  mysql_query($query) or die($query . ": " . mysql_error());
+  mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 ##################################################
 
 ##################################################
@@ -299,8 +299,8 @@
   $q_string  = "select san_sysport,san_switch,san_port,san_media,san_wwnnzone ";
   $q_string .= "from rsdp_san ";
   $q_string .= "where san_rsdp = " . $formVars['rsdp'];
-  $q_rsdp_san = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_rsdp_san = mysql_fetch_array($q_rsdp_san)) {
+  $q_rsdp_san = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_rsdp_san = mysqli_fetch_array($q_rsdp_san)) {
 
   }
 
@@ -342,7 +342,7 @@
 
   $query = "update inventory set " . $q_string . " where inv_id = " . $newinvid;
   if ($newinvid > 0) {
-    mysql_query($query) or die($query . ": " . mysql_error());
+    mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
   }
 
   changelog($newinvid, $servername, "New Server", "inventory", "inv_name", 0);
