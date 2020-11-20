@@ -23,14 +23,14 @@
     $q_string  = "select inv_manager,inv_product ";
     $q_string .= "from inventory ";
     $q_string .= "where inv_id = " . $formVars['id'] . " ";
-    $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_inventory) > 0) {
-      $a_inventory = mysql_fetch_array($q_inventory);
+    $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_inventory) > 0) {
+      $a_inventory = mysqli_fetch_array($q_inventory);
 
       $q_string  = "update hardware "; 
       $q_string .= "set hw_group = " . $a_inventory['inv_manager'] . ",hw_product = " . $a_inventory['inv_product'] . " ";
       $q_string .= "where hw_companyid = " . $formVars['id'] . " ";
-      $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+      $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
     }
   }
