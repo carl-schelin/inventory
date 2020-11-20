@@ -63,7 +63,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -126,9 +126,9 @@
       $q_string .= "left join groups on groups.grp_id = handoff.off_group ";
       $q_string .= $group;
       $q_string .= "order by off_timestamp ";
-      $q_handoff = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_handoff) > 0) {
-        while ($a_handoff = mysql_fetch_array($q_handoff)) {
+      $q_handoff = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_handoff) > 0) {
+        while ($a_handoff = mysqli_fetch_array($q_handoff)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('handoff.fill.php?id="  . $a_handoff['off_id'] . "');showDiv('handoff-hide');\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('handoff.del.php?id=" . $a_handoff['off_id'] . "');\">";
@@ -158,9 +158,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_handoff);
+      mysqli_free_result($q_handoff);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.handoff.update.disabled = true;\n";
 
