@@ -30,21 +30,21 @@
       $q_string  = "select inv_name ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_name = \"" . $formVars['os_sysname'] . "\" and inv_status = 0 ";
-      $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_inventory = mysql_fetch_array($q_inventory);
+      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_inventory = mysqli_fetch_array($q_inventory);
 
       $q_string  = "select os_sysname,os_rsdp ";
       $q_string .= "from rsdp_osteam ";
       $q_string .= "where os_rsdp != " . $formVars['rsdp'] . " and os_sysname = \"" . $formVars['os_sysname'] . "\"";
-      $q_rsdp_osteam = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_rsdp_osteam = mysql_fetch_array($q_rsdp_osteam);
+      $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
 
       $q_string  = "select st_completed ";
       $q_string .= "from rsdp_status ";
       $q_string .= "where st_rsdp = " . $formVars['rsdp'] . " and st_step = 2 ";
-      $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_rsdp_status) > 0) {
-        $a_rsdp_status = mysql_fetch_array($q_rsdp_status);
+      $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_rsdp_status) > 0) {
+        $a_rsdp_status = mysqli_fetch_array($q_rsdp_status);
       } else {
         $a_rsdp_status['st_completed'] = 0;
       }
