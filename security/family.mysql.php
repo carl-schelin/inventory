@@ -46,7 +46,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['fam_name']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -97,9 +97,9 @@
       $q_string  = "select fam_id,fam_name ";
       $q_string .= "from family ";
       $q_string .= "order by fam_name";
-      $q_family = mysql_query($q_string) or die ($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_family) > 0) {
-        while ($a_family = mysql_fetch_array($q_family)) {
+      $q_family = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_family) > 0) {
+        while ($a_family = mysqli_fetch_array($q_family)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('family.fill.php?id="  . $a_family['fam_id'] . "');showDiv('family-hide');\">";
           $linkdel   = "<a href=\"#\" onclick=\"delete_line('family.del.php?id=" . $a_family['fam_id'] . "');\">";
@@ -121,9 +121,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_family);
+      mysqli_free_result($q_family);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.family.update.disabled = true;\n";
       print "document.family.fam_name.value = '';\n";
