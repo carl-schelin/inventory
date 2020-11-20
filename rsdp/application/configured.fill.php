@@ -26,9 +26,9 @@
       $q_string  = "select app_id,app_tested,app_integrated,app_failover,app_concheck ";
       $q_string .= "from rsdp_applications ";
       $q_string .= "where app_rsdp = " . $formVars['rsdp'];
-      $q_rsdp_applications = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_rsdp_applications) > 0) {
-        $a_rsdp_applications = mysql_fetch_array($q_rsdp_applications);
+      $q_rsdp_applications = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_rsdp_applications) > 0) {
+        $a_rsdp_applications = mysqli_fetch_array($q_rsdp_applications);
 
         if ($a_rsdp_applications['app_concheck']) {
           print "document.rsdp.app_concheck.checked = true;\n";
@@ -55,7 +55,7 @@
 
       }
 
-      mysql_free_result($q_rsdp_applications);
+      mysqli_free_result($q_rsdp_applications);
 
       print "validate_Form();\n";
 
