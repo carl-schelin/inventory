@@ -29,8 +29,8 @@
     $q_string  = "select inv_id,inv_name,inv_manager ";
     $q_string .= "from inventory ";
     $q_string .= "where inv_id = " . $formVars['server'];
-    $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_inventory = mysql_fetch_array($q_inventory);
+    $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inventory = mysqli_fetch_array($q_inventory);
 
     $issue = "Issue: " . $a_inventory['inv_name'];
     $server = $a_inventory['inv_name'];
@@ -189,8 +189,8 @@ $(document).ready( function() {
   $q_string  = "select usr_first,usr_last ";
   $q_string .= "from users ";
   $q_string .= "where usr_id = " . $_SESSION['uid'];
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_users = mysql_fetch_array($q_users);
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_users = mysqli_fetch_array($q_users);
 
   print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
 
@@ -198,8 +198,8 @@ $(document).ready( function() {
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
   }
 ?>
@@ -273,8 +273,8 @@ $(document).ready( function() {
   $q_string .= "from tags ";
   $q_string .= "where tag_view = 0 and tag_owner = " . $_SESSION['uid'] . " ";
   $q_string .= "group by tag_name ";
-  $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_tags = mysql_fetch_array($q_tags)) {
+  $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_tags = mysqli_fetch_array($q_tags)) {
     $linkstart = "<a href=\"" . $Issueroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "&type=0\">";
     $linkend   = "</a>";
 
@@ -298,8 +298,8 @@ $(document).ready( function() {
   $q_string .= "from tags ";
   $q_string .= "where tag_view = 1 and tag_group = " . $_SESSION['group'] . " ";
   $q_string .= "group by tag_name ";
-  $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_tags = mysql_fetch_array($q_tags)) {
+  $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_tags = mysqli_fetch_array($q_tags)) {
     $linkstart = "<a href=\"" . $Issueroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "&type=1\">";
     $linkend   = "</a>";
 
@@ -323,8 +323,8 @@ $(document).ready( function() {
   $q_string .= "from tags ";
   $q_string .= "where tag_view = 2 ";
   $q_string .= "group by tag_name ";
-  $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_tags = mysql_fetch_array($q_tags)) {
+  $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_tags = mysqli_fetch_array($q_tags)) {
     $linkstart = "<a href=\"" . $Issueroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "&type=2\">";
     $linkend   = "</a>";
 
