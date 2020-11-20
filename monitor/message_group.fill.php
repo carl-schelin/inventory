@@ -25,11 +25,11 @@
       $q_string  = "select msg_group,msg_deleted ";
       $q_string .= "from message_group ";
       $q_string .= "where msg_id = " . $formVars['id'];
-      $q_message_group = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_message_group = mysql_fetch_array($q_message_group);
-      mysql_free_result($q_message_group);
+      $q_message_group = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_message_group = mysqli_fetch_array($q_message_group);
+      mysqli_free_result($q_message_group);
 
-      print "document.groups.msg_group.value = '"       . mysql_real_escape_string($a_message_group['msg_group'])       . "';\n";
+      print "document.groups.msg_group.value = '"       . mysqli_real_escape_string($a_message_group['msg_group'])       . "';\n";
 
       if ($a_message_group['msg_deleted']) {
         print "document.groups.msg_deleted.checked = true;\n";
