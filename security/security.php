@@ -138,8 +138,8 @@ $(document).ready( function() {
   $q_string  = "select fam_id,fam_name ";
   $q_string .= "from family ";
   $q_string .= "order by fam_name ";
-  $q_family = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_family = mysql_fetch_array($q_family)) {
+  $q_family = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_family = mysqli_fetch_array($q_family)) {
     print "<option value=\"" . $a_family['fam_id'] . "\">" . $a_family['fam_name'] . "</option>\n";
   }
 ?>
@@ -150,8 +150,8 @@ $(document).ready( function() {
   $q_string  = "select sev_id,sev_name ";
   $q_string .= "from severity ";
   $q_string .= "order by sev_name ";
-  $q_severity = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_severity = mysql_fetch_array($q_severity)) {
+  $q_severity = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_severity = mysqli_fetch_array($q_severity)) {
     print "<option value=\"" . $a_severity['sev_id'] . "\">" . $a_severity['sev_name'] . "</option>\n";
   }
 ?>
