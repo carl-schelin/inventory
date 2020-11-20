@@ -20,15 +20,15 @@
   $q_string = "select inv_name "
             . "from inventory "
             . "where inv_id = " . $formVars['id'];
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_inventory = mysql_fetch_array($q_inventory);
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inventory = mysqli_fetch_array($q_inventory);
 
   $grpcount = 0;
   $q_string = "select grp_changelog,grp_clfile "
             . "from groups "
             . "where grp_changelog != ''";
-  $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_groups = mysql_fetch_array($q_groups)) {
+  $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_groups = mysqli_fetch_array($q_groups)) {
     $grouplist[$grpcount] = $a_groups['grp_changelog'];
     $filename[$grpcount++] = "." . $a_groups['grp_clfile'];
   }
@@ -86,12 +86,12 @@
           }
           $finalname = $from . "</td>";
           if ($svrlist[$j + $add + 1] != "\n") {
-            $finaltext = mysql_real_escape_string(rtrim($svrlist[$j + $add + 1])) . "</td>";
+            $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 1])) . "</td>";
           } else {
             if ($svrlist[$j + $add + 2] != "\n") {
-              $finaltext = mysql_real_escape_string(rtrim($svrlist[$j + $add + 2])) . "</td>";
+              $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 2])) . "</td>";
             } else {
-              $finaltext = mysql_real_escape_string(rtrim($svrlist[$j + $add + 3])) . "</td>";
+              $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 3])) . "</td>";
             }
           }
           $allservers[$count++] = $finaldate . "<td class=\"ui-widget-content\">" . $finalserver . $finalname . "</a><td class=\"ui-widget-content\">" . $finaltext . "</tr>";
@@ -148,5 +148,5 @@
   $output .= "</table>";
 ?>
 
-document.getElementById('changelog_mysql').innerHTML = '<?php print mysql_real_escape_string($output); ?>';
+document.getElementById('changelog_mysql').innerHTML = '<?php print mysqli_real_escape_string($output); ?>';
 
