@@ -76,7 +76,7 @@
 
           logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['lic_product']);
 
-          mysql_query($query) or die($query . ": " . mysql_error());
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           print "alert('" . $message . "');\n";
         } else {
@@ -142,9 +142,9 @@
       $q_string .= "from licenses ";
       $q_string .= "left join products on products.prod_id = licenses.lic_project ";
       $q_string .= $orderby;
-      $q_licenses = mysql_query($q_string) or die ($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_licenses) > 0) {
-        while ($a_licenses = mysql_fetch_array($q_licenses)) {
+      $q_licenses = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_licenses) > 0) {
+        while ($a_licenses = mysqli_fetch_array($q_licenses)) {
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('license.fill.php?id="  . $a_licenses['lic_id'] . "');showDiv('license-hide');\">";
           $linkdel   = "<a href=\"#\" onclick=\"delete_line('license.del.php?id=" . $a_licenses['lic_id'] . "');\">";
@@ -174,9 +174,9 @@
 
       $output .= "</table>";
 
-      mysql_free_result($q_licenses);
+      mysqli_free_result($q_licenses);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysql_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
       print "document.license.update.disabled = true;\n";
     } else {
