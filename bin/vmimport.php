@@ -11,8 +11,8 @@
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -110,8 +110,8 @@
     $q_string  = "select inv_id ";
     $q_string .= "from inventory ";
     $q_string .= "where inv_name = \"" . $fqdn[0] . "\" ";
-    $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_inventory) > 0) {
+    $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_inventory) > 0) {
       print "Error: Server already exists in the Inventory\n";
     } else {
 # get the appadmin group id
@@ -119,8 +119,8 @@
       $q_string  = "select grp_id ";
       $q_string .= "from groups ";
       $q_string .= "where grp_name = \"" . $appadmin . "\" or grp_snow = \"" . $appadmin . "\" and grp_disabled = 0 ";
-      $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_groups) == 0) {
+      $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_groups) == 0) {
         $grp_test = explode(" ", $appadmin);
         if ($debug == 'yes') {
            print "Unable to locate this group: " . $appadmin . ", trying " . $grp_test[0] . "\n";
@@ -129,24 +129,24 @@
         $q_string  = "select grp_id,grp_name ";
         $q_string .= "from groups ";
         $q_string .= "where grp_name like \"%" . $grp_test[0] . "%\" and grp_disabled = 0 ";
-        $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        if (mysql_num_rows($q_groups) == 0) {
+        $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_groups) == 0) {
           $error .= "Unable to locate AppSupport group: " . $appadmin . " ";
         } else {
-          if (mysql_num_rows($q_groups) == 1) {
-            $a_groups = mysql_fetch_array($q_groups);
+          if (mysqli_num_rows($q_groups) == 1) {
+            $a_groups = mysqli_fetch_array($q_groups);
             $inv_appadmin = $a_groups['grp_id'];
             $appadmin = $a_groups['grp_name'];
           } else {
             $error .= "Unable to locate AppSupport group " . $appadmin . " but found these possibilities:";
-            while ($a_groups = mysql_fetch_array($q_groups)) {
+            while ($a_groups = mysqli_fetch_array($q_groups)) {
               $error .= " " . $a_groups['grp_name'];
             }
             $error .= " ";
           }
         }
       } else {
-        $a_groups = mysql_fetch_array($q_groups);
+        $a_groups = mysqli_fetch_array($q_groups);
         $inv_appadmin = $a_groups['grp_id'];
         if ($debug == 'yes') {
            print "Found this group: " . $appadmin . ", ID " . $inv_appadmin . "\n";
@@ -158,11 +158,11 @@
       $q_string  = "select env_id ";
       $q_string .= "from environment ";
       $q_string .= "where env_name = \"" . $environment . "\" ";
-      $q_environment = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_environment) == 0) {
+      $q_environment = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_environment) == 0) {
         $error .= "Unable to locate environment: " . $environment . " ";
       } else {
-        $a_environment = mysql_fetch_array($q_environment);
+        $a_environment = mysqli_fetch_array($q_environment);
 
         $inv_env = $a_environment['env_id'];
       }
@@ -174,11 +174,11 @@
       $q_string .= "where loc_west = \"" . $location . "\" and loc_environment = " . $inv_env . " and loc_type = 1 ";
       $q_string .= "order by loc_id ";
       $q_string .= "limit 1 ";
-      $q_locations = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_locations) == 0) {
+      $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_locations) == 0) {
         $error .= "Unable to identify location: " . $location . " ";
       } else {
-        $a_locations = mysql_fetch_array($q_locations);
+        $a_locations = mysqli_fetch_array($q_locations);
 
         $inv_location = $a_locations['loc_id'];
       }
@@ -188,11 +188,11 @@
       $q_string  = "select prod_id ";
       $q_string .= "from products ";
       $q_string .= "where prod_name = \"" . $product . "\" ";
-      $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_products) == 0) {
+      $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_products) == 0) {
          $error .= "Unable to locate product: " . $product . " ";
       } else {
-        $a_products = mysql_fetch_array($q_products);
+        $a_products = mysqli_fetch_array($q_products);
 
         $inv_product = $a_products['prod_id'];
       }
@@ -202,22 +202,22 @@
       $q_string  = "select prj_id ";
       $q_string .= "from projects ";
       $q_string .= "where prj_name = \"" . $project . "\" and prj_product = " . $inv_product . " ";
-      $q_projects = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_projects) == 0) {
+      $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_projects) == 0) {
         $error .= "Unable to locate project: " . $project . " in product: " . $product . " ";
 
         $q_string  = "select prj_name ";
         $q_string .= "from projects ";
         $q_string .= "where prj_product = " . $inv_product . " ";
-        $q_projects = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        if (mysql_num_rows($q_projects) > 0) {
+        $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_projects) > 0) {
           $error .= "\nAvailable Projects:";
-          while ($a_projects = mysql_fetch_array($q_projects)) {
+          while ($a_projects = mysqli_fetch_array($q_projects)) {
             $error .= "\n" . $a_projects['prj_name'];
           }
         }
       } else {
-        $a_projects = mysql_fetch_array($q_projects);
+        $a_projects = mysqli_fetch_array($q_projects);
 
         $inv_project = $a_projects['prj_id'];
       }
@@ -266,17 +266,17 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         }
 
         $q_string  = "select inv_id ";
         $q_string .= "from inventory ";
         $q_string .= "where inv_name = \"" . $fqdn[0] . "\" ";
-        $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        if (mysql_num_rows($q_inventory) == 0) {
+        $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_inventory) == 0) {
           print "Error adding server " . $fqdn[0] . "\n";
         } else {
-          $a_inventory = mysql_fetch_array($q_inventory);
+          $a_inventory = mysqli_fetch_array($q_inventory);
 
           $q_string  = "insert into interface set int_id = null,";
           $q_string .= "int_server      = \"" . $fqdn[0]               . "\",";
@@ -292,7 +292,7 @@
           $q_string .= "int_ping        =   " . "1"                    . ",";
           $q_string .= "int_ssh         =   " . "1";
  
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           $q_string  = "insert into hardware set hw_id = null,";
           $q_string .= "hw_companyid = " . $a_inventory['inv_id'] . ",";
@@ -301,7 +301,7 @@
           $q_string .= "hw_primary = " . "1" . ",";
           $q_string .= "hw_group = " . "1";
 
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         }
       }
     }
