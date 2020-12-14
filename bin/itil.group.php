@@ -3,7 +3,6 @@
 # Script: itil.group.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: Retrieve the 'support group' information from the group table
 # for the conversion to Remedy.
 # Requires:
@@ -17,8 +16,8 @@
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -31,8 +30,8 @@
   $q_string .= "left join organizations on organizations.org_id = groups.grp_organization ";
   $q_string .= "left join roles on roles.role_id = groups.grp_role ";
   $q_string .= "order by grp_name ";
-  $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_groups = mysql_fetch_array($q_groups)) {
+  $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_groups = mysqli_fetch_array($q_groups)) {
 
     if ($a_groups['org_name'] == 'Vendor') {
       $vendor = '0';
@@ -47,5 +46,7 @@
     }
     print "\"Intrado, Inc.\",\"" . $a_groups['org_name'] . "\",\"" . $a_groups['grp_name'] . "\",\"" . $a_groups['role_name'] . "\",\"\",\"" . $a_groups['grp_email'] . "\",\"" . $disabled . "\",\"0\"\n";
   }
+
+  mysqli_free_request($db);
 
 ?>
