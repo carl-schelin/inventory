@@ -3,15 +3,14 @@
 # Script: patch.email.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: 
 
   include('settings.php');
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -144,5 +143,7 @@ Content-Disposition: attachment
 
 //if the message is sent successfully print "Mail sent". Otherwise print "Mail failed"
   echo $mail_sent ? "Engineering Mail sent\n" : "Engineering Mail failed\n";
+
+  mysqli_free_request($db);
 
 ?>
