@@ -7,7 +7,7 @@
 # which are parsed by this script and then imported into the syspwd and sysgrp tables.
 
   include('settings.php');
-  include('function.php');
+  include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
     $db = mysqli_connect($server,$user,$pass,$database);
