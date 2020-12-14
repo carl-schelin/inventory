@@ -61,7 +61,7 @@
   $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
   $a_users = mysqli_fetch_array($q_users);
 
-  logaccess($a_users['usr_name'], "show.inventory.submit.php", $subjectline);
+  logaccess($db, $a_users['usr_name'], "show.inventory.submit.php", $subjectline);
 
 # if the script name and e-mail address is all, then default to active
   $productlist = '';
