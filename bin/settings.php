@@ -25,7 +25,7 @@ if ($hostname == "[hostname]") {
   $Statusurl		= "http://" . $Statushttp;
   $Nagioshttp		= "status";
   $Nagiosurl		= "http://" . $Nagioshttp;
-  $Wikihttp		= "incowk01";
+  $Wikihttp		= "wiki";
   $Wikiurl		= "http://" . $Wikihttp;
 
 # Changelog location (home directories)
