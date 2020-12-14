@@ -157,9 +157,7 @@
       print "\thost_name\t\t" . $a_inventory['inv_name'] . "\n";
       print "\talias\t\t\t" . $a_inventory['inv_name'] . "\n";
       print "\taddress\t\t\t" . $a_inventory['int_addr'] . "\n";
-      if ($a_inventory['inv_name'] != 'incomsu1') {
-        print "\tparents\t\t\t" . $a_inventory['int_gate'] . "\n";
-      }
+      print "\tparents\t\t\t" . $a_inventory['int_gate'] . "\n";
       print "\ticon_image_alt\t\t" . $a_inventory['inv_function'] . "\n";
       if (($a_inventory['inv_xpoint'] + $a_inventory['inv_ypoint'] + $a_inventory['inv_zpoint']) > 0) {
         print "\t2d_coords\t\t" . $a_inventory['int_xpoint'] . "," . $a_inventory['int_ypoint'] . "\n";
