@@ -497,7 +497,7 @@
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       $output .=   "<th class=\"ui-state-default\">Rem</th>\n";
-      if (return_Virtual($formVars['hw_companyid']) == 0) {
+      if (return_Virtual($db, $formVars['hw_companyid']) == 0) {
         $output .=   "<th class=\"ui-state-default\">Asset</th>\n";
         $output .=   "<th class=\"ui-state-default\">Serial</th>\n";
       }
@@ -557,7 +557,7 @@
   
           $output .= "<tr>\n";
           $output .= "<td " . $class . " delete\" " . $deltitle . ">" . $linkdel                                                           . "</td>\n";
-          if (return_Virtual($formVars['hw_companyid']) == 0) {
+          if (return_Virtual($db, $formVars['hw_companyid']) == 0) {
             $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hardware['hw_asset']             . $linkend . "</td>\n";
             $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hardware['hw_serial']            . $linkend . "</td>\n";
           }
@@ -618,7 +618,7 @@
   
               $output .= "<tr>\n";
               $output .= "<td " . $class . " delete\" " . $deltitle . ">" . $linkdel                                                           . "</td>\n";
-              if (return_Virtual($formVars['hw_companyid']) == 0) {
+              if (return_Virtual($db, $formVars['hw_companyid']) == 0) {
                 $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwselect['hw_asset']             . $linkend . "</td>\n";
                 $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwselect['hw_serial']            . $linkend . "</td>\n";
               }
@@ -680,7 +680,7 @@
   
                   $output .= "<tr>\n";
                   $output .= "<td " . $class . " delete\" " . $deltitle . ">" . $linkdel                                                           . "</td>\n";
-                  if (return_Virtual($formVars['hw_companyid']) == 0) {
+                  if (return_Virtual($db, $formVars['hw_companyid']) == 0) {
                     $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwdisk['hw_asset']             . $linkend . "</td>\n";
                     $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwdisk['hw_serial']            . $linkend . "</td>\n";
                   }
