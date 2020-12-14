@@ -2,7 +2,6 @@
 # Script: inventory.review.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: send out a list of all retired and rsdp systems
 
 # root.cron: # Monthly review of retired systems
@@ -14,8 +13,8 @@
   date_default_timezone_set('UTC') ;
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -57,14 +56,14 @@
   $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "where hw_retired > '" . $date . "' and inv_manager = " . $manager . " ";
   $q_string .= "order by hw_retired,inv_name ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_inventory) > 0) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inventory) > 0) {
     $retired = "<table border=\"1\">\n";
     $retired .= "<tr>\n";
     $retired .= "  <th>Server</th>\n";
     $retired .= "  <th>Retired</th>\n";
     $retired .= "</tr>\n";
-    while ($a_inventory = mysql_fetch_array($q_inventory)) {
+    while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
       $retired .= "<tr>\n";
       $retired .= "  <td>" . $a_inventory['inv_name'] . "</td>\n";
@@ -86,8 +85,8 @@
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where hw_active = '0000-00-00' and hw_primary = 1 and inv_status = 0 and inv_manager = " . $manager . " ";
   $q_string .= "order by inv_name ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_inventory) > 0) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inventory) > 0) {
     $built = "<table border=\"1\">\n";
     $built .= "<tr>\n";
     $built .= "  <th>Server</th>\n";
@@ -96,7 +95,7 @@
     $built .= "  <th>Project</th>\n";
     $built .= "  <th>RSDP Requester</th>\n";
     $built .= "</tr>\n";
-    while ($a_inventory = mysql_fetch_array($q_inventory)) {
+    while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
       $user = '';
       if ($a_inventory['inv_rsdp'] > 0) {
@@ -104,8 +103,8 @@
         $q_string .= "from rsdp_server ";
         $q_string .= "left join users on  users.usr_id = rsdp_server.rsdp_requestor ";
         $q_string .= "where rsdp_id = " . $a_inventory['inv_rsdp'] . " ";
-        $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+        $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
         $user = $a_rsdp_server['usr_last'] . ", " . $a_rsdp_server['usr_first'];
       }
@@ -132,13 +131,13 @@
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
   $q_string .= "where inv_status = 0 and inv_ssh = 0 and inv_manager = " . $manager . " and (mod_id = 15 or mod_id = 45) ";
   $q_string .= "order by inv_name ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_inventory) > 0) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inventory) > 0) {
     $ssh = "<table border=\"1\">\n";
     $ssh .= "<tr>\n";
     $ssh .= "  <th>Server</th>\n";
     $ssh .= "</tr>\n";
-    while ($a_inventory = mysql_fetch_array($q_inventory)) {
+    while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
       $ssh .= "<tr>\n";
       $ssh .= "  <td>" . $a_inventory['inv_name'] . "</td>\n";
@@ -173,8 +172,8 @@
         $q_string .= "from users ";
         $q_string .= "left join grouplist on grouplist.gpl_user = users.usr_id ";
         $q_string .= "where gpl_group = " . $manager . " ";
-        $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        while ($a_users = mysql_fetch_array($q_users)) {
+        $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_users = mysqli_fetch_array($q_users)) {
           if ($a_users['usr_email'] != '') {
             mail($a_users['usr_email'], $date . " Inventory Review", $body, $headers);
           }
@@ -184,5 +183,7 @@
       }
     }
   }
+
+  mysqli_free_request($db);
 
 ?>
