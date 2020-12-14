@@ -3,7 +3,6 @@
 # Script: login.report.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: 
 # 
 
@@ -11,8 +10,8 @@
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -31,8 +30,8 @@
   $q_string .= "left join rsdp_osteam on rsdp_osteam.os_rsdp = rsdp_server.rsdp_id ";
   $q_string .= "where rsdp_platform = " . $GRP_Unix . " or rsdp_platform = " . $GRP_OpsEng . " ";
   $q_string .= "order by os_sysname ";
-  $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_rsdp_server = mysql_fetch_array($q_rsdp_server)) {
+  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_rsdp_server = mysqli_fetch_array($q_rsdp_server)) {
 
     if ($debug == 'yes') {
       print "Processing: " . $a_rsdp_server['os_sysname'] . "\n";
@@ -46,8 +45,8 @@
     if ($debug == 'yes') {
       print "  Query: " . $q_string . "\n";
     }
-    $q_rsdp_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    while ($a_rsdp_interface = mysql_fetch_array($q_rsdp_interface)) {
+    $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
       $servername = $a_rsdp_interface['if_name'];
 
       if ($debug == 'yes') {
@@ -79,9 +78,9 @@
       $q_string  = "select fs_volume,fs_size ";
       $q_string .= "from rsdp_filesystem ";
       $q_string .= "where fs_rsdp = " . $a_rsdp_server['rsdp_id'];
-      $q_rsdp_filesystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_rsdp_filesystem) > 0) {
-        while ($a_rsdp_filesystem = mysql_fetch_array($q_rsdp_filesystem)) {
+      $q_rsdp_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_rsdp_filesystem) > 0) {
+        while ($a_rsdp_filesystem = mysqli_fetch_array($q_rsdp_filesystem)) {
           $configuration .= $servername . ":Disk:" . $a_rsdp_filesystem['fs_size'] . "\n";
         }
       }
@@ -91,8 +90,8 @@
       $q_string .= "from rsdp_interface ";
       $q_string .= "where if_rsdp = " . $a_rsdp_server['rsdp_id'] . " and if_type != 4 and if_type != 6 ";
       $q_string .= "order by if_interface";
-      $q_rsdp_console = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      while ($a_rsdp_console = mysql_fetch_array($q_rsdp_console)) {
+      $q_rsdp_console = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_rsdp_console = mysqli_fetch_array($q_rsdp_console)) {
 
         if ($a_rsdp_console['if_ipcheck']) {
           $configuration .= $servername . ":IP:" . $a_rsdp_console['if_ip'] . ":" . $a_rsdp_console['if_gate'] . "\n";
@@ -119,9 +118,9 @@
         $q_string  = "select bu_retention ";
         $q_string .= "from rsdp_backups ";
         $q_string .= "where bu_rsdp = " . $a_rsdp_server['rsdp_id'] . " ";
-        $q_rsdp_backups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        if (mysql_num_rows($q_rsdp_backups) > 0) {
-          $a_rsdp_backups = mysql_fetch_array($q_rsdp_backups);
+        $q_rsdp_backups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_rsdp_backups) > 0) {
+          $a_rsdp_backups = mysqli_fetch_array($q_rsdp_backups);
 
           if ($a_rsdp_backups['bu_retention']) {
             $configuration .= $servername . ":Netbackup\n";
@@ -161,8 +160,8 @@
   $q_string .= "from inventory ";
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
   $q_string .= "where inv_status = 0 and inv_ssh = 1 and inv_manager = " . $GRP_Unix . " ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
 # default in case there are no management interfaces
     $hostname = $servername = $a_inventory['inv_name'];
@@ -178,9 +177,9 @@
     $q_string .= "from interface ";
     $q_string .= "left join ip_zones on ip_zones.zone_id = interface.int_zone ";
     $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_management = 1 or int_backup = 1 or int_openview = 1) ";
-    $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_interface) > 0) {
-      while ($a_interface = mysql_fetch_array($q_interface)) {
+    $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_interface) > 0) {
+      while ($a_interface = mysqli_fetch_array($q_interface)) {
 
         if ($a_interface['int_management']) {
           $managementip = $a_interface['int_addr'];
@@ -206,9 +205,9 @@
     $q_string .= "from interface ";
     $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_type = 1 or int_type = 2) ";
     $q_string .= "order by int_type desc ";
-    $q_intapp = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_intapp) > 0) {
-      $a_intapp = mysql_fetch_array($q_intapp);
+    $q_intapp = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_intapp) > 0) {
+      $a_intapp = mysqli_fetch_array($q_intapp);
 
       $hostname = $a_intapp['int_server'];
     }
@@ -238,25 +237,25 @@
   $q_string .= "from software ";
   $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
   $q_string .= "where inv_status = 0 and inv_ssh = 1 and sw_software like '%Oracle%' and sw_group = " . $GRP_DBAdmins . " ";
-  $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_software) > 0) {
-    while ($a_software = mysql_fetch_array($q_software)) {
+  $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_software) > 0) {
+    while ($a_software = mysqli_fetch_array($q_software)) {
 
       $hostname = $servername = $a_software['inv_name'];
       $q_string  = "select int_server ";
       $q_string .= "from interface ";
       $q_string .= "where int_companyid = " . $a_software['inv_id'] . " and int_type = 2 ";
-      $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_interface) > 0) {
-        $a_interface = mysql_fetch_array($q_interface);
+      $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_interface) > 0) {
+        $a_interface = mysqli_fetch_array($q_interface);
         $servername = $a_interface['int_server'];
       } else {
         $q_string  = "select int_server ";
         $q_string .= "from interface ";
         $q_string .= "where int_companyid = " . $a_software['inv_id'] . " and int_type = 1 ";
-        $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        if (mysql_num_rows($q_interface) > 0) {
-          $a_interface = mysql_fetch_array($q_interface);
+        $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_interface) > 0) {
+          $a_interface = mysqli_fetch_array($q_interface);
           $servername = $a_interface['int_server'];
         }
       }
@@ -267,5 +266,7 @@
   }
 
   print $configuration . "\n";
+
+  mysqli_free_result($db);
 
 ?>
