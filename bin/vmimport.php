@@ -2,7 +2,6 @@
 <?php
 # Script: vmimport.php
 # By: Carl Schelin
-# Coding Standard 3.0 Applied
 # See: https://incowk01/makers/index.php/Coding_Standards
 # This script reads in a comma delimited file created by the chksys script. The chksys script has various keywords 
 # which are parsed by this script and then imported into the inventory database.
@@ -307,5 +306,6 @@
     }
   }
 
+  mysqli_free_request($db);
 
 ?>
