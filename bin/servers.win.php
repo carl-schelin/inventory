@@ -52,7 +52,7 @@
 
 # determine operating system
     $os = "";
-    $os = return_System($a_software['inv_id']);
+    $os = return_System($db, $a_software['inv_id']);
 
 # add a comment character to the server list for live servers but not ssh'able.
 # scripts use the "^#" part to make sure commented servers are able to use the changelog process
