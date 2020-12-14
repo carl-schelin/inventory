@@ -3,15 +3,14 @@
 # Script: import.policy.php
 # By: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # This script reads in a colon delimited file which imports the Openview policy info in and associates it with the server
 
   include('settings.php');
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -38,13 +37,13 @@
   $q_string  = "select inv_id ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_name = \"" . $server . "\" and inv_status = 0 ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_inventory) == 0) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inventory) == 0) {
     print "import.policy.ph: Unable to locate " . $server . " in the inventory.\n";
     print $q_string . "\n";
     exit(1);
   } else {
-    $a_inventory = mysql_fetch_array($q_inventory);
+    $a_inventory = mysqli_fetch_array($q_inventory);
   }
 
   $serverid = $a_inventory['inv_id'];
@@ -71,9 +70,9 @@
       $q_string  = "select pt_id ";
       $q_string .= "from policy_type ";
       $q_string .= "where pt_type = \"" . $value[0] . "\" ";
-      $q_policy_type = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_policy_type) > 0) {
-        $a_policy_type = mysql_fetch_array($q_policy_type);
+      $q_policy_type = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_policy_type) > 0) {
+        $a_policy_type = mysqli_fetch_array($q_policy_type);
       } else {
         $q_string  = "insert ";
         $q_string .= "into policy_type ";
@@ -82,16 +81,16 @@
         if ($debug == 'yes') {
           print "T";
         } else {
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           print "t";
         }
 # if it's been inserted, get the id
         $q_string  = "select pt_id ";
         $q_string .= "from policy_type ";
         $q_string .= "where pt_type = \"" . $value[0] . "\" ";
-        $q_policy_type = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        if (mysql_num_rows($q_policy_type) > 0) {
-          $a_policy_type = mysql_fetch_array($q_policy_type);
+        $q_policy_type = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_policy_type) > 0) {
+          $a_policy_type = mysqli_fetch_array($q_policy_type);
         } else {
           $a_policy_type['pt_id'] = 0;
         }
@@ -103,9 +102,9 @@
       $q_string  = "select pd_id ";
       $q_string .= "from policy_description ";
       $q_string .= "where pd_description = \"" . $value[1] . "\" ";
-      $q_policy_description = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_policy_description) > 0) {
-        $a_policy_description = mysql_fetch_array($q_policy_description);
+      $q_policy_description = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_policy_description) > 0) {
+        $a_policy_description = mysqli_fetch_array($q_policy_description);
       } else {
         $q_string  = "insert ";
         $q_string .= "into policy_description ";
@@ -114,16 +113,16 @@
         if ($debug == 'yes') {
           print "D";
         } else {
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           print "d";
         }
 # if it's been inserted, get the id
         $q_string  = "select pd_id ";
         $q_string .= "from policy_description ";
         $q_string .= "where pd_description = \"" . $value[1] . "\" ";
-        $q_policy_description = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        if (mysql_num_rows($q_policy_description) > 0) {
-          $a_policy_description = mysql_fetch_array($q_policy_description);
+        $q_policy_description = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_policy_description) > 0) {
+          $a_policy_description = mysqli_fetch_array($q_policy_description);
         } else {
           $a_policy_description['pd_id'] = 0;
         }
@@ -146,8 +145,8 @@
       $q_string  = "select pol_id ";
       $q_string .= "from policy ";
       $q_string .= "where pol_companyid = " . $a_inventory['inv_id'] . " and pol_type = " . $a_policy_type['pt_id'] . " and pol_description = " . $a_policy_description['pd_id'] . " ";
-      $q_policy = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_policy) == 0) {
+      $q_policy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_policy) == 0) {
         $q_string  = "insert ";
         $q_string .= "into policy ";
         $q_string .= "set ";
@@ -162,11 +161,11 @@
         if ($debug == 'yes') {
           print "I";
         } else {
-          $result = mysql_query($q_string);
+          $result = mysqli_query($db, $q_string);
           print "i";
         }
       } else {
-        $a_policy = mysql_fetch_array($q_policy);
+        $a_policy = mysqli_fetch_array($q_policy);
 
         $q_string  = "update "; 
         $q_string .= "policy ";
@@ -179,7 +178,7 @@
         if ($debug == 'yes') {
           print "P";
         } else {
-          $result = mysql_query($q_string);
+          $result = mysqli_query($db, $q_string);
           print "p";
         }
       }
@@ -187,5 +186,7 @@
       print "x";
     }
   }
+
+  mysqli_free_request($db);
 
 ?>
