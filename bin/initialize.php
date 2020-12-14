@@ -3,7 +3,6 @@
 # Script: initialize.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: This script creates a skeleton entry in the inventory 
 # to be ready for the core import. it's assumed a wrapper script will 
 # validate
