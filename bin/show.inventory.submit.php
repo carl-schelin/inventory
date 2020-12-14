@@ -19,7 +19,7 @@
     $argc--;
   }
 
-  $headers  = "From: Inventory Management <inventory@incojs01.scc911.com>\r\n";
+  $headers  = "From: Inventory Management <inventory@" . $hostname . ">\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
   $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
@@ -260,7 +260,7 @@
               }
               if ($a_inventory['inv_status'] == 0) {
                 $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
-                $output .= "  <td><a href=\"mailto:inventory@incojs01.scc911.com?subject=" . $a_inventory['inv_name'] . "\">" . $a_inventory['inv_name'] . "</a></td>\n";
+                $output .= "  <td><a href=\"mailto:inventory@" . $hostname . "?subject=" . $a_inventory['inv_name'] . "\">" . $a_inventory['inv_name'] . "</a></td>\n";
                 $output .= "  <td>" . $a_interface['int_addr'] . "</td>\n";
                 $output .= "  <td>" . $a_interface['int_face'] . "</td>\n";
                 $output .= "  <td>" . $a_interface['int_eth'] . "</td>\n";
@@ -316,7 +316,7 @@
             print $q_string . "\n\n";
           }
           $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
-          $output .= "  <td><a href=\"mailto:inventory@incojs01.scc911.com?subject=" . $a_inventory['inv_name'] . "\">" . $a_inventory['inv_name'] . "</a></td>\n";
+          $output .= "  <td><a href=\"mailto:inventory@" . $hostname . "?subject=" . $a_inventory['inv_name'] . "\">" . $a_inventory['inv_name'] . "</a></td>\n";
           $output .= "  <td>" . $a_groups['grp_name'] . "</td>\n";
           $output .= "</tr>\n";
         }
@@ -345,7 +345,7 @@
     $body .= "<p><u>Your Input:</u></p>\n";
     $body .= "<p>" . $subjectline . "</p>\n\n";
     $body .= "<p><u>Usage:</u></p>\n";
-    $body .= "<p>To: inventory@incojs01.scc911.com\n";
+    $body .= "<p>To: inventory@" . $hostname . "\n";
     $body .= "<br>Subject: {servername} or {serverip} [keyword option]\n";
     $body .= "<br>Subject: {intrado product}\n";
     $body .= "<br>Subject: [{empty subject} or {active} or {help} or {products}</p>\n\n";
@@ -427,7 +427,7 @@
       }
 
       $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
-      $output .= "  <td><a href=\"mailto:inventory@incojs01.scc911.com?subject=" . $a_inventory['inv_name'] . "\">" . $inv_name . "</a></td>\n";
+      $output .= "  <td><a href=\"mailto:inventory@" . $hostname . "?subject=" . $a_inventory['inv_name'] . "\">" . $inv_name . "</a></td>\n";
       $output .= "  <td>" . $a_inventory['inv_function'] . "</td>\n";
       $output .= "  <td>" . $a_inventory['grp_name']     . "</td>\n";
       $output .= "  <td>" . $a_groups['grp_name']        . "</td>\n";
@@ -534,7 +534,7 @@
       }
 
       $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
-      $output .= "  <td><a href=\"mailto:inventory@incojs01.scc911.com?subject=" . $a_inventory['inv_name'] . "\">" . $a_inventory['inv_name'] . "</a></td>\n";
+      $output .= "  <td><a href=\"mailto:inventory@" . $hostname . "?subject=" . $a_inventory['inv_name'] . "\">" . $a_inventory['inv_name'] . "</a></td>\n";
       $output .= "  <td>" . $a_inventory['inv_function'] . "</td>\n";
       $output .= "  <td>" . $a_inventory['grp_name']     . "</td>\n";
       $output .= "  <td>" . $a_groups['grp_name']        . "</td>\n";
