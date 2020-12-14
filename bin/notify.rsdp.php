@@ -2,15 +2,14 @@
 # Script: notify.rsdp.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description:
 
   include('settings.php');
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -62,16 +61,16 @@
   $q_string .= "left join products on products.prod_id = rsdp_server.rsdp_product ";
   $q_string .= "left join rsdp_backups on rsdp_backups.bu_rsdp = rsdp_server.rsdp_id ";
   $q_string .= "order by rsdp_id ";
-  $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_rsdp_server = mysql_fetch_array($q_rsdp_server)) {
+  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_rsdp_server = mysqli_fetch_array($q_rsdp_server)) {
 
 # need to get the last 
     $q_string  = "select st_step ";
     $q_string .= "from rsdp_status ";
     $q_string .= "where st_rsdp = " . $a_rsdp_server['rsdp_id'] . " ";
     $q_string .= "order by st_step desc limit 1 ";
-    $q_rsdp_status = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_rsdp_status = mysql_fetch_array($q_rsdp_status);
+    $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_rsdp_status = mysqli_fetch_array($q_rsdp_status);
 
     if ($a_rsdp_status['st_step'] != 18) {
       $waitingon = '';
@@ -95,9 +94,9 @@
       $q_string .= "from rsdp_platform ";
       $q_string .= "left join models on models.mod_id = rsdp_platform.pf_model ";
       $q_string .= "where pf_rsdp = " . $a_rsdp_server['rsdp_id'] . " ";
-      $q_rsdp_platform = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_rsdp_platform) > 0) {
-        $a_rsdp_platform = mysql_fetch_array($q_rsdp_platform);
+      $q_rsdp_platform = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_rsdp_platform) > 0) {
+        $a_rsdp_platform = mysqli_fetch_array($q_rsdp_platform);
 
         $virtual = $a_rsdp_platform['mod_virtual'];
       }
@@ -106,15 +105,15 @@
         $q_string  = "select os_sysname,os_software "; 
         $q_string .= "from rsdp_osteam ";
         $q_string .= "where os_rsdp = " . $a_rsdp_server['rsdp_id'] . " ";
-        $q_rsdp_osteam = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        if (mysql_num_rows($q_rsdp_osteam) > 0) {
-          $a_rsdp_osteam = mysql_fetch_array($q_rsdp_osteam);
+        $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_rsdp_osteam) > 0) {
+          $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
 
           $q_string  = "select os_software ";
           $q_string .= "from operatingsystem ";
           $q_string .= "where os_id = " . $a_rsdp_osteam['os_software'] . " ";
-          $q_operatingsystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_operatingsystem = mysql_fetch_array($q_operatingsystem);
+          $q_operatingsystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_operatingsystem = mysqli_fetch_array($q_operatingsystem);
 
         } else {
           $a_rsdp_osteam['os_sysname'] = 'Unknown';
@@ -131,14 +130,14 @@
         $q_string  = "select usr_id,usr_name,usr_disabled,usr_group ";
         $q_string .= "from users ";
         $q_string .= "where usr_id = " . $a_rsdp_server['rsdp_requestor'] . " ";
-        $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_users = mysql_fetch_array($q_users);
+        $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_users = mysqli_fetch_array($q_users);
 
         if ($a_users['usr_disabled']) {
           $groupid[$a_rsdp_server['rsdp_id']] = $a_users['usr_group'];
           if ($debug == 'yes') {
-            $q_groups = mysql_query("select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
-            $a_groups = mysql_fetch_array($q_groups);
+            $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+            $a_groups = mysqli_fetch_array($q_groups);
             print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
           }
         } else {
@@ -156,22 +155,22 @@
         if ($a_rsdp_server['rsdp_platformspoc'] == 0) {
           $groupid[$a_rsdp_server['rsdp_id']] = $a_rsdp_server['rsdp_platform'];
           if ($debug == 'yes') {
-            $q_groups = mysql_query("select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
-            $a_groups = mysql_fetch_array($q_groups);
+            $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+            $a_groups = mysqli_fetch_array($q_groups);
             print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
           }
         } else {
           $q_string  = "select usr_id,usr_name,usr_disabled,usr_group ";
           $q_string .= "from users ";
           $q_string .= "where usr_id = " . $a_rsdp_server['rsdp_platformspoc'] . " ";
-          $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_users = mysql_fetch_array($q_users);
+          $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_users = mysqli_fetch_array($q_users);
 
           if ($a_users['usr_disabled']) {
             $groupid[$a_rsdp_server['rsdp_id']] = $a_users['usr_group'];
             if ($debug == 'yes') {
-              $q_groups = mysql_query("select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
-              $a_groups = mysql_fetch_array($q_groups);
+              $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+              $a_groups = mysqli_fetch_array($q_groups);
               print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
             }
           } else {
@@ -189,22 +188,22 @@
         if ($a_rsdp_server['rsdp_sanpoc'] == 0) {
           $groupid[$a_rsdp_server['rsdp_id']] = $GRP_SAN;
           if ($debug == 'yes') {
-            $q_groups = mysql_query("select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
-            $a_groups = mysql_fetch_array($q_groups);
+            $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+            $a_groups = mysqli_fetch_array($q_groups);
             print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
           }
         } else {
           $q_string  = "select usr_id,usr_name,usr_disabled,usr_group ";
           $q_string .= "from users ";
           $q_string .= "where usr_id = " . $a_rsdp_server['rsdp_sanpoc'] . " ";
-          $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_users = mysql_fetch_array($q_users);
+          $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_users = mysqli_fetch_array($q_users);
 
           if ($a_users['usr_disabled']) {
             $groupid[$a_rsdp_server['rsdp_id']] = $a_users['usr_group'];
             if ($debug == 'yes') {
-              $q_groups = mysql_query("select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
-              $a_groups = mysql_fetch_array($q_groups);
+              $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+              $a_groups = mysqli_fetch_array($q_groups);
               print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
             }
           } else {
@@ -222,22 +221,22 @@
         if ($a_rsdp_server['rsdp_networkpoc'] == 0) {
           $groupid[$a_rsdp_server['rsdp_id']] = $GRP_Networking;
           if ($debug == 'yes') {
-            $q_groups = mysql_query("select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
-            $a_groups = mysql_fetch_array($q_groups);
+            $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+            $a_groups = mysqli_fetch_array($q_groups);
             print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
           }
         } else {
           $q_string  = "select usr_id,usr_name,usr_disabled,usr_group ";
           $q_string .= "from users ";
           $q_string .= "where usr_id = " . $a_rsdp_server['rsdp_networkpoc'] . " ";
-          $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_users = mysql_fetch_array($q_users);
+          $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_users = mysqli_fetch_array($q_users);
 
           if ($a_users['usr_disabled']) {
             $groupid[$a_rsdp_server['rsdp_id']] = $a_users['usr_group'];
             if ($debug == 'yes') {
-              $q_groups = mysql_query("select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
-              $a_groups = mysql_fetch_array($q_groups);
+              $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+              $a_groups = mysqli_fetch_array($q_groups);
               print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
             }
           } else {
@@ -256,22 +255,22 @@
           if ($a_rsdp_server['rsdp_virtpoc'] == 0) {
             $groupid[$a_rsdp_server['rsdp_id']] = $GRP_Virtualization;
             if ($debug == 'yes') {
-              $q_groups = mysql_query("select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
-              $a_groups = mysql_fetch_array($q_groups);
+              $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+              $a_groups = mysqli_fetch_array($q_groups);
               print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
             }
           } else {
             $q_string  = "select usr_id,usr_name,usr_disabled,usr_group ";
             $q_string .= "from users ";
             $q_string .= "where usr_id = " . $a_rsdp_server['rsdp_virtpoc'] . " ";
-            $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            $a_users = mysql_fetch_array($q_users);
+            $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $a_users = mysqli_fetch_array($q_users);
 
             if ($a_users['usr_disabled']) {
               $groupid[$a_rsdp_server['rsdp_id']] = $a_users['usr_group'];
               if ($debug == 'yes') {
-                $q_groups = mysql_query("select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
-                $a_groups = mysql_fetch_array($q_groups);
+                $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+                $a_groups = mysqli_fetch_array($q_groups);
                 print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
               }
             } else {
@@ -285,22 +284,22 @@
           if ($a_rsdp_server['rsdp_dcpoc'] == 0) {
             $groupid[$a_rsdp_server['rsdp_id']] = $GRP_DataCenter;
             if ($debug == 'yes') {
-              $q_groups = mysql_query("select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
-              $a_groups = mysql_fetch_array($q_groups);
+              $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+              $a_groups = mysqli_fetch_array($q_groups);
               print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
             }
           } else {
             $q_string  = "select usr_id,usr_name,usr_disabled,usr_group ";
             $q_string .= "from users ";
             $q_string .= "where usr_id = " . $a_rsdp_server['rsdp_dcpoc'] . " ";
-            $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-            $a_users = mysql_fetch_array($q_users);
+            $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $a_users = mysqli_fetch_array($q_users);
 
             if ($a_users['usr_disabled']) {
               $groupid[$a_rsdp_server['rsdp_id']] = $a_users['usr_group'];
               if ($debug == 'yes') {
-                $q_groups = mysql_query("select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
-                $a_groups = mysql_fetch_array($q_groups);
+                $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+                $a_groups = mysqli_fetch_array($q_groups);
                 print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
               }
             } else {
@@ -319,22 +318,22 @@
         if ($a_rsdp_server['rsdp_backuppoc'] == 0) {
           $groupid[$a_rsdp_server['rsdp_id']] = $GRP_Backups;
           if ($debug == 'yes') {
-            $q_groups = mysql_query("select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
-            $a_groups = mysql_fetch_array($q_groups);
+            $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+            $a_groups = mysqli_fetch_array($q_groups);
             print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
           }
         } else {
           $q_string  = "select usr_id,usr_name,usr_disabled,usr_group ";
           $q_string .= "from users ";
           $q_string .= "where usr_id = " . $a_rsdp_server['rsdp_backuppoc'] . " ";
-          $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_users = mysql_fetch_array($q_users);
+          $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_users = mysqli_fetch_array($q_users);
 
           if ($a_users['usr_disabled']) {
             $groupid[$a_rsdp_server['rsdp_id']] = $a_users['usr_group'];
             if ($debug == 'yes') {
-              $q_groups = mysql_query("select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
-              $a_groups = mysql_fetch_array($q_groups);
+              $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+              $a_groups = mysqli_fetch_array($q_groups);
               print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
             }
           } else {
@@ -352,22 +351,22 @@
         if ($a_rsdp_server['rsdp_monitoringpoc'] == 0) {
           $groupid[$a_rsdp_server['rsdp_id']] = $GRP_Monitoring;
           if ($debug == 'yes') {
-            $q_groups = mysql_query("select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
-            $a_groups = mysql_fetch_array($q_groups);
+            $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+            $a_groups = mysqli_fetch_array($q_groups);
             print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
           }
         } else {
           $q_string  = "select usr_id,usr_name,usr_disabled,usr_group ";
           $q_string .= "from users ";
           $q_string .= "where usr_id = " . $a_rsdp_server['rsdp_monitoringpoc'] . " ";
-          $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_users = mysql_fetch_array($q_users);
+          $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_users = mysqli_fetch_array($q_users);
 
           if ($a_users['usr_disabled']) {
             $groupid[$a_rsdp_server['rsdp_id']] = $a_users['usr_group'];
             if ($debug == 'yes') {
-              $q_groups = mysql_query("select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
-              $a_groups = mysql_fetch_array($q_groups);
+              $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+              $a_groups = mysqli_fetch_array($q_groups);
               print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
               print $groupid[$a_rsdp_server['rsdp_id']];
             }
@@ -386,22 +385,22 @@
         if ($a_rsdp_server['rsdp_applicationpoc'] == 0) {
           $groupid[$a_rsdp_server['rsdp_id']] = $a_rsdp_server['rsdp_application'];
           if ($debug == 'yes') {
-            $q_groups = mysql_query("select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
-            $a_groups = mysql_fetch_array($q_groups);
+            $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+            $a_groups = mysqli_fetch_array($q_groups);
             print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
           }
         } else {
           $q_string  = "select usr_id,usr_name,usr_disabled,usr_group ";
           $q_string .= "from users ";
           $q_string .= "where usr_id = " . $a_rsdp_server['rsdp_applicationpoc'] . " ";
-          $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          $a_users = mysql_fetch_array($q_users);
+          $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_users = mysqli_fetch_array($q_users);
 
           if ($a_users['usr_disabled']) {
             $groupid[$a_rsdp_server['rsdp_id']] = $a_users['usr_group'];
             if ($debug == 'yes') {
-              $q_groups = mysql_query("select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
-              $a_groups = mysql_fetch_array($q_groups);
+              $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+              $a_groups = mysqli_fetch_array($q_groups);
               print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
             }
           } else {
@@ -442,8 +441,8 @@
       $q_string  = "select grp_name,grp_email ";
       $q_string .= "from groups ";
       $q_string .= "where grp_id = " . $val . " ";
-      $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_groups = mysql_fetch_array($q_groups);
+      $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_groups = mysqli_fetch_array($q_groups);
 
       $output = "<p>The following Server Build Workflow (RSDP) servers are waiting for someone from your group to mark the task as complete.</p>\n";
       $output .= "<p><strong>Note:</strong> If the task has been completed, either click on the server and navigate to your task and mark it completed, or contact Carl Schelin to remove the task.</p>\n";
@@ -460,15 +459,15 @@
     $q_string  = "select os_sysname,os_software "; 
     $q_string .= "from rsdp_osteam ";
     $q_string .= "where os_rsdp = " . $key . " ";
-    $q_rsdp_osteam = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_rsdp_osteam) > 0) {
-      $a_rsdp_osteam = mysql_fetch_array($q_rsdp_osteam);
+    $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_rsdp_osteam) > 0) {
+      $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
 
       $q_string  = "select os_software ";
       $q_string .= "from operatingsystem ";
       $q_string .= "where os_id = " . $a_rsdp_osteam['os_software'] . " ";
-      $q_operatingsystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_operatingsystem = mysql_fetch_array($q_operatingsystem);
+      $q_operatingsystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_operatingsystem = mysqli_fetch_array($q_operatingsystem);
 
     } else {
       $a_rsdp_osteam['os_sysname'] = 'Unknown';
@@ -479,8 +478,8 @@
     $q_string .= "from rsdp_server ";
     $q_string .= "left join products on products.prod_id = rsdp_server.rsdp_product ";
     $q_string .= "where rsdp_id = " . $key . " ";
-    $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+    $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
     $output .= "<tr style=\"background-color: #bced91; border: 1px solid #000000; font-size: 75%;\">\n";
     $output .= "  <td><a href=\"" . $RSDProot . "/tasks.php?id=" . $key . "\">" . $a_rsdp_osteam['os_sysname'] . "</a></td>\n";
@@ -522,8 +521,8 @@
       $q_string  = "select usr_last,usr_first,usr_email ";
       $q_string .= "from users ";
       $q_string .= "where usr_id = " . $val . " ";
-      $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_users = mysql_fetch_array($q_users);
+      $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_users = mysqli_fetch_array($q_users);
 
       $output = "<p>The following Server Build Workflow (RSDP) servers are waiting for you to mark your task as complete.</p>\n";
       $output .= "<p><strong>Note:</strong> If the task has been completed, either click on the server and navigate to your task and mark it completed, or contact Carl Schelin to remove the task.</p>\n";
@@ -540,15 +539,15 @@
     $q_string  = "select os_sysname,os_software "; 
     $q_string .= "from rsdp_osteam ";
     $q_string .= "where os_rsdp = " . $key . " ";
-    $q_rsdp_osteam = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_rsdp_osteam) > 0) {
-      $a_rsdp_osteam = mysql_fetch_array($q_rsdp_osteam);
+    $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_rsdp_osteam) > 0) {
+      $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
 
       $q_string  = "select os_software ";
       $q_string .= "from operatingsystem ";
       $q_string .= "where os_id = " . $a_rsdp_osteam['os_software'] . " ";
-      $q_operatingsystem = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_operatingsystem = mysql_fetch_array($q_operatingsystem);
+      $q_operatingsystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_operatingsystem = mysqli_fetch_array($q_operatingsystem);
 
     } else {
       $a_rsdp_osteam['os_sysname'] = 'Unknown';
@@ -559,8 +558,8 @@
     $q_string .= "from rsdp_server ";
     $q_string .= "left join products on products.prod_id = rsdp_server.rsdp_product ";
     $q_string .= "where rsdp_id = " . $key . " ";
-    $q_rsdp_server = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_rsdp_server = mysql_fetch_array($q_rsdp_server);
+    $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
     $output .= "<tr style=\"background-color: #bced91; border: 1px solid #000000; font-size: 75%;\">\n";
     $output .= "  <td><a href=\"" . $RSDProot . "/tasks.php?id=" . $key . "\">" . $a_rsdp_osteam['os_sysname'] . "</a></td>\n";
@@ -574,5 +573,7 @@
   if ($debug == 'yes') {
     mail($Sitedev, "Server Build Workflow (RSDP) User Status", $debug_output, $headers);
   }
+
+  mysqli_free_request($db);
 
 ?>
