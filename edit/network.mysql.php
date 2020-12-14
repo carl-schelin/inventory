@@ -608,13 +608,13 @@
       $output .=   "<th class=\"ui-state-default\">Fwd</th>\n";
       $output .=   "<th class=\"ui-state-default\">Rev</th>\n";
       $output .=   "<th class=\"ui-state-default\">Logical Interface</th>\n";
-      if (return_Virtual($formVars['int_companyid']) == 0) {
+      if (return_Virtual($db, $formVars['int_companyid']) == 0) {
         $output .=   "<th class=\"ui-state-default\">Physical Port</th>\n";
       }
       $output .=   "<th class=\"ui-state-default\">MAC</th>\n";
       $output .=   "<th class=\"ui-state-default\">IP Address/Netmask</th>\n";
       $output .=   "<th class=\"ui-state-default\">Gateway</th>\n";
-      if (return_Virtual($formVars['int_companyid']) == 0) {
+      if (return_Virtual($db, $formVars['int_companyid']) == 0) {
         $output .=   "<th class=\"ui-state-default\">Switch</th>\n";
         $output .=   "<th class=\"ui-state-default\">Port</th>\n";
       }
@@ -764,13 +764,13 @@
           $output .= "  <td"          . $defaultdel . " title=\"" . $fwdtitle . "\">" . $linkstart . $forward                 . $linkend   . "</td>\n";
           $output .= "  <td"          . $defaultdel . " title=\"" . $revtitle . "\">" . $linkstart . $reverse                . $linkend   . "</td>\n";
           $output .= "  <td"          . $default    . ">" . $linkstart . $a_interface['int_face'] . $virtual                 . $linkend   . "</td>\n";
-          if (return_Virtual($formVars['int_companyid']) == 0) {
+          if (return_Virtual($db, $formVars['int_companyid']) == 0) {
             $output .= "  <td"        . $default    . ">" . $linkstart . $a_interface['int_sysport']                         . $linkend   . "</td>\n";
           }
           $output .= "  <td"          . $default    . ">" . $linkstart . $showmac                 . $ethchecked              . $linkend   . "</td>\n";
           $output .= "  <td"          . $default    . ">" . $linkstart . $a_interface['int_addr'] . $showmask . $addrchecked . $linkend   . "</td>\n";
           $output .= "  <td"          . $default    . ">" . $linkstart . $a_interface['int_gate'] . $gatechecked             . $linkend   . "</td>\n";
-          if (return_Virtual($formVars['int_companyid']) == 0) {
+          if (return_Virtual($db, $formVars['int_companyid']) == 0) {
             $output .= "  <td"        . $default    . ">" . $linkstart . $a_interface['int_switch']                          . $linkend   . "</td>\n";
             $output .= "  <td"        . $default    . ">" . $linkstart . $a_interface['int_port']                            . $linkend   . "</td>\n";
           }
@@ -922,13 +922,13 @@
               $output .= "  <td"          . $defaultdel . " title=\"" . $fwdtitle . "\">" . $linkstart . $forward                 . $linkend   . "</td>\n";
               $output .= "  <td"          . $defaultdel . " title=\"" . $revtitle . "\">" . $linkstart . $reverse                . $linkend   . "</td>\n";
               $output .= "  <td"          . $default    . ">"   . $linkstart . $a_redundancy['int_face']   . $virtual . $linkend            . "</td>\n";
-              if (return_Virtual($formVars['int_companyid']) == 0) {
+              if (return_Virtual($db, $formVars['int_companyid']) == 0) {
                 $output .= "  <td"        . $default    . ">"   . $linkstart . $a_redundancy['int_sysport']           . $linkend            . "</td>\n";
               }
               $output .= "  <td"          . $default    . ">"   . $linkstart . $showmac                               . $ethchecked . $linkend            . "</td>\n";
               $output .= "  <td"          . $default    . ">"   . $linkstart . $a_redundancy['int_addr'] . $showmask  . $addrchecked . $linkend            . "</td>\n";
               $output .= "  <td"          . $default    . ">"   . $linkstart . $a_redundancy['int_gate']              . $gatechecked . $linkend            . "</td>\n";
-              if (return_Virtual($formVars['int_companyid']) == 0) {
+              if (return_Virtual($db, $formVars['int_companyid']) == 0) {
                 $output .= "  <td"        . $default    . ">"   . $linkstart . $a_redundancy['int_switch']            . $linkend            . "</td>\n";
                 $output .= "  <td"        . $default    . ">"   . $linkstart . $a_redundancy['int_port']              . $linkend            . "</td>\n";
               }
@@ -1077,13 +1077,13 @@
                   $output .= "  <td"          . $defaultdel . " title=\"" . $fwdtitle . "\">" . $linkstart . $forward                 . $linkend   . "</td>\n";
                   $output .= "  <td"          . $defaultdel . " title=\"" . $revtitle . "\">" . $linkstart . $reverse                . $linkend   . "</td>\n";
                   $output .= "  <td"          . $default    . ">"   . $linkstart . $a_secondary['int_face']   . $virtual . $linkend            . "</td>\n";
-                  if (return_Virtual($formVars['int_companyid']) == 0) {
+                  if (return_Virtual($db, $formVars['int_companyid']) == 0) {
                     $output .= "  <td"        . $default    . ">"   . $linkstart . $a_secondary['int_sysport']           . $linkend            . "</td>\n";
                   }
                   $output .= "  <td"          . $default    . ">"   . $linkstart . $showmac                               . $ethchecked . $linkend            . "</td>\n";
                   $output .= "  <td"          . $default    . ">"   . $linkstart . $a_secondary['int_addr'] . $showmask  . $addrchecked . $linkend            . "</td>\n";
                   $output .= "  <td"          . $default    . ">"   . $linkstart . $a_secondary['int_gate']              . $gatechecked . $linkend            . "</td>\n";
-                  if (return_Virtual($formVars['int_companyid']) == 0) {
+                  if (return_Virtual($db, $formVars['int_companyid']) == 0) {
                     $output .= "  <td"        . $default    . ">"   . $linkstart . $a_secondary['int_switch']            . $linkend            . "</td>\n";
                     $output .= "  <td"        . $default    . ">"   . $linkstart . $a_secondary['int_port']              . $linkend            . "</td>\n";
                   }
