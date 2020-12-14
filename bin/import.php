@@ -584,7 +584,7 @@
             }
           }
 
-#incojs01,software,backup,NetBackup-Solaris_x86_10_64 7.1.0.4
+#[server],software,backup,NetBackup-Solaris_x86_10_64 7.1.0.4
           if ($value[2] == 'backup') {
             if (strlen($value[3]) > 0) {
               $skip = 'no';
@@ -625,7 +625,7 @@
             }
           }
 
-#incojs01,software,monitor,08.60.501
+#[server],software,monitor,08.60.501
           if ($value[2] == 'monitor') {
             if (strlen($value[3]) > 0) {
               $skip = 'no';
@@ -734,7 +734,7 @@
           }
 
 # database listings
-#incojs01,software,mysqld,/opt/csw/mysql5/libexec/amd64/mysqld  Ver 5.0.75 for pc-solaris2.10 on i386 (Source distribution)
+#[server],software,mysqld,/opt/csw/mysql5/libexec/amd64/mysqld  Ver 5.0.75 for pc-solaris2.10 on i386 (Source distribution)
           if ($value[2] == 'mysqld') {
             if (strlen($value[3]) > 0) {
               $skip = 'no';
@@ -1013,7 +1013,7 @@
           }
 
 # other software
-#incojs01,software,sudo,Sudo version 1.7.2p6
+#[server],software,sudo,Sudo version 1.7.2p6
           if ($value[2] == 'sudo') {
             if (strlen($value[3]) > 0) {
               $skip = 'no';
@@ -1057,7 +1057,7 @@
           }
 
 # other software
-#incojs01,software,httpd,Server version: Apache/2.0.63
+#[server],software,httpd,Server version: Apache/2.0.63
           if ($value[2] == 'httpd') {
             if (strlen($value[3]) > 0) {
               $skip = 'no';
