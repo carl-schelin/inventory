@@ -21,8 +21,8 @@
 # p|g - Password file or Group file
 # path and file name
 #
-# accounts.php p /usr/local/admin/servers/incojs01/passwd
-# accounts.php g /usr/local/admin/servers/incojs01/group
+# accounts.php p /usr/local/admin/servers/[servername]/passwd
+# accounts.php g /usr/local/admin/servers/[servername]/group
 # 
 # ultimately the user name needs to be matched with the group as well
 # check the third field for group name and associate that.
