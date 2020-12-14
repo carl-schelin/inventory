@@ -67,7 +67,7 @@
 # this way the server changelog listing is much shorter as the storage and backup group have backup software on all the servers.
     if (strlen($tags) > 0) {
 # determine operating system
-      $os = return_System($a_inventory['inv_id']);
+      $os = return_System($db, $a_inventory['inv_id']);
 
       print $a_inventory['inv_name'] . ":" . $a_inventory['inv_fqdn'] . ":$os:" . $a_inventory['zone_name'] . ":$tags:$note:" . $a_inventory['inv_id'] . "\n";
 
