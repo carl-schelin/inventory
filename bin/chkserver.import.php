@@ -8,8 +8,8 @@
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -25,15 +25,15 @@
   $q_string .= "set ";
   $q_string .= "ce_delete = 1 ";
   if ($debug == 'no') {
-    $q_result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $q_result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   }
 
   $q_string  = "select inv_id,inv_name ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_manager = 1 and inv_status = 0 and inv_ssh = 1 ";
   $q_string .= "order by inv_name ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     print $a_inventory['inv_name'] . ": ";
 
@@ -41,7 +41,7 @@
     $q_string  = "update chkserver ";
     $q_string .= "set chk_import = 1 ";
     $q_string .= "where chk_companyid = " . $a_inventory['inv_id'] . " ";
-    $results = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $results = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
     $servername = '/usr/local/admin/servers/' . $a_inventory['inv_name'] . "/chkserver.output";
 
@@ -90,8 +90,8 @@
           $q_string  = "select ce_id ";
           $q_string .= "from chkerrors ";
           $q_string .= "where ce_error = \"" . $process . "\" ";
-          $q_chkerrors = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n");
-          if (mysql_num_rows($q_chkerrors) == 0) {
+          $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
+          if (mysqli_num_rows($q_chkerrors) == 0) {
 # add the error if it's not there
             $q_string  = "insert ";
             $q_string .= "into chkerrors ";
@@ -104,10 +104,10 @@
               print "Missing error: " . $process . "\n";
             } else {
               print "e";
-              $result = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n");
+              $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
             }
           } else {
-            $a_chkerrors = mysql_fetch_array($q_chkerrors);
+            $a_chkerrors = mysqli_fetch_array($q_chkerrors);
 
             $q_string  = "update ";
             $q_string .= "chkerrors ";
@@ -116,18 +116,18 @@
             $q_string .= "where ce_id = " . $a_chkerrors['ce_id'] . " ";
 
             print "u";
-            $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+            $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           }
 
 # okay, now actually get the id for the update
           $q_string  = "select ce_id ";
           $q_string .= "from chkerrors ";
           $q_string .= "where ce_error = \"" . $process . "\" ";
-          $q_chkerrors = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-          if (mysql_num_rows($q_chkerrors) == 0) {
+          $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_chkerrors) == 0) {
             print "Unable to locate: " . $process . "\n";
           } else {
-            $a_chkerrors = mysql_fetch_array($q_chkerrors);
+            $a_chkerrors = mysqli_fetch_array($q_chkerrors);
 
 # the idea is to see if the server and id exists and hasn't been closed yet.
 # and got the id, now see if the id already exists in the chkserver table
@@ -136,8 +136,8 @@
             $q_string  = "select chk_id ";
             $q_string .= "from chkserver ";
             $q_string .= "where chk_companyid = " . $a_inventory['inv_id'] . " and chk_errorid = " . $a_chkerrors['ce_id'] . " and chk_closed = '0000-00-00 00:00:00' ";
-            $q_chkserver = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n");
-            if (mysql_num_rows($q_chkserver) == 0) {
+            $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
+            if (mysqli_num_rows($q_chkserver) == 0) {
 # add the message flag
               $q_string  = "insert ";
               $q_string .= "into chkserver ";
@@ -147,9 +147,9 @@
               $q_string .= "chk_errorid    =   " . $a_chkerrors['ce_id'];
   
               print "s";
-              $result = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n");
+              $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
             } else {
-              $a_chkserver = mysql_fetch_array($q_chkserver);
+              $a_chkserver = mysqli_fetch_array($q_chkserver);
 
               $q_string  = "update chkserver ";
               $q_string .= "set ";
@@ -157,7 +157,7 @@
               $q_string .= "where chk_id = " . $a_chkserver['chk_id'] . " and chk_closed = '0000-00-00 00:00:00' ";
 
               print "i";
-              $result = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n");
+              $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
             }
           }
         }
@@ -171,9 +171,11 @@
     $q_string .= "where chk_import = 1 and chk_companyid = " . $a_inventory['inv_id'] . " and chk_closed = '0000-00-00 00:00:00' ";
 
     print "c";
-    $result = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n");
+    $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
 
     print "\n";
   }
+
+  mysqli_free_request($db);
 
 ?>

@@ -3,7 +3,6 @@
 # Script: bigfix.email.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: 
 # 
 
@@ -11,8 +10,8 @@
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -23,7 +22,7 @@
     $debug = 'yes';
   }
 
-  $headers  = "From: Inventory Management <inventory@incojs01.scc911.com>\r\n";
+  $headers  = "From: Inventory Management <inventory@" . $hostname . ">\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
   $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
@@ -40,8 +39,8 @@
   $q_string  = "select usr_id,usr_group,usr_email ";
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 and usr_bigfix = 1 ";
-  $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_users = mysql_fetch_array($q_users)) {
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
 
     $email = $a_users['usr_email'];
     $output  = "<html>\n";
@@ -64,8 +63,8 @@
     $q_string .= "from inventory ";
     $q_string .= "where inv_status = 0 and (inv_manager = " . $a_users['usr_group'] . " or inv_appadmin = " . $a_users['usr_group'] . ") ";
     $q_string .= "order by inv_name ";
-    $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    while ($a_inventory = mysql_fetch_array($q_inventory)) {
+    $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
       $bgcolor = '';
       $numpatches = 0;
@@ -74,9 +73,9 @@
       $q_string  = "select big_id,big_fixlet,big_severity ";
       $q_string .= "from bigfix ";
       $q_string .= "where big_companyid = " . $a_inventory['inv_id'] . " and big_scheduled > \"" . $formVars['back'] . "\" and big_scheduled < \"" . $formVars['forward'] . "\" ";
-      $q_bigfix = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_bigfix) > 0) {
-        while ($a_bigfix = mysql_fetch_array($q_bigfix)) {
+      $q_bigfix = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_bigfix) > 0) {
+        while ($a_bigfix = mysqli_fetch_array($q_bigfix)) {
           $numpatches++;
           if ($a_bigfix['big_fixlet'] == "Restart Server") {
              $reboot = "Yes";
@@ -98,14 +97,14 @@
         $q_string  = "select grp_name ";
         $q_string .= "from groups ";
         $q_string .= "where grp_id = " . $a_inventory['inv_manager'] . " ";
-        $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_manager = mysql_fetch_array($q_groups);
+        $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_manager = mysqli_fetch_array($q_groups);
 
         $q_string  = "select grp_name ";
         $q_string .= "from groups ";
         $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
-        $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-        $a_appadmin = mysql_fetch_array($q_groups);
+        $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_appadmin = mysqli_fetch_array($q_groups);
 
         $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
         $output .= "  <td>" . $a_inventory['inv_name']     . "</td>\n";
@@ -134,5 +133,7 @@
       mail($email, "BigFix Server Listing For: " . $current_date, $body, $headers);
     }
   }
+
+  mysqli_free_result($db);
 
 ?>

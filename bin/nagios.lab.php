@@ -5,8 +5,8 @@
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -87,8 +87,8 @@
   if ($hostname == 'inventory.scc911.com') {
     $q_string .= "and hw_active != '0000-00-00' ";
   }
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $groupname = str_replace(" ", "-", $a_inventory['grp_name']);
 
@@ -129,8 +129,8 @@
       $q_string  = "select int_xpoint,int_ypoint,int_zpoint ";
       $q_string .= "from interface ";
       $q_string .= "where int_addr = '" . $a_inventory['int_gate'] . "' ";
-      $q_intgate = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_intgate = mysql_fetch_array($q_intgate);
+      $q_intgate = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_intgate = mysqli_fetch_array($q_intgate);
 
       if (($a_inventory['inv_xpoint'] + $a_inventory['inv_ypoint'] + $a_inventory['inv_zpoint']) > 0) {
         $a_inventory['int_xpoint'] += $a_intgate['int_xpoint'];
@@ -290,8 +290,8 @@
   $q_string  = "select prod_id,prod_name ";
   $q_string .= "from products ";
   $q_string .= "order by prod_name ";
-  $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_products = mysql_fetch_array($q_products)) {
+  $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_products = mysqli_fetch_array($q_products)) {
     if (strlen($products[$a_products['prod_id']]) > 0) {
 
       $hostgroup = str_replace(" ", "_", $a_products['prod_name']);
@@ -380,5 +380,7 @@
     print "        }\n";
     print "\n";
   }
+
+  mysqli_free_request($db);
 
 ?>

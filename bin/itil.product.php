@@ -3,7 +3,6 @@
 # Script: itil.product.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: Retrieve the 'product catalog' listing
 # for the conversion to Remedy.
 # Requires:
@@ -15,8 +14,8 @@
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -28,11 +27,13 @@
   $q_string .= "from products ";
   $q_string .= "where prod_type = 'Service' ";
   $q_string .= "order by prod_name ";
-  $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_products = mysql_fetch_array($q_products)) {
+  $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_products = mysqli_fetch_array($q_products)) {
 
     print "\"Intrado, Inc.\",\"" . $a_products['prod_type'] . "\",\"" . $a_products['prod_citype'] . "\",\"" . $a_products['prod_tier1'] . "\",\"" . $a_products['prod_tier2'] . "\",\"" . $a_products['prod_tier3'] . "\",\"" . $a_products['prod_name'] . "\",\"Intrado\",\"No\",\"1\"\n";
 
   }
+
+  mysqli_free_request($db);
 
 ?>

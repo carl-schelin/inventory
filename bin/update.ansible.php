@@ -2,7 +2,6 @@
 # Script: update.ansible.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description:
 
 # root.cron: # update all RH 6 and 7 ansible setting to 1
@@ -12,8 +11,8 @@
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -31,8 +30,8 @@
   $q_string .= "from inventory ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
   $q_string .= "where sw_type = 'OS' ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     if (stripos($a_inventory['sw_software'], "red hat") !== false || stripos($a_inventory['sw_software'], "centos") !== false ) {
       if (
@@ -48,12 +47,14 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         }
 
       }
     }
  
   }
+
+  mysqli_free_request($db);
 
 ?>

@@ -3,15 +3,14 @@
 # Script: patch.count.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: 
 
   include('settings.php');
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -30,16 +29,16 @@
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "where inv_status = 0 and inv_manager = " . $manager . " and inv_ssh = 1 ";
   $q_string .= "order by inv_name ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n");
-  while ($a_inventory = mysql_fetch_array($q_inventory)) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $target = 'Unknown';
 
     $q_string  = "select sw_software ";
     $q_string .= "from software ";
     $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'OS' ";
-    $q_software = mysql_query($q_string) or die($q_string . ": " . mysql_error() . "\n");
-    $a_software = mysql_fetch_array($q_software);
+    $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
+    $a_software = mysqli_fetch_array($q_software);
 
     if (strpos($a_software['sw_software'], 'Red Hat') !== false) {
       $target = 'RHEL 6.9';
@@ -259,5 +258,7 @@
 
     print "\"" . $a_inventory['inv_name'] . "\",\"" . $a_software['sw_software'] . "\",\"" . $target . "\",\"" . $a_inventory['inv_kernel'] . "\",\"" . $a_inventory['prod_name'] . "\"\n";
   }
+
+  mysqli_free_request($db);
 
 ?>

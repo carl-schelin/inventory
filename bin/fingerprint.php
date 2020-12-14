@@ -3,15 +3,14 @@
 # Script: fingerprint.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description:
 
   include('settings.php');
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -35,8 +34,8 @@
   $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
   $q_string .= "where inv_name = \"" . $server . "\" and inv_status = 0 and inv_ssh = 1 ";
   $q_string .= "order by inv_name";
-  $q_inventory = mysql_query($q_string) or die(mysql_error());
-  $a_inventory = mysql_fetch_array($q_inventory);
+  $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  $a_inventory = mysqli_fetch_array($q_inventory);
 
   $managebigfix = 'No';
   if ($a_inventory['inv_managebigfix']) {
@@ -50,14 +49,14 @@
   $os = "";
   $tags = "";
 
-  $os = return_System($a_inventory['inv_id']);
+  $os = return_System($db, $a_inventory['inv_id']);
 
   $tags = '';
   $q_string  = "select tag_name ";
   $q_string .= "from tags ";
   $q_string .= "where tag_companyid = " . $a_inventory['inv_id'];
-  $q_tags = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_tags = mysql_fetch_array($q_tags)) {
+  $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_tags = mysqli_fetch_array($q_tags)) {
     $tags .= "," . $a_tags['tag_name'] . ",";
   }
 
@@ -65,9 +64,9 @@
   $q_string  = "select grp_name ";
   $q_string .= "from groups ";
   $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'];
-  $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_groups) > 0) {
-    $a_groups = mysql_fetch_array($q_groups);
+  $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_groups) > 0) {
+    $a_groups = mysqli_fetch_array($q_groups);
     $appadmin = $a_groups['grp_name'];
   }
 
@@ -77,8 +76,8 @@
   $q_string .= "from interface ";
   $q_string .= "left join ip_zones on ip_zones.zone_id = interface.int_zone ";
   $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_type = 1 || int_type = 2 || int_type = 6)";
-  $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_interface = mysql_fetch_array($q_interface)) {
+  $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_interface = mysqli_fetch_array($q_interface)) {
     if ($a_interface['zone_zone'] != '') {
       $zone = $a_interface['zone_zone'];
     }
@@ -108,8 +107,8 @@
   $q_string  = "select hw_active ";
   $q_string .= "from hardware ";
   $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_deleted = 0 and hw_primary = 1 and hw_active = '0000-00-00' ";
-  $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_hardware) > 0) {
+  $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_hardware) > 0) {
     $status = "Build";
   }
 
@@ -120,9 +119,9 @@
   $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id  ";
   $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_deleted = 0 and hw_primary = 1 and sw_type = \"OS\" ";
-  $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_hardware) > 0) {
-    $a_hardware = mysql_fetch_array($q_hardware);
+  $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_hardware) > 0) {
+    $a_hardware = mysqli_fetch_array($q_hardware);
 
     $hardware = $a_hardware['hw_eol'];
     $software = $a_hardware['sw_eol'];
@@ -135,9 +134,9 @@
   $q_string .= "from hardware ";
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
   $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_deleted = 0 and hw_primary = 1 and mod_virtual = 0 ";
-  $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_hardware) > 0) {
-    $a_hardware = mysql_fetch_array($q_hardware);
+  $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_hardware) > 0) {
+    $a_hardware = mysqli_fetch_array($q_hardware);
 
     if ($a_hardware['hw_supportid'] > 0) {
       $supported = "Yes";
@@ -163,9 +162,9 @@
   $q_string  = "select win_day,win_start,win_end ";
   $q_string .= "from window ";
   $q_string .= "where win_id = " . $a_inventory['inv_maint'] . " ";
-  $q_window = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_window) > 0) {
-    $a_window = mysql_fetch_array($q_window);
+  $q_window = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_window) > 0) {
+    $a_window = mysqli_fetch_array($q_window);
 
 # getting the day for the maintenance window, not today's day
     $maintday = $dayname[$a_window['win_day']];
@@ -205,5 +204,7 @@
   print "Maintenance Day: " . $maintday . "\n";
   print "Maintenance Start: " . $maintstart . "\n";
   print "Maintenance Stop: " . $maintstop . "\n";
+
+  mysqli_free_result($db);
 
 ?>

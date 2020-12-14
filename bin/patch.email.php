@@ -3,15 +3,14 @@
 # Script: patch.email.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: 
 
   include('settings.php');
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -32,7 +31,7 @@
   $random_hash = md5(date('r', time()));
 
 //define the headers we want passed. Note that they are separated with \r\n
-  $headers = "From: root@incojs01.scc911.com\r\nReply-To: carl.schelin@intrado.com";
+  $headers = "From: root@" . $hostname . "\r\nReply-To: " . $Sitedev;
 
 //add boundary string and mime type specification
   $headers .= "\r\nContent-Type: multipart/mixed; boundary=\"PHP-mixed-".$random_hash."\"";
@@ -96,7 +95,7 @@ Content-Disposition: attachment
   $random_hash = md5(date('r', time()));
 
 //define the headers we want passed. Note that they are separated with \r\n
-  $headers = "From: root@incojs01.scc911.com\r\nReply-To: carl.schelin@intrado.com";
+  $headers = "From: root@" . $hostname . "\r\nReply-To: " . $Sitedev;
 
 //add boundary string and mime type specification
   $headers .= "\r\nContent-Type: multipart/mixed; boundary=\"PHP-mixed-".$random_hash."\"";
@@ -144,5 +143,7 @@ Content-Disposition: attachment
 
 //if the message is sent successfully print "Mail sent". Otherwise print "Mail failed"
   echo $mail_sent ? "Engineering Mail sent\n" : "Engineering Mail failed\n";
+
+  mysqli_free_request($db);
 
 ?>

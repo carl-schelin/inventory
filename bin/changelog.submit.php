@@ -1,4 +1,4 @@
-#!/usr/local/bin/php
+/!/usr/local/bin/php
 <?php
 # File: changelog.submit.php
 # Owner: Carl Schelin
@@ -9,8 +9,8 @@
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -80,10 +80,10 @@
     $q_string  = "select usr_id,usr_email,usr_first,usr_last,usr_name,usr_clientid,usr_group,usr_manager ";
     $q_string .= "from users ";
     $q_string .= "where (usr_email = '" . $email . "' or usr_altemail like '%" . $email . "%') and usr_id != 1 and usr_disabled = 0 ";
-    $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_users = mysql_fetch_array($q_users);
+    $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_users = mysqli_fetch_array($q_users);
 
-# reset the email if using an alternate email address (like incojs01).
+# reset the email if using an alternate email address.
 #  $email = $a_users['usr_email'];
     $clientid = $a_users['usr_clientid'];
 
@@ -95,8 +95,8 @@
     $q_string .= "from grouplist ";
     $q_string .= "left join groups on groups.grp_id = grouplist.gpl_group ";
     $q_string .= "where gpl_user = " . $a_users['usr_id'] . " ";
-    $q_grouplist = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    while ($a_grouplist = mysql_fetch_array($q_grouplist)) {
+    $q_grouplist = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_grouplist = mysqli_fetch_array($q_grouplist)) {
 
 # looking for $Changehome/$groupchangelog/Mail/user@domain.report.random_number
       if (file_exists($Changehome . "/" . $a_grouplist['grp_changelog'] . '/Mail/' . $email . '.report.' . $random)) {
@@ -113,15 +113,8 @@
     $q_string  = "select usr_first,usr_last,usr_name,usr_clientid ";
     $q_string .= "from users ";
     $q_string .= "where usr_id = " . $a_users['usr_manager'] . " and usr_disabled = 0 ";
-    $q_manager = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_manager = mysql_fetch_array($q_manager);
-
-# added because Josh is in a different group (Mobility) that has their own changelog file.
-# Josh sends changelogs for the Unix group on incojs01 and changelogs for Mobility via Outlook.
-    if ($email == 'jjohnson@incojs01.scc911.com') {
-      $groupchangelog = 'changelog';
-    }
-
+    $q_manager = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_manager = mysqli_fetch_array($q_manager);
   }
 
   $changelog = $Changehome . "/" . $groupchangelog . "/Mail/" . $email . ".report." . $random;
@@ -138,7 +131,7 @@
 # this also fails if email is incorrect including alternate emails.
   if ($a_users['usr_clientid'] == '' && $remedy == 'yes') {
     print "ERROR: RemedyID not set\n";
-    $headers  = "From: Changelog <changelog@incojs01.scc911.com>\r\n";
+    $headers  = "From: Changelog <changelog@" . $hostname . ">\r\n";
     $headers .= "CC: " . $Sitedev . "\r\n";
 
     $body  = "Your RemedyID has not been set in the Inventory application. In order for changelog messages ";
@@ -149,7 +142,7 @@
     $body .= "This message can also be received if your sending email address doesn't match your ";
     $body .= "Inventory email address.\n\n";
 
-    $body .= "https://incojs01/inventory/accounts/profile.php\n";
+    $body .= "https://" . $hostname . "/inventory/accounts/profile.php\n";
 
     mail($email, "Error: RemedyID Missing", $body, $headers);
 
@@ -160,13 +153,13 @@
 # bail if manager is not selected. Can't submit to remedy without it.
   if ($a_users['usr_manager'] == 0 && $remedy == 'yes') {
     print "ERROR: Manager not selected\n";
-    $headers  = "From: Changelog <changelog@incojs01.scc911.com>\r\n";
+    $headers  = "From: Changelog <changelog@" . $hostname . ">\r\n";
     $headers .= "CC: " . $Sitedev . "\r\n";
 
     $body  = "Remedy requires your manager's login information in order to store your changelog entry. You have not ";
     $body .= "identified your manager in your profile. Log in to your account and select your manager from the list.";
 
-    $body .= "https://incojs01/inventory/accounts/profile.php\n";
+    $body .= "https://" . $hostname . "/inventory/accounts/profile.php\n";
 
     mail($email, "Error: Manager not selected", $body, $headers);
 
@@ -178,7 +171,7 @@
 # bail if manager or manager clientid is not set. Can't submit to remedy without it.
   if ($a_manager['usr_clientid'] == '' && $remedy == 'yes') {
     print "ERROR: Manager's RemedyID not set\n";
-    $headers  = "From: Changelog <changelog@incojs01.scc911.com>\r\n";
+    $headers  = "From: Changelog <changelog@" . $hostname . ">\r\n";
     $headers .= "CC: " . $Sitedev . "\r\n";
 
     $body  = "Your Manager's RemedyID has not been set in the Inventory application. In order for changelog messages ";
@@ -188,12 +181,12 @@
 
     $body .= "An email was also sent to your manager.\n\n";
 
-    $body .= "https://incojs01/inventory/accounts/profile.php\n";
+    $body .= "https://" . $hostname . "/inventory/accounts/profile.php\n";
 
     mail($email, "Error: Manager's RemedyID Missing", $body, $headers);
 
 # send an email to the manager as well.
-    $headers  = "From: Changelog <changelog@incojs01.scc911.com>\r\n";
+    $headers  = "From: Changelog <changelog@" . $hostname . ">\r\n";
     $headers .= "CC: " . $Sitedev . "\r\n";
 
     $body  = "Your RemedyID has not been set in the Inventory application. In order for members of your ";
@@ -202,7 +195,7 @@
     $body .= "RemedyID to your account and notify " . $a_users['usr_first'] . " " . $a_users['usr_last'] . " ";
     $body .= "so they can resend the change to the system.\n\n";
 
-    $body .= "https://incojs01/inventory/accounts/profile.php\n";
+    $body .= "https://" . $hostname . "/inventory/accounts/profile.php\n";
 
     mail($email, "Error: RemedyID Missing", $body, $headers);
 
@@ -218,8 +211,8 @@
   $q_string  = "select inv_product ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_name = '" . $subject . "' ";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_inventory = mysql_fetch_array($q_inventory);
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inventory = mysqli_fetch_array($q_inventory);
 
   if ($a_inventory['inv_product'] == '') {
     $server = "Multiple";
@@ -228,8 +221,8 @@
     $q_string = "select prod_name ";
     $q_string .= "from products ";
     $q_string .= "where prod_id = " . $a_inventory['inv_product'];
-    $q_products = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_products = mysql_fetch_array($q_products);
+    $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_products = mysqli_fetch_array($q_products);
 
     $server = $subject;
     $application = $a_products['prod_name'];
@@ -281,7 +274,7 @@
   if ($file === FALSE) {
     print "ERROR: Unable to open file.\n";
 
-    $headers  = "From: Changelog <changelog@incojs01.scc911.com>\r\n";
+    $headers  = "From: Changelog <changelog@" . $hostname . ">\r\n";
     $headers .= "CC: " . $Sitedev . "\r\n";
 
     $body  = "ERROR: Unable to open " . $changelog . ".\n\n";
@@ -435,7 +428,7 @@
 # Template:
 # Wrap the specific information in the listed tags
 
-    $headers  = "From: Changelog <changelog@incojs01.scc911.com>\r\n";
+    $headers  = "From: Changelog <changelog@" . $hostname . ">\r\n";
     $headers .= "CC: " . $Sitedev . "\r\n";
 
 #########
@@ -490,8 +483,8 @@
     $q_string .= "from users ";
     $q_string .= "left join groups on groups.grp_id = users.usr_group ";
     $q_string .= "where (usr_email = '" . $email . "' or usr_altemail like '%" . $email . "%') and usr_id != 1 and usr_disabled = 0 ";
-    $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_users = mysql_fetch_array($q_users);
+    $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_users = mysqli_fetch_array($q_users);
 
     $headers = "From: " . $a_users['usr_first'] . " " . $a_users['usr_last'] . "<" . $a_users['usr_email'] . ">\r\n";
     $headers .= "CC: " . $Sitedev . "\r\n";
@@ -602,5 +595,7 @@
       }
     }
   }
+
+  mysqli_free_request($db);
 
 ?>

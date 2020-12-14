@@ -3,15 +3,14 @@
 # Script: alarms.submit.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description:
 
   include('settings.php');
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -53,9 +52,9 @@
     $q_string = "select inv_id ";
     $q_string .= "from inventory ";
     $q_string .= "where inv_name = '" . $value[1] . "' and inv_status = 0 ";
-    $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_inventory) > 0) {
-      $a_inventory = mysql_fetch_array($q_inventory);
+    $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_inventory) > 0) {
+      $a_inventory = mysqli_fetch_array($q_inventory);
 
       $q_string = 
         "alarm_companyid  =   " . $a_inventory['inv_id']       . "," . 
@@ -64,7 +63,7 @@
         "alarm_text       = \"" . $formVars['alarm_text']      . "\"";
 
       $query = "insert into alarms set alarm_id = null," . $q_string;
-      mysql_query($query);
+      mysqli_query($db, $query);
 
       print $formVars['alarm_timestamp'] . "\n";
     } else {
@@ -73,18 +72,18 @@
       $q_string .= "from interface ";
       $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
       $q_string .= "where int_server = '" . $value[1] . "' and inv_status = 0 ";
-      $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_interface) > 0) {
-        $a_interface = mysql_fetch_array($q_interface);
+      $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_interface) > 0) {
+        $a_interface = mysqli_fetch_array($q_interface);
 
         $q_string = 
           "alarm_companyid  =   " . $a_interface['int_companyid']  . "," . 
           "alarm_timestamp  = \"" . $formVars['alarm_timestamp']   . "\"," . 
           "alarm_level      =   " . $formVars['alarm_level']       . "," . 
-          "alarm_text       = \"" . mysql_real_escape_string($formVars['alarm_text']) . "\"";
+          "alarm_text       = \"" . mysqli_real_escape_string($formVars['alarm_text']) . "\"";
 
         $query = "insert into alarms set alarm_id = null," . $q_string;
-        mysql_query($query);
+        mysqli_query($db, $query);
 
         print $formVars['alarm_timestamp'] . "\n";
       } else {
@@ -94,5 +93,7 @@
   }
 
   fclose($file);
+
+  mysqli_free_result($db);
 
 ?>

@@ -2,16 +2,12 @@
 
 # this is the script used to manually process email'd changelogs that failed to process
 
+HOSTNAME=$(hostname)
+
 for i in `ls *@*`
 do
-  EMAIL="`echo $i | cut -f1 -d@`@incojs01.scc911.com"
+  EMAIL="`echo $i | cut -f1 -d@`@${HOSTNAME}"
   RANDPASS=`echo $i | cut -f5 -d.`
   SUBJECT=`grep Subject: $i | cut -f2 -d\ `
-
-  if [[ $EMAIL = 'jjohnson@incojs01.scc911.com' ]]
-  then
-    /usr/local/httpd/bin/changelog.submit.php $EMAIL $SUBJECT $RANDPASS
-#    echo "/usr/local/httpd/bin/changelog.submit.php $EMAIL $SUBJECT $RANDPASS"
-  fi
 done
 

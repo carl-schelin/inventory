@@ -3,22 +3,17 @@
 # Script: itil.psap.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: Retrieve the 'psap' listing for the conversion to Remedy.
 # Requires:
 # Product Type
 # Product Name
 
-# 
-
-# 
-
   include('settings.php');
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -188,16 +183,16 @@ $psapid[10114] = 10114;
   $q_string .= "from psaps ";
   $q_string .= "left join inventory on inventory.inv_id = psaps.psap_companyid ";
   $q_string .= "where psap_customerid = 1319 and psap_delete = 0 ";                    # only intrado PSAPs.
-  $q_psaps = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_psaps = mysql_fetch_array($q_psaps)) {
+  $q_psaps = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_psaps = mysqli_fetch_array($q_psaps)) {
 
 # get the Partner PSAP information for the Intrado PSAP retrieved
     $q_string  = "select psap_description,psap_lec,psap_psap_id,psap_circuit_id,psap_lport,psap_ali_id,psap_companyid,psap_texas,psap_pseudo_cid ";
     $q_string .= "from psaps ";
     $q_string .= "where psap_parentid = " . $a_psaps['psap_id'] . " and psap_delete = 0  ";
-    $q_ctl = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_ctl) > 0) {
-      $a_ctl = mysql_fetch_array($q_ctl);
+    $q_ctl = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_ctl) > 0) {
+      $a_ctl = mysqli_fetch_array($q_ctl);
 
 # need to get the ali-id from the mate
 #"TX-MEDINA CO SO","00204","","","","","NULL","","","NULL","","9030","","","","stlalic2","A3","More than One","dalalic2","","","No","No"
@@ -208,15 +203,15 @@ $psapid[10114] = 10114;
       $q_string .= "from psaps ";
       $q_string .= "where psap_psap_id = '" . $a_psaps['psap_psap_id'] . "' and psap_parentid = 0 and psap_companyid = " . $psapid[$a_psaps['psap_companyid']] . " and psap_id != '" . $a_psaps['psap_id'] . "' and psap_delete = 0  ";
       $q_string .= "order by psap_psap_id ";
-      $q_ali_id = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_ali_id) == 0) {
+      $q_ali_id = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_ali_id) == 0) {
         $ali_node = "None found";
       }
-      if (mysql_num_rows($q_ali_id) == 1) {
-        $a_ali_id = mysql_fetch_array($q_ali_id);
+      if (mysqli_num_rows($q_ali_id) == 1) {
+        $a_ali_id = mysqli_fetch_array($q_ali_id);
         $ali_node = $a_ali_id['psap_ali_id'];
       }
-      if (mysql_num_rows($q_ali_id) > 1) {
+      if (mysqli_num_rows($q_ali_id) > 1) {
         $ali_node = "More than One";
       }
 
@@ -262,15 +257,15 @@ $psapid[10114] = 10114;
       $q_string .= "from psaps ";
       $q_string .= "where psap_psap_id = '" . $a_psaps['psap_psap_id'] . "' and psap_parentid = 0 and psap_companyid = " . $psapid[$a_psaps['psap_companyid']] . " and psap_id != '" . $a_psaps['psap_id'] . "' and psap_delete = 0  ";
       $q_string .= "order by psap_psap_id ";
-      $q_ali_id = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_ali_id) == 0) {
+      $q_ali_id = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_ali_id) == 0) {
         $ali_node = "None found";
       }
-      if (mysql_num_rows($q_ali_id) == 1) {
-        $a_ali_id = mysql_fetch_array($q_ali_id);
+      if (mysqli_num_rows($q_ali_id) == 1) {
+        $a_ali_id = mysqli_fetch_array($q_ali_id);
         $ali_node = $a_ali_id['psap_ali_id'];
       }
-      if (mysql_num_rows($q_ali_id) > 1) {
+      if (mysqli_num_rows($q_ali_id) > 1) {
         $ali_node = "More than One";
       }
 
@@ -343,23 +338,23 @@ $psapid[10114] = 10114;
   $q_string .= "from psaps ";
   $q_string .= "left join inventory on inventory.inv_id = psaps.psap_companyid ";
   $q_string .= "where psap_parentid = 0 and psap_customerid != 1319 and psap_delete = 0 ";                    # anything but intrado PSAPs.
-  $q_psaps = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_psaps = mysql_fetch_array($q_psaps)) {
+  $q_psaps = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_psaps = mysqli_fetch_array($q_psaps)) {
 
     $ali_node = "Blank";
     $q_string  = "select psap_ali_id ";
     $q_string .= "from psaps ";
     $q_string .= "where psap_psap_id = '" . $a_psaps['psap_psap_id'] . "' and psap_parentid = 0 and psap_companyid = " . $psapid[$a_psaps['psap_companyid']] . " and psap_id != '" . $a_psaps['psap_id'] . "' and psap_delete = 0  ";
     $q_string .= "order by psap_psap_id ";
-    $q_ali_id = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_ali_id) == 0) {
+    $q_ali_id = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_ali_id) == 0) {
       $ali_node = "None found";
     }
-    if (mysql_num_rows($q_ali_id) == 1) {
-      $a_ali_id = mysql_fetch_array($q_ali_id);
+    if (mysqli_num_rows($q_ali_id) == 1) {
+      $a_ali_id = mysqli_fetch_array($q_ali_id);
       $ali_node = $a_ali_id['psap_ali_id'];
     }
-    if (mysql_num_rows($q_ali_id) > 1) {
+    if (mysqli_num_rows($q_ali_id) > 1) {
       $ali_node = "More than One";
     }
 
@@ -371,16 +366,16 @@ $psapid[10114] = 10114;
     $q_string  = "select psap_parentid ";
     $q_string .= "from psaps ";
     $q_string .= "where psap_customerid = " . $a_psaps['psap_customerid'] . " and psap_parentid != 0 and psap_psap_id = '" . $a_psaps['psap_psap_id'] . "' and psap_ali_id = '" . $a_psaps['psap_ali_id'] . "' and psap_delete = 0  ";
-    $q_partner = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_partner) > 0) {
-      $a_partner = mysql_fetch_array($q_partner);
+    $q_partner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_partner) > 0) {
+      $a_partner = mysqli_fetch_array($q_partner);
 
       $q_string  = "select psap_id,psap_description,psap_psap_id,psap_circuit_id,psap_lport,psap_ali_id,psap_texas,inv_name,psap_companyid ";
       $q_string .= "from psaps ";
       $q_string .= "left join inventory on inventory.inv_id = psaps.psap_companyid ";
       $q_string .= "where psap_id = " . $a_partner['psap_parentid'] . " and psap_delete = 0  ";
-      $q_intrado = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_intrado = mysql_fetch_array($q_intrado);
+      $q_intrado = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_intrado = mysqli_fetch_array($q_intrado);
 
       print "\"" . $a_intrado['psap_description'] . "\",";
       printf("\"%05d\",", $a_intrado['psap_psap_id']);
@@ -462,5 +457,7 @@ $psapid[10114] = 10114;
   print "\"" . "No" . "\"\n";
 
 #}
+
+mysqli_free_request($db);
 
 ?>

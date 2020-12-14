@@ -12,7 +12,7 @@
 # cc:
 # unixadmins@intrado.com
 # Subject: Only needs 'Re: number'
-# Re: 6201:incooas2.scc911.com [06:52:41] [major] [ping] [OS] [NodeDown]
+# Re: 6201:[server] [06:52:41] [major] [ping] [OS] [NodeDown]
 
 #########################
 ### validate parameter list
@@ -65,7 +65,7 @@
   $autoack = "/export/home/autoack/Mail/" . $server[0] . ".autoack";
 
   if (file_exists($autoack)) {
-    $headers      = "From: OVMC <ovmc@incojs01.scc911.com>\r\n";
+    $headers      = "From: OVMC <ovmc@" . $hostname . ">\r\n";
     $headers     .= "CC: unixadmins@intrado.com\r\n";
     $headers     .= "MIME-Version: 1.0\r\n";
     $headers     .= "Content-Type: text/html; charset=ISO-8859-1\r\n";

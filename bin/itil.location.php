@@ -3,7 +3,6 @@
 # Script: itil.location.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: Retrieve the company information from the Location table 
 # for the conversion to Remedy.
 # Requires:
@@ -22,8 +21,8 @@
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -37,8 +36,8 @@
   $q_string .= "left join states on states.st_id = cities.ct_state ";
   $q_string .= "left join country on country.cn_id = states.st_country ";
   $q_string .= "order by loc_name ";
-  $q_locations = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_locations = mysql_fetch_array($q_locations)) {
+  $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_locations = mysqli_fetch_array($q_locations)) {
 
     $type = "Other";
     if ($a_locations['loc_type'] == 1) {
@@ -57,5 +56,7 @@
 
     print "\"" . $a_locations['loc_name'] . "\",\"\",\"\",\"" . $a_locations['loc_name'] . "\",\"\",\"" . $a_locations['loc_addr1'] . "\",\"" . $a_locations['cn_country'] . "\",\"" . $a_locations['st_state'] . "\",\"" . $a_locations['ct_city'] . "\",\"" . $a_locations['loc_zipcode'] . "\",\"No\"\n";
   }
+
+  mysqli_free_request($db);
 
 ?>

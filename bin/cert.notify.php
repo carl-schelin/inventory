@@ -3,8 +3,8 @@
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -25,8 +25,8 @@
 
   $q_string  = "select cert_url,cert_expire,cert_group ";
   $q_string .= "from certs";
-  $q_certs = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_certs = mysql_fetch_array($q_certs)) {
+  $q_certs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_certs = mysqli_fetch_array($q_certs)) {
 
     if ($debug) {
       print "\n  cert url: " . $a_certs['cert_url'] . " cert expire:" . $a_certs['cert_expire'] . " cert group:" . $a_certs['cert_group'] . "\n";
@@ -44,8 +44,8 @@
     $q_string  = "select grp_name,grp_email ";
     $q_string .= "from groups ";
     $q_string .= "where grp_id = " . $a_certs['cert_group'];
-    $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    $a_groups = mysql_fetch_array($q_groups);
+    $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_groups = mysqli_fetch_array($q_groups);
     if ($debug) {
       print "  email: " . $a_groups['grp_email'] . "\n";
     }
@@ -75,8 +75,8 @@
       $q_string  = "select grp_name,grp_email ";
       $q_string .= "from groups ";
       $q_string .= "where grp_id = " . $GRP_WebApps;
-      $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      $a_groups = mysql_fetch_array($q_groups);
+      $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_groups = mysqli_fetch_array($q_groups);
       if (preg_match("/@intrado.com$/i", $a_groups['grp_email'])) {
         $webappsemail = 1;
       }
@@ -98,8 +98,8 @@
     $q_string  = "select usr_id,usr_name,usr_email,usr_notify,usr_freq,usr_countdown ";
     $q_string .= "from users ";
     $q_string .= "where (usr_group = " . $a_certs['cert_group'] . " or usr_group = " . $GRP_WebApps . ") and usr_disabled = 0";
-    $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    while ($a_users = mysql_fetch_array($q_users)) {
+    $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_users = mysqli_fetch_array($q_users)) {
       $email = $a_users['usr_email'];
       $subject = "Certificate is expiring";
       $body = "The certificate for \"" . $a_certs['cert_url'] . "\" is expiring on " . $a_certs['cert_expire'] . ".";
@@ -186,8 +186,10 @@
 
 # now update the user record with the new countdown;
       $q_string = "update users set usr_countdown = " . $a_users['usr_countdown'] . " where usr_id = " . $a_users['usr_id'];
-      $r_users = mysql_query($q_string) or die($q_string . "\n" . mysql_error() . "\n");
+      $r_users = mysqli_query($db, $q_string) or die($q_string . "\n" . mysqli_error($db) . "\n");
     }
   }
+
+  mysqli_free_request($db);
 
 ?>

@@ -3,15 +3,14 @@
 # Script: bugsnfeatures.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: Retrieve the list of open bug and feature requests and email to interested parties.
 
   include('settings.php');
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -21,7 +20,7 @@
   $debug = 'yes';
   $debug = 'no';
 
-  $headers  = "From: Inventory Management <inventory@incojs01.scc911.com>\r\n";
+  $headers  = "From: Inventory Management <inventory@" . $hostname . ">\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
   $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
@@ -54,9 +53,9 @@
   $q_string .= "left join users on users.usr_id       = bugs.bug_openby ";
   $q_string .= "where bug_closeby = 0 ";
   $q_string .= "order by bug_severity,bug_priority,bug_discovered ";
-  $q_bugs = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_bugs) > 0) {
-    while ($a_bugs = mysql_fetch_array($q_bugs)) {
+  $q_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_bugs) > 0) {
+    while ($a_bugs = mysqli_fetch_array($q_bugs)) {
 
       $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
       $output .= "  <td>" . $a_bugs['mod_name']                               . "</td>\n";
@@ -95,9 +94,9 @@
   $q_string .= "left join users on users.usr_id       = features.feat_openby ";
   $q_string .= "where feat_closeby = 0 ";
   $q_string .= "order by feat_severity,feat_priority,feat_discovered ";
-  $q_features = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_features) > 0) {
-    while ($a_features = mysql_fetch_array($q_features)) {
+  $q_features = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_features) > 0) {
+    while ($a_features = mysqli_fetch_array($q_features)) {
 
       $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
       $output .= "  <td>" . $a_features['mod_name']                                   . "</td>\n";
@@ -128,5 +127,7 @@
   } else {
     mail($Sitedev, "Bug and Feature Report", $body, $headers);
   }
+
+  mysqli_free_result($db);
 
 ?>
