@@ -12,8 +12,8 @@
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -44,8 +44,8 @@
   $q_string  = "select inv_id,inv_manager,inv_product ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_status = 0 and inv_name = '" . $server . "'";
-  $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_inventory) > 0) {
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inventory) > 0) {
 
     echo "ERROR: $server already exists in the inventory.\n";
 
@@ -58,9 +58,9 @@
     $q_string .= "from interface ";
     $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
     $q_string .= "where inv_status = 0 and int_server = '" . $server . "'";
-    $q_interface = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    if (mysql_num_rows($q_interface) > 0) {
-      $a_interface = mysql_fetch_array($q_interface);
+    $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_interface) > 0) {
+      $a_interface = mysqli_fetch_array($q_interface);
 
       echo "ERROR: $server is identified as being an interface for " . $a_interface['inv_name'] . ".\n";
 
@@ -75,13 +75,13 @@
         print $q_string . "\n";
         $serverid = 0;
       } else {
-        $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-        $query = "select last_insert_id()";
-        $q_result = mysql_query($query) or die($query . ": " . mysql_error());
-        $a_result = mysql_fetch_array($q_result);
+        $query = "select last_insert_id($db)";
+        $q_result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+        $a_result = mysqli_fetch_array($q_result);
 
-        $serverid = $a_result['last_insert_id()'];
+        $serverid = $a_result['last_insert_id($db)'];
       }
 
       echo "Adding a $server interface...\n";
@@ -91,7 +91,7 @@
       if ($debug == 'yes') {
         print $q_string . "\n";
       } else {
-        $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 
       echo "Adding a virtual machine for $server...\n";
@@ -101,9 +101,11 @@
       if ($debug == 'yes') {
         print $q_string . "\n";
       } else {
-        $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+        $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
     }
   }
+
+  mysqli_free_result($db);
 
 ?>
