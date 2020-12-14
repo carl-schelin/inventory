@@ -63,7 +63,7 @@
       $pre = '#';
     }
 
-    $os = return_System($a_inventory['inv_id']);
+    $os = return_System($db, $a_inventory['inv_id']);
 
     $tags = '';
     $q_string  = "select tag_name ";
