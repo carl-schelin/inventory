@@ -95,4 +95,6 @@
 
   fclose($file);
 
+  mysqli_free_result($db);
+
 ?>
