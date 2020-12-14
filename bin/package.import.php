@@ -42,7 +42,7 @@
   }
 
 # return the basic system type; Linux, SunOS, HP-UX, etc
-  $uname = return_System($inv_id);
+  $uname = return_System($db, $inv_id);
 
   if ($inv_id == '') {
     print "Error: No server found (" . $server . ")\n";
