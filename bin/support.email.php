@@ -3,7 +3,6 @@
 # Script: support.email.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: Retrieve the list of open bug and feature requests and email to interested parties.
 
 # root.cron: # send out email reports for the support contracts
@@ -14,8 +13,8 @@
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -72,9 +71,9 @@
   $q_string .= "left join states on states.st_id = locations.loc_state ";
   $q_string .= "where inv_status = 0 and mod_virtual = 0 and hw_primary = 1 and hw_supid_verified = 0 and inv_manager = " . $manager . " ";
   $q_string .= "order by inv_name ";
-  $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_hardware) > 0) {
-    while ($a_hardware = mysql_fetch_array($q_hardware)) {
+  $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_hardware) > 0) {
+    while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
       if ($a_hardware['hw_serial'] == '') {
         $bgcolor = $color[0];
@@ -127,9 +126,9 @@
   $q_string .= "left join states on states.st_id = locations.loc_state ";
   $q_string .= "where inv_status = 1 and mod_virtual = 0 and hw_primary = 1 and hw_supid_verified = 1 and hw_reused = '0000-00-00' and inv_manager = " . $manager . " ";
   $q_string .= "order by inv_name ";
-  $q_hardware = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_hardware) > 0) {
-    while ($a_hardware = mysql_fetch_array($q_hardware)) {
+  $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_hardware) > 0) {
+    while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
       $q_string  = "select inv_name ";
       $q_string .= "from inventory ";
@@ -141,9 +140,9 @@
         $or = ' or ';
       }
       $q_string .= ") and inv_status = 0 ";
-      $q_inventory = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-      if (mysql_num_rows($q_inventory) > 0) {
-        $a_inventory = mysql_fetch_array($q_inventory);
+      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inventory) > 0) {
+        $a_inventory = mysqli_fetch_array($q_inventory);
         $bgcolor = $color[0];
       } else {
         $a_inventory['inv_name'] = '';
@@ -178,8 +177,8 @@
   $q_string  = "select grp_email ";
   $q_string .= "from groups ";
   $q_string .= "where grp_id = " . $manager . " ";
-  $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  $a_groups = mysql_fetch_array($q_groups);
+  $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_groups = mysqli_fetch_array($q_groups);
 
   if ($debug == 'yes') {
     mail($Sitedev, "Unsupported Hardware Report", $body, $headers);
@@ -190,5 +189,7 @@
       mail($Sitedev, "Invalid Group Email: " . $manager, $body, $headers);
     }
   }
+
+  mysqli_free_request($db);
 
 ?>
