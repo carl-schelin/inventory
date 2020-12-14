@@ -3,15 +3,14 @@
 # Script: changelog.userlist.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: 
 
   include('settings.php');
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -21,8 +20,8 @@
   $q_string .= "from groups ";
   $q_string .= "where grp_disabled = 0 and grp_changelog != '' ";
   $q_string .= "order by grp_name ";
-  $q_groups = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_groups = mysql_fetch_array($q_groups)) {
+  $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_groups = mysqli_fetch_array($q_groups)) {
 
 # open file for writing; but not write plus unless the group has already been written to
 # like changelog which has product support and unix.
@@ -40,8 +39,8 @@
     $q_string .= "left join grouplist on grouplist.gpl_user = users.usr_id ";
     $q_string .= "where usr_disabled = 0 and gpl_group = " . $a_groups['grp_id'] . " ";
     $q_string .= "order by usr_last ";
-    $q_users = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-    while ($a_users = mysql_fetch_array($q_users)) {
+    $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_users = mysqli_fetch_array($q_users)) {
 
       fwrite($handle, $a_users['usr_email'] . "\n");
       if (strlen($a_users['usr_altemail']) > 0) {
@@ -61,5 +60,7 @@
     fclose($handle);
 
   }
+
+  mysqli_free_request($db);
 
 ?>
