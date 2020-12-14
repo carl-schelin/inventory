@@ -23,7 +23,7 @@
   }
 
   if (isset($formVars['servername'])) {
-    $formVars['server'] = return_ServerID( $formVars['servername']);
+    $formVars['server'] = return_ServerID($db, $formVars['servername']);
   }
 
   if (isset($formVars['server'])) {
