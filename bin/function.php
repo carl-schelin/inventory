@@ -6,34 +6,34 @@ date_default_timezone_set('UTC');
 
 # clean and escape the input data
 
-function clean($input, $maxlength) {
-  $input = trim($input);
-  $input = substr($input, 0, $maxlength);
-  return ($input);
+function clean( $p_input, $p_maxlength ) {
+  $input = trim($p_input);
+  $r_input = substr($input, 0, $p_maxlength);
+  return ($r_input);
 }
 
 # log who did what
 
-function logaccess($user, $source, $detail) {
+function logaccess( $p_db, $p_user, $p_source, $p_detail ) {
   include('settings.php');
 
   $query = "insert into log set " .
     "log_id        = NULL, " .
-    "log_user      = \"" . $user   . "\", " .
-    "log_source    = \"" . $source . "\", " .
-    "log_detail    = \"" . $detail . "\"";
+    "log_user      = \"" . $p_user   . "\", " .
+    "log_source    = \"" . $p_source . "\", " .
+    "log_detail    = \"" . $p_detail . "\"";
 
-  $insert = mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+  $insert = mysqli_query($p_db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
 }
 
-function check_userlevel( $p_level ) {
+function check_userlevel( $p_db, $p_level ) {
   if (isset($_SESSION['username'])) {
     include('settings.php');
     $q_string  = "select usr_level ";
     $q_string .= "from users ";
     $q_string .= "where usr_id = " . $_SESSION['uid'];
-    $q_user_level = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-    $a_user_level = mysql_fetch_array($q_user_level);
+    $q_user_level = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
+    $a_user_level = mysqli_fetch_array($q_user_level);
 
     if ($a_user_level['usr_level'] <= $p_level) {
       return(1);
@@ -45,17 +45,17 @@ function check_userlevel( $p_level ) {
   }
 }
 
-function last_insert_id() {
+function last_insert_id($p_db) {
   include('settings.php');
 
   $query = "select last_insert_id()";
-  $q_result = mysql_query($query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysql_error()));
-  $a_result = mysql_fetch_array($q_result);
+  $q_result = mysqli_query($p_db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($p_db)));
+  $a_result = mysqli_fetch_array($q_result);
 
   return ($a_result['last_insert_id()']);
 }
 
-# west is looking only for the following data to be logged.
+# log the following changes by users.
 # Asset Name
 # Manufacturer
 # Model
@@ -64,7 +64,7 @@ function last_insert_id() {
 # Class
 # Location
 # clear out any old records for the same system and same table/column when the same one shows up
-function changelog( $p_serverid, $p_changed, $p_notes, $p_user, $p_table, $p_column, $p_cleared ) {
+function changelog( $p_db, $p_serverid, $p_changed, $p_notes, $p_user, $p_table, $p_column, $p_cleared ) {
   include('settings.php');
 
 # clear previous entries for the same task; so if a server was location changed, only record the last change
@@ -75,7 +75,7 @@ function changelog( $p_serverid, $p_changed, $p_notes, $p_user, $p_table, $p_col
       "and mod_table  = \"" . $p_table  . "\" " . 
       "and mod_column = \"" . $p_column . "\" " .
       "and mod_companyid =   " . $p_serverid;
-#  $result = mysql_query($cl_query);
+#  $result = mysqli_query($p_db, $cl_query);
 
   $cl_query  = 
     "mod_companyid    =   " . $p_serverid     . "," . 
@@ -89,7 +89,7 @@ function changelog( $p_serverid, $p_changed, $p_notes, $p_user, $p_table, $p_col
 
   $query = "insert into modified set mod_id = null," . $cl_query;
 
-  $result = mysql_query($query);
+  $result = mysqli_query($p_db, $query);
 
 }
 
@@ -97,7 +97,11 @@ function changelog( $p_serverid, $p_changed, $p_notes, $p_user, $p_table, $p_col
 # get the user level and group the user belongs to
 # if the group matches or the user is an admin
 # return yes.
-function check_grouplevel( $p_group ) {
+function check_grouplevel( $p_db, $p_group ) {
+# somewhere it's passing a blank value for 'p_group' so for now; if blank set to 0.
+  if ($p_group == '') {
+    $p_group = 0;
+  }
   if (isset($_SESSION['username'])) {
     include('settings.php');
 
@@ -105,8 +109,8 @@ function check_grouplevel( $p_group ) {
     $q_string  = "select usr_level,usr_group ";
     $q_string .= "from users ";
     $q_string .= "where usr_id = " . $_SESSION['uid'];
-    $q_users = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-    $a_users = mysql_fetch_array($q_users);
+    $q_users = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
+    $a_users = mysqli_fetch_array($q_users);
 
     if ($p_group == $a_users['usr_group'] || $a_users['usr_level'] == $AL_Admin) {
       return(1);
@@ -116,8 +120,8 @@ function check_grouplevel( $p_group ) {
     $q_string  = "select gpl_id ";
     $q_string .= "from grouplist ";
     $q_string .= "where gpl_user = " . $_SESSION['uid'] . " and gpl_group = " . $p_group . " ";
-    $q_grouplist = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-    if (mysql_num_rows($q_grouplist) > 0) {
+    $q_grouplist = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=function.php&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
+    if (mysqli_num_rows($q_grouplist) > 0) {
       return(1);
     }
   }
@@ -178,8 +182,8 @@ function generatePassword ($length = 8) {
 
 }
 
-function createNetmaskAddr($bitcount) {
-  $netmask = str_split(str_pad(str_pad('', $bitcount, '1'), 32, '0'), 8);
+function createNetmaskAddr( $p_bitcount ) {
+  $netmask = str_split(str_pad(str_pad('', $p_bitcount, '1'), 32, '0'), 8);
   foreach ($netmask as &$element) $element = bindec($element);
   return join('.', $netmask);
 }
@@ -191,25 +195,25 @@ function return_Network( $p_addr, $p_cidr ) {
 }
 
 /* our simple php ping function */
-function ping($host) {
+function ping( $p_host ) {
   $sysos = php_uname('s');
 
   if ($sysos == "Linux") {
-    exec(sprintf('/bin/ping -c 1 -w 1 %s', $host), $res, $rval);
+    exec(sprintf('/bin/ping -c 1 -w 1 %s', $p_host), $res, $rval);
   }
   if ($sysos == "SunOS") {
-    exec(sprintf('/usr/sbin/ping %s 1', $host), $res, $rval);
+    exec(sprintf('/usr/sbin/ping %s 1', $p_host), $res, $rval);
   }
   return $rval === 0;
 }
 
-function return_Index($p_check, $p_string) {
+function return_Index( $p_db, $p_check, $p_string ) {
   include('settings.php');
 
   $r_index = 0;
   $count = 1;
-  $q_table = mysql_query($p_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  while ($a_table = mysql_fetch_row($q_table)) {
+  $q_table = mysqli_query($p_db, $p_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
+  while ($a_table = mysqli_fetch_row($q_table)) {
     if ($p_check == $a_table[0]) {
       $r_index = $count;
     }
@@ -218,7 +222,7 @@ function return_Index($p_check, $p_string) {
   return $r_index;
 }
 
-function wait_Process($p_string) {
+function wait_Process( $p_string ) {
 # includeing in order to use path information
   include('settings.php');
 
@@ -250,7 +254,7 @@ function wait_Process($p_string) {
   return $output;
 }
 
-function return_ServerID( $p_string ) {
+function return_ServerID( $p_db, $p_string ) {
   include('settings.php');
 
   $output = 1109;
@@ -262,22 +266,22 @@ function return_ServerID( $p_string ) {
   $q_string  = "select inv_id ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_status = 0 and inv_name = '" . $p_hostname[0] . "' ";
-  $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+  $q_inventory = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
 
-  if (mysql_num_rows($q_inventory) == 0) {
+  if (mysqli_num_rows($q_inventory) == 0) {
     $q_string  = "select inv_id ";
     $q_string .= "from inventory ";
     $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
     $q_string .= "where inv_status = 0 and int_server = '" . $p_hostname[0] . "' ";
-    $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+    $q_inventory = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
 
-    if (mysql_num_rows($q_inventory) > 0) {
-      $a_inventory = mysql_fetch_array($q_inventory);
+    if (mysqli_num_rows($q_inventory) > 0) {
+      $a_inventory = mysqli_fetch_array($q_inventory);
       $output = $a_inventory['inv_id'];
     }
   } else {
-    if (mysql_num_rows($q_inventory) == 1) {
-      $a_inventory = mysql_fetch_array($q_inventory);
+    if (mysqli_num_rows($q_inventory) == 1) {
+      $a_inventory = mysqli_fetch_array($q_inventory);
       $output = $a_inventory['inv_id'];
     }
   }
@@ -287,22 +291,22 @@ function return_ServerID( $p_string ) {
     $q_string  = "select inv_id ";
     $q_string .= "from inventory ";
     $q_string .= "where inv_name = '" . $p_hostname[0] . "' ";
-    $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+    $q_inventory = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
 
-    if (mysql_num_rows($q_inventory) == 0) {
+    if (mysqli_num_rows($q_inventory) == 0) {
       $q_string  = "select inv_id ";
       $q_string .= "from inventory ";
       $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
       $q_string .= "where int_server = '" . $p_hostname[0] . "' ";
-      $q_inventory = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+      $q_inventory = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
 
-      if (mysql_num_rows($q_inventory) > 0) {
-        $a_inventory = mysql_fetch_array($q_inventory);
+      if (mysqli_num_rows($q_inventory) > 0) {
+        $a_inventory = mysqli_fetch_array($q_inventory);
         $output = $a_inventory['inv_id'];
       }
     } else {
-      if (mysql_num_rows($q_inventory) == 1) {
-        $a_inventory = mysql_fetch_array($q_inventory);
+      if (mysqli_num_rows($q_inventory) == 1) {
+        $a_inventory = mysqli_fetch_array($q_inventory);
         $output = $a_inventory['inv_id'];
       }
     }
@@ -311,7 +315,7 @@ function return_ServerID( $p_string ) {
   return $output;
 }
 
-function return_Virtual( $p_string ) {
+function return_Virtual( $p_db, $p_string ) {
   include('settings.php');
 
   $output = 0;
@@ -320,10 +324,10 @@ function return_Virtual( $p_string ) {
   $q_string .= "from hardware ";
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
   $q_string .= "where hw_companyid = " . $p_string . " and mod_primary = 1 and mod_virtual = 1 ";
-  $q_hardware = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
+  $q_hardware = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
 
 # if there are any rows, then the server is a virtual machine.
-  if (mysql_num_rows($q_hardware) > 0) {
+  if (mysqli_num_rows($q_hardware) > 0) {
     $output = 1;
   }
 
@@ -408,6 +412,9 @@ function return_ShortOS( $p_string ) {
   if ($p_string == "Red Hat Enterprise Linux Server release 6.8 (Santiago)") {
     $ret_string = "RHEL6.8";
   }
+  if ($p_string == "CentOS release 6.8 (Final)") {
+    $ret_string = "COS6.8";
+  }
   if ($p_string == "Red Hat Enterprise Linux Server release 6.9 (Santiago)") {
     $ret_string = "RHEL6.9";
   }
@@ -432,19 +439,43 @@ function return_ShortOS( $p_string ) {
   if ($p_string == "Red Hat Enterprise Linux Server release 7.5 (Maipo)") {
     $ret_string = "RHEL7.5";
   }
+  if ($p_string == "Red Hat Enterprise Linux Server release 7.6 (Maipo)") {
+    $ret_string = "RHEL7.6";
+  }
+  if ($p_string == "Red Hat Enterprise Linux Server release 7.7 (Maipo)") {
+    $ret_string = "RHEL7.7";
+  }
+  if ($p_string == "Red Hat Enterprise Linux Server release 7.8 (Maipo)") {
+    $ret_string = "RHEL7.8";
+  }
+  if ($p_string == "Red Hat Enterprise Linux Server release 7.9 (Maipo)") {
+    $ret_string = "RHEL7.9";
+  }
+  if ($p_string == "Red Hat Enterprise Linux Server release 8.0 (Ootpa)") {
+    $ret_string = "RHEL8.0";
+  }
+  if ($p_string == "Red Hat Enterprise Linux Server release 8.0 (Ootpa)") {
+    $ret_string = "RHEL8.1";
+  }
+  if ($p_string == "Red Hat Enterprise Linux Server release 8.1 (Ootpa)") {
+    $ret_string = "RHEL8.2";
+  }
+  if ($p_string == "Red Hat Enterprise Linux Server release 8.3 (Ootpa)") {
+    $ret_string = "RHEL8.3";
+  }
 
   return $ret_string;
 }
 
-function return_System( $p_string ) {
+function return_System( $p_db, $p_string ) {
   include('settings.php');
 
   $output = '';
   $q_string = "select sw_software ";
   $q_string .= "from software ";
   $q_string .= "where sw_type = 'OS' and sw_companyid = " . $p_string;
-  $q_software = mysql_query($q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysql_error()));
-  $a_software = mysql_fetch_array($q_software);
+  $q_software = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
+  $a_software = mysqli_fetch_array($q_software);
 
   $output = $a_software['sw_software'];
   if (stripos($a_software['sw_software'], "linux") !== false) {
@@ -554,20 +585,20 @@ function return_Pagination( $p_script, $p_current, $p_total, $p_count ) {
 }
 
 # if the passed script name for this user isn't here yet, then the user hasn't viewed the help screen yet.
-function show_Help( $p_script ) {
+function show_Help( $p_db, $p_script ) {
 
   $q_string  = "select help_id ";
   $q_string .= "from help ";
   $q_string .= "where help_user = " . $_SESSION['uid'] . " and help_screen = '" . $p_script . "' ";
-  $q_help = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  if (mysql_num_rows($q_help) == 0) {
+  $q_help = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
+  if (mysqli_num_rows($q_help) == 0) {
     $q_string  = "insert ";
     $q_string .= "into help ";
     $q_string .= "set ";
     $q_string .= "help_user = " . $_SESSION['uid'] . ",";
     $q_string .= "help_screen = '" . $p_script . "' ";
 
-    $result = mysql_query($q_string) or die($q_string . ": " . mysql_error());
+    $result = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
 
     return 1;
   } else {
