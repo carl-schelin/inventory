@@ -65,7 +65,7 @@
   $autoack = "/export/home/autoack/Mail/" . $server[0] . ".autoack";
 
   if (file_exists($autoack)) {
-    $headers      = "From: OVMC <ovmc@incojs01.scc911.com>\r\n";
+    $headers      = "From: OVMC <ovmc@" . $hostname . ">\r\n";
     $headers     .= "CC: unixadmins@intrado.com\r\n";
     $headers     .= "MIME-Version: 1.0\r\n";
     $headers     .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
