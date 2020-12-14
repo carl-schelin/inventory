@@ -3,7 +3,6 @@
 # Script: itil.vendor.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: Retrieve the company information from the company table 
 # for the conversion to Remedy.
 # Requires:
@@ -19,8 +18,8 @@
   include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
-    $db = mysql_connect($server,$user,$pass);
-    $db_select = mysql_select_db($database,$db);
+    $db = mysqli_connect($server,$user,$pass,$database);
+    $db_select = mysqli_select_db($db,$database);
     return $db;
   }
 
@@ -32,8 +31,8 @@
   $q_string .= "from company ";
   $q_string .= "left join loc_types on loc_types.typ_id = company.com_type ";
   $q_string .= "order by com_name ";
-  $q_company = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_company = mysql_fetch_array($q_company)) {
+  $q_company = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_company = mysqli_fetch_array($q_company)) {
 
     if ($a_company['com_disabled']) {
       $disabled = 'Yes';
@@ -48,8 +47,8 @@
   $q_string .= "from locations ";
   $q_string .= "left join loc_types on loc_types.typ_id = locations.loc_type ";
   $q_string .= "order by loc_name ";
-  $q_locations = mysql_query($q_string) or die($q_string . ": " . mysql_error());
-  while ($a_locations = mysql_fetch_array($q_locations)) {
+  $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_locations = mysqli_fetch_array($q_locations)) {
 
     $type = "Other";
     $subtype = '';
@@ -68,5 +67,7 @@
 
     print "\"" . $a_locations['loc_name'] . "\",\"" . $type . "\",\"" . $subtype . "\",\"\",\"\",\"\",\"No\"\n";
   }
+
+  mysqli_free_request($db);
 
 ?>
