@@ -12,7 +12,7 @@
 # cc:
 # unixadmins@intrado.com
 # Subject: Only needs 'Re: number'
-# Re: 6201:incooas2.scc911.com [06:52:41] [major] [ping] [OS] [NodeDown]
+# Re: 6201:[server] [06:52:41] [major] [ping] [OS] [NodeDown]
 
 #########################
 ### validate parameter list
