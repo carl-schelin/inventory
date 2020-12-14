@@ -7,7 +7,7 @@
 # Description:
 
   include('settings.php');
-  include('function.php');
+  include($Sitepath . '/function.php');
 
   function dbconn($server,$database,$user,$pass){
     $db = mysqli_connect($server,$user,$pass,$database);
@@ -125,5 +125,7 @@
     print "#" . $a_changelog['cl_name'] . ":::::," . $a_changelog['cl_name'] . ",:0:" . $a_changelog['cl_name'] . "\n";
 
   }
+
+  mysqli_free_result($db);
 
 ?>
