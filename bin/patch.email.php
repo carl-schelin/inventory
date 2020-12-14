@@ -31,7 +31,7 @@
   $random_hash = md5(date('r', time()));
 
 //define the headers we want passed. Note that they are separated with \r\n
-  $headers = "From: root@incojs01.scc911.com\r\nReply-To: carl.schelin@intrado.com";
+  $headers = "From: root@" . $hostname . "\r\nReply-To: " . $Sitedev;
 
 //add boundary string and mime type specification
   $headers .= "\r\nContent-Type: multipart/mixed; boundary=\"PHP-mixed-".$random_hash."\"";
@@ -95,7 +95,7 @@ Content-Disposition: attachment
   $random_hash = md5(date('r', time()));
 
 //define the headers we want passed. Note that they are separated with \r\n
-  $headers = "From: root@incojs01.scc911.com\r\nReply-To: carl.schelin@intrado.com";
+  $headers = "From: root@" . $hostname . "\r\nReply-To: " . $Sitedev;
 
 //add boundary string and mime type specification
   $headers .= "\r\nContent-Type: multipart/mixed; boundary=\"PHP-mixed-".$random_hash."\"";
