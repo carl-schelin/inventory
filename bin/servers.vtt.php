@@ -64,7 +64,7 @@
 # Convert all to lowercase
     $value[0]                 = strtolower($value[0]);
     $value[1]                 = strtolower($value[1]);
-    $os                       = strtolower(return_System($a_inventory['inv_id']));
+    $os                       = strtolower(return_System($db, $a_inventory['inv_id']));
     $a_inventory['zone_name'] = strtolower($a_inventory['zone_name']);
     $a_inventory['inv_notes'] = strtolower($a_inventory['inv_notes']);
 
