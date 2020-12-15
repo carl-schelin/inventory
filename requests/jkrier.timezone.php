@@ -11,7 +11,7 @@
 
   $package = "jkrier.timezone.php";
 
-  logaccess($formVars[' uid'], $package, "Checking out the Server timezones.");
+  logaccess($db, $formVars[' uid'], $package, "Checking out the Server timezones.");
 
   $orderby = " order by ";
   if (isset($_GET['sort'])) {
