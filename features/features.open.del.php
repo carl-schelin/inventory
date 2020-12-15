@@ -19,14 +19,14 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Guest)) {
+    if (check_userlevel($db, $AL_Guest)) {
       $q_string  = "select feat_id ";
       $q_string .= "from features_detail ";
       $q_string .= "where feat_feat_id = " . $formVars['id'];
       $q_features_detail = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_features_detail = mysqli_fetch_array($q_features_detail)) {
 
-        logaccess($_SESSION['uid'], $package, "Deleting " . $a_features_detail['feat_id'] . " from features_detail");
+        logaccess($db, $_SESSION['uid'], $package, "Deleting " . $a_features_detail['feat_id'] . " from features_detail");
 
         $q_string  = "delete ";
         $q_string .= "from features_detail ";
@@ -34,7 +34,7 @@
         $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       }
 
-      logaccess($_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from features");
+      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from features");
 
       $q_string  = "delete ";
       $q_string .= "from features ";
@@ -45,7 +45,7 @@
 
       print "clear_fields();\n";
     } else {
-      logaccess($_SESSION['uid'], $package, "Access denied");
+      logaccess($db, $_SESSION['uid'], $package, "Access denied");
     }
   }
 ?>
