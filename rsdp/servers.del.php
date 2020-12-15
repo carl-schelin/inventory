@@ -21,7 +21,7 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Admin)) {
+    if (check_userlevel($db, $AL_Admin)) {
       $tables = array(
         0 => "rsdp_server",
         1 => "rsdp_applications",
@@ -61,7 +61,7 @@
       );
 
       for ($i = 0; $i < count($tables); $i++) {
-        logaccess($_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from rsdp_server");
+        logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from rsdp_server");
 
         $q_string  = "delete ";
         $q_string .= "from " . $tables[$i] . " ";
@@ -74,7 +74,7 @@
 
       print "clear_fields();\n";
     } else {
-      logaccess($_SESSION['uid'], $package, "Access denied");
+      logaccess($db, $_SESSION['uid'], $package, "Access denied");
     }
   }
 ?>
