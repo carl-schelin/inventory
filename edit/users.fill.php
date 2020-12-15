@@ -23,9 +23,9 @@
       $formVars['pwd_id'] = clean($_GET['pwd_id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['id'] == '' || $formVars['id'] == 0) {
-        logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from syspwd");
+        logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from syspwd");
 
         $q_string  = "select pwd_user,pwd_gecos ";
         $q_string .= "from syspwd ";
@@ -46,7 +46,7 @@
 
         print "document.edit.mu_update.disabled = true;\n";
       } else {
-        logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from manageusers");
+        logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from manageusers");
 
         $q_string  = "select mu_username,mu_name,mu_email,mu_account,mu_comment,mu_locked,mu_ticket ";
         $q_string .= "from manageusers ";
@@ -83,7 +83,7 @@
       print "document.edit.mu_account['" . $account . "'].checked = true;\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
