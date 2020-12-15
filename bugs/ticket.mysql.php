@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
 
 # update the issue
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
@@ -40,7 +40,7 @@
         }
 
         if (strlen($formVars['bug_subject']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "bug_module     =   " . $formVars['bug_module']     . "," . 
@@ -63,7 +63,7 @@
             $message = "Bug updated.";
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -84,7 +84,7 @@
         $formVars['bug_subject']    = clean($_GET['bug_subject'],    70);
 
         if (strlen($formVars['bug_subject']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
 # it's open, close it
           if ($formVars['bug_closed'] == '0000-00-00' || $formVars['bug_closed'] == 'Current Date') {
@@ -140,7 +140,7 @@
         }
       }
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
