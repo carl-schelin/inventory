@@ -24,7 +24,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['img_title']    = clean($_GET['img_title'],    255);
         $formVars['img_file']     = clean($_GET['img_file'],     255);
@@ -33,7 +33,7 @@
         $formVars['img_owner']    = clean($_GET['img_owner'],     10);
 
         if (strlen($formVars['img_file']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "img_title  = \"" . $formVars['img_title']  . "\"," .
@@ -51,7 +51,7 @@
             $message = "Image updated.";
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['img_file']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['img_file']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -62,7 +62,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">\n";
@@ -130,7 +130,7 @@
           }
 
           $output .= "<tr>";
-          if ($a_images['img_owner'] == $_SESSION['uid'] || check_userlevel($AL_Admin)) {
+          if ($a_images['img_owner'] == $_SESSION['uid'] || check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"" . $class . " delete\">" . $linkdel   . 'x'                          . $linkend . "</td>";
           } else {
             $output .= "  <td class=\"" . $class . " delete\">" .              '--'                                    . "</td>";
@@ -160,7 +160,7 @@
       }
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
