@@ -16,7 +16,7 @@
 
   $package = "initial.dup.php";
 
-  logaccess($_SESSION['uid'], $package, "Accessing script");
+  logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
   $formVars['rsdp']              = clean($_GET['rsdp'],             10);
   $formVars['chk_filesystem']    = clean($_GET['chk_filesystem'],   10);
@@ -161,7 +161,7 @@
 ######
 # Get the 'copy to' RSDP ID
 ######
-  $rsdp = last_insert_id();
+  $rsdp = last_insert_id($db);
 
 ######
 # Get the 'copy from' backup information: First interaction with rsdp_backups (initialization of record)
