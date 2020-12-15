@@ -136,7 +136,7 @@
 
       mysqli_free_result($q_levels);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.levels.lvl_name.value = '';\n";
       print "document.levels.lvl_level.value = '';\n";
