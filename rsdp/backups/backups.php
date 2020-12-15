@@ -206,7 +206,7 @@ the next task and an email will be sent notifying the responsible team or indivi
 
 </div>
 
-<?php print submit_RSDP( $formVars['rsdp'], 13, $RSDProot . "/backups/backups.mysql.php", "rsdp_backuppoc", "", $GRP_Backups); ?>
+<?php print submit_RSDP($db, " $formVars['rsdp'], 13, $RSDProot . "/backups/backups.mysql.php", "rsdp_backuppoc", "", $GRP_Backups); ?>
 
 <div id="tabs">
 
@@ -234,14 +234,14 @@ the next task and an email will be sent notifying the responsible team or indivi
 
 <div id="tabs-1">
 
-<?php print request_Header($formVars['rsdp']); ?>
+<?php print request_Header($db, "$formVars['rsdp']); ?>
 
 </div>
 
 
 <div id="tabs-2">
 
-<?php print request_Server($formVars['rsdp']); ?>
+<?php print request_Server($db, "$formVars['rsdp']); ?>
 
 </div>
 
@@ -426,7 +426,7 @@ the next task and an email will be sent notifying the responsible team or indivi
 <tr>
   <td id="if_bucheck"  ><input type="checkbox" id="check-1" name="if_bucheck"    onchange="validate_Form();"><label for="check-1"></label></td>
 </tr>
-<?php print return_Checklist( $formVars['rsdp'], 13); ?>
+<?php print return_Checklist($db, " $formVars['rsdp'], 13); ?>
 </table>
 
 </div>
