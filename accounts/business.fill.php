@@ -29,8 +29,8 @@
       $a_business_unit = mysqli_fetch_array($q_business_unit);
       mysqli_free_result($q_business_unit);
 
-      print "document.business.bus_unit.value = '" . mysqli_real_escape_string($a_business_unit['bus_unit']) . "';\n";
-      print "document.business.bus_name.value = '" . mysqli_real_escape_string($a_business_unit['bus_name']) . "';\n";
+      print "document.business.bus_unit.value = '" . mysqli_real_escape_string($db, $a_business_unit['bus_unit']) . "';\n";
+      print "document.business.bus_name.value = '" . mysqli_real_escape_string($db, $a_business_unit['bus_name']) . "';\n";
 
       print "document.business.id.value = " . $formVars['id'] . ";\n";
 
