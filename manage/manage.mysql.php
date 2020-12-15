@@ -15,7 +15,7 @@
   if (isset($_SESSION['username'])) {
     $package = "manage.mysql.php";
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       $formVars['update']       = clean($_GET['update'],      10);
       $formVars['product']      = clean($_GET['product'],     10);
       $formVars['project']      = clean($_GET['project'],     10);
@@ -58,7 +58,7 @@
           $formVars['chk_closed'] = '0000-00-00 00:00:00';
         }
 
-        logaccess($_SESSION['uid'], $package, "Building the query.");
+        logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
         $q_string =
           "chk_userid         =   " . $formVars['chk_userid']     . "," .
@@ -71,13 +71,13 @@
           $query = "update chkserver set " . $q_string . " where chk_id = " . $formVars['id'];
         }
 
-        logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $a_inventory['inv_name']);
+        logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $a_inventory['inv_name']);
 
         mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
 # need to build a while statement based on passed variables.
 # priority where's are simple and will always be the first block. Simply add more to the where statement.
@@ -133,7 +133,7 @@
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
-        if (check_grouplevel($GRP_Unix)) {
+        if (check_grouplevel($db, $GRP_Unix)) {
           $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
           $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
         } else {
@@ -200,7 +200,7 @@
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
-        if (check_grouplevel($GRP_Unix)) {
+        if (check_grouplevel($db, $GRP_Unix)) {
           $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
           $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
         } else {
@@ -267,7 +267,7 @@
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
-        if (check_grouplevel($GRP_Unix)) {
+        if (check_grouplevel($db, $GRP_Unix)) {
           $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
           $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
         } else {
@@ -334,7 +334,7 @@
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
-        if (check_grouplevel($GRP_Unix)) {
+        if (check_grouplevel($db, $GRP_Unix)) {
           $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
           $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
         } else {
@@ -401,7 +401,7 @@
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
-        if (check_grouplevel($GRP_Unix)) {
+        if (check_grouplevel($db, $GRP_Unix)) {
           $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
           $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
         } else {
@@ -472,7 +472,7 @@
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
-        if (check_grouplevel($GRP_Unix)) {
+        if (check_grouplevel($db, $GRP_Unix)) {
           $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
           $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
         } else {
@@ -551,7 +551,7 @@
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
-        if (check_grouplevel($GRP_Unix)) {
+        if (check_grouplevel($db, $GRP_Unix)) {
           $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
           $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
         } else {
@@ -622,7 +622,7 @@
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
-        if (check_grouplevel($GRP_Unix)) {
+        if (check_grouplevel($db, $GRP_Unix)) {
           $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
           $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
         } else {
@@ -664,7 +664,7 @@
       }
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
