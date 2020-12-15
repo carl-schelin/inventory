@@ -31,11 +31,11 @@
       $group = return_Index($db, $a_certs['cert_group'], "select grp_id from groups where grp_disabled = 0 order by grp_name");
       $cert  = return_Index($db, $a_certs['cert_ca'],    "select cert_id from certs where cert_isca = 1 order by cert_desc");
 
-      print "document.dialog.cert_desc.value = '"      . mysqli_real_escape_string($a_certs['cert_desc'])      . "';\n";
-      print "document.dialog.cert_url.value = '"       . mysqli_real_escape_string($a_certs['cert_url'])       . "';\n";
-      print "document.dialog.cert_expire.value = '"    . mysqli_real_escape_string($a_certs['cert_expire'])    . "';\n";
-      print "document.dialog.cert_authority.value = '" . mysqli_real_escape_string($a_certs['cert_authority']) . "';\n";
-      print "document.dialog.cert_memo.value = '"      . mysqli_real_escape_string($a_certs['cert_memo'])      . "';\n";
+      print "document.dialog.cert_desc.value = '"      . mysqli_real_escape_string($db, $a_certs['cert_desc'])      . "';\n";
+      print "document.dialog.cert_url.value = '"       . mysqli_real_escape_string($db, $a_certs['cert_url'])       . "';\n";
+      print "document.dialog.cert_expire.value = '"    . mysqli_real_escape_string($db, $a_certs['cert_expire'])    . "';\n";
+      print "document.dialog.cert_authority.value = '" . mysqli_real_escape_string($db, $a_certs['cert_authority']) . "';\n";
+      print "document.dialog.cert_memo.value = '"      . mysqli_real_escape_string($db, $a_certs['cert_memo'])      . "';\n";
 
       if ($a_certs['cert_isca']) {
         print "document.dialog.cert_isca.checked = true;\n";
