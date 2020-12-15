@@ -11,10 +11,10 @@
 
   $package = "index.changelog.php";
 
-  logaccess($db, $formVars['uid'], $package, "Checking out the index.");
+  logaccess($db, $db, $formVars['uid'], $package, "Checking out the index.");
 
 # if help has not been seen yet,
-  if (show_Help($Sitepath . "/" . $package)) {
+  if (show_Help($db, $Sitepath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
@@ -85,7 +85,7 @@ $(document).ready( function() {
   <li><a href="/changelog/listing.php">Sorted Changelog Pages</a></li>
   <li><a href="/changelog/countoff.php">Weekly Changelog Count</a></li>
 <?php
-  if (check_grouplevel($GRP_Unix)) {
+  if (check_grouplevel($db, $GRP_Unix)) {
 ?>
   <li><a href="<?php print $Listingroot; ?>/unix.php">Manage Server and Application Listings</a>.</li>
 <?php
@@ -107,7 +107,7 @@ $(document).ready( function() {
   <li><a href="/chglogvtt/listing.php">Sorted Changelog Pages</a></li>
   <li><a href="/chglogvtt/countoff.php">Weekly Changelog Count</a></li>
 <?php
-  if (check_grouplevel($GRP_Virtualization)) {
+  if (check_grouplevel($db, $GRP_Virtualization)) {
 ?>
   <li><a href="<?php print $Listingroot; ?>/virtualization.php">Manage Virtualization Server Listing</a>.</li>
 <?php
@@ -127,7 +127,7 @@ $(document).ready( function() {
   <li><a href="/chglogdba/listing.php">Sorted Changelog Pages</a></li>
   <li><a href="/chglogdba/countoff.php">Weekly Changelog Count</a></li>
 <?php
-  if (check_grouplevel($GRP_DBAdmins)) {
+  if (check_grouplevel($db, $GRP_DBAdmins)) {
 ?>
   <li><a href="<?php print $Listingroot; ?>/dbadmins.php">Add DBA Changelog Listing</a> - The changelog Mail directory permissions are updated every 30 minutes on the half hour.</li>
 <?php
@@ -147,7 +147,7 @@ $(document).ready( function() {
   <li><a href="/chglogtdm/listing.php">Sorted Changelog Pages</a></li>
   <li><a href="/chglogtdm/countoff.php">Weekly Changelog Count</a></li>
 <?php
-  if (check_grouplevel($GRP_Tandem)) {
+  if (check_grouplevel($db, $GRP_Tandem)) {
 ?>
   <li><a href="<?php print $Listingroot; ?>/tandem.php">Add Tandem Changelog Listing</a> - The changelog Mail directory permissions are updated every 30 minutes on the half hour.</li>
 <?php
@@ -167,7 +167,7 @@ $(document).ready( function() {
   <li><a href="/chglogweb/listing.php">Sorted Changelog Pages</a> This is a list of all changes for the group with dates, owner, and the first line of the change.</li>
   <li><a href="/chglogweb/countoff.php">Weekly Changelog Count</a> This counts all the changes by week.</li>
 <?php
-  if (check_grouplevel($GRP_WebApps)) {
+  if (check_grouplevel($db, $GRP_WebApps)) {
 ?>
   <li><a href="<?php print $Listingroot; ?>/webapps.php">Manage Web Applications Changelog Server and Application listing</a> - The changelog Mail directory permissions are updated every 30 minutes on the half hour.</li>
 <?php
@@ -188,7 +188,7 @@ $(document).ready( function() {
   <li><a href="/chglogsba/listing.php">Sorted Changelog Pages</a></li>
   <li><a href="/chglogsba/countoff.php">Weekly Changelog Count</a></li>
 <?php
-  if (check_grouplevel($GRP_Backups)) {
+  if (check_grouplevel($db, $GRP_Backups)) {
 ?>
   <li><a href="<?php print $Listingroot; ?>/backups.php">Manage the Backup Server Listing</a>.</li>
 <?php
@@ -208,7 +208,7 @@ $(document).ready( function() {
   <li><a href="/chgloglab/listing.php">Sorted Changelog Pages</a></li>
   <li><a href="/chgloglab/countoff.php">Weekly Changelog Count</a></li>
 <?php
-  if (check_grouplevel($GRP_ICLAdmins)) {
+  if (check_grouplevel($db, $GRP_ICLAdmins)) {
 ?>
   <li><a href="<?php print $Listingroot; ?>/icladmins.php">Manage the ICL Server Listing</a>.</li>
 <?php
@@ -228,7 +228,7 @@ $(document).ready( function() {
   <li><a href="/windows/listing.php">Sorted Changelog Pages</a></li>
   <li><a href="/windows/countoff.php">Weekly Changelog Count</a></li>
 <?php
-  if (check_grouplevel($GRP_Windows)) {
+  if (check_grouplevel($db, $GRP_Windows)) {
 ?>
   <li><a href="<?php print $Listingroot; ?>/windows.php">Manage the Windows Server Listing</a>.</li>
 <?php
@@ -248,7 +248,7 @@ $(document).ready( function() {
   <li><a href="/chglogmon/listing.php">Sorted Changelog Pages</a></li>
   <li><a href="/chglogmon/countoff.php">Weekly Changelog Count</a></li>
 <?php
-  if (check_grouplevel($GRP_Monitoring)) {
+  if (check_grouplevel($db, $GRP_Monitoring)) {
 ?>
   <li><a href="<?php print $Listingroot; ?>/monitoring.php">Manage the Monitoring Server Listing</a>.</li>
 <?php
@@ -268,7 +268,7 @@ $(document).ready( function() {
   <li><a href="/chglogmob/listing.php">Sorted Changelog Pages</a></li>
   <li><a href="/chglogmob/countoff.php">Weekly Changelog Count</a></li>
 <?php
-  if (check_grouplevel($GRP_Mobility)) {
+  if (check_grouplevel($db, $GRP_Mobility)) {
 ?>
   <li><a href="<?php print $Listingroot; ?>/mobility.php">Manage the Mobility Server Listing</a>.</li>
 <?php
@@ -288,7 +288,7 @@ $(document).ready( function() {
   <li><a href="/chglognet/listing.php">Sorted Changelog Pages</a></li>
   <li><a href="/chglognet/countoff.php">Weekly Changelog Count</a></li>
 <?php
-  if (check_grouplevel($GRP_Networking)) {
+  if (check_grouplevel($db, $GRP_Networking)) {
 ?>
   <li><a href="<?php print $Listingroot; ?>/networking.php">Manage Network Engineering Device Listing</a>.</li>
 <?php
@@ -308,7 +308,7 @@ $(document).ready( function() {
   <li><a href="/chglogse/listing.php">Sorted Changelog Pages</a></li>
   <li><a href="/chglogse/countoff.php">Weekly Changelog Count</a></li>
 <?php
-  if (check_grouplevel($GRP_SysEng)) {
+  if (check_grouplevel($db, $GRP_SysEng)) {
 ?>
   <li><a href="<?php print $Listingroot; ?>/systems.php">Manage Systems Engineering Server Listing</a>.</li>
 <?php
@@ -329,7 +329,7 @@ $(document).ready( function() {
   <li><a href="/chglogvns/listing.php">Sorted Changelog Pages</a></li>
   <li><a href="/chglogvns/countoff.php">Weekly Changelog Count</a></li>
 <?php
-  if (check_grouplevel($GRP_VoiceNetwork)) {
+  if (check_grouplevel($db, $GRP_VoiceNetwork)) {
 ?>
   <li><a href="<?php print $Listingroot; ?>/vns.php">Manage Voice Network Support Server Listing</a>.</li>
 <?php
@@ -350,7 +350,7 @@ $(document).ready( function() {
   <li><a href="/chglogali/listing.php">Sorted Changelog Pages</a></li>
   <li><a href="/chglogali/countoff.php">Weekly Changelog Count</a></li>
 <?php
-  if (check_grouplevel($GRP_ALIMAdmin)) {
+  if (check_grouplevel($db, $GRP_ALIMAdmin)) {
 ?>
   <li><a href="<?php print $Listingroot; ?>/alimadmin.php">Manage ALIM SysAdmin Server Listing</a>.</li>
 <?php
@@ -371,7 +371,7 @@ $(document).ready( function() {
   <li><a href="/chglogtss/listing.php">Sorted Changelog Pages</a></li>
   <li><a href="/chglogtss/countoff.php">Weekly Changelog Count</a></li>
 <?php
-  if (check_grouplevel($GRP_TSS)) {
+  if (check_grouplevel($db, $GRP_TSS)) {
 ?>
   <li><a href="<?php print $Listingroot; ?>/tss.php">Manage TSS SysAdmin Server Listing</a>.</li>
 <?php
@@ -392,7 +392,7 @@ $(document).ready( function() {
   <li><a href="/chglogienv/listing.php">Sorted Changelog Pages</a></li>
   <li><a href="/chglogienv/countoff.php">Weekly Changelog Count</a></li>
 <?php
-  if (check_grouplevel($GRP_IENV)) {
+  if (check_grouplevel($db, $GRP_IENV)) {
 ?>
   <li><a href="<?php print $Listingroot; ?>/ienv.php">Manage IEN Voice SysAdmin Server Listing</a>.</li>
 <?php
@@ -413,7 +413,7 @@ $(document).ready( function() {
   <li><a href="/chglogscm/listing.php">Sorted Changelog Pages</a></li>
   <li><a href="/chglogscm/countoff.php">Weekly Changelog Count</a></li>
 <?php
-  if (check_grouplevel($GRP_SCM)) {
+  if (check_grouplevel($db, $GRP_SCM)) {
 ?>
   <li><a href="<?php print $Listingroot; ?>/scm.php">Manage SCM Server Listing</a>.</li>
 <?php
@@ -434,7 +434,7 @@ $(document).ready( function() {
   <li><a href="/i3chglog/listing.php">Sorted Changelog Pages</a></li>
   <li><a href="/i3chglog/countoff.php">Weekly Changelog Count</a></li>
 <?php
-  if (check_grouplevel($GRP_i3)) {
+  if (check_grouplevel($db, $GRP_i3)) {
 ?>
   <li><a href="<?php print $Listingroot; ?>/i3admins.php">Manage SCM Server Listing</a>.</li>
 <?php
