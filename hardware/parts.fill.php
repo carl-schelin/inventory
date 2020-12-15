@@ -28,8 +28,8 @@
       $a_parts = mysqli_fetch_array($q_parts);
       mysqli_free_result($q_parts);
 
-      print "document.parts.part_name.value = '"    . mysqli_real_escape_string($a_parts['part_name'])    . "';\n";
-      print "document.parts.part_acronym.value = '" . mysqli_real_escape_string($a_parts['part_acronym']) . "';\n";
+      print "document.parts.part_name.value = '"    . mysqli_real_escape_string($db, $a_parts['part_name'])    . "';\n";
+      print "document.parts.part_acronym.value = '" . mysqli_real_escape_string($db, $a_parts['part_acronym']) . "';\n";
 
       if ($a_parts['part_type']) {
         print "document.parts.part_type.checked = true;\n";
