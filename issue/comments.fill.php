@@ -20,8 +20,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from comments");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from comments");
 
       $q_string  = "select det_text,det_timestamp,det_user ";
       $q_string .= "from issue_detail ";
@@ -30,7 +30,7 @@
       $a_issue_detail = mysqli_fetch_array($q_issue_detail);
       mysqli_free_result($q_issue_detail);
 
-      $selected = return_Index($a_issue_detail['det_user'],       "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
+      $selected = return_Index($db, $a_issue_detail['det_user'],       "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
 
       print "document.start.det_text.value = '"      . mysqli_real_escape_string($a_issue_detail['det_text'])      . "';\n";
       print "document.start.det_timestamp.value = '" . mysqli_real_escape_string($a_issue_detail['det_timestamp']) . "';\n";
@@ -42,7 +42,7 @@
       print "document.start.detupdate.disabled = false;\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
