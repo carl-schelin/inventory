@@ -459,7 +459,7 @@
 
           $system .= "<tr>\n";
           $system .= "<td class=\"ui-widget-content delete\"><input type=\"checkbox\" id=\"filter_" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"set_Filter('" . $a_rsdp_id['rsdp_id'] . "');\"></td>\n";
-          $system .= "  <td class=\"ui-widget-content\">" . $linkstart . $a_rsdp_osteam['os_sysname'] . $linkend . "<input type=\"hidden\" name=\"rsdp_virtual\" id=\"rsdp_virtual\" value=\"" . rsdp_Virtual($a_rsdp_id['rsdp_id']) . "\"></td>\n";
+          $system .= "  <td class=\"ui-widget-content\">" . $linkstart . $a_rsdp_osteam['os_sysname'] . $linkend . "<input type=\"hidden\" name=\"rsdp_virtual\" id=\"rsdp_virtual\" value=\"" . rsdp_Virtual($db, "$a_rsdp_id['rsdp_id']) . "\"></td>\n";
           $system .= "  <td class=\"ui-widget-content\">" . $tasks . "</td>\n";
           $system .= "  <td class=\"ui-widget-content\" id=\"ssf" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"server_Function('ssf"   . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $a_rsdp_server['rsdp_function']   . "</u></td>\n";
           $system .= "  <td class=\"ui-widget-content\" id=\"sos" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"operating_System('sos"  . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $a_operatingsystem['os_software'] . "</u></td>\n";
@@ -590,14 +590,14 @@
           }
 
           $hardware .= "<tr>\n";
-          $hardware .= "  <td class=\"ui-widget-content\">" . $linkstart . $a_rsdp_osteam['os_sysname'] . $linkend . "<input type=\"hidden\" name=\"rsdp_virtual\" id=\"rsdp_virtual\" value=\"" . rsdp_Virtual($a_rsdp_id['rsdp_id']) . "\"></td>\n";
+          $hardware .= "  <td class=\"ui-widget-content\">" . $linkstart . $a_rsdp_osteam['os_sysname'] . $linkend . "<input type=\"hidden\" name=\"rsdp_virtual\" id=\"rsdp_virtual\" value=\"" . rsdp_Virtual($db, "$a_rsdp_id['rsdp_id']) . "\"></td>\n";
           $hardware .= "  <td class=\"ui-widget-content\">"                                                                                                               . $a_rsdp_platform['mod_vendor']    . "</td>\n";
           $hardware .= "  <td class=\"ui-widget-content\">"                                                                                                               . $a_rsdp_platform['mod_name']      . "</td>\n";
           $hardware .= "  <td class=\"ui-widget-content\" id=\"hcp" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"central_Processor('hcp" . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $a_rsdp_server['rsdp_processors'] . "</u></td>\n";
           $hardware .= "  <td class=\"ui-widget-content\" id=\"hsm" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"system_Memory(    'hsm" . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $a_rsdp_server['rsdp_memory']     . " GB</u></td>\n";
           $hardware .= "  <td class=\"ui-widget-content\" id=\"hss" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"system_Size(      'hss" . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $a_rsdp_server['rsdp_ossize']     . " GB</u></td>\n";
           $hardware .= "  <td class=\"ui-widget-content\" title=\"" . $fstitle . "\">" . $filesystemstart . $filesystems . $linkend . "</td>\n";
-          if (rsdp_Virtual($a_rsdp_id['rsdp_id']) == 0) {
+          if (rsdp_Virtual($db, "$a_rsdp_id['rsdp_id']) == 0) {
             $hardware .= "  <td class=\"ui-widget-content\" id=\"hvt" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"volt_Text(        'hvt" . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $a_rsdp_platform['volt_text']     . "</u></td>\n";
             $hardware .= "  <td class=\"ui-widget-content\" id=\"hpd" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"power_Draw(       'hpd" . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $a_rsdp_platform['mod_draw']      . " Amps</u></td>\n";
             $hardware .= "  <td class=\"ui-widget-content\" id=\"hps" . $a_rsdp_id['rsdp_id'] . "\" onclick=\"power_Start(      'hps" . $a_rsdp_id['rsdp_id'] . "');\"><u>" . $a_rsdp_platform['mod_start']     . " Amps</u></td>\n";
@@ -613,7 +613,7 @@
           }
           $hardware .= "</tr>\n";
 
-          if (rsdp_Virtual($a_rsdp_id['rsdp_id']) == 0) {
+          if (rsdp_Virtual($db, "$a_rsdp_id['rsdp_id']) == 0) {
             $hardware .= "<tr>\n";
             $hardware .= "  <th class=\"ui-state-default\">System</th>\n";
             $hardware .= "  <th class=\"ui-state-default\">Switch</th>\n";
@@ -767,7 +767,7 @@
               $interface .= "  <td class=\"" . $class . "\" id=\"izn" . $a_rsdp_interface['if_id'] . "\" onclick=\"interface_Zone(       'izn" . $a_rsdp_interface['if_id'] . "');\"><u>" . $a_rsdp_interface['zone_name']               . "</u></td>\n";
               $interface .= "  <td class=\"" . $class . "\" id=\"igw" . $a_rsdp_interface['if_id'] . "\" onclick=\"interface_Gateway(    'igw" . $a_rsdp_interface['if_id'] . "');\"><u>" . $a_rsdp_interface['if_gate']                 . "</u></td>\n";
               $interface .= "  <td class=\"" . $class . "\" id=\"ivl" . $a_rsdp_interface['if_id'] . "\" onclick=\"interface_VLAN(       'ivl" . $a_rsdp_interface['if_id'] . "');\"><u>" . $a_rsdp_interface['if_vlan']                 . "</u></td>\n";
-              if (rsdp_Virtual($a_rsdp_id['rsdp_id']) == 0) {
+              if (rsdp_Virtual($db, "$a_rsdp_id['rsdp_id']) == 0) {
                 $interface .= "  <td class=\"" . $class . "\" id=\"isp" . $a_rsdp_interface['if_id'] . "\" onclick=\"interface_Device(     'isp" . $a_rsdp_interface['if_id'] . "');\"><u>" . $a_rsdp_interface['if_sysport']              . "</u></td>\n";
                 $interface .= "  <td class=\"" . $class . "\" id=\"imt" . $a_rsdp_interface['if_id'] . "\" onclick=\"interface_Media(      'imt" . $a_rsdp_interface['if_id'] . "');\"><u>" . $a_rsdp_interface['med_text']                . "</u></td>\n";
                 $interface .= "  <td class=\"" . $class . "\" id=\"isw" . $a_rsdp_interface['if_id'] . "\" onclick=\"interface_Switch(     'isw" . $a_rsdp_interface['if_id'] . "');\"><u>" . $a_rsdp_interface['if_switch']               . "</u></td>\n";
@@ -839,7 +839,7 @@
                   $interface .= "  <td class=\"" . $class . "\" id=\"izn" . $a_rsdp_child['if_id'] . "\" onclick=\"interface_Zone(       'izn" . $a_rsdp_child['if_id'] . "');\"><u>"      . $a_rsdp_child['zone_name']               . "</u></td>\n";
                   $interface .= "  <td class=\"" . $class . "\" id=\"igw" . $a_rsdp_child['if_id'] . "\" onclick=\"interface_Gateway(    'igw" . $a_rsdp_child['if_id'] . "');\"><u>"      . $a_rsdp_child['if_gate']                 . "</u></td>\n";
                   $interface .= "  <td class=\"" . $class . "\" id=\"ivl" . $a_rsdp_child['if_id'] . "\" onclick=\"interface_VLAN(       'ivl" . $a_rsdp_child['if_id'] . "');\"><u>"      . $a_rsdp_child['if_vlan']                 . "</u></td>\n";
-                  if (rsdp_Virtual($a_rsdp_id['rsdp_id']) == 0) {
+                  if (rsdp_Virtual($db, "$a_rsdp_id['rsdp_id']) == 0) {
                     $interface .= "  <td class=\"" . $class . "\" id=\"isp" . $a_rsdp_child['if_id'] . "\" onclick=\"interface_Device(     'isp" . $a_rsdp_child['if_id'] . "');\"><u>"      . $a_rsdp_child['if_sysport']              . "</u></td>\n";
                     $interface .= "  <td class=\"" . $class . "\" id=\"imt" . $a_rsdp_child['if_id'] . "\" onclick=\"interface_Media(      'imt" . $a_rsdp_child['if_id'] . "');\"><u>"      . $a_rsdp_child['med_text']                . "</u></td>\n";
                     $interface .= "  <td class=\"" . $class . "\" id=\"isw" . $a_rsdp_child['if_id'] . "\" onclick=\"interface_Switch(     'isw" . $a_rsdp_child['if_id'] . "');\"><u>"      . $a_rsdp_child['if_switch']               . "</u></td>\n";
