@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from locations");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from locations");
 
       $q_string  = "select loc_name,loc_addr1,loc_addr2,loc_suite,loc_city,loc_default,loc_type,";
       $q_string .= "loc_zipcode,loc_details,loc_instance,loc_xpoint,loc_ypoint,loc_xlen,loc_ylen, ";
@@ -37,8 +37,8 @@
       $q_string .= "left join country on country.cn_id = states.st_country ";
       $q_string .= "order by ct_city,st_acronym,cn_acronym ";
 
-      $city = return_Index($a_locations['loc_city'], $q_string);
-      $type = return_Index($a_locations['loc_type'], "select typ_id from loc_types order by typ_name");
+      $city = return_Index($db, $a_locations['loc_city'], $q_string);
+      $type = return_Index($db, $a_locations['loc_type'], "select typ_id from loc_types order by typ_name");
 
       print "document.locations.loc_name.value = '"       . mysqli_real_escape_string($a_locations['loc_name'])       . "';\n";
       print "document.locations.loc_addr1.value = '"      . mysqli_real_escape_string($a_locations['loc_addr1'])      . "';\n";
@@ -68,7 +68,7 @@
       print "document.locations.id.value = " . $formVars['id'] . ";\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
