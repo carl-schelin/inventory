@@ -2,7 +2,6 @@
 # Script: firewall.del.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: Delete association entries
 
   header('Content-Type: text/javascript');
