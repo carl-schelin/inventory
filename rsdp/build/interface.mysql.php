@@ -22,7 +22,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['if_id'],           10);
         $formVars['if_name']        = clean($_GET['if_name'],         60);
@@ -67,7 +67,7 @@
         }
 
         if (strlen($formVars['if_name']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "if_rsdp        =   " . $formVars['if_rsdp']        . "," . 
@@ -95,7 +95,7 @@
             $query = "update rsdp_interface set " . $q_string . " where if_id = " . $formVars['id'];
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['if_name']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['if_name']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -138,7 +138,7 @@
             $query = "insert into rsdp_interface set if_id = NULL, " . $q_string;
             mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
-            $response = last_insert_id();
+            $response = last_insert_id($db);
 
             $q_string  = "select if_name,if_sysport,if_interface,if_zone,if_ipcheck,if_swcheck,if_virtual,if_monitored,";
             $q_string .= "if_speed,if_duplex,if_redundant,if_groupname,if_media,if_type,if_cid,if_description ";
@@ -407,7 +407,7 @@
       print "\nvalidate_Interface();\n";
       print "\nvalidate_Form();\n";
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
