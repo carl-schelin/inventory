@@ -23,7 +23,7 @@
       $formVars['task'] = clean($_GET['task'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
 # get the group info from the id entry
       $q_string  = "select chk_group ";
       $q_string .= "from checklist ";
@@ -61,7 +61,7 @@
 
       print "clear_fields();\n";
     } else {
-      logaccess($_SESSION['uid'], $package, "Access denied");
+      logaccess($db, $_SESSION['uid'], $package, "Access denied");
     }
   }
 ?>
