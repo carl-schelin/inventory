@@ -36,8 +36,8 @@
       $rule_object      = return_Index($db, $a_rules['rule_object'],      "select obj_id  from objects       where obj_deleted = 0  order by obj_name         ");
       $rule_message     = return_Index($db, $a_rules['rule_message'],     "select msg_id  from message_group where msg_deleted = 0  order by msg_group        ");
 
-      print "document.rules.rule_description.value = '" . mysqli_real_escape_string($a_rules['rule_description']) . "';\n";
-      print "document.rules.rule_annotate.value = '"    . mysqli_real_escape_string($a_rules['rule_annotate']) . "';\n";
+      print "document.rules.rule_description.value = '" . mysqli_real_escape_string($db, $a_rules['rule_description']) . "';\n";
+      print "document.rules.rule_annotate.value = '"    . mysqli_real_escape_string($db, $a_rules['rule_annotate']) . "';\n";
 
       print "document.rules.rule_parent['"       . $rule_parent       . "'].selected = true;\n";
       print "document.rules.rule_group['"        . $rule_group        . "'].selected = true;\n";
