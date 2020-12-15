@@ -117,7 +117,7 @@
 
       mysqli_free_result($q_resources);
 
-      print "document.getElementById('resources_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('resources_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.resources.res_name.value = '';\n";
 
