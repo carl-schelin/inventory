@@ -28,7 +28,7 @@
       $formVars['server'] = 0;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
 
 # update the issue
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
@@ -43,7 +43,7 @@
         }
 
         if (strlen($formVars['morn_text']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "morn_issue      =   " . $formVars['id']             . "," .
@@ -61,7 +61,7 @@
             $message = "Morning Report updated.";
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['morn_id']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['morn_id']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -129,7 +129,7 @@
 # server - function - status
 # update - status
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $output  = "<p></p>\n";
 
@@ -232,7 +232,7 @@
       print "document.getElementById('morning_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
