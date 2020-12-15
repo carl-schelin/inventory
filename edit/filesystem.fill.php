@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from filesystem");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from filesystem");
 
       $q_string  = "select fs_backup,fs_device,fs_mount,fs_group,fs_size,fs_wwid,fs_subsystem,fs_lun,fs_volume,fs_volid,fs_path ";
       $q_string .= "from filesystem ";
@@ -29,7 +29,7 @@
       $a_filesystem = mysqli_fetch_array($q_filesystem);
       mysqli_free_result($q_filesystem);
 
-      $group = return_Index($a_filesystem['fs_group'], "select grp_id from groups where grp_disabled = 0 order by grp_name");
+      $group = return_Index($db, $a_filesystem['fs_group'], "select grp_id from groups where grp_disabled = 0 order by grp_name");
 
       print "document.edit.fs_device.value = '"    . mysqli_real_escape_string($a_filesystem['fs_device'])    . "';\n";
       print "document.edit.fs_mount.value = '"     . mysqli_real_escape_string($a_filesystem['fs_mount'])     . "';\n";
@@ -54,7 +54,7 @@
       print "document.edit.fs_update.disabled = false;\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
