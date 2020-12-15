@@ -26,7 +26,7 @@
       $formVars['if_complete'] = -1;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['if_complete'] == 0 || $formVars['if_complete'] == 1 || $formVars['if_complete'] == 2) {
         $formVars['if_inscheck']   = clean($_GET['if_inscheck'],  10);
         $formVars['if_config']     = clean($_GET['if_config'],    10);
@@ -60,7 +60,7 @@
           $formVars['if_dns'] = 0;
         }
 
-        logaccess($_SESSION['uid'], $package, "Building the query.");
+        logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
         $q_string =
           "if_rsdp      = " . $formVars['rsdp']         . "," . 
@@ -79,7 +79,7 @@
           $message = "Configuration updated.";
         }
 
-        logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['rsdp']);
+        logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['rsdp']);
 
         mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -210,7 +210,7 @@
       }
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
