@@ -102,7 +102,7 @@
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
-        print "document.getElementById('config_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('config_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       }
 
@@ -254,16 +254,16 @@
 
       mysqli_free_result($q_cluster);
 
-      print "document.getElementById('cfg_detail_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('cfg_detail_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
       print "document.edit.clu_update.disabled = true;\n";
 
 
 
-      print "document.getElementById('cfg_network_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('cfg_network_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
       print "document.edit.clu_update.disabled = true;\n";
 
 
-      print "document.getElementById('cfg_server_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('cfg_server_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
       print "document.edit.clu_update.disabled = true;\n";
 
 
