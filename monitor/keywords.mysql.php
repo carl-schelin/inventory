@@ -147,7 +147,7 @@
 
       mysqli_free_result($q_keywords);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.keywords.key_description.value = '';\n";
       print "document.keywords.key_page.value = '';\n";
