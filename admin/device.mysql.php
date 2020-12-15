@@ -149,7 +149,7 @@
 
       mysqli_free_result($q_device);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
   if ($_SESSION['uid'] == 2) {
 
