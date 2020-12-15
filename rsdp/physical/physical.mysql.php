@@ -172,6 +172,7 @@
 # Send an e-mail to the data center folks to remind them of the awaiting task
       if ($formVars['pf_complete'] == -1) {
         generateEmail(
+          $db, 
           $formVars['rsdp'],
           "<p>Reminder: The SAN and LAN ports have been identified and IP addresses assigned.</p>",
           "<p>Click on <a href=\"" . $RSDProot . "/physical/physical.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>",
@@ -190,7 +191,7 @@
 # Set the status for all the physical steps
         $arr = array(5, 6, 7, 8, 9);
         foreach ($arr as &$step) {
-          setstatus($formVars['rsdp'], 1, $step);
+          setstatus($db, "$formVars['rsdp'], 1, $step);
         }
 
         $q_string  = "select rsdp_platform ";
@@ -200,6 +201,7 @@
         $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
         generateEmail(
+          $db, 
           $formVars['rsdp'],
           "<p>The Virtual Machine has been provisioned and is ready to install.</p>", 
           "<p>Click on <a href=\"" . $RSDProot . "/system/installed.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>", 
@@ -216,6 +218,7 @@
         $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
         if ($a_rsdp_tickets['tkt_sysins']) {
           submit_Ticket(
+            $db, 
             $formVars['rsdp'],
             $RSDProot . "/system/installed.php",
             "rsdp_platformspoc",
