@@ -11,7 +11,7 @@
 
   $package = "cschelin.interfaces.php";
 
-  logaccess($formVars['uid'], $package, "Getting a listing of unassigned Interfaces.");
+  logaccess($db, $formVars['uid'], $package, "Getting a listing of unassigned Interfaces.");
 
   if (isset($_GET['group'])) {
     $formVars['group'] = clean($_GET['group'], 10);
