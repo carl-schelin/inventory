@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Admin)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from users");
+    if (check_userlevel($db, $AL_Admin)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from users");
 
       $q_string  = "select usr_id,usr_disabled,usr_first,usr_last,usr_name,usr_level,";
       $q_string .= "usr_phone,usr_email,usr_altemail,usr_deptname,usr_group,usr_theme,";
@@ -32,19 +32,19 @@
       $a_users = mysqli_fetch_array($q_users);
       mysqli_free_result($q_users);
 
-      $groups   = return_Index($a_users['usr_group'],    "select grp_id from groups where grp_disabled = 0 order by grp_name");
+      $groups   = return_Index($db, $a_users['usr_group'],    "select grp_id from groups where grp_disabled = 0 order by grp_name");
       $disabled = $a_users['usr_disabled'];
-      $levels   = return_Index($a_users['usr_level'],    "select lvl_id from levels where lvl_disabled = 0 order by lvl_id");
-      $theme    = return_Index($a_users['usr_theme'],    "select theme_id from themes order by theme_title") - 1;
-      $manager  = return_Index($a_users['usr_manager'],  "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
-      $title    = return_Index($a_users['usr_title'],    "select tit_id from titles order by tit_name");
+      $levels   = return_Index($db, $a_users['usr_level'],    "select lvl_id from levels where lvl_disabled = 0 order by lvl_id");
+      $theme    = return_Index($db, $a_users['usr_theme'],    "select theme_id from themes order by theme_title") - 1;
+      $manager  = return_Index($db, $a_users['usr_manager'],  "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
+      $title    = return_Index($db, $a_users['usr_title'],    "select tit_id from titles order by tit_name");
 
       $q_string  = "select dep_id,dep_unit,dep_dept,dep_name,bus_name ";
       $q_string .= "from department ";
       $q_string .= "left join business_unit on business_unit.bus_unit = department.dep_unit ";
       $q_string .= "order by bus_name,dep_name";
 
-      $deptname = return_Index($a_users['usr_deptname'], $q_string);
+      $deptname = return_Index($db, $a_users['usr_deptname'], $q_string);
 
       print "document.user.usr_name.value = '"       . mysqli_real_escape_string($a_users['usr_name'])     . "';\n";
       print "document.user.usr_first.value = '"      . mysqli_real_escape_string($a_users['usr_first'])    . "';\n";
@@ -88,7 +88,7 @@
       print "document.user.id.value = '" . $formVars['id'] . "'\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
