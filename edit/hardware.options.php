@@ -2,7 +2,6 @@
 # Script: hardware.options.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: Building a hardware list of a selected type
 
   header('Content-Type: text/javascript');
