@@ -103,6 +103,7 @@
         $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
         generateEmail(
+          $db, 
           $formVars['rsdp'],
           "<p>Reminder: The Virtual Machine has been provisioned and is ready to install.</p>",
           "<p>Click on <a href=\"" . $RSDProot . "/system/installed.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>",
@@ -119,9 +120,9 @@
       }
 
       if ($formVars['if_complete'] == 1) {
-        setstatus($formVars['rsdp'], 1, 10);
+        setstatus($db, "$formVars['rsdp'], 1, 10);
 
-        $virtual = rsdp_Virtual($formVars['rsdp']);
+        $virtual = rsdp_Virtual($db, "$formVars['rsdp']);
 
         $q_string  = "select fs_id ";
         $q_string .= "from rsdp_filesystem ";
@@ -132,6 +133,7 @@
 # greater than zero and a physical system, tell the SAN guys they're up.
         if (mysqli_num_rows($q_rsdp_filesystem) > 0 && $virtual == 0) {
           generateEmail(
+            $db, 
             $formVars['rsdp'],
             "<p>The Server hardware has been configured and documented, the Operating System installed. The SAN mounts need to be provisioned and presented.</p>", 
             "<p>Click on <a href=\"" . $RSDProot . "/san/provisioned.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>", 
@@ -148,6 +150,7 @@
           $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
           if ($a_rsdp_tickets['tkt_storage']) {
             submit_Ticket(
+              $db, 
               $formVars['rsdp'],
               $RSDProot . "/san/provisioned.php",
               "rsdp_sanpoc",
@@ -157,7 +160,7 @@
           print "alert('SAN task submitted');\n";
         } else {
 # skip step 11 as there are no extra file systems to be provisioned. E-mail the platforms group; redundant but best to follow the steps.
-          setstatus($formVars['rsdp'], 2, 11);
+          setstatus($db, "$formVars['rsdp'], 2, 11);
 
           $q_string  = "select rsdp_platform ";
           $q_string .= "from rsdp_server ";
@@ -166,6 +169,7 @@
           $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
           generateEmail(
+            $db, 
             $formVars['rsdp'],
             "<p>The Server hardware has been configured and documented, the Operating System installed. No SAN mounts are required.</p>", 
             "<p>Click on <a href=\"" . $RSDProot . "/system/configured.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>", 
@@ -182,6 +186,7 @@
           $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
           if ($a_rsdp_tickets['tkt_syscnf']) {
             submit_Ticket(
+              $db, 
               $formVars['rsdp'],
               $RSDProot . "/system/configured.php",
               "rsdp_platformspoc",
@@ -198,7 +203,7 @@
         $q_rsdp_tickets = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
         if ($a_rsdp_tickets['tkt_sysdns']) {
-          submit_DNS($formVars['rsdp']);
+          submit_DNS($db, $formVars['rsdp']);
         }
 
         print "window.location = '" . $RSDProot . "/tasks.php?id=" . $formVars['rsdp'] . "';\n";
