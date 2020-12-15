@@ -25,7 +25,7 @@
       $formVars['chk_group'] = $_SESSION['group'];
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['id'],          10);
         $formVars['chk_index']      = clean($_GET['chk_index'],   10);
@@ -53,7 +53,7 @@
         }
 
         if (strlen($formVars['chk_text']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
 # see if there is already an entry for the index requested (but only if adding a new entry)
 # if so, then loop through the remaining entries incrementing the index by 1
@@ -99,7 +99,7 @@
             $query = "update checklist set " . $q_string . " where chk_id = " . $formVars['id'];
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['chk_name']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['chk_name']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -110,7 +110,7 @@
 
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $q_string  = "select grp_name ";
       $q_string .= "from groups ";
@@ -204,7 +204,7 @@
 
               $linkstart = "<a href=\"#\" onclick=\"show_file('checklist.fill.php?id=" . $a_checklist['chk_id'] . "');showDiv('checklist-hide');\">";
               $linkend   = "</a>";
-              if (check_grouplevel($a_checklist['chk_group'])) {
+              if (check_grouplevel($db, $a_checklist['chk_group'])) {
                 $linkdel = "<a href=\"#\" onclick=\"delete_line('checklist.del.php?id=" . $a_checklist['chk_id'] . "&task=" . $i . "');\">";
               } else {
                 $linkdel = '';
@@ -239,7 +239,7 @@
       print "document.checklists.update.disabled = true;\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
