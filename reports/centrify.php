@@ -11,7 +11,7 @@
 
   $package = "centrify.php";
 
-  logaccess($formVars['uid'], $package, "Getting a listing of Centrify Servers.");
+  logaccess($db, $formVars['uid'], $package, "Getting a listing of Centrify Servers.");
 
   if (isset($_GET['type'])) {
     $formVars['type'] = clean($_GET['type'], 10);
@@ -35,7 +35,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
