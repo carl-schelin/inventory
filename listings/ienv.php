@@ -13,10 +13,10 @@
 
   $package = "ienv.php";
 
-  logaccess($_SESSION['uid'], $package, "Viewing the ienv server listing table");
+  logaccess($db, $_SESSION['uid'], $package, "Viewing the ienv server listing table");
 
 # If group or an admin, allow access
-  if (check_grouplevel($GRP_IENV)) {
+  if (check_grouplevel($db, $GRP_IENV)) {
 
 ?>
 <!DOCTYPE HTML>
