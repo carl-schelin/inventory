@@ -6,10 +6,15 @@
 # really the login stuff should be for event management and
 # site management. The other stuff should be readable regardless
   include('settings.php');
+  include($Sitepath . '/function.php');
 
   if (isset($_SESSION['username'])) {
     include($Loginpath . '/check.php');
-    check_login(4);
+
+# connect to the database
+    $db = db_connect($DBserver, $DBname, $DBuser, $DBpassword, $DBname);
+
+    check_login($db, $AL_Guest);
 
     $formVars['uid']      = $_SESSION['uid'];
     $formVars['username'] = $_SESSION['username'];
@@ -27,11 +32,10 @@
     if (!$db) {
       die('Couldn\'t connect: ' . mysqli_error($db));
     } else {
-      $DBlogout = mysqli_select_db($db,$DBname);
+      $DBlogout = mysqli_select_db($db, $DBname);
       if (!$DBlogout) {
         die('Not connected : ' . mysqli_error($db));
       }
     }
   }
-  include($Sitepath . '/function.php');
 ?>
