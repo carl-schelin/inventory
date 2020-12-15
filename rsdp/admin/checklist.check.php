@@ -15,7 +15,7 @@
 
   $package = "checklist.check.php";
 
-  logaccess($_SESSION['uid'], $package, "Setting the checkbox status");
+  logaccess($db, $_SESSION['uid'], $package, "Setting the checkbox status");
 
   $formVars['chk_rsdp']    = clean($_GET['rsdp'],          10);
   $formVars['chk_task']    = clean($_GET['chk_task'],      10);
