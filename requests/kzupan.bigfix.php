@@ -11,7 +11,7 @@
 
   $package = "kzupan.bigfix.php";
 
-  logaccess($formVars['uid'], $package, "Accessing script");
+  logaccess($db, $formVars['uid'], $package, "Accessing script");
 
   if (isset($_GET["csv"])) {
     $formVars['csv'] = clean($_GET["csv"], 10);
@@ -109,7 +109,7 @@
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
-    if (return_System($a_inventory['inv_id']) == 'Linux') {
+    if (return_System($db, $a_inventory['inv_id']) == 'Linux') {
 
       $callpath = "No";
       if ($a_inventory['inv_callpath']) {
