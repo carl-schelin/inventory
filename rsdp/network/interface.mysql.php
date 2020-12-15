@@ -66,7 +66,7 @@
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
 # need to skip switch check if a virtual machine
-      $virtual = rsdp_Virtual($formVars['rsdp']);
+      $virtual = rsdp_Virtual($db, "$formVars['rsdp']);
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">";
