@@ -19,7 +19,7 @@
     $formVars['status']   = clean($_GET['status'],   10);
     $formVars['select']   = clean($_GET['select'],   60);
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
 
 # check to see if the person editing is a member of a group that can edit this information; if not, blank out 'function' so no changes can be made.
       $q_string  = "select inv_manager ";
@@ -29,7 +29,7 @@
       $a_inventory = mysqli_fetch_array($q_inventory);
 
 # if not a member of the group that can edit this server, default to zero which bypasses all the edit functions.
-      if (check_grouplevel($a_inventory['inv_manager']) == 0) {
+      if (check_grouplevel($db, $a_inventory['inv_manager']) == 0) {
         $formVars['function'] = '';
       }
 
@@ -874,7 +874,7 @@
       }
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
