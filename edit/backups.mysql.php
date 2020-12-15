@@ -25,7 +25,7 @@
       $formVars['bu_companyid'] = 0;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['id'],             10);
         $formVars['bu_start']       = clean($_GET['bu_start'],       15);
@@ -57,7 +57,7 @@
           $formVars['bu_include'] = 0;
         }
 
-        logaccess($_SESSION['uid'], $package, "Building the query.");
+        logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
         $q_string =
           "bu_companyid =   " . $formVars['bu_companyid'] . "," .
@@ -88,7 +88,7 @@
           $query = "update backups set " . $q_string . " where bu_id = " . $formVars['id'];
         }
 
-        logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
+        logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
 
         mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
@@ -131,7 +131,7 @@
         }
       }
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
