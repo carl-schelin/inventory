@@ -11,7 +11,7 @@
 
   $package = "index.apps.php";
 
-  logaccess($db, $db, $formVars['uid'], $package, "Checking out the index.");
+  logaccess($db, $formVars['uid'], $package, "Checking out the index.");
 
 # if help has not been seen yet,
   if (show_Help($db, $Sitepath . "/" . $package)) {
