@@ -33,7 +33,7 @@
 
       print "document.edit.clu_association['" . $association . "'].selected = true;\n";
 
-      print "document.edit.clu_notes.value = '"    . mysqli_real_escape_string($a_cluster['clu_notes'])    . "';\n\n";
+      print "document.edit.clu_notes.value = '"    . mysqli_real_escape_string($db, $a_cluster['clu_notes'])    . "';\n\n";
 
       print "document.edit.clu_id.value = " . $formVars['id'] . ";\n";
       print "document.edit.clu_update.disabled = false;\n\n";
