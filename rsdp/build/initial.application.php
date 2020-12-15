@@ -27,8 +27,8 @@
       $formVars['rsdp_apppoc'] = clean($_GET['rsdp_apppoc'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from users");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from users");
 
       $q_string  = "select usr_group ";
       $q_string .= "from users ";
@@ -45,7 +45,7 @@
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 # retrieve index values
-        $application     = return_Index($a_users['usr_group'],     "select grp_id from groups where grp_disabled = 0 order by grp_name");
+        $application     = return_Index($db, $a_users['usr_group'],     "select grp_id from groups where grp_disabled = 0 order by grp_name");
 
         print "document.rsdp.rsdp_application['"     . $application     . "'].selected = true;\n";
 
@@ -56,7 +56,7 @@
       print "validate_Form();\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
