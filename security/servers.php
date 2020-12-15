@@ -11,7 +11,7 @@
 
   $package = "servers.php";
 
-  logaccess($formVars['uid'], $package, "Getting a report on vulnerabilities.");
+  logaccess($db, $formVars['uid'], $package, "Getting a report on vulnerabilities.");
 
   $formVars['product']   = 0;
   $formVars['project']   = 0;
@@ -59,7 +59,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help('scanlevelreport')) {
+  if (show_Help($db, 'scanlevelreport')) {
     $display = "display: block";
   } else {
     $display = "display: none";
