@@ -287,7 +287,7 @@
         $detail .= "</form>\n";
       }
 
-      print "document.getElementById('detail_mysql').innerHTML = '" . mysqli_real_escape_string($detail) . "';\n";
+      print "document.getElementById('detail_mysql').innerHTML = '" . mysqli_real_escape_string($db, $detail) . "';\n";
 
 # hardware
       if ($formVars['csv'] == 'true') {
@@ -430,7 +430,7 @@
         $hardware .= "</form>\n";
       }
 
-      print "document.getElementById('hardware_mysql').innerHTML = '" . mysqli_real_escape_string($hardware) . "';\n";
+      print "document.getElementById('hardware_mysql').innerHTML = '" . mysqli_real_escape_string($db, $hardware) . "';\n";
 
 
 # interfaces
@@ -801,9 +801,9 @@
         $interface .= $formVars['URL'] . $interfaceurl;
       }
 
-      print "document.getElementById('interface_mysql').innerHTML = '" . mysqli_real_escape_string($interface) . "';\n";
+      print "document.getElementById('interface_mysql').innerHTML = '" . mysqli_real_escape_string($db, $interface) . "';\n";
 
-      print "document.getElementById('tree_mysql').innerHTML = '" . mysqli_real_escape_string("testing") . "';\n";
+      print "document.getElementById('tree_mysql').innerHTML = '" . mysqli_real_escape_string($db, "testing") . "';\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
