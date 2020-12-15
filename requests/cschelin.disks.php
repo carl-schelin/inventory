@@ -11,7 +11,7 @@
 
   $package = "cschelin.disks.php";
 
-  logaccess($formVars['uid'], $package, "Getting a listing of hard disks.");
+  logaccess($db, $formVars['uid'], $package, "Getting a listing of hard disks.");
 
   if (isset($_GET['group'])) {
     $formVars['group'] = clean($_GET['group'], 10);
