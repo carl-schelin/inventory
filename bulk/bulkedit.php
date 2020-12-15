@@ -14,7 +14,7 @@
 
   $package = "bulkedit.php";
 
-  logaccess($_SESSION['uid'], $package, "Viewing Detail information for the servers");
+  logaccess($db, $_SESSION['uid'], $package, "Viewing Detail information for the servers");
 
   $formVars['product']   = clean($_GET['product'],  10);
   $formVars['project']   = clean($_GET['project'],  10);
@@ -126,7 +126,7 @@
   $where = $product . $group . $inwork . $location . $type . $and . " sw_type = 'OS' ";;
 
 # if help has not been seen yet,
-  if (show_Help('bulkedit')) {
+  if (show_Help($db, 'bulkedit')) {
     $display = "display: block";
   } else {
     $display = "display: none";
