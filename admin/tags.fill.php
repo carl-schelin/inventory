@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from tags");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from tags");
 
       $q_string  = "select tag_companyid,tag_name,tag_view,tag_owner,tag_group ";
       $q_string .= "from tags ";
@@ -29,7 +29,7 @@
       $a_tags = mysqli_fetch_array($q_tags);
       mysqli_free_result($q_tags);
 
-      $tag_owner       = return_Index($a_tags['tag_owner'],     "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
+      $tag_owner       = return_Index($db, $a_tags['tag_owner'],     "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
       $q_string  = "select inv_id ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_status = 0 ";
@@ -37,8 +37,8 @@
         $q_string .= "and inv_manager = " . $_SESSION['p_group'] . " ";
       }
       $q_string .= "order by inv_name ";
-      $tag_companyid   = return_Index($a_tags['tag_companyid'], $q_string);
-      $tag_group       = return_Index($a_tags['tag_group'],     "select grp_id from groups where grp_disabled = 0 order by grp_name");
+      $tag_companyid   = return_Index($db, $a_tags['tag_companyid'], $q_string);
+      $tag_group       = return_Index($db, $a_tags['tag_group'],     "select grp_id from groups where grp_disabled = 0 order by grp_name");
 
       print "document.tags.tag_view['"      . $a_tags['tag_view'] . "'].selected = true;\n";
       print "document.tags.tag_owner['"     . $tag_owner     . "'].selected = true;\n";
@@ -50,7 +50,7 @@
       print "document.tags.id.value = " . $formVars['id'] . ";\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
