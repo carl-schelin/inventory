@@ -11,10 +11,10 @@
 
   $package = "index.account.php";
 
-  logaccess($db, $formVars['uid'], $package, "Checking out the index.");
+  logaccess($db, $db, $formVars['uid'], $package, "Checking out the index.");
 
 # if help has not been seen yet,
-  if (show_Help($Sitepath . "/" . $package)) {
+  if (show_Help($db, $Sitepath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
@@ -60,7 +60,7 @@
 </div>
 
 <?php
-    if (check_userlevel($db, $AL_Admin)) {
+    if (check_userlevel($db, $db, $AL_Admin)) {
 ?>
 <div class="main ui-widget-content">
 
