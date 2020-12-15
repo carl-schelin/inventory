@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Admin)) {
+    if (check_userlevel($db, $AL_Admin)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['id'],             10);
         $formVars['usr_first']      = clean($_GET['usr_first'],     255);
@@ -76,7 +76,7 @@
         }
 
         if (strlen($formVars['usr_name']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string = 
             "usr_first       = \"" . $formVars['usr_first']     . "\"," .
@@ -100,13 +100,13 @@
             "usr_bigfix      =   " . $formVars['usr_bigfix'];
 
           if (strlen($formVars['usr_passwd']) > 0 && $formVars['usr_passwd'] === $formVars['usr_reenter']) {
-            logaccess($_SESSION['uid'], $package, "Resetting user " . $formVars['usr_name'] . " password.");
+            logaccess($db, $_SESSION['uid'], $package, "Resetting user " . $formVars['usr_name'] . " password.");
             $q_string .= ",usr_passwd = '" . MD5($formVars['usr_passwd']) . "' ";
           }
 
           if ($formVars['update'] == 0) {
             $query = "insert into users set usr_id = NULL, " . $q_string;
-            $formVars['id'] = last_insert_id();
+            $formVars['id'] = last_insert_id($db);
             $message = "User added.";
           }
           if ($formVars['update'] == 1) {
@@ -141,7 +141,7 @@
             }
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['usr_name']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['usr_name']);
 
           mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
@@ -203,7 +203,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
 ######
 # New User Listing
@@ -342,7 +342,7 @@
       print "document.user.usr_theme[0].selected = true;\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 
