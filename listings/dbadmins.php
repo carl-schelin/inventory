@@ -13,10 +13,10 @@
 
   $package = "dbadmins.php";
 
-  logaccess($_SESSION['uid'], $package, "Viewing the dba listing table");
+  logaccess($db, $_SESSION['uid'], $package, "Viewing the dba listing table");
 
 # If group or an admin, allow access
-  if (check_grouplevel($GRP_DBAdmins)) {
+  if (check_grouplevel($db, $GRP_DBAdmins)) {
 
 ?>
 <!DOCTYPE HTML>
