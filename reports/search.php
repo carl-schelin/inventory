@@ -72,7 +72,7 @@
   }
 
   if (strlen($formVars['search_for']) > 0) {
-    logaccess($formVars['uid'], $package, "Search: " . $formVars['search_for']);
+    logaccess($db, $formVars['uid'], $package, "Search: " . $formVars['search_for']);
 
 # clean up search_for replacing commas with spaces
     $formVars['search_for'] = str_replace(',', ' ', $formVars['search_for']);
