@@ -19,8 +19,8 @@
       $formVars['grp_id'] = clean($_GET['grp_id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Building a list of users in a group: group=" . $formVars['grp_id']);
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Building a list of users in a group: group=" . $formVars['grp_id']);
 
       print "var selbox = document.edit.hw_vendorid;\n\n";
       print "selbox.options.length = 0;\n";
@@ -38,7 +38,7 @@
         print "selbox.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_models['mod_name']) . " (" . htmlspecialchars($a_models['mod_vendor']) . ")\"," . $a_models['mod_id'] . ");\n";
       }
     } else {
-      logaccess($_SESSION['uid'], $package, "Access denied");
+      logaccess($db, $_SESSION['uid'], $package, "Access denied");
     }
   }
 
