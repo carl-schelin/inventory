@@ -24,7 +24,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['inv_name'] != 'Blank' && ($formVars['update'] == 0 || $formVars['update'] == 1)) {
         $formVars["inv_companyid"]   = clean($_GET["inv_companyid"],   10);
         $formVars["inv_clusterid"]   = clean($_GET["inv_clusterid"],   10);
@@ -92,7 +92,7 @@
         $newserver = $formVars['id'];
 
         if (strlen($formVars['inv_name']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "inv_name        = \"" . $formVars['inv_name']        . "\"," .
@@ -172,12 +172,12 @@
 
 # for changelog requirements, compare old inv_name with new inv_name. If changed, save the old name before changing it
             if ($a_inventory['inv_name'] != $formVars['inv_name']) {
-              changelog($formVars['id'], $a_inventory['inv_name'], "Asset Name Change", $_SESSION['uid'], "inventory", "inv_name", 0);
+              changelog($db, $formVars['id'], $a_inventory['inv_name'], "Asset Name Change", $_SESSION['uid'], "inventory", "inv_name", 0);
             }
 
 # for changelog requirements, compare old inv_location with new inv_location. If changed, save the old location before changing it
             if ($a_inventory['inv_location'] != $formVars['inv_location']) {
-              changelog($formVars['id'], $a_inventory['inv_location'], "Location Change", $_SESSION['uid'], "inventory", "inv_location", 0);
+              changelog($db, $formVars['id'], $a_inventory['inv_location'], "Location Change", $_SESSION['uid'], "inventory", "inv_location", 0);
             }
 
 # for changelog requirements, see if the status has changed
@@ -188,11 +188,11 @@
               $status_check = 0;
             }
             if ($a_inventory['inv_status'] != $status_check) {
-              changelog($formVars['id'], $a_inventory['inv_status'], "Status Change", $_SESSION['uid'], "inventory", "inv_status", 0);
+              changelog($db, $formVars['id'], $a_inventory['inv_status'], "Status Change", $_SESSION['uid'], "inventory", "inv_status", 0);
             }
 
 # now save any updated information
-            logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['inv_name']);
+            logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['inv_name']);
             $query = "update inventory set " . $q_string . " where inv_id = " . $formVars['id'];
             mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
@@ -203,16 +203,16 @@
           if ($formVars['update'] == 0) {
 # ensure folks don't click-click-click and add multiple systems with the same name.
             print "document.edit.addnew.disabled = true;\n";
-            logaccess($_SESSION['uid'], $package, "Adding: " . $formVars['inv_name']);
+            logaccess($db, $_SESSION['uid'], $package, "Adding: " . $formVars['inv_name']);
 
             $query = "insert into inventory set inv_id = NULL, " . $q_string;
             $result = mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
 # get the new inv_id
-            $newserver = last_insert_id();
+            $newserver = last_insert_id($db);
 
 # for changelog requirements, new server was added
-            changelog($newserver, $formVars['inv_name'], "New Server", $_SESSION['uid'], "inventory", "inv_name", 0);
+            changelog($db, $newserver, $formVars['inv_name'], "New Server", $_SESSION['uid'], "inventory", "inv_name", 0);
 
 #####
 # Duplicate just the primary piece of hardware
