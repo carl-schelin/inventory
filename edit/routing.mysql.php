@@ -224,7 +224,7 @@
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
-        print "document.getElementById('routing_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('routing_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
       }
 
 
@@ -375,7 +375,7 @@
         $output .= "<p class=\"ui-widget-content\">/etc/inet/static_routes: " . $sunroute . "</p>";
       }
 
-      print "document.getElementById('routing_table').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('routing_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.edit.route_update.disabled = true;\n";
     } else {
