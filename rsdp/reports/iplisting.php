@@ -14,7 +14,7 @@
 
   $package = "iplisting.php";
 
-  logaccess($_SESSION['uid'], $package, "List of RSDP systems by IP");
+  logaccess($db, $_SESSION['uid'], $package, "List of RSDP systems by IP");
 
 ?>
 <!DOCTYPE HTML>
