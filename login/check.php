@@ -6,7 +6,7 @@ if (isset($_SESSION['username'])) {
   include('functions/dbconn.php');
   include('functions/functions.php');
 
-  function check_login($level) {
+  function check_login($p_db, $p_level) {
     $username_s = $_SESSION['username']; 
 
     $q_string  = "select usr_id,usr_level,usr_disabled,usr_name,usr_first,usr_last,";
@@ -14,7 +14,7 @@ if (isset($_SESSION['username'])) {
     $q_string .= "from users ";
     $q_string .= "left join themes on themes.theme_id = users.usr_theme ";
     $q_string .= "where usr_name = '$username_s'"; 
-    $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $q_users = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
     $a_users = mysqli_fetch_array($q_users);
 
 # get the user level, disable status, and whether a password reset is needed
@@ -25,7 +25,7 @@ if (isset($_SESSION['username'])) {
     $q_string  = "select lvl_disabled ";
     $q_string .= "from levels ";
     $q_string .= "where lvl_level = '$user_level'"; 
-    $q_levels = mysqli_query($db, $q_string);
+    $q_levels = mysqli_query($p_db, $q_string);
     $a_levels = mysqli_fetch_array($q_levels);
 
 # see if the user is disabled
@@ -46,7 +46,7 @@ if (isset($_SESSION['username'])) {
     } elseif ($pwreset != 0) {
       include('pwreset.inc.php');
       exit();
-    } elseif ($user_level <= $level) {
+    } elseif ($user_level <= $p_level) {
 // User has authority to view this page.		
       $_SESSION['uid']         = $a_users['usr_id'];
       $_SESSION['username']    = $a_users['usr_name'];
@@ -64,7 +64,7 @@ if (isset($_SESSION['username'])) {
 } else {
 
 // creates an empty function
-  function check_login($level) {
+  function check_login($p_db, $p_level) {
     exit();
   }
 
