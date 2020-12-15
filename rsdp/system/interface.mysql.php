@@ -21,7 +21,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']            = clean($_GET['id'],           10);
         $formVars['if_mac']        = clean($_GET['if_mac'],       20);
@@ -31,7 +31,7 @@
         }
 
         if (strlen($formVars['if_mac']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "if_rsdp =   " . $formVars['rsdp']    . "," . 
@@ -46,7 +46,7 @@
             $message = "Interface updated.";
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['rsdp']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['rsdp']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -57,7 +57,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">\n";
@@ -175,7 +175,7 @@
       print "document.interface.if_mac.value = '';\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
