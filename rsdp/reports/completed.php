@@ -14,7 +14,7 @@
 
   $package = "completed.php";
 
-  logaccess($_SESSION['uid'], $package, "Showing completed server listing");
+  logaccess($db, $_SESSION['uid'], $package, "Showing completed server listing");
 
   if (isset($_GET['user'])) {
     $formVars['user'] = clean($_GET['user'], 30);
