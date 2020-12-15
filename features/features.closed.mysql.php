@@ -15,7 +15,7 @@
 
   $package = "features.closed.mysql.php";
 
-  logaccess($_SESSION['uid'], $package, "Creating the closed feature request listing.");
+  logaccess($db, $_SESSION['uid'], $package, "Creating the closed feature request listing.");
 
   if (isset($_GET['id'])) {
     $formVars['id'] = clean($_GET['id'], 10);
