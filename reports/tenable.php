@@ -11,7 +11,7 @@
 
   $package = "tenable.php";
 
-  logaccess($formVars['uid'], $package, "Listing of Product IPs.");
+  logaccess($db, $formVars['uid'], $package, "Listing of Product IPs.");
 
   $formVars['product']   = clean($_GET['product'],  10);
   $formVars['group']     = clean($_GET['group'],    10);
@@ -40,7 +40,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
