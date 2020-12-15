@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']            = clean($_GET['id'],            10);
         $formVars['gpl_group']     = clean($_GET['gpl_group'],     10);
@@ -37,11 +37,11 @@
         }
 
         if ($formVars['gpl_group'] > 0 && $formVars['gpl_user'] > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string  = "select gpl_id ";
           $q_string .= "from grouplist ";
-          if (check_userlevel($AL_Admin) == 0) {
+          if (check_userlevel($db, $AL_Admin) == 0) {
             $q_string .= "where gpl_user = " . $_SESSION['uid'] . " and gpl_group = " . $formVars['gpl_group'] . " ";
           }
           $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -61,7 +61,7 @@
               $message = "Group Association updated.";
             }
 
-            logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['fw_source']);
+            logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['fw_source']);
 
             mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
@@ -75,7 +75,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">\n";
@@ -138,7 +138,7 @@
           $q_string .= "from grouplist ";
           $q_string .= "where gpl_group = " . $a_grouplist['gpl_group'] . " and gpl_user = " . $_SESSION['uid'] . " "; 
           $q_gltest = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_gltest) > 0 || check_userlevel($AL_Admin)) {
+          if (mysqli_num_rows($q_gltest) > 0 || check_userlevel($db, $AL_Admin)) {
 
             $linkstart = '';
             $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_grouplist('grouplist.del.php?id=" . $a_grouplist['gpl_id'] . "');\">";
@@ -191,7 +191,7 @@
       print "document.grouplist.gpl_user[0].selected = true;\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
