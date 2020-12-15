@@ -116,7 +116,7 @@
 
       mysqli_free_result($q_window);
 
-      print "document.getElementById('window_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('window_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.window.win_text.value = '';\n";
 
