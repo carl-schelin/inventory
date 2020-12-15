@@ -14,7 +14,7 @@
 
   $package = "servers.php";
 
-  logaccess($_SESSION['uid'], $package, "Viewing RSDP server listing");
+  logaccess($db, $_SESSION['uid'], $package, "Viewing RSDP server listing");
 
   if (isset($_GET['myrsdp'])) {
     $formVars['myrsdp'] = clean($_GET['myrsdp'], 10);
