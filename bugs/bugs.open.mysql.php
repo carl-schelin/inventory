@@ -8,7 +8,11 @@
   $called = 'yes';
   include($Loginpath . '/check.php');
   include($Sitepath . '/function.php');
-  check_login('4');
+
+# connect to the database
+  $db = db_connect($DBserver, $DBname, $DBuser, $DBpassword);
+
+  check_login($db, $AL_Guest);
 
   header('Content-Type: text/javascript');
 
