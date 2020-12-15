@@ -40,20 +40,20 @@
       $city = return_Index($db, $a_locations['loc_city'], $q_string);
       $type = return_Index($db, $a_locations['loc_type'], "select typ_id from loc_types order by typ_name");
 
-      print "document.locations.loc_name.value = '"       . mysqli_real_escape_string($a_locations['loc_name'])       . "';\n";
-      print "document.locations.loc_addr1.value = '"      . mysqli_real_escape_string($a_locations['loc_addr1'])      . "';\n";
-      print "document.locations.loc_addr2.value = '"      . mysqli_real_escape_string($a_locations['loc_addr2'])      . "';\n";
-      print "document.locations.loc_suite.value = '"      . mysqli_real_escape_string($a_locations['loc_suite'])      . "';\n";
-      print "document.locations.loc_zipcode.value = '"    . mysqli_real_escape_string($a_locations['loc_zipcode'])    . "';\n";
-      print "document.locations.loc_contact1.value = '"   . mysqli_real_escape_string($a_locations['loc_contact1'])   . "';\n";
-      print "document.locations.loc_contact2.value = '"   . mysqli_real_escape_string($a_locations['loc_contact2'])   . "';\n";
-      print "document.locations.loc_details.value = '"    . mysqli_real_escape_string($a_locations['loc_details'])    . "';\n";
-      print "document.locations.loc_instance.value = '"   . mysqli_real_escape_string($a_locations['loc_instance'])   . "';\n";
-      print "document.locations.loc_west.value = '"       . mysqli_real_escape_string($a_locations['loc_west'])       . "';\n";
-      print "document.locations.loc_xpoint.value = '"     . mysqli_real_escape_string($a_locations['loc_xpoint'])     . "';\n";
-      print "document.locations.loc_ypoint.value = '"     . mysqli_real_escape_string($a_locations['loc_ypoint'])     . "';\n";
-      print "document.locations.loc_xlen.value = '"       . mysqli_real_escape_string($a_locations['loc_xlen'])       . "';\n";
-      print "document.locations.loc_ylen.value = '"       . mysqli_real_escape_string($a_locations['loc_ylen'])       . "';\n";
+      print "document.locations.loc_name.value = '"       . mysqli_real_escape_string($db, $a_locations['loc_name'])       . "';\n";
+      print "document.locations.loc_addr1.value = '"      . mysqli_real_escape_string($db, $a_locations['loc_addr1'])      . "';\n";
+      print "document.locations.loc_addr2.value = '"      . mysqli_real_escape_string($db, $a_locations['loc_addr2'])      . "';\n";
+      print "document.locations.loc_suite.value = '"      . mysqli_real_escape_string($db, $a_locations['loc_suite'])      . "';\n";
+      print "document.locations.loc_zipcode.value = '"    . mysqli_real_escape_string($db, $a_locations['loc_zipcode'])    . "';\n";
+      print "document.locations.loc_contact1.value = '"   . mysqli_real_escape_string($db, $a_locations['loc_contact1'])   . "';\n";
+      print "document.locations.loc_contact2.value = '"   . mysqli_real_escape_string($db, $a_locations['loc_contact2'])   . "';\n";
+      print "document.locations.loc_details.value = '"    . mysqli_real_escape_string($db, $a_locations['loc_details'])    . "';\n";
+      print "document.locations.loc_instance.value = '"   . mysqli_real_escape_string($db, $a_locations['loc_instance'])   . "';\n";
+      print "document.locations.loc_west.value = '"       . mysqli_real_escape_string($db, $a_locations['loc_west'])       . "';\n";
+      print "document.locations.loc_xpoint.value = '"     . mysqli_real_escape_string($db, $a_locations['loc_xpoint'])     . "';\n";
+      print "document.locations.loc_ypoint.value = '"     . mysqli_real_escape_string($db, $a_locations['loc_ypoint'])     . "';\n";
+      print "document.locations.loc_xlen.value = '"       . mysqli_real_escape_string($db, $a_locations['loc_xlen'])       . "';\n";
+      print "document.locations.loc_ylen.value = '"       . mysqli_real_escape_string($db, $a_locations['loc_ylen'])       . "';\n";
 
       print "document.locations.loc_city['"        . $city                           . "'].selected = true;\n";
       print "document.locations.loc_type['"        . $type                           . "'].selected = true;\n";
