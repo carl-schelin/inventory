@@ -28,9 +28,9 @@
       $a_zones = mysqli_fetch_array($q_zones);
       mysqli_free_result($q_zones);
 
-      print "document.zones.zone_name.value = '"         . mysqli_real_escape_string($a_zones['zone_name'])        . "';\n";
-      print "document.zones.zone_description.value  = '" . mysqli_real_escape_string($a_zones['zone_description']) . "';\n";
-      print "document.zones.zone_offset.value = '"       . mysqli_real_escape_string($a_zones['zone_offset'])      . "';\n";
+      print "document.zones.zone_name.value = '"         . mysqli_real_escape_string($db, $a_zones['zone_name'])        . "';\n";
+      print "document.zones.zone_description.value  = '" . mysqli_real_escape_string($db, $a_zones['zone_description']) . "';\n";
+      print "document.zones.zone_offset.value = '"       . mysqli_real_escape_string($db, $a_zones['zone_offset'])      . "';\n";
 
       print "document.zones.id.value = " . $formVars['id'] . ";\n";
 
