@@ -11,7 +11,7 @@
 
   $package = "bigfix.php";
 
-  logaccess($formVars['uid'], $package, "Checking out the Bigfix listing.");
+  logaccess($db, $formVars['uid'], $package, "Checking out the Bigfix listing.");
 
   if (isset($_GET['date'])) {
     $formVars['scheduled'] = clean($_GET['date'], 10);
@@ -79,7 +79,7 @@
   $formVars['forward'] = date('Y-m-d', strtotime($current_date . ' +1 day'));
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
