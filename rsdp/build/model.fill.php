@@ -20,8 +20,8 @@
       $formVars['pf_model'] = clean($_GET['pf_model'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['pf_model'] . " from models");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['pf_model'] . " from models");
 
       $q_string  = "select mod_vendor,mod_name,mod_type,mod_size,mod_plugs,mod_plugtype,mod_volts,mod_draw,mod_start,mod_virtual ";
       $q_string .= "from models ";
@@ -30,9 +30,9 @@
       $a_models = mysqli_fetch_array($q_models);
       mysqli_free_result($q_models);
 
-      $mod_type     = return_Index($a_models['mod_type'],     "select part_id from parts order by part_name");
-      $mod_plugtype = return_Index($a_models['mod_plugtype'], "select plug_id from int_plugtype order by plug_id");
-      $mod_volts    = return_Index($a_models['mod_volts'],    "select volt_id from int_volts order by volt_id");
+      $mod_type     = return_Index($db, $a_models['mod_type'],     "select part_id from parts order by part_name");
+      $mod_plugtype = return_Index($db, $a_models['mod_plugtype'], "select plug_id from int_plugtype order by plug_id");
+      $mod_volts    = return_Index($db, $a_models['mod_volts'],    "select volt_id from int_volts order by volt_id");
 
       print "document.rsdp.mod_type['"     . $mod_type     . "'].selected = true;\n";
       print "document.rsdp.mod_plugtype['" . $mod_plugtype . "'].selected = true;\n";
@@ -46,7 +46,7 @@
 
       print "validate_Form();\n";
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
