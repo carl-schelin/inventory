@@ -22,7 +22,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
 # Note: This is used for editing interfaces so there will be no new entries (no 'insert into' db calls).
       if ($formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['if_id'],       10);
@@ -38,7 +38,7 @@
         }
 
         if (strlen($formVars['if_ip']) > 0 || strlen($formVars['if_switch']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "if_rsdp      =   " . $formVars['rsdp']         . "," . 
@@ -53,7 +53,7 @@
             $query = "update rsdp_interface set " . $q_string . " where if_id = " . $formVars['id'];
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['if_ip']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['if_ip']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -63,7 +63,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
 # need to skip switch check if a virtual machine
       $virtual = rsdp_Virtual($formVars['rsdp']);
@@ -392,7 +392,7 @@
       print "validate_Form();\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
