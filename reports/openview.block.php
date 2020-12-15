@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0) {
         $formVars['id']          = clean($_GET['id'],          10);
         $formVars['block_text']  = clean($_GET['block_text'], 255);
@@ -31,13 +31,13 @@
         }
 
         if (strlen($formVars['block_text']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string  = "insert ";
           $q_string .= "into alarm_blocks ";
           $q_string .= "set block_id = NULL,block_text = \"" . $formVars['block_text'] . "\",block_user=" . $formVars['block_user'];
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['block_text']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['block_text']);
 
           mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
@@ -57,7 +57,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">\n";
@@ -110,7 +110,7 @@
       print "document.getElementById('block_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 
