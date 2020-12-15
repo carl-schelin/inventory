@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from patching");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from patching");
 
       $q_string  = "select patch_name,patch_user,patch_group,patch_date ";
       $q_string .= "from patching ";
@@ -29,8 +29,8 @@
       $a_patching = mysqli_fetch_array($q_patching);
       mysqli_free_result($q_patching);
 
-      $user  = return_Index($a_patching['patch_user'],   "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
-      $group = return_Index($a_patching['patch_group'],  "select grp_id from groups where grp_disabled = 0 order by grp_name");
+      $user  = return_Index($db, $a_patching['patch_user'],   "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
+      $group = return_Index($db, $a_patching['patch_group'],  "select grp_id from groups where grp_disabled = 0 order by grp_name");
 
       print "document.patching.patch_name.value = '" . mysqli_real_escape_string($a_patching['patch_name']) . "';\n";
       print "document.patching.patch_date.value = '" . mysqli_real_escape_string($a_patching['patch_date']) . "';\n";
@@ -41,7 +41,7 @@
       print "document.patching.id.value = " . $formVars['id'] . ";\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
