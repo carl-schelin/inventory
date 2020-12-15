@@ -37,12 +37,12 @@
       $license       = return_Index($db, $a_software['sw_licenseid'],   "select lic_id from licenses left join products on products.prod_id = licenses.lic_project order by prod_name,lic_key,lic_id");
       $department    = return_Index($db, $a_software['sw_department'],  "select dep_id from department order by dep_unit,dep_name");
 
-      print "document.edit.sw_vendor.value = '"       . mysqli_real_escape_string($a_software['sw_vendor'])       . "';\n";
-      print "document.edit.sw_software.value = '"     . mysqli_real_escape_string($a_software['sw_software'])     . "';\n";
-      print "document.edit.sw_type.value = '"         . mysqli_real_escape_string($a_software['sw_type'])         . "';\n";
-      print "document.edit.sw_notification.value = '" . mysqli_real_escape_string($a_software['sw_notification']) . "';\n";
-      print "document.edit.sw_eol.value = '"          . mysqli_real_escape_string($a_software['sw_eol'])          . "';\n";
-      print "document.edit.sw_eolticket.value = '"    . mysqli_real_escape_string($a_software['sw_eolticket'])    . "';\n";
+      print "document.edit.sw_vendor.value = '"       . mysqli_real_escape_string($db, $a_software['sw_vendor'])       . "';\n";
+      print "document.edit.sw_software.value = '"     . mysqli_real_escape_string($db, $a_software['sw_software'])     . "';\n";
+      print "document.edit.sw_type.value = '"         . mysqli_real_escape_string($db, $a_software['sw_type'])         . "';\n";
+      print "document.edit.sw_notification.value = '" . mysqli_real_escape_string($db, $a_software['sw_notification']) . "';\n";
+      print "document.edit.sw_eol.value = '"          . mysqli_real_escape_string($db, $a_software['sw_eol'])          . "';\n";
+      print "document.edit.sw_eolticket.value = '"    . mysqli_real_escape_string($db, $a_software['sw_eolticket'])    . "';\n";
 
       print "document.edit.sw_group['"      . $group      . "'].selected = true;\n";
       print "document.edit.sw_product['"    . $product    . "'].selected = true;\n";
