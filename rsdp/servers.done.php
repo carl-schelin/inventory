@@ -20,8 +20,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Admin)) {
-      logaccess($_SESSION['uid'], $package, "Completing RSDP " . $formVars['id']);
+    if (check_userlevel($db, $AL_Admin)) {
+      logaccess($db, $_SESSION['uid'], $package, "Completing RSDP " . $formVars['id']);
 
       for ($i = 1; $i < 19; $i++) {
         $q_string  = "select st_id ";
@@ -46,7 +46,7 @@
       print "clear_fields();\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Access denied");
+      logaccess($db, $_SESSION['uid'], $package, "Access denied");
     }
   }
 ?>
