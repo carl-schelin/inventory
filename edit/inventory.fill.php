@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inventory");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inventory");
 
       $q_string  = "select inv_name,inv_companyid,inv_function,inv_callpath,inv_document,inv_centrify,";
       $q_string .= "       inv_adzone,inv_domain,inv_ssh,inv_location,inv_rack,inv_row,inv_unit,inv_zone,inv_front,";
@@ -41,7 +41,7 @@
         $q_string .= "where mod_type = 13 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name ";
 
-        $invcompanyid  = return_Index($a_inventory['inv_companyid'],  $q_string);
+        $invcompanyid  = return_Index($db, $a_inventory['inv_companyid'],  $q_string);
 
         $q_string  = "select inv_id,inv_name ";
         $q_string .= "from inventory ";
@@ -50,22 +50,22 @@
         $q_string .= "where mod_type = 48 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name ";
  
-        $invclusterid  = return_Index($a_inventory['inv_clusterid'],  $q_string);
+        $invclusterid  = return_Index($db, $a_inventory['inv_clusterid'],  $q_string);
 
-        $invlocation   = return_Index($a_inventory['inv_location'],   "select loc_id from locations left join cities on cities.ct_id = locations.loc_city order by ct_city,loc_name");
-        $invzone       = return_Index($a_inventory['inv_zone'],       "select zone_id from zones order by zone_name");
-        $invfront      = return_Index($a_inventory['inv_front'],      "select img_id from images where img_facing = 1 order by img_title,img_file");
-        $invrear       = return_Index($a_inventory['inv_rear'],       "select img_id from images where img_facing = 0 order by img_title,img_file");
-        $invmanager    = return_Index($a_inventory['inv_manager'],    "select grp_id from groups where grp_disabled = 0 order by grp_name");
-        $invappadmin   = return_Index($a_inventory['inv_appadmin'],   "select grp_id from groups where grp_disabled = 0 order by grp_name");
-        $invclass      = return_Index($a_inventory['inv_class'],      "select svc_id from service order by svc_id");
-        $invresponse   = return_Index($a_inventory['inv_response'],   "select slv_id from supportlevel order by slv_value");
-        $invproduct    = return_Index($a_inventory['inv_product'],    "select prod_id from products order by prod_name");
-        $invproject    = return_Index($a_inventory['inv_project'],    "select prj_id from projects where prj_product = " . $a_inventory['inv_product'] . " order by prj_name");
-        $invdepartment = return_Index($a_inventory['inv_department'], "select dep_id from department order by dep_unit,dep_name");
-        $invenv        = return_Index($a_inventory['inv_env'],        "select env_id from environment order by env_name");
+        $invlocation   = return_Index($db, $a_inventory['inv_location'],   "select loc_id from locations left join cities on cities.ct_id = locations.loc_city order by ct_city,loc_name");
+        $invzone       = return_Index($db, $a_inventory['inv_zone'],       "select zone_id from zones order by zone_name");
+        $invfront      = return_Index($db, $a_inventory['inv_front'],      "select img_id from images where img_facing = 1 order by img_title,img_file");
+        $invrear       = return_Index($db, $a_inventory['inv_rear'],       "select img_id from images where img_facing = 0 order by img_title,img_file");
+        $invmanager    = return_Index($db, $a_inventory['inv_manager'],    "select grp_id from groups where grp_disabled = 0 order by grp_name");
+        $invappadmin   = return_Index($db, $a_inventory['inv_appadmin'],   "select grp_id from groups where grp_disabled = 0 order by grp_name");
+        $invclass      = return_Index($db, $a_inventory['inv_class'],      "select svc_id from service order by svc_id");
+        $invresponse   = return_Index($db, $a_inventory['inv_response'],   "select slv_id from supportlevel order by slv_value");
+        $invproduct    = return_Index($db, $a_inventory['inv_product'],    "select prod_id from products order by prod_name");
+        $invproject    = return_Index($db, $a_inventory['inv_project'],    "select prj_id from projects where prj_product = " . $a_inventory['inv_product'] . " order by prj_name");
+        $invdepartment = return_Index($db, $a_inventory['inv_department'], "select dep_id from department order by dep_unit,dep_name");
+        $invenv        = return_Index($db, $a_inventory['inv_env'],        "select env_id from environment order by env_name");
 # no zero in the selection window so off by one each time
-        $invmaint      = return_Index($a_inventory['inv_maint'],      "select win_id from window order by win_text") - 1;
+        $invmaint      = return_Index($db, $a_inventory['inv_maint'],      "select win_id from window order by win_text") - 1;
 
         print "document.edit.inv_name.value = '"     . mysqli_real_escape_string($a_inventory['inv_name'])     . "';\n";
         print "document.edit.inv_function.value = '" . mysqli_real_escape_string($a_inventory['inv_function']) . "';\n";
@@ -139,7 +139,7 @@
 
       mysqli_free_result($q_inventory);
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
