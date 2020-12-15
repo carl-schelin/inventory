@@ -13,7 +13,7 @@
   if (isset($_SESSION['username'])) {
     $package = "image.upload.php";
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       $formVars['id'] = clean($_SESSION['uid'], 10);
       $errorString = "";
 
@@ -94,7 +94,7 @@
         $query = "insert into images set img_id = NULL," . $q_string;
         mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
-        $lastid = last_insert_id();
+        $lastid = last_insert_id($db);
 
         header("Location: image.php?id=" . $lastid);
       } else {
