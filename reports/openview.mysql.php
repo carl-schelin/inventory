@@ -15,7 +15,7 @@
   if (isset($_SESSION['username'])) {
     $package = "openview.mysql.php";
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       $formVars['start']    = clean($_GET['start'],    15);
       $formVars['end']      = clean($_GET['end'],      15);
       $formVars['search_a'] = clean($_GET['search_a'], 60);
@@ -57,7 +57,7 @@
 
       $url = $start . $end . $search;
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $critical = 0;
       $major = 0;
@@ -156,7 +156,7 @@
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 
