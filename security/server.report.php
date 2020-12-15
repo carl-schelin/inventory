@@ -11,7 +11,7 @@
 
   $package = "server.report.php";
 
-  logaccess($formVars['uid'], $package, "Getting a report on vulnerabilities.");
+  logaccess($db, $formVars['uid'], $package, "Getting a report on vulnerabilities.");
 
   $formVars['product']   = clean($_GET['product'],  10);
   $formVars['project']   = clean($_GET['project'],  10);
@@ -116,7 +116,7 @@ if ($formVars['inwork'] == '') {
   $where = $product . $group . $location;
 
 # if help has not been seen yet,
-  if (show_Help('server.report')) {
+  if (show_Help($db, 'server.report')) {
     $display = "display: block";
   } else {
     $display = "display: none";
