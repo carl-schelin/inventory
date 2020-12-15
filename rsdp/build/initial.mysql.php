@@ -21,7 +21,7 @@
     $formVars["rsdp_complete"]     = clean($_GET["complete"],          10);
     $formVars["rsdp_requestor"]    = clean($_GET["rsdp_requestor"],    10);
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
 # save, submit, and save and exit
       if ($formVars['rsdp_complete'] == 0 || $formVars['rsdp_complete'] == 1 || $formVars['rsdp_complete'] == 2) {
         $formVars["usr_phone"]         = clean($_GET["usr_phone"],    15);
@@ -111,7 +111,7 @@
           $formVars['rsdp_backup'] = 0;
         }
 
-        logaccess($_SESSION['uid'], $package, "Building the query.");
+        logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
 # Now create or update the main server record
         $q_string = 
@@ -153,7 +153,7 @@
         if ($formVars['rsdp'] == 0) {
           $query = "insert into rsdp_server set rsdp_id = null," . $q_string;
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
-          $formVars['rsdp'] = last_insert_id();
+          $formVars['rsdp'] = last_insert_id($db);
           print "document.rsdp.rsdp.value = "          . $formVars['rsdp'] . ";\n";
           print "document.comments.com_rsdp.value = "  . $formVars['rsdp'] . ";\n";
           print "document.filesystem.fs_rsdp.value = " . $formVars['rsdp'] . ";\n";
@@ -202,7 +202,7 @@
             $query = "insert into rsdp_tickets set tkt_id = null," . $q_string;
             mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
-            $formVars['tkt_id'] = last_insert_id();
+            $formVars['tkt_id'] = last_insert_id($db);
             print "document.rsdp.tkt_id.value = " . $formVars['tkt_id'] . ";\n";
           }
           if ($formVars['tkt_id'] > 0) {
@@ -271,7 +271,7 @@
           $query = "insert into rsdp_backups set bu_id = null," . $q_string;
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
-          $formVars['bu_id'] = last_insert_id();
+          $formVars['bu_id'] = last_insert_id($db);
         }
         if ($formVars['bu_id'] > 0) {
           $query = "update rsdp_backups set " . $q_string . " where bu_id = " . $formVars['bu_id'];
@@ -375,7 +375,7 @@
       }
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
