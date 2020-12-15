@@ -24,7 +24,7 @@
       $formVars['prj_group'] = $_SESSION['group'];
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']            = clean($_GET['id'],           10);
         $formVars['prj_name']      = clean($_GET['prj_name'],     30);
@@ -45,7 +45,7 @@
         }
 
         if (strlen($formVars['prj_name']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "prj_name      = \"" . $formVars['prj_name']  . "\"," .
@@ -63,7 +63,7 @@
             $message = "Project updated.";
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['prj_name']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['prj_name']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -91,7 +91,7 @@
       }
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
