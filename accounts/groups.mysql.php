@@ -312,9 +312,9 @@
       $magic .= "</table>";
       $changelog .= "</table>";
 
-      print "document.getElementById('group_mysql').innerHTML = '"     . mysqli_real_escape_string($group)     . "';\n\n";
-      print "document.getElementById('magic_mysql').innerHTML = '"     . mysqli_real_escape_string($magic)     . "';\n\n";
-      print "document.getElementById('changelog_mysql').innerHTML = '" . mysqli_real_escape_string($changelog) . "';\n\n";
+      print "document.getElementById('group_mysql').innerHTML = '"     . mysqli_real_escape_string($db, $group)     . "';\n\n";
+      print "document.getElementById('magic_mysql').innerHTML = '"     . mysqli_real_escape_string($db, $magic)     . "';\n\n";
+      print "document.getElementById('changelog_mysql').innerHTML = '" . mysqli_real_escape_string($db, $changelog) . "';\n\n";
 
       print "document.groups.grp_organization[0].selected = true;\n";
       print "document.groups.grp_name.value = '';\n";
