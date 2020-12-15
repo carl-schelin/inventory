@@ -24,7 +24,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
 
 # only a few zones so load the up into an array
       $q_string  = "select zone_id,zone_name ";
@@ -45,7 +45,7 @@
         }
 
         if (strlen($formVars['cl_name']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "cl_name  = \"" . $formVars['cl_name']  . "\"," .
@@ -61,7 +61,7 @@
             $message = "Listing updated.";
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['cl_name']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['cl_name']);
 
           mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
@@ -88,7 +88,7 @@
 
 # determine operating system
             $os = "";
-            $os = return_System($a_software['inv_id']);
+            $os = return_System($db, $a_software['inv_id']);
 
 # add a comment character to the server list for live servers but not ssh'able.
 # scripts use the "^#" part to make sure commented servers are able to use the changelog process
@@ -176,7 +176,7 @@
 
 # determine operating system
           $os = "";
-          $os = return_System($a_software['inv_id']);
+          $os = return_System($db, $a_software['inv_id']);
 
 # add a comment character to the server list for live servers but not ssh'able.
 # scripts use the "^#" part to make sure commented servers are able to use the changelog process
@@ -303,7 +303,7 @@
       print "document.getElementById('manual_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
