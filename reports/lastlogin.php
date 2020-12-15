@@ -11,10 +11,10 @@
 
   $package = "lastlogin.php";
 
-  logaccess($formVars['uid'], $package, "Viewing the user listing");
+  logaccess($db, $formVars['uid'], $package, "Viewing the user listing");
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
