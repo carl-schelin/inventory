@@ -28,7 +28,7 @@
       $a_source_node = mysqli_fetch_array($q_source_node);
       mysqli_free_result($q_source_node);
 
-      print "document.nodes.src_node.value = '"       . mysqli_real_escape_string($a_source_node['src_node'])       . "';\n";
+      print "document.nodes.src_node.value = '"       . mysqli_real_escape_string($db, $a_source_node['src_node'])       . "';\n";
 
       if ($a_source_node['src_deleted']) {
         print "document.nodes.src_deleted.checked = true;\n";
