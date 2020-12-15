@@ -28,7 +28,7 @@
       $a_window = mysqli_fetch_array($q_window);
       mysqli_free_result($q_window);
 
-      print "document.window.win_text.value = '" . mysqli_real_escape_string($a_window['win_text'])        . "';\n";
+      print "document.window.win_text.value = '" . mysqli_real_escape_string($db, $a_window['win_text'])        . "';\n";
 
       print "document.window.id.value = " . $formVars['id'] . ";\n";
 
