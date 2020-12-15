@@ -15,7 +15,7 @@
 
   $package = "features.open.mysql.php";
 
-  logaccess($_SESSION['uid'], $package, "Creating the open feature request listing.");
+  logaccess($db, $_SESSION['uid'], $package, "Creating the open feature request listing.");
 
   if (isset($_GET['id'])) {
     $formVars['id'] = clean($_GET['id'], 10);
@@ -97,7 +97,7 @@
       $linkstart = "<a href=\"" . $Featureroot . "/ticket.php?id="   . $a_features['feat_id']     . "#problem\">";
       $linklist  = "<a href=\"" . $Featureroot . "/features.php?id=" . $a_features['feat_module'] . "#open\">";
       $linkend   = "</a>";
-      if ($a_features['feat_openby'] == $_SESSION['uid'] || check_userlevel($AL_Admin)) {
+      if ($a_features['feat_openby'] == $_SESSION['uid'] || check_userlevel($db, $AL_Admin)) {
         $delstart = "<a href=\"#\" onclick=\"javascript:delete_feature('" . $Featureroot . "/features.open.del.php?id=" . $a_features['feat_id'] . "');\">";
         $delend   = "</a>";
         $deltext  = 'x';
