@@ -339,7 +339,7 @@
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
-        print "document.getElementById('network_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('network_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
 
         $output  = "<table class=\"ui-styled-table\">\n";
@@ -391,7 +391,7 @@
         $output .= "</tr>\n"; 
         $output .= "</table>\n";
 
-        print "document.getElementById('nwserver_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('nwserver_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
 
         $output  = "<table class=\"ui-styled-table\">\n";
@@ -432,7 +432,7 @@
         $output .= "</tr>\n"; 
         $output .= "</table>\n";
 
-        print "document.getElementById('nwredundancy').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('nwredundancy').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
 
         $output  = "<table class=\"ui-styled-table\">\n";
@@ -474,7 +474,7 @@
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
-        print "document.getElementById('nwmonitoring_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('nwmonitoring_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
 
 
@@ -514,7 +514,7 @@
         $output .= "</select></td>\n";
         $output .= "</table>\n";
 
-        print "document.getElementById('nwtransport_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('nwtransport_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
 
         $output  = "<table class=\"ui-styled-table\">\n";
@@ -552,7 +552,7 @@
         $output .= "  <td class=\"ui-widget-content\">&nbsp;</td>\n";
         $output .= "</table>\n";
 
-        print "document.getElementById('nwswitch_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('nwswitch_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
       }
 
 
@@ -1103,7 +1103,7 @@
 
       $output .= "</table>\n";
 
-      print "document.getElementById('network_table').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('network_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.edit.int_update.disabled = true;\n";
 
