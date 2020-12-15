@@ -14,7 +14,7 @@
 
   $package = "report.php";
 
-  logaccess($_SESSION['uid'], $package, "Accessing script");
+  logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
   if (isset($_GET['id'])) {
     $formVars['id'] = clean($_GET['id'], 10);
