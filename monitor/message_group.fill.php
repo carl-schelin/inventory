@@ -28,7 +28,7 @@
       $a_message_group = mysqli_fetch_array($q_message_group);
       mysqli_free_result($q_message_group);
 
-      print "document.groups.msg_group.value = '"       . mysqli_real_escape_string($a_message_group['msg_group'])       . "';\n";
+      print "document.groups.msg_group.value = '"       . mysqli_real_escape_string($db, $a_message_group['msg_group'])       . "';\n";
 
       if ($a_message_group['msg_deleted']) {
         print "document.groups.msg_deleted.checked = true;\n";
