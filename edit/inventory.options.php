@@ -23,8 +23,8 @@
       $formVars['product'] = clean($_GET['product'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Building a project list: product=" . $formVars['product']);
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Building a project list: product=" . $formVars['product']);
 
 # set the project list to the currently selected one if the user selects the original product
 
@@ -56,7 +56,7 @@
         }
       }
     } else {
-      logaccess($_SESSION['uid'], $package, "Access denied");
+      logaccess($db, $_SESSION['uid'], $package, "Access denied");
     }
   }
 
