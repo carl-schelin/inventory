@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from routing");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from routing");
 
       $q_string  = "select route_companyid,route_address,route_gateway,route_mask,route_source,route_interface,route_desc,route_static ";
       $q_string .= "from routing ";
@@ -33,7 +33,7 @@
       $q_string .= "from interface ";
       $q_string .= "where int_companyid = " . $a_routing['route_companyid'] . " ";
       $q_string .= "order by int_face";
-      $interface = return_Index($a_routing['route_interface'], $q_string);
+      $interface = return_Index($db, $a_routing['route_interface'], $q_string);
 
       print "document.edit.route_address.value = '" . mysqli_real_escape_string($a_routing['route_address']) . "';\n";
       print "document.edit.route_gateway.value = '" . mysqli_real_escape_string($a_routing['route_gateway']) . "';\n";
@@ -54,7 +54,7 @@
       print "document.edit.route_update.disabled = false;\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
