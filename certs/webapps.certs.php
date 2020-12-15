@@ -11,7 +11,7 @@
 
   $package = "webapps.certs.php";
 
-  logaccess($formVars['uid'], $package, "Accessing script");
+  logaccess($db, $formVars['uid'], $package, "Accessing script");
 
 ?>
 <!DOCTYPE HTML>
