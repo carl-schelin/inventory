@@ -44,14 +44,14 @@
       print "document.edit.fw_sourcezone['"      . $sourcezone      . "'].selected = true;\n";
       print "document.edit.fw_destinationzone['" . $destinationzone . "'].selected = true;\n";
 
-      print "document.edit.fw_source.value = '"      . mysqli_real_escape_string($a_firewall['fw_source'])      . "';\n";
-      print "document.edit.fw_destination.value = '" . mysqli_real_escape_string($a_firewall['fw_destination']) . "';\n";
-      print "document.edit.fw_port.value = '"        . mysqli_real_escape_string($a_firewall['fw_port'])        . "';\n";
-      print "document.edit.fw_protocol.value = '"    . mysqli_real_escape_string($a_firewall['fw_protocol'])    . "';\n";
-      print "document.edit.fw_description.value = '" . mysqli_real_escape_string($a_firewall['fw_description']) . "';\n";
-      print "document.edit.fw_timeout.value = '"     . mysqli_real_escape_string($a_firewall['fw_timeout'])     . "';\n";
-      print "document.edit.fw_ticket.value = '"      . mysqli_real_escape_string($a_firewall['fw_ticket'])      . "';\n";
-      print "document.edit.fw_portdesc.value = '"    . mysqli_real_escape_string($a_firewall['fw_portdesc'])    . "';\n";
+      print "document.edit.fw_source.value = '"      . mysqli_real_escape_string($db, $a_firewall['fw_source'])      . "';\n";
+      print "document.edit.fw_destination.value = '" . mysqli_real_escape_string($db, $a_firewall['fw_destination']) . "';\n";
+      print "document.edit.fw_port.value = '"        . mysqli_real_escape_string($db, $a_firewall['fw_port'])        . "';\n";
+      print "document.edit.fw_protocol.value = '"    . mysqli_real_escape_string($db, $a_firewall['fw_protocol'])    . "';\n";
+      print "document.edit.fw_description.value = '" . mysqli_real_escape_string($db, $a_firewall['fw_description']) . "';\n";
+      print "document.edit.fw_timeout.value = '"     . mysqli_real_escape_string($db, $a_firewall['fw_timeout'])     . "';\n";
+      print "document.edit.fw_ticket.value = '"      . mysqli_real_escape_string($db, $a_firewall['fw_ticket'])      . "';\n";
+      print "document.edit.fw_portdesc.value = '"    . mysqli_real_escape_string($db, $a_firewall['fw_portdesc'])    . "';\n";
 
       print "document.edit.fw_id.value = " . $formVars['id'] . ";\n";
       print "document.edit.fw_update.disabled = false;\n\n";
