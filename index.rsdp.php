@@ -11,7 +11,7 @@
 
   $package = "index.rsdp.php";
 
-  logaccess($db, $db, $formVars['uid'], $package, "Accessing script");
+  logaccess($db, $formVars['uid'], $package, "Accessing script");
 
 # if help has not been seen yet,
   if (show_Help($db, $Sitepath . "/" . $package)) {
@@ -101,7 +101,7 @@ function attach_group( p_script_url ) {
   <li><a href="<?php print $RSDProot; ?>/rsdp/rsdp.php">Original MyRSDP Page</a> - This is the original listing of your RSDP servers that showed each server and the associated tasks.</li>
   <li><a href="<?php print $RSDProot; ?>/rsdp/rsdp.php?myrsdp=no">Original RSDP Page</a> - This is the original listing of all RSDP servers that showed each server and the associated tasks.</li>
 <?php
-  if (check_userlevel($db, $db, $AL_Admin)) {
+  if (check_userlevel($db, $AL_Admin)) {
 ?>
   <li><a href="<?php print $RSDProot; ?>/admin/status.php">Manage RSDP Status Entries</a> - Delete individual line items or an entire project from this script.</li>
 <?php
