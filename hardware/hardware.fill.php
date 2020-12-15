@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from models");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from models");
 
       $q_string  = "select mod_vendor,mod_name,mod_type,mod_size,mod_speed,mod_eopur,mod_eoship,mod_eol,";
       $q_string .= "mod_plugs,mod_plugtype,mod_volts,mod_start,mod_draw,mod_btu,mod_virtual ";
@@ -30,7 +30,7 @@
       $a_models = mysqli_fetch_array($q_models);
       mysqli_free_result($q_models);
 
-      $type = return_Index($a_models['mod_type'], "select part_id from parts order by part_name");
+      $type = return_Index($db, $a_models['mod_type'], "select part_id from parts order by part_name");
 
 
       print "document.hardware.mod_vendor.value = '" . mysqli_real_escape_string($a_models['mod_vendor']) . "';\n";
@@ -61,7 +61,7 @@
       print "document.hardware.mod_vendor.focus();\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
