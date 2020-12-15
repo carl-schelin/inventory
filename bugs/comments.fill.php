@@ -20,8 +20,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from bugs_detail");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from bugs_detail");
 
       $q_string  = "select bug_text,bug_timestamp,bug_user ";
       $q_string .= "from bugs_detail ";
@@ -30,7 +30,7 @@
       $a_bugs_detail = mysqli_fetch_array($q_bugs_detail);
       mysqli_free_result($q_bugs_detail);
 
-      $selected = return_Index($a_bugs_detail['bug_user'],       "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
+      $selected = return_Index($db, $a_bugs_detail['bug_user'],       "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
 
       print "document.start.bug_text.value = '"      . mysqli_real_escape_string($a_bugs_detail['bug_text'])      . "';\n";
       print "document.start.bug_timestamp.value = '" . mysqli_real_escape_string($a_bugs_detail['bug_timestamp']) . "';\n";
@@ -42,7 +42,7 @@
       print "document.start.bugupdate.disabled = false;\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
