@@ -443,7 +443,7 @@ to software and hardware section.</p>
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
-    $linkstart = "<a href=\"" . $Siteroot . "/reports/search.software.php?search_for=" . mysqli_real_escape_string($a_inventory['sw_software']) . "\">";
+    $linkstart = "<a href=\"" . $Siteroot . "/reports/search.software.php?search_for=" . mysqli_real_escape_string($db, $a_inventory['sw_software']) . "\">";
     $linkend   = "</a>";
 
     print "<tr>\n";
@@ -541,9 +541,9 @@ to software and hardware section.</p>
   $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
-    $linkvendor = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysqli_real_escape_string($a_hardware['mod_vendor']) . "\">";
-    $linkname   = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysqli_real_escape_string($a_hardware['mod_name'])   . "\">";
-    $linktype   = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysqli_real_escape_string($a_hardware['part_name'])  . "\">";
+    $linkvendor = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysqli_real_escape_string($db, $a_hardware['mod_vendor']) . "\">";
+    $linkname   = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysqli_real_escape_string($db, $a_hardware['mod_name'])   . "\">";
+    $linktype   = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysqli_real_escape_string($db, $a_hardware['part_name'])  . "\">";
     $linkend    = "</a>";
 
     print "<tr>\n";
