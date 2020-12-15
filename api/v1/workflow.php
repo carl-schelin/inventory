@@ -11,7 +11,7 @@
 
   $package = "workflow.php";
 
-  logaccess($formVars['uid'], $package, "Accessing the script.");
+  logaccess($db, $formVars['uid'], $package, "Accessing the script.");
 
 ?>
 <!DOCTYPE HTML>
