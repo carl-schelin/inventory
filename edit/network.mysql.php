@@ -24,7 +24,7 @@
       $formVars['int_companyid'] = 0;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']                 = clean($_GET['id'],                 10);
         $formVars['int_server']         = clean($_GET['int_server'],         60);
@@ -186,7 +186,7 @@
         }
 
         if ($formVars['int_companyid'] > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string = 
             "int_server     = \"" . $formVars['int_server']     . "\"," .
@@ -252,7 +252,7 @@
             $message = "Interface updated.";
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
 
           mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
@@ -310,7 +310,7 @@
 
 
       if ($formVars['update'] == -3) {
-        logaccess($_SESSION['uid'], $package, "Creating the form for viewing.");
+        logaccess($db, $_SESSION['uid'], $package, "Creating the form for viewing.");
 
         $output  = "<table class=\"ui-styled-table\">\n";
         $output .= "<tr>\n";
@@ -413,7 +413,7 @@
         $output .= "  <td class=\"ui-widget-content\">Group Name: <input type=\"text\" name=\"int_groupname\" size=\"20\"></td>\n";
         $output .= "  <td class=\"ui-widget-content\">";
 
-        $os = return_System($formVars['int_companyid']);
+        $os = return_System($db, $formVars['int_companyid']);
 
         if ($os == "Linux") {
           $output .= "Bond ";
@@ -556,7 +556,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">\n";
@@ -1138,7 +1138,7 @@
         print "alert(\"ERROR: " . $mgtcount . " management interfaces have been associated with this server.\\n\\nIdentify the device that will be permitting Management traffic and uncheck the Management checkbox for the rest of the interfaces.\");\n";
       }
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
