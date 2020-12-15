@@ -230,7 +230,7 @@ individuals that their task is ready to be worked.</li>
 
 </div>
 
-<?php print submit_RSDP( $formVars['rsdp'], 12, $RSDProot . "/system/configured.mysql.php", "rsdp_platformspoc", "rsdp_platform", 0); ?>
+<?php print submit_RSDP($db, " $formVars['rsdp'], 12, $RSDProot . "/system/configured.mysql.php", "rsdp_platformspoc", "rsdp_platform", 0); ?>
 
 <div id="tabs">
 
@@ -257,14 +257,14 @@ individuals that their task is ready to be worked.</li>
 
 <div id="tabs-1">
 
-<?php print request_Header($formVars['rsdp']); ?>
+<?php print request_Header($db, "$formVars['rsdp']); ?>
 
 </div>
 
 
 <div id="tabs-2">
 
-<?php print request_Server($formVars['rsdp']); ?>
+<?php print request_Server($db, "$formVars['rsdp']); ?>
 
 </div>
 
@@ -278,7 +278,7 @@ individuals that their task is ready to be worked.</li>
 <tr>
   <td id="if_checklist"><input type="checkbox" id="check-1" name="if_checklist" onchange="validate_Form();"><label for="check-1"></label></td>
 </tr>
-<?php print return_Checklist( $formVars['rsdp'], 12); ?>
+<?php print return_Checklist($db, " $formVars['rsdp'], 12); ?>
 </table>
 
 </div>
