@@ -11,7 +11,7 @@
 
   $package = "products.php";
 
-  logaccess($formVars['uid'], $package, "Viewing the Products table");
+  logaccess($db, $formVars['uid'], $package, "Viewing the Products table");
 
   $formVars['csv']       = clean($_GET['csv'],        10);
 
@@ -20,7 +20,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
