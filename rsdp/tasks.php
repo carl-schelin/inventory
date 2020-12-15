@@ -14,7 +14,7 @@
 
   $package = "tasks.php";
 
-  logaccess($_SESSION['uid'], $package, "Viewing RSDP Listing");
+  logaccess($db, $_SESSION['uid'], $package, "Viewing RSDP Listing");
 
   if (isset($_GET['id'])) {
     $formVars['id'] = clean($_GET['id'], 10);
