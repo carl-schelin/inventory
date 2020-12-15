@@ -25,9 +25,9 @@
       $formVars['product'] = 0;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $q_string  = "select grp_id,grp_name ";
       $q_string .= "from groups ";
@@ -127,7 +127,7 @@
       print "document.getElementById('details_mysql').innerHTML = '" . mysqli_real_escape_string($details) . "';\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
