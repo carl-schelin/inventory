@@ -11,7 +11,7 @@
 
   $package = "cschelin.cpus.php";
 
-  logaccess($formVars['uid'], $package, "Getting a listing of cpus.");
+  logaccess($db, $formVars['uid'], $package, "Getting a listing of cpus.");
 
   if (isset($_GET['group'])) {
     $formVars['group'] = clean($_GET['group'], 10);
