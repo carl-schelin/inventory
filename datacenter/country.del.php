@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Admin)) {
-      logaccess($_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from country");
+    if (check_userlevel($db, $AL_Admin)) {
+      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from country");
 
       $q_string  = "delete ";
       $q_string .= "from country ";
@@ -31,7 +31,7 @@
 
       print "clear_fields();\n";
     } else {
-      logaccess($_SESSION['uid'], $package, "Access denied");
+      logaccess($db, $_SESSION['uid'], $package, "Access denied");
     }
   }
 ?>
