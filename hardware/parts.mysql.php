@@ -134,7 +134,7 @@
 
       mysqli_free_result($q_parts);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.parts.part_name.value = '';\n";
       print "document.parts.part_acronym.value = '';\n";
