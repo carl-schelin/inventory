@@ -15,7 +15,7 @@
 
   $package = "bugs.closed.mysql.php";
 
-  logaccess($_SESSION['uid'], $package, "Creating the closed bugs listing.");
+  logaccess($db, $_SESSION['uid'], $package, "Creating the closed bugs listing.");
 
   if (isset($_GET['id'])) {
     $formVars['id'] = clean($_GET['id'], 10);
