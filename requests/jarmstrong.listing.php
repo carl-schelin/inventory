@@ -11,7 +11,7 @@
 
   $package = "jarmstrong.listing.php";
 
-  logaccess($formVars['uid'], $package, "Viewing Jeff's server listing.");
+  logaccess($db, $formVars['uid'], $package, "Viewing Jeff's server listing.");
 
   if (isset($_GET['clean'])) {
     $formVars['csv'] = clean($_GET['clean'],10);
