@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']            = clean($_GET['id'],           10);
         $formVars['mu_username']   = clean($_GET['mu_username'],  60);
@@ -45,7 +45,7 @@
           $formVars['mu_exclude'] = 0;
         }
 
-        logaccess($_SESSION['uid'], $package, "Building the query.");
+        logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
         $q_string =
           "mu_username    = \"" . $formVars['mu_username']   . "\"," .
@@ -65,7 +65,7 @@
           $message = "User updated.";
         }
 
-        logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['mu_username']);
+        logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['mu_username']);
 
         mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
@@ -73,7 +73,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">\n";
@@ -104,7 +104,7 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      if (check_userlevel($AL_Admin)) {
+      if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\">Del</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Id</th>\n";
@@ -137,7 +137,7 @@
           }
 
           $output .= "<tr>\n";
-          if (check_userlevel($AL_Admin)) {
+          if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"" . $class . " delete\" width=\"60\">" . $linkdel   . "</td>\n";
           }
           $output .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_manageusers['mu_id']   . $linkend . "</td>\n";
@@ -188,7 +188,7 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      if (check_userlevel($AL_Admin)) {
+      if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\">Del</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Id</th>\n";
@@ -222,7 +222,7 @@
           }
 
           $output .= "<tr>\n";
-          if (check_userlevel($AL_Admin)) {
+          if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"" . $class . " delete\" width=\"60\">" . $linkdel   . "</td>\n";
           }
           $output .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_manageusers['mu_id']   . $linkend . "</td>\n";
@@ -275,7 +275,7 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      if (check_userlevel($AL_Admin)) {
+      if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\">Del</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Id</th>\n";
@@ -307,7 +307,7 @@
           }
 
           $output .= "<tr>\n";
-          if (check_userlevel($AL_Admin)) {
+          if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"" . $class . " delete\" width=\"60\">" . $linkdel   . "</td>\n";
           }
           $output .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_manageusers['mu_id']   . $linkend . "</td>\n";
@@ -360,7 +360,7 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      if (check_userlevel($AL_Admin)) {
+      if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\">Del</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Id</th>\n";
@@ -393,7 +393,7 @@
           }
 
           $output .= "<tr>\n";
-          if (check_userlevel($AL_Admin)) {
+          if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"" . $class . " delete\" width=\"60\">" . $linkdel   . "</td>\n";
           }
           $output .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_manageusers['mu_id']   . $linkend . "</td>\n";
@@ -424,7 +424,7 @@
       print "document.users.mu_ticket.value = '';\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
