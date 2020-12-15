@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from cities");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from cities");
 
       $q_string  = "select ct_city,ct_state,ct_clli ";
       $q_string .= "from cities ";
@@ -29,7 +29,7 @@
       $a_cities = mysqli_fetch_array($q_cities);
       mysqli_free_result($q_cities);
 
-      $state = return_Index($a_cities['ct_state'], "select st_id from states order by st_state");
+      $state = return_Index($db, $a_cities['ct_state'], "select st_id from states order by st_state");
 
       print "document.cities.ct_city.value = '"    . mysqli_real_escape_string($a_cities['ct_city'])    . "';\n";
       print "document.cities.ct_clli.value = '"    . mysqli_real_escape_string($a_cities['ct_clli'])    . "';\n";
@@ -39,7 +39,7 @@
       print "document.cities.id.value = " . $formVars['id'] . ";\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
