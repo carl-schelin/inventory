@@ -19,7 +19,7 @@
 
   $package = "wiki.mysql.php";
 
-  logaccess($_SESSION['uid'], $package, "Generating wiki report.");
+  logaccess($db, $_SESSION['uid'], $package, "Generating wiki report.");
 
   print "{| border=1<br>";
   print "!Date/Time!!User!!Detail<br>";
