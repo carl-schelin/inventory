@@ -169,7 +169,7 @@
 
       mysqli_free_result($q_service);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.service.svc_name.value = '';\n";
       print "document.service.svc_acronym.value = '';\n";
