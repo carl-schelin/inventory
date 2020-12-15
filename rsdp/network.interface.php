@@ -22,7 +22,7 @@
 
     $formVars['interface'] = substr($formVars['id'], 3);
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
 
 # get the rsdp id for a quick test
       $q_string  = "select if_rsdp ";
@@ -742,7 +742,7 @@
       }
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
