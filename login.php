@@ -14,7 +14,10 @@
     include($Loginpath . '/check.php');
   }
 
-  check_login(4);
+# connect to the database
+  $db = db_connect($DBserver, $DBuser, $DBpassword, $DBname);
+
+  check_login($db, $AL_Guest);
 
   $formVars['uid']      = $_SESSION['uid'];
   $formVars['username'] = $_SESSION['username'];
