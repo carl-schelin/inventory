@@ -13,7 +13,7 @@
 
   $package = "levels.php";
 
-  logaccess($_SESSION['uid'], $package, "Accessing script");
+  logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
 ?>
 <!DOCTYPE HTML>
@@ -34,7 +34,7 @@
 <script type="text/javascript">
 <?php
 
-  if (check_userlevel($AL_Admin)) {
+  if (check_userlevel($db, $AL_Admin)) {
 ?>
 function delete_level( p_script_url ) {
   var question;
