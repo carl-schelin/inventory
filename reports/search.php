@@ -46,28 +46,28 @@
   $wait = wait_Process('Please Wait...');
 
   if ($formVars['search_by'] == 1 || $formVars['search_by'] == 0) {
-    print "document.getElementById('server_search_mysql').innerHTML = '" . mysqli_real_escape_string($wait) . "';\n\n";
+    print "document.getElementById('server_search_mysql').innerHTML = '" . mysqli_real_escape_string($db, $wait) . "';\n\n";
   }
   if ($formVars['search_by'] == 2 || $formVars['search_by'] == 0) {
-    print "document.getElementById('address_search_mysql').innerHTML = '" . mysqli_real_escape_string($wait) . "';\n\n";
+    print "document.getElementById('address_search_mysql').innerHTML = '" . mysqli_real_escape_string($db, $wait) . "';\n\n";
   }
   if ($formVars['search_by'] == 3 || $formVars['search_by'] == 0) {
-    print "document.getElementById('software_search_mysql').innerHTML = '" . mysqli_real_escape_string($wait) . "';\n\n";
+    print "document.getElementById('software_search_mysql').innerHTML = '" . mysqli_real_escape_string($db, $wait) . "';\n\n";
   }
   if ($formVars['search_by'] == 4 || $formVars['search_by'] == 0) {
-    print "document.getElementById('hardware_search_mysql').innerHTML = '" . mysqli_real_escape_string($wait) . "';\n\n";
+    print "document.getElementById('hardware_search_mysql').innerHTML = '" . mysqli_real_escape_string($db, $wait) . "';\n\n";
   }
   if ($formVars['search_by'] == 5 || $formVars['search_by'] == 0) {
-    print "document.getElementById('asset_search_mysql').innerHTML = '" . mysqli_real_escape_string($wait) . "';\n\n";
+    print "document.getElementById('asset_search_mysql').innerHTML = '" . mysqli_real_escape_string($db, $wait) . "';\n\n";
   }
   if ($formVars['search_by'] == 6 || $formVars['search_by'] == 0) {
-    print "document.getElementById('location_search_mysql').innerHTML = '" . mysqli_real_escape_string($wait) . "';\n\n";
+    print "document.getElementById('location_search_mysql').innerHTML = '" . mysqli_real_escape_string($db, $wait) . "';\n\n";
   }
   if ($formVars['search_by'] == 7 || $formVars['search_by'] == 0) {
-    print "document.getElementById('user_search_mysql').innerHTML = '" . mysqli_real_escape_string($wait) . "';\n\n";
+    print "document.getElementById('user_search_mysql').innerHTML = '" . mysqli_real_escape_string($db, $wait) . "';\n\n";
   }
   if ($formVars['search_by'] == 8 || $formVars['search_by'] == 0) {
-    print "document.getElementById('packages_search_mysql').innerHTML = '" . mysqli_real_escape_string($wait) . "';\n\n";
+    print "document.getElementById('packages_search_mysql').innerHTML = '" . mysqli_real_escape_string($db, $wait) . "';\n\n";
   }
 
   if (strlen($formVars['search_for']) > 0) {
@@ -312,7 +312,7 @@
         $output .= "</table>\n\n";
       }
 
-      print "document.getElementById('server_search_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('server_search_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
     }
 
 # IP address or all - search the inventory and interface
@@ -452,7 +452,7 @@
         $output .= "</table>\n\n";
       }
 
-      print "document.getElementById('address_search_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('address_search_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
     }
 
 # software or all - search the software and inventory
@@ -587,7 +587,7 @@
         $output .= "</table>\n\n";
       }
 
-      print "document.getElementById('software_search_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('software_search_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
     }
 
 # hardware or all - search the hardware and inventory
@@ -732,7 +732,7 @@
         $output .= "</table>\n\n";
       }
 
-      print "document.getElementById('hardware_search_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('hardware_search_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
     }
 
 # asset or all - search the hardware and inventory
@@ -858,7 +858,7 @@
         $output .= "</table>\n\n";
      }
 
-      print "document.getElementById('asset_search_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('asset_search_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
     }
 
 # location or all - search the locations and inventory
@@ -1003,7 +1003,7 @@
         $output .= "</table>\n\n";
       }
 
-      print "document.getElementById('location_search_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('location_search_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
     }
 
 # users or all - search for a user
@@ -1231,7 +1231,7 @@
         $output .= "</table>\n\n";
       }
 
-      print "document.getElementById('user_search_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('user_search_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
     }
 
 # packages or all - search the packages and inventory
@@ -1369,7 +1369,7 @@
         $output .= "</table>\n\n";
       } 
 
-      print "document.getElementById('packages_search_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('packages_search_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
     }
   }
 
