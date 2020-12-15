@@ -131,7 +131,7 @@
 
       mysqli_free_result($q_application);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.application.app_description.value = '';\n";
       print "document.application.app_deleted.checked = false;\n";
