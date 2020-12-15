@@ -23,8 +23,8 @@
       $formVars['scheduled'] = clean($_GET['scheduled'], 12);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting all records for " . $formVars['id'] . " from bigfix");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting all records for " . $formVars['id'] . " from bigfix");
 
       $q_string  = "select big_fixlet,inv_manager,inv_appadmin ";
       $q_string .= "from bigfix ";
@@ -60,7 +60,7 @@
       print "document.bigfix.big_patches.value = '" . mysqli_real_escape_string($patches) . "';\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
