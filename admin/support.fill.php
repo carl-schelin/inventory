@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from support");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from support");
 
       $q_string  = "select sup_company,sup_phone,sup_email,sup_web,sup_contract,sup_wiki,sup_hwresponse,sup_swresponse ";
       $q_string .= "from support ";
@@ -29,8 +29,8 @@
       $a_support = mysqli_fetch_array($q_support);
       mysqli_free_result($q_support);
 
-      $hwresponse   = return_Index($a_support['sup_hwresponse'],  "select slv_id from supportlevel order by slv_value");
-      $swresponse   = return_Index($a_support['sup_swresponse'],  "select slv_id from supportlevel order by slv_value");
+      $hwresponse   = return_Index($db, $a_support['sup_hwresponse'],  "select slv_id from supportlevel order by slv_value");
+      $swresponse   = return_Index($db, $a_support['sup_swresponse'],  "select slv_id from supportlevel order by slv_value");
 
       print "document.support.sup_hwresponse['" . $hwresponse . "'].selected = true;\n";
       print "document.support.sup_swresponse['" . $swresponse . "'].selected = true;\n";
@@ -45,7 +45,7 @@
       print "document.support.id.value = " . $formVars['id'] . ";\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
