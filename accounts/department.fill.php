@@ -29,9 +29,9 @@
       $a_department = mysqli_fetch_array($q_department);
       mysqli_free_result($q_department);
 
-      print "document.department.dep_unit.value = '" . mysqli_real_escape_string($a_department['dep_unit']) . "';\n";
-      print "document.department.dep_dept.value = '" . mysqli_real_escape_string($a_department['dep_dept']) . "';\n";
-      print "document.department.dep_name.value = '" . mysqli_real_escape_string($a_department['dep_name']) . "';\n";
+      print "document.department.dep_unit.value = '" . mysqli_real_escape_string($db, $a_department['dep_unit']) . "';\n";
+      print "document.department.dep_dept.value = '" . mysqli_real_escape_string($db, $a_department['dep_dept']) . "';\n";
+      print "document.department.dep_name.value = '" . mysqli_real_escape_string($db, $a_department['dep_name']) . "';\n";
 
       print "document.department.id.value = '" . $formVars['id'] . "'\n";
 
