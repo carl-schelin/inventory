@@ -22,7 +22,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']           = clean($_GET['san_id'],      10);
         $formVars['san_sysport']  = clean($_GET['san_sysport'], 60);
@@ -35,7 +35,7 @@
         }
 
         if (strlen($formVars['san_sysport']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "san_rsdp     =   " . $formVars['san_rsdp']    . "," . 
@@ -51,7 +51,7 @@
             $query = "update rsdp_san set " . $q_string . " where san_id = " . $formVars['id'];
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['san_sysport']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['san_sysport']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -82,7 +82,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">";
@@ -163,7 +163,7 @@
       print "document.san.san_media[0].selected = true;\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
