@@ -11,7 +11,7 @@
 
   $package = "compiled.class.php";
 
-  logaccess($formVars['uid'], $package, "Searching for EOL HW and SW.");
+  logaccess($db, $formVars['uid'], $package, "Searching for EOL HW and SW.");
 
   $formVars['product']   = clean($_GET['product'],  10);
   $formVars['project']   = clean($_GET['project'],  10);
@@ -129,7 +129,7 @@
   $software = 0;
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
