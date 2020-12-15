@@ -13,7 +13,7 @@
 
   $package = "openview.php";
 
-  logaccess($_SESSION['uid'], $package, "View openview alerts");
+  logaccess($db, $_SESSION['uid'], $package, "View openview alerts");
 
   if (isset($_POST['start']) || isset($_GET['start'])) {
     if (isset($_POST['start'])) {
@@ -72,7 +72,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
@@ -96,7 +96,7 @@
 
 <script type="text/javascript">
 <?php
-  if (check_userlevel($AL_Admin)) {
+  if (check_userlevel($db, $AL_Admin)) {
 ?>
 function delete_block( p_script_url ) {
   var answer = confirm("Delete this Block?")
