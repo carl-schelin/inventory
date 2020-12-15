@@ -210,12 +210,12 @@ $(document).ready( function() {
             }
             $finalname = $from . "</td>";
             if ($svrlist[$j + $add + 1] != "\n") {
-              $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 1])) . "</td>\n";
+              $finaltext = mysqli_real_escape_string($db, rtrim($svrlist[$j + $add + 1])) . "</td>\n";
             } else {
               if ($svrlist[$j + $add + 2] != "\n") {
-                $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 2])) . "</td>\n";
+                $finaltext = mysqli_real_escape_string($db, rtrim($svrlist[$j + $add + 2])) . "</td>\n";
               } else {
-                $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 3])) . "</td>\n";
+                $finaltext = mysqli_real_escape_string($db, rtrim($svrlist[$j + $add + 3])) . "</td>\n";
               }
             }
             $allservers[$count++] = $finaldate . "<td class=\"ui-widget-content\">" . $finalname . "<td class=\"ui-widget-content\">" . $finalserver . $a_hardware['inv_name'] . "</a></td>\n<td class=\"ui-widget-content\">" . $finaltext . "</tr>\n";
