@@ -13,7 +13,7 @@
 
   $package = "tag.view.php";
 
-  logaccess($_SESSION['uid'], $package, "Issue: tag view.");
+  logaccess($db, $_SESSION['uid'], $package, "Issue: tag view.");
 
   $formVars['tag']  = clean($_GET['tag'], 20);
   $formVars['type'] = clean($_GET['type'], 10);
