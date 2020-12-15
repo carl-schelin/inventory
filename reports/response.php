@@ -11,7 +11,7 @@
 
   $package = "response.php";
 
-  logaccess($formVars['uid'], $package, "Searching for Dell equipment.");
+  logaccess($db, $formVars['uid'], $package, "Searching for Dell equipment.");
 
   $formVars['sort'] = 'inv_response';
   $leftjoin = "left join supportlevel on supportlevel.slv_id = inventory.inv_response ";
@@ -64,7 +64,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
