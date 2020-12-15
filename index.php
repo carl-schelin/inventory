@@ -11,7 +11,7 @@
 
   $package = "index.php";
 
-  logaccess($db, $db, $formVars['uid'], $package, "Accessing the script.");
+  logaccess($db, $formVars['uid'], $package, "Accessing the script.");
 
   if (isset($_GET['search'])) {
     $formVars['search'] = clean($_GET['search'], 80);
@@ -559,7 +559,7 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/support.contract.php');">Support Contract</a> - Shows the support details for your group's Active devices.</li>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/licenses.php');">Software Licenses</a> - Shows all software and license information.</li>
 <?php
-    if (check_userlevel($db, $db, $AL_Admin)) {
+    if (check_userlevel($db, $AL_Admin)) {
 ?>
   <li><a href="<?php print $Reportroot; ?>/tags.php">View all Tags</a> - List of all Tags assigned in the system.</li>
 <?php
