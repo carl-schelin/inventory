@@ -11,7 +11,7 @@
 
   $package = "errors.php";
 
-  logaccess($formVars['uid'], $package, "Managing Errors.");
+  logaccess($db, $formVars['uid'], $package, "Managing Errors.");
 
 # get the totals for each problem to properly display tabs
   $q_string  = "select count(ce_id) ";
@@ -50,7 +50,7 @@
   $priority5 = $a_chkerrors['count(ce_id)'];
 
 # if help has not been seen yet,
-  if (show_Help('mainerrormanagement')) {
+  if (show_Help($db, 'mainerrormanagement')) {
     $display = "display: block";
   } else {
     $display = "display: none";
