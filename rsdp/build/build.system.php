@@ -16,8 +16,8 @@
   if (isset($_SESSION['username'])) {
     $package = "build.system.php";
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Populating system field with derived and selected values");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Populating system field with derived and selected values");
 
       $formVars['name_location']   = clean($_GET['name_location'],     4);
       $formVars['name_instance']   = clean($_GET['name_instance'],     1);
@@ -45,7 +45,7 @@
       print "document.rsdp.os_sysname.value = '" . strtolower($formVars['name_location'] . $formVars['name_instance'] . $formVars['name_zone'] . $a_device['dev_type'] . $formVars['name_service'] . $formVars['name_freeform']) . "';\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
