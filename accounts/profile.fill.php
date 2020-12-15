@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_SESSION['uid'], 10);
     }
 
-    if (check_userlevel($AL_Guest)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from users");
+    if (check_userlevel($db, $AL_Guest)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from users");
 
       $q_string  = "select usr_id,usr_first,usr_last,usr_email,usr_phone,usr_freq,usr_notify,usr_deptname,";
       $q_string .= "usr_altemail,usr_theme,usr_reset,usr_clientid,usr_report,usr_confirm,usr_manager,usr_title,";
@@ -31,9 +31,9 @@
       $a_users = mysqli_fetch_array($q_users);
       mysqli_free_result($q_users);
 
-      $theme    = return_Index($a_users['usr_theme'],    "select theme_id from themes order by theme_title") - 1;
-      $manager  = return_Index($a_users['usr_manager'],  "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
-      $title    = return_Index($a_users['usr_title'],    "select tit_id from titles order by tit_name");
+      $theme    = return_Index($db, $a_users['usr_theme'],    "select theme_id from themes order by theme_title") - 1;
+      $manager  = return_Index($db, $a_users['usr_manager'],  "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
+      $title    = return_Index($db, $a_users['usr_title'],    "select tit_id from titles order by tit_name");
 
       $count = 1;
       $deptname = 0;
@@ -89,7 +89,7 @@
       print "document.user.update.disabled = false;\n\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
