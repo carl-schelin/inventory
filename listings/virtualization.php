@@ -13,10 +13,10 @@
 
   $package = "virtualization.php";
 
-  logaccess($_SESSION['uid'], $package, "Viewing the virtualization server listing table");
+  logaccess($db, $_SESSION['uid'], $package, "Viewing the virtualization server listing table");
 
 # If group or an admin, allow access
-  if (check_grouplevel($GRP_Virtualization)) {
+  if (check_grouplevel($db, $GRP_Virtualization)) {
 
 ?>
 <!DOCTYPE HTML>
