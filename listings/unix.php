@@ -13,10 +13,10 @@
 
   $package = "unix.php";
 
-  logaccess($_SESSION['uid'], $package, "Viewing the unix server listing table");
+  logaccess($db, $_SESSION['uid'], $package, "Viewing the unix server listing table");
 
 # If group or an admin, allow access
-  if (check_grouplevel($GRP_Unix)) {
+  if (check_grouplevel($db, $GRP_Unix)) {
 
 ?>
 <!DOCTYPE HTML>
