@@ -22,7 +22,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['id'],             10);
         $formVars['fs_volume']      = clean($_GET['fs_volume'],      20);
@@ -47,10 +47,10 @@
             $q_string .= "set rsdp_id = null,rsdp_requestor = " . $_SESSION['uid'];
             $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-            $formVars['rsdp'] = last_insert_id();
+            $formVars['rsdp'] = last_insert_id($db);
           }
 
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "fs_rsdp   =   " . $formVars['rsdp']       . "," .
@@ -64,7 +64,7 @@
           if ($formVars['update'] == 1) {
             $query = "update rsdp_filesystem set " . $q_string . " where fs_id = " . $formVars['id'];
           }
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['fs_volume']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['fs_volume']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -74,7 +74,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">\n";
@@ -151,7 +151,7 @@
       print "document.comments.com_rsdp.value = " . $formVars['rsdp'] . ";\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
