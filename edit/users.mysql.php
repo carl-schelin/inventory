@@ -113,7 +113,7 @@
         $output .= "</table>\n";
         $output .= "<p>NOTE: Editing this form makes changes to the servers. See the Help for details.</p>\n";
 
-        print "document.getElementById('users_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('users_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
       }
 
 
@@ -250,7 +250,7 @@
 
       $output .= "</table>\n";
 
-      print "document.getElementById('users_table').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('users_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.edit.mu_update.disabled = true;\n";
     } else {
