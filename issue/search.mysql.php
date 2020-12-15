@@ -18,9 +18,9 @@
     $formVars['search_for']  = clean($_GET['search_for'],  80);
     $formVars['sort']        = clean($_GET['sort'],        20);
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
        if (strlen($formVars['search_for']) > 0) {
-        logaccess($_SESSION['uid'], $package, "Building the query.");
+        logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
 # server name or all - search the inventory and interface
         if ($formVars['search_by'] == 1 || $formVars['search_by'] == 0) {
@@ -100,7 +100,7 @@
             $linklist  = "<a href=\"" . $Issueroot . "/issue.php?server=" . $a_issue['iss_companyid'] . "\">";
             $linkend   = "</a>";
 
-            if ($a_issue['iss_user'] == $_SESSION['uid'] || $a_issue['grp_id'] == $_SESSION['group'] || check_userlevel($AL_Admin)) {
+            if ($a_issue['iss_user'] == $_SESSION['uid'] || $a_issue['grp_id'] == $_SESSION['group'] || check_userlevel($db, $AL_Admin)) {
               $delstart = "<a href=\"#\" onclick=\"javascript:delete_issue('" . $Issueroot . "/issue.open.del.php?id=" . $a_issue['iss_id'] . "');\">";
               $delend   = "</a>";
             } else {
@@ -190,7 +190,7 @@
       print "document.search.search_for.focus();\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
