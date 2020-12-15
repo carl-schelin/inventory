@@ -194,7 +194,7 @@
       print "document.exclude.ex_expiration.value = '';\n";
       print "document.exclude.noexpire.checked = false;\n";
 
-      print "document.getElementById('exclude_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('exclude_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
     }
 
