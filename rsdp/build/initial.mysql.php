@@ -340,7 +340,7 @@
 ###
 # now set the task as complete
       if ($formVars['rsdp_complete'] == 1) {
-        setstatus($formVars['rsdp'], 1, 1);
+        setstatus($db, "$formVars['rsdp'], 1, 1);
 
         $q_string  = "select rsdp_platform ";
         $q_string .= "from rsdp_server ";
@@ -349,6 +349,7 @@
         $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
         generateEmail(
+          $db, 
           $formVars['rsdp'], 
           "<p>A new server request has been submitted through the Rapid Server Deployment Process.</p>", 
           "<p>Click on <a href=\"" . $RSDProot . "/build/build.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>", 
@@ -365,6 +366,7 @@
         $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
         if ($a_rsdp_tickets['tkt_build']) {
           submit_Ticket(
+            $db, 
             $formVars['rsdp'],
             $RSDProot . "/build/build.php",
             "rsdp_platformspoc",
