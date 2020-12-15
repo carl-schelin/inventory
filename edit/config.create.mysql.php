@@ -2,7 +2,6 @@
 # Script: config.mysql.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: This is intended to be a copy of the RSDP information for the server. The idea is to continue to use  
 # RSDP information as how the system should be configured. Then the audit script (chkserver) can report on servers
 # that don't match the expected configuration. Eventually once we're sure the information is accurate, we can use 
