@@ -11,7 +11,7 @@
 
   $package = "walkthrough.php";
 
-  logaccess($formVars['uid'], $package, "Accessing script");
+  logaccess($db, $formVars['uid'], $package, "Accessing script");
 
   $formVars['product']   = clean($_GET['product'],  10);
   $formVars['group']     = clean($_GET['group'],    10);
@@ -45,7 +45,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
@@ -214,7 +214,7 @@
     }
 
     $linkedit = '';
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($a_inventory['inv_manager'] == $_SESSION['group']) {
         $linkedit = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\"><img src=\"" . $Imgsroot . "/pencil.gif\" height=10></a>";
       }
@@ -253,7 +253,7 @@
     while ($a_child = mysqli_fetch_array($q_child)) {
 
       $linkedit = '';
-      if (check_userlevel($AL_Edit)) {
+      if (check_userlevel($db, $AL_Edit)) {
         if ($a_child['inv_manager'] == $_SESSION['group']) {
           $linkedit = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_child['inv_id'] . "\" target=\"_blank\"><img src=\"" . $Imgsroot . "/pencil.gif\" height=10></a>";
         }
