@@ -13,7 +13,7 @@
 
   $package = "datacenter.php";
 
-  logaccess($_SESSION['uid'], $package, "Viewing the Data Center Location table");
+  logaccess($db, $_SESSION['uid'], $package, "Viewing the Data Center Location table");
 
 ?>
 <!DOCTYPE HTML>
@@ -34,7 +34,7 @@
 <script type="text/javascript">
 
 <?php
-  if (check_userlevel($AL_Admin)) {
+  if (check_userlevel($db, $AL_Admin)) {
 ?>
 function delete_line( p_script_url ) {
   var answer = confirm("Delete this Location?")
