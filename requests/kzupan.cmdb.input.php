@@ -11,7 +11,7 @@
 
   $package = "kzupan.cmdb.input.php";
 
-  logaccess($formVars['uid'], $package, "Accessing script");
+  logaccess($db, $formVars['uid'], $package, "Accessing script");
 
   if (isset($_GET["group"])) {
     $formVars['group'] = clean($_GET["group"], 10);
@@ -126,19 +126,19 @@
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $svrclass = '';
-    if (return_System($a_inventory['inv_id']) == 'Linux') {
+    if (return_System($db, $a_inventory['inv_id']) == 'Linux') {
       $svrclass = "Linux Server";
     }
-    if (return_System($a_inventory['inv_id']) == 'HP-UX') {
+    if (return_System($db, $a_inventory['inv_id']) == 'HP-UX') {
       $svrclass = "HP-UX Server";
     }
-    if (return_System($a_inventory['inv_id']) == 'FreeBSD') {
+    if (return_System($db, $a_inventory['inv_id']) == 'FreeBSD') {
       $svrclass = "FreeBSD Server";
     }
-    if (return_System($a_inventory['inv_id']) == 'SunOS') {
+    if (return_System($db, $a_inventory['inv_id']) == 'SunOS') {
       $svrclass = "Solaris Server";
     }
-    if (return_System($a_inventory['inv_id']) == 'Windows') {
+    if (return_System($db, $a_inventory['inv_id']) == 'Windows') {
       $svrclass = "Windows Server";
     }
 
@@ -157,8 +157,8 @@
 
     $linkedit   = "";
     $linkend   = "";
-    if (check_userlevel($AL_Edit)) {
-      if (check_grouplevel($a_inventory['inv_manager'])) {
+    if (check_userlevel($db, $AL_Edit)) {
+      if (check_grouplevel($db, $a_inventory['inv_manager'])) {
         $linkedit = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\"><img src=\"" . $Imgsroot . "/pencil.gif\"></a>";
         $linkend   = "</a>";
       }
