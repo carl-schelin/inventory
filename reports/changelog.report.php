@@ -193,12 +193,12 @@ $(document).ready( function() {
             }
             $finalname = $from;
             if ($svrlist[$j + $add + 1] != "\n") {
-              $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 1]));
+              $finaltext = mysqli_real_escape_string($db, rtrim($svrlist[$j + $add + 1]));
             } else {
               if ($svrlist[$j + $add + 2] != "\n") {
-                $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 2]));
+                $finaltext = mysqli_real_escape_string($db, rtrim($svrlist[$j + $add + 2]));
               } else {
-                $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 3]));
+                $finaltext = mysqli_real_escape_string($db, rtrim($svrlist[$j + $add + 3]));
               }
             }
 
@@ -294,12 +294,12 @@ $(document).ready( function() {
             }
             $finalname = $from;
             if ($svrlist[$j + $add + 1] != "\n") {
-              $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 1]));
+              $finaltext = mysqli_real_escape_string($db, rtrim($svrlist[$j + $add + 1]));
             } else {
               if ($svrlist[$j + $add + 2] != "\n") {
-                $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 2]));
+                $finaltext = mysqli_real_escape_string($db, rtrim($svrlist[$j + $add + 2]));
               } else {
-                $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 3]));
+                $finaltext = mysqli_real_escape_string($db, rtrim($svrlist[$j + $add + 3]));
               }
             }
 
