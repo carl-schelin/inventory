@@ -11,7 +11,7 @@
 
   $package = "droccaforte.vmlist.php";
 
-  logaccess($formVars['uid'], $package, "Getting a listing of VMs and Applications.");
+  logaccess($db, $formVars['uid'], $package, "Getting a listing of VMs and Applications.");
 
   $orderby = " order by ";
   if (isset($_GET['sort'])) {
