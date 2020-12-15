@@ -181,7 +181,7 @@
 
       mysqli_free_result($q_products);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.products.prod_name.value = '';\n";
       print "document.products.prod_code.value = '';\n";
