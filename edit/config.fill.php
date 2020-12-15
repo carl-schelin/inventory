@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from cluster");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from cluster");
 
       $q_string  = "select clu_companyid,clu_association,clu_notes ";
       $q_string .= "from cluster ";
@@ -29,7 +29,7 @@
       $a_cluster = mysqli_fetch_array($q_cluster);
       mysqli_free_result($q_cluster);
 
-      $association = return_Index($a_cluster['clu_association'], "select inv_id from inventory where inv_status = 0 order by inv_name");
+      $association = return_Index($db, $a_cluster['clu_association'], "select inv_id from inventory where inv_status = 0 order by inv_name");
 
       print "document.edit.clu_association['" . $association . "'].selected = true;\n";
 
@@ -39,7 +39,7 @@
       print "document.edit.clu_update.disabled = false;\n\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
