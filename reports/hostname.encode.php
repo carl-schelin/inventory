@@ -78,6 +78,6 @@
     }
   }
 
-  print "document.getElementById('encodedhostname').innerHTML = '" . mysqli_real_escape_string($formVars['hostname']) . "';\n";
+  print "document.getElementById('encodedhostname').innerHTML = '" . mysqli_real_escape_string($db, $formVars['hostname']) . "';\n";
 
 ?>
