@@ -11,7 +11,7 @@
 
   $package = "tbarrett.btu.php";
 
-  logaccess($formVars['uid'], $package, "Accessing script");
+  logaccess($db, $formVars['uid'], $package, "Accessing script");
 
   $orderby = " order by ";
   if (isset($_GET['sort'])) {
