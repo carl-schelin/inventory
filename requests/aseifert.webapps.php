@@ -11,7 +11,7 @@
 
   $package = "aseifert.webapps.php";
 
-  logaccess($formVars['uid'], $package, "Getting a listing of Web Applications with Apache.");
+  logaccess($db, $formVars['uid'], $package, "Getting a listing of Web Applications with Apache.");
 
   $formVars['csv'] = 0;
   if (isset($_GET['csv'])) {
@@ -19,7 +19,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help('aseifertapache')) {
+  if (show_Help($db, 'aseifertapache')) {
     $display = "display: block";
   } else {
     $display = "display: none";
