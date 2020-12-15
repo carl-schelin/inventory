@@ -24,7 +24,7 @@
       $formVars['route_companyid'] = 0;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']              = clean($_GET['id'],              10);
         $formVars['route_address']   = clean($_GET['route_address'],   60);
@@ -49,7 +49,7 @@
         }
 
         if (strlen($formVars['route_address']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string = 
             "route_companyid =   " . $formVars['route_companyid'] . "," .
@@ -74,7 +74,7 @@
             $message = "Route updated.";
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['var_name']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['var_name']);
 
           mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
@@ -144,7 +144,7 @@
 
 
       if ($formVars['update'] == -3) {
-        logaccess($_SESSION['uid'], $package, "Creating the form for viewing.");
+        logaccess($db, $_SESSION['uid'], $package, "Creating the form for viewing.");
 
         $output  = "<table class=\"ui-styled-table\">\n";
         $output .= "<tr>\n";
@@ -228,9 +228,9 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-      $os = return_System($formVars['route_companyid']);
+      $os = return_System($db, $formVars['route_companyid']);
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">\n";
@@ -379,7 +379,7 @@
 
       print "document.edit.route_update.disabled = true;\n";
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
