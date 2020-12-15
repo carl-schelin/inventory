@@ -11,7 +11,7 @@
 
   $package = "error.php";
 
-  logaccess($formVars['uid'], $package, "Accessing the script.");
+  logaccess($db, $formVars['uid'], $package, "Accessing the script.");
 
   $headers  = "From: Inventory Management <root@" . $Sitehttp . ">\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
