@@ -130,7 +130,7 @@
 
       mysqli_free_result($q_business_unit);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
       print "document.business.bus_unit.value = '';\n";
       print "document.business.bus_name.value = '';\n";
