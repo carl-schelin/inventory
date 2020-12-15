@@ -15,7 +15,7 @@
   if (isset($_SESSION['username'])) {
     $package = "openview.mysql.php";
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       $formVars['id'] = clean($_GET['id'],       10);
       if (isset($_GET['start'])) {
         $formVars['start']    = clean($_GET['start'],    15);
@@ -57,7 +57,7 @@
         $where = '';
       }
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       print "document.getElementById('alarms_mysql').innerHTML = '" . wait_Process('Alarms Waiting...') . "';\n";
 
@@ -134,7 +134,7 @@
       print "document.getElementById('alarms_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 
