@@ -13,10 +13,10 @@
 
   $package = "i3admins.php";
 
-  logaccess($_SESSION['uid'], $package, "Viewing the i3 server listing table");
+  logaccess($db, $_SESSION['uid'], $package, "Viewing the i3 server listing table");
 
 # If group or an admin, allow access
-  if (check_grouplevel($GRP_i3)) {
+  if (check_grouplevel($db, $GRP_i3)) {
 
 ?>
 <!DOCTYPE HTML>
