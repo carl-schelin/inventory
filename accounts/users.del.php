@@ -19,7 +19,7 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Admin)) {
+    if (check_userlevel($db, $AL_Admin)) {
       if ($formVars['id'] == $_SESSION['uid']) {
         print "alert('You cannot delete yourself.');\n";
         exit;
@@ -29,7 +29,7 @@
         exit;
       }
 
-      logaccess($_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from users");
+      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from users");
 
       $q_string  = "delete ";
       $q_string .= "from users ";
@@ -38,7 +38,7 @@
 
       print "alert('User deleted.');\n";
     } else {
-      logaccess($_SESSION['uid'], $package, "Access denied");
+      logaccess($db, $_SESSION['uid'], $package, "Access denied");
     }
   }
 ?>
