@@ -144,7 +144,7 @@
 
       $output .= "</table>";
 
-      print "document.getElementById('detail_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+      print "document.getElementById('detail_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
       if ($a_bugs['bug_closed'] == '0000-00-00') {
         print "document.start.bug_text.value = '';\n";
