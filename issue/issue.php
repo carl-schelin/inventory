@@ -13,7 +13,7 @@
 
   $package = "issue.php";
 
-  logaccess($_SESSION['uid'], $package, "Managing issues");
+  logaccess($db, $_SESSION['uid'], $package, "Managing issues");
 
   $issue = "Issue Tracker";
   $server = "";
