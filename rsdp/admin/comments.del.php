@@ -20,8 +20,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from rsdp_comments");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from rsdp_comments");
 
       $q_string  = "delete ";
       $q_string .= "from rsdp_comments ";
@@ -30,7 +30,7 @@
 
       print "alert('Comment deleted');\n";
     } else {
-      logaccess($_SESSION['uid'], $package, "Access denied");
+      logaccess($db, $_SESSION['uid'], $package, "Access denied");
     }
   }
 ?>
