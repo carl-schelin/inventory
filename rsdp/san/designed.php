@@ -15,7 +15,7 @@
 
   $package = "designed.php";
 
-  logaccess($_SESSION['uid'], $package, "Accessing script");
+  logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
   if (isset($_GET['rsdp'])) {
     $formVars['rsdp'] = clean($_GET['rsdp'], 10);
