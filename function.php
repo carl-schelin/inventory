@@ -606,4 +606,14 @@ function show_Help( $p_db, $p_script ) {
   }
 }
 
+# connect to the server
+function db_connect($p_server, $p_database, $p_user, $p_pass){
+
+  $r_db = mysqli_connect($p_server, $p_user, $p_pass, $p_database);
+
+  $db_select = mysqli_select_db($r_db, $p_database);
+
+  return $r_db;
+}
+
 ?>
