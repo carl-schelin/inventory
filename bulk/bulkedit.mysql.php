@@ -124,7 +124,7 @@
       $details .= "</table>\n";
       $details .= "</form>\n";
 
-      print "document.getElementById('details_mysql').innerHTML = '" . mysqli_real_escape_string($details) . "';\n";
+      print "document.getElementById('details_mysql').innerHTML = '" . mysqli_real_escape_string($db, $details) . "';\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
