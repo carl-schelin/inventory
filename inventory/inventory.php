@@ -13,7 +13,7 @@
 
   $package = "inventory.php";
 
-  logaccess($_SESSION['uid'], $package, "Viewing Inventory Settings");
+  logaccess($db, $_SESSION['uid'], $package, "Viewing Inventory Settings");
 
   if (isset($_GET['filter'])) {
     $formVars['filter'] = clean($_GET['filter'], 255);
@@ -50,7 +50,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help('tabbed_inventory')) {
+  if (show_Help($db, 'tabbed_inventory')) {
     $display = "display: block";
   } else {
     $display = "display: none";
