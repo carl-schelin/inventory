@@ -14,7 +14,7 @@
 
   $package = "network.php";
 
-  logaccess($_SESSION['uid'], $package, "Viewing Network Settings for the project");
+  logaccess($db, $_SESSION['uid'], $package, "Viewing Network Settings for the project");
 
   if (isset($_GET['myrsdp'])) {
     $formVars['myrsdp'] = clean($_GET['myrsdp'], 10);
@@ -44,7 +44,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help('rsdp_network')) {
+  if (show_Help($db, 'rsdp_network')) {
     $display = "display: block";
   } else {
     $display = "display: none";
