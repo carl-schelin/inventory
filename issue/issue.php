@@ -23,7 +23,7 @@
     $formVars['servername'] = clean($_GET['servername'], 60);
 
     if (strlen($formVars['servername']) > 0) {
-      $formVars['server'] = return_ServerID($formVars['servername']);
+      $formVars['server'] = return_ServerID($db, $formVars['servername']);
     }
 
     $q_string  = "select inv_id,inv_name,inv_manager ";
