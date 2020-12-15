@@ -195,7 +195,7 @@
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
-        print "document.getElementById('firewall_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('firewall_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
       }
 
 
@@ -369,7 +369,7 @@
 
       mysqli_free_result($q_firewall);
 
-      print "document.getElementById('firewall_table').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('firewall_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.edit.fw_update.disabled = true;\n";
     } else {
