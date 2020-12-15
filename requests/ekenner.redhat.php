@@ -11,7 +11,7 @@
 
   $package = "ekenner.redhat.php";
 
-  logaccess($formVars['uid'], $package, "Searching for Red Hat Installations.");
+  logaccess($db, $formVars['uid'], $package, "Searching for Red Hat Installations.");
 
   if (isset($_GET['group'])) {
     $formVars['group'] = clean($_GET['group'], 10);
