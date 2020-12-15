@@ -11,7 +11,7 @@
 
   $package = "ipreport.php";
 
-  logaccess($formVars['uid'], $package, "Getting a report on IPs.");
+  logaccess($db, $formVars['uid'], $package, "Getting a report on IPs.");
 
   if (isset($_GET['csv'])) {
     $formVars['csv'] = clean($_GET['csv'], 10);
@@ -51,7 +51,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help('notscanned')) {
+  if (show_Help($db, 'notscanned')) {
     $display = "display: block";
   } else {
     $display = "display: none";
