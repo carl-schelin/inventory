@@ -94,6 +94,7 @@
         $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
         generateEmail(
+          $db, 
           $formVars['rsdp'],
           "<p>Reminder: Application monitoring has been completed and the new Server is ready to have the Application completed.</p>",
           "<p>Click on <a href=\"" . $RSDProot . "/application/configured.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>",
@@ -110,7 +111,7 @@
       }
 
       if ($formVars['app_complete'] == 1) {
-        setstatus($formVars['rsdp'], 1, 17);
+        setstatus($db, "$formVars['rsdp'], 1, 17);
 
         $q_string  = "select rsdp_platform ";
         $q_string .= "from rsdp_server ";
@@ -119,6 +120,7 @@
         $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
         generateEmail(
+          $db, 
           $formVars['rsdp'],
           "<p>The Server is fully configured and ready to be scanned by InfoSec.</p>",
           "<p>Click on <a href=\"" . $RSDProot . "/infosec/scanned.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>", 
@@ -135,6 +137,7 @@
         $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
         if ($a_rsdp_tickets['tkt_infosec']) {
           submit_Ticket(
+            $db, 
             $formVars['rsdp'],
             $RSDProot . "/infosec/scanned.php",
             "rsdp_platformspoc",
@@ -149,7 +152,7 @@
         $q_rsdp_tickets = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
         if ($a_rsdp_tickets['tkt_sysscan']) {
-          submit_Scan($formVars['rsdp']);
+          submit_Scan($db, "$formVars['rsdp']);
         }
 
         print "alert('Application Task Submitted');\n";
