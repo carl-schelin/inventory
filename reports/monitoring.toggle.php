@@ -18,7 +18,7 @@
     $formVars['id']       = clean($_GET['id'],       10);
     $formVars['flip']     = clean($_GET['flip'],     50);
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['flip'] == 'openview') {
         $q_string  = "select int_openview ";
         $q_string .= "from interface ";
@@ -219,7 +219,7 @@
       }
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
