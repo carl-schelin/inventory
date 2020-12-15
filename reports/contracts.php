@@ -11,7 +11,7 @@
 
   $package = "contracts.php";
 
-  logaccess($formVars['uid'], $package, "Listing of Lynda's support contract import.");
+  logaccess($db, $formVars['uid'], $package, "Listing of Lynda's support contract import.");
 
   $formVars['product']   = clean($_GET['product'],  10);
   $formVars['group']     = clean($_GET['group'],    10);
@@ -63,7 +63,7 @@ if ($formVars['inwork'] == '') {
   }
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
