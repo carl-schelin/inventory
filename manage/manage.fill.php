@@ -20,8 +20,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from chkserver");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from chkserver");
 
       $q_string  = "select chk_id,chk_companyid,chk_errorid,chk_userid,chk_status,chk_text,chk_priority,chk_closed ";
       $q_string .= "from chkserver ";
@@ -36,7 +36,7 @@
       $q_string .= "where gpl_group = 1 and usr_disabled = 0 ";
       $q_string .= "order by usr_last ";
 
-      $chkuserid     = return_Index($a_chkserver['chk_userid'], $q_string);
+      $chkuserid     = return_Index($db, $a_chkserver['chk_userid'], $q_string);
 
       print "document.error.error_text.value = '"        . mysqli_real_escape_string($a_chkserver['chk_text'])        . "';\n";
 
@@ -73,7 +73,7 @@
       print "document.error.chk_id.value = " . $formVars['id'] . ";\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
