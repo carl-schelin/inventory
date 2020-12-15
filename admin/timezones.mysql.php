@@ -124,7 +124,7 @@
 
       mysqli_free_result($q_zones);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.zones.zone_name.value = '';\n";
       print "document.zones.zone_description.value = '';\n";
