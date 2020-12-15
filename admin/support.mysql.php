@@ -151,7 +151,7 @@
 
       mysqli_free_result($q_support);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.support.sup_company.value = '';\n";
       print "document.support.sup_hwresponse[0].selected = true;\n";
