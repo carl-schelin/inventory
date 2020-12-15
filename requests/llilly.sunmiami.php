@@ -11,7 +11,7 @@
 
   $package = "llilly.sunmiami.php";
 
-  logaccess($formVars['uid'], $package, "Checking out the Miami Sun inventory.");
+  logaccess($db, $formVars['uid'], $package, "Checking out the Miami Sun inventory.");
 
 ?>
 <!DOCTYPE HTML>
