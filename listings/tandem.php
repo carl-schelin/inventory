@@ -13,10 +13,10 @@
 
   $package = "tandem.php";
 
-  logaccess($_SESSION['uid'], $package, "Viewing the tandem listing table");
+  logaccess($db, $_SESSION['uid'], $package, "Viewing the tandem listing table");
 
 # If group or an admin, allow access
-  if (check_grouplevel($GRP_Tandem)) {
+  if (check_grouplevel($db, $GRP_Tandem)) {
 
 ?>
 <!DOCTYPE HTML>
