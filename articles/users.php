@@ -11,7 +11,7 @@
 
   $package = "users.php";
 
-  logaccess($formVars['uid'], $package, "How does Changelog work?");
+  logaccess($db, $formVars['uid'], $package, "How does Changelog work?");
 
 ?>
 <!DOCTYPE HTML>
