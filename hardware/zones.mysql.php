@@ -128,7 +128,7 @@
 
       mysqli_free_result($q_ip_zones);
 
-      print "document.getElementById('table_mysql').innerHTML = '"   . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '"   . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.zones.update.disabled = true;\n";
 
