@@ -11,7 +11,7 @@
 
   $package = "jsherard.listing.php";
 
-  logaccess($formVars['uid'], $package, "Viewing Jeff's oracle listing.");
+  logaccess($db, $formVars['uid'], $package, "Viewing Jeff's oracle listing.");
 
   $orderby = " order by ";
   if (isset($_GET['sort'])) {
