@@ -11,7 +11,7 @@
 
   $package = "pschmidt.lab.php";
 
-  logaccess($formVars['uid'], $package, "Getting a listing of Lab Application.");
+  logaccess($db, $formVars['uid'], $package, "Getting a listing of Lab Application.");
 
 ?>
 <!DOCTYPE HTML>
