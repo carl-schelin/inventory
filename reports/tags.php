@@ -8,7 +8,11 @@
   $called = 'no';
   include($Loginpath . '/check.php');
   include($Sitepath . '/function.php');
-  check_login($AL_Admin);
+
+# connect to the database
+  $db = db_connect($DBserver, $DBname, $DBuser, $DBpassword);
+
+  check_login($db, $AL_Admin);
 
   $package = "tags.php";
 
