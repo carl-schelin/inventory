@@ -32,7 +32,7 @@
       $formVars['sort'] = '';
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']               = clean($_GET['id'],                10);
         $formVars['int_id']           = clean($_GET['int_id'],            10);
@@ -52,7 +52,7 @@
         }
 
         if (strlen($formVars['int_id']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "vul_interface   =   " . $formVars['int_id']           . "," .
@@ -78,7 +78,7 @@
             $message = "Ownership updated.";
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -89,7 +89,7 @@
       }
 
 
-        logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+        logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
         $help  = "<table class=\"ui-styled-table\">\n";
         $help .= "<tr>\n";
@@ -296,7 +296,7 @@
         print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($help . $header . $output) . "';\n\n";
 
       } else {
-        logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+        logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
       }
 
   }
