@@ -28,9 +28,9 @@
       $a_device = mysqli_fetch_array($q_device);
       mysqli_free_result($q_device);
 
-      print "document.device.dev_type.value = '"        . mysqli_real_escape_string($a_device['dev_type'])        . "';\n";
-      print "document.device.dev_description.value = '" . mysqli_real_escape_string($a_device['dev_description']) . "';\n";
-      print "document.device.dev_notes.value = '"       . mysqli_real_escape_string($a_device['dev_notes'])       . "';\n";
+      print "document.device.dev_type.value = '"        . mysqli_real_escape_string($db, $a_device['dev_type'])        . "';\n";
+      print "document.device.dev_description.value = '" . mysqli_real_escape_string($db, $a_device['dev_description']) . "';\n";
+      print "document.device.dev_notes.value = '"       . mysqli_real_escape_string($db, $a_device['dev_notes'])       . "';\n";
 
       if ($a_device['dev_infrastructure']) {
         print "document.device.dev_infrastructure.checked = true\n;";
