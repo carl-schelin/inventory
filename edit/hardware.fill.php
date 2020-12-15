@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from hardware");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from hardware");
 
       $q_string  = "select hw_id,hw_companyid,hw_serial,hw_asset,hw_group,hw_product,hw_vendorid,hw_rma,";
       $q_string .= "hw_type,hw_size,hw_speed,hw_purchased,hw_built,hw_active,hw_eol,hw_retired,hw_reused,hw_supportid,";
@@ -83,13 +83,13 @@
         print "selbox.options[selbox.options.length] = new Option(\"" . $a_hwselect['hw_asset'] . $a_hwselect['hw_serial'] . " " . $a_hwselect['mod_name'] . "\"," . $a_hwselect['hw_id'] . ");\n";
       }
 
-      $product  = return_Index($a_hardware['hw_product'],   "select prod_id from products order by prod_name");
-      $model    = return_Index($a_hardware['hw_vendorid'],  "select mod_id from models where mod_type = " . $a_hardware['hw_type'] . " order by mod_vendor,mod_name");
-      $type     = return_Index($a_hardware['hw_type'],      "select part_id from parts order by part_name");
-      $support  = return_Index($a_hardware['hw_supportid'], "select sup_id from support order by sup_company,sup_contract");
-      $response = return_Index($a_hardware['hw_response'],  "select slv_id from supportlevel order by slv_value");
-      $hwselect = return_Index($a_hardware['hw_hw_id'],     "select hw_id from hardware where hw_companyid = " . $a_hardware['hw_companyid'] . " and hw_hw_id = 0 and hw_id != " . $formVars['id']);
-      $hwdisk   = return_Index($a_hardware['hw_hd_id'],     "select hw_id from hardware left join models on models.mod_id = hardware.hw_vendorid where hw_companyid = " . $a_hardware['hw_companyid'] . " and mod_name like \"RAID%\" and hw_id != " . $formVars['id']);
+      $product  = return_Index($db, $a_hardware['hw_product'],   "select prod_id from products order by prod_name");
+      $model    = return_Index($db, $a_hardware['hw_vendorid'],  "select mod_id from models where mod_type = " . $a_hardware['hw_type'] . " order by mod_vendor,mod_name");
+      $type     = return_Index($db, $a_hardware['hw_type'],      "select part_id from parts order by part_name");
+      $support  = return_Index($db, $a_hardware['hw_supportid'], "select sup_id from support order by sup_company,sup_contract");
+      $response = return_Index($db, $a_hardware['hw_response'],  "select slv_id from supportlevel order by slv_value");
+      $hwselect = return_Index($db, $a_hardware['hw_hw_id'],     "select hw_id from hardware where hw_companyid = " . $a_hardware['hw_companyid'] . " and hw_hw_id = 0 and hw_id != " . $formVars['id']);
+      $hwdisk   = return_Index($db, $a_hardware['hw_hd_id'],     "select hw_id from hardware left join models on models.mod_id = hardware.hw_vendorid where hw_companyid = " . $a_hardware['hw_companyid'] . " and mod_name like \"RAID%\" and hw_id != " . $formVars['id']);
 
       print "document.edit.hw_serial.value = '"    . mysqli_real_escape_string($a_hardware['hw_serial'])    . "';\n";
       print "document.edit.hw_asset.value = '"     . mysqli_real_escape_string($a_hardware['hw_asset'])     . "';\n";
@@ -128,7 +128,7 @@
 
       print "document.edit.hw_update.disabled = false;\n";
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
