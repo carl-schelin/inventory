@@ -12,7 +12,7 @@
     include($Loginpath . '/check.php');
 
 # connect to the database
-    $db = db_connect($DBserver, $DBname, $DBuser, $DBpassword, $DBname);
+    $db = db_connect($DBserver, $DBname, $DBuser, $DBpassword);
 
     check_login($db, $AL_Guest);
 
