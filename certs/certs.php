@@ -13,10 +13,10 @@
 
   $package = "certs.php";
 
-  logaccess($_SESSION['uid'], $package, "Accessing script");
+  logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
 # if help has not been seen yet,
-  if (show_Help($Sitepath . "/" . $package)) {
+  if (show_Help($db, $Sitepath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
