@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from interface");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from interface");
 
       $q_string  = "select int_companyid,int_face,int_int_id,int_server,int_addr,int_eth,int_switch,int_mask,";
       $q_string .= "int_gate,int_note,int_ip6,int_primary,int_type,int_media,int_speed,int_port,int_sysport,";
@@ -34,14 +34,14 @@
       $a_interface = mysqli_fetch_array($q_interface);
       mysqli_free_result($q_interface);
 
-      $inttype       = return_Index($a_interface['int_type'],       "select itp_id from inttype order by itp_id");
-      $intzone       = return_Index($a_interface['int_zone'],       "select zone_id from ip_zones order by zone_name");
-      $intmedia      = return_Index($a_interface['int_media'],      "select med_id from int_media order by med_text");
-      $intspeed      = return_Index($a_interface['int_speed'],      "select spd_id from int_speed order by spd_text");
-      $intduplex     = return_Index($a_interface['int_duplex'],     "select dup_id from int_duplex order by dup_text");
-      $introle       = return_Index($a_interface['int_role'],       "select rol_id from int_role order by rol_text");
-      $intintid      = return_Index($a_interface['int_int_id'],     "select int_id from interface where int_companyid = " . $a_interface['int_companyid'] . " and int_redundancy > 0 order by int_face");
-      $intredundancy = return_Index($a_interface['int_redundancy'], "select red_id from int_redundancy order by red_text");
+      $inttype       = return_Index($db, $a_interface['int_type'],       "select itp_id from inttype order by itp_id");
+      $intzone       = return_Index($db, $a_interface['int_zone'],       "select zone_id from ip_zones order by zone_name");
+      $intmedia      = return_Index($db, $a_interface['int_media'],      "select med_id from int_media order by med_text");
+      $intspeed      = return_Index($db, $a_interface['int_speed'],      "select spd_id from int_speed order by spd_text");
+      $intduplex     = return_Index($db, $a_interface['int_duplex'],     "select dup_id from int_duplex order by dup_text");
+      $introle       = return_Index($db, $a_interface['int_role'],       "select rol_id from int_role order by rol_text");
+      $intintid      = return_Index($db, $a_interface['int_int_id'],     "select int_id from interface where int_companyid = " . $a_interface['int_companyid'] . " and int_redundancy > 0 order by int_face");
+      $intredundancy = return_Index($db, $a_interface['int_redundancy'], "select red_id from int_redundancy order by red_text");
 
 
       print "document.edit.int_server.value = '"    . mysqli_real_escape_string($a_interface['int_server'])    . "';\n";
@@ -181,7 +181,7 @@
       print "document.edit.int_server.focus();\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
