@@ -62,7 +62,7 @@
       $formVars['URL'] .= "\">Link</a></p>";
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
 
 # prepopulate the small tables to increase lookup time.
       $q_string  = "select zone_id,zone_name ";
@@ -107,7 +107,7 @@
         $int_redundancy[$a_int_redundancy['red_id']] = $a_int_redundancy['red_text'];
       }
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
 # project
       $project  = "<form name=\"projects\">\n";
@@ -1168,7 +1168,7 @@
       print "document.getElementById('monitoring_mysql').innerHTML = '" . mysqli_real_escape_string($monitoring) . "';\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
