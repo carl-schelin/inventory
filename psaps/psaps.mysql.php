@@ -33,7 +33,7 @@
     $pages = $formVars['pagination'];
     $formVars['pagination'] *= 20;
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']               = clean($_GET['id'],                 10);
         $formVars['psap_ali_id']      = clean($_GET['psap_ali_id'],        10);
@@ -63,7 +63,7 @@
         }
 
         if (strlen($formVars['psap_description']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "psap_customerid     =   " . 1319                          . "," .
@@ -87,7 +87,7 @@
             $message = "PSAP updated.";
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['psap_ali_id']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['psap_ali_id']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -98,7 +98,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">\n";
@@ -201,7 +201,7 @@
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
