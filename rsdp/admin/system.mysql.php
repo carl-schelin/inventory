@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']            = clean($_GET['id'],             10);
         $formVars['os_vendor']     = clean($_GET['os_vendor'],     100);
@@ -38,7 +38,7 @@
         }
 
         if (strlen($formVars['os_software']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "os_vendor    = \"" . $formVars['os_vendor']    . "\"," . 
@@ -54,7 +54,7 @@
             $message = "Operating System updated.";
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['prj_name']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['prj_name']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -65,7 +65,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">\n";
@@ -157,7 +157,7 @@
       print "document.dialog.os_exception.checked = false;\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
