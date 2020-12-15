@@ -19,7 +19,7 @@
 
   $package = "text.mysql.php";
 
-  logaccess($_SESSION['uid'], $package, "Generating text report.");
+  logaccess($db, $_SESSION['uid'], $package, "Generating text report.");
 
   $q_string  = "select det_id,det_text,det_timestamp,usr_name ";
   $q_string .= "from issue_detail ";
