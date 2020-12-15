@@ -2,14 +2,17 @@
 # Script: zones.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description:
 
   include('settings.php');
   $called = 'no';
   include($Loginpath . '/check.php');
   include($Sitepath . '/function.php');
-  check_login('2');
+
+# connect to the database
+  $db = db_connect($DBserver, $DBname, $DBuser, $DBpassword);
+
+  check_login($db, $AL_Edit);
 
   $package = "zones.php";
 
