@@ -14,7 +14,7 @@
 
   $package = "index.php";
 
-  logaccess($_SESSION['uid'], $package, "Viewing RSDP index");
+  logaccess($db, $_SESSION['uid'], $package, "Viewing RSDP index");
 
   if (isset($_GET['myrsdp'])) {
     $formVars['myrsdp'] = clean($_GET['myrsdp'], 10);
@@ -45,7 +45,7 @@
 
 <script type="text/javascript">
 <?php
-  if (check_userlevel($AL_Admin)) {
+  if (check_userlevel($db, $AL_Admin)) {
 ?>
 function delete_line( p_script_url ) {
   var answer = confirm("This deletes every task and server associated with this project.\nMake sure you review the list of servers to ensure this is the correct action.\nYou can always delete individual servers vs the entire Project.\n\nAre you sure you want to delete this Project?")
