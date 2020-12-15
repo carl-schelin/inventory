@@ -20,8 +20,8 @@
       $formVars['rsdp'] = clean($_GET['rsdp'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['rsdp'] . " from rsdp_infosec");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['rsdp'] . " from rsdp_infosec");
 
       $q_string  = "select is_id,is_ticket,is_scan,is_verified,is_checklist ";
       $q_string .= "from rsdp_infosec ";
@@ -57,7 +57,7 @@
       print "validate_Form();\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
