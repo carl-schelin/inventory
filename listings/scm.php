@@ -13,10 +13,10 @@
 
   $package = "scm.php";
 
-  logaccess($_SESSION['uid'], $package, "Viewing the scm server listing table");
+  logaccess($db, $_SESSION['uid'], $package, "Viewing the scm server listing table");
 
 # If group or an admin, allow access
-  if (check_grouplevel($GRP_SCM)) {
+  if (check_grouplevel($db, $GRP_SCM)) {
 
 ?>
 <!DOCTYPE HTML>
