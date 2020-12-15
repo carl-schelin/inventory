@@ -13,10 +13,10 @@
 
   $package = "windows.php";
 
-  logaccess($_SESSION['uid'], $package, "Viewing the windows server listing table");
+  logaccess($db, $_SESSION['uid'], $package, "Viewing the windows server listing table");
 
 # If group or an admin, allow access
-  if (check_grouplevel($GRP_Windows)) {
+  if (check_grouplevel($db, $GRP_Windows)) {
 
 ?>
 <!DOCTYPE HTML>
