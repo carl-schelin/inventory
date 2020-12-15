@@ -20,8 +20,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from rsdp_interface");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from rsdp_interface");
 
       $q_string  = "select if_id,if_if_id,if_rsdp,if_name,if_sysport,if_interface,if_ipcheck,if_swcheck,";
       $q_string .= "if_zone,if_media,if_speed,if_duplex,if_redundant,if_type,if_description,if_virtual,";
@@ -32,13 +32,13 @@
       $a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface);
       mysqli_free_result($q_rsdp_interface);
 
-      $ifmedia     = return_Index($a_rsdp_interface['if_media'],     "select med_id from int_media order by med_text");
-      $ifspeed     = return_Index($a_rsdp_interface['if_speed'],     "select spd_id from int_speed order by spd_text");
-      $ifduplex    = return_Index($a_rsdp_interface['if_duplex'],    "select dup_id from int_duplex order by dup_text");
-      $ifredundant = return_Index($a_rsdp_interface['if_redundant'], "select red_id from int_redundancy order by red_text");
-      $iftype      = return_Index($a_rsdp_interface['if_type'],      "select itp_id from inttype order by itp_id");
-      $ifzone      = return_Index($a_rsdp_interface['if_zone'],      "select zone_id from ip_zones order by zone_name");
-      $ififid      = return_Index($a_rsdp_interface['if_if_id'],     "select if_id from rsdp_interface where if_rsdp = " . $a_rsdp_interface['if_rsdp'] . " and if_redundant > 0 order by if_interface");
+      $ifmedia     = return_Index($db, $a_rsdp_interface['if_media'],     "select med_id from int_media order by med_text");
+      $ifspeed     = return_Index($db, $a_rsdp_interface['if_speed'],     "select spd_id from int_speed order by spd_text");
+      $ifduplex    = return_Index($db, $a_rsdp_interface['if_duplex'],    "select dup_id from int_duplex order by dup_text");
+      $ifredundant = return_Index($db, $a_rsdp_interface['if_redundant'], "select red_id from int_redundancy order by red_text");
+      $iftype      = return_Index($db, $a_rsdp_interface['if_type'],      "select itp_id from inttype order by itp_id");
+      $ifzone      = return_Index($db, $a_rsdp_interface['if_zone'],      "select zone_id from ip_zones order by zone_name");
+      $ififid      = return_Index($db, $a_rsdp_interface['if_if_id'],     "select if_id from rsdp_interface where if_rsdp = " . $a_rsdp_interface['if_rsdp'] . " and if_redundant > 0 order by if_interface");
 
 
       print "document.interface.if_name.value = '"        . mysqli_real_escape_string($a_rsdp_interface['if_name'])        . "';\n";
@@ -81,7 +81,7 @@
       print "validate_Interface();\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
