@@ -28,8 +28,8 @@
       $a_ip_zones = mysqli_fetch_array($q_ip_zones);
       mysqli_free_result($q_ip_zones);
 
-      print "document.zones.zone_name.value = '" . mysqli_real_escape_string($a_ip_zones['zone_name']) . "';\n";
-      print "document.zones.zone_desc.value = '" . mysqli_real_escape_string($a_ip_zones['zone_desc']) . "';\n";
+      print "document.zones.zone_name.value = '" . mysqli_real_escape_string($db, $a_ip_zones['zone_name']) . "';\n";
+      print "document.zones.zone_desc.value = '" . mysqli_real_escape_string($db, $a_ip_zones['zone_desc']) . "';\n";
 
       print "document.zones.id.value = " . $formVars['id'] . ";\n";
 
