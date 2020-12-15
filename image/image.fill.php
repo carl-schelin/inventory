@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from images");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from images");
 
       $q_string  = "select img_title,img_file,img_facing,img_owner,img_date ";
       $q_string .= "from images ";
@@ -29,7 +29,7 @@
       $a_images = mysqli_fetch_array($q_images);
       mysqli_free_result($q_images);
 
-      $users = return_Index($a_images['img_owner'], "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
+      $users = return_Index($db, $a_images['img_owner'], "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
 
       print "document.images.img_title.value = '" . mysqli_real_escape_string($a_images['img_title'])    . "';\n";
       print "document.images.img_file.value = '"  . mysqli_real_escape_string($a_images['img_file'])     . "';\n";
@@ -47,7 +47,7 @@
 #      $output .= "</div>\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
