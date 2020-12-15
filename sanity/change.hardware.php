@@ -19,7 +19,7 @@
   $formVars['id']        = clean($_GET['id'],       10);
 
 # update all the hardware to match the inv_manager of the id
-  if (check_userlevel($AL_Admin)) {
+  if (check_userlevel($db, $AL_Admin)) {
     $q_string  = "select inv_manager,inv_product ";
     $q_string .= "from inventory ";
     $q_string .= "where inv_id = " . $formVars['id'] . " ";
