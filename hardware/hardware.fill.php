@@ -32,17 +32,17 @@
       $type = return_Index($db, $a_models['mod_type'], "select part_id from parts order by part_name");
 
 
-      print "document.hardware.mod_vendor.value = '" . mysqli_real_escape_string($a_models['mod_vendor']) . "';\n";
-      print "document.hardware.mod_name.value = '"   . mysqli_real_escape_string($a_models['mod_name'])   . "';\n";
-      print "document.hardware.mod_size.value = '"   . mysqli_real_escape_string($a_models['mod_size'])   . "';\n";
-      print "document.hardware.mod_speed.value = '"  . mysqli_real_escape_string($a_models['mod_speed'])  . "';\n";
-      print "document.hardware.mod_eopur.value = '"  . mysqli_real_escape_string($a_models['mod_eopur'])  . "';\n";
-      print "document.hardware.mod_eoship.value = '" . mysqli_real_escape_string($a_models['mod_eoship']) . "';\n";
-      print "document.hardware.mod_eol.value = '"    . mysqli_real_escape_string($a_models['mod_eol'])    . "';\n";
-      print "document.hardware.mod_plugs.value = '"  . mysqli_real_escape_string($a_models['mod_plugs'])  . "';\n";
-      print "document.hardware.mod_start.value = '"  . mysqli_real_escape_string($a_models['mod_start'])  . "';\n";
-      print "document.hardware.mod_draw.value = '"   . mysqli_real_escape_string($a_models['mod_draw'])   . "';\n";
-      print "document.hardware.mod_btu.value = '"    . mysqli_real_escape_string($a_models['mod_btu'])    . "';\n";
+      print "document.hardware.mod_vendor.value = '" . mysqli_real_escape_string($db, $a_models['mod_vendor']) . "';\n";
+      print "document.hardware.mod_name.value = '"   . mysqli_real_escape_string($db, $a_models['mod_name'])   . "';\n";
+      print "document.hardware.mod_size.value = '"   . mysqli_real_escape_string($db, $a_models['mod_size'])   . "';\n";
+      print "document.hardware.mod_speed.value = '"  . mysqli_real_escape_string($db, $a_models['mod_speed'])  . "';\n";
+      print "document.hardware.mod_eopur.value = '"  . mysqli_real_escape_string($db, $a_models['mod_eopur'])  . "';\n";
+      print "document.hardware.mod_eoship.value = '" . mysqli_real_escape_string($db, $a_models['mod_eoship']) . "';\n";
+      print "document.hardware.mod_eol.value = '"    . mysqli_real_escape_string($db, $a_models['mod_eol'])    . "';\n";
+      print "document.hardware.mod_plugs.value = '"  . mysqli_real_escape_string($db, $a_models['mod_plugs'])  . "';\n";
+      print "document.hardware.mod_start.value = '"  . mysqli_real_escape_string($db, $a_models['mod_start'])  . "';\n";
+      print "document.hardware.mod_draw.value = '"   . mysqli_real_escape_string($db, $a_models['mod_draw'])   . "';\n";
+      print "document.hardware.mod_btu.value = '"    . mysqli_real_escape_string($db, $a_models['mod_btu'])    . "';\n";
 
       print "document.hardware.mod_type['"     . $type                     . "'].selected = true;\n";
       print "document.hardware.mod_volts['"    . $a_models['mod_volts']    . "'].selected = true;\n";
