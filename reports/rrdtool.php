@@ -11,7 +11,7 @@
 
   $package = "rrdtool.php";
 
-  logaccess($formVars['uid'], $package, "Viewing rrdtool");
+  logaccess($db, $formVars['uid'], $package, "Viewing rrdtool");
 
   $formVars['product']   = clean($_GET['product'],  10);
   $formVars['group']     = clean($_GET['group'],    10);
