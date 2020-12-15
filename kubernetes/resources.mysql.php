@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']               = clean($_GET['id'],               10);
         $formVars['res_name']         = clean($_GET['res_name'],        100);
@@ -30,7 +30,7 @@
         }
 
         if (strlen($formVars['res_name']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "res_name        = \"" . $formVars['res_name'] . "\"";
@@ -44,7 +44,7 @@
             $message = "Resources updated.";
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['res_name']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['res_name']);
 
           mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
@@ -55,7 +55,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">\n";
@@ -81,7 +81,7 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      if (check_userlevel($AL_Admin)) {
+      if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\" width=\"60\">Del</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\" width=\"30\">Id</th>\n";
@@ -100,7 +100,7 @@
           $linkend   = "</a>";
 
           $output .= "<tr>";
-          if (check_userlevel($AL_Admin)) {
+          if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>";
           }
           $output .= "  <td class=\"ui-widget-content delete\">"   . $linkstart . $a_resources['res_id']          . $linkend . "</td>";
@@ -122,7 +122,7 @@
       print "document.resources.res_name.value = '';\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
