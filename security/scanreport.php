@@ -11,7 +11,7 @@
 
   $package = "scanreport.php";
 
-  logaccess($formVars['uid'], $package, "Getting a report on vulnerabilities.");
+  logaccess($db, $formVars['uid'], $package, "Getting a report on vulnerabilities.");
 
 ?>
 <!DOCTYPE HTML>
