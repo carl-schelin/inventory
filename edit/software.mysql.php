@@ -302,7 +302,7 @@
         $output .= "  <td class=\"ui-widget-content\" colspan=\"2\">Notification Requirements: <input type=\"text\" name=\"sw_notification\" size=\"30\"></td>\n";
         $output .= "</table>\n";
 
-        print "document.getElementById('software_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('software_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
       }
 
 
@@ -410,7 +410,7 @@
 
       mysqli_free_result($q_software);
 
-      print "document.getElementById('software_table').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('software_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.edit.sw_update.disabled = true;\n";
     } else {
