@@ -22,7 +22,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['id'],             10);
         $formVars["com_task"]       = clean($_GET["com_task"],       10);
@@ -35,7 +35,7 @@
         }
 
         if (strlen($formVars['com_text']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
 # if a new server is being entered, we'll need to create a server entry so the comment can have the correct association
           if ($formVars['com_rsdp'] == 0) {
@@ -44,7 +44,7 @@
             $q_string .= "set rsdp_id = null,rsdp_requestor = " . $_SESSION['uid'];
             $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-            $formVars['com_rsdp'] = last_insert_id();
+            $formVars['com_rsdp'] = last_insert_id($db);
 
             print "document.rsdp.rsdp.value = "          . $formVars['com_rsdp'] . ";\n";
             print "document.comments.com_rsdp.value = "  . $formVars['com_rsdp'] . ";\n";
@@ -68,7 +68,7 @@
             $query = "update rsdp_comments set " . $q_string . " where com_id = " . $formVars['id'];
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['com_rsdp']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['com_rsdp']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -78,7 +78,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">\n";
@@ -151,7 +151,7 @@
       print "document.comments.com_rsdp.value = " . $formVars['com_rsdp'] . ";\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
