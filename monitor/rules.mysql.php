@@ -26,7 +26,7 @@
       $orderby = "order by rule_description ";
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']                    = clean($_GET['id'],                  10);
         $formVars['rule_parent']           = clean($_GET['rule_parent'],         10);
@@ -58,7 +58,7 @@
         }
 
         if (strlen($formVars['rule_description']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "rule_parent        =   " . $formVars['rule_parent']       . "," .
@@ -81,7 +81,7 @@
             $query = "update rules set " . $q_string . " where rule_id = " . $formVars['id'];
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['rule_description']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['rule_description']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
         } else {
@@ -90,7 +90,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">\n";
@@ -239,7 +239,7 @@
       print "document.rules.rule_deleted.checked = false;\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
