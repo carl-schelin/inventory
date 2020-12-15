@@ -13,7 +13,7 @@
 
   $package = "ticket.php";
 
-  logaccess($_SESSION['uid'], $package, "Managing an issue");
+  logaccess($db, $_SESSION['uid'], $package, "Managing an issue");
 
   $formVars['id']     = clean($_GET['id'], 10);
   if (!isset($_GET['id'])) {
