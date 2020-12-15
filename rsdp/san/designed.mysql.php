@@ -77,10 +77,11 @@
 
 # if there aren't any HBA ports configured, skip it
         if (mysqli_num_rows($q_rsdp_san) == 0) {
-          setstatus($formVars['rsdp'], 2, 3);
+          setstatus($db, "$formVars['rsdp'], 2, 3);
         } else {
 
           generateEmail(
+            $db, 
             $formVars['rsdp'],
             "<p>Reminder: The new Server has been designed and the SAN switch ports need to be allocated.</p>",
             "<p>Click on <a href=\"" . $RSDProot . "/san/designed.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>",
@@ -98,7 +99,7 @@
 
 # now set status as complete and send out e-mails.
       if ($formVars['san_complete'] == 1) {
-        setstatus($formVars['rsdp'], 1, 3);
+        setstatus($db, "$formVars['rsdp'], 1, 3);
 
 # only send the e-mail if step 4 is also complete
         $q_string  = "select st_id ";
@@ -111,11 +112,12 @@
         if (mysqli_num_rows($q_rsdp_status) > 0) {
 
 # special bit for systems that are virtual machines. Make sure the e-mail is properly sent
-          $virtual = rsdp_Virtual($formVars['rsdp']);
+          $virtual = rsdp_Virtual($db, "$formVars['rsdp']);
 
 # now see if it is a Virtual Machine; if so, send the e-mail to the VM team and change the link to the 5vm link.
           if ($virtual) {
             generateEmail(
+              $db, 
               $formVars['rsdp'],
               "<p>The LAN has been configured and IP addresses assigned.</p>", 
               "<p>Click on <a href=\"" . $RSDProot . "/virtual/virtual.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>", 
@@ -132,6 +134,7 @@
             $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
             if ($a_rsdp_tickets['tkt_virtual']) {
               submit_Ticket(
+                $db, 
                 $formVars['rsdp'],
                 $RSDProot . "/virtual/virtual.php",
                 "rsdp_virtpoc",
@@ -141,6 +144,7 @@
           } else {
 # otherwise notification goes to the data center group
             generateEmail(
+              $db, 
               $formVars['rsdp'],
               "<p>The SAN and LAN ports have been identified and IP addresses assigned.</p>", 
               "<p>Click on <a href=\"" . $RSDProot . "/physical/physical.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>", 
@@ -157,6 +161,7 @@
             $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
             if ($a_rsdp_tickets['tkt_datacenter']) {
               submit_Ticket(
+                $db, 
                 $formVars['rsdp'],
                 $RSDProot . "/physical/physical.php",
                 "rsdp_dcpoc",
