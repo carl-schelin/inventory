@@ -11,7 +11,7 @@
 
   $package = "ovpolicy.php";
 
-  logaccess($formVars['uid'], $package, "Checking out the hardware.");
+  logaccess($db, $formVars['uid'], $package, "Checking out the hardware.");
 
   $formVars['country']   = clean($_GET['country'],  10);
   $formVars['state']     = clean($_GET['state'],    10);
@@ -58,7 +58,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
