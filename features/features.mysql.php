@@ -20,7 +20,7 @@
   $formVars['feat_openby']        = clean($_POST['feat_openby'],       10);
   $formVars['feat_subject']       = clean($_POST['feat_subject'],      70);
 
-  logaccess($_SESSION['uid'], $package, "Creating a new record.");
+  logaccess($db, $_SESSION['uid'], $package, "Creating a new record.");
 
   if (strlen($formVars['feat_subject']) > 0) {
 
@@ -33,15 +33,15 @@
       "feat_timestamp  = \"" . date("Y-m-d H:i:s")          . "\"," . 
       "feat_subject    = \"" . $formVars['feat_subject']    . "\"";
 
-    logaccess($_SESSION['uid'], $package, "Adding detail: " . $formVars['feat_module']);
+    logaccess($db, $_SESSION['uid'], $package, "Adding detail: " . $formVars['feat_module']);
 
     $result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
-    $query = "select last_insert_id()";
+    $query = "select last_insert_id($db)";
     $q_result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
     $a_result = mysqli_fetch_array($q_result);
 
-    $feature = $a_result['last_insert_id()'];
+    $feature = $a_result['last_insert_id($db)'];
 
     $q_string = 
       "feat_feat_id   =   " . $feature                  . "," . 
