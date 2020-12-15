@@ -32,8 +32,8 @@
 
       $selected = return_Index($db, $a_comments['com_user'],       "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
 
-      print "document.edit.com_text.value = '"      . mysqli_real_escape_string($a_comments['com_text'])      . "';\n";
-      print "document.edit.com_timestamp.value = '" . mysqli_real_escape_string($a_comments['com_timestamp']) . "';\n";
+      print "document.edit.com_text.value = '"      . mysqli_real_escape_string($db, $a_comments['com_text'])      . "';\n";
+      print "document.edit.com_timestamp.value = '" . mysqli_real_escape_string($db, $a_comments['com_timestamp']) . "';\n";
 
       print "document.edit.com_user['" . $selected . "'].selected = true;\n";
 
