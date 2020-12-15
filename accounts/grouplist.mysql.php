@@ -185,7 +185,7 @@
 
       mysqli_free_result($q_grouplist);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.grouplist.gpl_group[0].selected = true;\n";
       print "document.grouplist.gpl_user[0].selected = true;\n";
