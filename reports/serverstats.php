@@ -28,7 +28,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
@@ -467,7 +467,7 @@ to software and hardware section.</p>
   $q_string .= "where inv_status = 0 " . $admin . " ";
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
-    $os = return_System($a_inventory['inv_id']);
+    $os = return_System($db, $a_inventory['inv_id']);
     if (strlen($os) == 0) {
       $os = "Unknown OS";
     }
