@@ -11,7 +11,7 @@
 
   $package = "rrdtool.mysql.php";
 
-  logaccess($formVars['uid'], $package, "Accessing the script.");
+  logaccess($db, $formVars['uid'], $package, "Accessing the script.");
 
   header('Content-Type: text/javascript');
 
@@ -30,7 +30,7 @@
   $ramswap_day = "/rrdtool/" . $a_interface['int_server'] . "/ram-day-thumb.png";
   $ramswap_title = "Memory Usage";
 
-  $os = return_System($formVars['id']);
+  $os = return_System($db, $formVars['id']);
 
   if ($os == "Linux") {
     $ramswap_day  = "/rrdtool/" . $a_interface['int_server'] . "/ram-day-thumb.png";
