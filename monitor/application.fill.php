@@ -28,7 +28,7 @@
       $a_application = mysqli_fetch_array($q_application);
       mysqli_free_result($q_application);
 
-      print "document.application.app_description.value = '" . mysqli_real_escape_string($a_application['app_description'])       . "';\n";
+      print "document.application.app_description.value = '" . mysqli_real_escape_string($db, $a_application['app_description'])       . "';\n";
 
       if ($a_application['app_deleted']) {
         print "document.application.app_deleted.checked = true;\n";
