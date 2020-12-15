@@ -11,7 +11,7 @@
 
   $package = "emailquery.php";
 
-  logaccess($formVars['uid'], $package, "How does email query work?");
+  logaccess($db, $formVars['uid'], $package, "How does email query work?");
 
 ?>
 <!DOCTYPE HTML>
