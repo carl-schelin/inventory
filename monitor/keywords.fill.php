@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from keywords");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from keywords");
 
       $q_string  = "select key_description,key_page,key_email,key_annotate,key_critical_annotate,key_deleted ";
       $q_string .= "from keywords ";
@@ -44,7 +44,7 @@
       print "document.keywords.id.value = " . $formVars['id'] . ";\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
