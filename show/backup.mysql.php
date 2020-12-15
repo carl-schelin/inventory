@@ -11,7 +11,7 @@
 
   $package = "backup.mysql.php";
 
-  logaccess($formVars['uid'], $package, "Accessing the script.");
+  logaccess($db, $formVars['uid'], $package, "Accessing the script.");
 
   header('Content-Type: text/javascript');
 
@@ -37,14 +37,14 @@
   $output .= "<table class=\"ui-styled-table\">";
   $output .= "<tr>";
   $output .= "  <th class=\"ui-state-default\">";
-  if (check_userlevel($AL_Edit)) {
-    if (check_grouplevel($a_interface['inv_manager'])) {
+  if (check_userlevel($db, $AL_Edit)) {
+    if (check_grouplevel($db, $a_interface['inv_manager'])) {
       $output .= "<a href=\"" . $Editroot . "/inventory.php?server=" . $formVars['id'] . "#backups\" target=\"_blank\"><img src=\"" . $Imgsroot . "/pencil.gif\">";
     }
   }
   $output .= "Backup Information";
-  if (check_userlevel($AL_Edit)) {
-    if (check_grouplevel($a_interface['inv_manager'])) {
+  if (check_userlevel($db, $AL_Edit)) {
+    if (check_grouplevel($db, $a_interface['inv_manager'])) {
       $output .= "</a>";
     }
   }
@@ -169,14 +169,14 @@ document.getElementById('backup_mysql').innerHTML = '<?php print mysqli_real_esc
   $output .= "<table class=\"ui-styled-table\">";
   $output .= "<tr>";
   $output .= "  <th class=\"ui-state-default\">";
-  if (check_userlevel($AL_Edit)) {
-    if (check_grouplevel($a_interface['inv_manager'])) {
+  if (check_userlevel($db, $AL_Edit)) {
+    if (check_grouplevel($db, $a_interface['inv_manager'])) {
       $output .= "<a href=\"" . $Editroot . "/inventory.php?server=" . $formVars['id'] . "#backup\" target=\"_blank\"><img src=\"" . $Imgsroot . "/pencil.gif\">";
     }
   }
   $output .= "Backup Log Information";
-  if (check_userlevel($AL_Edit)) {
-    if (check_grouplevel($a_interface['inv_manager'])) {
+  if (check_userlevel($db, $AL_Edit)) {
+    if (check_grouplevel($db, $a_interface['inv_manager'])) {
       $output .= "</a>";
     }
   }
