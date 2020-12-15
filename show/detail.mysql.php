@@ -165,7 +165,7 @@
   $output .= "</tr>\n";
   $output .= "</table>";
 
-  if (return_Virtual($formVars['id']) == 0) {
+  if (return_Virtual($db, $formVars['id']) == 0) {
     $output .= "<table class=\"ui-styled-table\">";
     $output .= "<tr>";
     $output .= "<th class=\"ui-state-default\" colspan=\"7\">Location Information</th>";
