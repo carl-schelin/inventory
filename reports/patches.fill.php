@@ -36,7 +36,7 @@
         $big_fixlet = $a_bigfix['big_fixlet'];
         $inv_manager = $a_bigfix['inv_manager'];
         $inv_appadmin = $a_bigfix['inv_appadmin'];
-#        print "document.getElementById('big_servername').innerHTML = '" . mysqli_real_escape_string($a_inventory['inv_name']) . "';";
+#        print "document.getElementById('big_servername').innerHTML = '" . mysqli_real_escape_string($db, $a_inventory['inv_name']) . "';";
       }
 
       $patches = '';
@@ -56,7 +56,7 @@
       }
       mysqli_free_result($q_bigfix);
 
-      print "document.bigfix.big_patches.value = '" . mysqli_real_escape_string($patches) . "';\n";
+      print "document.bigfix.big_patches.value = '" . mysqli_real_escape_string($db, $patches) . "';\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
