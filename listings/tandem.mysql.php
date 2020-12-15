@@ -208,7 +208,7 @@
 
         $output .= "</table>\n";
 
-        print "document.getElementById('automatic_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('automatic_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
       }
 
 # manual listing
@@ -281,7 +281,7 @@
 
       $output .= "</table>\n";
 
-      print "document.getElementById('manual_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('manual_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
