@@ -24,7 +24,7 @@
       $formVars['hw_companyid'] = 0;
     }
 
-    if (check_userlevel($db, $db, $AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']           = clean($_GET['id'],           10);
         $formVars['hw_hw_id']     = clean($_GET['hw_hw_id'],     10);
@@ -101,7 +101,7 @@
         }
 
         if ($formVars['hw_companyid'] > 0) {
-          logaccess($db, $db, $_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string = 
             "hw_companyid =   " . $formVars['hw_companyid'] . "," . 
@@ -167,7 +167,7 @@
             $message = "Hardware updated.";
           }
 
-          logaccess($db, $db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
 
           mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
@@ -265,7 +265,7 @@
 
 
       if ($formVars['update'] == -3) {
-        logaccess($db, $db, $_SESSION['uid'], $package, "Creating the form for viewing.");
+        logaccess($db, $_SESSION['uid'], $package, "Creating the form for viewing.");
 
         $output  = "<table class=\"ui-styled-table\">\n";
         $output .= "<tr>\n";
@@ -423,7 +423,7 @@
       }
 
 
-      logaccess($db, $db, $_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
 # set up the hardware drop down to refresh the hardware listing
       print "var selbox = document.edit.hw_hw_id;\n\n";
@@ -722,7 +722,7 @@
       }
 
     } else {
-      logaccess($db, $db, $_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
