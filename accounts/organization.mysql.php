@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']       = clean($_GET['id'],       10);
         $formVars['org_name'] = clean($_GET['org_name'], 60);
@@ -30,7 +30,7 @@
         }
 
         if (strlen($formVars['org_name']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "org_name = \"" . $formVars['org_name'] . "\"";
@@ -44,7 +44,7 @@
             $message = "Organization updated.";
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['org_name']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['org_name']);
 
           mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
@@ -55,7 +55,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">\n";
@@ -72,7 +72,7 @@
       $output .= "<ul>\n";
       $output .= "  <li><strong>Organization Listing</strong>\n";
       $output .= "  <ul>\n";
-      if (check_userlevel($AL_Admin)) {
+      if (check_userlevel($db, $AL_Admin)) {
         $output .= "    <li><strong>Delete (x)</strong> - Click here to delete this organization from the Inventory.</li>\n";
       }
       $output .= "    <li><strong>Editing</strong> - Click on an organization to toggle the form and edit the organization.</li>\n";
@@ -86,7 +86,7 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      if (check_userlevel($AL_Admin)) {
+      if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\">Del</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Id</th>\n";
@@ -105,7 +105,7 @@
           $linkend   = "</a>";
 
           $output .= "<tr>\n";
-          if (check_userlevel($AL_Admin)) {
+          if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>\n";
           }
           $output .= "  <td class=\"ui-widget-content delete\">" . $linkstart . $a_organizations['org_id']   . $linkend . "</td>\n";
@@ -127,7 +127,7 @@
       print "document.organization.org_name.value = '';\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
