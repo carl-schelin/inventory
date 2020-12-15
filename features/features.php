@@ -13,7 +13,7 @@
 
   $package = "features.php";
 
-  logaccess($_SESSION['uid'], $package, "Managing feature requests");
+  logaccess($db, $_SESSION['uid'], $package, "Managing feature requests");
 
   if (isset($_GET['id'])) {
     $formVars['id'] = clean($_GET['id'], 10);
