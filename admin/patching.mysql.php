@@ -124,7 +124,7 @@
 
       mysqli_free_result($q_patching);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.patching.patch_name.value = '';\n";
       print "document.patching.patch_user[0].selected = true;\n";
