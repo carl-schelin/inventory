@@ -11,7 +11,7 @@
 
   $package = "khobbs.service.php";
 
-  logaccess($formVars['uid'], $package, "Checking out the Service Levels.");
+  logaccess($db, $formVars['uid'], $package, "Checking out the Service Levels.");
 
   $orderby = " order by ";
   if (isset($_GET['sort'])) {
@@ -120,8 +120,8 @@
   $q_hardware = mysqli_query($db, $q_string) or die("Inventory test: " . $q_string . ": " . mysqli_error($db));
   while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
-    if (check_userlevel($AL_Edit)) {
-      if (check_grouplevel($a_hardware['inv_manager'])) {
+    if (check_userlevel($db, $AL_Edit)) {
+      if (check_grouplevel($db, $a_hardware['inv_manager'])) {
         $linkedit = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_hardware['hw_companyid'] . "\"><img src=\"" . $Imgsroot . "/pencil.gif\"></a>";
       }
     }
