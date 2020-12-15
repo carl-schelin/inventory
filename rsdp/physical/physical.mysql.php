@@ -34,7 +34,7 @@
       $formVars['pf_complete'] = 0;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
 # save, submit, and save and exit
       if ($formVars['pf_complete'] == 0 || $formVars['pf_complete'] == 1 || $formVars['pf_complete'] == 2) {
         $formVars["pf_row"]      = clean($_GET["pf_row"],            20);
@@ -47,7 +47,7 @@
           $formVars['pf_unit'] = 0;
         }
 
-        logaccess($_SESSION['uid'], $package, "Building the query.");
+        logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
         $q_string =
           "pf_rsdp         =   " . $formVars['rsdp']        . "," . 
@@ -64,7 +64,7 @@
           $query = "update rsdp_platform set " . $q_string . " where pf_id = " . $formVars['pf_id'];
         }
 
-        logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['pf_id']);
+        logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['pf_id']);
 
         mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -154,11 +154,11 @@
           $query = "update rsdp_infrastructure set " . $q_string . " where if_id = " . $formVars['if_id'];
         }
 
-        logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['rsdp']);
+        logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['rsdp']);
 
         mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
-        logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['if_id']);
+        logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['if_id']);
       }
 
 
@@ -232,7 +232,7 @@
       }
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
