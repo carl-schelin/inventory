@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
 
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']              = clean($_GET['id'],      10);
@@ -33,7 +33,7 @@
         }
 
         if (strlen($formVars['cl_name']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "cl_name  = \"" . $formVars['cl_name']  . "\"," .
@@ -49,7 +49,7 @@
             $message = "Listing updated.";
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['cl_name']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['cl_name']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -94,7 +94,7 @@
 # Convert all to lowercase
             $value[0]                 = strtolower($value[0]);
             $value[1]                 = strtolower($value[1]);
-            $os                       = strtolower(return_System($a_inventory['inv_id']));
+            $os                       = strtolower(return_System($db, $a_inventory['inv_id']));
             $a_inventory['zone_name'] = strtolower($a_inventory['zone_name']);
             $a_inventory['inv_notes'] = strtolower($a_inventory['inv_notes']);
 
@@ -175,7 +175,7 @@
 # Convert all to lowercase
           $value[0]                 = strtolower($value[0]);
           $value[1]                 = strtolower($value[1]);
-          $os                       = strtolower(return_System($a_inventory['inv_id']));
+          $os                       = strtolower(return_System($db, $a_inventory['inv_id']));
           $a_inventory['zone_name'] = strtolower($a_inventory['zone_name']);
           $a_inventory['inv_notes'] = strtolower($a_inventory['inv_notes']);
 
@@ -271,7 +271,7 @@
       print "document.getElementById('manual_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
