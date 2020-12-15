@@ -11,7 +11,7 @@
 
   $package = "jshanahan.serial.php";
 
-  logaccess($formVars['uid'], $package, "Accessing script");
+  logaccess($db, $formVars['uid'], $package, "Accessing script");
 
   if (isset($_GET["csv"])) {
     $formVars['csv'] = clean($_GET["csv"], 10);
