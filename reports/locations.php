@@ -11,7 +11,7 @@
 
   $package = "locations.php";
 
-  logaccess($formVars['uid'], $package, "Accessing the script");
+  logaccess($db, $formVars['uid'], $package, "Accessing the script");
 
   $formVars['group']     = clean($_GET['group'],      10);
   $formVars['product']   = clean($_GET['product'],    10);
@@ -144,7 +144,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
@@ -466,9 +466,9 @@ $(document).ready( function () {
       $edhwstart = '';
       $edipstart = '';
       $edswstart = '';
-      if (check_userlevel($AL_Edit)) {
+      if (check_userlevel($db, $AL_Edit)) {
         $editpencil = "<img class=\"ui-icon-edit\" src=\"" . $Imgsroot . "/pencil.gif\" height=\"10\"></a>";
-        if (check_grouplevel($a_inventory['inv_manager'])) {
+        if (check_grouplevel($db, $a_inventory['inv_manager'])) {
           $editstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\"          target=\"_blank\">" . $editpencil;
           $edhwstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "#hardware\" target=\"_blank\">" . $editpencil;
           $edipstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "#network\"  target=\"_blank\">" . $editpencil;
