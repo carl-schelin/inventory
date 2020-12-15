@@ -19,7 +19,7 @@
 
   $package = "backups.pdf.php";
 
-  logaccess($_SESSION['uid'], $package, "Backup: " . $formVars['rsdp']);
+  logaccess($db, $_SESSION['uid'], $package, "Backup: " . $formVars['rsdp']);
 
   $retention[0] = "None";
   $retention[1] = "Less than 6 Months (Details Required)";
