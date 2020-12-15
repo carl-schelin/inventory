@@ -522,7 +522,7 @@ their task is ready to be worked.</li>
 
 </div>
 
-<?php print submit_RSDP( $formVars['rsdp'], 2, $RSDProot . "/build/build.mysql.php", "rsdp_platformspoc", "rsdp_platform", 0); ?>
+<?php print submit_RSDP($db, " $formVars['rsdp'], 2, $RSDProot . "/build/build.mysql.php", "rsdp_platformspoc", "rsdp_platform", 0); ?>
 
 <input type="hidden" name="virtual" value="0">
 <input type="hidden" name="ipokay" value="0">
@@ -1143,7 +1143,7 @@ system, use a permanent marker to clearly identify the location for the Data Cen
   <td class="ui-widget-content">Group Name If Needed: <input type="text" name="if_groupname" size="20" onchange="validate_Form();"></td>
   <td class="ui-widget-content">
 <?php
-  $os = rsdp_System($formVars['rsdp']);
+  $os = rsdp_System($db, $formVars['rsdp']);
 
   if ($os == "Linux") {
     print "Bond ";
