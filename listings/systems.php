@@ -13,10 +13,10 @@
 
   $package = "systems.php";
 
-  logaccess($_SESSION['uid'], $package, "Viewing the systems engineering server listing table");
+  logaccess($db, $_SESSION['uid'], $package, "Viewing the systems engineering server listing table");
 
 # If group or an admin, allow access
-  if (check_grouplevel($GRP_SysEng)) {
+  if (check_grouplevel($db, $GRP_SysEng)) {
 
 ?>
 <!DOCTYPE HTML>
