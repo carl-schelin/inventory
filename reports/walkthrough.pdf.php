@@ -11,7 +11,7 @@
 
   $package = "walkthrough.pdf.php";
 
-  logaccess($formVars['uid'], $package, "Group: " . $formVars['group']);
+  logaccess($db, $formVars['uid'], $package, "Group: " . $formVars['group']);
 
   if (isset($_GET['group'])) {
     $formVars['group']    = clean($_GET['group'], 10);
