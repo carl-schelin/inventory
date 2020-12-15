@@ -13,10 +13,10 @@
 
   $package = "backups.php";
 
-  logaccess($_SESSION['uid'], $package, "Viewing the backup server listing table");
+  logaccess($db, $_SESSION['uid'], $package, "Viewing the backup server listing table");
 
 # If group or an admin, allow access
-  if (check_grouplevel($GRP_Backups)) {
+  if (check_grouplevel($db, $GRP_Backups)) {
 
 ?>
 <!DOCTYPE HTML>
