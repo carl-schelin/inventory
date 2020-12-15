@@ -23,7 +23,7 @@
       $formVars['id'] = 0;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['app_complete'] == 0 || $formVars['app_complete'] == 1 || $formVars['app_complete'] == 2) {
         $formVars['app_concheck']   = clean($_GET['app_concheck'],     10);
         $formVars['app_tested']     = clean($_GET['app_tested'],       10);
@@ -51,7 +51,7 @@
           $formVars['app_failover'] = 0;
         }
 
-        logaccess($_SESSION['uid'], $package, "Building the query.");
+        logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
         $q_string =
           "app_rsdp       =   " . $formVars['rsdp']           . "," .
@@ -69,7 +69,7 @@
           $message = "Configuration updated.";
         }
 
-        logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['rsdp']);
+        logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['rsdp']);
 
         mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -162,7 +162,7 @@
       }
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
