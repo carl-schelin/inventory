@@ -322,7 +322,7 @@
 
       $output .= "</table>\n";
 
-      print "document.getElementById('new_users_table').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('new_users_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
 
       display_User("Registered", "registered", " and usr_disabled = 0 ");
@@ -478,7 +478,7 @@ function display_user( $p_title, $p_toggle, $p_query ) {
 
   }
 
-  print "document.getElementById('" . $p_toggle . "_users_table').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+  print "document.getElementById('" . $p_toggle . "_users_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
 }
 
