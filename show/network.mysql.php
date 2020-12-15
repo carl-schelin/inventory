@@ -55,14 +55,14 @@
   $output .= "<ul>";
   $output .= "  <li><strong>Interface Name</strong> - The name assigned to individual interfaces. Due to routing and management, access to a system needs to be through an interface identified as maintenance.</li>\n";
   $output .= "  <li><strong>Logical Interface</strong> - The operating system designation for an interface.</li>\n";
-  if (return_Virtual($formVars['id']) == 0) {
+  if (return_Virtual($db, $formVars['id']) == 0) {
     $output .= "  <li><strong>Physical Port</strong> - The port where the cable plugs into the computer.</li>\n";
   }
   $output .= "  <li><strong>MAC Address</strong> - The MAC address for this interface.</li>\n";
   $output .= "  <li><strong>IP Address/Netmask</strong> - The assigned IP address and netmask.</li>\n";
   $output .= "  <li><strong>Zone</strong> - The network zone this server sits in.</li>\n";
   $output .= "  <li><strong>Gateway</strong> - The gateway assigned for use by this interface.</li>\n";
-  if (return_Virtual($formVars['id']) == 0) {
+  if (return_Virtual($db, $formVars['id']) == 0) {
     $output .= "  <li><strong>Switch</strong> - What switch is being used to accept traffic from this computer.</li>\n";
     $output .= "  <li><strong>Port</strong> - What port has been assigned on the switch (where the cable plugs in that comes from the server).</li>\n";
   }
@@ -90,14 +90,14 @@
   $output .= "<tr>";
   $output .= "<th class=\"ui-state-default\">Interface Name</th>";
   $output .= "<th class=\"ui-state-default\">Logical Interface</th>";
-  if (return_Virtual($formVars['id']) == 0) {
+  if (return_Virtual($db, $formVars['id']) == 0) {
     $output .= "<th class=\"ui-state-default\">Physical Port</th>";
   }
   $output .= "<th class=\"ui-state-default\">MAC Address</th>";
   $output .= "<th class=\"ui-state-default\">IPv4 Address/Netmask</th>";
   $output .= "<th class=\"ui-state-default\">Zone</th>";
   $output .= "<th class=\"ui-state-default\">Gateway</th>";
-  if (return_Virtual($formVars['id']) == 0) {
+  if (return_Virtual($db, $formVars['id']) == 0) {
     $output .= "<th class=\"ui-state-default\">Switch</th>";
     $output .= "<th class=\"ui-state-default\">Port</th>";
   }
@@ -196,14 +196,14 @@
     $output .= "<tr>";
     $output .= "<td" . $pristart . $intnote . ">"              . $servername . $redundancy . $monitor . $management . $backup . $login . "</td>";
     $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['int_face'] . $virtual                 . "</td>";
-    if (return_Virtual($formVars['id']) == 0) {
+    if (return_Virtual($db, $formVars['id']) == 0) {
       $output .= "<td" . $pristart . $intnote . ">"            . $a_interface['int_sysport']                         . "</td>";
     }
     $output .= "<td" . $pristart . $intnote . ">"              . $showmac . $ethcheckmark                            . "</td>";
     $output .= "<td" . $pristart . $intnote . ">" . $linkstart . $a_interface['int_addr']     . $showmask . $addrcheckmark . $linkend . "</td>";
     $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['zone_name']                           . "</td>";
     $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['int_gate'] . $gatecheckmark           . "</td>";
-    if (return_Virtual($formVars['id']) == 0) {
+    if (return_Virtual($db, $formVars['id']) == 0) {
       $output .= "<td" . $pristart . $intnote . ">"            . $a_interface['int_switch']                          . "</td>";
       $output .= "<td" . $pristart . $intnote . ">"            . $a_interface['int_port']                            . "</td>";
     }
@@ -304,14 +304,14 @@
       $output .= "<tr>";
       $output .= "<td" . $pristart . $intnote . ">> "            . $servername . $group . $monitor . $management . $backup . $login . "</td>";
       $output .= "<td" . $pristart . $intnote . ">"              . $a_redundancy['int_face'] . $virtual                 . "</td>";
-      if (return_Virtual($formVars['id']) == 0) {
+      if (return_Virtual($db, $formVars['id']) == 0) {
         $output .= "<td" . $pristart . $intnote . ">"            . $a_redundancy['int_sysport']                         . "</td>";
       }
       $output .= "<td" . $pristart . $intnote . ">"              . $showmac . $ethcheckmark                            . "</td>";
       $output .= "<td" . $pristart . $intnote . ">" . $linkstart . $a_redundancy['int_addr']     . $showmask . $addrcheckmark . $linkend . "</td>";
       $output .= "<td" . $pristart . $intnote . ">"              . $a_redundancy['zone_name']                           . "</td>";
       $output .= "<td" . $pristart . $intnote . ">"              . $a_redundancy['int_gate'] . $gatecheckmark           . "</td>";
-      if (return_Virtual($formVars['id']) == 0) {
+      if (return_Virtual($db, $formVars['id']) == 0) {
         $output .= "<td" . $pristart . $intnote . ">"            . $a_redundancy['int_switch']                          . "</td>";
         $output .= "<td" . $pristart . $intnote . ">"            . $a_redundancy['int_port']                            . "</td>";
       }
@@ -412,14 +412,14 @@
         $output .= "<tr>";
         $output .= "<td" . $pristart . $intnote . ">>> "           . $servername . $group . $monitor . $management . $backup . $login . "</td>";
         $output .= "<td" . $pristart . $intnote . ">"              . $a_secondary['int_face'] . $virtual                 . "</td>";
-        if (return_Virtual($formVars['id']) == 0) {
+        if (return_Virtual($db, $formVars['id']) == 0) {
           $output .= "<td" . $pristart . $intnote . ">"            . $a_secondary['int_sysport']                         . "</td>";
         }
         $output .= "<td" . $pristart . $intnote . ">"              . $showmac . $ethcheckmark                            . "</td>";
         $output .= "<td" . $pristart . $intnote . ">" . $linkstart . $a_secondary['int_addr']     . $showmask . $addrcheckmark . $linkend . "</td>";
         $output .= "<td" . $pristart . $intnote . ">"              . $a_secondary['zone_name']                           . "</td>";
         $output .= "<td" . $pristart . $intnote . ">"              . $a_secondary['int_gate'] . $gatecheckmark           . "</td>";
-        if (return_Virtual($formVars['id']) == 0) {
+        if (return_Virtual($db, $formVars['id']) == 0) {
           $output .= "<td" . $pristart . $intnote . ">"            . $a_secondary['int_switch']                          . "</td>";
           $output .= "<td" . $pristart . $intnote . ">"            . $a_secondary['int_port']                            . "</td>";
         }
@@ -442,14 +442,14 @@
   $output .= "<tr>";
   $output .= "<th class=\"ui-state-default\">Interface Name</th>";
   $output .= "<th class=\"ui-state-default\">Logical Interface</th>";
-  if (return_Virtual($formVars['id']) == 0) {
+  if (return_Virtual($db, $formVars['id']) == 0) {
     $output .= "<th class=\"ui-state-default\">Physical Port</th>";
   }
   $output .= "<th class=\"ui-state-default\">MAC Address</th>";
   $output .= "<th class=\"ui-state-default\">IPv6 Address/Netmask</th>";
   $output .= "<th class=\"ui-state-default\">Zone</th>";
   $output .= "<th class=\"ui-state-default\">Gateway</th>";
-  if (return_Virtual($formVars['id']) == 0) {
+  if (return_Virtual($db, $formVars['id']) == 0) {
     $output .= "<th class=\"ui-state-default\">Switch</th>";
     $output .= "<th class=\"ui-state-default\">Port</th>";
   }
@@ -521,14 +521,14 @@
     $output .= "<tr>";
     $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['int_server'] . $redundancy            . "</td>";
     $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['int_face'] . $virtual                 . "</td>";
-    if (return_Virtual($formVars['id']) == 0) {
+    if (return_Virtual($db, $formVars['id']) == 0) {
       $output .= "<td" . $pristart . $intnote . ">"            . $a_interface['int_sysport']                         . "</td>";
     }
     $output .= "<td" . $pristart . $intnote . ">"              . $showmac . $ethcheckmark                            . "</td>";
     $output .= "<td" . $pristart . $intnote . ">" . $linkstart . $a_interface['int_addr']     . $showmask . $addrcheckmark . $linkend . "</td>";
     $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['zone_name']                           . "</td>";
     $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['int_gate'] . $gatecheckmark           . "</td>";
-    if (return_Virtual($formVars['id']) == 0) {
+    if (return_Virtual($db, $formVars['id']) == 0) {
       $output .= "<td" . $pristart . $intnote . ">"            . $a_interface['int_switch']                          . "</td>";
       $output .= "<td" . $pristart . $intnote . ">"            . $a_interface['int_port']                            . "</td>";
     }
@@ -600,14 +600,14 @@
       $output .= "<tr>";
       $output .= "<td" . $pristart . $intnote . ">> "            . $a_redundancy['int_server'] . $group                 . "</td>";
       $output .= "<td" . $pristart . $intnote . ">"              . $a_redundancy['int_face'] . $virtual                 . "</td>";
-      if (return_Virtual($formVars['id']) == 0) {
+      if (return_Virtual($db, $formVars['id']) == 0) {
         $output .= "<td" . $pristart . $intnote . ">"            . $a_redundancy['int_sysport']                         . "</td>";
       }
       $output .= "<td" . $pristart . $intnote . ">"              . $showmac . $ethcheckmark                            . "</td>";
       $output .= "<td" . $pristart . $intnote . ">" . $linkstart . $a_redundancy['int_addr']     . $showmask . $addrcheckmark . $linkend . "</td>";
       $output .= "<td" . $pristart . $intnote . ">"              . $a_redundancy['zone_name']                           . "</td>";
       $output .= "<td" . $pristart . $intnote . ">"              . $a_redundancy['int_gate'] . $gatecheckmark           . "</td>";
-      if (return_Virtual($formVars['id']) == 0) {
+      if (return_Virtual($db, $formVars['id']) == 0) {
         $output .= "<td" . $pristart . $intnote . ">"            . $a_redundancy['int_switch']                          . "</td>";
         $output .= "<td" . $pristart . $intnote . ">"            . $a_redundancy['int_port']                            . "</td>";
       }
@@ -678,14 +678,14 @@
         $output .= "<tr>";
         $output .= "<td" . $pristart . $intnote . ">>> "           . $a_secondary['int_server'] . $group                 . "</td>";
         $output .= "<td" . $pristart . $intnote . ">"              . $a_secondary['int_face'] . $virtual                 . "</td>";
-        if (return_Virtual($formVars['id']) == 0) {
+        if (return_Virtual($db, $formVars['id']) == 0) {
           $output .= "<td" . $pristart . $intnote . ">"            . $a_secondary['int_sysport']                         . "</td>";
         }
         $output .= "<td" . $pristart . $intnote . ">"              . $showmac . $ethcheckmark                            . "</td>";
         $output .= "<td" . $pristart . $intnote . ">" . $linkstart . $a_secondary['int_addr']     . $showmask . $addrcheckmark . $linkend . "</td>";
         $output .= "<td" . $pristart . $intnote . ">"              . $a_secondary['zone_name']                           . "</td>";
         $output .= "<td" . $pristart . $intnote . ">"              . $a_secondary['int_gate'] . $gatecheckmark           . "</td>";
-        if (return_Virtual($formVars['id']) == 0) {
+        if (return_Virtual($db, $formVars['id']) == 0) {
           $output .= "<td" . $pristart . $intnote . ">"            . $a_secondary['int_switch']                          . "</td>";
           $output .= "<td" . $pristart . $intnote . ">"            . $a_secondary['int_port']                            . "</td>";
         }
