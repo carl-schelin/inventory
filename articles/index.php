@@ -11,7 +11,7 @@
 
   $package = "index.php";
 
-  logaccess($formVars['uid'], $package, "Checking out the articles.");
+  logaccess($db, $formVars['uid'], $package, "Checking out the articles.");
 
 ?>
 <!DOCTYPE HTML>
