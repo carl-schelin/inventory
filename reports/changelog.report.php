@@ -11,7 +11,7 @@
 
   $package = "changelog.report.php";
 
-  logaccess($formVars['uid'], $package, "Viewing the script");
+  logaccess($db, $formVars['uid'], $package, "Viewing the script");
 
 
   $formVars['month'] = date('m');
@@ -73,7 +73,7 @@
   $title_month = $sel_month[intval($formVars['month'])];
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
