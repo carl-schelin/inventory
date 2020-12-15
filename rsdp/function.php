@@ -848,7 +848,7 @@ function submit_RSDP( $rsdp, $task, $script, $poc, $group, $grpnum ) {
 
   if ($a_rsdp_status['st_completed'] == '' || $a_rsdp_status['st_completed'] == 0) {
     $output .= "<input type=\"button\" name=\"reminder\" value=\"Reminder E-Mail\" onClick=\"javascript:attach_file('" . $script . "', -1);\">\n";
-    if (check_grouplevel($group_select) || $_SESSION['uid'] == $a_rsdp_server[$poc]) {
+    if (check_grouplevel($db, $group_select) || $_SESSION['uid'] == $a_rsdp_server[$poc]) {
       $output .= "<input type=\"button\" name=\"save\"   value=\"Save Changes\"   onClick=\"javascript:attach_file('" . $script . "', 0);\">\n";
       $output .= "<input type=\"button\" name=\"exit\"   value=\"Save And Exit\"  onClick=\"javascript:attach_file('" . $script . "', 2);\">\n";
       $output .= "<input type=\"button\" name=\"addbtn\" value=\"Task Completed\" onClick=\"javascript:attach_file('" . $script . "', 1);\">\n";
@@ -1677,7 +1677,7 @@ function return_Checklist( $p_rsdp, $p_task ) {
       $checked = "";
     }
 
-    if (check_grouplevel($task_group)) {
+    if (check_grouplevel($db, $task_group)) {
       $disabled = "";
     } else {
       $disabled = "disabled";
