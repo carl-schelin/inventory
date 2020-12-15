@@ -139,19 +139,19 @@ function generateEmail($p_db, $p_rsdp, $p_text1, $p_text2, $p_text3, $p_who, $p_
 # these are the individual groups
   switch ($p_group) {
 # Virtualization
-    case  4: $body .= request_Header($p_rsdp);
-             $body .= virtual_Request($p_rsdp);
+    case  4: $body .= request_Header($p_db, $p_rsdp);
+             $body .= virtual_Request($p_db, $p_rsdp);
              break;
 # SAN
-    case  9: $body .= request_Header($p_rsdp);
-             $body .= storage_Request($p_rsdp);
+    case  9: $body .= request_Header($p_db, $p_rsdp);
+             $body .= storage_Request($p_db, $p_rsdp);
              break;
 # Networking
-    case 12: $body .= request_Header($p_rsdp);
-             $body .= network_Request($p_rsdp);
+    case 12: $body .= request_Header($p_db, $p_rsdp);
+             $body .= network_Request($p_db, $p_rsdp);
              break;
-    default: $body .= default_Request($p_rsdp);
-             $body .= request_Header($p_rsdp);
+    default: $body .= default_Request($p_db, $p_rsdp);
+             $body .= request_Header($p_db, $p_rsdp);
              break;
   }
 
@@ -306,7 +306,7 @@ function request_Server( $p_db, $p_rsdp ) {
   $a_operatingsystem = mysqli_fetch_array($q_operatingsystem);
 
   $output .= "<tr>\n";
-  $output .= "  <td class=\"ui-widget-content\"><strong>Hostname</strong>: " . $a_rsdp_osteam['os_sysname'] . "<input type=\"hidden\" name=\"rsdp_virtual\" id=\"rsdp_virtual\" value=\"" . rsdp_Virtual($p_rsdp) . "\"></td>\n";
+  $output .= "  <td class=\"ui-widget-content\"><strong>Hostname</strong>: " . $a_rsdp_osteam['os_sysname'] . "<input type=\"hidden\" name=\"rsdp_virtual\" id=\"rsdp_virtual\" value=\"" . rsdp_Virtual($p_db, $p_rsdp) . "\"></td>\n";
   $output .= "  <td class=\"ui-widget-content\"><strong>Function</strong>: " . $a_rsdp_server['rsdp_function'] . "</td>\n";
   $output .= "  <td class=\"ui-widget-content\"><strong>Operating System</strong>: " . $a_operatingsystem['os_software'] . "</td>\n";
   $output .= "</tr>\n";
@@ -359,7 +359,7 @@ function request_Server( $p_db, $p_rsdp ) {
   $output .= "</tr>\n";
   $output .= "</table>\n";
 
-  if (rsdp_Virtual($p_rsdp) == 0) {
+  if (rsdp_Virtual($p_db, $p_rsdp) == 0) {
     if ($a_rsdp_platform['pf_redundant']) {
       $redundant = 'Yes';
     } else {
@@ -444,7 +444,7 @@ function request_Server( $p_db, $p_rsdp ) {
   $output .= "  <th class=\"ui-state-default\">Zone</th>\n";
   $output .= "  <th class=\"ui-state-default\">Gateway</th>\n";
   $output .= "  <th class=\"ui-state-default\">VLan</th>\n";
-  if (rsdp_Virtual($p_rsdp) == 0) {
+  if (rsdp_Virtual($p_db, $p_rsdp) == 0) {
     $output .= "  <th class=\"ui-state-default\">Physical Port</th>\n";
     $output .= "  <th class=\"ui-state-default\">Media</th>\n";
     $output .= "  <th class=\"ui-state-default\">Switch</th>\n";
@@ -485,7 +485,7 @@ function request_Server( $p_db, $p_rsdp ) {
       $output .= "  <td" . $class . ">" . $a_rsdp_interface['zone_name']        . "</td>\n";
       $output .= "  <td" . $class . ">" . $a_rsdp_interface['if_gate']          . "</td>\n";
       $output .= "  <td" . $class . ">" . $a_rsdp_interface['if_vlan']          . "</td>\n";
-      if (rsdp_Virtual($p_rsdp) == 0) {
+      if (rsdp_Virtual($p_db, $p_rsdp) == 0) {
         $output .= "  <td" . $class . ">" . $a_rsdp_interface['if_sysport']     . "</td>\n";
         $output .= "  <td" . $class . ">" . $a_rsdp_interface['med_text']         . "</td>\n";
         $output .= "  <td" . $class . ">" . $a_rsdp_interface['if_switch']        . "</td>\n";
@@ -526,7 +526,7 @@ function request_Server( $p_db, $p_rsdp ) {
           $output .= "  <td" . $class . ">" . $a_rsdp_child['zone_name']        . "</td>\n";
           $output .= "  <td" . $class . ">" . $a_rsdp_child['if_gate']          . "</td>\n";
           $output .= "  <td" . $class . ">" . $a_rsdp_child['if_vlan']          . "</td>\n";
-          if (rsdp_Virtual($p_rsdp) == 0) {
+          if (rsdp_Virtual($p_db, $p_rsdp) == 0) {
             $output .= "  <td" . $class . ">" . $a_rsdp_child['if_sysport']       . "</td>\n";
             $output .= "  <td" . $class . ">" . $a_rsdp_child['med_text']         . "</td>\n";
             $output .= "  <td" . $class . ">" . $a_rsdp_child['if_switch']        . "</td>\n";
@@ -543,7 +543,7 @@ function request_Server( $p_db, $p_rsdp ) {
   }
   $output .= "</table>\n";
 
-  if (rsdp_Virtual($p_rsdp) == 0) {
+  if (rsdp_Virtual($p_db, $p_rsdp) == 0) {
     $output .= "<table class=\"ui-styled-table\">\n";
     $output .= "<tr>\n";
     $output .= "  <th class=\"ui-state-default\" colspan=\"5\">SAN Listing</th>\n";
