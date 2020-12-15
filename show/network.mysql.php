@@ -11,14 +11,14 @@
 
   $package = "network.mysql.php";
 
-  logaccess($formVars['uid'], $package, "Accessing the script.");
+  logaccess($db, $formVars['uid'], $package, "Accessing the script.");
 
   header('Content-Type: text/javascript');
 
   $formVars['id'] = clean($_GET['id'], 10);
 
 # if help has not been seen yet,
-  if (show_Help('shownetwork')) {
+  if (show_Help($db, 'shownetwork')) {
     $display = "display: block";
   } else {
     $display = "display: none";
@@ -33,14 +33,14 @@
   $output  = "<table class=\"ui-styled-table\">";
   $output .= "<tr>";
   $output .= "  <th class=\"ui-state-default\">";
-  if (check_userlevel($AL_Edit)) {
-    if (check_grouplevel($a_inventory['inv_manager'])) {
+  if (check_userlevel($db, $AL_Edit)) {
+    if (check_grouplevel($db, $a_inventory['inv_manager'])) {
       $output .= "<a href=\"" . $Editroot . "/inventory.php?server=" . $formVars['id'] . "#network\" target=\"_blank\"><img src=\"" . $Imgsroot . "/pencil.gif\">";
     }
   }
   $output .= "Interface Information";
-  if (check_userlevel($AL_Edit)) {
-    if (check_grouplevel($a_inventory['inv_manager'])) {
+  if (check_userlevel($db, $AL_Edit)) {
+    if (check_grouplevel($db, $a_inventory['inv_manager'])) {
       $output .= "</a>";
     }
   }
