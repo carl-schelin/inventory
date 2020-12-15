@@ -11,10 +11,10 @@
 
   $package = "users.php";
 
-  logaccess($formVars['uid'], $package, "Managing Data files.");
+  logaccess($db, $formVars['uid'], $package, "Managing Data files.");
 
 # if help has not been seen yet,
-  if (show_Help('manageerrors')) {
+  if (show_Help($db, 'manageerrors')) {
     $display = "display: block";
   } else {
     $display = "display: none";
