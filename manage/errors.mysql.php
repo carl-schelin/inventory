@@ -15,14 +15,14 @@
   if (isset($_SESSION['username'])) {
     $package = "errors.mysql.php";
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       $formVars['update']       = clean($_GET['update'],    10);
 
       if ($formVars['update'] == 1) {
         $formVars['id']         = clean($_GET['id'],        10);
         $formVars['priority']   = clean($_GET['priority'],  10);
 
-        logaccess($_SESSION['uid'], $package, "Building the query.");
+        logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
         $q_string =
           "ce_priority =   " . $formVars['priority'];
@@ -31,13 +31,13 @@
           $query = "update chkerrors set " . $q_string . " where ce_id = " . $formVars['id'];
         }
 
-        logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $a_inventory['inv_name']);
+        logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $a_inventory['inv_name']);
 
         mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
 # priority 1
       $count = 0;
@@ -225,7 +225,7 @@
 
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
