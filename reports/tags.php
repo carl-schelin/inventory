@@ -13,7 +13,7 @@
 
   $package = "tags.php";
 
-  logaccess($formVars['uid'], $package, "Viewing all tags.");
+  logaccess($db, $formVars['uid'], $package, "Viewing all tags.");
 
   if (isset($_GET['sort'])) {
     $orderby = "order by " . clean($_GET['sort'], 10);
@@ -22,7 +22,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
