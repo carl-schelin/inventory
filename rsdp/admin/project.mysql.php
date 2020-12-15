@@ -24,7 +24,7 @@
       $formVars['prj_group'] = $_SESSION['group'];
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']            = clean($_GET['id'],           10);
         $formVars['prj_name']      = clean($_GET['prj_name'],     30);
@@ -42,7 +42,7 @@
         }
 
         if (strlen($formVars['prj_name']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "prj_name      = \"" . $formVars['prj_name']  . "\"," .
@@ -60,7 +60,7 @@
             $message = "Project updated.";
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['prj_name']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['prj_name']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -71,7 +71,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $q_string  = "select grp_name ";
       $q_string .= "from groups ";
@@ -112,7 +112,7 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      if (check_userlevel($AL_Admin)) {
+      if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\">Del</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Id</th>\n";
@@ -140,7 +140,7 @@
           }
 
           $output .= "<tr>";
-          if (check_userlevel($AL_Admin)) {
+          if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"" . $class . " delete\">" . $linkdel                                        . "</td>";
           }
           $output .= "  <td class=\"" . $class . " delete\">"   . $linkstart . $a_projects['prj_id']      . $linkend . "</td>";
@@ -166,7 +166,7 @@
       print "document.dialog.prj_close.checked = false;\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
