@@ -11,7 +11,7 @@
 
   $package = "dba.report.php";
 
-  logaccess($formVars['uid'], $package, "Checking out the inventory.");
+  logaccess($db, $formVars['uid'], $package, "Checking out the inventory.");
 
 # these are passed to each report
   $formVars['product']   = clean($_GET['product'],  10);
