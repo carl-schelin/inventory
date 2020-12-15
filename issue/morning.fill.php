@@ -20,8 +20,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from issue_morning");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from issue_morning");
 
       $q_string  = "select morn_text,morn_timestamp,morn_user,morn_status ";
       $q_string .= "from issue_morning ";
@@ -30,7 +30,7 @@
       $a_issue_morning = mysqli_fetch_array($q_issue_morning);
       mysqli_free_result($q_issue_morning);
 
-      $selected = return_Index($a_issue_morning['morn_user'], "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
+      $selected = return_Index($db, $a_issue_morning['morn_user'], "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
 
       print "document.start.morn_text.value = '"      . mysqli_real_escape_string($a_issue_morning['morn_text'])      . "';\n";
       print "document.start.morn_timestamp.value = '" . mysqli_real_escape_string($a_issue_morning['morn_timestamp']) . "';\n";
@@ -43,7 +43,7 @@
       print "document.start.mornupdate.disabled = false;\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
