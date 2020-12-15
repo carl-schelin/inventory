@@ -11,10 +11,10 @@
 
   $package = "index.apps.php";
 
-  logaccess($db, $formVars['uid'], $package, "Checking out the index.");
+  logaccess($db, $db, $formVars['uid'], $package, "Checking out the index.");
 
 # if help has not been seen yet,
-  if (show_Help($Sitepath . "/" . $package)) {
+  if (show_Help($db, $Sitepath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
@@ -61,14 +61,14 @@ $(document).ready( function() {
   <li><a href="#certificates">Certificate Manager</a></li>
   <li><a href="#images">Image Manager</a></li>
 <?php
-  if (check_grouplevel($GRP_Monitoring)) {
+  if (check_grouplevel($db, $GRP_Monitoring)) {
 ?>
   <li><a href="#monitor">Manage Monitoring</a></li>
 <?php
   }
 ?>
 <?php
-  if (check_grouplevel($GRP_Unix)) {
+  if (check_grouplevel($db, $GRP_Unix)) {
 ?>
   <li><a href="#psaps">PSAP Manager</a></li>
 <?php
@@ -142,7 +142,7 @@ $(document).ready( function() {
 
 
 <?php
-  if (check_grouplevel($GRP_Monitoring)) {
+  if (check_grouplevel($db, $GRP_Monitoring)) {
 ?>
 <div id="monitor">
 
@@ -164,7 +164,7 @@ $(document).ready( function() {
 
 
 <?php
-  if (check_grouplevel($GRP_Unix)) {
+  if (check_grouplevel($db, $GRP_Unix)) {
 ?>
 <div id="psaps">
 
