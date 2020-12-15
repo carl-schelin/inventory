@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from apigroups");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from apigroups");
 
       $q_string  = "select api_name ";
       $q_string .= "from apigroups ";
@@ -34,7 +34,7 @@
       print "document.apigroups.id.value = " . $formVars['id'] . ";\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
