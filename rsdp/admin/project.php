@@ -13,7 +13,7 @@
 
   $package = "project.php";
 
-  logaccess($_SESSION['uid'], $package, "Viewing the Project table");
+  logaccess($db, $_SESSION['uid'], $package, "Viewing the Project table");
 
   if (isset($_GET['group'])) {
     $formVars['group'] = clean($_GET['group'], 10);
@@ -39,7 +39,7 @@
 
 <script type="text/javascript">
 <?php
-  if (check_userlevel($AL_Admin)) {
+  if (check_userlevel($db, $AL_Admin)) {
 ?>
 function delete_line( p_script_url ) {
   var answer = confirm("Delete this Project?")
