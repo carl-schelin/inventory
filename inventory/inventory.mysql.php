@@ -634,7 +634,7 @@
               $interface .= "  <td class=\"" . $class . "\" id=\"fzn" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fzn');\"><u>" . $a_interface['zone_name']        . "</u></td>\n";
               $interface .= "  <td class=\"" . $class . "\" id=\"fgw" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fgw');\"><u>" . $a_interface['int_gate']         . "</u></td>\n";
               $interface .= "  <td class=\"" . $class . "\" id=\"fvl" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fvl');\"><u>" . $a_interface['int_vlan']         . "</u></td>\n";
-              if (return_Virtual($a_inventory['inv_id']) == 0) {
+              if (return_Virtual($db, $a_inventory['inv_id']) == 0) {
                 $interface .= "  <td class=\"" . $class . "\" id=\"fsp" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fsp');\"><u>" . $a_interface['int_sysport']    . "</u></td>\n";
                 $interface .= "  <td class=\"" . $class . "\" id=\"fmt" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fmt');\"><u>" . $a_interface['med_text']       . "</u></td>\n";
                 $interface .= "  <td class=\"" . $class . "\" id=\"fsw" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fsw');\"><u>" . $a_interface['int_switch']     . "</u></td>\n";
@@ -775,7 +775,7 @@
                   $interface .= "  <td class=\"" . $class . "\" id=\"fzn" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fzn');\"><u>"      . $a_int_child['zone_name']               . "</u></td>\n";
                   $interface .= "  <td class=\"" . $class . "\" id=\"fgw" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fgw');\"><u>"      . $a_int_child['int_gate']                 . "</u></td>\n";
                   $interface .= "  <td class=\"" . $class . "\" id=\"fvl" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fvl');\"><u>"      . $a_int_child['int_vlan']                 . "</u></td>\n";
-                  if (return_Virtual($a_inventory['inv_id']) == 0) {
+                  if (return_Virtual($db, $a_inventory['inv_id']) == 0) {
                     $interface .= "  <td class=\"" . $class . "\" id=\"fsp" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fsp');\"><u>"      . $a_int_child['int_sysport']              . "</u></td>\n";
                     $interface .= "  <td class=\"" . $class . "\" id=\"fmt" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fmt');\"><u>"      . $a_int_child['med_text']                . "</u></td>\n";
                     $interface .= "  <td class=\"" . $class . "\" id=\"fsw" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fsw');\"><u>"      . $a_int_child['int_switch']               . "</u></td>\n";
