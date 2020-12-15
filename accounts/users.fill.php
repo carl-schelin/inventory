@@ -46,15 +46,15 @@
 
       $deptname = return_Index($db, $a_users['usr_deptname'], $q_string);
 
-      print "document.user.usr_name.value = '"       . mysqli_real_escape_string($a_users['usr_name'])     . "';\n";
-      print "document.user.usr_first.value = '"      . mysqli_real_escape_string($a_users['usr_first'])    . "';\n";
-      print "document.user.usr_last.value = '"       . mysqli_real_escape_string($a_users['usr_last'])     . "';\n";
-      print "document.user.usr_email.value = '"      . mysqli_real_escape_string($a_users['usr_email'])    . "';\n";
-      print "document.user.usr_phone.value = '"      . mysqli_real_escape_string($a_users['usr_phone'])    . "';\n";
-      print "document.user.usr_clientid.value = '"   . mysqli_real_escape_string($a_users['usr_clientid']) . "';\n";
-      print "document.user.usr_altemail.value = '"   . mysqli_real_escape_string($a_users['usr_altemail']) . "';\n";
-      print "document.user.usr_notify.value = '"     . mysqli_real_escape_string($a_users['usr_notify'])   . "';\n";
-      print "document.user.usr_freq.value = '"       . mysqli_real_escape_string($a_users['usr_freq'])     . "';\n";
+      print "document.user.usr_name.value = '"       . mysqli_real_escape_string($db, $a_users['usr_name'])     . "';\n";
+      print "document.user.usr_first.value = '"      . mysqli_real_escape_string($db, $a_users['usr_first'])    . "';\n";
+      print "document.user.usr_last.value = '"       . mysqli_real_escape_string($db, $a_users['usr_last'])     . "';\n";
+      print "document.user.usr_email.value = '"      . mysqli_real_escape_string($db, $a_users['usr_email'])    . "';\n";
+      print "document.user.usr_phone.value = '"      . mysqli_real_escape_string($db, $a_users['usr_phone'])    . "';\n";
+      print "document.user.usr_clientid.value = '"   . mysqli_real_escape_string($db, $a_users['usr_clientid']) . "';\n";
+      print "document.user.usr_altemail.value = '"   . mysqli_real_escape_string($db, $a_users['usr_altemail']) . "';\n";
+      print "document.user.usr_notify.value = '"     . mysqli_real_escape_string($db, $a_users['usr_notify'])   . "';\n";
+      print "document.user.usr_freq.value = '"       . mysqli_real_escape_string($db, $a_users['usr_freq'])     . "';\n";
 
       print "document.user.usr_group['"    . $groups   . "'].selected = true;\n";
       print "document.user.usr_disabled['" . $disabled . "'].selected = true;\n";
