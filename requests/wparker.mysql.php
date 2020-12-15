@@ -11,7 +11,7 @@
 
   $package = "wparker.mysql.php";
 
-  logaccess($formVars['uid'], $package, "Accessing script");
+  logaccess($db, $formVars['uid'], $package, "Accessing script");
 
   if (isset($_GET["sort"])) {
     $formVars['sort'] = clean($_GET["sort"], 20);
