@@ -11,7 +11,7 @@
 
   $package = "show.project.php";
 
-  logaccess($formVars['uid'], $package, "Viewing the Projects table");
+  logaccess($db, $formVars['uid'], $package, "Viewing the Projects table");
 
   $formVars['id'] = clean($_GET['id'],10);
 
@@ -28,7 +28,7 @@
   $a_products = mysqli_fetch_array($q_products);
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
