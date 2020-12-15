@@ -64,6 +64,7 @@
 # Send an e-mail to the networking folks to remind them of the awaiting task
       if ($formVars['if_complete'] == -1) {
         generateEmail(
+          $db, 
           $formVars['rsdp'],
           "<p>Reminder: The new Server has been designed and the network interfaces need to be configured.</p>",
           "<p>Click on <a href=\"" . $RSDProot . "/network/network.php?rsdp=" . $formVars['rsdp'] . "#tabs-4\">this link</a> to work on your assigned task</p>",
@@ -81,7 +82,7 @@
 
 # now set status as complete and send out e-mails.
       if ($formVars['if_complete'] == 1) {
-        setstatus($formVars['rsdp'], 1, 4);
+        setstatus($db, "$formVars['rsdp'], 1, 4);
 
 # only send the e-mail if step 3 is also complete
         $q_string  = "select st_id,st_completed ";
@@ -93,11 +94,12 @@
         if (mysqli_num_rows($q_rsdp_status) > 0) {
 
 # special bit for systems that are virtual machines. Make sure the e-mail is properly sent
-          $virtual = rsdp_Virtual($formVars['rsdp']);
+          $virtual = rsdp_Virtual($db, "$formVars['rsdp']);
 
 # now see if it is a Virtual Machine; if so, send the e-mail to the VM team and change the link to the 5vm link.
           if ($virtual == 1) {
             generateEmail(
+              $db, 
               $formVars['rsdp'],
               "<p>The SAN and LAN ports have been identified and IP addresses assigned.</p>", 
               "<p>Click on <a href=\"" . $RSDProot . "/virtual/virtual.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>", 
@@ -114,6 +116,7 @@
             $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
             if ($a_rsdp_tickets['tkt_virtual']) {
               submit_Ticket(
+                $db, 
                 $formVars['rsdp'],
                 $RSDProot . "/virtual/virtual.php",
                 "rsdp_virtpoc",
@@ -125,6 +128,7 @@
           } else {
 # send email to the data center folks.
             generateEmail(
+              $db, 
               $formVars['rsdp'],
               "<p>The SAN and LAN ports have been identified and IP addresses assigned.</p>", 
               "<p>Click on <a href=\"" . $RSDProot . "/physical/physical.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>", 
@@ -141,6 +145,7 @@
             $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
             if ($a_rsdp_tickets['tkt_datacenter']) {
               submit_Ticket(
+                $db, 
                 $formVars['rsdp'],
                 $RSDProot . "/physical/physical.php",
                 "rsdp_dcpoc",
