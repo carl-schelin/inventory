@@ -40,7 +40,7 @@
       <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Adminroot; ?>/tags.php');">Tag Manager</a></li>
       <li><a href="<?php print $Statusroot;  ?>/home.php" target="_blank">Status Management</a></li>
 <?php
-    if (check_userlevel($AL_Admin)) {
+    if (check_userlevel($db, $AL_Admin)) {
 ?>
       <li><a href="<?php print $Assetroot;  ?>/assets.php" target="_blank">Bulk Upload</a></li>
       <li><a href="<?php print $Manageroot; ?>/users.php" target="_blank">User Manager</a></li>
@@ -49,7 +49,7 @@
 ?>
       <li><a href="<?php print $Nagiosroot; ?>" target="_blank">Lab Monitoring (Nagios)</a></li>
 <?php
-    if (check_userlevel($AL_Admin)) {
+    if (check_userlevel($db, $AL_Admin)) {
 ?>
       <li><a href="<?php print $PSAProot;   ?>">PSAP Manager</a></li>
 <?php
