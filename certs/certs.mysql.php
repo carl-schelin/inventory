@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['id'],             10);
         $formVars['cert_desc']      = clean($_GET['cert_desc'],      80);
@@ -42,7 +42,7 @@
         }
 
         if (strlen($formVars['cert_desc']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "cert_desc      = \"" . $formVars['cert_desc']      . "\"," .
@@ -63,7 +63,7 @@
             $message = "Certificate updated.";
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['cert_desc']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['cert_desc']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -74,7 +74,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $q_string  = "select usr_notify ";
       $q_string .= "from users ";
@@ -165,7 +165,7 @@
 
 # if a member of the webapps team or an admin, permit editing.
         $output .= "<tr>";
-        if (check_grouplevel($GRP_WebApps)) {
+        if (check_grouplevel($db, $GRP_WebApps)) {
           $output .= "  <td" . $class . " delete\">"                                 . $linkdel                                           . "</td>";
         } else {
           $output .= "  <td" . $class . "\">--</td>";
@@ -195,7 +195,7 @@
       print "document.dialog.cert_isca.checked = false;\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
