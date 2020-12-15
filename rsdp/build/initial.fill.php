@@ -26,8 +26,8 @@
     $ticket = 'yes';
     $ticket = 'no';
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from rsdp_server");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from rsdp_server");
 
       $userid = $_SESSION['uid'];
 
@@ -197,15 +197,15 @@
         }
 
 # retrieve index values
-        $products     = return_Index($a_rsdp_server['rsdp_product'],      "select prod_id from products order by prod_name");
-#       $projects     = return_Index($a_rsdp_server['rsdp_project'],      "select prj_id from projects where prj_group = " . $_SESSION['group'] . " and prj_close = 0 group by prj_name");
-        $platformspoc = return_Index($a_rsdp_server['rsdp_platformspoc'], "select usr_id from users where usr_disabled = 0 and usr_id != 1 order by usr_last");
-        $apppoc       = return_Index($a_rsdp_server['rsdp_apppoc'],       "select usr_id from users where usr_disabled = 0 and usr_id != 1 order by usr_last");
-        $platform     = return_Index($a_rsdp_server['rsdp_platform'],     "select grp_id from groups where grp_disabled = 0 order by grp_name");
-        $application  = return_Index($a_rsdp_server['rsdp_application'],  "select grp_id from groups where grp_disabled = 0 order by grp_name");
-        $service      = return_Index($a_rsdp_server['rsdp_service'],      "select svc_id from service order by svc_id");
-        $vendor       = return_Index($a_rsdp_server['rsdp_vendor'],       "select slv_id from supportlevel order by slv_value");
-        $location     = return_Index($a_rsdp_server['rsdp_location'],     "select loc_id from locations left join cities on cities.ct_id = locations.loc_city where loc_type = 1 order by ct_city,loc_name");
+        $products     = return_Index($db, $a_rsdp_server['rsdp_product'],      "select prod_id from products order by prod_name");
+#       $projects     = return_Index($db, $a_rsdp_server['rsdp_project'],      "select prj_id from projects where prj_group = " . $_SESSION['group'] . " and prj_close = 0 group by prj_name");
+        $platformspoc = return_Index($db, $a_rsdp_server['rsdp_platformspoc'], "select usr_id from users where usr_disabled = 0 and usr_id != 1 order by usr_last");
+        $apppoc       = return_Index($db, $a_rsdp_server['rsdp_apppoc'],       "select usr_id from users where usr_disabled = 0 and usr_id != 1 order by usr_last");
+        $platform     = return_Index($db, $a_rsdp_server['rsdp_platform'],     "select grp_id from groups where grp_disabled = 0 order by grp_name");
+        $application  = return_Index($db, $a_rsdp_server['rsdp_application'],  "select grp_id from groups where grp_disabled = 0 order by grp_name");
+        $service      = return_Index($db, $a_rsdp_server['rsdp_service'],      "select svc_id from service order by svc_id");
+        $vendor       = return_Index($db, $a_rsdp_server['rsdp_vendor'],       "select slv_id from supportlevel order by slv_value");
+        $location     = return_Index($db, $a_rsdp_server['rsdp_location'],     "select loc_id from locations left join cities on cities.ct_id = locations.loc_city where loc_type = 1 order by ct_city,loc_name");
 
 
         print "document.rsdp.rsdp_product['"      . $products     . "'].selected = true;\n";
@@ -278,8 +278,8 @@
       if (mysqli_num_rows($q_users) > 0) {
         $a_users = mysqli_fetch_array($q_users);
 
-        $requestor = return_Index($userid,                  "select usr_id from users where usr_disabled = 0 order by usr_last");
-        $deptname  = return_Index($a_users['usr_deptname'], "select dep_id from department left join business_unit on business_unit.bus_unit = department.dep_unit order by bus_name,dep_name");
+        $requestor = return_Index($db, $userid,                  "select usr_id from users where usr_disabled = 0 order by usr_last");
+        $deptname  = return_Index($db, $a_users['usr_deptname'], "select dep_id from department left join business_unit on business_unit.bus_unit = department.dep_unit order by bus_name,dep_name");
 
         print "document.rsdp.rsdp_requestor['"    . $requestor    . "'].selected = true;\n";
         print "document.rsdp.usr_deptname['"      . $deptname     . "'].selected = true;\n";
@@ -434,7 +434,7 @@
       print "validate_Form();\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
