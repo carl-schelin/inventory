@@ -29,7 +29,7 @@
       $a_resources = mysqli_fetch_array($q_resources);
       mysqli_free_result($q_resources);
 
-      print "document.resources.res_name.value = '" . mysqli_real_escape_string($a_resources['res_name'])        . "';\n";
+      print "document.resources.res_name.value = '" . mysqli_real_escape_string($db, $a_resources['res_name'])        . "';\n";
 
       print "document.resources.id.value = " . $formVars['id'] . ";\n";
 
