@@ -16,7 +16,7 @@
     $package = "exclude.checked.php";
     $formVars['noexpire'] = clean($_GET['noexpire'], 10);
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['noexpire'] == 'true') {
         $expire = "2038-01-01";
       }
@@ -28,7 +28,7 @@
       print "document.exclude.ex_expiration.value = '" . $expire . "';";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
