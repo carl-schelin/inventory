@@ -18,7 +18,7 @@
   $formVars['iss_user']          = clean($_POST['iss_user'],         10);
   $formVars['iss_subject']       = clean($_POST['iss_subject'],      70);
 
-  logaccess($_SESSION['uid'], $package, "Creating a new record.");
+  logaccess($db, $_SESSION['uid'], $package, "Creating a new record.");
 
   if (strlen($formVars['iss_subject']) > 0) {
 
@@ -29,15 +29,15 @@
       "iss_timestamp  = \"" . date("Y-m-d H:i:s")         . "\"," . 
       "iss_subject    = \"" . $formVars['iss_subject']    . "\"";
 
-    logaccess($_SESSION['uid'], $package, "Adding detail: " . $formVars['iss_companyid']);
+    logaccess($db, $_SESSION['uid'], $package, "Adding detail: " . $formVars['iss_companyid']);
 
     $result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
-    $query = "select last_insert_id()";
+    $query = "select last_insert_id($db)";
     $q_result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
     $a_result = mysqli_fetch_array($q_result);
 
-    $issue = $a_result['last_insert_id()'];
+    $issue = $a_result['last_insert_id($db)'];
 
     $url = $Issueroot . "/ticket.php?id=" . $issue . "&server=" . $formVars['iss_companyid'];
 
