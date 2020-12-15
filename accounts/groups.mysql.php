@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Admin)) {
+    if (check_userlevel($db, $AL_Admin)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']               = clean($_GET['id'],                10);
         $formVars['grp_name']         = clean($_GET['grp_name'],          60);
@@ -65,7 +65,7 @@
         }
 
         if (strlen($formVars['grp_name']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
 # get old group manager.
           $q_string  = "select grp_manager ";
@@ -110,7 +110,7 @@
             $query = "update groups set " . $q_string . " where grp_id = " . $formVars['id'];
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['grp_name']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['grp_name']);
 
           mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
@@ -165,7 +165,7 @@
 
       $title  = "<table class=\"ui-styled-table\">";
       $title .= "<tr>";
-      if (check_userlevel($AL_Admin)) {
+      if (check_userlevel($db, $AL_Admin)) {
         $title .= "  <th class=\"ui-state-default\">Del</th>";
       }
       $title .= "  <th class=\"ui-state-default\">Id</th>";
@@ -186,7 +186,7 @@
 
       $title  = "<table class=\"ui-styled-table\">";
       $title .= "<tr>";
-      if (check_userlevel($AL_Admin)) {
+      if (check_userlevel($db, $AL_Admin)) {
         $title .= "  <th class=\"ui-state-default\">Del</th>";
       }
       $title .= "  <th class=\"ui-state-default\">Id</th>";
@@ -201,7 +201,7 @@
 
       $title  = "<table class=\"ui-styled-table\">";
       $title .= "<tr>";
-      if (check_userlevel($AL_Admin)) {
+      if (check_userlevel($db, $AL_Admin)) {
         $title .= "  <th class=\"ui-state-default\">Del</th>";
       }
       $title .= "  <th class=\"ui-state-default\">Id</th>";
@@ -250,7 +250,7 @@
           }
 
           $group .= "<tr>";
-          if (check_userlevel($AL_Admin)) {
+          if (check_userlevel($db, $AL_Admin)) {
             $group .= "  <td class=\"" . $class . " delete\">" . $linkdel   . "</td>";
           }
           $group .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['grp_id']           . $linkend . "</td>";
@@ -267,7 +267,7 @@
           $group .= "</tr>";
 
           $magic .= "<tr>";
-          if (check_userlevel($AL_Admin)) {
+          if (check_userlevel($db, $AL_Admin)) {
             $magic .= "  <td class=\"" . $class . " delete\">" . $linkdel   . "</td>";
           }
           $magic .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['grp_id']           . $linkend . "</td>";
@@ -278,7 +278,7 @@
           $magic .= "</tr>";
 
           $changelog .= "<tr>";
-          if (check_userlevel($AL_Admin)) {
+          if (check_userlevel($db, $AL_Admin)) {
             $changelog .= "  <td class=\"" . $class . " delete\">" . $linkdel   . "</td>";
           }
           $changelog .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['grp_id']           . $linkend . "</td>";
@@ -331,7 +331,7 @@
       print "document.groups.grp_clscript.value = '';\n";
       print "document.groups.grp_report.value = '';\n";
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
