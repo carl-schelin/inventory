@@ -12,7 +12,7 @@
 
   $package = "assume.php";
 
-  logaccess($formVars['uid'], $package, "Assuming a new identity.");
+  logaccess($db, $formVars['uid'], $package, "Assuming a new identity.");
 
 ?>
 <!DOCTYPE HTML>
@@ -87,7 +87,7 @@ if (isset($_POST['change_user'])) {
 
     print "<p>You have assumed the identity of " . $_SESSION['username'] . ".</p>";
 
-    logaccess($formVars['uid'], $package, "Assumed identity.");
+    logaccess($db, $formVars['uid'], $package, "Assumed identity.");
   }
 }
 
