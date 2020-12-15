@@ -11,7 +11,7 @@
 
   $package = "khobbs.capex.php";
 
-  logaccess($formVars['uid'], $package, "Getting a capex listing.");
+  logaccess($db, $formVars['uid'], $package, "Getting a capex listing.");
 
   $orderby = " order by ";
   if (isset($_GET['sort'])) {
