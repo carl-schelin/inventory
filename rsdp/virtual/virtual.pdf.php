@@ -19,7 +19,7 @@
 
   $package = "virtual.pdf.php";
 
-  logaccess($_SESSION['uid'], $package, "VM: " . $formVars['rsdp']);
+  logaccess($db, $_SESSION['uid'], $package, "VM: " . $formVars['rsdp']);
 
   $q_string  = "select rsdp_application,rsdp_magic,rsdp_completion,rsdp_function,rsdp_processors,";
   $q_string .= "rsdp_memory,rsdp_ossize,svc_name,usr_last,usr_first,usr_phone,usr_email,bus_name,dep_name,dep_unit,dep_dept,loc_name,prj_name,prj_code,grp_name ";
