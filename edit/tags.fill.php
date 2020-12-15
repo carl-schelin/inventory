@@ -29,7 +29,7 @@
       $a_tags = mysqli_fetch_array($q_tags);
       mysqli_free_result($q_tags);
 
-      print "document.edit.tag_name.value = '" . mysqli_real_escape_string($a_tags['tag_name']) . "';\n";
+      print "document.edit.tag_name.value = '" . mysqli_real_escape_string($db, $a_tags['tag_name']) . "';\n";
 
       print "document.edit.tag_view['" . $a_tags['tag_view'] . "'].checked = true;\n";
 
