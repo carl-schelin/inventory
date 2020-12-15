@@ -125,6 +125,7 @@
         $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
         generateEmail(
+          $db, 
           $formVars['rsdp'],
           $body,
           "<p>Click on <a href=\"" . $RSDProot . "/system/configured.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>",
@@ -144,7 +145,7 @@
       if ($formVars['if_complete'] == 1) {
         $message = '';
 # set task 12 as complete
-        setstatus($formVars['rsdp'], 1, 12);
+        setstatus($db, "$formVars['rsdp'], 1, 12);
 
 # Check to see if backups have been requested. If not, mark the backup section as completed with a status of 2 for skipped
         $q_string  = "select bu_retention ";
@@ -154,11 +155,12 @@
         $a_rsdp_backups = mysqli_fetch_array($q_rsdp_backups);
 
         if ($a_rsdp_backups['bu_retention'] == 0) {
-          setstatus($formVars['rsdp'], 2, 13);
+          setstatus($db, "$formVars['rsdp'], 2, 13);
         } else {
 
 # send e-mail to the backup team
           generateEmail(
+            $db, 
             $formVars['rsdp'],
             "<p>The Server has been configured and is ready to have Backups configured.</p>", 
             "<p>Click on <a href=\"" . $RSDProot . "/backups/backups.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>", 
@@ -176,6 +178,7 @@
           $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
           if ($a_rsdp_tickets['tkt_backups']) {
             submit_Ticket(
+              $db, 
               $formVars['rsdp'],
               $RSDProot . "/backups/backups.php",
               "rsdp_backuppoc",
@@ -192,11 +195,12 @@
         $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
         if ($a_rsdp_server['rsdp_osmonitor'] == 0) {
-          setstatus($formVars['rsdp'], 2, 14);
+          setstatus($db, "$formVars['rsdp'], 2, 14);
         } else {
 
 # send e-mail to the monitoring team
           generateEmail(
+            $db, 
             $formVars['rsdp'],
             "<p>The Server has been configured and is ready to have Monitoring configured.</p>", 
             "<p>Click on <a href=\"" . $RSDProot . "/monitoring/monitoring.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>", 
@@ -214,6 +218,7 @@
           $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
           if ($a_rsdp_tickets['tkt_monitor']) {
             submit_Ticket(
+              $db, 
               $formVars['rsdp'],
               $RSDProot . "/monitoring/monitoring.php",
               "rsdp_monitorpoc",
@@ -230,6 +235,7 @@
         $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
         generateEmail(
+          $db, 
           $formVars['rsdp'],
           "<p>The Server has been configured and is ready for the installation of Applications.</p>", 
           "<p>Click on <a href=\"" . $RSDProot . "/application/installed.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>", 
@@ -248,6 +254,7 @@
         $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
         if ($a_rsdp_tickets['tkt_appins']) {
           submit_Ticket(
+            $db, 
             $formVars['rsdp'],
             $RSDProot . "/application/installed.php",
             "rsdp_apppoc",
