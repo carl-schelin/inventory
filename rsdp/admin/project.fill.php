@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from zones");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from zones");
 
       $q_string  = "select prj_name,prj_code,prj_close,prj_product ";
       $q_string .= "from projects ";
@@ -29,7 +29,7 @@
       $a_projects = mysqli_fetch_array($q_projects);
       mysqli_free_result($q_projects);
 
-      $product = return_Index($a_projects['prj_product'], "select prod_id from products order by prod_name");
+      $product = return_Index($db, $a_projects['prj_product'], "select prod_id from products order by prod_name");
 
       print "document.dialog.prj_name.value = '"  . mysqli_real_escape_string($a_projects['prj_name']) . "';\n";
       print "document.dialog.prj_code.value  = '" . mysqli_real_escape_string($a_projects['prj_code']) . "';\n";
@@ -45,7 +45,7 @@
       print "document.dialog.id.value = " . $formVars['id'] . ";\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
