@@ -30,9 +30,9 @@
       $formVars['if_netcheck'] = 0;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['if_complete'] == 0 || $formVars['if_complete'] == 1 || $formVars['if_complete'] == 2) {
-        logaccess($_SESSION['uid'], $package, "Building the query.");
+        logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
         $q_string =
           "if_rsdp       =   " . $formVars['rsdp']         . "," .
@@ -47,7 +47,7 @@
           $message = "Network updated.";
         }
 
-        logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['rsdp']);
+        logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['rsdp']);
 
         mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -161,7 +161,7 @@
       }
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
