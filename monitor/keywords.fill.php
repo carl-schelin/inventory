@@ -28,11 +28,11 @@
       $a_keywords = mysqli_fetch_array($q_keywords);
       mysqli_free_result($q_keywords);
 
-      print "document.keywords.key_description.value = '"       . mysqli_real_escape_string($a_keywords['key_description'])       . "';\n";
-      print "document.keywords.key_page.value = '"              . mysqli_real_escape_string($a_keywords['key_page'])              . "';\n";
-      print "document.keywords.key_email.value = '"             . mysqli_real_escape_string($a_keywords['key_email'])             . "';\n";
-      print "document.keywords.key_annotate.value = '"          . mysqli_real_escape_string($a_keywords['key_annotate'])          . "';\n";
-      print "document.keywords.key_critical_annotate.value = '" . mysqli_real_escape_string($a_keywords['key_critical_annotate']) . "';\n";
+      print "document.keywords.key_description.value = '"       . mysqli_real_escape_string($db, $a_keywords['key_description'])       . "';\n";
+      print "document.keywords.key_page.value = '"              . mysqli_real_escape_string($db, $a_keywords['key_page'])              . "';\n";
+      print "document.keywords.key_email.value = '"             . mysqli_real_escape_string($db, $a_keywords['key_email'])             . "';\n";
+      print "document.keywords.key_annotate.value = '"          . mysqli_real_escape_string($db, $a_keywords['key_annotate'])          . "';\n";
+      print "document.keywords.key_critical_annotate.value = '" . mysqli_real_escape_string($db, $a_keywords['key_critical_annotate']) . "';\n";
 
       if ($a_keywords['key_deleted']) {
         print "document.keywords.key_deleted.checked = true;\n";
