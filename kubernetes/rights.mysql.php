@@ -250,7 +250,7 @@
 
       mysqli_free_result($q_rights);
 
-      print "document.getElementById('rights_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('rights_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.rights.rgt_type['0'].checked = true;\n";
       print "document.rights.rgt_apigroup['0'].selected = true;\n";
