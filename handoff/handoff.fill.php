@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from handoff");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from handoff");
 
       $q_string  = "select off_user,off_group,off_timestamp,off_handoff,off_disabled ";
       $q_string .= "from handoff ";
@@ -29,8 +29,8 @@
       $a_handoff = mysqli_fetch_array($q_handoff);
       mysqli_free_result($q_contacts);
 
-      $user  = return_Index($a_handoff['off_user'],  "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
-      $group = return_Index($a_handoff['off_group'], "select grp_id from groups where grp_disabled = 0 order by grp_name");
+      $user  = return_Index($db, $a_handoff['off_user'],  "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
+      $group = return_Index($db, $a_handoff['off_group'], "select grp_id from groups where grp_disabled = 0 order by grp_name");
 
       print "document.handoff.off_timestamp.value = '" . mysqli_real_escape_string($a_handoff['off_timestamp']) . "';\n";
       print "document.handoff.off_handoff.value = '"   . mysqli_real_escape_string($a_handoff['off_handoff'])   . "';\n";
@@ -49,7 +49,7 @@
       print "document.handoff.update.disabled = false;\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
