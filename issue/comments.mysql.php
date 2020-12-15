@@ -24,7 +24,7 @@
       $formVars['id'] = 0;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars["det_id"]          = clean($_GET["det_id"],          10);
         $formVars["det_text"]        = clean($_GET["det_text"],      2000);
@@ -36,7 +36,7 @@
         }
 
         if (strlen($formVars['det_text']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "det_issue     =   " . $formVars['id']            . "," . 
@@ -53,7 +53,7 @@
             $message = "Comment updated.";
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['det_id']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['det_id']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -64,7 +64,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $q_string  = "select iss_closed ";
       $q_string .= "from issue ";
@@ -156,7 +156,7 @@
       }
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
