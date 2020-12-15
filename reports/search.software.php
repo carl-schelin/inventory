@@ -11,7 +11,7 @@
 
   $package = "search.software.php";
 
-  logaccess($formVars['uid'], $package, "Software report.");
+  logaccess($db, $formVars['uid'], $package, "Software report.");
 
 # search for software only
   $formVars['search_by'] = 3;
@@ -23,7 +23,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
