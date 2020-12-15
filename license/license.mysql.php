@@ -26,7 +26,7 @@
     }
     $orderby .= "lic_date";
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['id'],             10);
         $formVars['lic_vendor']     = clean($_GET['lic_vendor'],     30);
@@ -51,7 +51,7 @@
         }
 
         if (strlen($formVars['lic_vendor']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "lic_vendor   = \"" . $formVars['lic_vendor']   . "\"," . 
@@ -74,7 +74,7 @@
             $message = "License updated.";
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['lic_product']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['lic_product']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -88,7 +88,7 @@
 ### Now build the displayed table information
 ##############
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $linksort = "<a href=\"#\" onclick=\"javascript:show_file('license.mysql.php?update=-1";
 
@@ -123,7 +123,7 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      if (check_userlevel($AL_Admin)) {
+      if (check_userlevel($db, $AL_Admin)) {
         $output .= "<th class=\"ui-state-default\">Del</th>\n";
       }
       $output .= "<th class=\"ui-state-default\">" . $linksort . "&sort=lic_vendor');\">Vendor</a></th>\n";
@@ -151,7 +151,7 @@
           $linkend   = "</a>";
 
           $output .= "<tr>\n";
-          if (check_userlevel($AL_Admin)) {
+          if (check_userlevel($db, $AL_Admin)) {
             $output .= "<td class=\"ui-widget-content delete\">" . $linkdel   . "x"                         . $linkend . "</td>\n";
           }
           $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_licenses['lic_vendor']   . $linkend . "</td>\n";
@@ -180,7 +180,7 @@
 
       print "document.license.update.disabled = true;\n";
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
