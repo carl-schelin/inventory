@@ -13,7 +13,7 @@
 
   $package = "objects.php";
 
-  logaccess($_SESSION['uid'], $package, "Accessing script");
+  logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
   if (isset($_GET['sort'])) {
     $_SESSION['sort'] = clean($_GET['sort'], 20);
