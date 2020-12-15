@@ -132,7 +132,7 @@
 
       mysqli_free_result($q_inttype);
 
-      print "document.getElementById('table_mysql').innerHTML = '"   . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '"   . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.interfacetype.update.disabled = true;\n";
 
