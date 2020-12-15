@@ -34,16 +34,16 @@
       $role         = return_Index($db, $a_groups['grp_role'],         "select role_id from roles order by role_name");
       $manager      = return_Index($db, $a_groups['grp_manager'],      "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
 
-      print "document.groups.grp_name.value = '"      . mysqli_real_escape_string($a_groups['grp_name'])      . "';\n";
-      print "document.groups.grp_snow.value = '"      . mysqli_real_escape_string($a_groups['grp_snow'])      . "';\n";
-      print "document.groups.grp_email.value = '"     . mysqli_real_escape_string($a_groups['grp_email'])     . "';\n";
-      print "document.groups.grp_magic.value = '"     . mysqli_real_escape_string($a_groups['grp_magic'])     . "';\n";
-      print "document.groups.grp_category.value = '"  . mysqli_real_escape_string($a_groups['grp_category'])  . "';\n";
-      print "document.groups.grp_changelog.value = '" . mysqli_real_escape_string($a_groups['grp_changelog']) . "';\n";
-      print "document.groups.grp_clfile.value = '"    . mysqli_real_escape_string($a_groups['grp_clfile'])    . "';\n";
-      print "document.groups.grp_clserver.value = '"  . mysqli_real_escape_string($a_groups['grp_clserver'])  . "';\n";
-      print "document.groups.grp_clscript.value = '"  . mysqli_real_escape_string($a_groups['grp_clscript'])  . "';\n";
-      print "document.groups.grp_report.value = '"    . mysqli_real_escape_string($a_groups['grp_report'])    . "';\n";
+      print "document.groups.grp_name.value = '"      . mysqli_real_escape_string($db, $a_groups['grp_name'])      . "';\n";
+      print "document.groups.grp_snow.value = '"      . mysqli_real_escape_string($db, $a_groups['grp_snow'])      . "';\n";
+      print "document.groups.grp_email.value = '"     . mysqli_real_escape_string($db, $a_groups['grp_email'])     . "';\n";
+      print "document.groups.grp_magic.value = '"     . mysqli_real_escape_string($db, $a_groups['grp_magic'])     . "';\n";
+      print "document.groups.grp_category.value = '"  . mysqli_real_escape_string($db, $a_groups['grp_category'])  . "';\n";
+      print "document.groups.grp_changelog.value = '" . mysqli_real_escape_string($db, $a_groups['grp_changelog']) . "';\n";
+      print "document.groups.grp_clfile.value = '"    . mysqli_real_escape_string($db, $a_groups['grp_clfile'])    . "';\n";
+      print "document.groups.grp_clserver.value = '"  . mysqli_real_escape_string($db, $a_groups['grp_clserver'])  . "';\n";
+      print "document.groups.grp_clscript.value = '"  . mysqli_real_escape_string($db, $a_groups['grp_clscript'])  . "';\n";
+      print "document.groups.grp_report.value = '"    . mysqli_real_escape_string($db, $a_groups['grp_report'])    . "';\n";
 
       print "document.groups.grp_organization['"  . $organization . "'].selected = true;\n";
       print "document.groups.grp_role['"          . $role         . "'].selected = true;\n";
