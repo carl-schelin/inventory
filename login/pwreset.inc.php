@@ -89,7 +89,7 @@
             $q_string .= "where usr_name = '" . $usr_name . "' and usr_passwd = '" . $usr_passwd . "'";
             $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-            logaccess($_SESSION['uid'], "pwreset.inc.php", $_SESSION['username'] . " has reset their password.");
+            logaccess($db, $_SESSION['uid'], "pwreset.inc.php", $_SESSION['username'] . " has reset their password.");
 
 //  Successful login code will go here... 
 
