@@ -19,14 +19,14 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       $q_string  = "select det_id ";
       $q_string .= "from issue_detail ";
       $q_string .= "where det_issue = " . $formVars['id'];
       $q_issue_detail = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_issue_detail = mysqli_fetch_array($q_issue_detail)) {
 
-        logaccess($_SESSION['uid'], $package, "Deleting " . $a_issue_detail['det_id'] . " from issue_detail");
+        logaccess($db, $_SESSION['uid'], $package, "Deleting " . $a_issue_detail['det_id'] . " from issue_detail");
 
         $q_string  = "delete ";
         $q_string .= "from issue_detail ";
@@ -39,7 +39,7 @@
       $q_string .= "where sup_issue = " . $formVars['id'];
       $q_issue_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_issue_support = mysqli_fetch_array($q_issue_support)) {
-        logaccess($_SESSION['uid'], $package, "Deleting " . $a_issue_support['sup_id'] . " from sup_issue");
+        logaccess($db, $_SESSION['uid'], $package, "Deleting " . $a_issue_support['sup_id'] . " from sup_issue");
 
         $q_string  = "delete ";
         $q_string .= "from issue_support ";
@@ -47,7 +47,7 @@
         $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 
-      logaccess($_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from issue");
+      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from issue");
 
       $q_string  = "delete ";
       $q_string .= "from issue ";
@@ -58,7 +58,7 @@
 
       print "clear_fields();\n";
     } else {
-      logaccess($_SESSION['uid'], $package, "Access denied");
+      logaccess($db, $_SESSION['uid'], $package, "Access denied");
     }
   }
 ?>
