@@ -29,8 +29,8 @@
       $a_levels = mysqli_fetch_array($q_levels);
       mysqli_free_result($q_levels);
 
-      print "document.levels.lvl_name.value = '"  . mysqli_real_escape_string($a_levels['lvl_name'])  . "';\n";
-      print "document.levels.lvl_level.value = '" . mysqli_real_escape_string($a_levels['lvl_level']) . "';\n";
+      print "document.levels.lvl_name.value = '"  . mysqli_real_escape_string($db, $a_levels['lvl_name'])  . "';\n";
+      print "document.levels.lvl_level.value = '" . mysqli_real_escape_string($db, $a_levels['lvl_level']) . "';\n";
 
       print "document.levels.lvl_disabled['" . $a_levels['lvl_disabled'] . "'].selected = 'true';\n";
 
