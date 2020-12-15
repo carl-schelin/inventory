@@ -13,13 +13,13 @@
 
   $package = "exclude.php";
 
-  logaccess($_SESSION['uid'], $package, "Viewing the message.exclude table");
+  logaccess($db, $_SESSION['uid'], $package, "Viewing the message.exclude table");
 
 # If group or an admin, allow access
-  if (check_grouplevel($GRP_Unix)) {
+  if (check_grouplevel($db, $GRP_Unix)) {
 
 # if help has not been seen yet,
-  if (show_Help('excludes')) {
+  if (show_Help($db, 'excludes')) {
     $display = "display: block";
   } else {
     $display = "display: none";
