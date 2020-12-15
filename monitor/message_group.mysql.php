@@ -131,7 +131,7 @@
 
       mysqli_free_result($q_message_group);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.groups.msg_group.value = '';\n";
       print "document.groups.msg_deleted.checked = false;\n";
