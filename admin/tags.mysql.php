@@ -210,7 +210,7 @@
 
       mysqli_free_result($q_tags);
 
-      print "document.getElementById('view_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('view_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
 
 # show group specific tags here
@@ -293,7 +293,7 @@
 
       mysqli_free_result($q_tags);
 
-      print "document.getElementById('group_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('group_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
 
 # show public tags here
@@ -375,7 +375,7 @@
 
       mysqli_free_result($q_tags);
 
-      print "document.getElementById('public_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('public_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
 
       print "document.tags.tag_name.value = '';\n";
