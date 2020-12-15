@@ -35,10 +35,10 @@
       $q_string .= "order by int_face";
       $interface = return_Index($db, $a_routing['route_interface'], $q_string);
 
-      print "document.edit.route_address.value = '" . mysqli_real_escape_string($a_routing['route_address']) . "';\n";
-      print "document.edit.route_gateway.value = '" . mysqli_real_escape_string($a_routing['route_gateway']) . "';\n";
-      print "document.edit.route_desc.value = '"    . mysqli_real_escape_string($a_routing['route_desc'])    . "';\n";
-      print "document.edit.route_source.value = '"  . mysqli_real_escape_string($a_routing['route_source'])  . "';\n";
+      print "document.edit.route_address.value = '" . mysqli_real_escape_string($db, $a_routing['route_address']) . "';\n";
+      print "document.edit.route_gateway.value = '" . mysqli_real_escape_string($db, $a_routing['route_gateway']) . "';\n";
+      print "document.edit.route_desc.value = '"    . mysqli_real_escape_string($db, $a_routing['route_desc'])    . "';\n";
+      print "document.edit.route_source.value = '"  . mysqli_real_escape_string($db, $a_routing['route_source'])  . "';\n";
 
       print "document.edit.route_mask['"      . $a_routing['route_mask'] . "'].selected = true;\n";
       print "document.edit.route_interface['" . $interface               . "'].selected = true;\n";
