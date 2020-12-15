@@ -288,10 +288,10 @@
       $noc_output        = $nocheader        . $header . $noc        . $footer;
       $customer_output   = $customerheader   . $header . $customer   . $footer;
 
-      print "document.getElementById('datacenter_mysql').innerHTML = '" . mysqli_real_escape_string($datacenter_output) . "';\n\n";
-      print "document.getElementById('psap_mysql').innerHTML = '"       . mysqli_real_escape_string($psap_output)       . "';\n\n";
-      print "document.getElementById('noc_mysql').innerHTML = '"        . mysqli_real_escape_string($noc_output)        . "';\n\n";
-      print "document.getElementById('customer_mysql').innerHTML = '"   . mysqli_real_escape_string($customer_output)   . "';\n\n";
+      print "document.getElementById('datacenter_mysql').innerHTML = '" . mysqli_real_escape_string($db, $datacenter_output) . "';\n\n";
+      print "document.getElementById('psap_mysql').innerHTML = '"       . mysqli_real_escape_string($db, $psap_output)       . "';\n\n";
+      print "document.getElementById('noc_mysql').innerHTML = '"        . mysqli_real_escape_string($db, $noc_output)        . "';\n\n";
+      print "document.getElementById('customer_mysql').innerHTML = '"   . mysqli_real_escape_string($db, $customer_output)   . "';\n\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
