@@ -20,8 +20,8 @@
       $formVars['rsdp'] = clean($_GET['rsdp'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['rsdp'] . " from rsdp_infrastructure");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['rsdp'] . " from rsdp_infrastructure");
 
       $q_string  = "select if_id,if_monitor,if_monverified,if_moncheck ";
       $q_string .= "from rsdp_infrastructure ";
@@ -55,7 +55,7 @@
       print "validate_Form();\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
