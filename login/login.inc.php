@@ -131,7 +131,7 @@ if (isset($_POST['login'])) {
           $_SESSION['email']       = $a_users['usr_email'];
           $_SESSION['rand']        = rand(5,1000);
           $_SESSION['disposition'] = $a_users['usr_disposition'];
-          logaccess($_SESSION['uid'], "login.inc.php", $_SESSION['name'] . " has logged in.");
+          logaccess($db, $_SESSION['uid'], "login.inc.php", $_SESSION['name'] . " has logged in.");
 
 //  Successful login code will go here... 
 
