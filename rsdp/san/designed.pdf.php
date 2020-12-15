@@ -19,7 +19,7 @@
 
   $package = "designed.pdf.php";
 
-  logaccess($_SESSION['uid'], $package, "SAN: " . $formVars['id']);
+  logaccess($db, $_SESSION['uid'], $package, "SAN: " . $formVars['id']);
 
   $q_string  = "select rsdp_application,rsdp_completion,";
   $q_string .= "usr_last,usr_first,bus_name,dep_name,";
