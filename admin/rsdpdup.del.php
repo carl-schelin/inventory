@@ -27,8 +27,8 @@
       $formVars['table'] = clean($_GET['table'], 30);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from " . $formVars['table']);
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from " . $formVars['table']);
 
       $q_string  = "delete ";
       $q_string .= "from " . $formVars['table'] . " ";
@@ -39,7 +39,7 @@
 
       print "clear_fields();\n";
     } else {
-      logaccess($_SESSION['uid'], $package, "Access denied");
+      logaccess($db, $_SESSION['uid'], $package, "Access denied");
     }
   }
 ?>
