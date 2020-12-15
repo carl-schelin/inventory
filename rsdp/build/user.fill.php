@@ -20,8 +20,8 @@
       $formVars['rsdp_requestor'] = clean($_GET['rsdp_requestor'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['rsdp_requestor'] . " from users");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['rsdp_requestor'] . " from users");
 
       $q_string  = "select usr_phone,usr_email,usr_deptname ";
       $q_string .= "from users ";
@@ -30,7 +30,7 @@
       $a_users = mysqli_fetch_array($q_users);
       mysqli_free_result($q_users);
 
-      $department = return_Index($a_users['usr_deptname'], "select dep_id from department left join business_unit on business_unit.bus_unit = department.dep_unit order by bus_name,dep_name");
+      $department = return_Index($db, $a_users['usr_deptname'], "select dep_id from department left join business_unit on business_unit.bus_unit = department.dep_unit order by bus_name,dep_name");
 
       print "document.rsdp.usr_deptname['" . $department . "'].selected = true;\n";
 
@@ -38,7 +38,7 @@
       print "document.rsdp.usr_email.value = '" . mysqli_real_escape_string($a_users['usr_email']) . "';\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access. (" . $formVars['rsdp'] . ")");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access. (" . $formVars['rsdp'] . ")");
     }
   }
 ?>
