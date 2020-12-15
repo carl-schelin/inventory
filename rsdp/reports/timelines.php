@@ -14,7 +14,7 @@
 
   $package = "timelines.php";
 
-  logaccess($_SESSION['uid'], $package, "Graph how long it takes");
+  logaccess($db, $_SESSION['uid'], $package, "Graph how long it takes");
 
   if (isset($_POST['start'])) {
     $formVars['start'] = clean($_POST['start'], 15);
@@ -83,7 +83,7 @@
 
 <script type="text/javascript">
 <?php
-  if (check_userlevel($AL_Admin)) {
+  if (check_userlevel($db, $AL_Admin)) {
 ?>
 function delete_line( p_script_url ) {
   var answer = confirm("Delete this Server?")
