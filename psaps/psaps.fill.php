@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from psaps");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from psaps");
 
       $q_string  = "select psap_ali_id,psap_companyid,psap_psap_id,psap_description,";
       $q_string .= "psap_lport,psap_circuit_id,psap_texas,psap_updated,psap_delete ";
@@ -37,7 +37,7 @@
       $q_string .= "where prod_name = \"ALIM\" and inv_manager = 1 and inv_appadmin != 1 and inv_status = 0 ";
       $q_string .= "order by inv_name ";
 
-      $companyid = return_Index($a_psaps['psap_companyid'], $q_string);
+      $companyid = return_Index($db, $a_psaps['psap_companyid'], $q_string);
 
       print "document.psaps.psap_companyid[" . $companyid . "].selected = true;\n";
 
@@ -63,7 +63,7 @@
       print "document.psaps.id.value = " . $formVars['id'] . ";\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
