@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']           = clean($_GET['id'],          10);
         $formVars['prod_name']    = clean($_GET['prod_name'],  100);
@@ -56,7 +56,7 @@
           print "alert(\"Product Code must be unique!\");\n";
         } else {
           if (strlen($formVars['prod_name']) > 0) {
-            logaccess($_SESSION['uid'], $package, "Building the query.");
+            logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
             $q_string =
               "prod_name      = \"" . $formVars['prod_name']      . "\"," .
@@ -82,7 +82,7 @@
               $message = $Sitecompany . "Product updated.";
             }
 
-            logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['prod_name']);
+            logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['prod_name']);
 
             mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
@@ -94,7 +94,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">\n";
@@ -199,7 +199,7 @@
       print "document.products.prod_tier3.value = '';\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
