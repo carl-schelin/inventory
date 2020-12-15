@@ -1,16 +1,16 @@
 <?php
 
-function setstatus($rsdp,$completed,$step) {
+function setstatus($p_db, $p_rsdp, $p_completed, $p_step) {
   $q_status =
-    "st_rsdp      =   " . $rsdp            . "," .
-    "st_completed =   " . $completed       . "," .
+    "st_rsdp      =   " . $p_rsdp            . "," .
+    "st_completed =   " . $p_completed       . "," .
     "st_user      =   " . $_SESSION['uid'] . "," .
-    "st_step      =   " . $step;
+    "st_step      =   " . $p_step;
 
   $q_string  = "select st_id ";
   $q_string .= "from rsdp_status ";
-  $q_string .= "where st_rsdp = " . $rsdp . " and st_step = " . $step;
-  $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string .= "where st_rsdp = " . $p_rsdp . " and st_step = " . $p_step;
+  $q_rsdp_status = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_rsdp_status = mysqli_fetch_array($q_rsdp_status);
 
   if (mysqli_num_rows($q_rsdp_status) == 0) {
@@ -18,45 +18,45 @@ function setstatus($rsdp,$completed,$step) {
   } else {
     $query = "update rsdp_status set " . $q_status . " where st_id = " . $a_rsdp_status['st_id'];
   }
+  mysqli_query($p_db, $query) or die($query . ": " . mysqli_error($p_db));
 
-  mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 }
 
 # for RSDP; the e-mail function.
 
-function generateEmail($rsdp, $text1, $text2, $text3, $who, $group) {
+function generateEmail($p_db, $p_rsdp, $p_text1, $p_text2, $p_text3, $p_who, $p_group) {
 
   include('settings.php');
 
-  $q_string  = "select " . $who . ",rsdp_requestor,rsdp_project,rsdp_function ";
+  $q_string  = "select " . $p_who . ",rsdp_requestor,rsdp_project,rsdp_function ";
   $q_string .= "from rsdp_server ";
-  $q_string .= "where rsdp_id = " . $rsdp;
-  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string .= "where rsdp_id = " . $p_rsdp;
+  $q_rsdp_server = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
   $q_string  = "select usr_email,usr_last,usr_first ";
   $q_string .= "from users ";
   $q_string .= "where usr_id = " . $a_rsdp_server['rsdp_requestor'];
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_users = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_requestor = mysqli_fetch_array($q_users);
 
   $q_string  = "select usr_email ";
   $q_string .= "from users ";
   $q_string .= "where usr_id = " . $_SESSION['uid'];
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_users = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_users = mysqli_fetch_array($q_users);
   $myuserid = $a_users['usr_email'];
 
   $q_string  = "select os_sysname ";
   $q_string .= "from rsdp_osteam ";
-  $q_string .= "where os_rsdp = " . $rsdp;
-  $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string .= "where os_rsdp = " . $p_rsdp;
+  $q_rsdp_osteam = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
 
   $q_string  = "select prj_name,prj_code ";
   $q_string .= "from projects ";
   $q_string .= "where prj_id = " . $a_rsdp_server['rsdp_project'];
-  $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_projects = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_projects = mysqli_fetch_array($q_projects);
 
   $headers  = "From: RSDP <root@" . $Sitehttp . ">\r\n";
@@ -70,22 +70,22 @@ function generateEmail($rsdp, $text1, $text2, $text3, $who, $group) {
     $headers .= "Disposition-Notification-To: " . $a_requestor['usr_email'] . "\r\n";
   }
 
-  $subject = $text3 . " (" . $a_projects['prj_code'] . ")";
+  $subject = $p_text3 . " (" . $a_projects['prj_code'] . ")";
 
-  $body  = $text1;
+  $body  = $p_text1;
 
-  $body .= $text2;
+  $body .= $p_text2;
 
 # get the user for the next step in the process (physical).
 # if not set, get the e-mail address for the identified platforms group
 # if no group e-mail set, get the e-mail address for the person opening the request.
   $email = '';
 
-  if ($a_rsdp_server[$who] == '' || $a_rsdp_server[$who] == 0) {
+  if ($a_rsdp_server[$p_who] == '' || $a_rsdp_server[$p_who] == 0) {
     $q_string  = "select grp_email ";
     $q_string .= "from groups ";
-    $q_string .= "where grp_id = " . $group;
-    $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $q_string .= "where grp_id = " . $p_group;
+    $q_groups = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
     $a_groups = mysqli_fetch_array($q_groups);
 
     if ($a_groups['grp_email'] == '') {
@@ -101,8 +101,8 @@ function generateEmail($rsdp, $text1, $text2, $text3, $who, $group) {
   } else {
     $q_string  = "select usr_email ";
     $q_string .= "from users ";
-    $q_string .= "where usr_id = " . $a_rsdp_server[$who];
-    $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $q_string .= "where usr_id = " . $a_rsdp_server[$p_who];
+    $q_users = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
     $a_users = mysqli_fetch_array($q_users);
 
     $email = $a_users['usr_email'];
@@ -137,21 +137,21 @@ function generateEmail($rsdp, $text1, $text2, $text3, $who, $group) {
   $body .= "<body>\n";
 
 # these are the individual groups
-  switch ($group) {
+  switch ($p_group) {
 # Virtualization
-    case  4: $body .= request_Header($rsdp);
-             $body .= virtual_Request($rsdp);
+    case  4: $body .= request_Header($p_rsdp);
+             $body .= virtual_Request($p_rsdp);
              break;
 # SAN
-    case  9: $body .= request_Header($rsdp);
-             $body .= storage_Request($rsdp);
+    case  9: $body .= request_Header($p_rsdp);
+             $body .= storage_Request($p_rsdp);
              break;
 # Networking
-    case 12: $body .= request_Header($rsdp);
-             $body .= network_Request($rsdp);
+    case 12: $body .= request_Header($p_rsdp);
+             $body .= network_Request($p_rsdp);
              break;
-    default: $body .= default_Request($rsdp);
-             $body .= request_Header($rsdp);
+    default: $body .= default_Request($p_rsdp);
+             $body .= request_Header($p_rsdp);
              break;
   }
 
@@ -178,18 +178,18 @@ function generateEmail($rsdp, $text1, $text2, $text3, $who, $group) {
   }
 }
 
-function default_Request( $rsdp ) {
+function default_Request( $p_db, $p_rsdp ) {
   $q_string  = "select rsdp_function,rsdp_project ";
   $q_string .= "from rsdp_server ";
-  $q_string .= "where rsdp_id = " . $rsdp;
-  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string .= "where rsdp_id = " . $p_rsdp;
+  $q_rsdp_server = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
 
   $q_string  = "select os_sysname ";
   $q_string .= "from rsdp_osteam ";
-  $q_string .= "where os_rsdp = " . $rsdp;
-  $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string .= "where os_rsdp = " . $p_rsdp;
+  $q_rsdp_osteam = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
   $output  = "<p>Server: " . $a_rsdp_osteam['os_sysname'] . "\n";
 
@@ -198,14 +198,14 @@ function default_Request( $rsdp ) {
   $q_string  = "select prj_name ";
   $q_string .= "from projects ";
   $q_string .= "where prj_id = " . $a_rsdp_server['rsdp_project'];
-  $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_projects = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_projects = mysqli_fetch_array($q_projects);
   $output .= "<br>Project: " . $a_projects['prj_name'] . "</p>\n";
 
   return $output;
 }
 
-function request_Header( $rsdp ) {
+function request_Header( $p_db, $p_rsdp ) {
 
   $q_string  = "select usr_last,usr_first,dep_name,bus_name,loc_name,rsdp_location,";
   $q_string .= "rsdp_completion,prj_name,prj_code,rsdp_application,grp_name,svc_name ";
@@ -217,21 +217,21 @@ function request_Header( $rsdp ) {
   $q_string .= "left join service on service.svc_id = rsdp_server.rsdp_service ";
   $q_string .= "left join projects on projects.prj_id = rsdp_server.rsdp_project ";
   $q_string .= "left join locations on locations.loc_id = rsdp_server.rsdp_location ";
-  $q_string .= "where rsdp_id = " . $rsdp;
-  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string .= "where rsdp_id = " . $p_rsdp;
+  $q_rsdp_server = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
   $q_string  = "select grp_name ";
   $q_string .= "from groups ";
   $q_string .= "where grp_id = " . $a_rsdp_server['rsdp_application'];
-  $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_groups = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_groups = mysqli_fetch_array($q_groups);
 
   $q_string  = "select os_sysname,operatingsystem.os_software ";
   $q_string .= "from rsdp_osteam ";
   $q_string .= "left join operatingsystem on operatingsystem.os_id = rsdp_osteam.os_software ";
-  $q_string .= "where os_rsdp = " . $rsdp;
-  $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string .= "where os_rsdp = " . $p_rsdp;
+  $q_rsdp_osteam = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
 
   $output  = "<table class=\"ui-styled-table\">\n";
@@ -280,12 +280,12 @@ function request_Header( $rsdp ) {
 }
 
 
-function request_Server( $rsdp ) {
+function request_Server( $p_db, $p_rsdp ) {
 
   $q_string  = "select rsdp_processors,rsdp_memory,rsdp_ossize,rsdp_function ";
   $q_string .= "from rsdp_server ";
-  $q_string .= "where rsdp_id = " . $rsdp;
-  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string .= "where rsdp_id = " . $p_rsdp;
+  $q_rsdp_server = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
   $output  = "<table class=\"ui-styled-table\">\n";
@@ -295,18 +295,18 @@ function request_Server( $rsdp ) {
 
   $q_string  = "select os_sysname,os_software ";
   $q_string .= "from rsdp_osteam ";
-  $q_string .= "where os_rsdp = " . $rsdp;
-  $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string .= "where os_rsdp = " . $p_rsdp;
+  $q_rsdp_osteam = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
 
   $q_string  = "select os_software ";
   $q_string .= "from operatingsystem ";
   $q_string .= "where os_id = " . $a_rsdp_osteam['os_software'];
-  $q_operatingsystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_operatingsystem = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_operatingsystem = mysqli_fetch_array($q_operatingsystem);
 
   $output .= "<tr>\n";
-  $output .= "  <td class=\"ui-widget-content\"><strong>Hostname</strong>: " . $a_rsdp_osteam['os_sysname'] . "<input type=\"hidden\" name=\"rsdp_virtual\" id=\"rsdp_virtual\" value=\"" . rsdp_Virtual($rsdp) . "\"></td>\n";
+  $output .= "  <td class=\"ui-widget-content\"><strong>Hostname</strong>: " . $a_rsdp_osteam['os_sysname'] . "<input type=\"hidden\" name=\"rsdp_virtual\" id=\"rsdp_virtual\" value=\"" . rsdp_Virtual($p_rsdp) . "\"></td>\n";
   $output .= "  <td class=\"ui-widget-content\"><strong>Function</strong>: " . $a_rsdp_server['rsdp_function'] . "</td>\n";
   $output .= "  <td class=\"ui-widget-content\"><strong>Operating System</strong>: " . $a_operatingsystem['os_software'] . "</td>\n";
   $output .= "</tr>\n";
@@ -335,8 +335,8 @@ function request_Server( $rsdp ) {
   $q_string .= "left join int_volts on int_volts.volt_id = models.mod_volts ";
   $q_string .= "left join int_plugtype on int_plugtype.plug_id = models.mod_plugtype ";
   $q_string .= "left join parts on parts.part_id = models.mod_type ";
-  $q_string .= "where pf_rsdp = " . $rsdp;
-  $q_rsdp_platform = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string .= "where pf_rsdp = " . $p_rsdp;
+  $q_rsdp_platform = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_rsdp_platform = mysqli_fetch_array($q_rsdp_platform);
 
   if (strlen($a_rsdp_platform['pf_special']) == 0) {
@@ -359,7 +359,7 @@ function request_Server( $rsdp ) {
   $output .= "</tr>\n";
   $output .= "</table>\n";
 
-  if (rsdp_Virtual($rsdp) == 0) {
+  if (rsdp_Virtual($p_rsdp) == 0) {
     if ($a_rsdp_platform['pf_redundant']) {
       $redundant = 'Yes';
     } else {
@@ -414,8 +414,8 @@ function request_Server( $rsdp ) {
 
   $q_string  = "select fs_volume,fs_size ";
   $q_string .= "from rsdp_filesystem ";
-  $q_string .= "where fs_rsdp = " . $rsdp;
-  $q_rsdp_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string .= "where fs_rsdp = " . $p_rsdp;
+  $q_rsdp_filesystem = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
 
   if (mysqli_num_rows($q_rsdp_filesystem) > 0) {
     while ($a_rsdp_filesystem = mysqli_fetch_array($q_rsdp_filesystem)) {
@@ -444,7 +444,7 @@ function request_Server( $rsdp ) {
   $output .= "  <th class=\"ui-state-default\">Zone</th>\n";
   $output .= "  <th class=\"ui-state-default\">Gateway</th>\n";
   $output .= "  <th class=\"ui-state-default\">VLan</th>\n";
-  if (rsdp_Virtual($rsdp) == 0) {
+  if (rsdp_Virtual($p_rsdp) == 0) {
     $output .= "  <th class=\"ui-state-default\">Physical Port</th>\n";
     $output .= "  <th class=\"ui-state-default\">Media</th>\n";
     $output .= "  <th class=\"ui-state-default\">Switch</th>\n";
@@ -457,9 +457,9 @@ function request_Server( $rsdp ) {
   $q_string .= "left join ip_zones on ip_zones.zone_id = rsdp_interface.if_zone ";
   $q_string .= "left join inttype on inttype.itp_id = rsdp_interface.if_type ";
   $q_string .= "left join int_media on int_media.med_id = rsdp_interface.if_media ";
-  $q_string .= "where if_rsdp = " . $rsdp . " and if_if_id = 0 ";
+  $q_string .= "where if_rsdp = " . $p_rsdp . " and if_if_id = 0 ";
   $q_string .= "order by if_interface";
-  $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_rsdp_interface = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   if (mysqli_num_rows($q_rsdp_interface) > 0) {
     while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
 
@@ -485,7 +485,7 @@ function request_Server( $rsdp ) {
       $output .= "  <td" . $class . ">" . $a_rsdp_interface['zone_name']        . "</td>\n";
       $output .= "  <td" . $class . ">" . $a_rsdp_interface['if_gate']          . "</td>\n";
       $output .= "  <td" . $class . ">" . $a_rsdp_interface['if_vlan']          . "</td>\n";
-      if (rsdp_Virtual($rsdp) == 0) {
+      if (rsdp_Virtual($p_rsdp) == 0) {
         $output .= "  <td" . $class . ">" . $a_rsdp_interface['if_sysport']     . "</td>\n";
         $output .= "  <td" . $class . ">" . $a_rsdp_interface['med_text']         . "</td>\n";
         $output .= "  <td" . $class . ">" . $a_rsdp_interface['if_switch']        . "</td>\n";
@@ -498,9 +498,9 @@ function request_Server( $rsdp ) {
       $q_string .= "left join ip_zones on ip_zones.zone_id = rsdp_interface.if_zone ";
       $q_string .= "left join inttype on inttype.itp_id = rsdp_interface.if_type ";
       $q_string .= "left join int_media on int_media.med_id = rsdp_interface.if_media ";
-      $q_string .= "where if_rsdp = " . $rsdp . " and if_if_id = " . $a_rsdp_interface['if_id'] . " ";
+      $q_string .= "where if_rsdp = " . $p_rsdp . " and if_if_id = " . $a_rsdp_interface['if_id'] . " ";
       $q_string .= "order by if_interface";
-      $q_rsdp_child = mysqli_query($db, $q_string);
+      $q_rsdp_child = mysqli_query($p_db, $q_string);
       if (mysqli_num_rows($q_rsdp_child) > 0) {
         while ($a_rsdp_child = mysqli_fetch_array($q_rsdp_child)) {
 
@@ -526,7 +526,7 @@ function request_Server( $rsdp ) {
           $output .= "  <td" . $class . ">" . $a_rsdp_child['zone_name']        . "</td>\n";
           $output .= "  <td" . $class . ">" . $a_rsdp_child['if_gate']          . "</td>\n";
           $output .= "  <td" . $class . ">" . $a_rsdp_child['if_vlan']          . "</td>\n";
-          if (rsdp_Virtual($rsdp) == 0) {
+          if (rsdp_Virtual($p_rsdp) == 0) {
             $output .= "  <td" . $class . ">" . $a_rsdp_child['if_sysport']       . "</td>\n";
             $output .= "  <td" . $class . ">" . $a_rsdp_child['med_text']         . "</td>\n";
             $output .= "  <td" . $class . ">" . $a_rsdp_child['if_switch']        . "</td>\n";
@@ -543,7 +543,7 @@ function request_Server( $rsdp ) {
   }
   $output .= "</table>\n";
 
-  if (rsdp_Virtual($rsdp) == 0) {
+  if (rsdp_Virtual($p_rsdp) == 0) {
     $output .= "<table class=\"ui-styled-table\">\n";
     $output .= "<tr>\n";
     $output .= "  <th class=\"ui-state-default\" colspan=\"5\">SAN Listing</th>\n";
@@ -559,9 +559,9 @@ function request_Server( $rsdp ) {
     $q_string  = "select san_id,san_sysport,san_switch,san_port,med_text,san_wwnnzone ";
     $q_string .= "from rsdp_san ";
     $q_string .= "left join int_media on int_media.med_id = rsdp_san.san_media ";
-    $q_string .= "where san_rsdp = " . $rsdp . " ";
+    $q_string .= "where san_rsdp = " . $p_rsdp . " ";
     $q_string .= "order by san_sysport";
-    $q_rsdp_san = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $q_rsdp_san = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
     if (mysqli_num_rows($q_rsdp_san) > 0) {
       while ($a_rsdp_san = mysqli_fetch_array($q_rsdp_san)) {
         $output .= "<tr>\n";
@@ -585,7 +585,7 @@ function request_Server( $rsdp ) {
 }
 
 # Network request information; looking for interface information.
-function network_Request( $rsdp ) {
+function network_Request( $p_db, $p_rsdp ) {
 
   $output  = "</div>\n";
 
@@ -614,9 +614,9 @@ function network_Request( $rsdp ) {
   $q_string .= "left join int_speed on int_speed.spd_id = rsdp_interface.if_speed ";
   $q_string .= "left join int_duplex on int_duplex.dup_id = rsdp_interface.if_duplex ";
   $q_string .= "left join int_redundancy on int_redundancy.red_id = rsdp_interface.if_redundant ";
-  $q_string .= "where if_rsdp = " . $rsdp . " ";
+  $q_string .= "where if_rsdp = " . $p_rsdp . " ";
   $q_string .= "order by if_name";
-  $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_rsdp_interface = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
 
     $output .= "<tr>\n";
@@ -641,7 +641,7 @@ function network_Request( $rsdp ) {
 
 }
 
-function storage_Request($rsdp) {
+function storage_Request( $p_db, $p_rsdp ) {
 # create and return the the san task for display on the rsdp3 page or in the email to the san team
 
   $output  = "  <table>\n";
@@ -652,8 +652,8 @@ function storage_Request($rsdp) {
   $q_string  = "select pf_row,pf_rack,pf_unit,mod_size ";
   $q_string .= "from rsdp_platform ";
   $q_string .= "left join models on models.mod_id = rsdp_platform.pf_model ";
-  $q_string .= "where pf_rsdp = " . $rsdp;
-  $q_rsdp_platform = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string .= "where pf_rsdp = " . $p_rsdp;
+  $q_rsdp_platform = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_rsdp_platform = mysqli_fetch_array($q_rsdp_platform);
 
   $output .= "<tr>\n";
@@ -674,8 +674,8 @@ function storage_Request($rsdp) {
 
   $q_string  = "select fs_volume,fs_size ";
   $q_string .= "from rsdp_filesystem ";
-  $q_string .= "where fs_rsdp = " . $rsdp;
-  $q_rsdp_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string .= "where fs_rsdp = " . $p_rsdp;
+  $q_rsdp_filesystem = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   while ($a_rsdp_filesystem = mysqli_fetch_array($q_rsdp_filesystem)) {
 
     $output .= "<tr>\n";
@@ -692,14 +692,14 @@ function storage_Request($rsdp) {
 }
 
 
-function virtual_Request($rsdp) {
+function virtual_Request( $db, $p_rsdp ) {
 
-  $formVars['rsdp'] = $rsdp;
+  $formVars['rsdp'] = $p_rsdp;
 
   $q_string  = "select rsdp_processors,rsdp_memory,rsdp_ossize,rsdp_function ";
   $q_string .= "from rsdp_server ";
-  $q_string .= "where rsdp_id = " . $rsdp;
-  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string .= "where rsdp_id = " . $p_rsdp;
+  $q_rsdp_server = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
   $output  = "</div>\n";
@@ -712,14 +712,14 @@ function virtual_Request($rsdp) {
 
   $q_string  = "select os_sysname,os_software ";
   $q_string .= "from rsdp_osteam ";
-  $q_string .= "where os_rsdp = " . $rsdp;
-  $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string .= "where os_rsdp = " . $p_rsdp;
+  $q_rsdp_osteam = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
 
   $q_string  = "select os_software ";
   $q_string .= "from operatingsystem ";
   $q_string .= "where os_id = " . $a_rsdp_osteam['os_software'];
-  $q_operatingsystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_operatingsystem = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_operatingsystem = mysqli_fetch_array($q_operatingsystem);
 
   $output .= "<tr>\n";
@@ -753,8 +753,8 @@ function virtual_Request($rsdp) {
 
   $q_string  = "select pf_special ";
   $q_string .= "from rsdp_platform ";
-  $q_string .= "where pf_rsdp = " . $rsdp;
-  $q_rsdp_platform = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string .= "where pf_rsdp = " . $p_rsdp;
+  $q_rsdp_platform = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_rsdp_platform = mysqli_fetch_array($q_rsdp_platform);
 
   $output .= "<tr>\n";
@@ -775,8 +775,8 @@ function virtual_Request($rsdp) {
 
   $q_string  = "select fs_size ";
   $q_string .= "from rsdp_filesystem ";
-  $q_string .= "where fs_rsdp = " . $rsdp;
-  $q_rsdp_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string .= "where fs_rsdp = " . $p_rsdp;
+  $q_rsdp_filesystem = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
 
   if (mysqli_num_rows($q_rsdp_filesystem) > 0) {
     while ($a_rsdp_filesystem = mysqli_fetch_array($q_rsdp_filesystem)) {
@@ -801,7 +801,7 @@ function virtual_Request($rsdp) {
   $q_string .= "from rsdp_interface ";
   $q_string .= "where if_rsdp = " . $formVars['rsdp'] . " ";
   $q_string .= "order by if_interface";
-  $q_rsdp_interface = mysqli_query($db, $q_string);
+  $q_rsdp_interface = mysqli_query($p_db, $q_string);
   while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
     $output .= "<tr>\n";
     $output .= "  <td><strong>IP Address</strong>: " . $a_rsdp_interface['if_ip'] . "</td>\n";
@@ -819,27 +819,27 @@ function virtual_Request($rsdp) {
   return $output;
 }
 
-function submit_RSDP( $rsdp, $task, $script, $poc, $group, $grpnum ) {
+function submit_RSDP( $p_db, $p_rsdp, $p_task, $p_script, $p_poc, $p_group, $p_grpnum ) {
 
   $q_string  = "select st_completed,st_timestamp,st_user ";
   $q_string .= "from rsdp_status ";
-  $q_string .= "where st_step = " . $task . " and st_rsdp = " . $rsdp;
-  $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string .= "where st_step = " . $p_task . " and st_rsdp = " . $p_rsdp;
+  $q_rsdp_status = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_rsdp_status = mysqli_fetch_array($q_rsdp_status);
 
-  if (strlen($group) > 0) {
-    $q_string  = "select " . $group . "," . $poc . " ";
+  if (strlen($p_group) > 0) {
+    $q_string  = "select " . $p_group . "," . $p_poc . " ";
   } else {
-    $q_string  = "select " . $poc . " ";
+    $q_string  = "select " . $p_poc . " ";
   }
   $q_string .= "from rsdp_server ";
-  $q_string .= "where rsdp_id = " . $rsdp;
-  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string .= "where rsdp_id = " . $p_rsdp;
+  $q_rsdp_server = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
-  if (strlen($group) > 0) {
-    $group_select = $a_rsdp_server[$group];
+  if (strlen($p_group) > 0) {
+    $group_select = $a_rsdp_server[$p_group];
   } else {
-    $group_select = $grpnum;
+    $group_select = $p_grpnum;
   }
 
   $output  = "<table class=\"ui-styled-table\">\n";
@@ -847,29 +847,29 @@ function submit_RSDP( $rsdp, $task, $script, $poc, $group, $grpnum ) {
   $output .= "  <td class=\"ui-widget-content button\">";
 
   if ($a_rsdp_status['st_completed'] == '' || $a_rsdp_status['st_completed'] == 0) {
-    $output .= "<input type=\"button\" name=\"reminder\" value=\"Reminder E-Mail\" onClick=\"javascript:attach_file('" . $script . "', -1);\">\n";
-    if (check_grouplevel($db, $group_select) || $_SESSION['uid'] == $a_rsdp_server[$poc]) {
-      $output .= "<input type=\"button\" name=\"save\"   value=\"Save Changes\"   onClick=\"javascript:attach_file('" . $script . "', 0);\">\n";
-      $output .= "<input type=\"button\" name=\"exit\"   value=\"Save And Exit\"  onClick=\"javascript:attach_file('" . $script . "', 2);\">\n";
-      $output .= "<input type=\"button\" name=\"addbtn\" value=\"Task Completed\" onClick=\"javascript:attach_file('" . $script . "', 1);\">\n";
+    $output .= "<input type=\"button\" name=\"reminder\" value=\"Reminder E-Mail\" onClick=\"javascript:attach_file('" . $p_script . "', -1);\">\n";
+    if (check_grouplevel($p_db, $group_select) || $_SESSION['uid'] == $a_rsdp_server[$p_poc]) {
+      $output .= "<input type=\"button\" name=\"save\"   value=\"Save Changes\"   onClick=\"javascript:attach_file('" . $p_script . "', 0);\">\n";
+      $output .= "<input type=\"button\" name=\"exit\"   value=\"Save And Exit\"  onClick=\"javascript:attach_file('" . $p_script . "', 2);\">\n";
+      $output .= "<input type=\"button\" name=\"addbtn\" value=\"Task Completed\" onClick=\"javascript:attach_file('" . $p_script . "', 1);\">\n";
     } else {
       $q_string  = "select grp_name ";
       $q_string .= "from groups ";
       $q_string .= "where grp_id = " . $group_select;
-      $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_groups = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
       $a_groups = mysqli_fetch_array($q_groups);
 
       $output .= "<a href=\"index.php\">Task waiting to be completed by " . $a_groups['grp_name'] . ".</a>\n";
       $output .= "<input type=\"hidden\" name=\"addbtn\">\n";
     }
   } else {
-    $output .= "<input type=\"button\" name=\"save\"   value=\"Save Changes\"   onClick=\"javascript:attach_file('" . $script . "', 0);\">\n";
-    $output .= "<input type=\"button\" name=\"exit\"   value=\"Save And Exit\"  onClick=\"javascript:attach_file('" . $script . "', 2);\">\n";
+    $output .= "<input type=\"button\" name=\"save\"   value=\"Save Changes\"   onClick=\"javascript:attach_file('" . $p_script . "', 0);\">\n";
+    $output .= "<input type=\"button\" name=\"exit\"   value=\"Save And Exit\"  onClick=\"javascript:attach_file('" . $p_script . "', 2);\">\n";
 
     $q_string  = "select usr_last,usr_first ";
     $q_string .= "from users ";
     $q_string .= "where usr_id = " . $a_rsdp_status['st_user'];
-    $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $q_users = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
     $a_users = mysqli_fetch_array($q_users);
 
     $output .= "<br><a href=\"index.php\">Task was completed by " . $a_users['usr_first'] . " " . $a_users['usr_last'] . " on " . $a_rsdp_status['st_timestamp'] . ".</a>";
@@ -877,7 +877,7 @@ function submit_RSDP( $rsdp, $task, $script, $poc, $group, $grpnum ) {
   }
 
   $output .= "<input type=\"hidden\" name=\"id\" value=\"0\">\n";
-  $output .= "<input type=\"hidden\" name=\"rsdp\" value=\"" . $rsdp . "\">\n";
+  $output .= "<input type=\"hidden\" name=\"rsdp\" value=\"" . $p_rsdp . "\">\n";
 
   $output .= "</td>\n";
   $output .= "</tr>\n";
@@ -888,7 +888,7 @@ function submit_RSDP( $rsdp, $task, $script, $poc, $group, $grpnum ) {
 
 
 # this function takes the rsdp number and group and sends an email ticket
-function submit_Ticket( $rsdp, $script, $field, $group ) {
+function submit_Ticket( $p_db, $p_rsdp, $p_script, $p_field, $p_group ) {
   include('settings.php');
 
 # enable for magic
@@ -909,8 +909,8 @@ function submit_Ticket( $rsdp, $script, $field, $group ) {
     $q_string  = "select usr_name,usr_first,usr_last,usr_clientid,usr_email ";
     $q_string .= "from rsdp_server ";
     $q_string .= "left join users on users.usr_id = rsdp_server.rsdp_requestor ";
-    $q_string .= "where rsdp_id = " . $rsdp . " ";
-    $q_requestor = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $q_string .= "where rsdp_id = " . $p_rsdp . " ";
+    $q_requestor = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
     $a_requestor = mysqli_fetch_array($q_requestor);
 
     $target = 'prod';   # send to the production ticketing servers
@@ -931,7 +931,7 @@ function submit_Ticket( $rsdp, $script, $field, $group ) {
 ###  Format the mail message
 ###############################
 
-    $headers  = "From: RSDP <rsdp@incojs01.scc911.com>\r\n";
+    $headers  = "From: RSDP <rsdp@" . $hostname . ">\r\n";
 
 # Template:
 # Wrap the specific information in the listed tags
@@ -945,23 +945,23 @@ function submit_Ticket( $rsdp, $script, $field, $group ) {
 #########
 ### User Assigned to: -a-/*a*
 #########
-      $q_string  = "select " . $field . " ";
+      $q_string  = "select " . $p_field . " ";
       $q_string .= "from rsdp_server ";
-      $q_string .= "where rsdp_id = " . $rsdp;
-      $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_string .= "where rsdp_id = " . $p_rsdp;
+      $q_rsdp_server = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
       $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
-      if ($a_rsdp_server[$field] > 0) {
+      if ($a_rsdp_server[$p_field] > 0) {
         $q_string  = "select usr_clientid,usr_group ";
         $q_string .= "from users ";
-        $q_string .= "where usr_id = " . $a_rsdp_server[$field];
-        $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $q_string .= "where usr_id = " . $a_rsdp_server[$p_field];
+        $q_users = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
         $a_users = mysqli_fetch_array($q_users);
 
         $grppoc = $a_users['usr_group'];
         $body .= "-a-" . $a_users['usr_clientid'] . "*a*\n\n";
       } else {
-        $grppoc = $group;
+        $grppoc = $p_group;
       }
   
 #########
@@ -970,7 +970,7 @@ function submit_Ticket( $rsdp, $script, $field, $group ) {
       $q_string  = "select grp_magic,grp_category,grp_name ";
       $q_string .= "from groups ";
       $q_string .= "where grp_id = " . $grppoc;
-      $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_groups = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
       $a_groups = mysqli_fetch_array($q_groups);
 
       if ($a_groups['grp_magic'] != '') {
@@ -987,8 +987,8 @@ function submit_Ticket( $rsdp, $script, $field, $group ) {
 #########
 
           $body .= "-d-\n";
-          $body .= "RSDP " . $rsdp . " is waiting on work done by you or your group.\n";
-          $body .= "URL: " . $script . "?rsdp=" . $rsdp . "\n\n";
+          $body .= "RSDP " . $p_rsdp . " is waiting on work done by you or your group.\n";
+          $body .= "URL: " . $p_script . "?rsdp=" . $p_rsdp . "\n\n";
           if ($target == 'local') {
             $body .= "Note: Ticket not being generated yet.\n\n";
           }
@@ -1022,7 +1022,7 @@ function submit_Ticket( $rsdp, $script, $field, $group ) {
     } else {
       print "alert(\"ERROR: Ticket Client ID hasn't been set for " . $a_requestor['usr_first'] . " " . $a_requestor['usr_last'] . ".\\nA Ticket will need to be created manually.\");\n";
 
-      $body  = "Ticket creation failed for RSDP " . $rsdp . " due to " . $a_requestor['usr_name'] . " not having a Client ID set.\n\n";
+      $body  = "Ticket creation failed for RSDP " . $p_rsdp . " due to " . $a_requestor['usr_name'] . " not having a Client ID set.\n\n";
       $body .= "Your Ticket Client ID field has not been set in your profile.\n\n";
       $body .= "When this field is blank, a Ticket will not be ";
       $body .= "created and you'll need to manually create the IP request.";
@@ -1045,7 +1045,7 @@ function submit_Ticket( $rsdp, $script, $field, $group ) {
 # NOTE: This is the new Remedy specific code
 ######
 
-# Passed: $rsdp, $script, $field, $group
+# Passed: $p_rsdp, $p_script, $p_field, $p_group
 # the requester opens all tickets.
 # ticket is opened from the requestor, requestor's group, and requestor's manager
 # ticket is opened for the listed group plus user if known
@@ -1064,8 +1064,8 @@ function submit_Ticket( $rsdp, $script, $field, $group ) {
     $q_string .= "from rsdp_server ";
     $q_string .= "left join users on users.usr_id = rsdp_server.rsdp_requestor ";
     $q_string .= "left join groups on groups.grp_id = users.usr_group ";
-    $q_string .= "where rsdp_id = " . $rsdp . " ";
-    $q_requestor = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $q_string .= "where rsdp_id = " . $p_rsdp . " ";
+    $q_requestor = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
     $a_requestor = mysqli_fetch_array($q_requestor);
 
 # the person doing the work
@@ -1073,15 +1073,15 @@ function submit_Ticket( $rsdp, $script, $field, $group ) {
     $q_string .= "from rsdp_server ";
     $q_string .= "left join users on users.usr_id = rsdp_server.rsdp_requestor ";
     $q_string .= "left join groups on groups.grp_id = users.usr_group ";
-    $q_string .= "where rsdp_id = " . $rsdp . " ";
-    $q_user = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $q_string .= "where rsdp_id = " . $p_rsdp . " ";
+    $q_user = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
     $a_user = mysqli_fetch_array($q_user);
 
 # get the user information for the person in the inventory and will be the one opening the ticket plus group information
     $q_string  = "select usr_first,usr_last,usr_clientid ";
     $q_string .= "from users ";
     $q_string .= "where usr_id = " . $a_requestor['usr_manager'] . " ";
-    $q_manager = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $q_manager = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
     $a_manager = mysqli_fetch_array($q_manager);
 
     $headers = "From: " . $a_requestor['usr_first'] . " " . $a_requestor['usr_last'] . "<" . $a_requestor['usr_email'] . ">\r\n";
@@ -1194,7 +1194,7 @@ function submit_Ticket( $rsdp, $script, $field, $group ) {
 }
 
 
-function submit_DNS( $rsdp ) {
+function submit_DNS( $p_db, $p_rsdp ) {
   include('settings.php');
 
 ###############################
@@ -1205,14 +1205,14 @@ function submit_DNS( $rsdp ) {
   $q_string  = "select usr_name,usr_first,usr_last,usr_clientid,usr_email ";
   $q_string .= "from rsdp_server ";
   $q_string .= "left join users on users.usr_id = rsdp_server.rsdp_requestor ";
-  $q_string .= "where rsdp_id = " . $rsdp . " ";
-  $q_requestor = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string .= "where rsdp_id = " . $p_rsdp . " ";
+  $q_requestor = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_requestor = mysqli_fetch_array($q_requestor);
 
 # Template:
 # Wrap the specific information in the listed tags
 
-  $headers  = "From: RSDP <rsdp@incojs01.scc911.com>\r\n";
+  $headers  = "From: RSDP <rsdp@" . $hostname . ">\r\n";
 
   $ticket = $Siteadmins;  # Alpha/Beta Testing
 #  $ticket = "svc_MagicAdminDev@intrado.com"; # Testing to Dev
@@ -1231,7 +1231,7 @@ function submit_DNS( $rsdp ) {
     $q_string  = "select grp_magic,grp_category ";
     $q_string .= "from groups ";
     $q_string .= "where grp_id = " . $GRP_Windows;
-    $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $q_groups = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
     $a_groups = mysqli_fetch_array($q_groups);
 
     if ($a_groups['grp_magic'] != '') {
@@ -1253,8 +1253,8 @@ function submit_DNS( $rsdp ) {
 # get the project code
         $q_string  = "select rsdp_project ";
         $q_string .= "from rsdp_server ";
-        $q_string .= "where rsdp_id = " . $rsdp;
-        $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $q_string .= "where rsdp_id = " . $p_rsdp;
+        $q_rsdp_server = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
         if (mysqli_num_rows($q_rsdp_server) > 0) {
           $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
         } else {
@@ -1268,9 +1268,9 @@ function submit_DNS( $rsdp ) {
         $q_string .= "left join rsdp_osteam on rsdp_osteam.os_rsdp = rsdp_server.rsdp_id ";
 # commented for tickets to be single systems vs entire project
 #        $q_string .= "where rsdp_project = " . $a_rsdp_server['rsdp_project'] . " and if_ipcheck = 1 ";
-        $q_string .= "where if_rsdp = " . $rsdp . " and if_ipcheck = 1 ";
+        $q_string .= "where if_rsdp = " . $p_rsdp . " and if_ipcheck = 1 ";
         $q_string .= "order by if_name,if_interface";
-        $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $q_rsdp_interface = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
 
 # set the start variable for the display of the information
         while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
@@ -1307,7 +1307,7 @@ function submit_DNS( $rsdp ) {
   } else {
     print "alert(\"ERROR: Ticket Client ID hasn't been set for " . $a_requestor['usr_first'] . " " . $a_requestor['usr_last'] . ".\\nA Ticket will need to be created manually.\");\n";
 
-    $body  = "Ticket creation failed for RSDP " . $rsdp . " due to " . $a_requestor['usr_name'] . " not having a Client ID set.\n\n";
+    $body  = "Ticket creation failed for RSDP " . $p_rsdp . " due to " . $a_requestor['usr_name'] . " not having a Client ID set.\n\n";
     $body .= "Your Ticket Client ID field has not been set in your profile.\n\n";
     $body .= "When this field is blank, a Ticket will not be ";
     $body .= "created and you'll need to manually create the IP request.";
@@ -1326,7 +1326,7 @@ function submit_DNS( $rsdp ) {
 }
 
 
-function submit_Scan( $rsdp ) {
+function submit_Scan( $p_db, $p_rsdp ) {
   include('settings.php');
 
 ###############################
@@ -1337,14 +1337,14 @@ function submit_Scan( $rsdp ) {
   $q_string  = "select usr_name,usr_first,usr_last,usr_clientid,usr_email ";
   $q_string .= "from rsdp_server ";
   $q_string .= "left join users on users.usr_id = rsdp_server.rsdp_requestor ";
-  $q_string .= "where rsdp_id = " . $rsdp . " ";
-  $q_requestor = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string .= "where rsdp_id = " . $p_rsdp . " ";
+  $q_requestor = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_requestor = mysqli_fetch_array($q_requestor);
 
 # Template:
 # Wrap the specific information in the listed tags
 
-  $headers  = "From: RSDP <rsdp@incojs01.scc911.com>\r\n";
+  $headers  = "From: RSDP <rsdp@" . $hostname . ">\r\n";
 
   $ticket = $Siteadmins;  # Alpha/Beta Testing
 #  $ticket = "svc_MagicAdminDev@intrado.com"; # Testing to Dev
@@ -1363,7 +1363,7 @@ function submit_Scan( $rsdp ) {
     $q_string  = "select grp_magic,grp_category ";
     $q_string .= "from groups ";
     $q_string .= "where grp_id = " . $GRP_InfoSec;
-    $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $q_groups = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
     $a_groups = mysqli_fetch_array($q_groups);
 
     if ($a_groups['grp_magic'] != '') {
@@ -1385,9 +1385,9 @@ function submit_Scan( $rsdp ) {
         $q_string  = "select if_ip, zone_desc ";
         $q_string .= "from rsdp_interface ";
         $q_string .= "left join ip_zones on ip_zones.zone_id = rsdp_interface.if_zone ";
-        $q_string .= "where if_rsdp = " . $rsdp . " and if_ipcheck = 1 ";
+        $q_string .= "where if_rsdp = " . $p_rsdp . " and if_ipcheck = 1 ";
         $q_string .= "order by if_ip ";
-        $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $q_rsdp_interface = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
 
 # set the start variable for the display of the information
         while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
@@ -1427,7 +1427,7 @@ function submit_Scan( $rsdp ) {
   } else {
     print "alert(\"ERROR: Ticket Client ID hasn't been set for " . $a_requestor['usr_first'] . " " . $a_requestor['usr_last'] . ".\\nA Ticket will need to be created manually.\");\n";
 
-    $body  = "Ticket creation failed for RSDP " . $rsdp . " due to " . $a_requestor['usr_name'] . " not having a Client ID set.\n\n";
+    $body  = "Ticket creation failed for RSDP " . $p_rsdp . " due to " . $a_requestor['usr_name'] . " not having a Client ID set.\n\n";
     $body .= "Your Ticket Client ID field has not been set in your profile.\n\n";
     $body .= "When this field is blank, a Ticket will not be ";
     $body .= "created and you'll need to manually create the IP request.";
@@ -1446,7 +1446,7 @@ function submit_Scan( $rsdp ) {
 }
 
 
-function rsdp_Virtual( $p_rsdp ) {
+function rsdp_Virtual( $p_db, $p_rsdp ) {
 # get the model that's been selected
 # if there's a corresponding model,
 # return the mod_virtual setting (could be 0 or 1)
@@ -1456,7 +1456,7 @@ function rsdp_Virtual( $p_rsdp ) {
   $q_string .= "from rsdp_platform ";
   $q_string .= "left join models on models.mod_id = rsdp_platform.pf_model ";
   $q_string .= "where pf_rsdp = " . $p_rsdp;
-  $q_rsdp_platform = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_rsdp_platform = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
 
   if (mysqli_num_rows($q_rsdp_platform) > 0) {
     $a_rsdp_platform = mysqli_fetch_array($q_rsdp_platform);
@@ -1467,14 +1467,14 @@ function rsdp_Virtual( $p_rsdp ) {
 
 }
 
-function rsdp_System( $p_rsdp ) {
+function rsdp_System( $p_db, $p_rsdp ) {
   $output = 'Unknown';
 
   $q_string  = "select operatingsystem.os_software ";
   $q_string .= "from operatingsystem ";
   $q_string .= "left join rsdp_osteam on rsdp_osteam.os_software = operatingsystem.os_id ";
   $q_string .= "where rsdp_osteam.os_rsdp = " . $p_rsdp . " ";
-  $q_operatingsystem = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  $q_operatingsystem = mysqli_query($p_db, $q_string) or die(mysqli_error($p_db));
   $a_operatingsystem = mysqli_fetch_array($q_operatingsystem);
 
   if (stripos($a_operatingsystem['os_software'], "linux") !== false) {
@@ -1530,21 +1530,21 @@ function rsdp_System( $p_rsdp ) {
 }
 
 
-function return_Checklist( $p_rsdp, $p_task ) {
+function return_Checklist( $p_db, $p_rsdp, $p_task ) {
   include('settings.php');
 
 # get the host name for the $host variable
   $q_string  = "select os_sysname ";
   $q_string .= "from rsdp_osteam ";
   $q_string .= "where os_rsdp = " . $p_rsdp . " ";
-  $q_rsdp_osteam = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_rsdp_osteam = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
 
 # get the platform group id
   $q_string  = "select rsdp_platform,rsdp_application ";
   $q_string .= "from rsdp_server ";
   $q_string .= "where rsdp_id = " . $p_rsdp . " ";
-  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_rsdp_server = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
   switch ($p_task) {
@@ -1593,7 +1593,7 @@ function return_Checklist( $p_rsdp, $p_task ) {
   $q_string  = "select " . $task_poc . " ";
   $q_string .= "from rsdp_server ";
   $q_string .= "where rsdp_id = " . $p_rsdp . " ";
-  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_rsdp_server = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
   $debug .= $q_string . ":";
@@ -1603,7 +1603,7 @@ function return_Checklist( $p_rsdp, $p_task ) {
     $q_string  = "select usr_group ";
     $q_string .= "from users ";
     $q_string .= "where usr_id = " . $a_rsdp_server[$task_poc] . " ";
-    $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $q_users = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
     $a_users = mysqli_fetch_array($q_users);
 
     $group = $a_users['usr_group'];
@@ -1617,7 +1617,7 @@ function return_Checklist( $p_rsdp, $p_task ) {
   $q_string  = "select if_ip ";
   $q_string .= "from rsdp_interface ";
   $q_string .= "where if_rsdp = " . $p_rsdp . " and if_type = 1 and if_ip != '' ";
-  $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_rsdp_interface = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   if (mysqli_num_rows($q_rsdp_interface) > 0) {
     $a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface);
     $maintip = $a_rsdp_interface['if_ip'];
@@ -1627,7 +1627,7 @@ function return_Checklist( $p_rsdp, $p_task ) {
   $q_string  = "select if_ip ";
   $q_string .= "from rsdp_interface ";
   $q_string .= "where if_rsdp = " . $p_rsdp . " and if_type = 2 and if_ip != '' ";
-  $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_rsdp_interface = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   if (mysqli_num_rows($q_rsdp_interface) > 0) {
     $a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface);
     $appip = $a_rsdp_interface['if_ip'];
@@ -1646,7 +1646,7 @@ function return_Checklist( $p_rsdp, $p_task ) {
   $q_string .= "where chk_group = " . $group . " and chk_task = " . $p_task . " ";
   $q_string .= "order by chk_index";
   $debug .= $q_string . ":";
-  $q_checklist = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_checklist = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   while ($a_checklist = mysqli_fetch_array($q_checklist)) {
 
 # make the link from the checklist -> documentation generally
@@ -1667,7 +1667,7 @@ function return_Checklist( $p_rsdp, $p_task ) {
     $q_string  = "select chk_comment,chk_checked ";
     $q_string .= "from rsdp_check ";
     $q_string .= "where chk_rsdp = " . $p_rsdp . " and chk_index = " . $a_checklist['chk_index'] . " and chk_group = " . $group . " and chk_task = " . $p_task . " ";
-    $q_rsdp_check = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $q_rsdp_check = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
     $a_rsdp_check = mysqli_fetch_array($q_rsdp_check);
 
 # set checked
@@ -1677,7 +1677,7 @@ function return_Checklist( $p_rsdp, $p_task ) {
       $checked = "";
     }
 
-    if (check_grouplevel($db, $task_group)) {
+    if (check_grouplevel($p_db, $task_group)) {
       $disabled = "";
     } else {
       $disabled = "disabled";
