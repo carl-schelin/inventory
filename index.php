@@ -11,7 +11,7 @@
 
   $package = "index.php";
 
-  logaccess($db, $formVars['uid'], $package, "Accessing the script.");
+  logaccess($db, $db, $formVars['uid'], $package, "Accessing the script.");
 
   if (isset($_GET['search'])) {
     $formVars['search'] = clean($_GET['search'], 80);
@@ -20,7 +20,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help($Sitepath . "/" . $package)) {
+  if (show_Help($db, $Sitepath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
@@ -559,7 +559,7 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/support.contract.php');">Support Contract</a> - Shows the support details for your group's Active devices.</li>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/licenses.php');">Software Licenses</a> - Shows all software and license information.</li>
 <?php
-    if (check_userlevel($db, $AL_Admin)) {
+    if (check_userlevel($db, $db, $AL_Admin)) {
 ?>
   <li><a href="<?php print $Reportroot; ?>/tags.php">View all Tags</a> - List of all Tags assigned in the system.</li>
 <?php
@@ -600,7 +600,7 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
     <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/status.php');">Current Monitoring Status</a> - List of servers and their current status.</li>
     </li></ul>
 <?php
-  if (check_grouplevel($GRP_Unix)) {
+  if (check_grouplevel($db, $GRP_Unix)) {
 ?>
     <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Bulkroot; ?>/bulkedit.php');">Bulk Editor</a> - Provides a spreadsheet like view of a selected group of servers for editing.</li>
     <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Manageroot; ?>/errors.php');">Manage Error Priorities</a> - Manage the priority level of the server error messages.</li>
