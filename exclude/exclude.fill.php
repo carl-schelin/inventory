@@ -30,9 +30,9 @@
 
       $server = return_Index($db, $a_excludes['ex_companyid'], "select inv_id from inventory where inv_ssh = 1 and inv_status = 0 and inv_manager = " . $GRP_Unix . " order by inv_name");
 
-      print "document.exclude.ex_text.value = '"       . mysqli_real_escape_string($a_excludes['ex_text'])       . "';\n";
-      print "document.exclude.ex_comments.value = '"   . mysqli_real_escape_string($a_excludes['ex_comments'])   . "';\n";
-      print "document.exclude.ex_expiration.value = '" . mysqli_real_escape_string($a_excludes['ex_expiration']) . "';\n";
+      print "document.exclude.ex_text.value = '"       . mysqli_real_escape_string($db, $a_excludes['ex_text'])       . "';\n";
+      print "document.exclude.ex_comments.value = '"   . mysqli_real_escape_string($db, $a_excludes['ex_comments'])   . "';\n";
+      print "document.exclude.ex_expiration.value = '" . mysqli_real_escape_string($db, $a_excludes['ex_expiration']) . "';\n";
 
       print "document.exclude.ex_companyid['" . $server . "'].selected = true;\n";
 
