@@ -11,7 +11,7 @@
 
   $package = "incident.php";
 
-  logaccess($formVars['uid'], $package, "Getting a listing of servers and products.");
+  logaccess($db, $formVars['uid'], $package, "Getting a listing of servers and products.");
 
   $formVars['product']   = clean($_GET['product'],  10);
   $formVars['group']     = clean($_GET['group'],    10);
@@ -30,7 +30,7 @@
   $orderby = " group by inv_name";
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
