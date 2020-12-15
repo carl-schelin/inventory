@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Admin)) {
-      logaccess($_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from grouplist");
+    if (check_userlevel($db, $AL_Admin)) {
+      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from grouplist");
 
 # get the guy you're trying to delete's group id
       $q_string  = "select gpl_group ";
@@ -32,7 +32,7 @@
 # now check to see if the deleter is in the same group as the deletee
       $q_string  = "select gpl_id ";
       $q_string .= "from grouplist ";
-      if (check_userlevel($AL_Admin) == 0) {
+      if (check_userlevel($db, $AL_Admin) == 0) {
         $q_string .= "where gpl_user = " . $_SESSION['uid'] . " and gpl_group = " . $a_grouplist['gpl_group'] . " ";
       }
       $q_gltest = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -48,7 +48,7 @@
         print "alert('You are not allowed to manage groups you aren\'t a member of.');\n";
       }
     } else {
-      logaccess($_SESSION['uid'], $package, "Access denied");
+      logaccess($db, $_SESSION['uid'], $package, "Access denied");
     }
   }
 ?>
