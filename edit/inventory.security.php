@@ -19,8 +19,8 @@
       $formVars['server'] = clean($_GET['server'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Changing the checkbox status");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Changing the checkbox status");
 
       $q_string  = "select inv_appliance ";
       $q_string .= "from inventory ";
@@ -44,7 +44,7 @@
       }
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Access denied");
+      logaccess($db, $_SESSION['uid'], $package, "Access denied");
     }
   }
 
