@@ -32,15 +32,15 @@
 
       if (mysqli_num_rows($q_backups) > 0) {
 
-        print "document.edit.bu_start.value = '"   . mysqli_real_escape_string($a_backups['bu_start'])   . "';\n";
-        print "document.edit.bu_suntime.value = '" . mysqli_real_escape_string($a_backups['bu_suntime']) . "';\n";
-        print "document.edit.bu_montime.value = '" . mysqli_real_escape_string($a_backups['bu_montime']) . "';\n";
-        print "document.edit.bu_tuetime.value = '" . mysqli_real_escape_string($a_backups['bu_tuetime']) . "';\n";
-        print "document.edit.bu_wedtime.value = '" . mysqli_real_escape_string($a_backups['bu_wedtime']) . "';\n";
-        print "document.edit.bu_thutime.value = '" . mysqli_real_escape_string($a_backups['bu_thutime']) . "';\n";
-        print "document.edit.bu_fritime.value = '" . mysqli_real_escape_string($a_backups['bu_fritime']) . "';\n";
-        print "document.edit.bu_sattime.value = '" . mysqli_real_escape_string($a_backups['bu_sattime']) . "';\n";
-        print "document.edit.bu_notes.value = '"   . mysqli_real_escape_string($a_backups['bu_notes'])   . "';\n";
+        print "document.edit.bu_start.value = '"   . mysqli_real_escape_string($db, $a_backups['bu_start'])   . "';\n";
+        print "document.edit.bu_suntime.value = '" . mysqli_real_escape_string($db, $a_backups['bu_suntime']) . "';\n";
+        print "document.edit.bu_montime.value = '" . mysqli_real_escape_string($db, $a_backups['bu_montime']) . "';\n";
+        print "document.edit.bu_tuetime.value = '" . mysqli_real_escape_string($db, $a_backups['bu_tuetime']) . "';\n";
+        print "document.edit.bu_wedtime.value = '" . mysqli_real_escape_string($db, $a_backups['bu_wedtime']) . "';\n";
+        print "document.edit.bu_thutime.value = '" . mysqli_real_escape_string($db, $a_backups['bu_thutime']) . "';\n";
+        print "document.edit.bu_fritime.value = '" . mysqli_real_escape_string($db, $a_backups['bu_fritime']) . "';\n";
+        print "document.edit.bu_sattime.value = '" . mysqli_real_escape_string($db, $a_backups['bu_sattime']) . "';\n";
+        print "document.edit.bu_notes.value = '"   . mysqli_real_escape_string($db, $a_backups['bu_notes'])   . "';\n";
 
         print "document.edit.bu_retention['" . $a_backups['bu_retention'] . "'].selected = true;\n";
 
