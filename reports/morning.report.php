@@ -11,7 +11,7 @@
 
   $package = "morning.report.php";
 
-  logaccess($formVars['uid'], $package, "Accessing script");
+  logaccess($db, $formVars['uid'], $package, "Accessing script");
 
 # get the date for the log file display; yesterday's logs
   $date = date('Ymd', mktime(0, 0, 0, date('m'), date('d')-1, date('Y')) );
@@ -66,7 +66,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
@@ -267,7 +267,7 @@ reviewed and worked on.</li>
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
-    $os = return_System($a_inventory['inv_id']);
+    $os = return_System($db, $a_inventory['inv_id']);
 
 #####
 # This is the main server line with links if there is data to be displayed
