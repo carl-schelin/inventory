@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from products");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from products");
 
       $q_string  = "select prod_name,prod_code,prod_oldcode,prod_desc,prod_group,prod_type,prod_citype,prod_tier1,prod_tier2,prod_tier3,prod_remedy,prod_unit,prod_service ";
       $q_string .= "from products ";
@@ -29,9 +29,9 @@
       $a_products = mysqli_fetch_array($q_products);
       mysqli_free_result($q_products);
 
-      $group   = return_Index($a_products['prod_group'],   "select grp_id from groups where grp_disabled = 0 order by grp_name");
-      $unit    = return_Index($a_products['prod_unit'],    "select bus_id from business_unit order by bus_name");
-      $service = return_Index($a_products['prod_service'], "select svc_id from service order by svc_id");
+      $group   = return_Index($db, $a_products['prod_group'],   "select grp_id from groups where grp_disabled = 0 order by grp_name");
+      $unit    = return_Index($db, $a_products['prod_unit'],    "select bus_id from business_unit order by bus_name");
+      $service = return_Index($db, $a_products['prod_service'], "select svc_id from service order by svc_id");
 
       print "document.products.prod_id.value = '"      . mysqli_real_escape_string($formVars['id'])             . "';\n";
       print "document.products.prod_name.value = '"    . mysqli_real_escape_string($a_products['prod_name'])    . "';\n";
@@ -58,7 +58,7 @@
       print "document.products.id.value = " . $formVars['id'] . ";\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
