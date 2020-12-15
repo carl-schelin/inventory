@@ -24,8 +24,8 @@
       $formVars['os_sysname'] = clean($_GET['os_sysname'], 60);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting server " . $formVars['os_sysname'] . " from inventory");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting server " . $formVars['os_sysname'] . " from inventory");
 
       $q_string  = "select inv_name ";
       $q_string .= "from inventory ";
@@ -64,7 +64,7 @@
       }
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
