@@ -20,8 +20,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from issue_support");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from issue_support");
 
       $q_string  = "select sup_company,sup_case,sup_contact,sup_email,sup_phone,sup_govid,sup_timestamp,sup_rating ";
       $q_string .= "from issue_support ";
@@ -44,7 +44,7 @@
       print "document.start.supupdate.disabled = false;\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
