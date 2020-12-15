@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from vulnowner");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from vulnowner");
 
       $q_string  = "select int_id,int_addr,sec_id,sec_name ";
       $q_string .= "from vulnowner ";
@@ -49,7 +49,7 @@
         print "document.owner.vul_ticket.value = '"      . mysqli_real_escape_string($a_vulnowner['vul_ticket'])      . "';\n";
         print "document.owner.vul_description.value = '" . mysqli_real_escape_string($a_vulnowner['vul_description']) . "';\n";
 
-        $group = return_Index($a_vulnowner['vul_group'], "select grp_id from groups where grp_disabled = 0 order by grp_name");
+        $group = return_Index($db, $a_vulnowner['vul_group'], "select grp_id from groups where grp_disabled = 0 order by grp_name");
 
         print "document.owner.vul_group['" . $group . "'].selected = true;\n";
 
@@ -73,7 +73,7 @@
       print "document.owner.vul_group.focus();\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
