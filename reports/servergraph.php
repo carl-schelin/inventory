@@ -8,7 +8,11 @@
   $called = 'no';
   include($Sitepath . '/login/check.php');
   include($Sitepath . '/function.php');
-  check_login($AL_ReadOnly);
+
+# connect to the database
+  $db = db_connect($DBserver, $DBname, $DBuser, $DBpassword);
+
+  check_login($db, $AL_ReadOnly);
 
   if (isset($_GET['group'])) {
     $formVars['group'] = clean($_GET['group'], 10);
