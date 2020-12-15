@@ -31,8 +31,8 @@
       $user  = return_Index($db, $a_patching['patch_user'],   "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
       $group = return_Index($db, $a_patching['patch_group'],  "select grp_id from groups where grp_disabled = 0 order by grp_name");
 
-      print "document.patching.patch_name.value = '" . mysqli_real_escape_string($a_patching['patch_name']) . "';\n";
-      print "document.patching.patch_date.value = '" . mysqli_real_escape_string($a_patching['patch_date']) . "';\n";
+      print "document.patching.patch_name.value = '" . mysqli_real_escape_string($db, $a_patching['patch_name']) . "';\n";
+      print "document.patching.patch_date.value = '" . mysqli_real_escape_string($db, $a_patching['patch_date']) . "';\n";
 
       print "document.patching.patch_user['"  . $user  . "'].selected = true;\n";
       print "document.patching.patch_group['" . $group . "'].selected = true;\n";
