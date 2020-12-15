@@ -28,7 +28,7 @@
       $a_objects = mysqli_fetch_array($q_objects);
       mysqli_free_result($q_objects);
 
-      print "document.objects.obj_name.value = '"       . mysqli_real_escape_string($a_objects['obj_name'])       . "';\n";
+      print "document.objects.obj_name.value = '"       . mysqli_real_escape_string($db, $a_objects['obj_name'])       . "';\n";
 
       if ($a_objects['obj_deleted']) {
         print "document.objects.obj_deleted.checked = true;\n";
