@@ -11,7 +11,7 @@
 
   $package = "llilly.oracleas.php";
 
-  logaccess($formVars['uid'], $package, "Report on Oracle Unbreakable Linux.");
+  logaccess($db, $formVars['uid'], $package, "Report on Oracle Unbreakable Linux.");
 
 ?>
 <!DOCTYPE HTML>
