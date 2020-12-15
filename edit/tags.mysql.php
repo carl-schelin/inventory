@@ -185,7 +185,7 @@
         $output .= "</p>\n";
 
 
-        print "document.getElementById('tags_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('tags_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
       }
 
 
@@ -275,7 +275,7 @@
 
       mysqli_free_result($q_tags);
 
-      print "document.getElementById('tags_table').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('tags_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.edit.tag_update.disabled = true;\n";
     } else {
