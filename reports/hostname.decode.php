@@ -292,30 +292,30 @@
     }
 
 
-  print "document.getElementById('i15location').innerHTML = '" . mysqli_real_escape_string($formVars['i15location']) . "';\n";
-  print "document.getElementById('i15instance').innerHTML = '" . mysqli_real_escape_string($formVars['i15instance']) . "';\n";
-  print "document.getElementById('i15zone').innerHTML = '"     . mysqli_real_escape_string($formVars['i15zone'])     . "';\n";
-  print "document.getElementById('i15device').innerHTML = '"   . mysqli_real_escape_string($formVars['i15device'])   . "';\n";
-  print "document.getElementById('i15service').innerHTML = '"  . mysqli_real_escape_string($formVars['i15service'])  . "';\n";
-  print "document.getElementById('i15freeform').innerHTML = '" . mysqli_real_escape_string($formVars['i15freeform']) . "';\n";
+  print "document.getElementById('i15location').innerHTML = '" . mysqli_real_escape_string($db, $formVars['i15location']) . "';\n";
+  print "document.getElementById('i15instance').innerHTML = '" . mysqli_real_escape_string($db, $formVars['i15instance']) . "';\n";
+  print "document.getElementById('i15zone').innerHTML = '"     . mysqli_real_escape_string($db, $formVars['i15zone'])     . "';\n";
+  print "document.getElementById('i15device').innerHTML = '"   . mysqli_real_escape_string($db, $formVars['i15device'])   . "';\n";
+  print "document.getElementById('i15service').innerHTML = '"  . mysqli_real_escape_string($db, $formVars['i15service'])  . "';\n";
+  print "document.getElementById('i15freeform').innerHTML = '" . mysqli_real_escape_string($db, $formVars['i15freeform']) . "';\n";
 
-  print "document.getElementById('c15location').innerHTML = '" . mysqli_real_escape_string($formVars['c15location']) . "';\n";
-  print "document.getElementById('c15state').innerHTML = '"    . mysqli_real_escape_string($formVars['c15state'])    . "';\n";
-  print "document.getElementById('c15type').innerHTML = '"     . mysqli_real_escape_string($formVars['c15type'])     . "';\n";
-  print "document.getElementById('c15device').innerHTML = '"   . mysqli_real_escape_string($formVars['c15device'])   . "';\n";
-  print "document.getElementById('c15instance').innerHTML = '" . mysqli_real_escape_string($formVars['c15instance']) . "';\n";
+  print "document.getElementById('c15location').innerHTML = '" . mysqli_real_escape_string($db, $formVars['c15location']) . "';\n";
+  print "document.getElementById('c15state').innerHTML = '"    . mysqli_real_escape_string($db, $formVars['c15state'])    . "';\n";
+  print "document.getElementById('c15type').innerHTML = '"     . mysqli_real_escape_string($db, $formVars['c15type'])     . "';\n";
+  print "document.getElementById('c15device').innerHTML = '"   . mysqli_real_escape_string($db, $formVars['c15device'])   . "';\n";
+  print "document.getElementById('c15instance').innerHTML = '" . mysqli_real_escape_string($db, $formVars['c15instance']) . "';\n";
 
-  print "document.getElementById('08location').innerHTML = '"  . mysqli_real_escape_string($formVars['08location'])  . "';\n";
-  print "document.getElementById('08state').innerHTML = '"     . mysqli_real_escape_string($formVars['08state'])     . "';\n";
-  print "document.getElementById('08type').innerHTML = '"      . mysqli_real_escape_string($formVars['08type'])      . "';\n";
-  print "document.getElementById('08device').innerHTML = '"    . mysqli_real_escape_string($formVars['08device'])    . "';\n";
-  print "document.getElementById('08instance').innerHTML = '"  . mysqli_real_escape_string($formVars['08instance'])  . "';\n";
-  print "document.getElementById('08interface').innerHTML = '" . mysqli_real_escape_string($formVars['08interface']) . "';\n";
+  print "document.getElementById('08location').innerHTML = '"  . mysqli_real_escape_string($db, $formVars['08location'])  . "';\n";
+  print "document.getElementById('08state').innerHTML = '"     . mysqli_real_escape_string($db, $formVars['08state'])     . "';\n";
+  print "document.getElementById('08type').innerHTML = '"      . mysqli_real_escape_string($db, $formVars['08type'])      . "';\n";
+  print "document.getElementById('08device').innerHTML = '"    . mysqli_real_escape_string($db, $formVars['08device'])    . "';\n";
+  print "document.getElementById('08instance').innerHTML = '"  . mysqli_real_escape_string($db, $formVars['08instance'])  . "';\n";
+  print "document.getElementById('08interface').innerHTML = '" . mysqli_real_escape_string($db, $formVars['08interface']) . "';\n";
 
-  print "document.getElementById('location').innerHTML = '"    . mysqli_real_escape_string($formVars['location'])    . "';\n";
-  print "document.getElementById('company').innerHTML = '"     . mysqli_real_escape_string($formVars['company'])     . "';\n";
-  print "document.getElementById('state').innerHTML = '"       . mysqli_real_escape_string($formVars['state'])       . "';\n";
-  print "document.getElementById('product').innerHTML = '"     . mysqli_real_escape_string($formVars['product'])     . "';\n";
-  print "document.getElementById('instance').innerHTML = '"    . mysqli_real_escape_string($formVars['instance'])    . "';\n";
+  print "document.getElementById('location').innerHTML = '"    . mysqli_real_escape_string($db, $formVars['location'])    . "';\n";
+  print "document.getElementById('company').innerHTML = '"     . mysqli_real_escape_string($db, $formVars['company'])     . "';\n";
+  print "document.getElementById('state').innerHTML = '"       . mysqli_real_escape_string($db, $formVars['state'])       . "';\n";
+  print "document.getElementById('product').innerHTML = '"     . mysqli_real_escape_string($db, $formVars['product'])     . "';\n";
+  print "document.getElementById('instance').innerHTML = '"    . mysqli_real_escape_string($db, $formVars['instance'])    . "';\n";
 
 ?>
