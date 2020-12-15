@@ -11,7 +11,7 @@
 
   $package = "kzupan.wireline.php";
 
-  logaccess($formVars['uid'], $package, "Getting a listing of Wireline.");
+  logaccess($db, $formVars['uid'], $package, "Getting a listing of Wireline.");
 
   $orderby = " order by ";
   if (isset($_GET['sort'])) {
