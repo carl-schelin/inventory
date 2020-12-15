@@ -14,7 +14,7 @@
 
   $package = "system.php";
 
-  logaccess($_SESSION['uid'], $package, "Accessing script");
+  logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
   if (isset($_GET['id'])) {
     $formVars['id'] = clean($_GET['id'], 10);
@@ -23,7 +23,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help('operatingsystem')) {
+  if (show_Help($db, 'operatingsystem')) {
     $display = "display: block";
   } else {
     $display = "display: none";
