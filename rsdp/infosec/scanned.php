@@ -207,7 +207,7 @@ will drop off of the list of servers to be worked. The server will still be avai
 
 </div>
 
-<?php print submit_RSDP($formVars['rsdp'], 18, $RSDProot . "/infosec/scanned.mysql.php", "rsdp_platformspoc", "rsdp_platform", 0); ?>
+<?php print submit_RSDP($db, "$formVars['rsdp'], 18, $RSDProot . "/infosec/scanned.mysql.php", "rsdp_platformspoc", "rsdp_platform", 0); ?>
 
 <div id="tabs">
 
@@ -236,14 +236,14 @@ will drop off of the list of servers to be worked. The server will still be avai
 
 <div id="tabs-1">
 
-<?php print request_Header($formVars['rsdp']); ?>
+<?php print request_Header($db, "$formVars['rsdp']); ?>
 
 </div>
 
 
 <div id="tabs-2">
 
-<?php print request_Server($formVars['rsdp']); ?>
+<?php print request_Server($db, "$formVars['rsdp']); ?>
 
 </div>
 
@@ -306,7 +306,7 @@ will drop off of the list of servers to be worked. The server will still be avai
 <tr>
   <td id="is_checklist"><input type="checkbox" id="check-1" name="is_checklist" onchange="validate_Form();"><label for="check-1"></label></td>
 </tr>
-<?php print return_Checklist( $formVars['rsdp'], 18); ?>
+<?php print return_Checklist($db, " $formVars['rsdp'], 18); ?>
 </table>
 
 </div>
