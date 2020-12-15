@@ -11,7 +11,7 @@
 
   $package = "filesystem.mysql.php";
 
-  logaccess($formVars['uid'], $package, "Accessing the script.");
+  logaccess($db, $formVars['uid'], $package, "Accessing the script.");
 
   header('Content-Type: text/javascript');
 
@@ -29,14 +29,14 @@
   $output .= "<table class=\"ui-styled-table\">";
   $output .= "<tr>";
   $output .= "  <th class=\"ui-state-default\">";
-  if (check_userlevel($AL_Edit)) {
-    if (check_grouplevel($a_inventory['inv_manager'])) {
+  if (check_userlevel($db, $AL_Edit)) {
+    if (check_grouplevel($db, $a_inventory['inv_manager'])) {
       $output .= "<a href=\"" . $Editroot . "/inventory.php?server=" . $formVars['id'] . "#filesystem\" target=\"_blank\"><img src=\"" . $Imgsroot . "/pencil.gif\">";
     }
   }
   $output .= "Filesystem Information";
-  if (check_userlevel($AL_Edit)) {
-    if (check_grouplevel($a_inventory['inv_manager'])) {
+  if (check_userlevel($db, $AL_Edit)) {
+    if (check_grouplevel($db, $a_inventory['inv_manager'])) {
       $output .= "</a>";
     }
   }
