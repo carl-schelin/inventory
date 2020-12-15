@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
 
 # update the issue
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
@@ -38,7 +38,7 @@
         }
 
         if (strlen($formVars['iss_subject']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "iss_companyid  =   " . $formVars['iss_companyid']  . "," . 
@@ -59,7 +59,7 @@
             $message = "Issue updated.";
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -78,7 +78,7 @@
         $formVars['iss_subject']    = clean($_GET['iss_subject'],    70);
 
         if (strlen($formVars['iss_subject']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
 # it's open, close it
           if ($formVars['iss_closed'] == '0000-00-00' || $formVars['iss_closed'] == 'Current Date') {
@@ -128,7 +128,7 @@
         }
       }
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
