@@ -68,11 +68,11 @@
         print "document.edit.mu_update.disabled = false;\n";
       }
 
-      print "document.edit.mu_username.value = '" . mysqli_real_escape_string($username) . "';\n";
-      print "document.edit.mu_name.value = '"     . mysqli_real_escape_string($name)     . "';\n";
-      print "document.edit.mu_email.value = '"    . mysqli_real_escape_string($email)    . "';\n";
-      print "document.edit.mu_comment.value = '"  . mysqli_real_escape_string($comment)  . "';\n";
-      print "document.edit.mu_ticket.value = '"   . mysqli_real_escape_string($ticket)   . "';\n";
+      print "document.edit.mu_username.value = '" . mysqli_real_escape_string($db, $username) . "';\n";
+      print "document.edit.mu_name.value = '"     . mysqli_real_escape_string($db, $name)     . "';\n";
+      print "document.edit.mu_email.value = '"    . mysqli_real_escape_string($db, $email)    . "';\n";
+      print "document.edit.mu_comment.value = '"  . mysqli_real_escape_string($db, $comment)  . "';\n";
+      print "document.edit.mu_ticket.value = '"   . mysqli_real_escape_string($db, $ticket)   . "';\n";
 
       if ($locked) {
         print "document.edit.mu_locked.checked = true;\n";
