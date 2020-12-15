@@ -2,7 +2,6 @@
 # Script: network.del.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: Delete a specified record from the database
 
   header('Content-Type: text/javascript');
