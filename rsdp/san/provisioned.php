@@ -209,7 +209,7 @@ ready to be worked.</li>
 
 </div>
 
-<?php print submit_RSDP( $formVars['rsdp'], 11, $RSDProot . "/san/provisioned.mysql.php", "rsdp_sanpoc", "", 9); ?>
+<?php print submit_RSDP($db, " $formVars['rsdp'], 11, $RSDProot . "/san/provisioned.mysql.php", "rsdp_sanpoc", "", 9); ?>
 
 <div id="tabs">
 
@@ -236,14 +236,14 @@ ready to be worked.</li>
 
 <div id="tabs-1">
 
-<?php print request_Header($formVars['rsdp']); ?>
+<?php print request_Header($db, "$formVars['rsdp']); ?>
 
 </div>
 
 
 <div id="tabs-2">
 
-<?php print request_Server($formVars['rsdp']); ?>
+<?php print request_Server($db, "$formVars['rsdp']); ?>
 
 </div>
 
@@ -257,7 +257,7 @@ ready to be worked.</li>
 <tr>
   <td id="if_procheck"><input type="checkbox" id="check-1" name="if_procheck" onchange="validate_Form();"> <label for="check-1"></label></td>
 </tr>
-<?php print return_Checklist( $formVars['rsdp'], 11); ?>
+<?php print return_Checklist($db, " $formVars['rsdp'], 11); ?>
 </table>
 
 </div>
