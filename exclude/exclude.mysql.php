@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']                 = clean($_GET['id'],             10);
         $formVars['ex_companyid']       = clean($_GET['ex_companyid'],   10);
@@ -43,7 +43,7 @@
         }
 
         if (strlen($formVars['ex_text']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "ex_companyid   =   " . $formVars['ex_companyid']   . "," .
@@ -62,7 +62,7 @@
             $message = "Exclude Message updated.";
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['ex_text']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['ex_text']);
 
           mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
@@ -200,6 +200,6 @@
     }
 
   } else {
-    logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+    logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
   }
 ?>
