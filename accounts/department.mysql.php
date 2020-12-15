@@ -135,7 +135,7 @@
 
       $output .= "</table>";
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.department.dep_unit.value = 0;\n";
       print "document.department.dep_dept.value = 0;\n";
