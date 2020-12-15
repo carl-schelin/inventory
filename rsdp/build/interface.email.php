@@ -24,8 +24,8 @@
       $formVars['rsdp'] = clean($_GET['rsdp'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Emailing Network Engineering about " . $formVars['id']);
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Emailing Network Engineering about " . $formVars['id']);
 
       $headers  = "From: RSDP <rsdp@incojs01.scc911.com>\r\n";
 
@@ -85,7 +85,7 @@
       print "alert('Email sent.');\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Access denied");
+      logaccess($db, $_SESSION['uid'], $package, "Access denied");
     }
   }
 ?>
