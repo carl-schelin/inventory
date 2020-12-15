@@ -26,8 +26,8 @@
       $formVars['retired'] = date('Y-m-d');
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Marking Record " . $formVars['id'] . " as deleted from hardware");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Marking Record " . $formVars['id'] . " as deleted from hardware");
 
 # get the inv_id
       $q_string  = "select hw_companyid ";
@@ -56,7 +56,7 @@
         print "alert('Error: You must have at least one Server, Chassis,\\nor Array active before deleting this record.\\n\\nRecord not deleted.');\n";
       }
     } else {
-      logaccess($_SESSION['uid'], $package, "Access denied");
+      logaccess($db, $_SESSION['uid'], $package, "Access denied");
     }
   }
 ?>
