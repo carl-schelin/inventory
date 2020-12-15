@@ -28,9 +28,9 @@
       $a_inttype = mysqli_fetch_array($q_inttype);
       mysqli_free_result($q_inttype);
 
-      print "document.interfacetype.itp_name.value = '"        . mysqli_real_escape_string($a_inttype['itp_name'])        . "';\n";
-      print "document.interfacetype.itp_acronym.value = '"     . mysqli_real_escape_string($a_inttype['itp_acronym'])     . "';\n";
-      print "document.interfacetype.itp_description.value = '" . mysqli_real_escape_string($a_inttype['itp_description']) . "';\n";
+      print "document.interfacetype.itp_name.value = '"        . mysqli_real_escape_string($db, $a_inttype['itp_name'])        . "';\n";
+      print "document.interfacetype.itp_acronym.value = '"     . mysqli_real_escape_string($db, $a_inttype['itp_acronym'])     . "';\n";
+      print "document.interfacetype.itp_description.value = '" . mysqli_real_escape_string($db, $a_inttype['itp_description']) . "';\n";
 
       print "document.interfacetype.id.value = " . $formVars['id'] . ";\n";
 
