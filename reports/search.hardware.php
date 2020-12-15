@@ -11,7 +11,7 @@
 
   $package = "search.hardware.php";
 
-  logaccess($formVars['uid'], $package, "Hardware Report.");
+  logaccess($db, $formVars['uid'], $package, "Hardware Report.");
 
 # search for hardware only
   $formVars['search_by'] = 4;
@@ -23,7 +23,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
