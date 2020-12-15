@@ -122,7 +122,7 @@
 
       mysqli_free_result($q_organizations);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
       print "document.organization.org_name.value = '';\n";
 
