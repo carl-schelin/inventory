@@ -11,7 +11,7 @@
 
   $package = "manage.php";
 
-  logaccess($formVars['uid'], $package, "Managing Events.");
+  logaccess($db, $formVars['uid'], $package, "Managing Events.");
 
   if (isset($_GET['product'])) {
     $formVars['product']   = clean($_GET['product'],  10);
@@ -151,7 +151,7 @@
   $pending = $a_chkserver['count(chk_id)'];
 
 # if help has not been seen yet,
-  if (show_Help('manageerrors')) {
+  if (show_Help($db, 'manageerrors')) {
     $display = "display: block";
   } else {
     $display = "display: none";
