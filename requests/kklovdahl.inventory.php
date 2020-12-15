@@ -11,7 +11,7 @@
 
   $package = "kklovdahl.inventory.php";
 
-  logaccess($formVars['uid'], $package, "Checking out the inventory.");
+  logaccess($db, $formVars['uid'], $package, "Checking out the inventory.");
 
   $orderby = " order by ";
   if (isset($_GET['sort'])) {
