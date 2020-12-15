@@ -13,7 +13,7 @@
 
   $package = "issue.closed.mysql.php";
 
-  logaccess($formVars['uid'], $package, "Creating the closed issues listing.");
+  logaccess($db, $formVars['uid'], $package, "Creating the closed issues listing.");
 
   if (isset($_GET['server'])) {
     $formVars['server'] = clean($_GET['server'], 10);
