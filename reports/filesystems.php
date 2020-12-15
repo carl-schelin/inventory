@@ -11,7 +11,7 @@
 
   $package = "filesystems.php";
 
-  logaccess($formVars['uid'], $package, "Listing the Filesystems.");
+  logaccess($db, $formVars['uid'], $package, "Listing the Filesystems.");
 
   $formVars['product']   = clean($_GET['product'],  10);
   $formVars['group']     = clean($_GET['group'],    10);
@@ -118,7 +118,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
