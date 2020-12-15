@@ -281,9 +281,9 @@
 // create the javascript bit for populating the user dropdown box.
           while ($a_inttype = mysqli_fetch_array($q_inttype) ) {
             print "if (celltext == \"" . $a_inttype['itp_acronym'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($a_inttype['itp_name']) . "\"," . $a_inttype['itp_id'] . ",1,1);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inttype['itp_name']) . "\"," . $a_inttype['itp_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($a_inttype['itp_name']) . "\"," . $a_inttype['itp_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inttype['itp_name']) . "\"," . $a_inttype['itp_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -449,15 +449,15 @@
           for ($i = 0; $i < 129; $i++) {
             print "if (celltext == " . $i . ") {\n";
             if ($i > 32) {
-              print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string("IPv6/" . $i) . "\"," . $i . ",1,1);\n";
+              print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, "IPv6/" . $i) . "\"," . $i . ",1,1);\n";
             } else {
-              print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string(createNetmaskAddr($i) . "/" . $i) . "\"," . $i . ",1,1);\n";
+              print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, createNetmaskAddr($i) . "/" . $i) . "\"," . $i . ",1,1);\n";
             }
             print "} else {\n";
             if ($i > 32) {
-              print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string("IPv6/" . $i) . "\"," . $i . ",0,0);\n";
+              print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, "IPv6/" . $i) . "\"," . $i . ",0,0);\n";
             } else {
-              print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string(createNetmaskAddr($i) . "/" . $i) . "\"," . $i . ",0,0);\n";
+              print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, createNetmaskAddr($i) . "/" . $i) . "\"," . $i . ",0,0);\n";
             }
             print "}\n";
           }
@@ -518,9 +518,9 @@
 // create the javascript bit for populating the user dropdown box.
           while ($a_ip_zones = mysqli_fetch_array($q_ip_zones) ) {
             print "if (celltext == \"" . $a_ip_zones['zone_name'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($a_ip_zones['zone_name']) . "\"," . $a_ip_zones['zone_id'] . ",1,1);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_ip_zones['zone_name']) . "\"," . $a_ip_zones['zone_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($a_ip_zones['zone_name']) . "\"," . $a_ip_zones['zone_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_ip_zones['zone_name']) . "\"," . $a_ip_zones['zone_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -735,9 +735,9 @@
 // create the javascript bit for populating the user dropdown box.
           while ($a_int_media = mysqli_fetch_array($q_int_media) ) {
             print "if (celltext == \"" . $a_int_media['med_text'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($a_int_media['med_text']) . "\"," . $a_int_media['med_id'] . ",1,1);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_int_media['med_text']) . "\"," . $a_int_media['med_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($a_int_media['med_text']) . "\"," . $a_int_media['med_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_int_media['med_text']) . "\"," . $a_int_media['med_id'] . ",0,0);\n";
             print "}\n";
           }
 
