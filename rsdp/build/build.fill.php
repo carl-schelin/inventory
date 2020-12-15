@@ -20,8 +20,8 @@
       $formVars['rsdp'] = clean($_GET['rsdp'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['rsdp'] . " from rsdp_platform");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['rsdp'] . " from rsdp_platform");
 
       $q_string  = "select pf_id,pf_model,pf_asset,pf_serial,pf_redundant,pf_row,pf_rack,pf_unit,pf_special ";
       $q_string .= "from rsdp_platform ";
@@ -33,7 +33,7 @@
       if (mysqli_num_rows($q_rsdp_platform) > 0) {
         $a_rsdp_platform = mysqli_fetch_array($q_rsdp_platform);
 
-        $pf_model = return_Index($a_rsdp_platform['pf_model'], "select mod_id from models where mod_primary = 1 order by mod_vendor,mod_name");
+        $pf_model = return_Index($db, $a_rsdp_platform['pf_model'], "select mod_id from models where mod_primary = 1 order by mod_vendor,mod_name");
 
         print "document.rsdp.pf_model['" . $pf_model . "'].selected = true;\n";
 
@@ -61,7 +61,7 @@
       }
       mysqli_free_result($q_rsdp_platform);
 
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['rsdp'] . " from rsdp_osteam");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['rsdp'] . " from rsdp_osteam");
 
       $q_string  = "select os_id,os_sysname,os_fqdn,os_software ";
       $q_string .= "from rsdp_osteam ";
@@ -72,7 +72,7 @@
       $numrows = mysqli_num_rows($q_rsdp_osteam);
 
       if (mysqli_num_rows($q_rsdp_osteam) > 0) {
-        $os_software  = return_Index($a_rsdp_osteam['os_software'], "select os_id from operatingsystem where os_delete = 0 order by os_software");
+        $os_software  = return_Index($db, $a_rsdp_osteam['os_software'], "select os_id from operatingsystem where os_delete = 0 order by os_software");
 
         print "document.rsdp.os_sysname.value = '" . mysqli_real_escape_string($a_rsdp_osteam['os_sysname']) . "';\n";
         print "document.rsdp.os_fqdn.value = '"    . mysqli_real_escape_string($a_rsdp_osteam['os_fqdn'])    . "';\n";
@@ -92,7 +92,7 @@
       print "validate_Form();\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
