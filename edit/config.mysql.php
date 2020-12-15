@@ -102,7 +102,7 @@
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
-        print "document.getElementById('config_form').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+        print "document.getElementById('config_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       }
 
@@ -334,7 +334,7 @@
         $output .= "</table>\n";
       }
 
-      print "document.getElementById('cfg_detail_table').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('cfg_detail_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
 
 # the hardware form
@@ -399,7 +399,7 @@
         $output .= "</table>\n";
       }
 
-      print "document.getElementById('cfg_hardware_table').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('cfg_hardware_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
 
 # the network interface form
@@ -469,13 +469,13 @@
         $output .= "</table>\n";
       }
 
-      print "document.getElementById('cfg_network_table').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('cfg_network_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
 
 # the backups form
 # need backup information associated with locations and zones
 # see chkserver for how to determine from location and network zone.
-#      print "document.getElementById('cfg_backup_table').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+#      print "document.getElementById('cfg_backup_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
