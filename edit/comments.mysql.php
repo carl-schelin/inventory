@@ -130,7 +130,7 @@
 
       $output .= "</table>";
 
-      print "document.getElementById('comments_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+      print "document.getElementById('comments_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
       print "document.edit.com_text.value = '';\n";
       print "document.edit.com_timestamp.value = 'Current Time';\n";
