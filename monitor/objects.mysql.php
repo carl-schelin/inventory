@@ -26,7 +26,7 @@
       $orderby = "order by obj_name ";
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['id'],               10);
         $formVars['obj_name']       = clean($_GET['obj_name'],        255);
@@ -43,7 +43,7 @@
         }
 
         if (strlen($formVars['obj_name']) > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "obj_name       = \"" . $formVars['obj_name']       . "\"," .
@@ -56,7 +56,7 @@
             $query = "update objects set " . $q_string . " where obj_id = " . $formVars['id'];
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['obj_name']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['obj_name']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
         } else {
@@ -65,7 +65,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">\n";
@@ -138,7 +138,7 @@
       print "document.objects.obj_deleted.checked = false;\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
