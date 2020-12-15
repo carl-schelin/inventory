@@ -11,7 +11,7 @@
 
   $package = "logs.mysql.php";
 
-  logaccess($formVars['uid'], $package, "Accessing the script.");
+  logaccess($db, $formVars['uid'], $package, "Accessing the script.");
 
   header('Content-Type: text/javascript');
 
