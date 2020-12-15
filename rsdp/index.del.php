@@ -19,7 +19,7 @@
       $formVars['id'] = clean($_GET['projectid'], 10);
     }
 
-    if (check_userlevel($AL_Admin)) {
+    if (check_userlevel($db, $AL_Admin)) {
 
       print "document.getElementById('table_mysql').innerHTML = '" . wait_Process("Please Wait") . "';\n";
 
@@ -69,7 +69,7 @@
         while ($a_rsdp_server = mysqli_fetch_array($q_rsdp_server)) {
 
           for ($i = 0; $i < count($tables); $i++) {
-            logaccess($_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from rsdp_server");
+            logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from rsdp_server");
 
             $q_string  = "delete ";
             $q_string .= "from " . $tables[$i] . " ";
@@ -84,7 +84,7 @@
         print "clear_fields();\n";
       }
     } else {
-      logaccess($_SESSION['uid'], $package, "Access denied");
+      logaccess($db, $_SESSION['uid'], $package, "Access denied");
     }
   }
 ?>
