@@ -11,7 +11,7 @@
 
   $package = "inventory.php";
 
-  logaccess($_SESSION['uid'], $package, "Accessing the script.");
+  logaccess($db, $_SESSION['uid'], $package, "Accessing the script.");
 
   if (isset($_GET['server'])) {
     $formVars['id'] = clean($_GET['server'], 10);
@@ -45,7 +45,7 @@
     $formVars['end'] = date('Y-m-d');
   }
 
-  logaccess($_SESSION['uid'], $package, "Viewing server: " . $a_inventory['inv_name'] . " (" . $formVars['id'] . ").");
+  logaccess($db, $_SESSION['uid'], $package, "Viewing server: " . $a_inventory['inv_name'] . " (" . $formVars['id'] . ").");
 
 ?>
 <!DOCTYPE HTML>
