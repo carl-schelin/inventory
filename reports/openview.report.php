@@ -13,10 +13,10 @@
 
   $package = "openview.report.php";
 
-  logaccess($_SESSION['uid'], $package, "View openview alert report");
+  logaccess($db, $_SESSION['uid'], $package, "View openview alert report");
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
