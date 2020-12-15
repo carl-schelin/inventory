@@ -13,10 +13,10 @@
 
   $package = "tss.php";
 
-  logaccess($_SESSION['uid'], $package, "Viewing the tss server listing table");
+  logaccess($db, $_SESSION['uid'], $package, "Viewing the tss server listing table");
 
 # If group or an admin, allow access
-  if (check_grouplevel($GRP_TSS)) {
+  if (check_grouplevel($db, $GRP_TSS)) {
 
 ?>
 <!DOCTYPE HTML>
