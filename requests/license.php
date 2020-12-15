@@ -11,7 +11,7 @@
 
   $package = "license.php";
 
-  logaccess($formVars['uid'], $package, "Viewing License Info");
+  logaccess($db, $formVars['uid'], $package, "Viewing License Info");
 
   if (isset($_GET['group'])) {
     $formVars['group'] = trim(clean($_GET['group'], 10));
