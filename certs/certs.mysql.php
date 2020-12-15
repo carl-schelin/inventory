@@ -182,7 +182,7 @@
       $output .= "</div>";
       $output .= "</table>";
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.dialog.cert_desc.value = '';\n";
       print "document.dialog.cert_url.value = '';\n";
