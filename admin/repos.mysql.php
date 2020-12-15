@@ -152,7 +152,7 @@
 
       mysqli_free_result($q_repos);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.package.rep_version.value = '';\n";
       print "document.package.rep_group.value = '';\n";
