@@ -29,8 +29,8 @@
       $a_country = mysqli_fetch_array($q_country);
       mysqli_free_result($q_country);
 
-      print "document.country.cn_acronym.value = '" . mysqli_real_escape_string($a_country['cn_acronym']) . "';\n";
-      print "document.country.cn_country.value = '" . mysqli_real_escape_string($a_country['cn_country']) . "';\n";
+      print "document.country.cn_acronym.value = '" . mysqli_real_escape_string($db, $a_country['cn_acronym']) . "';\n";
+      print "document.country.cn_country.value = '" . mysqli_real_escape_string($db, $a_country['cn_country']) . "';\n";
 
       print "document.country.id.value = " . $formVars['id'] . ";\n";
 
