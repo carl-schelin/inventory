@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from firewall");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from firewall");
 
       $q_string  = "select fw_source,fw_sourcezone,fw_destination,fw_destinationzone,";
       $q_string .= "fw_port,fw_protocol,fw_description,fw_timeout,fw_ticket,fw_portdesc ";
@@ -34,12 +34,12 @@
       $q_string  = "select zone_id ";
       $q_string .= "from ip_zones ";
       $q_string .= "order by zone_name";
-      $sourcezone = return_Index($a_firewall['fw_sourcezone'], $q_string);
+      $sourcezone = return_Index($db, $a_firewall['fw_sourcezone'], $q_string);
 
       $q_string  = "select zone_id ";
       $q_string .= "from ip_zones ";
       $q_string .= "order by zone_name";
-      $destinationzone = return_Index($a_firewall['fw_destinationzone'], $q_string);
+      $destinationzone = return_Index($db, $a_firewall['fw_destinationzone'], $q_string);
 
       print "document.edit.fw_sourcezone['"      . $sourcezone      . "'].selected = true;\n";
       print "document.edit.fw_destinationzone['" . $destinationzone . "'].selected = true;\n";
@@ -57,7 +57,7 @@
       print "document.edit.fw_update.disabled = false;\n\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
