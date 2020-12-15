@@ -11,7 +11,7 @@
 
   $package = "theath.curvature.php";
 
-  logaccess($formVars['uid'], $package, "Accessing script");
+  logaccess($db, $formVars['uid'], $package, "Accessing script");
 
   if (isset($_GET['group'])) {
     $formVars['group'] = "and inv_manager = " . clean($_GET['group'], 10) . " ";
