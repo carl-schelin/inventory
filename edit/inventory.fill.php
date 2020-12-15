@@ -67,17 +67,17 @@
 # no zero in the selection window so off by one each time
         $invmaint      = return_Index($db, $a_inventory['inv_maint'],      "select win_id from window order by win_text") - 1;
 
-        print "document.edit.inv_name.value = '"     . mysqli_real_escape_string($a_inventory['inv_name'])     . "';\n";
-        print "document.edit.inv_function.value = '" . mysqli_real_escape_string($a_inventory['inv_function']) . "';\n";
-        print "document.edit.inv_document.value = '" . mysqli_real_escape_string($a_inventory['inv_document']) . "';\n";
-        print "document.edit.inv_centrify.value = '" . mysqli_real_escape_string($a_inventory['inv_centrify']) . "';\n";
-        print "document.edit.inv_adzone.value = '"   . mysqli_real_escape_string($a_inventory['inv_adzone'])   . "';\n";
-        print "document.edit.inv_domain.value = '"   . mysqli_real_escape_string($a_inventory['inv_domain'])   . "';\n";
-        print "document.edit.inv_rack.value = '"     . mysqli_real_escape_string($a_inventory['inv_rack'])     . "';\n";
-        print "document.edit.inv_row.value = '"      . mysqli_real_escape_string($a_inventory['inv_row'])      . "';\n";
-        print "document.edit.inv_unit.value = '"     . mysqli_real_escape_string($a_inventory['inv_unit'])     . "';\n";
-        print "document.edit.inv_notes.value = '"    . mysqli_real_escape_string($a_inventory['inv_notes'])    . "';\n";
-        print "document.edit.inv_ticket.value = '"   . mysqli_real_escape_string($a_inventory['inv_ticket'])   . "';\n";
+        print "document.edit.inv_name.value = '"     . mysqli_real_escape_string($db, $a_inventory['inv_name'])     . "';\n";
+        print "document.edit.inv_function.value = '" . mysqli_real_escape_string($db, $a_inventory['inv_function']) . "';\n";
+        print "document.edit.inv_document.value = '" . mysqli_real_escape_string($db, $a_inventory['inv_document']) . "';\n";
+        print "document.edit.inv_centrify.value = '" . mysqli_real_escape_string($db, $a_inventory['inv_centrify']) . "';\n";
+        print "document.edit.inv_adzone.value = '"   . mysqli_real_escape_string($db, $a_inventory['inv_adzone'])   . "';\n";
+        print "document.edit.inv_domain.value = '"   . mysqli_real_escape_string($db, $a_inventory['inv_domain'])   . "';\n";
+        print "document.edit.inv_rack.value = '"     . mysqli_real_escape_string($db, $a_inventory['inv_rack'])     . "';\n";
+        print "document.edit.inv_row.value = '"      . mysqli_real_escape_string($db, $a_inventory['inv_row'])      . "';\n";
+        print "document.edit.inv_unit.value = '"     . mysqli_real_escape_string($db, $a_inventory['inv_unit'])     . "';\n";
+        print "document.edit.inv_notes.value = '"    . mysqli_real_escape_string($db, $a_inventory['inv_notes'])    . "';\n";
+        print "document.edit.inv_ticket.value = '"   . mysqli_real_escape_string($db, $a_inventory['inv_ticket'])   . "';\n";
 
         print "document.edit.inv_companyid['"  . $invcompanyid              . "'].selected = true;\n";
         print "document.edit.inv_clusterid['"  . $invclusterid              . "'].selected = true;\n";
