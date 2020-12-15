@@ -13,7 +13,7 @@
 
   $package = "repos.php";
 
-  logaccess($_SESSION['uid'], $package, "Accessing script");
+  logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
 ?>
 <!DOCTYPE HTML>
