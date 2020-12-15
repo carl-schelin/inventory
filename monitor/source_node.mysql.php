@@ -131,7 +131,7 @@
 
       mysqli_free_result($q_source_node);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.nodes.src_node.value = '';\n";
       print "document.nodes.src_deleted.checked = false;\n";
