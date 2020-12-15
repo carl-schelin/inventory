@@ -24,7 +24,7 @@
       $formVars['sw_companyid'] = 0;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']              = clean($_GET['id'],               10);
         $formVars['sw_software']     = clean($_GET['sw_software'],     100);
@@ -69,7 +69,7 @@
         }
 
         if ($formVars['sw_companyid'] > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string = 
               "sw_companyid    =   " . $formVars['sw_companyid']    . "," . 
@@ -101,7 +101,7 @@
             $message = "Software updated.";
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['sw_companyid']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['sw_companyid']);
 
           mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
@@ -157,7 +157,7 @@
 
 
       if ($formVars['update'] == -3) {
-        logaccess($_SESSION['uid'], $package, "Creating the form for viewing.");
+        logaccess($db, $_SESSION['uid'], $package, "Creating the form for viewing.");
 
         $output  = "<table class=\"ui-styled-table\">\n";
         $output .= "<tr>\n";
@@ -306,7 +306,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">\n";
@@ -365,7 +365,7 @@
       $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_software = mysqli_fetch_array($q_software)) {
 
-        if (check_grouplevel($a_software['inv_manager']) || check_grouplevel($a_software['sw_group'])) {
+        if (check_grouplevel($db, $a_software['inv_manager']) || check_grouplevel($db, $a_software['sw_group'])) {
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('software.fill.php?id="      . $a_software['sw_id'] . "');showDiv('software-hide');\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_software('software.del.php?id=" . $a_software['sw_id'] . "');\">";
           $linkend   = "</a>";
@@ -414,7 +414,7 @@
 
       print "document.edit.sw_update.disabled = true;\n";
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
