@@ -20,8 +20,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from checklist");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from checklist");
 
       $q_string  = "select chk_group,chk_index,chk_text,chk_link,chk_task ";
       $q_string .= "from checklist ";
@@ -30,7 +30,7 @@
       $a_checklist = mysqli_fetch_array($q_checklist);
       mysqli_free_result($q_checklist);
 
-#      $group = return_Index($a_checklist['chk_group'], "select grp_id from groups where grp_disabled = 0 order by grp_name");
+#      $group = return_Index($db, $a_checklist['chk_group'], "select grp_id from groups where grp_disabled = 0 order by grp_name");
 
 #      print "document.checklists.chk_group['" . $group . "'].selected = true;\n";
       print "document.checklists.chk_task['" . $a_checklist['chk_task'] . "'].selected = true;\n";
@@ -42,14 +42,14 @@
       print "document.checklists.id.value = " . $formVars['id'] . ";\n";
 
 # you can view any group but only update your group information; unless you're an admin
-      if (check_grouplevel($a_checklist['chk_group'])) {
+      if (check_grouplevel($db, $a_checklist['chk_group'])) {
         print "document.checklists.update.disabled = false;\n";
       } else {
         print "document.checklists.update.disabled = true;\n";
       }
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
