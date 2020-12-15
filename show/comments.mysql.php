@@ -20,22 +20,22 @@
       $formVars['id'] = 0;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">";
       $output .= "<tr>";
       $output .= "  <th class=\"ui-state-default\">";
-      if (check_userlevel($AL_Edit)) {
-        if (check_grouplevel($a_inventory['inv_manager'])) {
+      if (check_userlevel($db, $AL_Edit)) {
+        if (check_grouplevel($db, $a_inventory['inv_manager'])) {
           $output .= "<a href=\"" . $Editroot . "/inventory.php?server=" . $formVars['id'] . "#comments\" target=\"_blank\"><img src=\"" . $Imgsroot . "/pencil.gif\">";
         }
       }
       $output .= "System Comments";
-      if (check_userlevel($AL_Edit)) {
-        if (check_grouplevel($a_inventory['inv_manager'])) {
+      if (check_userlevel($db, $AL_Edit)) {
+        if (check_grouplevel($db, $a_inventory['inv_manager'])) {
           $output .= "</a>";
         }
       }
@@ -83,7 +83,7 @@
       print "document.getElementById('comments_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
