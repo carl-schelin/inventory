@@ -2,7 +2,6 @@
 # Script: message_group.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: 
 
   include('settings.php');
