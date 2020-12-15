@@ -11,7 +11,7 @@
 
   $package = "changelog.view.php";
 
-  logaccess($formVars['uid'], $package, "Changelog Report.");
+  logaccess($db, $formVars['uid'], $package, "Changelog Report.");
 
   if (isset($_GET['id'])) {
     $formVars['id'] = clean($_GET['id'], 10);
@@ -20,7 +20,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
