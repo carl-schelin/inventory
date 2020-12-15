@@ -32,21 +32,21 @@
       $unit    = return_Index($db, $a_products['prod_unit'],    "select bus_id from business_unit order by bus_name");
       $service = return_Index($db, $a_products['prod_service'], "select svc_id from service order by svc_id");
 
-      print "document.products.prod_id.value = '"      . mysqli_real_escape_string($formVars['id'])             . "';\n";
-      print "document.products.prod_name.value = '"    . mysqli_real_escape_string($a_products['prod_name'])    . "';\n";
-      print "document.products.prod_code.value = '"    . mysqli_real_escape_string($a_products['prod_code'])    . "';\n";
-      print "document.products.prod_oldcode.value = '" . mysqli_real_escape_string($a_products['prod_oldcode']) . "';\n";
-      print "document.products.prod_desc.value = '"    . mysqli_real_escape_string($a_products['prod_desc'])    . "';\n";
+      print "document.products.prod_id.value = '"      . mysqli_real_escape_string($db, $formVars['id'])             . "';\n";
+      print "document.products.prod_name.value = '"    . mysqli_real_escape_string($db, $a_products['prod_name'])    . "';\n";
+      print "document.products.prod_code.value = '"    . mysqli_real_escape_string($db, $a_products['prod_code'])    . "';\n";
+      print "document.products.prod_oldcode.value = '" . mysqli_real_escape_string($db, $a_products['prod_oldcode']) . "';\n";
+      print "document.products.prod_desc.value = '"    . mysqli_real_escape_string($db, $a_products['prod_desc'])    . "';\n";
 
       print "document.products.prod_group['"   . $group   . "'].selected = true;\n";
       print "document.products.prod_unit['"    . $unit    . "'].selected = true;\n";
       print "document.products.prod_service['" . $service . "'].selected = true;\n";
 
-      print "document.products.prod_type.value = '"   . mysqli_real_escape_string($a_products['prod_type'])   . "';\n";
-      print "document.products.prod_citype.value = '" . mysqli_real_escape_string($a_products['prod_citype']) . "';\n";
-      print "document.products.prod_tier1.value = '"  . mysqli_real_escape_string($a_products['prod_tier1'])  . "';\n";
-      print "document.products.prod_tier2.value = '"  . mysqli_real_escape_string($a_products['prod_tier2'])  . "';\n";
-      print "document.products.prod_tier3.value = '"  . mysqli_real_escape_string($a_products['prod_tier3'])  . "';\n";
+      print "document.products.prod_type.value = '"   . mysqli_real_escape_string($db, $a_products['prod_type'])   . "';\n";
+      print "document.products.prod_citype.value = '" . mysqli_real_escape_string($db, $a_products['prod_citype']) . "';\n";
+      print "document.products.prod_tier1.value = '"  . mysqli_real_escape_string($db, $a_products['prod_tier1'])  . "';\n";
+      print "document.products.prod_tier2.value = '"  . mysqli_real_escape_string($db, $a_products['prod_tier2'])  . "';\n";
+      print "document.products.prod_tier3.value = '"  . mysqli_real_escape_string($db, $a_products['prod_tier3'])  . "';\n";
 
       if ($a_products['prod_remedy']) {
         print "document.products.prod_remedy.checked = true;\n";
