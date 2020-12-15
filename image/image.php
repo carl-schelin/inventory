@@ -13,7 +13,7 @@
 
   $package = "image.php";
 
-  logaccess($formVars['uid'], $package, "Managing Image files");
+  logaccess($db, $formVars['uid'], $package, "Managing Image files");
 
   $formVars['id'] = 0;
   $formVars['img_title'] = '';
@@ -60,7 +60,7 @@
 <script type="text/javascript">
 
 <?php
-  if (check_userlevel($AL_Admin)) {
+  if (check_userlevel($db, $AL_Admin)) {
 ?>
 function delete_line( p_script_url ) {
   var answer = confirm("This step deletes the image file and all associated information.\n\nDelete this Image?")
