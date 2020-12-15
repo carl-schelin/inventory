@@ -19,7 +19,7 @@
 
   $package = "physical.pdf.php";
 
-  logaccess($_SESSION['uid'], $package, "Data Center: " . $formVars['rsdp']);
+  logaccess($db, $_SESSION['uid'], $package, "Data Center: " . $formVars['rsdp']);
 
   $q_string  = "select rsdp_application,rsdp_magic,rsdp_completion,";
   $q_string .= "usr_last,usr_first,usr_phone,bus_name,dep_name,";
