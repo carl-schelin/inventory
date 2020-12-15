@@ -88,6 +88,7 @@
         $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
         generateEmail(
+          $db, 
           $formVars['rsdp'],
           "<p>Reminder: The Server is fully configured and ready to be scanned by InfoSec.</p>",
           "<p>Click on <a href=\"" . $RSDProot . "/infosec/scanned.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>",
@@ -104,7 +105,7 @@
       }
 
       if ($formVars['is_complete'] == 1) {
-        setstatus($formVars['rsdp'], 1, 18);
+        setstatus($db, "$formVars['rsdp'], 1, 18);
 
         $q_string  = "select rsdp_platform ";
         $q_string .= "from rsdp_server ";
@@ -113,6 +114,7 @@
         $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
         generateEmail(
+          $db, 
           $formVars['rsdp'],
           "<p>The InfoSec scans have been completed and resolved. The Server is ready for use.</p>", 
           "", 
