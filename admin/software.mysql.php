@@ -123,7 +123,7 @@
 
       mysqli_free_result($q_sw_support);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.software.sw_software.value = '';\n";
       print "document.software.sw_eol.value = '';\n";
