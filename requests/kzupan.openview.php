@@ -11,7 +11,7 @@
 
   $package = "kzupan.openview.php";
 
-  logaccess($formVars['uid'], $package, "Getting a listing of Openview.");
+  logaccess($db, $formVars['uid'], $package, "Getting a listing of Openview.");
 
   if (isset($_GET['csv'])) {
     $formVars['csv'] = 1;
