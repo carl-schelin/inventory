@@ -24,7 +24,7 @@
       $formVars['clu_companyid'] = 0;
     }
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']              = clean($_GET['id'],               10);
         $formVars['clu_association'] = clean($_GET['clu_association'],  10);
@@ -35,7 +35,7 @@
         }
 
         if ($formVars['clu_companyid'] > 0) {
-          logaccess($_SESSION['uid'], $package, "Building the query.");
+          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
             "clu_companyid   =   " . $formVars['clu_companyid']   . "," .
@@ -51,7 +51,7 @@
             $message = "Association updated.";
           }
 
-          logaccess($_SESSION['uid'], $package, "Saving Changes to: " . $formVars['clu_association']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['clu_association']);
 
           mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
@@ -85,7 +85,7 @@
 
       if ($formVars['update'] == -3) {
 
-        logaccess($_SESSION['uid'], $package, "Creating the form for viewing.");
+        logaccess($db, $_SESSION['uid'], $package, "Creating the form for viewing.");
 
         $output  = "<table class=\"ui-styled-table\">\n";
         $output .= "<tr>\n";
@@ -151,7 +151,7 @@
       }
 
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">\n";
@@ -226,7 +226,7 @@
 
       print "document.edit.clu_update.disabled = true;\n";
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
