@@ -19,8 +19,8 @@
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
-    if (check_userlevel($AL_Edit)) {
-      logaccess($_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from excludes");
+    if (check_userlevel($db, $AL_Edit)) {
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from excludes");
 
       $q_string  = "select ex_id,ex_companyid,ex_text,ex_comments,ex_expiration,ex_deleted ";
       $q_string .= "from excludes ";
@@ -29,7 +29,7 @@
       $a_excludes = mysqli_fetch_array($q_excludes);
       mysqli_free_result($q_excludes);
 
-      $server = return_Index($a_excludes['ex_companyid'], "select inv_id from inventory where inv_ssh = 1 and inv_status = 0 and inv_manager = " . $GRP_Unix . " order by inv_name");
+      $server = return_Index($db, $a_excludes['ex_companyid'], "select inv_id from inventory where inv_ssh = 1 and inv_status = 0 and inv_manager = " . $GRP_Unix . " order by inv_name");
 
       print "document.exclude.ex_text.value = '"       . mysqli_real_escape_string($a_excludes['ex_text'])       . "';\n";
       print "document.exclude.ex_comments.value = '"   . mysqli_real_escape_string($a_excludes['ex_comments'])   . "';\n";
@@ -51,7 +51,7 @@
       print "document.exclude.id.value = " . $formVars['id'] . ";\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
