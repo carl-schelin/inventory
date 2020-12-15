@@ -14,7 +14,7 @@
 
   $package = "issue.open.mysql.php";
 
-  logaccess($_SESSION['uid'], $package, "Creating the open issues listing.");
+  logaccess($db, $_SESSION['uid'], $package, "Creating the open issues listing.");
 
   if (isset($_GET['server'])) {
     $formVars['server'] = clean($_GET['server'], 10);
@@ -120,7 +120,7 @@
     $linklist  = "<a href=\"" . $Issueroot . "/issue.php?server=" . $a_issue['iss_companyid'] . "#open\">";
     $linkend   = "</a>";
 
-    if ($a_issue['iss_user'] == $formVars['uid'] || $a_issue['grp_id'] == $formVars['group'] || check_userlevel($AL_Admin)) {
+    if ($a_issue['iss_user'] == $formVars['uid'] || $a_issue['grp_id'] == $formVars['group'] || check_userlevel($db, $AL_Admin)) {
       $delstart = "<a href=\"#\" onclick=\"javascript:delete_issue('" . $Issueroot . "/issue.open.del.php?id=" . $a_issue['iss_id'] . "');\">";
       $delend   = "</a>";
       $deltext  = 'x';
