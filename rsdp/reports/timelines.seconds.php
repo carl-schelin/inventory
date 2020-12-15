@@ -16,12 +16,12 @@
   if (isset($_SESSION['username'])) {
     $package = "timelines.seconds.php";
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
       $formVars['start'] = clean($_GET['start'], 15);
       $formVars['end']   = clean($_GET['end'],   15);
       $formVars['group'] = clean($_GET['group'], 10);
 
-      logaccess($_SESSION['uid'], $package, "Creating the table for viewing.");
+      logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">\n";
@@ -164,7 +164,7 @@
       print "document.getElementById('seconds_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 
