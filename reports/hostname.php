@@ -11,7 +11,7 @@
 
   $package = "hostname.php";
 
-  logaccess($formVars['uid'], $package, "Decoding Hostname.");
+  logaccess($db, $formVars['uid'], $package, "Decoding Hostname.");
 
   if (isset($_GET['decode'])) {
     $formVars['decode'] = clean($_GET['decode'], 20);
@@ -20,7 +20,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
