@@ -13,7 +13,7 @@
 
   $package = "inventory.php";
 
-  logaccess($_SESSION['uid'], $package, "Accessing script");
+  logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
   if (isset($_GET['server'])) {
     $formVars['server'] = clean($_GET['server'], 10);
@@ -70,7 +70,7 @@
     $status3 = 'checked';
   }
 
-  logaccess($_SESSION['uid'], $package, "Editing server: " . $a_inventory['inv_name'] . " (" . $formVars['server'] . ").");
+  logaccess($db, $_SESSION['uid'], $package, "Editing server: " . $a_inventory['inv_name'] . " (" . $formVars['server'] . ").");
 
 ?>
 <!DOCTYPE HTML>
@@ -113,7 +113,7 @@ function delete_software( p_script_url ) {
 }
 
 <?php
-  if (check_grouplevel($a_inventory['inv_manager'])) {
+  if (check_grouplevel($db, $a_inventory['inv_manager'])) {
 ?>
 
 function delete_comment( p_script_url ) {
@@ -282,7 +282,7 @@ function attach_software( p_script_url, update ) {
 }
 
 <?php
-  if (check_grouplevel($a_inventory['inv_manager'])) {
+  if (check_grouplevel($db, $a_inventory['inv_manager'])) {
 ?>
 
 function attach_comment( p_script_url, update ) {
@@ -892,7 +892,7 @@ function clear_fields() {
   show_file('tags.mysql.php'        + '?update=-3' + '&tag_companyid=<?php print $formVars['server']; ?>');
   show_file('software.mysql.php'    + '?update=-3' + '&sw_companyid=<?php    print $formVars['server']; ?>');
 <?php
-  if (check_grouplevel($a_inventory['inv_manager'])) {
+  if (check_grouplevel($db, $a_inventory['inv_manager'])) {
 ?>
   show_file('maintenance.mysql.php' + '?update=-3' + '&id=<?php              print $formVars['server']; ?>');
   show_file('hardware.mysql.php'    + '?update=-3' + '&hw_companyid=<?php    print $formVars['server']; ?>');
@@ -903,7 +903,7 @@ function clear_fields() {
   show_file('backups.fill.php'      + '?id=<?php                             print $formVars['server']; ?>');
   show_file('association.mysql.php' + '?update=-3' + '&clu_companyid=<?php   print $formVars['server']; ?>');
 <?php
-  if (check_userlevel($AL_Admin)) {
+  if (check_userlevel($db, $AL_Admin)) {
 ?>
   show_file('config.mysql.php'      + '?update=-3' + '&cfg_companyid=<?php   print $formVars['server']; ?>');
 <?php
@@ -948,7 +948,7 @@ $(document).ready( function() {
 
 <ul>
 <?php
-  if (check_grouplevel($a_inventory['inv_manager'])) {
+  if (check_grouplevel($db, $a_inventory['inv_manager'])) {
 ?>
   <li><a href="#detail"><?php print $a_inventory['inv_name']; ?> Detail</a></li>
   <li><a href="#tags">Tags</a></li>
@@ -960,7 +960,7 @@ $(document).ready( function() {
   }
 ?>
 <?php
-  if (check_grouplevel($a_inventory['inv_manager'])) {
+  if (check_grouplevel($db, $a_inventory['inv_manager'])) {
 ?>
   <li><a href="#maintenance">Maintenance</a></li>
   <li><a href="#hardware">Hardware</a></li>
@@ -970,7 +970,7 @@ $(document).ready( function() {
 ?>
   <li><a href="#software">Software</a></li>
 <?php
-  if (check_grouplevel($a_inventory['inv_manager'])) {
+  if (check_grouplevel($db, $a_inventory['inv_manager'])) {
 ?>
   <li><a href="#network">Network</a></li>
   <li><a href="#users">Users</a></li>
@@ -986,7 +986,7 @@ $(document).ready( function() {
 </ul>
 
 <?php
-  if (check_grouplevel($a_inventory['inv_manager'])) {
+  if (check_grouplevel($db, $a_inventory['inv_manager'])) {
 ?>
 <div id="detail">
 
@@ -1442,7 +1442,7 @@ $(document).ready( function() {
 </div>
 
 <?php
-  if (check_grouplevel($a_inventory['inv_manager'])) {
+  if (check_grouplevel($db, $a_inventory['inv_manager'])) {
 ?>
 <div id="maintenance">
 
@@ -1744,7 +1744,7 @@ software support date exceeds the company requirements for support.</li>
 </div>
 
 <?php
-  if (check_grouplevel($a_inventory['inv_manager'])) {
+  if (check_grouplevel($db, $a_inventory['inv_manager'])) {
 ?>
 <div id="network">
 
@@ -2260,7 +2260,7 @@ to modify it and then click the Add User button to begin managing the account.</
 
 
 <?php
-  if (check_userlevel($AL_Admin)) {
+  if (check_userlevel($db, $AL_Admin)) {
 ?>
 
 <div id="config">
