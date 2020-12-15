@@ -15,7 +15,7 @@
 
   $package = "populate.php";
 
-  logaccess($_SESSION['uid'], $package, "Accessing script");
+  logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
   if (isset($_GET['id'])) {
     $formVars['id'] = clean($_GET['id'], 10);
@@ -93,14 +93,14 @@
 
   $q_string = "insert into inventory set inv_id = NULL";
   mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $newinvid = last_insert_id();
+  $newinvid = last_insert_id($db);
 
   if ($newinvid == 0) {
     print "alert('Inventory record creation failed.');\n";
     exit(1);
   }
 
-  logaccess($_SESSION['uid'], $package, "New invid: " . $newinvid);
+  logaccess($db, $_SESSION['uid'], $package, "New invid: " . $newinvid);
 ##################################################
 
 ##################################################
@@ -177,7 +177,7 @@
 
     $query = "insert into interface set int_id = null," . $q_string;
     mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
-    $newinterface = last_insert_id();
+    $newinterface = last_insert_id($db);
 
 # insert any child interfaces into the inventory
     $q_string  = "select if_name,if_sysport,if_interface,if_groupname,if_mac,if_zone,if_vlan,";
@@ -345,7 +345,7 @@
     mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
   }
 
-  changelog($newinvid, $servername, "New Server", "inventory", "inv_name", 0);
+  changelog($db, $newinvid, $servername, "New Server", "inventory", "inv_name", 0);
 
   print "document.rsdp.populate.value = '" . $servername . " In Inventory';\n";
   print "document.rsdp.populate.disabled = true;\n";
