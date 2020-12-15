@@ -84,6 +84,7 @@
 # Send an e-mail to the backup team to remind them of the awaiting task
       if ($formVars['if_complete'] == -1) {
         generateEmail(
+          $db, 
           $formVars['rsdp'],
           "<p>Reminder: The Server has been configured and is ready to have Backups configured.</p>",
           "<p>Click on <a href=\"" . $RSDProot . "/backups/backups.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>",
@@ -95,7 +96,7 @@
       }
 
       if ($formVars['if_complete'] == 1) {
-        setstatus($formVars['rsdp'], 1, 13);
+        setstatus($db, "$formVars['rsdp'], 1, 13);
 # if completed
 #  if monitoring and application installation is complete (or skipped)
 #    send email/ticket to monitoring team for application monitoring if not skipped
@@ -136,7 +137,7 @@
           $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
           if ($a_rsdp_server['rsdp_appmonitor'] == 0) {
-            setstatus($formVars['rsdp'], 2, 16);
+            setstatus($db, "$formVars['rsdp'], 2, 16);
 
 # send e-mail to the Application folks since no app monitoring is required
             $q_string  = "select rsdp_application ";
@@ -146,6 +147,7 @@
             $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
             generateEmail(
+              $db, 
               $formVars['rsdp'],
               "<p>The Server is ready for the final Application configuration.</p>", 
               "<p>Click on <a href=\"" . $RSDProot . "/application/configured.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>", 
@@ -162,6 +164,7 @@
             $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
             if ($a_rsdp_tickets['tkt_appcnf']) {
               submit_Ticket(
+                $db, 
                 $formVars['rsdp'],
                 $RSDProot . "/application/configured.php",
                 "rsdp_apppoc",
@@ -172,6 +175,7 @@
           } else {
 # send e-mail to the monitoring folks to configure application monitoring
             generateEmail(
+              $db, 
               $formVars['rsdp'],
               "<p>The Server is ready for Application level monitoring.</p>", 
               "<p>Click on <a href=\"" . $RSDProot . "/application/monitored.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>", 
@@ -188,6 +192,7 @@
             $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
             if ($a_rsdp_tickets['tkt_appmon']) {
               submit_Ticket(
+                $db, 
                 $formVars['rsdp'],
                 $RSDProot . "/application/monitored.php",
                 "rsdp_monitorpoc",
