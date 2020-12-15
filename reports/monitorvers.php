@@ -11,7 +11,7 @@
 
   $package = "monitorvers.php";
 
-  logaccess($formVars['uid'], $package, "Checking out the interfaces.");
+  logaccess($db, $formVars['uid'], $package, "Checking out the interfaces.");
 
   if (isset($_GET['product'])) {
     $formVars['product']   = clean($_GET['product'],  10);
@@ -97,7 +97,7 @@
   }
 
 # if help has not been seen yet,
-  if (show_Help($Reportpath . "/" . $package)) {
+  if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
