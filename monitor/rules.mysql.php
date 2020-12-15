@@ -223,7 +223,7 @@
 
       mysqli_free_result($q_rules);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.rules.rule_description.value = '';\n";
       print "document.rules.rule_annotate.value = '';\n";
