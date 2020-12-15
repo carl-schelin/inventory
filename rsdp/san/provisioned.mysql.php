@@ -84,6 +84,7 @@
 # Send an e-mail to the SAN team to remind them of the awaiting task
       if ($formVars['if_complete'] == -1) {
         generateEmail(
+          $db, 
           $formVars['rsdp'],
           "<p>Reminder: The Server hardware has been configured and documented, the Operating System installed. The SAN mounts need to be provisioned and presented.</p>",
           "<p>Click on <a href=\"" . $RSDProot . "/san/provisioned.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>",
@@ -99,7 +100,7 @@
       }
 
       if ($formVars['if_complete'] == 1) {
-        setstatus($formVars['rsdp'], 1, 11);
+        setstatus($db, "$formVars['rsdp'], 1, 11);
 
         $q_string  = "select rsdp_platform ";
         $q_string .= "from rsdp_server ";
@@ -108,6 +109,7 @@
         $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
         generateEmail(
+          $db, 
           $formVars['rsdp'],
           "<p>The SAN mounts have been provisioned and presented to the server.</p>", 
           "<p>Click on <a href=\"" . $RSDProot . "/system/configured.php?rsdp=" . $formVars['rsdp'] . "\">this link</a> to work on your assigned task</p>", 
@@ -124,6 +126,7 @@
         $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
         if ($a_rsdp_tickets['tkt_syscnf']) {
           submit_Ticket(
+            $db, 
             $formVars['rsdp'],
             $RSDProot . "/system/configured.php",
             "rsdp_platformspoc",
