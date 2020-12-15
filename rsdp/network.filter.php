@@ -19,7 +19,7 @@
     $formVars['filter']   = clean($_GET['filter'],    255);
     $formVars['status']   = clean($_GET['status'],     10);
 
-    if (check_userlevel($AL_Edit)) {
+    if (check_userlevel($db, $AL_Edit)) {
 
       if ($formVars['status'] == 'true') {
         if (strlen($formVars['filter']) == 0) {
@@ -40,7 +40,7 @@
       print "document.rsdp.filter.value = '" . $filter . "';\n";
 
     } else {
-      logaccess($_SESSION['uid'], $package, "Unauthorized access.");
+      logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
   }
 ?>
