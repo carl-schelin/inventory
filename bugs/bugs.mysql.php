@@ -20,7 +20,7 @@
   $formVars['bug_openby']        = clean($_POST['bug_openby'],       10);
   $formVars['bug_subject']       = clean($_POST['bug_subject'],      70);
 
-  logaccess($_SESSION['uid'], $package, "Creating a new record.");
+  logaccess($db, $_SESSION['uid'], $package, "Creating a new record.");
 
   if (strlen($formVars['bug_subject']) > 0) {
 
@@ -33,15 +33,15 @@
       "bug_timestamp  = \"" . date("Y-m-d H:i:s")         . "\"," . 
       "bug_subject    = \"" . $formVars['bug_subject']    . "\"";
 
-    logaccess($_SESSION['uid'], $package, "Adding detail: " . $formVars['bug_module']);
+    logaccess($db, $_SESSION['uid'], $package, "Adding detail: " . $formVars['bug_module']);
 
     $result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
-    $query = "select last_insert_id()";
+    $query = "select last_insert_id($db)";
     $q_result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
     $a_result = mysqli_fetch_array($q_result);
 
-    $bug = $a_result['last_insert_id()'];
+    $bug = $a_result['last_insert_id($db)'];
 
     $q_string = 
       "bug_bug_id    =   " . $bug                     . "," . 
