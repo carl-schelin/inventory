@@ -15,7 +15,7 @@
 
   $package = "bugs.open.mysql.php";
 
-  logaccess($_SESSION['uid'], $package, "Creating the open bugs listing.");
+  logaccess($db, $_SESSION['uid'], $package, "Creating the open bugs listing.");
 
   if (isset($_GET['id'])) {
     $formVars['id'] = clean($_GET['id'], 10);
@@ -97,7 +97,7 @@
       $linkstart = "<a href=\"" . $Bugroot . "/ticket.php?id=" . $a_bugs['bug_id']     . "#problem\">";
       $linklist  = "<a href=\"" . $Bugroot . "/bugs.php?id="   . $a_bugs['bug_module'] . "#open\">";
       $linkend   = "</a>";
-      if ($a_bugs['bug_openby'] == $_SESSION['uid'] || check_userlevel($AL_Admin)) {
+      if ($a_bugs['bug_openby'] == $_SESSION['uid'] || check_userlevel($db, $AL_Admin)) {
         $delstart = "<a href=\"#\" onclick=\"javascript:delete_bug('" . $Bugroot . "/bugs.open.del.php?id=" . $a_bugs['bug_id'] . "');\">";
         $delend   = "</a>";
         $deltext  = 'x';
