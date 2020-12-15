@@ -201,57 +201,65 @@
       $q_string .= "left join int_volts on int_volts.volt_id = models.mod_volts ";
       $q_string .= "order by mod_vendor,mod_name";
       $q_models = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
-      while ($a_models = mysqli_fetch_array($q_models)) {
+      if (mysqli_num_rows($q_models) > 0) {
+        while ($a_models = mysqli_fetch_array($q_models)) {
 
-        if ($a_models['part_type']) {
-          $class = "ui-state-highlight";
-        } else {
-          $class = "ui-widget-content";
-        }
-
-        $linkstart = "<a href=\"#\" onclick=\"show_file('hardware.fill.php?id="  . $a_models['mod_id'] . "');showDiv('hardware-hide');\">";
-        $linkdel   = "<a href=\"#\" onclick=\"delete_line('hardware.del.php?id=" . $a_models['mod_id'] . "');\">";
-        $linkend   = "</a>";
-
-        $table  = "<tr>";
-        if (check_userlevel($db, $AL_Admin)) {
-          $table .= "  <td class=\"" . $class . " delete\">" . $linkdel . 'x'                     . $linkend . "</td>";
-        }
-        $table .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_models['mod_id']     . $linkend . "</td>";
-        $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_models['mod_vendor'] . $linkend . "</td>";
-        $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_models['mod_name']   . $linkend . "</td>";
-        $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_models['part_name']  . $linkend . "</td>";
-        if ($a_models['part_type'] == 1) {
-          $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_models['volt_text'] . $linkend . "</td>";
-          $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_models['mod_draw']  . $linkend . "</td>";
-          $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_models['mod_btu']   . $linkend . "</td>";
-          $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_models['mod_size']   . $linkend . "</td>";
-        } else {
-          $table .= "  <td class=\"" . $class . "\" colspan=\"2\">" . $linkstart . $a_models['mod_size']  . $linkend . "</td>";
-          $table .= "  <td class=\"" . $class . "\">"               . $linkstart . $a_models['mod_speed'] . $linkend . "</td>";
-        }
-        $table .= "</tr>";
-
-        if ($a_models['part_type'] == 1) {
-          $server .= $table;
-        } else {
-          if ($a_models['mod_type'] == 2) {
-            $disk .= $table;
+          if ($a_models['part_type']) {
+            $class = "ui-state-highlight";
           } else {
-            if ($a_models['mod_type'] == 8) {
-              $cpu .= $table;
+            $class = "ui-widget-content";
+          }
+
+          $linkstart = "<a href=\"#\" onclick=\"show_file('hardware.fill.php?id="  . $a_models['mod_id'] . "');showDiv('hardware-hide');\">";
+          $linkdel   = "<a href=\"#\" onclick=\"delete_line('hardware.del.php?id=" . $a_models['mod_id'] . "');\">";
+          $linkend   = "</a>";
+
+          $table  = "<tr>";
+          if (check_userlevel($db, $AL_Admin)) {
+            $table .= "  <td class=\"" . $class . " delete\">" . $linkdel . 'x'                     . $linkend . "</td>";
+          }
+          $table .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_models['mod_id']     . $linkend . "</td>";
+          $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_models['mod_vendor'] . $linkend . "</td>";
+          $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_models['mod_name']   . $linkend . "</td>";
+          $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_models['part_name']  . $linkend . "</td>";
+          if ($a_models['part_type'] == 1) {
+            $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_models['volt_text'] . $linkend . "</td>";
+            $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_models['mod_draw']  . $linkend . "</td>";
+            $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_models['mod_btu']   . $linkend . "</td>";
+            $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_models['mod_size']   . $linkend . "</td>";
+          } else {
+            $table .= "  <td class=\"" . $class . "\" colspan=\"2\">" . $linkstart . $a_models['mod_size']  . $linkend . "</td>";
+            $table .= "  <td class=\"" . $class . "\">"               . $linkstart . $a_models['mod_speed'] . $linkend . "</td>";
+          }
+          $table .= "</tr>";
+
+          if ($a_models['part_type'] == 1) {
+            $server .= $table;
+          } else {
+            if ($a_models['mod_type'] == 2) {
+              $disk .= $table;
             } else {
-              if ($a_models['mod_type'] == 4) {
-                $memory .= $table;
+              if ($a_models['mod_type'] == 8) {
+                $cpu .= $table;
               } else {
-                $misc .= $table;
+                if ($a_models['mod_type'] == 4) {
+                  $memory .= $table;
+                } else {
+                  $misc .= $table;
+                }
               }
             }
           }
         }
-      }
 
-      $footer = "</table>";
+        $footer = "</table>";
+      } else {
+        $server .= "<p>No servers found</p>\n";
+        $server .= "<p>No disks found</p>\n";
+        $server .= "<p>No cpus found</p>\n";
+        $server .= "<p>No memory found</p>\n";
+        $server .= "<p>No miscellaneous found</p>\n";
+      }
 
       $server .= $footer;
       $disk   .= $footer;
@@ -261,11 +269,11 @@
 
       mysqli_free_result($q_models);
 
-      print "document.getElementById('server_mysql').innerHTML = '" . mysqli_real_escape_string($server) . "';\n\n";
-      print "document.getElementById('disk_mysql').innerHTML = '"   . mysqli_real_escape_string($disk) . "';\n\n";
-      print "document.getElementById('cpu_mysql').innerHTML = '"    . mysqli_real_escape_string($cpu) . "';\n\n";
-      print "document.getElementById('memory_mysql').innerHTML = '" . mysqli_real_escape_string($memory) . "';\n\n";
-      print "document.getElementById('misc_mysql').innerHTML = '"   . mysqli_real_escape_string($misc) . "';\n\n";
+      print "document.getElementById('server_mysql').innerHTML = '" . mysqli_real_escape_string($db, $server) . "';\n\n";
+      print "document.getElementById('disk_mysql').innerHTML = '"   . mysqli_real_escape_string($db, $disk) . "';\n\n";
+      print "document.getElementById('cpu_mysql').innerHTML = '"    . mysqli_real_escape_string($db, $cpu) . "';\n\n";
+      print "document.getElementById('memory_mysql').innerHTML = '" . mysqli_real_escape_string($db, $memory) . "';\n\n";
+      print "document.getElementById('misc_mysql').innerHTML = '"   . mysqli_real_escape_string($db, $misc) . "';\n\n";
 
       print "document.hardware.update.disabled = true;\n";
       print "document.hardware.mod_vendor.focus();\n";
