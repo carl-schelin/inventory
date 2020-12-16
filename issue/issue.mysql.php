@@ -8,7 +8,11 @@
   $called = 'yes';
   include($Loginpath . '/check.php');
   include($Sitepath . '/function.php');
-  check_login($AL_Edit);
+
+# connect to the database
+  $db = db_connect($DBserver, $DBname, $DBuser, $DBpassword);
+
+  check_login($db, $AL_Edit);
 
   $package = "issue.mysql.php";
 
