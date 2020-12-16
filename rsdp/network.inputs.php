@@ -79,9 +79,9 @@
 
           while ($a_groups = mysqli_fetch_array($q_groups) ) {
             print "if (celltext == \"" . $a_groups['grp_name'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($a_groups['grp_name']) . "\"," . $a_groups['grp_id'] . ",1,1);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_groups['grp_name']) . "\"," . $a_groups['grp_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($a_groups['grp_name']) . "\"," . $a_groups['grp_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_groups['grp_name']) . "\"," . $a_groups['grp_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -160,9 +160,9 @@
 
           while ($a_service = mysqli_fetch_array($q_service) ) {
             print "if (celltext == \"" . $a_service['svc_name'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($a_service['svc_name']) . "\"," . $a_service['svc_id'] . ",1,1);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_service['svc_name']) . "\"," . $a_service['svc_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($a_service['svc_name']) . "\"," . $a_service['svc_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_service['svc_name']) . "\"," . $a_service['svc_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -232,9 +232,9 @@
 
           while ($a_locations = mysqli_fetch_array($q_locations) ) {
             print "if (celltext == \"" . $a_locations['loc_name'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($a_locations['loc_name']) . "\"," . $a_locations['loc_id'] . ",1,1);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_locations['loc_name']) . "\"," . $a_locations['loc_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($a_locations['loc_name']) . "\"," . $a_locations['loc_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_locations['loc_name']) . "\"," . $a_locations['loc_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -350,9 +350,9 @@
 
           while ($a_operatingsystem = mysqli_fetch_array($q_operatingsystem) ) {
             print "if (celltext == \"" . $a_operatingsystem['os_software'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($a_operatingsystem['os_software']) . "\"," . $a_operatingsystem['os_id'] . ",1,1);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_operatingsystem['os_software']) . "\"," . $a_operatingsystem['os_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($a_operatingsystem['os_software']) . "\"," . $a_operatingsystem['os_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_operatingsystem['os_software']) . "\"," . $a_operatingsystem['os_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -632,9 +632,9 @@ if ($formVars['type'] == 20) {
 // create the javascript bit for populating the user dropdown box.
           while ($a_users = mysqli_fetch_array($q_users) ) {
             print "if (celltext == \"" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($a_users['usr_last'] . ", " . $a_users['usr_first']) . "\"," . $a_users['usr_id'] . ",1,1);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_users['usr_last'] . ", " . $a_users['usr_first']) . "\"," . $a_users['usr_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($a_users['usr_last'] . ", " . $a_users['usr_first']) . "\"," . $a_users['usr_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_users['usr_last'] . ", " . $a_users['usr_first']) . "\"," . $a_users['usr_id'] . ",0,0);\n";
             print "}\n";
           }
 
