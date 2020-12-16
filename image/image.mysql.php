@@ -152,7 +152,7 @@
 
       mysqli_free_result($q_images);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       if ($formVars['id'] == 0) {
         print "document.images.update.disabled = true;\n";
