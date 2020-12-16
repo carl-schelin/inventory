@@ -160,7 +160,7 @@
 
       $output .= "</table>\n";
 
-      print "document.getElementById('seconds_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+      print "document.getElementById('seconds_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
