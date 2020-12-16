@@ -458,6 +458,6 @@ $psapid[10114] = 10114;
 
 #}
 
-mysqli_free_request($db);
+mysqli_free_result($db);
 
 ?>

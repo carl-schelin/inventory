@@ -80,6 +80,6 @@
 
   $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-  mysqli_free_request($db);
+  mysqli_free_result($db);
 
 ?>

@@ -144,6 +144,6 @@ Content-Disposition: attachment
 //if the message is sent successfully print "Mail sent". Otherwise print "Mail failed"
   echo $mail_sent ? "Engineering Mail sent\n" : "Engineering Mail failed\n";
 
-  mysqli_free_request($db);
+  mysqli_free_result($db);
 
 ?>

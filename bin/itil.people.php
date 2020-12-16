@@ -35,6 +35,6 @@
     print "\"" . $a_users['usr_last'] . ",\"" . $a_users['usr_first'] . "\",\"" . $a_users['tit_name'] . "\",1\n";
   }
 
-  mysqli_free_request($db);
+  mysqli_free_result($db);
 
 ?>

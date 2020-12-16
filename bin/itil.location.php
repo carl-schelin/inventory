@@ -57,6 +57,6 @@
     print "\"" . $a_locations['loc_name'] . "\",\"\",\"\",\"" . $a_locations['loc_name'] . "\",\"\",\"" . $a_locations['loc_addr1'] . "\",\"" . $a_locations['cn_country'] . "\",\"" . $a_locations['st_state'] . "\",\"" . $a_locations['ct_city'] . "\",\"" . $a_locations['loc_zipcode'] . "\",\"No\"\n";
   }
 
-  mysqli_free_request($db);
+  mysqli_free_result($db);
 
 ?>

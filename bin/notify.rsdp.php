@@ -574,6 +574,6 @@
     mail($Sitedev, "Server Build Workflow (RSDP) User Status", $debug_output, $headers);
   }
 
-  mysqli_free_request($db);
+  mysqli_free_result($db);
 
 ?>
