@@ -9,7 +9,11 @@
   include($Loginpath . '/check.php');
   include($Sitepath . '/function.php');
   include($RSDPpath . '/function.php');
-  check_login('4');
+
+# connect to the database
+  $db = db_connect($DBserver, $DBname, $DBuser, $DBpassword);
+
+  check_login($db, $AL_Guest);
 
   $package = "index.php";
 
