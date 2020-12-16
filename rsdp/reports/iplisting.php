@@ -148,7 +148,7 @@ $(document).ready( function() {
     print "  <td class=\"ui-widget-content\"><a href=\"" . $RSDProot . "/build/build.php?rsdp="            . $a_rsdp_server['rsdp_id'] . "\">Des</a></td>\n";
     print "  <td class=\"ui-widget-content\"><a href=\"" . $RSDProot . "/san/designed.php?rsdp="           . $a_rsdp_server['rsdp_id'] . "\">SAN</a></td>\n";
     print "  <td class=\"ui-widget-content\"><a href=\"" . $RSDProot . "/network/network.php?rsdp="        . $a_rsdp_server['rsdp_id'] . "\">Net</a></td>\n";
-    if (rsdp_Virtual($db, "$a_rsdp_server['rsdp_id'])) {
+    if (rsdp_Virtual($db, $a_rsdp_server['rsdp_id'])) {
       print "  <td class=\"ui-widget-content\"><a href=\"" . $RSDProot . "/physical/physical.php?rsdp="      . $a_rsdp_server['rsdp_id'] . "\">PHY</a></td>\n";
     } else {
       print "  <td class=\"ui-widget-content\"><a href=\"" . $RSDProot . "/virtual/virtual.php?rsdp="        . $a_rsdp_server['rsdp_id'] . "\">VM</a></td>\n";
