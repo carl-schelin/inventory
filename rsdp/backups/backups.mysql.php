@@ -95,7 +95,7 @@
       }
 
       if ($formVars['if_complete'] == 1) {
-        setstatus($db, "$formVars['rsdp'], 1, 13);
+        setstatus($db, $formVars['rsdp'], 1, 13);
 # if completed
 #  if monitoring and application installation is complete (or skipped)
 #    send email/ticket to monitoring team for application monitoring if not skipped
@@ -136,7 +136,7 @@
           $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
           if ($a_rsdp_server['rsdp_appmonitor'] == 0) {
-            setstatus($db, "$formVars['rsdp'], 2, 16);
+            setstatus($db, $formVars['rsdp'], 2, 16);
 
 # send e-mail to the Application folks since no app monitoring is required
             $q_string  = "select rsdp_application ";
