@@ -113,7 +113,7 @@
 
   print "<ul>\n";
   print "  <li><strong>System Name</strong> - The name of the system in the inventory. Clicking here will take you to the Edit form (limited if you aren't the system custodian).</li>\n";
-  print "  <li><strong>Service Class</strong> - The selected Service Class of the system based on <a href=\"https://incojs01/inventory/admin/service.php\">this table</a>. An * next to the Service Class indicates the system is in the 911 Call Path.</li>\n";
+  print "  <li><strong>Service Class</strong> - The selected Service Class of the system based on <a href=\"" . $Siteroot . "/admin/service.php\">this table</a>. An * next to the Service Class indicates the system is in the 911 Call Path.</li>\n";
   print "  <li><strong>Device Owner</strong> - The group that are the custodians of the system.</li>\n";
   print "  <li><strong>Hardware</strong> - The covered hardware.</li>\n";
   print "  <li><strong>Product</strong> - The Intrado Product this system is associated with.</li>\n";
