@@ -320,7 +320,7 @@ the next task and an email will be sent notifying the responsible team or indivi
 
 </div>
 
-<?php print submit_RSDP($db, " $formVars['rsdp'], 10, $RSDProot . "/system/installed.mysql.php", "rsdp_platformspoc", "rsdp_platform", 0); ?>
+<?php print submit_RSDP($db, $formVars['rsdp'], 10, $RSDProot . "/system/installed.mysql.php", "rsdp_platformspoc", "rsdp_platform", 0); ?>
 
 <div id="tabs">
 
@@ -350,14 +350,14 @@ the next task and an email will be sent notifying the responsible team or indivi
 
 <div id="tabs-1">
 
-<?php print request_Header($db, "$formVars['rsdp']); ?>
+<?php print request_Header($db, $formVars['rsdp']); ?>
 
 </div>
 
 
 <div id="tabs-2">
 
-<?php print request_Server($db, "$formVars['rsdp']); ?>
+<?php print request_Server($db, $formVars['rsdp']); ?>
 
 </div>
 
@@ -478,7 +478,7 @@ copy and paste the following text into a new ticket and submit it.</p>
 <tr>
   <td id="if_inscheck" colspan="2"><input type="checkbox" id="check-1" name="if_inscheck" onchange="validate_Form();"><label for="check-1"></label></td>
 </tr>
-<?php print return_Checklist($db, " $formVars['rsdp'], 10); ?>
+<?php print return_Checklist($db, $formVars['rsdp'], 10); ?>
 </table>
 
 </div>
