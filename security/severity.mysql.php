@@ -122,7 +122,7 @@
 
       mysqli_free_result($q_severity);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.severity.update.disabled = true;\n";
       print "document.severity.sev_name.value = '';\n";
