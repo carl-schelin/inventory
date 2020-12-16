@@ -81,7 +81,7 @@
 
 # now set status as complete and send out e-mails.
       if ($formVars['if_complete'] == 1) {
-        setstatus($db, "$formVars['rsdp'], 1, 4);
+        setstatus($db, $formVars['rsdp'], 1, 4);
 
 # only send the e-mail if step 3 is also complete
         $q_string  = "select st_id,st_completed ";
@@ -93,7 +93,7 @@
         if (mysqli_num_rows($q_rsdp_status) > 0) {
 
 # special bit for systems that are virtual machines. Make sure the e-mail is properly sent
-          $virtual = rsdp_Virtual($db, "$formVars['rsdp']);
+          $virtual = rsdp_Virtual($db, $formVars['rsdp']);
 
 # now see if it is a Virtual Machine; if so, send the e-mail to the VM team and change the link to the 5vm link.
           if ($virtual == 1) {
