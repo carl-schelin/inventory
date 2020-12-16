@@ -525,7 +525,7 @@ their task is ready to be worked.</li>
 
 </div>
 
-<?php print submit_RSDP($db, " $formVars['rsdp'], 2, $RSDProot . "/build/build.mysql.php", "rsdp_platformspoc", "rsdp_platform", 0); ?>
+<?php print submit_RSDP($db, $formVars['rsdp'], 2, $RSDProot . "/build/build.mysql.php", "rsdp_platformspoc", "rsdp_platform", 0); ?>
 
 <input type="hidden" name="virtual" value="0">
 <input type="hidden" name="ipokay" value="0">
