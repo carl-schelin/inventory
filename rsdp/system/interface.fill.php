@@ -29,10 +29,10 @@
       $a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface);
       mysqli_free_result($q_rsdp_interface);
 
-      print "document.getElementById('if_name').innerHTML = '" . mysqli_real_escape_string($a_rsdp_interface['if_name']) . "';\n";
-      print "document.getElementById('if_ip').innerHTML = '"   . mysqli_real_escape_string($a_rsdp_interface['if_ip']) . "';\n";
+      print "document.getElementById('if_name').innerHTML = '" . mysqli_real_escape_string($db, $a_rsdp_interface['if_name']) . "';\n";
+      print "document.getElementById('if_ip').innerHTML = '"   . mysqli_real_escape_string($db, $a_rsdp_interface['if_ip']) . "';\n";
 
-      print "document.interface.if_mac.value = '"  . mysqli_real_escape_string($a_rsdp_interface['if_mac'])  . "';\n";
+      print "document.interface.if_mac.value = '"  . mysqli_real_escape_string($db, $a_rsdp_interface['if_mac'])  . "';\n";
 
       print "document.interface.if_id.value = " . $formVars['id'] . ";\n";
 
