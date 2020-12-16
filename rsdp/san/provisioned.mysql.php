@@ -99,7 +99,7 @@
       }
 
       if ($formVars['if_complete'] == 1) {
-        setstatus($db, "$formVars['rsdp'], 1, 11);
+        setstatus($db, $formVars['rsdp'], 1, 11);
 
         $q_string  = "select rsdp_platform ";
         $q_string .= "from rsdp_server ";
