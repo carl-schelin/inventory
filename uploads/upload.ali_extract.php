@@ -61,12 +61,12 @@ if (($handle = fopen($extract, "r")) !== FALSE) {
 
       $query  = 
         "psap_customerid  =  " . "1319"                                        . "," . 
-        "psap_ali_id      = \"" . mysqli_real_escape_string(clean($data[0],10))  . "\"," .
+        "psap_ali_id      = \"" . mysqli_real_escape_string($db, clean($data[0],10))  . "\"," .
         "psap_companyid   =  " . $a_inventory['inv_id']                        . "," .
-        "psap_psap_id     = \"" . mysqli_real_escape_string(clean($data[2],255)) . "\"," .
-        "psap_description = \"" . mysqli_real_escape_string(clean($data[3],255)) . "\"," .
+        "psap_psap_id     = \"" . mysqli_real_escape_string($db, clean($data[2],255)) . "\"," .
+        "psap_description = \"" . mysqli_real_escape_string($db, clean($data[3],255)) . "\"," .
         "psap_lport       =  " . $data[4]                                      . "," .
-        "psap_circuit_id  = \"" . mysqli_real_escape_string(clean($data[5],255)) . "\"," . 
+        "psap_circuit_id  = \"" . mysqli_real_escape_string($db, clean($data[5],255)) . "\"," . 
         "psap_updated     = \"" . date('Y-m-d')                                 . "\"," . 
         "psap_delete      =   " . "0";
 
@@ -106,12 +106,12 @@ if (($handle = fopen($extract, "r")) !== FALSE) {
 #
 #    $query  = 
 #      "psap_customerid  =   " . "41"                                          . "," . 
-#      "psap_ali_id      = \"" . mysqli_real_escape_string(clean($data[0],10))  . "\"," .
+#      "psap_ali_id      = \"" . mysqli_real_escape_string($db, clean($data[0],10))  . "\"," .
 #      "psap_companyid   =   " . "10114"                                       . "," .
-#      "psap_psap_id     = \"" . mysqli_real_escape_string(clean($data[2],255)) . "\"," .
-#      "psap_description = \"" . mysqli_real_escape_string(clean($data[3],255)) . "\"," .
+#      "psap_psap_id     = \"" . mysqli_real_escape_string($db, clean($data[2],255)) . "\"," .
+#      "psap_description = \"" . mysqli_real_escape_string($db, clean($data[3],255)) . "\"," .
 #      "psap_lport       =   " . $data[4]                                      . "," .
-#      "psap_circuit_id  = \"" . mysqli_real_escape_string(clean($data[5],255)) . "\"," . 
+#      "psap_circuit_id  = \"" . mysqli_real_escape_string($db, clean($data[5],255)) . "\"," . 
 #      "psap_updated     = \"" . date('Y-m-d')                                 . "\"," . 
 #      "psap_delete      =   " . "0";
 #
