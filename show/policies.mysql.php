@@ -54,5 +54,5 @@
   $output .= "</table>";
 ?>
 
-document.getElementById('policies_mysql').innerHTML = '<?php print mysqli_real_escape_string($output); ?>';
+document.getElementById('policies_mysql').innerHTML = '<?php print mysqli_real_escape_string($db, $output); ?>';
 
