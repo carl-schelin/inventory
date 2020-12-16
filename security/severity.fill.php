@@ -28,7 +28,7 @@
       $a_severity = mysqli_fetch_array($q_severity);
       mysqli_free_result($q_severity);
 
-      print "document.severity.sev_name.value = '"   . mysqli_real_escape_string($a_severity['sev_name'])   . "';\n";
+      print "document.severity.sev_name.value = '"   . mysqli_real_escape_string($db, $a_severity['sev_name'])   . "';\n";
 
       print "document.severity.id.value = " . $formVars['id'] . ";\n";
 
