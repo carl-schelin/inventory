@@ -28,7 +28,7 @@
       $a_family = mysqli_fetch_array($q_family);
       mysqli_free_result($q_family);
 
-      print "document.family.fam_name.value = '"   . mysqli_real_escape_string($a_family['fam_name'])   . "';\n";
+      print "document.family.fam_name.value = '"   . mysqli_real_escape_string($db, $a_family['fam_name'])   . "';\n";
 
       print "document.family.id.value = " . $formVars['id'] . ";\n";
 
