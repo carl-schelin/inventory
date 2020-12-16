@@ -147,6 +147,6 @@
 
   mysqli_free_result($q_issue);
 
-  print "document.getElementById('open_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+  print "document.getElementById('open_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
 ?>
