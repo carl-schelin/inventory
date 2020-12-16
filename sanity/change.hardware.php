@@ -2,7 +2,6 @@
 # Script: change.hardware.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: 
 # Update all the hardware associated with 'id' to match inv_manager and inv_product
 # Pass the inv_id for the server.
