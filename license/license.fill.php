@@ -31,15 +31,15 @@
 
       $licproject = return_Index($db, $a_licenses['lic_project'], "select prod_id from products order by prod_name");
 
-      print "document.license.lic_vendor.value = '"   . mysqli_real_escape_string($a_licenses['lic_vendor'])   . "';\n";
-      print "document.license.lic_product.value = '"  . mysqli_real_escape_string($a_licenses['lic_product'])  . "';\n";
-      print "document.license.lic_date.value = '"     . mysqli_real_escape_string($a_licenses['lic_date'])     . "';\n";
-      print "document.license.lic_vendorpo.value = '" . mysqli_real_escape_string($a_licenses['lic_vendorpo']) . "';\n";
-      print "document.license.lic_po.value = '"       . mysqli_real_escape_string($a_licenses['lic_po'])       . "';\n";
-      print "document.license.lic_quantity.value = '" . mysqli_real_escape_string($a_licenses['lic_quantity']) . "';\n";
-      print "document.license.lic_key.value = '"      . mysqli_real_escape_string($a_licenses['lic_key'])      . "';\n";
-      print "document.license.lic_serial.value = '"   . mysqli_real_escape_string($a_licenses['lic_serial'])   . "';\n";
-      print "document.license.lic_domain.value = '"   . mysqli_real_escape_string($a_licenses['lic_domain'])   . "';\n";
+      print "document.license.lic_vendor.value = '"   . mysqli_real_escape_string($db, $a_licenses['lic_vendor'])   . "';\n";
+      print "document.license.lic_product.value = '"  . mysqli_real_escape_string($db, $a_licenses['lic_product'])  . "';\n";
+      print "document.license.lic_date.value = '"     . mysqli_real_escape_string($db, $a_licenses['lic_date'])     . "';\n";
+      print "document.license.lic_vendorpo.value = '" . mysqli_real_escape_string($db, $a_licenses['lic_vendorpo']) . "';\n";
+      print "document.license.lic_po.value = '"       . mysqli_real_escape_string($db, $a_licenses['lic_po'])       . "';\n";
+      print "document.license.lic_quantity.value = '" . mysqli_real_escape_string($db, $a_licenses['lic_quantity']) . "';\n";
+      print "document.license.lic_key.value = '"      . mysqli_real_escape_string($db, $a_licenses['lic_key'])      . "';\n";
+      print "document.license.lic_serial.value = '"   . mysqli_real_escape_string($db, $a_licenses['lic_serial'])   . "';\n";
+      print "document.license.lic_domain.value = '"   . mysqli_real_escape_string($db, $a_licenses['lic_domain'])   . "';\n";
 
       print "document.license.lic_project['" . $licproject . "'].selected = true;\n";
 
