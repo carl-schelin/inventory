@@ -2,7 +2,6 @@
 # Script: monitoring.fill.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-ex.php/Coding_Standards
 # Description: 
 
   header('Content-Type: text/javascript');
