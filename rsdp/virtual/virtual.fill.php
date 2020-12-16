@@ -50,7 +50,7 @@
           print "document.rsdp.if_vmprov.checked = false;\n";
         }
 
-        print "document.rsdp.if_vmnote.value = '" . mysqli_real_escape_string($a_rsdp_infrastructure['if_vmnote']) . "';\n";
+        print "document.rsdp.if_vmnote.value = '" . mysqli_real_escape_string($db, $a_rsdp_infrastructure['if_vmnote']) . "';\n";
 
         print "document.rsdp.id.value = " . $a_rsdp_infrastructure['if_id'] . ";\n";
 
