@@ -8,7 +8,11 @@
   $called = 'no';
   include($Sitepath . '/login/check.php');
   include($Sitepath . '/function.php');
-  check_login('3');
+
+# connect to the database
+  $db = db_connect($DBserver, $DBname, $DBuser, $DBpassword);
+
+  check_login($db, $AL_ReadOnly);
 
   if (isset($_GET['start'])) {
     $formVars['start'] = clean($_GET['start'], 15);
