@@ -137,7 +137,7 @@
       $output .= "</table>\n";
       mysqli_free_result($q_rsdp_filesystem);
 
-      print "document.getElementById('filesystem_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('filesystem_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.rsdp.rsdp.value = " . $formVars['rsdp'] . ";\n";
 
