@@ -68,6 +68,6 @@
     print "\"" . $a_locations['loc_name'] . "\",\"" . $type . "\",\"" . $subtype . "\",\"\",\"\",\"\",\"No\"\n";
   }
 
-  mysqli_free_request($db);
+  mysqli_free_result($db);
 
 ?>
