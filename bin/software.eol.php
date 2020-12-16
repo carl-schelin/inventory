@@ -685,6 +685,6 @@ print "Updating Centrify\n";
 $q_string = "update software set sw_eol = \"2015-04-01\" where sw_software = \"Centrify\" ";
 $result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
 
-mysqli_free_result($db);
+mysqli_close($db);
 
 ?>
