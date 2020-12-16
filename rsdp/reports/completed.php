@@ -198,7 +198,7 @@ task completion charts due to the tasks all being identified as completed in a s
 
         if ($i > 2) {
           if ($i > 4 && $i < 10) {
-            if (rsdp_Virtual($db, "$a_rsdp_server['rsdp_id'])) {
+            if (rsdp_Virtual($db, $a_rsdp_server['rsdp_id'])) {
               if ($i == 5) {
                 print "  <td colspan=\"5\" class=\"" . $class . " rsdp\"><a href=\"" . $rsdptask[6] . "\">Virtual Machine</a></td>\n";
               }
