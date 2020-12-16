@@ -11,7 +11,11 @@
   include($Loginpath . '/check.php');
   include($Sitepath . '/function.php');
   include($RSDPpath . '/function.php');
-  check_login('2');
+
+# connect to the database
+  $db = db_connect($DBserver, $DBname, $DBuser, $DBpassword);
+
+  check_login($db, $AL_Edit);
 
   $package = "initial.dup.php";
 
