@@ -85,12 +85,12 @@
           }
           $finalname = $from . "</td>";
           if ($svrlist[$j + $add + 1] != "\n") {
-            $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 1])) . "</td>";
+            $finaltext = mysqli_real_escape_string($db, rtrim($svrlist[$j + $add + 1])) . "</td>";
           } else {
             if ($svrlist[$j + $add + 2] != "\n") {
-              $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 2])) . "</td>";
+              $finaltext = mysqli_real_escape_string($db, rtrim($svrlist[$j + $add + 2])) . "</td>";
             } else {
-              $finaltext = mysqli_real_escape_string(rtrim($svrlist[$j + $add + 3])) . "</td>";
+              $finaltext = mysqli_real_escape_string($db, rtrim($svrlist[$j + $add + 3])) . "</td>";
             }
           }
           $allservers[$count++] = $finaldate . "<td class=\"ui-widget-content\">" . $finalserver . $finalname . "</a><td class=\"ui-widget-content\">" . $finaltext . "</tr>";
@@ -147,5 +147,5 @@
   $output .= "</table>";
 ?>
 
-document.getElementById('changelog_mysql').innerHTML = '<?php print mysqli_real_escape_string($output); ?>';
+document.getElementById('changelog_mysql').innerHTML = '<?php print mysqli_real_escape_string($db, $output); ?>';
 
