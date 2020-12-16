@@ -31,8 +31,8 @@
 
       $selected = return_Index($db, $a_features_detail['feat_user'],       "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
 
-      print "document.start.feat_text.value = '"      . mysqli_real_escape_string($a_features_detail['feat_text'])      . "';\n";
-      print "document.start.feat_timestamp.value = '" . mysqli_real_escape_string($a_features_detail['feat_timestamp']) . "';\n";
+      print "document.start.feat_text.value = '"      . mysqli_real_escape_string($db, $a_features_detail['feat_text'])      . "';\n";
+      print "document.start.feat_timestamp.value = '" . mysqli_real_escape_string($db, $a_features_detail['feat_timestamp']) . "';\n";
 
       print "document.start.feat_user['" . $selected . "'].selected = true;\n";
 
