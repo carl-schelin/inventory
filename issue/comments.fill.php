@@ -31,8 +31,8 @@
 
       $selected = return_Index($db, $a_issue_detail['det_user'],       "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
 
-      print "document.start.det_text.value = '"      . mysqli_real_escape_string($a_issue_detail['det_text'])      . "';\n";
-      print "document.start.det_timestamp.value = '" . mysqli_real_escape_string($a_issue_detail['det_timestamp']) . "';\n";
+      print "document.start.det_text.value = '"      . mysqli_real_escape_string($db, $a_issue_detail['det_text'])      . "';\n";
+      print "document.start.det_timestamp.value = '" . mysqli_real_escape_string($db, $a_issue_detail['det_timestamp']) . "';\n";
 
       print "document.start.det_user['" . $selected . "'].selected = true;\n";
 
