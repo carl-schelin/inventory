@@ -88,6 +88,6 @@
 
 #  print "$pre$value[0]:$value[1]:$os:" . $a_inventory['zone_name'] . ":$tags:$note:" . $a_inventory['inv_id'] . "\n";
 
-  mysqli_free_request($db);
+  mysqli_free_result($db);
 
 ?>
