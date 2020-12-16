@@ -167,7 +167,7 @@
 
       mysqli_free_result($q_rsdp_interface);
 
-      print "document.getElementById('interface_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('interface_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.getElementById('if_name').innerHTML = '';\n";
       print "document.getElementById('if_ip').innerHTML = '';\n";
