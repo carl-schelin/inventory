@@ -29,11 +29,11 @@
       if (mysqli_num_rows($q_rsdp_platform) > 0) {
         $a_rsdp_platform = mysqli_fetch_array($q_rsdp_platform);
 
-        print "document.rsdp.pf_row.value = '"      . mysqli_real_escape_string($a_rsdp_platform['pf_row'])      . "';\n";
-        print "document.rsdp.pf_rack.value = '"     . mysqli_real_escape_string($a_rsdp_platform['pf_rack'])     . "';\n";
-        print "document.rsdp.pf_unit.value = '"     . mysqli_real_escape_string($a_rsdp_platform['pf_unit'])     . "';\n";
-        print "document.rsdp.pf_circuita.value = '" . mysqli_real_escape_string($a_rsdp_platform['pf_circuita']) . "';\n";
-        print "document.rsdp.pf_circuitb.value = '" . mysqli_real_escape_string($a_rsdp_platform['pf_circuitb']) . "';\n";
+        print "document.rsdp.pf_row.value = '"      . mysqli_real_escape_string($db, $a_rsdp_platform['pf_row'])      . "';\n";
+        print "document.rsdp.pf_rack.value = '"     . mysqli_real_escape_string($db, $a_rsdp_platform['pf_rack'])     . "';\n";
+        print "document.rsdp.pf_unit.value = '"     . mysqli_real_escape_string($db, $a_rsdp_platform['pf_unit'])     . "';\n";
+        print "document.rsdp.pf_circuita.value = '" . mysqli_real_escape_string($db, $a_rsdp_platform['pf_circuita']) . "';\n";
+        print "document.rsdp.pf_circuitb.value = '" . mysqli_real_escape_string($db, $a_rsdp_platform['pf_circuitb']) . "';\n";
 
         print "document.rsdp.pf_id.value = " . $a_rsdp_platform['pf_id'] . ";\n";
 
@@ -105,7 +105,7 @@
           print "document.rsdp.dc_checklist.checked = false;\n";
         }
 
-        print "document.rsdp.dc_path.value = '" . mysqli_real_escape_string($a_rsdp_datacenter['dc_path']) . "';\n";
+        print "document.rsdp.dc_path.value = '" . mysqli_real_escape_string($db, $a_rsdp_datacenter['dc_path']) . "';\n";
 
         print "document.rsdp.dc_id.value = " . $a_rsdp_datacenter['dc_id'] . ";\n";
 
