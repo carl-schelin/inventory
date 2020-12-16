@@ -47,6 +47,6 @@
     print "\"Intrado, Inc.\",\"" . $a_groups['org_name'] . "\",\"" . $a_groups['grp_name'] . "\",\"" . $a_groups['role_name'] . "\",\"\",\"" . $a_groups['grp_email'] . "\",\"" . $disabled . "\",\"0\"\n";
   }
 
-  mysqli_free_request($db);
+  mysqli_free_result($db);
 
 ?>
