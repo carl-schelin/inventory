@@ -30,8 +30,8 @@
       $a_vulnowner = mysqli_fetch_array($q_vulnowner);
       mysqli_free_result($q_vulnowner);
 
-      print "document.getElementById('vuln_interface').innerHTML = '"  . mysqli_real_escape_string($a_vulnowner['int_addr']) . "';\n";
-      print "document.getElementById('vuln_securityid').innerHTML = '" . mysqli_real_escape_string($a_vulnowner['sec_name']) . "';\n";
+      print "document.getElementById('vuln_interface').innerHTML = '"  . mysqli_real_escape_string($db, $a_vulnowner['int_addr']) . "';\n";
+      print "document.getElementById('vuln_securityid').innerHTML = '" . mysqli_real_escape_string($db, $a_vulnowner['sec_name']) . "';\n";
 
       print "document.owner.int_id.value = " . $a_vulnowner['int_id'] . ";\n";
       print "document.owner.sec_id.value = " . $a_vulnowner['sec_id'] . ";\n";
@@ -45,8 +45,8 @@
       if (mysqli_num_rows($q_vulnowner) > 0) {
         $a_vulnowner = mysqli_fetch_array($q_vulnowner);
 
-        print "document.owner.vul_ticket.value = '"      . mysqli_real_escape_string($a_vulnowner['vul_ticket'])      . "';\n";
-        print "document.owner.vul_description.value = '" . mysqli_real_escape_string($a_vulnowner['vul_description']) . "';\n";
+        print "document.owner.vul_ticket.value = '"      . mysqli_real_escape_string($db, $a_vulnowner['vul_ticket'])      . "';\n";
+        print "document.owner.vul_description.value = '" . mysqli_real_escape_string($db, $a_vulnowner['vul_description']) . "';\n";
 
         $group = return_Index($db, $a_vulnowner['vul_group'], "select grp_id from groups where grp_disabled = 0 order by grp_name");
 
