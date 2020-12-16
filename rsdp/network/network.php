@@ -304,7 +304,7 @@ Checklist, and a comments page for passing information to various teams.</p>
 
 </div>
 
-<?php print submit_RSDP($db, " $formVars['rsdp'], 4, $RSDProot . "/network/network.mysql.php", "rsdp_networkpoc", "", $GRP_Networking); ?>
+<?php print submit_RSDP($db, $formVars['rsdp'], 4, $RSDProot . "/network/network.mysql.php", "rsdp_networkpoc", "", $GRP_Networking); ?>
 
 
 <div id="tabs">
@@ -334,14 +334,14 @@ Checklist, and a comments page for passing information to various teams.</p>
 
 <div id="tabs-1">
 
-<?php print request_Header($db, "$formVars['rsdp']); ?>
+<?php print request_Header($db, $formVars['rsdp']); ?>
 
 </div>
 
 
 <div id="tabs-2">
 
-<?php print request_Server($db, "$formVars['rsdp']); ?>
+<?php print request_Server($db, $formVars['rsdp']); ?>
 
 </div>
 
@@ -358,7 +358,7 @@ Checklist, and a comments page for passing information to various teams.</p>
   <th class="ui-state-default">Logical Interface</th>
   <th class="ui-state-default">Zone</th>
 <?php
-  if (rsdp_Virtual($db, "$formVars['rsdp']) == 0) {
+  if (rsdp_Virtual($db, $formVars['rsdp']) == 0) {
 ?>
   <th class="ui-state-default">Physical Port</th>
   <th class="ui-state-default">Media</th>
@@ -388,7 +388,7 @@ Checklist, and a comments page for passing information to various teams.</p>
     print "  <td class=\"ui-widget-content\">" . $a_rsdp_interface['itp_acronym']  . "</td>\n";
     print "  <td class=\"ui-widget-content\">" . $a_rsdp_interface['if_sysport']   . "</td>\n";
     print "  <td class=\"ui-widget-content\">" . $a_rsdp_interface['zone_name']    . "</td>\n";
-    if (rsdp_Virtual($db, "$formVars['rsdp']) == 0) {
+    if (rsdp_Virtual($db, $formVars['rsdp']) == 0) {
       print "  <td class=\"ui-widget-content\">" . $a_rsdp_interface['if_interface'] . "</td>\n";
       print "  <td class=\"ui-widget-content\">" . $a_rsdp_interface['med_text']     . "</td>\n";
       print "  <td class=\"ui-widget-content\">" . $a_rsdp_interface['spd_text']     . "</td>\n";
@@ -418,7 +418,7 @@ Checklist, and a comments page for passing information to various teams.</p>
       print "  <td class=\"ui-widget-content\">" . $a_redundant['itp_acronym']    . "</td>\n";
       print "  <td class=\"ui-widget-content\">" . $a_redundant['if_sysport']     . "</td>\n";
       print "  <td class=\"ui-widget-content\">" . $a_redundant['zone_name']      . "</td>\n";
-      if (rsdp_Virtual($db, "$formVars['rsdp']) == 0) {
+      if (rsdp_Virtual($db, $formVars['rsdp']) == 0) {
         print "  <td class=\"ui-widget-content\">" . $a_redundant['if_interface'] . "</td>\n";
         print "  <td class=\"ui-widget-content\">" . $a_redundant['med_text']     . "</td>\n";
         print "  <td class=\"ui-widget-content\">" . $a_redundant['spd_text']     . "</td>\n";
@@ -484,7 +484,7 @@ Checklist, and a comments page for passing information to various teams.</p>
 <tr>
   <td id="if_netcheck"><input type="checkbox" id="check-1" name="if_netcheck" onchange="validate_Form();"><label for="check-1"></label></td>
 </tr>
-<?php print return_Checklist($db, " $formVars['rsdp'], 4); ?>
+<?php print return_Checklist($db, $formVars['rsdp'], 4); ?>
 </table>
 
 </div>
