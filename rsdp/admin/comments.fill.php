@@ -30,7 +30,7 @@
       mysqli_free_result($q_rsdp_comments);
 
       $updated = str_replace("<br />", "\n", $a_rsdp_comments['com_text']);
-      print "document.comments.com_text.value = '" . mysqli_real_escape_string($updated) . "';\n";
+      print "document.comments.com_text.value = '" . mysqli_real_escape_string($db, $updated) . "';\n";
 
       print "document.comments.com_id.value = '" . $formVars['id'] . "'\n";
 
