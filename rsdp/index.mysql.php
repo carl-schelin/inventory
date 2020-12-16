@@ -121,7 +121,7 @@
               $a_rsdp_status = mysqli_fetch_array($q_rsdp_status);
 
 # let's see if this is a virtual machine or a physical machine
-              $virtual = rsdp_Virtual($db, "$a_rsdp_server_2['rsdp_id']);
+              $virtual = rsdp_Virtual($db, $a_rsdp_server_2['rsdp_id']);
 
 # if the step exists, then it's either done or skipped. so not $mystep
               if ($a_rsdp_status['st_step'] == '') {
