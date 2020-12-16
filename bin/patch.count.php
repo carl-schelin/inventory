@@ -259,6 +259,6 @@
     print "\"" . $a_inventory['inv_name'] . "\",\"" . $a_software['sw_software'] . "\",\"" . $target . "\",\"" . $a_inventory['inv_kernel'] . "\",\"" . $a_inventory['prod_name'] . "\"\n";
   }
 
-  mysqli_free_request($db);
+  mysqli_free_result($db);
 
 ?>
