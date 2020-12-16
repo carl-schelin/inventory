@@ -170,7 +170,7 @@
 
       $output .= "</table>";
 
-      print "document.getElementById('support_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+      print "document.getElementById('support_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
       if ($a_issue['iss_closed'] == '0000-00-00') {
         print "document.start.sup_company.value = '';";
