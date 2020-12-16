@@ -319,7 +319,7 @@
 #####
 
 # really hardware identifies this but for historical reasons:
-  $isvirtual = rsdp_Virtual($db, "$formVars['rsdp']);
+  $isvirtual = rsdp_Virtual($db, $formVars['rsdp']);
 
   $q_string = 
     "inv_name     = '" . $servername                        . "'," . 
