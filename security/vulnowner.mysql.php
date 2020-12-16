@@ -292,7 +292,7 @@
 
         mysqli_free_result($q_vulnowner);
 
-        print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($help . $header . $output) . "';\n\n";
+        print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $help . $header . $output) . "';\n\n";
 
       } else {
         logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
