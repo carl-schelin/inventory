@@ -31,7 +31,7 @@
       $family   = return_Index($db, $a_security['sec_family'],   "select fam_id from family order by fam_name");
       $severity = return_Index($db, $a_security['sec_severity'], "select sev_id from severity order by sev_name");
 
-      print "document.security.sec_name.value = '"   . mysqli_real_escape_string($a_security['sec_name'])   . "';\n";
+      print "document.security.sec_name.value = '"   . mysqli_real_escape_string($db, $a_security['sec_name'])   . "';\n";
 
       print "document.security.sec_family['"   . $family   . "'].selected = true;\n";
       print "document.security.sec_severity['" . $severity . "'].selected = true;\n";
