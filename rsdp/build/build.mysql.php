@@ -182,19 +182,19 @@
       }
 
       if ($formVars['complete'] == 1) {
-        setstatus($db, "$formVars['rsdp'], 1, 2);
+        setstatus($db, $formVars['rsdp'], 1, 2);
 
 ###############################################
 #######   Virtual or Physical Machine   #######
 ###############################################
 
 # special bit for systems that are virtual machines. Can skip all the datacenter bits and the SAN design bit
-        $virtual = rsdp_Virtual($db, "$formVars['rsdp']);
+        $virtual = rsdp_Virtual($db, $formVars['rsdp']);
 
 # now see if it is a Virtual Machine; if so, send the e-mail to the VM team and change the link to the 5vm link.
         if ($virtual) {
 # set the physical SAN task to skip if the system is a virtual machine. The SAN task is to assign physical ports to a physical system via fiber.
-          setstatus($db, "$formVars['rsdp'], 2, 3);
+          setstatus($db, $formVars['rsdp'], 2, 3);
         } else {
 
 # now check to see if a SAN mount is requested. if physical, an HBA card will be installed so the SAN admin will need to configure that for the data center manager.
@@ -206,7 +206,7 @@
 
 # if there aren't any HBA ports configured, skip it
           if (mysqli_num_rows($q_rsdp_san) == 0) {
-            setstatus($db, "$formVars['rsdp'], 2, 3);
+            setstatus($db, $formVars['rsdp'], 2, 3);
           } else {
 
             generateEmail(
