@@ -132,7 +132,7 @@
 
       mysqli_free_result($q_security);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.security.update.disabled = true;\n";
       print "document.security.sec_name.value = '';\n";
