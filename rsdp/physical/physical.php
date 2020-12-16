@@ -275,7 +275,7 @@ ready to be worked.</li>
 
 </div>
 
-<?php print submit_RSDP($db, " $formVars['rsdp'], 5, $RSDProot . "/physical/physical.mysql.php", "rsdp_dcpoc", "", $GRP_DataCenter); ?>
+<?php print submit_RSDP($db, $formVars['rsdp'], 5, $RSDProot . "/physical/physical.mysql.php", "rsdp_dcpoc", "", $GRP_DataCenter); ?>
 
 <input type="hidden" name="if_id" value="0">
 <input type="hidden" name="pf_id" value="0">
@@ -307,14 +307,14 @@ ready to be worked.</li>
 
 <div id="tabs-1">
 
-<?php print request_Header($db, "$formVars['rsdp']); ?>
+<?php print request_Header($db, $formVars['rsdp']); ?>
 
 </div>
 
 
 <div id="tabs-2">
 
-<?php print request_Server($db, "$formVars['rsdp']); ?>
+<?php print request_Server($db, $formVars['rsdp']); ?>
 
 </div>
 
