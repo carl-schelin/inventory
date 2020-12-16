@@ -34,9 +34,9 @@
 #      print "document.checklists.chk_group['" . $group . "'].selected = true;\n";
       print "document.checklists.chk_task['" . $a_checklist['chk_task'] . "'].selected = true;\n";
 
-      print "document.checklists.chk_index.value = '" . mysqli_real_escape_string($a_checklist['chk_index']) . "';\n";
-      print "document.checklists.chk_text.value = '"  . mysqli_real_escape_string($a_checklist['chk_text'])  . "';\n";
-      print "document.checklists.chk_link.value = '"  . mysqli_real_escape_string($a_checklist['chk_link'])  . "';\n";
+      print "document.checklists.chk_index.value = '" . mysqli_real_escape_string($db, $a_checklist['chk_index']) . "';\n";
+      print "document.checklists.chk_text.value = '"  . mysqli_real_escape_string($db, $a_checklist['chk_text'])  . "';\n";
+      print "document.checklists.chk_link.value = '"  . mysqli_real_escape_string($db, $a_checklist['chk_link'])  . "';\n";
 
       print "document.checklists.id.value = " . $formVars['id'] . ";\n";
 
