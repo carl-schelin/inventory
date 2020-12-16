@@ -42,5 +42,5 @@
   $output .= "</table>";
 ?>
 
-document.getElementById('chkserver_mysql').innerHTML = '<?php print mysqli_real_escape_string($output); ?>';
+document.getElementById('chkserver_mysql').innerHTML = '<?php print mysqli_real_escape_string($db, $output); ?>';
 
