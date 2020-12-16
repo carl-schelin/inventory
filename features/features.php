@@ -8,7 +8,11 @@
   $called = 'no';
   include($Loginpath . '/check.php');
   include($Sitepath . '/function.php');
-  check_login($AL_Guest);
+
+# connect to the database
+  $db = db_connect($DBserver, $DBname, $DBuser, $DBpassword);
+
+  check_login($db, $AL_Guest);
 
   $package = "features.php";
 
