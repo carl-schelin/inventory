@@ -99,7 +99,7 @@
       }
 
       if ($formVars['app_complete'] == 1) {
-        setstatus($db, "$formVars['rsdp'], 1, 16);
+        setstatus($db, $formVars['rsdp'], 1, 16);
 
         $q_string  = "select rsdp_application ";
         $q_string .= "from rsdp_server ";
