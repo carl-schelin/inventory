@@ -2,7 +2,6 @@
 # Script: servers.mysql.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: Retrieve data and update the database with the new info. Prepare and display the table
 
   header('Content-Type: text/javascript');
