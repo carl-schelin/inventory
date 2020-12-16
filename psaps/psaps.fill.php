@@ -40,12 +40,12 @@
 
       print "document.psaps.psap_companyid[" . $companyid . "].selected = true;\n";
 
-      print "document.psaps.psap_ali_id.value = '"        . mysqli_real_escape_string($a_psaps['psap_ali_id'])        . "';\n";
-      print "document.psaps.psap_psap_id.value = '"       . mysqli_real_escape_string($a_psaps['psap_psap_id'])       . "';\n";
-      print "document.psaps.psap_description.value = '"   . mysqli_real_escape_string($a_psaps['psap_description'])   . "';\n";
-      print "document.psaps.psap_lport.value = '"         . mysqli_real_escape_string($a_psaps['psap_lport'])         . "';\n";
-      print "document.psaps.psap_circuit_id.value = '"    . mysqli_real_escape_string($a_psaps['psap_circuit_id'])    . "';\n";
-      print "document.psaps.psap_updated.value = '"       . mysqli_real_escape_string($a_psaps['psap_updated'])       . "';\n";
+      print "document.psaps.psap_ali_id.value = '"        . mysqli_real_escape_string($db, $a_psaps['psap_ali_id'])        . "';\n";
+      print "document.psaps.psap_psap_id.value = '"       . mysqli_real_escape_string($db, $a_psaps['psap_psap_id'])       . "';\n";
+      print "document.psaps.psap_description.value = '"   . mysqli_real_escape_string($db, $a_psaps['psap_description'])   . "';\n";
+      print "document.psaps.psap_lport.value = '"         . mysqli_real_escape_string($db, $a_psaps['psap_lport'])         . "';\n";
+      print "document.psaps.psap_circuit_id.value = '"    . mysqli_real_escape_string($db, $a_psaps['psap_circuit_id'])    . "';\n";
+      print "document.psaps.psap_updated.value = '"       . mysqli_real_escape_string($db, $a_psaps['psap_updated'])       . "';\n";
 
       if ($a_psaps['psap_texas']) {
         print "document.psaps.psap_texas.checked = true;\n";
