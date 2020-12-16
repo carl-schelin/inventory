@@ -105,7 +105,7 @@
 
 
         $class = "ui-widget-content";
-        if (rsdp_Virtual($db, "$a_rsdp_server['rsdp_id'])) {
+        if (rsdp_Virtual($db, $a_rsdp_server['rsdp_id'])) {
           $class = "ui-state-highlight";
         }
 
