@@ -128,6 +128,6 @@
     mail($Sitedev, "Bug and Feature Report", $body, $headers);
   }
 
-  mysqli_free_result($db);
+  mysqli_close($db);
 
 ?>
