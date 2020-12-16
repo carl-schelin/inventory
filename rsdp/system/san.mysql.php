@@ -126,7 +126,7 @@
 
       $output .= "</table>";
 
-      print "document.getElementById('san_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('san_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.getElementById('san_sysport').innerHTML = '';\n";
       print "document.getElementById('san_switch').innerHTML = '';\n";
