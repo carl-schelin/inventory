@@ -2,7 +2,6 @@
 # Script: index.mysql.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
-# See: https://incowk01/makers/index.php/Coding_Standards
 # Description: 
 #
 # Concept here is to get the values for the four drop downs and properly set the 
