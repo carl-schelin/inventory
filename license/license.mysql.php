@@ -175,7 +175,7 @@
 
       mysqli_free_result($q_licenses);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.license.update.disabled = true;\n";
     } else {
