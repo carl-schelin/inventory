@@ -176,6 +176,6 @@
     print "\n";
   }
 
-  mysqli_free_result($db);
+  mysqli_close($db);
 
 ?>

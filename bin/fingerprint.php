@@ -205,6 +205,6 @@
   print "Maintenance Start: " . $maintstart . "\n";
   print "Maintenance Stop: " . $maintstop . "\n";
 
-  mysqli_free_result($db);
+  mysqli_close($db);
 
 ?>
