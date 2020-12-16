@@ -29,8 +29,8 @@
       $a_rsdp_filesystem = mysqli_fetch_array($q_rsdp_filesystem);
       mysqli_free_result($q_rsdp_filesystem);
 
-      print "document.filesystem.fs_volume.value = '" . mysqli_real_escape_string($a_rsdp_filesystem['fs_volume']) . "';\n";
-      print "document.filesystem.fs_size.value = '"   . mysqli_real_escape_string($a_rsdp_filesystem['fs_size'])   . "';\n";
+      print "document.filesystem.fs_volume.value = '" . mysqli_real_escape_string($db, $a_rsdp_filesystem['fs_volume']) . "';\n";
+      print "document.filesystem.fs_size.value = '"   . mysqli_real_escape_string($db, $a_rsdp_filesystem['fs_size'])   . "';\n";
 
       if ($a_rsdp_filesystem['fs_backup']) {
         print "document.filesystem.fs_backup.checked = true;\n";
