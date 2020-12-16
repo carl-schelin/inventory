@@ -1036,11 +1036,11 @@ field shows you the limit of the number of characters. This limit is set by the 
 <ul>
   <li>Affected System
   <ul>
-    <li>Name: incojs01</li>
+    <li>Name: <?php print $hostname; ?></li>
     <li>Location: <?php print $Sitecompany; ?>Production Data Center - Longmont (Longmont CO)</li>
-    <li>Asset Tag Number: L.015377</li>
-    <li>Serial Number: 0850BD0CB4</li>
-    <li>Dell Service Tag Number:</li>
+    <li>Asset Tag Number: [Asset Tag]</li>
+    <li>Serial Number: [Serial Number]</li>
+    <li>Dell Service Tag Number: [Service Tag]</li>
   </ul></li>
   <li>Failed Hardware
   <ul>
