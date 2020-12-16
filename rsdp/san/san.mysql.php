@@ -135,7 +135,7 @@
 
       mysqli_free_result($q_rsdp_san);
 
-      print "document.getElementById('san_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+      print "document.getElementById('san_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
       print "document.getElementById('san_sysport').innerHTML = '';\n";
       print "document.san.san_wwnnzone.value = '';\n";
