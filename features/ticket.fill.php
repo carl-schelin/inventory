@@ -27,17 +27,17 @@
       $q_features = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_features = mysqli_fetch_array($q_features);
 
-      print "document.start.feat_discovered.value = '" . mysqli_real_escape_string($a_features['feat_discovered']) . "';\n";
-      print "document.start.feat_subject.value = '"    . mysqli_real_escape_string($a_features['feat_subject'])    . "';\n";
+      print "document.start.feat_discovered.value = '" . mysqli_real_escape_string($db, $a_features['feat_discovered']) . "';\n";
+      print "document.start.feat_subject.value = '"    . mysqli_real_escape_string($db, $a_features['feat_subject'])    . "';\n";
 
       if ($a_features['feat_closed'] == '0000-00-00') {
         print "document.start.feat_closed.value = 'Current Date';\n";
 
-        print "document.getElementById('feat_discovered').innerHTML = '" . mysqli_real_escape_string($a_features['feat_discovered']) . "';\n";
-        print "document.getElementById('feat_closed').innerHTML = '"     . mysqli_real_escape_string($a_features['feat_closed'])     . "';\n";
-        print "document.getElementById('feat_subject').innerHTML = '"    . mysqli_real_escape_string($a_features['feat_subject'])    . "';\n";
+        print "document.getElementById('feat_discovered').innerHTML = '" . mysqli_real_escape_string($db, $a_features['feat_discovered']) . "';\n";
+        print "document.getElementById('feat_closed').innerHTML = '"     . mysqli_real_escape_string($db, $a_features['feat_closed'])     . "';\n";
+        print "document.getElementById('feat_subject').innerHTML = '"    . mysqli_real_escape_string($db, $a_features['feat_subject'])    . "';\n";
       } else {
-        print "document.start.feat_closed.value = '" . mysqli_real_escape_string($a_features['feat_closed']) . "';\n";
+        print "document.start.feat_closed.value = '" . mysqli_real_escape_string($db, $a_features['feat_closed']) . "';\n";
       }
 
       print "document.start.feat_id.value = " . $formVars['id'] . ";\n";
