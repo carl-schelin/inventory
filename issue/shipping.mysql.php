@@ -237,7 +237,7 @@
 
       $output .= "</table>";
 
-      print "document.getElementById('mysql_hardware').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+      print "document.getElementById('mysql_hardware').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
       print "document.start.hw_count.value = '" . $count . "';\n";
       print "document.start.hw_rma.value = '';\n";
