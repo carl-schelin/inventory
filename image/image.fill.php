@@ -30,9 +30,9 @@
 
       $users = return_Index($db, $a_images['img_owner'], "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
 
-      print "document.images.img_title.value = '" . mysqli_real_escape_string($a_images['img_title'])    . "';\n";
-      print "document.images.img_file.value = '"  . mysqli_real_escape_string($a_images['img_file'])     . "';\n";
-      print "document.images.img_date.value = '"  . mysqli_real_escape_string($a_images['img_date'])     . "';\n";
+      print "document.images.img_title.value = '" . mysqli_real_escape_string($db, $a_images['img_title'])    . "';\n";
+      print "document.images.img_file.value = '"  . mysqli_real_escape_string($db, $a_images['img_file'])     . "';\n";
+      print "document.images.img_date.value = '"  . mysqli_real_escape_string($db, $a_images['img_date'])     . "';\n";
 
       print "document.images.img_owner['"  . $users                  . "'].selected = true;\n";
       print "document.images.img_facing['" . $a_images['img_facing'] . "'].checked  = true;\n";
