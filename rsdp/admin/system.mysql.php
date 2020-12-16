@@ -149,7 +149,7 @@
 
       mysqli_free_result($q_operatingsystem);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.dialog.os_vendor.value = '';\n";
       print "document.dialog.os_software.value = '';\n";
