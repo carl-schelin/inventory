@@ -144,7 +144,7 @@
 
       mysqli_free_result($q_rsdp_comments);
 
-      print "document.getElementById('comment_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('comment_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.comments.com_text.value = '';\n";
       print "document.comments.com_rsdp.value = " . $formVars['com_rsdp'] . ";\n";
