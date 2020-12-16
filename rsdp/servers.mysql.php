@@ -220,7 +220,7 @@
         $output .= "<p class=\"ui-widget-content\">Click <a href=\"network.php?productid=" . $formVars['productid'] . "\" target=\"_blank\">here</a> for a view of all servers for this product.</p>\n";
       }
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
