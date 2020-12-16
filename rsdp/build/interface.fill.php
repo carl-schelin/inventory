@@ -40,11 +40,11 @@
       $ififid      = return_Index($db, $a_rsdp_interface['if_if_id'],     "select if_id from rsdp_interface where if_rsdp = " . $a_rsdp_interface['if_rsdp'] . " and if_redundant > 0 order by if_interface");
 
 
-      print "document.interface.if_name.value = '"        . mysqli_real_escape_string($a_rsdp_interface['if_name'])        . "';\n";
-      print "document.interface.if_sysport.value = '"     . mysqli_real_escape_string($a_rsdp_interface['if_sysport'])     . "';\n";
-      print "document.interface.if_interface.value = '"   . mysqli_real_escape_string($a_rsdp_interface['if_interface'])   . "';\n";
-      print "document.interface.if_description.value = '" . mysqli_real_escape_string($a_rsdp_interface['if_description']) . "';\n";
-      print "document.interface.if_groupname.value = '"   . mysqli_real_escape_string($a_rsdp_interface['if_groupname'])   . "';\n";
+      print "document.interface.if_name.value = '"        . mysqli_real_escape_string($db, $a_rsdp_interface['if_name'])        . "';\n";
+      print "document.interface.if_sysport.value = '"     . mysqli_real_escape_string($db, $a_rsdp_interface['if_sysport'])     . "';\n";
+      print "document.interface.if_interface.value = '"   . mysqli_real_escape_string($db, $a_rsdp_interface['if_interface'])   . "';\n";
+      print "document.interface.if_description.value = '" . mysqli_real_escape_string($db, $a_rsdp_interface['if_description']) . "';\n";
+      print "document.interface.if_groupname.value = '"   . mysqli_real_escape_string($db, $a_rsdp_interface['if_groupname'])   . "';\n";
 
       print "document.interface.if_zone['"      . $ifzone                      . "'].selected = true;\n";
       print "document.interface.if_media['"     . $ifmedia                     . "'].selected = true;\n";
