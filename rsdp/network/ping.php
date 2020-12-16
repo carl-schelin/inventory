@@ -29,6 +29,6 @@
       $message .= " and is assigned to " . $dns;
     }
     $message .= ".\n\nAre you sure you want to assign " . $formVars['address'] . " to this server/interface?";
-    print "alert('" . mysqli_real_escape_string($message) . "');\n";
+    print "alert('" . mysqli_real_escape_string($db, $message) . "');\n";
   }
 ?>
