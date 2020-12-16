@@ -23,12 +23,12 @@
 # old data
 #
 #        "psap_customerid  =  " . "1319"                             . "," .
-#        "psap_ali_id      = '" . mysqli_real_escape_string($data[0]) . "'," .
+#        "psap_ali_id      = '" . mysqli_real_escape_string($db, $data[0]) . "'," .
 #        "psap_companyid   =  " . $a_inventory['inv_id']             . "," .
-#        "psap_psap_id     = '" . mysqli_real_escape_string($data[2]) . "'," .
-#        "psap_description = '" . mysqli_real_escape_string($data[3]) . "'," .
+#        "psap_psap_id     = '" . mysqli_real_escape_string($db, $data[2]) . "'," .
+#        "psap_description = '" . mysqli_real_escape_string($db, $data[3]) . "'," .
 #        "psap_lport       =  " . $data[4]                           . "," .
-#        "psap_circuit_id  = '" . mysqli_real_escape_string($data[5]) . "'";
+#        "psap_circuit_id  = '" . mysqli_real_escape_string($db, $data[5]) . "'";
 #
 #0     1     2      3                4   5     6
 #A4,dalalic2,2,TX-ENNIS POLICE DEPT,9042,NULL,AT&T Southwest
@@ -36,12 +36,12 @@
 # new data
 #
 #        "psap_customerid  =  " . "1319"                             . "," .
-#        "psap_ali_id      = '" . mysqli_real_escape_string($data[1]) . "'," .
+#        "psap_ali_id      = '" . mysqli_real_escape_string($db, $data[1]) . "'," .
 #        "psap_companyid   =  " . $a_inventory['inv_id']             . "," .
-#        "psap_psap_id     = '" . mysqli_real_escape_string($data[0]) . "'," .
-#        "psap_description = '" . mysqli_real_escape_string($data[2]) . "'," .
+#        "psap_psap_id     = '" . mysqli_real_escape_string($db, $data[0]) . "'," .
+#        "psap_description = '" . mysqli_real_escape_string($db, $data[2]) . "'," .
 #        "psap_lport       =  " . $data[3]                           . "," .
-#        "psap_circuit_id  = '" . mysqli_real_escape_string($data[4]) . "'";
+#        "psap_circuit_id  = '" . mysqli_real_escape_string($db, $data[4]) . "'";
 #
 # 0  1        2           3  4   5    # current columns
 #512,N1,TEXAS TEST PSAP,4011,,hplgmtn
@@ -71,12 +71,12 @@ if (($handle = fopen($extract, "r")) !== FALSE) {
 
       $query  = 
         "psap_customerid  =  " . "1319"                             . "," . 
-        "psap_ali_id      = '" . mysqli_real_escape_string($data[1]) . "'," .
+        "psap_ali_id      = '" . mysqli_real_escape_string($db, $data[1]) . "'," .
         "psap_companyid   =  " . $a_inventory['inv_id']             . "," .
-        "psap_psap_id     = '" . mysqli_real_escape_string($data[0]) . "'," .
-        "psap_description = '" . mysqli_real_escape_string($data[2]) . "'," .
+        "psap_psap_id     = '" . mysqli_real_escape_string($db, $data[0]) . "'," .
+        "psap_description = '" . mysqli_real_escape_string($db, $data[2]) . "'," .
         "psap_lport       =  " . $data[3]                           . "," .
-        "psap_circuit_id  = '" . mysqli_real_escape_string($data[4]) . "'";
+        "psap_circuit_id  = '" . mysqli_real_escape_string($db, $data[4]) . "'";
 
       $q_string  = "select psap_id "; 
       $q_string .= "from psaps ";
