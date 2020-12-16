@@ -119,7 +119,7 @@
 
       mysqli_free_result($q_mon_type);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
       print "document.types.mt_name.value = '';\n";
 
