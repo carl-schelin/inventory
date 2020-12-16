@@ -228,7 +228,7 @@
 
       $output .= "</table>";
 
-      print "document.getElementById('morning_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+      print "document.getElementById('morning_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
