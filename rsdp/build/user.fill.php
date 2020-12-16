@@ -33,8 +33,8 @@
 
       print "document.rsdp.usr_deptname['" . $department . "'].selected = true;\n";
 
-      print "document.rsdp.usr_phone.value = '" . mysqli_real_escape_string($a_users['usr_phone']) . "';\n";
-      print "document.rsdp.usr_email.value = '" . mysqli_real_escape_string($a_users['usr_email']) . "';\n";
+      print "document.rsdp.usr_phone.value = '" . mysqli_real_escape_string($db, $a_users['usr_phone']) . "';\n";
+      print "document.rsdp.usr_email.value = '" . mysqli_real_escape_string($db, $a_users['usr_email']) . "';\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access. (" . $formVars['rsdp'] . ")");
