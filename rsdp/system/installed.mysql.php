@@ -119,9 +119,9 @@
       }
 
       if ($formVars['if_complete'] == 1) {
-        setstatus($db, "$formVars['rsdp'], 1, 10);
+        setstatus($db, $formVars['rsdp'], 1, 10);
 
-        $virtual = rsdp_Virtual($db, "$formVars['rsdp']);
+        $virtual = rsdp_Virtual($db, $formVars['rsdp']);
 
         $q_string  = "select fs_id ";
         $q_string .= "from rsdp_filesystem ";
@@ -159,7 +159,7 @@
           print "alert('SAN task submitted');\n";
         } else {
 # skip step 11 as there are no extra file systems to be provisioned. E-mail the platforms group; redundant but best to follow the steps.
-          setstatus($db, "$formVars['rsdp'], 2, 11);
+          setstatus($db, $formVars['rsdp'], 2, 11);
 
           $q_string  = "select rsdp_platform ";
           $q_string .= "from rsdp_server ";
