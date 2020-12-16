@@ -141,6 +141,6 @@
 
   mysqli_free_result($q_log);
 
-  print "document.getElementById('logs_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+  print "document.getElementById('logs_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
 ?>
