@@ -365,7 +365,7 @@ $(document).ready( function() {
 
 <p><strong>Note:</strong> Default report is the current month and year. You can pass the year, month, and/or Changed By on the URL. Pass 'month=0' for all months of the selected year.</p>
 
-<p>Example: <strong>https://incojs01.scc911.com/inventory/reports/changelog.report.php?year=2016&month=8&name=Ainsley</strong></p>
+<p>Example: <strong><?php print $Siteroot; ?>/reports/changelog.report.php?year=2016&month=8&name=[username]</strong></p>
 
 </div>
 
