@@ -182,7 +182,7 @@
 
           $output .= "</table>";
 
-          print "document.getElementById('server_search_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+          print "document.getElementById('server_search_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
         }
       }
 
