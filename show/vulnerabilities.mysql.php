@@ -49,7 +49,7 @@
 
   $top .= "</div>";
 
-  print "document.getElementById('vulnerability_mysql').innerHTML = '" . mysqli_real_escape_string($top) . "';\n\n";
+  print "document.getElementById('vulnerability_mysql').innerHTML = '" . mysqli_real_escape_string($db, $top) . "';\n\n";
 
   $header  = "<table class=\"ui-styled-table\">\n";
   $header .= "<tr>\n";
@@ -154,8 +154,8 @@
 
   $output .= "</table>";
 
-  print "document.getElementById('critical_count').innerHTML = ' (" . mysqli_real_escape_string($count) . ")';\n\n";
-  print "document.getElementById('critical_vuln_mysql').innerHTML = '" . mysqli_real_escape_string($header . $output) . "';\n\n";
+  print "document.getElementById('critical_count').innerHTML = ' (" . mysqli_real_escape_string($db, $count) . ")';\n\n";
+  print "document.getElementById('critical_vuln_mysql').innerHTML = '" . mysqli_real_escape_string($db, $header . $output) . "';\n\n";
 
 
 # high vulnerabilities
@@ -249,8 +249,8 @@
 
   $output .= "</table>";
 
-  print "document.getElementById('high_count').innerHTML = ' (" . mysqli_real_escape_string($count) . ")';\n\n";
-  print "document.getElementById('high_vuln_mysql').innerHTML = '" . mysqli_real_escape_string($header . $output) . "';\n\n";
+  print "document.getElementById('high_count').innerHTML = ' (" . mysqli_real_escape_string($db, $count) . ")';\n\n";
+  print "document.getElementById('high_vuln_mysql').innerHTML = '" . mysqli_real_escape_string($db, $header . $output) . "';\n\n";
 
 
 # medium vulnerabilities
@@ -344,8 +344,8 @@
 
   $output .= "</table>";
 
-  print "document.getElementById('medium_count').innerHTML = ' (" . mysqli_real_escape_string($count) . ")';\n\n";
-  print "document.getElementById('medium_vuln_mysql').innerHTML = '" . mysqli_real_escape_string($header . $output) . "';\n\n";
+  print "document.getElementById('medium_count').innerHTML = ' (" . mysqli_real_escape_string($db, $count) . ")';\n\n";
+  print "document.getElementById('medium_vuln_mysql').innerHTML = '" . mysqli_real_escape_string($db, $header . $output) . "';\n\n";
 
 
 # low vulnerabilities
@@ -439,8 +439,8 @@
 
   $output .= "</table>";
 
-  print "document.getElementById('low_count').innerHTML = ' (" . mysqli_real_escape_string($count) . ")';\n\n";
-  print "document.getElementById('low_vuln_mysql').innerHTML = '" . mysqli_real_escape_string($header . $output) . "';\n\n";
+  print "document.getElementById('low_count').innerHTML = ' (" . mysqli_real_escape_string($db, $count) . ")';\n\n";
+  print "document.getElementById('low_vuln_mysql').innerHTML = '" . mysqli_real_escape_string($db, $header . $output) . "';\n\n";
 
 
 # info vulnerabilities
@@ -536,8 +536,8 @@
 
   $mysql = $header . $output;
 
-  print "document.getElementById('info_count').innerHTML = ' (" . mysqli_real_escape_string($count) . ")';\n\n";
-  print "document.getElementById('info_vuln_mysql').innerHTML = '" . mysqli_real_escape_string($mysql) . "';\n\n";
+  print "document.getElementById('info_count').innerHTML = ' (" . mysqli_real_escape_string($db, $count) . ")';\n\n";
+  print "document.getElementById('info_vuln_mysql').innerHTML = '" . mysqli_real_escape_string($db, $mysql) . "';\n\n";
 
   mysqli_free_result($q_interface);
 
