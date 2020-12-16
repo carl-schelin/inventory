@@ -430,7 +430,7 @@
   }
   $output .= "</table>";
 
-  print "document.getElementById('network_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+  print "document.getElementById('network_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
 
 # IP6 table
@@ -698,7 +698,7 @@
 
 # only throw a table if ipv6 exists
   if ($ipv6) {
-    print "document.getElementById('ipv6network_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+    print "document.getElementById('ipv6network_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
   } else {
     print "document.getElementById('ipv6network_mysql').innerHTML = '';\n";
   }
