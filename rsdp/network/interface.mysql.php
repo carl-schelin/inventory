@@ -384,7 +384,7 @@
 
       mysqli_free_result($q_rsdp_interface);
 
-      print "document.getElementById('interface_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+      print "document.getElementById('interface_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
       print "document.rsdp.if_save.value = " . $submit . ";\n";
 
