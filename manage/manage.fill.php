@@ -37,7 +37,7 @@
 
       $chkuserid     = return_Index($db, $a_chkserver['chk_userid'], $q_string);
 
-      print "document.error.error_text.value = '"        . mysqli_real_escape_string($a_chkserver['chk_text'])        . "';\n";
+      print "document.error.error_text.value = '"        . mysqli_real_escape_string($db, $a_chkserver['chk_text'])        . "';\n";
 
       print "document.error.chk_userid['"       . $chkuserid                   . "'].selected = true;\n";
       print "document.error.chk_priority['"     . $a_chkserver['chk_priority'] . "'].selected = true;\n";
@@ -59,7 +59,7 @@
       $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       $a_chkerrors = mysqli_fetch_array($q_chkerrors);
 
-      print "document.getElementById('error_message').innerHTML = '" . mysqli_real_escape_string($a_chkerrors['ce_error']) . "';\n";
+      print "document.getElementById('error_message').innerHTML = '" . mysqli_real_escape_string($db, $a_chkerrors['ce_error']) . "';\n";
 
       $q_string  = "select inv_name ";
       $q_string .= "from inventory ";
@@ -67,7 +67,7 @@
       $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       $a_inventory = mysqli_fetch_array($q_inventory);
 
-      print "document.getElementById('error_server').innerHTML = '" . mysqli_real_escape_string($a_inventory['inv_name']) . "';\n";
+      print "document.getElementById('error_server').innerHTML = '" . mysqli_real_escape_string($db, $a_inventory['inv_name']) . "';\n";
 
       print "document.error.chk_id.value = " . $formVars['id'] . ";\n";
 
