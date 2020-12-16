@@ -144,7 +144,7 @@
       if ($formVars['if_complete'] == 1) {
         $message = '';
 # set task 12 as complete
-        setstatus($db, "$formVars['rsdp'], 1, 12);
+        setstatus($db, $formVars['rsdp'], 1, 12);
 
 # Check to see if backups have been requested. If not, mark the backup section as completed with a status of 2 for skipped
         $q_string  = "select bu_retention ";
@@ -154,7 +154,7 @@
         $a_rsdp_backups = mysqli_fetch_array($q_rsdp_backups);
 
         if ($a_rsdp_backups['bu_retention'] == 0) {
-          setstatus($db, "$formVars['rsdp'], 2, 13);
+          setstatus($db, $formVars['rsdp'], 2, 13);
         } else {
 
 # send e-mail to the backup team
@@ -194,7 +194,7 @@
         $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
         if ($a_rsdp_server['rsdp_osmonitor'] == 0) {
-          setstatus($db, "$formVars['rsdp'], 2, 14);
+          setstatus($db, $formVars['rsdp'], 2, 14);
         } else {
 
 # send e-mail to the monitoring team
