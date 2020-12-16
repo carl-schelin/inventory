@@ -69,7 +69,7 @@
       $output .= "  <th class=\"ui-state-default\">Date Completed</th>\n";
       $output .= "</tr>\n";
 
-      $virtual = rsdp_Virtual($db, "$formVars['id']);
+      $virtual = rsdp_Virtual($db, $formVars['id']);
 
       $tasks = array(
         1 => "Server Initialization",
