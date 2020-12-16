@@ -168,8 +168,8 @@
       $output .= "</form>\n";
 
       if ($count > 0) {
-        print "document.getElementById('priority1').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
-        print "document.getElementById('pri1_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+        print "document.getElementById('priority1').innerHTML = '" . mysqli_real_escape_string($db, $count) . "';\n";
+        print "document.getElementById('pri1_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
       }
 
 
@@ -235,8 +235,8 @@
       $output .= "</form>\n";
 
       if ($count > 0) {
-        print "document.getElementById('priority2').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
-        print "document.getElementById('pri2_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+        print "document.getElementById('priority2').innerHTML = '" . mysqli_real_escape_string($db, $count) . "';\n";
+        print "document.getElementById('pri2_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
       }
 
 
@@ -302,8 +302,8 @@
       $output .= "</form>\n";
 
       if ($count > 0) {
-        print "document.getElementById('priority3').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
-        print "document.getElementById('pri3_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+        print "document.getElementById('priority3').innerHTML = '" . mysqli_real_escape_string($db, $count) . "';\n";
+        print "document.getElementById('pri3_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
       }
 
 
@@ -369,8 +369,8 @@
       $output .= "</form>\n";
 
       if ($count > 0) {
-        print "document.getElementById('priority4').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
-        print "document.getElementById('pri4_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+        print "document.getElementById('priority4').innerHTML = '" . mysqli_real_escape_string($db, $count) . "';\n";
+        print "document.getElementById('pri4_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
       }
 
 
@@ -436,8 +436,8 @@
       $output .= "</form>\n";
 
       if ($count > 0) {
-        print "document.getElementById('priority5').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
-        print "document.getElementById('pri5_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+        print "document.getElementById('priority5').innerHTML = '" . mysqli_real_escape_string($db, $count) . "';\n";
+        print "document.getElementById('pri5_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
       }
 
 
@@ -514,8 +514,8 @@
       $output .= "</form>\n";
 
       if ($count > 0) {
-        print "document.getElementById('is_closed').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
-        print "document.getElementById('closed_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+        print "document.getElementById('is_closed').innerHTML = '" . mysqli_real_escape_string($db, $count) . "';\n";
+        print "document.getElementById('closed_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
       }
     }
 # adding closing brace to block closed; a lot and it's killing the page
@@ -587,8 +587,8 @@
       $output .= "</form>\n";
 
       if ($count > 0) {
-        print "document.getElementById('is_claimed').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
-        print "document.getElementById('claimed_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+        print "document.getElementById('is_claimed').innerHTML = '" . mysqli_real_escape_string($db, $count) . "';\n";
+        print "document.getElementById('claimed_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
       }
 
 
@@ -658,8 +658,8 @@
       $output .= "</form>\n";
 
       if ($count > 0) {
-        print "document.getElementById('is_pending').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
-        print "document.getElementById('pending_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+        print "document.getElementById('is_pending').innerHTML = '" . mysqli_real_escape_string($db, $count) . "';\n";
+        print "document.getElementById('pending_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
       }
 
     } else {
