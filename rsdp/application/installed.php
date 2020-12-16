@@ -262,7 +262,7 @@ an email will be sent notifying the responsible team or individual that their ta
 
 </div>
 
-<?php print submit_RSDP($db, " $formVars['rsdp'], 15, $RSDProot . "/application/installed.mysql.php", "rsdp_apppoc", "rsdp_application", 0); ?>
+<?php print submit_RSDP($db, $formVars['rsdp'], 15, $RSDProot . "/application/installed.mysql.php", "rsdp_apppoc", "rsdp_application", 0); ?>
 
 <div id="tabs">
 
@@ -290,14 +290,14 @@ an email will be sent notifying the responsible team or individual that their ta
 
 <div id="tabs-1">
 
-<?php print request_Header($db, "$formVars['rsdp']); ?>
+<?php print request_Header($db, $formVars['rsdp']); ?>
 
 </div>
 
 
 <div id="tabs-2">
 
-<?php print request_Server($db, "$formVars['rsdp']); ?>
+<?php print request_Server($db, $formVars['rsdp']); ?>
 
 </div>
 
@@ -311,7 +311,7 @@ an email will be sent notifying the responsible team or individual that their ta
 <tr>
   <td id="app_inscheck"  ><input type="checkbox" id="check-1" name="app_inscheck"   onchange="validate_Form();"><label for="check-1"></label></td>
 </tr>
-<?php print return_Checklist($db, " $formVars['rsdp'], 15); ?>
+<?php print return_Checklist($db, $formVars['rsdp'], 15); ?>
 </table>
 
 </div>
