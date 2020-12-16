@@ -31,10 +31,10 @@
 
       $sanmedia = return_Index($db, $a_rsdp_san['san_media'], "select med_id from int_media order by med_text");
 
-      print "document.getElementById('san_sysport').innerHTML = '" . mysqli_real_escape_string($a_rsdp_san['san_sysport'])  . "';\n";
-      print "document.san.san_switch.value = '"                   . mysqli_real_escape_string($a_rsdp_san['san_switch'])   . "';\n";
-      print "document.san.san_port.value = '"                     . mysqli_real_escape_string($a_rsdp_san['san_port'])     . "';\n";
-      print "document.san.san_wwnnzone.value = '"                 . mysqli_real_escape_string($a_rsdp_san['san_wwnnzone']) . "';\n";
+      print "document.getElementById('san_sysport').innerHTML = '" . mysqli_real_escape_string($db, $a_rsdp_san['san_sysport'])  . "';\n";
+      print "document.san.san_switch.value = '"                   . mysqli_real_escape_string($db, $a_rsdp_san['san_switch'])   . "';\n";
+      print "document.san.san_port.value = '"                     . mysqli_real_escape_string($db, $a_rsdp_san['san_port'])     . "';\n";
+      print "document.san.san_wwnnzone.value = '"                 . mysqli_real_escape_string($db, $a_rsdp_san['san_wwnnzone']) . "';\n";
 
       print "document.san.san_media['" . $sanmedia . "'].selected = true;\n";
 
