@@ -196,7 +196,7 @@
 
       mysqli_free_result($q_monitoring);
 
-      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+      print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
       print "document.monitoring.mon_openvew.checked = false;\n";
 
