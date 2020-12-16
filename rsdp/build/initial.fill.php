@@ -223,11 +223,11 @@
         print "document.rsdp.rsdp_vendor['"       . $vendor       . "'].selected = true;\n";
         print "document.rsdp.rsdp_location['"     . $location     . "'].selected = true;\n";
 
-        print "document.rsdp.rsdp_completion.value = '" . mysqli_real_escape_string($a_rsdp_server['rsdp_completion']) . "';\n";
-        print "document.rsdp.rsdp_function.value = '"   . mysqli_real_escape_string($a_rsdp_server['rsdp_function'])   . "';\n";
-        print "document.rsdp.rsdp_processors.value ='"  . mysqli_real_escape_string($a_rsdp_server['rsdp_processors']) . "';\n";
-        print "document.rsdp.rsdp_memory.value = '"     . mysqli_real_escape_string($a_rsdp_server['rsdp_memory'])     . "';\n";
-        print "document.rsdp.rsdp_ossize.value = '"     . mysqli_real_escape_string($a_rsdp_server['rsdp_ossize'])     . "';\n";
+        print "document.rsdp.rsdp_completion.value = '" . mysqli_real_escape_string($db, $a_rsdp_server['rsdp_completion']) . "';\n";
+        print "document.rsdp.rsdp_function.value = '"   . mysqli_real_escape_string($db, $a_rsdp_server['rsdp_function'])   . "';\n";
+        print "document.rsdp.rsdp_processors.value ='"  . mysqli_real_escape_string($db, $a_rsdp_server['rsdp_processors']) . "';\n";
+        print "document.rsdp.rsdp_memory.value = '"     . mysqli_real_escape_string($db, $a_rsdp_server['rsdp_memory'])     . "';\n";
+        print "document.rsdp.rsdp_ossize.value = '"     . mysqli_real_escape_string($db, $a_rsdp_server['rsdp_ossize'])     . "';\n";
 
         if ($a_rsdp_server['rsdp_osmonitor']) {
           print "document.rsdp.rsdp_osmonitor.checked = true;\n";
@@ -283,8 +283,8 @@
         print "document.rsdp.rsdp_requestor['"    . $requestor    . "'].selected = true;\n";
         print "document.rsdp.usr_deptname['"      . $deptname     . "'].selected = true;\n";
 
-        print "document.rsdp.usr_phone.value = '"       . mysqli_real_escape_string($a_users['usr_phone'])             . "';\n";
-        print "document.rsdp.usr_email.value = '"       . mysqli_real_escape_string($a_users['usr_email'])             . "';\n";
+        print "document.rsdp.usr_phone.value = '"       . mysqli_real_escape_string($db, $a_users['usr_phone'])             . "';\n";
+        print "document.rsdp.usr_email.value = '"       . mysqli_real_escape_string($db, $a_users['usr_email'])             . "';\n";
 
       }
 
@@ -410,14 +410,14 @@
         print "document.rsdp.bu_friday['"    . $a_rsdp_backups['bu_friday']    . "'].checked = true;\n";
         print "document.rsdp.bu_saturday['"  . $a_rsdp_backups['bu_saturday']  . "'].checked = true;\n";
 
-        print "document.rsdp.bu_start.value = '"   . mysqli_real_escape_string($a_rsdp_backups['bu_start'])   . "';\n";
-        print "document.rsdp.bu_suntime.value = '" . mysqli_real_escape_string($a_rsdp_backups['bu_suntime']) . "';\n";
-        print "document.rsdp.bu_montime.value = '" . mysqli_real_escape_string($a_rsdp_backups['bu_montime']) . "';\n";
-        print "document.rsdp.bu_tuetime.value = '" . mysqli_real_escape_string($a_rsdp_backups['bu_tuetime']) . "';\n";
-        print "document.rsdp.bu_wedtime.value = '" . mysqli_real_escape_string($a_rsdp_backups['bu_wedtime']) . "';\n";
-        print "document.rsdp.bu_thutime.value = '" . mysqli_real_escape_string($a_rsdp_backups['bu_thutime']) . "';\n";
-        print "document.rsdp.bu_fritime.value = '" . mysqli_real_escape_string($a_rsdp_backups['bu_fritime']) . "';\n";
-        print "document.rsdp.bu_sattime.value = '" . mysqli_real_escape_string($a_rsdp_backups['bu_sattime']) . "';\n";
+        print "document.rsdp.bu_start.value = '"   . mysqli_real_escape_string($db, $a_rsdp_backups['bu_start'])   . "';\n";
+        print "document.rsdp.bu_suntime.value = '" . mysqli_real_escape_string($db, $a_rsdp_backups['bu_suntime']) . "';\n";
+        print "document.rsdp.bu_montime.value = '" . mysqli_real_escape_string($db, $a_rsdp_backups['bu_montime']) . "';\n";
+        print "document.rsdp.bu_tuetime.value = '" . mysqli_real_escape_string($db, $a_rsdp_backups['bu_tuetime']) . "';\n";
+        print "document.rsdp.bu_wedtime.value = '" . mysqli_real_escape_string($db, $a_rsdp_backups['bu_wedtime']) . "';\n";
+        print "document.rsdp.bu_thutime.value = '" . mysqli_real_escape_string($db, $a_rsdp_backups['bu_thutime']) . "';\n";
+        print "document.rsdp.bu_fritime.value = '" . mysqli_real_escape_string($db, $a_rsdp_backups['bu_fritime']) . "';\n";
+        print "document.rsdp.bu_sattime.value = '" . mysqli_real_escape_string($db, $a_rsdp_backups['bu_sattime']) . "';\n";
 
         if ($a_rsdp_backups['bu_include']) {
           print "document.rsdp.bu_include.checked = true;\n";
