@@ -126,7 +126,7 @@
       }
 
       if ($formVars['app_complete'] == 1) {
-        setstatus($db, "$formVars['rsdp'], 1, 15);
+        setstatus($db, $formVars['rsdp'], 1, 15);
 
 # this is the san part.
 # if step 13 and step 14 is done (> 0), then
@@ -168,7 +168,7 @@
           $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
           if ($a_rsdp_server['rsdp_appmonitor'] == 0) {
-            setstatus($db, "$formVars['rsdp'], 2, 16);
+            setstatus($db, $formVars['rsdp'], 2, 16);
 
 # send e-mail to the Application folks since no app monitoring is required
             $q_string  = "select rsdp_application ";
