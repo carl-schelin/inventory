@@ -28,7 +28,7 @@
       $a_mon_type = mysqli_fetch_array($q_mon_type);
       mysqli_free_result($q_mon_type);
 
-      print "document.types.mt_name.value = '" . mysqli_real_escape_string($a_mon_type['mt_name']) . "';\n";
+      print "document.types.mt_name.value = '" . mysqli_real_escape_string($db, $a_mon_type['mt_name']) . "';\n";
 
       print "document.types.id.value = " . $formVars['id'] . ";\n";
 
