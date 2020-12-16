@@ -71,8 +71,8 @@
       $output .= "</table>\n";
       $output .= "</form>\n";
 
-      print "document.getElementById('priority1').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
-      print "document.getElementById('pri1_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+      print "document.getElementById('priority1').innerHTML = '" . mysqli_real_escape_string($db, $count) . "';\n";
+      print "document.getElementById('pri1_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
 
 # priority 2
@@ -108,8 +108,8 @@
       $output .= "</table>\n";
       $output .= "</form>\n";
 
-      print "document.getElementById('priority2').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
-      print "document.getElementById('pri2_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+      print "document.getElementById('priority2').innerHTML = '" . mysqli_real_escape_string($db, $count) . "';\n";
+      print "document.getElementById('pri2_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
 
 # priority 3
@@ -145,8 +145,8 @@
       $output .= "</table>\n";
       $output .= "</form>\n";
 
-      print "document.getElementById('priority3').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
-      print "document.getElementById('pri3_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+      print "document.getElementById('priority3').innerHTML = '" . mysqli_real_escape_string($db, $count) . "';\n";
+      print "document.getElementById('pri3_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
 
 # priority 4
@@ -182,8 +182,8 @@
       $output .= "</table>\n";
       $output .= "</form>\n";
 
-      print "document.getElementById('priority4').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
-      print "document.getElementById('pri4_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+      print "document.getElementById('priority4').innerHTML = '" . mysqli_real_escape_string($db, $count) . "';\n";
+      print "document.getElementById('pri4_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
 
 # priority 5
@@ -219,8 +219,8 @@
       $output .= "</table>\n";
       $output .= "</form>\n";
 
-      print "document.getElementById('priority5').innerHTML = '" . mysqli_real_escape_string($count) . "';\n";
-      print "document.getElementById('pri5_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+      print "document.getElementById('priority5').innerHTML = '" . mysqli_real_escape_string($db, $count) . "';\n";
+      print "document.getElementById('pri5_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
 
     } else {
