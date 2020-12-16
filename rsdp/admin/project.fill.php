@@ -30,8 +30,8 @@
 
       $product = return_Index($db, $a_projects['prj_product'], "select prod_id from products order by prod_name");
 
-      print "document.dialog.prj_name.value = '"  . mysqli_real_escape_string($a_projects['prj_name']) . "';\n";
-      print "document.dialog.prj_code.value  = '" . mysqli_real_escape_string($a_projects['prj_code']) . "';\n";
+      print "document.dialog.prj_name.value = '"  . mysqli_real_escape_string($db, $a_projects['prj_name']) . "';\n";
+      print "document.dialog.prj_code.value  = '" . mysqli_real_escape_string($db, $a_projects['prj_code']) . "';\n";
 
       print "document.dialog.prj_product['" . $product . "'].selected = true;\n";
 
