@@ -179,7 +179,7 @@ $(document).ready( function() {
   </ul></li>
   <li><strong>Changelog Form</strong>
   <ul>
-    <li><strong>E-Mail Address</strong> - This is email address used by users to submit changelogs. This email is located on the incojs01 jumpstart server and managed by the Unix Team.</li>
+    <li><strong>E-Mail Address</strong> - This is email address used by users to submit changelogs. This email is located on the jumpstart server.</li>
     <li><strong>Filename Extension</strong> - In the mailbox where the changelog files are stored, this is the file extension so scripts are able to open and read the mail messages.</li>
     <li><strong>Server Filename</strong> - This is the name of the group's servers file. This file is checked by the changelog process to ensure members of the group are able to submit changelogs for servers they manage.</li>
   </ul></li>
