@@ -28,8 +28,8 @@
       $a_operatingsystem = mysqli_fetch_array($q_operatingsystem);
       mysqli_free_result($q_operatingsystem);
 
-      print "document.dialog.os_vendor.value = '"    . mysqli_real_escape_string($a_operatingsystem['os_vendor'])   . "';\n";
-      print "document.dialog.os_software.value  = '" . mysqli_real_escape_string($a_operatingsystem['os_software']) . "';\n";
+      print "document.dialog.os_vendor.value = '"    . mysqli_real_escape_string($db, $a_operatingsystem['os_vendor'])   . "';\n";
+      print "document.dialog.os_software.value  = '" . mysqli_real_escape_string($db, $a_operatingsystem['os_software']) . "';\n";
 
       if ($a_operatingsystem['os_exception']) {
         print "document.dialog.os_exception.checked = true;\n";
