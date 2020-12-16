@@ -155,7 +155,7 @@
 
       mysqli_free_result($q_manageusers);
 
-      print "document.getElementById('gecos_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+      print "document.getElementById('gecos_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
 
 
@@ -241,7 +241,7 @@
 
       mysqli_free_result($q_manageusers);
 
-      print "document.getElementById('lockuser_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+      print "document.getElementById('lockuser_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
 
       $output  = "<p></p>\n";
@@ -324,7 +324,7 @@
 
       mysqli_free_result($q_manageusers);
 
-      print "document.getElementById('system_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+      print "document.getElementById('system_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
 
       $output  = "<p></p>\n";
@@ -411,7 +411,7 @@
 
       mysqli_free_result($q_manageusers);
 
-      print "document.getElementById('service_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+      print "document.getElementById('service_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
 
       print "document.users.mu_username.value = '';\n";
