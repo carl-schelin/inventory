@@ -28,13 +28,13 @@
       $q_issue_support = mysqli_query($db, $q_string) or die (mysqli_error($db));
       $a_issue_support = mysqli_fetch_array($q_issue_support);
 
-      print "document.start.sup_company.value = '"   . mysqli_real_escape_string($a_issue_support['sup_company'])   . "';\n";
-      print "document.start.sup_case.value = '"      . mysqli_real_escape_string($a_issue_support['sup_case'])      . "';\n";
-      print "document.start.sup_contact.value = '"   . mysqli_real_escape_string($a_issue_support['sup_contact'])   . "';\n";
-      print "document.start.sup_email.value = '"     . mysqli_real_escape_string($a_issue_support['sup_email'])     . "';\n";
-      print "document.start.sup_phone.value = '"     . mysqli_real_escape_string($a_issue_support['sup_phone'])     . "';\n";
-      print "document.start.sup_govid.value = '"     . mysqli_real_escape_string($a_issue_support['sup_govid'])     . "';\n";
-      print "document.start.sup_timestamp.value = '" . mysqli_real_escape_string($a_issue_support['sup_timestamp']) . "';\n";
+      print "document.start.sup_company.value = '"   . mysqli_real_escape_string($db, $a_issue_support['sup_company'])   . "';\n";
+      print "document.start.sup_case.value = '"      . mysqli_real_escape_string($db, $a_issue_support['sup_case'])      . "';\n";
+      print "document.start.sup_contact.value = '"   . mysqli_real_escape_string($db, $a_issue_support['sup_contact'])   . "';\n";
+      print "document.start.sup_email.value = '"     . mysqli_real_escape_string($db, $a_issue_support['sup_email'])     . "';\n";
+      print "document.start.sup_phone.value = '"     . mysqli_real_escape_string($db, $a_issue_support['sup_phone'])     . "';\n";
+      print "document.start.sup_govid.value = '"     . mysqli_real_escape_string($db, $a_issue_support['sup_govid'])     . "';\n";
+      print "document.start.sup_timestamp.value = '" . mysqli_real_escape_string($db, $a_issue_support['sup_timestamp']) . "';\n";
 
       print "document.start.sup_rating['" . $a_issue_support['sup_rating'] . "'].checked = true;\n";
 
