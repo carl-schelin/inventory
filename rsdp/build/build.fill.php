@@ -36,13 +36,13 @@
 
         print "document.rsdp.pf_model['" . $pf_model . "'].selected = true;\n";
 
-        print "document.rsdp.pf_asset.value = '"   . mysqli_real_escape_string($a_rsdp_platform['pf_asset'])   . "';\n";
-        print "document.rsdp.pf_serial.value = '"  . mysqli_real_escape_string($a_rsdp_platform['pf_serial'])  . "';\n";
+        print "document.rsdp.pf_asset.value = '"   . mysqli_real_escape_string($db, $a_rsdp_platform['pf_asset'])   . "';\n";
+        print "document.rsdp.pf_serial.value = '"  . mysqli_real_escape_string($db, $a_rsdp_platform['pf_serial'])  . "';\n";
 
-        print "document.rsdp.pf_row.value = '"     . mysqli_real_escape_string($a_rsdp_platform['pf_row'])     . "';\n";
-        print "document.rsdp.pf_rack.value = '"    . mysqli_real_escape_string($a_rsdp_platform['pf_rack'])    . "';\n";
-        print "document.rsdp.pf_unit.value = "     . mysqli_real_escape_string($a_rsdp_platform['pf_unit'])    . ";\n";
-        print "document.rsdp.pf_special.value = '" . mysqli_real_escape_string($a_rsdp_platform['pf_special']) . "';\n";
+        print "document.rsdp.pf_row.value = '"     . mysqli_real_escape_string($db, $a_rsdp_platform['pf_row'])     . "';\n";
+        print "document.rsdp.pf_rack.value = '"    . mysqli_real_escape_string($db, $a_rsdp_platform['pf_rack'])    . "';\n";
+        print "document.rsdp.pf_unit.value = "     . mysqli_real_escape_string($db, $a_rsdp_platform['pf_unit'])    . ";\n";
+        print "document.rsdp.pf_special.value = '" . mysqli_real_escape_string($db, $a_rsdp_platform['pf_special']) . "';\n";
 
         if ($a_rsdp_platform['pf_redundant']) {
           print "document.rsdp.pf_redundant.checked = true;\n";
@@ -73,8 +73,8 @@
       if (mysqli_num_rows($q_rsdp_osteam) > 0) {
         $os_software  = return_Index($db, $a_rsdp_osteam['os_software'], "select os_id from operatingsystem where os_delete = 0 order by os_software");
 
-        print "document.rsdp.os_sysname.value = '" . mysqli_real_escape_string($a_rsdp_osteam['os_sysname']) . "';\n";
-        print "document.rsdp.os_fqdn.value = '"    . mysqli_real_escape_string($a_rsdp_osteam['os_fqdn'])    . "';\n";
+        print "document.rsdp.os_sysname.value = '" . mysqli_real_escape_string($db, $a_rsdp_osteam['os_sysname']) . "';\n";
+        print "document.rsdp.os_fqdn.value = '"    . mysqli_real_escape_string($db, $a_rsdp_osteam['os_fqdn'])    . "';\n";
 
         print "document.rsdp.os_software['" . $os_software . "'].selected = true;\n";
 
