@@ -111,7 +111,7 @@
 # Set the status for all the physical steps
         $arr = array(5, 6, 7, 8, 9);
         foreach ($arr as &$step) {
-          setstatus($db, "$formVars['rsdp'], 1, $step);
+          setstatus($db, $formVars['rsdp'], 1, $step);
         }
 
         $q_string  = "select rsdp_platform ";
