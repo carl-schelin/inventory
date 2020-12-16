@@ -127,7 +127,7 @@
       $output .= "</body>";
       $output .= "</html>";
 
-      print mysqli_real_escape_string($output);
+      print mysqli_real_escape_string($db, $output);
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
