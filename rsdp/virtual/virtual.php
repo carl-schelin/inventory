@@ -222,7 +222,7 @@ a list of items that must be checked off before the task can be completed, and a
 
 </div>
 
-<?php print submit_RSDP($db, " $formVars['rsdp'], 5, $RSDProot . "/virtual/virtual.mysql.php", "rsdp_virtpoc", "", $GRP_Virtualization); ?>
+<?php print submit_RSDP($db, $formVars['rsdp'], 5, $RSDProot . "/virtual/virtual.mysql.php", "rsdp_virtpoc", "", $GRP_Virtualization); ?>
 
 <div id="tabs">
 
@@ -250,14 +250,14 @@ a list of items that must be checked off before the task can be completed, and a
 
 <div id="tabs-1">
 
-<?php print request_Header($db, "$formVars['rsdp']); ?>
+<?php print request_Header($db, $formVars['rsdp']); ?>
 
 </div>
 
 
 <div id="tabs-2">
 
-<?php print request_Server($db, "$formVars['rsdp']); ?>
+<?php print request_Server($db, $formVars['rsdp']); ?>
 
 </div>
 
@@ -271,7 +271,7 @@ a list of items that must be checked off before the task can be completed, and a
 <tr>
   <td id="if_vmcheck" colspan="2"><input type="checkbox" id="check-1" name="if_vmcheck" onchange="validate_Form();"><label for="check-1"></label></td>
 </tr>
-<?php print return_Checklist($db, " $formVars['rsdp'], 6); ?>
+<?php print return_Checklist($db, $formVars['rsdp'], 6); ?>
 </table>
 
 </div>
