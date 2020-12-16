@@ -14,7 +14,7 @@
     print "    <li><a href=\"" . $RSDProot . "/san/designed.php?rsdp="           . $formVars['rsdp'] . "\">" . $task[3] . "SAN Design</a></li>\n";
     print "    <li><a href=\"" . $RSDProot . "/network/network.php?rsdp="        . $formVars['rsdp'] . "\">" . $task[4] . "Network Configuration</a></li>\n";
 
-    if (rsdp_Virtual($db, "$formVars['rsdp'])) {
+    if (rsdp_Virtual($db, $formVars['rsdp'])) {
       print "    <li><a href=\"" . $RSDProot . "/virtual/virtual.php?rsdp="      . $formVars['rsdp'] . "\">" . $task[5] . "Virtualization</a></li>\n";
     } else {
       print "    <li><a href=\"" . $RSDProot . "/physical/physical.php?rsdp="    . $formVars['rsdp'] . "\">" . $task[5] . "Data Center</a></li>\n";
