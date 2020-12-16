@@ -236,7 +236,7 @@ ready to be worked.</li>
 
 </div>
 
-<?php print submit_RSDP($db, " $formVars['rsdp'], 3, $RSDProot . "/san/designed.mysql.php", "rsdp_sanpoc", "", $GRP_SAN); ?>
+<?php print submit_RSDP($db, $formVars['rsdp'], 3, $RSDProot . "/san/designed.mysql.php", "rsdp_sanpoc", "", $GRP_SAN); ?>
 
 <div id="tabs">
 
@@ -264,14 +264,14 @@ ready to be worked.</li>
 
 <div id="tabs-1">
 
-<?php print request_Header($db, "$formVars['rsdp']); ?>
+<?php print request_Header($db, $formVars['rsdp']); ?>
 
 </div>
 
 
 <div id="tabs-2">
 
-<?php print request_Server($db, "$formVars['rsdp']); ?>
+<?php print request_Server($db, $formVars['rsdp']); ?>
 
 </div>
 
@@ -316,7 +316,7 @@ than one port. This information is used by the Data Center folks to run cable. I
 <tr>
   <td id="san_checklist" colspan="2"><input type="checkbox" id="check-1" name="san_checklist" onchange="validate_Form();"><label for="check-1"></label></td>
 </tr>
-<?php print return_Checklist($db, " $formVars['rsdp'], 3); ?>
+<?php print return_Checklist($db, $formVars['rsdp'], 3); ?>
 </table>
 
 </div>
