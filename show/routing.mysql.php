@@ -119,7 +119,7 @@
   }
   $output .= "</table>";
 
-  print "document.getElementById('routing_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+  print "document.getElementById('routing_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
 
 # ipv6 output
@@ -182,7 +182,7 @@
   $output .= "</table>";
 
   if ($ipv6) {
-    print "document.getElementById('ipv6routing_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n";
+    print "document.getElementById('ipv6routing_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
   } else {
     print "document.getElementById('ipv6routing_mysql').innerHTML = '';\n";
   }
