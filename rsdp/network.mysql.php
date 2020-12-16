@@ -292,7 +292,7 @@
       $project .= $formVars['URL'];
       $project .= "</form>\n";
 
-      print "document.getElementById('project_mysql').innerHTML = '" . mysqli_real_escape_string($project) . "';\n";
+      print "document.getElementById('project_mysql').innerHTML = '" . mysqli_real_escape_string($db, $project) . "';\n";
 
 # system
       $carl = 'yes';
@@ -473,7 +473,7 @@
       $system .= $formVars['URL'] . $systemurl;
       $system .= "</form>\n";
 
-      print "document.getElementById('system_mysql').innerHTML = '" . mysqli_real_escape_string($system) . "';\n";
+      print "document.getElementById('system_mysql').innerHTML = '" . mysqli_real_escape_string($db, $system) . "';\n";
 
 
 # hardware
@@ -650,7 +650,7 @@
       $hardware .= $formVars['URL'] . $hardwareurl;
       $hardware .= "</form>\n";
 
-      print "document.getElementById('hardware_mysql').innerHTML = '" . mysqli_real_escape_string($hardware) . "';\n";
+      print "document.getElementById('hardware_mysql').innerHTML = '" . mysqli_real_escape_string($db, $hardware) . "';\n";
 
 
 # interfaces
@@ -864,7 +864,7 @@
       $interface .= "</table>\n";
       $interface .= $formVars['URL'] . $interfaceurl;
 
-      print "document.getElementById('interface_mysql').innerHTML = '" . mysqli_real_escape_string($interface) . "';\n";
+      print "document.getElementById('interface_mysql').innerHTML = '" . mysqli_real_escape_string($db, $interface) . "';\n";
 
 # kickstart
       $parameters = '<p>';
@@ -953,7 +953,7 @@
 
       $parameters .= "</p>";
 
-      print "document.getElementById('kickstart_mysql').innerHTML = '" . mysqli_real_escape_string($parameters) . "';\n";
+      print "document.getElementById('kickstart_mysql').innerHTML = '" . mysqli_real_escape_string($db, $parameters) . "';\n";
 
 
 # dns field
@@ -988,7 +988,7 @@
 
       $dns .= "</pre></p>";
 
-      print "document.getElementById('dns_mysql').innerHTML = '" . mysqli_real_escape_string($dns) . "';\n";
+      print "document.getElementById('dns_mysql').innerHTML = '" . mysqli_real_escape_string($db, $dns) . "';\n";
 
 
 # hosts field
@@ -1022,7 +1022,7 @@
 
       $hosts .= "</pre></p>";
 
-      print "document.getElementById('hosts_mysql').innerHTML = '" . mysqli_real_escape_string($hosts) . "';\n";
+      print "document.getElementById('hosts_mysql').innerHTML = '" . mysqli_real_escape_string($db, $hosts) . "';\n";
 
 # vulnerability listing
       $address = '';
@@ -1064,7 +1064,7 @@
         $hostname .= "</p>";
       }
 
-      print "document.getElementById('vulnerability_mysql').innerHTML = '" . mysqli_real_escape_string($address . $hostname) . "';\n";
+      print "document.getElementById('vulnerability_mysql').innerHTML = '" . mysqli_real_escape_string($db, $address . $hostname) . "';\n";
 
 
 # Virtualization wants a csv type output
@@ -1122,7 +1122,7 @@
 
       $virtualization .= "</pre></p>";
 
-      print "document.getElementById('virtualization_mysql').innerHTML = '" . mysqli_real_escape_string($virtualization) . "';\n";
+      print "document.getElementById('virtualization_mysql').innerHTML = '" . mysqli_real_escape_string($db, $virtualization) . "';\n";
 
 
 # list servers and interfaces that will be monitored
@@ -1164,7 +1164,7 @@
 
       $monitoring .= "</table>";
 
-      print "document.getElementById('monitoring_mysql').innerHTML = '" . mysqli_real_escape_string($monitoring) . "';\n";
+      print "document.getElementById('monitoring_mysql').innerHTML = '" . mysqli_real_escape_string($db, $monitoring) . "';\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
