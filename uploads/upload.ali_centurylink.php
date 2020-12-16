@@ -88,14 +88,14 @@ if (($handle = fopen($file, "r")) !== FALSE) {
         $query  = 
           "psap_customerid  =  " . "41"                                          . "," . 
           "psap_parentid    =  " . $a_psaps['psap_id']                           . "," . 
-          "psap_ali_id      = '" . mysqli_real_escape_string(clean($data[0],10))  . "'," .
+          "psap_ali_id      = '" . mysqli_real_escape_string($db, clean($data[0],10))  . "'," .
           "psap_companyid   =  " . $a_inventory['inv_id']                        . "," .
-          "psap_psap_id     = '" . mysqli_real_escape_string(clean($data[2],255)) . "'," .
-          "psap_description = '" . mysqli_real_escape_string(clean($data[8],255)) . "'," .
+          "psap_psap_id     = '" . mysqli_real_escape_string($db, clean($data[2],255)) . "'," .
+          "psap_description = '" . mysqli_real_escape_string($db, clean($data[8],255)) . "'," .
           "psap_lport       =  " . 0                                             . "," . 
-          "psap_circuit_id  = '" . mysqli_real_escape_string(clean($data[5],255)) . "'," . 
-          "psap_pseudo_cid  = '" . mysqli_real_escape_string(clean($data[6],255)) . "'," . 
-          "psap_lec         = '" . mysqli_real_escape_string(clean($data[7],255)) . "'," .
+          "psap_circuit_id  = '" . mysqli_real_escape_string($db, clean($data[5],255)) . "'," . 
+          "psap_pseudo_cid  = '" . mysqli_real_escape_string($db, clean($data[6],255)) . "'," . 
+          "psap_lec         = '" . mysqli_real_escape_string($db, clean($data[7],255)) . "'," .
           "psap_delete      =  " . 0                                             . "," . 
           "psap_updated     = '" . date('Y-m-d')                                 . "'";
 
