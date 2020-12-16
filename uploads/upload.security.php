@@ -53,7 +53,7 @@
         $q_string  = "insert ";
         $q_string .= "into security set ";
         $q_string .= "sec_id       =  " . $data[0]                           . ",";
-        $q_string .= "sec_name     = '" . mysqli_real_escape_string($data[1]) . "',";
+        $q_string .= "sec_name     = '" . mysqli_real_escape_string($db, $data[1]) . "',";
         $q_string .= "sec_family   =  " . $a_family['fam_id']                . ",";
         $q_string .= "sec_severity =  " . $a_severity['sev_id']              . " ";
         $insert = mysqli_query($db, $q_string) or die("\nQuery: " . $q_string . "\nFamily: " . $data[2] . "\nSeverity: " . $data[3] . "\n" . mysqli_error($db) . "\n");
@@ -66,7 +66,7 @@
           $q_string  = "update ";
           $q_string .= "security ";
           $q_string .= "set ";
-          $q_string .= "sec_name     = \"" . mysqli_real_escape_string($data[1]) . "\",";
+          $q_string .= "sec_name     = \"" . mysqli_real_escape_string($db, $data[1]) . "\",";
           $q_string .= "sec_severity =   " . $a_severity['sev_id'] . " ";
           $q_string .= "where sec_id = " . $a_security['sec_id'];
           $update = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
