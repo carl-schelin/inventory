@@ -110,7 +110,7 @@
       }
 
       if ($formVars['app_complete'] == 1) {
-        setstatus($db, "$formVars['rsdp'], 1, 17);
+        setstatus($db, $formVars['rsdp'], 1, 17);
 
         $q_string  = "select rsdp_platform ";
         $q_string .= "from rsdp_server ";
@@ -151,7 +151,7 @@
         $q_rsdp_tickets = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_rsdp_tickets = mysqli_fetch_array($q_rsdp_tickets);
         if ($a_rsdp_tickets['tkt_sysscan']) {
-          submit_Scan($db, "$formVars['rsdp']);
+          submit_Scan($db, $formVars['rsdp']);
         }
 
         print "alert('Application Task Submitted');\n";
