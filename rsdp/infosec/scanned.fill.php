@@ -29,7 +29,7 @@
       if (mysqli_num_rows($q_rsdp_infosec) > 0) {
         $a_rsdp_infosec = mysqli_fetch_array($q_rsdp_infosec);
 
-        print "document.rsdp.is_ticket.value = '" . mysqli_real_escape_string($a_rsdp_infosec['is_ticket']) . "';\n";
+        print "document.rsdp.is_ticket.value = '" . mysqli_real_escape_string($db, $a_rsdp_infosec['is_ticket']) . "';\n";
 
         if ($a_rsdp_infosec['is_checklist']) {
           print "document.rsdp.is_checklist.checked = true;\n";
