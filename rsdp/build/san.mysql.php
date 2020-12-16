@@ -154,7 +154,7 @@
 
       mysqli_free_result($q_rsdp_san);
 
-      print "document.getElementById('san_mysql').innerHTML = '" . mysqli_real_escape_string($output) . "';\n\n";
+      print "document.getElementById('san_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
       print "document.san.san_sysport.value = '';\n";
       print "document.san.san_switch.value = '';\n";
