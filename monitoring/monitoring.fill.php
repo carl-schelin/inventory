@@ -43,14 +43,14 @@
       $a_monitoring = mysqli_fetch_array($q_monitoring);
       mysqli_free_result($q_monitoring);
 
-      print "document.monitoring.mon_openview.value = '" . mysqli_real_escape_string($a_monitoring['mon_openview']) . "';\n";
-      print "document.monitoring.mon_openview.value = '" . mysqli_real_escape_string($a_monitoring['mon_openview']) . "';\n";
-      print "document.monitoring.mon_openview.value = '" . mysqli_real_escape_string($a_monitoring['mon_openview']) . "';\n";
-      print "document.monitoring.mon_openview.value = '" . mysqli_real_escape_string($a_monitoring['mon_openview']) . "';\n";
-      print "document.monitoring.mon_openview.value = '" . mysqli_real_escape_string($a_monitoring['mon_openview']) . "';\n";
-      print "document.monitoring.mon_openview.value = '" . mysqli_real_escape_string($a_monitoring['mon_openview']) . "';\n";
-      print "document.monitoring.mon_openview.value = '" . mysqli_real_escape_string($a_monitoring['mon_openview']) . "';\n";
-      print "document.monitoring.mon_openview.value = '" . mysqli_real_escape_string($a_monitoring['mon_openview']) . "';\n";
+      print "document.monitoring.mon_openview.value = '" . mysqli_real_escape_string($db, $a_monitoring['mon_openview']) . "';\n";
+      print "document.monitoring.mon_openview.value = '" . mysqli_real_escape_string($db, $a_monitoring['mon_openview']) . "';\n";
+      print "document.monitoring.mon_openview.value = '" . mysqli_real_escape_string($db, $a_monitoring['mon_openview']) . "';\n";
+      print "document.monitoring.mon_openview.value = '" . mysqli_real_escape_string($db, $a_monitoring['mon_openview']) . "';\n";
+      print "document.monitoring.mon_openview.value = '" . mysqli_real_escape_string($db, $a_monitoring['mon_openview']) . "';\n";
+      print "document.monitoring.mon_openview.value = '" . mysqli_real_escape_string($db, $a_monitoring['mon_openview']) . "';\n";
+      print "document.monitoring.mon_openview.value = '" . mysqli_real_escape_string($db, $a_monitoring['mon_openview']) . "';\n";
+      print "document.monitoring.mon_openview.value = '" . mysqli_real_escape_string($db, $a_monitoring['mon_openview']) . "';\n";
 
       print "document.monitoring.id.value = " . $formVars['id'] . ";\n";
 
