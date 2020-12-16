@@ -102,10 +102,10 @@ if (($handle = fopen($file, "r")) !== FALSE) {
       $q_string  = "select psap_id ";
       $q_string .= "from psaps ";
       $q_string .= "where ";
-      $q_string .= "  psap_ali_id      = '" . mysqli_real_escape_string(clean($data[0],10)) . "' and ";
+      $q_string .= "  psap_ali_id      = '" . mysqli_real_escape_string($db, clean($data[0],10)) . "' and ";
       $q_string .= "  psap_companyid   =  " . $a_inventory['inv_id']             . "  and ";
       $q_string .= "  psap_psap_id     = '" . $data[3]                           . "' and ";
-      $q_string .= "  psap_description = '" . mysqli_real_escape_string(clean($data[4],255)) . "' ";
+      $q_string .= "  psap_description = '" . mysqli_real_escape_string($db, clean($data[4],255)) . "' ";
       $q_psaps = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_psaps) == 0) {
         $a_psaps['psap_id'] = 0;
@@ -119,14 +119,14 @@ if (($handle = fopen($file, "r")) !== FALSE) {
       $query  = 
         "psap_customerid  =  " . "41"                                          . "," . 
         "psap_parentid    =  " . $a_psaps['psap_id']                           . "," . 
-        "psap_ali_id      = '" . mysqli_real_escape_string(clean($data[0],10))  . "'," .
+        "psap_ali_id      = '" . mysqli_real_escape_string($db, clean($data[0],10))  . "'," .
         "psap_companyid   =  " . $a_inventory['inv_id']                        . "," .
-        "psap_psap_id     = '" . mysqli_real_escape_string(clean($data[2],255)) . "'," .
-        "psap_description = '" . mysqli_real_escape_string(clean($data[8],255)) . "'," .
+        "psap_psap_id     = '" . mysqli_real_escape_string($db, clean($data[2],255)) . "'," .
+        "psap_description = '" . mysqli_real_escape_string($db, clean($data[8],255)) . "'," .
         "psap_lport       =  " . 0                                             . "," . 
-        "psap_circuit_id  = '" . mysqli_real_escape_string(clean($data[5],255)) . "'," . 
-        "psap_pseudo_cid  = '" . mysqli_real_escape_string(clean($data[6],255)) . "'," . 
-        "psap_lec         = '" . mysqli_real_escape_string(clean($data[7],255)) . "'," .
+        "psap_circuit_id  = '" . mysqli_real_escape_string($db, clean($data[5],255)) . "'," . 
+        "psap_pseudo_cid  = '" . mysqli_real_escape_string($db, clean($data[6],255)) . "'," . 
+        "psap_lec         = '" . mysqli_real_escape_string($db, clean($data[7],255)) . "'," .
         "psap_updated     = '" . date('Y-m-d')                                 . "' ";
 
 
@@ -136,13 +136,13 @@ if (($handle = fopen($file, "r")) !== FALSE) {
       $q_string .= "where ";
       $q_string .= "  psap_customerid  =  " . "41"                                          . "  and ";
       $q_string .= "  psap_parentid    =  " . "0"                                           . "  and ";
-      $q_string .= "  psap_ali_id      = '" . mysqli_real_escape_string(clean($data[0],10))  . "' and ";
+      $q_string .= "  psap_ali_id      = '" . mysqli_real_escape_string($db, clean($data[0],10))  . "' and ";
       $q_string .= "  psap_companyid   =  " . $a_inventory['inv_id']                        . "  and ";
-      $q_string .= "  psap_psap_id     =  " . mysqli_real_escape_string(clean($data[2],255)) . "  and ";
-      $q_string .= "  psap_description = '" . mysqli_real_escape_string(clean($data[8],255)) . "' and ";
-      $q_string .= "  psap_circuit_id  = '" . mysqli_real_escape_string(clean($data[5],255)) . "' and ";
-      $q_string .= "  psap_pseudo_cid  = '" . mysqli_real_escape_string(clean($data[6],255)) . "' and ";
-      $q_string .= "  psap_lec         = '" . mysqli_real_escape_string(clean($data[7],255)) . "' ";
+      $q_string .= "  psap_psap_id     =  " . mysqli_real_escape_string($db, clean($data[2],255)) . "  and ";
+      $q_string .= "  psap_description = '" . mysqli_real_escape_string($db, clean($data[8],255)) . "' and ";
+      $q_string .= "  psap_circuit_id  = '" . mysqli_real_escape_string($db, clean($data[5],255)) . "' and ";
+      $q_string .= "  psap_pseudo_cid  = '" . mysqli_real_escape_string($db, clean($data[6],255)) . "' and ";
+      $q_string .= "  psap_lec         = '" . mysqli_real_escape_string($db, clean($data[7],255)) . "' ";
       $q_psaps = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_psaps) == 0) {
         $q_string  = "insert into psaps set psap_id = null," . $query;
