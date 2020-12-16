@@ -142,7 +142,7 @@
 
 ?>
 
-document.getElementById('hardware_support_mysql').innerHTML = '<?php print mysqli_real_escape_string($hardware); ?>';
+document.getElementById('hardware_support_mysql').innerHTML = '<?php print mysqli_real_escape_string($db, $hardware); ?>';
 
-document.getElementById('software_support_mysql').innerHTML = '<?php print mysqli_real_escape_string($software); ?>';
+document.getElementById('software_support_mysql').innerHTML = '<?php print mysqli_real_escape_string($db, $software); ?>';
 
