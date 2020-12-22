@@ -68,13 +68,6 @@ reported to the Unix team for review.</p>
 <p>Since System and Service Accounts aren't User Accounts, an exception file was created. This file lists any accounts that can be ignored since they aren't actual users.</p>
 
 
-<p><strong><u>Validating Email</u></strong></p>
-
-<p>With the transition to West's email system, email accounts started switching from intrado.com to west.com or even regmail.west.com. The new email accounts were part of the 
-email extraction and folks with changed email addresses were being reported as departing the company. A new data file was created which would updated user's GECOS fields with 
-the corrected email address.</p>
-
-
 <p><strong><u>Locking Users</u></strong></p>
 
 <p>With consistent information in the user's GECOS field, we can now automatically lock users on systems after they leave. A data file that has the user's login and their 
