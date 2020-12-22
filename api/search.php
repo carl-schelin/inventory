@@ -113,6 +113,9 @@
     if (mysqli_num_rows($q_interface) > 0) {
       $formVars['inv_id'] = $a_interface['inv_id'];
       $formVars['interfaces'] = "yes";
+    } else {
+      $formVars['inv_id'] = 0;
+      $formVars['interfaces'] = 'no';
     }
   }
 
@@ -127,6 +130,9 @@
     if (mysqli_num_rows($q_interface) > 0) {
       $formVars['inv_id'] = $a_interface['inv_id'];
       $formVars['interfaces'] = "yes";
+    } else {
+      $formVars['inv_id'] = 0;
+      $formVars['interfaces'] = 'no';
     }
   }
 
