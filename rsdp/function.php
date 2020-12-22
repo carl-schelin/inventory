@@ -894,7 +894,7 @@ function submit_Ticket( $p_db, $p_rsdp, $p_script, $p_field, $p_group ) {
 # enable for magic
   $magic = 'no';
 # enable for remedy
-  $remedy = 'yes';
+  $remedy = 'no';
 
 #
 # This is the Magic ticket system process.
@@ -921,10 +921,10 @@ function submit_Ticket( $p_db, $p_rsdp, $p_script, $p_field, $p_group ) {
       $magicemail = $Sitedev;
     }
     if ($target == 'dev') {
-      $magicemail = "svc_MagicAdminDev@intrado.com";
+      $magicemail = $Magicdev;
     }
     if ($target == 'prod') {
-      $magicemail = "svc_magicprodemail@intrado.com";
+      $magicemail = $Magicprod;
     }
 
 ###############################
@@ -1146,34 +1146,16 @@ function submit_Ticket( $p_db, $p_rsdp, $p_script, $p_field, $p_group ) {
 # development server information
     if ($development == 'yes') {
       if ($remedy8 == 'yes') {
-        $remedyemail  = "remedy.helpdesk.dev@intrado.com";
-        $remedyserver = "LMV08-REMAPPQA.corp.intrado.pri";
+        $remedyemail  = $Remedydev8;
+        $remedyserver = $Remedydevsvr8;
 
         $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
         mail($remedyemail, "Changelog Submission", $body, $headers);
       }
 
       if ($remedy9 == 'yes') {
-        $remedyemail = "remedy.helpdesk.dev.safetyservices@regmail.west.com";
-        $remedyserver = "LNMT0CWASRMAP00";
-
-        $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
-        mail($remedyemail, "Changelog Submission", $body, $headers);
-      }
-    }
-# production server information
-    if ($production == 'yes') {
-      if ($remedy8 == 'yes') {
-        $remedyemail  = "remedy.helpdesk@intrado.com";
-        $remedyserver = "LMV08-REMAR01.corp.intrado.pri";
-
-        $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
-        mail($remedyemail, "Changelog Submission", $body, $headers);
-      }
-
-      if ($remedy9 == 'yes') {
-        $remedyemail = "Remedy91HelpdeskProd@intrado.com";
-        $remedyserver = "LNMT1CWASRMAP01.corp.intrado.pri";
+        $remedyemail = $Remedydev9;
+        $remedyserver = $Remedydevsvr9;
 
         $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
         mail($remedyemail, "Changelog Submission", $body, $headers);
@@ -1183,13 +1165,33 @@ function submit_Ticket( $p_db, $p_rsdp, $p_script, $p_field, $p_group ) {
 # qa server information
     if ($sqa == 'yes') {
       if ($remedy9 == 'yes') {
-        $remedyemail = "Remedy91HelpdeskQA@intrado.com";
-        $remedyserver = "lnmt0cwasrmap10.corp.intrado.pri";
+        $remedyemail = $Remedyqa9;
+        $remedyserver = $Remedysvr9;
 
         $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
         mail($remedyemail, "Changelog Submission", $body, $headers);
       }
     }
+
+# production server information
+    if ($production == 'yes') {
+      if ($remedy8 == 'yes') {
+        $remedyemail  = $Remedyprod8;
+        $remedyserver = $Remedyprodsvr8;
+
+        $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
+        mail($remedyemail, "Changelog Submission", $body, $headers);
+      }
+
+      if ($remedy9 == 'yes') {
+        $remedyemail = $Remedyprod9;
+        $remedyserver = $Remedyprodsvr9;
+
+        $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
+        mail($remedyemail, "Changelog Submission", $body, $headers);
+      }
+    }
+
   }
 }
 
@@ -1215,8 +1217,8 @@ function submit_DNS( $p_db, $p_rsdp ) {
   $headers  = "From: RSDP <rsdp@" . $hostname . ">\r\n";
 
   $ticket = $Siteadmins;  # Alpha/Beta Testing
-#  $ticket = "svc_MagicAdminDev@intrado.com"; # Testing to Dev
-#  $ticket = "svc_magicprodemail@intrado.com"; # Production
+#  $ticket = $Magicdevemail;
+#  $ticket = $Magicprodemail;
 
 
 #########
@@ -1347,9 +1349,8 @@ function submit_Scan( $p_db, $p_rsdp ) {
   $headers  = "From: RSDP <rsdp@" . $hostname . ">\r\n";
 
   $ticket = $Siteadmins;  # Alpha/Beta Testing
-#  $ticket = "svc_MagicAdminDev@intrado.com"; # Testing to Dev
-#  $ticket = "svc_magicprodemail@intrado.com"; # Production
-
+#  $ticket = $Magicdevemail;
+#  $ticket = $Magicprodemail;
 
 #########
 ### Opened by Client ID: -u-/*u*
