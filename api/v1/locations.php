@@ -38,7 +38,7 @@ $(document).ready( function() {
 
 <p><strong>GET /api/locations.php</strong></p>
 
-<pre style="text-align: left">curl -s -k https://incojs01.scc911.com/inventory/api/locations.php?site=[site name]&type=[site type] | python -mjson.tool</pre>
+<pre style="text-align: left">curl -s -k https://<?php print $Siteroot; ?>/api/locations.php?site=[site name]&type=[site type] | python -mjson.tool</pre>
 
 <p><strong>Parameters</strong></p>
 
@@ -51,37 +51,22 @@ $(document).ready( function() {
 <p><strong>Output</strong></p>
 
 <pre style="text-align: left">
-$ curl -s -k https://incojs01.scc911.com/inventory/api/locations.php?site=nap | python -mjson.tool
+$ curl -s -k http://inventory.internal.pri/inventory/api/locations.php?site=nederland | python -mjson.tool
 {
-    "26": {
-        "location_address1": "18155 Technology Drive",
-        "location_address2": "Data Center A",
-        "location_city": "Culpeper",
-        "location_clli": "CLPP",
+    "678": {
+        "location_address1": "9999 Ridge Road",
+        "location_address2": "",
+        "location_city": "Nederland",
+        "location_clli": "NDLD",
         "location_country": "United States",
-        "location_designation": "WDC09",
-        "location_environment": "Production",
+        "location_designation": "NED01",
+        "location_environment": "",
         "location_instance": "1",
-        "location_name": "NAP of the Capital Region - Culpeper",
-        "location_state": "Virginia",
-        "location_suite": "cage 71",
-        "location_type": "Data Center",
-        "location_zipcode": "22701"
-    },
-    "4": {
-        "location_address1": "50 N.E. 9th Street",
-        "location_address2": "8th Street Entrance",
-        "location_city": "Miami",
-        "location_clli": "MIAM",
-        "location_country": "United States",
-        "location_designation": "MIA04",
-        "location_environment": "Production",
-        "location_instance": "1",
-        "location_name": "Nap of The Americas - Miami",
-        "location_state": "Florida",
+        "location_name": "Nederland",
+        "location_state": "Colorado",
         "location_suite": "",
         "location_type": "Data Center",
-        "location_zipcode": "33132"
+        "location_zipcode": "80555"
     }
 }
 </pre>
