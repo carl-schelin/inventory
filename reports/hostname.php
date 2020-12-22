@@ -214,7 +214,7 @@ $(document).ready( function() {
   <th class="ui-state-default">2015 Internal Standard</th>
 </tr>
 <tr>
-  <td class="ui-widget-content"><strong>Example:</strong> lnmt0duwslfui1</td>
+  <td class="ui-widget-content"><strong>Example:</strong> ndld1cuwsexid1</td>
 </tr>
 <tr>
   <td class="ui-widget-content"><strong>Data Center Location</strong>: <span id="i15location"></span></td>
@@ -242,7 +242,7 @@ $(document).ready( function() {
   <th class="ui-state-default">2015 Customer Standard</th>
 </tr>
 <tr>
-  <td class="ui-widget-content"><strong>Example:</strong> lnmtcopdrtr1</td>
+  <td class="ui-widget-content"><strong>Example:</strong> ndldtxexora1</td>
 </tr>
 <tr>
   <td class="ui-widget-content"><strong>Location</strong>: <span id="c15location"></span></td>
@@ -266,7 +266,7 @@ $(document).ready( function() {
   <th class="ui-state-default">2008 Standard</th>
 </tr>
 <tr>
-  <td class="ui-widget-content"><strong>Example:</strong> lnmtcodcad10</td>
+  <td class="ui-widget-content"><strong>Example:</strong> ndldtxexmy10</td>
 </tr>
 <tr>
   <td class="ui-widget-content"><strong>Data Center Location</strong>: <span id="08location"></span></td>
@@ -294,7 +294,7 @@ $(document).ready( function() {
   <th class="ui-state-default">Standard</th>
 </tr>
 <tr>
-  <td class="ui-widget-content"><strong>Example:</strong> incojs01</td>
+  <td class="ui-widget-content"><strong>Example:</strong> extxks01</td>
 </tr>
 <tr>
   <td class="ui-widget-content"><strong>Location</strong>: <span id="location"></span></td>
