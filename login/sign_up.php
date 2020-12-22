@@ -183,7 +183,7 @@ function populate_email() {
   var pe_doc = document.login;
 
   var pe_username = pe_doc.fname.value.substring(0,1) + pe_doc.lname.value;
-  var pe_email = pe_doc.fname.value + '.' + pe_doc.lname.value + '@intrado.com';
+  var pe_email = pe_doc.fname.value + '.' + pe_doc.lname.value + '@<?php print $Companyemail; ?>';
 
   document.login.username.value = pe_username.toLowerCase();
   document.login.email.value = pe_email.toLowerCase();
