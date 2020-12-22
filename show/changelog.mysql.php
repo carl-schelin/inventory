@@ -69,7 +69,7 @@
           if ($list[1][0] == '"') {
             $from = substr($list[1], 1, strlen($list[1]) - 2);
           } else {
-# if it's <first.last@intrado.com>
+# if it's <first.last@internal.pri>
             $fromtmp = str_replace("<", "", str_replace(">", "", $list[1]));
             $from = substr($fromtmp, 0, strpos($fromtmp, "@"));
           }
