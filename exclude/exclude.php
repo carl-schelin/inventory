@@ -169,7 +169,7 @@ output.</p>
 <p>This page lets you manage the two filter files (messages.exclude) in order to identify and remove the unimportant lines from the final message preview file for the past 24 hours.</p>
 
 <p>There are two files that are created. A prefilter file which is also called messages.exclude which is located on each server in the /opt/intrado/etc directory. The script only pulls in lines that 
-begin with the hostname of the server. The second more general filter is located on the central server (incojs01) in /usr/local/admin/etc. After all the prefiltered log files are pulled to the central 
+begin with the hostname of the server. The second more general filter is located on the central server in /usr/local/admin/etc. After all the prefiltered log files are pulled to the central 
 server, the general filter is applied and a single messages file is created which can then be reviewed.
 
 <p><strong>Adding and Editing</strong></p>
