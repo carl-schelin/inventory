@@ -26,7 +26,7 @@
     if (check_userlevel($db, $AL_Edit)) {
       logaccess($db, $_SESSION['uid'], $package, "Emailing Storage about " . $formVars['id']);
 
-      $headers  = "From: RSDP <rsdp@incojs01.scc911.com>\r\n";
+      $headers  = "From: RSDP <rsdp@" . $hostname . ">\r\n";
 
       $q_string  = "select rsdp_sanpoc ";
       $q_string .= "from rsdp_server ";
