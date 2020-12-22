@@ -58,7 +58,7 @@ the detail record plus the additional information.</p>
 
 <ul>
   <li>You create an email message, sending to the inventory server or product name in the subject line, and optionally, any flags for additional data.</li>
-  <li>The inventory server receives the email and checks the sender (you) against a list of email addresses that are permitted to send to the Inventory. Only intrado.com and west.com addresses are permitted.</li>
+  <li>The inventory server receives the email and checks the sender (you) against a list of email addresses that are permitted to send to the Inventory. Only company specific addresses are permitted.</li>
   <li>Assuming everything passes, the script parses the server name or product and options, formats the output, and returns it to you.</li>
   <li>If you don't have an account in the Inventory, you won't get a response. If you do have an account and the subject line is incorrect or unclear, you'll receive a help email.</li>
 </ul>
