@@ -38,7 +38,7 @@ $(document).ready( function() {
 
 <p><strong>GET /api/inventory.php</strong></p>
 
-<pre style="text-align: left">curl -s -k https://incojs01.scc911.com/inventory/api/inventory.php?group=[groupname] | python -mjson.tool</pre>
+<pre style="text-align: left">curl -s -k https://" . $Siteroot . "/api/inventory.php?group=[groupname] | python -mjson.tool</pre>
 
 <p><strong>Parameters</strong></p>
 
@@ -51,13 +51,13 @@ $(document).ready( function() {
 <p><strong>Output</strong></p>
 
 <pre style="text-align: left">
-    "alde0euasnesa11": {
-        "inventory_appowner": "Mobility Sys Admin",
-        "inventory_satellite_uuid": "ffce24e7-e99d-49ff-92a9-24ffe83d3d39",
+    "ndld1cuasexsa11": {
+        "inventory_appowner": "Applications Sys Admin",
+        "inventory_satellite_uuid": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
         "inventory_serverid": "11202",
-        "inventory_servername": "alde0euasnesa11",
+        "inventory_servername": "ndld1cuasexsa11",
         "inventory_sysowner": "UNIX System Administration",
-        "inventory_uuid": "42190C4D-2A58-9072-B57A-27DA0698857E"
+        "inventory_uuid": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
     },
 </pre>
 
