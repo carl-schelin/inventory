@@ -47,7 +47,7 @@ matches their profile email or alternate email fields.</p>
 
 <p><strong><u>Process</u></strong></p>
 
-<p>The process is pretty simple. You send an email to <mailto>inventory@incojs01.scc911.com</mailto> with a subject line that consists of the server name, product for a listing of servers, 
+<p>The process is pretty simple. You send an email to <mailto>inventory@<?php print $hostname; ?></mailto> with a subject line that consists of the server name, product for a listing of servers, 
 or IP address. Without passing options on the Subject line, you'll get the detail record for the server. You can also pass a word or letter on the subject line for a specific query which returns 
 the detail record plus the additional information.</p>
 
