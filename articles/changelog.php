@@ -91,8 +91,8 @@ would have been a better choice.</p>
 
 ERROR!
 [server] may be an invalid servername or [email address] is not allowed to send mail to [changelog]!
-Check https://incojs01.scc911.com/inventory/[listing] to verify the server name.
-Make sure you have your new west email address in your Inventory Profile: https://incojs01.scc911.com/inventory/accounts/profile.php
+Check https://<?print $Siteroot; ?>/[listing] to verify the server name.
+Make sure you have your new email address in your Inventory Profile: https://<?php print $Siteroot; ?>/accounts/profile.php
 Please verify, correct and re-submit!
 
 ----- end error message -----</pre>
@@ -100,8 +100,8 @@ Please verify, correct and re-submit!
 <p>The error describes the possible issues. Either the servername isn't in your group's listing or your email address in the Inventory is incorrect.</p>
 
 <ol>
-  <li>Check your server listing. The URL is in the error: https://incojs01.scc911.com/inventory/servers (Unix team list of servers). See if [server] is in the listing. If not, follow the above instructions to add it in or change the Subject line to match the correct server name.</li>
-  <li>Check your Inventory email address or alternate email address. The URL is in the error: https://incojs01.scc911.com/inventory/accounts/profile.php (this is your profile page). See if the [email address] in your profile and correct.</li>
+  <li>Check your server listing. The URL is in the error: https://<?php print $Siteroot; ?>/servers (Unix team list of servers). See if [server] is in the listing. If not, follow the above instructions to add it in or change the Subject line to match the correct server name.</li>
+  <li>Check your Inventory email address or alternate email address. The URL is in the error: https://<?php print $Siteroot; ?>/accounts/profile.php (this is your profile page). See if the [email address] in your profile and correct.</li>
 </ol>
 
 <p>Note that if you're making corrections, the server listings are recreated at 4pm each day. Manual updates can be done, see the above instructions. The email listings used to verify your authority to add changes is updated every hour on the hour.</p>
