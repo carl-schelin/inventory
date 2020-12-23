@@ -107,7 +107,7 @@ $(document).ready( function() {
     <li><strong>Theme</strong> - Select a theme for the user.</li>
     <li><strong>E-Mail</strong> - The user's official email address. This is important in that several email portions of the system check incoming email against this address.</li>
     <li><strong>Phone Number</strong> - The user's contact phone number. Could be desk phone or cell phone.</li>
-    <li><strong>Department</strong> - The Intrado department the user belongs to.
+    <li><strong>Department</strong> - The company department the user belongs to.
   </ul></li>
   <li><strong>Password Form</strong>
   <ul>
