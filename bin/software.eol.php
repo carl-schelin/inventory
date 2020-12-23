@@ -31,6 +31,8 @@ $q_string = "update software set sw_eol = \"2014-01-31\",sw_type = \"OS\" where 
 $result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
 $q_string = "update software set sw_eol = \"2014-01-31\",sw_type = \"OS\" where sw_software = \"CentOS release 5.8 (Final)\" ";
 $result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+
+
 $q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where sw_software = \"CentOS 6.2\" ";
 $result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
 $q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where sw_software = \"CentOS release 6.2 (Final)\" ";
@@ -49,6 +51,47 @@ $q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where 
 $result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
 $q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where sw_software = \"CentOS release 6.9 (Final)\" ";
 $result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+
+
+$q_string = "update software set sw_eol = \"2015-03-05\",sw_type = \"OS\" where sw_software = \"CentOS Linux 7 (64-bit)\" ";
+$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$q_string = "update software set sw_eol = \"2015-03-05\",sw_type = \"OS\" where sw_software = \"CentOS Linux release 7.0.1406 (Core)\" ";
+$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$q_string = "update software set sw_eol = \"2015-11-19\",sw_type = \"OS\" where sw_software = \"CentOS Linux release 7.1.1503 (Core)\" ";
+$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$q_string = "update software set sw_eol = \"2016-11-03\",sw_type = \"OS\" where sw_software = \"CentOS Linux release 7.2.1511 (Core)\" ";
+$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$q_string = "update software set sw_eol = \"2017-07-31\",sw_type = \"OS\" where sw_software = \"CentOS Linux release 7.3.1611 (Core)\" ";
+$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$q_string = "update software set sw_eol = \"2018-04-10\",sw_type = \"OS\" where sw_software = \"CentOS Linux release 7.4.1708 (Core)\" ";
+$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$q_string = "update software set sw_eol = \"2018-10-30\",sw_type = \"OS\" where sw_software = \"CentOS Linux release 7.5.1804 (Core)\" ";
+$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$q_string = "update software set sw_eol = \"2019-08-06\",sw_type = \"OS\" where sw_software = \"CentOS Linux release 7.6.1810 (Core)\" ";
+$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$q_string = "update software set sw_eol = \"2020-03-31\",sw_type = \"OS\" where sw_software = \"CentOS Linux release 7.7.1908 (Core)\" ";
+$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$q_string = "update software set sw_eol = \"2020-09-29\",sw_type = \"OS\" where sw_software = \"CentOS Linux release 7.8.2003 (Core)\" ";
+$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$q_string = "update software set sw_eol = \"2024-06-30\",sw_type = \"OS\" where sw_software = \"CentOS Linux release 7.9.2009 (Core)\" ";
+$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+
+# CentOS 7 End of Product is 06/30/2024 so the last release is always set to this date.
+# All point releases are end of support as of the release date of the next point release.
+
+$q_string = "update software set sw_eol = \"2019-11-05\",sw_type = \"OS\" where sw_software = \"CentOS Linux release 8.0.1905 (Core)\" ";
+$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$q_string = "update software set sw_eol = \"2020-05-05\",sw_type = \"OS\" where sw_software = \"CentOS Linux release 8.1.1911 (Core)\" ";
+$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$q_string = "update software set sw_eol = \"2020-11-05\",sw_type = \"OS\" where sw_software = \"CentOS Linux release 8.2.2004 (Core)\" ";
+$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$q_string = "update software set sw_eol = \"2021-12-31\",sw_type = \"OS\" where sw_software = \"CentOS Linux release 8.3.2011 (Core)\" ";
+$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+
+# CentOS 8 End of Product is 12/31/2021 so the last release is always set to this date.
+# All point releases are end of support as of the release date of the next point release.
+
+
 
 print "Updating Red Hat\n";
 
@@ -246,13 +289,23 @@ $q_string = "update software set sw_eol = \"2018-10-30\",sw_type = \"OS\" where 
 $result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
 $q_string = "update software set sw_eol = \"2019-08-06\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 7.6 (Maipo)\" ";
 $result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
-$q_string = "update software set sw_eol = \"2024-06-30\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 7.7 (Maipo)\" ";
+$q_string = "update software set sw_eol = \"2020-03-31\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 7.7 (Maipo)\" ";
+$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$q_string = "update software set sw_eol = \"2020-09-29\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 7.8 (Maipo)\" ";
+$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$q_string = "update software set sw_eol = \"2024-06-30\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 7.9 (Maipo)\" ";
 $result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
 
 # Red Hat 7 End of Product is 06/30/2024 so the last release is always set to this date.
 # All point releases are end of support as of the release date of the next point release.
 
-$q_string = "update software set sw_eol = \"2029-05-30\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 8.0 (Oopta)\" ";
+$q_string = "update software set sw_eol = \"2019-11-05\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 8.0 (Oopta)\" ";
+$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$q_string = "update software set sw_eol = \"2020-04-28\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 8.1 (Oopta)\" ";
+$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$q_string = "update software set sw_eol = \"2020-11-03\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 8.2 (Oopta)\" ";
+$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$q_string = "update software set sw_eol = \"2029-05-30\",sw_type = \"OS\" where sw_software = \"Red Hat Enterprise Linux Server release 8.3 (Oopta)\" ";
 $result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
 
 # Red Hat 8 End of Product is 05/30/2029 so the last release is always set to this date.
