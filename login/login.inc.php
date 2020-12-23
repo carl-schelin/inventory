@@ -7,7 +7,7 @@
     session_start(); 
   }
 
-  include($Sitepath . '/function.php');
+#  include($Sitepath . '/function.php');
 
   if (isset($_SERVER['HTTP_REFERER'])) {
     $ref = $_SERVER['HTTP_REFERER'];
