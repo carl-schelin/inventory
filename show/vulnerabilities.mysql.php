@@ -78,7 +78,7 @@
 
       $q_string  = "select vuln_interface,vuln_securityid,vuln_duplicate,vuln_date,grp_name,sev_name,sec_name ";
       $q_string .= "from vulnerabilities "; 
-      $q_string .= "left join groups    on vulnerabilities.vuln_group = groups.grp_id ";
+      $q_string .= "left join a_groups    on vulnerabilities.vuln_group = a_groups.grp_id ";
       $q_string .= "left join security  on security.sec_id            = vulnerabilities.vuln_securityid ";
       $q_string .= "left join severity  on severity.sev_id            = security.sec_severity ";
       $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " and sec_severity = 1 and vuln_delete = 0 ";
@@ -89,7 +89,7 @@
         $count++;
         $q_string  = "select vul_id,grp_name,vul_ticket,vul_exception,vul_description ";
         $q_string .= "from vulnowner "; 
-        $q_string .= "left join groups on groups.grp_id = vulnowner.vul_group ";
+        $q_string .= "left join a_groups on a_groups.grp_id = vulnowner.vul_group ";
         $q_string .= "where vul_security = " . $a_vulnerabilities['vuln_securityid'] . " and vul_interface = " . $a_vulnerabilities['vuln_interface'] . " ";
         $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         if (mysqli_num_rows($q_vulnowner) > 0) {
@@ -172,7 +172,7 @@
 
       $q_string  = "select vuln_interface,vuln_securityid,vuln_duplicate,vuln_date,grp_name,sev_name,sec_name ";
       $q_string .= "from vulnerabilities "; 
-      $q_string .= "left join groups    on vulnerabilities.vuln_group = groups.grp_id ";
+      $q_string .= "left join a_groups    on vulnerabilities.vuln_group = a_groups.grp_id ";
       $q_string .= "left join security  on security.sec_id            = vulnerabilities.vuln_securityid ";
       $q_string .= "left join severity  on severity.sev_id            = security.sec_severity ";
       $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " and sec_severity = 2 and vuln_delete = 0 ";
@@ -183,7 +183,7 @@
         $count++;
         $q_string  = "select vul_id,grp_name,vul_ticket,vul_exception,vul_description ";
         $q_string .= "from vulnowner "; 
-        $q_string .= "left join groups on groups.grp_id = vulnowner.vul_group ";
+        $q_string .= "left join a_groups on a_groups.grp_id = vulnowner.vul_group ";
         $q_string .= "where vul_security = " . $a_vulnerabilities['vuln_securityid'] . " and vul_interface = " . $a_vulnerabilities['vuln_interface'] . " ";
         $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         if (mysqli_num_rows($q_vulnowner) > 0) {
@@ -267,7 +267,7 @@
 
       $q_string  = "select vuln_interface,vuln_securityid,vuln_duplicate,vuln_date,grp_name,sev_name,sec_name ";
       $q_string .= "from vulnerabilities "; 
-      $q_string .= "left join groups    on vulnerabilities.vuln_group = groups.grp_id ";
+      $q_string .= "left join a_groups    on vulnerabilities.vuln_group = a_groups.grp_id ";
       $q_string .= "left join security  on security.sec_id            = vulnerabilities.vuln_securityid ";
       $q_string .= "left join severity  on severity.sev_id            = security.sec_severity ";
       $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " and sec_severity = 3 and vuln_delete = 0 ";
@@ -278,7 +278,7 @@
         $count++;
         $q_string  = "select vul_id,grp_name,vul_ticket,vul_exception,vul_description ";
         $q_string .= "from vulnowner "; 
-        $q_string .= "left join groups on groups.grp_id = vulnowner.vul_group ";
+        $q_string .= "left join a_groups on a_groups.grp_id = vulnowner.vul_group ";
         $q_string .= "where vul_security = " . $a_vulnerabilities['vuln_securityid'] . " and vul_interface = " . $a_vulnerabilities['vuln_interface'] . " ";
         $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         if (mysqli_num_rows($q_vulnowner) > 0) {
@@ -362,7 +362,7 @@
 
       $q_string  = "select vuln_interface,vuln_securityid,vuln_duplicate,vuln_date,grp_name,sev_name,sec_name ";
       $q_string .= "from vulnerabilities "; 
-      $q_string .= "left join groups    on vulnerabilities.vuln_group = groups.grp_id ";
+      $q_string .= "left join a_groups    on vulnerabilities.vuln_group = a_groups.grp_id ";
       $q_string .= "left join security  on security.sec_id            = vulnerabilities.vuln_securityid ";
       $q_string .= "left join severity  on severity.sev_id            = security.sec_severity ";
       $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " and sec_severity = 4 and vuln_delete = 0 ";
@@ -373,7 +373,7 @@
         $count++;
         $q_string  = "select vul_id,grp_name,vul_ticket,vul_exception,vul_description ";
         $q_string .= "from vulnowner "; 
-        $q_string .= "left join groups on groups.grp_id = vulnowner.vul_group ";
+        $q_string .= "left join a_groups on a_groups.grp_id = vulnowner.vul_group ";
         $q_string .= "where vul_security = " . $a_vulnerabilities['vuln_securityid'] . " and vul_interface = " . $a_vulnerabilities['vuln_interface'] . " ";
         $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         if (mysqli_num_rows($q_vulnowner) > 0) {
@@ -457,7 +457,7 @@
 
       $q_string  = "select vuln_interface,vuln_securityid,vuln_duplicate,vuln_date,grp_name,sev_name,sec_name ";
       $q_string .= "from vulnerabilities "; 
-      $q_string .= "left join groups    on vulnerabilities.vuln_group = groups.grp_id ";
+      $q_string .= "left join a_groups    on vulnerabilities.vuln_group = a_groups.grp_id ";
       $q_string .= "left join security  on security.sec_id            = vulnerabilities.vuln_securityid ";
       $q_string .= "left join severity  on severity.sev_id            = security.sec_severity ";
       $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " and sec_severity = 5 and vuln_delete = 0 ";
@@ -468,7 +468,7 @@
         $count++;
         $q_string  = "select vul_id,grp_name,vul_ticket,vul_exception,vul_description ";
         $q_string .= "from vulnowner "; 
-        $q_string .= "left join groups on groups.grp_id = vulnowner.vul_group ";
+        $q_string .= "left join a_groups on a_groups.grp_id = vulnowner.vul_group ";
         $q_string .= "where vul_security = " . $a_vulnerabilities['vuln_securityid'] . " and vul_interface = " . $a_vulnerabilities['vuln_interface'] . " ";
         $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         if (mysqli_num_rows($q_vulnowner) > 0) {
