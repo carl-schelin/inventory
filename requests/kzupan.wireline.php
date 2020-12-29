@@ -74,7 +74,7 @@
   $q_string  = "select inv_id,inv_name,inv_function,svc_acronym,loc_city,zone_name,grp_name ";
   $q_string .= "from inventory ";
   $q_string .= "join software on software.sw_companyid = inventory.inv_id ";
-  $q_string .= "join groups on groups.grp_id = inventory.inv_manager ";
+  $q_string .= "join a_groups on a_groups.grp_id = inventory.inv_manager ";
   $q_string .= "join locations on locations.loc_id = inventory.inv_location ";
   $q_string .= "join zones on zones.zone_id = inventory.inv_zone ";
   $q_string .= "join service on service.svc_id = inventory.inv_class ";
