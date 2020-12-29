@@ -44,7 +44,7 @@
         $email = $a_users['usr_email'];
       } else {
         $q_string  = "select grp_email ";
-        $q_string .= "from groups ";
+        $q_string .= "from a_groups ";
         $q_string .= "where grp_id = " . $GRP_Networking . " ";
         $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_groups = mysqli_fetch_array($q_groups);
