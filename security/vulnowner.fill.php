@@ -39,7 +39,7 @@
 # get vulowner and ticket from interface id and security id in vulowner table
       $q_string  = "select grp_name,vul_group,vul_ticket,vul_exception,vul_description ";
       $q_string .= "from vulnowner ";
-      $q_string .= "left join groups on groups.grp_id = vulnowner.vul_group ";
+      $q_string .= "left join a_groups on a_groups.grp_id = vulnowner.vul_group ";
       $q_string .= "where vul_security = " . $a_vulnowner['sec_id'] . " and vul_interface = " . $a_vulnowner['int_id'] . " ";
       $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_vulnowner) > 0) {
