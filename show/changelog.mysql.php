@@ -24,7 +24,7 @@
 
   $grpcount = 0;
   $q_string = "select grp_changelog,grp_clfile "
-            . "from groups "
+            . "from a_groups "
             . "where grp_changelog != ''";
   $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_groups = mysqli_fetch_array($q_groups)) {
