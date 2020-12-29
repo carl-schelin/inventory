@@ -81,7 +81,7 @@
             $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           }
 
-# all done. now update groups with the new information.
+# all done. now update a_groups with the new information.
           $q_string =
             "grp_name          = \"" . $formVars['grp_name']          . "\"," . 
             "grp_snow          = \"" . $formVars['grp_snow']          . "\"," . 
@@ -103,10 +103,10 @@
             "grp_import        =   " . $formVars['grp_import'];
 
           if ($formVars['update'] == 0) {
-            $query = "insert into groups set grp_id = NULL," . $q_string;
+            $query = "insert into a_groups set grp_id = NULL," . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update groups set " . $q_string . " where grp_id = " . $formVars['id'];
+            $query = "update a_groups set " . $q_string . " where grp_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['grp_name']);
