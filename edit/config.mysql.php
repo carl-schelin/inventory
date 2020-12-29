@@ -226,7 +226,7 @@
 
         $q_string  = "select rsdp_function,grp_name,rsdp_platform,rsdp_application,loc_name,loc_west,rsdp_location,prod_name,rsdp_product,prj_name,rsdp_project ";
         $q_string .= "from rsdp_server ";
-        $q_string .= "left join groups on groups.grp_id = rsdp_server.rsdp_platform ";
+        $q_string .= "left join a_groups on a_groups.grp_id = rsdp_server.rsdp_platform ";
         $q_string .= "left join locations on locations.loc_id = rsdp_server.rsdp_location ";
         $q_string .= "left join products on products.prod_id = rsdp_server.rsdp_product ";
         $q_string .= "left join projects on projects.prj_id = rsdp_server.rsdp_project ";
@@ -235,7 +235,7 @@
         $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
         $q_string  = "select grp_name ";
-        $q_string .= "from groups ";
+        $q_string .= "from a_groups ";
         $q_string .= "where grp_id = " . $a_rsdp_server['rsdp_application'] . " ";
         $q_application = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         $a_application = mysqli_fetch_array($q_application);
