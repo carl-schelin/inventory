@@ -19,11 +19,11 @@
     }
 
     if (check_userlevel($db, $AL_Admin)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from groups");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from a_groups");
 
       $q_string  = "select grp_disabled,grp_name,grp_snow,grp_email,grp_magic,grp_category,grp_changelog,grp_manager,grp_clfile,";
       $q_string .= "grp_clserver,grp_report,grp_organization,grp_role,grp_clscript,grp_status,grp_server,grp_import ";
-      $q_string .= "from groups ";
+      $q_string .= "from a_groups ";
       $q_string .= "where grp_id = " . $formVars['id'];
       $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_groups = mysqli_fetch_array($q_groups);
