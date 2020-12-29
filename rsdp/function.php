@@ -83,7 +83,7 @@ function generateEmail($p_db, $p_rsdp, $p_text1, $p_text2, $p_text3, $p_who, $p_
 
   if ($a_rsdp_server[$p_who] == '' || $a_rsdp_server[$p_who] == 0) {
     $q_string  = "select grp_email ";
-    $q_string .= "from groups ";
+    $q_string .= "from a_groups ";
     $q_string .= "where grp_id = " . $p_group;
     $q_groups = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
     $a_groups = mysqli_fetch_array($q_groups);
@@ -213,7 +213,7 @@ function request_Header( $p_db, $p_rsdp ) {
   $q_string .= "left join users on users.usr_id = rsdp_server.rsdp_requestor ";
   $q_string .= "left join department on department.dep_id = users.usr_deptname ";
   $q_string .= "left join business_unit on business_unit.bus_id = department.dep_unit ";
-  $q_string .= "left join groups on groups.grp_id = rsdp_server.rsdp_platform ";
+  $q_string .= "left join a_groups on a_groups.grp_id = rsdp_server.rsdp_platform ";
   $q_string .= "left join service on service.svc_id = rsdp_server.rsdp_service ";
   $q_string .= "left join projects on projects.prj_id = rsdp_server.rsdp_project ";
   $q_string .= "left join locations on locations.loc_id = rsdp_server.rsdp_location ";
@@ -222,7 +222,7 @@ function request_Header( $p_db, $p_rsdp ) {
   $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
 
   $q_string  = "select grp_name ";
-  $q_string .= "from groups ";
+  $q_string .= "from a_groups ";
   $q_string .= "where grp_id = " . $a_rsdp_server['rsdp_application'];
   $q_groups = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
   $a_groups = mysqli_fetch_array($q_groups);
@@ -854,7 +854,7 @@ function submit_RSDP( $p_db, $p_rsdp, $p_task, $p_script, $p_poc, $p_group, $p_g
       $output .= "<input type=\"button\" name=\"addbtn\" value=\"Task Completed\" onClick=\"javascript:attach_file('" . $p_script . "', 1);\">\n";
     } else {
       $q_string  = "select grp_name ";
-      $q_string .= "from groups ";
+      $q_string .= "from a_groups ";
       $q_string .= "where grp_id = " . $group_select;
       $q_groups = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
       $a_groups = mysqli_fetch_array($q_groups);
@@ -968,7 +968,7 @@ function submit_Ticket( $p_db, $p_rsdp, $p_script, $p_field, $p_group ) {
 ### Group Assigned to: -a-/*a*
 #########
       $q_string  = "select grp_magic,grp_category,grp_name ";
-      $q_string .= "from groups ";
+      $q_string .= "from a_groups ";
       $q_string .= "where grp_id = " . $grppoc;
       $q_groups = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
       $a_groups = mysqli_fetch_array($q_groups);
@@ -1063,7 +1063,7 @@ function submit_Ticket( $p_db, $p_rsdp, $p_script, $p_field, $p_group ) {
     $q_string  = "select usr_first,usr_last,usr_name,usr_email,usr_manager,usr_clientid,grp_name ";
     $q_string .= "from rsdp_server ";
     $q_string .= "left join users on users.usr_id = rsdp_server.rsdp_requestor ";
-    $q_string .= "left join groups on groups.grp_id = users.usr_group ";
+    $q_string .= "left join a_groups on a_groups.grp_id = users.usr_group ";
     $q_string .= "where rsdp_id = " . $p_rsdp . " ";
     $q_requestor = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
     $a_requestor = mysqli_fetch_array($q_requestor);
@@ -1072,7 +1072,7 @@ function submit_Ticket( $p_db, $p_rsdp, $p_script, $p_field, $p_group ) {
     $q_string  = "select usr_first,usr_last,usr_name,usr_email,usr_manager,usr_clientid,grp_name ";
     $q_string .= "from rsdp_server ";
     $q_string .= "left join users on users.usr_id = rsdp_server.rsdp_requestor ";
-    $q_string .= "left join groups on groups.grp_id = users.usr_group ";
+    $q_string .= "left join a_groups on a_groups.grp_id = users.usr_group ";
     $q_string .= "where rsdp_id = " . $p_rsdp . " ";
     $q_user = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
     $a_user = mysqli_fetch_array($q_user);
@@ -1231,7 +1231,7 @@ function submit_DNS( $p_db, $p_rsdp ) {
 ### Group Assigned to: -a-/*a*
 #########
     $q_string  = "select grp_magic,grp_category ";
-    $q_string .= "from groups ";
+    $q_string .= "from a_groups ";
     $q_string .= "where grp_id = " . $GRP_Windows;
     $q_groups = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
     $a_groups = mysqli_fetch_array($q_groups);
@@ -1362,7 +1362,7 @@ function submit_Scan( $p_db, $p_rsdp ) {
 ### Group Assigned to: -a-/*a*
 #########
     $q_string  = "select grp_magic,grp_category ";
-    $q_string .= "from groups ";
+    $q_string .= "from a_groups ";
     $q_string .= "where grp_id = " . $GRP_InfoSec;
     $q_groups = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
     $a_groups = mysqli_fetch_array($q_groups);
