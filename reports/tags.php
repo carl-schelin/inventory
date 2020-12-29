@@ -87,7 +87,7 @@
   $q_string .= "from tags ";
   $q_string .= "left join inventory on inventory.inv_id = tags.tag_companyid ";
   $q_string .= "left join users     on users.usr_id     = tags.tag_owner ";
-  $q_string .= "left join groups    on groups.grp_id    = tags.tag_group ";
+  $q_string .= "left join a_groups    on a_groups.grp_id    = tags.tag_group ";
   $q_string .= "where inv_status = 0 ";
   $q_string .= $orderby;
   $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
