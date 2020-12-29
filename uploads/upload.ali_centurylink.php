@@ -39,14 +39,14 @@ if (($handle = fopen($file, "r")) !== FALSE) {
 # new centurylink data 1/29
 # "Q1" |hpstlew |          03318         |     607       |"UT JUAB COUNTY" | "64LGGZ134187  172.20.50.124"| 64/LGGZ/134187/MS|CTL West |         JUAB COUNTY             |UT/EVXR/318/MS     |
 # 0A       1B                2C                 3D                4E                     5F                        6G              7H                 8I                        9J
-#ALI-ID,ALI Name,CTL-ID - Partner PSAP ID,Intrado PSAP ID,Intrado PSAP Name,        Circuit ID -          , NEW CircuitID,      LEC,    CTL-PSAP Name - Partner PSAP Name,CTL-PSAP Circuit ID,
+#ALI-ID,ALI Name,CTL-ID - Partner PSAP ID,company PSAP ID,company PSAP Name,        Circuit ID -          , NEW CircuitID,      LEC,    CTL-PSAP Name - Partner PSAP Name,CTL-PSAP Circuit ID,
 #
 # 0        1           2                   3             4     5     6      7                 8
-#ALI-ID,ALI Name,Intrado PSAP ID,Intrado PSAP Name,Circuit ID,LEC,CTL-ID,CTL-PSAP Name,CTL-PSAP Circuit ID,
+#ALI-ID,ALI Name,company PSAP ID,company PSAP Name,Circuit ID,LEC,CTL-ID,CTL-PSAP Name,CTL-PSAP Circuit ID,
 # 
 # old centurylink data 12/11 - Ignore this...
 # 0        1           2                        3                   4            5            6          7                 8                      9
-#ALI-ID,ALI Name,CTL-ID - Partner PSAP ID,Intrado PSAP ID,Intrado PSAP Name,Circuit ID - ,NEW CircuitID,LEC,CTL-PSAP Name - Partner PSAP Name,CTL-PSAP Circuit ID
+#ALI-ID,ALI Name,CTL-ID - Partner PSAP ID,company PSAP ID,company PSAP Name,Circuit ID - ,NEW CircuitID,LEC,CTL-PSAP Name - Partner PSAP Name,CTL-PSAP Circuit ID
 
 # clear out spaces
     $data[0] = clean($data[0], 10);
@@ -62,14 +62,14 @@ if (($handle = fopen($file, "r")) !== FALSE) {
     } else {
       $a_inventory = mysqli_fetch_array($q_inventory);
 
-# get the matching Intrado psap information from the database
+# get the matching company psap information from the database
       $q_string  = "select psap_id "; 
       $q_string .= "from psaps ";
       $q_string .= "where psap_ali_id = '" . $data[0] . "' and psap_companyid = " . $a_inventory['inv_id'] . " and psap_psap_id = " . $data[3] . " ";
       $q_psaps = mysqli_query($db, $q_string) or die($q_string . "\n: " . mysqli_error($db) . "\n");
       if (mysqli_num_rows($q_psaps) == 0) {
 # error, there should be an association with an existing psap id.
-        print "Error: No association with an existing Intrado PSAP: Query: ALI ID = " . $data[0] . " and ALI Name = " . $a_inventory['inv_name'] . " and PSAP ID = " . $data[3] . "\n";
+        print "Error: No association with an existing company PSAP: Query: ALI ID = " . $data[0] . " and ALI Name = " . $a_inventory['inv_name'] . " and PSAP ID = " . $data[3] . "\n";
 
         $q_string  = "select psap_ali_id,inv_name "; 
         $q_string .= "from psaps ";
