@@ -227,7 +227,7 @@
       $q_string  = "select clu_id,clu_association,clu_notes,grp_name,inv_name ";
       $q_string .= "from cluster ";
       $q_string .= "left join inventory on inventory.inv_id = cluster.clu_companyid ";
-      $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
+      $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
       $q_string .= "where clu_companyid = " . $formVars['clu_companyid'] . " ";
       $q_string .= "order by inv_name,clu_association,clu_port";
       $q_cluster = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
