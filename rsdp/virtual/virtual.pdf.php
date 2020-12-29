@@ -30,7 +30,7 @@
   $q_string .= "left join users         on users.usr_id         = rsdp_server.rsdp_requestor ";
   $q_string .= "left join department    on department.dep_id    = users.usr_deptname ";
   $q_string .= "left join business_unit on business_unit.bus_id = department.dep_unit ";
-  $q_string .= "left join groups        on groups.grp_id        = rsdp_server.rsdp_platform ";
+  $q_string .= "left join a_groups        on a_groups.grp_id        = rsdp_server.rsdp_platform ";
   $q_string .= "left join service       on service.svc_id       = rsdp_server.rsdp_service ";
   $q_string .= "left join locations     on locations.loc_id     = rsdp_server.rsdp_location ";
   $q_string .= "left join cities        on cities.ct_id         = locations.loc_city ";
