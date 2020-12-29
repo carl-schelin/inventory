@@ -89,7 +89,7 @@
       $q_string .= "left join projects on projects.prj_id = rsdp_server.rsdp_project ";
       $q_string .= "left join rsdp_osteam on rsdp_osteam.os_rsdp = rsdp_server.rsdp_id ";
       $q_string .= "left join users on users.usr_id = rsdp_server.rsdp_requestor ";
-      $q_string .= "left join groups on groups.grp_id = users.usr_group ";
+      $q_string .= "left join a_groups on a_groups.grp_id = users.usr_group ";
       $q_string .= $where;
       $q_string .= "group by os_sysname ";
       $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
