@@ -55,7 +55,7 @@
 
   $q_string  = "select cert_id,cert_desc,cert_url,cert_expire,cert_authority,grp_name ";
   $q_string .= "from certs ";
-  $q_string .= "left join groups on groups.grp_id = certs.cert_group ";
+  $q_string .= "left join a_groups on a_groups.grp_id = certs.cert_group ";
   $q_string .= "order by cert_url,cert_expire";
   $q_certs = mysqli_query($db, $q_string) or die (mysqli_error($db));
   while ($a_certs = mysqli_fetch_array($q_certs)) {
@@ -82,7 +82,7 @@
     $q_string .= "from software ";
     $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
     $q_string .= "left join products on products.prod_id = software.sw_product ";
-    $q_string .= "left join groups on groups.grp_id = software.sw_group ";
+    $q_string .= "left join a_groups on a_groups.grp_id = software.sw_group ";
     $q_string .= "where sw_cert = " . $a_certs['cert_id'];
     $q_software = mysqli_query($db, $q_string) or die(mysqli_error($db));
     while ($a_software = mysqli_fetch_array($q_software)) {
