@@ -158,7 +158,7 @@
       $q_string .= "left join inttype   on inttype.itp_id   = interface.int_type ";
       $q_string .= "left join products  on products.prod_id = inventory.inv_product ";
       $q_string .= "left join projects  on projects.prj_id  = inventory.inv_project ";
-      $q_string .= "left join groups    on groups.grp_id    = inventory.inv_manager ";
+      $q_string .= "left join a_groups    on a_groups.grp_id    = inventory.inv_manager ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";
       } else {
@@ -170,7 +170,7 @@
         while ($a_interface = mysqli_fetch_array($q_interface)) {
 
           $q_string  = "select grp_name ";
-          $q_string .= "from groups ";
+          $q_string .= "from a_groups ";
           $q_string .= "where grp_id = " . $a_interface['inv_appadmin'] . " ";
           $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_groups = mysqli_fetch_array($q_groups);
@@ -258,7 +258,7 @@
       $q_string  = "select rsdp_id,if_ip,if_mac,if_name,itp_name,grp_name,rsdp_application ";
       $q_string .= "from rsdp_interface ";
       $q_string .= "left join rsdp_server on rsdp_server.rsdp_id = rsdp_interface.if_rsdp ";
-      $q_string .= "left join groups on groups.grp_id = rsdp_server.rsdp_platform ";
+      $q_string .= "left join a_groups on a_groups.grp_id = rsdp_server.rsdp_platform ";
       $q_string .= "left join inttype on inttype.itp_id = rsdp_interface.if_type ";
       $q_string .= "where if_name like \"%" . $formVars['search_for'] . "%\" or if_ip like \"%" . $formVars['search_for'] . "%\" ";
       $q_string .= "order by if_name ";
@@ -268,7 +268,7 @@
 
           if ($a_rsdp_interface['rsdp_application'] > 0) {
             $q_string  = "select grp_name ";
-            $q_string .= "from groups ";
+            $q_string .= "from a_groups ";
             $q_string .= "where grp_id = " . $a_rsdp_interface['rsdp_application'] . " ";
             $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             $a_groups = mysqli_fetch_array($q_groups);
@@ -392,7 +392,7 @@
       $q_string .= "left join cities    on cities.ct_id     = locations.loc_city ";
       $q_string .= "left join states    on states.st_id     = locations.loc_state ";
       $q_string .= "left join inttype on inttype.itp_id = interface.int_type ";
-      $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
+      $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";
       } else {
@@ -404,7 +404,7 @@
         while ($a_interface = mysqli_fetch_array($q_interface)) {
 
           $q_string  = "select grp_name ";
-          $q_string .= "from groups ";
+          $q_string .= "from a_groups ";
           $q_string .= "where grp_id = " . $a_interface['inv_appadmin'] . " ";
           $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_groups = mysqli_fetch_array($q_groups);
@@ -532,7 +532,7 @@
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
       $q_string .= "left join cities    on cities.ct_id     = locations.loc_city ";
       $q_string .= "left join states    on states.st_id     = locations.loc_state ";
-      $q_string .= "left join groups on groups.grp_id = software.sw_group ";
+      $q_string .= "left join a_groups on a_groups.grp_id = software.sw_group ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";
       } else {
@@ -671,7 +671,7 @@
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
       $q_string .= "left join cities    on cities.ct_id     = locations.loc_city ";
       $q_string .= "left join states    on states.st_id     = locations.loc_state ";
-      $q_string .= "left join groups on groups.grp_id = hardware.hw_group ";
+      $q_string .= "left join a_groups on a_groups.grp_id = hardware.hw_group ";
       $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
       $q_string .= "left join parts on parts.part_id = models.mod_type ";
       if ($formVars['retired'] == 'true') {
@@ -810,7 +810,7 @@
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
       $q_string .= "left join cities    on cities.ct_id     = locations.loc_city ";
       $q_string .= "left join states    on states.st_id     = locations.loc_state ";
-      $q_string .= "left join groups    on groups.grp_id    = inventory.inv_manager ";
+      $q_string .= "left join a_groups    on a_groups.grp_id    = inventory.inv_manager ";
       $q_string .= "where " . $search_on . " ";
       $q_string .= $orderby;
       $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -939,7 +939,7 @@
       $q_string  = "select inv_id,loc_name,ct_city,st_acronym,cn_acronym,inv_name,grp_name,typ_name,inv_status ";
       $q_string .= "from inventory ";
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
-      $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
+      $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
       $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
       $q_string .= "left join states on states.st_id = locations.loc_state ";
       $q_string .= "left join country on country.cn_id = locations.loc_country ";
@@ -1069,7 +1069,7 @@
 
       $q_string  = "select pwd_id,pwd_user,pwd_update,inv_id,inv_name,inv_domain,IFNULL(inv_appadmin, 0) as inv_appadmin,grp_name ";
       $q_string .= "from inventory ";
-      $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
+      $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
       $q_string .= "left join syspwd on syspwd.pwd_companyid = inventory.inv_id ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";
@@ -1082,7 +1082,7 @@
         while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
           $q_string  = "select grp_name ";
-          $q_string .= "from groups ";
+          $q_string .= "from a_groups ";
           $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
           $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_groups = mysqli_fetch_array($q_groups);
@@ -1149,7 +1149,7 @@
 
         $q_string  = "select pwd_id,pwd_user,pwd_update,inv_id,inv_name,inv_domain,IFNULL(inv_appadmin, 0) as inv_appadmin,grp_name ";
         $q_string .= "from inventory ";
-        $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
+        $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
         $q_string .= "left join syspwd on syspwd.pwd_companyid = inventory.inv_id ";
         if ($formVars['retired'] == 'true') {
           $q_string .= "where " . $search_on . " ";
@@ -1162,7 +1162,7 @@
           while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
             $q_string  = "select grp_name ";
-            $q_string .= "from groups ";
+            $q_string .= "from a_groups ";
             $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
             $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             $a_groups = mysqli_fetch_array($q_groups);
@@ -1309,7 +1309,7 @@
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
       $q_string .= "left join cities    on cities.ct_id     = locations.loc_city ";
       $q_string .= "left join states    on states.st_id     = locations.loc_state ";
-      $q_string .= "left join groups    on groups.grp_id    = inventory.inv_manager ";
+      $q_string .= "left join a_groups    on a_groups.grp_id    = inventory.inv_manager ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";
       } else {
@@ -1330,7 +1330,7 @@
           }
 
           $q_string  = "select grp_name ";
-          $q_string .= "from groups ";
+          $q_string .= "from a_groups ";
           $q_string .= "where grp_id = " . $a_packages['inv_appadmin'] . " ";
           $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_groups = mysqli_fetch_array($q_groups);
