@@ -297,7 +297,7 @@
   $q_string .= "left join cities    on cities.ct_id          = locations.loc_city ";
   $q_string .= "left join zones     on zones.zone_id         = inventory.inv_zone ";
   $q_string .= "left join models    on models.mod_id         = hardware.hw_vendorid ";
-  $q_string .= "left join groups    on groups.grp_id         = inventory.inv_manager ";
+  $q_string .= "left join a_groups    on a_groups.grp_id         = inventory.inv_manager ";
   $q_string .= $group . $product . $inwork . $location . $type . " ";
   $q_string .= "group by prod_name ";
   $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
