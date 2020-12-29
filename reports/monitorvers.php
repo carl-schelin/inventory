@@ -183,7 +183,7 @@
   $q_string  = "select int_id,inv_name,inv_function,int_companyid,int_server,int_addr,inv_appadmin,grp_name,int_type,int_openview,loc_name,prod_name,sw_software ";
   $q_string .= "from interface ";
   $q_string .= "left join inventory on inventory.inv_id   = interface.int_companyid ";
-  $q_string .= "left join groups    on groups.grp_id      = inventory.inv_manager ";
+  $q_string .= "left join a_groups    on a_groups.grp_id      = inventory.inv_manager ";
   $q_string .= "left join locations on locations.loc_id   = inventory.inv_location ";
   $q_string .= "left join products  on products.prod_id   = inventory.inv_product ";
   $q_string .= "right join software  on software.sw_companyid   = inventory.inv_id ";
@@ -198,7 +198,7 @@
       $linkend   = "</a>";
 
       $q_string  = "select grp_name ";
-      $q_string .= "from groups ";
+      $q_string .= "from a_groups ";
       $q_string .= "where grp_id = " . $a_interface['inv_appadmin'] . " ";
       $q_appadmin = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_appadmin = mysqli_fetch_array($q_appadmin);
