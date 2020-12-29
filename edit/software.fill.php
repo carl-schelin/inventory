@@ -29,7 +29,7 @@
       $a_software = mysqli_fetch_array($q_software);
       mysqli_free_result($q_software);
 
-      $group         = return_Index($db, $a_software['sw_group'],       "select grp_id from groups where grp_disabled = 0 order by grp_name");
+      $group         = return_Index($db, $a_software['sw_group'],       "select grp_id from a_groups where grp_disabled = 0 order by grp_name");
       $product       = return_Index($db, $a_software['sw_product'],     "select prod_id from products where prod_id != 0 order by prod_name");
       $cert          = return_Index($db, $a_software['sw_cert'],        "select cert_id from certs order by cert_url");
       $support       = return_Index($db, $a_software['sw_supportid'],   "select sup_id from support order by sup_company,sup_contract");
