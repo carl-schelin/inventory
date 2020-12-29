@@ -70,7 +70,7 @@ function attach_group( p_script_url ) {
 <select name="group">
 <?php
   $q_string  = "select grp_name ";
-  $q_string .= "from groups ";
+  $q_string .= "from a_groups ";
   $q_string .= "where grp_id = " . $formVars['group'];
   $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   $a_groups = mysqli_fetch_array($q_groups);
@@ -78,7 +78,7 @@ function attach_group( p_script_url ) {
   print "<option value=\"" . $formVars['group'] . "\">" . htmlspecialchars($a_groups['grp_name']) . "</option>\n";
 
   $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from groups ";
+  $q_string .= "from a_groups ";
   $q_string .= "where grp_disabled = 0 and grp_id != " . $formVars['group'] . " ";
   $q_string .= "order by grp_name";
   $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
