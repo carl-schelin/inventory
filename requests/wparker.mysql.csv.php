@@ -41,7 +41,7 @@
   $q_string  = "select sw_id,sw_software,sw_vendor,sw_product,sw_type,sw_verified,sw_update,inv_name,grp_name,prod_name ";
   $q_string .= "from software ";
   $q_string .= "left join inventory on software.sw_companyid = inventory.inv_id ";
-  $q_string .= "left join groups    on groups.grp_id         = software.sw_group ";
+  $q_string .= "left join a_groups    on a_groups.grp_id         = software.sw_group ";
   $q_string .= "left join products  on products.prod_id      = software.sw_product ";
   $q_string .= "where inv_status = 0 and sw_software like '%mysql%' ";
   $q_string .= $orderby;
