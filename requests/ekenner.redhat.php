@@ -65,7 +65,7 @@
   $q_string .= "from inventory ";
   $q_string .= "left join hardware  on inventory.inv_id        = hardware.hw_companyid ";
   $q_string .= "left join software  on inventory.inv_id        = software.sw_companyid ";
-  $q_string .= "left join groups    on groups.grp_id           = hardware.hw_group ";
+  $q_string .= "left join a_groups    on a_groups.grp_id           = hardware.hw_group ";
   $q_string .= "left join models    on models.mod_id           = hardware.hw_vendorid ";
   $q_string .= "left join support   on support.sup_id          = hardware.hw_supportid ";
   $q_string .= "left join products  on products.prod_id        = inventory.inv_product ";
@@ -79,7 +79,7 @@
   $q_string .= "from inventory ";
   $q_string .= "left join hardware  on inventory.inv_id        = hardware.hw_companyid ";
   $q_string .= "left join software  on inventory.inv_id        = software.sw_companyid ";
-  $q_string .= "left join groups    on groups.grp_id           = hardware.hw_group ";
+  $q_string .= "left join a_groups    on a_groups.grp_id           = hardware.hw_group ";
   $q_string .= "left join models    on models.mod_id           = hardware.hw_vendorid ";
   $q_string .= "left join support   on support.sup_id          = hardware.hw_supportid ";
   $q_string .= "left join products  on products.prod_id        = inventory.inv_product ";
