@@ -80,7 +80,7 @@
   $q_string  = "select inv_id,inv_name,mod_vendor,mod_name,ct_city,loc_addr1,loc_addr2,loc_county,st_state,loc_zipcode,hw_serial,hw_asset,grp_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
+  $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
   $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
