@@ -20,7 +20,7 @@
 
 # read in the uploaded file
 
-  $file = "/opt/intrado/etc/intrado.email";
+  $file = "/opt/unixsuite/etc/company.email";
 
   $q_string  = "update email set mail_disabled = 1";
   if ($debug == 'yes') {
