@@ -28,7 +28,7 @@
       $a_certs = mysqli_fetch_array($q_certs);
       mysqli_free_result($q_certs);
 
-      $group = return_Index($db, $a_certs['cert_group'], "select grp_id from groups where grp_disabled = 0 order by grp_name");
+      $group = return_Index($db, $a_certs['cert_group'], "select grp_id from a_groups where grp_disabled = 0 order by grp_name");
       $cert  = return_Index($db, $a_certs['cert_ca'],    "select cert_id from certs where cert_isca = 1 order by cert_desc");
 
       print "document.dialog.cert_desc.value = '"      . mysqli_real_escape_string($db, $a_certs['cert_desc'])      . "';\n";
