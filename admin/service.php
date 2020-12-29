@@ -169,7 +169,7 @@ $(document).ready( function() {
   </ul></li>
 </ul>
 
-<p><a href="http://intradonet/sites/database/Shared%20Documents/Service_Class/Service_Class_Definition.doc">Service Class Documentation.</a></p>
+<p><a href="<?php print $Serviceclass; ?>">Service Class Documentation.</a></p>
 
 </div>
 
