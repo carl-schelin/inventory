@@ -4,7 +4,7 @@
   if (isset($_SESSION['username'])) {
     $q_string  = "select grp_id,grp_name ";
     $q_string .= "from grouplist ";
-    $q_string .= "left join groups on groups.grp_id = grouplist.gpl_group ";
+    $q_string .= "left join a_groups on a_groups.grp_id = grouplist.gpl_group ";
     $q_string .= "where gpl_user = " . $_SESSION['uid'];
     $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=footer.php&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     if (mysqli_num_rows($q_grouplist) > 0) {
