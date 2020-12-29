@@ -25,11 +25,11 @@
   $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 # This script adds the Centurylink data to the psaps table. This is intended to fill in the Partners fields in the output .csv file.
-# As such the psap_partnerid equals the Intrado ALI ID.
-# Output is if the psap_partnerid == 0, then the PSAP is an Intrado PSAP otherwise it's a Parter PSAP.
+# As such the psap_partnerid equals the ALI ID.
+# Output is if the psap_partnerid == 0, then the PSAP is a company PSAP otherwise it's a Parter PSAP.
 # 
 # New fields per the new spreadsheet:
-# psap_parentid - Stores the psap_id of the Intrado PSAP where ALI ID and Intrado PSAP ID match
+# psap_parentid - Stores the psap_id of the company PSAP where ALI ID and company PSAP ID match
 # psap_pseudo_cid - Stores the 'New Circuit ID', column 6/G
 # psap_lec - Stores the 'LEC', column 7/H
 #
@@ -48,9 +48,9 @@ $row = 1;
 if (($handle = fopen($file, "r")) !== FALSE) {
   while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
 
-# initially get the intrado psap information: column 0, 1, 3, 4
-# match it with what's in the system already and get the intrado psap_id. This becomes the centurylink psap_companyid
-# then see if the centurylink data inlcuding the psap_companyid and psap_parentid (which equals psap_id of intrado psap) exists
+# initially get the psap information: column 0, 1, 3, 4
+# match it with what's in the system already and get the psap_id. This becomes the centurylink psap_companyid
+# then see if the centurylink data inlcuding the psap_companyid and psap_parentid (which equals psap_id of the psap) exists
 
 
 
@@ -64,14 +64,14 @@ if (($handle = fopen($file, "r")) !== FALSE) {
 # new centurylink data 1/29
 # "Q1" |hpstlew |          03318         |     607       |"UT JUAB COUNTY" | "64LGGZ134187  172.20.50.124"| 64/LGGZ/134187/MS|CTL West |         JUAB COUNTY             |UT/EVXR/318/MS     |
 # 0A       1B                2C                 3D                4E                     5F                        6G              7H                 8I                        9J
-#ALI-ID,ALI Name,CTL-ID - Partner PSAP ID,Intrado PSAP ID,Intrado PSAP Name,        Circuit ID -          , NEW CircuitID,      LEC,    CTL-PSAP Name - Partner PSAP Name,CTL-PSAP Circuit ID,
+#ALI-ID,ALI Name,CTL-ID - Partner PSAP ID,company PSAP ID,company PSAP Name,        Circuit ID -          , NEW CircuitID,      LEC,    CTL-PSAP Name - Partner PSAP Name,CTL-PSAP Circuit ID,
 #
 # 0        1           2                   3             4     5     6      7                 8
-#ALI-ID,ALI Name,Intrado PSAP ID,Intrado PSAP Name,Circuit ID,LEC,CTL-ID,CTL-PSAP Name,CTL-PSAP Circuit ID,
+#ALI-ID,ALI Name,company PSAP ID,company PSAP Name,Circuit ID,LEC,CTL-ID,CTL-PSAP Name,CTL-PSAP Circuit ID,
 # 
 # old centurylink data 12/11 - Ignore this...
 # 0        1           2                        3                   4            5            6          7                 8                      9
-#ALI-ID,ALI Name,CTL-ID - Partner PSAP ID,Intrado PSAP ID,Intrado PSAP Name,Circuit ID - ,NEW CircuitID,LEC,CTL-PSAP Name - Partner PSAP Name,CTL-PSAP Circuit ID
+#ALI-ID,ALI Name,CTL-ID - Partner PSAP ID,company PSAP ID,company PSAP Name,Circuit ID - ,NEW CircuitID,LEC,CTL-PSAP Name - Partner PSAP Name,CTL-PSAP Circuit ID
 
 # clear out spaces
     $data[0] = clean($data[0], 10);
@@ -98,7 +98,7 @@ if (($handle = fopen($file, "r")) !== FALSE) {
 #select psap_id from psaps where psap_ali_id = 'Q3' and psap_companyid = 1373 and psap_psap_id = '881' and psap_description = 'nc fayetteville com hosted viper 2';
 # returns 
 
-# get the matching intrado psap id when data0, data1, data3, and data4 match
+# get the matching psap id when data0, data1, data3, and data4 match
       $q_string  = "select psap_id ";
       $q_string .= "from psaps ";
       $q_string .= "where ";
@@ -114,7 +114,7 @@ if (($handle = fopen($file, "r")) !== FALSE) {
       }
 
 # add or update the centurylink (customerid 41) data.
-# parentid == intrado psap_id == 0 if Default
+# parentid == companyid psap_id == 0 if Default
 # change from data[9] to data[6] per converstion with mahesh and jerry. 2/1/16
       $query  = 
         "psap_customerid  =  " . "41"                                          . "," . 
