@@ -93,7 +93,7 @@
       $output .= "#   [0-9] Search for all numbers from 0 to 9\n";
       $output .= "#\n";
       $output .= "#\n";
-      $output .= "# There is a 'messages.exclude' file in /usr/local/admin/install/intrado/etc\n";
+      $output .= "# There is a 'messages.exclude' file in /usr/local/admin/install/unixsuite/etc\n";
       $output .= "# which contains server specific messages that need to be removed.\n";
       $output .= "# This file should be used for messages that occur across multiple servers\n";
       $output .= "# and smaller groupings of messages or temporary exclusions (please date the\n";
