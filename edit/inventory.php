@@ -1912,14 +1912,14 @@ on all servers during the following server script run.</p>
 <ul>
   <li>valid.email - This changes the GECOS field on all servers to match the GECOS settings made here.</li>
   <li>lockuser.dat - This file identifes who needs to be locked on a server due to departure from the company.</li>
-  <li>users.exclude - This file lists service accounts that aren't listed in the intrado.email file used to identify people who are still in the company.</li>
+  <li>users.exclude - This file lists service accounts that aren't listed in the company.email file used to identify people who are still in the company.</li>
 </ul>
 
 <p>While you can fill out the fields and "create" a new user in this listing, adding the user does not add the user 
 on the server.</p>
 
 <p>Any user account with a '--' in the Account Type column indicates it is not currently being managed and is likely 
-being reported if a service or system account as it's not being found in the intrado.email file. Click on the user 
+being reported if a service or system account as it's not being found in the company.email file. Click on the user 
 to modify it and then click the Add User button to begin managing the account.</p>
 
 </div>
