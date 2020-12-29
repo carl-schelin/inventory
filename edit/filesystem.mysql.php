@@ -177,7 +177,7 @@
         $output .= "<option value=\"0\">Unassigned</option>\n";
 
         $q_string  = "select grp_id,grp_name ";
-        $q_string .= "from groups ";
+        $q_string .= "from a_groups ";
         $q_string .= "where grp_disabled = 0 ";
         $q_string .= "order by grp_name ";
         $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -277,7 +277,7 @@
       $q_string  = "select fs_id,fs_backup,fs_wwid,fs_volume,fs_device,fs_size,fs_mount,fs_verified,fs_update,grp_name ";
       $q_string .= "from filesystem ";
       $q_string .= "left join inventory on inventory.inv_id = filesystem.fs_companyid ";
-      $q_string .= "left join groups on groups.grp_id = filesystem.fs_group ";
+      $q_string .= "left join a_groups on a_groups.grp_id = filesystem.fs_group ";
       $q_string .= "where fs_companyid = " . $formVars['fs_companyid'] . " ";
       $q_string .= "order by fs_device";
       $q_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
