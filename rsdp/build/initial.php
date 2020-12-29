@@ -1145,7 +1145,7 @@ the Platforms and Applications selections at the default, the groups selected un
 <option value="0">Unassigned</option>
 <?php
   $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from groups ";
+  $q_string .= "from a_groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name";
   $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -1158,7 +1158,7 @@ the Platforms and Applications selections at the default, the groups selected un
 <option value="0">Unassigned</option>
 <?php
   $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from groups ";
+  $q_string .= "from a_groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name";
   $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
