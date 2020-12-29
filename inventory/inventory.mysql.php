@@ -166,7 +166,7 @@
 
       $q_string  = "select inv_id,inv_fqdn,inv_name,inv_function,inv_appadmin,grp_name,prod_name,prj_name,svc_name,loc_name,inv_row,inv_rack,inv_unit,inv_callpath,inv_ansible,inv_ssh,win_text ";
       $q_string .= "from inventory ";
-      $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
+      $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
       $q_string .= "left join products on products.prod_id = inventory.inv_product ";
       $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
       $q_string .= "left join service on service.svc_id = inventory.inv_class ";
@@ -191,7 +191,7 @@
         $linkend   = "</a>";
 
         $q_string  = "select grp_name ";
-        $q_string .= "from groups ";
+        $q_string .= "from a_groups ";
         $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'];
         $q_appadmin = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_appadmin = mysqli_fetch_array($q_appadmin);
@@ -479,7 +479,7 @@
       $servername = '&nbsp;';
       $q_string  = "select inv_id,inv_fqdn,inv_name,inv_function,inv_appadmin,inv_ssh,grp_name,prod_name,prj_name,svc_name,loc_name,inv_row,inv_rack,inv_unit,inv_callpath,inv_ansible,inv_ssh ";
       $q_string .= "from inventory ";
-      $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
+      $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
       $q_string .= "left join products on products.prod_id = inventory.inv_product ";
       $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
       $q_string .= "left join service on service.svc_id = inventory.inv_class ";
