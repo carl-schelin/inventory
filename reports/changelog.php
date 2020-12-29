@@ -104,7 +104,7 @@
 
   $q_string  = "select cl_id,cl_name,cl_group,grp_name ";
   $q_string .= "from changelog ";
-  $q_string .= "left join groups on groups.grp_id = changelog.cl_group ";
+  $q_string .= "left join a_groups on a_groups.grp_id = changelog.cl_group ";
   $q_string .= $where . " ";
   $q_string .= $orderby;
   $q_changelog = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
