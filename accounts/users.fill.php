@@ -31,7 +31,7 @@
       $a_users = mysqli_fetch_array($q_users);
       mysqli_free_result($q_users);
 
-      $groups   = return_Index($db, $a_users['usr_group'],    "select grp_id from groups where grp_disabled = 0 order by grp_name");
+      $groups   = return_Index($db, $a_users['usr_group'],    "select grp_id from a_groups where grp_disabled = 0 order by grp_name");
       $disabled = $a_users['usr_disabled'];
       $levels   = return_Index($db, $a_users['usr_level'],    "select lvl_id from levels where lvl_disabled = 0 order by lvl_id");
       $theme    = return_Index($db, $a_users['usr_theme'],    "select theme_id from themes order by theme_title") - 1;
