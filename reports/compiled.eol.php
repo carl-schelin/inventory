@@ -168,7 +168,7 @@
   $q_string .= "from software ";
   $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
   $q_string .= "left join hardware  on inventory.inv_id = hardware.hw_companyid ";
-  $q_string .= "left join groups    on groups.grp_id    = hardware.hw_group ";
+  $q_string .= "left join a_groups    on a_groups.grp_id    = hardware.hw_group ";
   $q_string .= "left join models    on models.mod_id    = hardware.hw_vendorid ";
   $q_string .= "left join support   on support.sup_id   = hardware.hw_supportid ";
   $q_string .= "left join products  on products.prod_id = inventory.inv_product ";
@@ -229,7 +229,7 @@
     $a_software = mysqli_fetch_array($q_software);
 
     $q_string  = "select grp_name ";
-    $q_string .= "from groups ";
+    $q_string .= "from a_groups ";
     $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
     $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_groups = mysqli_fetch_array($q_groups);
