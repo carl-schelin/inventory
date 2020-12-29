@@ -48,7 +48,7 @@
         print "document.owner.vul_ticket.value = '"      . mysqli_real_escape_string($db, $a_vulnowner['vul_ticket'])      . "';\n";
         print "document.owner.vul_description.value = '" . mysqli_real_escape_string($db, $a_vulnowner['vul_description']) . "';\n";
 
-        $group = return_Index($db, $a_vulnowner['vul_group'], "select grp_id from groups where grp_disabled = 0 order by grp_name");
+        $group = return_Index($db, $a_vulnowner['vul_group'], "select grp_id from a_groups where grp_disabled = 0 order by grp_name");
 
         print "document.owner.vul_group['" . $group . "'].selected = true;\n";
 
