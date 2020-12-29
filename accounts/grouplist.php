@@ -183,8 +183,8 @@ $(document).ready( function() {
 <option value="0">Unassigned</option>
 <?php
   $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from groups ";
-  $q_string .= "left join grouplist on grouplist.gpl_group = groups.grp_id ";
+  $q_string .= "from a_groups ";
+  $q_string .= "left join grouplist on grouplist.gpl_group = a_groups.grp_id ";
   if (check_userlevel($db, $AL_Admin) == 0) {
     $q_string .= "where gpl_user = " . $_SESSION['uid'] . " ";
   }
