@@ -98,7 +98,7 @@
   $q_string .= "from rsdp_server ";
   $q_string .= "left join locations on locations.loc_id = rsdp_server.rsdp_location ";
   $q_string .= "left join users on users.usr_id = rsdp_server.rsdp_requestor ";
-  $q_string .= "left join groups on groups.grp_id = users.usr_group ";
+  $q_string .= "left join a_groups on a_groups.grp_id = users.usr_group ";
   $q_string .= $where;
   $q_string .= "order by rsdp_id ";
   $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -256,7 +256,7 @@
   $q_string .= "from rsdp_server ";
   $q_string .= "left join locations on locations.loc_id = rsdp_server.rsdp_location ";
   $q_string .= "left join users on users.usr_id = rsdp_server.rsdp_requestor ";
-  $q_string .= "left join groups on groups.grp_id = users.usr_group ";
+  $q_string .= "left join a_groups on a_groups.grp_id = users.usr_group ";
   $q_string .= $where;
   $q_string .= "order by rsdp_id ";
   $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
