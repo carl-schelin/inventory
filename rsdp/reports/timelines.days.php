@@ -94,7 +94,7 @@
       $q_string  = "select rsdp_id,rsdp_created ";
       $q_string .= "from rsdp_server ";
       $q_string .= "left join users on users.usr_id = rsdp_server.rsdp_requestor ";
-      $q_string .= "left join groups on groups.grp_id = users.usr_group ";
+      $q_string .= "left join a_groups on a_groups.grp_id = users.usr_group ";
       $q_string .= "where rsdp_created >= '" . $formVars['start'] . "' and rsdp_created <= '" . $formVars['end'] . "' ";
       if ($formVars['group'] > 0) {
         $q_string .= "and grp_id = " . $formVars['group'] . " ";
