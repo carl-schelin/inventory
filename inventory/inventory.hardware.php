@@ -179,7 +179,7 @@
           print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
           $q_string  = "select grp_id,grp_name ";
-          $q_string .= "from groups ";
+          $q_string .= "from a_groups ";
           $q_string .= "where grp_disabled = 0 ";
           $q_string .= "order by grp_name ";
           $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -209,7 +209,7 @@
           }
 
           $q_string  = "select grp_id,grp_name ";
-          $q_string .= "from groups ";
+          $q_string .= "from a_groups ";
           $q_string .= "where grp_id = " . $formVars['select'] . " ";
           $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_groups) > 0) {
