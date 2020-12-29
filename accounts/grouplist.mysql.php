@@ -120,7 +120,7 @@
 
       $q_string  = "select gpl_id,gpl_group,gpl_edit,grp_name,usr_first,usr_last,usr_disabled,usr_group,tit_name,usr_manager ";
       $q_string .= "from grouplist ";
-      $q_string .= "left join groups on groups.grp_id = grouplist.gpl_group ";
+      $q_string .= "left join a_groups on a_groups.grp_id = grouplist.gpl_group ";
       $q_string .= "left join users on users.usr_id = grouplist.gpl_user ";
       $q_string .= "left join titles on titles.tit_id = users.usr_title ";
       $q_string .= "where grp_disabled = 0 ";
