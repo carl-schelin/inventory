@@ -58,7 +58,7 @@
 
     $q_string  = "select sw_software,prod_name,grp_name ";
     $q_string .= "from software ";
-    $q_string .= "left join groups on groups.grp_id = software.sw_group ";
+    $q_string .= "left join a_groups on a_groups.grp_id = software.sw_group ";
     $q_string .= "left join products on products.prod_id = software.sw_product ";
     $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type != 'OS' and sw_group != 1 ";
     $q_string .= "order by prod_name,grp_name";
