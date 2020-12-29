@@ -68,7 +68,7 @@
 
 # get old group manager.
           $q_string  = "select grp_manager ";
-          $q_string .= "from groups ";
+          $q_string .= "from a_groups ";
           $q_string .= "where grp_id = " . $formVars['id'] . " ";
           $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_groups) > 0) {
@@ -217,10 +217,10 @@
 
       $q_string  = "select grp_id,grp_name,grp_snow,org_name,role_name,grp_email,grp_magic,grp_category,grp_clscript,usr_last,";
       $q_string .= "usr_first,grp_disabled,grp_changelog,grp_clfile,grp_clserver,grp_report,grp_status,grp_server,grp_import ";
-      $q_string .= "from groups ";
-      $q_string .= "left join organizations on organizations.org_id = groups.grp_organization ";
-      $q_string .= "left join roles on roles.role_id = groups.grp_role ";
-      $q_string .= "left join users on users.usr_id = groups.grp_manager ";
+      $q_string .= "from a_groups ";
+      $q_string .= "left join organizations on organizations.org_id = a_groups.grp_organization ";
+      $q_string .= "left join roles on roles.role_id = a_groups.grp_role ";
+      $q_string .= "left join users on users.usr_id = a_groups.grp_manager ";
       $q_string .= "order by grp_name";
       $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_groups) > 0) {
