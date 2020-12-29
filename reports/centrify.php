@@ -78,7 +78,7 @@
 
   print "<p>The purpose of this report is to list all the servers that are currently under Centrify control. Centrify is a connection 
 to the Windows Active Directory services which changes the user management from the individual server to a central controller. There are 
-several domains which are isolated from the other domains. The 'unix.intrado.pri' domain is connected to the central corp domain which 
+several domains which are isolated from the other domains. The central Unix domain is connected to the central corp domain which 
 is managed by the Windows team. The other domains are managed by the Unix team.</p>\n";
 
   print "</div>\n\n";
