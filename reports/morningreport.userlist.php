@@ -112,7 +112,7 @@
         $comma = '';
         $q_string  = "select grp_name ";
         $q_string .= "from grouplist ";
-        $q_string .= "left join groups on groups.grp_id = grouplist.gpl_group ";
+        $q_string .= "left join a_groups on a_groups.grp_id = grouplist.gpl_group ";
         $q_string .= "where gpl_user = " . $a_users['usr_id'] . " ";
         $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_grouplist = mysqli_fetch_array($q_grouplist)) {
@@ -133,7 +133,7 @@
         $comma = '';
         $q_string  = "select grp_name ";
         $q_string .= "from grouplist ";
-        $q_string .= "left join groups on groups.grp_id = grouplist.gpl_group ";
+        $q_string .= "left join a_groups on a_groups.grp_id = grouplist.gpl_group ";
         $q_string .= "where gpl_user = " . $a_users['usr_id'] . " ";
         $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_grouplist = mysqli_fetch_array($q_grouplist)) {
