@@ -194,7 +194,7 @@
         $output .= "<option value=\"0\">Unassigned</option>\n";
 
         $q_string  = "select grp_id,grp_name ";
-        $q_string .= "from groups ";
+        $q_string .= "from a_groups ";
         $q_string .= "where grp_disabled = 0 ";
         $q_string .= "order by grp_name";
         $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -357,7 +357,7 @@
       $q_string  = "select sw_id,sw_software,sw_vendor,sw_product,sw_type,sw_verified,sw_update,inv_manager,sw_group,sw_facing,grp_name,prod_name,sw_primary,sw_locked ";
       $q_string .= "from software ";
       $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
-      $q_string .= "left join groups on groups.grp_id = software.sw_group ";
+      $q_string .= "left join a_groups on a_groups.grp_id = software.sw_group ";
       $q_string .= "left join products on products.prod_id = software.sw_product ";
       $q_string .= "where sw_companyid = " . $formVars['sw_companyid'] . " ";
       $q_string .= "order by sw_software ";
