@@ -13,7 +13,7 @@ do
   sed -e "s/TX-EASTERN HOST A\\\, HOST B/\"TX-EASTERN HOST A, HOST B\"/g" $i >> ali_total.csv
 done
 
-# add non Intrado ALI PSAP IDs for CenturyLink
+# add non company ALI PSAP IDs for CenturyLink
 # These were provided by Pete Schmidt 9/1/16
 # The issue is there are IEN PSAPs being imported that don't match any existing "Standard" ALI PSAP information
 #   Carl Schelin determined that creating a "dummy" file of non ALI PSAPs would be better than trying to hack the code.
