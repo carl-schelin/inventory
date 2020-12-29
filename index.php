@@ -414,7 +414,7 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
   <li>Filter on Group: <select name="group">
 <?php
   $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from groups ";
+  $q_string .= "from 'groups' ";
   $q_string .= "where grp_id = " . $formVars['group'] . " ";
   $q_string .= "order by grp_name";
   $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -429,7 +429,7 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
   }
 
   $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from groups ";
+  $q_string .= "from 'groups' ";
   $q_string .= "where grp_disabled = 0 and grp_id != " . $formVars['group'] . " ";
   $q_string .= "order by grp_name";
   $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
