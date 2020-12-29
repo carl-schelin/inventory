@@ -112,7 +112,7 @@
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $q_string  = "select grp_name ";
-      $q_string .= "from groups ";
+      $q_string .= "from a_groups ";
       $q_string .= "where grp_id = " . $formVars['chk_group'] . " ";
       $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       $a_groups = mysqli_fetch_array($q_groups);
@@ -194,7 +194,7 @@
 
           $q_string  = "select chk_id,chk_group,grp_name,chk_index,chk_text,chk_link ";
           $q_string .= "from checklist ";
-          $q_string .= "left join groups on groups.grp_id = checklist.chk_group ";
+          $q_string .= "left join a_groups on a_groups.grp_id = checklist.chk_group ";
           $q_string .= "where chk_group = " . $formVars['chk_group'] . " and chk_task = " . $i . " ";
           $q_string .= "order by chk_group,chk_index";
           $q_checklist = mysqli_query($db, $q_string) or die (mysqli_error($db));
