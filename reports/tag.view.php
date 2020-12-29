@@ -252,7 +252,7 @@ $(document).ready( function () {
             . "left join models    on models.mod_id         = hardware.hw_vendorid "
             . "left join locations on locations.loc_id      = inventory.inv_location "
             . "left join cities    on cities.ct_id          = locations.loc_city "
-            . "left join groups    on groups.grp_id         = inventory.inv_manager "
+            . "left join a_groups    on a_groups.grp_id         = inventory.inv_manager "
             . "left join zones     on zones.zone_id         = inventory.inv_zone "
             . "left join tags      on tags.tag_companyid    = inventory.inv_id "
             . $where
