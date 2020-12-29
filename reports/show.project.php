@@ -125,7 +125,7 @@ $(document).ready( function() {
   $q_string  = "select hw_id,inv_id,inv_name,hw_asset,hw_serial,mod_name,grp_name,inv_ssh,inv_ansible,hw_verified,hw_update ";
   $q_string .= "from hardware ";
   $q_string .= "left join inventory on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join groups on hardware.hw_group = groups.grp_id ";
+  $q_string .= "left join a_groups on hardware.hw_group = a_groups.grp_id ";
   $q_string .= "left join models on hardware.hw_vendorid = models.mod_id ";
   $q_string .= "where inv_project = " . $formVars['id'] . " and inv_status = 0 and hw_primary = 1 ";
   $q_string .= "order by inv_name";
@@ -163,7 +163,9 @@ $(document).ready( function() {
 
 # this is the gather from all systems for the changelog part of the listing
     $grpcount = 0;
-    $q_string = "select grp_changelog,grp_clfile from groups where grp_changelog != ''";
+    $q_string  = "select grp_changelog,grp_clfile ";
+    $q_string .= "from a_groups ";
+    $q_string .= "where grp_changelog != ''";
     $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     while ($a_groups = mysqli_fetch_array($q_groups)) {
       $grouplist[$grpcount] = $a_groups['grp_changelog'];
@@ -278,7 +280,7 @@ $(document).ready( function() {
   $q_string  = "select sw_id,sw_companyid,sw_vendor,sw_type,sw_group,sw_software,sw_verified,sw_update,inv_name,grp_name ";
   $q_string .= "from software ";
   $q_string .= "left join inventory on software.sw_companyid = inventory.inv_id ";
-  $q_string .= "left join groups on software.sw_group = groups.grp_id ";
+  $q_string .= "left join a_groups on software.sw_group = a_groups.grp_id ";
   $q_string .= "where inv_project = " . $formVars['id'] . " and inv_status = 0 ";
   $q_string .= "order by inv_name,sw_software";
   $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
