@@ -278,7 +278,7 @@
             if ($a_rsdp_server[$taskpoc] != 0) {
               if ($taskpoc == "rsdp_apppoc") {
                 $q_string  = "select grp_name ";
-                $q_string .= "from groups ";
+                $q_string .= "from a_groups ";
                 $q_string .= "where grp_id = " . $a_rsdp_server['rsdp_application'];
                 $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
                 $a_groups = mysqli_fetch_array($q_groups);
