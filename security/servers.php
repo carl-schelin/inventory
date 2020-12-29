@@ -196,7 +196,7 @@ $(document).ready( function() {
   $q_string .= "left join severity  on severity.sev_id = security.sec_severity ";
   $q_string .= "left join interface on interface.int_id = vulnerabilities.vuln_interface ";
   $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
-  $q_string .= "left join groups    on groups.grp_id = inventory.inv_manager ";
+  $q_string .= "left join a_groups  on a_groups.grp_id = inventory.inv_manager ";
   $q_string .= "left join products  on products.prod_id = inventory.inv_product ";
 # add in bits if asked
   if ($formVars['projects'] > 0) {
