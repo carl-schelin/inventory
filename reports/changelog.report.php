@@ -124,7 +124,7 @@ $(document).ready( function() {
 # this is the gather from all systems for the changelog part of the listing
   $grpcount = 0;
   $q_string  = "select grp_changelog,grp_clfile ";
-  $q_string .= "from groups ";
+  $q_string .= "from a_groups ";
   $q_string .= "where grp_changelog != ''";
   $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_groups = mysqli_fetch_array($q_groups)) {
