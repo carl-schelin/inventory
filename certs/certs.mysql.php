@@ -135,7 +135,7 @@
       $count = 0;
       $q_string  = "select cert_desc,cert_id,cert_url,cert_expire,cert_authority,cert_group,grp_name,cert_isca ";
       $q_string .= "from certs ";
-      $q_string .= "left join groups on groups.grp_id = certs.cert_group ";
+      $q_string .= "left join a_groups on a_groups.grp_id = certs.cert_group ";
       $q_string .= "order by cert_desc,cert_expire";
       $q_certs = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
       while ($a_certs = mysqli_fetch_array($q_certs)) {
