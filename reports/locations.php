@@ -195,7 +195,7 @@ $(document).ready( function () {
 
   if ($formVars['group'] != -1) {
     $q_string  = "select grp_name ";
-    $q_string .= "from groups ";
+    $q_string .= "from a_groups ";
     $q_string .= "where grp_id = " . $formVars['group'] . " ";
     $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_groups = mysqli_fetch_array($q_groups);
@@ -398,7 +398,7 @@ $(document).ready( function () {
             . "left join country   on country.cn_id         = states.st_country "
             . "left join zones     on zones.zone_id         = inventory.inv_zone "
             . "left join models    on models.mod_id         = hardware.hw_vendorid "
-            . "left join groups    on groups.grp_id         = inventory.inv_manager "
+            . "left join a_groups    on a_groups.grp_id         = inventory.inv_manager "
             . $product . $inwork . $location . $type . " "
             . $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -408,7 +408,7 @@ $(document).ready( function () {
 
       $total_servers++;
       $q_string = "select grp_name "
-                . "from groups "
+                . "from a_groups "
                 . "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
       $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_groups = mysqli_fetch_array($q_groups);
