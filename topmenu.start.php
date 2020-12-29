@@ -61,7 +61,7 @@
     <ul>
 <?php
   $q_string  = "select grp_changelog,grp_clserver,grp_clscript ";
-  $q_string .= "from groups ";
+  $q_string .= "from a_groups ";
   $q_string .= "where grp_id = " . $_SESSION['group'] . " ";
   $q_tmgroups = mysqli_query($db, $q_string);
   $a_tmgroups = mysqli_fetch_array($q_tmgroups);
