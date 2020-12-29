@@ -85,7 +85,7 @@
   $q_string  = "select inv_name,hw_id,hw_companyid,hw_asset,hw_serial,grp_name ";
   $q_string .= "from hardware ";
   $q_string .= "left join inventory on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
+  $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
   $q_string .= "where inv_status = 0 and mod_virtual = 0 and hw_primary = 1 and hw_deleted = 0 ";
   if ($formVars['group'] > 0) {
