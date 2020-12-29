@@ -232,7 +232,7 @@
       $q_string  = "select tag_id,tag_name,tag_view,tag_group,usr_first,usr_last,grp_name ";
       $q_string .= "from tags ";
       $q_string .= "left join inventory on inventory.inv_id = tags.tag_companyid ";
-      $q_string .= "left join groups on groups.grp_id = tags.tag_group ";
+      $q_string .= "left join a_groups on a_groups.grp_id = tags.tag_group ";
       $q_string .= "left join users on users.usr_id = tags.tag_owner ";
       $q_string .= "where tag_companyid = " . $formVars['tag_companyid'] . " ";
       $q_string .= "order by tag_view,tag_name";
