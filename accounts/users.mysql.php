@@ -159,8 +159,8 @@
             $q_string .= "where usr_manager = " . $formVars['id'] . " ";
             mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
-# and clear from groups as well.
-            $q_string  = "update groups ";
+# and clear from a_groups as well.
+            $q_string  = "update a_groups ";
             $q_string .= "set grp_manager = 0 ";
             $q_string .= "where grp_manager = " . $formVars['id'] . " ";
             mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -263,7 +263,7 @@
       $q_string  = "select usr_id,lvl_name,usr_disabled,usr_name,usr_clientid,usr_first,usr_last,usr_email,usr_altemail,usr_reset,grp_name,usr_timestamp,theme_title ";
       $q_string .= "from users ";
       $q_string .= "left join levels on levels.lvl_id = users.usr_level ";
-      $q_string .= "left join groups on groups.grp_id = users.usr_group ";
+      $q_string .= "left join a_groups on a_groups.grp_id = users.usr_group ";
       $q_string .= "left join themes on themes.theme_id = users.usr_theme ";
       $q_string .= "where usr_disabled = 0 and usr_group = 0 and usr_level > 1 ";
       $q_string .= "order by usr_last,usr_first";
@@ -380,7 +380,7 @@ function display_user( $p_title, $p_toggle, $p_query ) {
   $output .= "</div>\n";
 
   $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from groups ";
+  $q_string .= "from a_groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name";
   $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));;
