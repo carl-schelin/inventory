@@ -61,7 +61,7 @@
   $q_string  = "select count(st_id) ";
   $q_string .= "from rsdp_status ";
   $q_string .= "left join users on usr_id = st_user ";
-  $q_string .= "left join groups on groups.grp_id = users.usr_group ";
+  $q_string .= "left join a_groups on a_groups.grp_id = users.usr_group ";
   $q_string .= $where;
   $q_rsdp_status = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_rsdp_status = mysqli_fetch_array($q_rsdp_status);
@@ -218,7 +218,7 @@ $(document).ready( function() {
 <option value="0">All Groups</option>
 <?php
   $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from groups ";
+  $q_string .= "from a_groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name ";
   $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
