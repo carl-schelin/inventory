@@ -23,7 +23,7 @@
             . "left join locations on locations.loc_id = inventory.inv_location "
             . "left join products on products.prod_id = inventory.inv_product "
             . "left join projects on projects.prj_id = inventory.inv_project "
-            . "left join groups on groups.grp_id = inventory.inv_manager "
+            . "left join a_groups on a_groups.grp_id = inventory.inv_manager "
             . "left join cities on cities.ct_id = locations.loc_city "
             . "left join states on states.st_id = locations.loc_state "
             . "left join country on country.cn_id = locations.loc_country "
@@ -129,7 +129,7 @@
   $output .= "<td class=\"" . $class_detail . "\" colspan=\"3\"><strong>Platform Managed By</strong>: " . $a_inventory['grp_name'] . "</td>";
 
   $q_string  = "select grp_name ";
-  $q_string .= "from groups ";
+  $q_string .= "from a_groups ";
   $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
   $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_groups = mysqli_fetch_array($q_groups);
@@ -205,7 +205,7 @@
 
     $q_string  = "select inv_id,inv_name,inv_function,grp_name,inv_unit,inv_appadmin,prod_name ";
     $q_string .= "from inventory ";
-    $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
+    $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
     $q_string .= "left join products on products.prod_id = inventory.inv_product ";
     $q_string .= "where inv_companyid = " . $formVars['id'] . " and inv_status = 0 ";
     $q_string .= "order by inv_unit ";
@@ -228,7 +228,7 @@
         $linkend   = "</a>";
 
         $q_string  = "select grp_name ";
-        $q_string .= "from groups ";
+        $q_string .= "from a_groups ";
         $q_string .= "where grp_id = " . $a_children['inv_appadmin'] . " ";
         $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_groups = mysqli_fetch_array($q_groups);
@@ -312,7 +312,7 @@
 
   $q_string  = "select inv_id,inv_name,inv_function,grp_name,inv_appadmin ";
   $q_string .= "from inventory ";
-  $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
+  $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
   $q_string .= "where inv_clusterid = " . $formVars['id'] . " and inv_status = 0 ";
   $q_string .= "order by inv_name ";
   $q_children = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -332,7 +332,7 @@
       $linkend   = "</a>";
 
       $q_string  = "select grp_name ";
-      $q_string .= "from groups ";
+      $q_string .= "from a_groups ";
       $q_string .= "where grp_id = " . $a_children['inv_appadmin'] . " ";
       $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       $a_groups = mysqli_fetch_array($q_groups);
