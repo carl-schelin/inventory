@@ -101,7 +101,7 @@
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
   $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
-  $q_string .= "left join groups    on groups.grp_id         = inventory.inv_appadmin ";
+  $q_string .= "left join a_groups    on a_groups.grp_id         = inventory.inv_appadmin ";
   $q_string .= "left join products  on products.prod_id      = software.sw_product ";
   $q_string .= "where inv_status = 0 and inv_manager = " . $GRP_Unix . " and sw_type = 'OS' and hw_primary = 1 and int_primary = 1 ";
   $q_string .= "order by inv_name ";
