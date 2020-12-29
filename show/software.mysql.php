@@ -73,7 +73,7 @@
   $q_string  = "select prod_name,sw_vendor,sw_software,sw_type,grp_name,sw_verified,sw_update,sw_primary,sw_facing "
              . "from software "
              . "left join products on products.prod_id = software.sw_product "
-             . "left join groups on groups.grp_id = software.sw_group "
+             . "left join a_groups on a_groups.grp_id = software.sw_group "
              . "where sw_companyid = " . $formVars['id'] . " and sw_type != \"Package\" "
              . "order by sw_type,sw_software";
   $q_software = mysqli_query($db, $q_string) or die(mysqli_error($db));
@@ -144,7 +144,7 @@
 
   $q_string  = "select pkg_name,pkg_update,pkg_os,grp_name ";
   $q_string .= "from packages ";
-  $q_string .= "left join groups on groups.grp_id = packages.pkg_grp_id ";
+  $q_string .= "left join a_groups on a_groups.grp_id = packages.pkg_grp_id ";
   $q_string .= "where pkg_inv_id = " . $formVars['id'] . " ";
   $q_string .= "order by pkg_name,pkg_update ";
   $q_packages = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
