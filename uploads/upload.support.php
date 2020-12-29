@@ -30,7 +30,7 @@
   print ". - Found the Serial Number but did not find the hardware.\n";
 
 # 0-Vendor            # yes
-# 1-Company           # no - this is Intrado or Positron
+# 1-Company           # no - this is company or company
 # 2-PO                # yes
 # 3-Comment           # no
 # 4-Description       # yes
