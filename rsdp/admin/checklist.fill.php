@@ -29,7 +29,7 @@
       $a_checklist = mysqli_fetch_array($q_checklist);
       mysqli_free_result($q_checklist);
 
-#      $group = return_Index($db, $a_checklist['chk_group'], "select grp_id from groups where grp_disabled = 0 order by grp_name");
+#      $group = return_Index($db, $a_checklist['chk_group'], "select grp_id from a_groups where grp_disabled = 0 order by grp_name");
 
 #      print "document.checklists.chk_group['" . $group . "'].selected = true;\n";
       print "document.checklists.chk_task['" . $a_checklist['chk_task'] . "'].selected = true;\n";
