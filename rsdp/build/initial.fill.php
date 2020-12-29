@@ -200,8 +200,8 @@
 #       $projects     = return_Index($db, $a_rsdp_server['rsdp_project'],      "select prj_id from projects where prj_group = " . $_SESSION['group'] . " and prj_close = 0 group by prj_name");
         $platformspoc = return_Index($db, $a_rsdp_server['rsdp_platformspoc'], "select usr_id from users where usr_disabled = 0 and usr_id != 1 order by usr_last");
         $apppoc       = return_Index($db, $a_rsdp_server['rsdp_apppoc'],       "select usr_id from users where usr_disabled = 0 and usr_id != 1 order by usr_last");
-        $platform     = return_Index($db, $a_rsdp_server['rsdp_platform'],     "select grp_id from groups where grp_disabled = 0 order by grp_name");
-        $application  = return_Index($db, $a_rsdp_server['rsdp_application'],  "select grp_id from groups where grp_disabled = 0 order by grp_name");
+        $platform     = return_Index($db, $a_rsdp_server['rsdp_platform'],     "select grp_id from a_groups where grp_disabled = 0 order by grp_name");
+        $application  = return_Index($db, $a_rsdp_server['rsdp_application'],  "select grp_id from a_groups where grp_disabled = 0 order by grp_name");
         $service      = return_Index($db, $a_rsdp_server['rsdp_service'],      "select svc_id from service order by svc_id");
         $vendor       = return_Index($db, $a_rsdp_server['rsdp_vendor'],       "select slv_id from supportlevel order by slv_value");
         $location     = return_Index($db, $a_rsdp_server['rsdp_location'],     "select loc_id from locations left join cities on cities.ct_id = locations.loc_city where loc_type = 1 order by ct_city,loc_name");
