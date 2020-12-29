@@ -74,7 +74,7 @@
 
   $q_string  = "select usr_name,usr_first,usr_last,tit_name,usr_manager,grp_name ";
   $q_string .= "from users ";
-  $q_string .= "left join groups on groups.grp_id = users.usr_group ";
+  $q_string .= "left join a_groups on a_groups.grp_id = users.usr_group ";
   $q_string .= "left join titles on titles.tit_id = users.usr_title ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_manager,usr_group,usr_last,usr_first ";
