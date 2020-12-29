@@ -44,7 +44,7 @@
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 # retrieve index values
-        $application     = return_Index($db, $a_users['usr_group'],     "select grp_id from groups where grp_disabled = 0 order by grp_name");
+        $application     = return_Index($db, $a_users['usr_group'],     "select grp_id from a_groups where grp_disabled = 0 order by grp_name");
 
         print "document.rsdp.rsdp_application['"     . $application     . "'].selected = true;\n";
 
