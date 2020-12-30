@@ -38,7 +38,7 @@ $(document).ready( function() {
 
 <p><strong>GET /api/locations.php</strong></p>
 
-<pre style="text-align: left">curl -s -k https://<?php print $Siteroot; ?>/api/locations.php?site=[site name]&type=[site type] | python -mjson.tool</pre>
+<pre style="text-align: left">curl -s -k <?php print $Siteroot; ?>/api/locations.php?site=[site name]&type=[site type] | python -mjson.tool</pre>
 
 <p><strong>Parameters</strong></p>
 
@@ -51,7 +51,7 @@ $(document).ready( function() {
 <p><strong>Output</strong></p>
 
 <pre style="text-align: left">
-$ curl -s -k http://inventory.internal.pri/inventory/api/locations.php?site=nederland | python -mjson.tool
+$ curl -s -k <?php print $Siteroot; ?>/api/locations.php?site=nederland | python -mjson.tool
 {
     "678": {
         "location_address1": "9999 Ridge Road",
