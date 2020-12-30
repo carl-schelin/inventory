@@ -64,7 +64,7 @@
         $invdepartment = return_Index($db, $a_inventory['inv_department'], "select dep_id from department order by dep_unit,dep_name");
         $invenv        = return_Index($db, $a_inventory['inv_env'],        "select env_id from environment order by env_name");
 # no zero in the selection window so off by one each time
-        $invmaint      = return_Index($db, $a_inventory['inv_maint'],      "select win_id from window order by win_text") - 1;
+        $invmaint      = return_Index($db, $a_inventory['inv_maint'],      "select win_id from maint_window order by win_text") - 1;
 
         print "document.edit.inv_name.value = '"     . mysqli_real_escape_string($db, $a_inventory['inv_name'])     . "';\n";
         print "document.edit.inv_function.value = '" . mysqli_real_escape_string($db, $a_inventory['inv_function']) . "';\n";
