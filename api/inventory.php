@@ -34,7 +34,7 @@
 
   $q_string  = "select inv_id,inv_name,grp_name,inv_appadmin,inv_uuid,inv_satuuid ";
   $q_string .= "from inventory ";
-  $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
+  $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
   $q_string .= "where inv_status = 0 and (grp_id = 1 or grp_id = 26)";
   if ($formVars['group'] != '') {
     $q_string .= "and grp_name like \"%" . $formVars['group'] . "%\" ";
@@ -44,7 +44,7 @@
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $q_string  = "select grp_name ";
-    $q_string .= "from groups ";
+    $q_string .= "from a_groups ";
     $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
     $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     $a_groups = mysqli_fetch_array($q_groups);
