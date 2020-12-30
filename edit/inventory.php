@@ -1365,7 +1365,7 @@ $(document).ready( function() {
   <td class="ui-widget-content">Maintenance Window <select name="inv_maint">
 <?php
   $q_string  = "select win_id,win_text ";
-  $q_string .= "from window  ";
+  $q_string .= "from maint_window  ";
   $q_string .= "order by win_text";
   $q_window = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_window = mysqli_fetch_array($q_window)) {
