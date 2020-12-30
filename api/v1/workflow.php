@@ -38,7 +38,11 @@ $(document).ready( function() {
 
 <p><strong>GET /api/workflow.php</strong></p>
 
-<pre style="text-align: left">curl -s -k https://incojs01.scc911.com/inventory/api/workflow.php?server=[servername]&group=[groupid] | python -mjson.tool</pre>
+<pre style="text-align: left">curl -s -k <?php print $Siteroot; ?>/api/workflow.php?server=[servername]&group=[groupid] | python -mjson.tool</pre>
+
+<p><strong>Description</strong></p>
+
+<p>IN WORK: The intention here is to facilitate automation by returning the necessary information for provisioning a server. Passing along ownerships, system specifications, etc. A server upon being provisioned would kick off a query to the Inventory api, retrieve its configuration information, and self configure.</p>
 
 <p><strong>Parameters</strong></p>
 
@@ -51,40 +55,59 @@ $(document).ready( function() {
 <p><strong>Output</strong></p>
 
 <pre style="text-align: left;">
+$ curl -s -k <?php print $Siteroot; ?>/api/workflow.php?server=lnmt1cuomknode1 | python -mjson.tool
 {
-    "alde0euasnesa11": {
-        "config_agent": "",
-        "config_appadmin": "mobadmin",
-        "config_appsudo": "mobadmin",
-        "config_cpus": "2",
+    "lnmt1cuomknode1": {
+        "config_agent": [],
+        "config_appadmin": "",
+        "config_appsudo": "",
+        "config_cpus": "8",
         "config_disk": {
-            "disk_1202": {
+            "/": {
                 "disk_mount": "/",
-                "disk_size": "80"
+                "disk_size": "2"
             },
-            "disk_736": {
+            "/home": {
+                "disk_mount": "/home",
+                "disk_size": "8"
+            },
+            "/opt": {
                 "disk_mount": "/opt",
-                "disk_size": "160"
+                "disk_size": "4"
+            },
+            "/opt/docker": {
+                "disk_mount": "/opt/docker",
+                "disk_size": "200"
+            },
+            "/tmp": {
+                "disk_mount": "/tmp",
+                "disk_size": "4"
+            },
+            "/usr": {
+                "disk_mount": "/usr",
+                "disk_size": "8"
+            },
+            "/var": {
+                "disk_mount": "/var",
+                "disk_size": "4"
+            },
+            "swap": {
+                "disk_mount": "swap",
+                "disk_size": "2"
             }
         },
-        "config_memory": "8",
+        "config_memory": "16",
         "config_network": {
-            "interface_2354": {
-                "interface_address": "10.39.22.7",
+            "ens192": {
+                "interface_address": "192.168.104.50",
                 "interface_ethernet": "ens192",
-                "interface_gateway": "10.39.22.254",
-                "interface_monitored": "No"
-            },
-            "interface_2394": {
-                "interface_address": "10.39.19.7",
-                "interface_ethernet": "ens224",
-                "interface_gateway": "10.39.19.254",
+                "interface_gateway": "192.168.104.254",
                 "interface_monitored": "Yes"
             }
         },
         "config_sysadmin": "sysadmins",
         "config_syssudo": "sysadmins",
-        "config_workflowid": "1202"
+        "config_workflowid": "1484"
     }
 }
 </pre>
