@@ -38,7 +38,7 @@ $(document).ready( function() {
 
 <p><strong>GET /api/inventory.php</strong></p>
 
-<pre style="text-align: left">curl -s -k https://" . $Siteroot . "/api/inventory.php?group=[groupname] | python -mjson.tool</pre>
+<pre style="text-align: left">curl -s -k <?php print $Siteroot; ?>/api/inventory.php?group=[groupname] | python -mjson.tool</pre>
 
 <p><strong>Parameters</strong></p>
 
@@ -51,14 +51,26 @@ $(document).ready( function() {
 <p><strong>Output</strong></p>
 
 <pre style="text-align: left">
-    "ndld1cuasexsa11": {
-        "inventory_appowner": "Applications Sys Admin",
-        "inventory_satellite_uuid": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-        "inventory_serverid": "11202",
-        "inventory_servername": "ndld1cuasexsa11",
+$ curl -s -k <?php print $Siteroot; ?>/api/inventory.php?group=unix | python -mjson.tool
+{
+    "bldr0cuomaws1": {
+        "inventory_appowner": "UNIX System Administration",
+        "inventory_satellite_uuid": "",
+        "inventory_serverid": "12939",
+        "inventory_servername": "bldr0cuomaws1",
         "inventory_sysowner": "UNIX System Administration",
-        "inventory_uuid": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        "inventory_uuid": "4233632f-d70b-ec25-c7fb-2c288bd8fc70"
     },
+    "bldr0cuomdev1": {
+        "inventory_appowner": "DBA Admin",
+        "inventory_satellite_uuid": "",
+        "inventory_serverid": "12849",
+        "inventory_servername": "bldr0cuomdev1",
+        "inventory_sysowner": "UNIX System Administration",
+        "inventory_uuid": "564d0d58-dd09-c932-837f-70e5e80362ba"
+    },
+...
+}
 </pre>
 
 </div>
