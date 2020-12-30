@@ -235,7 +235,7 @@ $(document).ready( function() {
   <td class="ui-widget-content"><input type="radio" checked name="notification"> Group to be notified: <select name="mon_group">
 <?php
   $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from groups ";
+  $q_string .= "from a_groups ";
   $q_string .= "where grp_page != \"\" and grp_disabled = 0 ";
   $q_string .= "order by grp_name ";
   $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
