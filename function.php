@@ -52,7 +52,7 @@ function new_Mysql($p_db) {
 
   $q_string = "select version()";
   $q_version = mysqli_query($p_db, $q_string);
-  $a_version = mysql_fetch_array($q_version);
+  $a_version = mysqli_fetch_array($q_version);
 
   $e_version = explode('.', $a_version['version()']);
 
