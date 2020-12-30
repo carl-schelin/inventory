@@ -19,10 +19,10 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from window");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from maint_window");
 
       $q_string  = "select win_text ";
-      $q_string .= "from window ";
+      $q_string .= "from maint_window ";
       $q_string .= "where win_id = " . $formVars['id'];
       $q_window = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_window = mysqli_fetch_array($q_window);
