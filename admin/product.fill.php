@@ -28,7 +28,7 @@
       $a_products = mysqli_fetch_array($q_products);
       mysqli_free_result($q_products);
 
-      $group   = return_Index($db, $a_products['prod_group'],   "select grp_id from groups where grp_disabled = 0 order by grp_name");
+      $group   = return_Index($db, $a_products['prod_group'],   "select grp_id from a_groups where grp_disabled = 0 order by grp_name");
       $unit    = return_Index($db, $a_products['prod_unit'],    "select bus_id from business_unit order by bus_name");
       $service = return_Index($db, $a_products['prod_service'], "select svc_id from service order by svc_id");
 
