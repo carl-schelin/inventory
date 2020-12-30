@@ -169,7 +169,7 @@
       $q_string .= "from tags ";
       $q_string .= "left join inventory    on inventory.inv_id      = tags.tag_companyid ";
       $q_string .= "left join users        on users.usr_id          = tags.tag_owner ";
-      $q_string .= "left join groups       on groups.grp_id         = tags.tag_group ";
+      $q_string .= "left join a_groups       on a_groups.grp_id         = tags.tag_group ";
       $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
       $q_string .= "left join models       on models.mod_id         = hardware.hw_vendorid ";
       $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
@@ -252,7 +252,7 @@
       $q_string .= "from tags ";
       $q_string .= "left join inventory    on inventory.inv_id      = tags.tag_companyid ";
       $q_string .= "left join users        on users.usr_id          = tags.tag_owner ";
-      $q_string .= "left join groups       on groups.grp_id         = tags.tag_group ";
+      $q_string .= "left join a_groups       on a_groups.grp_id         = tags.tag_group ";
       $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
       $q_string .= "left join models       on models.mod_id         = hardware.hw_vendorid ";
       $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
@@ -334,7 +334,7 @@
       $q_string .= "from tags ";
       $q_string .= "left join inventory    on inventory.inv_id      = tags.tag_companyid ";
       $q_string .= "left join users        on users.usr_id          = tags.tag_owner ";
-      $q_string .= "left join groups       on groups.grp_id         = tags.tag_group ";
+      $q_string .= "left join a_groups       on a_groups.grp_id         = tags.tag_group ";
       $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
       $q_string .= "left join models       on models.mod_id         = hardware.hw_vendorid ";
       $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
