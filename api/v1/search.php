@@ -36,9 +36,9 @@ $(document).ready( function() {
 
 <div class="main ui-widget-content">
 
-<p><strong>GET /api/server.php</strong></p>
+<p><strong>GET /api/search.php</strong></p>
 
-<pre style="text-align: left">curl -s -k https://<?php print $Siteroot; ?>/api/search.php?ip=[ip address]&mac=[mac address]&asset=[asset tag]&serial=[serial number/service tag] | python -mjson.tool</pre>
+<pre style="text-align: left">curl -s -k <?php print $Siteroot; ?>/api/search.php?ip=[ip address]&mac=[mac address]&asset=[asset tag]&serial=[serial number/service tag] | python -mjson.tool</pre>
 
 <p><strong>Parameters</strong></p>
 
@@ -55,7 +55,7 @@ $(document).ready( function() {
 
 
 <pre style="text-align: left;">
-$ curl -s -k http://inventory.internal.pri/inventory/api/search.php?ip=192.168.104.57 | python -mjson.tool
+$ curl -s -k <?php print $Siteroot; ?>/api/search.php?ip=192.168.104.57 | python -mjson.tool
 {
     "lnmt1cuomtool11": {
         "inventory_appadmins": "UNIX System Administration",
