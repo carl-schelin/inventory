@@ -198,7 +198,7 @@ $(document).ready( function() {
   $q_string  = "select inv_id,big_id,inv_name,inv_function,win_text,svc_name,prod_name ";
   $q_string .= "from bigfix ";
   $q_string .= "left join inventory on inventory.inv_id       = bigfix.big_companyid ";
-  $q_string .= "left join window on window.win_id             = inventory.inv_maint ";
+  $q_string .= "left join maint_window on maint_window.win_id             = inventory.inv_maint ";
   $q_string .= "left join products on products.prod_id        = inventory.inv_product ";
   $q_string .= "left join service on service.svc_id           = inventory.inv_class ";
   $q_string .= "where (inv_manager = " . $formVars['group'] . " or inv_appadmin = " . $formVars['group'] . ") " . $daterange . $product . $project;
