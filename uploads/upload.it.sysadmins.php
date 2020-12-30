@@ -64,7 +64,7 @@ if (($handle = fopen($file, "r")) !== FALSE) {
 
     $q_string  = "select inv_id,inv_name,inv_manager,grp_name ";
     $q_string .= "from inventory ";
-    $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
+    $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
     $q_string .= "where inv_name = \"" . $data[1] . "\" and inv_status = 0 ";
     $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     while ($a_inventory = mysqli_fetch_array($q_inventory)) {
