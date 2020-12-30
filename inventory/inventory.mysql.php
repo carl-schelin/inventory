@@ -170,7 +170,7 @@
       $q_string .= "left join products on products.prod_id = inventory.inv_product ";
       $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
       $q_string .= "left join service on service.svc_id = inventory.inv_class ";
-      $q_string .= "left join window on window.win_id = inventory.inv_maint ";
+      $q_string .= "left join maint_window on maint_window.win_id = inventory.inv_maint ";
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
       $q_string .= "where inv_status = 0 and inv_manager = " . $formVars['group'] . " ";
       if ($formVars['location'] > 0) {
