@@ -118,10 +118,10 @@
     $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   }
   if ($formVars['admin'] != 'no') {
-    $q_string .= "left join groups on groups.grp_id = inventory.inv_appadmin ";
+    $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_appadmin ";
   } else {
     if ($formVars['manager'] != 'no') {
-      $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
+      $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
     }
   }
   $q_string .= $where;
