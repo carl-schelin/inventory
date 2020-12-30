@@ -35,11 +35,11 @@
             "win_text        = \"" . $formVars['win_text'] . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into window set win_id = NULL, " . $q_string;
+            $query = "insert into maint_window set win_id = NULL, " . $q_string;
             $message = "Maintenance Window added.";
           }
           if ($formVars['update'] == 1) {
-            $query = "update window set " . $q_string . " where win_id = " . $formVars['id'];
+            $query = "update maint_window set " . $q_string . " where win_id = " . $formVars['id'];
             $message = "Maintenance Window updated.";
           }
 
@@ -88,7 +88,7 @@
       $output .= "</tr>\n";
 
       $q_string  = "select win_id,win_text ";
-      $q_string .= "from window ";
+      $q_string .= "from maint_window ";
       $q_string .= "order by win_text ";
       $q_window = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_window) > 0) {
