@@ -131,10 +131,15 @@
 
         $output .= "<p>\n";
 
-        $q_string  = "select tag_id,tag_name ";
+        if (new_Mysql($db)) {
+          $q_string  = "select ANY_VALUE(tag_id),tag_name ";
+        } else {
+          $q_string  = "select tag_id,tag_name ";
+        }
         $q_string .= "from tags ";
         $q_string .= "where tag_view = 0 and tag_owner = " . $_SESSION['uid'] . " ";
         $q_string .= "group by tag_name ";
+        $q_string .= "order by tag_name ";
         $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_tags = mysqli_fetch_array($q_tags)) {
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('tags.fill.php?id="  . $a_tags['tag_id'] . "');\">";
@@ -150,10 +155,15 @@
 
         $output .= "<p>\n";
 
-        $q_string  = "select tag_id,tag_name ";
+        if (new_Mysql($db)) {
+          $q_string  = "select ANY_VALUE(tag_id),tag_name ";
+        } else {
+          $q_string  = "select tag_id,tag_name ";
+        }
         $q_string .= "from tags ";
         $q_string .= "where tag_view = 1 and tag_group = " . $_SESSION['group'] . " ";
         $q_string .= "group by tag_name ";
+        $q_string .= "order by tag_name ";
         $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_tags = mysqli_fetch_array($q_tags)) {
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('tags.fill.php?id="  . $a_tags['tag_id'] . "');\">";
@@ -169,10 +179,15 @@
 
         $output .= "<p>\n";
 
-        $q_string  = "select tag_id,tag_name ";
+        if (new_Mysql($db)) {
+          $q_string  = "select ANY_VALUE(tag_id),tag_name ";
+        } else {
+          $q_string  = "select tag_id,tag_name ";
+        }
         $q_string .= "from tags ";
         $q_string .= "where tag_view = 2 ";
         $q_string .= "group by tag_name ";
+        $q_string .= "order by tag_name ";
         $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_tags = mysqli_fetch_array($q_tags)) {
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('tags.fill.php?id="  . $a_tags['tag_id'] . "');\">";
