@@ -96,7 +96,7 @@
       $q_string  = "select patch_id,patch_name,usr_first,usr_last,grp_name,patch_date ";
       $q_string .= "from patching ";
       $q_string .= "left join users on users.usr_id = patching.patch_user ";
-      $q_string .= "left join groups on groups.grp_id = patching.patch_group ";
+      $q_string .= "left join a_groups on a_groups.grp_id = patching.patch_group ";
       $q_string .= "order by patch_name";
       $q_patching = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_patching) > 0) {
