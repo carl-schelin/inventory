@@ -38,7 +38,12 @@ $(document).ready( function() {
 
 <p><strong>GET /api/tags.php</strong></p>
 
-<pre style="text-align: left">curl -s -k https://incojs01.scc911.com/inventory/api/west.php?tags=[tags]&group=[groupid]&location=[location]&service=[service class]&product=[product]&zone=[zone]&admin=[app admin]&manager=[system manager] | python -mjson.tool</pre>
+<pre style="text-align: left">curl -s -k <?php print $Siteroot; ?>/api/west.php?tags=[tags]&group=[groupid]&location=[location]&service=[service class]&product=[product]&zone=[zone]&admin=[app admin]&manager=[system manager] | python -mjson.tool</pre>
+
+
+<p><strong>Description</strong></p>
+
+<p>The purpose of this api call is to provide a list of just server names to Ansible based on the passed piece of data. Locations, tags, groups, etc. In this way, a separate hosts file doesn't need to be maintained.</p>
 
 <p><strong>Parameters</strong></p>
 
@@ -46,11 +51,11 @@ $(document).ready( function() {
   <li>[default] - Without a parameter, returns all Unix System Administrator servers in the inventory.</li>
   <li>tags - comma delimited list of tags.</li>
   <li>group - group id that manages servers.</li>
-  <li>location - all servers in the West designated location (DEN03, MIA04, etc).</li>
+  <li>location - all servers in the short designated location (BLD01, CAB01, etc).</li>
   <li>service - all servers designed by the service class (LMCS, BCS, BES, UBS, LABetc).</li>
   <li>product - all servers for a specified product.</li>
-  <li>zone - all servers in a specific zone (CORP, DMZ, E911).</li>
-  <li>admin - all servers where the application is managed by the listed group. This is a wildcard search so passing 'web' will give servers managed by Web Applications.</li>
+  <li>zone - all servers in a specific zone (CORP, DMZ).</li>
+  <li>admin - all servers where the application is managed by the listed group. This is a wildcard search so passing 'dba' will give servers managed by the DBA Group.</li>
   <li>manager - all servers where the server is managed by the listed group. This is a wildcard search so passing 'unix' will give servers managed by Unix Admins.</li>
 </ul>
 
@@ -59,16 +64,25 @@ $(document).ready( function() {
 <p><strong>Output</strong></p>
 
 <pre style="text-align:left;">
-$ curl -s -k 'https://incojs01.scc911.com/inventory/api/tags.php?location=mia04&product=nead/neam&zone=dmz&admin=web' | python -mjson.tool
+$ curl -s -k '<?php print $Siteroot; ?>/api/tags.php?location=bld01&product=kubernetes&admin=unix' | python -mjson.tool
 {
-    "miam1duasnenx11": {
-        "servername": "miam1duasnenx11"
+    "bldr0cuomknode1": {
+        "servername": "bldr0cuomknode1"
     },
-    "miam1duasnenx21": {
-        "servername": "miam1duasnenx21"
+    "bldr0cuomknode2": {
+        "servername": "bldr0cuomknode2"
     },
-    "miam1duasnenx31": {
-        "servername": "miam1duasnenx31"
+    "bldr0cuomknode3": {
+        "servername": "bldr0cuomknode3"
+    },
+    "bldr0cuomkube1": {
+        "servername": "bldr0cuomkube1"
+    },
+    "bldr0cuomkube2": {
+        "servername": "bldr0cuomkube2"
+    },
+    "bldr0cuomkube3": {
+        "servername": "bldr0cuomkube3"
     }
 }
 </pre>
