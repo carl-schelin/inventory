@@ -122,7 +122,7 @@
       $q_string  = "select off_id,usr_last,usr_first,grp_name,off_timestamp,off_handoff,off_disabled ";
       $q_string .= "from handoff ";
       $q_string .= "left join users on users.usr_id = handoff.off_user ";
-      $q_string .= "left join groups on groups.grp_id = handoff.off_group ";
+      $q_string .= "left join a_groups on a_groups.grp_id = handoff.off_group ";
       $q_string .= $group;
       $q_string .= "order by off_timestamp ";
       $q_handoff = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
