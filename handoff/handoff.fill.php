@@ -29,7 +29,7 @@
       mysqli_free_result($q_contacts);
 
       $user  = return_Index($db, $a_handoff['off_user'],  "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
-      $group = return_Index($db, $a_handoff['off_group'], "select grp_id from groups where grp_disabled = 0 order by grp_name");
+      $group = return_Index($db, $a_handoff['off_group'], "select grp_id from a_groups where grp_disabled = 0 order by grp_name");
 
       print "document.handoff.off_timestamp.value = '" . mysqli_real_escape_string($db, $a_handoff['off_timestamp']) . "';\n";
       print "document.handoff.off_handoff.value = '"   . mysqli_real_escape_string($db, $a_handoff['off_handoff'])   . "';\n";
