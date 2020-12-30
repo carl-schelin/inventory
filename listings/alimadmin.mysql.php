@@ -76,29 +76,34 @@
         $handle = fopen($file, 'w');
         if ($handle) {
 
-          $q_string  = "select inv_id,inv_name,inv_fqdn,inv_zone,inv_ssh ";
+          if (new_Mysql($db)) {
+            $q_string  = "select ANY_VALUE(inv_id) as invid,inv_name,ANY_VALUE(inv_fqdn) as invfqdn,ANY_VALUE(inv_zone) as invzone,ANY_VALUE(inv_ssh) as invssh ";
+          } else {
+            $q_string  = "select inv_id as invid,inv_name,inv_fqdn as invfqdn,inv_zone as invzone,inv_ssh as invssh ";
+          }
           $q_string .= "from software ";
           $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
           $q_string .= "where (inv_manager = " . $mygroup . " or inv_appadmin = " . $mygroup . " or sw_group = " . $mygroup . ") and inv_status = 0 ";
           $q_string .= "group by inv_name ";
+          $q_string .= "order by inv_name ";
           $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           while ($a_software = mysqli_fetch_array($q_software)) {
 
 # determine operating system
             $os = "";
-            $os = return_System($db, $a_software['inv_id']);
+            $os = return_System($db, $a_software['invid']);
 
 # add a comment character to the server list for live servers but not ssh'able.
 # scripts use the "^#" part to make sure commented servers are able to use the changelog process
             $pre = "";
-            if ($a_software['inv_ssh'] == 0) {
+            if ($a_software['invssh'] == 0) {
               $pre = '#';
             }
 
             $tags = '';
             $q_string  = "select tag_name ";
             $q_string .= "from tags ";
-            $q_string .= "where tag_companyid = " . $a_software['inv_id'];
+            $q_string .= "where tag_companyid = " . $a_software['invid'];
             $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             while ($a_tags = mysqli_fetch_array($q_tags)) {
               $tags .= "," . $a_tags['tag_name'] . ",";
@@ -107,13 +112,13 @@
             $interfaces = '';
             $q_string  = "select int_server ";
             $q_string .= "from interface ";
-            $q_string .= "where int_companyid = " . $a_software['inv_id'] . " and int_ip6 = 0 and (int_type = 1 || int_type = 2 || int_type = 6)";
+            $q_string .= "where int_companyid = " . $a_software['invid'] . " and int_ip6 = 0 and (int_type = 1 || int_type = 2 || int_type = 6)";
             $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             while ($a_interface = mysqli_fetch_array($q_interface)) {
               $interfaces .= "," . $a_interface['int_server'] . ",";
             }
 
-            $output = $pre . $a_software['inv_name'] . ":" . $a_software['inv_fqdn'] . ":$os:" . $zonename[$a_software['inv_zone']] . ":$tags:$interfaces:" . $a_software['inv_id'] . "\n";
+            $output = $pre . $a_software['inv_name'] . ":" . $a_software['invfqdn'] . ":$os:" . $zonename[$a_software['invzone']] . ":$tags:$interfaces:" . $a_software['invid'] . "\n";
             fwrite($handle, $output);
 
           }
@@ -123,6 +128,7 @@
           $q_string .= "from changelog ";
           $q_string .= "where cl_group = " . $mygroup . " and cl_delete = 0 ";
           $q_string .= "group by cl_name ";
+          $q_string .= "order by cl_name ";
           $q_changelog = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           while ($a_changelog = mysqli_fetch_array($q_changelog)) {
 
@@ -155,11 +161,16 @@
         $output .= "  <th class=\"ui-state-default\">Inventory ID</th>\n";
         $output .= "</tr>\n";
 
-        $q_string  = "select inv_id,inv_name,inv_fqdn,inv_zone,inv_ssh ";
+        if (new_Mysql($db)) {
+          $q_string  = "select ANY_VALUE(inv_id) as invid,inv_name,ANY_VALUE(inv_fqdn) as invfqdn,ANY_VALUE(inv_zone) as invzone,ANY_VALUE(inv_ssh) as invssh ";
+        } else {
+          $q_string  = "select inv_id as invid,inv_name,inv_fqdn as invfqdn,inv_zone as invzone,inv_ssh as invssh ";
+        }
         $q_string .= "from software ";
         $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
         $q_string .= "where (inv_manager = " . $mygroup . " or inv_appadmin = " . $mygroup . " or sw_group = " . $mygroup . ") and inv_status = 0 ";
         $q_string .= "group by inv_name ";
+        $q_string .= "order by inv_name ";
         $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_software = mysqli_fetch_array($q_software)) {
 
@@ -167,19 +178,19 @@
 
 # determine operating system
           $os = "";
-          $os = return_System($db, $a_software['inv_id']);
+          $os = return_System($db, $a_software['invid']);
 
 # add a comment character to the server list for live servers but not ssh'able.
 # scripts use the "^#" part to make sure commented servers are able to use the changelog process
           $pre = "";
-          if ($a_software['inv_ssh'] == 0) {
+          if ($a_software['invssh'] == 0) {
             $pre = '#';
           }
 
           $tags = '';
           $q_string  = "select tag_name ";
           $q_string .= "from tags ";
-          $q_string .= "where tag_companyid = " . $a_software['inv_id'];
+          $q_string .= "where tag_companyid = " . $a_software['invid'];
           $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           while ($a_tags = mysqli_fetch_array($q_tags)) {
             $tags .= "," . $a_tags['tag_name'] . ", ";
@@ -188,7 +199,7 @@
           $interfaces = '';
           $q_string  = "select int_server ";
           $q_string .= "from interface ";
-          $q_string .= "where int_companyid = " . $a_software['inv_id'] . " and int_ip6 = 0 and (int_type = 1 || int_type = 2 || int_type = 6)";
+          $q_string .= "where int_companyid = " . $a_software['invid'] . " and int_ip6 = 0 and (int_type = 1 || int_type = 2 || int_type = 6)";
           $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           while ($a_interface = mysqli_fetch_array($q_interface)) {
             $interfaces .= "," . $a_interface['int_server'] . ", ";
@@ -196,12 +207,12 @@
 
           $output .= "<tr>\n";
           $output .= "  <td class=\"ui-widget-content\">" . $pre . $a_software['inv_name']     . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">" . $a_software['inv_fqdn']            . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">" . $a_software['invfqdn']            . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">" . $os                                . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">" . $zonename[$a_software['inv_zone']] . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">" . $zonename[$a_software['invzone']] . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">" . $tags                              . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">" . $interfaces                        . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">" . $a_software['inv_id']              . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">" . $a_software['invid']              . "</td>\n";
           $output .= "</tr>\n";
 
         }
@@ -252,15 +263,20 @@
       $output .= "  <th class=\"ui-state-default\">Inventory ID</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select cl_id,cl_name ";
+      if (new_Mysql($db)) {
+        $q_string  = "select ANY_VALUE(cl_id) as clid,cl_name ";
+      } else {
+        $q_string  = "select cl_id as clid,cl_name ";
+      }
       $q_string .= "from changelog ";
       $q_string .= "where cl_group = " . $mygroup . " and cl_delete = 0 ";
       $q_string .= "group by cl_name ";
+      $q_string .= "order by cl_name ";
       $q_changelog = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_changelog = mysqli_fetch_array($q_changelog)) {
 
-        $linkstart = "<a href=\"#\" onclick=\"show_file('" . $myfill . "?id="  . $a_changelog['cl_id'] . "');jQuery('#dialogListing').dialog('open');\">";
-        $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('" . $mydel . "?id=" . $a_changelog['cl_id'] . "');\">";
+        $linkstart = "<a href=\"#\" onclick=\"show_file('" . $myfill . "?id="  . $a_changelog['clid'] . "');jQuery('#dialogListing').dialog('open');\">";
+        $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('" . $mydel . "?id=" . $a_changelog['clid'] . "');\">";
         $linkend   = "</a>";
 
         $class = 'ui-widget-content';
