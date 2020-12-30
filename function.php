@@ -45,6 +45,32 @@ function check_userlevel( $p_db, $p_level ) {
   }
 }
 
+
+# get the version of mysql and return a 1 if newer than 5.6
+function new_Mysql($p_db) {
+  $r_result = 0;
+
+  $q_string = "select version()";
+  $q_version = mysqli_query($p_db, $q_string);
+  $a_version = mysql_fetch_array($q_version);
+
+  $e_version = explode('.', $a_version['version()']);
+
+  $c_version = $e_version[0] . "." . $e_version[1];
+
+  switch ($c_version) {
+    case "8.0": $r_result = 1;
+            break;
+    case "5.7": $r_result = 1;
+            break;
+    case "5.5": $r_result = 0;
+            break;
+  }
+
+  return $r_result;
+}
+
+
 function last_insert_id($p_db) {
   include('settings.php');
 
