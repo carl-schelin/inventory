@@ -160,7 +160,7 @@
   $q_string .= "from inventory ";
   $q_string .= "left join hardware  on hardware.hw_companyid   = inventory.inv_id ";
   $q_string .= "left join locations on locations.loc_id        = inventory.inv_location ";
-  $q_string .= "left join groups    on groups.grp_id           = inventory.inv_manager ";
+  $q_string .= "left join a_groups    on a_groups.grp_id           = inventory.inv_manager ";
   $q_string .= "left join products  on products.prod_id        = inventory.inv_product ";
   $q_string .= $where;
   $q_string .= $orderby;
