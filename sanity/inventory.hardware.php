@@ -159,7 +159,7 @@
   $q_string .= "from inventory ";
   $q_string .= "left join hardware  on hardware.hw_companyid   = inventory.inv_id ";
   $q_string .= "left join locations on locations.loc_id        = inventory.inv_location ";
-  $q_string .= "left join groups    on groups.grp_id           = inventory.inv_manager ";
+  $q_string .= "left join a_groups    on a_groups.grp_id           = inventory.inv_manager ";
   $q_string .= $where;
   $q_string .= $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -177,7 +177,7 @@
 
     $q_string  = "select hw_id,hw_group,grp_name ";
     $q_string .= "from hardware ";
-    $q_string .= "left join groups on groups.grp_id = hardware.hw_group ";
+    $q_string .= "left join a_groups on a_groups.grp_id = hardware.hw_group ";
     $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_group != " . $a_inventory['inv_manager'] . " ";
     $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     while ($a_hardware = mysqli_fetch_array($q_hardware)) {
