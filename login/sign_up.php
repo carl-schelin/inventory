@@ -118,7 +118,7 @@ if (isset($_POST['new_user'])) {
 
 // Notify the admin that a new member has arrived.
     $q_string  = "select grp_name ";
-    $q_string .= "from groups ";
+    $q_string .= "from a_groups ";
     $q_string .= "where grp_id = " . $group;
     $q_groups = mysqli_query($db, $q_string) or die(mysqli_error($db));
     $a_groups = mysqli_fetch_array($q_groups);
@@ -198,7 +198,7 @@ function populate_email() {
   <option value="0">Unassigned</option>
 <?php 
   $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from groups ";
+  $q_string .= "from a_groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name";
   $q_groups = mysqli_query($db, $q_string) or die(mysqli_error($db));
