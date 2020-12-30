@@ -143,7 +143,7 @@
 
       $q_string  = "select prod_id,prod_name,prod_code,prod_oldcode,prod_desc,grp_name,prod_type,prod_citype,prod_tier1,prod_tier2,prod_tier3,prod_remedy,bus_name,svc_acronym ";
       $q_string .= "from products ";
-      $q_string .= "left join groups on groups.grp_id = products.prod_group ";
+      $q_string .= "left join a_groups on a_groups.grp_id = products.prod_group ";
       $q_string .= "left join business_unit on business_unit.bus_id = products.prod_unit ";
       $q_string .= "left join service on service.svc_id = products.prod_service ";
       $q_string .= "order by prod_name ";
