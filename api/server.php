@@ -154,7 +154,7 @@
   $q_string .= "from inventory ";
   $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
   $q_string .= "left join window on window.win_id = inventory.inv_maint ";
-  $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
+  $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where inv_status = 0 ";
@@ -175,7 +175,7 @@
     }
 
     $q_string  = "select grp_name ";
-    $q_string .= "from groups ";
+    $q_string .= "from a_groups ";
     $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
     $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     $a_groups = mysqli_fetch_array($q_groups);
@@ -493,7 +493,7 @@
     while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
       $q_string  = "select grp_name ";
-      $q_string .= "from groups ";
+      $q_string .= "from a_groups ";
       $q_string .= "where grp_id = " . $a_hardware['hw_group'] . " ";
       $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       $a_groups = mysqli_fetch_array($q_groups);
@@ -543,7 +543,7 @@
         while ($a_internal = mysqli_fetch_array($q_internal)) {
 
           $q_string  = "select grp_name ";
-          $q_string .= "from groups ";
+          $q_string .= "from a_groups ";
           $q_string .= "where grp_id = " . $a_internal['hw_group'] . " ";
           $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           $a_groups = mysqli_fetch_array($q_groups);
