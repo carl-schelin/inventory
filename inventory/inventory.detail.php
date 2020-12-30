@@ -600,7 +600,7 @@
           print "selbox.options.length = 0;\n";
 
           $q_string  = "select win_id,win_text ";
-          $q_string .= "from window ";
+          $q_string .= "from maint_window ";
           $q_string .= "order by win_text ";
           $q_window = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
@@ -625,7 +625,7 @@
           print "cell.setAttribute(\"onclick\", \"edit_Detail(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "select win_id,win_text ";
-          $q_string .= "from window ";
+          $q_string .= "from maint_window ";
           $q_string .= "where win_id = " . $formVars['select'] . " ";
           $q_window = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           $a_window = mysqli_fetch_array($q_window);
