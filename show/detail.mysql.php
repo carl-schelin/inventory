@@ -354,7 +354,7 @@
   $q_hardware = mysqli_query($db, $q_string) or die(mysqli_error($db));
   $a_hardware = mysqli_fetch_array($q_hardware);
 
-  if ($a_hardware['hw_active'] == '0000-00-00') {
+  if ($a_hardware['hw_active'] == '1971-01-01') {
     $class = "ui-state-error";
   } else {
     $class = "ui-widget-content";
