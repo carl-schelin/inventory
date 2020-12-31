@@ -31,7 +31,7 @@
       print "document.start.iss_discovered.value = '" . mysqli_real_escape_string($db, $a_issue['iss_discovered']) . "';\n";
       print "document.start.iss_subject.value = '"    . mysqli_real_escape_string($db, $a_issue['iss_subject'])    . "';\n";
 
-      if ($a_issue['iss_closed'] == '0000-00-00') {
+      if ($a_issue['iss_closed'] == '1971-01-01') {
         print "document.start.iss_closed.value = 'Current Date';\n";
 
         print "document.getElementById('iss_discovered').innerHTML = '" . mysqli_real_escape_string($db, $a_issue['iss_discovered']) . "';\n";
