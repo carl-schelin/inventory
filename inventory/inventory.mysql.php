@@ -204,7 +204,7 @@
 
         if ($formVars['csv'] == 'true') {
           $is_live = 'No';
-          if ($a_hardware['hw_active'] != '0000-00-00') {
+          if ($a_hardware['hw_active'] != '1971-01-01') {
             $is_live = 'Yes';
           }
           $is_callpath = 'No';
@@ -240,7 +240,7 @@
 
         } else {
           $is_live = '';
-          if ($a_hardware['hw_active'] != '0000-00-00') {
+          if ($a_hardware['hw_active'] != '1971-01-01') {
             $is_live = 'checked';
           }
           $is_callpath = '';
