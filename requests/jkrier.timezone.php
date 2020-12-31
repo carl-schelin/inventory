@@ -62,7 +62,7 @@
   $q_string .= "inv_product = 41 or inv_product = 40 or inv_product = 31 or ";
   $q_string .= "inv_product = 102 or inv_product = 103 or inv_product = 28 or ";
   $q_string .= "inv_product = 2 or inv_product = 83) ";
-  $q_string .= "and hw_primary = 1 and (hw_retired = '0000-00-00' and hw_reused = '0000-00-00') ";
+  $q_string .= "and hw_primary = 1 and (hw_retired = '1971-01-01' and hw_reused = '1971-01-01') ";
   $q_string .= $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die("Inventory: " . $q_string . ": " . mysqli_error($db));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
