@@ -21,7 +21,7 @@
     if (isset($_GET['retired'])) {
       $formVars['retired'] = clean($_GET['retired'], 15);
     }
-    if ($formVars['retired'] == '0000-00-00') {
+    if ($formVars['retired'] == '1971-01-01') {
       $formVars['retired'] = date('Y-m-d');
     }
 
