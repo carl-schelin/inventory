@@ -1,0 +1,4 @@
+Removed any company specific information.
+Changed mysql functions to mysqli functions in support of php 7.
+Renamed any calls to the groups table to a_groups due to the table change.
+Renamed any calls to the window table to maint_window due to the table change.
