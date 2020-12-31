@@ -572,7 +572,7 @@
     $q_string .= "from inventory ";
     $q_string .= "left join service on service.svc_id = inventory.inv_class ";
     $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
-    $q_string .= "left join window on window.win_id = inventory.inv_maint ";
+    $q_string .= "left join maint_window on maint_window.win_id = inventory.inv_maint ";
     $q_string .= "where inv_name = '" . $server . "' and inv_status = 0";
     if ($debug == 'yes') {
       print $q_string . "\n";
