@@ -116,7 +116,7 @@
 # get the appadmin group id
       $inv_appadmin = 0;
       $q_string  = "select grp_id ";
-      $q_string .= "from groups ";
+      $q_string .= "from a_groups ";
       $q_string .= "where grp_name = \"" . $appadmin . "\" or grp_snow = \"" . $appadmin . "\" and grp_disabled = 0 ";
       $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_groups) == 0) {
@@ -126,7 +126,7 @@
         }
 
         $q_string  = "select grp_id,grp_name ";
-        $q_string .= "from groups ";
+        $q_string .= "from a_groups ";
         $q_string .= "where grp_name like \"%" . $grp_test[0] . "%\" and grp_disabled = 0 ";
         $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         if (mysqli_num_rows($q_groups) == 0) {
