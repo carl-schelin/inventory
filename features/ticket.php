@@ -369,7 +369,7 @@ $(document).ready( function() {
   <ul>
     <li><strong>Close Ticket</strong> - Sets the Closed field to today's date which closed the feature.</li>
     <li><strong>Save Changes</strong> - If you update the Feature Request Form, click here to save changes.</li>
-    <li><strong>Reopen Ticket</strong> - Reopen a closed feature. Resets the Closed field to '0000-00-00'.</li>
+    <li><strong>Reopen Ticket</strong> - Reopen a closed feature. Resets the Closed field to '1971-01-01'.</li>
   </ul></li>
 </ul>
 
@@ -397,7 +397,7 @@ $(document).ready( function() {
     $newissue = "disabled";
     $updateissue = "";
   }
-  if ($a_features['feat_closed'] == '0000-00-00') {
+  if ($a_features['feat_closed'] == '1971-01-01') {
     print "  <input type=\"button\" " . $updateissue . " name=\"close\"     value=\"Close Ticket\"  onClick=\"javascript:attach_file('ticket.mysql.php', 2);\">\n";
     print "  <input type=\"button\" " . $updateissue . " name=\"save\"      value=\"Save Changes\"  onClick=\"javascript:attach_file('ticket.mysql.php', 1);\">\n";
   } else {
@@ -447,7 +447,7 @@ $(document).ready( function() {
   $q_features = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   $a_features = mysqli_fetch_array($q_features);
 
-  if ($a_features['feat_closed'] == '0000-00-00') {
+  if ($a_features['feat_closed'] == '1971-01-01') {
     print "  <td class=\"ui-widget-content\"><strong>Module</strong>: <select name=\"feat_module\">\n";
 
     $q_string  = "select mod_id,mod_name ";
@@ -557,7 +557,7 @@ The <strong>character count</strong> field shows you the limit of the number of 
 <div id="request-hide" style="display: none">
 
 <?php
-  if ($a_features['feat_closed'] == '0000-00-00') {
+  if ($a_features['feat_closed'] == '1971-01-01') {
 ?>
 <table class="ui-styled-table">
 <tr>
