@@ -339,7 +339,7 @@ $(document).ready( function () {
     $inwork = $and . ' hw_primary = 1 and hw_deleted = 0 ';
     $and = " and";
   } else {
-    $inwork = $and . " hw_active = '0000-00-00' and hw_primary = 1 and hw_deleted = 0 ";
+    $inwork = $and . " hw_active = '1971-01-01' and hw_primary = 1 and hw_deleted = 0 ";
     $and = " and";
   }
 
@@ -448,15 +448,15 @@ $(document).ready( function () {
     
       $title="This system is live.";
       $class = " class=\"ui-widget-content\"";
-      if ($a_inventory['hw_active'] == '0000-00-00') {
+      if ($a_inventory['hw_active'] == '1971-01-01') {
         $title="This system is not live yet.";
         $class = " class=\"ui-state-highlight\"";
       }
-      if ($a_inventory['hw_retired'] != '0000-00-00' || $a_inventory['inv_status'] == 1) {
+      if ($a_inventory['hw_retired'] != '1971-01-01' || $a_inventory['inv_status'] == 1) {
         $title="This system is retired.";
         $class = " class=\"ui-state-error\"";
       }
-      if ($a_inventory['hw_reused'] != '0000-00-00') {
+      if ($a_inventory['hw_reused'] != '1971-01-01') {
         $title="This system has been reused.";
         $class = " class=\"ui-state-error\"";
       }
