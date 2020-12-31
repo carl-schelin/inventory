@@ -36,7 +36,7 @@
 # 1. Flat chart with totals and percentage increase
 # 2. Graph with two lines; one for sumyear, one for cumulative
 
-# hw_built date not null default '0000-00-00',
+# hw_built date not null default '1971-01-01',
 
   $total = 5;
 
