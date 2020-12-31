@@ -73,7 +73,7 @@ tabs displaying all the hardware associated with the product, the installed soft
 
   $q_string  = "select usr_id,usr_name,usr_first,usr_last,usr_disabled,usr_checkin,usr_ipaddr ";
   $q_string .= "from users ";
-  $q_string .= "where usr_disabled = 1 and usr_checkin = '0000-00-00 00:00:00' ";
+  $q_string .= "where usr_disabled = 1 and usr_checkin = '1971-01-01 00:00:00' ";
   $q_string .= "order by usr_last,usr_first";
   $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_users = mysqli_fetch_array($q_users)) {
