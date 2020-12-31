@@ -17,7 +17,7 @@
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
   $q_string  = "select grp_id,grp_changelog ";
-  $q_string .= "from groups ";
+  $q_string .= "from a_groups ";
   $q_string .= "where grp_disabled = 0 and grp_changelog != '' ";
   $q_string .= "order by grp_name ";
   $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
