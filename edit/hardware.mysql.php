@@ -173,7 +173,7 @@
           print "alert('" . $message . "');\n";
 # One additional bit is to set the status bit to 0 if a server is live and 1 if it's retired. Flip off the ssh bit if retired.
           if ($formVars['hw_primary'] == 1) {
-            if ($formVars['hw_retired'] == '0000-00-00' && $formVars['hw_reused'] == '0000-00-00') {
+            if ($formVars['hw_retired'] == '1971-01-01' && $formVars['hw_reused'] == '1971-01-01') {
               $invstatus = 0;
               $invssh = '';
             } else {
@@ -205,7 +205,7 @@
 # get model info as well to make sure she's not notified of virtual machine activity.
 #      $q_string = "select mod";
 #
-#      if ($a_hardware['hw_active'] == '0000-00-00' && $formVars['hw_active'] != '0000-00-00') {
+#      if ($a_hardware['hw_active'] == '1971-01-01' && $formVars['hw_active'] != '1971-01-01') {
 #
 #        $q_string = "select inv_name from inventory where inv_id = " . $formVars['hw_companyid'];
 #        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -398,13 +398,13 @@
         $output .= "  <th class=\"ui-state-default\" colspan=\"7\">Life-Cycle Form</th>\n";
         $output .= "</tr>\n";
         $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\">Purchased   <input type=\"text\" name=\"hw_purchased\" value=\"0000-00-00\" size=\"11\"></td>\n";
+        $output .= "  <td class=\"ui-widget-content\">Purchased   <input type=\"text\" name=\"hw_purchased\" value=\"1971-01-01\" size=\"11\"></td>\n";
         $output .= "  <td class=\"ui-widget-content\">Built       <input type=\"text\" name=\"hw_built\"     value=\"" . date('Y-m-d') . "\" size=\"11\"></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Live        <input type=\"text\" name=\"hw_active\"    value=\"0000-00-00\" size=\"11\"></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">End of Life <input type=\"text\" name=\"hw_eol\"       value=\"0000-00-00\" size=\"11\"></td>\n";
+        $output .= "  <td class=\"ui-widget-content\">Live        <input type=\"text\" name=\"hw_active\"    value=\"1971-01-01\" size=\"11\"></td>\n";
+        $output .= "  <td class=\"ui-widget-content\">End of Life <input type=\"text\" name=\"hw_eol\"       value=\"1971-01-01\" size=\"11\"></td>\n";
         $output .= "  <td class=\"ui-widget-content\">Ticket      <input type=\"text\" name=\"hw_eolticket\" value=\"\" size=\"20\"></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Retired     <input type=\"text\" name=\"hw_retired\"   value=\"0000-00-00\" size=\"11\"></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Reused      <input type=\"text\" name=\"hw_reused\"    value=\"0000-00-00\" size=\"11\"></td>\n";
+        $output .= "  <td class=\"ui-widget-content\">Retired     <input type=\"text\" name=\"hw_retired\"   value=\"1971-01-01\" size=\"11\"></td>\n";
+        $output .= "  <td class=\"ui-widget-content\">Reused      <input type=\"text\" name=\"hw_reused\"    value=\"1971-01-01\" size=\"11\"></td>\n";
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
