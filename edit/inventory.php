@@ -1010,7 +1010,7 @@ $(document).ready( function() {
     <li><strong>Update Platform Record</strong> - Save any changes made to this form.</li>
     <li><strong>Add New Platform Record</strong> - If you need to add a new platform, change the Platform Name field then click this button to add the device. This button is only active if there are no devices using the same Server Name.</li>
   </ul></li>
-  <li><strong>Radio Selection</strong> - This area lets you select the current status of the system. Clicking on one of the options below and updating the system will change the status as noted. These three options change the date fields for the primary hardware device for this system, either resetting to '0000-00-00' or setting to today's date. For manual editing of the dates, see the Hardware tab.
+  <li><strong>Radio Selection</strong> - This area lets you select the current status of the system. Clicking on one of the options below and updating the system will change the status as noted. These three options change the date fields for the primary hardware device for this system, either resetting to '1971-01-01' or setting to today's date. For manual editing of the dates, see the Hardware tab.
   <ul>
     <li><strong>Being Built</strong> - Selecting this will identify the server as Being Built. This is how the server comes in from RSDP.</li>
     <li><strong>In Use</strong> - Selecting this will identify the server as completed and being used. If changing from Retired to In Use, the Unix Service account flag will remain unchecked.</li>
