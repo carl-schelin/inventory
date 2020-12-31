@@ -200,7 +200,7 @@
     }
 
     $status = 'In Use';
-    if ($a_inventory['hw_active'] == '0000-00-00') {
+    if ($a_inventory['hw_active'] == '1971-01-01') {
       $status = 'Build in Progress';
     }
 
