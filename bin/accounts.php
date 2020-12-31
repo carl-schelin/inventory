@@ -129,7 +129,7 @@
 #| pwd_home      | char(50)  | NO   |     |            |                | 
 #| pwd_shell     | char(50)  | NO   |     |            |                | 
 #| pwd_exclude   | int(10)   | NO   |     | 0          |                | 
-#| pwd_update    | date      | NO   |     | 0000-00-00 |                | 
+#| pwd_update    | date      | NO   |     | 1971-01-01 |                | 
 #+---------------+-----------+------+-----+------------+----------------+
 
 # need to see if the user exists
@@ -227,7 +227,7 @@
 #| grp_companyid | int(10)  | NO   |     | 0          |                | 
 #| grp_name      | char(30) | NO   |     |            |                | 
 #| grp_gid       | double   | NO   |     | 0          |                | 
-#| grp_update    | date     | NO   |     | 0000-00-00 |                | 
+#| grp_update    | date     | NO   |     | 1971-01-01 |                | 
 #+---------------+----------+------+-----+------------+----------------+
 
 # need to see if the group exists
