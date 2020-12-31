@@ -206,7 +206,7 @@ reviewed and worked on.</li>
     $inwork = $and . ' hw_primary = 1 and hw_deleted = 0 ';
     $and = " and";
   } else {
-    $inwork = $and . " hw_active = '0000-00-00' and hw_primary = 1 and hw_deleted = 0 ";
+    $inwork = $and . " hw_active = '1971-01-01' and hw_primary = 1 and hw_deleted = 0 ";
     $and = " and";
   }
 
