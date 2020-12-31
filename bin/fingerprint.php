@@ -31,7 +31,7 @@
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
-  $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
+  $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
   $q_string .= "where inv_name = \"" . $server . "\" and inv_status = 0 and inv_ssh = 1 ";
   $q_string .= "order by inv_name";
   $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
@@ -62,7 +62,7 @@
 
   $appadmin = 'Unassigned';
   $q_string  = "select grp_name ";
-  $q_string .= "from groups ";
+  $q_string .= "from a_groups ";
   $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'];
   $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_groups) > 0) {
@@ -160,7 +160,7 @@
   $maintstart = 0;
   $maintend = 0;
   $q_string  = "select win_day,win_start,win_end ";
-  $q_string .= "from window ";
+  $q_string .= "from maint_window ";
   $q_string .= "where win_id = " . $a_inventory['inv_maint'] . " ";
   $q_window = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_window) > 0) {
