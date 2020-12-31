@@ -47,7 +47,7 @@
       } else {
         print "document.error.chk_status.checked = false;\n";
       }
-      if ($a_chkserver['chk_closed'] != '0000-00-00 00:00:00') {
+      if ($a_chkserver['chk_closed'] != '1971-01-01 00:00:00') {
         print "document.error.chk_closed.checked = true;\n";
       } else {
         print "document.error.chk_closed.checked = false;\n";
