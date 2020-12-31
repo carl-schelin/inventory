@@ -122,7 +122,7 @@
 
         $updated = preg_replace("/\[:hash:\]/", "#", $a_issue_detail['det_text']);
 
-        if ($a_issue['iss_closed'] == '0000-00-00') {
+        if ($a_issue['iss_closed'] == '1971-01-01') {
           $linkstart = "<a href=\"#\" onclick=\"show_file('"     . $Issueroot . "/comments.fill.php?id=" . $a_issue_detail['det_id'] . "');showDiv('problem-hide');\">";
           $linkdel   = "<a href=\"#\" onclick=\"delete_detail('" . $Issueroot . "/comments.del.php?id="  . $a_issue_detail['det_id'] . "');\">";
           $linkend   = "</a>";
@@ -148,7 +148,7 @@
 
       print "document.getElementById('detail_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
-      if ($a_issue['iss_closed'] == '0000-00-00') {
+      if ($a_issue['iss_closed'] == '1971-01-01') {
         print "document.start.det_text.value = '';\n";
         print "document.start.det_timestamp.value = 'Current Time';\n";
         print "document.start.detupdate.disabled = true;\n";
