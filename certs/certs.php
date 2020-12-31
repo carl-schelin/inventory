@@ -225,7 +225,7 @@ $(function() {
   <td class="ui-widget-content" colspan="2"><label><input type="checkbox" name="cert_isca"> Is this a Certificate Authority?</label></td>
 </tr>
 <tr>
-  <td class="ui-widget-content" colspan="2">Expiration Date: <input type="text" name="cert_expire" value="0000-00-00" size="12"></td>
+  <td class="ui-widget-content" colspan="2">Expiration Date: <input type="text" name="cert_expire" value="1971-01-01" size="12"></td>
   <td class="ui-widget-content" colspan="2">Certificate Authority: <input type="text" name="cert_authority" size="40"></td>
   <td class="ui-widget-content" colspan="2">Managed By: <select name="cert_group">
 <?php
