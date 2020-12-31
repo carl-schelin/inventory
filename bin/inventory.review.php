@@ -83,7 +83,7 @@
   $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
-  $q_string .= "where hw_active = '0000-00-00' and hw_primary = 1 and inv_status = 0 and inv_manager = " . $manager . " ";
+  $q_string .= "where hw_active = '1971-01-01' and hw_primary = 1 and inv_status = 0 and inv_manager = " . $manager . " ";
   $q_string .= "order by inv_name ";
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_inventory) > 0) {
