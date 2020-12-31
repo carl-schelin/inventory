@@ -97,7 +97,7 @@
   $q_string .= "left join users on users.usr_id = issue.iss_user ";
   $q_string .= "left join a_groups on a_groups.grp_id = users.usr_group ";
   $q_string .= $leftjoin;
-  $q_string .= "where iss_closed = '0000-00-00' " . $where . " ";
+  $q_string .= "where iss_closed = '1971-01-01' " . $where . " ";
   $q_string .= "order by iss_discovered desc,inv_name";
   $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_issue = mysqli_fetch_array($q_issue)) {
