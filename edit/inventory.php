@@ -64,7 +64,7 @@
   $status3 = '';
 # if in work/live status is 0
   if ($a_inventory['inv_status'] == 0) {
-    if ($a_inventory['hw_active'] == '0000-00-00') {
+    if ($a_inventory['hw_active'] == '1971-01-01') {
       $status1 = 'checked';
     } else {
       $status2 = 'checked';
