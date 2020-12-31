@@ -80,7 +80,7 @@
   $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
   $q_string .= "where int_nagios = 1 and inv_status = 0 and sw_type = 'OS' and int_ip6 = 0 and int_management = 1 and inv_location = 39 and inv_manager != 12 ";
   if ($hostname == 'inventory.scc911.com') {
-    $q_string .= "and hw_active != '0000-00-00' ";
+    $q_string .= "and hw_active != '1971-01-01' ";
   }
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
