@@ -152,7 +152,7 @@
   print "<p>This page lists all the operating systems and the end of life dates.</p>\n";
 
   print "<ul>\n";
-  print "  <li><span class=\"ui-state-highlight\">Highlight</span> - Indicates a system without a set date (set to default of 0000-00-00).</li>\n";
+  print "  <li><span class=\"ui-state-highlight\">Highlight</span> - Indicates a system without a set date (set to default of 1971-01-01).</li>\n";
   print "  <li><span class=\"ui-state-error\">Highlight</span> - Indicates a system with a expiration date older than today's date.</li>\n";
   print "</ul>\n";
 
@@ -187,7 +187,7 @@
       if ($a_software['sw_eol'] < date('Y-m-d')) {
         $class = "ui-state-error";
       }
-      if ($a_software['sw_eol'] == '0000-00-00') {
+      if ($a_software['sw_eol'] == '1971-01-01') {
         $class = "ui-state-highlight";
       }
 
