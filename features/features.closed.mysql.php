@@ -68,7 +68,7 @@
   $q_string .= "from features ";
   $q_string .= "left join modules on modules.mod_id = features.feat_module ";
   $q_string .= "left join users   on users.usr_id   = features.feat_openby ";
-  $q_string .= "where feat_closed != '0000-00-00' " . $where;
+  $q_string .= "where feat_closed != '1971-01-01' " . $where;
   $q_string .= "order by mod_name,feat_discovered desc";
   $q_features = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   if (mysqli_num_rows($q_features) > 0) {
