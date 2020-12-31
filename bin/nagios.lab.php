@@ -29,7 +29,7 @@
 #        }
 #
 
-# only get systems that are marked 'in use' or have the hw_live date != 0000-00-00
+# only get systems that are marked 'in use' or have the hw_live date != 1971-01-01
 # only get systems that are checked for 'nagios' on the main page.
 # only get interfaces that are marked 'mgt'.
 # only get gateways that are set.
@@ -85,7 +85,7 @@
   $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
   $q_string .= "where int_nagios = 1 and inv_status = 0 and sw_type = 'OS' and int_ip6 = 0 and int_management = 1 and loc_instance = 0 and inv_manager = 1 ";
   if ($hostname == 'inventory.scc911.com') {
-    $q_string .= "and hw_active != '0000-00-00' ";
+    $q_string .= "and hw_active != '1971-01-01' ";
   }
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
