@@ -97,7 +97,7 @@
       $newdate = $a_inventory['mod_eol'];
     }
 
-    if ($newdate == '0000-00-00') {
+    if ($newdate == '1971-01-01') {
       $newdate = "";
     }
 
