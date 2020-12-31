@@ -305,7 +305,7 @@ monitoring checkbox for the server interface that was identified as being monito
       
         $class = "ui-state-highlight";
 
-        $test_alarm = '0000-00-00 00:00:00';
+        $test_alarm = '1971-01-01 00:00:00';
         $q_string  = "select alarm_timestamp ";
         $q_string .= "from alarms ";
         $q_string .= "where alarm_companyid = " . $a_inventory['inv_id'] . " and alarm_text = \"'Unix Monitoring Test - Please Ignore'\" ";
@@ -329,7 +329,7 @@ monitoring checkbox for the server interface that was identified as being monito
         if (mysqli_num_rows($q_alarmtext) > 0) {
           $a_alarmtext = mysqli_fetch_array($q_alarmtext);
           if ($alarm_baseline < $a_alarmtext['alarm_timestamp']) {
-            if ($test_alarm != '0000-00-00 00:00:00') {
+            if ($test_alarm != '1971-01-01 00:00:00') {
               $class = "ui-widget-content";
               $goodalarms++;
             } else {
@@ -360,11 +360,11 @@ monitoring checkbox for the server interface that was identified as being monito
           }
           $displayalarms++;
         } else {
-          $a_alarmtext['alarm_timestamp'] = '0000-00-00 00:00:00';
+          $a_alarmtext['alarm_timestamp'] = '1971-01-01 00:00:00';
           $a_alarmtext['alarm_level'] = 0;
           $a_alarmtext['alarm_text'] = 'No alarms since 2009-09-08 17:13:10';
           $class = "ui-state-error";
-          if ($test_alarm != '0000-00-00 00:00:00') {
+          if ($test_alarm != '1971-01-01 00:00:00') {
             $nolivealarms++;
             if ($a_inventory['svc_acronym'] == 'LMCS') {
               $nl_lmcs++;
@@ -414,7 +414,7 @@ monitoring checkbox for the server interface that was identified as being monito
         }
 
         $hwactive = '';
-        if ($a_inventory['hw_active'] == '0000-00-00') {
+        if ($a_inventory['hw_active'] == '1971-01-01') {
           $hwactive = ' *';
         }
 
