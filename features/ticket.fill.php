@@ -30,7 +30,7 @@
       print "document.start.feat_discovered.value = '" . mysqli_real_escape_string($db, $a_features['feat_discovered']) . "';\n";
       print "document.start.feat_subject.value = '"    . mysqli_real_escape_string($db, $a_features['feat_subject'])    . "';\n";
 
-      if ($a_features['feat_closed'] == '0000-00-00') {
+      if ($a_features['feat_closed'] == '1971-01-01') {
         print "document.start.feat_closed.value = 'Current Date';\n";
 
         print "document.getElementById('feat_discovered').innerHTML = '" . mysqli_real_escape_string($db, $a_features['feat_discovered']) . "';\n";
