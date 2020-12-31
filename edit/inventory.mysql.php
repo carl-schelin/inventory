@@ -239,9 +239,9 @@
                     "hw_group     =   " . $a_hardware['hw_group']     . "," .
                     "hw_poid      =   " . $a_hardware['hw_poid']      . "," .
                     "hw_built     = \"" . $date                       . "\"," .
-                    "hw_active    = \"" . '0000-00-00'                . "\"," .
-                    "hw_retired   = \"" . '0000-00-00'                . "\"," .
-                    "hw_reused    = \"" . '0000-00-00'                . "\"," .
+                    "hw_active    = \"" . '1971-01-01'                . "\"," .
+                    "hw_retired   = \"" . '1971-01-01'                . "\"," .
+                    "hw_reused    = \"" . '1971-01-01'                . "\"," .
                     "hw_supportid =   " . $a_hardware['hw_supportid'] . "," .
                     "hw_primary   =   " . $a_hardware['hw_primary'];
   
@@ -256,9 +256,9 @@
                   "hw_product   =   " . $formVars['inv_product'] . "," .
                   "hw_group     =   " . $formVars['inv_manager'] . "," .
                   "hw_built     = \"" . $date                    . "\"," .
-                  "hw_active    = \"" . '0000-00-00'             . "\"," .
-                  "hw_retired   = \"" . '0000-00-00'             . "\"," .
-                  "hw_reused    = \"" . '0000-00-00'             . "\"," .
+                  "hw_active    = \"" . '1971-01-01'             . "\"," .
+                  "hw_retired   = \"" . '1971-01-01'             . "\"," .
+                  "hw_reused    = \"" . '1971-01-01'             . "\"," .
                   "hw_primary   =   " . 1;
 
                 $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -272,9 +272,9 @@
                 "hw_product   =   " . $formVars['inv_product'] . "," .
                 "hw_group     =   " . $formVars['inv_manager'] . "," .
                 "hw_built     = \"" . $date                    . "\"," .
-                "hw_active    = \"" . '0000-00-00'             . "\"," .
-                "hw_retired   = \"" . '0000-00-00'             . "\"," .
-                "hw_reused    = \"" . '0000-00-00'             . "\"," .
+                "hw_active    = \"" . '1971-01-01'             . "\"," .
+                "hw_retired   = \"" . '1971-01-01'             . "\"," .
+                "hw_reused    = \"" . '1971-01-01'             . "\"," .
                 "hw_primary   =   " . 1;
 
               $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -425,7 +425,7 @@ print "alert('All Done!');\n";
         $a_hardware = mysqli_fetch_array($q_hardware);
 
         if ($a_inventory['inv_status'] == 0) {
-          if ($a_hardware['hw_active'] == '0000-00-00') {
+          if ($a_hardware['hw_active'] == '1971-01-01') {
             $current = "work";
           } else {
             $current = "production";
@@ -448,7 +448,7 @@ print "alert('All Done!');\n";
 
         if ($current == 'production') {
           if ($formVars['inv_status'] == 0) {
-            $r_hardware = "update hardware set hw_active = '0000-00-00' where hw_id = " . $a_hardware['hw_id'] . " ";
+            $r_hardware = "update hardware set hw_active = '1971-01-01' where hw_id = " . $a_hardware['hw_id'] . " ";
           }
           if ($formVars['inv_status'] == 2) {
             $r_hardware = "update hardware set hw_retired = '" . date('Y-m-d') . "' where hw_id = " . $a_hardware['hw_id'] . " ";
@@ -458,11 +458,11 @@ print "alert('All Done!');\n";
 
         if ($current == 'retired') {
           if ($formVars['inv_status'] == 0) {
-            $r_hardware = "update hardware set hw_retired = '0000-00-00' where hw_id = " . $a_hardware['hw_id'] . " ";
+            $r_hardware = "update hardware set hw_retired = '1971-01-01' where hw_id = " . $a_hardware['hw_id'] . " ";
             $r_inventory = "update inventory set inv_status = 0 where inv_id = " . $newserver . " ";
           }
           if ($formVars['inv_status'] == 1) {
-            $r_hardware = "update hardware set hw_active = '" . date('Y-m-d') . "', hw_retired = '0000-00-00' where hw_id = " . $a_hardware['hw_id'] . " ";
+            $r_hardware = "update hardware set hw_active = '" . date('Y-m-d') . "', hw_retired = '1971-01-01' where hw_id = " . $a_hardware['hw_id'] . " ";
             $r_inventory = "update inventory set inv_status = 0 where inv_id = " . $newserver . " ";
           }
         }
