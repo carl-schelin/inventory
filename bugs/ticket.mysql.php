@@ -86,7 +86,7 @@
           logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
 # it's open, close it
-          if ($formVars['bug_closed'] == '0000-00-00' || $formVars['bug_closed'] == 'Current Date') {
+          if ($formVars['bug_closed'] == '1971-01-01' || $formVars['bug_closed'] == 'Current Date') {
             $formVars['bug_closed'] = date('Y-m-d');
 
             $q_string =
@@ -112,7 +112,7 @@
             mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           } else {
-            $formVars['bug_closed'] = '0000-00-00';
+            $formVars['bug_closed'] = '1971-01-01';
 
             $q_string =
               "bug_module     =   " . $formVars['bug_module']     . "," . 
