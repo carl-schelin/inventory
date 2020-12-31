@@ -171,7 +171,7 @@
       if (mysqli_num_rows($q_vulnerabilities) == 0) {
 
         $class = "ui-widget-content";
-        if ($a_hardware['hw_active'] == '0000-00-00') {
+        if ($a_hardware['hw_active'] == '1971-01-01') {
           $class = "ui-state-highlight";
         }
 
