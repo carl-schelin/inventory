@@ -77,7 +77,7 @@
           $q_string .= "from issue ";
           $q_string .= "left join inventory on issue.iss_companyid = inventory.inv_id ";
           $q_string .= "left join users on users.usr_id = issue.iss_user ";
-          $q_string .= "where iss_closed = '0000-00-00' and inv_name like '%" . $formVars['search_for'] . "%' ";
+          $q_string .= "where iss_closed = '1971-01-01' and inv_name like '%" . $formVars['search_for'] . "%' ";
           $q_string .= "order by iss_discovered desc,inv_name";
           $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           while ($a_issue = mysqli_fetch_array($q_issue)) {
@@ -160,7 +160,7 @@
           $q_string .= "from issue ";
           $q_string .= "left join inventory on issue.iss_companyid = inventory.inv_id ";
           $q_string .= "left join users on users.usr_id = issue.iss_user ";
-          $q_string .= "where iss_closed != '0000-00-00' and inv_name like '%" . $formVars['search_for'] . "%' ";
+          $q_string .= "where iss_closed != '1971-01-01' and inv_name like '%" . $formVars['search_for'] . "%' ";
           $q_string .= "order by inv_name,iss_discovered desc";
           $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           while ($a_issue = mysqli_fetch_array($q_issue)) {
