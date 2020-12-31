@@ -30,7 +30,7 @@
       print "document.start.bug_discovered.value = '" . mysqli_real_escape_string($db, $a_bugs['bug_discovered']) . "';\n";
       print "document.start.bug_subject.value = '"    . mysqli_real_escape_string($db, $a_bugs['bug_subject'])    . "';\n";
 
-      if ($a_bugs['bug_closed'] == '0000-00-00') {
+      if ($a_bugs['bug_closed'] == '1971-01-01') {
         print "document.start.bug_closed.value = 'Current Date';\n";
 
         print "document.getElementById('bug_discovered').innerHTML = '" . mysqli_real_escape_string($db, $a_bugs['bug_discovered']) . "';\n";
