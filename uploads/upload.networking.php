@@ -21,7 +21,7 @@
   $file = 'networking.current.csv';
 
 # run through the existing network devices. If the hardware retirement date is not set, set it and the status.
-# then when the server list is run through, update the hardware retirement date to be '0000-00-00' to show it's not retired.
+# then when the server list is run through, update the hardware retirement date to be '1971-01-01' to show it's not retired.
 
 print "Setting all network hardware as retired but only if not already retired.\n";
 print "Legend:\n";
@@ -44,7 +44,7 @@ print "h - Update hardware record\n";
 
     $q_string  = "select hw_id ";
     $q_string .= "from hardware ";
-    $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1 and hw_retired = '0000-00-00' ";
+    $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1 and hw_retired = '1971-01-01' ";
     $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     if (mysqli_num_rows($q_hardware) > 0) {
       $a_hardware = mysqli_fetch_array($q_hardware);
@@ -163,11 +163,11 @@ if (($handle = fopen($file, "r")) !== FALSE) {
 # now update the hardware information
         $q_string  = "update hardware ";
         $q_string .= "set ";
-        $q_string .= "hw_retired = '0000-00-00',";
-        if ($a_hardware['hw_active'] == '0000-00-00') {
+        $q_string .= "hw_retired = '1971-01-01',";
+        if ($a_hardware['hw_active'] == '1971-01-01') {
           $q_string .= "hw_active = '" . date('Y-m-d') . "',";
         }
-        if ($a_hardware['hw_built'] == '0000-00-00') {
+        if ($a_hardware['hw_built'] == '1971-01-01') {
           $q_string .= "hw_built = '" . date('Y-m-d') . "',";
         }
         $q_string .= "hw_vendorid = " . $a_models['mod_id'] . ",";
@@ -268,7 +268,7 @@ if (($handle = fopen($file, "r")) !== FALSE) {
         $q_string .= "set ";
         $q_string .= "hw_id = null,";
         $q_string .= "hw_companyid = " . $server . ",";
-        $q_string .= "hw_retired = '0000-00-00',";
+        $q_string .= "hw_retired = '1971-01-01',";
         $q_string .= "hw_active = '" . date('Y-m-d') . "',";
         $q_string .= "hw_built = '" . date('Y-m-d') . "',";
         $q_string .= "hw_vendorid = " . $a_models['mod_id'] . ",";
