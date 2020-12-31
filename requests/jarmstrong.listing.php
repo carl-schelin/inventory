@@ -90,7 +90,7 @@
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_inventory = mysqli_fetch_array($q_inventory) ) {
 
-    if ($a_inventory['hw_active'] == '0000-00-00') {
+    if ($a_inventory['hw_active'] == '1971-01-01') {
       $active = "In Progress";
     } else {
       $active = "Live";
