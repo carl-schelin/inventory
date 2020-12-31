@@ -120,7 +120,7 @@
       $q_features_detail = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_features_detail = mysqli_fetch_array($q_features_detail)) {
 
-        if ($a_features['feat_closed'] == '0000-00-00') {
+        if ($a_features['feat_closed'] == '1971-01-01') {
           $linkstart = "<a href=\"#\" onclick=\"show_file('"     . $Featureroot . "/comments.fill.php?id=" . $a_features_detail['feat_id'] . "');showDiv('request-hide');\">";
           $linkdel   = "<a href=\"#\" onclick=\"delete_detail('" . $Featureroot . "/comments.del.php?id="  . $a_features_detail['feat_id'] . "');\">";
           $linkend   = "</a>";
@@ -146,7 +146,7 @@
 
       print "document.getElementById('detail_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
-      if ($a_features['feat_closed'] == '0000-00-00') {
+      if ($a_features['feat_closed'] == '1971-01-01') {
         print "document.start.feat_text.value = '';\n";
         print "document.start.feat_timestamp.value = 'Current Time';\n";
         print "document.start.featupdate.disabled = true;\n";
