@@ -42,7 +42,7 @@
 
 # first check the affected group
     $q_string  = "select grp_name,grp_email ";
-    $q_string .= "from groups ";
+    $q_string .= "from a_groups ";
     $q_string .= "where grp_id = " . $a_certs['cert_group'];
     $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     $a_groups = mysqli_fetch_array($q_groups);
@@ -73,7 +73,7 @@
 # then check the WebApps group assuming the previous group check wasn't the webapps folks
     if ($webappsemail == 0) {
       $q_string  = "select grp_name,grp_email ";
-      $q_string .= "from groups ";
+      $q_string .= "from a_groups ";
       $q_string .= "where grp_id = " . $GRP_WebApps;
       $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       $a_groups = mysqli_fetch_array($q_groups);
