@@ -95,13 +95,13 @@
         }
 
         $q_string  = "select grp_name ";
-        $q_string .= "from groups ";
+        $q_string .= "from a_groups ";
         $q_string .= "where grp_id = " . $a_inventory['inv_manager'] . " ";
         $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_manager = mysqli_fetch_array($q_groups);
 
         $q_string  = "select grp_name ";
-        $q_string .= "from groups ";
+        $q_string .= "from a_groups ";
         $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
         $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_appadmin = mysqli_fetch_array($q_groups);
