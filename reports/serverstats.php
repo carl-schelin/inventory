@@ -317,7 +317,7 @@ to software and hardware section.</p>
   $q_string  = "select hw_built ";
   $q_string .= "from hardware ";
   $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
-  $q_string .= "where hw_built != '0000-00-00' and hw_primary = 1 " . $admin . " ";
+  $q_string .= "where hw_built != '1971-01-01' and hw_primary = 1 " . $admin . " ";
   $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
@@ -354,12 +354,12 @@ to software and hardware section.</p>
   $q_string .= "from hardware ";
   $q_string .= "left join software on software.sw_companyid = hardware.hw_companyid ";
   $q_string .= "where hw_companyid != 0 " . $admin . " ";
-  $q_string .= "and hw_built = '0000-00-00' ";
+  $q_string .= "and hw_built = '1971-01-01' ";
   $q_string .= "and hw_primary = 1";
   $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   $a_hardware = mysqli_fetch_row($q_hardware);
 
-  print "<p>Note: There are " . $a_hardware[0] . " servers with 0000-00-00 build dates which weren't counted.</p>\n";
+  print "<p>Note: There are " . $a_hardware[0] . " servers with 1971-01-01 build dates which weren't counted.</p>\n";
 
 ?>
 
