@@ -420,7 +420,7 @@
       $q_string .= "where hw_primary = 1 and hw_companyid = " . $a_inventory['inv_id'];
       $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
       $a_hardware = mysqli_fetch_array($q_hardware);
-      if ($a_hardware['hw_active'] == '0000-00-00') {
+      if ($a_hardware['hw_active'] == '1971-01-01') {
         $bgcolor = $color[1];
       } else {
         $bgcolor = $color[0];
@@ -527,7 +527,7 @@
       $q_string .= "where hw_primary = 1 and hw_companyid = " . $a_inventory['inv_id'];
       $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
       $a_hardware = mysqli_fetch_array($q_hardware);
-      if ($a_hardware['hw_active'] == '0000-00-00') {
+      if ($a_hardware['hw_active'] == '1971-01-01') {
         $bgcolor = $color[1];
       } else {
         $bgcolor = $color[0];
@@ -619,7 +619,7 @@
     $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
     $a_hardware = mysqli_fetch_array($q_hardware);
 
-    if ($a_hardware['hw_active'] == '0000-00-00') {
+    if ($a_hardware['hw_active'] == '1971-01-01') {
       $output .= "<tr style=\"background-color: " . $color[3] . "; border: 1px solid #000000; font-size: 75%;\">\n";
       $output .= "  <td colspan=\"5\"><strong>Server is not in Production at this time.</strong></td>\n";
       $output .= "</tr>\n";
