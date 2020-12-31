@@ -475,7 +475,7 @@ $(document).ready( function() {
   <ul>
     <li><strong>Close Issue</strong> - Sets the Closed field to today's date which closed the issue.</li>
     <li><strong>Save Issue Changes</strong> - If you update the Issue Form, click here to save changes.</li>
-    <li><strong>Reopen Issue</strong> - Reopen a closed issue. Resets the Closed field to '0000-00-00'.</li>
+    <li><strong>Reopen Issue</strong> - Reopen a closed issue. Resets the Closed field to '1971-01-01'.</li>
   </ul></li>
 </ul>
 
@@ -503,7 +503,7 @@ $(document).ready( function() {
     $newissue = "disabled";
     $updateissue = "";
   }
-  if ($a_issue['iss_closed'] == '0000-00-00') {
+  if ($a_issue['iss_closed'] == '1971-01-01') {
     print "  <input type=\"button\" " . $updateissue . " name=\"close\"     value=\"Close Issue\"        onClick=\"javascript:attach_file('ticket.mysql.php', 2);\">\n";
     print "  <input type=\"button\" " . $updateissue . " name=\"save\"      value=\"Save Issue Changes\" onClick=\"javascript:attach_file('ticket.mysql.php', 1);\">\n";
   } else {
@@ -658,7 +658,7 @@ $(document).ready( function() {
   $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_issue = mysqli_fetch_array($q_issue);
 
-  if ($a_issue['iss_closed'] == '0000-00-00') {
+  if ($a_issue['iss_closed'] == '1971-01-01') {
     print "  <td class=\"ui-widget-content\"><strong>Discovered</strong>: <input type=\"text\" name=\"iss_discovered\" size=\"10\" value=\"" . $a_issue['iss_discovered'] . "\"></td>\n";
     print "  <td class=\"ui-widget-content\"><strong>Closed</strong>: <input type=\"text\" name=\"iss_closed\" size=\"15\" value=\"Current Date\"></td>\n";
     print "  <td class=\"ui-widget-content\"><strong>Problem Description</strong>: <input type=\"text\" name=\"iss_subject\" size=\"50\" value=\"" . $a_issue['iss_subject'] . "\"></td>\n";
@@ -729,7 +729,7 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <?php
-  if ($a_issue['iss_closed'] == '0000-00-00') {
+  if ($a_issue['iss_closed'] == '1971-01-01') {
 ?>
 <tr>
   <td colspan="4" class="ui-widget-content button">
@@ -918,7 +918,7 @@ field shows you the limit of the number of characters. This limit is set by the 
 <div id="problem-hide" style="display: none">
 
 <?php
-  if ($a_issue['iss_closed'] == '0000-00-00') {
+  if ($a_issue['iss_closed'] == '1971-01-01') {
 ?>
 <table class="ui-styled-table">
 <tr>
