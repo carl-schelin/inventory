@@ -124,7 +124,7 @@
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
   $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
   $q_string .= "left join states on states.st_id = locations.loc_state ";
-  $q_string .= "where inv_status = 1 and mod_virtual = 0 and hw_primary = 1 and hw_supid_verified = 1 and hw_reused = '0000-00-00' and inv_manager = " . $manager . " ";
+  $q_string .= "where inv_status = 1 and mod_virtual = 0 and hw_primary = 1 and hw_supid_verified = 1 and hw_reused = '1971-01-01' and inv_manager = " . $manager . " ";
   $q_string .= "order by inv_name ";
   $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_hardware) > 0) {
