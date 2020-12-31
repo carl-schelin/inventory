@@ -32,7 +32,7 @@
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
         }
-        if ($formVars['off_timestamp'] == '0000-00-00 00:00:00' || $formVars['off_timestamp'] == 'Current Date' || $formVars['off_timestamp'] == '') {
+        if ($formVars['off_timestamp'] == '1971-01-01 00:00:00' || $formVars['off_timestamp'] == 'Current Date' || $formVars['off_timestamp'] == '') {
           $formVars['off_timestamp'] = date('Y-m-d H:i:s');
         }
         if ($formVars['off_disabled'] == 'true') {
