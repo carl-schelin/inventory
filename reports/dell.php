@@ -201,7 +201,7 @@
       } else {
         $status = "ui-widget-content";
       }
-      if ($a_inventory['hw_purchased'] == '0000-00-00') {
+      if ($a_inventory['hw_purchased'] == '1971-01-01') {
         $nodate = "ui-state-highlight";
       } else {
         $nodate = "ui-widget-content";
