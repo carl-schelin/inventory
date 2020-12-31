@@ -78,7 +78,7 @@
   $q_string .= "from bugs ";
   $q_string .= "left join users   on users.usr_id   = bugs.bug_openby ";
   $q_string .= "left join modules on modules.mod_id = bugs.bug_module ";
-  $q_string .= "where bug_closed = '0000-00-00' " . $where;
+  $q_string .= "where bug_closed = '1971-01-01' " . $where;
   $q_string .= "order by bug_discovered desc,mod_name ";
   $q_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_bugs) > 0) {
