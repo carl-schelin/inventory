@@ -79,7 +79,7 @@
     $inwork = $and . ' hw_primary = 1 and hw_deleted = 0 ';
     $and = " and";
   } else {
-    $inwork = $and . " hw_active = '0000-00-00' and hw_primary = 1 and hw_deleted = 0 ";
+    $inwork = $and . " hw_active = '1971-01-01' and hw_primary = 1 and hw_deleted = 0 ";
     $and = " and";
   }
 
@@ -218,7 +218,7 @@ $(document).ready( function() {
       $callpath = "Yes";
     }
 
-    if ($a_inventory['sw_eol'] < date('Y-m-d') && $a_inventory['sw_eol'] != '0000-00-00') {
+    if ($a_inventory['sw_eol'] < date('Y-m-d') && $a_inventory['sw_eol'] != '1971-01-01') {
 
       if ($formVars['csv']) {
         print "\"" . $a_inventory['inv_name']     . "\",";
@@ -305,14 +305,14 @@ $(document).ready( function() {
       $newdate = date("Y-m-d",$support);
     } else {
       if ($a_inventory['mod_eol'] == '') {
-        $a_inventory['mod_eol'] = '0000-00-00';
+        $a_inventory['mod_eol'] = '1971-01-01';
       }
       $date = explode("-", $a_inventory['mod_eol']);
       $support = mktime(0,0,0,$date[1],$date[2],$date[0]);
       $newdate = $a_inventory['mod_eol'];
     }
 
-    if ($newdate < date('Y-m-d') && $newdate != '0000-00-00') {
+    if ($newdate < date('Y-m-d') && $newdate != '1971-01-01') {
 
       if ($formVars['csv']) {
         print "\"" . $a_inventory['inv_name']   . "\",";
