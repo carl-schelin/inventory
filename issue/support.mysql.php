@@ -39,7 +39,7 @@
           $formVars['sup_rating'] = 0;
         }
 # if blank, we want to set a new one
-        if ($formVars['sup_timestamp'] == '0000-00-00 00:00:00' || $formVars['sup_timestamp'] == 'Current Time' || $formVars['sup_timestamp'] == '') {
+        if ($formVars['sup_timestamp'] == '1971-01-01 00:00:00' || $formVars['sup_timestamp'] == 'Current Time' || $formVars['sup_timestamp'] == '') {
           $timestamp = "sup_timestamp = \"" . date('Y-m-d H:i:s') . "\",";
         } else {
           $timestamp = "sup_timestamp = \"" . $formVars['sup_timestamp'] . "\",";
@@ -137,7 +137,7 @@
       if (mysqli_num_rows($q_issue_support) > 0) {
         while ($a_issue_support = mysqli_fetch_array($q_issue_support)) {
 
-          if ($a_issue['iss_closed'] == '0000-00-00') {
+          if ($a_issue['iss_closed'] == '1971-01-01') {
             $linkstart = "<a href=\"#\" onclick=\"show_file('"     . $Issueroot . "/support.fill.php?id=" . $a_issue_support['sup_id'] . "');showDiv('support-hide');\">";
             $linkdel   = "<a href=\"#\" onclick=\"delete_ticket('" . $Issueroot . "/support.del.php?id="  . $a_issue_support['sup_id'] . "');\">";
             $linkend   = "</a>";
@@ -172,7 +172,7 @@
 
       print "document.getElementById('support_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
-      if ($a_issue['iss_closed'] == '0000-00-00') {
+      if ($a_issue['iss_closed'] == '1971-01-01') {
         print "document.start.sup_company.value = '';";
         print "document.start.sup_case.value = '';";
         print "document.start.sup_rating[0].checked = true;";
