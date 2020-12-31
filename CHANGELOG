@@ -1,0 +1,5 @@
+Renamed table groups to a_groups due to a change in mysql 8 making groups a reserved word
+Renamed table window to maint_window due to a change in mysql 8 making window a reserved word
+Changed the following tables to have a default of '1971-01-01' due to mysql 8 not permitting '0000-00-00'.
+Changed code that depended upon checking for '0000-00-00' to checkinf for '1971-01-01'
+Removed or changed to an example, any company specific information in the code. In some cases moving company info into the .config file.
