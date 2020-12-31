@@ -26,9 +26,9 @@
   print "Company,Support Organization,Support Group Name,Support Group Role,Description,Group Email,Deletion Flag,Status\n";
 
   $q_string  = "select grp_id,grp_disabled,grp_name,grp_email,org_name,role_name ";
-  $q_string .= "from groups ";
-  $q_string .= "left join organizations on organizations.org_id = groups.grp_organization ";
-  $q_string .= "left join roles on roles.role_id = groups.grp_role ";
+  $q_string .= "from a_groups ";
+  $q_string .= "left join organizations on organizations.org_id = a_groups.grp_organization ";
+  $q_string .= "left join roles on roles.role_id = a_groups.grp_role ";
   $q_string .= "order by grp_name ";
   $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_groups = mysqli_fetch_array($q_groups)) {
