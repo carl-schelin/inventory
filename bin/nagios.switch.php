@@ -68,7 +68,7 @@
   $q_string .= "from inventory ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
   $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
-  $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
+  $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
   $q_string .= "where int_nagios = 1 and inv_status = 0 and sw_type = 'OS' and int_ip6 = 0 and int_type = 1 and inv_manager = 12 ";
   $q_string .= "order by int_addr ";
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
