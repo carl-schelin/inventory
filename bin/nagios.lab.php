@@ -80,7 +80,7 @@
   }
 # have a management flag now.
 # int_type != 6 and int_type != 4 and loc_type = 1 and 
-  $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
+  $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
   $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
   $q_string .= "where int_nagios = 1 and inv_status = 0 and sw_type = 'OS' and int_ip6 = 0 and int_management = 1 and loc_instance = 0 and inv_manager = 1 ";
