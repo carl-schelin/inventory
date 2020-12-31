@@ -97,7 +97,7 @@ function checkos() {
 }
 
 function populatestart() {
-  if (document.rsdp.bu_start.value === '0000-00-00') {
+  if (document.rsdp.bu_start.value === '1971-01-01') {
     document.rsdp.bu_start.value = document.rsdp.rsdp_completion.value;
   }
   if (document.rsdp.bu_start.value === '') {
@@ -321,7 +321,7 @@ function validate_Form() {
     set_Class('rsdp_product', 'ui-widget-content');
   }
 
-  if (vf_form.rsdp_completion.value === "" || vf_form.rsdp_completion.value === '0000-00-00') {
+  if (vf_form.rsdp_completion.value === "" || vf_form.rsdp_completion.value === '1971-01-01') {
     set_Class('rsdp_completion', 'ui-state-error');
     vf_submit = 0;
   } else {
@@ -801,7 +801,7 @@ Click the <strong>Add New Project</strong> button to add a new Project to the li
   }
 ?>
   </select><input type="button" name="addprj" id="clickAddProject" value="Add New Project"></td>
-  <td class="ui-widget-content" id="rsdp_completion">Requested Completion Date: <input type="date" name="rsdp_completion" id="compdate" size="10" value="0000-00-00" onclick="populatestart();validate_Form();"></td>
+  <td class="ui-widget-content" id="rsdp_completion">Requested Completion Date: <input type="date" name="rsdp_completion" id="compdate" size="10" value="1971-01-01" onclick="populatestart();validate_Form();"></td>
 </tr>
 </table>
 
