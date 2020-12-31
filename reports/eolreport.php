@@ -103,7 +103,7 @@
     $inwork = $and . ' hw_primary = 1 and hw_deleted = 0 ';
     $and = " and";
   } else {
-    $inwork = $and . " hw_active = '0000-00-00' and hw_primary = 1 and hw_deleted = 0 ";
+    $inwork = $and . " hw_active = '1971-01-01' and hw_primary = 1 and hw_deleted = 0 ";
     $argument .= $ampersand . "inwork=" . $formVars['inwork'];
     $ampersand = "&";
     $and = " and";
@@ -334,7 +334,7 @@
           $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inventory['inv_id'] . "#hardware\" target=\"_blank\">";
           $linkend = "</a>";
 
-          $newdate = '0000-00-00';
+          $newdate = '1971-01-01';
           if ($a_models['mod_virtual'] == 0) {
             if ($a_models['mod_vendor'] == 'Dell') {
 # For Dell, the end of support is 5 years after the purchase date
@@ -343,13 +343,13 @@
               $newdate = date("Y-m-d",$support);
             } else {
               if ($a_models['mod_eol'] == '') {
-                $a_models['mod_eol'] = '0000-00-00';
+                $a_models['mod_eol'] = '1971-01-01';
               }
 # just commonalizing the newdate value for the check
               $newdate = $a_models['mod_eol'];
             }
 
-            if ($newdate == '0000-00-00') {
+            if ($newdate == '1971-01-01') {
               $hwuncounted++;
             } else {
               if ($newdate < $today) {
@@ -360,7 +360,7 @@
           }
 
           $class = "ui-widget-content";
-          if ($newdate < $today && $newdate != '0000-00-00') {
+          if ($newdate < $today && $newdate != '1971-01-01') {
             $class = "ui-state-error";
           }
 
@@ -395,7 +395,7 @@
           $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inventory['inv_id'] . "#sofware\" target=\"_blank\">";
           $linkend = "</a>";
 
-          if ($a_software['sw_eol'] == '0000-00-00') {
+          if ($a_software['sw_eol'] == '1971-01-01') {
             $swuncounted++;
           } else {
             if ($a_software['sw_eol'] < $today) {
@@ -404,7 +404,7 @@
           }
 
           $class = "ui-widget-content";
-          if ($a_software['sw_eol'] < $today && $a_software['sw_eol'] != '0000-00-00') {
+          if ($a_software['sw_eol'] < $today && $a_software['sw_eol'] != '1971-01-01') {
             $class = "ui-state-error";
           }
 
@@ -436,7 +436,7 @@
       }
       $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_software = mysqli_fetch_array($q_software)) {
-        if ($a_software['sw_eol'] == '0000-00-00') {
+        if ($a_software['sw_eol'] == '1971-01-01') {
           $swuncounted++;
           $totalswuncounted++;
         } else {
@@ -467,13 +467,13 @@
           $newdate = date("Y-m-d",$support);
         } else {
           if ($a_hardware['mod_eol'] == '') {
-            $a_hardware['mod_eol'] = '0000-00-00';
+            $a_hardware['mod_eol'] = '1971-01-01';
           }
 # just commonalizing the newdate value for the check
           $newdate = $a_hardware['mod_eol'];
         }
 
-        if ($newdate == '0000-00-00') {
+        if ($newdate == '1971-01-01') {
           $hwuncounted++;
           $totalhwuncounted++;
         } else {
