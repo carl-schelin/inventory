@@ -75,7 +75,7 @@
       $newdate = date("Y-m-d",$support);
     } else {
       if ($a_inventory['mod_eol'] == '') {
-        $a_inventory['mod_eol'] = '0000-00-00';
+        $a_inventory['mod_eol'] = '1971-01-01';
       }
       $date = explode("-", $a_inventory['mod_eol']);
       $support = mktime(0,0,0,$date[1],$date[2],$date[0]);
@@ -94,10 +94,10 @@
       $swstatus = " class=\"ui-state-error\"";
     }
 
-    if ($newdate == '' || $newdate == '0000-00-00') {
+    if ($newdate == '' || $newdate == '1971-01-01') {
       $newdate = '----------';
     }
-    if ($a_software['sw_eol'] == '' || $a_software['sw_eol'] == '0000-00-00') {
+    if ($a_software['sw_eol'] == '' || $a_software['sw_eol'] == '1971-01-01') {
       $moddate = '----------';
     }
 
