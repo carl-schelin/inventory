@@ -47,14 +47,14 @@
           $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           $a_chkserver = mysqli_fetch_array($q_chkserver);
 
-          if ($a_chkserver['chk_closed'] == '0000-00-00 00:00:00') {
+          if ($a_chkserver['chk_closed'] == '1971-01-01 00:00:00') {
             $formVars['chk_closed'] = date('Y-m-d H:i:s');
           } else {
             $formVars['chk_closed'] = $a_chkserver['chk_closed'];
           }
 
         } else {
-          $formVars['chk_closed'] = '0000-00-00 00:00:00';
+          $formVars['chk_closed'] = '1971-01-01 00:00:00';
         }
 
         logaccess($db, $_SESSION['uid'], $package, "Building the query.");
@@ -126,7 +126,7 @@
       $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
       $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
       $q_string .= "left join service on service.svc_id = inventory.inv_class ";
-      $q_string .= "where ce_priority = 1 and chk_status = 0 and chk_closed = '0000-00-00 00:00:00' " . $where;
+      $q_string .= "where ce_priority = 1 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
       $q_string .= $orderby;
       $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
@@ -193,7 +193,7 @@
       $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
       $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
       $q_string .= "left join service on service.svc_id = inventory.inv_class ";
-      $q_string .= "where ce_priority = 2 and chk_status = 0 and chk_closed = '0000-00-00 00:00:00' " . $where;
+      $q_string .= "where ce_priority = 2 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
       $q_string .= $orderby;
       $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
@@ -260,7 +260,7 @@
       $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
       $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
       $q_string .= "left join service on service.svc_id = inventory.inv_class ";
-      $q_string .= "where ce_priority = 3 and chk_status = 0 and chk_closed = '0000-00-00 00:00:00' " . $where;
+      $q_string .= "where ce_priority = 3 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
       $q_string .= $orderby;
       $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
@@ -327,7 +327,7 @@
       $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
       $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
       $q_string .= "left join service on service.svc_id = inventory.inv_class ";
-      $q_string .= "where ce_priority = 4 and chk_status = 0 and chk_closed = '0000-00-00 00:00:00' " . $where;
+      $q_string .= "where ce_priority = 4 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
       $q_string .= $orderby;
       $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
@@ -394,7 +394,7 @@
       $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
       $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
       $q_string .= "left join service on service.svc_id = inventory.inv_class ";
-      $q_string .= "where ce_priority = 5 and chk_status = 0 and chk_closed = '0000-00-00 00:00:00' " . $where;
+      $q_string .= "where ce_priority = 5 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
       $q_string .= $orderby;
       $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
@@ -465,7 +465,7 @@
       $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
       $q_string .= "left join service on service.svc_id = inventory.inv_class ";
       $q_string .= "left join users on users.usr_id = chkserver.chk_userid ";
-      $q_string .= "where chk_closed != '0000-00-00 00:00:00' " . $where;
+      $q_string .= "where chk_closed != '1971-01-01 00:00:00' " . $where;
       $q_string .= "order by inv_class,ce_error,inv_name ";
       $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
@@ -544,7 +544,7 @@
       $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
       $q_string .= "left join service on service.svc_id = inventory.inv_class ";
       $q_string .= "left join users on users.usr_id = chkserver.chk_userid ";
-      $q_string .= "where chk_status = 1 and chk_closed = '0000-00-00 00:00:00' " . $where;
+      $q_string .= "where chk_status = 1 and chk_closed = '1971-01-01 00:00:00' " . $where;
       $q_string .= "order by inv_class,ce_error,inv_name ";
       $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
@@ -615,7 +615,7 @@
       $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
       $q_string .= "left join service on service.svc_id = inventory.inv_class ";
       $q_string .= "left join users on users.usr_id = chkserver.chk_userid ";
-      $q_string .= "where chk_status = 2 and chk_closed = '0000-00-00 00:00:00' " . $where;
+      $q_string .= "where chk_status = 2 and chk_closed = '1971-01-01 00:00:00' " . $where;
       $q_string .= "order by inv_class,ce_error,inv_name ";
       $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
