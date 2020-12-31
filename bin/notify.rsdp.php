@@ -136,7 +136,7 @@
         if ($a_users['usr_disabled']) {
           $groupid[$a_rsdp_server['rsdp_id']] = $a_users['usr_group'];
           if ($debug == 'yes') {
-            $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+            $q_groups = mysqli_query($db, "select grp_name from a_groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
             $a_groups = mysqli_fetch_array($q_groups);
             print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
           }
@@ -155,7 +155,7 @@
         if ($a_rsdp_server['rsdp_platformspoc'] == 0) {
           $groupid[$a_rsdp_server['rsdp_id']] = $a_rsdp_server['rsdp_platform'];
           if ($debug == 'yes') {
-            $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+            $q_groups = mysqli_query($db, "select grp_name from a_groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
             $a_groups = mysqli_fetch_array($q_groups);
             print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
           }
@@ -169,7 +169,7 @@
           if ($a_users['usr_disabled']) {
             $groupid[$a_rsdp_server['rsdp_id']] = $a_users['usr_group'];
             if ($debug == 'yes') {
-              $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+              $q_groups = mysqli_query($db, "select grp_name from a_groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
               $a_groups = mysqli_fetch_array($q_groups);
               print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
             }
@@ -188,7 +188,7 @@
         if ($a_rsdp_server['rsdp_sanpoc'] == 0) {
           $groupid[$a_rsdp_server['rsdp_id']] = $GRP_SAN;
           if ($debug == 'yes') {
-            $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+            $q_groups = mysqli_query($db, "select grp_name from a_groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
             $a_groups = mysqli_fetch_array($q_groups);
             print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
           }
@@ -202,7 +202,7 @@
           if ($a_users['usr_disabled']) {
             $groupid[$a_rsdp_server['rsdp_id']] = $a_users['usr_group'];
             if ($debug == 'yes') {
-              $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+              $q_groups = mysqli_query($db, "select grp_name from a_groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
               $a_groups = mysqli_fetch_array($q_groups);
               print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
             }
@@ -221,7 +221,7 @@
         if ($a_rsdp_server['rsdp_networkpoc'] == 0) {
           $groupid[$a_rsdp_server['rsdp_id']] = $GRP_Networking;
           if ($debug == 'yes') {
-            $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+            $q_groups = mysqli_query($db, "select grp_name from a_groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
             $a_groups = mysqli_fetch_array($q_groups);
             print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
           }
@@ -235,7 +235,7 @@
           if ($a_users['usr_disabled']) {
             $groupid[$a_rsdp_server['rsdp_id']] = $a_users['usr_group'];
             if ($debug == 'yes') {
-              $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+              $q_groups = mysqli_query($db, "select grp_name from a_groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
               $a_groups = mysqli_fetch_array($q_groups);
               print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
             }
@@ -255,7 +255,7 @@
           if ($a_rsdp_server['rsdp_virtpoc'] == 0) {
             $groupid[$a_rsdp_server['rsdp_id']] = $GRP_Virtualization;
             if ($debug == 'yes') {
-              $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+              $q_groups = mysqli_query($db, "select grp_name from a_groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
               $a_groups = mysqli_fetch_array($q_groups);
               print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
             }
@@ -269,7 +269,7 @@
             if ($a_users['usr_disabled']) {
               $groupid[$a_rsdp_server['rsdp_id']] = $a_users['usr_group'];
               if ($debug == 'yes') {
-                $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+                $q_groups = mysqli_query($db, "select grp_name from a_groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
                 $a_groups = mysqli_fetch_array($q_groups);
                 print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
               }
@@ -284,7 +284,7 @@
           if ($a_rsdp_server['rsdp_dcpoc'] == 0) {
             $groupid[$a_rsdp_server['rsdp_id']] = $GRP_DataCenter;
             if ($debug == 'yes') {
-              $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+              $q_groups = mysqli_query($db, "select grp_name from a_groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
               $a_groups = mysqli_fetch_array($q_groups);
               print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
             }
@@ -298,7 +298,7 @@
             if ($a_users['usr_disabled']) {
               $groupid[$a_rsdp_server['rsdp_id']] = $a_users['usr_group'];
               if ($debug == 'yes') {
-                $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+                $q_groups = mysqli_query($db, "select grp_name from a_groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
                 $a_groups = mysqli_fetch_array($q_groups);
                 print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
               }
@@ -318,7 +318,7 @@
         if ($a_rsdp_server['rsdp_backuppoc'] == 0) {
           $groupid[$a_rsdp_server['rsdp_id']] = $GRP_Backups;
           if ($debug == 'yes') {
-            $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+            $q_groups = mysqli_query($db, "select grp_name from a_groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
             $a_groups = mysqli_fetch_array($q_groups);
             print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
           }
@@ -332,7 +332,7 @@
           if ($a_users['usr_disabled']) {
             $groupid[$a_rsdp_server['rsdp_id']] = $a_users['usr_group'];
             if ($debug == 'yes') {
-              $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+              $q_groups = mysqli_query($db, "select grp_name from a_groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
               $a_groups = mysqli_fetch_array($q_groups);
               print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
             }
@@ -351,7 +351,7 @@
         if ($a_rsdp_server['rsdp_monitoringpoc'] == 0) {
           $groupid[$a_rsdp_server['rsdp_id']] = $GRP_Monitoring;
           if ($debug == 'yes') {
-            $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+            $q_groups = mysqli_query($db, "select grp_name from a_groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
             $a_groups = mysqli_fetch_array($q_groups);
             print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
           }
@@ -365,7 +365,7 @@
           if ($a_users['usr_disabled']) {
             $groupid[$a_rsdp_server['rsdp_id']] = $a_users['usr_group'];
             if ($debug == 'yes') {
-              $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+              $q_groups = mysqli_query($db, "select grp_name from a_groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
               $a_groups = mysqli_fetch_array($q_groups);
               print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
               print $groupid[$a_rsdp_server['rsdp_id']];
@@ -385,7 +385,7 @@
         if ($a_rsdp_server['rsdp_applicationpoc'] == 0) {
           $groupid[$a_rsdp_server['rsdp_id']] = $a_rsdp_server['rsdp_application'];
           if ($debug == 'yes') {
-            $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+            $q_groups = mysqli_query($db, "select grp_name from a_groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
             $a_groups = mysqli_fetch_array($q_groups);
             print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
           }
@@ -399,7 +399,7 @@
           if ($a_users['usr_disabled']) {
             $groupid[$a_rsdp_server['rsdp_id']] = $a_users['usr_group'];
             if ($debug == 'yes') {
-              $q_groups = mysqli_query($db, "select grp_name from groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
+              $q_groups = mysqli_query($db, "select grp_name from a_groups where grp_id = " . $groupid[$a_rsdp_server['rsdp_id']]);
               $a_groups = mysqli_fetch_array($q_groups);
               print $groupid[$a_rsdp_server['rsdp_id']] . " (" . $a_groups['grp_name'] . ")";
             }
@@ -439,7 +439,7 @@
       }
 
       $q_string  = "select grp_name,grp_email ";
-      $q_string .= "from groups ";
+      $q_string .= "from a_groups ";
       $q_string .= "where grp_id = " . $val . " ";
       $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       $a_groups = mysqli_fetch_array($q_groups);
