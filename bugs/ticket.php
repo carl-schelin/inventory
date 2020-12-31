@@ -369,7 +369,7 @@ $(document).ready( function() {
   <ul>
     <li><strong>Close Bug</strong> - Sets the Closed field to today's date which closed the bug.</li>
     <li><strong>Save Bug Changes</strong> - If you update the Bug Form, click here to save changes.</li>
-    <li><strong>Reopen Bug</strong> - Reopen a closed bug. Resets the Closed field to '0000-00-00'.</li>
+    <li><strong>Reopen Bug</strong> - Reopen a closed bug. Resets the Closed field to '1971-01-01'.</li>
   </ul></li>
 </ul>
 
@@ -397,7 +397,7 @@ $(document).ready( function() {
     $newissue = "disabled";
     $updateissue = "";
   }
-  if ($a_bugs['bug_closed'] == '0000-00-00') {
+  if ($a_bugs['bug_closed'] == '1971-01-01') {
     print "  <input type=\"button\" " . $updateissue . " name=\"close\"     value=\"Close Ticket\"  onClick=\"javascript:attach_file('ticket.mysql.php', 2);\">\n";
     print "  <input type=\"button\" " . $updateissue . " name=\"save\"      value=\"Save Changes\"  onClick=\"javascript:attach_file('ticket.mysql.php', 1);\">\n";
   } else {
@@ -447,7 +447,7 @@ $(document).ready( function() {
   $q_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_bugs = mysqli_fetch_array($q_bugs);
 
-  if ($a_bugs['bug_closed'] == '0000-00-00') {
+  if ($a_bugs['bug_closed'] == '1971-01-01') {
     print "  <td class=\"ui-widget-content\"><strong>Module</strong>: <select name=\"bug_module\">\n";
 
     $q_string  = "select mod_id,mod_name ";
@@ -560,7 +560,7 @@ field shows you the limit of the number of characters. This limit is set by the 
 <div id="problem-hide" style="display: none">
 
 <?php
-  if ($a_bugs['bug_closed'] == '0000-00-00') {
+  if ($a_bugs['bug_closed'] == '1971-01-01') {
 ?>
 <table class="ui-styled-table">
 <tr>
