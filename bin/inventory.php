@@ -143,7 +143,7 @@
   $q_string .= "hw_asset,hw_service,loc_name,loc_addr1,ct_city,st_state,loc_zipcode,inv_status,inv_rack,inv_row,inv_unit ";
   $q_string .= "from inventory ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
-  $q_string .= "left join groups on groups.grp_id = inventory.inv_manager ";
+  $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
   $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
@@ -181,7 +181,7 @@
     }
 
     $q_string  = "select grp_name ";
-    $q_string .= "from groups ";
+    $q_string .= "from a_groups ";
     $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
     $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     $a_groups = mysqli_fetch_array($q_groups);
@@ -366,7 +366,9 @@
         $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
         $a_products = mysqli_fetch_array($q_products);
 
-        $q_string = "select grp_name from groups where grp_id = " . $a_software['sw_group'];
+        $q_string  = "select grp_name ";
+        $q_string .= "from a_groups ";
+        $q_string .= "where grp_id = " . $a_software['sw_group'];
         $q_groups = mysqli_query($db, $q_string) or die($q_string . ":(5): " . mysqli_error($db) . "\n\n");
         $a_groups = mysqli_fetch_array($q_groups);
 
