@@ -23,7 +23,7 @@
 
 # add a header with settings and email target
   $q_string  = "select grp_email,grp_status,grp_server,grp_import ";
-  $q_string .= "from groups ";
+  $q_string .= "from a_groups ";
   $q_string .= "where grp_id = " . $mygroup . " ";
   $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_groups = mysqli_fetch_array($q_groups);
