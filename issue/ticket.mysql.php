@@ -80,7 +80,7 @@
           logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
 # it's open, close it
-          if ($formVars['iss_closed'] == '0000-00-00' || $formVars['iss_closed'] == 'Current Date') {
+          if ($formVars['iss_closed'] == '1971-01-01' || $formVars['iss_closed'] == 'Current Date') {
             $formVars['iss_closed'] = date('Y-m-d');
 
             $q_string =
@@ -103,7 +103,7 @@
             mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           } else {
-            $formVars['iss_closed'] = '0000-00-00';
+            $formVars['iss_closed'] = '1971-01-01';
 
             $q_string =
               "iss_companyid  =   " . $formVars['iss_companyid']  . "," . 
