@@ -93,7 +93,7 @@
 
     $q_string  = "select gpl_group,grp_changelog,grp_magic ";
     $q_string .= "from grouplist ";
-    $q_string .= "left join groups on groups.grp_id = grouplist.gpl_group ";
+    $q_string .= "left join a_groups on a_groups.grp_id = grouplist.gpl_group ";
     $q_string .= "where gpl_user = " . $a_users['usr_id'] . " ";
     $q_grouplist = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     while ($a_grouplist = mysqli_fetch_array($q_grouplist)) {
@@ -481,7 +481,7 @@
 # get the user information for the person in the inventory and will be the one opening the ticket plus group information
     $q_string  = "select usr_first,usr_last,usr_name,usr_email,usr_manager,grp_name ";
     $q_string .= "from users ";
-    $q_string .= "left join groups on groups.grp_id = users.usr_group ";
+    $q_string .= "left join a_groups on a_groups.grp_id = users.usr_group ";
     $q_string .= "where (usr_email = '" . $email . "' or usr_altemail like '%" . $email . "%') and usr_id != 1 and usr_disabled = 0 ";
     $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     $a_users = mysqli_fetch_array($q_users);
