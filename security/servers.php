@@ -238,7 +238,7 @@ $(document).ready( function() {
     }
   }
   if ($formVars['inwork'] == 'true') {
-    $q_string .= "and hw_active = '0000-00-00' and hw_primary = 1 and hw_deleted = 0 ";
+    $q_string .= "and hw_active = '1971-01-01' and hw_primary = 1 and hw_deleted = 0 ";
   }
   if ($formVars['type'] != -1) {
     $q_string .= "and inv_status = 0 ";
@@ -249,35 +249,35 @@ $(document).ready( function() {
 
     $class = "ui-widget-content";
     if ($a_vulnerabilities['sev_name'] == 'High') {
-      if ($a_vulnerabilities['vuln_deldate'] != '0000-00-00') {
+      if ($a_vulnerabilities['vuln_deldate'] != '1971-01-01') {
         $class = "ui-state-highlight";
       } else {
         $numhigh++;
       }
     }
     if ($a_vulnerabilities['sev_name'] == 'Critical') {
-      if ($a_vulnerabilities['vuln_deldate'] != '0000-00-00') {
+      if ($a_vulnerabilities['vuln_deldate'] != '1971-01-01') {
         $class = "ui-state-highlight";
       } else {
         $numcritical++;
       }
     }
     if ($a_vulnerabilities['sev_name'] == 'Medium') {
-      if ($a_vulnerabilities['vuln_deldate'] != '0000-00-00') {
+      if ($a_vulnerabilities['vuln_deldate'] != '1971-01-01') {
         $class = "ui-state-highlight";
       } else {
         $nummedium++;
       }
     }
     if ($a_vulnerabilities['sev_name'] == 'Low') {
-      if ($a_vulnerabilities['vuln_deldate'] != '0000-00-00') {
+      if ($a_vulnerabilities['vuln_deldate'] != '1971-01-01') {
         $class = "ui-state-highlight";
       } else {
         $numlow++;
       }
     }
     if ($a_vulnerabilities['sev_name'] == 'Info') {
-      if ($a_vulnerabilities['vuln_deldate'] != '0000-00-00') {
+      if ($a_vulnerabilities['vuln_deldate'] != '1971-01-01') {
         $class = "ui-state-highlight";
       } else {
         $numinfo++;
