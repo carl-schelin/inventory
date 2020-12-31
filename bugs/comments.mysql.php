@@ -120,7 +120,7 @@
       $q_bugs_detail = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
       while ($a_bugs_detail = mysqli_fetch_array($q_bugs_detail)) {
 
-        if ($a_bugs['bug_closed'] == '0000-00-00') {
+        if ($a_bugs['bug_closed'] == '1971-01-01') {
           $linkstart = "<a href=\"#details\" onclick=\"show_file('"     . $Bugroot . "/comments.fill.php?id=" . $a_bugs_detail['bug_id'] . "');showDiv('problem-hide');\">";
           $linkdel   = "<a href=\"#details\" onclick=\"delete_detail('" . $Bugroot . "/comments.del.php?id="  . $a_bugs_detail['bug_id'] . "');\">";
           $linkend   = "</a>";
@@ -146,7 +146,7 @@
 
       print "document.getElementById('detail_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
-      if ($a_bugs['bug_closed'] == '0000-00-00') {
+      if ($a_bugs['bug_closed'] == '1971-01-01') {
         print "document.start.bug_text.value = '';\n";
         print "document.start.bug_timestamp.value = 'Current Time';\n";
         print "document.start.bugupdate.disabled = true;\n";
