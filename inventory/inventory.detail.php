@@ -849,7 +849,7 @@
       }
 
 # checkboxes. change the live info
-# with this one, we're just setting today's date if checked or blanking it out to 0000-00-00 if returning to 'inwork'
+# with this one, we're just setting today's date if checked or blanking it out to 1971-01-01 if returning to 'inwork'
 # to start, get the inv_status
       if ($formVars['function'] == 'ilv') {
         $q_string  = "select inv_status,hw_id,hw_active ";
@@ -859,10 +859,10 @@
         $q_invlive = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_invlive = mysqli_fetch_array($q_invlive);
 
-        if ($a_invlive['hw_active'] == '0000-00-00') {
+        if ($a_invlive['hw_active'] == '1971-01-01') {
           $a_invlive['hw_active'] = date('Y-m-d');
         } else {
-          $a_invlive['hw_active'] = '0000-00-00';
+          $a_invlive['hw_active'] = '1971-01-01';
         }
 
         $q_string  = "update ";
@@ -872,7 +872,7 @@
         $q_string .= "where hw_id = " . $a_invlive['hw_id'] . " ";
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-        if ($a_invlive['hw_active'] == '0000-00-00') {
+        if ($a_invlive['hw_active'] == '1971-01-01') {
           print "document.getElementById('ilv" . $formVars['id'] . "').checked = false;\n";
         } else {
           print "document.getElementById('ilv" . $formVars['id'] . "').checked = true;\n";
