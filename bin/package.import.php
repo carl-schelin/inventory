@@ -63,7 +63,7 @@
     if ($uname == "SunOS") {
 
       $process = trim(fgets($file));
-      $value = split(" ", $process);
+      $value = explode(" ", $process);
 
       if ($value[0] == 'PKGINST:') {
         $package = $value[2] . " ";
