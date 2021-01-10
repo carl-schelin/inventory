@@ -95,7 +95,7 @@
     if (filter_var($a_inventory['int_addr'], FILTER_VALIDATE_IP)) {
 
 # determine operating system
-      $value = split(" ", $a_inventory['sw_software']);
+      $value = explode(" ", $a_inventory['sw_software']);
 
 # straight linux check
       if ($value[0] == 'Linux' || $value[1] == 'Linux' || $value[2] == 'Linux') {
