@@ -47,7 +47,7 @@
 
     $process = trim(fgets($file));
 
-    $value = split(",", $process);
+    $value = explode(",", $process);
 
     if ($value[0] != '') {
       $q_string  = "select inv_name,inv_id,inv_manager,inv_appadmin,inv_product ";
@@ -510,7 +510,7 @@
               $skip = 'no';
 # determine operating system
               $vendortrim = trim($value[3]);
-              $list = split(" ", $vendortrim);
+              $list = explode(" ", $vendortrim);
 
               $vendor = 'Unknown: ' . $vendortrim;
               $os = "Unknown";
