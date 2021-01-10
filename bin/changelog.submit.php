@@ -292,7 +292,7 @@
       $process = trim(fgets($file));
 
       if (preg_match("/boundary/", $process) && $leave == 0) {
-        $value = split("\"", $process);
+        $value = explode("\"", $process);
         $boundary = $value[1];
       }
 
