@@ -112,7 +112,7 @@
   $file = fopen($filename, "r") or die;
   while(!feof($file)) {
     $process = trim(fgets($file));
-    $value = split(":", $process);
+    $value = explode(":", $process);
 
     $value[4] = str_replace('"', "", $value[4]);
 
@@ -265,7 +265,7 @@
 # groupname:x:gid:users
 
         if ($value[3] != '') {
-          $users = split(",", $value[3]);
+          $users = explode(",", $value[3]);
 
           foreach ($users as &$username) {
 # get the pwd_id of the user
