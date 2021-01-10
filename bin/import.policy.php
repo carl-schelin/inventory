@@ -63,7 +63,7 @@
   while(!feof($file)) {
     $process = trim(fgets($file));
 
-    $value = split(":", $process);
+    $value = explode(":", $process);
 
 # so something is in the type field. check the policy_type pt_type field
     if ($value[0] != '') {
