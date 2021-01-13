@@ -116,8 +116,8 @@
   print "  <li><strong>Service Class</strong> - The selected Service Class of the system based on <a href=\"" . $Siteroot . "/admin/service.php\">this table</a>. An * next to the Service Class indicates the system is in the 911 Call Path.</li>\n";
   print "  <li><strong>Device Owner</strong> - The group that are the custodians of the system.</li>\n";
   print "  <li><strong>Hardware</strong> - The covered hardware.</li>\n";
-  print "  <li><strong>Product</strong> - The Intrado Product this system is associated with.</li>\n";
-  print "  <li><strong>Asset Tag</strong> - The Intrado asset tag. An '*' here indicates the Asset Tag could not be visually verified. If Asset Tag info is here, it was captured other than visually.</li>\n";
+  print "  <li><strong>Product</strong> - The Product this system is associated with.</li>\n";
+  print "  <li><strong>Asset Tag</strong> - The asset tag. An '*' here indicates the Asset Tag could not be visually verified. If Asset Tag info is here, it was captured other than visually.</li>\n";
   print "  <li><strong>Serial Number</strong> - Vendor Serial Number. An '*' here indicates the Serial Number could not be visually verified. If Serial Number info is here, it was captured other than visually.</li>\n";
   print "  <li><strong>Service Tag</strong> - The Dell Service Tag. An '*' here indicates the Service Tag could not be visually verified. If Service Tag info is here, it was captured other than visually.</li>\n";
   print "  <li><strong>Recommended</strong> - The recommended or suggested vendor response time for this system. By default, LMCS and 911 Call Path systems are 24x7 2 Hour Response. Other production systems are 24x7 4 Hour Response. Operations Lab environment is 9x5 Next Business Day Response.</li>\n";
