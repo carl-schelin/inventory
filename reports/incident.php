@@ -79,8 +79,8 @@
 <ul>
   <li>The first two characters are the company identifier.
   <ul>
-    <li><strong>in</strong> for Intrado</li>
-    <li><strong>ps</strong> for Positron Systems.</li>
+    <li><strong>in</strong> for the Company</li>
+    <li><strong>ps</strong> for the Company</li>
   </ul></li>
   <li>The second two characters are location identifiers.
   <ul>
@@ -101,7 +101,7 @@
   <li>The final character is either an instance number or a location such as 'e' for East, 'w' for West, and 'n' for North.</li>
 </ul>
 
-<p>Finally systems from companies Intrado purchased such as HBF or Contact One</p>
+<p>Finally systems from companies purchased by the company</p>
 
 <p><strong>Current Naming Conventions</strong></p>
 
