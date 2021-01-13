@@ -246,7 +246,7 @@ $(document).ready( function () {
   print "  <li><strong>Model</strong> Shows the server hardware.</li>\n";
   print "  <li><strong>Operating System</strong> Shows the server operating system.</li>\n";
   print "  <li><strong>Location (TZ)</strong> Shows the server location and time zone (TZ).</li>\n";
-  print "  <li><strong>West</strong> Displays the 5 character data center code used by West.</li>\n";
+  print "  <li><strong>Identity</strong> Displays a 5 character data center code.</li>\n";
   print "  <li><strong>IP Address</strong> Shows the assigned interface and IPs for servers. A Default Route is identified with an asterisk (*)\n";
   print "  <ul>\n";
   print "    <li><strong>Mgt</strong> Management IP used for remote access plus maintenance traffic such as backups and monitoring</li>\n";
@@ -297,7 +297,7 @@ $(document).ready( function () {
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=mod_vendor,mod_name" . $passed . "\">Model</a></th>\n";
     print "  <th class=\"ui-state-default\">Operating System</th>\n";
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=ct_city" . $passed . "\">Location (TZ)</a></th>\n";
-    print "  <th class=\"ui-state-default\">West</th>\n";
+    print "  <th class=\"ui-state-default\">Identity</th>\n";
     print "  <th class=\"ui-state-default\">IP Address</th>\n";
     print "</tr>\n";
   } else {
@@ -310,7 +310,7 @@ $(document).ready( function () {
     print "\"Model\",";
     print "\"Operating System\",";
     print "\"Location (TZ)\",";
-    print "\"West\"";
+    print "\"Identity\"";
     print "\"IP Address\"";
     print "</br>\n";
   }
