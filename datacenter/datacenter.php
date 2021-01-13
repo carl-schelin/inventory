@@ -75,7 +75,7 @@ function attach_file( p_script_url, update ) {
   af_url += "&loc_ypoint="      + encode_URI(af_form.loc_ypoint.value);
   af_url += "&loc_xlen="        + encode_URI(af_form.loc_xlen.value);
   af_url += "&loc_ylen="        + encode_URI(af_form.loc_ylen.value);
-  af_url += "&loc_west="        + encode_URI(af_form.loc_west.value);
+  af_url += "&loc_identity="    + encode_URI(af_form.loc_identity.value);
   af_url += "&loc_environment=" + encode_URI(af_form.loc_environment.value);
 
   script = document.createElement('script');
@@ -173,7 +173,7 @@ $(document).ready( function() {
     <li><strong>Default</strong> Checking this puts this location into the default Home Page Data Center drop down box. Default sites are <span class="ui-state-highlight">highlighted</span>.</li>
     <li><strong>Zipcode</strong> The location zipcode.</li>
     <li><strong>CLLI Prefix</strong> The Standard Naming Convention server name prefix for this location. Four character city plus two character state plus data center instance number.</li>
-    <li><strong>West Designation</strong> The 5 character code identifying a data center for West.</li>
+    <li><strong>DC Identity</strong> The 5 character code identifying a data center.</li>
   </li></ul>
   <li><strong>Location Contact Form</strong> - Provide contact information for a location.</li>
   <li><strong>Location Access Form</strong> - Provide a link to additional documentation on how a field engineer can access this site.</li>
@@ -290,7 +290,7 @@ $(document).ready( function() {
 </tr>
 <tr>
   <td class="ui-widget-content">Instance (0 for Lab, 1, 2, etc): <input type="text" name="loc_instance" size="5"></td>
-  <td class="ui-widget-content" colspan="2">West Designation: <input type="text" name="loc_west" size="10"></td>
+  <td class="ui-widget-content" colspan="2">DC Identity: <input type="text" name="loc_identity" size="10"></td>
 </tr>
 </table>
 
