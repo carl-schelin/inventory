@@ -314,7 +314,7 @@
       $output .= "<tr>\n";
       $output .= "  <td class=\"ui-widget-content\">The following servers are being retired. Please uncable and remove the following systems and deliver them to my desk at 1K3005 for disposal:<br><br>";
 
-      $q_string  = "select inv_name,hw_asset,hw_serial,inv_rack,inv_row,inv_unit,mod_vendor,mod_name,loc_west ";
+      $q_string  = "select inv_name,hw_asset,hw_serial,inv_rack,inv_row,inv_unit,mod_vendor,mod_name,loc_identity ";
       $q_string .= "from inventory ";
       $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
       $q_string .= "left join models   on models.mod_id         = hardware.hw_vendorid ";
@@ -325,7 +325,7 @@
 
 
 
-      $output .= "Label: " . $a_inventory['inv_name'] . ", Vendor: " . $a_inventory['mod_vendor'] . ", Model: " . $a_inventory['mod_name'] . ", Asset Tag: " . $a_inventory['hw_asset'] . ", Serial/Service: " . $a_inventory['hw_serial'] . ", Location: " . $a_inventory['loc_west'] . " " . $a_inventory['inv_row'] . "-" . $a_inventory['inv_rack'] . " U" . $a_inventory['inv_unit'] . "</td>\n";
+      $output .= "Label: " . $a_inventory['inv_name'] . ", Vendor: " . $a_inventory['mod_vendor'] . ", Model: " . $a_inventory['mod_name'] . ", Asset Tag: " . $a_inventory['hw_asset'] . ", Serial/Service: " . $a_inventory['hw_serial'] . ", Location: " . $a_inventory['loc_identity'] . " " . $a_inventory['inv_row'] . "-" . $a_inventory['inv_rack'] . " U" . $a_inventory['inv_unit'] . "</td>\n";
       $output .= "</tr>\n";
       $output .= "</table>\n";
 
