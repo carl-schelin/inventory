@@ -88,7 +88,7 @@
   print "<div class=\"main-help ui-widget-content\">\n\n";
 
   print "<p>This page lists all the changelog entries for the manual views. Manual entries can be pretty custom and not be associated with an ";
-  print "Intrado product or server. This page lets you view these custom entries. Click on the server or application to see the report for ";
+  print "The product or server. This page lets you view these custom entries. Click on the server or application to see the report for ";
   print "the item. In the group listing, clicking on the group gives you the full report. In the full report, clicking on the group gives ";
   print "you the listing for that group.</p>\n";
 
