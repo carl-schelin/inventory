@@ -389,7 +389,7 @@ $(document).ready( function () {
   $total_servers = 0;
   $q_string = "select inv_id,inv_name,inv_function,inv_document,inv_manager,inv_appadmin,grp_name,"
             . "ct_city,zone_name,inv_ssh,hw_active,hw_retired,hw_reused,mod_vendor,mod_name,inv_status,st_acronym,cn_acronym,"
-            . "loc_type,loc_name,loc_addr1,loc_addr2,loc_suite,loc_city,loc_state,loc_zipcode,loc_country,loc_west "
+            . "loc_type,loc_name,loc_addr1,loc_addr2,loc_suite,loc_city,loc_state,loc_zipcode,loc_country,loc_identity "
             . "from inventory "
             . "left join hardware  on hardware.hw_companyid = inventory.inv_id "
             . "left join locations on locations.loc_id      = inventory.inv_location "
@@ -507,7 +507,7 @@ $(document).ready( function () {
         print "  <td " . $class . ">" . $a_inventory['st_acronym']      . $showend . "</td>\n";
         print "  <td " . $class . ">" . $a_inventory['loc_zipcode']     . $showend . "</td>\n";
         print "  <td " . $class . ">" . $a_inventory['cn_acronym']      . $showend . "</td>\n";
-        print "  <td " . $class . ">" . $a_inventory['loc_west']        . $showend . "</td>\n";
+        print "  <td " . $class . ">" . $a_inventory['loc_identity']    . $showend . "</td>\n";
         print "</tr>\n";
       } else {
         print "\"" . $a_inventory['inv_name'] . "\",";
@@ -523,7 +523,7 @@ $(document).ready( function () {
         print "\"" . $a_inventory['st_acronym'] . "\",";
         print "\"" . $a_inventory['loc_zipcode'] . "\",";
         print "\"" . $a_inventory['cn_acronym'] . "\",";
-        print "\"" . $a_inventory['loc_west'] . "\"";
+        print "\"" . $a_inventory['loc_identity'] . "\"";
         print "</br>\n";
       }
     }
