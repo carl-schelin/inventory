@@ -176,7 +176,7 @@
 # Server:BackupIPAddress: ip address
 # Server:BackupInterface: interface
 # Server:NetworkZone: network zone
-# Server:Location: West location identifier
+# Server:Location: Data Center location identifier
 # Server:Cron:oracle
 # Server:Service:oracle
 
