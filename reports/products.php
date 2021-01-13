@@ -30,7 +30,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>View Intrado Products</title>
+<title>View Product Listing</title>
 
 <style type="text/css" title="currentStyle" media="screen">
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -60,7 +60,7 @@
 
 <div class="main-help ui-widget-content">
 
-<p>This provides a list of all installed Intrado products. Clicking on the link brings up a document with three 
+<p>This provides a list of all installed products. Clicking on the link brings up a document with three 
 tabs displaying all the hardware associated with the product, the installed software, and all changelog entries.</p>
 
 </div>
