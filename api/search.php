@@ -204,13 +204,13 @@
     $servers[$a_inventory['inv_name']]->inventory_timezone           = $a_inventory['zone_name'];
     $servers[$a_inventory['inv_name']]->inventory_maintenance_window = $a_inventory['win_text'];
 
-    $q_string  = "select loc_west ";
+    $q_string  = "select loc_identity ";
     $q_string .= "from locations ";
     $q_string .= "where loc_id = " . $a_inventory['inv_location'] . " ";
     $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     $a_locations = mysqli_fetch_array($q_locations);
 
-    $servers[$a_inventory['inv_name']]->inventory_location = $a_locations['loc_west'];
+    $servers[$a_inventory['inv_name']]->inventory_location = $a_locations['loc_identity'];
 
     $q_string  = "select svc_name ";
     $q_string .= "from service ";
