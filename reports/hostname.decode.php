@@ -189,7 +189,7 @@
 # if it doesn't make sense, hack it :)
           if ($os_site == 'il') {
             $formVars['08type'] = 'Integration Lab';
-            $formVars['08location'] = 'Intrado Lab Data Center - Longmont';
+            $formVars['08location'] = 'Lab Data Center - Longmont';
           }
           if ($os_site == 'ec') {
             $formVars['08type'] = 'ECMC Site';
