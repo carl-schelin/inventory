@@ -38,7 +38,7 @@
         $formVars['loc_ypoint']       = clean($_GET['loc_ypoint'],      10);
         $formVars['loc_xlen']         = clean($_GET['loc_xlen'],        10);
         $formVars['loc_ylen']         = clean($_GET['loc_ylen'],        10);
-        $formVars['loc_west']         = clean($_GET['loc_west'],        10);
+        $formVars['loc_identity']     = clean($_GET['loc_identity'],    10);
         $formVars['loc_environment']  = clean($_GET['loc_environment'], 10);
 
         if ($formVars['id'] == '') {
@@ -106,7 +106,7 @@
             "loc_details     = \"" . $formVars['loc_details']     . "\"," .
             "loc_default     =   " . $formVars['loc_default']     . "," .
             "loc_instance    =   " . $formVars['loc_instance']    . "," .
-            "loc_west        = \"" . $formVars['loc_west']        . "\"," .
+            "loc_identity    = \"" . $formVars['loc_identity']    . "\"," .
             "loc_environment =   " . $formVars['loc_environment'] . "," .
             "loc_xpoint      =   " . $formVars['loc_xpoint']      . "," .
             "loc_ypoint      =   " . $formVars['loc_ypoint']      . "," .
@@ -212,12 +212,12 @@
       $header .= "  <th class=\"ui-state-default\">Zipcode</th>\n";
       $header .= "  <th class=\"ui-state-default\">Country</th>\n";
       $header .= "  <th class=\"ui-state-default\">CLLI</th>\n";
-      $header .= "  <th class=\"ui-state-default\">West</th>\n";
+      $header .= "  <th class=\"ui-state-default\">Identity</th>\n";
       $header .= "  <th class=\"ui-state-default\">Instance</th>\n";
       $header .= "  <th class=\"ui-state-default\">Env</th>\n";
       $header .= "</tr>\n";
 
-      $q_string  = "select loc_id,loc_name,loc_addr1,loc_addr2,loc_suite,ct_city,loc_type,loc_west,";
+      $q_string  = "select loc_id,loc_name,loc_addr1,loc_addr2,loc_suite,ct_city,loc_type,loc_identity,";
       $q_string .= "st_acronym,loc_zipcode,cn_acronym,loc_details,loc_default,ct_clli,loc_instance,";
       $q_string .= "env_abb ";
       $q_string .= "from locations ";
@@ -225,7 +225,7 @@
       $q_string .= "left join states  on states.st_id  = cities.ct_state ";
       $q_string .= "left join country on country.cn_id = states.st_country ";
       $q_string .= "left join environment on environment.env_id = locations.loc_environment ";
-      $q_string .= "order by loc_west,loc_name,ct_city ";
+      $q_string .= "order by loc_identity,loc_name,ct_city ";
       $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_locations) > 0) {
         while ($a_locations = mysqli_fetch_array($q_locations)) {
@@ -253,7 +253,7 @@
           $output .= "  <td class=\"" . $class . "\">"          . $linkstart . $a_locations['loc_zipcode']    . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . "\">"          . $linkstart . $a_locations['cn_acronym']     . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . "\">"          . $linkstart . $a_locations['ct_clli']        . $linkend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"          . $linkstart . $a_locations['loc_west']       . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"          . $linkstart . $a_locations['loc_identity']   . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . "\">"          . $linkstart . $a_locations['loc_instance']   . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . "\">"          . $linkstart . $a_locations['env_abb']        . $linkend . "</td>";
           $output .= "</tr>";
