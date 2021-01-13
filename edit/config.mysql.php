@@ -146,7 +146,7 @@
 # - os_software int
 # rsdp_status to mark it complete.
 
-      $q_string  = "select inv_name,inv_function,inv_rsdp,loc_name,loc_west,inv_location,prod_name,inv_product,prj_name,inv_project,inv_manager,inv_appadmin ";
+      $q_string  = "select inv_name,inv_function,inv_rsdp,loc_name,loc_identity,inv_location,prod_name,inv_product,prj_name,inv_project,inv_manager,inv_appadmin ";
       $q_string .= "from inventory ";
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
       $q_string .= "left join products on products.prod_id = inventory.inv_product ";
@@ -179,7 +179,7 @@
 # Server:BackupIPAddress: ip address
 # Server:BackupInterface: interface
 # Server:NetworkZone: network zone
-# Server:Location: West location identifier
+# Server:Location: Data Center location identifier
 # Server:Cron:oracle
 # Server:Service:oracle
 
@@ -224,7 +224,7 @@
         $q_rsdp_osteam = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         $a_rsdp_osteam = mysqli_fetch_array($q_rsdp_osteam);
 
-        $q_string  = "select rsdp_function,grp_name,rsdp_platform,rsdp_application,loc_name,loc_west,rsdp_location,prod_name,rsdp_product,prj_name,rsdp_project ";
+        $q_string  = "select rsdp_function,grp_name,rsdp_platform,rsdp_application,loc_name,loc_identity,rsdp_location,prod_name,rsdp_product,prj_name,rsdp_project ";
         $q_string .= "from rsdp_server ";
         $q_string .= "left join a_groups on a_groups.grp_id = rsdp_server.rsdp_platform ";
         $q_string .= "left join locations on locations.loc_id = rsdp_server.rsdp_location ";
@@ -286,11 +286,11 @@
         $output .= "<tr>\n";
         $class = "ui-widget-content";
         $button = "";
-        $text = "Location: " . $a_rsdp_server['loc_name'] . " (" . $a_rsdp_server['loc_west'] . ")";
+        $text = "Location: " . $a_rsdp_server['loc_name'] . " (" . $a_rsdp_server['loc_identity'] . ")";
         if ($a_rsdp_server['rsdp_location'] != $a_inventory['inv_location']) {
           $class = "ui-state-error";
-          $text  = "<input type=\"radio\" checked=\"true\" value=\"0\" name=\"loc_error\">" . $a_rsdp_server['loc_name'] . " (" . $a_rsdp_server['loc_west'] . ") ";
-          $text .= "<input type=\"radio\" value=\"1\" name=\"loc_error\">" . $a_inventory['loc_name'] . " (" . $a_inventory['loc_west'] . ") ";
+          $text  = "<input type=\"radio\" checked=\"true\" value=\"0\" name=\"loc_error\">" . $a_rsdp_server['loc_name'] . " (" . $a_rsdp_server['loc_identity'] . ") ";
+          $text .= "<input type=\"radio\" value=\"1\" name=\"loc_error\">" . $a_inventory['loc_name'] . " (" . $a_inventory['loc_identity'] . ") ";
           $text .= "<input type=\"button\" value=\"Correct Entry\">";
         }
         $output .=   "<td class=\"" . $class . "\" colspan=\"2\">Location: " . $text . "</td>\n";
