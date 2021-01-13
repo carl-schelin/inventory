@@ -386,7 +386,7 @@ $(document).ready( function () {
 
   $total_servers = 0;
   $q_string = "select inv_id,inv_name,inv_function,inv_document,inv_manager,inv_appadmin,grp_name,"
-            . "ct_city,loc_west,zone_name,inv_ssh,hw_active,hw_retired,hw_reused,mod_vendor,mod_name,inv_status "
+            . "ct_city,loc_identity,zone_name,inv_ssh,hw_active,hw_retired,hw_reused,mod_vendor,mod_name,inv_status "
             . "from inventory "
             . "left join hardware  on hardware.hw_companyid = inventory.inv_id "
             . "left join locations on locations.loc_id      = inventory.inv_location "
@@ -498,7 +498,7 @@ $(document).ready( function () {
         print "  <td " . $class . "><nobr>" . $edhwstart . $shhwstart . $a_inventory['mod_vendor'] . " " . $a_inventory['mod_name']         . $showend                     . "</nobr></td>\n";
         print "  <td " . $class . "><nobr>" . $edswstart . $shswstart . return_ShortOS($a_software['sw_software'])                          . $showend                     . "</nobr></td>\n";
         print "  <td " . $class . "><nobr>"              . $showstart . $a_inventory['ct_city']    . " (" . $a_inventory['zone_name'] . ")" . $showend                     . "</nobr></td>\n";
-        print "  <td " . $class . "><nobr>"              . $showstart . $a_inventory['loc_west']                                            . $showend                     . "</nobr></td>\n";
+        print "  <td " . $class . "><nobr>"              . $showstart . $a_inventory['loc_identity']                                        . $showend                     . "</nobr></td>\n";
         print "  <td " . $class . ">" . $edipstart . $shipstart . $interface                                                          . $showend . "<br>" . $console . "</td>\n";
         print "</tr>\n";
       } else {
@@ -511,7 +511,7 @@ $(document).ready( function () {
         print "\"" . $a_inventory['mod_vendor'] . " " . $a_inventory['mod_name'] . "\",";
         print "\"" . $a_software['sw_software'] . "\",";
         print "\"" . $a_inventory['ct_city']    . " (" . $a_inventory['zone_name'] . ")\",";
-        print "\"" . $a_inventory['loc_west'] . "\",";
+        print "\"" . $a_inventory['loc_identity'] . "\",";
         print "\"" . $interface . " " . $console . "\"";
         print "</br>\n";
       }
