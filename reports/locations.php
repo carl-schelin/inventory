@@ -64,7 +64,7 @@
 
 # set up filters. Being passed:
 # group = The group that's looking at the listing
-# product = Restrict the view to just one Intrado Product
+# product = Restrict the view to just one Product
 # inwork = Restrict the view again to just the products that are being built
 # location = Restrict the view again to just where the servers are located
 # type = are we looking at all servers or just the ones that are live/in work (inv_status = 0)
