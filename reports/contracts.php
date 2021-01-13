@@ -180,7 +180,7 @@ $(document).ready( function() {
 <p>Just some notes on the output.</p>
 
 <ul>
-  <li><strong>Company</strong> - Not captured. Expected is basically TRDO or Intrado and Positron Systems</li>
+  <li><strong>Company</strong> - Not captured.</li>
   <li><strong>Comment</strong> - Not captured.</li>
   <li><strong>Description</strong> - Not captured. Mainly the vendor and model information.</li>
   <li><strong>Custodian</strong> - If the Custodian is inactive/gone from the company or just not in the Inventory as a user, this is 'Unknown'</li>
