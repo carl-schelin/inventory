@@ -23,7 +23,7 @@
 
       $q_string  = "select loc_name,loc_addr1,loc_addr2,loc_suite,loc_city,loc_default,loc_type,";
       $q_string .= "loc_zipcode,loc_details,loc_instance,loc_xpoint,loc_ypoint,loc_xlen,loc_ylen, ";
-      $q_string .= "loc_contact1,loc_contact2,loc_west,loc_environment ";
+      $q_string .= "loc_contact1,loc_contact2,loc_identity,loc_environment ";
       $q_string .= "from locations ";
       $q_string .= "where loc_id = " . $formVars['id'];
       $q_locations = mysqli_query($db, $q_string) or die (mysqli_error($db));
@@ -48,7 +48,7 @@
       print "document.locations.loc_contact2.value = '"   . mysqli_real_escape_string($db, $a_locations['loc_contact2'])   . "';\n";
       print "document.locations.loc_details.value = '"    . mysqli_real_escape_string($db, $a_locations['loc_details'])    . "';\n";
       print "document.locations.loc_instance.value = '"   . mysqli_real_escape_string($db, $a_locations['loc_instance'])   . "';\n";
-      print "document.locations.loc_west.value = '"       . mysqli_real_escape_string($db, $a_locations['loc_west'])       . "';\n";
+      print "document.locations.loc_identity.value = '"   . mysqli_real_escape_string($db, $a_locations['loc_identity'])   . "';\n";
       print "document.locations.loc_xpoint.value = '"     . mysqli_real_escape_string($db, $a_locations['loc_xpoint'])     . "';\n";
       print "document.locations.loc_ypoint.value = '"     . mysqli_real_escape_string($db, $a_locations['loc_ypoint'])     . "';\n";
       print "document.locations.loc_xlen.value = '"       . mysqli_real_escape_string($db, $a_locations['loc_xlen'])       . "';\n";
