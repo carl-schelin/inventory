@@ -60,7 +60,7 @@
   $where = "where inv_status = 0 and inv_manager = " . $formVars['group'] . " ";
 
   if ($formVars['location'] != '') {
-    $where .= "and loc_west = \"" . $formVars['location'] . "\" ";
+    $where .= "and loc_identity = \"" . $formVars['location'] . "\" ";
   } else {
     $formVars['location'] = 'no';
   }
