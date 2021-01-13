@@ -214,7 +214,7 @@
 #          $formVars['08interface'] = $q_string;
         } else {
 
-# if it's not the 2015 or 2008 standard, it may be the original standard of inco, infl, psca, psto.
+# if it's not the 2015 or 2008 standard, it may using one of the original naming standards
 
           $os_company        = strtolower(substr($formVars['server'],  0, 2));
           $os_state          = strtolower(substr($formVars['server'],  2, 2));
@@ -228,24 +228,24 @@
           $os_instanceone    = strtolower(substr($formVars['server'],  7, 1));
 
           if ($os_company == 'in') {
-            $formVars['company'] = 'Intrado';
-            $formVars['location'] = 'Intrado Production Data Center - Longmont';
+            $formVars['company'] = 'Company';
+            $formVars['location'] = 'Production Data Center - Longmont';
           }
           if ($os_company == 'ps') {
-            $formVars['company'] = 'Positron Systems';
+            $formVars['company'] = 'Company';
           }
 
           if ($os_state == 'ca') {
-            $formVars['state'] = 'Alberta (Calgary: Blame Todd)';
+            $formVars['state'] = 'Alberta (Calgary)';
             $formVars['location'] = 'Care Factor - Calgary';
           } else {
             if ($os_state == 'to') {
-              $formVars['state'] = 'Ontario (Toronto: Blame Todd)';
+              $formVars['state'] = 'Ontario (Toronto)';
               $formVars['location'] = 'Switch and Data - Toronto';
             } else {
               if ($os_state == 'il') {
                 $formVars['state'] = 'Colorado';
-                $formVars['location'] = 'Intrado Lab Data Center - Longmont';
+                $formVars['location'] = 'Lab Data Center - Longmont';
               } else {
                 $q_string  = "select st_state ";
                 $q_string .= "from states ";
