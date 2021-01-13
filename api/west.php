@@ -49,7 +49,7 @@
     public $interface_scanned = '';
   }
 
-  $q_string  = "select inv_id,inv_name,loc_instance,loc_west,inv_function,inv_domain,loc_environment,inv_kernel,inv_satuuid ";
+  $q_string  = "select inv_id,inv_name,loc_instance,loc_identity,inv_function,inv_domain,loc_environment,inv_kernel,inv_satuuid ";
   $q_string .= "from inventory ";
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
   $q_string .= "where inv_status = 0 ";
@@ -79,7 +79,7 @@
     $servers[$a_inventory['inv_name']] = new Server();
     $servers[$a_inventory['inv_name']]->inventory_name           = $a_inventory['inv_name'];
     $servers[$a_inventory['inv_name']]->inventory_function       = $a_inventory['inv_function'];
-    $servers[$a_inventory['inv_name']]->inventory_location       = $a_inventory['loc_west'];
+    $servers[$a_inventory['inv_name']]->inventory_location       = $a_inventory['loc_identity'];
     $servers[$a_inventory['inv_name']]->inventory_domain         = $a_inventory['inv_domain'];
     $servers[$a_inventory['inv_name']]->inventory_environment    = $environment;
     $servers[$a_inventory['inv_name']]->inventory_patched        = $a_inventory['inv_kernel'];
