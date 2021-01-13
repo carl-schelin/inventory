@@ -95,7 +95,7 @@ $(document).ready( function() {
 
 <ul>
   <li><strong>Server</strong> - The Name of the server. An asterisk (*) indicates the server is accessible using ssh. An at (&) indicates the server is available to Ansible Playbooks</li>
-  <li><strong>Asset</strong> - The Intrado Asset Tag.</li>
+  <li><strong>Asset</strong> - The Asset Tag.</li>
   <li><strong>Serial</strong> - The Vendor serial number.</li>
   <li><strong>Service</strong> - The Dell specific service tag.</li>
   <li><strong>Model</strong> - Model information.</li>
