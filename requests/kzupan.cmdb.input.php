@@ -106,7 +106,7 @@
     print "</tr>";
   }
 
-  $q_string  = "select inv_id,inv_name,inv_function,inv_manager,inv_appadmin,loc_west,mod_name,part_name,env_name,hw_serial,inv_uuid,sw_software,grp_name,grp_snow,hw_active ";
+  $q_string  = "select inv_id,inv_name,inv_function,inv_manager,inv_appadmin,loc_identity,mod_name,part_name,env_name,hw_serial,inv_uuid,sw_software,grp_name,grp_snow,hw_active ";
   $q_string .= "from inventory ";
   $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
   $q_string .= "left join locations  on locations.loc_id        = inventory.inv_location ";
@@ -209,7 +209,7 @@
         print "\"" . $a_inventory['inv_name'] . "\",";
         print "\"" . $ip_address . "\",";
         print "\"" . $svrclass . "\",";
-        print "\"" . $a_inventory['loc_west'] . "\",";
+        print "\"" . $a_inventory['loc_identity'] . "\",";
         print "\"" . $inv_appadmin . "\",";
         print "\"" . $inv_appadmin . "\",";
         print "\"" . $inv_group . "\",";
@@ -225,7 +225,7 @@
         print "  <td class=\"" . $class . "\">" . $linkedit . $a_inventory['inv_name']     . $linkend . "</td>\n";
         print "  <td class=\"" . $class . "\">"             . $ip_address                             . "</td>\n";
         print "  <td class=\"" . $class . "\">"             . $svrclass                               . "</td>\n";
-        print "  <td class=\"" . $class . "\">"             . $a_inventory['loc_west']                . "</td>\n";
+        print "  <td class=\"" . $class . "\">"             . $a_inventory['loc_identity']            . "</td>\n";
         print "  <td class=\"" . $class . "\">"             . $inv_appadmin                           . "</td>\n";
         print "  <td class=\"" . $class . "\">"             . $inv_appadmin                           . "</td>\n";
         print "  <td class=\"" . $class . "\">"             . $inv_group                              . "</td>\n";
