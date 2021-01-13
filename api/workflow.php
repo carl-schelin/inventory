@@ -29,10 +29,6 @@
     $formVars['group'] = '';
   }
 
-
-  $formVars['group'] = 1;
-
-
 # output
 # server:Group:groupname
 # server:Sudoers:groupname
