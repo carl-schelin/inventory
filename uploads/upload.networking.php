@@ -1,5 +1,5 @@
 <?php
-# Script: upload.west.php
+# Script: upload.networking.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
 # Description:
