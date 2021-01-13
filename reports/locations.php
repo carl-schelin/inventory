@@ -300,7 +300,7 @@ $(document).ready( function () {
     print "  <th class=\"ui-state-default\">State</th>\n";
     print "  <th class=\"ui-state-default\">Zipcode</th>\n";
     print "  <th class=\"ui-state-default\">Country</th>\n";
-    print "  <th class=\"ui-state-default\">West</th>\n";
+    print "  <th class=\"ui-state-default\">Identity</th>\n";
     print "</tr>\n";
   } else {
     print "<p>\"System Name\",";
@@ -313,7 +313,7 @@ $(document).ready( function () {
     print "\"State\"";
     print "\"Zipcode\"";
     print "\"Country\"";
-    print "\"West\"";
+    print "\"Identity\"";
     print "</br>\n";
   }
 
