@@ -38,7 +38,7 @@ $(document).ready( function() {
 
 <p><strong>GET /api/tags.php</strong></p>
 
-<pre style="text-align: left">curl -s -k <?php print $Siteroot; ?>/api/west.php?tags=[tags]&group=[groupid]&location=[location]&service=[service class]&product=[product]&zone=[zone]&admin=[app admin]&manager=[system manager] | python -mjson.tool</pre>
+<pre style="text-align: left">curl -s -k <?php print $Siteroot; ?>/api/tags.php?tags=[tags]&group=[groupid]&location=[location]&service=[service class]&product=[product]&zone=[zone]&admin=[app admin]&manager=[system manager] | python -mjson.tool</pre>
 
 
 <p><strong>Description</strong></p>
