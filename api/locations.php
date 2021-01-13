@@ -55,7 +55,7 @@
     public $location_environment = '';
   }
 
-  $q_string  = "select loc_id,typ_name,loc_name,loc_addr1,loc_addr2,loc_suite,ct_city,st_state,loc_zipcode,cn_country,ct_clli,loc_instance,loc_west,loc_environment ";
+  $q_string  = "select loc_id,typ_name,loc_name,loc_addr1,loc_addr2,loc_suite,ct_city,st_state,loc_zipcode,cn_country,ct_clli,loc_instance,loc_identity,loc_environment ";
   $q_string .= "from locations ";
   $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
   $q_string .= "left join states on states.st_id = cities.ct_state ";
@@ -94,7 +94,7 @@
     $location[$a_locations['loc_id']]->location_country     = $a_locations['cn_country'];
     $location[$a_locations['loc_id']]->location_clli        = $a_locations['ct_clli'];
     $location[$a_locations['loc_id']]->location_instance    = $a_locations['loc_instance'];
-    $location[$a_locations['loc_id']]->location_designation = $a_locations['loc_west'];
+    $location[$a_locations['loc_id']]->location_designation = $a_locations['loc_identity'];
     $location[$a_locations['loc_id']]->location_environment = $environment;
 
   }
