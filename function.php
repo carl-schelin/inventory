@@ -3,6 +3,7 @@
 include('settings.php');
 
 date_default_timezone_set('UTC');
+$package = "function.php";
 
 # clean and escape the input data
 
