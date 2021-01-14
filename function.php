@@ -3,7 +3,6 @@
 include('settings.php');
 
 date_default_timezone_set('UTC');
-$package = "function.php";
 
 # clean and escape the input data
 
@@ -17,6 +16,7 @@ function clean( $p_input, $p_maxlength ) {
 
 function logaccess( $p_db, $p_user, $p_source, $p_detail ) {
   include('settings.php');
+  $package = "function.php";
 
   $query = "insert into log set " .
     "log_id        = NULL, " .
@@ -28,6 +28,8 @@ function logaccess( $p_db, $p_user, $p_source, $p_detail ) {
 }
 
 function check_userlevel( $p_db, $p_level ) {
+  $package = "function.php";
+
   if (isset($_SESSION['username'])) {
     include('settings.php');
     $q_string  = "select usr_level ";
@@ -74,6 +76,7 @@ function new_Mysql($p_db) {
 
 function last_insert_id($p_db) {
   include('settings.php');
+  $package = "function.php";
 
   $query = "select last_insert_id()";
   $q_result = mysqli_query($p_db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($p_db)));
@@ -125,6 +128,8 @@ function changelog( $p_db, $p_serverid, $p_changed, $p_notes, $p_user, $p_table,
 # if the group matches or the user is an admin
 # return yes.
 function check_grouplevel( $p_db, $p_group ) {
+  $package = "function.php";
+
 # somewhere it's passing a blank value for 'p_group' so for now; if blank set to 0.
   if ($p_group == '') {
     $p_group = 0;
@@ -236,6 +241,7 @@ function ping( $p_host ) {
 
 function return_Index( $p_db, $p_check, $p_string ) {
   include('settings.php');
+  $package = "function.php";
 
   $r_index = 0;
   $count = 1;
@@ -283,6 +289,7 @@ function wait_Process( $p_string ) {
 
 function return_ServerID( $p_db, $p_string ) {
   include('settings.php');
+  $package = "function.php";
 
   $output = 1109;
 
@@ -344,6 +351,7 @@ function return_ServerID( $p_db, $p_string ) {
 
 function return_Virtual( $p_db, $p_string ) {
   include('settings.php');
+  $package = "function.php";
 
   $output = 0;
 
@@ -496,6 +504,7 @@ function return_ShortOS( $p_string ) {
 
 function return_System( $p_db, $p_string ) {
   include('settings.php');
+  $package = "function.php";
 
   $output = '';
   $q_string = "select sw_software ";
