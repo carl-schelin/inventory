@@ -156,7 +156,7 @@
 # ===What came before; leaving in just in case===
 
 # just get a list of all the servers
-  $q_string  = "select inv_id,inv_name,loc_west ";
+  $q_string  = "select inv_id,inv_name,loc_identity ";
   $q_string .= "from inventory ";
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
   $q_string .= "where inv_status = 0 and inv_ssh = 1 and inv_manager = " . $GRP_Unix . " ";
@@ -228,7 +228,7 @@
 
 # adding in network zone for the interface and location, not necessarily needed for the monitoring, etc interface descriptions.
     $configuration .= $hostname . ":NetworkZone:" . $networkzone . "\n";
-    $configuration .= $hostname . ":Location:" . $a_inventory['loc_west'] . "\n";
+    $configuration .= $hostname . ":Location:" . $a_inventory['loc_identity'] . "\n";
   }
 
 # check software first for ability to run cron
