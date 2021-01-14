@@ -170,7 +170,7 @@
       $inv_location = 0;
       $q_string  = "select loc_id ";
       $q_string .= "from locations ";
-      $q_string .= "where loc_west = \"" . $location . "\" and loc_environment = " . $inv_env . " and loc_type = 1 ";
+      $q_string .= "where loc_identity = \"" . $location . "\" and loc_environment = " . $inv_env . " and loc_type = 1 ";
       $q_string .= "order by loc_id ";
       $q_string .= "limit 1 ";
       $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
