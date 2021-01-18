@@ -98,7 +98,74 @@
           $q_string  = "update ";
           $q_string .= "interface ";
           $q_string .= "set ";
-          $q_string .= "int_server = '" . $formVars['select'] . "' ";
+          $q_string .= "int_domain = '" . $formVars['select'] . "' ";
+          $q_string .= "where int_id = " . $formVars['id'] . " ";
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+
+          if ($formVars['select'] == '') {
+            $formVars['select'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
+          }
+          print "cell.innerHTML = '" . $child . "<u>" . $formVars['select'] . "</u>" . $virtual . "';\n";
+
+        }
+      }
+
+# edit the domain name field
+      if ($formVars['function'] == 'fdn') {
+        if ($formVars['status'] == 1) {
+          print "var cell = document.getElementById('" . $cellid . "');\n";
+          print "var celltext = document.getElementById('" . $cellid . "').innerHTML;\n";
+
+          print "celltext = celltext.replace(\"<u>\",\"\");\n";
+          print "celltext = celltext.replace(\"</u>\",\"\");\n";
+          print "celltext = celltext.replace(\"&gt; \",\"\");\n";
+          print "celltext = celltext.replace(\" (v)\",\"\");\n";
+          print "celltext = celltext.replace(\"&nbsp;&nbsp;&nbsp;&nbsp;\",\"\");\n";
+
+          print "cell.innerHTML = '&nbsp;';\n";
+          print "cell.setAttribute(\"onclick\", \"\");\n";
+
+          print "var infield = document.createElement('input');\n";
+
+          print "infield.setAttribute(\"id\",\"edit_data\");\n";
+          print "infield.setAttribute(\"name\",\"edit_data\");\n";
+          print "infield.setAttribute(\"onblur\",\"interface_Completed(" . $formVars['id'] . ",'" . $formVars['function'] . "');\");\n";
+          print "infield.setAttribute(\"type\",\"text\");\n";
+          print "infield.setAttribute(\"value\",celltext);\n";
+          print "infield.setAttribute(\"size\",\"15\");\n";
+
+          print "cell.appendChild(infield);\n";
+
+          print "document.getElementById('edit_data').focus();\n";
+        }
+# close down the cell and put the text in plus update rsdp
+        if ($formVars['status'] == 0) {
+
+          print "var cell = document.getElementById('" . $cellid . "');\n";
+
+          print "cell.setAttribute(\"onclick\", \"edit_Interface(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
+
+# need to determine if it's a child to see if I need to add the "< " back in to the output.
+          $q_string  = "select int_int_id,int_virtual ";
+          $q_string .= "from interface ";
+          $q_string .= "where int_id = " . $formVars['id'] . " ";
+          $q_intcheck = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_intcheck = mysqli_fetch_array($q_intcheck);
+
+          $child = '';
+          if ($a_intcheck['int_int_id'] > 0) {
+            $child = '< ';
+          }
+
+          $virtual = '';
+          if ($a_intcheck['int_virtual'] > 0) {
+            $virtual = ' (v)';
+          }
+
+          $q_string  = "update ";
+          $q_string .= "interface ";
+          $q_string .= "set ";
+          $q_string .= "int_domain = '" . $formVars['select'] . "' ";
           $q_string .= "where int_id = " . $formVars['id'] . " ";
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
