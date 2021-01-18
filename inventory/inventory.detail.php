@@ -43,60 +43,75 @@
 # 6. clear element
 # 7. update with new text
 
-# fqdn
-# this is a text edit field
-      if ($formVars['function'] == 'idn') {
+
+# parent listing
+# this will be a drop down.
+      if ($formVars['function'] == 'ipt') {
         if ($formVars['status'] == 1) {
-# give me the cell pointer you just clicked on.
           print "var cell = document.getElementById('" . $cellid . "');\n";
-# give me the text in that cell
           print "var celltext = document.getElementById('" . $cellid . "').innerHTML;\n";
 
-# remove the underscores
           print "celltext = celltext.replace(\"<u>\", \"\");\n";
           print "celltext = celltext.replace(\"</u>\", \"\");\n";
 
-# blank the cell
           print "cell.innerHTML = '&nbsp;';\n";
-# remove the function call
           print "cell.setAttribute(\"onclick\", \"\");\n";
 
-# create an input field so the data can be edited
-          print "var infield = document.createElement('input');\n";
+          print "var selbox = document.createElement('select');\n";
+          print "selbox.setAttribute(\"id\",\"edit_data\");\n";
+          print "selbox.setAttribute(\"name\",\"edit_data\");\n";
+          print "selbox.setAttribute(\"onchange\",\"detail_Completed(" . $formVars['id'] . ",'" . $formVars['function'] . "');\");\n";
+          print "selbox.setAttribute(\"onblur\",\"detail_Completed(" . $formVars['id'] . ",'" . $formVars['function'] . "');\");\n";
 
-          print "infield.setAttribute(\"id\",\"edit_data\");\n";
-          print "infield.setAttribute(\"name\",\"edit_data\");\n";
-          print "infield.setAttribute(\"onblur\",\"detail_Completed(" . $formVars['id'] . ",'" . $formVars['function'] . "');\");\n";
-          print "infield.setAttribute(\"type\",\"text\");\n";
-          print "infield.setAttribute(\"value\",celltext);\n";
-          print "infield.setAttribute(\"size\",\"30\");\n";
+          print "selbox.options.length = 0;\n";
+          print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
-# put the new input field into the cell
-          print "cell.appendChild(infield);\n";
+          $q_string  = "select inv_id,inv_name ";
+          $q_string .= "from inventory ";
+          $q_string .= "where inv_status = 0 and inv_virtual = 0 ";
+          $q_string .= "order by inv_name ";
+          $q_parent = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          while ($a_parent = mysqli_fetch_array($q_parent) ) {
+            print "if (celltext == \"" . $a_parent['inv_name'] . "\") {\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_parent['inv_name']) . "\"," . $a_parent['inv_id'] . ",1,1);\n";
+            print "} else {\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_parent['inv_name']) . "\"," . $a_parent['inv_id'] . ",0,0);\n";
+            print "}\n";
+          }
 
-# put the cursor into the new cell
+          print "cell.appendChild(selbox);\n";
+
           print "document.getElementById('edit_data').focus();\n";
-# and ready for editing
+
         }
 # close down the cell and put the text in plus update rsdp
         if ($formVars['status'] == 0) {
 
-# give me the cell pointer you just finished
           print "var cell = document.getElementById('" . $cellid . "');\n";
 
-# update the function so it can be clicked again; matches the info in the original
           print "cell.setAttribute(\"onclick\", \"edit_Detail(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
-# update the inventory with the updated information
+          $q_string  = "select inv_id,inv_name ";
+          $q_string .= "from inventory ";
+          $q_string .= "where inv_id = " . $formVars['select'] . " ";
+          $q_parent = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_parent) > 0) {
+            $a_parent = mysqli_fetch_array($q_parent);
+          } else {
+            $a_parent['inv_id']   = 0;
+            $a_parent['inv_name'] = "Orphan";
+          }
+
+          $display = $a_parent['inv_name'];
+
           $q_string  = "update ";
           $q_string .= "inventory ";
           $q_string .= "set ";
-          $q_string .= "inv_fqdn = '" . $formVars['select'] . "' ";
+          $q_string .= "inv_companyid = " . $a_parent['inv_id'] . " ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-# replace the input field with the updated data.
-          print "cell.innerHTML = '<u>" . $formVars['select'] . "</u>';\n";
+          print "cell.innerHTML = '<u>" . $display . "</u>';\n";
         }
       }
 
