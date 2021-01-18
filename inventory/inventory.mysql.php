@@ -124,7 +124,7 @@
 # detail
       if ($formVars['csv'] == 'true') {
         $detail  = "<p>\"Server Name\",";
-        $detail .= "\"Domain Name\",";
+        $detail .= "\"Parent\",";
         $detail .= "\"Function\",";
         $detail .= "\"Systems Admin\",";
         $detail .= "\"Applications Admin\",";
@@ -145,7 +145,7 @@
         $detail .= "<table id=\"project-table\" class=\"ui-styled-table\">\n";
         $detail .= "<tr>\n";
         $detail .= "  <th class=\"ui-state-default\">Server Name</th>\n";
-        $detail .= "  <th class=\"ui-state-default\">Domain Name</th>\n";
+        $detail .= "  <th class=\"ui-state-default\">Parent</th>\n";
         $detail .= "  <th class=\"ui-state-default\">Function</th>\n";
         $detail .= "  <th class=\"ui-state-default\">Systems Admin</th>\n";
         $detail .= "  <th class=\"ui-state-default\">Applications Admin</th>\n";
@@ -164,7 +164,7 @@
         $detail .= "</tr>\n";
       }
 
-      $q_string  = "select inv_id,inv_fqdn,inv_name,inv_function,inv_appadmin,grp_name,prod_name,prj_name,svc_name,loc_name,inv_row,inv_rack,inv_unit,inv_callpath,inv_ansible,inv_ssh,win_text ";
+      $q_string  = "select inv_id,inv_companyid,inv_name,inv_function,inv_appadmin,grp_name,prod_name,prj_name,svc_name,loc_name,inv_row,inv_rack,inv_unit,inv_callpath,inv_ansible,inv_ssh,win_text ";
       $q_string .= "from inventory ";
       $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
       $q_string .= "left join products on products.prod_id = inventory.inv_product ";
@@ -189,6 +189,16 @@
 
         $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">";
         $linkend   = "</a>";
+
+        $q_string  = "select inv_name ";
+	$q_string .= "from inventory ";
+	$q_string .= "where inv_id = " . $a_inventory['inv_companyid'] . " ";
+        $q_parent = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+	if (mysqli_num_rows($q_parent) > 0) {
+          $a_parent = mysqli_fetch_array($q_parent);
+	} else {
+	  $a_parent['inv_name'] = "orphan";
+	}
 
         $q_string  = "select grp_name ";
         $q_string .= "from a_groups ";
@@ -221,7 +231,7 @@
           }
 
           $detail .= "\"" . $a_inventory['inv_name']     . "\",";
-          $detail .= "\"" . $a_inventory['inv_fqdn']     . "\",";
+          $detail .= "\"" . $a_parent['inv_name']        . "\",";
           $detail .= "\"" . $a_inventory['inv_function'] . "\",";
           $detail .= "\"" . $a_inventory['grp_name']     . "\",";
           $detail .= "\"" . $a_appadmin['grp_name']      . "\",";
@@ -258,7 +268,7 @@
 
           $detail .= "<tr>\n";
           $detail .= "<td class=\"ui-widget-content\">" . $linkstart . $a_inventory['inv_name'] . $linkend . "</td>\n";
-          $detail .= "<td class=\"ui-widget-content\" id=\"idn" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'idn');\"><u>" . $a_inventory['inv_fqdn']     . "</u></td>\n";
+          $detail .= "<td class=\"ui-widget-content\" id=\"ipt" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'ipt');\"><u>" . $a_parent['inv_name']        . "</u></td>\n";
           $detail .= "<td class=\"ui-widget-content\" id=\"ifn" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'ifn');\"><u>" . $a_inventory['inv_function'] . "</u></td>\n";
           $detail .= "<td class=\"ui-widget-content\" id=\"isa" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'isa');\"><u>" . $a_inventory['grp_name']     . "</u></td>\n";
           $detail .= "<td class=\"ui-widget-content\" id=\"iaa" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'iaa');\"><u>" . $a_appadmin['grp_name']      . "</u></td>\n";
@@ -436,6 +446,7 @@
       if ($formVars['csv'] == 'true') {
         $interface  = "<p>\"Server Name\",";
         $interface .= "\"Interface Name\",";
+        $interface .= "\"Domain\",";
         $interface .= "\"Management\",";
         $interface .= "\"Secure Shell\",";
         $interface .= "\"Backup\",";
@@ -457,6 +468,7 @@
         $interface .= "<tr>\n";
         $interface .= "  <th class=\"ui-state-default\">Server Name</th>\n";
         $interface .= "  <th class=\"ui-state-default\">Interface Name</th>\n";
+        $interface .= "  <th class=\"ui-state-default\">Domain</th>\n";
         $interface .= "  <th class=\"ui-state-default\">Mgt</th>\n";
         $interface .= "  <th class=\"ui-state-default\">SSH</th>\n";
         $interface .= "  <th class=\"ui-state-default\">Bkup</th>\n";
@@ -477,7 +489,7 @@
       }
 
       $servername = '&nbsp;';
-      $q_string  = "select inv_id,inv_fqdn,inv_name,inv_function,inv_appadmin,inv_ssh,grp_name,prod_name,prj_name,svc_name,loc_name,inv_row,inv_rack,inv_unit,inv_callpath,inv_ansible,inv_ssh ";
+      $q_string  = "select inv_id,inv_name,inv_function,inv_appadmin,inv_ssh,grp_name,prod_name,prj_name,svc_name,loc_name,inv_row,inv_rack,inv_unit,inv_callpath,inv_ansible,inv_ssh ";
       $q_string .= "from inventory ";
       $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
       $q_string .= "left join products on products.prod_id = inventory.inv_product ";
@@ -503,7 +515,7 @@
         $linkend   = "</a>";
         $servername = $a_inventory['inv_name'];
 
-        $q_string  = "select int_id,int_server,int_openview,int_nagios,int_management,int_backup,int_face,int_login,";
+        $q_string  = "select int_id,int_server,int_domain,int_openview,int_nagios,int_management,int_backup,int_face,int_login,";
         $q_string .= "int_sysport,int_addr,int_mask,zone_name,int_gate,int_switch,int_port,itp_acronym,int_virtual,med_text,int_vlan ";
         $q_string .= "from interface ";
         $q_string .= "left join ip_zones  on ip_zones.zone_id = interface.int_zone ";
@@ -547,6 +559,7 @@
               $interface .= "\"" . $servername                  . "\",";
               $interface .= "\"" . $a_interface['int_server']   . "\",";
               $interface .= "\"" . $is_management               . "\",";
+              $interface .= "\"" . $a_interface['int_domain']   . "\",";
               $interface .= "\"" . $is_ssh                      . "\",";
               $interface .= "\"" . $is_backedup                 . "\",";
               $interface .= "\"" . $is_omi                      . "\",";
@@ -565,6 +578,9 @@
             } else {
               if ($a_interface['int_server'] == '') {
                 $a_interface['int_server'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
+              }
+              if ($a_interface['int_domain'] == '') {
+                $a_interface['int_domain'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
               }
               $is_management = "";
               if ($a_interface['int_management']) {
@@ -621,6 +637,7 @@
               $interface .= "<tr>\n";
               $interface .= "  <td class=\"" . $class . "\">" . $linkstart . $servername                       . $linkend . "</td>\n";
               $interface .= "  <td class=\"" . $class . "\" id=\"fsn" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fsn');\"><u>" . $a_interface['int_server']       . "</u>" . $virtual . "</td>\n";
+              $interface .= "  <td class=\"" . $class . "\" id=\"fdn" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fdn');\"><u>" . $a_interface['int_domain']       . "</u>" . $virtual . "</td>\n";
               $interface .= "  <td class=\"" . $class . " delete\"><input type=\"checkbox\"" . $is_management . " id=\"fmg" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fmg');\"></td>\n";
               $interface .= "  <td class=\"" . $class . " delete\"><input type=\"checkbox\"" . $is_ssh        . " id=\"fsh" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fsh');\"></td>\n";
               $interface .= "  <td class=\"" . $class . " delete\"><input type=\"checkbox\"" . $is_backedup   . " id=\"fbu" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fbu');\"></td>\n";
@@ -644,7 +661,7 @@
               $interface .= "</tr>\n";
             }
 
-            $q_string  = "select int_id,int_server,int_face,int_sysport,int_addr,int_mask,zone_name,int_gate,int_openview,int_login,";
+            $q_string  = "select int_id,int_server,int_domain,int_face,int_sysport,int_addr,int_mask,zone_name,int_gate,int_openview,int_login,";
             $q_string .= "int_switch,int_port,itp_acronym,int_virtual,med_text,int_vlan,int_management,int_backup,int_nagios ";
             $q_string .= "from interface ";
             $q_string .= "left join ip_zones  on ip_zones.zone_id = interface.int_zone ";
@@ -687,6 +704,7 @@
 
                   $interface .= "\"" . $servername                   . "\",";
                   $interface .= "\"" . $a_int_child['int_server']    . "\",";
+                  $interface .= "\"" . $a_int_child['int_domain']    . "\",";
                   $interface .= "\"" . $is_management                . "\",";
                   $interface .= "\"" . $is_ssh                       . "\",";
                   $interface .= "\"" . $is_backedup                  . "\",";
@@ -706,6 +724,9 @@
                 } else {
                   if ($a_int_child['int_server'] == '') {
                     $a_int_child['int_server'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
+                  }
+                  if ($a_int_child['int_domain'] == '') {
+                    $a_int_child['int_domain'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
                   }
                   $is_management = "";
                   if ($a_int_child['int_management']) {
@@ -762,6 +783,7 @@
                   $interface .= "<tr>\n";
                   $interface .= "  <td class=\"" . $class . "\">"      . $servername                              . "</td>\n";
                   $interface .= "  <td class=\"" . $class . "\" id=\"fsn" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fsn');\">&gt; <u>" . $a_int_child['int_server']      . "</u>" . $virtual . "</td>\n";
+                  $interface .= "  <td class=\"" . $class . "\" id=\"fdn" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fdn');\">&gt; <u>" . $a_int_child['int_domain']      . "</u>" . $virtual . "</td>\n";
                   $interface .= "  <td class=\"" . $class . " delete\"><input type=\"checkbox\"" . $is_management . " id=\"fmg" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fmg');\"></td>\n";
                   $interface .= "  <td class=\"" . $class . " delete\"><input type=\"checkbox\"" . $is_ssh        . " id=\"fsh" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fsh');\"></td>\n";
                   $interface .= "  <td class=\"" . $class . " delete\"><input type=\"checkbox\"" . $is_backedup   . " id=\"fbu" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fbu');\"></td>\n";
@@ -801,6 +823,26 @@
       }
 
       print "document.getElementById('interface_mysql').innerHTML = '" . mysqli_real_escape_string($db, $interface) . "';\n";
+
+
+# need to pull up a list of all the physical boxes these servers are connected to
+# list them in order
+# then list the other servers under each of the physical boxes.
+
+      $q_string  = "select inv_companyid ";
+      $q_string .= "from inventory ";
+      $q_string .= "where inv_manager = " . $formVars['group'] . " ";
+
+
+
+
+
+
+
+
+
+
+
 
       print "document.getElementById('tree_mysql').innerHTML = '" . mysqli_real_escape_string($db, "testing") . "';\n";
 
