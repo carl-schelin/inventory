@@ -59,20 +59,6 @@ $(document).ready( function() {
   <li><a href="#locations">Location Manager</a></li>
   <li><a href="#certificates">Certificate Manager</a></li>
   <li><a href="#images">Image Manager</a></li>
-<?php
-  if (check_grouplevel($db, $GRP_Monitoring)) {
-?>
-  <li><a href="#monitor">Manage Monitoring</a></li>
-<?php
-  }
-?>
-<?php
-  if (check_grouplevel($db, $GRP_Unix)) {
-?>
-  <li><a href="#psaps">PSAP Manager</a></li>
-<?php
-  }
-?>
 </ul>
 
 
@@ -139,44 +125,6 @@ $(document).ready( function() {
 
 </div>
 
-
-<?php
-  if (check_grouplevel($db, $GRP_Monitoring)) {
-?>
-<div id="monitor">
-
-<p>Manage Monitoring<p>
-
-<ul>
-  <li><a href="<?php print $Monitorroot; ?>/rules.php">Manage Monitoring Rules</a></li>
-  <li><a href="<?php print $Monitorroot; ?>/keywords.php">Manage Page Group Definitions</a></li>
-  <li><a href="<?php print $Monitorroot; ?>/application.php">Manage Applications</a></li>
-  <li><a href="<?php print $Monitorroot; ?>/source_node.php">Manage Nodes</a></li>
-  <li><a href="<?php print $Monitorroot; ?>/objects.php">Manage Objects</a></li>
-  <li><a href="<?php print $Monitorroot; ?>/message_group.php">Manage Message Groups</a></li>
-</ul>
-
-</div>
-<?php
-  }
-?>
-
-
-<?php
-  if (check_grouplevel($db, $GRP_Unix)) {
-?>
-<div id="psaps">
-
-<p>PSAP Manager<p>
-
-<ul>
-  <li><a href="<?php print $PSAProot; ?>/psaps.php">Manage PSAPs</a></li>
-</ul>
-
-</div>
-<?php
-  }
-?>
 
 </div>
 
