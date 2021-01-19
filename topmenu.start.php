@@ -48,13 +48,6 @@
   }
 ?>
       <li><a href="<?php print $Nagiosroot; ?>" target="_blank">Lab Monitoring (Nagios)</a></li>
-<?php
-    if (check_userlevel($db, $AL_Admin)) {
-?>
-      <li><a href="<?php print $PSAProot;   ?>">PSAP Manager</a></li>
-<?php
-  }
-?>
     </ul>
   </li>
   <li id="tm_changelog"><a href="<?php print $Siteroot; ?>/index.changelog.php">Changelogs</a>
