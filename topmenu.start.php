@@ -29,7 +29,6 @@
   </li>
   <li id="tm_applications"><a href="<?php print $Siteroot; ?>/index.apps.php">Applications</a>
     <ul>
-      <li><a href="<?php print $Oncallroot;  ?>/oncall.php">On Call Listing</a></li>
       <li><a href="<?php print $Issueroot;   ?>/issue.php">Issue Tracker</a></li>
       <li><a href="<?php print $Certsroot;   ?>/certs.php">Web Certificate Management</a></li>
       <li><a href="<?php print $Certsroot;   ?>/webapps.certs.php">-View Certificates</a></li>
