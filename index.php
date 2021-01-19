@@ -608,12 +608,6 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
 ?>
     <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Manageroot; ?>/manage.php');">Manage Server Errors</a> - Review and address individual server errors from the chkserver script.</li>
   </ul></li>
-  <li><strong>Kubernetes</strong>
-  <ul>
-    <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Kubernetesroot; ?>/apigroups.php');">Manage apiGroups</a> - Manage all the apiGroups that are part of a Kubernetes cluster.</li>
-    <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Kubernetesroot; ?>/resources.php');">Manage resources</a> - Manage all the resources that are part of a Kubernetes cluster.</li>
-    <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Kubernetesroot; ?>/rights.php');">Manage Clusterrole Rights</a> - Manage the rights associated wth clusterroles in Kubernetes.</li>
-  </ul></li>
   <li><a href="<?php print $Reportroot; ?>/esxlisting.php">Listing of ESX hosts and a count of Guests</a></li>
 </ul>
 
