@@ -73,7 +73,6 @@
       <li><a href="<?php print $Reportroot; ?>/changelog.php?group=<?php print $_SESSION['group']; ?>">Application Changelog Report</a></li>
       <li><a href="<?php print $Siteroot . "/" . $a_tmgroups['grp_clserver']; ?>"><?php print $a_tmgroups['grp_clserver']; ?> Listing review</a></li>
     </ul></li>
-  <li id="tm_custom"><a href="<?php print $Siteroot; ?>/index.custom.php">Special Requests</a></li>
   <li id="tm_database"><a href="<?php print $Siteroot; ?>/index.manage.php">Database</a>
     <ul>
       <li><a href="<?php print $Usersroot; ?>/business.php">Business Unit Names</a></li>
