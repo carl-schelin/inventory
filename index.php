@@ -521,7 +521,6 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
   <li><a href="#group">Group Reports</a></li>
   <li><a href="#security">Security Reports</a></li>
   <li><a href="#lifecycle">Life-Cycle Reports</a></li>
-  <li><a href="#admin">Administrative Reports</a></li>
   <li><a href="#archived">Archived Reports</a></li>
   <li><a href="#tagcloud">Tag Cloud</a></li>
   <li><a href="#search">Search</a></li>
@@ -638,21 +637,6 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/compiled.eol.php');">Hardware/Software End-of-Life</a> - Report on the end of life date for all Operating Systems and Hardware.</li>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/compiled.class.php');">Hardware/Software End-of-Life by Service Class</a> - Report on the end of life date for all Operating Systems and Hardware order by Service Class.</li>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/eolreport.php');">End-of-Life Report by Project</a> - Report on the end of life date compiled for all Projects.</li>
-</ul>
-
-</div>
-
-
-<div id="admin">
-
-<p><strong>Administrative Reports</strong></p>
-
-<ul>
-  <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Sanityroot; ?>/inventory.hardware.php');">Custodian not the same as the owner of all the Hardware</a> - Should be the same.</li>
-  <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Sanityroot; ?>/inventory.software.php');">Custodian not the same as the owner of the OS</a> - Should be the same.</li>
-  <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Sanityroot; ?>/product.hardware.php');">All hardware with no Product or Server identified.</a></li>
-  <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Sanityroot; ?>/product.software.php');">All software with no Product or Server identified.</a></li>
-  <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Sanityroot; ?>/inventory.duplicates.php');">Display all servers with duplicate entries.</a></li>
 </ul>
 
 </div>
