@@ -8,9 +8,9 @@
 # read incoming messages to the ovmc account and send out an autoack email if the subject line matches the server name.
 
 # To: 
-# tanotify@intrado.com
+# $WHOCARES
 # cc:
-# unixadmins@intrado.com
+# $WHOCARES
 # Subject: Only needs 'Re: number'
 # Re: 6201:[server] [06:52:41] [major] [ping] [OS] [NodeDown]
 
@@ -66,14 +66,14 @@
 
   if (file_exists($autoack)) {
     $headers      = "From: OVMC <ovmc@" . $hostname . ">\r\n";
-    $headers     .= "CC: unixadmins@intrado.com\r\n";
+    $headers     .= "CC: " . $WHOCARES . "\r\n";
     $headers     .= "MIME-Version: 1.0\r\n";
     $headers     .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
     if ($noc == 'yes') {
-      $destination  = "ISOCoperators@intrado.com,E911Voice@intrado.com";
+      $destination  = $NOCCARES;
     } else {
-      $destination  = "tanotify@intrado.com";
+      $destination  = $WHOCARES;
     }
 
     $subject      = "Re: $subject";
