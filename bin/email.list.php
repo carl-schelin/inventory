@@ -13,7 +13,7 @@
   $q_string  = "select usr_id,usr_email,grp_email,grp_clserver ";
   $q_string .= "from users ";
   $q_string .= "left join a_groups on a_groups.grp_id = users.usr_group ";
-  $q_string .= "where (usr_email like '%@intrado.com' or usr_email like '%west.com') and usr_disabled = 0 and grp_clserver != '' ";
+  $q_string .= "where usr_disabled = 0 and grp_clserver != '' ";
   $q_string .= "order by usr_last,usr_first ";
   $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_users = mysqli_fetch_array($q_users)) {
