@@ -15,12 +15,12 @@
 # build a nagios config file listing:
 #
 #define host{
-#	use                     solaris-server
-#	host_name		coolcacsdca15
-#	alias			Database Server
-#	address			10.105.200.80
-#	parents			10.105.200.254
-#	icon_image_alt		Solaris 10 5/08
+#       use                     solaris-server
+#       host_name               lnmt1cuom2540
+#       alias                   Database Server
+#       address                 192.168.104.50
+#       parents                 192.168.104.254
+#       icon_image_alt          Solaris 10 5/08
 #        }
 #
 
