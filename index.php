@@ -377,7 +377,7 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
   <li><strong>{blank} or active</strong> - If the Subject line is empty or contains 'active', a list of all active devices will be returned via e-mail.</li>
   <li><strong>{devicename}</strong> - An e-mail will be returned containing information about the identified device. If it's a partial name then a partial listing of devices will be returned.</li>
   <li><strong>{product}</strong> - An e-mail will be returned containing a list of all devices assigned to this Product or Service</li>
-  <li><strong>products</strong> - A list of all Intrado products and services will be returned. <strong>NOTE:</strong> Replace spaces with underscores for any products with more than one word.</li>
+  <li><strong>products</strong> - A list of all products and services will be returned. <strong>NOTE:</strong> Replace spaces with underscores for any products with more than one word.</li>
   <li><strong>help</strong> - An e-mail will be returned with this message.</li>
 </ul>
 
