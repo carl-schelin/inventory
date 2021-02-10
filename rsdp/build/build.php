@@ -668,7 +668,7 @@ System Name. Once you click one of the task buttons at the top, the name is save
     <li><strong>Zone</strong> - The network zone.</li>
     <li><strong>Unique Device Type</strong> - A selection of Unique Device Types has been created to make it easy to identify a system's Custodian.</li>
     <li><strong>Service/Project</strong> - This data is populated from the Project information you select in the Server Initialization task. <strong>Note:</strong> Infrastructure servers have 'IF' for this data however the standard does not mandate these two characters. You can delete them from the final System Name field at your discretion.</li>
-    <li><strong>Freeform</strong> - This field can have no more than 4 characters but can be any data that further identifies a system. Typically the last character would be the system instance. For example lnmt0duwslfui1 is the first instance and lnmt0duwslfui2 is the second instance.</li>
+    <li><strong>Freeform</strong> - This field can have no more than 4 characters but can be any data that further identifies a system. Typically the last character would be the system instance. For example lnmt0cuomtool10 is the first instance and lnmt1cuomtool11 is the second instance.</li>
   </ul></li>
 </ul>
 
