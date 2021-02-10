@@ -108,7 +108,7 @@ of the page you're on. In some cases where there is no title bar, 'Help' has bee
 
 <p>I reorganized the <strong>Inventory Reports</strong> page to be a bit more logical. The filter area is clearly different 
 than the available links. The links work about the same however the <strong>Location</strong> drop down is new. Before, you 
-could select a group and an Intrado product and come up with a page of systems. You can now filter it further by selecting 
+could select a group and a product and come up with a page of systems. You can now filter it further by selecting 
 a location from the drop down.</p>
 
 <p>Some of the more <strong>General Reports</strong> were moved into their own area. The <strong>Inventory Reports</strong> 
