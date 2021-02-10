@@ -228,7 +228,7 @@
           } else {
             $output .= "<table width=80%>\n";
             $output .= "<tr>\n";
-            $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Intrado: IP Listing</th>\n";
+            $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">IP Listing</th>\n";
             $output .= "</tr>\n";
             $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
             $output .= "  <th>Servername</th>\n";
@@ -298,7 +298,7 @@
       } else {
         $output .= "<table width=80%>\n";
         $output .= "<tr>\n";
-        $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"3\">Intrado: Server Listing</th>\n";
+        $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"3\">Server Listing</th>\n";
         $output .= "</tr>\n";
         $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
         $output .= "  <th>Servername</th>\n";
@@ -347,19 +347,19 @@
     $body .= "<p><u>Usage:</u></p>\n";
     $body .= "<p>To: inventory@" . $hostname . "\n";
     $body .= "<br>Subject: {servername} or {serverip} [keyword option]\n";
-    $body .= "<br>Subject: {intrado product}\n";
+    $body .= "<br>Subject: {product}\n";
     $body .= "<br>Subject: [{empty subject} or {active} or {help} or {products}</p>\n\n";
 
     $body .= "<p>The Subject line consists of up to two keywords. The first can be one of five options;</p>\n";
     $body .= "<ul>\n";
     $body .= "  <li><b>{empty subject} or active</b> - If the Subject line is empty or contains the keyword 'active', a list of all active servers will be returned via e-mail.</li>\n";
     $body .= "  <li><b>help</b> - An e-mail will be returned with this message.</li>\n";
-    $body .= "  <li><b>products</b> - A list of all Intrado products will be returned. <strong>NOTE:</strong> Replace spaces with underscores on the Subject line for products with more than one word.</li>\n";
+    $body .= "  <li><b>products</b> - A list of all products will be returned. <strong>NOTE:</strong> Replace spaces with underscores on the Subject line for products with more than one word.</li>\n";
 
     $body .= "  <li><b>{servername}</b> - An e-mail will be returned containing information about the identified server.</li>\n";
     $body .= "  <li><b>{serverip}</b> - An e-mail will be returned containing information about the server associated with the IP.</li>\n";
 
-    $body .= "  <li><b>{intrado product}</b> - An e-mail will be returned containing a list of all servers assigned to this Intrado Product</li>\n";
+    $body .= "  <li><b>{product}</b> - An e-mail will be returned containing a list of all servers assigned to this Product</li>\n";
     $body .= "</ul>\n\n";
     $body .= "<p>The email request supports Database wildcards (%) so to get a list of servers that start with 'inco', add the wildcard character to the end of the server name, example: 'inco%' or '10.100.78.%' for a list of servers with IP Addresses. You will receive a complete listing of all servers or IP addresses.</p>\n";
 
@@ -393,7 +393,7 @@
   if ($server == "active") {
     $output .= "<table width=80%>\n";
     $output .= "<tr>\n";
-    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=3>Intrado: Active Server Listing</th>\n";
+    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=3>Active Server Listing</th>\n";
     $output .= "</tr>\n";
     $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
     $output .= "  <th>Servername</th>\n";
@@ -454,7 +454,7 @@
   if ($server == "products") {
     $output .= "<table width=80%>\n";
     $output .= "<tr>\n";
-    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=3>Intrado Product Listing</th>\n";
+    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=3>Product Listing</th>\n";
     $output .= "</tr>\n";
     $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
     $output .= "  <th>Servername</th>\n";
@@ -483,9 +483,9 @@
     $body = $output;
 
     if ($debug == 'yes') {
-      print "mail($email, \"Intrado Product Listing\", $body, $headers);\n\n";
+      print "mail($email, \"Product Listing\", $body, $headers);\n\n";
     } else {
-      mail($email, "Intrado Product Listing", $body, $headers);
+      mail($email, "Product Listing", $body, $headers);
     }
     exit(1);
   }
@@ -493,7 +493,7 @@
   if ($product != '') {
     $output .= "<table width=80%>\n";
     $output .= "<tr>\n";
-    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"4\">Intrado Product : " . $product . "</th>\n";
+    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"4\">Product : " . $product . "</th>\n";
     $output .= "</tr>\n";
     $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
     $output .= "  <th>Servername</th>\n";
