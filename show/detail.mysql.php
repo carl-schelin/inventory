@@ -82,7 +82,7 @@
   $output .= "    <li><strong>911 Call Path</strong> - If a system is in the 911 call path, <span class=\"ui-state-error\">the header</span> and <span class=\"ui-state-highlight\">this text</span> will indicate it.</li>";
   $output .= "    <li><strong>Server</strong> - The hostname of a server according to DNS.</li>";
   $output .= "    <li><strong>Function</strong> - The system function; Oracle Database Server, JBoss Application Server, etc.</li>";
-  $output .= "    <li><strong>Product</strong> - The Intrado product this server is a member of.</li>";
+  $output .= "    <li><strong>Product</strong> - The product this server is a member of.</li>";
   $output .= "    <li><strong>Platform Managed By</strong> - The group that provides overall management of the physical or virtual system.</li>";
   $output .= "    <li><strong>Application Managed By</strong> - The group that provides overall management of the applications installed on the system.</li>";
   $output .= "    <li><strong>Class</strong> - The Product's service class. The system is one component of the Product. The Product may require 2 9's of uptime but a component like this server can have a higher failure rate.</li>";
