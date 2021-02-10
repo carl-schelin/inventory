@@ -226,7 +226,7 @@
 
 # updates the last time the system was updated
 # inv_kernel holds the yyyy-mm-dd
-####lnmtcodcerl10,system,kernel,2012-10-08
+####lnmt1cuomtool11,system,kernel,2012-10-08
           if ($value[2] == 'kernel') {
             print "last patch date found:\n";
 
@@ -668,7 +668,7 @@
 
 # Centrify
 # server, software, centrify, inv_centrify, inv_adzone, inv_domain
-#lnmtcodcew40,software,centrify,2012-12-18,unix.internal.pri
+#lnmt1cuomtool11,software,centrify,2012-12-18,unix.internal.pri
           if ($value[2] == 'centrify') {
             $skip = 'no';
             $query = 
@@ -778,7 +778,7 @@
           }
 
 # database listings
-#lnmtcodced10,software,informix,shared memory not initialized for INFORMIXSERVER '<NULL>'
+#lnmt1cuomtool11,software,informix,shared memory not initialized for INFORMIXSERVER '<NULL>'
           if ($value[2] == 'informix') {
             if (strlen($value[3]) > 0) {
               $skip = 'no';
@@ -1100,7 +1100,7 @@
             }
           }
 
-#lnmt1duasneap10,software,wildfly,Installed
+#lnmt1cuomtool11,software,wildfly,Installed
           if ($value[2] == 'wildfly') {
             if (strlen($value[3]) > 0) {
               $value[3] = 'Wildfly';
@@ -1145,7 +1145,7 @@
           }
 
 
-#lnmt1duasneap10,software,vmtoolsd,VMware Tools daemon, version 10.0.6.54238 (build-3560309)
+#lnmt1cuomtool11,software,vmtoolsd,VMware Tools daemon, version 10.0.6.54238 (build-3560309)
           if ($value[2] == 'vmtoolsd') {
             if (strlen($value[3]) > 0) {
               $skip = 'no';
@@ -1189,7 +1189,7 @@
           }
 
 
-#lnmt1duasneap10,software,newrelic,Installed
+#lnmt1cuomtool11,software,newrelic,Installed
           if ($value[2] == 'newrelic') {
             if (strlen($value[3]) > 0) {
               $skip = 'no';
@@ -1234,7 +1234,7 @@
           }
 
 
-#lnmt1duasneap10,software,newrelic,Installed
+#lnmt1cuomtool11,software,newrelic,Installed
           if ($value[2] == 'java') {
             if (strlen($value[3]) > 0) {
               $skip = 'no';
@@ -1279,7 +1279,7 @@
           }
 
 
-#lnmt1duasneap10,software,newrelic,Installed
+#lnmt1cuomtool11,software,newrelic,Installed
           if ($value[2] == 'openjdk') {
             if (strlen($value[3]) > 0) {
               $skip = 'no';
