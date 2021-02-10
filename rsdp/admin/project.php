@@ -201,7 +201,7 @@ $(function() {
   <td class="ui-widget-content"><label>Close Project <input type="checkbox" name="prj_close"></label></td>
 </tr>
 <tr>
-  <td class="ui-widget-content" colspan="3">Intrado Product: <select name="prj_product">
+  <td class="ui-widget-content" colspan="3">Product: <select name="prj_product">
 <option value="0">Unassigned</option>
 <?php
   $q_string  = "select prod_id,prod_name ";
