@@ -1097,7 +1097,7 @@ function submit_Ticket( $p_db, $p_rsdp, $p_script, $p_field, $p_group ) {
 
     $bodyhead  = "First Name*+ !1000000019!: " . $a_requestor['usr_first'] . "\n";
     $bodyhead .= "Last Name*+ !1000000018!: " . $a_requestor['usr_last'] . "\n";
-    $bodyhead .= "(Change Location) Company*+ !1000000001!: Intrado, Inc.\n";
+    $bodyhead .= "(Change Location) Company*+ !1000000001!: Company, Inc.\n";
     $bodyhead .= "(Notes) Detailed Description !1000000151!: " . $report . "\n";
     $bodyhead .= "Summary* !1000000000!: " . $firstline . "\n";
     $bodyhead .= "Impact* !1000000163!: 4-Minor/Localized\n";
@@ -1105,14 +1105,14 @@ function submit_Ticket( $p_db, $p_rsdp, $p_script, $p_field, $p_group ) {
     $bodyhead .= "Priority !1000000164!: High\n";
 
     $bodyhead .= "#Change Coordinator Details\n";
-    $bodyhead .= "Support Company !1000003228!: Intrado, Inc.\n";
+    $bodyhead .= "Support Company !1000003228!: Company, Inc.\n";
     $bodyhead .= "Support Organization !1000003227!: Technical Operations\n";
     $bodyhead .= "Support Group Name+ !1000003229!: " . $a_user['grp_name'] . "\n";
     $bodyhead .= "Change Coordinator+ !1000003230!: " . $a_user['usr_first'] . " " . $a_user['usr_last'] . "\n";
     $bodyhead .= "Change Coordinator Login !1000003231!: " . $a_user['usr_clientid'] . "\n";
 
     $bodyhead .= "#Change Manager Details\n";
-    $bodyhead .= "Support Company !1000000251!: Intrado, Inc.\n";
+    $bodyhead .= "Support Company !1000000251!: Company, Inc.\n";
     $bodyhead .= "Support Organization !1000000014!: Technical Operations\n";
     $bodyhead .= "Support Group Name !1000000015!: " . $a_requestor['grp_name'] . "\n";
     $bodyhead .= "Change Manager !1000000403!: " . $a_manager['usr_first'] . " " . $a_manager['usr_last'] . "\n";
