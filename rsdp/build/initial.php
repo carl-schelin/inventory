@@ -741,7 +741,7 @@ saved in the Requestor's profile when the server is saved or submitted as comple
 <ul>
   <li><strong>Project Form</strong>
   <ul>
-    <li><strong>Intrado Product</strong> - Select the Product this server is being built for. This information is stored in the Inventory and used to associate all 
+    <li><strong>Product</strong> - Select the Product this server is being built for. This information is stored in the Inventory and used to associate all 
 servers with the necessary Product.</li>
     <li><strong>Project Name</strong> - Select the Project this server is associated with. Use the Project Codes link in the menu to add a new Project. 
 Click the <strong>Add New Project</strong> button to add a new Project to the listing.</li>
@@ -759,7 +759,7 @@ Click the <strong>Add New Project</strong> button to add a new Project to the li
   <th class="ui-state-default" colspan="3">Project Form</th>
 </tr>
 <tr>
-  <td class="ui-widget-content" id="rsdp_product">Intrado Product <select name="rsdp_product" onchange="validate_Form();">
+  <td class="ui-widget-content" id="rsdp_product">Product <select name="rsdp_product" onchange="validate_Form();">
   <option value="0">Unassigned</option>
 <?php
     $q_string  = "select prod_id,prod_name ";
@@ -1598,7 +1598,7 @@ backups.</li>
   <td class="ui-widget-content">Project Code: <input type="number" name="prj_code" size="15"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content" colspan="2">Intrado Product: <select name="prj_product">
+  <td class="ui-widget-content" colspan="2">Product: <select name="prj_product">
 <option value="0">Unassigned</option>
 <?php
   $q_string  = "select prod_id,prod_name ";
