@@ -668,7 +668,7 @@
 
 # Centrify
 # server, software, centrify, inv_centrify, inv_adzone, inv_domain
-#lnmtcodcew40,software,centrify,2012-12-18,WebApps,e911zone.intrado.pri
+#lnmtcodcew40,software,centrify,2012-12-18,unix.internal.pri
           if ($value[2] == 'centrify') {
             $skip = 'no';
             $query = 
@@ -1324,12 +1324,10 @@
           }
 
 
-
-
 # Commercial
           if ($value[2] == 'commercial') {
           }
-# Intrado
+# Custom Company Software
           if ($value[2] == 'custom') {
           }
 
