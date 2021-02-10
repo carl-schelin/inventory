@@ -17,8 +17,6 @@
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
 # are tickets created?
-# yes for magic
-  $magic = 'no';
 # yes for remedy
   $remedy = 'no';
 
@@ -69,15 +67,12 @@
   $service = explode("@", $email);
 
   if ($service[0] == 'root' || $service[0] == 'unixsvc') {
-# for Remedy; not doing it so just set it so the checks will pass
-    $clientid = '';
-    $groupmagicid = 'CORP-UNIX SYSADMIN';
 
 # really just looking for this so the automatic serviceaccounts can apply changelogs
     $groupchangelog = 'changelog';
 
   } else {
-    $q_string  = "select usr_id,usr_email,usr_first,usr_last,usr_name,usr_clientid,usr_group,usr_manager ";
+    $q_string  = "select usr_id,usr_email,usr_first,usr_last,usr_name,usr_group,usr_manager ";
     $q_string .= "from users ";
     $q_string .= "where (usr_email = '" . $email . "' or usr_altemail like '%" . $email . "%') and usr_id != 1 and usr_disabled = 0 ";
     $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -85,13 +80,12 @@
 
 # reset the email if using an alternate email address.
 #  $email = $a_users['usr_email'];
-    $clientid = $a_users['usr_clientid'];
 
 # users can be members of multiple groups.
 # run through the grouplist table for this user
 # and try to locate the saved file.
 
-    $q_string  = "select gpl_group,grp_changelog,grp_magic ";
+    $q_string  = "select gpl_group,grp_changelog ";
     $q_string .= "from grouplist ";
     $q_string .= "left join a_groups on a_groups.grp_id = grouplist.gpl_group ";
     $q_string .= "where gpl_user = " . $a_users['usr_id'] . " ";
@@ -101,16 +95,11 @@
 # looking for $Changehome/$groupchangelog/Mail/user@domain.report.random_number
       if (file_exists($Changehome . "/" . $a_grouplist['grp_changelog'] . '/Mail/' . $email . '.report.' . $random)) {
         $groupchangelog = $a_grouplist['grp_changelog'];
-        $groupmagicid   = $a_grouplist['grp_magic'];
       }
     }
 
-    if ($groupmagicid == '') {
-      $groupmagicid = "CORP-UNIX SYSADMIN";
-    }
-
 # get the manager information for the user.
-    $q_string  = "select usr_first,usr_last,usr_name,usr_clientid ";
+    $q_string  = "select usr_first,usr_last,usr_name ";
     $q_string .= "from users ";
     $q_string .= "where usr_id = " . $a_users['usr_manager'] . " and usr_disabled = 0 ";
     $q_manager = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -126,83 +115,6 @@
     unlink($changelog);
     exit(1);
   }
-
-# bail if clientid not set. Can't submit to remedy without it.
-# this also fails if email is incorrect including alternate emails.
-  if ($a_users['usr_clientid'] == '' && $remedy == 'yes') {
-    print "ERROR: RemedyID not set\n";
-    $headers  = "From: Changelog <changelog@" . $hostname . ">\r\n";
-    $headers .= "CC: " . $Sitedev . "\r\n";
-
-    $body  = "Your RemedyID has not been set in the Inventory application. In order for changelog messages ";
-    $body .= "to be submitted successfully to Remedy, the RemedyID must be set. This value is the same ";
-    $body .= "as your Windows Login ID. Please go into your Account Details and add your Remedy/Windows ";
-    $body .= "RemedyID to your account and resend the change to the system.\n\n";
-
-    $body .= "This message can also be received if your sending email address doesn't match your ";
-    $body .= "Inventory email address.\n\n";
-
-    $body .= "https://" . $hostname . "/inventory/accounts/profile.php\n";
-
-    mail($email, "Error: RemedyID Missing", $body, $headers);
-
-    unlink($changelog);
-    exit(1);
-  }
-
-# bail if manager is not selected. Can't submit to remedy without it.
-  if ($a_users['usr_manager'] == 0 && $remedy == 'yes') {
-    print "ERROR: Manager not selected\n";
-    $headers  = "From: Changelog <changelog@" . $hostname . ">\r\n";
-    $headers .= "CC: " . $Sitedev . "\r\n";
-
-    $body  = "Remedy requires your manager's login information in order to store your changelog entry. You have not ";
-    $body .= "identified your manager in your profile. Log in to your account and select your manager from the list.";
-
-    $body .= "https://" . $hostname . "/inventory/accounts/profile.php\n";
-
-    mail($email, "Error: Manager not selected", $body, $headers);
-
-    unlink($changelog);
-    exit(1);
-  }
-
-
-# bail if manager or manager clientid is not set. Can't submit to remedy without it.
-  if ($a_manager['usr_clientid'] == '' && $remedy == 'yes') {
-    print "ERROR: Manager's RemedyID not set\n";
-    $headers  = "From: Changelog <changelog@" . $hostname . ">\r\n";
-    $headers .= "CC: " . $Sitedev . "\r\n";
-
-    $body  = "Your Manager's RemedyID has not been set in the Inventory application. In order for changelog messages ";
-    $body .= "to be submitted successfully to Remedy, your Manager's RemedyID must be set. This value is the same ";
-    $body .= "as their Windows Login ID. Please have your manager go into their Account Details page and add their Remedy/Windows ";
-    $body .= "RemedyID to their account and then you can resend the change to the system.\n\n";
-
-    $body .= "An email was also sent to your manager.\n\n";
-
-    $body .= "https://" . $hostname . "/inventory/accounts/profile.php\n";
-
-    mail($email, "Error: Manager's RemedyID Missing", $body, $headers);
-
-# send an email to the manager as well.
-    $headers  = "From: Changelog <changelog@" . $hostname . ">\r\n";
-    $headers .= "CC: " . $Sitedev . "\r\n";
-
-    $body  = "Your RemedyID has not been set in the Inventory application. In order for members of your ";
-    $body .= "group to send changelog messages to Remedy, your RemedyID must be set. This value is the same ";
-    $body .= "as your Windows Login ID. Please go into your Account Details and add your Remedy/Windows ";
-    $body .= "RemedyID to your account and notify " . $a_users['usr_first'] . " " . $a_users['usr_last'] . " ";
-    $body .= "so they can resend the change to the system.\n\n";
-
-    $body .= "https://" . $hostname . "/inventory/accounts/profile.php\n";
-
-    mail($email, "Error: RemedyID Missing", $body, $headers);
-
-    unlink($changelog);
-    exit(1);
-  }
-
 
 ###################
 ### Now retrieve the server name and application name
@@ -235,10 +147,10 @@
 
 # get the border value
 #Content-Type: multipart/mixed;
-#	boundary="_000_CBAD9FE331D55CarlSchelinintradocom_"
+#	boundary="_000_CBAD9FE331D55CarlSchelininteralpri_"
 # read until: ^--------------
 # read until --boundary value
-#--_000_CBAD9FE331D55CarlSchelinintradocom_
+#--_000_CBAD9FE331D55CarlSchelininteralpri_
 # read content type for text/
 #Content-Type: text/plain; charset="us-ascii"
 #
@@ -279,7 +191,6 @@
 
     $body  = "ERROR: Unable to open " . $changelog . ".\n\n";
     $body .= "Email: " . $email . ".\n";
-    $body .= "ClientID: " . $clientid . ".\n";
     $body .= "Server: " . $server . ".\n";
     $body .= "Application: " . $application . ".\n";
     $body .= "Random Number: " . $random . ".\n\n";
@@ -303,7 +214,7 @@
           $process = trim(fgets($file));
 
 # again, if a blackberry (bb uses '__' as signature sep), we're done
-          if (preg_match("/Intrado Wireless Information Network/", $process) || preg_match("/__/", $process) && $leave == 0) {
+          if (preg_match("/Company Wireless Information Network/", $process) || preg_match("/__/", $process) && $leave == 0) {
             print "Loop-Wireless: Found Blackberry signature line. Saving text, exiting loop.\n";
             $report .= $savedlines . "\n";
             $leave = 1;
@@ -400,200 +311,6 @@
 
   if ($report == '' and strlen($savedlines) > 0) {
     $report = $savedlines;
-  }
-
-#
-# This is the Magic ticket system process.
-#
-  if ($magic == 'yes') {
-
-    $target = 'local';
-    $target = 'dev';
-    $target = 'prod';
-
-    if ($target == 'local') {
-      $magicemail = $Sitedev;
-    }
-    if ($target == 'dev') {
-      $magicemail = "svc_MagicAdminDev@intrado.com";
-    }
-    if ($target == 'prod') {
-      $magicemail = "svc_magicprodemail@intrado.com";
-    }
-
-###############################
-###  Format the mail message
-###############################
-
-# Template:
-# Wrap the specific information in the listed tags
-
-    $headers  = "From: Changelog <changelog@" . $hostname . ">\r\n";
-    $headers .= "CC: " . $Sitedev . "\r\n";
-
-#########
-### Client ID: -u-/*u*
-#########
-    $body = "-u-" . $clientid . "*u*\n\n";
-
-#########
-### Group ID: -g-/*g*
-#########
-    $body .= "-g-" . $groupmagicid . "*g*\n\n";
-
-#########
-### Server: -s-/*s*
-#########
-    $body .= "-s-" . $server . "*s*\n\n";
-  
-#########
-### Application: -a-/*a*
-#########
-    $body .= "-a-" . $application . "*a*\n\n";
-
-#########
-### Description: -d-/*d*
-#########
-    $body .= "-d-\n" . $report . "*d*\n\n";
-
-#########
-### Resolution: -r-/*r*
-#########
-    $body .= "-r-" . "Completed" . "*r*\n\n";
-
-
-###############################
-###  Send the mail to magic
-###############################
-
-    mail($magicemail, "changelog", $body, $headers);
-  }
-
-  if ($remedy == 'yes') {
-
-    $local       = 'no';
-    $development = 'no';
-    $sqa         = 'no';
-    $production  = 'yes';
-    $remedy8     = 'no';	# gone away 8/25/2016
-    $remedy9     = 'yes';
-
-# get the user information for the person in the inventory and will be the one opening the ticket plus group information
-    $q_string  = "select usr_first,usr_last,usr_name,usr_email,usr_manager,grp_name ";
-    $q_string .= "from users ";
-    $q_string .= "left join a_groups on a_groups.grp_id = users.usr_group ";
-    $q_string .= "where (usr_email = '" . $email . "' or usr_altemail like '%" . $email . "%') and usr_id != 1 and usr_disabled = 0 ";
-    $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_users = mysqli_fetch_array($q_users);
-
-    $headers = "From: " . $a_users['usr_first'] . " " . $a_users['usr_last'] . "<" . $a_users['usr_email'] . ">\r\n";
-    $headers .= "CC: " . $Sitedev . "\r\n";
-
-# need to add the server name and application to the changelog ticket.
-
-    $report = "Server: " . $server . "\nApplication: " . $application . "\n\n" . $report;
-
-#
-# begin the email message
-#
-
-    $bodyhead  = "First Name*+ !1000000019!: " . $a_users['usr_first'] . "\n";
-    $bodyhead .= "Last Name*+ !1000000018!: " . $a_users['usr_last'] . "\n";
-    $bodyhead .= "(Change Location) Company*+ !1000000001!: Intrado, Inc.\n";
-    $bodyhead .= "(Notes) Detailed Description !1000000151!: " . $report . "\n";
-    $bodyhead .= "Summary* !1000000000!: " . $firstline . "\n";
-    $bodyhead .= "Impact* !1000000163!: 4-Minor/Localized\n";
-    $bodyhead .= "Urgency* !1000000162!: 4-Low\n";
-    $bodyhead .= "Priority !1000000164!: High\n";
-
-    $bodyhead .= "#Change Coordinator Details\n";
-    $bodyhead .= "Support Company !1000003228!: Intrado, Inc.\n";
-    $bodyhead .= "Support Organization !1000003227!: Technical Operations\n";
-    $bodyhead .= "Support Group Name+ !1000003229!: " . $a_users['grp_name'] . "\n";
-    $bodyhead .= "Change Coordinator+ !1000003230!: " . $a_users['usr_first'] . " " . $a_users['usr_last'] . "\n";
-    $bodyhead .= "Change Coordinator Login !1000003231!: " . $clientid . "\n";
-
-    $bodyhead .= "#Change Manager Details\n";
-    $bodyhead .= "Support Company !1000000251!: Intrado, Inc.\n";
-    $bodyhead .= "Support Organization !1000000014!: Technical Operations\n";
-    $bodyhead .= "Support Group Name !1000000015!: " . $a_users['grp_name'] . "\n";
-    $bodyhead .= "Change Manager !1000000403!: " . $a_manager['usr_first'] . " " . $a_manager['usr_last'] . "\n";
-    $bodyhead .= "Change Manager Login !1000000408!: " . $a_manager['usr_clientid'] . "\n";
-
-    $bodyhead .= "# Change Dates in the following format 3/8/2016 1:00:00 AM MST\n";
-    $bodyhead .= "Actual Start Date+ !1000000348!: " . date('n/j/Y g:i:s A e', strtotime("Yesterday")) . "\n";
-    $bodyhead .= "Actual End Date+ !1000000364!: " . date('n/j/Y g:i:s A e') . "\n";
-
-    $bodyhead .= "#PLEASE DO NOT MODIFY THE BELOW MANDATORY VALUES:\n";
-    $bodyhead .= "Schema: CHG:ChangeInterface_Create\n";
-
-# tail of the email
-    $bodytail  = "Action: Submit\n";
-    $bodytail .= "Status !         7!: Draft\n";
-    $bodytail .= "Risk Level* !1000000180!: Risk Level 1\n";
-    $bodytail .= "Class !1000000568!: Latent\n";
-    $bodytail .= "Change Type* !1000000181!: Change\n\n";
-
-
-# send it to the developer for testing
-    if ($local == 'yes') {
-      $remedyemail  = $Sitedev;
-      $remedyserver = "Blank";
-
-      $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
-      mail($remedyemail, "Changelog Submission", $body, $headers);
-
-    }
-# development server information
-    if ($development == 'yes') {
-      if ($remedy8 == 'yes') {
-        $remedyemail  = "remedy.helpdesk.dev@intrado.com";
-        $remedyserver = "LMV08-REMAPPQA.corp.intrado.pri";
-
-        $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
-        mail($remedyemail, "Changelog Submission", $body, $headers);
-      }
-
-      if ($remedy9 == 'yes') {
-        $remedyemail = "Remedy91HelpdeskDev@intrado.com";
-        $remedyemail = "remedy.helpdesk.dev.safetyservices@regmail.west.com";
-        $remedyserver = "LMV08-MX02.corp.intrado.pri";
-        $remedyserver = "LNMT0CWASRMAP00";
-
-        $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
-        mail($remedyemail, "Changelog Submission", $body, $headers);
-      }
-    }
-# production server information
-    if ($production == 'yes') {
-      if ($remedy8 == 'yes') {
-        $remedyemail  = "remedy.helpdesk@intrado.com";
-        $remedyserver = "LMV08-REMAR01.corp.intrado.pri";
-
-        $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
-        mail($remedyemail, "Changelog Submission", $body, $headers);
-      }
-
-      if ($remedy9 == 'yes') {
-        $remedyemail = "Remedy91HelpdeskProd@intrado.com";
-        $remedyserver = "LMV08-MX01.corp.intrado.pri";
-        $remedyserver = "LNMT1CWASRMAP01.corp.intrado.pri";
-
-        $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
-        mail($remedyemail, "Changelog Submission", $body, $headers);
-      }
-    }
-
-# qa server information
-    if ($sqa == 'yes') {
-      if ($remedy9 == 'yes') {
-        $remedyemail = "Remedy91HelpdeskQA@intrado.com";
-        $remedyserver = "lnmt0cwasrmap10.corp.intrado.pri";
-
-        $body = $bodyhead . "Server: " . $remedyserver . "\n" . $bodytail;
-        mail($remedyemail, "Changelog Submission", $body, $headers);
-      }
-    }
   }
 
   mysqli_close($db);
