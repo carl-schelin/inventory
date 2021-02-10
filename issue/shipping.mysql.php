@@ -84,7 +84,7 @@
 
 // build the message
           $body  = "<p>" . $a_users['usr_first'] . " " . $a_users['usr_last'] . " is notifying your group that the hardware ";
-          $body .= "identified below has failed and a replacement is being shipped to Intrado.</p>\n";
+          $body .= "identified below has failed and a replacement is being shipped to the company.</p>\n";
 
 
           $q_string  = "select inv_name,loc_name,ct_city,st_acronym,hw_asset,hw_serial ";
