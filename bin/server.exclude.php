@@ -38,7 +38,7 @@
   print "#   [0-9] Search for all numbers from 0 to 9\n";
   print "#\n";
   print "#\n";
-  print "# There is a 'messages.exclude' file in /usr/local/admin/install/intrado/etc\n";
+  print "# There is a 'messages.exclude' file in /usr/local/admin/install/unixsuite/etc\n";
   print "# which contains server specific messages that need to be removed.\n";
   print "# This file should be used for messages that occur across multiple servers\n";
   print "# and smaller groupings of messages or temporary exclusions (please date the\n";
