@@ -72,7 +72,7 @@
       $hardware .= "<td class=\"" . $class . "\" title=\"Link to Company website\"><a href=\"" . $a_support['sup_web'] . "\">" . $a_support['sup_company'] . "</a></td>";
       $hardware .= "<td class=\"" . $class . "\">" . $a_support['sup_phone'] . "</td>";
       $hardware .= "<td class=\"" . $class . "\">" . $a_support['sup_email'] . "</td>";
-      $hardware .= "<td class=\"" . $class . "\" title=\"Link to Intrado support page\"><a href=\"" . $a_support['sup_wiki'] . "\">" . $a_support['sup_contract'] . "</a></td>";
+      $hardware .= "<td class=\"" . $class . "\" title=\"Link to hardware support page\"><a href=\"" . $a_support['sup_wiki'] . "\">" . $a_support['sup_contract'] . "</a></td>";
       $hardware .= "<td class=\"" . $class . "\">" . $slvval[$a_support['sup_hwresponse']] . "</td>";
       $hardware .= "<td class=\"" . $class . "\">" . $a_support['hw_supportend'] . "</td>";
       $hardware .= "<td class=\"" . $class . "\">" . $slvval[$a_support['sup_swresponse']] . "</td>";
@@ -127,7 +127,7 @@
       $software .= "<td class=\"ui-widget-content\" title=\"Link to Company website\"><a href=\"" . $a_support['sup_web'] . "\">" . $a_support['sup_company'] . "</a></td>";
       $software .= "<td class=\"ui-widget-content\">" . $a_support['sup_phone'] . "</td>";
       $software .= "<td class=\"ui-widget-content\">" . $a_support['sup_email'] . "</td>";
-      $software .= "<td class=\"ui-widget-content\" title=\"Link to Intrado support page\"><a href=\"" . $a_support['sup_wiki'] . "\">" . $a_support['sup_contract'] . "</a></td>";
+      $software .= "<td class=\"ui-widget-content\" title=\"Link to Software support page\"><a href=\"" . $a_support['sup_wiki'] . "\">" . $a_support['sup_contract'] . "</a></td>";
       $software .= "<td class=\"ui-widget-content\">" . $slvval[$a_support['sup_hwresponse']] . "</td>";
       $software .= "<td class=\"ui-widget-content\">" . $slvval[$a_support['sup_swresponse']] . "</td>";
       $software .= "</tr>";
