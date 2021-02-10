@@ -49,7 +49,7 @@
     if ($debug) {
       print "  email: " . $a_groups['grp_email'] . "\n";
     }
-    if (preg_match("/@intrado.com$/i", $a_groups['grp_email'])) {
+    if (preg_match("/@internal.pri$/i", $a_groups['grp_email'])) {
       if ($a_certs['cert_group'] == 25) {
         $webappsemail = 1;
       } else {
@@ -77,7 +77,7 @@
       $q_string .= "where grp_id = " . $GRP_WebApps;
       $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       $a_groups = mysqli_fetch_array($q_groups);
-      if (preg_match("/@intrado.com$/i", $a_groups['grp_email'])) {
+      if (preg_match("/@internal.pri$/i", $a_groups['grp_email'])) {
         $webappsemail = 1;
       }
     }
