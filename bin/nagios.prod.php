@@ -21,10 +21,10 @@
 #
 #define host{
 #	use                     solaris-server
-#	host_name		coolcacsdca15
+#	host_name		lnmt1cuom2540
 #	alias			Database Server
-#	address			10.105.200.80
-#	parents			10.105.200.254
+#	address			192.168.104.50
+#	parents			192.168.104.254
 #	icon_image_alt		Solaris 10 5/08
 #        }
 #
@@ -74,14 +74,14 @@
   $q_string .= "int_ssh,int_ping,int_http,int_ftp,int_smtp,int_cfg2html,grp_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
-  if ($hostname == 'inventory.scc911.com') {
+  if ($hostname == 'inventory.internal.pri') {
     $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
   }
   $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
   $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
   $q_string .= "where int_nagios = 1 and inv_status = 0 and sw_type = 'OS' and int_ip6 = 0 and int_management = 1 and loc_instance > 0 and inv_manager = 1 ";
-  if ($hostname == 'inventory.scc911.com') {
+  if ($hostname == 'inventory.internal.pri') {
     $q_string .= "and hw_active != '1971-01-01' ";
   }
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
