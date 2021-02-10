@@ -41,7 +41,7 @@
   $debug = 'yes';
   $debug = 'no';
 # for testing; mail me only
-  $email = 'carl.schelin@intrado.com';
+  $email = $WHOCARES;
   $email = '';
 
   $headers  = "From: Inventory Management <inventory@" . $hostname . ">\r\n";
