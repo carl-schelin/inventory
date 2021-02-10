@@ -12,17 +12,16 @@ SERVERLIST="ali dba i3 ienv lab mob mon net pe sba scm se tandem tss unix vns vt
 TEMP=/var/tmp
 HOSTNAME=`hostname|cut -f1 -d.`
 SVRRUN=/usr/local/httpd/bin
-WHOCARES="carl.schelin@intrado.com"
-WHOCARES="unixadmins@intrado.com"
+WHOCARES="cschelin@internal.pri"
 
-### Dev:
-if [[ $HOSTNAME = 'lnmt1cuomrcs1' ]] || [[ $HOSTNAME = 'lnmt1cuomtool10' ]] || [[ $HOSTNAME = 'miam1cuomtool10' ]] || [[ $HOSTNAME = 'lnmt1cuomtool11' ]]
+grep apache /etc/passwd > /dev/null
+if [[ $? -eq 0 ]]
 then
   OWNER="apache:sysadmin"
 fi
 
-### Production:
-if [[ $HOSTNAME = 'incojs01' ]]
+grep webservd /etc/passwd > /dev/null
+if [[ $? -eq 0 ]]
 then
   OWNER="webservd:sysadmin"
 fi
