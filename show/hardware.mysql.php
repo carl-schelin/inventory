@@ -50,7 +50,7 @@
   $output .= "<ul>";
   $output .= "  <li><strong>Hardware Information</strong>";
   $output .= "  <ul>";
-  $output .= "    <li><strong>Asset</strong> - The Intrado Asset Tag.</li>";
+  $output .= "    <li><strong>Asset</strong> - The Company Asset Tag.</li>";
   $output .= "    <li><strong>Serial</strong> - The Vendor serial number.</li>";
   $output .= "    <li><strong>Service</strong> - The Dell specific service tag.</li>";
   $output .= "    <li><strong>Model</strong> - Model information. Clicking on this will bring up a search listing containing all servers associated with this hardware model.</li>";
