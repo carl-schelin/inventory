@@ -215,7 +215,7 @@
     if ($monitoringip != '') {
       $configuration .= $hostname . ":MonitoringIPAddress:" . $monitoringip . "\n";
       $configuration .= $hostname . ":MonitoringInterface:" . $monitoringface . "\n";
-      $configuration .= $hostname . ":MonitoringServer:lnmtcodcom1vip.scc911.com\n";
+      $configuration .= $hostname . ":MonitoringServer:lnmt1cuomnagios1.internal.pri\n";
     }
 
     if ($backupip != '') {
