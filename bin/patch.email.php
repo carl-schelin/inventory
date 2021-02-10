@@ -17,14 +17,10 @@
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
 //define the receiver of the email
-  $to = "UnixServerReport@intradonet.intrado.com,carl.schelin@intrado.com,marcus.cotey@intrado.com";
-// Stan Trevino added for Denise as she's on PTO for August.
-  if (date('Y/m') == "2017/08") {
-    $to .= ",etrevino@west.com";
-  }
+  $to = "ServerReport@internal.pri,cschelin@internal.pri";
 
 //define the subject of the email
-  $subject     = date('Y-m-d') . " TechOps Patch Report";
+  $subject     = date('Y-m-d') . " Patch Report";
 
 //create a boundary string. It must be unique
 //so we use the MD5 algorithm to generate a random hash
@@ -51,19 +47,19 @@ Content-Type: multipart/alternative; boundary="PHP-alt-<?php echo $random_hash; 
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
 
-TechOps Patch Count report.
+Patch Count report.
 
 --PHP-alt-<?php echo $random_hash; ?> 
 Content-Type: text/html; charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
 
-<h2>TechOps Report</h2>
-<p>Patch count report for TechOps.</p>
+<h2>Patch Report</h2>
+<p>Patch count report.</p>
 
 --PHP-alt-<?php echo $random_hash; ?>--
 
 --PHP-mixed-<?php echo $random_hash; ?> 
-Content-Type: text/plain; name="patch.count.techops.<?php print date('Y-m-d'); ?>.csv" 
+Content-Type: text/plain; name="patch.count.<?php print date('Y-m-d'); ?>.csv" 
 Content-Transfer-Encoding: base64 
 Content-Disposition: attachment 
 
@@ -78,7 +74,7 @@ Content-Disposition: attachment
   $mail_sent = @mail( $to, $subject, $message, $headers );
 
 //if the message is sent successfully print "Mail sent". Otherwise print "Mail failed"
-  echo $mail_sent ? "TechOps Mail sent\n" : "TechOps Mail failed\n";
+  echo $mail_sent ? "Mail sent\n" : "Mail failed\n";
 
 
 
