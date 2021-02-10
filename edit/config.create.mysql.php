@@ -172,7 +172,7 @@
 # this is grabbed from the Inventory and not from RSDP.
 # Server:MonitoringIPAddress: ip address
 # Server:MonitoringInterface: interface
-# Server:MonitoringServer: lnmtcodcom1vip.scc911.com
+# Server:MonitoringServer: monitoring server name
 # Server:BackupIPAddress: ip address
 # Server:BackupInterface: interface
 # Server:NetworkZone: network zone
