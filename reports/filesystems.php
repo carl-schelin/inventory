@@ -190,7 +190,6 @@
   $q_string .= "left join products on products.prod_id       = inventory.inv_product ";
   $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
-print $where . "</br>";
   $q_string .= $where . " ";
   $q_string .= $orderby;
   $q_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
