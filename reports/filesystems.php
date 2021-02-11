@@ -63,11 +63,11 @@
     }
   }
 
-  if ($formVars['inwork'] == 'false') {
-    $inwork = $and . ' hw_primary = 1 and hw_deleted = 0 ';
+  if ($formVars['inwork'] == 'true') {
+    $inwork = $and . " hw_active = '1971-01-01' and hw_primary = 1 and hw_deleted = 0 ";
     $and = " and";
   } else {
-    $inwork = $and . " hw_active = '1971-01-01' and hw_primary = 1 and hw_deleted = 0 ";
+    $inwork = $and . ' hw_primary = 1 and hw_deleted = 0 ';
     $and = " and";
   }
 
@@ -190,6 +190,7 @@
   $q_string .= "left join products on products.prod_id       = inventory.inv_product ";
   $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
+print $where . "</br>";
   $q_string .= $where . " ";
   $q_string .= $orderby;
   $q_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -227,7 +228,7 @@
     }
   } else {
     print "<tr>\n";
-    print "  <td class=\"ui-widget-content\" colspan=\"5\">No records found</td>\n";
+    print "  <td class=\"ui-widget-content\" colspan=\"10\">No records found</td>\n";
     print "</tr>\n";
   }
 
