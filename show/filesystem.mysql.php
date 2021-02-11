@@ -74,12 +74,6 @@
   $output .= "<th class=\"ui-state-default\">Updated</th>";
   $output .= "</tr>";
 
-
-+-------+--------------+------------------------------------------+------------------------------+------------+---------+---------+-----------+-----------+---------+--------------+-----------+--------+----------+---------+-----------+---------+------------+----------+-------------+---------+------------+-----------+-----------+------------+
-| fs_id | fs_companyid | fs_device                                | fs_mount                     | fs_options | fs_pass | fs_type | fs_size   | fs_backup | fs_wwid | fs_subsystem | fs_volume | fs_lun | fs_volid | fs_path | fs_switch | fs_port | fs_sysport | fs_group | fs_verified | fs_user | fs_update  | fs_used   | fs_avail  | fs_percent |
-+-------+--------------+------------------------------------------+------------------------------+------------+---------+---------+-----------+-----------+---------+--------------+-----------+--------+----------+---------+-----------+---------+------------+----------+-------------+---------+------------+-----------+-----------+------------+
-
-
   $q_string  = "select fs_device,fs_size,fs_volume,fs_mount,fs_wwid,fs_verified,fs_update,fs_used,fs_avail,fs_percent ";
   $q_string .= "from filesystem ";
   $q_string .= "where fs_companyid = " . $formVars['id'] . " ";
