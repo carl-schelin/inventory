@@ -259,6 +259,9 @@
       $output .=   "<th class=\"ui-state-default\">Mount</th>\n";
       $output .=   "<th class=\"ui-state-default\">Managed By</th>\n";
       $output .=   "<th class=\"ui-state-default\">Size</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Used</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Available</th>\n";
+      $output .=   "<th class=\"ui-state-default\">% Used</th>\n";
       $output .=   "<th class=\"ui-state-default\">Volume Name</th>\n";
       $output .=   "<th class=\"ui-state-default\">WWNN</th>\n";
       $output .=   "<th class=\"ui-state-default\">Updated</th>\n";
@@ -274,7 +277,7 @@
         $a_backups['bu_include'] = 0;
       }
 
-      $q_string  = "select fs_id,fs_backup,fs_wwid,fs_volume,fs_device,fs_size,fs_mount,fs_verified,fs_update,grp_name ";
+      $q_string  = "select fs_id,fs_backup,fs_wwid,fs_volume,fs_device,fs_size,fs_mount,fs_verified,fs_update,grp_name,fs_used,fs_avail,fs_percent ";
       $q_string .= "from filesystem ";
       $q_string .= "left join inventory on inventory.inv_id = filesystem.fs_companyid ";
       $q_string .= "left join a_groups on a_groups.grp_id = filesystem.fs_group ";
@@ -307,6 +310,9 @@
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['fs_mount']             . $linkend . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['grp_name']             . $linkend . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['fs_size']              . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['fs_used']              . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['fs_avail']             . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['fs_percent']           . $linkend . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['fs_volume']            . $linkend . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['fs_wwid']              . $linkend . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['fs_update'] . $checked . $linkend . "</td>\n";
