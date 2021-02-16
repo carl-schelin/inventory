@@ -279,6 +279,20 @@
                 $value[7] = 0;
               }
 
+# default group
+# basically if the fs_group info isn't assigned, assign to the unix group
+              $fs_group = $GRP_Unix;
+              $q_string  = "select fs_group ";
+              $q_string .= "from filesystem ";
+              $q_string .= "where fs_companyid = " . $a_inventory['inv_id'] . " and fs_device = \"" . $value[3] . "\" ";
+              $q_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              if (mysqli_num_rows($q_filesystem) > 0) {
+                $a_filesystem = mysqli_fetch_array($q_filesystem);
+                if ($a_filesystem['fs_group'] > 0) {
+                  $fs_group = $a_filesystem['fs_group'];
+                }
+              }
+
               $query = 
                 "fs_companyid =   " . $a_inventory['inv_id'] . "," . 
                 "fs_device    = \"" . $value[3]              . "\"," . 
@@ -287,6 +301,7 @@
                 "fs_used      =   " . $value[6]              . "," . 
                 "fs_avail     =   " . $value[7]              . "," . 
                 "fs_percent   = \"" . $value[8]              . "\"," . 
+                "fs_group     =   " . $fs_group              . "," . 
                 "fs_verified  =   " . '1'                    . "," . 
                 "fs_user      =   " . '1'                    . "," . 
                 "fs_update    = \"" . $date                  . "\"";
