@@ -41,6 +41,7 @@
           $q_string =
             "tag_companyid =   " . $formVars['tag_companyid'] . "," .
             "tag_name      = \"" . $formVars['tag_name']      . "\"," .
+            "tag_type      =   " . "1"                        . "," .
             "tag_view      =   " . $formVars['tag_view']      . "," .
             "tag_owner     =   " . $formVars['tag_owner']     . "," .
             "tag_group     =   " . $formVars['tag_group'];
@@ -68,7 +69,7 @@
         $formVars['copyfrom'] = clean($_GET['copyfrom'], 10);
 
         if ($formVars['copyfrom'] > 0) {
-          $q_string  = "select tag_name,tag_view,tag_owner,tag_group ";
+          $q_string  = "select tag_name,tag_type,tag_view,tag_owner,tag_group ";
           $q_string .= "from tags ";
           $q_string .= "where tag_companyid = " . $formVars['copyfrom'] . " and tag_view = " . $a_tags['tag_view'] . " ";
           $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -77,6 +78,7 @@
             $q_string =
               "tag_companyid   =   " . $formVars['tag_companyid']   . "," .
               "tag_name        = \"" . $a_firewall['tag_name']      . "\"," .
+              "tag_type        =   " . $a_firewall['tag_type']      . "," .
               "tag_view        =   " . $a_firewall['tag_view']      . "," .
               "tag_owner       =   " . $a_firewall['tag_owner']     . "," .
               "tag_group       =   " . $a_firewall['tag_group'];
@@ -137,7 +139,7 @@
           $q_string  = "select tag_id as tagid,tag_name ";
         }
         $q_string .= "from tags ";
-        $q_string .= "where tag_view = 0 and tag_owner = " . $_SESSION['uid'] . " ";
+        $q_string .= "where tag_view = 0 and tag_owner = " . $_SESSION['uid'] . " and tag_type = 1 ";
         $q_string .= "group by tag_name ";
         $q_string .= "order by tag_name ";
         $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -161,7 +163,7 @@
           $q_string  = "select tag_id as tagid,tag_name ";
         }
         $q_string .= "from tags ";
-        $q_string .= "where tag_view = 1 and tag_group = " . $_SESSION['group'] . " ";
+        $q_string .= "where tag_view = 1 and tag_group = " . $_SESSION['group'] . " and tag_type = 1 ";
         $q_string .= "group by tag_name ";
         $q_string .= "order by tag_name ";
         $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -185,7 +187,7 @@
           $q_string  = "select tag_id as tagid,tag_name ";
         }
         $q_string .= "from tags ";
-        $q_string .= "where tag_view = 2 ";
+        $q_string .= "where tag_view = 2 and tag_type = 1 ";
         $q_string .= "group by tag_name ";
         $q_string .= "order by tag_name ";
         $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -249,7 +251,7 @@
       $q_string .= "left join inventory on inventory.inv_id = tags.tag_companyid ";
       $q_string .= "left join a_groups on a_groups.grp_id = tags.tag_group ";
       $q_string .= "left join users on users.usr_id = tags.tag_owner ";
-      $q_string .= "where tag_companyid = " . $formVars['tag_companyid'] . " ";
+      $q_string .= "where tag_companyid = " . $formVars['tag_companyid'] . " and tag_type = 1 ";
       $q_string .= "order by tag_view,tag_name";
       $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_tags) > 0) {
