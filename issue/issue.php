@@ -274,7 +274,7 @@ $(document).ready( function() {
 <?php
   $q_string  = "select tag_name,count(tag_name) ";
   $q_string .= "from tags ";
-  $q_string .= "where tag_view = 0 and tag_owner = " . $_SESSION['uid'] . " ";
+  $q_string .= "where tag_view = 0 and tag_owner = " . $_SESSION['uid'] . " and tag_type = 1 ";
   $q_string .= "group by tag_name ";
   $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_tags = mysqli_fetch_array($q_tags)) {
@@ -299,7 +299,7 @@ $(document).ready( function() {
 <?php
   $q_string  = "select tag_name,count(tag_name) ";
   $q_string .= "from tags ";
-  $q_string .= "where tag_view = 1 and tag_group = " . $_SESSION['group'] . " ";
+  $q_string .= "where tag_view = 1 and tag_group = " . $_SESSION['group'] . " and tag_type = 1 ";
   $q_string .= "group by tag_name ";
   $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_tags = mysqli_fetch_array($q_tags)) {
@@ -324,7 +324,7 @@ $(document).ready( function() {
 <?php
   $q_string  = "select tag_name,count(tag_name) ";
   $q_string .= "from tags ";
-  $q_string .= "where tag_view = 2 ";
+  $q_string .= "where tag_view = 2 and tag_type = 1 ";
   $q_string .= "group by tag_name ";
   $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_tags = mysqli_fetch_array($q_tags)) {
