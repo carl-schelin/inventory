@@ -175,7 +175,7 @@
       $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
       $q_string .= "left join cities       on cities.ct_id          = locations.loc_city ";
       $q_string .= "left join states       on states.st_id          = locations.loc_state ";
-      $q_string .= $where . "and tag_view = 0 ";
+      $q_string .= $where . "and tag_view = 0 and tag_type = 1 ";
       $q_string .= "order by tag_name,inv_name,grp_name,usr_last,usr_first ";
       $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_tags) > 0) {
@@ -258,7 +258,7 @@
       $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
       $q_string .= "left join cities       on cities.ct_id          = locations.loc_city ";
       $q_string .= "left join states       on states.st_id          = locations.loc_state ";
-      $q_string .= $where . "and tag_view = 1 ";
+      $q_string .= $where . "and tag_view = 1 and tag_type = 1 ";
       $q_string .= "order by tag_name,inv_name,grp_name,usr_last,usr_first ";
       $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_tags) > 0) {
@@ -340,7 +340,7 @@
       $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
       $q_string .= "left join cities       on cities.ct_id          = locations.loc_city ";
       $q_string .= "left join states       on states.st_id          = locations.loc_state ";
-      $q_string .= $where . "and tag_view = 2 ";
+      $q_string .= $where . "and tag_view = 2 and tag_type = 1 ";
       $q_string .= "order by tag_name,inv_name,grp_name,usr_last,usr_first ";
       $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_tags) > 0) {
