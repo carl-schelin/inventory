@@ -98,7 +98,7 @@
             $tags = '';
             $q_string  = "select tag_name ";
             $q_string .= "from tags ";
-            $q_string .= "where tag_companyid = " . $a_software['inv_id'] . " and tag_group = " . $mygroup . " ";
+            $q_string .= "where tag_companyid = " . $a_software['inv_id'] . " and tag_group = " . $mygroup . " and tag_type = 1 ";
             $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             while ($a_tags = mysqli_fetch_array($q_tags)) {
               $tags .= "," . $a_tags['tag_name'] . ",";
@@ -182,7 +182,7 @@
           $tags = '';
           $q_string  = "select tag_name ";
           $q_string .= "from tags ";
-          $q_string .= "where tag_companyid = " . $a_software['inv_id'] . " and tag_group = " . $mygroup . " ";
+          $q_string .= "where tag_companyid = " . $a_software['inv_id'] . " and tag_group = " . $mygroup . " and tag_type = 1 ";
           $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           while ($a_tags = mysqli_fetch_array($q_tags)) {
             $tags .= "," . $a_tags['tag_name'] . ", ";
