@@ -846,6 +846,101 @@
 
       print "document.getElementById('tree_mysql').innerHTML = '" . mysqli_real_escape_string($db, "testing") . "';\n";
 
+
+      $tags  = "<table id=\"interface-table\" class=\"ui-styled-table\">\n";
+      $tags .= "<tr>\n";
+      $tags .= "  <th class=\"ui-state-default\">Server Name</th>\n";
+      $tags .= "  <th class=\"ui-state-default\">Private</th>\n";
+      $tags .= "  <th class=\"ui-state-default\">Group</th>\n";
+      $tags .= "  <th class=\"ui-state-default\">Public</th>\n";
+      $tags .= "</tr>\n";
+
+      $q_string  = "select inv_id,inv_name ";
+      $q_string .= "from inventory ";
+      $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
+      $q_string .= "left join products on products.prod_id = inventory.inv_product ";
+      $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
+      $q_string .= "left join service on service.svc_id = inventory.inv_class ";
+      $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
+      $q_string .= "where inv_status = 0 and inv_manager = " . $formVars['group'] . " ";
+      if ($formVars['location'] > 0) {
+        $q_string .= "and inv_location = " . $formVars['location'] . " ";
+      }
+      if ($formVars['productid'] > 0) {
+        $q_string .= "and inv_product = " . $formVars['productid'] . " ";
+      }
+      if ($formVars['projectid'] > 0) {
+        $q_string .= "and inv_project = " . $formVars['projectid'] . " ";
+      }
+      $q_string .= $filter;
+      $q_string .= "order by inv_name ";
+      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+
+        $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">";
+        $linkend   = "</a>";
+
+        $tags .= "<tr>\n";
+        $tags .= "<td class=\"ui-widget-content\">" . $linkstart . $a_inventory['inv_name'] . $linkend . "</td>\n";
+
+        $tmp_tags = '';
+        $q_string  = "select tag_id,tag_name ";
+        $q_string .= "from tags ";
+        $q_string .= "where tag_companyid = " . $a_inventory['inv_id'] . " and tag_type = 0 and tag_view = 0 and tag_owner = " . $_SESSION['uid'] . " ";
+        $q_string .= "order by tag_name ";
+        $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_tags) > 0) {
+          $comma = "";
+          while ($a_tags = mysqli_fetch_array($q_tags)) {
+            $tmp_tags .= $comma . "<u>" . $a_tags['tag_name'] . "</u>";
+            $comma = ", ";
+          }
+        } else {
+          $tmp_tags = "<u>No Private Tags</u>";
+        }
+        $tags .= "  <td class=\"ui-widget-content\" id=\"tagv" . $a_inventory['inv_id'] . "\" onclick=\"edit_Tags(" . $a_inventory['inv_id'] . ",'tagv');\">" . $tmp_tags . "</td>\n";
+        
+        $tmp_tags = '';
+        $q_string  = "select tag_id,tag_name ";
+        $q_string .= "from tags ";
+        $q_string .= "where tag_companyid = " . $a_inventory['inv_id'] . " and tag_type = 0 and tag_view = 1 and tag_group = " . $formVars['group'] . " ";
+        $q_string .= "order by tag_name ";
+        $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_tags) > 0) {
+          $comma = "";
+          while ($a_tags = mysqli_fetch_array($q_tags)) {
+            $tmp_tags .= $comma . "<u>" . $a_tags['tag_name'] . "</u>";
+            $comma = ", ";
+          }
+        } else {
+          $tmp_tags = "<u>No Group Tags</u>";
+        }
+        $tags .= "  <td class=\"ui-widget-content\" id=\"tagg" . $a_inventory['inv_id'] . "\" onclick=\"edit_Tags(" . $a_inventory['inv_id'] . ",'tagg');\">" . $tmp_tags . "</td>\n";
+        
+        $tmp_tags = '';
+        $q_string  = "select tag_id,tag_name ";
+        $q_string .= "from tags ";
+        $q_string .= "where tag_companyid = " . $a_inventory['inv_id'] . " and tag_type = 0 and tag_view = 2 ";
+        $q_string .= "order by tag_name ";
+        $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_tags) > 0) {
+          $comma = "";
+          while ($a_tags = mysqli_fetch_array($q_tags)) {
+            $tmp_tags .= $comma . "<u>" . $a_tags['tag_name'] . "</u>";
+            $comma = ", ";
+          }
+        } else {
+          $tmp_tags = "<u>No Public Tags</u>";
+        }
+        $tags .= "  <td class=\"ui-widget-content\" id=\"tagu" . $a_inventory['inv_id'] . "\" onclick=\"edit_Tags(" . $a_inventory['inv_id'] . ",'tagu');\">" . $tmp_tags . "</td>\n";
+
+        $tags .= "</tr>\n";
+      }
+
+      $tags .= "</table>\n";
+
+      print "document.getElementById('tags_mysql').innerHTML = '" . mysqli_real_escape_string($db, $tags) . "';\n";
+
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
