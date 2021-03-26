@@ -124,6 +124,15 @@ function interface_Completed( p_id, p_function) {
   show_file('inventory.interface.php?id=' + p_id + '&function=' + p_function + '&status=0' + "&select=" + edit_data);
 }
 
+function edit_Tags( p_id, p_function) {
+  show_file('inventory.tags.php?id=' + p_id + '&function=' + p_function + '&status=1');
+}
+
+function tags_Completed( p_id, p_function) {
+  var edit_data = document.getElementById('edit_data').value;
+
+  show_file('inventory.tags.php?id=' + p_id + '&function=' + p_function + '&status=0' + "&select=" + edit_data);
+}
 
 function set_Filter( p_rsdp ) {
   var sf_filter = document.rsdp.filter.value;
@@ -221,6 +230,10 @@ provided.</p>
   <li>Nagios (Nag) - This is a special case used by the Unix team to monitor servers that aren't Production or otherwise monitored by the monitoring team.</li>
 </ul>
 
+<p>The Assigned Tags tag shows the three types of tags associated with the servers. Private are the tags you create for the servers and only seen by you. 
+Group are tags that are created for use by the group you are a member of. Public are seen by all users. Public are also the ones 
+used to create the hosts file used by Ansible.</p>
+
 <p>Note: The server names are clickable links to the server detail pages. Fields that are <u>underscored</u> are editable.</p>
 
 </div>
@@ -236,6 +249,7 @@ provided.</p>
   <li><a href="#detail">System Information</a></li>
   <li><a href="#hardware">Hardware Details</a></li>
   <li><a href="#interface">Interface Information</a></li>
+  <li><a href="#tags">Assigned Tags</a></li>
 </ul>
 
 <div id="tree">
@@ -262,6 +276,13 @@ provided.</p>
 <div id="interface">
 
 <span id="interface_mysql"><?php print wait_Process("Please Wait"); ?></span>
+
+</div>
+
+
+<div id="tags">
+
+<span id="tags_mysql"><?php print wait_Process("Please Wait"); ?></span>
 
 </div>
 
