@@ -148,18 +148,6 @@
       $datacenterheader .= "<div id=\"datacenter-listing-help\" style=\"display: none\">\n";
 
 
-      $psap = '';
-
-      $psapheader  = "<p></p>\n";
-      $psapheader .= "<table class=\"ui-styled-table\">\n";
-      $psapheader .= "<tr>\n";
-      $psapheader .= "  <th class=\"ui-state-default\">PSAP Listing</th>\n";
-      $psapheader .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('psap-listing-help');\">Help</a></th>\n";
-      $psapheader .= "</tr>\n";
-      $psapheader .= "</table>\n";
-
-      $psapheader .= "<div id=\"psap-listing-help\" style=\"display: none\">\n";
-
       $noc = '';
 
       $nocheader  = "<p></p>\n";
@@ -261,9 +249,6 @@
           if ($a_locations['loc_type'] == 1) {
             $datacenter .= $output;
           }
-          if ($a_locations['loc_type'] == 2) {
-            $psap .= $output;
-          }
           if ($a_locations['loc_type'] == 3) {
             $noc .= $output;
           }
@@ -283,12 +268,10 @@
       mysqli_free_result($q_locations);
 
       $datacenter_output = $datacenterheader . $header . $datacenter . $footer;
-      $psap_output       = $psapheader       . $header . $psap       . $footer;
       $noc_output        = $nocheader        . $header . $noc        . $footer;
       $customer_output   = $customerheader   . $header . $customer   . $footer;
 
       print "document.getElementById('datacenter_mysql').innerHTML = '" . mysqli_real_escape_string($db, $datacenter_output) . "';\n\n";
-      print "document.getElementById('psap_mysql').innerHTML = '"       . mysqli_real_escape_string($db, $psap_output)       . "';\n\n";
       print "document.getElementById('noc_mysql').innerHTML = '"        . mysqli_real_escape_string($db, $noc_output)        . "';\n\n";
       print "document.getElementById('customer_mysql').innerHTML = '"   . mysqli_real_escape_string($db, $customer_output)   . "';\n\n";
 
