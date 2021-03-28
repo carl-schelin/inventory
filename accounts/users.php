@@ -203,10 +203,6 @@ $(document).ready( function() {
     <li><strong>Number of Days Prior to Expiration</strong> - If a user has been identified by the Web Applications team as being responsible for a web site certificate, they will need to be notified when the certificate is going to expire. This should be set to a sufficiently large number to ensure notifications are made in a timely manner.</li>
     <li><strong>Reminder Increment</strong> - Once the initial notification goes out, the user will want to be notified regularly until the certificate has been updated.</li>
   </ul></li>
-  <li><strong>BigFix Patch Email Form</strong>
-  <ul>
-    <li><strong>Receive BigFix Emails</strong> - Receive a daily email listing the servers being patched by BigFix over the next 24 hours.</li>
-  </ul></li>
 </ul>
 
 </div>
