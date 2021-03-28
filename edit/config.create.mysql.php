@@ -108,54 +108,10 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-# if the inv_rsdp setting is 0, then automatically create an entry with the information from the inventory
-# rsdp_server for the main entry.
-# - rsdp_requestor int _SESSION[uid]
-# - rsdp_location int inv_location
-# - rsdp_product int inv_product
-# - rsdp_project int inv_project
-# - rsdp_platform int inv_manager
-# - rsdp_application int inv_appadmin
-# - rsdp_service int inv_class
-# - rsdp_processors int (count number of CPUs ; parts parts_id = 8
-# - rsdp_memory char(20) type 4; remove GB from the model output
-# rsdp_backups for backup schedules.
-# rsdp_interface for the interfaces.
-# - if_name char(60) int_server
-# - if_sysport char(60) int_port - verify it's not sysport
-# - if_interface char(30) int_face
-# - if_groupname char(30) int_groupname
-# - if_if_id int int_int_id
-# - if_mac char(30) int_eth
-# - if_zone int int_zone
-# - if_vlan char(30) int_vlan
-# - if_ip char(60) int_addr
-# - if_mask char(60) int_mask
-# - if_gate char(60) int_gate
-# - if_speed int int_speed
-# - if_duplex int int_duplex
-# - if_redundant int int_redundancy
-# - if_media int int_media
-# - if_type int int_type from inttype; for application and management only?
-# - if_switch char(50) int_switch
-# - if_port char(50) int_sysport - verify it's not int_port
-# - if_virtual int int_virtual
-# - if_monitored int int_openview
-# rsdp_osteam for the operating system
-# - os_sysname char(60)
-# - os_software int
-# rsdp_status to mark it complete.
-
-      $q_string  = "select inv_rsdp ";
-      $q_string .= "from inventory ";
-      $q_string .= "where inv_id = " . $formVars['cfg_companyid'] . " ";
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_inventory = mysqli_fetch_array($q_inventory);
-
 # The intention here is to show the items currently being set in the chkserver.input file
 # Server:Group: [dbadmins|mobadmin|webapps|scmadmins]
 # Server:Sudoers: [dbadmins|mobadmin|webapps|scmadmins]
-# Server:Hostname: hostname : rsdpid
+# Server:Hostname: hostname
 # SErver:CPU: number of cpus
 # Server:Memory: amount of ram
 # Server:Disk: os size (80G mainly) # not currently used for anything right now
