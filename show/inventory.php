@@ -86,18 +86,12 @@ function clear_fields() {
   show_file('software.mysql.php?id=<?php print $formVars['id']; ?>');
   show_file('network.mysql.php?id=<?php print $formVars['id']; ?>');
   show_file('routing.mysql.php?id=<?php print $formVars['id']; ?>');
-  show_file('firewall.mysql.php?id=<?php print $formVars['id']; ?>');
-  show_file('changelog.mysql.php?id=<?php print $formVars['id']; ?>');
-  show_file('rrdtool.mysql.php?id=<?php print $formVars['id']; ?>');
   show_file('backup.mysql.php?id=<?php print $formVars['id']; ?>');
-  show_file('openview.mysql.php?id=<?php print $formVars['id']; ?>&start=<?php print $formVars['start']; ?>&end=<?php print $formVars['end']; ?>');
-  show_file('policies.mysql.php?id=<?php print $formVars['id']; ?>');
   show_file('comments.mysql.php?id=<?php print $formVars['id']; ?>');
   show_file('logs.mysql.php?id=<?php print $formVars['id']; ?>');
   show_file('<?php print $Issueroot; ?>/issue.open.mysql.php?server=<?php print $formVars['id']; ?>');
   show_file('<?php print $Issueroot; ?>/issue.closed.mysql.php?server=<?php print $formVars['id']; ?>');
   show_file('errors.mysql.php?id=<?php print $formVars['id']; ?>');
-  show_file('patches.mysql.php?id=<?php print $formVars['id']; ?>');
 }
 
 $(document).ready( function() {
@@ -134,14 +128,9 @@ $(document).ready( function() {
   <li><a href="#network">Network</a></li>
   <li><a href="#comments">Comments</a></li>
   <li><a href="#backup">Backup</a></li>
-  <li><a href="#changelog">Changelog</a></li>
-  <li><a href="#performance">Performance</a></li>
-  <li><a href="#alarms">Alarms</a></li>
-  <li><a href="#policies">Policies</a></li>
   <li><a href="#logs">Logs</a></li>
   <li><a href="#issues">Issue Tracker</a></li>
   <li><a href="#chkserver">Errors</a></li>
-  <li><a href="#bigfix">Patches</a></li>
 </ul>
 
 
@@ -191,8 +180,6 @@ $(document).ready( function() {
 
 <span id="ipv6routing_mysql"><?php print wait_Process('IPv6 Routing Waiting...')?></span>
 
-<span id="firewall_mysql"><?php print wait_Process('Firewall Waiting...')?></span>
-
 </div>
 
 
@@ -208,34 +195,6 @@ $(document).ready( function() {
 <span id="backup_mysql"><?php print wait_Process('Backup Waiting...')?></span>
 
 <span id="backuplog_mysql"><?php print wait_Process('Backup Log Waiting...')?></span>
-
-</div>
-
-
-<div id="changelog">
-
-<span id="changelog_mysql"><?php print wait_Process('Changelog Waiting...')?></span>
-
-</div>
-
-
-<div id="performance">
-
-<span id="performance_mysql"><?php print wait_Process('Performance Waiting...')?></span>
-
-</div>
-
-
-<div id="alarms">
-
-<span id="alarms_mysql"><?php print wait_Process('Alarms Waiting...')?></span>
-
-</div>
-
-
-<div id="policies">
-
-<span id="policies_mysql"><?php print wait_Process('Policies Waiting...')?></span>
 
 </div>
 
@@ -282,12 +241,6 @@ $(document).ready( function() {
 
 </div>
 
-
-<div id="bigfix">
-
-<span id="bigfix_mysql"><?php print wait_Process('BigFix Waiting...')?></span>
-
-</div>
 
 
 </div>
