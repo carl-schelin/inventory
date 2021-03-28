@@ -23,7 +23,7 @@
 
       $q_string  = "select usr_id,usr_first,usr_last,usr_email,usr_phone,usr_freq,usr_notify,usr_deptname,";
       $q_string .= "usr_altemail,usr_theme,usr_reset,usr_clientid,usr_report,usr_confirm,usr_manager,usr_title,";
-      $q_string .= "usr_bigfix,usr_page,usr_pagemail ";
+      $q_string .= "usr_page,usr_pagemail ";
       $q_string .= "from users ";
       $q_string .= "where usr_id = " . $formVars['id'];
       $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -78,11 +78,6 @@
         print "document.user.usr_confirm.checked = true;\n";
       } else {
         print "document.user.usr_confirm.checked = false;\n";
-      }
-      if ($a_users['usr_bigfix']) {
-        print "document.user.usr_bigfix.checked = true;\n";
-      } else {
-        print "document.user.usr_bigfix.checked = false;\n";
       }
 
       print "document.user.update.disabled = false;\n\n";
