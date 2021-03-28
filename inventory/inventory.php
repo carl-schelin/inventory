@@ -134,15 +134,15 @@ function tags_Completed( p_id, p_function) {
   show_file('inventory.tags.php?id=' + p_id + '&function=' + p_function + '&status=0' + "&select=" + edit_data);
 }
 
-function set_Filter( p_rsdp ) {
-  var sf_filter = document.rsdp.filter.value;
-  var sf_checked = document.getElementById('filter_' + p_rsdp).checked;
+function set_Filter( p_inventory ) {
+  var sf_filter = document.inventory.filter.value;
+  var sf_checked = document.getElementById('filter_' + p_inventory).checked;
 
-  show_file('inventory.filter.php?rsdp=' + p_rsdp+ '&filter=' + sf_filter + '&status=' + sf_checked);
+  show_file('inventory.filter.php?inventory=' + p_inventory+ '&filter=' + sf_filter + '&status=' + sf_checked);
 }
 
 function attach_filter( ) {
-  var af_form = document.rsdp;
+  var af_form = document.inventory;
   var af_url = 'inventory.mysql.php';
 
   af_url += '?projectid='     + <?php print $formVars['projectid']; ?>;
@@ -154,8 +154,8 @@ function attach_filter( ) {
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
-function clear_Filter( p_rsdp ) {
-  document.rsdp.filter.value = '';
+function clear_Filter( p_inventory ) {
+  document.inventory.filter.value = '';
 
   clear_fields();
 }
@@ -175,7 +175,7 @@ $(document).ready( function() {
 
 <div class="main">
 
-<form name="rsdp">
+<form name="inventory">
 
 <table class="ui-styled-table">
 <tr>
