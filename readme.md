@@ -44,3 +44,122 @@ My process:
 4. Sync the full site to the target server
 
 
+
+
+database cleanup:
+
+remove the following tables:
+
+no more RSDP:
+
+drop table rsdp_accept;
+drop table rsdp_applications;
+drop table rsdp_backups;
+drop table rsdp_check;
+drop table rsdp_comments;
+drop table rsdp_datacenter;
+drop table rsdp_designed;
+drop table rsdp_filesystem;
+drop table rsdp_infosec;
+drop table rsdp_infrastructure;
+drop table rsdp_interface;
+drop table rsdp_osteam;
+drop table rsdp_platform;
+drop table rsdp_san;
+drop table rsdp_server;
+drop table rsdp_status;
+drop table rsdp_tickets;
+
+no more vulnerabilities:
+
+drop table vulnerabilities;
+drop table vulnowner;
+drop table security;
+drop table severity;
+drop table family;
+drop table intvuln;
+
+
+no more psap stuff:
+
+drop table psaps;
+drop table psaps_arch;
+
+
+polls; maybe some other time:
+
+drop table polls;
+drop table poll_answers;
+drop table poll_questions;
+
+
+red hat stuff, gone:
+
+drop table rh_groups;
+drop table rh_packages;
+drop table rh_selections;
+drop table repos;
+
+
+kubernetes stuff, out for nwo:
+
+drop table apigroups;
+
+
+Alarms come from openview; no more:
+
+drop table alarm_blocks;
+drop table alarm_type;
+drop table alarms;
+
+
+bigfix; no way:
+
+drop table bigfix;
+
+
+firewall tracking is gone; no one used it;
+
+drop table firewall;
+
+
+faq can go:
+
+drop table faq;
+drop table faq_comment;
+drop table faq_detail;
+drop table faq_tags;
+drop table faq_votes;
+
+monitoring stuff can go too:
+
+drop table message_group;
+
+
+oh and kevin's stuff
+
+drop table vlanz;
+
+And west
+
+drop table west;
+
+and some misc stuff;
+
+drop table handoff;
+drop table oncall;
+drop table outage;
+drop table spectre;
+
+
+
+
+
+
+
+
+
+
+
+
+
