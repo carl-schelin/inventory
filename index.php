@@ -519,7 +519,6 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
   <li><a href="#inventory">Inventory Reports</a></li>
   <li><a href="#general">General Reports</a></li>
   <li><a href="#group">Group Reports</a></li>
-  <li><a href="#security">Security Reports</a></li>
   <li><a href="#lifecycle">Life-Cycle Reports</a></li>
   <li><a href="#archived">Archived Reports</a></li>
   <li><a href="#tagcloud">Tag Cloud</a></li>
@@ -584,18 +583,6 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
   <ul>
     <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/morning.report.php');">Morning Report</a> - Shows the performance graphs, filtered log files, and audit information for the group's devices. Filters only.</li>
     <li><a href="javascript:;" onClick="javascript:attach_walkthrough('<?php print $Reportroot; ?>/walkthrough.php');">Data Center Walkthroughs</a> - Select a Location to review and then print a walkthrough form.</li>
-    <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/centrify.php');">Centrify Server Listing</a></li>
-    <li>Monitoring<ul>
-    <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/monitoring.php');">Monitoring Report</a> - Togglable list of selected systems for Openview and Nagios flags.</li>
-    <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/monitor.php');">Openview Monitoring Report</a> - Provides a togglablelist of all servers being monitored by Openview.</li>
-    <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/openview.report.php');">Openview Alarm Report</a> - Provides a year/month count of alarms received.</li>
-    <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/openview.php');">OpenView Alarm Listing</a> - List of alarms in the database for the default 2 week period.</li>
-    <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/ovmessages.php');">OpenView Health</a> - List of servers where an alarm has not been received in the past 5 days.</li>
-    <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/monitorvers.php');">OpenView Version Listing</a> - List of servers and the version of Openview installed.</li>
-    <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/ovstatus.php');">OpenView Notification Status</a> - List of servers and a count of alarms per server since 2009.</li>
-    <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/ovpolicy.php');">OpenView Policy Listing</a> - List of servers and the associated policies.</li>
-    <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/status.php');">Current Monitoring Status</a> - List of servers and their current status.</li>
-    </li></ul>
 <?php
   if (check_grouplevel($db, $GRP_Unix)) {
 ?>
@@ -607,19 +594,6 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
     <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Manageroot; ?>/manage.php');">Manage Server Errors</a> - Review and address individual server errors from the chkserver script.</li>
   </ul></li>
   <li><a href="<?php print $Reportroot; ?>/esxlisting.php">Listing of ESX hosts and a count of Guests</a></li>
-</ul>
-
-</div>
-
-
-<div id="security">
-
-<p><strong>Security Management</strong></p>
-
-<ul>
-  <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/tenable.php');">SecurityCenter</a> - IP Ranges for Security Center Asset Lists.</li>
-  <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/bigfix.php');">List of Servers being Patched by BigFix by date</a> - Note Group, Product, and Project filters work on this report.</li>
-  <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/patches.php');">List of Patches being applied for BigFix by date</a> - Note only the Group filter works on this report.</li>
 </ul>
 
 </div>
