@@ -36,7 +36,7 @@
       $formVars['csv'] = 'false';
     }
 
-    $a_rsdp_id['rsdp_id'] = 0;
+    $a_inventory_id['inventory_id'] = 0;
 
     $filter = '';
     if (strlen($formVars['filter']) > 0) {
@@ -46,7 +46,7 @@
       $filter = 'and (';
       $or = '';
       for ($i = 0; $i < count($filterinv); $i++) {
-        $filter .= $or . "rsdp_id = " . $filterinv[$i] . " ";
+        $filter .= $or . "inventory_id = " . $filterinv[$i] . " ";
         $or = 'or ';
       }
       $filter .= ") ";
