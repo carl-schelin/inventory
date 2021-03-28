@@ -538,7 +538,6 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
   <li><a href="javascript:;" onClick="javascript:attach_interface('<?php print $Reportroot; ?>/interfaces.php');">Interface Listing</a>: <input type="checkbox" checked name="active"> Active Interfaces <input type="checkbox" name="ip6"> IP6 Interfaces <input type="checkbox" name="loopback"> Loopback Interfaces <input type="checkbox" checked name="virtual"> Virtual Interfaces</li>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/hardware.php');">Hardware Listing</a> - Shows all hardware for the group of devices.</li>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/software.php');">Software Listing</a> - Shows all software for the group of devices.</li>
-  <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/firewall.php');">Firewall Rules</a> - Shows firewall rule listing.</li>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/routing.php');">Routing Table</a> - Shows all routes.</li>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/filesystems.php');">Filesystem Listing</a> - Shows filesystems as owned the the filtered group.</li>
 </ul>
