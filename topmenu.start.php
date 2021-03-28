@@ -14,19 +14,6 @@
       <li><a href="<?php print $Editroot; ?>/inventory.php">Add Server or Device</a></li>
     </ul>
   </li>
-  <li id="tm_rsdp"><a href="<?php print $Siteroot; ?>/index.rsdp.php">RSDP</a>
-    <ul>
-      <li><a href="<?php print $RSDProot; ?>/index.php?myrsdp=yes">My RSDP</a></li>
-      <li><a href="<?php print $RSDProot; ?>/index.php?myrsdp=no">Full RSDP Listing</a></li>
-      <li><a href="<?php print $RSDProot; ?>/reports/completed.php">Completed RSDP Servers</a></li>      
-      <li><a href="<?php print $RSDProot; ?>/reports/timelines.php">RSDP Timeline Report</a></li>      
-      <li><a href="<?php print $RSDProot; ?>/reports/iplisting.php">RSDP IP Listing</a></li>
-      <li><a href="<?php print $RSDProot; ?>/admin/checklist.php">Checklist Manager</a></li>
-      <li><a href="<?php print $RSDProot; ?>/admin/project.php">Project Codes</a></li>  
-      <li><a href="<?php print $RSDProot; ?>/admin/system.php">Operating Systems</a></li>  
-      <li><a href="<?php print $Siteroot; ?>/index.rsdp.php">Reports</a></li>
-    </ul>
-  </li>
   <li id="tm_applications"><a href="<?php print $Siteroot; ?>/index.apps.php">Applications</a>
     <ul>
       <li><a href="<?php print $Issueroot;   ?>/issue.php">Issue Tracker</a></li>
@@ -38,6 +25,7 @@
       <li><a href="<?php print $Imageroot;   ?>/image.php">Image Manager</a></li>
       <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Adminroot; ?>/tags.php');">Tag Manager</a></li>
       <li><a href="<?php print $Statusroot;  ?>/home.php" target="_blank">Status Management</a></li>
+      <li><a href="<?php print $RSDProot; ?>/admin/system.php">Operating Systems</a></li>  
 <?php
     if (check_userlevel($db, $AL_Admin)) {
 ?>
