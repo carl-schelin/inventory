@@ -74,7 +74,6 @@
     public $interface_groupname = '';
     public $interface_virtual = '';
     public $interface_netzone = '';
-    public $interface_scanned = '';
     public $interface_management = '';
     public $interface_backup = '';
 
@@ -237,15 +236,6 @@
     while ($a_interface = mysqli_fetch_array($q_interface)) {
 
       if ($formVars['interfaces'] == 'yes') {
-        $q_string  = "select vul_id ";
-        $q_string .= "from vulnowner ";
-        $q_string .= "where vul_interface = " . $a_interface['int_id'] . " ";
-        $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . "p: " . mysqli_error($db));
-        if (mysqli_num_rows($q_vulnowner) > 0) {
-          $scanned = 'Yes';
-        } else {
-          $scanned = 'No';
-        }
 
         if ($a_interface['int_virtual']) {
           $virtual = 'Yes';
@@ -299,7 +289,6 @@
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_groupname    = $a_interface['int_groupname'];
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_virtual      = $virtual;
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_netzone      = $a_interface['zone_name'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_scanned      = $scanned;
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_management   = ($a_interface['int_management'] ? 'Yes' : 'No');
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_backup       = ($a_interface['int_backup'] ? 'Yes' : 'No');
 
@@ -338,16 +327,6 @@
         $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_interface['int_id'] . " ";
         $q_internal = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         while ($a_internal = mysqli_fetch_array($q_internal)) {
-
-          $q_string  = "select vul_id ";
-          $q_string .= "from vulnowner ";
-          $q_string .= "where vul_interface = " . $a_internal['int_id'] . " ";
-          $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . "c: " . mysqli_error($db));
-          if (mysqli_num_rows($q_vulnowner) > 0) {
-            $scanned = 'Yes';
-          } else {
-            $scanned = 'No';
-          }
 
           if ($a_internal['int_virtual']) {
             $virtual = 'Yes';
@@ -401,7 +380,6 @@
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_groupname    = $a_internal['int_groupname'];
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_virtual      = $virtual;
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_netzone      = $a_internal['zone_name'];
-          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_scanned      = $scanned;
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_management   = ($a_internal['int_management'] ? 'Yes' : 'No');
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_backup       = ($a_internal['int_backup'] ? 'Yes' : 'No');
 
