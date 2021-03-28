@@ -77,11 +77,11 @@
 
             $q_string =
               "tag_companyid   =   " . $formVars['tag_companyid']   . "," .
-              "tag_name        = \"" . $a_firewall['tag_name']      . "\"," .
-              "tag_type        =   " . $a_firewall['tag_type']      . "," .
-              "tag_view        =   " . $a_firewall['tag_view']      . "," .
-              "tag_owner       =   " . $a_firewall['tag_owner']     . "," .
-              "tag_group       =   " . $a_firewall['tag_group'];
+              "tag_name        = \"" . $a_tags['tag_name']      . "\"," .
+              "tag_type        =   " . $a_tags['tag_type']      . "," .
+              "tag_view        =   " . $a_tags['tag_view']      . "," .
+              "tag_owner       =   " . $a_tags['tag_owner']     . "," .
+              "tag_group       =   " . $a_tags['tag_group'];
 
             $query = "insert into tags set tag_id = NULL, " . $q_string;
             mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
