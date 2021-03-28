@@ -92,7 +92,6 @@ function clear_fields() {
   show_file('backup.mysql.php?id=<?php print $formVars['id']; ?>');
   show_file('openview.mysql.php?id=<?php print $formVars['id']; ?>&start=<?php print $formVars['start']; ?>&end=<?php print $formVars['end']; ?>');
   show_file('policies.mysql.php?id=<?php print $formVars['id']; ?>');
-  show_file('vulnerabilities.mysql.php?id=<?php print $formVars['id']; ?>');
   show_file('comments.mysql.php?id=<?php print $formVars['id']; ?>');
   show_file('logs.mysql.php?id=<?php print $formVars['id']; ?>');
   show_file('<?php print $Issueroot; ?>/issue.open.mysql.php?server=<?php print $formVars['id']; ?>');
@@ -137,7 +136,6 @@ $(document).ready( function() {
   <li><a href="#backup">Backup</a></li>
   <li><a href="#changelog">Changelog</a></li>
   <li><a href="#performance">Performance</a></li>
-  <li><a href="#vulnerabilities">Vulnerabilities</a></li>
   <li><a href="#alarms">Alarms</a></li>
   <li><a href="#policies">Policies</a></li>
   <li><a href="#logs">Logs</a></li>
@@ -224,63 +222,6 @@ $(document).ready( function() {
 <div id="performance">
 
 <span id="performance_mysql"><?php print wait_Process('Performance Waiting...')?></span>
-
-</div>
-
-
-<div id="vulnerabilities">
-
-
-<span id="vulnerability_mysql"><?php print wait_Process('Vulnerabilities Waiting...')?></span>
-
-<div id="vuln-tabs">
-
-<ul>
-  <li><a href="#critical">Critical<span id="critical_count"></span></a></li>
-  <li><a href="#high">High<span id="high_count"></span></a></li>
-  <li><a href="#medium">Medium<span id="medium_count"></span></a></li>
-  <li><a href="#low">Low<span id="low_count"></span></a></li>
-  <li><a href="#info">Info<span id="info_count"></span></a></li>
-</ul>
-
-
-<div id="critical">
-
-<span id="critical_vuln_mysql"><?php print wait_Process('Vulnerabilities Waiting...')?></span>
-
-</div>
-
-
-<div id="high">
-
-<span id="high_vuln_mysql"><?php print wait_Process('Vulnerabilities Waiting...')?></span>
-
-</div>
-
-
-<div id="medium">
-
-<span id="medium_vuln_mysql"><?php print wait_Process('Vulnerabilities Waiting...')?></span>
-
-</div>
-
-
-<div id="low">
-
-<span id="low_vuln_mysql"><?php print wait_Process('Vulnerabilities Waiting...')?></span>
-
-</div>
-
-
-<div id="info">
-
-<span id="info_vuln_mysql"><?php print wait_Process('Vulnerabilities Waiting...')?></span>
-
-</div>
-
-</div>
-
-
 
 </div>
 
