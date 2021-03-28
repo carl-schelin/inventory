@@ -43,7 +43,6 @@ $(document).ready( function() {
   <li><a href="v1/search.php">GET /api/search.php</a> Search for a system based on IP address, MAC address, Asset Tag, or Serial Number/Dell Service Tag</li>
   <li><a href="v1/server.php">GET /api/server.php</a> Generates a Server listing</li>
   <li><a href="v1/tags.php">GET /api/tag.php</a> Generates a server listing based on passed tags</li>
-  <li><a href="v1/workflow.php">GET /api/workflow.php</a> Workflow Listing</a></li>
 </ul>
 
 </div>
