@@ -196,18 +196,12 @@ $(document).ready( function() {
 
 <ul>
   <li><a href="#datacenter">Data Centers</a></li>
-  <li><a href="#psap">PSAPs</a></li>
   <li><a href="#noc">NOC Contacts</a></li>
   <li><a href="#customer">Customers</a></li>
 </ul>
 
 <div id="datacenter">
 <span id="datacenter_mysql"><?php print wait_Process('Waiting...')?></span>
-</div>
-
-
-<div id="psap">
-<span id="psap_mysql"><?php print wait_Process('Waiting...')?></span>
 </div>
 
 
