@@ -266,16 +266,6 @@ onKeyUp="javascript:show_file('validate.password.php?password=' + usr_passwd.val
 </tr>
 </table>
 
-<table class="ui-styled-table">
-<tr>
-  <th class="ui-state-default" colspan="2">Oncall Form</th>
-</tr>
-<tr>
-  <td class="ui-widget-content">Pager Number: <input type="text" name="usr_page" size="20"></td>
-  <td class="ui-widget-content">Pager Email Address: <input type="text" name="usr_pagemail" size="50"></td>
-</tr>
-</table>
-
 </div>
 
 </form>
