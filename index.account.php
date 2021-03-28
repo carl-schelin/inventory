@@ -68,7 +68,6 @@
   <li><a href="<?php print $Usersroot; ?>/groups.php">Group Management</a></li>
   <li><a href="<?php print $Usersroot; ?>/levels.php">Access Level Management</a></li>
   <li><a href="<?php print $Loginroot; ?>/assume.php">Change Credentials</a> - Change your login information to become another user.</li>
-  <li><a href="<?php print $Adminroot; ?>/rsdpdup.php">Review and Remove Duplicate RSDP Records</a></li>
   <li><a href="<?php print $Reportroot;  ?>/logs.php">View Last 7 Days of Logs</a></li>
   <li><a href="<?php print $Reportroot;  ?>/lastlogin.php">View User Logins</a></li>
 </ul>
