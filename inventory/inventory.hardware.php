@@ -488,13 +488,6 @@
 
           $display = $a_operatingsystem['os_software'];
 
-          $q_string  = "update ";
-          $q_string .= "rsdp_osteam ";
-          $q_string .= "set ";
-          $q_string .= "os_software = " . $a_operatingsystem['os_id'] . " ";
-          $q_string .= "where os_rsdp = " . $formVars['rsdp'] . " ";
-          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
         }
       }
