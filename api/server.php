@@ -272,6 +272,8 @@
     $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     while ($a_interface = mysqli_fetch_array($q_interface)) {
 
+      if ($formVars['interfaces'] == 'yes') {
+
         if ($a_interface['int_virtual']) {
           $virtual = 'Yes';
         } else {
