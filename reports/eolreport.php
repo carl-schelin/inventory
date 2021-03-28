@@ -10,7 +10,7 @@
 
   $package = "eolreport.php";
 
-  logaccess($db, $formVars['uid'], $package, "Getting a report on vulnerabilities.");
+  logaccess($db, $formVars['uid'], $package, "Getting a report on end of life gear.");
 
   $formVars['group']     = clean($_GET['group'],      10);
   $formVars['product']   = clean($_GET['product'],    10);
