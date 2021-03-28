@@ -30,7 +30,7 @@
   }
 
   if (isset($formVars['server'])) {
-    $q_string  = "select inv_id,inv_name,inv_rsdp,inv_manager,inv_product,inv_project,inv_status,hw_active,hw_eol ";
+    $q_string  = "select inv_id,inv_name,inv_manager,inv_product,inv_project,inv_status,hw_active,hw_eol ";
     $q_string .= "from inventory ";
     $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
     $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
@@ -41,7 +41,6 @@
     if (mysqli_num_rows($q_inventory) == 0) {
       $a_inventory['inv_id'] = $formVars['server'];
       $a_inventory['inv_name'] = 'Blank';
-      $a_inventory['inv_rsdp'] = 0;
       $a_inventory['inv_manager'] = $_SESSION['group'];
       $a_inventory['inv_product'] = 0;
       $a_inventory['inv_project'] = 0;
@@ -52,7 +51,6 @@
     $formVars['server'] = 0;
     $a_inventory['inv_id'] = $formVars['server'];
     $a_inventory['inv_name'] = 'Blank';
-    $a_inventory['inv_rsdp'] = 0;
     $a_inventory['inv_manager'] = $_SESSION['group'];
     $a_inventory['inv_product'] = 0;
     $a_inventory['inv_project'] = 0;
@@ -196,17 +194,6 @@ function delete_route( p_script_url ) {
     script.src = p_script_url;
     document.getElementsByTagName('head')[0].appendChild(script);
     show_file('routing.mysql.php'     + '?update=-1' + '&route_companyid=<?php print $formVars['server']; ?>');
-  }
-}
-
-function delete_firewall( p_script_url ) {
-  var answer = confirm("Delete this Firewall Rule?")
-
-  if (answer) {
-    script = document.createElement('script');
-    script.src = p_script_url;
-    document.getElementsByTagName('head')[0].appendChild(script);
-    show_file('firewall.mysql.php?update=-1&fw_companyid=<?php print $formVars['server']; ?>');
   }
 }
 
@@ -587,31 +574,6 @@ function attach_route(p_script_url, update) {
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
-function attach_firewall( p_script_url, update ) {
-  var af_form = document.edit;
-  var af_url;
-
-  af_url  = '?update='   + update;
-  af_url += '&id='       + af_form.fw_id.value;
-  af_url += '&copyfrom=' + af_form.fw_copyfrom.value;
-
-  af_url += "&fw_companyid="       + <?php print $formVars['server']; ?>;
-  af_url += "&fw_source="          + encode_URI(af_form.fw_source.value);
-  af_url += "&fw_sourcezone="      + af_form.fw_sourcezone.value;
-  af_url += "&fw_destination="     + encode_URI(af_form.fw_destination.value);
-  af_url += "&fw_destinationzone=" + af_form.fw_destinationzone.value;
-  af_url += "&fw_port="            + encode_URI(af_form.fw_port.value);
-  af_url += "&fw_protocol="        + encode_URI(af_form.fw_protocol.value);
-  af_url += "&fw_description="     + encode_URI(af_form.fw_description.value);
-  af_url += "&fw_timeout="         + encode_URI(af_form.fw_timeout.value);
-  af_url += "&fw_ticket="          + encode_URI(af_form.fw_ticket.value);
-  af_url += "&fw_portdesc="        + encode_URI(af_form.fw_portdesc.value);
-
-  script = document.createElement('script');
-  script.src = p_script_url + af_url;
-  document.getElementsByTagName('head')[0].appendChild(script);
-}
-
 function attach_backups( p_script_url, update ) {
   var ab_form = document.edit;
   var ab_url;
@@ -913,7 +875,6 @@ function clear_fields() {
   }
 ?>
   show_file('comments.mysql.php'    + '?update=-3' + '&com_companyid=<?php   print $formVars['server']; ?>');
-  show_file('firewall.mysql.php'    + '?update=-3' + '&fw_companyid=<?php    print $formVars['server']; ?>');
 <?php
 # end inv_manager if
   }
@@ -978,7 +939,6 @@ $(document).ready( function() {
   <li><a href="#network">Network</a></li>
   <li><a href="#users">Users</a></li>
   <li><a href="#routing">Routing</a></li>
-  <li><a href="#firewall">Firewall</a></li>
   <li><a href="#backup">Backup</a></li>
   <li><a href="#association">Association</a></li>
   <li><a href="#config">Configuration</a></li>
@@ -2000,81 +1960,6 @@ to modify it and then click the Add User button to begin managing the account.</
 <span id="routing_table"><?php print wait_Process("Please Wait - DNS Lookups"); ?></span>
 
 </div>
-
-
-<div id="firewall">
-
-<table class="ui-styled-table">
-<tr>
-  <th class="ui-state-default"><a href="javascript:;" onmousedown="toggleDiv('firewall-hide');">Firewall Management</a></th>
-  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('firewall-help');">Help</a></th>
-</tr>
-</table>
-
-<div id="firewall-help" style="display: none">
-
-<div class="main-help ui-widget-content">
-
-<ul>
-  <li><strong>Buttons</strong>
-  <ul>
-    <li><strong>Refresh Firewall Listing</strong> - Reloads the Firewall Listing table. At times, especially when removing several items, the table fails to refresh.</li>
-    <li><strong>Update Firewall Rule</strong> - After selecting the firewall rule to edit, click here to save changes.</li>
-    <li><strong>Add Firewall Rule</strong> - Add a new rule. You can also select an existing rule, make changes if needed, and click this button to add a new rule.</li>
-    <li><strong>Copy Firewall Rules From:</strong> - Select a server from the listing to duplicate it's list of rules.</li>
-  </ul></li>
-</ul>
-
-<ul>
-  <li><strong>Firewall Form</strong>
-  <ul>
-    <li><strong>Source IP</strong> - The IP the data will be coming from.</li>
-    <li><strong>Source Zone</strong> - The source network zone.</li>
-    <li><strong>Transport Protocol</strong> - Which protocol (for example tcp or udp).</li>
-    <li><strong>Destination IP</strong> - The IP the data is intended to receive the data.</li>
-    <li><strong>Destination Zone</strong> - The destination network zone.</li>
-    <li><strong>Firewall Timeout (in Minutes)</strong> - How long before an inactive session is timed out.</li>
-    <li><strong>Destination Port</strong> - The destination port.</li>
-    <li><strong>Port Desc</strong> - Describe the destination port application (ssh, telnet, http).</li>
-    <li><strong>InfoSec/Network Engineering Ticket</strong> - Ticket number for this firewall rule.</li>
-    <li><strong>Notes</strong> - Any additional notes to help describe the request.</li>
-  </ul></li>
-</ul>
-
-<ul>
-  <li><strong>Firewall Listing</strong>
-  <ul>
-    <li><strong>Delete (x)</strong> - Clicking the <strong>x</strong> will delete this firewall rule from this server.</li>
-    <li><strong>Editing</strong> - Click on a firewall rule to edit it.</li>
-  </ul></li>
-</ul>
-
-<ul>
-  <li><strong>Related Firewall Fules</strong> - This table is a list of servers that have firewall rules with this server as the destination IP.</li>
-</ul>
-
-<ul>
-  <li><strong>Notes</strong>
-  <ul>
-    <li>Click the <strong>Firewall Management</strong> title bar to display the <strong>Firewall Form</strong>.</li>
-  </ul></li>
-</ul>
-
-</div>
-
-</div>
-
-<div id="firewall-hide" style="display: none">
-
-<span id="firewall_form"><?php print wait_Process("Please Wait"); ?></span>
-
-</div>
-
-<span id="firewall_table"><?php print wait_Process("Please Wait - DNS Lookups"); ?></span>
-
-</div>
-
-
 
 
 <div id="backup">
