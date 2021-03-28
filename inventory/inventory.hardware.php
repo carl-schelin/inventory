@@ -80,7 +80,7 @@
           print "document.getElementById('edit_data').select();\n";
 # and ready for editing
         }
-# close down the cell and put the text in plus update rsdp
+# close down the cell and put the text in 
         if ($formVars['status'] == 0) {
 
 # give me the cell pointer you just finished
@@ -197,7 +197,7 @@
           print "document.getElementById('" . $formVars['id'] . "_groups').focus();\n";
 
         }
-# close down the cell and put the text in plus update rsdp
+# close down the cell and put the text in 
         if ($formVars['status'] == 0) {
 
           print "var cell = document.getElementById('" . $formVars['id'] . "');\n";
@@ -220,18 +220,6 @@
           }
 
           $display = $a_groups['grp_name'];
-
-          $q_string  = "update ";
-          $q_string .= "rsdp_server ";
-          $q_string .= "set ";
-          if ($formVars['type'] == 1) {
-            $q_string .= "rsdp_platform = " . $a_groups['grp_id'] . " ";
-          }
-          if ($formVars['type'] == 2) {
-            $q_string .= "rsdp_application = " . $a_groups['grp_id'] . " ";
-          }
-          $q_string .= "where rsdp_id = " . $formVars['rsdp'] . " ";
-          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
 
@@ -278,7 +266,7 @@
           print "document.getElementById('" . $formVars['id'] . "_service').focus();\n";
 
         }
-# close down the cell and put the text in plus update rsdp
+# close down the cell and put the text in 
         if ($formVars['status'] == 0) {
 
           print "var cell = document.getElementById('" . $formVars['id'] . "');\n";
@@ -297,13 +285,6 @@
           }
 
           $display = $a_service['svc_name'];
-
-          $q_string  = "update ";
-          $q_string .= "rsdp_server ";
-          $q_string .= "set ";
-          $q_string .= "rsdp_service = " . $a_service['svc_id'] . " ";
-          $q_string .= "where rsdp_id = " . $formVars['rsdp'] . " ";
-          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
         }
@@ -350,7 +331,7 @@
           print "document.getElementById('" . $formVars['id'] . "_location').focus();\n";
 
         }
-# close down the cell and put the text in plus update rsdp
+# close down the cell and put the text in 
         if ($formVars['status'] == 0) {
 
           print "var cell = document.getElementById('" . $formVars['id'] . "');\n";
@@ -369,13 +350,6 @@
           }
 
           $display = $a_locations['loc_name'];
-
-          $q_string  = "update ";
-          $q_string .= "rsdp_server ";
-          $q_string .= "set ";
-          $q_string .= "rsdp_location = " . $a_locations['loc_id'] . " ";
-          $q_string .= "where rsdp_id = " . $formVars['rsdp'] . " ";
-          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
         }
@@ -406,19 +380,12 @@
 
           print "document.getElementById('" . $formVars['id'] . "_function').focus();\n";
         }
-# close down the cell and put the text in plus update rsdp
+# close down the cell and put the text in 
         if ($formVars['status'] == 0) {
 
           print "var cell = document.getElementById('" . $formVars['id'] . "');\n";
 
           print "cell.setAttribute(\"onclick\", \"server_Function('" . $formVars['id'] . "');" . "\");\n";
-
-          $q_string  = "update ";
-          $q_string .= "rsdp_server ";
-          $q_string .= "set ";
-          $q_string .= "rsdp_function = '" . $formVars['select'] . "' ";
-          $q_string .= "where rsdp_id = " . $formVars['rsdp'] . " ";
-          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $formVars['select'] . "</u>';\n";
 
@@ -468,7 +435,7 @@
           print "document.getElementById('" . $formVars['id'] . "_system').focus();\n";
 
         }
-# close down the cell and put the text in plus update rsdp
+# close down the cell and put the text in 
         if ($formVars['status'] == 0) {
 
           print "var cell = document.getElementById('" . $formVars['id'] . "');\n";
@@ -517,19 +484,12 @@
 
           print "document.getElementById('" . $formVars['id'] . "_cpu').focus();\n";
         }
-# close down the cell and put the text in plus update rsdp
+# close down the cell and put the text in 
         if ($formVars['status'] == 0) {
 
           print "var cell = document.getElementById('" . $formVars['id'] . "');\n";
 
           print "cell.setAttribute(\"onclick\", \"central_Processor('" . $formVars['id'] . "');" . "\");\n";
-
-          $q_string  = "update ";
-          $q_string .= "rsdp_server ";
-          $q_string .= "set ";
-          $q_string .= "rsdp_processors = '" . $formVars['select'] . "' ";
-          $q_string .= "where rsdp_id = " . $formVars['rsdp'] . " ";
-          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $formVars['select'] . "</u>';\n";
 
@@ -563,19 +523,12 @@
 
           print "document.getElementById('" . $formVars['id'] . "_memory').focus();\n";
         }
-# close down the cell and put the text in plus update rsdp
+# close down the cell and put the text in 
         if ($formVars['status'] == 0) {
 
           print "var cell = document.getElementById('" . $formVars['id'] . "');\n";
 
           print "cell.setAttribute(\"onclick\", \"system_Memory('" . $formVars['id'] . "');" . "\");\n";
-
-          $q_string  = "update ";
-          $q_string .= "rsdp_server ";
-          $q_string .= "set ";
-          $q_string .= "rsdp_memory = '" . $formVars['select'] . "' ";
-          $q_string .= "where rsdp_id = " . $formVars['rsdp'] . " ";
-          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $formVars['select'] . " GB</u>';\n";
 
@@ -608,19 +561,12 @@
 
           print "document.getElementById('" . $formVars['id'] . "_size').focus();\n";
         }
-# close down the cell and put the text in plus update rsdp
+# close down the cell and put the text in 
         if ($formVars['status'] == 0) {
 
           print "var cell = document.getElementById('" . $formVars['id'] . "');\n";
 
           print "cell.setAttribute(\"onclick\", \"system_Size('" . $formVars['id'] . "');" . "\");\n";
-
-          $q_string  = "update ";
-          $q_string .= "rsdp_server ";
-          $q_string .= "set ";
-          $q_string .= "rsdp_ossize = '" . $formVars['select'] . "' ";
-          $q_string .= "where rsdp_id = " . $formVars['rsdp'] . " ";
-          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $formVars['select'] . " GB</u>';\n";
 
@@ -743,7 +689,7 @@ if ($formVars['type'] == 20) {
           print "document.getElementById('" . $idstring . "').focus();\n";
 
         }
-# close down the cell and put the text in plus update rsdp
+# close down the cell and put the text in 
         if ($formVars['status'] == 0) {
 
           print "var cell = document.getElementById('" . $formVars['id'] . "');\n";
@@ -763,13 +709,6 @@ if ($formVars['type'] == 20) {
 
             $display = "--";
           }
-
-          $q_string  = "update ";
-          $q_string .= "rsdp_server ";
-          $q_string .= "set ";
-          $q_string .= $pocstring . " = " . $a_users['usr_id'] . " ";
-          $q_string .= "where rsdp_id = " . $formVars['rsdp'] . " ";
-          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
         }
