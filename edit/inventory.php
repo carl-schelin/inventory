@@ -328,8 +328,6 @@ function attach_detail( p_script_url, update ) {
   am_url += "&inv_ansible="     + am_form.inv_ansible.checked;
   am_url += "&inv_env="         + am_form.inv_env.value;
   am_url += "&inv_appliance="   + am_form.inv_appliance.checked;
-  am_url += "&inv_bigfix="      + am_form.inv_bigfix.checked;
-  am_url += "&inv_ciscoamp="    + am_form.inv_ciscoamp.checked;
   am_url += "&inv_ticket="      + encode_URI(am_form.inv_ticket.value);
   am_url += "&inv_maint="       + am_form.inv_maint.value;
 
@@ -1117,16 +1115,6 @@ $(document).ready( function() {
 </tr>
 <tr>
   <td class="ui-widget-content"  colspan="8">System Notes <input type="text" name="inv_notes" size="80"></td>
-</tr>
-</table>
-
-<table class="ui-styled-table">
-<tr>
-  <th class="ui-state-default" colspan="6">Security Form</th>
-</tr>
-<tr>
-  <td class="ui-widget-content">Install Big Fix Agent? <input type="checkbox" name="inv_bigfix"></td>
-  <td class="ui-widget-content">Install Cisco Amp Agent? <input type="checkbox" name="inv_ciscoamp"></td>
 </tr>
 </table>
 
