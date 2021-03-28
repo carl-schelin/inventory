@@ -59,7 +59,6 @@ function attach_users(p_script_url, update) {
   au_url += "&usr_freq="       + encode_URI(au_form.usr_freq.value);
   au_url += "&usr_report="     + au_form.usr_report.checked;
   au_url += "&usr_confirm="    + au_form.usr_confirm.checked;
-  au_url += "&usr_bigfix="     + au_form.usr_bigfix.checked;
   au_url += "&usr_page="       + encode_URI(au_form.usr_page.value);
   au_url += "&usr_pagemail="   + encode_URI(au_form.usr_pagemail.value);
 
@@ -254,15 +253,6 @@ onKeyUp="javascript:show_file('validate.password.php?password=' + usr_passwd.val
 <tr>
   <td class="ui-widget-content">Number of Days Prior to Expiration: <input type="number" name="usr_notify" size="20"></td>
   <td class="ui-widget-content">Reminder Increment: <input type="number" name="usr_freq" size="20"></td>
-</tr>
-</table>
-
-<table class="ui-styled-table">
-<tr>
-  <th class="ui-state-default">BigFix Patching Form</th>
-</tr>
-<tr>
-  <td class="ui-widget-content"><label>Receive an email each day that lists the servers being patched by BigFix in the next 24 hours: <input type="checkbox" name="usr_bigfix"></label></td>
 </tr>
 </table>
 
