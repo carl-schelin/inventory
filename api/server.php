@@ -42,11 +42,6 @@
   } else {
     $formVars['hardware'] = 'no';
   }
-  if (isset($_GET['vulnerabilities'])) {
-    $formVars['vulnerabilities'] = clean($_GET['vulnerabilities'], 10);
-  } else {
-    $formVars['vulnerabilities'] = 'no';
-  }
 
   class Server {
     public $inventory_name = '';
