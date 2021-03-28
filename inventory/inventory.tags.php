@@ -97,7 +97,7 @@
           print "document.getElementById('edit_data').select();\n";
 # and ready for editing
         }
-# close down the cell and put the text in plus update rsdp
+# close down the cell and put the text in 
         if ($formVars['status'] == 0) {
 
 # give me the cell pointer you just finished
@@ -163,7 +163,7 @@
           print "document.getElementById('edit_data').select();\n";
 # and ready for editing
         }
-# close down the cell and put the text in plus update rsdp
+# close down the cell and put the text in 
         if ($formVars['status'] == 0) {
 
 # give me the cell pointer you just finished
@@ -229,7 +229,7 @@
           print "document.getElementById('edit_data').select();\n";
 # and ready for editing
         }
-# close down the cell and put the text in plus update rsdp
+# close down the cell and put the text in 
         if ($formVars['status'] == 0) {
 
 # give me the cell pointer you just finished
