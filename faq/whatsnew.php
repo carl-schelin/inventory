@@ -152,8 +152,8 @@ of systems that have that tag.</p>
 <p><strong>Search</strong> - I've had many requests for information where I needed to create a report or at the minimum, 
 pop into the database to look something up. In addition, other teams have either had issues bringing up a server listing or 
 matching a paged alert for a server that might be different than the main hostname in the Listings. In addition, the number of 
-data centers (including equipment in PSAPs) makes the Location listing quite long. As a result, I've added the ability to 
-search for information in the Inventory.</p>
+data centers makes the Location listing quite long. As a result, I've added the ability to search for information in the 
+Inventory.</p>
 
 <p>Searching is on the Home Page under the 'Search' tab. You can select a specific subject to search for or let it search 
 all areas of the Inventory. The search criteria must match one of the listed columns though. It's not a 'search everything' 
