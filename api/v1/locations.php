@@ -45,7 +45,7 @@ $(document).ready( function() {
 <ul>
   <li>[default] - Returns all locations in the inventory.</li>
   <li>site - Wildcard search on the location name.</li>
-  <li>type - Location type; Data Center, PSAP, NOC, Customer. For 'Data Center', use '%20' in place of the space.</li>
+  <li>type - Location type; Data Center, NOC, Customer. For 'Data Center', use '%20' in place of the space.</li>
 </ul>
 
 <p><strong>Output</strong></p>
