@@ -78,7 +78,7 @@
   $hw_built .= "<p>Please review the listing and if the server is <b>in use</b>, please mark the server as appropriate. You can set the actual date when editing the server hardware (primary device).</p>\n";
   $hw_built .= "<p>Please review the listing.</p>\n";
 
-  $q_string  = "select inv_name,inv_rsdp,hw_built,prod_name,prj_name ";
+  $q_string  = "select inv_name,hw_built,prod_name,prj_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
@@ -93,28 +93,14 @@
     $built .= "  <th>Build Date</th>\n";
     $built .= "  <th>Product</th>\n";
     $built .= "  <th>Project</th>\n";
-    $built .= "  <th>RSDP Requester</th>\n";
     $built .= "</tr>\n";
     while ($a_inventory = mysqli_fetch_array($q_inventory)) {
-
-      $user = '';
-      if ($a_inventory['inv_rsdp'] > 0) {
-        $q_string  = "select usr_first,usr_last ";
-        $q_string .= "from rsdp_server ";
-        $q_string .= "left join users on  users.usr_id = rsdp_server.rsdp_requestor ";
-        $q_string .= "where rsdp_id = " . $a_inventory['inv_rsdp'] . " ";
-        $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_rsdp_server = mysqli_fetch_array($q_rsdp_server);
-
-        $user = $a_rsdp_server['usr_last'] . ", " . $a_rsdp_server['usr_first'];
-      }
 
       $built .= "<tr>\n";
       $built .= "  <td>" . $a_inventory['inv_name'] . "</td>\n";
       $built .= "  <td>" . $a_inventory['hw_built'] . "</td>\n";
       $built .= "  <td>" . $a_inventory['prod_name'] . "</td>\n";
       $built .= "  <td>" . $a_inventory['prj_name'] . "</td>\n";
-      $built .= "  <td>" . $user . "</td>\n";
       $built .= "</tr>\n";
     }
     $built .= "</table>\n";
