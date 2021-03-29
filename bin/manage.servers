@@ -7,8 +7,7 @@
 # Then we need to see if the file exists over on the website and is > 0 bytes
 
 ADMIN=/usr/local/admin
-SERVERS=/usr/local/httpd/htsecure/inventory
-SERVERLIST="ali dba i3 ienv lab mob mon net pe sba scm se tandem tss unix vns vtt web win"
+SERVERS=/var/www/html/inventory
 TEMP=/var/tmp
 HOSTNAME=`hostname|cut -f1 -d.`
 SVRRUN=/usr/local/httpd/bin
@@ -26,63 +25,30 @@ then
   OWNER="webservd:sysadmin"
 fi
 
-if [[ ! -z $1 ]]
-then
-  SERVERLIST=$1
-fi
-
-# parse through the servers files
-for i in $SERVERLIST
-do
-  echo "Processing servers.$i"
-
 # ensure file exists regardless; write to a temporary area to ensure the servers file continues to exist.
-  /usr/local/bin/php $SVRRUN/servers.$i.php | sort | uniq > $TEMP/servers.$i
+/usr/local/bin/php $SVRRUN/servers.php | sort | uniq > $TEMP/servers
 
 # now copy it over the existing file.
-  cp $TEMP/servers.$i $SERVERS/servers.$i
+cp $TEMP/servers $SERVERS/servers
 
-# and remove the old file
-  rm $TEMP/servers.$i
+# and remove the generated file
+rm $TEMP/servers
 
 # chown so the web site can write to it
-  chown $OWNER $SERVERS/servers.$i
+chown $OWNER $SERVERS/servers
 
-  if [[ -f $ADMIN/etc/servers.$i ]]
-  then
-    OUTPUT=`/usr/bin/file -h $SERVERS/servers.$i | grep symbolic`
-
-# if the file is NOT a symbolic link then the link has been broken
-# clear it and set it back up
-    if [[ -z $OUTPUT ]]
-    then
-      rm $ADMIN/etc/servers.$i
-      ln -s $SERVERS/servers.$i $ADMIN/etc/servers.$i
-    fi
-  else
-    ln -s $SERVERS/servers.$i $ADMIN/etc/servers.$i
-  fi
-
-# because many scripts expect to see 'servers' for unix, a second link is created
-  if [[ $i = 'unix' ]]
-  then
-# unix servers are processed differently because we're just 'servers' vs other groups which are servers.[group]
-    if [[ -f $ADMIN/etc/servers ]]
-    then
-      OUTPUT=`/usr/bin/file -h $SERVERS/servers | grep symbolic`
+if [[ -f $ADMIN/etc/servers ]]
+then
+  OUTPUT=`/usr/bin/file -h $SERVERS/servers | grep symbolic`
 
 # if the file is NOT a symbolic link then the link has been broken
 # clear it and set it back up
-      if [[ -z $OUTPUT ]]
-      then
-        rm $ADMIN/etc/servers
-        ln -s $SERVERS/servers.unix $ADMIN/etc/servers
-      fi
-    else
-      ln -s $SERVERS/servers.unix $ADMIN/etc/servers
-    fi
+  if [[ -z $OUTPUT ]]
+  then
+    rm $ADMIN/etc/servers
+    ln -s $SERVERS/servers $ADMIN/etc/servers
   fi
-
-
-done
+else
+  ln -s $SERVERS/servers $ADMIN/etc/servers
+fi
 
