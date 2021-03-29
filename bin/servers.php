@@ -16,7 +16,11 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
-  $package        = "servers.unix.php";
+# want to loop through the group table to see which group is active, pull 
+# pull the necessary information and then build the lists.
+# in the mean time, it works fine for one group
+
+  $package        = "servers.php";
   $mygroup        = $GRP_Unix;
 
   print "#Server Name(1):FQDN(2):Operating System(3):Time Zone(4):,Tag,(5):,Interface Name,(6):Inventory ID(7):Product Name(8):Project(9):Status(10)\n";
