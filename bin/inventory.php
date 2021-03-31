@@ -437,7 +437,6 @@
 #ip_addresses.sql:  `ip_companyid`    int(10) NOT NULL default '0',
 #issue.sql:         `iss_companyid`   int(10) NOT NULL default '0',
 #packages.sql:      `pkg_inv_id`      int(10) NOT NULL default '0',
-#retire.sql:        `ret_companyid`   int(10) NOT NULL default '0',
 #routing.sql:       `route_companyid` int(10) NOT NULL default '0',
 #san.sql:           `san_companyid`   int(10) NOT NULL default '0',
 #software.sql:      `sw_companyid`    int(10) NOT NULL default '0',
@@ -569,16 +568,6 @@
       if (mysqli_num_rows($q_packages) > 0) {
         print "There are " . mysqli_num_rows($q_packages) . " package records for " . $a_inventory['inv_name'] . "\n";
         $packages = mysqli_num_rows($q_packages);
-      }
-
-      $retirements = 0;
-      $q_string  = "select ret_companyid ";
-      $q_string .= "from retire ";
-      $q_string .= "where ret_companyid = " . $remove . " ";
-      $q_retire = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_retire) > 0) {
-        print "There are " . mysqli_num_rows($q_retire) . " retirement records for " . $a_inventory['inv_name'] . "\n";
-        $retirements = mysqli_num_rows($q_retire);
       }
 
       $routes = 0;
@@ -746,12 +735,6 @@
       if ($packages > 0) {
         print "Packages ";
         $q_string = "delete from packages   where pkg_inv_id      = " . $remove;
-        $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      }
-
-      if ($retirements > 0) {
-        print "Retirements ";
-        $q_string = "delete from retire     where ret_companyid   = " . $remove;
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 
