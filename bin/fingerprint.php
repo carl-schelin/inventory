@@ -24,7 +24,7 @@
     $server = $argv[1];
   }
 
-  $q_string  = "select inv_id,inv_name,inv_fqdn,inv_ssh,svc_acronym,inv_callpath,zone_name,prod_name,prj_name,loc_identity,grp_name,inv_appadmin,inv_appliance,inv_maint,inv_managebigfix ";
+  $q_string  = "select inv_id,inv_name,inv_fqdn,inv_ssh,svc_acronym,inv_callpath,zone_name,prod_name,prj_name,loc_identity,grp_name,inv_appadmin,inv_appliance,inv_maint ";
   $q_string .= "from inventory ";
   $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
   $q_string .= "left join service on service.svc_id = inventory.inv_class ";
@@ -37,10 +37,6 @@
   $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
   $a_inventory = mysqli_fetch_array($q_inventory);
 
-  $managebigfix = 'No';
-  if ($a_inventory['inv_managebigfix']) {
-    $managebigfix = 'Yes';
-  }
   $callpath = 'No';
   if ($a_inventory['inv_callpath']) {
     $callpath = 'Yes';
@@ -200,7 +196,6 @@
   print "Software EOL: " . $software . "\n";
   print "Support Contract: " . $supported . "\n";
   print "Status: " . $status . "\n";
-  print "Manage BigFix: " . $managebigfix . "\n";
   print "Maintenance Day: " . $maintday . "\n";
   print "Maintenance Start: " . $maintstart . "\n";
   print "Maintenance Stop: " . $maintstop . "\n";
