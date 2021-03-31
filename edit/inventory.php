@@ -865,13 +865,6 @@ function clear_fields() {
   show_file('routing.mysql.php'     + '?update=-3' + '&route_companyid=<?php print $formVars['server']; ?>');
   show_file('backups.fill.php'      + '?id=<?php                             print $formVars['server']; ?>');
   show_file('association.mysql.php' + '?update=-3' + '&clu_companyid=<?php   print $formVars['server']; ?>');
-<?php
-  if (check_userlevel($db, $AL_Admin)) {
-?>
-  show_file('config.mysql.php'      + '?update=-3' + '&cfg_companyid=<?php   print $formVars['server']; ?>');
-<?php
-  }
-?>
   show_file('comments.mysql.php'    + '?update=-3' + '&com_companyid=<?php   print $formVars['server']; ?>');
 <?php
 # end inv_manager if
@@ -887,8 +880,6 @@ function clear_fields() {
 $(document).ready( function() {
   $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
   $( "#networktab" ).tabs( ).addClass( "tab-shadow" );
-  $( "#configtab" ).tabs( ).addClass( "tab-shadow" );
-
   $( "#sstatus" ).buttonset();
 });
 
@@ -939,7 +930,6 @@ $(document).ready( function() {
   <li><a href="#routing">Routing</a></li>
   <li><a href="#backup">Backup</a></li>
   <li><a href="#association">Association</a></li>
-  <li><a href="#config">Configuration</a></li>
   <li><a href="#comments">Comments</a></li>
 <?php
   }
@@ -2134,71 +2124,6 @@ to modify it and then click the Add User button to begin managing the account.</
 
 </div>
 
-
-<?php
-  if (check_userlevel($db, $AL_Admin)) {
-?>
-
-<div id="config">
-
-<table class="ui-styled-table">
-<tr>
-  <th class="ui-state-default"><a href="javascript:;" onmousedown="toggleDiv('config-hide');">Configuration Management</a></th>
-  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('config-help');">Help</a></th>
-</tr>
-</table>
-
-<div id="config-help" style="display: none">
-
-<div class="main-help ui-widget-content">
-
-
-</div>
-
-</div>
-
-
-<div id="config-hide" style="display: none">
-
-<span id="config_form"><?php print wait_Process("Please Wait"); ?></span>
-
-</div>
-
-<div id="configtab">
-
-<ul>
-  <li><a href="#cfg_detail">Detail</a></li>
-  <li><a href="#cfg_hardware">Hardware</a></li>
-  <li><a href="#cfg_network">Network</a></li>
-</ul>
-
-<div id="cfg_detail">
-
-<span id="cfg_detail_table"><?php print wait_Process("Please Wait"); ?></span>
-
-</div>
-
-
-<div id="cfg_hardware">
-
-<span id="cfg_hardware_table"><?php print wait_Process("Please Wait"); ?></span>
-
-</div>
-
-
-<div id="cfg_network">
-
-<span id="cfg_network_table"><?php print wait_Process("Please Wait"); ?></span>
-
-</div>
-
-</div>
-
-</div>
-
-<?php
-  }
-?>
 
 <div id="comments">
 
