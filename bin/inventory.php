@@ -571,16 +571,6 @@
         $packages = mysqli_num_rows($q_packages);
       }
 
-      $psaps = 0;
-      $q_string  = "select psap_companyid ";
-      $q_string .= "from psaps ";
-      $q_string .= "where psap_companyid = " . $remove . " ";
-      $q_psaps = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_psaps) > 0) {
-        print "There are " . mysqli_num_rows($q_psaps) . " psap records for " . $a_inventory['inv_name'] . "\n";
-        $psaps = mysqli_num_rows($q_psaps);
-      }
-
       $retirements = 0;
       $q_string  = "select ret_companyid ";
       $q_string .= "from retire ";
@@ -756,12 +746,6 @@
       if ($packages > 0) {
         print "Packages ";
         $q_string = "delete from packages   where pkg_inv_id      = " . $remove;
-        $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      }
-
-      if ($psaps > 0) {
-        print "PSAPs ";
-        $q_string = "delete from psaps      where psap_companyid  = " . $remove;
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 
