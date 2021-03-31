@@ -681,29 +681,6 @@
             }
           }
 
-# Centrify
-# server, software, centrify, inv_centrify, inv_adzone, inv_domain
-#lnmt1cuomtool11,software,centrify,2012-12-18,unix.internal.pri
-          if ($value[2] == 'centrify') {
-            $skip = 'no';
-            $query = 
-              "inv_centrify = '" . trim($value[3]) . "'," . 
-              "inv_adzone   = '" . trim($value[4]) . "'," . 
-              "inv_domain   = '" . trim($value[5]) . "'";
-
-            $q_string = "update inventory set " . $query . " where inv_id = " . $a_inventory['inv_id'];
-
-            if ($debug == 'no') {
-              $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
-            }
-            if ($debug == 'yes') {
-              print $q_string . "\n";
-            }
-          } else {
-            if ($debug == 'yes') {
-              print "Missing Centrify\n";
-            }
-          }
 # instance
 #enwdcocsdca25,software,instance,+ASM2
           if ($value[2] == 'instance') {
