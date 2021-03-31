@@ -438,7 +438,6 @@
 #issue.sql:         `iss_companyid`   int(10) NOT NULL default '0',
 #packages.sql:      `pkg_inv_id`      int(10) NOT NULL default '0',
 #routing.sql:       `route_companyid` int(10) NOT NULL default '0',
-#san.sql:           `san_companyid`   int(10) NOT NULL default '0',
 #software.sql:      `sw_companyid`    int(10) NOT NULL default '0',
 #sysgrp.sql:        `grp_companyid`   int(10) NOT NULL default '0',
 #syspwd.sql:        `pwd_companyid`   int(10) NOT NULL default '0',
@@ -578,16 +577,6 @@
       if (mysqli_num_rows($q_routing) > 0) {
         print "There are " . mysqli_num_rows($q_routing) . " routing records for " . $a_inventory['inv_name'] . "\n";
         $routes = mysqli_num_rows($q_routing);
-      }
-
-      $san = 0;
-      $q_string  = "select san_companyid ";
-      $q_string .= "from san ";
-      $q_string .= "where san_companyid = " . $remove . " ";
-      $q_san = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_san) > 0) {
-        print "There are " . mysqli_num_rows($q_san) . " san storage records for " . $a_inventory['inv_name'] . "\n";
-        $san = mysqli_num_rows($q_san);
       }
 
       $software = 0;
@@ -741,12 +730,6 @@
       if ($routes > 0) {
         print "Route Tables ";
         $q_string = "delete from routing    where route_companyid = " . $remove;
-        $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      }
-
-      if ($san > 0) {
-        print "SAN ";
-        $q_string = "delete from san        where san_companyid   = " . $remove;
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 
