@@ -70,18 +70,10 @@ function attach_file( p_script_url, update ) {
 
   af_url += "&grp_organization="  + af_form.grp_organization.value;
   af_url += "&grp_name="          + encode_URI(af_form.grp_name.value);
-  af_url += "&grp_snow="          + encode_URI(af_form.grp_snow.value);
   af_url += "&grp_manager="       + af_form.grp_manager.value;
   af_url += "&grp_role="          + af_form.grp_role.value;
   af_url += "&grp_email="         + encode_URI(af_form.grp_email.value);
   af_url += "&grp_disabled="      + af_form.grp_disabled.value;
-  af_url += "&grp_magic="         + encode_URI(af_form.grp_magic.value);
-  af_url += "&grp_category="      + encode_URI(af_form.grp_category.value);
-  af_url += "&grp_changelog="     + encode_URI(af_form.grp_changelog.value);
-  af_url += "&grp_clfile="        + encode_URI(af_form.grp_clfile.value);
-  af_url += "&grp_clserver="      + encode_URI(af_form.grp_clserver.value);
-  af_url += "&grp_clscript="      + encode_URI(af_form.grp_clscript.value);
-  af_url += "&grp_report="        + encode_URI(af_form.grp_report.value);
   af_url += "&grp_status="        + af_form.grp_status.checked;
   af_url += "&grp_server="        + af_form.grp_server.checked;
   af_url += "&grp_import="        + af_form.grp_import.checked;
@@ -266,7 +258,6 @@ $(document).ready( function() {
   }
 ?></select></td>
   <td class="ui-widget-content">Group Name: <input type="text" name="grp_name" size="40"></td>
-  <td class="ui-widget-content">Service Now Name: <input type="text" name="grp_snow" size="40"></td>
   <td class="ui-widget-content">Group Role: <select name="grp_role">
 <option value="0">Unassigned</option>
 <?php
@@ -298,37 +289,6 @@ $(document).ready( function() {
 <option value="0">Enabled</option>
 <option value="1">Disabled</option>
 </select></td>
-</tr>
-</table>
-
-<table class="ui-styled-table">
-<tr>
-  <th class="ui-state-default" colspan="2">Magic Form</th>
-</tr>
-<tr>
-  <td class="ui-widget-content">Magic ID: <input type="text" name="grp_magic" size="40"></td>
-  <td class="ui-widget-content">Category: <input type="text" name="grp_category" size="40"></td>
-</tr>
-</table>
-
-<table class="ui-styled-table">
-<tr>
-  <th class="ui-state-default" colspan="4">Changelog Form</th>
-</tr>
-<tr>
-  <td class="ui-widget-content">E-Mail Address: <input type="text" name="grp_changelog" size="20"></td>
-  <td class="ui-widget-content">Filename Extension: <input type="text" name="grp_clfile" size="20"></td>
-  <td class="ui-widget-content">Server Filename: <input type="text" name="grp_clserver" size="20"></td>
-  <td class="ui-widget-content">Called Script: <input type="text" name="grp_clscript" size="20"></td>
-</tr>
-</table>
-
-<table class="ui-styled-table">
-<tr>
-  <th class="ui-state-default">Morning Report Form</th>
-</tr>
-<tr>
-  <td class="ui-widget-content">Morning Report Order: <input type="text" name="grp_report" size="30"></td>
 </tr>
 </table>
 
