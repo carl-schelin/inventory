@@ -117,7 +117,7 @@
       $inv_appadmin = 0;
       $q_string  = "select grp_id ";
       $q_string .= "from a_groups ";
-      $q_string .= "where grp_name = \"" . $appadmin . "\" or grp_snow = \"" . $appadmin . "\" and grp_disabled = 0 ";
+      $q_string .= "where grp_name = \"" . $appadmin . "\" and grp_disabled = 0 ";
       $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_groups) == 0) {
         $grp_test = explode(" ", $appadmin);
