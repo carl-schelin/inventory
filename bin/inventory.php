@@ -501,22 +501,6 @@
       if (mysqli_num_rows($q_interface) > 0) {
         print "There are " . mysqli_num_rows($q_interface) . " interface records for " . $a_inventory['inv_name'] . "\n";
         $interface = mysqli_num_rows($q_interface);
-        while ($a_interface = mysqli_fetch_array($q_interface)) {
-          $q_string  = "select vuln_id ";
-          $q_string .= "from vulnerabilities ";
-          $q_string .= "where vuln_interface = " . $a_interface['int_id'];
-          $q_vulnerabilities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_vulnerabilities) > 0) {
-            print " -- There are " . mysqli_num_rows($q_vulnerabilities) . " vulnerability records for " . $a_interface['int_addr'] . "\n";
-          }
-          $q_string  = "select vul_id ";
-          $q_string .= "from vulnowner ";
-          $q_string .= "where vul_interface = " . $a_interface['int_id'];
-          $q_vulnowner = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_vulnowner) > 0) {
-            print " -- There are " . mysqli_num_rows($q_vulnowner) . " vulnerability ticket records for " . $a_interface['int_addr'] . "\n";
-          }
-        }
       }
 
       $issues = 0;
@@ -682,13 +666,6 @@
         $q_string .= "where int_companyid = " . $remove . " ";
         $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         if (mysqli_num_rows($q_interface) > 0) {
-          while ($a_interface = mysqli_fetch_array($q_interface)) {
-            $q_string = "delete from vulnerabilities where vuln_interface = " . $a_interface['int_id'];
-            $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-
-            $q_string = "delete from vulnowner where vul_interface = " . $a_interface['int_id'];
-            $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          }
           $q_string = "delete from interface where int_companyid = " . $remove;
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         }
