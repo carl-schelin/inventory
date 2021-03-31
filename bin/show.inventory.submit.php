@@ -121,9 +121,6 @@
       case 'issues':
       case 'i':
         break;
-      case 'vulnerabilities':
-      case 'v':
-        break;
       case 'all':
       case 'a':
       case '*':
@@ -374,7 +371,6 @@
     $body .= "  <li><b><u>n</u>etwork</b> - An e-mail will be returned containing the basic information plus the network interfaces.</li>\n";
     $body .= "  <li><b><u>r</u>oute/<u>r</u>outing</b> - An e-mail will be returned containing basic information plus a list of the baseline routes.</li>\n";
     $body .= "  <li><b><u>i</u>ssues</b> - An e-mail will be returned containing basic information plus a list of open issues.</li>\n";
-    $body .= "  <li><b><u>v</u>ulnerabilities</b> - An e-mail will be returned containing a list of vulnerabilities.</li>\n";
     $body .= "</ul>\n\n";
 
     $body .= "<p>This mail box is not monitored, please do not reply.</p>\n\n";
@@ -1281,52 +1277,6 @@
         $output .= "  <td>" . $a_routing['route_desc']                    . "</td>\n";
         $output .= "  <td>" . $a_routing['route_update']                  . "</td>\n";
         $output .= "</tr>\n";
-      }
-      $output .= "</table>\n\n";
-    }
-
-# vulnerability table
-    if (substr($action, 0, 1) == 'v' || $action == "*" || substr($action, 0, 1) == 'a') {
-      $output .= "<table width=80%>\n";
-      $output .= "<tr>\n";
-      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Vulnerability Listing</th>\n";
-      $output .= "</tr>\n";
-      $output .= "<tr style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">\n";
-      $output .= "  <th>IP</th>\n";
-      $output .= "  <th>ID</th>\n";
-      $output .= "  <th>Vulnerability</th>\n";
-      $output .= "  <th>Severity</th>\n";
-      $output .= "  <th>Seen</th>\n";
-      $output .= "</tr>\n";
-
-      $q_string  = "select int_id,int_addr ";
-      $q_string .= "from interface ";
-      $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " ";
-      $q_string .= "order by int_server ";
-      $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_interface) > 0) {
-        while ($a_interface = mysqli_fetch_array($q_interface)) {
-
-          $q_string  = "select vuln_securityid,vuln_date,sev_name,sec_name ";
-          $q_string .= "from vulnerabilities ";
-          $q_string .= "left join security  on security.sec_id            = vulnerabilities.vuln_securityid ";
-          $q_string .= "left join severity  on severity.sev_id            = security.sec_severity ";
-          $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " and vuln_delete = 0 ";
-          $q_string .= "order by vuln_securityid ";
-          $q_vulnerabilities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          while ($a_vulnerabilities = mysqli_fetch_array($q_vulnerabilities)) {
-
-            $class = "ui-widget-content";
-
-            $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
-            $output   .= "  <td>"                  . $a_interface['int_addr']              . "</td>\n";
-            $output   .= "  <td class=\"delete\">" . $a_vulnerabilities['vuln_securityid'] . "</td>\n";
-            $output   .= "  <td>"                  . $a_vulnerabilities['sec_name']        . "</td>\n";
-            $output   .= "  <td>"                  . $a_vulnerabilities['sev_name']        . "</td>\n";
-            $output   .= "  <td>"                  . $a_vulnerabilities['vuln_date']       . "</td>\n";
-            $output .= "</tr>\n";
-          }
-        }
       }
       $output .= "</table>\n\n";
     }
