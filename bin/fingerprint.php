@@ -141,16 +141,6 @@
     }
   }
 
-# the goal here is to populate the maintenance bits when it's time for the server to be updated
-# and also to let you individually identify servers that should be disabling the bigfix agent
-# once patching is done.
-
-# first off, get the bigfix bit from the inventory
-# second, get the timezone the server is using
-# then calculate the window, 11pm Central to 5am Central
-# the set the maintenance start and end times
-
-
   $dayname = array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
   $maintday = $dayname['0'];
   $maintstart = 0;
