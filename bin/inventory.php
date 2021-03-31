@@ -431,7 +431,6 @@
 #backups.sql:       `bu_companyid`    int(10) NOT NULL default '0',
 #cluster.sql:       `clu_companyid`   int(10) NOT NULL default '0',
 #filesystem.sql:    `fs_companyid`    int(10) NOT NULL default '0',
-#firewall.sql:      `fw_companyid`    int(8)  NOT NULL default '0',
 #hardware.sql:      `hw_companyid`    int(8)  NOT NULL default '0',
 #interface.sql:     `int_companyid`   int(10) NOT NULL default '0',
 #inventory.sql:     `inv_companyid`   int(10) NOT NULL default '0',
@@ -486,16 +485,6 @@
       if (mysqli_num_rows($q_filesystem) > 0) {
         print "There are " . mysqli_num_rows($q_filesystem) . " filesystem records for " . $a_inventory['inv_name'] . "\n";
         $filesystem = mysqli_num_rows($q_filesystem);
-      }
-
-      $firewall = 0;
-      $q_string  = "select fw_companyid ";
-      $q_string .= "from firewall ";
-      $q_string .= "where fw_companyid = " . $remove . " ";
-      $q_firewall = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_firewall) > 0) {
-        print "There are " . mysqli_num_rows($q_firewall) . " firewall records for " . $a_inventory['inv_name'] . "\n";
-        $firewall = mysqli_num_rows($q_firewall);
       }
 
       $hardware = 0;
@@ -716,12 +705,6 @@
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 
-      if ($alarms > 0) {
-        print "Alarms ";
-        $q_string = "delete from alarms     where alarm_companyid = " . $remove;
-        $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      }
-
       if ($backups > 0) {
         print "Backups ";
         $q_string = "delete from backups    where bu_companyid    = " . $remove;
@@ -737,12 +720,6 @@
       if ($filesystem > 0) {
         print "Filesystem ";
         $q_string = "delete from filesystem where fs_companyid    = " . $remove;
-        $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      }
-
-      if ($firewall > 0) {
-        print "Firewall ";
-        $q_string = "delete from firewall   where fw_companyid    = " . $remove;
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 
