@@ -436,7 +436,6 @@
 #inventory.sql:     `inv_companyid`   int(10) NOT NULL default '0',
 #ip_addresses.sql:  `ip_companyid`    int(10) NOT NULL default '0',
 #issue.sql:         `iss_companyid`   int(10) NOT NULL default '0',
-#outage.sql:        `out_companyid`   int(10) NOT NULL default '0',
 #packages.sql:      `pkg_inv_id`      int(10) NOT NULL default '0',
 #retire.sql:        `ret_companyid`   int(10) NOT NULL default '0',
 #routing.sql:       `route_companyid` int(10) NOT NULL default '0',
@@ -560,16 +559,6 @@
             print " -- There are " . mysqli_num_rows($q_report) . " morning report entries for issue " . $a_issue['iss_id'] . "\n";
           }
         }
-      }
-
-      $outages = 0;
-      $q_string  = "select out_companyid ";
-      $q_string .= "from outage ";
-      $q_string .= "where out_companyid = " . $remove . " ";
-      $q_outage = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_outage) > 0) {
-        print "There are " . mysqli_num_rows($q_outage) . " outage records for " . $a_inventory['inv_name'] . "\n";
-        $outages = mysqli_num_rows($q_outage);
       }
 
       $packages = 0;
@@ -762,12 +751,6 @@
           $q_string = "delete from issue      where iss_companyid   = " . $remove;
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         }
-      }
-
-      if ($outages > 0) {
-        print "Outages ";
-        $q_string = "delete from outage     where out_companyid   = " . $remove;
-        $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 
       if ($packages > 0) {
