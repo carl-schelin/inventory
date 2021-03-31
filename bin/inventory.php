@@ -428,7 +428,6 @@
 # Need to grep for 'companyid' and in a couple of places, 'inv_id'
 # cd /var/tmp/mysql/carl/inventory/inventory
 # egrep "(companyid|inv_id)" *sql
-#alarms.sql:        `alarm_companyid` int(10) NOT NULL default '0',
 #backups.sql:       `bu_companyid`    int(10) NOT NULL default '0',
 #cluster.sql:       `clu_companyid`   int(10) NOT NULL default '0',
 #filesystem.sql:    `fs_companyid`    int(10) NOT NULL default '0',
@@ -459,16 +458,6 @@
 
 # if we're here, we do want to delete the server.
 # let's show the number of entries for each of the tables for this server id.
-      $alarms = 0;
-      $q_string  = "select alarm_companyid ";
-      $q_string .= "from alarms ";
-      $q_string .= "where alarm_companyid = " . $remove . " ";
-      $q_alarms = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_alarms) > 0) {
-        $alarms = mysqli_num_rows($q_alarms);
-        print "There are " . mysqli_num_rows($q_alarms) . " alarm records for " . $a_inventory['inv_name'] . "\n";
-      }
-
       $backups = 0;
       $q_string  = "select bu_companyid ";
       $q_string .= "from backups ";
