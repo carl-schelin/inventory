@@ -574,7 +574,8 @@
       $output .= "  <ul>\n";
       $output .= "    <li><strong>Highlighted</strong> - This interface is the <span class=\"ui-state-highlight\">Default Route</span>.</li>\n";
       $output .= "    <li><strong>Highlighted</strong> - This hostname either doesn't match the resolved hostname or is simply <span class=\"ui-state-error\">not in DNS</span>. If incorrect or incomplete, the identified DNS entry will be displayed. If no DNS entry, it will show the IP Address. Not all interfaces need to be in DNS but they will be highlighted if not.</li>\n";
-      $output .= "    <li><strong>Delete (x)</strong> - Clicking the <strong>x</strong> will delete this interface from this server.</li>\n";
+      $output .= "    <li><strong>Delete</strong> - Clicking the <strong>Delete</strong> button will delete this interface from this server.</li>\n";
+      $output .= "    <li><strong>Bridge</strong> - A bridge interface will be designed with a (b).</li>\n";
       $output .= "    <li><strong>Virtual Memberships</strong> - If a physical interface is a member of a virtual interface, it will be designated with a &gt; to the left of the name and will listed under the virtual interface. The main virtual interface of the group will be designated with (r). If Group or Teaming names are used, they will be listed next to the physical members of the group.\n";
       $output .= "    <ul>\n";
       $output .= "      <li><strong>Solaris</strong> virtual interfaces end in :number (e1000g1:1, e1000g5:1, etc).</li>\n";
@@ -721,6 +722,10 @@
           $redundancy = '';
           if ($a_interface['int_redundancy'] > 0) {
             $redundancy = ' (r)';
+# new bridge interface
+            if ($a_interface['int_redundancy'] == 12) {
+              $redundancy = ' (b)';
+            }
           }
           $virtual = '';
           if ($a_interface['int_virtual'] > 0) {
@@ -783,7 +788,7 @@
           $q_string .= "int_eth,int_mask,int_switch,int_groupname,int_vaddr,int_veth,int_vgate,";
           $q_string .= "int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,";
           $q_string .= "itp_description,int_gate,int_update,usr_name,int_nagios,int_openview,";
-          $q_string .= "int_management,int_backup,int_ip6,int_login ";
+          $q_string .= "int_redundancy,int_management,int_backup,int_ip6,int_login ";
           $q_string .= "from interface ";
           $q_string .= "left join inttype on inttype.itp_id = interface.int_type ";
           $q_string .= "left join users on users.usr_id = interface.int_user ";
@@ -876,6 +881,14 @@
               if ($a_redundancy['int_verified']) {
                 $checked = "&#x2713;";
               }
+              $redundancy = '';
+              if ($a_redundancy['int_redundancy'] > 0) {
+                $redundancy = ' (r)';
+# new bridge interface
+                if ($a_redundancy['int_redundancy'] == 12) {
+                  $redundancy = ' (b)';
+                }
+              }
               $virtual = '';
               if ($a_redundancy['int_virtual'] > 0) {
                 $virtual = ' (v)';
@@ -917,7 +930,7 @@
 
               $output .= "<tr>\n";
               $output .=   "<td"          . $defaultdel . ">"   . $linkdel                                                                  . "</td>\n";
-              $output .= "  <td"          . $default    . ">> " . $linkstart . $servername . $group . $monitor . $management . $backups . $login . $linkend . "</td>\n";
+              $output .= "  <td"          . $default    . ">> " . $linkstart . $servername . $redundancy , $group . $monitor . $management . $backups . $login . $linkend . "</td>\n";
               $output .= "  <td"          . $defaultdel . " title=\"" . $fwdtitle . "\">" . $linkstart . $forward                 . $linkend   . "</td>\n";
               $output .= "  <td"          . $defaultdel . " title=\"" . $revtitle . "\">" . $linkstart . $reverse                . $linkend   . "</td>\n";
               $output .= "  <td"          . $default    . ">"   . $linkstart . $a_redundancy['int_face']   . $virtual . $linkend            . "</td>\n";
@@ -1031,6 +1044,14 @@
                   if ($a_secondary['int_verified']) {
                     $checked = "&#x2713;";
                   }
+                  $redundancy = '';
+                  if ($a_secondary['int_redundancy'] > 0) {
+                    $redundancy = ' (r)';
+# new bridge interface
+                    if ($a_secondary['int_redundancy'] == 12) {
+                      $redundancy = ' (b)';
+                    }
+                  }
                   $virtual = '';
                   if ($a_secondary['int_virtual'] > 0) {
                     $virtual = ' (v)';
@@ -1072,7 +1093,7 @@
 
                   $output .= "<tr>\n";
                   $output .=   "<td"          . $defaultdel . ">"   . $linkdel                                                                  . "</td>\n";
-                  $output .= "  <td"          . $default    . ">>> " . $linkstart . $a_secondary['int_server'] . $group . $monitor . $management . $backups . $login . $linkend . "</td>\n";
+                  $output .= "  <td"          . $default    . ">>> " . $linkstart . $a_secondary['int_server'] . $redundancy . $group . $monitor . $management . $backups . $login . $linkend . "</td>\n";
                   $output .= "  <td"          . $defaultdel . " title=\"" . $fwdtitle . "\">" . $linkstart . $forward                 . $linkend   . "</td>\n";
                   $output .= "  <td"          . $defaultdel . " title=\"" . $revtitle . "\">" . $linkstart . $reverse                . $linkend   . "</td>\n";
                   $output .= "  <td"          . $default    . ">"   . $linkstart . $a_secondary['int_face']   . $virtual . $linkend            . "</td>\n";
