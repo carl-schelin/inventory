@@ -551,7 +551,6 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
 <ul>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/incident.php');">Incident Management Listing</a> - All production devices here.</li>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/serverstats.php');">Device Growth Chart</a> - By year, by month, and graphically.</li>
-  <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/contracts.php');">Lynda's Support Contract Report</a> - Basically duplicated Lynda Lilly's spreadsheet for what's in the Inventory.</li>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/support.contract.php');">Support Contract</a> - Shows the support details for your group's Active devices.</li>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/licenses.php');">Software Licenses</a> - Shows all software and license information.</li>
 <?php
