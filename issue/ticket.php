@@ -236,7 +236,6 @@ function clear_fields() {
 <?php
   if ($formVars['id'] > 0) {
     print "  show_file('support.mysql.php?update=-1&id=" . $formVars['id'] . "');\n";
-    print "  show_file('morning.mysql.php?update=-1&id=" . $formVars['id'] . "&server=" . $formVars['server'] . "');\n";
     print "  show_file('comments.mysql.php?update=-1&id=" . $formVars['id'] . "');\n";
     print "  show_file('shipping.mysql.php?update=-1&id=" . $formVars['id'] . "&hw_server=" . $formVars['server'] . "');\n";
   }
@@ -451,7 +450,6 @@ $(document).ready( function() {
 <ul>
   <li><a href="#information"><?php print $a_inventory['inv_name']; ?> Information</a></li>
   <li><a href="#support">Support Form</a></li>
-  <li><a href="#morning">Morning Report</a></li>
   <li><a href="#problem">Problem Form</a></li>
   <li><a href="#hardware">Hardware Form</a></li>
 </ul>
@@ -771,101 +769,6 @@ $(document).ready( function() {
 
 </div>
 
-
-<div id="morning">
-
-<table class="ui-styled-table">
-<tr>
-  <th class="ui-state-default"><a href="javascript:;" onmousedown="toggleDiv('morning-hide');">Morning Report Management</a></th>
-  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('morning-help');">Help</a></th>
-</tr>
-</table>
-
-<div id="morning-help" style="display: none">
-
-<div class="main-help ui-widget-content">
-
-<p>This page lets you create a summary of the issue to be published in the Morning Report. You create a short line describing 
-the issue along with the Status.</p>
-
-<p>While you can make changes and update the information, until you click the <strong>Publish</strong> button, the Morning Report
-doesn't change.</p>
-
-<p>The <strong>Status</strong> drop down lets you advise Operations of any system related problems.</p>
-
-<ul>
-  <li><strong>Major</strong> - This problem will cause a system outage and may impact customers of the system. It is a high priority for the team in question.</li>
-  <li><strong>Warning</strong> - This problem will cause a system outage but of a non-customer impacting system such as a Lab system.</li>
-  <li><strong>Resolved</strong> - This problem has been resolved and service is back to normal.</li>
-</ul>
-
-<p>As you work the problem, the Status may change from Major to Warning and finally to Resolved. Any tasks that are Resolved will be cleared from 
-the Morning Report at midnight. Note that you don't have to change all statuses to Resolved, just the final status.</p>
-
-<p>Between the Form and the Listing is an example area of what will be inserted into the Morning Report. The Server Name and Function are automatically added 
-to the first line and <strong>Update</strong> is added to subsequent updates.</p>
-
-</div>
-
-</div>
-
-<div id="morning-hide" style="display: none">
-
-<table class="ui-styled-table">
-<tr>
-  <td colspan="7" class="ui-widget-content button">
-<input type="button"                 name="mornpublish" value="Publish"       onClick="javascript:attach_morning('morning.mysql.php', 2);">
-<input type="button" disabled="true" name="mornupdate"  value="Update Report" onClick="javascript:attach_morning('morning.mysql.php', 1);hideDiv('morning-hide');">
-<input type="hidden" name="morning_id" value="0">
-<input type="button"                 name="mornbutton"  value="Save Report"   onClick="javascript:attach_morning('morning.mysql.php', 0);"></td>
-</tr>
-</table>
-
-<p></p>
-
-<table class="ui-styled-table">
-<tr>
-  <th class="ui-state-default" colspan="3">Morning Report Form</th>
-</tr>
-<tr>
-  <td class="ui-widget-content" colspan="3">Status: <input type="text" name="morn_text" size="80"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content" title="Leave Timestamp field set to Current Time to use current time, otherwise use YYYY-MM-DD HH:MM:SS.">Timestamp: <input type="text" name="morn_timestamp" value="Current Time" size="23"></td>
-  <td class="ui-widget-content">Support Tech: <select name="morn_user">
-<?php
-  $q_string  = "select usr_first,usr_last ";
-  $q_string .= "from users ";
-  $q_string .= "where usr_id = " . $_SESSION['uid'];
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_users = mysqli_fetch_array($q_users);
-
-  print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
-
-  $q_string  = "select usr_id,usr_first,usr_last ";
-  $q_string .= "from users ";
-  $q_string .= "where usr_disabled = 0 ";
-  $q_string .= "order by usr_last,usr_first";
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_users = mysqli_fetch_array($q_users)) {
-    print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
-  }
-?>
-</select></td>
-  <td class="ui-widget-content">Status: <select name="morn_status">
-<option value="0">No Status</option>
-<option selected value="1">Resolved</option>
-<option value="2">Warning</option>
-<option value="3">Major</option>
-</select></td>
-</tr>
-</table>
-
-</div>
-
-<span id="morning_mysql"></span>
-
-</div>
 
 
 <div id="problem">
