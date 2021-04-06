@@ -66,7 +66,6 @@
       <li><a href="<?php print $Hardwareroot; ?>/speed.php">Interface Speeds</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/zones.php">Network Zones</a></li>
       <li><a href="<?php print $Licenseroot; ?>/license.php">License Manager</a></li>
-      <li><a href="<?php print $Adminroot; ?>/patching.php">Patching Description</a></li>
       <li><a href="<?php print $Adminroot; ?>/maintenance.windows.php">Maintenance Windows</a></li>
       <li><a href="<?php print $Adminroot; ?>/product.php">Products and Services</a></li>
       <li><a href="<?php print $Adminroot; ?>/device.php">Device Types</a></li>
