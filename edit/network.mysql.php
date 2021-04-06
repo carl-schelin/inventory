@@ -930,7 +930,7 @@
 
               $output .= "<tr>\n";
               $output .=   "<td"          . $defaultdel . ">"   . $linkdel                                                                  . "</td>\n";
-              $output .= "  <td"          . $default    . ">> " . $linkstart . $servername . $redundancy , $group . $monitor . $management . $backups . $login . $linkend . "</td>\n";
+              $output .= "  <td"          . $default    . ">> " . $linkstart . $servername . $redundancy . $group . $monitor . $management . $backups . $login . $linkend . "</td>\n";
               $output .= "  <td"          . $defaultdel . " title=\"" . $fwdtitle . "\">" . $linkstart . $forward                 . $linkend   . "</td>\n";
               $output .= "  <td"          . $defaultdel . " title=\"" . $revtitle . "\">" . $linkstart . $reverse                . $linkend   . "</td>\n";
               $output .= "  <td"          . $default    . ">"   . $linkstart . $a_redundancy['int_face']   . $virtual . $linkend            . "</td>\n";
