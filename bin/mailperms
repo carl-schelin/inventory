@@ -1,0 +1,25 @@
+#!/bin/ksh
+
+# Program: mailperms
+# Owner: Carl Schelin
+# In order for the changelog entries to be visible, the permissions need to be 644 for the Mail directory.
+
+for i in changelog chglogali chglogdba chglogienv chgloglab chglogmob chglogmon chglognet chglogsba chglogscm chglogse chglogtdm chglogtss chglogvns chglogvtt chglogweb i3chglog windows
+do
+# for a Solaris box
+  if [[ -d /export/home/$i/Mail ]]
+  then
+    /usr/bin/chmod -R 664 /export/home/$i/Mail
+    /usr/bin/chmod 775 /export/home/$i/Mail
+    /usr/bin/chown -R $i:sysadmin /export/home/$i/Mail
+  fi
+
+# for inventory (RHEL)
+  if [[ -d /home/$i/Mail ]]
+  then
+    /bin/chmod -R 664 /home/$i/Mail
+    /bin/chmod 775 /home/$i/Mail
+    /bin/chown -R $i:sysadmin /home/$i/Mail
+  fi
+done
+

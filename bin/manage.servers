@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Script: manage.servers
+# Owner: Carl Schelin
+# Description: Ensure soft links are in place and then run the script that creates the data
+# Need to determine if the file exists and is a symbolic link
+# Then we need to see if the file exists over on the website and is > 0 bytes
+
+ADMIN=/usr/local/admin
+SERVERS=/var/www/html/inventory
+TEMP=/var/tmp
+HOSTNAME=`hostname|cut -f1 -d.`
+SVRRUN=/usr/local/httpd/bin
+WHOCARES="cschelin@internal.pri"
+
+grep apache /etc/passwd > /dev/null
+if [[ $? -eq 0 ]]
+then
+  OWNER="apache:sysadmin"
+fi
+
+grep webservd /etc/passwd > /dev/null
+if [[ $? -eq 0 ]]
+then
+  OWNER="webservd:sysadmin"
+fi
+
+# ensure file exists regardless; write to a temporary area to ensure the servers file continues to exist.
+/usr/local/bin/php $SVRRUN/servers.php | sort | uniq > $TEMP/servers
+
+# now copy it over the existing file.
+cp $TEMP/servers $SERVERS/servers
+
+# and remove the generated file
+rm $TEMP/servers
+
+# chown so the web site can write to it
+chown $OWNER $SERVERS/servers
+
+if [[ -f $ADMIN/etc/servers ]]
+then
+  OUTPUT=`/usr/bin/file -h $SERVERS/servers | grep symbolic`
+
+# if the file is NOT a symbolic link then the link has been broken
+# clear it and set it back up
+  if [[ -z $OUTPUT ]]
+  then
+    rm $ADMIN/etc/servers
+    ln -s $SERVERS/servers $ADMIN/etc/servers
+  fi
+else
+  ln -s $SERVERS/servers $ADMIN/etc/servers
+fi
+

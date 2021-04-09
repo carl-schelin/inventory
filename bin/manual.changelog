@@ -1,0 +1,13 @@
+#!/bin/ksh
+
+# this is the script used to manually process email'd changelogs that failed to process
+
+HOSTNAME=$(hostname)
+
+for i in `ls *@*`
+do
+  EMAIL="`echo $i | cut -f1 -d@`@${HOSTNAME}"
+  RANDPASS=`echo $i | cut -f5 -d.`
+  SUBJECT=`grep Subject: $i | cut -f2 -d\ `
+done
+

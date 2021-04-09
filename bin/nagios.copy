@@ -1,0 +1,20 @@
+#!/bin/ksh
+
+# Copy the configuration files over to the status server to be processed
+
+HOSTNAME=`hostname|cut -f1 -d.`
+if [[ $HOSTNAME = 'lnmt1cuomtool11' ]]
+then
+  SOURCE=/usr/local/httpd/htsecure
+fi
+if [[ $HOSTNAME = 'inventory' ]]
+then
+  SOURCE=/var/www/html
+fi
+
+scp $SOURCE/nagios/monitor.sqa.cfg    status.internal.pri:/var/tmp
+scp $SOURCE/nagios/monitor.lab.cfg    status.internal.pri:/var/tmp
+scp $SOURCE/nagios/monitor.prod.cfg   status.internal.pri:/var/tmp
+scp $SOURCE/nagios/monitor.loms.cfg   status.internal.pri:/var/tmp
+scp $SOURCE/nagios/monitor.switch.cfg status.internal.pri:/var/tmp
+
