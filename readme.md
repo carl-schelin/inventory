@@ -50,201 +50,246 @@ database cleanup:
 
 remove the following tables:
 
-no more RSDP:
+drop table alarm_blocks;
+drop table alarm_type;
+drop table alarms;
+drop table apigroups;
+drop table application;
+drop table bigfix;
+drop table business;
+drop table changelog;
+drop table checklist;
+drop table company;
+drop table config;
+drop table contact;
+drop table contacts;
+drop table events;
+drop table family;
+drop table faq;
+drop table faq_comment;
+drop table faq_detail;
+drop table faq_tags;
+drop table faq_votes;
+drop table firewall;
+drop table handoff;
+drop table intvuln;
+drop table ip_addresses;
+drop table ip_subnets;
+drop table keywords;
+drop table maint;
+drop table message_group;
+drop table issue_morning;
+drop table networks;
+drop table objects;
+drop table oncall;
+drop table outage;
+drop table patching;
+drop table policy;
+drop table policy_description;
+drop table policy_type;
+drop table poll_answers;
+drop table poll_questions;
+drop table polls;
+drop table psaps;
+drop table psaps_arch;
+drop table purchaseorder;
+drop table report;
+drop table repos;
+drop table resources;
+drop table retire;
+drop table rh_groups;
+drop table rh_packages;
+drop table rh_selections;
+drop table rights;
+drop table rsdp_accept;
+drop table rsdp_applications;
+drop table rsdp_backups;
+drop table rsdp_check;
+drop table rsdp_comments;
+drop table rsdp_datacenter;
+drop table rsdp_designed;
+drop table rsdp_filesystem;
+drop table rsdp_infosec;
+drop table rsdp_infrastructure;
+drop table rsdp_interface;
+drop table rsdp_osteam;
+drop table rsdp_platform;
+drop table rsdp_san;
+drop table rsdp_server;
+drop table rsdp_status;
+drop table rsdp_tickets;
+drop table rules;
+drop table san;
+drop table security;
+drop table source_node;
+drop table spectre;
+drop table sudoers;
+drop table swbackup;
+drop table vlanz;
+drop table vulnerabilities;
+drop table vulnowner;
+drop table west;
 
-There's an xxxx    edit/config set of files that need to be edited
 
-x drop table alarm_blocks;
-x drop table alarm_type;
-x drop table alarms;
-x drop table apigroups;
-x drop table application;
-X drop table bigfix;
-x drop table business;
-x drop table checklist;
-x drop table company;
-x drop table config;
-x drop table contact;
-x drop table contacts;
-x drop table events;
-x drop table family;
-x drop table faq;
-x drop table faq_comment;
-x drop table faq_detail;
-x drop table faq_tags;
-x drop table faq_votes;
-x drop table firewall;
-x drop table handoff;
-x drop table intvuln;
-x drop table ip_addresses;
-x drop table ip_subnets;
-x drop table keywords;
-x drop table maint;
-x drop table message_group;
-x drop table objects;
-x drop table oncall;
-x drop table outage;
-x drop table policy;
-x drop table policy_description;
-x drop table policy_type;
-x drop table poll_answers;
-x drop table poll_questions;
-x drop table polls;
-x drop table psaps;
-x drop table psaps_arch;
-x drop table repos;
-x drop table resources;
-x drop table retire;
-x drop table rh_groups;
-x drop table rh_packages;
-x drop table rh_selections;
-x drop table rights;
-x drop table rsdp_accept;
-x drop table rsdp_applications;
-x drop table rsdp_backups;
-x drop table rsdp_check;
-x drop table rsdp_comments;
-x drop table rsdp_datacenter;
-x drop table rsdp_designed;
-x drop table rsdp_filesystem;
-x drop table rsdp_infosec;
-x drop table rsdp_infrastructure;
-x drop table rsdp_interface;
-x drop table rsdp_osteam;
-x drop table rsdp_platform;
-x drop table rsdp_san;
-x drop table rsdp_server;
-x drop table rsdp_status;
-x drop table rsdp_tickets;
-x drop table rules;
-x drop table san;
-x drop table security;
-x drop table source_node;
-x drop table spectre;
-x drop table sudoers;
-x drop table swbackup;
-x drop table vlanz;
-x drop table vulnerabilities;
-x drop table vulnowner;
-x drop table west;
+# keep these tables, for now; identify which ones would be pre-populated
 
-
-# keep these tables, for now;
-
-a_groups
-backups
-bugs
-bugs_detail
-business_unit
-certs
-changelog
-chkerrors
-chkserver
-cities
-cluster
-comments
-country
-department
-device
-email
-environment
-excludes
-features
-features_detail
-filesystem
-grouplist
-hardware
-help
-images
-int_duplex
-int_media
-int_plugtype
-int_redundancy
-int_role
-int_speed
-int_volts
-interface
-inttype
-inventory
-ip_zones
-issue
-issue_detail
-issue_morning
-issue_support
-levels
-licenses
-loc_types
-locations
-log
-maint_window
-manageusers
-models
-modified
-modules
-mon_system
-mon_type
-monitoring
-networks
-operatingsystem
-organizations
-packages
-parts
-patching
-products
-projects
-purchaseorder
-report
-roles
-routing
-service
-severity
-software
-states
-support
-supportlevel
-sw_support
-sysgrp
-sysgrp_members
-syspwd
-tag_types
-tags
-themes
-titles
-users
-vlans
-zones
+x a_groups - should be empty on fresh installation
+x backups - should be empty on fresh installation
+x bugs - empty
+x bugs_detail - empty
+x business_unit - empty
+x certs - empty
+x chkerrors - empty - delete as part of the chkserver script?
+x chkserver - empty - same as chkerrors.
+x cities - no reason this can't be populated.
+x cluster - unused however could be used to identify server parents...
+x comments - should be empty
+x country - should save
+x department - should be empty
+x device - should be empty; part of the server nameing process
+x email - should be empty
+x environment - was from snow; should be empty though. maybe part of the location table?
+excludes - should be deleted
+x features - should be empty
+x features_detail - should be empty
+x filesystem - should be empty;
+x grouplist - connects users with groups
+x hardware - hardware table; probably can be empty
+x help - defines which help screen the user has already seen. should be empty
+x images - image descriptions for uploaded impages; should be empty
+x int_duplex - list of interface duplex types
+x int_media - list of interface media types
+x int_plugtype - list of system plug types
+x int_redundancy - interface redundancy listing
+x int_role - interface role
+x int_speed - interface speeds
+x int_volts - system voltage
+x interface - main interface table for systems; should be empty
+x inttype - interface type; management, application, etc.
+x inventory - main list of servers; should be empty
+x ip_zones - list of ip network zones - probably should be emptyu
+x issue - issue tracker - should be empty
+x issue_detail - detail record - should be empty
+x issue_support - who did you call for support; details about the call. should be empty;
+x levels - access levels for the inventory
+x licenses - license manager sub table for software; should be empty
+x loc_types - location types; probably should be empty
+x locations - location manager; should be empty
+x log - might make this an external file vs a table;
+x maint_window - list of maintenance windows used for servers; should be empty
+x manageusers
+x models - hardware table define model information
+x modified - notes who changed what. need to review this
+x modules - system modules; bug tracker, feature tracker.
+x mon_system - list of monitoring systems - 
+x mon_type - list of things to monitor.
+x monitoring - new monitoring system. should be empty.
+x operatingsystem - should be in the software manager
+x organizations - company organizations should be empty
+x packages - installed packages
+x parts -  hardware stuff; list of hardware types.
+x products - list of products for this installation; should be empty
+x projects - list of projects associated with products; should be empty
+x roles - roles groups have. should be empty probably.
+x routing - routing information for each server; should be empty
+x service - service class information. can probably stick around
+x severity - severity of a bug report or feature
+x software - server associations for software. much xfered to the software manager
+x states - part of locations
+x support - hardware support contract information. should be empty
+x supportlevel - response level from the vendor. should be empty
+x sw_support - software support contracts. should be empty
+x sysgrp - group imports from servers; should be empty
+x sysgrp_members - associations between users and what groups they're in
+x syspwd - user imports from servers; should be empty
+x tag_types - describes each management module type.
+x tags - tags for the various modules; should be empty
+x themes - system themes from jquery
+x titles - possible user titles. can probably be removed
+x users - user information
+x vlans - vlan table; part of the ip manager. should be empty
+x zones - time zones.
 
 
 table cleanup; where we drop columns.
 
+a_groups:
+
+alter table a_groups drop column grp_snow;
+alter table a_groups drop column grp_magic;
+alter table a_groups drop column grp_category;
+alter table a_groups drop column grp_changelog;
+alter table a_groups drop column grp_clfile;
+alter table a_groups drop column grp_clserver;
+alter table a_groups drop column grp_report;
+alter table a_groups drop column grp_clscript;
+
+
 inventory table:
 
-x alter table inventory drop column inv_bigfix;
-x alter table inventory drop column inv_ciscoamp;
-x alter table inventory drop column inv_managebigfix;
-x alter table inventory drop column inv_centrify;
-x alter table inventory drop column inv_adzone;
-x alter table inventory drop column inv_domain;
-x alter table inventory drop column inv_rsdp;
+alter table inventory drop column inv_bigfix;
+alter table inventory drop column inv_ciscoamp;
+alter table inventory drop column inv_managebigfix;
+alter table inventory drop column inv_centrify;
+alter table inventory drop column inv_adzone;
+alter table inventory drop column inv_domain;
+alter table inventory drop column inv_rsdp;
 
 users table:
 
-x alter table users drop column usr_bigfix;
+alter table users drop column usr_bigfix;
 
 
 Remove bigfix and ciscoamp from inventory edit page.
 remove centrify info
 
 
-purge the users table;
 
-x delete from users where usr_id > 2;
 
-purge the system info;
+table purging; these tables should be empty upon new installation
 
-x delete from syspwd;
-x delete from sysgrp;
-x delete from sysgrp_members;
+backups:
+
+delete from backups;
+
+bugs:
+
+delete from bugs;
+delete from bugs_detail;
+
+business_unit;
+
+delete from business_unit;
+
+certs:
+
+delete from certs;
+
+cluster:
+
+delete from cluster;
+
+log:
+
+delete from log; 
+
+system info;
+
+delete from syspwd;
+delete from sysgrp;
+delete from sysgrp_members;
+
+users table;
+
+delete from users where usr_id > 2; > 1 for admin only
+
+manageusers table;
+
+delete from manageusers;
+
+filesystems table;
+
+delete from filesystem; except for existing installations;
 
 
 done checking databases:
