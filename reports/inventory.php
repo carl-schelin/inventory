@@ -12,6 +12,17 @@
 
   logaccess($db, $formVars['uid'], $package, "Accessing the script");
 
+# initialize then set if it exists.
+  $formVars['group']     = "";
+  $formVars['product']   = "";
+  $formVars['project']   = "";
+  $formVars['inwork']    = "";
+  $formVars['country']   = "";
+  $formVars['state']     = "";
+  $formVars['city']      = "";
+  $formVars['location']  = "";
+  $formVars['csv']       = "";
+
   $formVars['group']     = clean($_GET['group'],      10);
   $formVars['product']   = clean($_GET['product'],    10);
   $formVars['project']   = clean($_GET['project'],    10);
