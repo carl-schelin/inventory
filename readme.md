@@ -238,6 +238,7 @@ alter table inventory drop column inv_rsdp;
 users table:
 
 alter table users drop column usr_bigfix;
+alter table users drop column usr_altemail; - this is used for changelog
 
 
 Remove bigfix and ciscoamp from inventory edit page.
