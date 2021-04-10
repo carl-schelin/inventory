@@ -22,7 +22,7 @@
     $debug = 'yes';
   }
 
-# use the group name. The email will identify the correct list of users (maybe the changelog name?)
+# use the group name. The email will identify the correct list of users
   $q_string  = "select inv_name,fs_mount,fs_group,grp_name ";
   $q_string .= "from filesystem ";
   $q_string .= "left join inventory on inventory.inv_id = filesystem.fs_companyid ";
