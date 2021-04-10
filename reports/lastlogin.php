@@ -54,8 +54,8 @@
 
 <div class="main-help ui-widget-content">
 
-<p>This provides a list of all installed products. Clicking on the link brings up a document with three 
-tabs displaying all the hardware associated with the product, the installed software, and all changelog entries.</p>
+<p>This provides a list of all installed products. Clicking on the link brings up a document with two 
+tabs displaying all the hardware associated with the product and the software.</p>
 
 </div>
 
