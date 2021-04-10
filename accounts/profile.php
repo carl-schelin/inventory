@@ -49,14 +49,12 @@ function attach_users(p_script_url, update) {
   au_url += "&usr_deptname="   + au_form.usr_deptname.value;
   au_url += "&usr_manager="    + au_form.usr_manager.value;
   au_url += "&usr_title="      + au_form.usr_title.value;
-  au_url += "&usr_clientid="   + encode_URI(au_form.usr_clientid.value);
   au_url += "&usr_theme="      + au_form.usr_theme.value;
   au_url += "&usr_passwd="     + encode_URI(au_form.usr_passwd.value);
   au_url += "&usr_reenter="    + encode_URI(au_form.usr_reenter.value);
   au_url += "&usr_reset="      + au_form.usr_reset.checked;
   au_url += "&usr_notify="     + encode_URI(au_form.usr_notify.value);
   au_url += "&usr_freq="       + encode_URI(au_form.usr_freq.value);
-  au_url += "&usr_report="     + au_form.usr_report.checked;
   au_url += "&usr_confirm="    + au_form.usr_confirm.checked;
   au_url += "&usr_page="       + encode_URI(au_form.usr_page.value);
   au_url += "&usr_pagemail="   + encode_URI(au_form.usr_pagemail.value);
