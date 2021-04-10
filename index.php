@@ -562,8 +562,6 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
 ?>
   <li><a href="<?php print $Reportroot; ?>/hostname.php">Hostname Encode/Decode</a> - Build hostname here or figure out what a hostname means.</li>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/physical.php');">Show all Physical Systems</a> - Lists every system where the MAC is not 00:50:56 (VMWare).</li>
-  <li><a href="<?php print $Reportroot; ?>/changelog.php">Changelog by Server or Service</a> - List all changes for servers and services.</li>
-  <li><a href="<?php print $Reportroot; ?>/changelog.report.php">Changelog by Month and Year</a> - List all changes for a month. Default is July 2016. Add year and month on the URL to change reports (see Help).</li>
 </ul>
 
 </div>
