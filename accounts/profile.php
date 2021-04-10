@@ -50,7 +50,6 @@ function attach_users(p_script_url, update) {
   au_url += "&usr_manager="    + au_form.usr_manager.value;
   au_url += "&usr_title="      + au_form.usr_title.value;
   au_url += "&usr_clientid="   + encode_URI(au_form.usr_clientid.value);
-  au_url += "&usr_altemail="   + encode_URI(au_form.usr_altemail.value);
   au_url += "&usr_theme="      + au_form.usr_theme.value;
   au_url += "&usr_passwd="     + encode_URI(au_form.usr_passwd.value);
   au_url += "&usr_reenter="    + encode_URI(au_form.usr_reenter.value);
@@ -113,16 +112,6 @@ $(document).ready( function() {
     <li><strong>Reset User Password</strong> - Enter in a new password for the user here.</li>
     <li><strong>Re-Enter Password</strong> - Enter the password in again. If the passwords don't match, the two boxes <span class="ui-state-highlight">change to indicate</span> a mismatch</li>
     <li><strong>Force Password Reset on Next Login</strong> - Check this box if you're resetting a user password or otherwise want to force a password reset.</li>
-  </ul></li>
-  <li><strong>Changelog Form</strong>
-  <ul>
-    <li><strong>Remedy ClientID</strong> - This is the user's ID in Remedy which is the same as your Windows Login ID. When changelog's are emailed in, this ID is used to set the owner of the ticket. If this is missing, the email won't be sent and an email will be sent to the user indicating an error.</li>
-    <li><strong>Alternate E-Mail</strong> - If the user will be sending changelog emails from other systems such as a jump server, enter that email here.</li>
-  </ul></li>
-  <li><strong>Morning Report Form</strong>
-  <ul>
-    <li><strong>Receive the Techops Morning Report</strong> - Select this if you wish to receive the Morning Report. This provides a summary of important issues as provided by selected teams in TechOps.</li>
-    <li><strong>cc On Group Responses</strong> - Do you want to receive a copy of the confirmation email that is a reply to the status update sent in by a member of your group? When someone on your team sends a status report in via email, they receive a reply from the system indicating the email was received successfully. When you check this box, you also receive a copy of this confirmation reply.</li>
   </ul></li>
   <li><strong>Website Certificate Form</strong>
   <ul>
@@ -219,26 +208,6 @@ $(document).ready( function() {
   <td class="ui-widget-content" id="reenter">Re-Enter Password <input type="password" name="usr_reenter" size="30" onKeyDown="javascript:show_file('validate.password.php?password=' + usr_passwd.value + '&reenter=' + usr_reenter.value);" 
 onKeyUp="javascript:show_file('validate.password.php?password=' + usr_passwd.value + '&reenter=' + usr_reenter.value);"></td>
   <td class="ui-widget-content"><label>Force Password Reset on Next Login? <input type="checkbox" checked="true" name="usr_reset"></label></td>
-</tr>
-</table>
-
-<table class="ui-styled-table">
-<tr>
-  <th class="ui-state-default" colspan="2">Changelog Form</th>
-</tr>
-<tr>
-  <td class="ui-widget-content">Remedy ClientID: <input type="text" name="usr_clientid" size="20"></td>
-  <td class="ui-widget-content">Alternate E-Mail <input type="text" name="usr_altemail" autocomplete="off" size="80"></td>
-</tr>
-</table>
-
-<table class="ui-styled-table">
-<tr>
-  <th class="ui-state-default" colspan="2">Morning Report Form</th>
-</tr>
-<tr>
-  <td class="ui-widget-content"><label>Receive The Techops Morning Report: <input type="checkbox" name="usr_report"></label></td>
-  <td class="ui-widget-content"><label>cc On Group Responses: <input type="checkbox" name="usr_confirm"></label></td>
 </tr>
 </table>
 
