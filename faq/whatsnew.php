@@ -51,12 +51,9 @@ $(document).ready( function() {
   <li><a href="#home">Home Page</a></li>
   <li><a href="#tags">Tag Clouds</a></li>
   <li><a href="#search">Search</a></li>
-  <li><a href="#rsdp">RSDP</a></li>
   <li><a href="#bugs">Bugs!</a></li>
   <li><a href="#features">Feature Requests</a></li>
   <li><a href="#exchange">InfoExchange</a></li>
-  <li><a href="#morning">Morning Report</a></li>
-  <li><a href="#servers">Device Listings</a></li>
   <li><a href="#updates">Progress!</a></li>
 </ul>
 
@@ -190,47 +187,6 @@ on 'VA' and then clicking on 'Culpeper' in the City column will further reduce t
 </div>
 
 
-<div id="rsdp">
-
-<h4>Rapid Server Deployment Process Module (RSDP)</h4>
-
-<p>This module is the largest and most complicated part of the Inventory. It really could be a different package however it 
-does use some information from the main Inventory and is connected where servers can be added to the Inventory at the press 
-of a button.</p>
-
-<p>The first part of the work here was to reorganize the scripts into their own area and then further organize them to make 
-them easier to manage. Once that was done, work was done to bring them into line with the user interface concepts used by 
-the Inventory. This included a full code review to ensure all code was brought up to 3.0 standards.</p>
-
-<p>Some of the larger changes:</p>
-
-<ul>
-  <li>Changed the view method. The default now is to show all the Projects and drill down through the Server listing to the 
-Task listing and then from there to any of the tasks that need to be done. In addition, the Orange menu gives you the ability to 
-go back to the Task or Server page or navigate to any of the Server Tasks.</li>
-  <li>Added Help to every page. Help provides information on what's expected and on any issues or notes about how the data 
-interacts with the rest of RSDP.</li>
-  <li>Added the ability to request a Ticket. This is in place with most of the RSDP tasks as a selectable toggle. If selected
-  <li>Added the ability to request a DNS Ticket. Under the System Installed task, you will see a list of all the IP addresses 
-associated with the project. You can select to have a ticket automatically created in this task.</li>
-  <li>The Interface and Network tasks have been greatly enhanced. You can design your configuration which is then clearly 
-presented to the Networking team to be completed as efficiently as possible.</li>
-  <li>Checklists have been added for most tasks. There are unique Task Checklists but in addition, groups can design their 
-own checklists for their tasks to ensure work has been successful.</li>
-</ul>
-
-<p>One specific note regarding the Interface and Network tasks is the addition of checkboxes indicating a necessary configuration 
-update for the Network Engineering team. Under the Server Build page, you would specifically check the 'I Need An IP' checkbox 
-which then displays all IP related fields under the Network task and if a physical system, check the 'I Need Switch Configuarion' 
-checkbox will display all Switch specific information. It's interesting to look at older (current) RSDP requests under the 
-Network Task and see no input fields because of this new feature.</p>
-
-<p>There are many other improvements throughout the system which should improve the experience and make the process of 
-requesting a server much more efficient.</p>
-
-
-</div>
-
 <div id="bugs">
 
 <h4>Bugs!</h4>
@@ -238,8 +194,8 @@ requesting a server much more efficient.</p>
 <p>The original bug reporting system was pretty minimal and the last thing to be updated. Now the system is quite a bit more 
 robust and able to let you report issues. The old bug data is there and I did work to address the reported bugs where I could.</p>
 
-
 </div>
+
 
 <div id="features">
 
@@ -250,6 +206,7 @@ more robust. In this case though, with more room to expand, you can request thin
 the tagging system or that is a bit more than you want to do (2,000 or 3,000 systems might be hard to tag).</p>
 
 </div>
+
 
 <div id="exchange">
 
@@ -276,63 +233,9 @@ module. Inventory 3.1 :) </p>
 </div>
 
 
-<div id="morning">
-
-<h4>Morning Report</h4>
-
-<p>The Morning Report app has been hosted on the Status Management site primarily due to the function of reporting the system 
-status for various group's. Since they are system related, I moved the Morning Report over to the Inventory. Initially there 
-isn't a reason for it to be in one place or the other except that the systems are in the Inventory.</p>
-
-<p>The primary benefit is that the Inventory also contains an Issue Tracker. The Issue Tracker has been modified to accept 
-one line "Morning Report" status messages. These single lines are then automatically inserted into the Morning Report when 
-updated in the Issue Tracker.</p>
-
-<p>This aligns with the idea of making changes in only one place. If a change is made in two or more places, then there is no 
-guarantee the data will be complete in either place.</p>
-
-</div>
-
-
-<div id="servers">
-
-<h4>Device Listings</h4>
-
-<p>Prior to I3, each group had to wait on the nightly rebuild of the various files that list the systems or software the group 
-manages. Alternately, they would contact me to rerun the script to regenerate a new file due to a recent change. I've also 
-had to manually enter a server when building one as part of the checklist is to copy some files from the new server to the 
-central location.</p>
-
-<p>New to this is under the <strong>Changelogs</strong> header. Previously only teams that had special requirements would be 
-able to rebuild their listings generally because it was a software or product listing vs a general list of devices. Now all 
-groups can regenerate their listings when needed.</p>
-
-<p>Of course the existing scripts didn't get lost. They'll still run at 4pm. But your group can now regenerate the list when 
-needed vs waiting.</p>
-
-<p>In addition you are now able to add applications to your listing. For example, in the Unix group Centrify is installed 
-on many systems. If a change is made to a Centrify specific user or configuration, rather than updating every possible 
-system that may be affected, a changelog entry is made just for centrify.</p>
-
-<p>This lets you create unique changelog management. The DBAs can create changelog entries for Schema's instead of a server 
-which may hold more than one Schema. Networking can create changelog entries for vlans which, like centrify, may be spread 
-across multiple devices.</p>
-
-<p>And since this is a custom entry, a report is ready to take you to a view of all the changelog entries for those custom 
-entries.</p>
-
-</div>
-
 <div id="updates">
 
 <h4>Progress!</h4>
-
-<p>Added a warning popup if you make a change to a form in RSDP that isn't the main form. For example, the interface information 
-is a list of interfaces that are associated with the new system. The form for managing the interfaces is a sub-form of the 
-main page. With a 'Save' and a 'Save And Exit' button, folks were getting confused and were losing form information because 
-they were thinking the two buttons also saved the form data. Now there is a visual warning (the Update/Add button box changes 
-color during editing to highlight the Update/Add options) and a popup that warns you that a form is unsaved. You can still 
-exit but at least you know the form data is lost.</p>
 
 <p>Added the ability to associate systems with Blade Chassis. In the device edit page, you'll find a <strong>Blade Chassis</strong>
 select menu where you can select the Blade Chassis this system is hosted in. Leave Row and Rack blank but put the slot 
