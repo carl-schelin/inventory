@@ -206,8 +206,6 @@ $(document).ready( function() {
 
 <ul>
   <li><a href="#group">Group Details</a></li>
-  <li><a href="#magic">Magic Configuration</a></li>
-  <li><a href="#changelog">Changelog Configuration</a></li>
 </ul>
 
 
@@ -217,19 +215,6 @@ $(document).ready( function() {
 
 </div>
 
-
-<div id="magic">
-
-<span id="magic_mysql"></span>
-
-</div>
-
-
-<div id="changelog">
-
-<span id="changelog_mysql"></span>
-
-</div>
 
 </div>
 
