@@ -70,7 +70,6 @@ $(document).ready( function() {
 <ul>
   <li><a href="#hardware">Hardware</a></li>
   <li><a href="#software">Software</a></li>
-  <li><a href="#changelog">Changelog</a></li>
 </ul>
 
 
@@ -154,79 +153,6 @@ $(document).ready( function() {
     print "  <td class=\"ui-widget-content\">" . $linkstart . $a_hardware['hw_update']            . $linkend . $checkmark . "</td>\n";
     print "</tr>\n";
 
-
-# this is the gather from all systems for the changelog part of the listing
-    $grpcount = 0;
-    $q_string  = "select grp_changelog,grp_clfile ";
-    $q_string .= "from a_groups ";
-    $q_string .= "where grp_changelog != ''";
-    $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    while ($a_groups = mysqli_fetch_array($q_groups)) {
-      $grouplist[$grpcount] = $a_groups['grp_changelog'];
-      $filename[$grpcount++] = "." . $a_groups['grp_clfile'];
-    }
-
-    $debug = '';
-    for ($i = 0; $i < count($grouplist); $i++) {
-      if (file_exists( $Sitedir . "/" . $grouplist[$i] . "/" . $a_hardware['inv_name'] . $filename[$i])) {
-        $svrlist = file($Sitedir . "/" . $grouplist[$i] . "/" . $a_hardware['inv_name'] . $filename[$i]);
-        for ($j = 0; $j < count($svrlist); $j++) {
-          $list = explode(" ", $svrlist[$j]);
-# create the data field
-          if ($list[0] == "Date:") {
-            switch($list[3]) {
-              case "Jan" : $month = "01"; break;
-              case "Feb" : $month = "02"; break;
-              case "Mar" : $month = "03"; break;
-              case "Apr" : $month = "04"; break;
-              case "May" : $month = "05"; break;
-              case "Jun" : $month = "06"; break;
-              case "Jul" : $month = "07"; break;
-              case "Aug" : $month = "08"; break;
-              case "Sep" : $month = "09"; break;
-              case "Oct" : $month = "10"; break;
-              case "Nov" : $month = "11"; break;
-              case "Dec" : $month = "12"; break;
-            }
-            if ($list[2] < 10) {
-              $zero = "0";
-            } else {
-              $zero = "";
-            }
-            $finaldate = $list[4] . "/" . $month . "/" . $zero . $list[2] . "&nbsp;" . $list[5] . "</td>";
-            $finalserver = "<a href=\"/" . $grouplist[$i] . "/server.php?server=" . $a_hardware['inv_name'] . "\">";
-          }
-# create the from field
-          if ($list[0] == "From:") {
-            if ($list[1][0] == '"') {
-              $from = substr($list[1], 1, strlen($list[1]) - 2);
-            } else {
-              $from = $list[2];
-            }
-          }
-# process the text file itself
-          if ($svrlist[$j] == "--------------\n") {
-            $add = 0;
-            if ($svrlist[$j + 4] == "--------------\n" || $svrlist[$j + 4] == "Content-Transfer-Encoding: quoted-printable\n") {
-              $add = 4;
-            }
-            $finalname = $from . "</td>";
-            if ($svrlist[$j + $add + 1] != "\n") {
-              $finaltext = mysqli_real_escape_string($db, rtrim($svrlist[$j + $add + 1])) . "</td>\n";
-            } else {
-              if ($svrlist[$j + $add + 2] != "\n") {
-                $finaltext = mysqli_real_escape_string($db, rtrim($svrlist[$j + $add + 2])) . "</td>\n";
-              } else {
-                $finaltext = mysqli_real_escape_string($db, rtrim($svrlist[$j + $add + 3])) . "</td>\n";
-              }
-            }
-            $allservers[$count++] = $finaldate . "<td class=\"ui-widget-content\">" . $finalname . "<td class=\"ui-widget-content\">" . $finalserver . $a_hardware['inv_name'] . "</a></td>\n<td class=\"ui-widget-content\">" . $finaltext . "</tr>\n";
-          }
-        }
-      }
-    }
-# end of changelog gather for this server
-
   }
 ?>
 </table>
@@ -306,53 +232,6 @@ $(document).ready( function() {
 
 </div>
 
-
-<div id="changelog">
-
-<table class="ui-styled-table">
-<tr>
-  <th class="ui-state-default">Changelog</th>
-  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('changelog-help');">Help</a></th>
-</tr>
-</table>
-
-<div id="changelog-help" style="<?php print $display; ?>">
-
-<div class="main-help ui-widget-content">
-
-<p>This page shows changes made to this system by any group permitted to make changes.</p>
-
-<ul>
-  <li><strong>Change Date</strong> - The date the email was sent to the group's changelog mailing list. It's in reverse order so the newest change is at the top of the list.</li>
-  <li><strong>Changed By</strong> - The person who submitted the change.</li>
-  <li><strong>Server</strong> - The server that had the change applied to it.</li>
-  <li><strong>First Line of Change</strong> - The first line of the changelog submission is extracted from the email.</li>
-</ul>
-
-</div>
-
-</div>
-
-<table class="ui-styled-table">
-<tr>
-  <th class="ui-state-default">Change Date</th>
-  <th class="ui-state-default">Changed By</th>
-  <th class="ui-state-default">Server</th>
-  <th class="ui-state-default">First Line of Change</th>
-</tr>
-<?php
-  sort($allservers);
-  $newarray = array();
-  $newarray = array_reverse($allservers);
-
-  for ($i = 0; $i < count($newarray); $i++) {
-    print "<tr>\n";
-    print "<td class=\"ui-widget-content\">" . $newarray[$i];
-  }
-?>
-</table>
-
-</div>
 
 </div>
 
