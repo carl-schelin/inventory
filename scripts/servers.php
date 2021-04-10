@@ -62,7 +62,6 @@
     $tags = "";
 
 # add a comment character to the server list for live servers but not ssh'able.
-# scripts use the "^#" part to make sure commented servers are able to use the changelog process
     if ($a_inventory['inv_ssh'] == 0) {
       $pre = '#';
     }
@@ -114,18 +113,6 @@
     }
 
     print "$pre" . $a_inventory['inv_name'] . ":" . $a_inventory['inv_fqdn'] . ":$os:" . $a_inventory['zone_name'] . ":$tags:$interfaces:" . $a_inventory['inv_id'] . ":" . $product . ":" . $project . ":" . $status . "\n";
-
-  }
-
-# add the centrify application for changelog work
-  $q_string  = "select cl_name ";
-  $q_string .= "from changelog ";
-  $q_string .= "where cl_group = " . $mygroup . " and cl_delete = 0 ";
-  $q_string .= "order by cl_name";
-  $q_changelog = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_changelog = mysqli_fetch_array($q_changelog)) {
-
-    print "#" . $a_changelog['cl_name'] . ":::::," . $a_changelog['cl_name'] . ",:0:" . $a_changelog['cl_name'] . "\n";
 
   }
 
