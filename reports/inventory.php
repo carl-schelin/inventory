@@ -385,36 +385,40 @@ $(document).ready( function () {
   $dnsdead = 'yes';
 
   $total_servers = 0;
-  $q_string = "select inv_id,inv_name,inv_function,inv_document,inv_manager,inv_appadmin,grp_name,"
-            . "ct_city,loc_identity,zone_name,inv_ssh,hw_active,hw_retired,hw_reused,mod_vendor,mod_name,inv_status "
-            . "from inventory "
-            . "left join hardware  on hardware.hw_companyid = inventory.inv_id "
-            . "left join locations on locations.loc_id      = inventory.inv_location "
-            . "left join cities    on cities.ct_id          = locations.loc_city "
-            . "left join zones     on zones.zone_id         = inventory.inv_zone "
-            . "left join models    on models.mod_id         = hardware.hw_vendorid "
-            . "left join a_groups    on a_groups.grp_id         = inventory.inv_manager "
-            . $product . $inwork . $location . $type . " "
-            . $orderby;
+  $q_string  = "select inv_id,inv_name,inv_function,inv_document,inv_manager,inv_appadmin,grp_name,";
+  $q_string .= "ct_city,loc_identity,zone_name,inv_ssh,hw_active,hw_retired,hw_reused,mod_vendor,mod_name,inv_status ";
+  $q_string .= "from inventory ";
+  $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
+  $q_string .= "left join cities    on cities.ct_id          = locations.loc_city ";
+  $q_string .= "left join zones     on zones.zone_id         = inventory.inv_zone ";
+  $q_string .= "left join models    on models.mod_id         = hardware.hw_vendorid ";
+  $q_string .= "left join a_groups    on a_groups.grp_id         = inventory.inv_manager ";
+  $q_string .= $product . $inwork . $location . $type . " ";
+  $q_string .= $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     if ($invindex[$a_inventory['inv_id']] === true) {
 
       $total_servers++;
-      $q_string = "select grp_name "
-                . "from a_groups "
-                . "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
+      $q_string  = "select grp_name ";
+      $q_string .= "from a_groups ";
+      $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
       $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_groups = mysqli_fetch_array($q_groups);
+      if (mysqli_num_rows($q_groups) > 0) {
+        $a_groups = mysqli_fetch_array($q_groups);
+      } else {
+        $a_groups['grp_name'] = 'No App Owner';
+      }
 
       $interface = "";
       $console = "";
-      $q_string = "select int_face,int_addr,int_type,itp_acronym,int_ip6,int_primary "
-                . "from interface "
-                . "left join inttype on inttype.itp_id = interface.int_type "
-                . "where int_companyid = \"" . $a_inventory['inv_id'] . "\" and int_type != 7 and int_addr != '' and int_ip6 = 0 "
-                . "order by int_face";
+      $q_string  = "select int_face,int_addr,int_type,itp_acronym,int_ip6,int_primary ";
+      $q_string .= "from interface ";
+      $q_string .= "left join inttype on inttype.itp_id = interface.int_type ";
+      $q_string .= "where int_companyid = \"" . $a_inventory['inv_id'] . "\" and int_type != 7 and int_addr != '' and int_ip6 = 0 ";
+      $q_string .= "order by int_face";
       $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_interface = mysqli_fetch_array($q_interface)) {
 
@@ -435,9 +439,9 @@ $(document).ready( function () {
         }
       }
 
-      $q_string = "select sw_software "
-                . "from software "
-                . "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'OS' ";
+      $q_string  = "select sw_software ";
+      $q_string .= "from software ";
+      $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'OS' ";
       $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_software = mysqli_fetch_array($q_software);
     
