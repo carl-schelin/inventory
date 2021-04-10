@@ -25,7 +25,6 @@
       <li><a href="<?php print $Imageroot;   ?>/image.php">Image Manager</a></li>
       <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Adminroot; ?>/tags.php');">Tag Manager</a></li>
       <li><a href="<?php print $Statusroot;  ?>/home.php" target="_blank">Status Management</a></li>
-      <li><a href="<?php print $RSDProot; ?>/admin/system.php">Operating Systems</a></li>  
 <?php
     if (check_userlevel($db, $AL_Admin)) {
 ?>
@@ -37,22 +36,6 @@
       <li><a href="<?php print $Nagiosroot; ?>" target="_blank">Lab Monitoring (Nagios)</a></li>
     </ul>
   </li>
-  <li id="tm_changelog"><a href="<?php print $Siteroot; ?>/index.changelog.php">Changelogs</a>
-    <ul>
-<?php
-  $q_string  = "select grp_changelog,grp_clserver,grp_clscript ";
-  $q_string .= "from a_groups ";
-  $q_string .= "where grp_id = " . $_SESSION['group'] . " ";
-  $q_tmgroups = mysqli_query($db, $q_string);
-  $a_tmgroups = mysqli_fetch_array($q_tmgroups);
-?>
-      <li><a href="/<?php print $a_tmgroups['grp_changelog']; ?>">Server Changelog Pages</a></li>
-      <li><a href="/<?php print $a_tmgroups['grp_changelog']; ?>/listing.php">Sorted Changelog Pages</a></li>
-      <li><a href="/<?php print $a_tmgroups['grp_changelog']; ?>/countoff.php">Weekly Changelog Count</a></li>
-      <li><a href="<?php print $Listingroot . "/" . $a_tmgroups['grp_clscript']; ?>">Server/Application Management</a></li>
-      <li><a href="<?php print $Reportroot; ?>/changelog.php?group=<?php print $_SESSION['group']; ?>">Application Changelog Report</a></li>
-      <li><a href="<?php print $Siteroot . "/" . $a_tmgroups['grp_clserver']; ?>"><?php print $a_tmgroups['grp_clserver']; ?> Listing review</a></li>
-    </ul></li>
   <li id="tm_database"><a href="<?php print $Siteroot; ?>/index.manage.php">Database</a>
     <ul>
       <li><a href="<?php print $Usersroot; ?>/business.php">Business Unit Names</a></li>
