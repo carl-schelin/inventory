@@ -10,7 +10,7 @@ ADMIN=/usr/local/admin
 SERVERS=/var/www/html/inventory
 TEMP=/var/tmp
 HOSTNAME=`hostname|cut -f1 -d.`
-SVRRUN=/usr/local/httpd/bin
+SVRRUN=/var/www/html/inventory/scripts
 WHOCARES="cschelin@internal.pri"
 
 grep apache /etc/passwd > /dev/null
