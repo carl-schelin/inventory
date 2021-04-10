@@ -111,10 +111,6 @@ $(document).ready( function() {
 </tr>
 <?php
 
-# initialize changelog arrays and variables
-  $allservers = array();
-  $count = 0;
-
   $q_string  = "select hw_id,inv_id,inv_name,hw_asset,hw_serial,mod_name,grp_name,inv_ansible,inv_ssh,hw_verified,hw_update ";
   $q_string .= "from hardware ";
   $q_string .= "left join inventory on hardware.hw_companyid = inventory.inv_id ";
