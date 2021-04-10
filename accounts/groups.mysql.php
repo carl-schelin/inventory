@@ -202,8 +202,6 @@
       mysqli_free_result($q_groups);
 
       $group .= "</table>";
-      $magic .= "</table>";
-      $changelog .= "</table>";
 
       print "document.getElementById('group_mysql').innerHTML = '"     . mysqli_real_escape_string($db, $group)     . "';\n\n";
 
