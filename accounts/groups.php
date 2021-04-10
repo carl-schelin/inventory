@@ -164,27 +164,6 @@ $(document).ready( function() {
     <li><strong>E-Mail</strong> - The e-mail address for this group. This is used by RSDP for example to send tasks to the group.</li>
     <li><strong>Status</strong> - Change the status of the group here. Disabled groups will not be shown in the group selection menus.</li>
   </ul></li>
-  <li><strong>Magic Form</strong>
-  <ul>
-    <li><strong>Magic ID</strong> - This is the group's ID in Magic. When RSDP tasks are created, this ID is made the owner of the generated ticket. If this is missing, the email won't be sent and an email will be sent to the user indicating an error.</li>
-    <li><strong>Category</strong> - For Magic tickets, this sets the ticket Category to ensure proper reporting. If this is missing, the email won't be sent the user will be notified of the error.</li>
-  </ul></li>
-  <li><strong>Changelog Form</strong>
-  <ul>
-    <li><strong>E-Mail Address</strong> - This is email address used by users to submit changelogs. This email is located on the jumpstart server.</li>
-    <li><strong>Filename Extension</strong> - In the mailbox where the changelog files are stored, this is the file extension so scripts are able to open and read the mail messages.</li>
-    <li><strong>Server Filename</strong> - This is the name of the group's servers file. This file is checked by the changelog process to ensure members of the group are able to submit changelogs for servers they manage.</li>
-  </ul></li>
-  <li><strong>Morning Report Form</strong>
-  <ul>
-    <li><strong>Morning Report Order</strong> - The location in the Morning Report display.</li>
-  </ul></li>
-  <li><strong>General Report Form</strong>
-  <ul>
-    <li><strong>Check Status Report</strong> - Receive a report on the servers that both the Unix team and your team manages. The report details drive space, user issues, and other identified problems.</li>
-    <li><strong>Check Server Report</strong> - Receive a report on whether a server is up or down. This only works on Unix servers as the Unix Service account needs to have access to perform the check.</li>
-    <li><strong>Import Server Data</strong> - Do you want the inventory to import the data file for the server? This only works on Unix servers as the Unix Service account needs to have access to retrieve the data.</li>
-  </ul></li>
 </ul>
 
 </div>
