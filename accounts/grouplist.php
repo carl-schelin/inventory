@@ -194,7 +194,7 @@ $(document).ready( function() {
     print "<option value=\"" . $a_groups['grp_id'] . "\">" . $a_groups['grp_name'] . "</option>\n";
   }
 ?>
-</select> <input type="checkbox" name="gpl_edit"> Let this user edit your assets? (Doesn't affect changelog)</td>
+</select> <input type="checkbox" name="gpl_edit"> Let this user edit your assets?</td>
 </tr>
 </table>
 
