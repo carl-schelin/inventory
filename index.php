@@ -754,7 +754,7 @@ names such as <strong><u>kube knode lvfui neap</u></strong> although you'll get 
 <p><strong>Search</strong> - Click the button when ready or hit Enter. A table will be displayed with the search results.</p>
 
 <p><strong>Note:</strong> - In the <strong>Device Details</strong> search tables, clicking on the Product or Project will bring up the report displaying 
-all servers, software, and changelog entries for that <strong>Product</strong>.</p>
+all servers, hardware, and software entries for that <strong>Product</strong>.</p>
 
 <p><strong>Note:</strong> - In the <strong>Software</strong> and <strong>Hardware</strong> search tables, clicking on the Vendor, Software/Model, 
 or Type will restart the search based on the exact text in that field. For example you can enter 'Red' in the search box to bring up everything with 
