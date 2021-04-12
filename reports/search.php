@@ -954,7 +954,6 @@
         $output .= "\"Updated\",";
         $output .= "\"Groups\",";
         $output .= "\"Server Name\",";
-        $output .= "\"Centrify Zone\",";
         $output .= "\"Platform Managed By\",";
         $output .= "\"Application Managed By\"<br>";
       } else {
@@ -966,13 +965,12 @@
         $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=pwd_update');\">Updated</a></th>\n";
         $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=inv_name');\">Groups</a></th>\n";
         $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=inv_name');\">Server Name</a></th>\n";
-        $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=inv_name');\">Centrify Zone</a></th>\n";
         $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=grp_name');\">Platform Managed By</a></th>\n";
         $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=grp_name');\">Application Managed By</a></th>\n";
         $output .= "</tr>\n";
       }
 
-      $q_string  = "select pwd_id,pwd_user,pwd_update,inv_id,inv_name,inv_domain,IFNULL(inv_appadmin, 0) as inv_appadmin,grp_name ";
+      $q_string  = "select pwd_id,pwd_user,pwd_update,inv_id,inv_name,IFNULL(inv_appadmin, 0) as inv_appadmin,grp_name ";
       $q_string .= "from inventory ";
       $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
       $q_string .= "left join syspwd on syspwd.pwd_companyid = inventory.inv_id ";
@@ -1021,7 +1019,6 @@
             $output .= "\"" . $a_inventory['pwd_update'] . "\",";
             $output .= "\"" . $groups                    . "\",";
             $output .= "\"" . $a_inventory['inv_name']   . "\",";
-            $output .= "\"" . $a_inventory['inv_domain'] . "\",";
             $output .= "\"" . $a_inventory['grp_name']   . "\",";
             $output .= "\"" . $a_groups['grp_name']      . "\"<br>";
           } else {
@@ -1030,7 +1027,6 @@
             $output .= "  <td class=\"" . $class . "\">"                 . $a_inventory['pwd_update']            . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"                 . $groups                               . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">" . $linkstart    . $a_inventory['inv_name']   . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"                 . $a_inventory['inv_domain']            . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"                 . $a_inventory['grp_name']              . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"                 . $a_groups['grp_name']                 . "</td>\n";
             $output .= "</tr>\n";
@@ -1052,7 +1048,7 @@
           $search_on = " or inv_name like '%" . $formVars['search_for'] . "%' ";
         }
 
-        $q_string  = "select pwd_id,pwd_user,pwd_update,inv_id,inv_name,inv_domain,IFNULL(inv_appadmin, 0) as inv_appadmin,grp_name ";
+        $q_string  = "select pwd_id,pwd_user,pwd_update,inv_id,inv_name,IFNULL(inv_appadmin, 0) as inv_appadmin,grp_name ";
         $q_string .= "from inventory ";
         $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
         $q_string .= "left join syspwd on syspwd.pwd_companyid = inventory.inv_id ";
@@ -1104,7 +1100,6 @@
               $output .= "\"" . $a_inventory['pwd_update'] . "\",";
               $output .= "\"" . $groups                    . "\",";
               $output .= "\"" . $a_inventory['inv_name']   . "\",";
-              $output .= "\"" . $a_inventory['inv_domain'] . "\",";
               $output .= "\"" . $a_inventory['grp_name']   . "\",";
               $output .= "\"" . $a_groups['grp_name']      . "\"<br>";
             } else {
@@ -1113,7 +1108,6 @@
               $output .= "  <td class=\"" . $class . "\">"                 . $a_inventory['pwd_update']            . "</td>\n";
               $output .= "  <td class=\"" . $class . "\">"                 . $groups                               . "</td>\n";
               $output .= "  <td class=\"" . $class . "\">" . $linkstart    . $a_inventory['inv_name']   . $linkend . "</td>\n";
-              $output .= "  <td class=\"" . $class . "\">"                 . $a_inventory['inv_domain']            . "</td>\n";
               $output .= "  <td class=\"" . $class . "\">"                 . $a_inventory['grp_name']              . "</td>\n";
               $output .= "  <td class=\"" . $class . "\">"                 . $a_groups['grp_name']                 . "</td>\n";
               $output .= "</tr>\n";
