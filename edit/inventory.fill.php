@@ -21,8 +21,8 @@
     if (check_userlevel($db, $AL_Edit)) {
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inventory");
 
-      $q_string  = "select inv_name,inv_companyid,inv_function,inv_callpath,inv_document,inv_centrify,";
-      $q_string .= "       inv_adzone,inv_domain,inv_ssh,inv_location,inv_rack,inv_row,inv_unit,inv_zone,inv_front,";
+      $q_string  = "select inv_name,inv_companyid,inv_function,inv_callpath,inv_document,";
+      $q_string .= "       inv_ssh,inv_location,inv_rack,inv_row,inv_unit,inv_zone,inv_front,";
       $q_string .= "       inv_rear,inv_manager,inv_appadmin,inv_class,inv_response,inv_mstart,inv_mend,inv_ansible,";
       $q_string .= "       inv_mdow,inv_minterval,inv_product,inv_project,inv_department,inv_notes,inv_clusterid,inv_env,";
       $q_string .= "       inv_appliance,inv_ticket,inv_maint ";
@@ -69,9 +69,6 @@
         print "document.edit.inv_name.value = '"     . mysqli_real_escape_string($db, $a_inventory['inv_name'])     . "';\n";
         print "document.edit.inv_function.value = '" . mysqli_real_escape_string($db, $a_inventory['inv_function']) . "';\n";
         print "document.edit.inv_document.value = '" . mysqli_real_escape_string($db, $a_inventory['inv_document']) . "';\n";
-        print "document.edit.inv_centrify.value = '" . mysqli_real_escape_string($db, $a_inventory['inv_centrify']) . "';\n";
-        print "document.edit.inv_adzone.value = '"   . mysqli_real_escape_string($db, $a_inventory['inv_adzone'])   . "';\n";
-        print "document.edit.inv_domain.value = '"   . mysqli_real_escape_string($db, $a_inventory['inv_domain'])   . "';\n";
         print "document.edit.inv_rack.value = '"     . mysqli_real_escape_string($db, $a_inventory['inv_rack'])     . "';\n";
         print "document.edit.inv_row.value = '"      . mysqli_real_escape_string($db, $a_inventory['inv_row'])      . "';\n";
         print "document.edit.inv_unit.value = '"     . mysqli_real_escape_string($db, $a_inventory['inv_unit'])     . "';\n";
