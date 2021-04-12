@@ -31,9 +31,6 @@
         $formVars["inv_callpath"]    = clean($_GET["inv_callpath"],    10);
         $formVars["inv_status"]      = clean($_GET["inv_status"],      10);
         $formVars["inv_document"]    = clean($_GET["inv_document"],   255);
-        $formVars["inv_centrify"]    = clean($_GET["inv_centrify"],    11);
-        $formVars["inv_adzone"]      = clean($_GET["inv_adzone"],      30);
-        $formVars["inv_domain"]      = clean($_GET["inv_domain"],      50);
         $formVars["inv_ssh"]         = clean($_GET["inv_ssh"],         10);
         $formVars["inv_location"]    = clean($_GET["inv_location"],    15);
         $formVars["inv_rack"]        = clean($_GET["inv_rack"],        30);
@@ -98,9 +95,6 @@
             "inv_function    = \"" . $formVars['inv_function']    . "\"," .
             "inv_callpath    =   " . $formVars['inv_callpath']    . "," .
             "inv_document    = \"" . $formVars['inv_document']    . "\"," .
-            "inv_centrify    = \"" . $formVars['inv_centrify']    . "\"," .
-            "inv_adzone      = \"" . $formVars['inv_adzone']      . "\"," .
-            "inv_domain      = \"" . $formVars['inv_domain']      . "\"," .
             "inv_ssh         =   " . $formVars['inv_ssh']         . "," .
             "inv_ansible     =   " . $formVars['inv_ansible']     . "," .
             "inv_location    = \"" . $formVars['inv_location']    . "\"," .
@@ -482,7 +476,7 @@ print "alert('All Done!');\n";
         $formVars['copyfrom'] = clean($_GET['copyfrom'], 10);
 
         if ($formVars['copyfrom'] > 0) {
-          $q_string  = "select inv_function,inv_callpath,inv_document,inv_centrify,inv_adzone,inv_domain,inv_ssh,inv_location,";
+          $q_string  = "select inv_function,inv_callpath,inv_document,inv_ssh,inv_location,";
           $q_string .= "inv_rack,inv_row,inv_unit,inv_zone,inv_front,inv_rear,inv_manager,inv_appadmin,inv_class,inv_response,inv_mstart,";
           $q_string .= "inv_mend,inv_mdow,inv_minterval,inv_product,inv_project,inv_department,inv_ansible,inv_notes ";
           $q_string .= "from inventory ";
@@ -494,9 +488,6 @@ print "alert('All Done!');\n";
               "inv_function       = \"" . $a_inventory['inv_function']       . "\"," .
               "inv_callpath       = \"" . $a_inventory['inv_callpath']       . "\"," .
               "inv_document       = \"" . $a_inventory['inv_document']       . "\"," .
-              "inv_centrify       = \"" . $a_inventory['inv_centrify']       . "\"," .
-              "inv_adzone         = \"" . $a_inventory['inv_adzone']         . "\"," .
-              "inv_domain         = \"" . $a_inventory['inv_domain']         . "\"," .
               "inv_ssh            = \"" . $a_inventory['inv_ssh']            . "\"," .
               "inv_location       = \"" . $a_inventory['inv_location']       . "\"," .
               "inv_rack           = \"" . $a_inventory['inv_rack']           . "\"," .
