@@ -375,7 +375,7 @@
   $output .= "</table>";
 
 
-  $q_string = "select inv_name,inv_ssh,inv_centrify,inv_document,inv_adzone,inv_domain,inv_notes "
+  $q_string = "select inv_name,inv_ssh,inv_document,inv_adzone,inv_domain,inv_notes "
             . "from inventory "
             . "where inv_id = " . $formVars['id'];
   $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
@@ -386,10 +386,6 @@
   $output .= "<th class=\"ui-state-default\" colspan=\"4\">Platform Specific Information</th>";
   $output .= "</tr>";
   $output .= "<tr>";
-  $output .= "<td class=\"ui-widget-content\"><strong>Date Added to Centrify</strong>: " . $a_inventory['inv_centrify'] . "</td>";
-  $output .= "<td class=\"ui-widget-content\"><strong>Active Directory Zone</strong>: "  . $a_inventory['inv_adzone']   . "</td>";
-  $output .= "<td class=\"ui-widget-content\"><strong>Centrify Domain</strong>: "        . $a_inventory['inv_domain']   . "</td>";
-
   $output .= "<td class=\"ui-widget-content\">This server is ";
   if ($a_inventory['inv_ssh'] == 0) {
     $output .= "not ";
