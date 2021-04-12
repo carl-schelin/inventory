@@ -306,9 +306,6 @@ function attach_detail( p_script_url, update ) {
   am_url += "&inv_callpath="    + am_form.inv_callpath.checked;
   am_url += "&inv_status="      + radio_Loop(am_form.inv_status, 3);
   am_url += "&inv_document="    + encode_URI(am_form.inv_document.value);
-  am_url += "&inv_centrify="    + encode_URI(am_form.inv_centrify.value);
-  am_url += "&inv_adzone="      + encode_URI(am_form.inv_adzone.value);
-  am_url += "&inv_domain="      + encode_URI(am_form.inv_domain.value);
   am_url += "&inv_ssh="         + am_form.inv_ssh.checked;
   am_url += "&inv_location="    + am_form.inv_location.value;
   am_url += "&inv_rack="        + encode_URI(am_form.inv_rack.value);
@@ -1319,9 +1316,6 @@ $(document).ready( function() {
   <th class="ui-state-default" colspan="5">Platform Specific Form</th>
 </tr>
 <tr>
-  <td class="ui-widget-content">Date Added to Centrify* <input type="date" name="inv_centrify" size="11"></td>
-  <td class="ui-widget-content">Centrify Zone* <input type="text" name="inv_adzone" size="25"></td>
-  <td class="ui-widget-content">Centrify Domain* <input type="text" name="inv_domain" size="25"></td>
   <td class="ui-widget-content"><label>Enable Ansible? <input type="checkbox" name="inv_ansible"></label></td>
   <td class="ui-widget-content"><label>Accessible via SSH for unixsvc? <input type="checkbox" name="inv_ssh"></label></td>
 </tr>
