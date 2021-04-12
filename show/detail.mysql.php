@@ -375,7 +375,7 @@
   $output .= "</table>";
 
 
-  $q_string = "select inv_name,inv_ssh,inv_document,inv_adzone,inv_domain,inv_notes "
+  $q_string = "select inv_name,inv_ssh,inv_document,inv_notes "
             . "from inventory "
             . "where inv_id = " . $formVars['id'];
   $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
