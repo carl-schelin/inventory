@@ -455,7 +455,7 @@
 
     $hwcount = 0;
     $q_string  = "select hw_id,part_name,hw_serial,hw_asset,hw_service,mod_vendor,mod_name,mod_type,mod_size,mod_speed,prj_name,prod_name,hw_group,";
-    $q_string .= "hw_purchased,hw_built,hw_active,hw_eol,hw_primary ";
+    $q_string .= "hw_purchased,hw_built,hw_active,mod_eol,hw_primary ";
     $q_string .= "from hardware ";
     $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
     $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
@@ -500,12 +500,12 @@
         $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_purchased      = $a_hardware['hw_purchased'];
         $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_built          = $a_hardware['hw_built'];
         $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_active         = $a_hardware['hw_active'];
-        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_eol            = $a_hardware['hw_eol'];
+        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_eol            = $a_hardware['mod_eol'];
 
 
         $hwintcount = 0;
         $q_string  = "select hw_id,part_name,hw_serial,hw_asset,hw_service,mod_vendor,mod_name,mod_type,mod_size,mod_speed,prj_name,prod_name,hw_group,";
-        $q_string .= "hw_purchased,hw_built,hw_active,hw_eol ";
+        $q_string .= "hw_purchased,hw_built,hw_active,mod_eol ";
         $q_string .= "from hardware ";
         $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
         $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
@@ -549,7 +549,7 @@
           $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->inventory_hardware[$cindex]->hardware_purchased      = $a_internal['hw_purchased'];
           $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->inventory_hardware[$cindex]->hardware_built          = $a_internal['hw_built'];
           $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->inventory_hardware[$cindex]->hardware_active         = $a_internal['hw_active'];
-          $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->inventory_hardware[$cindex]->hardware_eol            = $a_internal['hw_eol'];
+          $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->inventory_hardware[$cindex]->hardware_eol            = $a_internal['mod_eol'];
         }
       } else {
         if ($a_hardware['hw_primary'] == 1) {
