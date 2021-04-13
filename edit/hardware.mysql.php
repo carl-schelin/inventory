@@ -391,7 +391,6 @@
         $output .= "  <td class=\"ui-widget-content\">Purchased   <input type=\"text\" name=\"hw_purchased\" value=\"1971-01-01\" size=\"11\"></td>\n";
         $output .= "  <td class=\"ui-widget-content\">Built       <input type=\"text\" name=\"hw_built\"     value=\"" . date('Y-m-d') . "\" size=\"11\"></td>\n";
         $output .= "  <td class=\"ui-widget-content\">Live        <input type=\"text\" name=\"hw_active\"    value=\"1971-01-01\" size=\"11\"></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">End of Life <input type=\"text\" name=\"hw_eol\"       value=\"1971-01-01\" size=\"11\"></td>\n";
         $output .= "  <td class=\"ui-widget-content\">Ticket      <input type=\"text\" name=\"hw_eolticket\" value=\"\" size=\"20\"></td>\n";
         $output .= "  <td class=\"ui-widget-content\">Retired     <input type=\"text\" name=\"hw_retired\"   value=\"1971-01-01\" size=\"11\"></td>\n";
         $output .= "  <td class=\"ui-widget-content\">Reused      <input type=\"text\" name=\"hw_reused\"    value=\"1971-01-01\" size=\"11\"></td>\n";
@@ -504,7 +503,7 @@
       $q_string .= "left join parts on hardware.hw_type = parts.part_id ";
       $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
       $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = 0 and hw_hd_id = 0 ";
-      $q_string .= "order by hw_type,hw_size,hw_vendorid,hw_serial,hw_asset ";
+      $q_string .= "order by hw_type,hw_vendorid,hw_serial,hw_asset ";
       $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_hardware) > 0) {
         while ($a_hardware = mysqli_fetch_array($q_hardware)) {
@@ -565,7 +564,7 @@
           $q_string .= "left join parts on hardware.hw_type = parts.part_id ";
           $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
           $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " and hw_hd_id = 0 ";
-          $q_string .= "order by hw_type,hw_size,hw_vendorid,hw_serial,hw_asset ";
+          $q_string .= "order by hw_type,hw_vendorid,hw_serial,hw_asset ";
           $q_hwselect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_hwselect) > 0) {
             while ($a_hwselect = mysqli_fetch_array($q_hwselect)) {
@@ -627,7 +626,7 @@
               $q_string .= "left join parts on hardware.hw_type = parts.part_id ";
               $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
               $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " and hw_hd_id = " . $a_hwselect['hw_id'] . " ";
-              $q_string .= "order by hw_type,hw_size,hw_vendorid,hw_serial,hw_asset ";
+              $q_string .= "order by hw_type,hw_vendorid,hw_serial,hw_asset ";
               $q_hwdisk = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               if (mysqli_num_rows($q_hwdisk) > 0) {
                 while ($a_hwdisk = mysqli_fetch_array($q_hwdisk)) {
