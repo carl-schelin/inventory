@@ -176,16 +176,16 @@
   print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=hw_asset"     . $passthrough . "\">Asset</a></th>\n";
   print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=hw_product"   . $passthrough . "\">Product</a></th>\n";
   print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=mod_name"     . $passthrough . "\">Model</a></th>\n";
-  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=hw_size"      . $passthrough . "\">Size</a></th>\n";
-  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=hw_speed"     . $passthrough . "\">Speed</a></th>\n";
+  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=mod_size"      . $passthrough . "\">Size</a></th>\n";
+  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=mod_speed"     . $passthrough . "\">Speed</a></th>\n";
   print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=hw_type"      . $passthrough . "\">Type</a></th>\n";
   print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=sup_company"  . $passthrough . "\">Vendor</a></th>\n";
   print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=slv_value"    . $passthrough . "\">Support</a></th>\n";
   print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=hw_update"    . $passthrough . "\">Updated</a></th>\n";
   print "</tr>\n";
 
-  $q_string  = "select hw_id,inv_name,part_name,hw_serial,hw_asset,hw_speed,inv_status,hw_deleted,sup_company,slv_value, ";
-  $q_string .= "hw_size,mod_name,prod_name,hw_active,hw_retired,hw_group,hw_supportid,hw_primary,hw_verified,hw_update ";
+  $q_string  = "select hw_id,inv_name,part_name,hw_serial,hw_asset,mod_speed,inv_status,hw_deleted,sup_company,slv_value, ";
+  $q_string .= "mod_size,mod_name,prod_name,hw_active,hw_retired,hw_group,hw_supportid,hw_primary,hw_verified,hw_update ";
   $q_string .= "from hardware ";
   $q_string .= "left join inventory      on inventory.inv_id    = hardware.hw_companyid ";
   $q_string .= "left join locations      on locations.loc_id    = inventory.inv_location ";
@@ -220,8 +220,8 @@
     print "  <td" . $class . ">" . $a_hardware['hw_asset']                . "</td>";
     print "  <td" . $class . ">" . $a_hardware['prod_name']               . "</td>";
     print "  <td" . $class . ">" . $a_hardware['mod_name']                . "</td>";
-    print "  <td" . $class . ">" . $a_hardware['hw_size']                 . "</td>";
-    print "  <td" . $class . ">" . $a_hardware['hw_speed']                . "</td>";
+    print "  <td" . $class . ">" . $a_hardware['mod_size']                 . "</td>";
+    print "  <td" . $class . ">" . $a_hardware['mod_speed']                . "</td>";
     print "  <td" . $class . ">" . $a_hardware['part_name']               . "</td>";
     print "  <td" . $class . ">" . $a_hardware['sup_company']               . "</td>";
     print "  <td" . $class . ">" . $a_hardware['slv_value']               . "</td>";
