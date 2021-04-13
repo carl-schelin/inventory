@@ -195,7 +195,7 @@
 
       $checked = "checked ";
       $count = 0;
-      $q_string  = "select hw_id,part_name,hw_serial,hw_asset,mod_name,mod_speed,mod_size,hw_speed,hw_size,hw_primary,hw_rma ";
+      $q_string  = "select hw_id,part_name,hw_serial,hw_asset,mod_name,mod_speed,mod_size,hhw_primary,hw_rma ";
       $q_string .= "from hardware ";
       $q_string .= "left join parts  on parts.part_id = hardware.hw_type ";
       $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
@@ -208,13 +208,6 @@
           $class = "ui-state-highlight";
         } else {
           $class = "ui-widget-content";
-        }
-
-        if (strlen($a_hardware['hw_speed']) > 0) {
-          $a_hardware['mod_speed'] = $a_hardware['hw_speed'];
-        }
-        if (strlen($a_hardware['hw_size']) > 0) {
-          $a_hardware['mod_size'] = $a_hardware['hw_size'];
         }
 
         $output .= "<tr>";
