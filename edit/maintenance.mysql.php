@@ -26,7 +26,7 @@
         $formVars['copyfrom'] = clean($_GET['copyfrom'], 10);
 
         if ($formVars['copyfrom'] > 0) {
-          $q_string  = "select hw_type,hw_vendorid,hw_speed,hw_supportid,hw_size,hw_primary ";
+          $q_string  = "select hw_type,hw_vendorid,hw_supportid,hw_primary ";
           $q_string .= "from hardware ";
           $q_string .= "where hw_companyid = " . $formVars['copyfrom'];
           $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -38,8 +38,6 @@
               "hw_product   =   " . $formVars['hw_product']     . "," . 
               "hw_vendorid  =   " . $a_hardware['hw_vendorid']  . "," . 
               "hw_type      =   " . $a_hardware['hw_type']      . "," . 
-              "hw_size      = \"" . $a_hardware['hw_size']      . "\"," . 
-              "hw_speed     = \"" . $a_hardware['hw_speed']     . "\"," . 
               "hw_supportid =   " . $a_hardware['hw_supportid'] . "," .
               "hw_primary   =   " . $a_hardware['hw_primary'];
 
