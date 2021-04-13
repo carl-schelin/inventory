@@ -277,7 +277,7 @@ $(document).ready( function() {
     print "</tr>\n";
   }
 
-  $q_string  = "select inv_id,inv_name,inv_callpath,svc_name,hw_purchased,mod_eol,hw_eol,mod_vendor,mod_name ";
+  $q_string  = "select inv_id,inv_name,inv_callpath,svc_name,hw_purchased,mod_eol,mod_vendor,mod_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join software  on inventory.inv_id = software.sw_companyid ";
   $q_string .= "left join hardware  on inventory.inv_id = hardware.hw_companyid ";
