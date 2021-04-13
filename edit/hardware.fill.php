@@ -22,7 +22,7 @@
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from hardware");
 
       $q_string  = "select hw_id,hw_companyid,hw_serial,hw_asset,hw_group,hw_product,hw_vendorid,hw_rma,";
-      $q_string .= "hw_type,hw_size,hw_speed,hw_purchased,hw_built,hw_active,hw_eol,hw_retired,hw_reused,hw_supportid,";
+      $q_string .= "hw_type,hw_purchased,hw_built,hw_active,hw_retired,hw_reused,hw_supportid,";
       $q_string .= "hw_deleted,hw_note,hw_response,hw_supid_verified,hw_eolticket,hw_hw_id,hw_hd_id ";
       $q_string .= "from hardware ";
       $q_string .= "where hw_id = " . $formVars['id'];
@@ -92,12 +92,9 @@
 
       print "document.edit.hw_serial.value = '"    . mysqli_real_escape_string($db, $a_hardware['hw_serial'])    . "';\n";
       print "document.edit.hw_asset.value = '"     . mysqli_real_escape_string($db, $a_hardware['hw_asset'])     . "';\n";
-      print "document.edit.hw_size.value = '"      . mysqli_real_escape_string($db, $a_hardware['hw_size'])      . "';\n";
-      print "document.edit.hw_speed.value = '"     . mysqli_real_escape_string($db, $a_hardware['hw_speed'])     . "';\n";
       print "document.edit.hw_purchased.value = '" . mysqli_real_escape_string($db, $a_hardware['hw_purchased']) . "';\n";
       print "document.edit.hw_built.value = '"     . mysqli_real_escape_string($db, $a_hardware['hw_built'])     . "';\n";
       print "document.edit.hw_active.value = '"    . mysqli_real_escape_string($db, $a_hardware['hw_active'])    . "';\n";
-      print "document.edit.hw_eol.value = '"       . mysqli_real_escape_string($db, $a_hardware['hw_eol'])       . "';\n";
       print "document.edit.hw_retired.value = '"   . mysqli_real_escape_string($db, $a_hardware['hw_retired'])   . "';\n";
       print "document.edit.hw_reused.value = '"    . mysqli_real_escape_string($db, $a_hardware['hw_reused'])    . "';\n";
       print "document.edit.hw_eolticket.value = '" . mysqli_real_escape_string($db, $a_hardware['hw_eolticket']) . "';\n";
