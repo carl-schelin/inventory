@@ -110,16 +110,17 @@
 
   $hardware = "Unset";
   $software = "Unset";
-  $q_string  = "select hw_eol,sw_eol,hw_supportid ";
+  $q_string  = "select mod_eol,sw_eol,hw_supportid ";
   $q_string .= "from hardware ";
   $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
+  $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id  ";
   $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_deleted = 0 and hw_primary = 1 and sw_type = \"OS\" ";
   $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_hardware) > 0) {
     $a_hardware = mysqli_fetch_array($q_hardware);
 
-    $hardware = $a_hardware['hw_eol'];
+    $hardware = $a_hardware['mod_eol'];
     $software = $a_hardware['sw_eol'];
 
   }
