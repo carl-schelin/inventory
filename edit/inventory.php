@@ -385,12 +385,9 @@ function attach_hardware( p_script_url, update ) {
   ah_url += "&hw_product="    + <?php print $a_inventory['inv_product']; ?>;
   ah_url += "&hw_vendorid="   + ah_form.hw_vendorid.value;
   ah_url += "&hw_type="       + ah_form.hw_type.value;
-  ah_url += "&hw_size="       + encode_URI(ah_form.hw_size.value);
-  ah_url += "&hw_speed="      + encode_URI(ah_form.hw_speed.value);
   ah_url += "&hw_purchased="  + encode_URI(ah_form.hw_purchased.value);
   ah_url += "&hw_built="      + encode_URI(ah_form.hw_built.value);
   ah_url += "&hw_active="     + encode_URI(ah_form.hw_active.value);
-  ah_url += "&hw_eol="        + encode_URI(ah_form.hw_eol.value);
   ah_url += "&hw_eolticket="  + encode_URI(ah_form.hw_eolticket.value);
   ah_url += "&hw_retired="    + encode_URI(ah_form.hw_retired.value);
   ah_url += "&hw_reused="     + encode_URI(ah_form.hw_reused.value);
