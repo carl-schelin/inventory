@@ -269,7 +269,7 @@
         printf("%20s %10s %8s %20s %30s %20s %15s %20s\n", "Serial", "Asset", "Service", "Vendor", "Model", "Size", "Speed", "Type");
       }
 
-      $q_string  = "select hw_id,hw_serial,hw_asset,hw_service,hw_vendorid,hw_size,hw_speed,part_name,hw_verified,hw_update ";
+      $q_string  = "select hw_id,hw_serial,hw_asset,hw_service,hw_vendorid,part_name,hw_verified,hw_update ";
       $q_string .= "from hardware ";
       $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
       $q_string .= "where hw_deleted = 0 and hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = 0 and hw_hd_id = 0 ";
@@ -286,14 +286,14 @@
           print "\"" . $a_hardware['hw_service'] . "\",";
           print "\"" . $a_models['mod_vendor']   . "\",";
           print "\"" . $a_models['mod_name']     . "\",";
-          print "\"" . $a_hardware['hw_size']    . "\",";
-          print "\"" . $a_hardware['hw_speed']   . "\",";
+          print "\"" . $a_models['mod_size']    . "\",";
+          print "\"" . $a_models['mod_speed']   . "\",";
           print "\"" . $a_hardware['part_name']  . "\"\n";
         } else {
-          printf("%20s %10s %8s %20s %30s %20s %15s %20s\n", $a_hardware['hw_serial'], $a_hardware['hw_asset'], $a_hardware['hw_service'], $a_models['mod_vendor'], $a_models['mod_name'], $a_hardware['hw_size'], $a_hardware['hw_speed'], $a_hardware['part_name']);
+          printf("%20s %10s %8s %20s %30s %20s %15s %20s\n", $a_hardware['hw_serial'], $a_hardware['hw_asset'], $a_hardware['hw_service'], $a_models['mod_vendor'], $a_models['mod_name'], $a_models['mod_size'], $a_models['mod_speed'], $a_hardware['part_name']);
         }
 
-        $q_string  = "select hw_id,hw_serial,hw_asset,hw_service,hw_vendorid,hw_size,hw_speed,part_name,hw_verified,hw_update ";
+        $q_string  = "select hw_id,hw_serial,hw_asset,hw_service,hw_vendorid,part_name,hw_verified,hw_update ";
         $q_string .= "from hardware ";
         $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
         $q_string .= "where hw_deleted = 0 and hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " and hw_hd_id = 0 ";
@@ -310,14 +310,14 @@
             print "\"" . $a_hwselect['hw_service'] . "\",";
             print "\"" . $a_models['mod_vendor']   . "\",";
             print "\"" . $a_models['mod_name']     . "\",";
-            print "\"" . $a_hwselect['hw_size']    . "\",";
-            print "\"" . $a_hwselect['hw_speed']   . "\",";
+            print "\"" . $a_models['mod_size']    . "\",";
+            print "\"" . $a_models['mod_speed']   . "\",";
             print "\"" . $a_hwselect['part_name']  . "\"\n";
           } else {
-            printf("%20s %10s %8s %20s >%29s %20s %15s %20s\n", $a_hwselect['hw_serial'], $a_hwselect['hw_asset'], $a_hwselect['hw_service'], $a_models['mod_vendor'], $a_models['mod_name'], $a_hwselect['hw_size'], $a_hwselect['hw_speed'], $a_hwselect['part_name']);
+            printf("%20s %10s %8s %20s >%29s %20s %15s %20s\n", $a_hwselect['hw_serial'], $a_hwselect['hw_asset'], $a_hwselect['hw_service'], $a_models['mod_vendor'], $a_models['mod_name'], $a_models['mod_size'], $a_models['mod_speed'], $a_hwselect['part_name']);
           }
 
-          $q_string  = "select hw_id,hw_serial,hw_asset,hw_service,hw_vendorid,hw_size,hw_speed,part_name,hw_verified,hw_update ";
+          $q_string  = "select hw_id,hw_serial,hw_asset,hw_service,hw_vendorid,part_name,hw_verified,hw_update ";
           $q_string .= "from hardware ";
           $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
           $q_string .= "where hw_deleted = 0 and hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " and hw_hd_id = " . $a_hwselect['hw_id'] . " ";
@@ -334,11 +334,11 @@
               print "\"" . $a_hwdisk['hw_service'] . "\",";
               print "\"" . $a_models['mod_vendor']   . "\",";
               print "\"" . $a_models['mod_name']     . "\",";
-              print "\"" . $a_hwdisk['hw_size']    . "\",";
-              print "\"" . $a_hwdisk['hw_speed']   . "\",";
+              print "\"" . $a_models['mod_size']    . "\",";
+              print "\"" . $a_models['mod_speed']   . "\",";
               print "\"" . $a_hwdisk['part_name']  . "\"\n";
             } else {
-              printf("%20s %10s %8s %20s >>%28s %20s %15s %20s\n", $a_hwdisk['hw_serial'], $a_hwdisk['hw_asset'], $a_hwdisk['hw_service'], $a_models['mod_vendor'], $a_models['mod_name'], $a_hwdisk['hw_size'], $a_hwdisk['hw_speed'], $a_hwdisk['part_name']);
+              printf("%20s %10s %8s %20s >>%28s %20s %15s %20s\n", $a_hwdisk['hw_serial'], $a_hwdisk['hw_asset'], $a_hwdisk['hw_service'], $a_models['mod_vendor'], $a_models['mod_name'], $a_models['mod_size'], $a_models['mod_speed'], $a_hwdisk['part_name']);
             }
           }
         }
