@@ -34,12 +34,9 @@
         $formVars['hw_product']   = clean($_GET['hw_product'],   10);
         $formVars['hw_vendorid']  = clean($_GET['hw_vendorid'],  10);
         $formVars['hw_type']      = clean($_GET['hw_type'],      10);
-        $formVars['hw_size']      = clean($_GET['hw_size'],     100);
-        $formVars['hw_speed']     = clean($_GET['hw_speed'],     20);
         $formVars['hw_purchased'] = clean($_GET['hw_purchased'], 12);
         $formVars['hw_built']     = clean($_GET['hw_built'],     12);
         $formVars['hw_active']    = clean($_GET['hw_active'],    12);
-        $formVars['hw_eol']       = clean($_GET['hw_eol'],       12);
         $formVars['hw_retired']   = clean($_GET['hw_retired'],   12);
         $formVars['hw_reused']    = clean($_GET['hw_reused'],    12);
         $formVars['hw_eolticket'] = clean($_GET['hw_eolticket'], 30);
@@ -112,12 +109,9 @@
             "hw_product   =   " . $formVars['hw_product']   . "," .
             "hw_vendorid  =   " . $formVars['hw_vendorid']  . "," . 
             "hw_type      =   " . $formVars['hw_type']      . "," . 
-            "hw_size      = \"" . $formVars['hw_size']      . "\"," . 
-            "hw_speed     = \"" . $formVars['hw_speed']     . "\"," . 
             "hw_purchased = \"" . $formVars['hw_purchased'] . "\"," . 
             "hw_built     = \"" . $formVars['hw_built']     . "\"," . 
             "hw_active    = \"" . $formVars['hw_active']    . "\"," . 
-            "hw_eol       = \"" . $formVars['hw_eol']       . "\"," . 
             "hw_retired   = \"" . $formVars['hw_retired']   . "\"," . 
             "hw_reused    = \"" . $formVars['hw_reused']    . "\"," . 
             "hw_eolticket = \"" . $formVars['hw_eolticket'] . "\"," . 
@@ -239,7 +233,7 @@
         $formVars['copyfrom'] = clean($_GET['copyfrom'], 10);
 
         if ($formVars['copyfrom'] > 0) {
-          $q_string  = "select hw_type,hw_vendorid,hw_speed,hw_supportid,hw_size,hw_primary ";
+          $q_string  = "select hw_type,hw_vendorid,hw_supportid,hw_primary ";
           $q_string .= "from hardware ";
           $q_string .= "where hw_companyid = " . $formVars['copyfrom'];
           $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -251,8 +245,6 @@
               "hw_product   =   " . $formVars['hw_product']     . "," . 
               "hw_vendorid  =   " . $a_hardware['hw_vendorid']  . "," . 
               "hw_type      =   " . $a_hardware['hw_type']      . "," . 
-              "hw_size      = \"" . $a_hardware['hw_size']      . "\"," . 
-              "hw_speed     = \"" . $a_hardware['hw_speed']     . "\"," . 
               "hw_supportid =   " . $a_hardware['hw_supportid'] . "," .
               "hw_primary   =   " . $a_hardware['hw_primary'];
 
@@ -318,8 +310,6 @@
         $output .= "  <td class=\"ui-widget-content\">Model <select name=\"hw_vendorid\">\n";
         $output .= "<option value=\"0\">Unassigned</option>\n";
         $output .= "</select></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Size <input type=\"text\" name=\"hw_size\" size=\"20\"></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Speed <input type=\"text\" name=\"hw_speed\" size=\"20\"></td>\n";
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
@@ -508,8 +498,8 @@
       $output .= "</tr>\n";
 
       $primary = 0;
-      $q_string  = "select hw_id,hw_companyid,part_name,hw_serial,hw_asset,hw_product,hw_speed,hw_size,";
-      $q_string .= "mod_name,hw_active,hw_eol,hw_group,hw_primary,hw_retired,hw_deleted,hw_note,hw_rma,hw_verified,hw_update ";
+      $q_string  = "select hw_id,hw_companyid,part_name,hw_serial,hw_asset,hw_product,mod_speed,mod_size,";
+      $q_string .= "mod_name,hw_active,mod_eol,hw_group,hw_primary,hw_retired,hw_deleted,hw_note,hw_rma,hw_verified,hw_update ";
       $q_string .= "from hardware ";
       $q_string .= "left join parts on hardware.hw_type = parts.part_id ";
       $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
@@ -562,15 +552,15 @@
           }
           $output .= "<td " . $class .        "\" " . $hwnote   . ">" . $linkstart . $rma . $a_hardware['mod_name']             . $linkend . "</td>\n";
           $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hardware['part_name']            . $linkend . "</td>\n";
-          $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hardware['hw_size']              . $linkend . "</td>\n";
-          $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hardware['hw_speed']             . $linkend . "</td>\n";
+          $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hardware['mod_size']              . $linkend . "</td>\n";
+          $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hardware['mod_speed']             . $linkend . "</td>\n";
           $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hardware['hw_update']            . $checkmark . $linkend . "</td>\n";
           $output .= "</tr>\n";
 
 
 # any associated equipment
-          $q_string  = "select hw_id,hw_companyid,part_name,hw_serial,hw_asset,hw_product,hw_speed,hw_size,";
-          $q_string .= "mod_name,hw_active,hw_eol,hw_group,hw_primary,hw_retired,hw_deleted,hw_note,hw_rma,hw_verified,hw_update ";
+          $q_string  = "select hw_id,hw_companyid,part_name,hw_serial,hw_asset,hw_product,mod_speed,mod_size,";
+          $q_string .= "mod_name,hw_active,mod_eol,hw_group,hw_primary,hw_retired,hw_deleted,hw_note,hw_rma,hw_verified,hw_update ";
           $q_string .= "from hardware ";
           $q_string .= "left join parts on hardware.hw_type = parts.part_id ";
           $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
@@ -623,16 +613,16 @@
               }
               $output .= "<td " . $class .        "\" " . $hwnote   . ">&gt; " . $linkstart . $rma . $a_hwselect['mod_name']             . $linkend . "</td>\n";
               $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwselect['part_name']            . $linkend . "</td>\n";
-              $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwselect['hw_size']              . $linkend . "</td>\n";
-              $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwselect['hw_speed']             . $linkend . "</td>\n";
+              $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwselect['mod_size']              . $linkend . "</td>\n";
+              $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwselect['mod_speed']             . $linkend . "</td>\n";
               $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwselect['hw_update']            . $checkmark . $linkend . "</td>\n";
               $output .= "</tr>\n";
 
 
 
 # any associated hard disks
-              $q_string  = "select hw_id,hw_companyid,part_name,hw_serial,hw_asset,hw_product,hw_speed,hw_size,";
-              $q_string .= "mod_name,hw_active,hw_eol,hw_group,hw_primary,hw_retired,hw_deleted,hw_note,hw_rma,hw_verified,hw_update ";
+              $q_string  = "select hw_id,hw_companyid,part_name,hw_serial,hw_asset,hw_product,mod_speed,mod_size,";
+              $q_string .= "mod_name,hw_active,mod_eol,hw_group,hw_primary,hw_retired,hw_deleted,hw_note,hw_rma,hw_verified,hw_update ";
               $q_string .= "from hardware ";
               $q_string .= "left join parts on hardware.hw_type = parts.part_id ";
               $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
@@ -685,8 +675,8 @@
                   }
                   $output .= "<td " . $class .        "\" " . $hwnote   . ">&gt;&gt; " . $linkstart . $rma . $a_hwdisk['mod_name']             . $linkend . "</td>\n";
                   $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwdisk['part_name']            . $linkend . "</td>\n";
-                  $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwdisk['hw_size']              . $linkend . "</td>\n";
-                  $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwdisk['hw_speed']             . $linkend . "</td>\n";
+                  $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwdisk['mod_size']              . $linkend . "</td>\n";
+                  $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwdisk['mod_speed']             . $linkend . "</td>\n";
                   $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwdisk['hw_update']            . $checkmark . $linkend . "</td>\n";
                   $output .= "</tr>\n";
 
