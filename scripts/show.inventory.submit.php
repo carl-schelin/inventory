@@ -887,7 +887,7 @@
       $output .= "  <th>Last</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select hw_serial,hw_asset,hw_vendorid,hw_size,hw_speed,part_name,hw_verified,hw_update ";
+      $q_string  = "select hw_serial,hw_asset,hw_vendorid,part_name,hw_verified,hw_update ";
       $q_string .= "from hardware ";
       $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
       $q_string .= "where hw_deleted = 0 and hw_companyid = " . $a_inventory['inv_id'] . " ";
@@ -909,8 +909,8 @@
         $output .= "  <td>" . $a_hardware['hw_asset']   . "</td>\n";
         $output .= "  <td>" . $a_models['mod_vendor']   . "</td>\n";
         $output .= "  <td>" . $a_models['mod_name']     . "</td>\n";
-        $output .= "  <td>" . $a_hardware['hw_size']    . "</td>\n";
-        $output .= "  <td>" . $a_hardware['hw_speed']   . "</td>\n";
+        $output .= "  <td>" . $a_models['mod_size']    . "</td>\n";
+        $output .= "  <td>" . $a_models['mod_speed']   . "</td>\n";
         $output .= "  <td>" . $a_hardware['part_name']  . "</td>\n";
         $output .= "  <td>" . $a_hardware['hw_update']  . "</td>\n";
         $output .= "</tr>\n";
