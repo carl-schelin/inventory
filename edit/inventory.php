@@ -30,7 +30,7 @@
   }
 
   if (isset($formVars['server'])) {
-    $q_string  = "select inv_id,inv_name,inv_manager,inv_product,inv_project,inv_status,hw_active,hw_eol ";
+    $q_string  = "select inv_id,inv_name,inv_manager,inv_product,inv_project,inv_status,hw_active ";
     $q_string .= "from inventory ";
     $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
     $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
