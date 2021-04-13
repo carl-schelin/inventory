@@ -207,7 +207,7 @@
 # Duplicate just the primary piece of hardware
 #####
             if ($formVars['id'] > 0) {
-              $q_string  = "select hw_id,hw_type,hw_serial,hw_asset,hw_vendorid,hw_speed,hw_size,hw_projectid,hw_product,";
+              $q_string  = "select hw_id,hw_type,hw_serial,hw_asset,hw_vendorid,hw_projectid,hw_product,";
               $q_string .= "hw_group,hw_poid,hw_built,hw_poid,hw_built,hw_active,hw_retired,hw_reused,hw_supportid,hw_primary ";
               $q_string .= "from hardware ";
               $q_string .= "where hw_primary = 1 and hw_companyid = " . $formVars['id'];
@@ -222,8 +222,6 @@
                     "hw_serial    = \"" . $a_hardware['hw_serial']    . "\"," .
                     "hw_asset     = \"" . $a_hardware['hw_asset']     . "\"," .
                     "hw_vendorid  =   " . $a_hardware['hw_vendorid']  . "," .
-                    "hw_speed     = \"" . $a_hardware['hw_speed']     . "\"," .
-                    "hw_size      = \"" . $a_hardware['hw_size']      . "\"," .
                     "hw_projectid =   " . $a_hardware['hw_projectid'] . "," .
                     "hw_product   =   " . $a_hardware['hw_product']   . "," .
                     "hw_group     =   " . $a_hardware['hw_group']     . "," .
