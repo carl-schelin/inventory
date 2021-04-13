@@ -367,7 +367,7 @@
               $skip = 'no';
               $q_string  = "select hw_id ";
               $q_string .= "from hardware ";
-              $q_string .= "where hw_type = 2 and hw_companyid = " . $a_inventory['inv_id'] . " and hw_verified = 0 and hw_size = '" . $value[3] . "' ";
+              $q_string .= "where hw_type = 2 and hw_companyid = " . $a_inventory['inv_id'] . " and hw_verified = 0 ";
               $q_string .= "limit 1";
               $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
               $a_hardware = mysqli_fetch_array($q_hardware);
@@ -376,7 +376,6 @@
                 "hw_companyid =  " . $a_inventory['inv_id']      . "," . 
                 "hw_hw_id     =  " . $primary                    . "," . 
                 "hw_type      =  " . "2"                         . "," . 
-                "hw_size      = '" . trim($value[3])             . "'," . 
                 "hw_verified  =  " . '1'                         . "," . 
                 "hw_user      =  " . '1'                         . "," . 
                 "hw_update    = '" . $date                       . "'";
@@ -417,7 +416,6 @@
                 "hw_companyid =  " . $a_inventory['inv_id']      . "," . 
                 "hw_hw_id     =  " . $primary                    . "," . 
                 "hw_type      =  " . "4"                         . "," . 
-                "hw_size      = '" . trim($value[3])             . "'," . 
                 "hw_vendorid  =  " . "0"                         . "," . 
                 "hw_verified  =  " . '1'                         . "," . 
                 "hw_user      =  " . '1'                         . "," . 
@@ -462,8 +460,6 @@
                   "hw_companyid =  " . $a_inventory['inv_id']      . "," . 
                   "hw_hw_id     =  " . $primary                    . "," . 
                   "hw_type      =  " . "8"                         . "," . 
-                  "hw_size      = '" . trim($value[4])             . "'," . 
-                  "hw_speed     = '" . $a_hardware['mod_speed']    . "'," . 
                   "hw_vendorid  =  " . $a_hardware['mod_id']       . "," . 
                   "hw_verified  =  " . '1'                         . "," . 
                   "hw_user      =  " . '1'                         . "," . 
@@ -485,8 +481,6 @@
                     "hw_companyid =  " . $a_inventory['inv_id']      . "," . 
                     "hw_hw_id     =  " . $primary                    . "," . 
                     "hw_type      =  " . "8"                         . "," . 
-                    "hw_size      = '" . trim($value[4])             . "'," . 
-                    "hw_speed     = '" . $a_models['mod_speed']      . "'," . 
                     "hw_vendorid  =  " . $a_models['mod_id']         . "," . 
                     "hw_verified  =  " . '1'                         . "," . 
                     "hw_user      =  " . '1'                         . "," . 
