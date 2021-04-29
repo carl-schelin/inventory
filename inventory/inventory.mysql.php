@@ -886,7 +886,7 @@
         $tmp_tags = '';
         $q_string  = "select tag_id,tag_name ";
         $q_string .= "from tags ";
-        $q_string .= "where tag_companyid = " . $a_inventory['inv_id'] . " and tag_type = 0 and tag_view = 0 and tag_owner = " . $_SESSION['uid'] . " ";
+        $q_string .= "where tag_companyid = " . $a_inventory['inv_id'] . " and tag_type = 1 and tag_view = 0 and tag_owner = " . $_SESSION['uid'] . " ";
         $q_string .= "order by tag_name ";
         $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         if (mysqli_num_rows($q_tags) > 0) {
@@ -903,7 +903,7 @@
         $tmp_tags = '';
         $q_string  = "select tag_id,tag_name ";
         $q_string .= "from tags ";
-        $q_string .= "where tag_companyid = " . $a_inventory['inv_id'] . " and tag_type = 0 and tag_view = 1 and tag_group = " . $formVars['group'] . " ";
+        $q_string .= "where tag_companyid = " . $a_inventory['inv_id'] . " and tag_type = 1 and tag_view = 1 and tag_group = " . $formVars['group'] . " ";
         $q_string .= "order by tag_name ";
         $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         if (mysqli_num_rows($q_tags) > 0) {
@@ -920,7 +920,7 @@
         $tmp_tags = '';
         $q_string  = "select tag_id,tag_name ";
         $q_string .= "from tags ";
-        $q_string .= "where tag_companyid = " . $a_inventory['inv_id'] . " and tag_type = 0 and tag_view = 2 ";
+        $q_string .= "where tag_companyid = " . $a_inventory['inv_id'] . " and tag_type = 1 and tag_view = 2 ";
         $q_string .= "order by tag_name ";
         $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         if (mysqli_num_rows($q_tags) > 0) {
