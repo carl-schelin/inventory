@@ -256,21 +256,18 @@
 
           foreach ($list as $index) {
 
-            if ($index != '') {
+            $q_string  = "insert ";
+            $q_string .= "into tags ";
+            $q_string .= "set ";
+            $q_string .= "tag_id          =   " . "null"             . ",";
+            $q_string .= "tag_companyid   =   " . $formVars['id']    . ",";
+            $q_string .= "tag_name        = \"" . $index             . "\",";
+            $q_string .= "tag_type        =   " . 1                  . ",";
+            $q_string .= "tag_view        =   " . 2                  . ",";
+            $q_string .= "tag_owner       =   " . $_SESSION['uid']   . ",";
+            $q_string .= "tag_group       =   " . $formVars['group'];
 
-              $q_string  = "insert ";
-              $q_string .= "into tags ";
-              $q_string .= "set ";
-              $q_string .= "tag_id          =   " . "null"             . ",";
-              $q_string .= "tag_companyid   =   " . $formVars['id']    . ",";
-              $q_string .= "tag_name        = \"" . $index             . "\",";
-              $q_string .= "tag_type        =   " . 1                  . ",";
-              $q_string .= "tag_view        =   " . 2                  . ",";
-              $q_string .= "tag_owner       =   " . $_SESSION['uid']   . ",";
-              $q_string .= "tag_group       =   " . $formVars['group'];
-
-              $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-            }
+            $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           }
 
 # rebuild the string, just to be sure
