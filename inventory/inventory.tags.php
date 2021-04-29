@@ -254,9 +254,10 @@
 
           $list = explode(" ", $formVars['select']);
 
-          if ($formVars['select'] != '') {
-            foreach ($list as $index) {
-  
+          foreach ($list as $index) {
+
+            if ($index != '') {
+
               $q_string  = "insert ";
               $q_string .= "into tags ";
               $q_string .= "set ";
