@@ -16,7 +16,7 @@
     $formVars['id']       = clean($_GET['id'],       10);
     $formVars['function'] = clean($_GET['function'], 10);
     $formVars['status']   = clean($_GET['status'],   10);
-    $formVars['select']   = clean($_GET['select'],   60);
+    $formVars['select']   = clean($_GET['select'],   500);
 
     if (check_userlevel($db, $AL_Edit)) {
 
