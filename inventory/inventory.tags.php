@@ -218,7 +218,7 @@
           print "infield.setAttribute(\"onblur\",\"tags_Completed(" . $formVars['id'] . ",'" . $formVars['function'] . "');\");\n";
           print "infield.setAttribute(\"type\",\"text\");\n";
           print "infield.setAttribute(\"value\",celltext);\n";
-          print "infield.setAttribute(\"size\",\"40\");\n";
+          print "infield.setAttribute(\"size\",\"100\");\n";
 
 # put the new input field into the cell
           print "cell.appendChild(infield);\n";
