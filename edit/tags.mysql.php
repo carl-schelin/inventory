@@ -14,7 +14,7 @@
   if (isset($_SESSION['username'])) {
     $package = "tags.mysql.php";
     $formVars['update']         = clean($_GET['update'],            10);
-    $formVars['tag_companyid']  = clean($_GET['tag_companyid'],    10);
+    $formVars['tag_companyid']  = clean($_GET['tag_companyid'],     10);
 
     if ($formVars['update'] == '') {
       $formVars['update'] = -1;
@@ -71,7 +71,7 @@
         if ($formVars['copyfrom'] > 0) {
           $q_string  = "select tag_name,tag_type,tag_view,tag_owner,tag_group ";
           $q_string .= "from tags ";
-          $q_string .= "where tag_companyid = " . $formVars['copyfrom'] . " and tag_view = " . $a_tags['tag_view'] . " ";
+          $q_string .= "where tag_companyid = " . $formVars['copyfrom'] . " and tag_type = 1 ";
           $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           while ($a_tags = mysqli_fetch_array($q_tags)) {
 
