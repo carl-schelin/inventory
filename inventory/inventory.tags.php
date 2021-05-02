@@ -51,139 +51,7 @@
 # 6. clear element
 # 7. update with new text
 
-# private tags
-# this is a text edit field
-      if ($formVars['function'] == 'tagv') {
-        if ($formVars['status'] == 1) {
-# give me the cell pointer you just clicked on.
-          print "var cell = document.getElementById('" . $cellid . "');\n";
-# give me the text in that cell
-          print "var celltext = document.getElementById('" . $cellid . "').innerHTML;\n";
-
-# remove the underscores
-          print "celltext = celltext.replace(\"<u>\", \"\");\n";
-          print "celltext = celltext.replace(\"</u>\", \"\");\n";
-
-# remove the commas
-          print "celltext = celltext.replaceAll(\",\", \"\");\n";
-          print "celltext = celltext.replaceAll(\",\", \"\");\n";
-
-# clear if no tags
-          print "if (celltext = 'No Private Tags') {\n";
-          print "  celltext = ''\n";
-          print "}\n";
-
-# blank the cell
-          print "cell.innerHTML = '&nbsp;';\n";
-# remove the function call
-          print "cell.setAttribute(\"onclick\", \"\");\n";
-
-# create an input field so the data can be edited
-          print "var infield = document.createElement('input');\n";
-
-          print "infield.setAttribute(\"id\",\"edit_data\");\n";
-          print "infield.setAttribute(\"name\",\"edit_data\");\n";
-          print "infield.setAttribute(\"onblur\",\"tags_Completed(" . $formVars['id'] . ",'" . $formVars['function'] . "');\");\n";
-          print "infield.setAttribute(\"type\",\"text\");\n";
-          print "infield.setAttribute(\"value\",celltext);\n";
-          print "infield.setAttribute(\"size\",\"40\");\n";
-
-# put the new input field into the cell
-          print "cell.appendChild(infield);\n";
-
-# put the cursor into the new cell
-          print "document.getElementById('edit_data').focus();\n";
-# highlight the text
-          print "document.getElementById('edit_data').select();\n";
-# and ready for editing
-        }
-# close down the cell and put the text in 
-        if ($formVars['status'] == 0) {
-
-# give me the cell pointer you just finished
-          print "var cell = document.getElementById('" . $cellid . "');\n";
-
-# update the function so it can be clicked again; matches the info in the original
-          print "cell.setAttribute(\"onclick\", \"edit_Tags(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
-
-# return to blanks
-          if ($formVars['select'] == '') {
-            $formVars['select'] = "No Private Tags";
-          }
-
-# replace the input field with the updated data.
-          print "cell.innerHTML = '<u>" . $formVars['select'] . "</u>';\n";
-        }
-      }
-
-
-# group tags
-# this is a text edit field
-      if ($formVars['function'] == 'tagg') {
-        if ($formVars['status'] == 1) {
-# give me the cell pointer you just clicked on.
-          print "var cell = document.getElementById('" . $cellid . "');\n";
-# give me the text in that cell
-          print "var celltext = document.getElementById('" . $cellid . "').innerHTML;\n";
-
-# remove the underscores
-          print "celltext = celltext.replace(\"<u>\", \"\");\n";
-          print "celltext = celltext.replace(\"</u>\", \"\");\n";
-
-# remove the commas
-          print "celltext = celltext.replaceAll(\",\", \"\");\n";
-          print "celltext = celltext.replaceAll(\",\", \"\");\n";
-
-# clear if no tags
-          print "if (celltext = 'No Group Tags') {\n";
-          print "  celltext = ''\n";
-          print "}\n";
-
-# blank the cell
-          print "cell.innerHTML = '&nbsp;';\n";
-# remove the function call
-          print "cell.setAttribute(\"onclick\", \"\");\n";
-
-# create an input field so the data can be edited
-          print "var infield = document.createElement('input');\n";
-
-          print "infield.setAttribute(\"id\",\"edit_data\");\n";
-          print "infield.setAttribute(\"name\",\"edit_data\");\n";
-          print "infield.setAttribute(\"onblur\",\"tags_Completed(" . $formVars['id'] . ",'" . $formVars['function'] . "');\");\n";
-          print "infield.setAttribute(\"type\",\"text\");\n";
-          print "infield.setAttribute(\"value\",celltext);\n";
-          print "infield.setAttribute(\"size\",\"40\");\n";
-
-# put the new input field into the cell
-          print "cell.appendChild(infield);\n";
-
-# put the cursor into the new cell
-          print "document.getElementById('edit_data').focus();\n";
-# highlight the text
-          print "document.getElementById('edit_data').select();\n";
-# and ready for editing
-        }
-# close down the cell and put the text in 
-        if ($formVars['status'] == 0) {
-
-# give me the cell pointer you just finished
-          print "var cell = document.getElementById('" . $cellid . "');\n";
-
-# update the function so it can be clicked again; matches the info in the original
-          print "cell.setAttribute(\"onclick\", \"edit_Tags(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
-
-# return to blanks
-          if ($formVars['select'] == '') {
-            $formVars['select'] = "No Group Tags";
-          }
-
-# replace the input field with the updated data.
-          print "cell.innerHTML = '<u>" . $formVars['select'] . "</u>';\n";
-        }
-      }
-
-
-# public tags
+# tags
 # this is a text edit field
       if ($formVars['function'] == 'tagu') {
         if ($formVars['status'] == 1) {
@@ -201,7 +69,7 @@
           print "celltext = celltext.replaceAll(\",\", \"\");\n";
 
 # clear if no tags
-          print "if (celltext == 'No Public Tags') {\n";
+          print "if (celltext == 'No Tags') {\n";
           print "  celltext = ''\n";
           print "}\n";
 
@@ -244,7 +112,7 @@
 
           $q_string  = "delete ";
           $q_string .= "from tags ";
-          $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_view = 2 and tag_type = 1 ";
+          $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_type = 1 ";
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 # replace commas if accidentally added
@@ -263,7 +131,6 @@
             $q_string .= "tag_companyid   =   " . $formVars['id']    . ",";
             $q_string .= "tag_name        = \"" . $index             . "\",";
             $q_string .= "tag_type        =   " . 1                  . ",";
-            $q_string .= "tag_view        =   " . 2                  . ",";
             $q_string .= "tag_owner       =   " . $_SESSION['uid']   . ",";
             $q_string .= "tag_group       =   " . $formVars['group'];
 
@@ -275,7 +142,7 @@
           $comma = "";
           $q_string  = "select tag_name ";
           $q_string .= "from tags ";
-          $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_type = 1 and tag_view = 2 ";
+          $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_type = 1 ";
           $q_string .= "order by tag_name ";
           $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_tags) > 0) {
@@ -290,7 +157,7 @@
 
 # return to blanks
           if ($formVars['select'] == '') {
-            $formVars['select'] = "No Public Tags";
+            $formVars['select'] = "No Tags";
           }
 
 # replace the input field with the updated data.

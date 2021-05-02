@@ -652,57 +652,13 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
 
 <div class="main ui-widget-content">
 
-<t4>Private Tags</t4>
+<t4>Tags</t4>
 
 <p>
 <?php
   $q_string  = "select tag_name,count(tag_name) ";
   $q_string .= "from tags ";
-  $q_string .= "where tag_view = 0 and tag_owner = " . $formVars['uid'] . " and tag_type = 1 ";
-  $q_string .= "group by tag_name ";
-  $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_tags = mysqli_fetch_array($q_tags)) {
-    $linkstart = "<a href=\"javascript:;\" onClick=\"javascript:attach_tag('" . $Reportroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "&type=0');\">";
-    $linkend   = "</a>";
-
-    print $linkstart . $a_tags['tag_name'] . " (" . $a_tags['count(tag_name)'] . ")" . $linkend . "&nbsp;&nbsp;";
-  }
-?>
-</p>
-
-</div>
-
-<div class="main ui-widget-content">
-
-<t4>Group Tags</t4>
-
-<p>
-<?php
-  $q_string  = "select tag_name,count(tag_name) ";
-  $q_string .= "from tags ";
-  $q_string .= "where tag_view = 1 and tag_group = " . $formVars['group'] . " and tag_type = 1 ";
-  $q_string .= "group by tag_name ";
-  $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_tags = mysqli_fetch_array($q_tags)) {
-    $linkstart = "<a href=\"javascript:;\" onClick=\"javascript:attach_tag('" . $Reportroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "&type=1');\">";
-    $linkend   = "</a>";
-
-    print $linkstart . $a_tags['tag_name'] . " (" . $a_tags['count(tag_name)'] . ")" . $linkend . "&nbsp;&nbsp;";
-  }
-?>
-</p>
-
-</div>
-
-<div class="main ui-widget-content">
-
-<t4>Public Tags</t4>
-
-<p>
-<?php
-  $q_string  = "select tag_name,count(tag_name) ";
-  $q_string .= "from tags ";
-  $q_string .= "where tag_view = 2 and tag_type = 1 ";
+  $q_string .= "where tag_type = 1 ";
   $q_string .= "group by tag_name ";
   $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_tags = mysqli_fetch_array($q_tags)) {

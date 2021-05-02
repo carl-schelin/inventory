@@ -253,9 +253,7 @@ $(document).ready( function() {
 <ul>
   <li><strong>Tag Cloud</strong>
   <ul>
-    <li><strong>Private Tags</strong> - Shows tags that only you can manipulate. These tags are only visible to you so they let you create personalized server lists.</li>
-    <li><strong>Group Tags</strong> - Shows group tags manageable by your group. These tags are visible by your group. They are also added to the servers file for each team. Externals scripts may be run using these tags.</li>
-    <li><strong>Public Tags</strong> - Tags that are viewable by all users of the Inventory software. These tags may be useful for grouping like systems that may cross projects. Use the Project listing page for single project server lists.</li>
+    <li><strong>Tags</strong> - Tags that are viewable by all users of the Inventory software. These tags may be useful for grouping like systems that may cross projects. Use the Project listing page for single project server lists.</li>
   </ul></li>
 </ul>
 
@@ -265,57 +263,7 @@ $(document).ready( function() {
 <!--     End of help-tagcloud (4) -->
 
 
-<!--     Start of Private Cloud block (4) -->
-<div class="main ui-widget-content">
-
-<t4>Private Cloud</t4>
-
-<ul id="cloud">
-<?php
-  $q_string  = "select tag_name,count(tag_name) ";
-  $q_string .= "from tags ";
-  $q_string .= "where tag_view = 0 and tag_owner = " . $_SESSION['uid'] . " and tag_type = 1 ";
-  $q_string .= "group by tag_name ";
-  $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_tags = mysqli_fetch_array($q_tags)) {
-    $linkstart = "<a href=\"" . $Issueroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "&type=0\">";
-    $linkend   = "</a>";
-
-    print "  <li>" . $linkstart . $a_tags['tag_name'] . " (" . $a_tags['count(tag_name)'] . ")" . $linkend . "</li>\n";
-  }
-?>
-</ul>
-
-</div>
-<!--     End of Private Cloud block (4) -->
-
-
-<!--     Start of Group Cloud block (4) -->
-<div class="main ui-widget-content">
-
-<t4>Group Cloud</t4>
-
-<ul id="cloud">
-<?php
-  $q_string  = "select tag_name,count(tag_name) ";
-  $q_string .= "from tags ";
-  $q_string .= "where tag_view = 1 and tag_group = " . $_SESSION['group'] . " and tag_type = 1 ";
-  $q_string .= "group by tag_name ";
-  $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_tags = mysqli_fetch_array($q_tags)) {
-    $linkstart = "<a href=\"" . $Issueroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "&type=1\">";
-    $linkend   = "</a>";
-
-    print "  <li>" . $linkstart . $a_tags['tag_name'] . " (" . $a_tags['count(tag_name)'] . ")" . $linkend . "</li>\n";
-  }
-?>
-</ul>
-
-</div>
-<!--     End of Group Cloud block (4) -->
-
- 
-<!--     Start of Public Cloud block (4) -->
+<!--     Start of Tag Cloud block (4) -->
 <div class="main ui-widget-content">
 
 <t4>Public Cloud</t4>
@@ -324,7 +272,7 @@ $(document).ready( function() {
 <?php
   $q_string  = "select tag_name,count(tag_name) ";
   $q_string .= "from tags ";
-  $q_string .= "where tag_view = 2 and tag_type = 1 ";
+  $q_string .= "where tag_type = 1 ";
   $q_string .= "group by tag_name ";
   $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_tags = mysqli_fetch_array($q_tags)) {

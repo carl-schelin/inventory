@@ -47,9 +47,7 @@
   $output .= "<ul>\n";
   $output .= "  <li><strong>Tag Cloud</strong>\n";
   $output .= "  <ul>\n";
-  $output .= "    <li><strong>Private Tag Cloud</strong> - Shows tags that only you can manipulate.</li>\n";
-  $output .= "    <li><strong>Group Tag Cloud</strong> - Shows group tags manageable by your group.</li>\n";
-  $output .= "    <li><strong>Public Tag Cloud</strong> - Tags that are viewable by all users of the Inventory software.</li>\n";
+  $output .= "    <li><strong>Tag Cloud</strong> - Tags that are viewable by all users of the Inventory software.</li>\n";
   $output .= "  </ul></li>\n";
   $output .= "</ul>\n";
 
@@ -59,57 +57,13 @@
 
   $output .= "<div class=\"main ui-widget-content\">\n";
 
-  $output .= "<t4>Private Tag Cloud</t4>\n";
+  $output .= "<t4>Tag Cloud</t4>\n";
 
   $output .= "<ul id=\"cloud\">\n";
 
   $q_string  = "select tag_name ";
   $q_string .= "from tags ";
-  $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_view = 0 and tag_owner = " . $formVars['uid'] . " and tag_type = 1 ";
-  $q_string .= "group by tag_name ";
-  $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_tags = mysqli_fetch_array($q_tags)) {
-    $linkstart = "<a href=\"" . $Reportroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "\">";
-    $linkend   = "</a>";
-
-    $output .= "  <li>" . $linkstart . $a_tags['tag_name'] . $linkend . "</li>\n";
-  }
-
-  $output .= "</ul>\n";
-
-  $output .= "</div>\n";
-
-  $output .= "<div class=\"main ui-widget-content\">\n";
-
-  $output .= "<t4>Group Tag Cloud</t4>\n";
-
-  $output .= "<ul id=\"cloud\">\n";
-
-  $q_string  = "select tag_name ";
-  $q_string .= "from tags ";
-  $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_view = 1 and tag_group = " . $formVars['group'] . " and tag_type = 1 ";
-  $q_string .= "group by tag_name ";
-  $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_tags = mysqli_fetch_array($q_tags)) {
-    $linkstart = "<a href=\"" . $Reportroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "\">";
-    $linkend   = "</a>";
-
-    $output .= "  <li>" . $linkstart . $a_tags['tag_name'] . $linkend . "</li>\n";
-  }
-
-  $output .= "</ul>\n";
-
-  $output .= "</div>\n";
-
-  $output .= "<div class=\"main ui-widget-content\">\n";
-
-  $output .= "<t4>Public Tag Cloud</t4>\n";
-
-  $output .= "<ul id=\"cloud\">\n";
-
-  $q_string  = "select tag_name ";
-  $q_string .= "from tags ";
-  $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_view = 2 and tag_type = 1 ";
+  $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_type = 1 ";
   $q_string .= "group by tag_name ";
   $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_tags = mysqli_fetch_array($q_tags)) {

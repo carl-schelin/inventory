@@ -220,7 +220,6 @@ function attach_tags(p_script_url, update) {
   at_url += "&copyfrom="       + at_form.tag_copyfrom.value;
   at_url += "&tag_companyid="  + <?php print $formVars['server']; ?>;
   at_url += "&tag_name="       + encode_URI(at_form.tag_name.value);
-  at_url += "&tag_view="       + radio_Loop(at_form.tag_view, 3);
 
   script = document.createElement('script');
   script.src = p_script_url + at_url;

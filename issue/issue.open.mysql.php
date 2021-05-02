@@ -75,15 +75,6 @@
     if (strlen($formVars['tag']) > 0) {
       $leftjoin = "left join tags on tags.tag_companyid = issue.iss_companyid ";
       $where = " and tag_name = '" . $formVars['tag'] . "' ";
-      if ($formVars['type'] == 0) {
-        $where .= " and tag_view = 0 and tag_owner = " . $_SESSION['uid'] . " ";
-      }
-      if ($formVars['type'] == 1) {
-        $where .= " and tag_view = 1 and tag_group = " . $_SESSION['group'] . " ";
-      }
-      if ($formVars['type'] == 2) {
-        $where = " and tag_view = 2 ";
-      }
     } else {
       $where = " and (inv_manager = " . $_SESSION['group'] . " or iss_user = " . $_SESSION['uid'] . ") ";
     }

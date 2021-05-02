@@ -21,7 +21,7 @@
     if (check_userlevel($db, $AL_Edit)) {
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from tags");
 
-      $q_string  = "select tag_name,tag_view ";
+      $q_string  = "select tag_name ";
       $q_string .= "from tags ";
       $q_string .= "where tag_id = " . $formVars['id'] . " and tag_type = 1 ";
       $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -29,8 +29,6 @@
       mysqli_free_result($q_tags);
 
       print "document.edit.tag_name.value = '" . mysqli_real_escape_string($db, $a_tags['tag_name']) . "';\n";
-
-      print "document.edit.tag_view['" . $a_tags['tag_view'] . "'].checked = true;\n";
 
       print "document.edit.tag_id.value = " . $formVars['id'] . ";\n";
 

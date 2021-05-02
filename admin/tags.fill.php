@@ -21,7 +21,7 @@
     if (check_userlevel($db, $AL_Edit)) {
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from tags");
 
-      $q_string  = "select tag_companyid,tag_name,tag_view,tag_owner,tag_group ";
+      $q_string  = "select tag_companyid,tag_name,tag_owner,tag_group ";
       $q_string .= "from tags ";
       $q_string .= "where tag_id = " . $formVars['id'] . " and tag_type = 1 ";
       $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -39,7 +39,6 @@
       $tag_companyid   = return_Index($db, $a_tags['tag_companyid'], $q_string);
       $tag_group       = return_Index($db, $a_tags['tag_group'],     "select grp_id from a_groups where grp_disabled = 0 order by grp_name");
 
-      print "document.tags.tag_view['"      . $a_tags['tag_view'] . "'].selected = true;\n";
       print "document.tags.tag_owner['"     . $tag_owner     . "'].selected = true;\n";
       print "document.tags.tag_companyid['" . $tag_companyid . "'].selected = true;\n";
       print "document.tags.tag_group['"     . $tag_group     . "'].selected = true;\n";

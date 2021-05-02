@@ -23,7 +23,6 @@
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['id'],             10);
         $formVars['tag_name']       = clean($_GET['tag_name'],       40);
-        $formVars['tag_view']       = clean($_GET['tag_view'],       10);
         $formVars['tag_owner']      = clean($_GET['tag_owner'],      10);
         $formVars['tag_group']      = clean($_GET['tag_group'],      10);
 
@@ -36,7 +35,6 @@
 
           $q_string =
             "tag_name    = \"" . $formVars['tag_name']     . "\"," .
-            "tag_view    =   " . $formVars['tag_view']     . "," .
             "tag_owner   =   " . $formVars['tag_owner']    . "," .
             "tag_group   =   " . $formVars['tag_group'];
 
@@ -128,175 +126,7 @@
 
       $where = $product . $project . $group . $inwork . $location;
 
-
-
-# show all Private tags so we can restrict them to just the person making the request
-
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\">Private Tag Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('private-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"private-listing-help\" style=\"display: none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Private Tag Listing</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li><strong>Editing</strong> - Click on a tag to edit it.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      if (check_userlevel($db, $AL_Admin)) {
-        $output .= "  <th class=\"ui-state-default\">Del</th>\n";
-      }
-      $output .= "  <th class=\"ui-state-default\">Server</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Tag Name</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Owner</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Group</th>\n";
-      $output .= "</tr>\n";
-
-      $q_string  = "select tag_id,tag_name,inv_name,usr_first,usr_last,grp_name ";
-      $q_string .= "from tags ";
-      $q_string .= "left join inventory    on inventory.inv_id      = tags.tag_companyid ";
-      $q_string .= "left join users        on users.usr_id          = tags.tag_owner ";
-      $q_string .= "left join a_groups       on a_groups.grp_id         = tags.tag_group ";
-      $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
-      $q_string .= "left join models       on models.mod_id         = hardware.hw_vendorid ";
-      $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
-      $q_string .= "left join cities       on cities.ct_id          = locations.loc_city ";
-      $q_string .= "left join states       on states.st_id          = locations.loc_state ";
-      $q_string .= $where . "and tag_view = 0 and tag_type = 1 ";
-      $q_string .= "order by tag_name,inv_name,grp_name,usr_last,usr_first ";
-      $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_tags) > 0) {
-        while ($a_tags = mysqli_fetch_array($q_tags)) {
-
-          $linkstart = "<a href=\"#\" onclick=\"show_file('tags.fill.php?id="  . $a_tags['tag_id'] . "');jQuery('#dialogTags').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('tags.del.php?id=" . $a_tags['tag_id'] . "');\">";
-          $linkend   = "</a>";
-
-          $inv_name = "All Servers";
-          if ($a_tags['inv_name'] != '') {
-            $inv_name = $a_tags['inv_name'];
-          }
-
-          $output .= "<tr>";
-          if (check_userlevel($db, $AL_Admin)) {
-            $output .= "  <td class=\"ui-widget-content delete\" width=\"6\">" . $linkdel   . "</td>";
-          }
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $inv_name                                        . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_tags['tag_name']                              . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_tags['usr_first'] . " " . $a_tags['usr_last'] . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_tags['grp_name']                              . $linkend . "</td>";
-          $output .= "</tr>";
-        }
-      } else {
-        $output .= "<tr>";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"5\">No records found.</td>";
-        $output .= "</tr>";
-      }
-
-      $output .= "</table>";
-
-      mysqli_free_result($q_tags);
-
-      print "document.getElementById('view_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
-
-
-# show group specific tags here
-
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\">Group Tag Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('group-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"group-listing-help\" style=\"display: none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Group Tag Listing</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li><strong>Editing</strong> - Click on a contract to edit it.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      if (check_userlevel($db, $AL_Admin)) {
-        $output .= "  <th class=\"ui-state-default\">Del</th>\n";
-      }
-      $output .= "  <th class=\"ui-state-default\">Server</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Tag Name</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Owner</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Group</th>\n";
-      $output .= "</tr>\n";
-
-      $q_string  = "select tag_id,tag_name,inv_name,usr_first,usr_last,grp_name ";
-      $q_string .= "from tags ";
-      $q_string .= "left join inventory    on inventory.inv_id      = tags.tag_companyid ";
-      $q_string .= "left join users        on users.usr_id          = tags.tag_owner ";
-      $q_string .= "left join a_groups       on a_groups.grp_id         = tags.tag_group ";
-      $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
-      $q_string .= "left join models       on models.mod_id         = hardware.hw_vendorid ";
-      $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
-      $q_string .= "left join cities       on cities.ct_id          = locations.loc_city ";
-      $q_string .= "left join states       on states.st_id          = locations.loc_state ";
-      $q_string .= $where . "and tag_view = 1 and tag_type = 1 ";
-      $q_string .= "order by tag_name,inv_name,grp_name,usr_last,usr_first ";
-      $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_tags) > 0) {
-        while ($a_tags = mysqli_fetch_array($q_tags)) {
-
-          $linkstart = "<a href=\"#\" onclick=\"show_file('tags.fill.php?id="  . $a_tags['tag_id'] . "');jQuery('#dialogTags').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('tags.del.php?id=" . $a_tags['tag_id'] . "');\">";
-          $linkend   = "</a>";
-
-          $inv_name = "All Servers";
-          if ($a_tags['inv_name'] != '') {
-            $inv_name = $a_tags['inv_name'];
-          }
-
-          $output .= "<tr>";
-          if (check_userlevel($db, $AL_Admin)) {
-            $output .= "  <td class=\"ui-widget-content delete\" width=\"6\">" . $linkdel   . "</td>";
-          }
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $inv_name                                        . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_tags['tag_name']                              . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_tags['usr_first'] . " " . $a_tags['usr_last'] . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_tags['grp_name']                              . $linkend . "</td>";
-          $output .= "</tr>";
-        }
-      } else {
-        $output .= "<tr>";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"5\">No records found.</td>";
-        $output .= "</tr>";
-      }
-
-      $output .= "</table>";
-
-      mysqli_free_result($q_tags);
-
-      print "document.getElementById('group_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
-
-
-# show public tags here
+# show tags here
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
@@ -340,7 +170,7 @@
       $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
       $q_string .= "left join cities       on cities.ct_id          = locations.loc_city ";
       $q_string .= "left join states       on states.st_id          = locations.loc_state ";
-      $q_string .= $where . "and tag_view = 2 and tag_type = 1 ";
+      $q_string .= $where . "and tag_type = 1 ";
       $q_string .= "order by tag_name,inv_name,grp_name,usr_last,usr_first ";
       $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_tags) > 0) {

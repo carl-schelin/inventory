@@ -78,12 +78,11 @@
   print "<tr>\n";
   print "  <th class=\"ui-state-default\"><a href=\"tags.php?sort=inv_name\">Server</a></th>\n";
   print "  <th class=\"ui-state-default\"><a href=\"tags.php?sort=tag_name\">Tag</a></th>\n";
-  print "  <th class=\"ui-state-default\"><a href=\"tags.php?sort=tag_view\">View</a></th>\n";
   print "  <th class=\"ui-state-default\"><a href=\"tags.php?sort=usr_name\">Creator</a></th>\n";
   print "  <th class=\"ui-state-default\"><a href=\"tags.php?sort=grp_name\">Group</a></th>\n";
   print "</tr>\n";
 
-  $q_string  = "select tag_id,inv_name,tag_name,tag_view,usr_name,grp_name ";
+  $q_string  = "select tag_id,inv_name,tag_name,usr_name,grp_name ";
   $q_string .= "from tags ";
   $q_string .= "left join inventory on inventory.inv_id = tags.tag_companyid ";
   $q_string .= "left join users     on users.usr_id     = tags.tag_owner ";
@@ -93,20 +92,9 @@
   $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_tags = mysqli_fetch_array($q_tags)) {
 
-    if ($a_tags['tag_view'] == 0) {
-      $tagview = 'Private';
-    }
-    if ($a_tags['tag_view'] == 1) {
-      $tagview = 'Group';
-    }
-    if ($a_tags['tag_view'] == 2) {
-      $tagview = 'Public';
-    }
-
     print "<tr>";
     print "  <td class=\"ui-widget-content\">" . $a_tags['inv_name'] . "</td>";
     print "  <td class=\"ui-widget-content\">" . $a_tags['tag_name'] . "</td>";
-    print "  <td class=\"ui-widget-content\">" . $tagview            . "</td>";
     print "  <td class=\"ui-widget-content\">" . $a_tags['usr_name'] . "</td>";
     print "  <td class=\"ui-widget-content\">" . $a_tags['grp_name'] . "</td>";
     print "</tr>";

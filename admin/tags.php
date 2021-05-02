@@ -105,7 +105,6 @@ function attach_file( p_script_url, update ) {
 
   af_url += "&tag_name="       + encode_URI(af_form.tag_name.value);
   af_url += "&tag_companyid="  + af_form.tag_companyid.value;
-  af_url += "&tag_view="       + af_form.tag_view.value;
   af_url += "&tag_owner="      + af_form.tag_owner.value;
   af_url += "&tag_group="      + af_form.tag_group.value;
 
@@ -237,24 +236,8 @@ In the Tag View page, you can select a tag and it will show you all the servers 
 <div id="tabs">
 
 <ul>
-  <li><a href="#private_tag">Private Tags</a></li>
-  <li><a href="#group_tag">Group Tags</a></li>
   <li><a href="#public_tag">Public Tags</a></li>
 </ul>
-
-
-<div id="private_tag">
-
-<span id="view_mysql"><?php print wait_Process('Waiting...')?></span>
-
-</div>
-
-
-<div id="group_tag">
-
-<span id="group_mysql"><?php print wait_Process('Waiting...')?></span>
-
-</div>
 
 
 <div id="public_tag">
@@ -300,11 +283,6 @@ In the Tag View page, you can select a tag and it will show you all the servers 
 </select> Select All Servers to create a Master Tag.</td>
 </tr>
 <tr>
-  <td class="ui-widget-content">View: <select name="tag_view">
-<option value="0">Private Tag</option>
-<option value="1">Group Tag</option>
-<option value="2">Public Tag</option>
-</select></td>
   <td class="ui-widget-content">Owner: <select name="tag_owner">
 <option value="0">None</option>
 <?php

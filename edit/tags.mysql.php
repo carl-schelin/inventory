@@ -27,7 +27,6 @@
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['id'],            10);
         $formVars['tag_name']       = str_replace(' ', '_', clean($_GET['tag_name'], 40));
-        $formVars['tag_view']       = clean($_GET['tag_view'],      10);
         $formVars['tag_owner']      = clean($_SESSION['uid'],       10);
         $formVars['tag_group']      = clean($_SESSION['group'],     10);
 
@@ -42,7 +41,6 @@
             "tag_companyid =   " . $formVars['tag_companyid'] . "," .
             "tag_name      = \"" . $formVars['tag_name']      . "\"," .
             "tag_type      =   " . "1"                        . "," .
-            "tag_view      =   " . $formVars['tag_view']      . "," .
             "tag_owner     =   " . $formVars['tag_owner']     . "," .
             "tag_group     =   " . $formVars['tag_group'];
 
@@ -69,7 +67,7 @@
         $formVars['copyfrom'] = clean($_GET['copyfrom'], 10);
 
         if ($formVars['copyfrom'] > 0) {
-          $q_string  = "select tag_name,tag_type,tag_view,tag_owner,tag_group ";
+          $q_string  = "select tag_name,tag_type,tag_owner,tag_group ";
           $q_string .= "from tags ";
           $q_string .= "where tag_companyid = " . $formVars['copyfrom'] . " and tag_type = 1 ";
           $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -79,7 +77,6 @@
               "tag_companyid   =   " . $formVars['tag_companyid']   . "," .
               "tag_name        = \"" . $a_tags['tag_name']      . "\"," .
               "tag_type        =   " . $a_tags['tag_type']      . "," .
-              "tag_view        =   " . $a_tags['tag_view']      . "," .
               "tag_owner       =   " . $a_tags['tag_owner']     . "," .
               "tag_group       =   " . $a_tags['tag_group'];
 
@@ -125,11 +122,10 @@
         $output .= "</tr>\n";
         $output .= "<tr>\n";
         $output .= "  <td class=\"ui-widget-content\">Tag Name <input type=\"text\" name=\"tag_name\" size=\"40\"> <input type=\"hidden\" name=\"tag_companyid\" value=\"" . $formVars['tag_companyid'] . "\"></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Visibility: <label><input type=\"radio\" name=\"tag_view\" value=\"0\"> Private</label> <label><input type=\"radio\" checked=\"true\" name=\"tag_view\" value=\"1\"> Group</label> <label><input type=\"radio\" name=\"tag_view\" value=\"2\"> Public</label></td>\n";
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
-        $output .= "<t4>Private Tags</t4>\n";
+        $output .= "<t4>Tags</t4>\n";
 
         $output .= "<p>\n";
 
@@ -139,55 +135,7 @@
           $q_string  = "select tag_id as tagid,tag_name ";
         }
         $q_string .= "from tags ";
-        $q_string .= "where tag_view = 0 and tag_owner = " . $_SESSION['uid'] . " and tag_type = 1 ";
-        $q_string .= "group by tag_name ";
-        $q_string .= "order by tag_name ";
-        $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_tags = mysqli_fetch_array($q_tags)) {
-          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('tags.fill.php?id="  . $a_tags['tagid'] . "');\">";
-          $linkend   = "</a>";
-
-          $output .= $linkstart . $a_tags['tag_name'] . $linkend . "&nbsp;&nbsp;";
-        }
-
-        $output .= "</p>\n";
-
-
-        $output .= "<t4>Group Tags</t4>\n";
-
-        $output .= "<p>\n";
-
-        if (new_Mysql($db)) {
-          $q_string  = "select ANY_VALUE(tag_id) as tagid,tag_name ";
-        } else {
-          $q_string  = "select tag_id as tagid,tag_name ";
-        }
-        $q_string .= "from tags ";
-        $q_string .= "where tag_view = 1 and tag_group = " . $_SESSION['group'] . " and tag_type = 1 ";
-        $q_string .= "group by tag_name ";
-        $q_string .= "order by tag_name ";
-        $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_tags = mysqli_fetch_array($q_tags)) {
-          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('tags.fill.php?id="  . $a_tags['tagid'] . "');\">";
-          $linkend   = "</a>";
-
-          $output .= $linkstart . $a_tags['tag_name'] . $linkend . "&nbsp;&nbsp;";
-        }
-
-        $output .= "</p>\n";
-
-
-        $output .= "<t4>Public Tags</t4>\n";
-
-        $output .= "<p>\n";
-
-        if (new_Mysql($db)) {
-          $q_string  = "select ANY_VALUE(tag_id) as tagid,tag_name ";
-        } else {
-          $q_string  = "select tag_id as tagid,tag_name ";
-        }
-        $q_string .= "from tags ";
-        $q_string .= "where tag_view = 2 and tag_type = 1 ";
+        $q_string .= "where tag_type = 1 ";
         $q_string .= "group by tag_name ";
         $q_string .= "order by tag_name ";
         $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -241,18 +189,17 @@
       $output .= "<tr>\n";
       $output .=   "<th class=\"ui-state-default\">Del</th>\n";
       $output .=   "<th class=\"ui-state-default\">Tag</th>\n";
-      $output .=   "<th class=\"ui-state-default\">Visibility</th>\n";
       $output .=   "<th class=\"ui-state-default\">Owner</th>\n";
       $output .=   "<th class=\"ui-state-default\">Group</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select tag_id,tag_name,tag_view,tag_group,usr_first,usr_last,grp_name ";
+      $q_string  = "select tag_id,tag_name,tag_group,usr_first,usr_last,grp_name ";
       $q_string .= "from tags ";
       $q_string .= "left join inventory on inventory.inv_id = tags.tag_companyid ";
       $q_string .= "left join a_groups on a_groups.grp_id = tags.tag_group ";
       $q_string .= "left join users on users.usr_id = tags.tag_owner ";
       $q_string .= "where tag_companyid = " . $formVars['tag_companyid'] . " and tag_type = 1 ";
-      $q_string .= "order by tag_view,tag_name";
+      $q_string .= "order by tag_name";
       $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_tags) > 0) {
         while ($a_tags = mysqli_fetch_array($q_tags)) {
@@ -261,14 +208,6 @@
           $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_tags('tags.del.php?id=" . $a_tags['tag_id'] . "');\">";
           $linkend   = "</a>";
 
-          $tagview = "Private";
-          if ($a_tags['tag_view'] == 1) {
-            $tagview = "Group";
-          }
-          if ($a_tags['tag_view'] == 2) {
-            $tagview = "Public";
-          }
-
           $output .= "<tr>\n";
           if (check_grouplevel($db, $a_tags['tag_group'])) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel                                                                 . "</td>\n";
@@ -276,7 +215,6 @@
             $output .= "  <td class=\"ui-widget-content delete\">--</td>\n";
           }
           $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_tags['tag_name']                              . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $tagview                                         . $linkend . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_tags['usr_first'] . " " . $a_tags['usr_last'] . $linkend . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_tags['grp_name']                              . $linkend . "</td>\n";
           $output .= "</tr>\n";
@@ -284,7 +222,7 @@
         }
       } else {
         $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"9\">No Tags defined.</td>\n";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"4\">No Tags defined.</td>\n";
         $output .= "</tr>\n";
       }
       $output .= "</table>\n";
