@@ -351,14 +351,19 @@
 
         $servername = $a_inventory['inv_name'];
 
-        $q_string  = "select hw_id,hw_built,hw_active,hw_update,hw_verified,hw_asset,hw_serial,part_name,mod_vendor,mod_name,mod_size,mod_speed ";
+        $q_string  = "select hw_id,hw_built,hw_active,hw_update,hw_verified,hw_asset,hw_serial,hw_size,hw_vendorid,part_name,mod_vendor,mod_name,mod_size,mod_speed ";
         $q_string .= "from hardware ";
         $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
-        $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
+        $q_string .= "left join parts  on parts.part_id = hardware.hw_type ";
         $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = 0 ";
         $q_string .= "order by hw_primary desc,part_id,mod_size ";
         $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+
+          $hwsize = $a_hardware['mod_size'];
+          if ($a_hardware['hw_vendorid'] == 0) {
+            $hwsize = $a_hardware['hw_size'];
+          }
 
           if ($formVars['csv'] == 'true') {
             $hardware .= "\"" . $servername               . "\",";
@@ -368,7 +373,7 @@
             $hardware .= "\"" . $a_hardware['hw_update']  . "\",";
             $hardware .= "\"" . $a_hardware['mod_vendor'] . "\",";
             $hardware .= "\"" . $a_hardware['mod_name']   . "\",";
-            $hardware .= "\"" . $a_hardware['mod_size']    . "\",";
+            $hardware .= "\"" . $hwsize                    . "\",";
             $hardware .= "\"" . $a_hardware['mod_speed']   . "\",";
             $hardware .= "\"" . $a_hardware['hw_asset']   . "\",";
             $hardware .= "\"" . $a_hardware['hw_serial']  . "\"\n</br>";
@@ -381,7 +386,7 @@
             $hardware .= "  <td class=\"ui-widget-content\">" . $a_hardware['hw_update']  . "</td>\n";
             $hardware .= "  <td class=\"ui-widget-content\" id=\"hmv" . $a_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hardware['hw_id'] . ",'hmv');\">" . $a_hardware['mod_vendor'] . "</td>\n";
             $hardware .= "  <td class=\"ui-widget-content\" id=\"hmn" . $a_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hardware['hw_id'] . ",'hmn');\">" . $a_hardware['mod_name']   . "</td>\n";
-            $hardware .= "  <td class=\"ui-widget-content\" id=\"hsz" . $a_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hardware['hw_id'] . ",'hsz');\">" . $a_hardware['mod_size']    . "</td>\n";
+            $hardware .= "  <td class=\"ui-widget-content\" id=\"hsz" . $a_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hardware['hw_id'] . ",'hsz');\">" . $hwsize                    . "</td>\n";
             $hardware .= "  <td class=\"ui-widget-content\" id=\"hsp" . $a_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hardware['hw_id'] . ",'hsp');\">" . $a_hardware['mod_speed']   . "</td>\n";
             $hardware .= "  <td class=\"ui-widget-content\" id=\"has" . $a_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hardware['hw_id'] . ",'has');\">" . $a_hardware['hw_asset']   . "</td>\n";
             $hardware .= "  <td class=\"ui-widget-content\" id=\"hsn" . $a_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hardware['hw_id'] . ",'hsn');\">" . $a_hardware['hw_serial']  . "</td>\n";
@@ -391,7 +396,7 @@
           }
 
 
-          $q_string  = "select hw_id,hw_built,hw_active,hw_update,hw_verified,hw_asset,hw_serial,part_name,mod_vendor,mod_name,mod_size,mod_speed ";
+          $q_string  = "select hw_id,hw_built,hw_active,hw_update,hw_verified,hw_asset,hw_serial,hw_size,hw_vendorid,part_name,mod_vendor,mod_name,mod_size,mod_speed ";
           $q_string .= "from hardware ";
           $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
           $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
@@ -399,6 +404,11 @@
           $q_string .= "order by hw_primary desc,part_id,mod_size ";
           $q_hw_child = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           while ($a_hw_child = mysqli_fetch_array($q_hw_child)) {
+
+            $hwsize = $a_hw_child['mod_size'];
+            if ($a_hw_child['hw_vendorid'] == 0) {
+              $hwsize = $a_hw_child['hw_size'];
+            }
 
             if ($formVars['csv'] == 'true') {
               $hardware .= "\"" . $servername               . "\",";
@@ -408,7 +418,7 @@
               $hardware .= "\"" . $a_hw_child['hw_update']  . "\",";
               $hardware .= "\"" . $a_hw_child['mod_vendor'] . "\",";
               $hardware .= "\"" . $a_hw_child['mod_name']   . "\",";
-              $hardware .= "\"" . $a_hw_child['mod_size']    . "\",";
+              $hardware .= "\"" . $hwsize                    . "\",";
               $hardware .= "\"" . $a_hw_child['mod_speed']   . "\",";
               $hardware .= "\"" . $a_hw_child['hw_asset']   . "\",";
               $hardware .= "\"" . $a_hw_child['hw_serial']  . "\"\n</br>";
@@ -421,7 +431,7 @@
               $hardware .= "  <td class=\"ui-widget-content\">" . $a_hw_child['hw_update']  . "</td>\n";
               $hardware .= "  <td class=\"ui-widget-content\" id=\"hmv" . $a_hw_child['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hw_child['hw_id'] . ",'hmv');\">" . $a_hw_child['mod_vendor'] . "</td>\n";
               $hardware .= "  <td class=\"ui-widget-content\" id=\"hmn" . $a_hw_child['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hw_child['hw_id'] . ",'hmn');\">" . $a_hw_child['mod_name']   . "</td>\n";
-              $hardware .= "  <td class=\"ui-widget-content\" id=\"hsz" . $a_hw_child['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hw_child['hw_id'] . ",'hsz');\">" . $a_hw_child['mod_size']    . "</td>\n";
+              $hardware .= "  <td class=\"ui-widget-content\" id=\"hsz" . $a_hw_child['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hw_child['hw_id'] . ",'hsz');\">" . $hwsize                    . "</td>\n";
               $hardware .= "  <td class=\"ui-widget-content\" id=\"hsp" . $a_hw_child['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hw_child['hw_id'] . ",'hsp');\">" . $a_hw_child['mod_speed']   . "</td>\n";
               $hardware .= "  <td class=\"ui-widget-content\" id=\"has" . $a_hw_child['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hw_child['hw_id'] . ",'has');\">" . $a_hw_child['hw_asset']   . "</td>\n";
               $hardware .= "  <td class=\"ui-widget-content\" id=\"hsn" . $a_hw_child['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hw_child['hw_id'] . ",'hsn');\">" . $a_hw_child['hw_serial']  . "</td>\n";
@@ -454,6 +464,7 @@
         $interface .= "\"Nagios\",";
         $interface .= "\"Type\",";
         $interface .= "\"Logical Interface\",";
+        $interface .= "\"MAC\",";
         $interface .= "\"IP Address\",";
         $interface .= "\"Netmask\",";
         $interface .= "\"Zone\",";
@@ -476,6 +487,7 @@
         $interface .= "  <th class=\"ui-state-default\">Nag</th>\n";
         $interface .= "  <th class=\"ui-state-default\">Type</th>\n";
         $interface .= "  <th class=\"ui-state-default\">Logical Interface</th>\n";
+        $interface .= "  <th class=\"ui-state-default\">MAC</th>\n";
         $interface .= "  <th class=\"ui-state-default\">IP Address</th>\n";
         $interface .= "  <th class=\"ui-state-default\">Netmask</th>\n";
         $interface .= "  <th class=\"ui-state-default\">Zone</th>\n";
@@ -516,7 +528,7 @@
         $servername = $a_inventory['inv_name'];
 
         $q_string  = "select int_id,int_server,int_domain,int_openview,int_nagios,int_management,int_backup,int_face,int_login,";
-        $q_string .= "int_sysport,int_addr,int_mask,zone_name,int_gate,int_switch,int_port,itp_acronym,int_virtual,med_text,int_vlan ";
+        $q_string .= "int_sysport,int_addr,int_eth,int_mask,zone_name,int_gate,int_switch,int_port,itp_acronym,int_virtual,med_text,int_vlan ";
         $q_string .= "from interface ";
         $q_string .= "left join ip_zones  on ip_zones.zone_id = interface.int_zone ";
         $q_string .= "left join inttype   on inttype.itp_id   = interface.int_type ";
@@ -566,6 +578,7 @@
               $interface .= "\"" . $is_nagios                   . "\",";
               $interface .= "\"" . $a_interface['itp_acronym']  . "\",";
               $interface .= "\"" . $a_interface['int_face']     . "\",";
+              $interface .= "\"" . $a_interface['int_eth']      . "\",";
               $interface .= "\"" . $a_interface['int_addr']     . "\",";
               $interface .= "\"" . $a_interface['int_mask']     . "\",";
               $interface .= "\"" . $a_interface['zone_name']    . "\",";
@@ -609,6 +622,9 @@
               if ($a_interface['int_face'] == '') {
                 $a_interface['int_face'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
               }
+              if ($a_interface['int_eth'] == '') {
+                $a_interface['int_eth'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
+              }
               if ($a_interface['int_addr'] == '') {
                 $a_interface['int_addr'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
               }
@@ -645,6 +661,7 @@
               $interface .= "  <td class=\"" . $class . " delete\"><input type=\"checkbox\"" . $is_nagios     . " id=\"fng" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fng');\"></td>\n";
               $interface .= "  <td class=\"" . $class . "\" id=\"fia" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fia');\"><u>" . $a_interface['itp_acronym']      . "</u></td>\n";
               $interface .= "  <td class=\"" . $class . "\" id=\"ffc" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'ffc');\"><u>" . $a_interface['int_face']         . "</u></td>\n";
+              $interface .= "  <td class=\"" . $class . "\" id=\"fad" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fae');\"><u>" . $a_interface['int_eth']         . "</u></td>\n";
               $interface .= "  <td class=\"" . $class . "\" id=\"fad" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fad');\"><u>" . $a_interface['int_addr']         . "</u></td>\n";
               $interface .= "  <td class=\"" . $class . "\" id=\"fan" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fan');\"><u>" . $a_interface['int_mask']         . "</u></td>\n";
               $interface .= "  <td class=\"" . $class . "\" id=\"fzn" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fzn');\"><u>" . $a_interface['zone_name']        . "</u></td>\n";
@@ -661,7 +678,7 @@
               $interface .= "</tr>\n";
             }
 
-            $q_string  = "select int_id,int_server,int_domain,int_face,int_sysport,int_addr,int_mask,zone_name,int_gate,int_openview,int_login,";
+            $q_string  = "select int_id,int_server,int_domain,int_face,int_sysport,int_addr,int_eth,int_mask,zone_name,int_gate,int_openview,int_login,";
             $q_string .= "int_switch,int_port,itp_acronym,int_virtual,med_text,int_vlan,int_management,int_backup,int_nagios ";
             $q_string .= "from interface ";
             $q_string .= "left join ip_zones  on ip_zones.zone_id = interface.int_zone ";
@@ -712,6 +729,7 @@
                   $interface .= "\"" . $is_nagios                    . "\",";
                   $interface .= "\"" . $a_int_child['itp_acronym']   . "\",";
                   $interface .= "\"" . $a_int_child['int_face']      . "\",";
+                  $interface .= "\"" . $a_int_child['int_eth']       . "\",";
                   $interface .= "\"" . $a_int_child['int_addr']      . "\",";
                   $interface .= "\"" . $a_int_child['int_mask']      . "\",";
                   $interface .= "\"" . $a_int_child['zone_name']     . "\",";
@@ -755,6 +773,9 @@
                   if ($a_int_child['int_face'] == '') {
                     $a_int_child['int_face'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
                   }
+                  if ($a_int_child['int_eth'] == '') {
+                    $a_int_child['int_eth'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
+                  }
                   if ($a_int_child['int_addr'] == '') {
                     $a_int_child['int_addr'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
                   }
@@ -791,6 +812,7 @@
                   $interface .= "  <td class=\"" . $class . " delete\"><input type=\"checkbox\"" . $is_nagios     . " id=\"fng" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fng');\"></td>\n";
                   $interface .= "  <td class=\"" . $class . "\" id=\"fia" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fia');\"><u>"      . $a_int_child['itp_acronym']             . "</u></td>\n";
                   $interface .= "  <td class=\"" . $class . "\" id=\"ffc" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'ffc');\"><u>"      . $a_int_child['int_face']            . "</u></td>\n";
+                  $interface .= "  <td class=\"" . $class . "\" id=\"fad" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fae');\"><u>"      . $a_int_child['int_eth']                   . "</u></td>\n";
                   $interface .= "  <td class=\"" . $class . "\" id=\"fad" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fad');\"><u>"      . $a_int_child['int_addr']                   . "</u></td>\n";
                   $interface .= "  <td class=\"" . $class . "\" id=\"fan" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fan');\"><u>"      . $a_int_child['int_mask']                 . "</u></td>\n";
                   $interface .= "  <td class=\"" . $class . "\" id=\"fzn" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fzn');\"><u>"      . $a_int_child['zone_name']               . "</u></td>\n";
