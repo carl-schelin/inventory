@@ -14,7 +14,7 @@
       <li><a href="<?php print $Editroot; ?>/inventory.php">Add Server or Device</a></li>
     </ul>
   </li>
-  <li id="tm_applications"><a href="<?php print $Siteroot; ?>/index.apps.php">Applications</a>
+  <li id="tm_applications"><a href="<?php print $Siteroot; ?>/index.apps.php">Modules</a>
     <ul>
       <li><a href="<?php print $Issueroot;   ?>/issue.php">Issue Tracker</a></li>
       <li><a href="<?php print $Certsroot;   ?>/certs.php">Web Certificate Management</a></li>
