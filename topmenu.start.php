@@ -36,6 +36,17 @@
       <li><a href="<?php print $Nagiosroot; ?>" target="_blank">Lab Monitoring (Nagios)</a></li>
     </ul>
   </li>
+
+  <li id="tm_ipam"><a href="<?php print $Siteroot; ?>/index.ipam.php">IPAM</a>
+    <ul>
+      <li><a href="<?php print $Ipamroot; ?>/ipam.php">IP Address Manager</a></li>
+      <li><a href="<?php print $Ipamroot; ?>/network.php">Network Manager</a></li>
+      <li><a href="<?php print $Ipamroot; ?>/vlans.php">VLAN Manager</a></li>
+      <li><a href="<?php print $Ipamroot; ?>/netzones.php">Network Zones</a></li>
+      <li><a href="<?php print $Ipamroot; ?>/iptype.php">IP Types</a></li>
+    </ul>
+  </li>
+
   <li id="tm_database"><a href="<?php print $Siteroot; ?>/index.manage.php">Database</a>
     <ul>
       <li><a href="<?php print $Usersroot; ?>/business.php">Business Unit Names</a></li>
@@ -45,7 +56,6 @@
       <li><a href="<?php print $Hardwareroot; ?>/hardware.php">Hardware Models</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/parts.php">Part Descriptions</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/type.php">Interface Names</a></li>
-      <li><a href="<?php print $Hardwareroot; ?>/vlans.php">VLAN Management</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/speed.php">Interface Speeds</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/zones.php">Network Zones</a></li>
       <li><a href="<?php print $Licenseroot; ?>/license.php">License Manager</a></li>
