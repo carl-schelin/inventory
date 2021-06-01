@@ -132,7 +132,7 @@
     if ($formVars['zone'] != '') {
       $q_string  = "select int_zone ";
       $q_string .= "from interface ";
-      $q_string .= "left join ip_zones on ip_zones.zone_id = interface.int_zone ";
+      $q_string .= "left join net_zones on net_zones.zone_id = interface.int_zone ";
       $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and zone_zone = \"" . $formVars['zone'] . "\" ";
       $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
