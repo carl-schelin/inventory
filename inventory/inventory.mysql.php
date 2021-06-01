@@ -78,10 +78,10 @@
 
 # prepopulate the small tables to increase lookup time.
       $q_string  = "select zone_id,zone_name ";
-      $q_string .= "from ip_zones ";
-      $q_ip_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_ip_zones = mysqli_fetch_array($q_ip_zones)) {
-        $ip_zones[$a_ip_zones['zone_id']] = $a_ip_zones['zone_name'];
+      $q_string .= "from net_zones ";
+      $q_net_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_net_zones = mysqli_fetch_array($q_net_zones)) {
+        $net_zones[$a_net_zones['zone_id']] = $a_net_zones['zone_name'];
       }
 
       $q_string  = "select med_id,med_text ";
@@ -530,7 +530,7 @@
         $q_string  = "select int_id,int_server,int_domain,int_openview,int_nagios,int_management,int_backup,int_face,int_login,";
         $q_string .= "int_sysport,int_addr,int_eth,int_mask,zone_name,int_gate,int_switch,int_port,itp_acronym,int_virtual,med_text,int_vlan ";
         $q_string .= "from interface ";
-        $q_string .= "left join ip_zones  on ip_zones.zone_id = interface.int_zone ";
+        $q_string .= "left join net_zones  on net_zones.zone_id = interface.int_zone ";
         $q_string .= "left join inttype   on inttype.itp_id   = interface.int_type ";
         $q_string .= "left join int_media on int_media.med_id = interface.int_media ";
         $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = 0 ";
@@ -681,7 +681,7 @@
             $q_string  = "select int_id,int_server,int_domain,int_face,int_sysport,int_addr,int_eth,int_mask,zone_name,int_gate,int_openview,int_login,";
             $q_string .= "int_switch,int_port,itp_acronym,int_virtual,med_text,int_vlan,int_management,int_backup,int_nagios ";
             $q_string .= "from interface ";
-            $q_string .= "left join ip_zones  on ip_zones.zone_id = interface.int_zone ";
+            $q_string .= "left join net_zones  on net_zones.zone_id = interface.int_zone ";
             $q_string .= "left join inttype   on inttype.itp_id   = interface.int_type ";
             $q_string .= "left join int_media on int_media.med_id = interface.int_media ";
             $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_interface['int_id'] . " ";
