@@ -37,11 +37,11 @@
             "zone_desc = \"" . $formVars['zone_desc'] . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into ip_zones set zone_id = NULL, " . $q_string;
+            $query = "insert into net_zones set zone_id = NULL, " . $q_string;
             $message = "Network Zone added.";
           }
           if ($formVars['update'] == 1) {
-            $query = "update ip_zones set " . $q_string . " where zone_id = " . $formVars['id'];
+            $query = "update net_zones set " . $q_string . " where zone_id = " . $formVars['id'];
             $message = "Network Zone updated.";
           }
 
@@ -98,23 +98,23 @@
       $output .= "</tr>\n";
 
       $q_string  = "select zone_id,zone_name,zone_desc ";
-      $q_string .= "from ip_zones ";
+      $q_string .= "from net_zones ";
       $q_string .= "order by zone_name "; 
-      $q_ip_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_ip_zones) > 0) {
-        while ($a_ip_zones = mysqli_fetch_array($q_ip_zones)) {
+      $q_net_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_net_zones) > 0) {
+        while ($a_net_zones = mysqli_fetch_array($q_net_zones)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('zones.fill.php?id="  . $a_ip_zones['zone_id'] . "');showDiv('zone-hide');\">";
-          $linkdel   = "<a href=\"#\" onclick=\"delete_line('zones.del.php?id=" . $a_ip_zones['zone_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('zones.fill.php?id="  . $a_net_zones['zone_id'] . "');showDiv('zone-hide');\">";
+          $linkdel   = "<a href=\"#\" onclick=\"delete_line('zones.del.php?id=" . $a_net_zones['zone_id'] . "');\">";
           $linkend   = "</a>";
 
           $output .= "<tr>\n";
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . 'x'                      . $linkend . "</td>\n";
           }
-          $output .= "  <td class=\"ui-widget-content delete\">" . $linkstart . $a_ip_zones['zone_id']   . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_ip_zones['zone_name'] . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_ip_zones['zone_desc'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content delete\">" . $linkstart . $a_net_zones['zone_id']   . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_net_zones['zone_name'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_net_zones['zone_desc'] . $linkend . "</td>\n";
           $output .= "</tr>\n";
 
         }
@@ -126,7 +126,7 @@
 
       $output .= "</table>\n";
 
-      mysqli_free_result($q_ip_zones);
+      mysqli_free_result($q_net_zones);
 
       print "document.getElementById('table_mysql').innerHTML = '"   . mysqli_real_escape_string($db, $output) . "';\n\n";
 
