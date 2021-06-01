@@ -67,10 +67,10 @@
   }
 
   $q_string  = "select zone_id,zone_name ";
-  $q_string .= "from ip_zones";
-  $q_ip_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_ip_zones = mysqli_fetch_array($q_ip_zones)) {
-    $zoneval[$a_ip_zones['zone_id']] = $a_ip_zones['zone_name'];
+  $q_string .= "from net_zones";
+  $q_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_net_zones = mysqli_fetch_array($q_net_zones)) {
+    $zoneval[$a_net_zones['zone_id']] = $a_net_zones['zone_name'];
   }
 
 # if help has not been seen yet,
@@ -268,7 +268,7 @@
   $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
   $q_string .= "left join states on states.st_id = locations.loc_state ";
   $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join ip_zones on ip_zones.zone_id = interface.int_zone ";
+  $q_string .= "left join net_zones on net_zones.zone_id = interface.int_zone ";
   $q_string .= "left join inttype on inttype.itp_id = interface.int_type ";
   $q_string .= $where;
   $q_string .= $orderby;
