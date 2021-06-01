@@ -258,7 +258,7 @@ reviewed and worked on.</li>
   $q_string .= "from inventory ";
   $q_string .= "left join hardware  on inventory.inv_id      = hardware.hw_companyid ";
   $q_string .= "left join interface on inventory.inv_id      = interface.int_companyid ";
-  $q_string .= "left join zones     on zones.zone_id         = inventory.inv_zone ";
+  $q_string .= "left join timezones on timezones.zone_id     = inventory.inv_zone ";
   $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join software  on software.sw_companyid = inventory.inv_id ";
   $q_string .= $where . " and sw_type = 'OS' and int_management = 1 ";
