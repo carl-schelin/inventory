@@ -417,7 +417,7 @@ $(document).ready( function () {
       $console = "";
       $q_string = "select int_face,int_addr,int_type,itp_acronym,int_ip6,int_primary "
                 . "from interface "
-                . "left join inttype on inttype.itp_id = interface.int_type "
+                . "left join int_types on int_types.itp_id = interface.int_type "
                 . "where int_companyid = \"" . $a_inventory['inv_id'] . "\" and int_type != 7 and int_addr != '' and int_ip6 = 0 "
                 . "order by int_face";
       $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

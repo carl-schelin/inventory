@@ -155,7 +155,7 @@
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
       $q_string .= "left join cities    on cities.ct_id     = locations.loc_city ";
       $q_string .= "left join states    on states.st_id     = locations.loc_state ";
-      $q_string .= "left join inttype   on inttype.itp_id   = interface.int_type ";
+      $q_string .= "left join int_types   on int_types.itp_id   = interface.int_type ";
       $q_string .= "left join products  on products.prod_id = inventory.inv_product ";
       $q_string .= "left join projects  on projects.prj_id  = inventory.inv_project ";
       $q_string .= "left join a_groups    on a_groups.grp_id    = inventory.inv_manager ";
@@ -296,7 +296,7 @@
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
       $q_string .= "left join cities    on cities.ct_id     = locations.loc_city ";
       $q_string .= "left join states    on states.st_id     = locations.loc_state ";
-      $q_string .= "left join inttype on inttype.itp_id = interface.int_type ";
+      $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
       $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";

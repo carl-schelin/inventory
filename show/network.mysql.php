@@ -109,7 +109,7 @@
   $q_string .= "int_vgate,int_note,int_update,int_type,zone_name,int_nagios,int_openview,int_backup,int_management,int_login ";
   $q_string .= "from interface ";
   $q_string .= "left join net_zones on interface.int_zone = net_zones.zone_id  ";
-  $q_string .= "left join inttype  on interface.int_type = inttype.itp_id ";
+  $q_string .= "left join int_types  on interface.int_type = int_types.itp_id ";
   $q_string .= "where int_companyid = " . $formVars['id'] . " and int_int_id = 0 and int_ip6 = 0 ";
   $q_string .= "order by int_face,int_addr";
   $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -217,7 +217,7 @@
     $q_string .= "int_vaddr,int_veth,int_vgate,int_nagios,int_openview,int_management,int_backup,int_login ";
     $q_string .= "from interface ";
     $q_string .= "left join net_zones on interface.int_zone = net_zones.zone_id  ";
-    $q_string .= "left join inttype on interface.int_type = inttype.itp_id ";
+    $q_string .= "left join int_types on interface.int_type = int_types.itp_id ";
     $q_string .= "where int_companyid = " . $formVars['id'] . " and int_int_id = " . $a_interface['int_id'] . " and int_ip6 = 0 ";
     $q_string .= "order by int_face,int_addr";
     $q_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -325,7 +325,7 @@
       $q_string .= "int_vaddr,int_veth,int_vgate,int_nagios,int_openview,int_management,int_backup,int_login ";
       $q_string .= "from interface ";
       $q_string .= "left join net_zones on interface.int_zone = net_zones.zone_id  ";
-      $q_string .= "left join inttype on interface.int_type = inttype.itp_id ";
+      $q_string .= "left join int_types on interface.int_type = int_types.itp_id ";
       $q_string .= "where int_companyid = " . $formVars['id'] . " and int_int_id = " . $a_redundancy['int_id'] . " and int_ip6 = 0 ";
       $q_string .= "order by int_face,int_addr";
       $q_secondary = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -460,7 +460,7 @@
             .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_veth,int_vaddr,int_vgate "
             . "from interface "
             . "left join net_zones on interface.int_zone = net_zones.zone_id  "
-            . "left join inttype on interface.int_type = inttype.itp_id "
+            . "left join int_types on interface.int_type = int_types.itp_id "
             . "where int_companyid = " . $formVars['id'] . " and int_int_id = 0 and int_ip6 = 1 "
             . "order by int_face,int_addr";
   $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -541,7 +541,7 @@
               .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_groupname,int_vaddr,int_veth,int_vgate "
               . "from interface "
               . "left join net_zones on interface.int_zone = net_zones.zone_id  "
-              . "left join inttype on interface.int_type = inttype.itp_id "
+              . "left join int_types on interface.int_type = int_types.itp_id "
               . "where int_companyid = " . $formVars['id'] . " and int_int_id = " . $a_interface['int_id'] . " and int_ip6 = 1 "
               . "order by int_face,int_addr";
     $q_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -619,7 +619,7 @@
                 .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_groupname,int_vaddr,int_veth,int_vgate "
                 . "from interface "
                 . "left join net_zones on interface.int_zone = net_zones.zone_id  "
-                . "left join inttype on interface.int_type = inttype.itp_id "
+                . "left join int_types on interface.int_type = int_types.itp_id "
                 . "where int_companyid = " . $formVars['id'] . " and int_int_id = " . $a_redundancy['int_id'] . " and int_ip6 = 1 "
                 . "order by int_face,int_addr";
       $q_secondary = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));

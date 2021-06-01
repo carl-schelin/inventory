@@ -92,10 +92,10 @@
       }
 
       $q_string  = "select itp_id,itp_acronym ";
-      $q_string .= "from inttype ";
-      $q_inttype = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_inttype = mysqli_fetch_array($q_inttype)) {
-        $inttype[$a_inttype['itp_id']] = $a_inttype['itp_acronym'];
+      $q_string .= "from int_types ";
+      $q_int_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_int_types = mysqli_fetch_array($q_int_types)) {
+        $int_types[$a_int_types['itp_id']] = $a_int_types['itp_acronym'];
       }
 
       $q_string  = "select spd_id,spd_text ";
@@ -531,7 +531,7 @@
         $q_string .= "int_sysport,int_addr,int_eth,int_mask,zone_name,int_gate,int_switch,int_port,itp_acronym,int_virtual,med_text,int_vlan ";
         $q_string .= "from interface ";
         $q_string .= "left join net_zones  on net_zones.zone_id = interface.int_zone ";
-        $q_string .= "left join inttype   on inttype.itp_id   = interface.int_type ";
+        $q_string .= "left join int_types   on int_types.itp_id   = interface.int_type ";
         $q_string .= "left join int_media on int_media.med_id = interface.int_media ";
         $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = 0 ";
         $q_string .= "order by int_server,int_face";
@@ -682,7 +682,7 @@
             $q_string .= "int_switch,int_port,itp_acronym,int_virtual,med_text,int_vlan,int_management,int_backup,int_nagios ";
             $q_string .= "from interface ";
             $q_string .= "left join net_zones  on net_zones.zone_id = interface.int_zone ";
-            $q_string .= "left join inttype   on inttype.itp_id   = interface.int_type ";
+            $q_string .= "left join int_types   on int_types.itp_id   = interface.int_type ";
             $q_string .= "left join int_media on int_media.med_id = interface.int_media ";
             $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_interface['int_id'] . " ";
             $q_string .= "order by int_server,int_face";

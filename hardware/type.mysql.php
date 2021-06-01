@@ -39,11 +39,11 @@
             "itp_description = \"" . $formVars['itp_description'] . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into inttype set itp_id = NULL, " . $q_string;
+            $query = "insert into int_types set itp_id = NULL, " . $q_string;
             $message = "Interface Type added.";
           }
           if ($formVars['update'] == 1) {
-            $query = "update inttype set " . $q_string . " where itp_id = " . $formVars['id'];
+            $query = "update int_types set " . $q_string . " where itp_id = " . $formVars['id'];
             $message = "Interface Type updated.";
           }
 
@@ -101,24 +101,24 @@
       $output .= "</tr>\n";
 
       $q_string  = "select itp_id,itp_name,itp_acronym,itp_description ";
-      $q_string .= "from inttype ";
+      $q_string .= "from int_types ";
       $q_string .= "order by itp_name ";
-      $q_inttype = mysqli_query($db, $q_string) or die (mysqli_error($db));
-      if (mysqli_num_rows($q_inttype) > 0) {
-        while ($a_inttype = mysqli_fetch_array($q_inttype)) {
+      $q_int_types = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      if (mysqli_num_rows($q_int_types) > 0) {
+        while ($a_int_types = mysqli_fetch_array($q_int_types)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('type.fill.php?id="  . $a_inttype['itp_id'] . "');showDiv('type-hide');\">";
-          $linkdel   = "<a href=\"#\" onclick=\"delete_line('type.del.php?id=" . $a_inttype['itp_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('type.fill.php?id="  . $a_int_types['itp_id'] . "');showDiv('type-hide');\">";
+          $linkdel   = "<a href=\"#\" onclick=\"delete_line('type.del.php?id=" . $a_int_types['itp_id'] . "');\">";
           $linkend   = "</a>";
 
           $output .= "<tr>\n";
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel . "x"                           . $linkend . "</td>\n";
           }
-          $output .= "  <td class=\"ui-widget-content delete\">" . $linkstart . $a_inttype['itp_id']          . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inttype['itp_acronym']     . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inttype['itp_name']        . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inttype['itp_description'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content delete\">" . $linkstart . $a_int_types['itp_id']          . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_int_types['itp_acronym']     . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_int_types['itp_name']        . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_int_types['itp_description'] . $linkend . "</td>\n";
           $output .= "</tr>\n";
 
         }
@@ -130,7 +130,7 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_inttype);
+      mysqli_free_result($q_int_types);
 
       print "document.getElementById('table_mysql').innerHTML = '"   . mysqli_real_escape_string($db, $output) . "';\n\n";
 

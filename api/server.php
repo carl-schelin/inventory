@@ -263,7 +263,7 @@
     $q_string .= "int_redundancy,int_groupname,int_virtual,zone_name,zone_acronym,int_sysport ";
     $q_string .= "from interface ";
     $q_string .= "left join net_zones   on net_zones.zone_id  = interface.int_zone ";
-    $q_string .= "left join inttype    on inttype.itp_id    = interface.int_type ";
+    $q_string .= "left join int_types    on int_types.itp_id    = interface.int_type ";
     $q_string .= "left join int_duplex on int_duplex.dup_id = interface.int_duplex ";
     $q_string .= "left join int_media  on int_media.med_id  = interface.int_media ";
     $q_string .= "left join int_speed  on int_speed.spd_id  = interface.int_speed ";
@@ -354,7 +354,7 @@
         $q_string .= "int_redundancy,int_groupname,int_virtual,zone_name,int_sysport ";
         $q_string .= "from interface ";
         $q_string .= "left join net_zones   on net_zones.zone_id  = interface.int_zone ";
-        $q_string .= "left join inttype    on inttype.itp_id    = interface.int_type ";
+        $q_string .= "left join int_types    on int_types.itp_id    = interface.int_type ";
         $q_string .= "left join int_duplex on int_duplex.dup_id = interface.int_duplex ";
         $q_string .= "left join int_media  on int_media.med_id  = interface.int_media ";
         $q_string .= "left join int_speed  on int_speed.spd_id  = interface.int_speed ";

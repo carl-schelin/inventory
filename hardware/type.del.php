@@ -19,12 +19,12 @@
     }
 
     if (check_userlevel($db, $AL_Admin)) {
-      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from inttype");
+      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from int_types");
 
       $q_string  = "delete ";
-      $q_string .= "from inttype ";
+      $q_string .= "from int_types ";
       $q_string .= "where itp_id = " . $formVars['id'];
-      $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $insert = mysqli_query($ab, $q_string) or die($q_string . ": " . mysqli_error($db));
 
       print "alert('Interface Type deleted');\n";
 

@@ -374,11 +374,11 @@
         $output .= "<option value=\"0\">Unassigned</option>\n";
 
         $q_string  = "select itp_id,itp_name ";
-        $q_string .= "from inttype ";
+        $q_string .= "from int_types ";
         $q_string .= "order by itp_id";
-        $q_inttype = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_inttype = mysqli_fetch_array($q_inttype)) {
-          $output .= "<option value=\"" . $a_inttype['itp_id'] . "\">" . $a_inttype['itp_name'] . "</option>\n";
+        $q_int_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_int_types = mysqli_fetch_array($q_int_types)) {
+          $output .= "<option value=\"" . $a_int_types['itp_id'] . "\">" . $a_int_types['itp_name'] . "</option>\n";
         }
 
         $output .= "</select></td>\n";
@@ -628,7 +628,7 @@
       $q_string .= "int_redundancy,int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,";
       $q_string .= "itp_description,int_gate,int_update,usr_name,int_nagios,int_openview,int_ip6 ";
       $q_string .= "from interface ";
-      $q_string .= "left join inttype on inttype.itp_id = interface.int_type ";
+      $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
       $q_string .= "left join users on users.usr_id = interface.int_user ";
       $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = 0 ";
       $q_string .= "order by int_face,int_addr,int_server";
@@ -790,7 +790,7 @@
           $q_string .= "itp_description,int_gate,int_update,usr_name,int_nagios,int_openview,";
           $q_string .= "int_redundancy,int_management,int_backup,int_ip6,int_login ";
           $q_string .= "from interface ";
-          $q_string .= "left join inttype on inttype.itp_id = interface.int_type ";
+          $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
           $q_string .= "left join users on users.usr_id = interface.int_user ";
           $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = " . $a_interface['int_id'] . " ";
           $q_string .= "order by int_face,int_addr,int_server";
@@ -953,7 +953,7 @@
               $q_string .= "int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,itp_description,int_gate,int_update,usr_name,";
               $q_string .= "int_nagios,int_openview,int_management,int_backup,int_ip6,int_login ";
               $q_string .= "from interface ";
-              $q_string .= "left join inttype on inttype.itp_id = interface.int_type ";
+              $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
               $q_string .= "left join users on users.usr_id = interface.int_user ";
               $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = " . $a_redundancy['int_id'] . " ";
               $q_string .= "order by int_face,int_addr,int_server";
