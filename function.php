@@ -244,7 +244,7 @@ function return_Index( $p_db, $p_check, $p_string ) {
   $package = "function.php";
 
   $r_index = 0;
-  $count = 1;
+  $count = 0;
   $q_table = mysqli_query($p_db, $p_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
   while ($a_table = mysqli_fetch_row($q_table)) {
     if ($p_check == $a_table[0]) {
