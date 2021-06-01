@@ -175,7 +175,7 @@
 # interface information
     $q_string  = "select int_addr,int_face,int_management,int_backup,int_openview,zone_zone ";
     $q_string .= "from interface ";
-    $q_string .= "left join ip_zones on ip_zones.zone_id = interface.int_zone ";
+    $q_string .= "left join net_zones on net_zones.zone_id = interface.int_zone ";
     $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_management = 1 or int_backup = 1 or int_openview = 1) ";
     $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     if (mysqli_num_rows($q_interface) > 0) {
