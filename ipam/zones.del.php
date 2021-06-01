@@ -19,10 +19,10 @@
     }
 
     if (check_userlevel($db, $AL_Admin)) {
-      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from ip_zones");
+      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from net_zones");
 
       $q_string  = "delete ";
-      $q_string .= "from ip_zones ";
+      $q_string .= "from net_zones ";
       $q_string .= "where zone_id = " . $formVars['id'];
       $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
