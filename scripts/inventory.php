@@ -398,7 +398,7 @@
 
       $q_string  = "select int_server,int_face,int_ip6,int_addr,int_eth,int_mask,int_gate,int_verified,int_type,int_update,zone_name ";
       $q_string .= "from interface ";
-      $q_string .= "left join ip_zones on ip_zones.zone_id = interface.int_zone ";
+      $q_string .= "left join net_zones on net_zones.zone_id = interface.int_zone ";
       $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 ";
       $q_string .= "order by int_face";
       $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
