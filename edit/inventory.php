@@ -1138,11 +1138,11 @@ $(document).ready( function() {
 <option value="0">Unassigned</option>
 <?php
   $q_string  = "select zone_id,zone_name ";
-  $q_string .= "from zones ";
+  $q_string .= "from timezones ";
   $q_string .= "order by zone_name";
-  $q_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_zones = mysqli_fetch_array($q_zones)) {
-    print "<option value=\"" . $a_zones['zone_id'] . "\">" . htmlspecialchars($a_zones['zone_name']) . "</option>\n";
+  $q_timezones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_timezones = mysqli_fetch_array($q_timezones)) {
+    print "<option value=\"" . $a_timezones['zone_id'] . "\">" . htmlspecialchars($a_timezones['zone_name']) . "</option>\n";
   }
 ?>
 </select></td>
