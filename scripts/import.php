@@ -143,16 +143,16 @@
             print "timezone found:\n";
 
             $q_string  = "select zone_id ";
-            $q_string .= "from zones ";
+            $q_string .= "from timezones ";
             $q_string .= "where zone_name like '%" . $value[3] . "%'";
-            $q_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-            $a_zones = mysqli_fetch_array($q_zones);
+            $q_timezones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $a_timezones = mysqli_fetch_array($q_timezones);
 
 # if we found the timezone in the database, update the inventory with it.
-            if ($a_zones['zone_id'] > 0) {
+            if ($a_timezones['zone_id'] > 0) {
               $skip = 'no';
               $query = 
-                "inv_zone = " . $a_zones['zone_id'];
+                "inv_zone = " . $a_timezones['zone_id'];
 
               $q_string = "update inventory set " . $query . " where inv_id = " . $a_inventory['inv_id'];
               if ($debug == 'no') {
