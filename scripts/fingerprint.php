@@ -26,7 +26,7 @@
 
   $q_string  = "select inv_id,inv_name,inv_fqdn,inv_ssh,svc_acronym,inv_callpath,zone_name,prod_name,prj_name,loc_identity,grp_name,inv_appadmin,inv_appliance,inv_maint ";
   $q_string .= "from inventory ";
-  $q_string .= "left join zones on zones.zone_id = inventory.inv_zone ";
+  $q_string .= "left join timezones on timezones.zone_id = inventory.inv_zone ";
   $q_string .= "left join service on service.svc_id = inventory.inv_class ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
