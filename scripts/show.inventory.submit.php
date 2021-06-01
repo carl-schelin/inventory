@@ -1032,7 +1032,7 @@
       $q_string = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,"
                 .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_domain "
                 . "from interface "
-                . "left join ip_zones on interface.int_zone = ip_zones.zone_id  "
+                . "left join net_zones on interface.int_zone = net_zones.zone_id  "
                 . "left join inttype on interface.int_type = inttype.itp_id "
                 . "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = 0 and int_ip6 = 0 "
                 . "order by int_face,int_addr";
@@ -1100,7 +1100,7 @@
         $q_string = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,int_domain,"
                   .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_groupname "
                   . "from interface "
-                  . "left join ip_zones on interface.int_zone = ip_zones.zone_id  "
+                  . "left join net_zones on interface.int_zone = net_zones.zone_id  "
                   . "left join inttype on interface.int_type = inttype.itp_id "
                   . "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_interface['int_id'] . " and int_ip6 = 0 "
                   . "order by int_face,int_addr";
@@ -1167,7 +1167,7 @@
           $q_string = "select int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,int_domain,"
                     .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_groupname "
                     . "from interface "
-                    . "left join ip_zones on interface.int_zone = ip_zones.zone_id  "
+                    . "left join net_zones on interface.int_zone = net_zones.zone_id  "
                     . "left join inttype on interface.int_type = inttype.itp_id "
                     . "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_redundancy['int_id'] . " and int_ip6 = 0 "
                     . "order by int_face,int_addr";
