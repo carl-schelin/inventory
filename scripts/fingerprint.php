@@ -70,7 +70,7 @@
   $zone = '';
   $q_string  = "select int_server,zone_zone ";
   $q_string .= "from interface ";
-  $q_string .= "left join ip_zones on ip_zones.zone_id = interface.int_zone ";
+  $q_string .= "left join net_zones on net_zones.zone_id = interface.int_zone ";
   $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_type = 1 || int_type = 2 || int_type = 6)";
   $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_interface = mysqli_fetch_array($q_interface)) {
