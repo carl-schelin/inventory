@@ -52,7 +52,7 @@
         $invclusterid  = return_Index($db, $a_inventory['inv_clusterid'],  $q_string);
 
         $invlocation   = return_Index($db, $a_inventory['inv_location'],   "select loc_id from locations left join cities on cities.ct_id = locations.loc_city order by ct_city,loc_name");
-        $invzone       = return_Index($db, $a_inventory['inv_zone'],       "select zone_id from zones order by zone_name");
+        $invzone       = return_Index($db, $a_inventory['inv_zone'],       "select zone_id from timezones order by zone_name");
         $invfront      = return_Index($db, $a_inventory['inv_front'],      "select img_id from images where img_facing = 1 order by img_title,img_file");
         $invrear       = return_Index($db, $a_inventory['inv_rear'],       "select img_id from images where img_facing = 0 order by img_title,img_file");
         $invmanager    = return_Index($db, $a_inventory['inv_manager'],    "select grp_id from a_groups where grp_disabled = 0 order by grp_name");
