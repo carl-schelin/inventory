@@ -14,12 +14,11 @@
       <li><a href="<?php print $Editroot; ?>/inventory.php">Add Server or Device</a></li>
     </ul>
   </li>
-  <li id="tm_applications"><a href="<?php print $Siteroot; ?>/index.apps.php">Modules</a>
+  <li id="tm_tools"><a href="<?php print $Siteroot; ?>/index.tools.php">Tools</a>
     <ul>
       <li><a href="<?php print $Issueroot;   ?>/issue.php">Issue Tracker</a></li>
       <li><a href="<?php print $Certsroot;   ?>/certs.php">Web Certificate Management</a></li>
       <li><a href="<?php print $Certsroot;   ?>/webapps.certs.php">-View Certificates</a></li>
-      <li><a href="<?php print $DCroot;      ?>/datacenter.php">Location Manager</a></li>
       <li><a href="<?php print $Reportroot;  ?>/hostname.php">Hostname Encode/Decode</a></li>
       <li><a href="<?php print $Excluderoot; ?>/exclude.php">Exclusion Manager</a></li>
       <li><a href="<?php print $Imageroot;   ?>/image.php">Image Manager</a></li>
@@ -40,10 +39,31 @@
   <li id="tm_ipam"><a href="<?php print $Siteroot; ?>/index.ipam.php">IPAM</a>
     <ul>
       <li><a href="<?php print $Ipamroot; ?>/ipam.php">IP Address Manager</a></li>
+      <li><a href="<?php print $Ipamroot; ?>/subzones.php">IP Address Zones</a></li>
+      <li><a href="<?php print $Ipamroot; ?>/types.php">IP Address Types</a></li>
       <li><a href="<?php print $Ipamroot; ?>/network.php">Network Manager</a></li>
-      <li><a href="<?php print $Ipamroot; ?>/vlans.php">VLAN Manager</a></li>
-      <li><a href="<?php print $Ipamroot; ?>/netzones.php">Network Zones</a></li>
-      <li><a href="<?php print $Ipamroot; ?>/iptype.php">IP Types</a></li>
+      <li><a href="<?php print $Ipamroot; ?>/zones.php">Network Zones</a></li>
+    </ul>
+  </li>
+
+  <li id="tm_hardware"><a href="<?php print $Siteroot; ?>/index.hardware.php">Hardware</a>
+    <ul>
+      <li><a href="<?php print $Hardwareroot; ?>/hardware.php">Hardware Models</a></li>
+      <li><a href="<?php print $Hardwareroot; ?>/parts.php">Part Descriptions</a></li>
+      <li><a href="<?php print $Hardwareroot; ?>/type.php">Interface Names</a></li>
+      <li><a href="<?php print $Hardwareroot; ?>/speed.php">Interface Speeds</a></li>
+    </ul>
+  </li>
+
+  <li id="tm_software"><a href="<?php print $Siteroot; ?>/index.software.php">Software</a>
+    <ul>
+      <li><a href="<?php print $Licenseroot; ?>/license.php">License Manager</a></li>
+    </ul>
+  </li>
+
+  <li id="tm_location"><a href="<?php print $Siteroot; ?>/index.location.php">Locations</a>
+    <ul>
+      <li><a href="<?php print $DCroot;      ?>/datacenter.php">Location Manager</a></li>
     </ul>
   </li>
 
@@ -53,12 +73,6 @@
       <li><a href="<?php print $Usersroot; ?>/department.php">Department Names</a></li>
       <li><a href="<?php print $Usersroot; ?>/organization.php">Organizations</a></li>
       <li><a href="<?php print $Usersroot; ?>/roles.php">Role Names</a></li>
-      <li><a href="<?php print $Hardwareroot; ?>/hardware.php">Hardware Models</a></li>
-      <li><a href="<?php print $Hardwareroot; ?>/parts.php">Part Descriptions</a></li>
-      <li><a href="<?php print $Hardwareroot; ?>/type.php">Interface Names</a></li>
-      <li><a href="<?php print $Hardwareroot; ?>/speed.php">Interface Speeds</a></li>
-      <li><a href="<?php print $Hardwareroot; ?>/zones.php">Network Zones</a></li>
-      <li><a href="<?php print $Licenseroot; ?>/license.php">License Manager</a></li>
       <li><a href="<?php print $Adminroot; ?>/maintenance.windows.php">Maintenance Windows</a></li>
       <li><a href="<?php print $Adminroot; ?>/product.php">Products and Services</a></li>
       <li><a href="<?php print $Adminroot; ?>/device.php">Device Types</a></li>

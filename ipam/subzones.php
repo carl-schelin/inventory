@@ -1,5 +1,5 @@
 <?php
-# Script: zones.php
+# Script: subzones.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
 # Description:
@@ -14,7 +14,7 @@
 
   check_login($db, $AL_Edit);
 
-  $package = "zones.php";
+  $package = "subzones.php";
 
   logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
@@ -30,7 +30,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Manage Network Zones</title>
+<title>Manage IP Address Zones</title>
 
 <style type='text/css' title='currentStyle' media='screen'>
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -47,7 +47,7 @@
   if (check_userlevel($db, $AL_Admin)) {
 ?>
 function delete_line( p_script_url ) {
-  var answer = confirm("Delete this Network Zone?")
+  var answer = confirm("Delete this Sub Zone?")
 
   if (answer) {
     script = document.createElement('script');
@@ -60,14 +60,15 @@ function delete_line( p_script_url ) {
 ?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.zoneDialog;
+  var af_form = document.subzoneDialog;
   var af_url;
 
   af_url  = '?update='   + update;
   af_url += '&id='       + af_form.id.value;
 
-  af_url += "&zone_zone="              + encode_URI(af_form.zone_zone.value);
-  af_url += "&zone_acronym="           + encode_URI(af_form.zone_acronym.value);
+  af_url += "&sub_name="              + encode_URI(af_form.sub_name.value);
+  af_url += "&sub_zone="              + af_form.sub_zone.value;
+  af_url += "&sub_description="       + encode_URI(af_form.sub_description.value);
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
@@ -81,8 +82,9 @@ function update_file( p_script_url, update ) {
   uf_url  = '?update='   + update;
   uf_url += '&id='       + uf_form.id.value;
 
-  uf_url += "&zone_zone="              + encode_URI(uf_form.zone_zone.value);
-  uf_url += "&zone_acronym="           + encode_URI(uf_form.zone_acronym.value);
+  uf_url += "&sub_name="              + encode_URI(uf_form.sub_name.value);
+  uf_url += "&sub_zone="              + uf_form.sub_zone.value;
+  uf_url += "&sub_description="       + encode_URI(uf_form.sub_description.value);
 
   script = document.createElement('script');
   script.src = p_script_url + uf_url;
@@ -90,38 +92,38 @@ function update_file( p_script_url, update ) {
 }
 
 function clear_fields() {
-  show_file('zones.mysql.php?update=-1');
+  show_file('subzones.mysql.php?update=-1');
 }
 
 $(document).ready( function() {
-  $( '#clickAddZone' ).click(function() {
-    $( "#dialogZone" ).dialog('open');
+  $( '#clickAddSubZone' ).click(function() {
+    $( "#dialogSubZone" ).dialog('open');
   });
 
-  $( "#dialogZone" ).dialog({
+  $( "#dialogSubZone" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 175,
+    height: 200,
     width: 600,
     show: 'slide',
     hide: 'slide',
     closeOnEscape: true,
     dialogClass: 'dialogWithDropShadow',
     close: function(event, ui) {
-      $( "#dialogZone" ).hide();
+      $( "#dialogSubZone" ).hide();
     },
     buttons: [
       {
         text: "Cancel",
         click: function() {
-          show_file('zones.mysql.php?update=-1');
+          show_file('subzones.mysql.php?update=-1');
           $( this ).dialog( "close" );
         }
       },
       {
-        text: "Add Network Zone",
+        text: "Add IP Address Zone",
         click: function() {
-          attach_file('zones.mysql.php', 0);
+          attach_file('subzones.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -131,7 +133,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 175,
+    height: 200,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -144,21 +146,21 @@ $(document).ready( function() {
       {
         text: "Cancel",
         click: function() {
-          show_file('zones.mysql.php?update=-1');
+          show_file('subzones.mysql.php?update=-1');
           $( this ).dialog( "close" );
         }
       },
       {
-        text: "Update Network Zone",
+        text: "Update IP Address Zone",
         click: function() {
-          update_file('zones.mysql.php', 1);
+          update_file('subzones.mysql.php', 1);
           $( this ).dialog( "close" );
         }
       },
       {
-        text: "Add Network Zone",
+        text: "Add IP Address Zone",
         click: function() {
-          update_file('zones.mysql.php', 0);
+          update_file('subzones.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -180,16 +182,16 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default">Network Zone Management</th>
-  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('zone-help');">Help</a></th>
+  <th class="ui-state-default">IP Address Zone Management</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('sub-help');">Help</a></th>
 </tr>
 </table>
 
-<div id="zone-help" style="<?php print $display; ?>">
+<div id="sub-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
 
-<p>A Network Zone are the layers of your network. Generally you think of this as an internal network such as the Corporate network or the one facing the public such as a DMZ. Other zones might be added as well depending upon your network design.</p>
+<p>Within Network Zones are network ranges that might be used for specific types of traffic. These are identified as IP Address Zones. For example you may have an IP Address that's specific to Windows or Linux servers. You might have an IP Address that's specific for Application traffic or Administration traffic.</p>
 
 <p>Click the Help link at the upper right to open and close any Help window.</p>
 
@@ -200,7 +202,7 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickAddZone" value="Add Network Zone"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickAddSubZone" value="Add IP Address Zone"></td>
 </tr>
 </table>
 
@@ -211,18 +213,30 @@ $(document).ready( function() {
 </div>
 
 
-<div id="dialogZone" title="Network Zone Form">
+<div id="dialogSubZone" title="Add IP Address Zone">
 
-<form name="zoneDialog">
+<form name="subzoneDialog">
 
 <input type="hidden" name="id" value="0">
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content">Network Zone <input type="text" name="zone_zone" size="10"></td>
+  <td class="ui-widget-content">IP Address Zone <input type="text" name="sub_name" size="50"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Zone Acronym <input type="text" name="zone_acronym" size="5"></td>
+  <td class="ui-widget-content">Network Zone: <select name="sub_zone">
+<?php
+  $q_string  = "select zone_id,zone_zone ";
+  $q_string .= "from net_zones ";
+  $q_string .= "order by zone_zone ";
+  $q_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_net_zones = mysqli_fetch_array($q_net_zones)) {
+    print "<option value=\"" . $a_net_zones['zone_id'] . "\">" . $a_net_zones['zone_zone'] . "</option>\n";
+  }
+?></select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Description <input type="text" name="sub_description" size="50"></td>
 </tr>
 </table>
 
@@ -230,7 +244,7 @@ $(document).ready( function() {
 
 </div>
 
-<div id="dialogUpdate" title="Network Zone Form">
+<div id="dialogUpdate" title="Update IP Address Zone">
 
 <form name="updateDialog">
 
@@ -238,10 +252,22 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content">Network Zone <input type="text" name="zone_zone" size="10"></td>
+  <td class="ui-widget-content">IP Address Zone <input type="text" name="sub_name" size="50"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Zone Acronym <input type="text" name="zone_acronym" size="5"></td>
+  <td class="ui-widget-content">Network Zone: <select name="sub_zone">
+<?php
+  $q_string  = "select zone_id,zone_zone ";
+  $q_string .= "from net_zones ";
+  $q_string .= "order by zone_zone ";
+  $q_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_net_zones = mysqli_fetch_array($q_net_zones)) {
+    print "<option value=\"" . $a_net_zones['zone_id'] . "\">" . $a_net_zones['zone_zone'] . "</option>\n";
+  }
+?></select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Description <input type="text" name="sub_description" size="50"></td>
 </tr>
 </table>
 

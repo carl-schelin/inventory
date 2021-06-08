@@ -1,5 +1,5 @@
 <?php
-# Script: zones.del.php
+# Script: network.del.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
 # Description: 
@@ -12,18 +12,18 @@
   include($Sitepath . '/function.php');
 
   if (isset($_SESSION['username'])) {
-    $package = "zones.del.php";
+    $package = "network.del.php";
     $formVars['id'] = 0;
     if (isset($_GET['id'])) {
       $formVars['id'] = clean($_GET['id'], 10);
     }
 
     if (check_userlevel($db, $AL_Admin)) {
-      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from net_zones");
+      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from network");
 
       $q_string  = "delete ";
-      $q_string .= "from net_zones ";
-      $q_string .= "where zone_id = " . $formVars['id'];
+      $q_string .= "from network ";
+      $q_string .= "where net_id = " . $formVars['id'];
       $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
       print "clear_fields();\n";

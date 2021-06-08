@@ -21,19 +21,17 @@
     if (check_userlevel($db, $AL_Edit)) {
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from net_zones");
 
-      $q_string  = "select zone_name,zone_desc ";
+      $q_string  = "select zone_zone,zone_acronym ";
       $q_string .= "from net_zones ";
       $q_string .= "where zone_id = " . $formVars['id'];
       $q_net_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       $a_net_zones = mysqli_fetch_array($q_net_zones);
       mysqli_free_result($q_net_zones);
 
-      print "document.zones.zone_name.value = '" . mysqli_real_escape_string($db, $a_net_zones['zone_name']) . "';\n";
-      print "document.zones.zone_desc.value = '" . mysqli_real_escape_string($db, $a_net_zones['zone_desc']) . "';\n";
+      print "document.updateDialog.zone_zone.value = '"        . mysqli_real_escape_string($db, $a_net_zones['zone_zone'])        . "';\n";
+      print "document.updateDialog.zone_acronym.value = '"     . mysqli_real_escape_string($db, $a_net_zones['zone_acronym'])     . "';\n";
 
-      print "document.zones.id.value = " . $formVars['id'] . ";\n";
-
-      print "document.zones.update.disabled = false;\n";
+      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

@@ -271,19 +271,99 @@ database cleanup:
 remove the following tables:
 
 drop table alarm_blocks;
+drop table alarm_type;
+drop table alarms;
+drop table apigroups;
+drop table application;
+drop table bigfix;
+drop table business;
+drop table changelog;
+drop table checklist;
+drop table company;
+drop table config;
+drop table contact;
+drop table contacts;
+drop table events;
+drop table family;
+drop table faq;
+drop table faq_comment;
+drop table faq_detail;
+drop table faq_tags;
+drop table faq_votes;
+drop table firewall;
+drop table handoff;
+drop table intvuln;
+drop table ip_addresses;
+drop table ip_subnets;
+drop table keywords;
+drop table maint;
+drop table message_group;
+drop table issue_morning;
+drop table networks;
+drop table objects;
+drop table oncall;
+drop table outage;
+drop table policy;
+drop table policy_description;
+drop table policy_type;
+drop table poll_answers;
+drop table poll_questions;
+drop table polls;
+drop table psaps;
+drop table psaps_arch;
+drop table purchaseorder;
+drop table report;
+drop table repos;
+drop table resources;
+drop table retire;
+drop table rh_groups;
+drop table rh_packages;
+drop table rh_selections;
+drop table rights;
+drop table rsdp_accept;
+drop table rsdp_applications;
+drop table rsdp_backups;
+drop table rsdp_check;
+drop table rsdp_comments;
+drop table rsdp_datacenter;
+drop table rsdp_designed;
+drop table rsdp_filesystem;
+drop table rsdp_infosec;
+drop table rsdp_infrastructure;
+drop table rsdp_interface;
+drop table rsdp_osteam;
+drop table rsdp_platform;
+drop table rsdp_san;
+drop table rsdp_server;
+drop table rsdp_status;
+drop table rsdp_tickets;
+drop table rules;
+drop table san;
+drop table security;
+drop table source_node;
+drop table spectre;
+drop table sudoers;
+drop table swbackup;
+drop table vlanz;
+drop table vulnerabilities;
+drop table vulnowner;
+drop table west;
+
+
+
+In case of restoration for any reason
+
 CREATE TABLE `alarm_blocks` (
   `block_id` int NOT NULL AUTO_INCREMENT,
   `block_text` text NOT NULL,
   `block_user` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`block_id`)
 )
-drop table alarm_type;
 CREATE TABLE `alarm_type` (
   `atype_id` int NOT NULL AUTO_INCREMENT,
   `atype_name` char(40) NOT NULL DEFAULT '',
   PRIMARY KEY (`atype_id`)
 )
-drop table alarms;
 CREATE TABLE `alarms` (
   `alarm_id` int NOT NULL AUTO_INCREMENT,
   `alarm_companyid` int NOT NULL DEFAULT '0',
@@ -293,20 +373,17 @@ CREATE TABLE `alarms` (
   `alarm_disabled` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`alarm_id`)
 )
-drop table apigroups;
 CREATE TABLE `apigroups` (
   `api_id` int NOT NULL AUTO_INCREMENT,
   `api_name` char(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`api_id`)
 )
-drop table application;
 CREATE TABLE `application` (
   `app_id` int NOT NULL AUTO_INCREMENT,
   `app_description` char(255) NOT NULL DEFAULT '',
   `app_deleted` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`app_id`)
 )
-drop table bigfix;
 CREATE TABLE `bigfix` (
   `big_id` int NOT NULL AUTO_INCREMENT,
   `big_companyid` int NOT NULL DEFAULT '0',
@@ -316,7 +393,6 @@ CREATE TABLE `bigfix` (
   `big_scheduled` date NOT NULL DEFAULT '1971-01-01',
   PRIMARY KEY (`big_id`)
 )
-drop table business;
 CREATE TABLE `business` (
   `bus_id` int NOT NULL AUTO_INCREMENT,
   `bus_unit` int NOT NULL DEFAULT '0',
@@ -328,7 +404,6 @@ CREATE TABLE `business` (
   `bus_deptname` char(70) NOT NULL DEFAULT '',
   PRIMARY KEY (`bus_id`)
 )
-drop table changelog;
 CREATE TABLE `changelog` (
   `cl_id` int NOT NULL AUTO_INCREMENT,
   `cl_name` char(60) NOT NULL DEFAULT '',
@@ -338,7 +413,6 @@ CREATE TABLE `changelog` (
   `cl_whodel` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`cl_id`)
 )
-drop table checklist;
 CREATE TABLE `checklist` (
   `chk_id` int NOT NULL AUTO_INCREMENT,
   `chk_task` int NOT NULL DEFAULT '0',
@@ -348,7 +422,6 @@ CREATE TABLE `checklist` (
   `chk_link` char(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`chk_id`)
 )
-drop table company;
 CREATE TABLE `company` (
   `com_id` int NOT NULL AUTO_INCREMENT,
   `com_short` char(30) NOT NULL DEFAULT '',
@@ -372,14 +445,12 @@ CREATE TABLE `company` (
   `com_disabled` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`com_id`)
 )
-drop table config;
 CREATE TABLE `config` (
   `config_id` int NOT NULL AUTO_INCREMENT,
   `config_name` char(30) NOT NULL DEFAULT '',
   `config_path` char(30) NOT NULL DEFAULT '',
   PRIMARY KEY (`config_id`)
 )
-drop table contact;
 CREATE TABLE `contact` (
   `con_id` int NOT NULL AUTO_INCREMENT,
   `con_name` char(100) NOT NULL DEFAULT '',
@@ -390,7 +461,6 @@ CREATE TABLE `contact` (
   `con_notes` char(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`con_id`)
 )
-drop table contacts;
 CREATE TABLE `contacts` (
   `con_id` int NOT NULL AUTO_INCREMENT,
   `con_company` char(255) NOT NULL DEFAULT '',
@@ -401,7 +471,6 @@ CREATE TABLE `contacts` (
   `con_disabled` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`con_id`)
 )
-drop table events;
 CREATE TABLE `events` (
   `evt_id` int NOT NULL AUTO_INCREMENT,
   `evt_group` int NOT NULL DEFAULT '0',
@@ -409,13 +478,11 @@ CREATE TABLE `events` (
   `evt_date` date NOT NULL DEFAULT '1971-01-01',
   PRIMARY KEY (`evt_id`)
 )
-drop table family;
 CREATE TABLE `family` (
   `fam_id` int NOT NULL AUTO_INCREMENT,
   `fam_name` char(60) NOT NULL DEFAULT '',
   PRIMARY KEY (`fam_id`)
 )
-drop table faq;
 CREATE TABLE `faq` (
   `faq_id` int NOT NULL AUTO_INCREMENT,
   `faq_subject` char(255) NOT NULL DEFAULT '',
@@ -425,7 +492,6 @@ CREATE TABLE `faq` (
   `faq_views` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`faq_id`)
 )
-drop table faq_comment;
 CREATE TABLE `faq_comment` (
   `com_id` int NOT NULL AUTO_INCREMENT,
   `com_detail_id` int NOT NULL DEFAULT '0',
@@ -435,7 +501,6 @@ CREATE TABLE `faq_comment` (
   `com_status` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`com_id`)
 )
-drop table faq_detail;
 CREATE TABLE `faq_detail` (
   `faq_id` int NOT NULL AUTO_INCREMENT,
   `faq_faq_id` int NOT NULL DEFAULT '0',
@@ -446,7 +511,6 @@ CREATE TABLE `faq_detail` (
   `faq_status` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`faq_id`)
 )
-drop table faq_tags;
 CREATE TABLE `faq_tags` (
   `tag_id` int NOT NULL AUTO_INCREMENT,
   `tag_faq_id` int NOT NULL DEFAULT '0',
@@ -454,7 +518,6 @@ CREATE TABLE `faq_tags` (
   `tag_user` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`tag_id`)
 )
-drop table faq_votes;
 CREATE TABLE `faq_votes` (
   `vote_id` int NOT NULL AUTO_INCREMENT,
   `vote_faq_id` int NOT NULL DEFAULT '0',
@@ -463,7 +526,6 @@ CREATE TABLE `faq_votes` (
   `vote_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`vote_id`)
 )
-drop table firewall;
 CREATE TABLE `firewall` (
   `fw_id` int NOT NULL AUTO_INCREMENT,
   `fw_companyid` int NOT NULL DEFAULT '0',
@@ -479,7 +541,6 @@ CREATE TABLE `firewall` (
   `fw_ticket` char(20) NOT NULL DEFAULT '',
   PRIMARY KEY (`fw_id`)
 )
-drop table handoff;
 CREATE TABLE `handoff` (
   `off_id` int NOT NULL AUTO_INCREMENT,
   `off_user` int NOT NULL DEFAULT '0',
@@ -490,7 +551,6 @@ CREATE TABLE `handoff` (
   `off_who` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`off_id`)
 )
-drop table intvuln;
 CREATE TABLE `intvuln` (
   `iv_id` int NOT NULL AUTO_INCREMENT,
   `iv_intid` int NOT NULL DEFAULT '0',
@@ -498,7 +558,6 @@ CREATE TABLE `intvuln` (
   `iv_date` date NOT NULL DEFAULT '1971-01-01',
   PRIMARY KEY (`iv_id`)
 )
-drop table ip_addresses;
 CREATE TABLE `ip_addresses` (
   `ip_id` int NOT NULL AUTO_INCREMENT,
   `ip_companyid` int NOT NULL DEFAULT '0',
@@ -507,7 +566,6 @@ CREATE TABLE `ip_addresses` (
   `ip_gateway` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`ip_id`)
 )
-drop table ip_subnets;
 CREATE TABLE `ip_subnets` (
   `sub_id` int NOT NULL AUTO_INCREMENT,
   `sub_base` mediumtext NOT NULL,
@@ -522,7 +580,6 @@ CREATE TABLE `ip_subnets` (
   `sub_disable` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`sub_id`)
 )
-drop table keywords;
 CREATE TABLE `keywords` (
   `key_id` int NOT NULL AUTO_INCREMENT,
   `key_description` char(255) NOT NULL DEFAULT '',
@@ -533,7 +590,6 @@ CREATE TABLE `keywords` (
   `key_deleted` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`key_id`)
 )
-drop table maint;
 CREATE TABLE `maint` (
   `man_id` int NOT NULL AUTO_INCREMENT,
   `man_service` char(100) NOT NULL DEFAULT '',
@@ -548,14 +604,12 @@ CREATE TABLE `maint` (
   `man_status` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`man_id`)
 )
-drop table message_group;
 CREATE TABLE `message_group` (
   `msg_id` int NOT NULL AUTO_INCREMENT,
   `msg_group` char(255) NOT NULL DEFAULT '',
   `msg_deleted` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`msg_id`)
 )
-drop table issue_morning;
 CREATE TABLE `issue_morning` (
   `morn_id` int NOT NULL AUTO_INCREMENT,
   `morn_text` char(255) NOT NULL DEFAULT '',
@@ -565,7 +619,6 @@ CREATE TABLE `issue_morning` (
   `morn_status` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`morn_id`)
 )
-drop table networks;
 CREATE TABLE `networks` (
   `net_id` int NOT NULL AUTO_INCREMENT,
   `net_network` char(128) NOT NULL DEFAULT '',
@@ -574,14 +627,12 @@ CREATE TABLE `networks` (
   `net_vlan` char(30) NOT NULL DEFAULT '',
   PRIMARY KEY (`net_id`)
 )
-drop table objects;
 CREATE TABLE `objects` (
   `obj_id` int NOT NULL AUTO_INCREMENT,
   `obj_name` char(255) NOT NULL DEFAULT '',
   `obj_deleted` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`obj_id`)
 )
-drop table oncall;
 CREATE TABLE `oncall` (
   `onc_id` int NOT NULL AUTO_INCREMENT,
   `onc_userid` int NOT NULL DEFAULT '0',
@@ -589,7 +640,6 @@ CREATE TABLE `oncall` (
   `onc_changed` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`onc_id`)
 )
-drop table outage;
 CREATE TABLE `outage` (
   `out_id` int NOT NULL AUTO_INCREMENT,
   `out_companyid` int NOT NULL DEFAULT '0',
@@ -602,7 +652,6 @@ CREATE TABLE `outage` (
   `out_closed` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`out_id`)
 )
-drop table policy;
 CREATE TABLE `policy` (
   `pol_id` int NOT NULL AUTO_INCREMENT,
   `pol_companyid` int NOT NULL DEFAULT '0',
@@ -613,33 +662,28 @@ CREATE TABLE `policy` (
   `pol_date` date NOT NULL DEFAULT '1971-01-01',
   PRIMARY KEY (`pol_id`)
 )
-drop table policy_description;
 CREATE TABLE `policy_description` (
   `pd_id` int NOT NULL AUTO_INCREMENT,
   `pd_description` char(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`pd_id`)
 )
-drop table policy_type;
 CREATE TABLE `policy_type` (
   `pt_id` int NOT NULL AUTO_INCREMENT,
   `pt_type` char(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`pt_id`)
 )
-drop table poll_answers;
 CREATE TABLE `poll_answers` (
   `pa_id` int NOT NULL AUTO_INCREMENT,
   `pa_pq_id` int NOT NULL DEFAULT '0',
   `pa_user` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`pa_id`)
 )
-drop table poll_questions;
 CREATE TABLE `poll_questions` (
   `pq_id` int NOT NULL AUTO_INCREMENT,
   `pq_poll_id` int NOT NULL DEFAULT '0',
   `pq_question` char(30) NOT NULL DEFAULT '',
   PRIMARY KEY (`pq_id`)
 )
-drop table polls;
 CREATE TABLE `polls` (
   `poll_id` int NOT NULL AUTO_INCREMENT,
   `poll_name` char(30) NOT NULL DEFAULT '',
@@ -649,7 +693,6 @@ CREATE TABLE `polls` (
   `poll_expires` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`poll_id`)
 )
-drop table psaps;
 CREATE TABLE `psaps` (
   `psap_id` int NOT NULL AUTO_INCREMENT,
   `psap_customerid` int NOT NULL DEFAULT '0',
@@ -667,7 +710,6 @@ CREATE TABLE `psaps` (
   `psap_delete` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`psap_id`)
 )
-drop table psaps_arch;
 CREATE TABLE `psaps_arch` (
   `psap_id` int NOT NULL AUTO_INCREMENT,
   `psap_customerid` int NOT NULL DEFAULT '0',
@@ -685,7 +727,6 @@ CREATE TABLE `psaps_arch` (
   `psap_delete` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`psap_id`)
 )
-drop table purchaseorder;
 CREATE TABLE `purchaseorder` (
   `po_id` int NOT NULL AUTO_INCREMENT,
   `po_number` char(40) NOT NULL DEFAULT '',
@@ -693,7 +734,6 @@ CREATE TABLE `purchaseorder` (
   `po_bu` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`po_id`)
 )
-drop table report;
 CREATE TABLE `report` (
   `rep_id` int NOT NULL AUTO_INCREMENT,
   `rep_user` int NOT NULL DEFAULT '0',
@@ -705,7 +745,6 @@ CREATE TABLE `report` (
   `rep_task` text NOT NULL,
   PRIMARY KEY (`rep_id`)
 )
-drop table repos;
 CREATE TABLE `repos` (
   `rep_id` int NOT NULL AUTO_INCREMENT,
   `rep_version` char(5) NOT NULL DEFAULT '',
@@ -718,13 +757,11 @@ CREATE TABLE `repos` (
   `rep_included` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`rep_id`)
 )
-drop table resources;
 CREATE TABLE `resources` (
   `res_id` int NOT NULL AUTO_INCREMENT,
   `res_name` char(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`res_id`)
 )
-drop table retire;
 CREATE TABLE `retire` (
   `ret_id` int NOT NULL AUTO_INCREMENT,
   `ret_companyid` int NOT NULL DEFAULT '0',
@@ -734,7 +771,6 @@ CREATE TABLE `retire` (
   `ret_user` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`ret_id`)
 )
-drop table rh_groups;
 CREATE TABLE `rh_groups` (
   `grp_id` int NOT NULL AUTO_INCREMENT,
   `grp_osid` int NOT NULL DEFAULT '0',
@@ -746,7 +782,6 @@ CREATE TABLE `rh_groups` (
   `grp_disabled` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`grp_id`)
 )
-drop table rh_packages;
 CREATE TABLE `rh_packages` (
   `pkg_id` int NOT NULL AUTO_INCREMENT,
   `pkg_grpid` int NOT NULL DEFAULT '0',
@@ -754,7 +789,6 @@ CREATE TABLE `rh_packages` (
   `pkg_description` char(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`pkg_id`)
 )
-drop table rh_selections;
 CREATE TABLE `rh_selections` (
   `sel_id` int NOT NULL AUTO_INCREMENT,
   `sel_pkgid` int NOT NULL DEFAULT '0',
@@ -763,7 +797,6 @@ CREATE TABLE `rh_selections` (
   `sel_userid` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`sel_id`)
 )
-drop table rights;
 CREATE TABLE `rights` (
   `rgt_id` int NOT NULL AUTO_INCREMENT,
   `rgt_type` int NOT NULL DEFAULT '0',
@@ -780,7 +813,6 @@ CREATE TABLE `rights` (
   `rgt_update` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`rgt_id`)
 )
-drop table rsdp_accept;
 CREATE TABLE `rsdp_accept` (
   `acc_id` int NOT NULL AUTO_INCREMENT,
   `acc_rsdp` int NOT NULL DEFAULT '0',
@@ -792,7 +824,6 @@ CREATE TABLE `rsdp_accept` (
   `acc_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`acc_id`)
 )
-drop table rsdp_applications;
 CREATE TABLE `rsdp_applications` (
   `app_id` int NOT NULL AUTO_INCREMENT,
   `app_rsdp` int NOT NULL DEFAULT '0',
@@ -811,7 +842,6 @@ CREATE TABLE `rsdp_applications` (
   `app_moncheck` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`app_id`)
 )
-drop table rsdp_backups;
 CREATE TABLE `rsdp_backups` (
   `bu_id` int NOT NULL AUTO_INCREMENT,
   `bu_rsdp` int NOT NULL DEFAULT '0',
@@ -834,7 +864,6 @@ CREATE TABLE `rsdp_backups` (
   `bu_sattime` char(10) NOT NULL DEFAULT '00:00',
   PRIMARY KEY (`bu_id`)
 )
-drop table rsdp_check;
 CREATE TABLE `rsdp_check` (
   `chk_id` int NOT NULL AUTO_INCREMENT,
   `chk_task` int NOT NULL DEFAULT '0',
@@ -845,7 +874,6 @@ CREATE TABLE `rsdp_check` (
   `chk_checked` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`chk_id`)
 )
-drop table rsdp_comments;
 CREATE TABLE `rsdp_comments` (
   `com_id` int NOT NULL AUTO_INCREMENT,
   `com_rsdp` int NOT NULL DEFAULT '0',
@@ -855,7 +883,6 @@ CREATE TABLE `rsdp_comments` (
   `com_user` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`com_id`)
 )
-drop table rsdp_datacenter;
 CREATE TABLE `rsdp_datacenter` (
   `dc_id` int NOT NULL AUTO_INCREMENT,
   `dc_rsdp` int NOT NULL DEFAULT '0',
@@ -868,7 +895,6 @@ CREATE TABLE `rsdp_datacenter` (
   `dc_path` char(30) NOT NULL DEFAULT '',
   PRIMARY KEY (`dc_id`)
 )
-drop table rsdp_designed;
 CREATE TABLE `rsdp_designed` (
   `san_id` int NOT NULL AUTO_INCREMENT,
   `san_rsdp` int NOT NULL DEFAULT '0',
@@ -876,7 +902,6 @@ CREATE TABLE `rsdp_designed` (
   `san_checklist` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`san_id`)
 )
-drop table rsdp_filesystem;
 CREATE TABLE `rsdp_filesystem` (
   `fs_id` int NOT NULL AUTO_INCREMENT,
   `fs_rsdp` int NOT NULL DEFAULT '0',
@@ -888,7 +913,6 @@ CREATE TABLE `rsdp_filesystem` (
   `fs_backup` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`fs_id`)
 )
-drop table rsdp_infosec;
 CREATE TABLE `rsdp_infosec` (
   `is_id` int NOT NULL AUTO_INCREMENT,
   `is_rsdp` int NOT NULL DEFAULT '0',
@@ -898,7 +922,6 @@ CREATE TABLE `rsdp_infosec` (
   `is_verified` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`is_id`)
 )
-drop table rsdp_infrastructure;
 CREATE TABLE `rsdp_infrastructure` (
   `if_id` int NOT NULL AUTO_INCREMENT,
   `if_rsdp` int NOT NULL DEFAULT '0',
@@ -932,7 +955,6 @@ CREATE TABLE `rsdp_infrastructure` (
   `if_vmnote` char(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`if_id`)
 )
-drop table rsdp_interface;
 CREATE TABLE `rsdp_interface` (
   `if_id` int NOT NULL AUTO_INCREMENT,
   `if_rsdp` int NOT NULL DEFAULT '0',
@@ -963,7 +985,6 @@ CREATE TABLE `rsdp_interface` (
   `if_checklist` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`if_id`)
 )
-drop table rsdp_osteam;
 CREATE TABLE `rsdp_osteam` (
   `os_id` int NOT NULL AUTO_INCREMENT,
   `os_rsdp` int NOT NULL DEFAULT '0',
@@ -973,7 +994,6 @@ CREATE TABLE `rsdp_osteam` (
   `os_complete` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`os_id`)
 )
-drop table rsdp_platform;
 CREATE TABLE `rsdp_platform` (
   `pf_id` int NOT NULL AUTO_INCREMENT,
   `pf_rsdp` int NOT NULL DEFAULT '0',
@@ -992,7 +1012,6 @@ CREATE TABLE `rsdp_platform` (
   `pf_complete` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`pf_id`)
 )
-drop table rsdp_san;
 CREATE TABLE `rsdp_san` (
   `san_id` int NOT NULL AUTO_INCREMENT,
   `san_rsdp` int NOT NULL DEFAULT '0',
@@ -1003,7 +1022,6 @@ CREATE TABLE `rsdp_san` (
   `san_wwnnzone` char(20) NOT NULL DEFAULT '',
   PRIMARY KEY (`san_id`)
 )
-drop table rsdp_server;
 CREATE TABLE `rsdp_server` (
   `rsdp_id` int NOT NULL AUTO_INCREMENT,
   `rsdp_requestor` int NOT NULL DEFAULT '0',
@@ -1040,7 +1058,6 @@ CREATE TABLE `rsdp_server` (
   `rsdp_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`rsdp_id`)
 )
-drop table rsdp_status;
 CREATE TABLE `rsdp_status` (
   `st_id` int NOT NULL AUTO_INCREMENT,
   `st_rsdp` int NOT NULL DEFAULT '0',
@@ -1050,7 +1067,6 @@ CREATE TABLE `rsdp_status` (
   `st_step` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`st_id`)
 )
-drop table rsdp_tickets;
 CREATE TABLE `rsdp_tickets` (
   `tkt_id` int NOT NULL AUTO_INCREMENT,
   `tkt_rsdp` int NOT NULL DEFAULT '0',
@@ -1072,7 +1088,6 @@ CREATE TABLE `rsdp_tickets` (
   `tkt_sysscan` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`tkt_id`)
 )
-drop table rules;
 CREATE TABLE `rules` (
   `rule_id` int NOT NULL AUTO_INCREMENT,
   `rule_parent` int NOT NULL DEFAULT '0',
@@ -1089,7 +1104,6 @@ CREATE TABLE `rules` (
   `rule_deleted` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`rule_id`)
 )
-drop table san;
 CREATE TABLE `san` (
   `san_id` int NOT NULL AUTO_INCREMENT,
   `san_companyid` int NOT NULL DEFAULT '0',
@@ -1102,7 +1116,6 @@ CREATE TABLE `san` (
   `san_group` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`san_id`)
 )
-drop table security;
 CREATE TABLE `security` (
   `sec_id` int NOT NULL AUTO_INCREMENT,
   `sec_name` char(255) NOT NULL DEFAULT '',
@@ -1110,21 +1123,18 @@ CREATE TABLE `security` (
   `sec_severity` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`sec_id`)
 )
-drop table source_node;
 CREATE TABLE `source_node` (
   `src_id` int NOT NULL AUTO_INCREMENT,
   `src_node` char(255) NOT NULL DEFAULT '',
   `src_deleted` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`src_id`)
 )
-drop table spectre;
 CREATE TABLE `spectre` (
   `sp_system` char(50) DEFAULT NULL,
   `sp_var1` char(50) DEFAULT NULL,
   `sp_var2` char(50) DEFAULT NULL,
   `sp_var3` char(50) DEFAULT NULL
 )
-drop table sudoers;
 CREATE TABLE `sudoers` (
   `sudo_id` int NOT NULL AUTO_INCREMENT,
   `sudo_companyid` int NOT NULL DEFAULT '0',
@@ -1133,7 +1143,6 @@ CREATE TABLE `sudoers` (
   `sudo_expire` date NOT NULL DEFAULT '1971-01-01',
   PRIMARY KEY (`sudo_id`)
 )
-drop table swbackup;
 CREATE TABLE `swbackup` (
   `sw_id` int NOT NULL AUTO_INCREMENT,
   `sw_name` char(20) NOT NULL,
@@ -1155,7 +1164,6 @@ CREATE TABLE `swbackup` (
   `sw_support` char(10) NOT NULL,
   PRIMARY KEY (`sw_id`)
 )
-drop table vlanz;
 CREATE TABLE `vlanz` (
   `vlan_id` int NOT NULL AUTO_INCREMENT,
   `vlan_vlan` char(10) NOT NULL DEFAULT '',
@@ -1167,7 +1175,6 @@ CREATE TABLE `vlanz` (
   `vlan_netmask` char(16) NOT NULL DEFAULT '',
   PRIMARY KEY (`vlan_id`)
 )
-drop table vulnerabilities;
 CREATE TABLE `vulnerabilities` (
   `vuln_id` int NOT NULL AUTO_INCREMENT,
   `vuln_interface` int NOT NULL DEFAULT '0',
@@ -1179,7 +1186,6 @@ CREATE TABLE `vulnerabilities` (
   `vuln_deldate` date NOT NULL DEFAULT '1971-01-01',
   PRIMARY KEY (`vuln_id`)
 )
-drop table vulnowner;
 CREATE TABLE `vulnowner` (
   `vul_id` int NOT NULL AUTO_INCREMENT,
   `vul_interface` int NOT NULL DEFAULT '0',
@@ -1190,7 +1196,6 @@ CREATE TABLE `vulnowner` (
   `vul_description` char(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`vul_id`)
 )
-drop table west;
 CREATE TABLE `west` (
   `west_id` int NOT NULL AUTO_INCREMENT,
   `west_rc` varchar(30) NOT NULL DEFAULT '',
@@ -1249,7 +1254,6 @@ x int_volts - system voltage
 x interface - main interface table for systems; should be empty
 x inttype - interface type; management, application, etc.
 x inventory - main list of servers; should be empty
-x ip_zones - list of ip network zones - probably should be emptyu
 x issue - issue tracker - should be empty
 x issue_detail - detail record - should be empty
 x issue_support - who did you call for support; details about the call. should be empty;
@@ -1266,6 +1270,7 @@ x modules - system modules; bug tracker, feature tracker.
 x mon_system - list of monitoring systems - 
 x mon_type - list of things to monitor.
 x monitoring - new monitoring system. should be empty.
+x net_zones - list of network zones - probably should be empty
 x operatingsystem - should be in the software manager
 x organizations - company organizations should be empty
 x packages - installed packages
@@ -1425,4 +1430,32 @@ x ./research/research/database.output
 x ./show/research/database.output
 x ./swm/research/database.output
 x ./tm/research/database.output
+
+
+New as of today
+
+Created ipaddress table
+Created network table
+Renamed ip_zones table to net_zones
+Renamed zones to timezones
+Renamed inttype to int_types
+
+in netzones to be consistent:
+
+alter table net_zones change zone_desc zone_description char(50) not null default '';
+
+
+Dialog Box sizes.
+
+Width 600
+
+Heights are different depending upon the number of lines.
+
+1 line: 150
+2 lines: 175
+3 lines: 200
+4 lines: 225
+5 lines: 250
+6 lines: 275
+7 lines: 300
 

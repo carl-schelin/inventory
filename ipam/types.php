@@ -1,5 +1,5 @@
 <?php
-# Script: zones.php
+# Script: types.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
 # Description:
@@ -14,7 +14,7 @@
 
   check_login($db, $AL_Edit);
 
-  $package = "zones.php";
+  $package = "types.php";
 
   logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
@@ -30,7 +30,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Manage Network Zones</title>
+<title>Manage IP Address Types</title>
 
 <style type='text/css' title='currentStyle' media='screen'>
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -47,7 +47,7 @@
   if (check_userlevel($db, $AL_Admin)) {
 ?>
 function delete_line( p_script_url ) {
-  var answer = confirm("Delete this Network Zone?")
+  var answer = confirm("Delete this IP Address Type?")
 
   if (answer) {
     script = document.createElement('script');
@@ -60,14 +60,14 @@ function delete_line( p_script_url ) {
 ?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.zoneDialog;
+  var af_form = document.typeDialog;
   var af_url;
 
   af_url  = '?update='   + update;
   af_url += '&id='       + af_form.id.value;
 
-  af_url += "&zone_zone="              + encode_URI(af_form.zone_zone.value);
-  af_url += "&zone_acronym="           + encode_URI(af_form.zone_acronym.value);
+  af_url += "&ip_name="        + encode_URI(af_form.ip_name.value);
+  af_url += "&ip_description=" + encode_URI(af_form.ip_description.value);
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
@@ -81,8 +81,8 @@ function update_file( p_script_url, update ) {
   uf_url  = '?update='   + update;
   uf_url += '&id='       + uf_form.id.value;
 
-  uf_url += "&zone_zone="              + encode_URI(uf_form.zone_zone.value);
-  uf_url += "&zone_acronym="           + encode_URI(uf_form.zone_acronym.value);
+  uf_url += "&ip_name="        + encode_URI(uf_form.ip_name.value);
+  uf_url += "&ip_description=" + encode_URI(uf_form.ip_description.value);
 
   script = document.createElement('script');
   script.src = p_script_url + uf_url;
@@ -90,15 +90,15 @@ function update_file( p_script_url, update ) {
 }
 
 function clear_fields() {
-  show_file('zones.mysql.php?update=-1');
+  show_file('types.mysql.php?update=-1');
 }
 
 $(document).ready( function() {
-  $( '#clickAddZone' ).click(function() {
-    $( "#dialogZone" ).dialog('open');
+  $( '#clickAddType' ).click(function() {
+    $( "#dialogType" ).dialog('open');
   });
 
-  $( "#dialogZone" ).dialog({
+  $( "#dialogType" ).dialog({
     autoOpen: false,
     modal: true,
     height: 175,
@@ -108,20 +108,20 @@ $(document).ready( function() {
     closeOnEscape: true,
     dialogClass: 'dialogWithDropShadow',
     close: function(event, ui) {
-      $( "#dialogZone" ).hide();
+      $( "#dialogType" ).hide();
     },
     buttons: [
       {
         text: "Cancel",
         click: function() {
-          show_file('zones.mysql.php?update=-1');
+          show_file('types.mysql.php?update=-1');
           $( this ).dialog( "close" );
         }
       },
       {
-        text: "Add Network Zone",
+        text: "Add IP Address Type",
         click: function() {
-          attach_file('zones.mysql.php', 0);
+          attach_file('types.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -144,21 +144,21 @@ $(document).ready( function() {
       {
         text: "Cancel",
         click: function() {
-          show_file('zones.mysql.php?update=-1');
+          show_file('types.mysql.php?update=-1');
           $( this ).dialog( "close" );
         }
       },
       {
-        text: "Update Network Zone",
+        text: "Update IP Address Type",
         click: function() {
-          update_file('zones.mysql.php', 1);
+          update_file('types.mysql.php', 1);
           $( this ).dialog( "close" );
         }
       },
       {
-        text: "Add Network Zone",
+        text: "Add IP Address Type",
         click: function() {
-          update_file('zones.mysql.php', 0);
+          update_file('types.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -176,22 +176,21 @@ $(document).ready( function() {
 
 <div class="main">
 
-<form name="zones">
-
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default">Network Zone Management</th>
-  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('zone-help');">Help</a></th>
+  <th class="ui-state-default">IP Address Type Management</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('type-help');">Help</a></th>
 </tr>
 </table>
 
-<div id="zone-help" style="<?php print $display; ?>">
+<div id="type-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
 
-<p>A Network Zone are the layers of your network. Generally you think of this as an internal network such as the Corporate network or the one facing the public such as a DMZ. Other zones might be added as well depending upon your network design.</p>
+<p>An IP Address Type lets you define a specific IP address in a range of IPs such as a Gateway IP, Broadcast IP, 
+or more generic descriptions such as servers, switches, or even webcams.</p>
 
-<p>Click the Help link at the upper right to open and close any Help window.</p>
+<p>Click the Help link on the upper right to open and close all Help windows.</p>
 
 </div>
 
@@ -200,7 +199,7 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickAddZone" value="Add Network Zone"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickAddType" value="Add IP Address Type"></td>
 </tr>
 </table>
 
@@ -211,18 +210,18 @@ $(document).ready( function() {
 </div>
 
 
-<div id="dialogZone" title="Network Zone Form">
+<div id="dialogType" title="IP Address Type Form">
 
-<form name="zoneDialog">
+<form name="typeDialog">
 
 <input type="hidden" name="id" value="0">
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content">Network Zone <input type="text" name="zone_zone" size="10"></td>
+  <td class="ui-widget-content">IP Address Type <input type="text" name="ip_name" size="30"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Zone Acronym <input type="text" name="zone_acronym" size="5"></td>
+  <td class="ui-widget-content">Description <input type="text" name="ip_description" size="50"></td>
 </tr>
 </table>
 
@@ -230,7 +229,7 @@ $(document).ready( function() {
 
 </div>
 
-<div id="dialogUpdate" title="Network Zone Form">
+<div id="dialogUpdate" title="IP Address Type Form">
 
 <form name="updateDialog">
 
@@ -238,10 +237,10 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content">Network Zone <input type="text" name="zone_zone" size="10"></td>
+  <td class="ui-widget-content">IP Address Type <input type="text" name="ip_name" size="30"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Zone Acronym <input type="text" name="zone_acronym" size="5"></td>
+  <td class="ui-widget-content">Description <input type="text" name="ip_description" size="50"></td>
 </tr>
 </table>
 
