@@ -66,13 +66,6 @@
     $formVars['csv'] = 'false';
   }
 
-  $q_string  = "select zone_id,zone_name ";
-  $q_string .= "from net_zones";
-  $q_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_net_zones = mysqli_fetch_array($q_net_zones)) {
-    $zoneval[$a_net_zones['zone_id']] = $a_net_zones['zone_name'];
-  }
-
 # if help has not been seen yet,
   if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
@@ -237,7 +230,7 @@
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=int_sysport"           . $passthrough . "\">Physical Port</a></th>\n";
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=int_eth"               . $passthrough . "\">MAC Address</a></th>\n";
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=INET_ATON(int_addr)"   . $passthrough . "\">IP Address</a></th>\n";
-    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=int_zone"              . $passthrough . "\">Zone</a></th>\n";
+    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=sub_zone"              . $passthrough . "\">IP Zone</a></th>\n";
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=int_gate"              . $passthrough . "\">Gateway</a></th>\n";
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=int_switch"            . $passthrough . "\">Switch</a></th>\n";
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=int_port"              . $passthrough . "\">Port</a></th>\n";
@@ -260,7 +253,7 @@
   }
 
   $q_string  = "select int_id,int_companyid,int_server,int_face,int_sysport,int_eth,int_addr,int_mask,";
-  $q_string .= "zone_name,int_gate,int_switch,int_port,itp_acronym,int_update,int_verified,int_primary,";
+  $q_string .= "sub_zone,int_gate,int_switch,int_port,itp_acronym,int_update,int_verified,int_primary,";
   $q_string .= "inv_manager,inv_status ";
   $q_string .= "from interface ";
   $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
@@ -268,7 +261,7 @@
   $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
   $q_string .= "left join states on states.st_id = locations.loc_state ";
   $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join net_zones on net_zones.zone_id = interface.int_zone ";
+  $q_string .= "left join sub_zones on sub_zones.sub_id = interface.int_zone ";
   $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
   $q_string .= $where;
   $q_string .= $orderby;
@@ -300,7 +293,7 @@
       print "  <td" . $class . ">" . $a_interface['int_sysport']                   . "</td>\n";
       print "  <td" . $class . ">" . $showmac                                      . "</td>\n";
       print "  <td" . $class . ">" . $a_interface['int_addr'] . '/' . $a_interface['int_mask'] . "</td>\n";
-      print "  <td" . $class . ">" . $a_interface['zone_name']                     . "</td>\n";
+      print "  <td" . $class . ">" . $a_interface['sub_name']                     . "</td>\n";
       print "  <td" . $class . ">" . $a_interface['int_gate']                      . "</td>\n";
       print "  <td" . $class . ">" . $a_interface['int_switch']                    . "</td>\n";
       print "  <td" . $class . ">" . $a_interface['int_port']                      . "</td>\n";
@@ -313,7 +306,7 @@
       print "\"" . $a_interface['int_sysport'] . "\",";
       print "\"" . $showmac . "\",";
       print "\"" . $a_interface['int_addr'] . '/' . $a_interface['int_mask'] . "\",";
-      print "\"" . $a_interface['zone_name'] . "\",";
+      print "\"" . $a_interface['sub_name'] . "\",";
       print "\"" . $a_interface['int_gate'] . "\",";
       print "\"" . $a_interface['int_switch'] . "\",";
       print "\"" . $a_interface['int_port'] . "\",";
