@@ -260,7 +260,7 @@
     $q_string  = "select int_id,int_server,int_domain,int_face,int_addr,int_eth,int_mask,int_gate,int_vlan,itp_name,";
     $q_string .= "int_openview,int_nagios,int_ping,int_ssh,int_http,int_ftp,int_smtp,int_cfg2html,int_notify,int_hours,";
     $q_string .= "int_primary,int_switch,int_port,med_text,spd_text,dup_text,rol_text,int_management,int_backup,";
-    $q_string .= "int_redundancy,int_groupname,int_virtual,zone_name,zone_acronym,int_sysport ";
+    $q_string .= "int_redundancy,int_groupname,int_virtual,zone_zone,zone_acronym,int_sysport ";
     $q_string .= "from interface ";
     $q_string .= "left join net_zones   on net_zones.zone_id  = interface.int_zone ";
     $q_string .= "left join int_types    on int_types.itp_id    = interface.int_type ";
@@ -324,7 +324,7 @@
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_redundant    = $a_int_redundancy['red_text'];
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_groupname    = $a_interface['int_groupname'];
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_virtual      = $virtual;
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_netzone      = $a_interface['zone_name'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_netzone      = $a_interface['zone_zone'];
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_management   = ($a_interface['int_management'] ? "Yes" : "No");
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_backup       = ($a_interface['int_backup'] ? "Yes" : "No");
 
@@ -351,7 +351,7 @@
         $q_string  = "select int_id,int_server,int_domain,int_face,int_addr,int_eth,int_mask,int_gate,int_vlan,itp_name,";
         $q_string .= "int_openview,int_nagios,int_ping,int_ssh,int_http,int_ftp,int_smtp,int_cfg2html,int_notify,int_hours,";
         $q_string .= "int_primary,int_switch,int_port,med_text,spd_text,dup_text,rol_text,int_management,int_backup,";
-        $q_string .= "int_redundancy,int_groupname,int_virtual,zone_name,int_sysport ";
+        $q_string .= "int_redundancy,int_groupname,int_virtual,zone_zone,int_sysport ";
         $q_string .= "from interface ";
         $q_string .= "left join net_zones   on net_zones.zone_id  = interface.int_zone ";
         $q_string .= "left join int_types    on int_types.itp_id    = interface.int_type ";
@@ -414,7 +414,7 @@
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_redundant    = $a_int_redundancy['red_text'];
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_groupname    = $a_internal['int_groupname'];
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_virtual      = $virtual;
-          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_netzone      = $a_internal['zone_name'];
+          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_netzone      = $a_internal['zone_zone'];
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_management   = ($a_internal['int_management'] ? "Yes" : "No");
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_backup       = ($a_internal['int_backup'] ? "Yes" : "No");
 
