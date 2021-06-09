@@ -109,13 +109,6 @@
 
   $where = $product . $group . $inwork . $location . $type;
 
-  $q_string  = "select zone_id,zone_name ";
-  $q_string .= "from net_zones";
-  $q_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_net_zones = mysqli_fetch_array($q_net_zones)) {
-    $zoneval[$a_net_zones['zone_id']] = $a_net_zones['zone_name'];
-  }
-
 # if help has not been seen yet,
   if (show_Help($db, $Reportpath . "/" . $package)) {
     $display = "display: block";
