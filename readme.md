@@ -1436,13 +1436,109 @@ New as of today
 
 Created ipaddress table
 Created network table
-Renamed ip_zones table to net_zones
-Renamed zones to timezones
-Renamed inttype to int_types
+Created sub_zones table
+Created ip_types table
+
+
+
+
+create table ipaddress (
+  ip_id int(10) not null auto_increment,
+  ip_ipv4 char(20) not null default '',
+  ip_ipv6 char(50) not null default '',
+  ip_hostname char(100) not null default '',
+  ip_domain char(255) not null default '',
+  ip_network int(10) not null default 0,
+  ip_subzone int(10) not null default 0,
+  ip_type int(10) not null default 0,
+  ip_user int(10) not null default 0,
+  ip_timestamp timestamp not null default current_timestamp,
+  primary key (ip_id)
+);
+
+create table network (
+  net_id int(10) not null auto_increment,
+  net_ipv4 char(20) not null default '',
+  net_ipv6 char(50) not null default '',
+  net_mask int(10) not null default 0,
+  net_zone int(10) not null default 0,
+  net_location int(10) not null default 0,
+  net_vlan char(20) not null default '',
+  net_user int(10) not null default 0,
+  net_timestamp timestamp not null default current_timestamp,
+  net_group int(10) not null default 0,
+  net_description char(100) not null default '',
+  primary key (net_id)
+);
+
+create table net_zones (
+  zone_id int(10) not null auto_increment,
+  zone_zone char(10) not null default '',
+  zone_acronym char(5) not null default '',
+  zone_user int(10) not null default 0,
+  zone_timestamp timestamp not null default current_timestamp,
+  primary key (zone_id)
+);
+
+create table ip_types (
+  ip_id int(10) not null auto_increment,
+  ip_name char(30) not null default '',
+  ip_user int(10) not null default 0,
+  ip_timestamp timestamp not null default current_timestamp,
+  ip_description char(50) not null default '',
+  primary key (ip_id)
+);
+
+create table sub_zones (
+  sub_id int(10) not null auto_increment,
+  sub_name char(50) not null default '',
+  sub_zone int(10) not null default 0,
+  sub_user int(10) not null default 0,
+  sub_timestamp timestamp not null default current_timestamp,
+  sub_description char(50) not null default '',
+  primary key (sub_id)
+);
+
+
+
+Renamed ip_zones table to net_zones - to be clearer as to what it does.
+Renamed zones to timezones - to really be clear
+Renamed inttype to int_types - to match the other int_ tables.
+
 
 in netzones to be consistent:
 
 alter table net_zones change zone_desc zone_description char(50) not null default '';
+alter table net_zones drop column zone_name;
+alter table net_zones drop column zone_description;
+alter table net_zones add column zone_user int(10) not null default 0;
+alter tabbl net_zones add column zone_timestamp timestamp not null default current_timestamp;
+
+delete from net_zones where zone_id = 5;
+delete from net_zones where zone_id = 8;
+delete from net_zones where zone_id = 14;
+delete from net_zones where zone_id = 15;
+delete from net_zones where zone_id = 16;
+delete from net_zones where zone_id = 17;
+delete from net_zones where zone_id = 18;
+delete from net_zones where zone_id = 20;
+delete from net_zones where zone_id = 21;
+delete from net_zones where zone_id = 22;
+delete from net_zones where zone_id = 23;
+delete from net_zones where zone_id = 24;
+delete from net_zones where zone_id = 25;
+delete from net_zones where zone_id = 26;
+delete from net_zones where zone_id = 27;
+delete from net_zones where zone_id = 28;
+delete from net_zones where zone_id = 30;
+
+update net_zones set zone_zone = "LAB_CIL" where zone_id = 6;
+update net_zones set zone_zone = "LAB_DMZ" where zone_id = 9;
+update net_zones set zone_zone = "LAB_E911" where zone_id = 13;
+update net_zones set zone_zone = "LAB_ICL" where zone_id = 19;
+update net_zones set zone_zone = "PRIVATE" where zone_id = 31;
+
+update net_zones set zone_user = 2;
 
 
 Dialog Box sizes.
