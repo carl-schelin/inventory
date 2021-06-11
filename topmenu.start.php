@@ -38,11 +38,11 @@
 
   <li id="tm_ipam"><a href="<?php print $Siteroot; ?>/index.ipam.php">IPAM</a>
     <ul>
-      <li><a href="<?php print $Ipamroot; ?>/ipam.php">IP Address Manager</a></li>
-      <li><a href="<?php print $Ipamroot; ?>/subzones.php">IP Address Zones</a></li>
-      <li><a href="<?php print $Ipamroot; ?>/types.php">IP Address Types</a></li>
-      <li><a href="<?php print $Ipamroot; ?>/network.php">Network Manager</a></li>
-      <li><a href="<?php print $Ipamroot; ?>/zones.php">Network Zones</a></li>
+      <li><a href="<?php print $IPAMroot; ?>/ipam.php">IP Address Manager</a></li>
+      <li><a href="<?php print $IPAMroot; ?>/subzones.php">IP Address Zones</a></li>
+      <li><a href="<?php print $IPAMroot; ?>/types.php">IP Address Types</a></li>
+      <li><a href="<?php print $IPAMroot; ?>/network.php">Network Manager</a></li>
+      <li><a href="<?php print $IPAMroot; ?>/zones.php">Network Zones</a></li>
     </ul>
   </li>
 
