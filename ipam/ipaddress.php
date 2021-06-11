@@ -251,11 +251,11 @@ the internet. This page provides the ability to identify IP Addresses that will 
   <td class="ui-widget-content">Domain: <input type="text" name="ip_domain" size="40"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">IP Zone: <select name="ip_subzone">
+  <td class="ui-widget-content">IP Zone (<?php print $formVars['net_id']; ?>): <select name="ip_subzone">
 <?php
   $q_string  = "select sub_id,sub_name ";
   $q_string .= "from sub_zones ";
-  $q_string .= "where sub_zone = \"" . $formVars['net_id'] . "\" ";
+  $q_string .= "where sub_zone = " . $formVars['net_id'] . " ";
   $q_string .= "order by sub_name ";
   $q_sub_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_sub_zones = mysqli_fetch_array($q_sub_zones)) {
