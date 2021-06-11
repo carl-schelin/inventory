@@ -25,8 +25,9 @@
       $where = "and net_id = " . $formVars['network'] . " ";
 
 # get the passed network.
-      $q_string  = "select net_ipv4,net_ipv6,net_mask ";
+      $q_string  = "select net_ipv4,net_ipv6,net_mask,zone_zone ";
       $q_string .= "from network ";
+      $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
       $q_string .= "where net_id = " . $formVars['network'] . " ";
       $q_network = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_network) > 0) {
