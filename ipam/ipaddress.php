@@ -75,7 +75,7 @@ function attach_file( p_script_url, update ) {
   af_url += "&ip_ipv6="           + encode_URI(af_form.ip_ipv6.value);
   af_url += "&ip_hostname="       + encode_URI(af_form.ip_hostname.value);
   af_url += "&ip_domain="         + encode_URI(af_form.ip_domain.value);
-  uf_url += "&ip_network="        + <?php print $formVars['net_id']; ?>;
+  af_url += "&ip_network="        + <?php print $formVars['net_id']; ?>;
   af_url += "&ip_subzone="        + af_form.ip_subzone.value;
   af_url += "&ip_type="           + af_form.ip_type.value;
   af_url += "&network="           + af_form.network.value;
