@@ -111,7 +111,7 @@ which then lets you manage the IP Addresses that are assigned to this network.</
     }
   } else {
     print "<tr>\n";
-    print "  <td class=\"ui-widget-content\">You need to add network records.</td>\n";
+    print "  <td class=\"ui-widget-content\" colspan=\"6\">You need to add network records.</td>\n";
     print "</tr>\n";
   }
 ?>
