@@ -8,7 +8,7 @@
   $called = 'no';
   include($Sitepath . '/guest.php');
 
-  $package = "interfaces.php";
+  $package = "ipam.php";
 
   logaccess($db, $formVars['uid'], $package, "Checking out the ip addresses.");
 
