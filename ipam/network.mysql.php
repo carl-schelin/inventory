@@ -44,6 +44,7 @@
             "net_zone        =   " . $formVars['net_zone']        . "," .
             "net_location    =   " . $formVars['net_location']    . "," .
             "net_vlan        = \"" . $formVars['net_vlan']        . "\"," . 
+            "net_user        =   " . $_SESSION['uid']             . ",";
             "net_description = \"" . $formVars['net_description'] . "\"";
   
           if ($formVars['update'] == 0) {
@@ -108,10 +109,13 @@
       $output .= "  <th class=\"ui-state-default\">Location</th>\n";
       $output .= "  <th class=\"ui-state-default\">VLan</th>\n";
       $output .= "  <th class=\"ui-state-default\">Description</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Changed By</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Date</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select net_id,net_ipv4,net_mask,zone_zone,loc_name,net_vlan,net_description ";
+      $q_string  = "select net_id,net_ipv4,net_mask,zone_zone,loc_name,net_vlan,net_description,usr_first,usr_last,net_timestamp ";
       $q_string .= "from network ";
+      $q_string .= "left join users on users.usr_id = network.net_user ";
       $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
       $q_string .= "left join locations on locations.loc_id = network.net_location ";
       $q_string .= "where net_ipv4 != '' ";
@@ -149,6 +153,8 @@
           $output .= "  <td class=\"ui-widget-content\">" . $a_network['loc_name']        . "</td>";
           $output .= "  <td class=\"ui-widget-content\">" . $a_network['net_vlan']        . "</td>";
           $output .= "  <td class=\"ui-widget-content\">" . $a_network['net_description'] . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">" . $a_network['usr_first'] . " " . $a_network['usr_last'] . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">" . $a_network['net_timestamp'] . "</td>";
           $output .= "</tr>";
         }
       } else {
@@ -172,10 +178,13 @@
       $output .= "  <th class=\"ui-state-default\">Location</th>\n";
       $output .= "  <th class=\"ui-state-default\">VLan</th>\n";
       $output .= "  <th class=\"ui-state-default\">Description</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Changed By</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Date</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select net_id,net_ipv6,net_mask,zone_zone,loc_name,net_vlan,net_description ";
+      $q_string  = "select net_id,net_ipv6,net_mask,zone_zone,loc_name,net_vlan,net_description,usr_first,usr_last,net_timestamp ";
       $q_string .= "from network ";
+      $q_string .= "left join users on users.usr_id = network.net_user ";
       $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
       $q_string .= "left join locations on locations.loc_id = network.net_location ";
       $q_string .= "where net_ipv6 != '' ";
@@ -213,6 +222,8 @@
           $output .= "  <td class=\"ui-widget-content\">" . $a_network['loc_name']        . "</td>";
           $output .= "  <td class=\"ui-widget-content\">" . $a_network['net_vlan']        . "</td>";
           $output .= "  <td class=\"ui-widget-content\">" . $a_network['net_description'] . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">" . $a_network['usr_first'] . " " . $a_network['usr_last'] . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">" . $a_network['net_timestamp'] . "</td>";
           $output .= "</tr>";
         }
       } else {
