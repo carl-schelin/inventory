@@ -1453,6 +1453,7 @@ create table ipaddress (
   ip_type int(10) not null default 0,
   ip_user int(10) not null default 0,
   ip_timestamp timestamp not null default current_timestamp,
+  ip_description char(50) not null default '',
   primary key (ip_id)
 );
 
@@ -1466,7 +1467,6 @@ create table network (
   net_vlan char(20) not null default '',
   net_user int(10) not null default 0,
   net_timestamp timestamp not null default current_timestamp,
-  net_group int(10) not null default 0,
   net_description char(100) not null default '',
   primary key (net_id)
 );
@@ -1554,4 +1554,102 @@ Heights are different depending upon the number of lines.
 5 lines: 250
 6 lines: 275
 7 lines: 300
+
+
+Update the interface table to minimize the information.
+
+| int_id         | int(10) unsigned | NO   | PRI | NULL       | auto_increment |
+| int_server     | char(60)         | NO   |     |            |                | - in the ipaddress table
+| int_domain     | char(100)        | NO   |     |            |                | - in the ipaddress table
+| int_companyid  | int(10)          | NO   | MUL | 0          |                | - which inventory entry does this belong to>?
+| int_face       | char(20)         | NO   |     |            |                | - interface specific information
+| int_int_id     | int(10)          | NO   |     | 0          |                | - child interfaces - 
+| int_ip6        | char(1)          | NO   |     | 0          |                | - in the ipaddress table
+| int_addr       | char(100)        | NO   | MUL |            |                | - in the ipaddress table
+| int_vaddr      | int(10)          | NO   |     | 0          |                | - removed
+| int_netbios    | char(100)        | NO   |     |            |                | - interface specific information
+| int_eth        | char(20)         | NO   |     |            |                | - interface specific information
+| int_veth       | int(10)          | NO   |     | 0          |                | - removed
+| int_network    | int(10)          | NO   |     | 0          |                | - in the network table
+| int_mask       | char(50)         | NO   |     |            |                | - in the ipaddress table
+| int_gate       | char(100)        | NO   |     |            |                | - in the ipaddress table
+| int_vgate      | int(10)          | NO   |     | 0          |                | - removed
+| int_note       | char(255)        | NO   |     |            |                | - description of the interface if needed
+| int_verified   | char(1)          | NO   |     | 0          |                | - probably needed
+| int_switch     | char(50)         | NO   |     |            |                | - removed - should have the switch be the parent
+| int_port       | char(50)         | NO   |     |            |                | - interface specific information
+| int_sysport    | char(50)         | NO   |     |            |                | - removed - should have the switch be the parent
+| int_primary    | int(8)           | NO   |     | 0          |                | - interface specific information
+| int_type       | int(10)          | NO   |     | 0          |                | - interface specific information
+| int_vlan       | char(10)         | NO   |     |            |                | - in the network table
+| int_media      | int(10)          | NO   |     | 0          |                | - interface specific information
+| int_speed      | int(10)          | NO   |     | 0          |                | - interface specific information
+| int_duplex     | int(10)          | NO   |     | 0          |                | - interface specific information
+| int_role       | int(10)          | NO   |     | 0          |                | - probably not needed
+| int_redundancy | int(10)          | NO   |     | 0          |                | - interface grouping information
+| int_groupname  | char(20)         | NO   |     |            |                | - interface grouping information
+| int_virtual    | int(10)          | NO   |     | 0          |                | - is this a virtual ip address (a VIP)
+| int_zone       | int(10)          | NO   |     | 0          |                | - in the network table
+| int_user       | int(10)          | NO   |     | 0          |                | - Who updated the information
+| int_update     | date             | NO   |     | 1971-01-01 |                | - date information was added
+| int_openview   | int(10)          | NO   |     | 0          |                | - in the monitoring table
+| int_monstatus  | char(24)         | NO   |     |            |                | - in the monitoring table
+| int_monservice | char(40)         | NO   |     |            |                | - in the monitoring table
+| int_mondate    | date             | NO   |     | 1971-01-01 |                | - in the monitoring table
+| int_nagios     | int(10)          | NO   |     | 0          |                | - in the monitoring table
+| int_backup     | int(10)          | NO   |     | 0          |                | - interface configuration
+| int_management | int(10)          | NO   |     | 0          |                | - interface configuration
+| int_login      | int(10)          | NO   |     | 0          |                | - is this the ssh login interface (generally management is but not always)
+| int_xpoint     | int(10)          | NO   |     | 0          |                | - removed
+| int_ypoint     | int(10)          | NO   |     | 0          |                | - removed
+| int_zpoint     | int(10)          | NO   |     | 0          |                | - removed
+| int_ping       | int(10)          | NO   |     | 0          |                | - in the monitoring table
+| int_ssh        | int(10)          | NO   |     | 0          |                | - in the monitoring table
+| int_http       | int(10)          | NO   |     | 0          |                | - in the monitoring table
+| int_ftp        | int(10)          | NO   |     | 0          |                | - in the monitoring table
+| int_smtp       | int(10)          | NO   |     | 0          |                | - in the monitoring table
+| int_snmp       | int(10)          | NO   |     | 0          |                | - in the monitoring table
+| int_load       | int(10)          | NO   |     | 0          |                | - in the monitoring table
+| int_uptime     | int(10)          | NO   |     | 0          |                | - in the monitoring table
+| int_cpu        | int(10)          | NO   |     | 0          |                | - in the monitoring table
+| int_swap       | int(10)          | NO   |     | 0          |                | - in the monitoring table
+| int_memory     | int(10)          | NO   |     | 0          |                | - in the monitoring table
+| int_cfg2html   | int(10)          | NO   |     | 1          |                | - in the monitoring table
+| int_notify     | int(10)          | NO   |     | 0          |                | - in the monitoring table
+| int_hours      | int(10)          | NO   |     | 0          |                | - in the monitoring table
+| int_hostname   | int(10)          | NO   |     | 0          |                | - is this the hostname vs something the team entered
+
+
+
+Final:
+
+
+| int_id         | int(10) unsigned | NO   | PRI | NULL       | auto_increment |
+| int_companyid  | int(10)          | NO   | MUL | 0          |                | - which inventory entry does this belong to>?
+  int_addressid  | int(10)  
+| int_face       | char(20)         | NO   |     |            |                | - interface specific information
+| int_int_id     | int(10)          | NO   |     | 0          |                | - child interfaces - 
+| int_netbios    | char(100)        | NO   |     |            |                | - interface specific information
+| int_eth        | char(20)         | NO   |     |            |                | - interface specific information
+| int_note       | char(255)        | NO   |     |            |                | - description of the interface if needed
+| int_verified   | char(1)          | NO   |     | 0          |                | - probably needed
+| int_port       | char(50)         | NO   |     |            |                | - interface specific information
+| int_primary    | int(8)           | NO   |     | 0          |                | - interface specific information
+| int_type       | int(10)          | NO   |     | 0          |                | - interface specific information
+| int_media      | int(10)          | NO   |     | 0          |                | - interface specific information
+| int_speed      | int(10)          | NO   |     | 0          |                | - interface specific information
+| int_duplex     | int(10)          | NO   |     | 0          |                | - interface specific information
+| int_redundancy | int(10)          | NO   |     | 0          |                | - interface grouping information
+| int_groupname  | char(20)         | NO   |     |            |                | - interface grouping information
+| int_virtual    | int(10)          | NO   |     | 0          |                | - is this a virtual ip address (a VIP)
+| int_user       | int(10)          | NO   |     | 0          |                | - Who updated the information
+| int_update     | date             | NO   |     | 1971-01-01 |                | - date information was added
+| int_backup     | int(10)          | NO   |     | 0          |                | - interface configuration
+| int_management | int(10)          | NO   |     | 0          |                | - interface configuration
+| int_login      | int(10)          | NO   |     | 0          |                | - is this the ssh login interface (generally management is but not always)
+| int_hostname   | int(10)          | NO   |     | 0          |                | - is this the hostname vs something the team entered
+
+
+alter table interface add column int_addressid int(10) not null default 0 after int_companyid;
+
 
