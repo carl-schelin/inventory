@@ -129,7 +129,7 @@
             }
           }
           $output .= "  <td class=\"ui-widget-content\">" . $linkstart . $a_ip_types['ip_name'] . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"              . $total . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content delete\">"              . $total . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"              . $a_ip_types['ip_description'] . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"              . $a_ip_types['usr_first'] . " " . $a_ip_types['usr_last'] . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"              . $a_ip_types['ip_timestamp'] . "</td>\n";
