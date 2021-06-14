@@ -235,9 +235,9 @@ when you're building a device. </p>
 
 <p>When you select a <strong>Network</strong> on the <strong>IPAM Management</strong> page, you will 
 be taken to a page that lists all the <strong>IP Addresses</strong> currently allocated to that 
-network. You'll be presented with the following screen. Initially there will be no <strong>IP 
-Addresses</strong>. Click the <strong>Add IP Address</strong> button to add a new <strong>IP 
-Address</strong>.</p>
+network. You'll be presented with the following screen. The listing header displays the network 
+and mask along with the network zone. Initially there will be no <strong>IP Addresses</strong>. 
+Click the <strong>Add IP Address</strong> button to add a new <strong>IP Address</strong>.</p>
 
 <img src="imgs/ipaddress.png">
 
