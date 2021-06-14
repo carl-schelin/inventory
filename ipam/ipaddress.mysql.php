@@ -58,6 +58,9 @@
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
         }
+        if ($formVars['ip_subzone'] == '') {
+          $formVars['ip_subzone'] = 0;
+        }
 
         if (strlen($formVars['ip_ipv4']) > 0 || strlen($formVars['ip_ipv6']) > 0) {
           logaccess($db, $_SESSION['uid'], $package, "Building the query.");
