@@ -112,6 +112,7 @@
           $q_string .= "from ipaddress ";
           $q_string .= "left join network on network.net_id = ipaddress.ip_network ";
           $q_string .= "where net_zone = " . $a_net_zones['zone_id'] . " ";
+          $q_string .= "group by ip_id ";
           $q_ipaddress = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_ipaddress) > 0) {
             $a_ipaddress = mysqli_fetch_array($q_ipaddress);
