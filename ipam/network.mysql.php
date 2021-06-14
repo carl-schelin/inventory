@@ -44,7 +44,7 @@
             "net_zone        =   " . $formVars['net_zone']        . "," .
             "net_location    =   " . $formVars['net_location']    . "," .
             "net_vlan        = \"" . $formVars['net_vlan']        . "\"," . 
-            "net_user        =   " . $_SESSION['uid']             . ",";
+            "net_user        =   " . $_SESSION['uid']             . "," .
             "net_description = \"" . $formVars['net_description'] . "\"";
   
           if ($formVars['update'] == 0) {
