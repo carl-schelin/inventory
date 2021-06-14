@@ -193,7 +193,7 @@
       }
       $output .= "  <th class=\"ui-state-default\">IPv6 Address/Mask</th>\n";
       $output .= "  <th class=\"ui-state-default\">Hostname</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Zone</th>\n";
+      $output .= "  <th class=\"ui-state-default\">IP Zone</th>\n";
       $output .= "  <th class=\"ui-state-default\">Type</th>\n";
       $output .= "  <th class=\"ui-state-default\">Description</th>\n";
       $output .= "  <th class=\"ui-state-default\">Created By</th>\n";
