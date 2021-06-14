@@ -94,7 +94,7 @@
       $output .= "  <th class=\"ui-state-default\">IP Address Type</th>\n";
       $output .= "  <th class=\"ui-state-default\">Members</th>\n";
       $output .= "  <th class=\"ui-state-default\">Description</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Changed By</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Created By</th>\n";
       $output .= "  <th class=\"ui-state-default\">Date</th>\n";
       $output .= "</tr>\n";
 

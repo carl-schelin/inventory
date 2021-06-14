@@ -95,7 +95,7 @@
       $output .= "  <th class=\"ui-state-default\">Network Zone</th>\n";
       $output .= "  <th class=\"ui-state-default\">Members</th>\n";
       $output .= "  <th class=\"ui-state-default\">Zone Acronym</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Changed By</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Created By</th>\n";
       $output .= "  <th class=\"ui-state-default\">Date</th>\n";
       $output .= "</tr>\n";
 

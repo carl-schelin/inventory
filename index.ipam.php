@@ -83,7 +83,7 @@ in the Corporate Network Zone.</p>
 <img src="imgs/netzones2.png">
 
 <p>When added, you'll see the entry in the listing as shown below. The fields should be pretty 
-obvious. Network Zone, Zone Acronym, Changed By, and Date are reasonably clear. The extra field, 
+obvious. Network Zone, Zone Acronym, Created By, and Date are reasonably clear. The extra field, 
 Members, provides a count of the number of devices that are in the <strong>Network Zone</strong>. 
 As a precaution, if this count is greater than zero, the Remove button will not be displayed.</p>
 
@@ -125,7 +125,7 @@ Address Zone</strong>.</p>
 <img src="imgs/ipzones2.png">
 
 <p>When added, you'll see the entry in the listing as shown below. The fields should be pretty 
-obvious. Network Zone, IP Address Zone, Changed By, and Date are reasonably clear. The extra field, 
+obvious. Network Zone, IP Address Zone, Created By, and Date are reasonably clear. The extra field, 
 Members, provides a count of the number of devices that are further described by this <strong>IP 
 Address Zone</strong>. As a precaution, if this count is greater than zero, the Remove button will not 
 be displayed.</p>
@@ -161,7 +161,7 @@ the <strong>IP Address Type</strong> and a second to describe the <strong>IP Add
 <img src="imgs/iptypes2.png">
 
 <p>When added, you'll see the entry in the listing as shown below. The fields should be pretty 
-obvious. IP Address Type, Description, Changed By, and Date are reasonably clear. The extra field, 
+obvious. IP Address Type, Description, Created By, and Date are reasonably clear. The extra field, 
 Members, provides a count of the number of devices that are further described by this <strong>IP 
 Address Type</strong>. As a precaution, if this count is greater than zero, the Remove button will not 
 be displayed.</p>
@@ -201,7 +201,7 @@ Network Device.</p>
 <img src="imgs/network2.png">
 
 <p>When added, you'll see the entry in the listing as shown below. The fields should be pretty 
-obvious. IPv4 or IPv6 Network/Mask, Network Zone, Location, VLan, Description, Changed By, and 
+obvious. IPv4 or IPv6 Network/Mask, Network Zone, Location, VLan, Description, Created By, and 
 Date are reasonably clear. The extra field, Members, provides a count of the number of devices 
 that are further described by this <strong>Network</strong>. As a precaution, if this count is 
 greater than zero, the Remove button will not be displayed.</p>
@@ -249,7 +249,7 @@ the IPv4 data will be saved.</p>
 
 <p>When added, you'll see the entry in the listing as shown below. The fields should be pretty 
 obvious. IPv4 or IPv6 Network/Mask, HOstname, IP Address Zone, IP Address Type, Description, 
-Changed By, and Date are reasonably clear.</p>
+Created By, and Date are reasonably clear.</p>
 
 <p>If you wish to edit an <strong>IP Address</strong>, click on the <strong>IPv4 or IPv6 IP 
 Address</strong> name in the listing.</p>

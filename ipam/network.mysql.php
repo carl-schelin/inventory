@@ -109,7 +109,7 @@
       $output .= "  <th class=\"ui-state-default\">Location</th>\n";
       $output .= "  <th class=\"ui-state-default\">VLan</th>\n";
       $output .= "  <th class=\"ui-state-default\">Description</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Changed By</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Created By</th>\n";
       $output .= "  <th class=\"ui-state-default\">Date</th>\n";
       $output .= "</tr>\n";
 
@@ -178,7 +178,7 @@
       $output .= "  <th class=\"ui-state-default\">Location</th>\n";
       $output .= "  <th class=\"ui-state-default\">VLan</th>\n";
       $output .= "  <th class=\"ui-state-default\">Description</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Changed By</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Created By</th>\n";
       $output .= "  <th class=\"ui-state-default\">Date</th>\n";
       $output .= "</tr>\n";
 
