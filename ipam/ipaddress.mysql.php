@@ -191,7 +191,7 @@
       if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete IP Address</th>\n";
       }
-      $output .= "  <th class=\"ui-state-default\">IPv6 Address</th>\n";
+      $output .= "  <th class=\"ui-state-default\">IPv6 Address/Mask</th>\n";
       $output .= "  <th class=\"ui-state-default\">Hostname</th>\n";
       $output .= "  <th class=\"ui-state-default\">Zone</th>\n";
       $output .= "  <th class=\"ui-state-default\">Type</th>\n";
@@ -229,7 +229,7 @@
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel . "</td>";
           }
-          $output .= "  <td class=\"ui-widget-content\">" . $linkstart . $a_ipaddress['ip_ipv6'] . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">" . $linkstart . $a_ipaddress['ip_ipv6'] . "/" . $a_ipaddress['net_mask'] . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"              . $a_ipaddress['ip_hostname'] . "." . $a_ipaddress['ip_domain'] . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"              . $a_ipaddress['sub_name']          . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"              . $a_ip_types['ip_name']             . "</td>";
