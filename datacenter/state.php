@@ -176,7 +176,6 @@ $(document).ready( function() {
   <td class="ui-widget-content">Acronym: <input type="text" name="st_acronym" size="10"></td>
   <td class="ui-widget-content">State: <input type="text" name="st_state" size="30"></td>
   <td class="ui-widget-content">Country: <select name="st_country">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select cn_id,cn_country ";
   $q_string .= "from country ";

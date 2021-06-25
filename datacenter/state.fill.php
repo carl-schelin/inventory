@@ -33,7 +33,9 @@
       print "document.states.st_acronym.value = '"  . mysqli_real_escape_string($db, $a_states['st_acronym'])   . "';\n";
       print "document.states.st_state.value = '"    . mysqli_real_escape_string($db, $a_states['st_state'])    . "';\n";
 
-      print "document.states.st_country['" . $country . "'].selected = true;\n";
+      if ($country > 0) {
+        print "document.states.st_country['" . $country . "'].selected = true;\n";
+      }
 
       print "document.states.id.value = " . $formVars['id'] . ";\n";
 
