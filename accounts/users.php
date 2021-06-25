@@ -281,7 +281,6 @@ $(document).ready( function() {
 <option value="1">Disabled</option>
 </select></td>
   <td class="ui-widget-content">Edit Level <select name="usr_level">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select lvl_id,lvl_name ";
   $q_string .= "from levels ";
@@ -313,7 +312,6 @@ $(document).ready( function() {
 <tr>
   <td class="ui-widget-content">Phone Number <input type="text" name="usr_phone" size="20"></td>
   <td class="ui-widget-content">Group <select name="usr_group">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select grp_id,grp_name ";
   $q_string .= "from a_groups ";
@@ -326,7 +324,6 @@ $(document).ready( function() {
 ?>
 </select></td>
   <td class="ui-widget-content" colspan="2">Department: <select name="usr_deptname">
-  <option value="0">Unassigned</option>
 <?php
   $q_string  = "select dep_id,dep_unit,dep_dept,dep_name,bus_name ";
   $q_string .= "from department ";
@@ -341,7 +338,6 @@ $(document).ready( function() {
 </tr>
 <tr>
   <td class="ui-widget-content" colspan="2">Title: <select name="usr_title">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select tit_id,tit_name ";
   $q_string .= "from titles ";
@@ -353,7 +349,6 @@ $(document).ready( function() {
 ?>
 </select></td>
   <td class="ui-widget-content" colspan="2">Manager: <select name="usr_manager">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select usr_id,usr_last,usr_first ";
   $q_string .= "from users ";

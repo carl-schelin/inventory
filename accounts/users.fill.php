@@ -55,13 +55,27 @@
       print "document.user.usr_notify.value = '"     . mysqli_real_escape_string($db, $a_users['usr_notify'])   . "';\n";
       print "document.user.usr_freq.value = '"       . mysqli_real_escape_string($db, $a_users['usr_freq'])     . "';\n";
 
-      print "document.user.usr_group['"    . $groups   . "'].selected = true;\n";
-      print "document.user.usr_disabled['" . $disabled . "'].selected = true;\n";
-      print "document.user.usr_level['"    . $levels   . "'].selected = true;\n";
-      print "document.user.usr_theme['"    . $theme    . "'].selected = true;\n";
-      print "document.user.usr_deptname['" . $deptname . "'].selected = true;\n";
-      print "document.user.usr_manager['"  . $manager  . "'].selected = true;\n";
-      print "document.user.usr_title['"    . $title    . "'].selected = true;\n";
+      if ($groups > 0) {
+        print "document.user.usr_group['"    . $groups   . "'].selected = true;\n";
+      }
+      if ($disabled > 0) {
+        print "document.user.usr_disabled['" . $disabled . "'].selected = true;\n";
+      }
+      if ($levels > 0) {
+        print "document.user.usr_level['"    . $levels   . "'].selected = true;\n";
+      }
+      if ($theme > 0) {
+        print "document.user.usr_theme['"    . $theme    . "'].selected = true;\n";
+      }
+      if ($deptname > 0) {
+        print "document.user.usr_deptname['" . $deptname . "'].selected = true;\n";
+      }
+      if ($manager > 0) {
+        print "document.user.usr_manager['"  . $manager  . "'].selected = true;\n";
+      }
+      if ($title > 0) {
+        print "document.user.usr_title['"    . $title    . "'].selected = true;\n";
+      }
 
       if ($a_users['usr_reset']) {
         print "document.user.usr_reset.checked = true;\n";
