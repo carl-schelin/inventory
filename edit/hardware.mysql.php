@@ -296,7 +296,6 @@
         $output .= "</tr>\n";
         $output .= "<tr>\n";
         $output .= "  <td class=\"ui-widget-content\" title=\"Hardware type\">Type <select name=\"hw_type\" onclick=\"javascript:attach_hardwaretype('hardware.options.php?hw_type=' + hw_type.value);\">\n";
-        $output .= "<option value=\"0\">Unassigned</option>\n";
 
         $q_string  = "select part_id,part_name ";
         $q_string .= "from parts ";
@@ -308,7 +307,6 @@
 
         $output .= "</select></td>\n";
         $output .= "  <td class=\"ui-widget-content\">Model <select name=\"hw_vendorid\">\n";
-        $output .= "<option value=\"0\">Unassigned</option>\n";
         $output .= "</select></td>\n";
         $output .= "</tr>\n";
         $output .= "</table>\n";
@@ -320,7 +318,6 @@
         $output .= "</tr>\n";
         $output .= "<tr>\n";
         $output .= "  <td class=\"ui-widget-content\" title=\"Support company and contract number\">Support Company <select name=\"hw_supportid\">\n";
-        $output .= "<option value=\"0\">Unassigned</option>\n";
 
         $q_string  = "select sup_id,sup_company,sup_contract ";
         $q_string .= "from support ";
@@ -332,7 +329,6 @@
 
         $output .= "</select></td>\n";
         $output .= "  <td class=\"ui-widget-content\">Response Level <select name=\"hw_response\">\n";
-        $output .= "<option value=\"0\">Unassigned</option>\n";
 
         $q_string  = "select slv_id,slv_value ";
         $q_string .= "from supportlevel ";
@@ -354,7 +350,6 @@
         $output .= "</tr>\n";
         $output .= "<tr>\n";
         $output .= "  <td class=\"ui-widget-content\">Main Hardware Container <select name=\"hw_hw_id\">\n";
-        $output .= "<option value=\"0\">Unassigned</option>\n";
 
         $q_string  = "select hw_id,mod_vendor,mod_name ";
         $q_string .= "from hardware ";
@@ -367,7 +362,6 @@
 
         $output .= "</select></td>\n";
         $output .= "  <td class=\"ui-widget-content\">Hard Disk Redundancy <select name=\"hw_hd_id\">\n";
-        $output .= "<option value=\"0\">Unassigned</option>\n";
 
         $q_string  = "select hw_id,hw_serial,hw_asset,mod_name ";
         $q_string .= "from hardware ";
@@ -416,7 +410,6 @@
 # set up the hardware drop down to refresh the hardware listing
       print "var selbox = document.edit.hw_hw_id;\n\n";
       print "selbox.options.length = 0;\n";
-      print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
 # retrieve hardware list
       $q_string  = "select hw_id,mod_vendor,mod_name ";
@@ -434,7 +427,6 @@
 # set up the hardware drop down to refresh the hardware listing
       print "var selbox = document.edit.hw_hd_id;\n\n";
       print "selbox.options.length = 0;\n";
-      print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
 # retrieve hardware list
       $q_string  = "select hw_id,hw_serial,hw_asset,mod_name ";

@@ -43,12 +43,24 @@
       print "document.edit.sw_eol.value = '"          . mysqli_real_escape_string($db, $a_software['sw_eol'])          . "';\n";
       print "document.edit.sw_eolticket.value = '"    . mysqli_real_escape_string($db, $a_software['sw_eolticket'])    . "';\n";
 
-      print "document.edit.sw_group['"      . $group      . "'].selected = true;\n";
-      print "document.edit.sw_product['"    . $product    . "'].selected = true;\n";
-      print "document.edit.sw_cert['"       . $cert       . "'].selected = true;\n";
-      print "document.edit.sw_supportid['"  . $support    . "'].selected = true;\n";
-      print "document.edit.sw_licenseid['"  . $license    . "'].selected = true;\n";
-      print "document.edit.sw_department['" . $department . "'].selected = true;\n";
+      if ($group > 0) {
+        print "document.edit.sw_group['"      . $group      . "'].selected = true;\n";
+      }
+      if ($product > 0) {
+        print "document.edit.sw_product['"    . $product    . "'].selected = true;\n";
+      }
+      if ($cert > 0) {
+        print "document.edit.sw_cert['"       . $cert       . "'].selected = true;\n";
+      }
+      if ($support > 0) {
+        print "document.edit.sw_supportid['"  . $support    . "'].selected = true;\n";
+      }
+      if ($license > 0) {
+        print "document.edit.sw_licenseid['"  . $license    . "'].selected = true;\n";
+      }
+      if ($department > 0) {
+        print "document.edit.sw_department['" . $department . "'].selected = true;\n";
+      }
 
       if ($a_software['sw_facing']) {
         print "document.edit.sw_facing.checked = true;\n";

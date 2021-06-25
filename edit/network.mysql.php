@@ -371,7 +371,6 @@
         $output .= "</tr>\n"; 
         $output .= "<tr>\n"; 
         $output .= "  <td class=\"ui-widget-content\">Interface Type: <select name=\"int_type\">\n";
-        $output .= "<option value=\"0\">Unassigned</option>\n";
 
         $q_string  = "select itp_id,itp_name ";
         $q_string .= "from int_types ";
@@ -1133,7 +1132,6 @@
 # rebuild the int_int_id drop down in case of changes in the virtual interface listing
       print "var selbox = document.edit.int_int_id;\n\n";
       print "selbox.options.length = 0;\n";
-      print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
       $q_string  = "select int_id,int_face,int_ip6 ";
       $q_string .= "from interface ";

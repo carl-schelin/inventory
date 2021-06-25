@@ -1066,7 +1066,6 @@ $(document).ready( function() {
   <td class="ui-widget-content"  colspan="3">Link to Documentation: <input type="text" name="inv_document" size="80"></td>
   <td class="ui-widget-content">Server is an Appliance? <input type="checkbox" name="inv_appliance"></td>
   <td class="ui-widget-content"  colspan="3">Blade Chassis: <select name="inv_companyid">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select inv_id,inv_name ";
   $q_string .= "from inventory ";
@@ -1081,7 +1080,6 @@ $(document).ready( function() {
 ?>
 </select></td>
   <td class="ui-widget-content"  colspan="2">Cluster Member: <select name="inv_clusterid">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select inv_id,inv_name ";
   $q_string .= "from inventory ";
@@ -1107,7 +1105,6 @@ $(document).ready( function() {
 </tr>
 <tr>
   <td class="ui-widget-content">Location <select type="text" name="inv_location">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select loc_id,loc_name,ct_city ";
   $q_string .= "from locations ";
@@ -1120,7 +1117,6 @@ $(document).ready( function() {
 ?>
 </select></td>
   <td class="ui-widget-content">Environment <select name="inv_env">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select env_id,env_name ";
   $q_string .= "from environment ";
@@ -1135,7 +1131,6 @@ $(document).ready( function() {
   <td class="ui-widget-content">Rack <input type="text" name="inv_rack" size="10"></td>
   <td class="ui-widget-content">Unit U<input type="text" name="inv_unit" size="5"></td>
   <td class="ui-widget-content">Time Zone* <select name="inv_zone">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select zone_id,zone_name ";
   $q_string .= "from timezones ";
@@ -1149,7 +1144,6 @@ $(document).ready( function() {
 </tr>
 <tr>
   <td class="ui-widget-content" colspan="6">Front photo filename <select name="inv_front">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select img_id,img_title,img_file ";
   $q_string .= "from images ";
@@ -1164,7 +1158,6 @@ $(document).ready( function() {
 </tr>
 <tr>
   <td class="ui-widget-content" colspan="6">Rear photo filename <select name="inv_rear">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select img_id,img_title,img_file ";
   $q_string .= "from images ";
@@ -1185,7 +1178,6 @@ $(document).ready( function() {
 </tr>
 <tr>
   <td class="ui-widget-content">Platform Manager <select name="inv_manager">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select grp_id,grp_name ";
   $q_string .= "from a_groups ";
@@ -1198,7 +1190,6 @@ $(document).ready( function() {
 ?>
 </select></td>
   <td class="ui-widget-content">Application Manager <select name="inv_appadmin">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select grp_id,grp_name ";
   $q_string .= "from a_groups ";
@@ -1213,7 +1204,6 @@ $(document).ready( function() {
 </tr>
 <tr>
   <td class="ui-widget-content">Service Class <select name="inv_class">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select svc_id,svc_name ";
   $q_string .= "from service ";
@@ -1225,7 +1215,6 @@ $(document).ready( function() {
 ?>
 </select></td>
   <td class="ui-widget-content">Suggested Response Level <select name="inv_response">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select slv_id,slv_value ";
   $q_string .= "from supportlevel ";
@@ -1245,7 +1234,6 @@ $(document).ready( function() {
 </tr>
 <tr>
   <td class="ui-widget-content">Product <select name="inv_product" onchange="show_file('inventory.options.php?server=<?php print $formVars['server']; ?>&product=' + document.edit.inv_product.value);">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select prod_id,prod_name ";
   $q_string .= "from products ";
@@ -1257,7 +1245,6 @@ $(document).ready( function() {
 ?>
 </select></td>
   <td class="ui-widget-content">Project <select name="inv_project">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select prj_id,prj_name ";
   $q_string .= "from projects ";
@@ -1270,7 +1257,6 @@ $(document).ready( function() {
 ?>
 </select></td>
   <td class="ui-widget-content">Business Unit (Department) <select name="inv_department">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select dep_id,dep_unit,bus_name,dep_dept,dep_name ";
   $q_string .= "from department  ";

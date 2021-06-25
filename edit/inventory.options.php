@@ -35,7 +35,6 @@
 
       print "var selbox = document.edit.inv_project;\n\n";
       print "selbox.options.length = 0;\n";
-      print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
 // retrieve type list
       $q_string  = "select prj_id,prj_name ";

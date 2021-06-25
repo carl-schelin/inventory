@@ -23,7 +23,6 @@
 
       print "var selbox = document.edit.hw_vendorid;\n\n";
       print "selbox.options.length = 0;\n";
-      print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
 // retrieve type list
       $q_string  = "select mod_id,mod_vendor,mod_name ";

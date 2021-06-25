@@ -40,7 +40,9 @@
       print "document.edit.fs_volid.value = '"     . mysqli_real_escape_string($db, $a_filesystem['fs_volid'])     . "';\n";
       print "document.edit.fs_path.value = '"      . mysqli_real_escape_string($db, $a_filesystem['fs_path'])      . "';\n";
 
-      print "document.edit.fs_group['" . $group . "'].selected = true;\n";
+      if ($group > 0) {
+        print "document.edit.fs_group['" . $group . "'].selected = true;\n";
+      }
 
       if ($a_filesystem['fs_backup']) {
         print "document.edit.fs_backup.checked = true;\n";

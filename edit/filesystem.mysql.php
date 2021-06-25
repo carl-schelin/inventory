@@ -174,7 +174,6 @@
         $output .= "</tr>\n";
         $output .= "<tr>\n";
         $output .= "  <td class=\"ui-widget-content\" colspan=\"4\">Managed by: <select name=\"fs_group\">\n";
-        $output .= "<option value=\"0\">Unassigned</option>\n";
 
         $q_string  = "select grp_id,grp_name ";
         $q_string .= "from a_groups ";

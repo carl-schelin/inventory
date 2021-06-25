@@ -61,13 +61,27 @@
       print "document.edit.int_ypoint.value = '"    . mysqli_real_escape_string($db, $a_interface['int_ypoint'])    . "';\n";
       print "document.edit.int_zpoint.value = '"    . mysqli_real_escape_string($db, $a_interface['int_zpoint'])    . "';\n";
 
-      print "document.edit.int_type['"       . $int_types     . "'].selected = true;\n";
-      print "document.edit.int_zone['"       . $intzone       . "'].selected = true;\n";
-      print "document.edit.int_media['"      . $intmedia      . "'].selected = true;\n";
-      print "document.edit.int_speed['"      . $intspeed      . "'].selected = true;\n";
-      print "document.edit.int_duplex['"     . $intduplex     . "'].selected = true;\n";
-      print "document.edit.int_role['"       . $introle       . "'].selected = true;\n";
-      print "document.edit.int_redundancy['" . $intredundancy . "'].selected = true;\n";
+      if ($int_types > 0) {
+        print "document.edit.int_type['"       . $int_types     . "'].selected = true;\n";
+      }
+      if ($int_types > 0) {
+        print "document.edit.int_zone['"       . $intzone       . "'].selected = true;\n";
+      }
+      if ($int_types > 0) {
+        print "document.edit.int_media['"      . $intmedia      . "'].selected = true;\n";
+      }
+      if ($int_types > 0) {
+        print "document.edit.int_speed['"      . $intspeed      . "'].selected = true;\n";
+      }
+      if ($int_types > 0) {
+        print "document.edit.int_duplex['"     . $intduplex     . "'].selected = true;\n";
+      }
+      if ($int_types > 0) {
+        print "document.edit.int_role['"       . $introle       . "'].selected = true;\n";
+      }
+      if ($int_types > 0) {
+        print "document.edit.int_redundancy['" . $intredundancy . "'].selected = true;\n";
+      }
 
       print "document.edit.int_notify['" . $a_interface['int_notify'] . "'].checked = true;\n";
       print "document.edit.int_hours['"  . $a_interface['int_hours']  . "'].checked = true;\n";

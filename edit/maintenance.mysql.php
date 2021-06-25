@@ -85,7 +85,6 @@
         $output .= "</tr>\n";
         $output .= "<tr>\n";
         $output .= "  <td class=\"ui-widget-content\">Start: <select name=\"inv_mstart\">\n";
-        $output .= "<option value=\"0\">Unassigned</option>\n";
         $output .= "<option value=\"1\">Midnight</option>\n";
         $output .= "<option value=\"2\">1 am</option>\n";
         $output .= "<option value=\"3\">2 am</option>\n";
@@ -112,7 +111,6 @@
         $output .= "<option value=\"24\">11 pm</option>\n";
         $output .= "</select></td>\n";
         $output .= "  <td class=\"ui-widget-content\">End: <select name=\"inv_mend\">\n";
-        $output .= "<option value=\"0\">Unassigned</option>\n";
         $output .= "<option value=\"1\">Midnight</option>\n";
         $output .= "<option value=\"2\">1 am</option>\n";
         $output .= "<option value=\"3\">2 am</option>\n";
@@ -139,7 +137,6 @@
         $output .= "<option value=\"24\">11 pm</option>\n";
         $output .= "</select></td>\n";
         $output .= "  <td class=\"ui-widget-content\">Day of the Week: <select name=\"inv_mdow\">\n";
-        $output .= "<option value=\"0\">Unassigned</option>\n";
         $output .= "<option value=\"1\">Sunday</option>\n";
         $output .= "<option value=\"2\">Monday</option>\n";
         $output .= "<option value=\"3\">Tuesday</option>\n";
@@ -162,7 +159,6 @@
         $output .= "</tr>\n";
         $output .= "<tr>\n";
         $output .= "  <td class=\"ui-widget-content\">Select a Patching Increment: <select name=\"inv_patchid\">\n";
-        $output .= "<option value=\"0\">Unassigned</option>\n";
 
         $q_string  = "select inv_manager ";
         $q_string .= "from inventory ";

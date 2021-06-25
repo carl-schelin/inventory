@@ -33,7 +33,6 @@
 // set up the model type drop down to match the type of the retrieved record.
       print "var selbox = document.edit.hw_vendorid;\n\n";
       print "selbox.options.length = 0;\n";
-      print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
 // retrieve type list
       $q_string  = "select mod_id,mod_vendor,mod_name from models ";
@@ -50,7 +49,6 @@
 # set up the hardware drop down to refresh the hardware listing
       print "var selbox = document.edit.hw_hw_id;\n\n";
       print "selbox.options.length = 0;\n";
-      print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
 # retrieve hardware list
       $q_string  = "select hw_id,mod_vendor,mod_name ";
@@ -68,7 +66,6 @@
 # set up the hardware drop down to refresh the hardware listing
       print "var selbox = document.edit.hw_hd_id;\n\n";
       print "selbox.options.length = 0;\n";
-      print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
 # retrieve hardware list
       $q_string  = "select hw_id,hw_serial,hw_asset,mod_name ";

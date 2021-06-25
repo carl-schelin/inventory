@@ -191,7 +191,6 @@
         $output .= "</tr>\n";
         $output .= "<tr>\n";
         $output .= "  <td class=\"ui-widget-content\" colspan=\"2\">Group: <select name=\"sw_group\">\n";
-        $output .= "<option value=\"0\">Unassigned</option>\n";
 
         $q_string  = "select grp_id,grp_name ";
         $q_string .= "from a_groups ";
@@ -212,7 +211,6 @@
         $output .= "</tr>\n";
         $output .= "<tr>\n";
         $output .= "  <td class=\"ui-widget-content\" colspan=\"2\">Product <select name=\"sw_product\">\n";
-        $output .= "<option value=\"0\">Unassigned</option>\n";
 
         $q_string  = "select prod_id,prod_name ";
         $q_string .= "from products ";
@@ -266,7 +264,6 @@
 
         $output .= "</select></td>\n";
         $output .= "  <td class=\"ui-widget-content\" title=\"Support company and contract number\" colspan=\"2\">Support <select name=\"sw_supportid\">\n";
-        $output .= "<option value=\"0\">Unassigned</option>\n";
 
         $q_string  = "select sup_id,sup_company,sup_contract ";
         $q_string .= "from support ";
@@ -280,7 +277,6 @@
         $output .= "</tr>\n";
         $output .= "<tr>\n";
         $output .= "  <td class=\"ui-widget-content\" colspan=\"2\">Business Unit (Department) <select name=\"sw_department\">\n";
-        $output .= "<option value=\"0\">Unassigned</option>\n";
 
         $q_string  = "select dep_id,dep_unit,dep_dept,dep_name,bus_name ";
         $q_string .= "from department ";

@@ -75,21 +75,51 @@
         print "document.edit.inv_notes.value = '"    . mysqli_real_escape_string($db, $a_inventory['inv_notes'])    . "';\n";
         print "document.edit.inv_ticket.value = '"   . mysqli_real_escape_string($db, $a_inventory['inv_ticket'])   . "';\n";
 
-        print "document.edit.inv_companyid['"  . $invcompanyid              . "'].selected = true;\n";
-        print "document.edit.inv_clusterid['"  . $invclusterid              . "'].selected = true;\n";
-        print "document.edit.inv_location['"   . $invlocation               . "'].selected = true;\n";
-        print "document.edit.inv_zone['"       . $invzone                   . "'].selected = true;\n";
-        print "document.edit.inv_front['"      . $invfront                  . "'].selected = true;\n";
-        print "document.edit.inv_rear['"       . $invrear                   . "'].selected = true;\n";
-        print "document.edit.inv_manager['"    . $invmanager                . "'].selected = true;\n";
-        print "document.edit.inv_appadmin['"   . $invappadmin               . "'].selected = true;\n";
-        print "document.edit.inv_class['"      . $invclass                  . "'].selected = true;\n";
-        print "document.edit.inv_response['"   . $invresponse               . "'].selected = true;\n";
-        print "document.edit.inv_product['"    . $invproduct                . "'].selected = true;\n";
-        print "document.edit.inv_project['"    . $invproject                . "'].selected = true;\n";
-        print "document.edit.inv_department['" . $invdepartment             . "'].selected = true;\n";
-        print "document.edit.inv_env['"        . $invenv                    . "'].selected = true;\n";
-        print "document.edit.inv_maint['"      . $invmaint                  . "'].selected = true;\n";
+        if ($invcompanyid > 0) {
+          print "document.edit.inv_companyid['"  . $invcompanyid              . "'].selected = true;\n";
+        }
+        if ($invclusterid > 0) {
+          print "document.edit.inv_clusterid['"  . $invclusterid              . "'].selected = true;\n";
+        }
+        if ($invlocation > 0) {
+          print "document.edit.inv_location['"   . $invlocation               . "'].selected = true;\n";
+        }
+        if ($invzone > 0) {
+          print "document.edit.inv_zone['"       . $invzone                   . "'].selected = true;\n";
+        }
+        if ($invfront > 0) {
+          print "document.edit.inv_front['"      . $invfront                  . "'].selected = true;\n";
+        }
+        if ($invrear > 0) {
+          print "document.edit.inv_rear['"       . $invrear                   . "'].selected = true;\n";
+        }
+        if ($invmanager > 0) {
+          print "document.edit.inv_manager['"    . $invmanager                . "'].selected = true;\n";
+        }
+        if ($invappadmin > 0) {
+          print "document.edit.inv_appadmin['"   . $invappadmin               . "'].selected = true;\n";
+        }
+        if ($invclass > 0) {
+          print "document.edit.inv_class['"      . $invclass                  . "'].selected = true;\n";
+        }
+        if ($invresponse > 0) {
+          print "document.edit.inv_response['"   . $invresponse               . "'].selected = true;\n";
+        }
+        if ($invproduct > 0) {
+          print "document.edit.inv_product['"    . $invproduct                . "'].selected = true;\n";
+        }
+        if ($invproject > 0) {
+          print "document.edit.inv_project['"    . $invproject                . "'].selected = true;\n";
+        }
+        if ($invdepartment > 0) {
+          print "document.edit.inv_department['" . $invdepartment             . "'].selected = true;\n";
+        }
+        if ($invenv > 0) {
+          print "document.edit.inv_env['"        . $invenv                    . "'].selected = true;\n";
+        }
+        if ($invmaint > 0) {
+          print "document.edit.inv_maint['"      . $invmaint                  . "'].selected = true;\n";
+        }
 
         if ($a_inventory['inv_callpath']) {
           print "document.edit.inv_callpath.checked = true;\n";
