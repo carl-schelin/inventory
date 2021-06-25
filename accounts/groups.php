@@ -211,7 +211,6 @@ $(document).ready( function() {
 </tr>
 <tr>
   <td class="ui-widget-content">Group Organization: <select name="grp_organization">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select org_id,org_name ";
   $q_string .= "from organizations ";
@@ -223,7 +222,6 @@ $(document).ready( function() {
 ?></select></td>
   <td class="ui-widget-content">Group Name: <input type="text" name="grp_name" size="40"></td>
   <td class="ui-widget-content">Group Role: <select name="grp_role">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select role_id,role_name ";
   $q_string .= "from roles ";
@@ -237,7 +235,6 @@ $(document).ready( function() {
 <tr>
   <td class="ui-widget-content">E-Mail: <input type="text" name="grp_email" size="40"></td>
   <td class="ui-widget-content">Manager: <select name="grp_manager">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select usr_id,usr_last,usr_first ";
   $q_string .= "from users ";

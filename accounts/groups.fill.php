@@ -36,9 +36,15 @@
       print "document.groups.grp_name.value = '"      . mysqli_real_escape_string($db, $a_groups['grp_name'])      . "';\n";
       print "document.groups.grp_email.value = '"     . mysqli_real_escape_string($db, $a_groups['grp_email'])     . "';\n";
 
-      print "document.groups.grp_organization['"  . $organization . "'].selected = true;\n";
-      print "document.groups.grp_role['"          . $role         . "'].selected = true;\n";
-      print "document.groups.grp_manager['"       . $manager      . "'].selected = true;\n";
+      if ($organization > 0) {
+        print "document.groups.grp_organization['"  . $organization . "'].selected = true;\n";
+      }
+      if ($role > 0) {
+        print "document.groups.grp_role['"          . $role         . "'].selected = true;\n";
+      }
+      if ($manager > 0) {
+        print "document.groups.grp_manager['"       . $manager      . "'].selected = true;\n";
+      }
 
       print "document.groups.grp_disabled['" . $a_groups['grp_disabled'] . "'].selected = 'true';\n";
 
