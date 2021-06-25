@@ -39,8 +39,12 @@
 
       print "document.error.error_text.value = '"        . mysqli_real_escape_string($db, $a_chkserver['chk_text'])        . "';\n";
 
-      print "document.error.chk_userid['"       . $chkuserid                   . "'].selected = true;\n";
-      print "document.error.chk_priority['"     . $a_chkserver['chk_priority'] . "'].selected = true;\n";
+      if ($chkuserid > 0) {
+        print "document.error.chk_userid['"       . $chkuserid                   . "'].selected = true;\n";
+      }
+      if ($a_chkserver['chk_priority'] > 0) {
+        print "document.error.chk_priority['"     . $a_chkserver['chk_priority'] . "'].selected = true;\n";
+      }
 
       if ($a_chkserver['chk_status'] == 2) {
         print "document.error.chk_status.checked = true;\n";

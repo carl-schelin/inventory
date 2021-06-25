@@ -394,7 +394,6 @@ new warnings. Use this page to set specific server and error priorities. In orde
 ?></select></td>
   <td class="ui-widget-content"><label><input type="checkbox" name="chk_status"> Work Pending</label></td>
   <td class="ui-widget-content">Set Priority: <select name="chk_priority">
-  <option value="0">Unassigned</option>
   <option value="1">Priority 1</option>
   <option value="2">Priority 2</option>
   <option value="3">Priority 3</option>
