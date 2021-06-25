@@ -64,7 +64,6 @@
           print "selbox.setAttribute(\"onblur\",\"detail_Completed(" . $formVars['id'] . ",'" . $formVars['function'] . "');\");\n";
 
           print "selbox.options.length = 0;\n";
-          print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
           $q_string  = "select inv_id,inv_name ";
           $q_string .= "from inventory ";
@@ -182,7 +181,6 @@
           print "selbox.setAttribute(\"onblur\",\"detail_Completed(" . $formVars['id'] . ",'" . $formVars['function'] . "');\");\n";
 
           print "selbox.options.length = 0;\n";
-          print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
           $q_string  = "select grp_id,grp_name ";
           $q_string .= "from a_groups ";
@@ -280,7 +278,6 @@
           print "selbox.setAttribute(\"onblur\",\"detail_Completed(" . $formVars['id'] . ",'" . $formVars['function'] . "');\");\n";
 
           print "selbox.options.length = 0;\n";
-          print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
           $q_string  = "select grp_id,grp_name ";
           $q_string .= "from a_groups ";
@@ -370,7 +367,6 @@
           print "selbox.setAttribute(\"onblur\",\"detail_Completed(" . $formVars['id'] . ",'" . $formVars['function'] . "');\");\n";
 
           print "selbox.options.length = 0;\n";
-          print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
           $q_string  = "select prod_id,prod_name ";
           $q_string .= "from products ";
@@ -464,7 +460,6 @@
           print "selbox.setAttribute(\"onblur\",\"detail_Completed(" . $formVars['id'] . ",'" . $formVars['function'] . "');\");\n";
 
           print "selbox.options.length = 0;\n";
-          print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
           $q_string  = "select inv_manager,inv_product ";
           $q_string .= "from inventory ";
@@ -542,7 +537,6 @@
           print "selbox.setAttribute(\"onblur\",\"detail_Completed(" . $formVars['id'] . ",'" . $formVars['function'] . "');\");\n";
 
           print "selbox.options.length = 0;\n";
-          print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
           $q_string  = "select svc_id,svc_name ";
           $q_string .= "from service ";
@@ -679,7 +673,6 @@
           print "selbox.setAttribute(\"onblur\",\"detail_Completed(" . $formVars['id'] . ",'" . $formVars['function'] . "');\");\n";
 
           print "selbox.options.length = 0;\n";
-          print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
           $q_string  = "select loc_id,loc_name ";
           $q_string .= "from locations ";

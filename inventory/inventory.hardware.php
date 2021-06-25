@@ -176,7 +176,6 @@
           }
 
           print "selbox.options.length = 0;\n";
-          print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
           $q_string  = "select grp_id,grp_name ";
           $q_string .= "from a_groups ";
@@ -246,7 +245,6 @@
           print "selbox.setAttribute(\"onblur\",\"select_Service('" . $formVars['id'] . "');\");\n";
 
           print "selbox.options.length = 0;\n";
-          print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
           $q_string  = "select svc_id,svc_name ";
           $q_string .= "from service ";
@@ -310,7 +308,6 @@
           print "selbox.setAttribute(\"onblur\",\"select_Location('" . $formVars['id'] . "');\");\n";
 
           print "selbox.options.length = 0;\n";
-          print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
           $q_string  = "select loc_id,loc_name ";
           $q_string .= "from locations ";
@@ -414,7 +411,6 @@
           print "selbox.setAttribute(\"onblur\",\"select_Platform('" . $formVars['id'] . "');\");\n";
 
           print "selbox.options.length = 0;\n";
-          print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
           $q_string  = "select os_id,os_software ";
           $q_string .= "from operatingsystem ";
@@ -667,7 +663,6 @@ if ($formVars['type'] == 20) {
           print "selbox.setAttribute(\"onblur\",\"" . $onblurstring . "\");\n";
 
           print "selbox.options.length = 0;\n";
-          print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
           $q_string  = "select usr_id,usr_last,usr_first ";
           $q_string .= "from users ";

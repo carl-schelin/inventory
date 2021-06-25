@@ -337,7 +337,6 @@
           print "selbox.setAttribute(\"onblur\",\"interface_Completed(" . $formVars['id'] . ",'" . $formVars['function'] . "');\");\n";
 
           print "selbox.options.length = 0;\n";
-          print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
           $q_string  = "select itp_id,itp_name,itp_acronym ";
           $q_string .= "from int_types ";
@@ -510,7 +509,6 @@
           print "selbox.setAttribute(\"onblur\",\"interface_Completed(" . $formVars['id'] . ",'" . $formVars['function'] . "');\");\n";
 
           print "selbox.options.length = 0;\n";
-          print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
           for ($i = 0; $i < 129; $i++) {
             print "if (celltext == " . $i . ") {\n";
@@ -574,7 +572,6 @@
           print "selbox.setAttribute(\"onblur\",\"interface_Completed(" . $formVars['id'] . ",'" . $formVars['function'] . "');\");\n";
 
           print "selbox.options.length = 0;\n";
-          print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
           $q_string  = "select zone_id,zone_name ";
           $q_string .= "from net_zones ";
@@ -791,7 +788,6 @@
           print "selbox.setAttribute(\"onblur\",\"interface_Completed(" . $formVars['id'] . ",'" . $formVars['function'] . "');\");\n";
 
           print "selbox.options.length = 0;\n";
-          print "selbox.options[selbox.options.length] = new Option(\"Unassigned\",0);\n";
 
           $q_string  = "select med_id,med_text ";
           $q_string .= "from int_media ";
