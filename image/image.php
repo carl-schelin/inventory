@@ -158,7 +158,6 @@ $(document).ready( function() {
   <td class="ui-widget-content">Image Name: <input type="text" name="img_file" value="<?php print $formVars['img_file']; ?>" size="40"></td>
   <td class="ui-widget-content">Image Date: <input type="text" name="img_date" value="<?php print $formVars['img_date']; ?>" size="20"></td>
   <td class="ui-widget-content">Image Owner: <select name="img_owner">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select usr_id,usr_first,usr_last ";
   $q_string .= "from users ";

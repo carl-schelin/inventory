@@ -34,8 +34,12 @@
       print "document.images.img_file.value = '"  . mysqli_real_escape_string($db, $a_images['img_file'])     . "';\n";
       print "document.images.img_date.value = '"  . mysqli_real_escape_string($db, $a_images['img_date'])     . "';\n";
 
-      print "document.images.img_owner['"  . $users                  . "'].selected = true;\n";
-      print "document.images.img_facing['" . $a_images['img_facing'] . "'].checked  = true;\n";
+      if ($users > 0) {
+        print "document.images.img_owner['"  . $users                  . "'].selected = true;\n";
+      }
+      if ($a_images['img_facing'] > 0) {
+        print "document.images.img_facing['" . $a_images['img_facing'] . "'].checked  = true;\n";
+      }
 
       print "document.images.id.value = " . $formVars['id'] . ";\n";
 
