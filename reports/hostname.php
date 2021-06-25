@@ -119,7 +119,6 @@ $(document).ready( function() {
 <table class="ui-styled-table">
 <tr>
   <td class="ui-widget-content">Select the Data Center where the server will be located: <select name="location" onclick="check_encode();" onblur="check_encode();">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select loc_id,loc_name,ct_clli,loc_instance ";
   $q_string .= "from locations ";
@@ -135,7 +134,6 @@ $(document).ready( function() {
 </tr>
 <tr>
   <td class="ui-widget-content">Select the Network Zone: <select name="zone" onclick="check_encode();" onblur="check_encode();">
-<option value="0">Unassigned</option>
 <option value="1">C (Enterprise/Corporate)</option>
 <option value="2">E (E911)</option>
 <option value="3">D (DMZ)</option>
@@ -145,7 +143,6 @@ $(document).ready( function() {
 </tr>
 <tr>
   <td class="ui-widget-content">Select the Unique Device Type: <select name="device" onclick="check_encode();" onblur="check_encode();">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select dev_id,dev_type,dev_description ";
   $q_string .= "from device ";
@@ -159,7 +156,6 @@ $(document).ready( function() {
 </tr>
 <tr>
   <td class="ui-widget-content">Select the Product or Service: <select name="service" id="service" onclick="check_encode();" onblur="check_encode();">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select prod_id,prod_name,prod_code ";
   $q_string .= "from products ";
