@@ -33,7 +33,9 @@
       print "document.cities.ct_city.value = '"    . mysqli_real_escape_string($db, $a_cities['ct_city'])    . "';\n";
       print "document.cities.ct_clli.value = '"    . mysqli_real_escape_string($db, $a_cities['ct_clli'])    . "';\n";
 
-      print "document.cities.ct_state['" . $state . "'].selected = true;\n";
+      if ($state > 0) {
+        print "document.cities.ct_state['" . $state . "'].selected = true;\n";
+      }
 
       print "document.cities.id.value = " . $formVars['id'] . ";\n";
 
