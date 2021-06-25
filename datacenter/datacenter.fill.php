@@ -54,9 +54,15 @@
       print "document.locations.loc_xlen.value = '"       . mysqli_real_escape_string($db, $a_locations['loc_xlen'])       . "';\n";
       print "document.locations.loc_ylen.value = '"       . mysqli_real_escape_string($db, $a_locations['loc_ylen'])       . "';\n";
 
-      print "document.locations.loc_city['"        . $city                           . "'].selected = true;\n";
-      print "document.locations.loc_type['"        . $type                           . "'].selected = true;\n";
-      print "document.locations.loc_environment['" . $a_locations['loc_environment'] . "'].selected = true;\n";
+      if ($city > 0) {
+        print "document.locations.loc_city['"        . $city                           . "'].selected = true;\n";
+      }
+      if ($type > 0) {
+        print "document.locations.loc_type['"        . $type                           . "'].selected = true;\n";
+      }
+      if ($a_locations['loc_environment'] > 0) {
+        print "document.locations.loc_environment['" . $a_locations['loc_environment'] . "'].selected = true;\n";
+      }
 
       if ($a_locations['loc_default']) {
         print "document.locations.loc_default.checked = true;\n";

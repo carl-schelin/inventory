@@ -233,7 +233,6 @@ $(document).ready( function() {
 <tr>
   <td class="ui-widget-content">Name: <input type="text" name="loc_name" size="50"></td>
   <td class="ui-widget-content">Type: <select name="loc_type">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select typ_id,typ_name ";
   $q_string .= "from loc_types ";
@@ -245,7 +244,6 @@ $(document).ready( function() {
 ?>
 </select></td>
 <td class="ui-widget-content">Environment: <select name="loc_environment">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select env_id,env_name ";
   $q_string .= "from environment ";
@@ -267,7 +265,6 @@ $(document).ready( function() {
 </tr>
 <tr>
   <td class="ui-widget-content">Select a City/State/Country: <select name="loc_city">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select ct_id,ct_city,st_acronym,cn_acronym ";
   $q_string .= "from cities ";
