@@ -187,7 +187,6 @@ $(document).ready( function() {
 </tr>
 <tr>
   <td class="ui-widget-content" colspan="3" title="Hardware type">Type <select name="mod_type">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select part_id,part_name ";
   $q_string .= "from parts ";

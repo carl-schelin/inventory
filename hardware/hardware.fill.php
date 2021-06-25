@@ -44,9 +44,15 @@
       print "document.hardware.mod_draw.value = '"   . mysqli_real_escape_string($db, $a_models['mod_draw'])   . "';\n";
       print "document.hardware.mod_btu.value = '"    . mysqli_real_escape_string($db, $a_models['mod_btu'])    . "';\n";
 
-      print "document.hardware.mod_type['"     . $type                     . "'].selected = true;\n";
-      print "document.hardware.mod_volts['"    . $a_models['mod_volts']    . "'].selected = true;\n";
-      print "document.hardware.mod_plugtype['" . $a_models['mod_plugtype'] . "'].selected = true;\n";
+      if ($type > 0) {
+        print "document.hardware.mod_type['"     . $type                     . "'].selected = true;\n";
+      }
+      if ($a_models['mod_volts'] > 0) {
+        print "document.hardware.mod_volts['"    . $a_models['mod_volts']    . "'].selected = true;\n";
+      }
+      if ($a_models['mod_plugtype'] > 0) {
+        print "document.hardware.mod_plugtype['" . $a_models['mod_plugtype'] . "'].selected = true;\n";
+      }
 
       if ($a_models['mod_virtual']) {
         print "document.hardware.mod_virtual.checked = true;\n";
