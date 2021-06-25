@@ -156,7 +156,6 @@ $(document).ready( function() {
 ?>
 </select></td>
   <td class="ui-widget-content">Department: <select name="usr_deptname">
-  <option value="0">Unassigned</option>
 <?php
   $q_string  = "select dep_id,dep_unit,dep_dept,dep_name,bus_name ";
   $q_string .= "from department ";
@@ -171,7 +170,6 @@ $(document).ready( function() {
 </tr>
 <tr>
   <td class="ui-widget-content">Select Your Title: <select name="usr_title">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select tit_id,tit_name ";
   $q_string .= "from titles ";
@@ -183,7 +181,6 @@ $(document).ready( function() {
 ?>
 </select></td>
   <td class="ui-widget-content" colspan="3">Select Your Manager: <select name="usr_manager">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select usr_id,usr_last,usr_first ";
   $q_string .= "from users ";

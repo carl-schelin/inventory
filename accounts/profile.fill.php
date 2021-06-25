@@ -59,10 +59,18 @@
       print "document.user.usr_page.value = '"       . mysqli_real_escape_string($db, $a_users['usr_page'])     . "';\n";
       print "document.user.usr_pagemail.value = '"   . mysqli_real_escape_string($db, $a_users['usr_pagemail']) . "';\n";
 
-      print "document.user.usr_theme['"    . $theme     . "'].selected = true;\n";
-      print "document.user.usr_deptname['" . $deptname  . "'].selected = true;\n";
-      print "document.user.usr_manager['"  . $manager   . "'].selected = true;\n";
-      print "document.user.usr_title['"    . $title     . "'].selected = true;\n";
+      if ($theme > 0) {
+        print "document.user.usr_theme['"    . $theme     . "'].selected = true;\n";
+      }
+      if ($deptname > 0) {
+        print "document.user.usr_deptname['" . $deptname  . "'].selected = true;\n";
+      }
+      if ($manager > 0) {
+        print "document.user.usr_manager['"  . $manager   . "'].selected = true;\n";
+      }
+      if ($title > 0) {
+        print "document.user.usr_title['"    . $title     . "'].selected = true;\n";
+      }
 
       if ($a_users['usr_reset']) {
         print "document.user.usr_reset.checked = true;\n";
