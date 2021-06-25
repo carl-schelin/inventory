@@ -168,7 +168,6 @@ $(document).ready( function() {
 <table class="ui-styled-table">
 <tr>
   <td class="ui-widget-content">Add <select name="gpl_user"></th>
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select usr_id,usr_last,usr_first ";
   $q_string .= "from users ";
@@ -180,7 +179,6 @@ $(document).ready( function() {
   }
 ?>
 </select> to <select name="gpl_group">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select grp_id,grp_name ";
   $q_string .= "from a_groups ";
