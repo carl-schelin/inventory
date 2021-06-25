@@ -175,7 +175,6 @@ $(document).ready( function() {
 <tr>
   <td class="ui-widget-content">City/County: <input type="text" name="ct_city" size="30"></td>
   <td class="ui-widget-content">State: <select name="ct_state">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select st_id,st_state ";
   $q_string .= "from states ";
