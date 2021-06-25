@@ -194,7 +194,6 @@ $(document).ready( function() {
 </tr>
 <tr>
   <td class="ui-widget-content" colspan="3">Group: <select name="prod_group">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select grp_id,grp_name ";
   $q_string .= "from a_groups ";
@@ -206,7 +205,6 @@ $(document).ready( function() {
   }
 ?></select></td>
   <td class="ui-widget-content" colspan="2">Business Unit <select name="prod_unit">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select bus_id,bus_name ";
   $q_string .= "from business_unit ";
@@ -219,7 +217,6 @@ $(document).ready( function() {
 </select></td>
   <td class="ui-widget-content">Remedy? <input type="checkbox" name="prod_remedy"></td>
   <td class="ui-widget-content" colspan="2">Service Class <select name="prod_service">
-<option value="0">Unassigned</option>
 <?php
   $q_string  = "select svc_id,svc_acronym ";
   $q_string .= "from service ";

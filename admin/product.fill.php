@@ -38,9 +38,15 @@
       print "document.products.prod_oldcode.value = '" . mysqli_real_escape_string($db, $a_products['prod_oldcode']) . "';\n";
       print "document.products.prod_desc.value = '"    . mysqli_real_escape_string($db, $a_products['prod_desc'])    . "';\n";
 
-      print "document.products.prod_group['"   . $group   . "'].selected = true;\n";
-      print "document.products.prod_unit['"    . $unit    . "'].selected = true;\n";
-      print "document.products.prod_service['" . $service . "'].selected = true;\n";
+      if ($group > 0) {
+        print "document.products.prod_group['"   . $group   . "'].selected = true;\n";
+      }
+      if ($unit > 0) {
+        print "document.products.prod_unit['"    . $unit    . "'].selected = true;\n";
+      }
+      if ($service > 0) {
+        print "document.products.prod_service['" . $service . "'].selected = true;\n";
+      }
 
       print "document.products.prod_type.value = '"   . mysqli_real_escape_string($db, $a_products['prod_type'])   . "';\n";
       print "document.products.prod_citype.value = '" . mysqli_real_escape_string($db, $a_products['prod_citype']) . "';\n";
