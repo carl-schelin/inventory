@@ -195,7 +195,6 @@ function populate_email() {
 
 <label>Username / Group Membership</label><input id="username" type="text" name="username" style="width: 46%;" value="<?php print $username; ?>" onchange="toggle_username('username')" />&nbsp;
 <select style="width: 49%;" name="group">
-  <option value="0">Unassigned</option>
 <?php 
   $q_string  = "select grp_id,grp_name ";
   $q_string .= "from a_groups ";
