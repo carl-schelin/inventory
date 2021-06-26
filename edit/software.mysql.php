@@ -45,6 +45,18 @@
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
         }
+        if ($formVars['sw_supportid'] == '') {
+          $formVars['sw_supportid'] = 0;
+        }
+        if ($formVars['sw_department'] == '') {
+          $formVars['sw_department'] = 0;
+        }
+        if ($formVars['sw_cert'] == '') {
+          $formVars['sw_cert'] = 0;
+        }
+        if ($formVars['sw_licenseid'] == '') {
+          $formVars['sw_licenseid'] = 0;
+        }
         if ($formVars['sw_product'] == '') {
           $formVars['sw_product'] = 0;
         }

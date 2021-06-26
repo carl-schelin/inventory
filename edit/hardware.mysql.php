@@ -55,6 +55,24 @@
         if ($formVars['hw_product'] == '') {
           $formVars['hw_product'] = 0;
         }
+        if ($formVars['hw_type'] == '') {
+          $formVars['hw_type'] = 0;
+        }
+        if ($formVars['hw_vendorid'] == '') {
+          $formVars['hw_vendorid'] = 0;
+        }
+        if ($formVars['hw_supportid'] == '') {
+          $formVars['hw_supportid'] = 0;
+        }
+        if ($formVars['hw_response'] == '') {
+          $formVars['hw_response'] = 0;
+        }
+        if ($formVars['hw_hw_id'] == '') {
+          $formVars['hw_hw_id'] = 0;
+        }
+        if ($formVars['hw_hd_id'] == '') {
+          $formVars['hw_hd_id'] = 0;
+        }
         if ($formVars['hw_deleted'] == "true") {
           $formVars['hw_deleted'] = 1;
 # disassociate from physical/virtual container

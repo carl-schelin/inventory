@@ -76,6 +76,27 @@
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
         }
+        if ($formVars['int_duplex'] == '') {
+          $formVars['int_duplex'] = 0;
+        }
+        if ($formVars['int_speed'] == '') {
+          $formVars['int_speed'] = 0;
+        }
+        if ($formVars['int_media'] == '') {
+          $formVars['int_media'] = 0;
+        }
+        if ($formVars['int_int_id'] == '') {
+          $formVars['int_int_id'] = 0;
+        }
+        if ($formVars['int_redundancy'] == '') {
+          $formVars['int_redundancy'] = 0;
+        }
+        if ($formVars['int_mask'] == '') {
+          $formVars['int_mask'] = 0;
+        }
+        if ($formVars['int_type'] == '') {
+          $formVars['int_type'] = 0;
+        }
         if ($formVars['int_eth'] == '') {
           $formVars['int_eth'] = "00:00:00:00:00:00";
         }
@@ -528,12 +549,12 @@
         $output .= "  <td class=\"ui-widget-content\">Zone <select name=\"int_zone\">\n";
         $output .= "<option value=\"0\">Unknown</option>\n";
 
-        $q_string  = "select zone_id,zone_name ";
+        $q_string  = "select zone_id,zone_zone ";
         $q_string .= "from net_zones ";
-        $q_string .= "order by zone_name";
+        $q_string .= "order by zone_zone";
         $q_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_net_zones = mysqli_fetch_array($q_net_zones)) {
-          $output .= "<option value=\"" . $a_net_zones['zone_id'] . "\">" . $a_net_zones['zone_name'] . "</option>\n";
+          $output .= "<option value=\"" . $a_net_zones['zone_id'] . "\">" . $a_net_zones['zone_zone'] . "</option>\n";
         }
 
         $output .= "</select></td>\n";

@@ -32,6 +32,9 @@
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
         }
+        if ($formVars['clu_association'] == '') {
+          $formVars['clu_association'] = 0;
+        }
 
         if ($formVars['clu_companyid'] > 0) {
           logaccess($db, $_SESSION['uid'], $package, "Building the query.");

@@ -30,6 +30,10 @@
         $formVars["com_timestamp"]   = clean($_GET["com_timestamp"],   60);
         $formVars["com_user"]        = clean($_GET["com_user"],        10);
 
+        if ($formVars['com_user'] == '') {
+          $formVars['com_user'] = 0;
+        }
+
         if ($formVars['com_timestamp'] == "YYYY-MM-DD HH:MM:SS" || $formVars['com_timestamp'] == '' || $formVars['com_timestamp'] == 'Current Time') {
           $formVars['com_timestamp'] = date("Y-m-d H:i:s");
         }

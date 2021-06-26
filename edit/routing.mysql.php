@@ -38,6 +38,9 @@
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
         }
+        if ($formVars['route_mask'] == '') {
+          $formVars['route_mask'] = 0;
+        }
         if ($formVars['route_propagate'] == '') {
           $formVars['route_propagate'] = "no";
         }

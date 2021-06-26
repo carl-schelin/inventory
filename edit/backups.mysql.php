@@ -50,6 +50,9 @@
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
         }
+        if ($formVars['bu_retention'] == '') {
+          $formVars['bu_retention'] = 0;
+        }
         if ($formVars['bu_include'] == 'true') {
           $formVars['bu_include'] = 1;
         } else {

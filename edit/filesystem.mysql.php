@@ -55,6 +55,9 @@
         if ($formVars['fs_lun'] == '') {
           $formVars['fs_lun'] = 0;
         }
+        if ($formVars['fs_group'] == '') {
+          $formVars['fs_group'] = 0;
+        }
 
         if ($formVars['fs_companyid'] > 0) {
           logaccess($db, $_SESSION['uid'], $package, "Building the query.");

@@ -56,6 +56,48 @@
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
         }
+        if ($formVars['inv_maint'] == '') {
+          $formVars['inv_maint'] = 0;
+        }
+        if ($formVars['inv_department'] == '') {
+          $formVars['inv_department'] = 0;
+        }
+        if ($formVars['inv_project'] == '') {
+          $formVars['inv_project'] = 0;
+        }
+        if ($formVars['inv_product'] == '') {
+          $formVars['inv_product'] = 0;
+        }
+        if ($formVars['inv_response'] == '') {
+          $formVars['inv_response'] = 0;
+        }
+        if ($formVars['inv_class'] == '') {
+          $formVars['inv_class'] = 0;
+        }
+        if ($formVars['inv_appadmin'] == '') {
+          $formVars['inv_appadmin'] = 0;
+        }
+        if ($formVars['inv_manager'] == '') {
+          $formVars['inv_manager'] = 0;
+        }
+        if ($formVars['inv_rear'] == '') {
+          $formVars['inv_rear'] = 0;
+        }
+        if ($formVars['inv_front'] == '') {
+          $formVars['inv_front'] = 0;
+        }
+        if ($formVars['inv_zone'] == '') {
+          $formVars['inv_zone'] = 0;
+        }
+        if ($formVars['inv_env'] == '') {
+          $formVars['inv_env'] = 0;
+        }
+        if ($formVars['inv_location'] == '') {
+          $formVars['inv_location'] = 0;
+        }
+        if ($formVars['inv_clusterid'] == '') {
+          $formVars['inv_clusterid'] = 0;
+        }
         if ($formVars['inv_callpath'] == 'true' ) {
           $formVars['inv_callpath'] = 1;
         } else {
