@@ -396,7 +396,7 @@
         printf("%30s %10s %20s %20s %20s %5s %10s\n", "Name", "Interface", "IP Address/Mask", "MAC", "Gateway", "Type", "Zone");
       }
 
-      $q_string  = "select int_server,int_face,int_ip6,int_addr,int_eth,int_mask,int_gate,int_verified,int_type,int_update,zone_name ";
+      $q_string  = "select int_server,int_face,int_ip6,int_addr,int_eth,int_mask,int_gate,int_verified,int_type,int_update,zone_zone ";
       $q_string .= "from interface ";
       $q_string .= "left join net_zones on net_zones.zone_id = interface.int_zone ";
       $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 ";
@@ -416,9 +416,9 @@
           print "\"" . $a_interface['int_eth']    . "\",";
           print "\"" . $a_interface['int_gate']   . "\",";
           print "\"" . $a_int_types['itp_acronym']  . "\"\n";
-          print "\"" . $a_interface['zone_name']  . "\"\n";
+          print "\"" . $a_interface['zone_zone']  . "\"\n";
         } else {
-          printf("%30s %10s %20s %20s %20s %5s %10s\n", $a_interface['int_server'], $a_interface['int_face'], $a_interface['int_addr'] . "/" . $a_interface['int_mask'], $a_interface['int_eth'], $a_interface['int_gate'], $a_int_types['itp_acronym'], $a_interface['zone_name']);
+          printf("%30s %10s %20s %20s %20s %5s %10s\n", $a_interface['int_server'], $a_interface['int_face'], $a_interface['int_addr'] . "/" . $a_interface['int_mask'], $a_interface['int_eth'], $a_interface['int_gate'], $a_int_types['itp_acronym'], $a_interface['zone_zone']);
         }
       }
     }

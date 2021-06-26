@@ -106,7 +106,7 @@
 
   $q_string  = "select int_id,int_server,int_domain,int_face,int_addr,int_vaddr,int_eth,int_veth,int_mask,int_verified,";
   $q_string .= "int_sysport,int_redundancy,int_virtual,int_switch,int_port,int_primary,itp_acronym,int_gate,";
-  $q_string .= "int_vgate,int_note,int_update,int_type,zone_name,int_nagios,int_openview,int_backup,int_management,int_login ";
+  $q_string .= "int_vgate,int_note,int_update,int_type,zone_zone,int_nagios,int_openview,int_backup,int_management,int_login ";
   $q_string .= "from interface ";
   $q_string .= "left join net_zones on interface.int_zone = net_zones.zone_id  ";
   $q_string .= "left join int_types  on interface.int_type = int_types.itp_id ";
@@ -200,7 +200,7 @@
     }
     $output .= "<td" . $pristart . $intnote . ">"              . $showmac . $ethcheckmark                            . "</td>";
     $output .= "<td" . $pristart . $intnote . ">" . $linkstart . $a_interface['int_addr']     . $showmask . $addrcheckmark . $linkend . "</td>";
-    $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['zone_name']                           . "</td>";
+    $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['zone_zone']                           . "</td>";
     $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['int_gate'] . $gatecheckmark           . "</td>";
     if (return_Virtual($db, $formVars['id']) == 0) {
       $output .= "<td" . $pristart . $intnote . ">"            . $a_interface['int_switch']                          . "</td>";
@@ -213,7 +213,7 @@
 
 # redundant interfaces
     $q_string  = "select int_id,int_server,int_domain,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,";
-    $q_string .= "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_groupname,";
+    $q_string .= "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_groupname,";
     $q_string .= "int_vaddr,int_veth,int_vgate,int_nagios,int_openview,int_management,int_backup,int_login ";
     $q_string .= "from interface ";
     $q_string .= "left join net_zones on interface.int_zone = net_zones.zone_id  ";
@@ -308,7 +308,7 @@
       }
       $output .= "<td" . $pristart . $intnote . ">"              . $showmac . $ethcheckmark                            . "</td>";
       $output .= "<td" . $pristart . $intnote . ">" . $linkstart . $a_redundancy['int_addr']     . $showmask . $addrcheckmark . $linkend . "</td>";
-      $output .= "<td" . $pristart . $intnote . ">"              . $a_redundancy['zone_name']                           . "</td>";
+      $output .= "<td" . $pristart . $intnote . ">"              . $a_redundancy['zone_zone']                           . "</td>";
       $output .= "<td" . $pristart . $intnote . ">"              . $a_redundancy['int_gate'] . $gatecheckmark           . "</td>";
       if (return_Virtual($db, $formVars['id']) == 0) {
         $output .= "<td" . $pristart . $intnote . ">"            . $a_redundancy['int_switch']                          . "</td>";
@@ -321,7 +321,7 @@
 
 # secondary redundant interfaces
       $q_string  = "select int_id,int_server,int_domain,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,";
-      $q_string .= "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_groupname,";
+      $q_string .= "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_groupname,";
       $q_string .= "int_vaddr,int_veth,int_vgate,int_nagios,int_openview,int_management,int_backup,int_login ";
       $q_string .= "from interface ";
       $q_string .= "left join net_zones on interface.int_zone = net_zones.zone_id  ";
@@ -416,7 +416,7 @@
         }
         $output .= "<td" . $pristart . $intnote . ">"              . $showmac . $ethcheckmark                            . "</td>";
         $output .= "<td" . $pristart . $intnote . ">" . $linkstart . $a_secondary['int_addr']     . $showmask . $addrcheckmark . $linkend . "</td>";
-        $output .= "<td" . $pristart . $intnote . ">"              . $a_secondary['zone_name']                           . "</td>";
+        $output .= "<td" . $pristart . $intnote . ">"              . $a_secondary['zone_zone']                           . "</td>";
         $output .= "<td" . $pristart . $intnote . ">"              . $a_secondary['int_gate'] . $gatecheckmark           . "</td>";
         if (return_Virtual($db, $formVars['id']) == 0) {
           $output .= "<td" . $pristart . $intnote . ">"            . $a_secondary['int_switch']                          . "</td>";
@@ -457,7 +457,7 @@
   $output .= "</tr>";
 
   $q_string = "select int_id,int_server,int_domain,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,"
-            .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_veth,int_vaddr,int_vgate "
+            .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_veth,int_vaddr,int_vgate "
             . "from interface "
             . "left join net_zones on interface.int_zone = net_zones.zone_id  "
             . "left join int_types on interface.int_type = int_types.itp_id "
@@ -525,7 +525,7 @@
     }
     $output .= "<td" . $pristart . $intnote . ">"              . $showmac . $ethcheckmark                            . "</td>";
     $output .= "<td" . $pristart . $intnote . ">" . $linkstart . $a_interface['int_addr']     . $showmask . $addrcheckmark . $linkend . "</td>";
-    $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['zone_name']                           . "</td>";
+    $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['zone_zone']                           . "</td>";
     $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['int_gate'] . $gatecheckmark           . "</td>";
     if (return_Virtual($db, $formVars['id']) == 0) {
       $output .= "<td" . $pristart . $intnote . ">"            . $a_interface['int_switch']                          . "</td>";
@@ -538,7 +538,7 @@
 
 # redundant interfaces
     $q_string = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,"
-              .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_groupname,int_vaddr,int_veth,int_vgate "
+              .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_groupname,int_vaddr,int_veth,int_vgate "
               . "from interface "
               . "left join net_zones on interface.int_zone = net_zones.zone_id  "
               . "left join int_types on interface.int_type = int_types.itp_id "
@@ -604,7 +604,7 @@
       }
       $output .= "<td" . $pristart . $intnote . ">"              . $showmac . $ethcheckmark                            . "</td>";
       $output .= "<td" . $pristart . $intnote . ">" . $linkstart . $a_redundancy['int_addr']     . $showmask . $addrcheckmark . $linkend . "</td>";
-      $output .= "<td" . $pristart . $intnote . ">"              . $a_redundancy['zone_name']                           . "</td>";
+      $output .= "<td" . $pristart . $intnote . ">"              . $a_redundancy['zone_zone']                           . "</td>";
       $output .= "<td" . $pristart . $intnote . ">"              . $a_redundancy['int_gate'] . $gatecheckmark           . "</td>";
       if (return_Virtual($db, $formVars['id']) == 0) {
         $output .= "<td" . $pristart . $intnote . ">"            . $a_redundancy['int_switch']                          . "</td>";
@@ -616,7 +616,7 @@
 
 # secondary redundant interfaces
       $q_string = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,"
-                .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_groupname,int_vaddr,int_veth,int_vgate "
+                .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_groupname,int_vaddr,int_veth,int_vgate "
                 . "from interface "
                 . "left join net_zones on interface.int_zone = net_zones.zone_id  "
                 . "left join int_types on interface.int_type = int_types.itp_id "
@@ -682,7 +682,7 @@
         }
         $output .= "<td" . $pristart . $intnote . ">"              . $showmac . $ethcheckmark                            . "</td>";
         $output .= "<td" . $pristart . $intnote . ">" . $linkstart . $a_secondary['int_addr']     . $showmask . $addrcheckmark . $linkend . "</td>";
-        $output .= "<td" . $pristart . $intnote . ">"              . $a_secondary['zone_name']                           . "</td>";
+        $output .= "<td" . $pristart . $intnote . ">"              . $a_secondary['zone_zone']                           . "</td>";
         $output .= "<td" . $pristart . $intnote . ">"              . $a_secondary['int_gate'] . $gatecheckmark           . "</td>";
         if (return_Virtual($db, $formVars['id']) == 0) {
           $output .= "<td" . $pristart . $intnote . ">"            . $a_secondary['int_switch']                          . "</td>";

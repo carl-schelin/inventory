@@ -77,11 +77,11 @@
     if (check_userlevel($db, $AL_Edit)) {
 
 # prepopulate the small tables to increase lookup time.
-      $q_string  = "select zone_id,zone_name ";
+      $q_string  = "select zone_id,zone_zone ";
       $q_string .= "from net_zones ";
       $q_net_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_net_zones = mysqli_fetch_array($q_net_zones)) {
-        $net_zones[$a_net_zones['zone_id']] = $a_net_zones['zone_name'];
+        $net_zones[$a_net_zones['zone_id']] = $a_net_zones['zone_zone'];
       }
 
       $q_string  = "select med_id,med_text ";
@@ -528,7 +528,7 @@
         $servername = $a_inventory['inv_name'];
 
         $q_string  = "select int_id,int_server,int_domain,int_openview,int_nagios,int_management,int_backup,int_face,int_login,";
-        $q_string .= "int_sysport,int_addr,int_eth,int_mask,zone_name,int_gate,int_switch,int_port,itp_acronym,int_virtual,med_text,int_vlan ";
+        $q_string .= "int_sysport,int_addr,int_eth,int_mask,zone_zone,int_gate,int_switch,int_port,itp_acronym,int_virtual,med_text,int_vlan ";
         $q_string .= "from interface ";
         $q_string .= "left join net_zones  on net_zones.zone_id = interface.int_zone ";
         $q_string .= "left join int_types   on int_types.itp_id   = interface.int_type ";
@@ -581,7 +581,7 @@
               $interface .= "\"" . $a_interface['int_eth']      . "\",";
               $interface .= "\"" . $a_interface['int_addr']     . "\",";
               $interface .= "\"" . $a_interface['int_mask']     . "\",";
-              $interface .= "\"" . $a_interface['zone_name']    . "\",";
+              $interface .= "\"" . $a_interface['zone_zone']    . "\",";
               $interface .= "\"" . $a_interface['int_gate']     . "\",";
               $interface .= "\"" . $a_interface['int_vlan']     . "\",";
               $interface .= "\"" . $a_interface['int_sysport']  . "\",";
@@ -628,8 +628,8 @@
               if ($a_interface['int_addr'] == '') {
                 $a_interface['int_addr'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
               }
-              if ($a_interface['zone_name'] == '') {
-                $a_interface['zone_name'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
+              if ($a_interface['zone_zone'] == '') {
+                $a_interface['zone_zone'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
               }
               if ($a_interface['int_gate'] == '') {
                 $a_interface['int_gate'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -664,7 +664,7 @@
               $interface .= "  <td class=\"" . $class . "\" id=\"fad" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fae');\"><u>" . $a_interface['int_eth']         . "</u></td>\n";
               $interface .= "  <td class=\"" . $class . "\" id=\"fad" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fad');\"><u>" . $a_interface['int_addr']         . "</u></td>\n";
               $interface .= "  <td class=\"" . $class . "\" id=\"fan" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fan');\"><u>" . $a_interface['int_mask']         . "</u></td>\n";
-              $interface .= "  <td class=\"" . $class . "\" id=\"fzn" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fzn');\"><u>" . $a_interface['zone_name']        . "</u></td>\n";
+              $interface .= "  <td class=\"" . $class . "\" id=\"fzn" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fzn');\"><u>" . $a_interface['zone_zone']        . "</u></td>\n";
               $interface .= "  <td class=\"" . $class . "\" id=\"fgw" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fgw');\"><u>" . $a_interface['int_gate']         . "</u></td>\n";
               $interface .= "  <td class=\"" . $class . "\" id=\"fvl" . $a_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_interface['int_id'] . ",'fvl');\"><u>" . $a_interface['int_vlan']         . "</u></td>\n";
               if (return_Virtual($db, $a_inventory['inv_id']) == 0) {
@@ -678,7 +678,7 @@
               $interface .= "</tr>\n";
             }
 
-            $q_string  = "select int_id,int_server,int_domain,int_face,int_sysport,int_addr,int_eth,int_mask,zone_name,int_gate,int_openview,int_login,";
+            $q_string  = "select int_id,int_server,int_domain,int_face,int_sysport,int_addr,int_eth,int_mask,zone_zone,int_gate,int_openview,int_login,";
             $q_string .= "int_switch,int_port,itp_acronym,int_virtual,med_text,int_vlan,int_management,int_backup,int_nagios ";
             $q_string .= "from interface ";
             $q_string .= "left join net_zones  on net_zones.zone_id = interface.int_zone ";
@@ -732,7 +732,7 @@
                   $interface .= "\"" . $a_int_child['int_eth']       . "\",";
                   $interface .= "\"" . $a_int_child['int_addr']      . "\",";
                   $interface .= "\"" . $a_int_child['int_mask']      . "\",";
-                  $interface .= "\"" . $a_int_child['zone_name']     . "\",";
+                  $interface .= "\"" . $a_int_child['zone_zone']     . "\",";
                   $interface .= "\"" . $a_int_child['int_gate']      . "\",";
                   $interface .= "\"" . $a_int_child['int_vlan']      . "\",";
                   $interface .= "\"" . $a_int_child['int_sysport']   . "\",";
@@ -779,8 +779,8 @@
                   if ($a_int_child['int_addr'] == '') {
                     $a_int_child['int_addr'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
                   }
-                  if ($a_int_child['zone_name'] == '') {
-                    $a_int_child['zone_name'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
+                  if ($a_int_child['zone_zone'] == '') {
+                    $a_int_child['zone_zone'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
                   }
                   if ($a_int_child['int_gate'] == '') {
                     $a_int_child['int_gate'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -815,7 +815,7 @@
                   $interface .= "  <td class=\"" . $class . "\" id=\"fad" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fae');\"><u>"      . $a_int_child['int_eth']                   . "</u></td>\n";
                   $interface .= "  <td class=\"" . $class . "\" id=\"fad" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fad');\"><u>"      . $a_int_child['int_addr']                   . "</u></td>\n";
                   $interface .= "  <td class=\"" . $class . "\" id=\"fan" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fan');\"><u>"      . $a_int_child['int_mask']                 . "</u></td>\n";
-                  $interface .= "  <td class=\"" . $class . "\" id=\"fzn" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fzn');\"><u>"      . $a_int_child['zone_name']               . "</u></td>\n";
+                  $interface .= "  <td class=\"" . $class . "\" id=\"fzn" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fzn');\"><u>"      . $a_int_child['zone_zone']               . "</u></td>\n";
                   $interface .= "  <td class=\"" . $class . "\" id=\"fgw" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fgw');\"><u>"      . $a_int_child['int_gate']                 . "</u></td>\n";
                   $interface .= "  <td class=\"" . $class . "\" id=\"fvl" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fvl');\"><u>"      . $a_int_child['int_vlan']                 . "</u></td>\n";
                   if (return_Virtual($db, $a_inventory['inv_id']) == 0) {

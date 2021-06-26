@@ -1030,7 +1030,7 @@
       $output .= "</tr>\n";
     
       $q_string = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,"
-                .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_domain "
+                .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_domain "
                 . "from interface "
                 . "left join net_zones on interface.int_zone = net_zones.zone_id  "
                 . "left join int_types on interface.int_type = int_types.itp_id "
@@ -1086,7 +1086,7 @@
         }
         $output .= "<td" . $intnote . ">"              . $showmac                                            . "</td>\n";
         $output .= "<td" . $intnote . ">" . $linkstart . $a_interface['int_addr']     . $showmask . $linkend . "</td>\n";
-        $output .= "<td" . $intnote . ">"              . $a_interface['zone_name']                           . "</td>\n";
+        $output .= "<td" . $intnote . ">"              . $a_interface['zone_zone']                           . "</td>\n";
         $output .= "<td" . $intnote . ">"              . $a_interface['int_gate']                            . "</td>\n";
         if (return_Virtual($db, $a_inventory['inv_id']) == 0) {
           $output .= "<td" . $intnote . ">"            . $a_interface['int_switch']                          . "</td>\n";
@@ -1098,7 +1098,7 @@
     
     
         $q_string = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,int_domain,"
-                  .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_groupname "
+                  .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_groupname "
                   . "from interface "
                   . "left join net_zones on interface.int_zone = net_zones.zone_id  "
                   . "left join int_types on interface.int_type = int_types.itp_id "
@@ -1154,7 +1154,7 @@
           }
           $output .= "<td" . $intnote . ">"              . $showmac                                            . "</td>\n";
           $output .= "<td" . $intnote . ">" . $linkstart . $a_redundancy['int_addr']     . $showmask . $linkend . "</td>\n";
-          $output .= "<td" . $intnote . ">"              . $a_redundancy['zone_name']                           . "</td>\n";
+          $output .= "<td" . $intnote . ">"              . $a_redundancy['zone_zone']                           . "</td>\n";
           $output .= "<td" . $intnote . ">"              . $a_redundancy['int_gate']                            . "</td>\n";
           if (return_Virtual($db, $a_inventory['inv_id']) == 0) {
             $output .= "<td" . $intnote . ">"            . $a_redundancy['int_switch']                          . "</td>\n";
@@ -1165,7 +1165,7 @@
           $output .= "</tr>\n";
 
           $q_string = "select int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,int_domain,"
-                    .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_name,int_groupname "
+                    .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_groupname "
                     . "from interface "
                     . "left join net_zones on interface.int_zone = net_zones.zone_id  "
                     . "left join int_types on interface.int_type = int_types.itp_id "
@@ -1221,7 +1221,7 @@
             }
             $output .= "<td" . $intnote . ">"              . $showmac                                            . "</td>\n";
             $output .= "<td" . $intnote . ">" . $linkstart . $a_secondary['int_addr']     . $showmask . $linkend . "</td>\n";
-            $output .= "<td" . $intnote . ">"              . $a_secondary['zone_name']                           . "</td>\n";
+            $output .= "<td" . $intnote . ">"              . $a_secondary['zone_zone']                           . "</td>\n";
             $output .= "<td" . $intnote . ">"              . $a_secondary['int_gate']                            . "</td>\n";
             if (return_Virtual($db, $a_inventory['inv_id']) == 0) {
               $output .= "<td" . $intnote . ">"            . $a_secondary['int_switch']                          . "</td>\n";
