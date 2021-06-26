@@ -34,7 +34,7 @@
       mysqli_free_result($q_interface);
 
       $int_types     = return_Index($db, $a_interface['int_type'],       "select itp_id from int_types order by itp_id");
-      $intzone       = return_Index($db, $a_interface['int_zone'],       "select zone_id from net_zones order by zone_name");
+      $intzone       = return_Index($db, $a_interface['int_zone'],       "select zone_id from net_zones order by zone_zone");
       $intmedia      = return_Index($db, $a_interface['int_media'],      "select med_id from int_media order by med_text");
       $intspeed      = return_Index($db, $a_interface['int_speed'],      "select spd_id from int_speed order by spd_text");
       $intduplex     = return_Index($db, $a_interface['int_duplex'],     "select dup_id from int_duplex order by dup_text");
