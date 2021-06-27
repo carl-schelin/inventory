@@ -95,6 +95,9 @@
         if ($formVars['inv_location'] == '') {
           $formVars['inv_location'] = 0;
         }
+        if ($formVars['inv_companyid'] == '') {
+          $formVars['inv_companyid'] = 0;
+        }
         if ($formVars['inv_clusterid'] == '') {
           $formVars['inv_clusterid'] = 0;
         }
