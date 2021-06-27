@@ -98,9 +98,6 @@
         if ($formVars['inv_clusterid'] == '') {
           $formVars['inv_clusterid'] = 0;
         }
-        if ($formVars['inv_companyid'] == '') {
-          $formVars['inv_companyid'] = 0;
-        }
         if ($formVars['inv_callpath'] == 'true' ) {
           $formVars['inv_callpath'] = 1;
         } else {
