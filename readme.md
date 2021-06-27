@@ -145,7 +145,7 @@ alter table users change usr_checkin usr_checkin date not null default '1971-01-
 
 
 
-# just for the intrado inventory
+# just for the old inventory
 
 alter table alarms change alarm_timestamp alarm_timestamp timestamp not null default "1971-01-01 00:00:00";
 
@@ -239,7 +239,7 @@ update users set usr_end = '1971-01-01' where usr_end = '0000-00-00';
 update users set usr_checkin = '1971-01-01' where usr_checkin = '0000-00-00';
 
 
-# again, for the intrado inventory
+# again, for the old inventory
 
 
 update alarms set alarm_timestamp = '1971-01-01 00:00:00' where alarm_timestamp = '0000-00-00 00:00:00';
@@ -1651,5 +1651,22 @@ Final:
 
 
 alter table interface add column int_addressid int(10) not null default 0 after int_companyid;
+
+Huh, newer versions of mysql requires text files to not have a null value or it kicks back an error. But it fails on older installations.
+
+alter table backups change bu_notes bu_notes text not null default "";
+
+I want to modify backups anyway to have a sub table of when to run backups.
+
+create table backupdays (
+  bud_id int(10) not null auto_increment,
+  bud_backupid int(10) not null default 0,    # pointer to the main backup record.
+  bud_type int(10) not null default 0,        # incremental or full
+  bud_time char(10) not null default "00:00", # when to perform backups
+  bud_user int(10) not null default 0,        # who created this entry and when
+  bud_timestamp timestamp not null default current_timestamp,
+  bud_description char(50) not null default '',  # description for more information if necessary.
+  primary key (bud_id)
+);
 
 
