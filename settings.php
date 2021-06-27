@@ -1,7 +1,7 @@
 <?php
 
 # add a space at the end as the company will be inserted into strings.
-$Sitecompany		= 'Intrado ';
+$Sitecompany		= 'Hobgoblin Consulting Services, LLC ';
 # by default, enable debugging in case we missed a server entry. ALL means full on screen debugging
 $Sitedebug		= 'ALL';
 
@@ -119,17 +119,9 @@ $Adminroot		= $Siteroot . "/admin";
 $Articlepath		= $Sitepath . "/articles";
 $Articleroot		= $Siteroot . "/articles";
 
-## Bulk Uploads
-$Assetpath		= $Sitepath . "/assets";
-$Assetroot		= $Siteroot . "/assets";
-
 ## Bug Tracking Manager scripts
 $Bugpath		= $Sitepath . "/bugs";
 $Bugroot		= $Siteroot . "/bugs";
-
-## Bulk Edit scripts
-$Bulkpath		= $Sitepath . "/bulk";
-$Bulkroot		= $Siteroot . "/bulk";
 
 ## Certificate Manager scripts
 $Certspath		= $Sitepath . "/certs";
@@ -155,10 +147,6 @@ $FAQroot		= $Siteroot . "/faq";
 $Featurepath		= $Sitepath . "/features";
 $Featureroot		= $Siteroot . "/features";
 
-## Handoff scripts
-$Handoffpath		= $Sitepath . "/handoff";
-$Handoffroot		= $Siteroot . "/handoff";
-
 ## Hardware scripts
 $Hardwarepath		= $Sitepath . "/hardware";
 $Hardwareroot		= $Siteroot . "/hardware";
@@ -175,6 +163,10 @@ $Imageroot		= $Siteroot . "/image";
 $Invpath		= $Sitepath . "/inventory";
 $Invroot		= $Siteroot . "/inventory";
 
+## IPAM
+$IPAMpath               = $Sitepath . "/ipam";
+$IPAMroot               = $Siteroot . "/ipam";
+
 ## Issue Tracker scripts
 $Issuepath		= $Sitepath . "/issue";
 $Issueroot		= $Siteroot . "/issue";
@@ -182,10 +174,6 @@ $Issueroot		= $Siteroot . "/issue";
 ## License Manager scripts
 $Licensepath		= $Sitepath . "/license";
 $Licenseroot		= $Siteroot . "/license";
-
-## Server Listing Manager scripts
-$Listingpath		= $Sitepath . "/listings";
-$Listingroot		= $Siteroot . "/listings";
 
 ## Login
 $Loginpath		= $Sitepath . "/login";
@@ -195,49 +183,21 @@ $Loginroot		= $Siteroot . "/login";
 $Managepath		= $Sitepath . "/manage";
 $Manageroot		= $Siteroot . "/manage";
 
-## Monitoring
-$Monitorpath		= $Sitepath . "/monitor";
-$Monitorroot		= $Siteroot . "/monitor";
-
-## Morning Report
-$Morningpath		= $Sitepath . "/morning";
-$Morningroot		= $Siteroot . "/morning";
+## Server Monitoring errors
+$Monitorpath            = $Sitepath . "/monitoring";
+$Monitorroot            = $Siteroot . "/monitoring";
 
 ## Pictures
 $Picturepath		= $Sitepath . "/pictures";
 $Pictureroot		= $Siteroot . "/pictures";
 
-## PSAPs
-$PSAPpath		= $Sitepath . "/psaps";
-$PSAProot		= $Siteroot . "/psaps";
-
-## Request path
-$Requestpath		= $Sitepath . "/requests";
-$Requestroot		= $Siteroot . "/requests";
-
 ## Report path
 $Reportpath		= $Sitepath . "/reports";
 $Reportroot		= $Siteroot . "/reports";
 
-## RSDP path
-$RSDPpath		= $Sitepath . "/rsdp";
-$RSDProot		= $Siteroot . "/rsdp";
-
-## Sanity Report path
-$Sanitypath		= $Sitepath . "/sanity";
-$Sanityroot		= $Siteroot . "/sanity";
-
-## Security path
-$Securitypath		= $Sitepath . "/security";
-$Securityroot		= $Siteroot . "/security";
-
 ## Show path
 $Showpath		= $Sitepath . "/show";
 $Showroot		= $Siteroot . "/show";
-
-## Upload directory
-$Uploadpath		= $Sitepath . "/uploads";
-$Uploadroot		= $Siteroot . "/uploads";
 
 ## Account Management path
 $Userspath		= $Sitepath . "/accounts";
@@ -251,31 +211,11 @@ $Sitecopyright		= "";
 # Default variable to determine whether a popup alert is presented or a full login page
 $called			= 'no';
 
-# Group settings. Hate to hard code numbers
+# Group settings. Hate to hard code numbers. Need to add this to the database vs here.
 $GRP_Unix		= 1;
-$GRP_VoiceNetwork	= 2;
-$GRP_Virtualization	= 4;
-$GRP_Windows		= 5;
-$GRP_TSS		= 7;
 $GRP_DBAdmins		= 8;
-$GRP_SAN		= 9;
-$GRP_Backups		= 9;
 $GRP_Monitoring		= 10;
 $GRP_Networking		= 12;
-$GRP_TechOps		= 14;
-$GRP_Tandem		= 15;
-$GRP_Mobility		= 19;
-$GRP_WebApps		= 25;
-$GRP_ICLAdmins		= 26;
-$GRP_SCM		= 27;
-$GRP_SysEng		= 29;
-$GRP_InfoSec		= 31;
-$GRP_Shipping		= 40;
-$GRP_DataCenter		= 44;
-$GRP_ALIMAdmin		= 55;
-$GRP_IENV		= 87;
-$GRP_OpsEng		= 96;
-$GRP_i3			= 99;
 
 # Access levels
 $AL_Admin		= 1;
