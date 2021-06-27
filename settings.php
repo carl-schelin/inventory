@@ -23,11 +23,11 @@ if ($hostname == "[hostname]") {
 # Set site specific variables
   $Sitehttp		= "[hostname]";
   $Siteurl		= "http://" . $Sitehttp;
-  $Statushttp		= "status";
+  $Statushttp		= "[status]";
   $Statusurl		= "http://" . $Statushttp;
-  $Nagioshttp		= "status";
+  $Nagioshttp		= "[nagios]]";
   $Nagiosurl		= "http://" . $Nagioshttp;
-  $Wikihttp		= "incowk01";
+  $Wikihttp		= "[wiki]]";
   $Wikiurl		= "http://" . $Wikihttp;
 
 # Changelog location (home directories)
