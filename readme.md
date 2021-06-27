@@ -1,5 +1,11 @@
 #Inventory Database
 
+Notice: This is a conversion work in progress. I originally did this as a grass roots tool and have modified quite a bit to remove
+company specific information and make it more neutral so it can be reviewed and used.
+
+There are missing pieces, some bits that aren't complete, and generally I wouldn't advise using it as of right now. Once I get a 
+better handle on the tool, I'll actually set up a release so watch for that.
+
 ##Overview
 
 The Inventory database is a long term grass roots project specific to the environment. Much of the Inventory was created in response 
