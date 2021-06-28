@@ -1308,6 +1308,8 @@ $(document).ready( function() {
   }
 ?>
 
+
+
 <div id="tags">
 
 <table class="ui-styled-table">
@@ -1350,13 +1352,21 @@ $(document).ready( function() {
 
 <div id="tags-hide" style="display: none">
 
+<div id="main">
+
 <span id="tags_form"><?php print wait_Process("Please Wait"); ?></span>
+
+</div>
 
 </div>
 
 <span id="tags_table"><?php print wait_Process("Please Wait"); ?></span>
 
 </div>
+
+
+
+
 
 <?php
   if (check_grouplevel($db, $a_inventory['inv_manager'])) {
@@ -1438,6 +1448,7 @@ $(document).ready( function() {
 <span id="maintenance_form"><?php print wait_Process("Please Wait"); ?></span>
 
 </div>
+
 
 
 <div id="hardware">
