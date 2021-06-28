@@ -383,7 +383,7 @@
                 while ($a_backups = mysqli_fetch_array($q_backups)) {
 
                   $q_string = "insert into backups set " .
-                    "bu_id        = \"" . "NULL"                     . "\"," .
+                    "bu_id        =   " . "NULL"                     . "," .
                     "bu_companyid =   " . $newserver                 . "," .
                     "bu_start     = \"" . $a_backups['bu_start']     . "\"," .
                     "bu_include   =   " . $a_backups['bu_include']   . "," .
@@ -408,7 +408,7 @@
                 }
               } else {
                 $q_string = "insert into backups set " .
-                  "bu_id        = \"" . "NULL"                     . "\"," .
+                  "bu_id        =   " . "NULL"                     . "," .
                   "bu_companyid =   " . $newserver                 . "," .
                   "bu_start     = \"" . $date                      . "\"," .
                   "bu_include   =   " . 1                          . "," .
@@ -420,7 +420,7 @@
               }
             } else {
               $q_string = "insert into backups set " .
-                "bu_id        = \"" . "NULL"                     . "\"," .
+                "bu_id        =   " . "NULL"                     . "," .
                 "bu_companyid =   " . $newserver                 . "," .
                 "bu_start     = \"" . $date                      . "\"," .
                 "bu_include   =   " . 1                          . "," .
