@@ -461,6 +461,7 @@ function attach_interface( p_script_url, update ) {
   ai_url += "&int_server="     + encode_URI(ai_form.int_server.value);
   ai_url += "&int_domain="     + encode_URI(ai_form.int_domain.value);
   ai_url += "&int_companyid="  + <?php print $formVars['server']; ?>;
+  ai_url += "&int_ipaddressid="  + ai_form.int_ipaddressid;
   ai_url += "&int_face="       + encode_URI(ai_form.int_face.value);
   ai_url += "&int_int_id="     + ai_form.int_int_id.value;
   ai_url += "&int_virtual="    + ai_form.int_virtual.checked;
