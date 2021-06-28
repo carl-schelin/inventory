@@ -27,6 +27,7 @@
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']                 = clean($_GET['id'],                 10);
         $formVars['int_server']         = clean($_GET['int_server'],         60);
+        $formVars['int_ipaddressid']    = clean($_GET['int_ipaddressid'],    10);
         $formVars['int_domain']         = clean($_GET['int_domain'],        100);
         $formVars['int_face']           = clean($_GET['int_face'],           20);
         $formVars['int_int_id']         = clean($_GET['int_int_id'],         10);
@@ -75,6 +76,9 @@
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
+        }
+        if ($formVars['int_ipaddressid'] == '') {
+          $formVars['int_ipaddressid'] = 0;
         }
         if ($formVars['int_duplex'] == '') {
           $formVars['int_duplex'] = 0;
@@ -209,59 +213,60 @@
           logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string = 
-            "int_server     = \"" . $formVars['int_server']     . "\"," .
-            "int_domain     = \"" . $formVars['int_domain']     . "\"," .
-            "int_companyid  =   " . $formVars['int_companyid']  . "," .
-            "int_face       = \"" . $formVars['int_face']       . "\"," .
-            "int_int_id     =   " . $formVars['int_int_id']     . "," .
-            "int_virtual    =   " . $formVars['int_virtual']    . "," .
-            "int_addr       = \"" . $formVars['int_addr']       . "\"," .
-            "int_vaddr      =   " . "0"                         . "," .
-            "int_ip6        =   " . $formVars['int_ip6']        . "," .
-            "int_eth        = \"" . $formVars['int_eth']        . "\"," .
-            "int_veth       =   " . "0"                         . "," .
-            "int_mask       =   " . $formVars['int_mask']       . "," .
-            "int_gate       = \"" . $formVars['int_gate']       . "\"," .
-            "int_vgate      =   " . "0"                         . "," .
-            "int_note       = \"" . $formVars['int_note']       . "\"," .
-            "int_verified   =   " . "0"                         . "," . 
-            "int_switch     = \"" . $formVars['int_switch']     . "\"," . 
-            "int_port       = \"" . $formVars['int_port']       . "\"," . 
-            "int_sysport    = \"" . $formVars['int_sysport']    . "\"," . 
-            "int_primary    =   " . $formVars['int_primary']    . "," .
-            "int_type       =   " . $formVars['int_type']       . "," . 
-            "int_zone       =   " . $formVars['int_zone']       . "," . 
-            "int_vlan       = \"" . $formVars['int_vlan']       . "\"," . 
-            "int_media      =   " . $formVars['int_media']      . "," . 
-            "int_speed      =   " . $formVars['int_speed']      . "," . 
-            "int_duplex     =   " . $formVars['int_duplex']     . "," . 
-            "int_role       =   " . $formVars['int_role']       . "," . 
-            "int_redundancy =   " . $formVars['int_redundancy'] . "," . 
-            "int_groupname  = \"" . $formVars['int_groupname']  . "\"," . 
-            "int_user       =   " . $_SESSION['uid']            . "," . 
-            "int_update     = \"" . date('Y-m-d')               . "\"," . 
-            "int_openview   =   " . $formVars['int_openview']   . "," .
-            "int_nagios     =   " . $formVars['int_nagios']     . "," .
-            "int_backup     =   " . $formVars['int_backup']     . "," .
-            "int_management =   " . $formVars['int_management'] . "," .
-            "int_login      =   " . $formVars['int_login']      . "," .
-            "int_xpoint     =   " . $formVars['int_xpoint']     . "," .
-            "int_ypoint     =   " . $formVars['int_ypoint']     . "," .
-            "int_zpoint     =   " . $formVars['int_zpoint']     . "," .
-            "int_ping       =   " . $formVars['int_ping']       . "," .
-            "int_ssh        =   " . $formVars['int_ssh']        . "," .
-            "int_http       =   " . $formVars['int_http']       . "," .
-            "int_ftp        =   " . $formVars['int_ftp']        . "," .
-            "int_smtp       =   " . $formVars['int_smtp']       . "," .
-            "int_snmp       =   " . $formVars['int_snmp']       . "," .
-            "int_load       =   " . $formVars['int_load']       . "," .
-            "int_uptime     =   " . $formVars['int_uptime']     . "," .
-            "int_cpu        =   " . $formVars['int_cpu']        . "," .
-            "int_swap       =   " . $formVars['int_swap']       . "," .
-            "int_memory     =   " . $formVars['int_memory']     . "," .
-            "int_cfg2html   =   " . $formVars['int_cfg2html']   . "," .
-            "int_notify     =   " . $formVars['int_notify']     . "," .
-            "int_hours      =   " . $formVars['int_hours'];
+            "int_server       = \"" . $formVars['int_server']       . "\"," .
+            "int_domain       = \"" . $formVars['int_domain']       . "\"," .
+            "int_companyid    =   " . $formVars['int_companyid']    . "," .
+            "int_ipaddressid  =   " . $formVars['int_ipaddressid']  . "," .
+            "int_face         = \"" . $formVars['int_face']         . "\"," .
+            "int_int_id       =   " . $formVars['int_int_id']       . "," .
+            "int_virtual      =   " . $formVars['int_virtual']      . "," .
+            "int_addr         = \"" . $formVars['int_addr']         . "\"," .
+            "int_vaddr        =   " . "0"                           . "," .
+            "int_ip6          =   " . $formVars['int_ip6']          . "," .
+            "int_eth          = \"" . $formVars['int_eth']          . "\"," .
+            "int_veth         =   " . "0"                           . "," .
+            "int_mask         =   " . $formVars['int_mask']         . "," .
+            "int_gate         = \"" . $formVars['int_gate']         . "\"," .
+            "int_vgate        =   " . "0"                           . "," .
+            "int_note         = \"" . $formVars['int_note']         . "\"," .
+            "int_verified     =   " . "0"                           . "," . 
+            "int_switch       = \"" . $formVars['int_switch']       . "\"," . 
+            "int_port         = \"" . $formVars['int_port']         . "\"," . 
+            "int_sysport      = \"" . $formVars['int_sysport']      . "\"," . 
+            "int_primary      =   " . $formVars['int_primary']      . "," .
+            "int_type         =   " . $formVars['int_type']         . "," . 
+            "int_zone         =   " . $formVars['int_zone']         . "," . 
+            "int_vlan         = \"" . $formVars['int_vlan']         . "\"," . 
+            "int_media        =   " . $formVars['int_media']        . "," . 
+            "int_speed        =   " . $formVars['int_speed']        . "," . 
+            "int_duplex       =   " . $formVars['int_duplex']       . "," . 
+            "int_role         =   " . $formVars['int_role']         . "," . 
+            "int_redundancy   =   " . $formVars['int_redundancy']   . "," . 
+            "int_groupname    = \"" . $formVars['int_groupname']    . "\"," . 
+            "int_user         =   " . $_SESSION['uid']              . "," . 
+            "int_update       = \"" . date('Y-m-d')                 . "\"," . 
+            "int_openview     =   " . $formVars['int_openview']     . "," .
+            "int_nagios       =   " . $formVars['int_nagios']       . "," .
+            "int_backup       =   " . $formVars['int_backup']       . "," .
+            "int_management   =   " . $formVars['int_management']   . "," .
+            "int_login        =   " . $formVars['int_login']        . "," .
+            "int_xpoint       =   " . $formVars['int_xpoint']       . "," .
+            "int_ypoint       =   " . $formVars['int_ypoint']       . "," .
+            "int_zpoint       =   " . $formVars['int_zpoint']       . "," .
+            "int_ping         =   " . $formVars['int_ping']         . "," .
+            "int_ssh          =   " . $formVars['int_ssh']          . "," .
+            "int_http         =   " . $formVars['int_http']         . "," .
+            "int_ftp          =   " . $formVars['int_ftp']          . "," .
+            "int_smtp         =   " . $formVars['int_smtp']         . "," .
+            "int_snmp         =   " . $formVars['int_snmp']         . "," .
+            "int_load         =   " . $formVars['int_load']         . "," .
+            "int_uptime       =   " . $formVars['int_uptime']       . "," .
+            "int_cpu          =   " . $formVars['int_cpu']          . "," .
+            "int_swap         =   " . $formVars['int_swap']         . "," .
+            "int_memory       =   " . $formVars['int_memory']       . "," .
+            "int_cfg2html     =   " . $formVars['int_cfg2html']     . "," .
+            "int_notify       =   " . $formVars['int_notify']       . "," .
+            "int_hours        =   " . $formVars['int_hours'];
 
           if ($formVars['update'] == 0) {
             $query = "insert into interface set int_id = NULL, " . $q_string;
@@ -288,7 +293,7 @@
         if ($formVars['copyfrom'] > 0) {
           $q_string  = "select int_server,int_domain,int_face,int_addr,int_ip6,int_eth,int_mask,int_gate,int_note,int_switch,";
           $q_string .= "int_port,int_sysport,int_primary,int_type,int_zone,int_vlan,int_media,int_speed,int_duplex,";
-          $q_string .= "int_role,int_redundancy,int_groupname,int_virtual ";
+          $q_string .= "int_role,int_redundancy,int_groupname,int_virtual,int_ipaddressid ";
           $q_string .= "from interface ";
           $q_string .= "where int_companyid = " . $formVars['copyfrom'];
           $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -298,6 +303,7 @@
               "int_server     = \"" . $a_interface['int_server']     . "\"," .
               "int_domain     = \"" . $a_interface['int_domain']     . "\"," .
               "int_companyid  =   " . $formVars['int_companyid']     . "," .
+              "int_ipaddressid  =   " . $formVars['int_ipaddressid']     . "," .
               "int_face       = \"" . $a_interface['int_face']       . "\"," .
               "int_addr       = \"" . $a_interface['int_addr']       . "\"," .
               "int_ip6        =   " . $a_interface['int_ip6']        . "," .
@@ -364,15 +370,33 @@
 
         $output  = "<table class=\"ui-styled-table\">\n";
         $output .= "<tr>\n";
-        $output .= "  <th class=\"ui-state-default\" colspan=\"3\">Server Form</th>\n";
+        $output .= "  <th class=\"ui-state-default\" colspan=\"4\">Server Form</th>\n";
         $output .= "</tr>\n";
         $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\">Hostname* <input type=\"text\" name=\"int_server\" size=\"20\"> Domain <input type=\"text\" name=\"int_domain\" size=\"30\"></td>\n";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"2\">Hostname* <input type=\"text\" name=\"int_server\" size=\"20\"> Domain <input type=\"text\" name=\"int_domain\" size=\"30\"></td>\n";
         $output .= "  <td class=\"ui-widget-content\">Physical Port <input type=\"text\" name=\"int_sysport\" size=\"20\"></td>\n";
         $output .= "  <td class=\"ui-widget-content\">MAC* <input type=\"text\" name=\"int_eth\" value=\"00:00:00:00:00:00\" size=\"18\"></td>\n";
         $output .= "</tr>\n";
         $output .= "<tr>\n";
         $output .= "  <td class=\"ui-widget-content\">IP Address* <input type=\"text\" name=\"int_addr\" size=\"25\"> <label>IPv6* <input type=\"checkbox\" name=\"int_ip6\"></label></td>\n";
+        $output .= "  <td class=\"ui-widget-content\">IP Address* <select name=\"int_ipaddressid\">\n";
+
+        $q_string  = "select ip_id,ip_ipv4 ";
+        $q_string .= "from ipaddress ";
+        $q_string .= "order by ip_ipv4 ";
+        $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
+
+          $q_string  = "select int_id ";
+          $q_string .= "from interface ";
+          $q_string .= "where int_ipaddressid = " . $a_ipaddress['ip_id'] . " ";
+          $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_interface) == 0) {
+            $output .= "<option value=\"" . $a_ipaddress['ip_id'] . "\">" . $a_ipaddress['ip_ipv4'] . "</option>\n";
+          }
+        }
+
+        $output .= "</select></td>\n";
         $output .= "  <td class=\"ui-widget-content\">Subnet Mask* <select name=\"int_mask\">\n";
 
         for ($i = 0; $i < 129; $i++) {
@@ -391,7 +415,7 @@
         $output .= "  <td class=\"ui-widget-content\">Logical Interface Name* <input type=\"text\" name=\"int_face\" size=\"10\"></td>\n";
         $output .= "</tr>\n"; 
         $output .= "<tr>\n"; 
-        $output .= "  <td class=\"ui-widget-content\">Interface Type: <select name=\"int_type\">\n";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"2\">Interface Type: <select name=\"int_type\">\n";
 
         $q_string  = "select itp_id,itp_name ";
         $q_string .= "from int_types ";
@@ -406,7 +430,7 @@
         $output .= "  <td class=\"ui-widget-content\">Gateway <input type=\"text\" name=\"int_gate\" size=\"15\"> <label>Default Route? <input type=\"checkbox\" name=\"int_primary\"></label></td>\n";
         $output .= "</tr>\n";
         $output .= "<tr>\n"; 
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"3\">Note: <input type=\"text\" name=\"int_note\" size=\"80\"></td>\n";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"4\">Note: <input type=\"text\" name=\"int_note\" size=\"80\"></td>\n";
         $output .= "</tr>\n"; 
         $output .= "</table>\n";
 
@@ -646,9 +670,10 @@
       $q_string  = "select int_id,int_server,int_domain,int_companyid,int_redundancy,int_management,int_login,";
       $q_string .= "int_backup,int_face,int_addr,int_eth,int_mask,int_switch,int_vaddr,int_veth,int_vgate,";
       $q_string .= "int_redundancy,int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,";
-      $q_string .= "itp_description,int_gate,int_update,usr_name,int_nagios,int_openview,int_ip6 ";
+      $q_string .= "itp_description,int_gate,int_update,usr_name,int_nagios,int_openview,int_ip6,ip_ipv4 ";
       $q_string .= "from interface ";
       $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
+      $q_string .= "left join ipaddress on ipaddress.ip_id = interface.int_ipaddressid ";
       $q_string .= "left join users on users.usr_id = interface.int_user ";
       $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = 0 ";
       $q_string .= "order by int_face,int_addr,int_server";
