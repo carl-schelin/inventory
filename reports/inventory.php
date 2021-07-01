@@ -454,7 +454,7 @@ $(document).ready( function () {
       $q_string .= "from interface ";
       $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
       $q_string .= "where int_companyid = \"" . $a_inventory['inv_id'] . "\" and int_type != 7 and int_addr != '' and int_ip6 = 0 ";
-      $q_string .= "order by int_acronym,int_face";
+      $q_string .= "order by itp_acronym,int_face";
       $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_interface = mysqli_fetch_array($q_interface)) {
 
@@ -472,7 +472,7 @@ $(document).ready( function () {
           }
         } else {
 # only want to see App, Mgt, EVIP, or Bkp  interfaces.
-          if ($a_interface['int_type == 1 || $a_interface['int_type'] == 2 || $a_interface['int_type'] == 12 || $a_interface['int_type'] == 16) {
+          if ($a_interface['int_type'] == 1 || $a_interface['int_type'] == 2 || $a_interface['int_type'] == 12 || $a_interface['int_type'] == 16) {
             $interface .= $a_interface['itp_acronym'] . "=" . $a_interface['int_addr'] . $primary . " ";
           }
         }
