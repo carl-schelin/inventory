@@ -114,16 +114,16 @@
         while ($a_sub_zones = mysqli_fetch_array($q_sub_zones)) {
 
           $total = 0;
-          $q_string  = "select count(ip_id),net_id ";
+          $q_string  = "select ip_id,net_id ";
           $q_string .= "from ipaddress ";
           $q_string .= "left join network on network.net_id = ipaddress.ip_network ";
           $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
           $q_string .= "where ip_subzone = " . $a_sub_zones['sub_id'] . " ";
-          $q_string .= "group by ip_id ";
           $q_ipaddress = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_ipaddress) > 0) {
-            $a_ipaddress = mysqli_fetch_array($q_ipaddress);
-            $total = $a_ipaddress['count(ip_id)'];
+            while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
+              $total++;
+            }
           }
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('subzones.fill.php?id="  . $a_sub_zones['sub_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";

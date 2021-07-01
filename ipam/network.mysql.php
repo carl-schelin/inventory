@@ -130,14 +130,14 @@
           $linkend   = "</a>";
 
           $total = 0;
-          $q_string  = "select count(ip_ipv4) ";
+          $q_string  = "select ip_ipv4 ";
           $q_string .= "from ipaddress ";
           $q_string .= "where ip_network = " . $a_network['net_id'] . " ";
-          $q_string .= "group by ip_ipv4 ";
           $q_ipaddress = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_ipaddress) > 0) {
-            $a_ipaddress = mysqli_fetch_array($q_ipaddress);
-            $total = $a_ipaddress['count(ip_ipv4)'];
+            while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
+              $total++;
+            }
           }
 
           $output .= "<tr>";
@@ -200,14 +200,14 @@
           $linkend   = "</a>";
 
           $total = 0;
-          $q_string  = "select count(ip_ipv6) ";
+          $q_string  = "select ip_ipv6 ";
           $q_string .= "from ipaddress ";
           $q_string .= "where ip_network = " . $a_network['net_id'] . " ";
-          $q_string .= "group by ip_ipv6 ";
           $q_ipaddress = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_ipaddress) > 0) {
-            $a_ipaddress = mysqli_fetch_array($q_ipaddress);
-            $total = $a_ipaddress['count(ip_ipv6)'];
+            while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
+              $total++;
+            }
           }
 
           $output .= "<tr>";
