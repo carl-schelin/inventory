@@ -24,7 +24,7 @@
     if ($formVars['network'] > 0) {
       $where = "and net_id = " . $formVars['network'] . " ";
 
-# get the passed network.
+# get the passed network for the title bar.
       $q_string  = "select net_ipv4,net_ipv6,net_mask,zone_zone ";
       $q_string .= "from network ";
       $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
@@ -61,33 +61,62 @@
         if ($formVars['ip_subzone'] == '') {
           $formVars['ip_subzone'] = 0;
         }
+        if ($formVars['ip_type'] == '') {
+          $formVars['ip_type'] = 0;
+        }
 
-        if (strlen($formVars['ip_ipv4']) > 0 || strlen($formVars['ip_ipv6']) > 0) {
-          logaccess($db, $_SESSION['uid'], $package, "Building the query.");
+# see if the IP is already taken and report an error if so
+        $assigned = 'No';
+        if ($formVars['update'] == 0) {
+          $q_string  = "select ip_ipv4,ip_hostname ";
+          $q_string .= "from ipaddress ";
+          $q_string .= "where ip_ipv4 != \"\" and ip_ipv4 = \"" . $formVars['ip_ipv4'] . "\" ";
+          $q_ipaddress = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_ipaddress) > 0) {
+            $a_ipaddress = mysqli_fetch_array($q_ipaddress);
+            print "alert('IPv4 " . $formVars['ip_ipv4'] . " has already been assigned to " . $a_ipaddress['ip_hostname'] . ".');";
+            $assigned = 'Yes';
+          }
+ 
+          $q_string  = "select ip_ipv6,ip_hostname ";
+          $q_string .= "from ipaddress ";
+          $q_string .= "where ip_ipv6 != \"\" and ip_ipv6 = \"" . $formVars['ip_ipv6'] . "\" ";
+          $q_ipaddress = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_ipaddress) > 0) {
+            $a_ipaddress = mysqli_fetch_array($q_ipaddress);
+            print "alert('IPv6 " . $formVars['ip_ipv6'] . " has already been assigned to " . $a_ipaddress['ip_hostname'] . ".');";
+            $assigned = 'Yes';
+          }
+        }
 
-          $q_string =
-            "ip_ipv4          = \"" . $formVars['ip_ipv4']           . "\"," .
-            "ip_ipv6          = \"" . $formVars['ip_ipv6']           . "\"," .
-            "ip_hostname      = \"" . $formVars['ip_hostname']       . "\"," .
-            "ip_domain        = \"" . $formVars['ip_domain']         . "\"," .
-            "ip_network       =   " . $formVars['ip_network']        . "," . 
-            "ip_subzone       =   " . $formVars['ip_subzone']        . "," . 
-            "ip_type          =   " . $formVars['ip_type']           . "," . 
-            "ip_user          =   " . $_SESSION['uid']               . "," . 
-            "ip_description   = \"" . $formVars['ip_description']    . "\"";
+        if ($assigned == 'No') {
+          if (strlen($formVars['ip_ipv4']) > 0 || strlen($formVars['ip_ipv6']) > 0) {
+            logaccess($db, $_SESSION['uid'], $package, "Building the query.");
+
+            $q_string =
+              "ip_ipv4          = \"" . $formVars['ip_ipv4']           . "\"," .
+              "ip_ipv6          = \"" . $formVars['ip_ipv6']           . "\"," .
+              "ip_hostname      = \"" . $formVars['ip_hostname']       . "\"," .
+              "ip_domain        = \"" . $formVars['ip_domain']         . "\"," .
+              "ip_network       =   " . $formVars['ip_network']        . "," . 
+              "ip_subzone       =   " . $formVars['ip_subzone']        . "," . 
+              "ip_type          =   " . $formVars['ip_type']           . "," . 
+              "ip_user          =   " . $_SESSION['uid']               . "," . 
+              "ip_description   = \"" . $formVars['ip_description']    . "\"";
   
-          if ($formVars['update'] == 0) {
-            $query = "insert into ipaddress set ip_id = NULL, " . $q_string;
-          }
-          if ($formVars['update'] == 1) {
-            $query = "update ipaddress set " . $q_string . " where ip_id = " . $formVars['id'];
-          }
+            if ($formVars['update'] == 0) {
+              $query = "insert into ipaddress set ip_id = NULL, " . $q_string;
+            }
+            if ($formVars['update'] == 1) {
+              $query = "update ipaddress set " . $q_string . " where ip_id = " . $formVars['id'];
+            }
 
-          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['ip_ipv4'] . "/" . $formVars['ip_ipv6']);
+            logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['ip_ipv4'] . "/" . $formVars['ip_ipv6']);
 
-          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
-        } else {
-          print "alert('You must input data before saving changes.');\n";
+            mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+          } else {
+            print "alert('You must input data before saving changes.');\n";
+          }
         }
       }
 
