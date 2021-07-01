@@ -142,6 +142,9 @@
       $output .= "<p>To add a new IP Address, click on the <strong>Add IP Address</strong> button. This will bring up a dialog ";
       $output .= "box which you can use to add a new IP Address.</p>\n";
 
+      $output .= "<p>If an entered IP Address already exists, you will be alerted and the existing line will be <span class=\"ui-state-error\">highlighted</span>. ";
+      $output .= "Either enter a different IP Address or edit the existing one.</p>\n";
+
       $output .= "<p>Note that you should only fill out one of the fields. The default is the IPv4 Address field. If that is ";
       $output .= "filled in, the IPv6 field will be cleared before saving.</p>\n";
 
@@ -192,17 +195,22 @@
             $a_ip_types['ip_name'] = "Unassigned";
           }
 
+          $class = 'ui-widget-content';
+          if ($assigned == 'Yes' && $a_ipaddress['ip_ipv4'] == $formVars['ip_ipv4']) {
+            $class = 'ui-state-error';
+          }
+
           $output .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
-            $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel . "</td>";
+            $output .= "  <td class=\"" . $class . " delete\">" . $linkdel . "</td>";
           }
-          $output .= "  <td class=\"ui-widget-content\">" . $linkstart . $a_ipaddress['ip_ipv4'] . "/" . $a_ipaddress['net_mask'] . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"              . $a_ipaddress['ip_hostname'] . "." . $a_ipaddress['ip_domain'] . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"              . $a_ipaddress['sub_name']           . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"              . $a_ip_types['ip_name']             . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"              . $a_ipaddress['ip_description']             . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"              . $a_ipaddress['usr_first'] . " " . $a_ipaddress['usr_last'] . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"              . $a_ipaddress['ip_timestamp']             . "</td>";
+          $output .= "  <td class=\"" . $class . "\">" . $linkstart . $a_ipaddress['ip_ipv4'] . "/" . $a_ipaddress['net_mask'] . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_hostname'] . "." . $a_ipaddress['ip_domain'] . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['sub_name']           . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"              . $a_ip_types['ip_name']             . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_description']             . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['usr_first'] . " " . $a_ipaddress['usr_last'] . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_timestamp']             . "</td>";
           $output .= "</tr>";
         }
       } else {
@@ -254,17 +262,22 @@
             $a_ip_types['ip_name'] = "Unassigned";
           }
 
+          $class = 'ui-widget-content';
+          if ($assigned == 'Yes' && $a_ipaddress['ip_ipv6'] == $formVars['ip_ipv6']) {
+            $class = 'ui-state-error';
+          }
+
           $output .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
-            $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel . "</td>";
+            $output .= "  <td class=\"" . $class . " delete\">" . $linkdel . "</td>";
           }
-          $output .= "  <td class=\"ui-widget-content\">" . $linkstart . $a_ipaddress['ip_ipv6'] . "/" . $a_ipaddress['net_mask'] . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"              . $a_ipaddress['ip_hostname'] . "." . $a_ipaddress['ip_domain'] . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"              . $a_ipaddress['sub_name']          . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"              . $a_ip_types['ip_name']             . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"              . $a_ipaddress['ip_description']             . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"              . $a_ipaddress['usr_first'] . " " . $a_ipaddress['usr_last'] . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"              . $a_ipaddress['ip_timestamp']             . "</td>";
+          $output .= "  <td class=\"" . $class . "\">" . $linkstart . $a_ipaddress['ip_ipv6'] . "/" . $a_ipaddress['net_mask'] . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_hostname'] . "." . $a_ipaddress['ip_domain'] . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['sub_name']          . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"              . $a_ip_types['ip_name']             . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_description']             . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['usr_first'] . " " . $a_ipaddress['usr_last'] . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_timestamp']             . "</td>";
           $output .= "</tr>";
         }
       } else {
