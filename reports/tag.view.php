@@ -269,7 +269,7 @@ $(document).ready( function () {
               . "from interface "
               . "left join int_types on int_types.itp_id = interface.int_type "
               . "where int_companyid = \"" . $a_inventory['inv_id'] . "\" and int_type != 7 and int_addr != '' and int_ip6 = 0 "
-              . "order by int_face";
+              . "order by itp_acronym,int_face";
     $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     while ($a_interface = mysqli_fetch_array($q_interface)) {
 
@@ -277,7 +277,9 @@ $(document).ready( function () {
       if ($a_interface['int_type'] == 4 || $a_interface['int_type'] == 6) {
         $console .= $a_interface['int_face'] . "=" . "<a href=\"http://" . $a_interface['int_addr'] . "\" target=\"_blank\">" . $a_interface['int_addr'] . "</a> ";
       } else {
-        $interface .= $a_interface['itp_acronym'] . "=" . $a_interface['int_addr'] . " ";
+        if ($a_interface['int_type'] == 1 || $a_interface['int_type'] == 2 || $a_interface['int_type'] == 12 || $a_interface['int_type'] == 16) {
+          $interface .= $a_interface['itp_acronym'] . "=" . $a_interface['int_addr'] . " ";
+        }
       }
     }
 
