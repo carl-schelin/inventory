@@ -456,55 +456,27 @@ function attach_interface( p_script_url, update ) {
 
   ai_url  = '?update='   + update;
   ai_url += '&id='       + ai_form.int_id.value;
-  ai_url += '&copyfrom=' + ai_form.int_copyfrom.value;
 
-  ai_url += "&int_server="     + encode_URI(ai_form.int_server.value);
-  ai_url += "&int_domain="     + encode_URI(ai_form.int_domain.value);
   ai_url += "&int_companyid="  + <?php print $formVars['server']; ?>;
-  ai_url += "&int_ipaddressid="  + ai_form.int_ipaddressid;
+  ai_url += "&int_ipaddressid="  + ai_form.int_ipaddressid.value;
   ai_url += "&int_face="       + encode_URI(ai_form.int_face.value);
   ai_url += "&int_int_id="     + ai_form.int_int_id.value;
   ai_url += "&int_virtual="    + ai_form.int_virtual.checked;
-  ai_url += "&int_addr="       + encode_URI(ai_form.int_addr.value);
-  ai_url += "&int_ip6="        + ai_form.int_ip6.checked;
   ai_url += "&int_eth="        + encode_URI(ai_form.int_eth.value);
-  ai_url += "&int_mask="       + ai_form.int_mask.value;
-  ai_url += "&int_gate="       + encode_URI(ai_form.int_gate.value);
   ai_url += "&int_note="       + encode_URI(ai_form.int_note.value);
   ai_url += "&int_switch="     + encode_URI(ai_form.int_switch.value);
   ai_url += "&int_port="       + encode_URI(ai_form.int_port.value);
   ai_url += "&int_sysport="    + encode_URI(ai_form.int_sysport.value);
   ai_url += "&int_primary="    + ai_form.int_primary.checked;
   ai_url += "&int_type="       + ai_form.int_type.value;
-  ai_url += "&int_zone="       + ai_form.int_zone.value;
-  ai_url += "&int_vlan="       + encode_URI(ai_form.int_vlan.value);
   ai_url += "&int_media="      + ai_form.int_media.value;
   ai_url += "&int_speed="      + ai_form.int_speed.value;
   ai_url += "&int_duplex="     + ai_form.int_duplex.value;
-  ai_url += "&int_role="       + ai_form.int_role.value;
   ai_url += "&int_redundancy=" + ai_form.int_redundancy.value;
   ai_url += "&int_groupname="  + encode_URI(ai_form.int_groupname.value);
-  ai_url += "&int_openview="   + ai_form.int_openview.checked;
-  ai_url += "&int_nagios="     + ai_form.int_nagios.checked;
   ai_url += "&int_backup="     + ai_form.int_backup.checked;
   ai_url += "&int_management=" + ai_form.int_management.checked;
   ai_url += "&int_login="      + ai_form.int_login.checked;
-  ai_url += "&int_xpoint="     + ai_form.int_xpoint.value;
-  ai_url += "&int_ypoint="     + ai_form.int_ypoint.value;
-  ai_url += "&int_zpoint="     + ai_form.int_zpoint.value;
-  ai_url += "&int_ping="       + ai_form.int_ping.checked;
-  ai_url += "&int_ssh="        + ai_form.int_ssh.checked;
-  ai_url += "&int_http="       + ai_form.int_http.checked;
-  ai_url += "&int_ftp="        + ai_form.int_ftp.checked;
-  ai_url += "&int_smtp="       + ai_form.int_smtp.checked;
-  ai_url += "&int_snmp="       + ai_form.int_snmp.checked;
-  ai_url += "&int_load="       + ai_form.int_load.checked;
-  ai_url += "&int_cpu="        + ai_form.int_cpu.checked;
-  ai_url += "&int_swap="       + ai_form.int_swap.checked;
-  ai_url += "&int_memory="     + ai_form.int_memory.checked;
-  ai_url += "&int_cfg2html="   + ai_form.int_cfg2html.checked;
-  ai_url += "&int_notify="     + radio_Loop(ai_form.int_notify, 3);
-  ai_url += "&int_hours="      + radio_Loop(ai_form.int_hours, 2);
 
   if (ai_form.int_id.value != 0 && ai_form.int_id.value == ai_form.int_int_id.value) {
     alert("You cannot be a child of yourself.");
@@ -1764,44 +1736,20 @@ software support date exceeds the company requirements for support.</li>
 <div id="networktab">
 
 <ul>
-  <li><a href="#nwserver">Server Form</a></li>
-  <li><a href="#nwredundancy">Redundancy Form</a></li>
-  <li><a href="#nwmonitoring">Monitoring Form</a></li>
-  <li><a href="#nwtransport">Transport Form</a></li>
-  <li><a href="#nwswitch">Switch Form</a></li>
+  <li><a href="#nwsystem">System Form</a></li>
+  <li><a href="#nwphysical">Physical Form</a></li>
 </ul>
 
-<div id="nwserver">
+<div id="nwsystem">
 
-<span id="nwserver_form"><?php print wait_Process("Please Wait"); ?></span>
-
-</div>
-
-
-<div id="nwredundancy">
-
-<span id="nwredundancy_form"><?php print wait_Process("Please Wait"); ?></span>
+<span id="nwsystem_form"><?php print wait_Process("Please Wait"); ?></span>
 
 </div>
 
 
-<div id="nwmonitoring">
+<div id="nwphysical">
 
-<span id="nwmonitoring_form"><?php print wait_Process("Please Wait"); ?></span>
-
-</div>
-
-
-<div id="nwtransport">
-
-<span id="nwtransport_form"><?php print wait_Process("Please Wait"); ?></span>
-
-</div>
-
-
-<div id="nwswitch">
-
-<span id="nwswitch_form"><?php print wait_Process("Please Wait"); ?></span>
+<span id="nwphysical_form"><?php print wait_Process("Please Wait"); ?></span>
 
 </div>
 

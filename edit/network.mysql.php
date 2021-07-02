@@ -26,53 +26,25 @@
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']                 = clean($_GET['id'],                 10);
-        $formVars['int_server']         = clean($_GET['int_server'],         60);
         $formVars['int_ipaddressid']    = clean($_GET['int_ipaddressid'],    10);
-        $formVars['int_domain']         = clean($_GET['int_domain'],        100);
         $formVars['int_face']           = clean($_GET['int_face'],           20);
         $formVars['int_int_id']         = clean($_GET['int_int_id'],         10);
         $formVars['int_virtual']        = clean($_GET['int_virtual'],        10);
-        $formVars['int_addr']           = clean($_GET['int_addr'],          100);
         $formVars['int_eth']            = clean($_GET['int_eth'],            20);
-        $formVars['int_mask']           = clean($_GET['int_mask'],           50);
-        $formVars['int_gate']           = clean($_GET['int_gate'],           50);
         $formVars['int_note']           = clean($_GET['int_note'],          255);
         $formVars['int_switch']         = clean($_GET['int_switch'],         50);
         $formVars['int_port']           = clean($_GET['int_port'],           50);
         $formVars['int_sysport']        = clean($_GET['int_sysport'],        50);
-        $formVars['int_ip6']            = clean($_GET['int_ip6'],            10);
         $formVars['int_primary']        = clean($_GET['int_primary'],        10);
         $formVars['int_type']           = clean($_GET['int_type'],           10);
-        $formVars['int_zone']           = clean($_GET['int_zone'],           10);
-        $formVars['int_vlan']           = clean($_GET['int_vlan'],           10);
         $formVars['int_media']          = clean($_GET['int_media'],          10);
         $formVars['int_speed']          = clean($_GET['int_speed'],          10);
         $formVars['int_duplex']         = clean($_GET['int_duplex'],         10);
-        $formVars['int_role']           = clean($_GET['int_role'],           10);
         $formVars['int_redundancy']     = clean($_GET['int_redundancy'],     10);
         $formVars['int_groupname']      = clean($_GET['int_groupname'],      20);
-        $formVars['int_openview']       = clean($_GET['int_openview'],       10);
-        $formVars['int_nagios']         = clean($_GET['int_nagios'],         10);
         $formVars['int_backup']         = clean($_GET['int_backup'],         10);
         $formVars['int_management']     = clean($_GET['int_management'],     10);
         $formVars['int_login']          = clean($_GET['int_login'],          10);
-        $formVars['int_xpoint']         = clean($_GET['int_xpoint'],         10);
-        $formVars['int_ypoint']         = clean($_GET['int_ypoint'],         10);
-        $formVars['int_zpoint']         = clean($_GET['int_zpoint'],         10);
-        $formVars['int_notify']         = clean($_GET['int_notify'],         10);
-        $formVars['int_hours']          = clean($_GET['int_hours'],          10);
-        $formVars['int_ping']           = clean($_GET['int_ping'],           10);
-        $formVars['int_ssh']            = clean($_GET['int_ssh'],            10);
-        $formVars['int_http']           = clean($_GET['int_http'],           10);
-        $formVars['int_ftp']            = clean($_GET['int_ftp'],            10);
-        $formVars['int_smtp']           = clean($_GET['int_smtp'],           10);
-        $formVars['int_snmp']           = clean($_GET['int_snmp'],           10);
-        $formVars['int_load']           = clean($_GET['int_load'],           10);
-        $formVars['int_uptime']         = clean($_GET['int_uptime'],         10);
-        $formVars['int_cpu']            = clean($_GET['int_cpu'],            10);
-        $formVars['int_swap']           = clean($_GET['int_swap'],           10);
-        $formVars['int_memory']         = clean($_GET['int_memory'],         10);
-        $formVars['int_cfg2html']       = clean($_GET['int_cfg2html'],       10);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
@@ -95,34 +67,16 @@
         if ($formVars['int_redundancy'] == '') {
           $formVars['int_redundancy'] = 0;
         }
-        if ($formVars['int_mask'] == '') {
-          $formVars['int_mask'] = 0;
-        }
         if ($formVars['int_type'] == '') {
           $formVars['int_type'] = 0;
         }
         if ($formVars['int_eth'] == '') {
           $formVars['int_eth'] = "00:00:00:00:00:00";
         }
-        if ($formVars['int_ip6'] == 'true') {
-          $formVars['int_ip6'] = 1;
-        } else {
-          $formVars['int_ip6'] = 0;
-        }
         if ($formVars['int_primary'] == 'true') {
           $formVars['int_primary'] = 1;
         } else {
           $formVars['int_primary'] = 0;
-        }
-        if ($formVars['int_openview'] == 'true') {
-          $formVars['int_openview'] = 1;
-        } else {
-          $formVars['int_openview'] = 0;
-        }
-        if ($formVars['int_nagios'] == 'true') {
-          $formVars['int_nagios'] = 1;
-        } else {
-          $formVars['int_nagios'] = 0;
         }
         if ($formVars['int_backup'] == 'true') {
           $formVars['int_backup'] = 1;
@@ -139,94 +93,75 @@
         } else {
           $formVars['int_login'] = 0;
         }
-        if ($formVars['int_ping'] == 'true') {
-          $formVars['int_ping'] = 1;
-        } else {
-          $formVars['int_ping'] = 0;
-        }
         if ($formVars['int_virtual'] == 'true') {
           $formVars['int_virtual'] = 1;
         } else {
           $formVars['int_virtual'] = 0;
         }
-        if ($formVars['int_ssh'] == 'true') {
-          $formVars['int_ssh'] = 1;
-        } else {
-          $formVars['int_ssh'] = 0;
-        }
-        if ($formVars['int_http'] == 'true') {
-          $formVars['int_http'] = 1;
-        } else {
-          $formVars['int_http'] = 0;
-        }
-        if ($formVars['int_ftp'] == 'true') {
-          $formVars['int_ftp'] = 1;
-        } else {
-          $formVars['int_ftp'] = 0;
-        }
-        if ($formVars['int_smtp'] == 'true') {
-          $formVars['int_smtp'] = 1;
-        } else {
-          $formVars['int_smtp'] = 0;
-        }
-        if ($formVars['int_snmp'] == 'true') {
-          $formVars['int_snmp'] = 1;
-        } else {
-          $formVars['int_snmp'] = 0;
-        }
-        if ($formVars['int_load'] == 'true') {
-          $formVars['int_load'] = 1;
-        } else {
-          $formVars['int_load'] = 0;
-        }
-        if ($formVars['int_uptime'] == 'true') {
-          $formVars['int_uptime'] = 1;
-        } else {
-          $formVars['int_uptime'] = 0;
-        }
-        if ($formVars['int_cpu'] == 'true') {
-          $formVars['int_cpu'] = 1;
-        } else {
-          $formVars['int_cpu'] = 0;
-        }
-        if ($formVars['int_swap'] == 'true') {
-          $formVars['int_swap'] = 1;
-        } else {
-          $formVars['int_swap'] = 0;
-        }
-        if ($formVars['int_memory'] == 'true') {
-          $formVars['int_memory'] = 1;
-        } else {
-          $formVars['int_memory'] = 0;
-        }
-        if ($formVars['int_xpoint'] == '') {
-          $formVars['int_xpoint'] = 0;
-        }
-        if ($formVars['int_ypoint'] == '') {
-          $formVars['int_ypoint'] = 0;
-        }
-        if ($formVars['int_zpoint'] == '') {
-          $formVars['int_zpoint'] = 0;
-        }
 
         if ($formVars['int_companyid'] > 0) {
           logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
+# for now repopulate the info from the ipaddress table.
+          $q_string  = "select ip_ipv4,ip_hostname,ip_domain,ip_network ";
+          $q_string .= "from ipaddress ";
+          $q_string .= "where ip_id = " . $formVars['int_ipaddressid'] . " ";
+          $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_ipaddress) > 0) {
+            $a_ipaddress = mysqli_fetch_array($q_ipaddress);
+
+# now get the netmask and netvlan
+            $q_string  = "select net_mask,net_vlan ";
+            $q_string .= "from network ";
+            $q_string .= "where net_id = " . $a_ipaddress['ip_network'] . " ";
+            $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            if (mysqli_num_rows($q_network) > 0) {
+              $a_network = mysqli_fetch_array($q_network);
+            } else {
+              $a_network['net_mask'] = 0;
+              $a_network['net_vlan'] = "";
+            }
+
+            $q_string  = "select ip_ipv4 ";
+            $q_string .= "from ipaddress ";
+            $q_string .= "left join ip_types on ip_types.ip_id = ipaddress.ip_type ";
+            $q_string .= "where ip_network = " . $a_ipaddress['ip_network'] . " and ip_name = \"Gateway\" ";
+            $q_string .= "limit 1 ";
+            $q_addr = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            if (mysqli_num_rows($q_addr) > 0) {
+              $a_addr = mysqli_fetch_array($q_addr);
+            } else {
+              $a_addr['ip_ipv4'] = '';
+            }
+
+          } else {
+            $a_ipaddress['ip_ipv4'] = '';
+            $a_ipaddress['ip_hostname'] = '';
+            $a_ipaddress['ip_domain'] = '';
+            $a_ipaddress['ip_network'] = 0;
+          }
+
+# want to get vlan, gateway, subnetmask, etc at least until the info is fully rewritten.
+# something like get the network from above, then get the vlan from there and the gateway from the listing of IPs associated with the network.
+
           $q_string = 
-            "int_server       = \"" . $formVars['int_server']       . "\"," .
-            "int_domain       = \"" . $formVars['int_domain']       . "\"," .
+            "int_server       = \"" . $a_ipaddress['ip_hostname']   . "\"," .
+            "int_domain       = \"" . $a_ipaddress['ip_domain']     . "\"," .
+            "int_addr         = \"" . $a_ipaddress['ip_ipv4']       . "\"," .
+
+            "int_mask         =   " . $a_network['net_mask']        . "," .
+            "int_vlan         = \"" . $a_network['net_vlan']        . "\"," .
+
+            "int_gate         = \"" . $a_addr['ip_ipv4']            . "\"," .
+
             "int_companyid    =   " . $formVars['int_companyid']    . "," .
             "int_ipaddressid  =   " . $formVars['int_ipaddressid']  . "," .
             "int_face         = \"" . $formVars['int_face']         . "\"," .
             "int_int_id       =   " . $formVars['int_int_id']       . "," .
             "int_virtual      =   " . $formVars['int_virtual']      . "," .
-            "int_addr         = \"" . $formVars['int_addr']         . "\"," .
             "int_vaddr        =   " . "0"                           . "," .
-            "int_ip6          =   " . $formVars['int_ip6']          . "," .
             "int_eth          = \"" . $formVars['int_eth']          . "\"," .
             "int_veth         =   " . "0"                           . "," .
-            "int_mask         =   " . $formVars['int_mask']         . "," .
-            "int_gate         = \"" . $formVars['int_gate']         . "\"," .
             "int_vgate        =   " . "0"                           . "," .
             "int_note         = \"" . $formVars['int_note']         . "\"," .
             "int_verified     =   " . "0"                           . "," . 
@@ -235,38 +170,16 @@
             "int_sysport      = \"" . $formVars['int_sysport']      . "\"," . 
             "int_primary      =   " . $formVars['int_primary']      . "," .
             "int_type         =   " . $formVars['int_type']         . "," . 
-            "int_zone         =   " . $formVars['int_zone']         . "," . 
-            "int_vlan         = \"" . $formVars['int_vlan']         . "\"," . 
             "int_media        =   " . $formVars['int_media']        . "," . 
             "int_speed        =   " . $formVars['int_speed']        . "," . 
             "int_duplex       =   " . $formVars['int_duplex']       . "," . 
-            "int_role         =   " . $formVars['int_role']         . "," . 
             "int_redundancy   =   " . $formVars['int_redundancy']   . "," . 
             "int_groupname    = \"" . $formVars['int_groupname']    . "\"," . 
             "int_user         =   " . $_SESSION['uid']              . "," . 
             "int_update       = \"" . date('Y-m-d')                 . "\"," . 
-            "int_openview     =   " . $formVars['int_openview']     . "," .
-            "int_nagios       =   " . $formVars['int_nagios']       . "," .
             "int_backup       =   " . $formVars['int_backup']       . "," .
             "int_management   =   " . $formVars['int_management']   . "," .
-            "int_login        =   " . $formVars['int_login']        . "," .
-            "int_xpoint       =   " . $formVars['int_xpoint']       . "," .
-            "int_ypoint       =   " . $formVars['int_ypoint']       . "," .
-            "int_zpoint       =   " . $formVars['int_zpoint']       . "," .
-            "int_ping         =   " . $formVars['int_ping']         . "," .
-            "int_ssh          =   " . $formVars['int_ssh']          . "," .
-            "int_http         =   " . $formVars['int_http']         . "," .
-            "int_ftp          =   " . $formVars['int_ftp']          . "," .
-            "int_smtp         =   " . $formVars['int_smtp']         . "," .
-            "int_snmp         =   " . $formVars['int_snmp']         . "," .
-            "int_load         =   " . $formVars['int_load']         . "," .
-            "int_uptime       =   " . $formVars['int_uptime']       . "," .
-            "int_cpu          =   " . $formVars['int_cpu']          . "," .
-            "int_swap         =   " . $formVars['int_swap']         . "," .
-            "int_memory       =   " . $formVars['int_memory']       . "," .
-            "int_cfg2html     =   " . $formVars['int_cfg2html']     . "," .
-            "int_notify       =   " . $formVars['int_notify']       . "," .
-            "int_hours        =   " . $formVars['int_hours'];
+            "int_login        =   " . $formVars['int_login'];
 
           if ($formVars['update'] == 0) {
             $query = "insert into interface set int_id = NULL, " . $q_string;
@@ -284,53 +197,6 @@
           print "alert('" . $message . "');\n";
         } else {
           print "alert('You must input data before saving changes.');\n";
-        }
-      }
-
-      if ($formVars['update'] == -2) {
-        $formVars['copyfrom'] = clean($_GET['copyfrom'], 10);
-
-        if ($formVars['copyfrom'] > 0) {
-          $q_string  = "select int_server,int_domain,int_face,int_addr,int_ip6,int_eth,int_mask,int_gate,int_note,int_switch,";
-          $q_string .= "int_port,int_sysport,int_primary,int_type,int_zone,int_vlan,int_media,int_speed,int_duplex,";
-          $q_string .= "int_role,int_redundancy,int_groupname,int_virtual,int_ipaddressid ";
-          $q_string .= "from interface ";
-          $q_string .= "where int_companyid = " . $formVars['copyfrom'];
-          $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          while ($a_interface = mysqli_fetch_array($q_interface)) {
-
-            $q_string = 
-              "int_server     = \"" . $a_interface['int_server']     . "\"," .
-              "int_domain     = \"" . $a_interface['int_domain']     . "\"," .
-              "int_companyid  =   " . $formVars['int_companyid']     . "," .
-              "int_ipaddressid  =   " . $formVars['int_ipaddressid']     . "," .
-              "int_face       = \"" . $a_interface['int_face']       . "\"," .
-              "int_addr       = \"" . $a_interface['int_addr']       . "\"," .
-              "int_ip6        =   " . $a_interface['int_ip6']        . "," .
-              "int_eth        = \"" . $a_interface['int_eth']        . "\"," .
-              "int_mask       = \"" . $a_interface['int_mask']       . "\"," .
-              "int_gate       = \"" . $a_interface['int_gate']       . "\"," .
-              "int_note       = \"" . $a_interface['int_note']       . "\"," .
-              "int_verified   =   " . "0"                            . "," . 
-              "int_switch     = \"" . $a_interface['int_switch']     . "\"," . 
-              "int_port       = \"" . $a_interface['int_port']       . "\"," . 
-              "int_sysport    = \"" . $a_interface['int_sysport']    . "\"," . 
-              "int_primary    =   " . $a_interface['int_primary']    . "," .
-              "int_type       =   " . $a_interface['int_type']       . "," . 
-              "int_zone       =   " . $a_interface['int_zone']       . "," . 
-              "int_vlan       = \"" . $a_interface['int_vlan']       . "\"," . 
-              "int_media      =   " . $a_interface['int_media']      . "," . 
-              "int_speed      =   " . $a_interface['int_speed']      . "," . 
-              "int_duplex     =   " . $a_interface['int_duplex']     . "," . 
-              "int_role       =   " . $a_interface['int_role']       . "," . 
-              "int_redundancy =   " . $a_interface['int_redundancy'] . "," . 
-              "int_groupname  = \"" . $a_interface['int_groupname']  . "\"," . 
-              "int_virtual    =   " . $a_interface['int_virtual']    . "," . 
-              "int_update     = \"" . date('Y-m-d')                  . "\"";
-
-            $query = "insert into interface set int_id = NULL, " . $q_string;
-            mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
-          }
         }
       }
 
@@ -368,54 +234,42 @@
         print "document.getElementById('network_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
 
+
+
         $output  = "<table class=\"ui-styled-table\">\n";
         $output .= "<tr>\n";
-        $output .= "  <th class=\"ui-state-default\" colspan=\"4\">Server Form</th>\n";
+        $output .= "  <th class=\"ui-state-default\" colspan=\"4\">System Form</th>\n";
         $output .= "</tr>\n";
+
         $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"2\">Hostname* <input type=\"text\" name=\"int_server\" size=\"20\"> Domain <input type=\"text\" name=\"int_domain\" size=\"30\"></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Physical Port <input type=\"text\" name=\"int_sysport\" size=\"20\"></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">MAC* <input type=\"text\" name=\"int_eth\" value=\"00:00:00:00:00:00\" size=\"18\"></td>\n";
-        $output .= "</tr>\n";
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\">IP Address* <input type=\"text\" name=\"int_addr\" size=\"25\"> <label>IPv6* <input type=\"checkbox\" name=\"int_ip6\"></label></td>\n";
         $output .= "  <td class=\"ui-widget-content\">IP Address* <select name=\"int_ipaddressid\">\n";
+        $output .= "<option value=\"0\">Unassigned</option>\n";
 
-        $q_string  = "select ip_id,ip_ipv4 ";
+        $q_string  = "select ip_id,ip_ipv4,ip_hostname ";
         $q_string .= "from ipaddress ";
-        $q_string .= "order by ip_ipv4 ";
+        $q_string .= "order by ip_hostname ";
         $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
+        if (mysqli_num_rows($q_ipaddress) > 0) {
+          while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
 
-          $q_string  = "select int_id ";
-          $q_string .= "from interface ";
-          $q_string .= "where int_ipaddressid = " . $a_ipaddress['ip_id'] . " ";
-          $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_interface) == 0) {
-            $output .= "<option value=\"" . $a_ipaddress['ip_id'] . "\">" . $a_ipaddress['ip_ipv4'] . "</option>\n";
+#            $q_string  = "select int_id ";
+#            $q_string .= "from interface ";
+#            $q_string .= "where int_ipaddressid = " . $a_ipaddress['ip_id'] . " ";
+#            $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+#            if (mysqli_num_rows($q_interface) == 0) {
+              $output .= "<option value=\"" . $a_ipaddress['ip_id'] . "\">" . $a_ipaddress['ip_hostname'] . " " . $a_ipaddress['ip_ipv4'] . "</option>\n";
+#            }
           }
         }
 
         $output .= "</select></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Subnet Mask* <select name=\"int_mask\">\n";
-
-        for ($i = 0; $i < 129; $i++) {
-          if ($i > 32) {
-            $output .=  "<option value=\"" . $i . "\">IPv6/" . $i . "</option>\n";
-          } else {
-            if ($i == 32) {
-              $output .=  "<option selected value=\"" . $i . "\">" . createNetmaskAddr($i) . "/" . $i . "</option>\n";
-            } else {
-              $output .=  "<option value=\"" . $i . "\">" . createNetmaskAddr($i) . "/" . $i . "</option>\n";
-            }
-          }
-        }
-
-        $output .= "</select></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Logical Interface Name* <input type=\"text\" name=\"int_face\" size=\"10\"></td>\n";
+        $output .= "  <td class=\"ui-widget-content\"><label>Virtual Interface? <input type=\"checkbox\" name=\"int_virtual\"></label></td>\n"; 
+        $output .= "  <td class=\"ui-widget-content\"><label>Default Route? <input type=\"checkbox\" name=\"int_primary\"></label></td>\n";
         $output .= "</tr>\n"; 
+
         $output .= "<tr>\n"; 
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"2\">Interface Type: <select name=\"int_type\">\n";
+        $output .= "  <td class=\"ui-widget-content\">Logical Interface Name* <input type=\"text\" name=\"int_face\" size=\"10\"></td>\n";
+        $output .= "  <td class=\"ui-widget-content\">Interface Type: <select name=\"int_type\">\n";
 
         $q_string  = "select itp_id,itp_name ";
         $q_string .= "from int_types ";
@@ -426,21 +280,9 @@
         }
 
         $output .= "</select></td>\n";
-        $output .= "  <td class=\"ui-widget-content\"><label>Virtual Interface? <input type=\"checkbox\" name=\"int_virtual\"></label></td>\n"; 
-        $output .= "  <td class=\"ui-widget-content\">Gateway <input type=\"text\" name=\"int_gate\" size=\"15\"> <label>Default Route? <input type=\"checkbox\" name=\"int_primary\"></label></td>\n";
+        $output .= "  <td class=\"ui-widget-content\">MAC* <input type=\"text\" name=\"int_eth\" value=\"00:00:00:00:00:00\" size=\"18\"></td>\n";
         $output .= "</tr>\n";
-        $output .= "<tr>\n"; 
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"4\">Note: <input type=\"text\" name=\"int_note\" size=\"80\"></td>\n";
-        $output .= "</tr>\n"; 
-        $output .= "</table>\n";
 
-        print "document.getElementById('nwserver_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
-
-
-        $output  = "<table class=\"ui-styled-table\">\n";
-        $output .= "<tr>\n";
-        $output .= "  <th class=\"ui-state-default\" colspan=\"3\">Redundancy Form</th>\n";
-        $output .= "</tr>\n";
         $output .= "<tr>\n";
         $output .= "  <td class=\"ui-widget-content\">Redundancy: <select name=\"int_redundancy\">\n";
         $output .= "<option value=\"0\">Child Interface</option>\n";
@@ -453,7 +295,6 @@
           $output .= "<option value=\"" . $a_int_redundancy['red_id'] . "\">" . $a_int_redundancy['red_text'] . "</option>\n";
         }
         $output .= "</select></td>\n"; 
-        $output .= "  <td class=\"ui-widget-content\">Group Name: <input type=\"text\" name=\"int_groupname\" size=\"20\"></td>\n";
         $output .= "  <td class=\"ui-widget-content\">";
 
         $os = return_System($db, $formVars['int_companyid']);
@@ -472,59 +313,32 @@
         }
 
         $output .= "Assignment <select name=\"int_int_id\"></select></td>\n"; 
+        $output .= "  <td class=\"ui-widget-content\">Group Name: <input type=\"text\" name=\"int_groupname\" size=\"20\"></td>\n";
         $output .= "</tr>\n"; 
-        $output .= "</table>\n";
 
-        print "document.getElementById('nwredundancy').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
-
-
-        $output  = "<table class=\"ui-styled-table\">\n";
         $output .= "<tr>\n";
-        $output .= "  <th class=\"ui-state-default\" colspan=\"2\">Management Form</th>\n";
+        $output .= "  <td class=\"ui-widget-content\"><label><input type=\"checkbox\" name=\"int_management\"> Used for Management traffic</label></td>";
+        $output .= "  <td class=\"ui-widget-content\"><label><input type=\"checkbox\" name=\"int_backup\"> Used for Backup traffic</label></td>";
+        $output .= "  <td class=\"ui-widget-content\"><label><input type=\"checkbox\" name=\"int_login\"> Used for Secure Shell traffic</label></td>";
         $output .= "</tr>\n";
         $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\">How is this interface monitored? <label><input type=\"checkbox\" name=\"int_openview\"> OpenView</label> <label><input type=\"checkbox\" name=\"int_nagios\"> Nagios</label></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Services to monitor: ";
-          $output .= "<label><input type=\"checkbox\" name=\"int_ping\"> Ping</label> - ";
-          $output .= "<label><input type=\"checkbox\" name=\"int_ssh\"> SSH</label> - ";
-          $output .= "<label><input type=\"checkbox\" name=\"int_http\"> HTTP</label> - ";
-          $output .= "<label><input type=\"checkbox\" name=\"int_ftp\"> FTP</label> - ";
-          $output .= "<label><input type=\"checkbox\" name=\"int_smtp\"> SMTP</label> - ";
-          $output .= "<label><input type=\"checkbox\" name=\"int_snmp\"> SNMP</label> - ";
-          $output .= "<label><input type=\"checkbox\" name=\"int_cfg2html\"> Do not validate Cfg2Html</label>";
-        $output .= "</td>\n";
-        $output .= "</tr>\n";
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\">";
-          $output .= "<label><input type=\"checkbox\" name=\"int_management\"> Used for Management traffic</label> - ";
-          $output .= "<label><input type=\"checkbox\" name=\"int_backup\"> Used for Backup traffic</label> - ";
-          $output .= "<label><input type=\"checkbox\" name=\"int_login\"> Used for Secure Shell traffic</label>";
-        $output .= "</td>\n";
-        $output .= "  <td class=\"ui-widget-content\">If snmp is enabled, statistics to monitor: ";
-          $output .= "<label><input type=\"checkbox\" name=\"int_load\"> Load Average</label> - ";
-          $output .= "<label><input type=\"checkbox\" name=\"int_uptime\"> System Uptime</label> - ";
-          $output .= "<label><input type=\"checkbox\" name=\"int_cpu\"> CPU Statistics</label> - ";
-          $output .= "<label><input type=\"checkbox\" name=\"int_swap\"> Swap</label> - ";
-          $output .= "<label><input type=\"checkbox\" name=\"int_memory\"> Memory Usage</label>";
-        $output .= "</td>\n";
-        $output .= "</tr>\n";
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\">Notify Process: <label><input type=\"radio\" value=\"0\" checked name=\"int_notify\"> None</label> <label><input type=\"radio\" value=\"1\" name=\"int_notify\"> Email</label> <label><input type=\"radio\" value=\"2\" name=\"int_notify\">Page</label></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Notification Hours: <label><input type=\"radio\" checked value=\"0\" name=\"int_hours\"> Business Hours</label> <label><input type=\"radio\" value=\"1\" name=\"int_hours\"> 24x7</label></td>\n";
-        $output .= "</tr>\n";
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"2\">Nagios Custom Coordinate Layout: X Axis: <input type=\"text\" name=\"int_xpoint\" size=\"5\"> Y Axis: <input type=\"text\" name=\"int_ypoint\" size=\"5\"> Z Axis: <input type=\"text\" name=\"int_zpoint\" size=\"5\"></td>\n";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"4\">Note: <input type=\"text\" name=\"int_note\" size=\"80\"></td>\n";
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
-        print "document.getElementById('nwmonitoring_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
+        print "document.getElementById('nwsystem_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
 
 
         $output  = "<table class=\"ui-styled-table\">\n";
         $output .= "<tr>\n";
-        $output .= "  <th class=\"ui-state-default\" colspan=\"3\">Transport Form</th>\n";
+        $output .= "  <th class=\"ui-state-default\" colspan=\"3\">Physical Form</th>\n";
         $output .= "</tr>\n";
+        $output .= "<tr>\n";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"3\">Physical Hardware Port <input type=\"text\" name=\"int_sysport\" size=\"20\"></td>\n";
+        $output .= "</tr>\n";
+        $output .= "<tr>\n";
+
         $output .= "  <td class=\"ui-widget-content\">Media: <select name=\"int_media\">\n";
         $output .= "<option value=\"0\">N/A</option>\n";
 
@@ -555,47 +369,14 @@
         }
 
         $output .= "</select></td>\n";
-        $output .= "</table>\n";
-
-        print "document.getElementById('nwtransport_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
-
-
-        $output  = "<table class=\"ui-styled-table\">\n";
-        $output .= "<tr>\n";
-        $output .= "  <th class=\"ui-state-default\" colspan=\"3\">Switch Form</th>\n";
         $output .= "</tr>\n";
         $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\">Switch <input type=\"text\" name=\"int_switch\" size=\"40\"></td>\n";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"2\">Switch <input type=\"text\" name=\"int_switch\" size=\"40\"></td>\n";
         $output .= "  <td class=\"ui-widget-content\">Port <input type=\"text\" name=\"int_port\" size=\"20\"></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">VLAN <input type=\"text\" name=\"int_vlan\" size=\"16\"></td>\n";
         $output .= "</tr>\n";
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\">Zone <select name=\"int_zone\">\n";
-        $output .= "<option value=\"0\">Unknown</option>\n";
-
-        $q_string  = "select zone_id,zone_zone ";
-        $q_string .= "from net_zones ";
-        $q_string .= "order by zone_zone";
-        $q_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_net_zones = mysqli_fetch_array($q_net_zones)) {
-          $output .= "<option value=\"" . $a_net_zones['zone_id'] . "\">" . $a_net_zones['zone_zone'] . "</option>\n";
-        }
-
-        $output .= "</select></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Role: <select name=\"int_role\">\n";
-        $output .= "<option value=\"0\">N/A</option>\n";
-
-        $q_string = "select rol_id,rol_text from int_role order by rol_text";
-        $q_int_role = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_int_role = mysqli_fetch_array($q_int_role)) {
-          $output .= "<option value=\"" . $a_int_role['rol_id'] . "\">" . $a_int_role['rol_text'] . "</option>\n";
-        }
-
-        $output .= "</select></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">&nbsp;</td>\n";
         $output .= "</table>\n";
 
-        print "document.getElementById('nwswitch_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
+        print "document.getElementById('nwphysical_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
       }
 
 
