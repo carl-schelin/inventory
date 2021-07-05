@@ -104,12 +104,12 @@ function clear_fields() {
 }
 
 $(document).ready( function() {
-  $( '#clickAddNetwork' ).click(function() {
-    $( "#dialogNetwork" ).dialog('open');
+  $( '#clickCreate' ).click(function() {
+    $( "#dialogCreate" ).dialog('open');
   });
 
 
-  $( "#dialogNetwork" ).dialog({
+  $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
     height: 300,
@@ -119,7 +119,7 @@ $(document).ready( function() {
     closeOnEscape: true,
     dialogClass: 'dialogWithDropShadow',
     close: function(event, ui) {
-      $( "#dialogNetwork" ).hide();
+      $( "#dialogCreate" ).hide();
     },
     buttons: [
       {
@@ -213,7 +213,7 @@ an IP address that is then assigned to a device.</p>
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickAddNetwork" value="Add Network"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add Network"></td>
 </tr>
 </table>
 
@@ -225,9 +225,9 @@ an IP address that is then assigned to a device.</p>
 </div>
 
 
-<div id="dialogNetwork" title="Add Network">
+<div id="dialogCreate" title="Add Network">
 
-<form name="networkDialog">
+<form name="createDialog">
 
 <input type="hidden" name="id" value="0">
 
