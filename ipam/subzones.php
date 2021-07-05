@@ -96,11 +96,11 @@ function clear_fields() {
 }
 
 $(document).ready( function() {
-  $( '#clickAddSubZone' ).click(function() {
-    $( "#dialogSubZone" ).dialog('open');
+  $( '#clickCreate' ).click(function() {
+    $( "#dialogCreate" ).dialog('open');
   });
 
-  $( "#dialogSubZone" ).dialog({
+  $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
     height: 200,
@@ -110,7 +110,7 @@ $(document).ready( function() {
     closeOnEscape: true,
     dialogClass: 'dialogWithDropShadow',
     close: function(event, ui) {
-      $( "#dialogSubZone" ).hide();
+      $( "#dialogCreate" ).hide();
     },
     buttons: [
       {
@@ -213,9 +213,9 @@ $(document).ready( function() {
 </div>
 
 
-<div id="dialogSubZone" title="Add IP Address Zone">
+<div id="dialogCreate" title="Add IP Address Zone">
 
-<form name="subzoneDialog">
+<form name="createDialog">
 
 <input type="hidden" name="id" value="0">
 
