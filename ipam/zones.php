@@ -94,11 +94,11 @@ function clear_fields() {
 }
 
 $(document).ready( function() {
-  $( '#clickAddZone' ).click(function() {
-    $( "#dialogZone" ).dialog('open');
+  $( '#clickCreate' ).click(function() {
+    $( "#dialogCreate" ).dialog('open');
   });
 
-  $( "#dialogZone" ).dialog({
+  $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
     height: 175,
@@ -108,7 +108,7 @@ $(document).ready( function() {
     closeOnEscape: true,
     dialogClass: 'dialogWithDropShadow',
     close: function(event, ui) {
-      $( "#dialogZone" ).hide();
+      $( "#dialogCreate" ).hide();
     },
     buttons: [
       {
@@ -200,7 +200,7 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickAddZone" value="Add Network Zone"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add Network Zone"></td>
 </tr>
 </table>
 
@@ -211,9 +211,9 @@ $(document).ready( function() {
 </div>
 
 
-<div id="dialogZone" title="Network Zone Form">
+<div id="dialogCreate" title="Network Zone Form">
 
-<form name="zoneDialog">
+<form name="createDialog">
 
 <input type="hidden" name="id" value="0">
 
