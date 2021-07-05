@@ -82,8 +82,8 @@
       if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Country</th>\n";
       }
-      $output .= "  <th class=\"ui-state-default\">Acronym</th>\n";
       $output .= "  <th class=\"ui-state-default\">Country</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Acronym</th>\n";
       $output .= "</tr>\n";
 
       $q_string  = "select cn_id,cn_acronym,cn_country ";
@@ -101,8 +101,8 @@
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel    . "</td>";
           }
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_country['cn_acronym']     . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_country['cn_country']     . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                       . $a_country['cn_acronym']                . "</td>";
           $output .= "</tr>";
         }
       } else {
