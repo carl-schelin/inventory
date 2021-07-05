@@ -61,9 +61,12 @@
     </ul>
   </li>
 
-  <li id="tm_location"><a href="<?php print $Siteroot; ?>/index.location.php">Locations</a>
+  <li id="tm_location"><a href="<?php print $Siteroot; ?>/index.datacenter.php">Data Centers</a>
     <ul>
-      <li><a href="<?php print $DCroot;      ?>/datacenter.php">Location Manager</a></li>
+      <li><a href="<?php print $DCroot;      ?>/datacenter.php">Data Center Manager</a></li>
+      <li><a href="<?php print $DCroot;      ?>/datacenter.php">City/County Manager</a></li>
+      <li><a href="<?php print $DCroot;      ?>/datacenter.php">State Manager</a></li>
+      <li><a href="<?php print $DCroot;      ?>/datacenter.php">Country Manager</a></li>
     </ul>
   </li>
 
