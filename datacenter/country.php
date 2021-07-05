@@ -202,10 +202,10 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content">Acronym: <input type="text" name="cn_acronym" size="10"></td>
+  <td class="ui-widget-content">Country: <input type="text" name="cn_country" size="25"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Country: <input type="text" name="cn_country" size="25"></td>
+  <td class="ui-widget-content">Acronym: <input type="text" name="cn_acronym" size="10"></td>
 </tr>
 </table>
 
@@ -222,10 +222,10 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content">Acronym: <input type="text" name="cn_acronym" size="10"></td>
+  <td class="ui-widget-content">Country: <input type="text" name="cn_country" size="25"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Country: <input type="text" name="cn_country" size="25"></td>
+  <td class="ui-widget-content">Acronym: <input type="text" name="cn_acronym" size="10"></td>
 </tr>
 </table>
 
