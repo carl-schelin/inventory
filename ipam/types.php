@@ -94,11 +94,11 @@ function clear_fields() {
 }
 
 $(document).ready( function() {
-  $( '#clickAddType' ).click(function() {
-    $( "#dialogType" ).dialog('open');
+  $( '#clickCreate' ).click(function() {
+    $( "#dialogCreate" ).dialog('open');
   });
 
-  $( "#dialogType" ).dialog({
+  $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
     height: 175,
@@ -108,7 +108,7 @@ $(document).ready( function() {
     closeOnEscape: true,
     dialogClass: 'dialogWithDropShadow',
     close: function(event, ui) {
-      $( "#dialogType" ).hide();
+      $( "#dialogCreate" ).hide();
     },
     buttons: [
       {
@@ -199,7 +199,7 @@ or more generic descriptions such as servers, switches, or even webcams.</p>
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickAddType" value="Add IP Address Type"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add IP Address Type"></td>
 </tr>
 </table>
 
@@ -210,9 +210,9 @@ or more generic descriptions such as servers, switches, or even webcams.</p>
 </div>
 
 
-<div id="dialogType" title="IP Address Type Form">
+<div id="dialogCreate" title="IP Address Type Form">
 
-<form name="typeDialog">
+<form name="createDialog">
 
 <input type="hidden" name="id" value="0">
 
