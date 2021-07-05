@@ -202,7 +202,7 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickAddSubZone" value="Add IP Address Zone"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add IP Address Zone"></td>
 </tr>
 </table>
 
