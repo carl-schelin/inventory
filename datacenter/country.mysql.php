@@ -38,18 +38,14 @@
 
           if ($formVars['update'] == 0) {
             $query = "insert into country set cn_id = NULL, " . $q_string;
-            $message = "Country added.";
           }
           if ($formVars['update'] == 1) {
             $query = "update country set " . $q_string . " where cn_id = " . $formVars['id'];
-            $message = "Country modified.";
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['cn_country']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
-
-          print "alert('" . $message . "');\n";
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -69,6 +65,7 @@
       $output .= "<div id=\"country-listing-help\" style=\"display: none\">\n";
 
       $output .= "<div class=\"main-help ui-widget-content\">\n";
+
       $output .= "<ul>\n";
       $output .= "  <li><strong>Country Listing</strong>\n";
       $output .= "  <ul>\n";
@@ -83,9 +80,8 @@
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
-        $output .= "  <th class=\"ui-state-default\">Del</th>\n";
+        $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Country</th>\n";
       }
-      $output .= "  <th class=\"ui-state-default\">Id</th>\n";
       $output .= "  <th class=\"ui-state-default\">Acronym</th>\n";
       $output .= "  <th class=\"ui-state-default\">Country</th>\n";
       $output .= "</tr>\n";
@@ -97,7 +93,7 @@
       if (mysqli_num_rows($q_country) > 0) {
         while ($a_country = mysqli_fetch_array($q_country)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('country.fill.php?id="  . $a_country['cn_id'] . "');jQuery('#dialogCountry').dialog('open');return false;\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('country.fill.php?id="  . $a_country['cn_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('country.del.php?id=" . $a_country['cn_id'] . "');\">";
           $linkend   = "</a>";
 
@@ -105,14 +101,13 @@
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel    . "</td>";
           }
-          $output .= "  <td class=\"ui-widget-content delete\">"   . $linkstart . $a_country['cn_id']          . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_country['cn_acronym']     . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_country['cn_country']     . $linkend . "</td>";
           $output .= "</tr>";
         }
       } else {
         $output .= "<tr>";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"4\">No records found.</td>";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"3\">No records found.</td>";
         $output .= "</tr>";
       }
 

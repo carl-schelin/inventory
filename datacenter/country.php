@@ -72,21 +72,51 @@ function clear_fields() {
 }
 
 $(document).ready( function() {
-  $( '#clickAddCountry' ).click(function() {
-    $( "#dialogCountry" ).dialog('open');
+  $( '#clickCreate' ).click(function() {
+    $( "#dialogCreate" ).dialog('open');
   });
 
-  $( "#dialogCountry" ).dialog({
+  $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 200,
-    width: 1100,
+    height: 175,
+    width: 600,
     show: 'slide',
     hide: 'slide',
     closeOnEscape: true,
     dialogClass: 'dialogWithDropShadow',
     close: function(event, ui) {
-      $( "#dialogCountry" ).hide();
+      $( "#dialogCreate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('country.mysql.php?update=-1');
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Country",
+        click: function() {
+          attach_file('country.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+  $( "#dialogUpdate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 175,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogUpdate" ).hide();
     },
     buttons: [
       {
@@ -149,30 +179,32 @@ $(document).ready( function() {
 
 </div>
 
+
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickAddCountry" value="Add Country"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add Country"></td>
 </tr>
 </table>
 
 </form>
 
+
 <span id="table_mysql"><?php print wait_Process('Waiting...')?></span>
 
 </div>
 
-<div id="dialogCountry" title="Country Form">
 
-<form name="country">
+<div id="dialogCreate" title="Country Form">
+
+<form name="createDialog">
 
 <input type="hidden" name="id" value="0">
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default" colspan="2">Country Form</th>
+  <td class="ui-widget-content">Acronym: <input type="text" name="cn_acronym" size="10"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Acronym: <input type="text" name="cn_acronym" size="10"></td>
   <td class="ui-widget-content">Country: <input type="text" name="cn_country" size="25"></td>
 </tr>
 </table>
@@ -180,6 +212,27 @@ $(document).ready( function() {
 </form>
 
 </div>
+
+
+<div id="dialogUpdate" title="Country Form">
+
+<form name="updateDialog">
+
+<input type="hidden" name="id" value="0">
+
+<table class="ui-styled-table">
+<tr>
+  <td class="ui-widget-content">Acronym: <input type="text" name="cn_acronym" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Country: <input type="text" name="cn_country" size="25"></td>
+</tr>
+</table>
+
+</form>
+
+</div>
+
 
 <?php include($Sitepath . '/footer.php'); ?>
 

@@ -28,10 +28,10 @@
       $a_country = mysqli_fetch_array($q_country);
       mysqli_free_result($q_country);
 
-      print "document.country.cn_acronym.value = '" . mysqli_real_escape_string($db, $a_country['cn_acronym']) . "';\n";
-      print "document.country.cn_country.value = '" . mysqli_real_escape_string($db, $a_country['cn_country']) . "';\n";
+      print "document.updateDialog.cn_acronym.value = '" . mysqli_real_escape_string($db, $a_country['cn_acronym']) . "';\n";
+      print "document.updateDialog.cn_country.value = '" . mysqli_real_escape_string($db, $a_country['cn_country']) . "';\n";
 
-      print "document.country.id.value = " . $formVars['id'] . ";\n";
+      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
