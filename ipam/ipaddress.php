@@ -113,11 +113,11 @@ function clear_fields() {
 }
 
 $(document).ready( function() {
-  $( '#clickAddIPAddress' ).click(function() {
-    $( "#dialogIPAddress" ).dialog('open');
+  $( '#clickCreate' ).click(function() {
+    $( "#dialogCreate" ).dialog('open');
   });
 
-  $( "#dialogIPAddress" ).dialog({
+  $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
     height: 300,
@@ -127,7 +127,7 @@ $(document).ready( function() {
     closeOnEscape: true,
     dialogClass: 'dialogWithDropShadow',
     close: function(event, ui) {
-      $( "#dialogIPAddress" ).hide();
+      $( "#dialogCreate" ).hide();
     },
     buttons: [
       {
@@ -218,7 +218,7 @@ the internet. This page provides the ability to identify IP Addresses that will 
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickAddIPAddress" value="Add IP Address"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add IP Address"></td>
 </tr>
 </table>
 
@@ -230,9 +230,9 @@ the internet. This page provides the ability to identify IP Addresses that will 
 </div>
 
 
-<div id="dialogIPAddress" title="Add IP Address">
+<div id="dialogCreate" title="Add IP Address">
 
-<form name="ipaddressDialog">
+<form name="createDialog">
 
 <input type="hidden" name="id" value="0">
 <input type="hidden" name="network" value="<?php print $formVars['net_id']; ?>">
