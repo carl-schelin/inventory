@@ -60,7 +60,7 @@ function delete_line( p_script_url ) {
 ?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.typeDialog;
+  var af_form = document.createDialog;
   var af_url;
 
   af_url  = '?update='   + update;
