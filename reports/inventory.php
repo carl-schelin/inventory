@@ -450,8 +450,9 @@ $(document).ready( function () {
 
       $interface = "";
       $console = "";
-      $q_string  = "select int_face,int_addr,int_type,itp_acronym,int_ip6,int_primary ";
+      $q_string  = "select int_face,ip_ipv4,int_addr,int_type,itp_acronym,int_ip6,int_primary ";
       $q_string .= "from interface ";
+      $q_string .= "left join ipaddress on ipaddress.ip_id = interface.int_ipaddressid ";
       $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
       $q_string .= "where int_companyid = \"" . $a_inventory['inv_id'] . "\" and int_type != 7 and int_addr != '' and int_ip6 = 0 ";
       $q_string .= "order by itp_acronym,int_face";
@@ -466,14 +467,14 @@ $(document).ready( function () {
         }
         if ($a_interface['int_type'] == 4 || $a_interface['int_type'] == 6) {
           if ($formVars['csv'] == 'false') {
-            $console .= $a_interface['int_face'] . "=" . "<a href=\"http://" . $a_interface['int_addr'] . "\" target=\"_blank\">" . $a_interface['int_addr'] . "</a>" . $primary . " ";
+            $console .= $a_interface['int_face'] . "=" . "<a href=\"http://" . $a_interface['int_addr'] . "\" target=\"_blank\">" . $a_interface['ip_ipv4'] . "</a>" . $primary . " ";
           } else {
-            $console .= $a_interface['int_face'] . "=" . $a_interface['int_addr'] . $primary . " ";
+            $console .= $a_interface['int_face'] . "=" . $a_interface['ip_ipv4'] . $primary . " ";
           }
         } else {
 # only want to see App, Mgt, EVIP, or Bkp  interfaces.
           if ($a_interface['int_type'] == 1 || $a_interface['int_type'] == 2 || $a_interface['int_type'] == 12 || $a_interface['int_type'] == 16) {
-            $interface .= $a_interface['itp_acronym'] . "=" . $a_interface['int_addr'] . $primary . " ";
+            $interface .= $a_interface['itp_acronym'] . "=" . $a_interface['ip_ipv4'] . $primary . " ";
           }
         }
       }
