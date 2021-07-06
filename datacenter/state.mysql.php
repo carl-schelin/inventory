@@ -40,18 +40,14 @@
 
           if ($formVars['update'] == 0) {
             $query = "insert into states set st_id = NULL, " . $q_string;
-            $message = "State added.";
           }
           if ($formVars['update'] == 1) {
             $query = "update states set " . $q_string . " where st_id = " . $formVars['id'];
-            $message = "State modified.";
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['st_state']);
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
-
-          print "alert('" . $message . "');\n";
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -85,10 +81,10 @@
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
-        $output .= "  <th class=\"ui-state-default\">Del</th>\n";
+        $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete State</th>\n";
       }
-      $output .= "  <th class=\"ui-state-default\">Acronym</th>\n";
       $output .= "  <th class=\"ui-state-default\">State</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Acronym</th>\n";
       $output .= "  <th class=\"ui-state-default\">Country</th>\n";
       $output .= "</tr>\n";
 
@@ -100,7 +96,7 @@
       if (mysqli_num_rows($q_states) > 0) {
         while ($a_states = mysqli_fetch_array($q_states)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('state.fill.php?id="  . $a_states['st_id'] . "');jQuery('#dialogState').dialog('open');return false;\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('state.fill.php?id="  . $a_states['st_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('state.del.php?id=" . $a_states['st_id'] . "');\">";
           $linkend   = "</a>";
 
@@ -108,9 +104,9 @@
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>";
           }
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_states['st_acronym']  . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_states['st_state']    . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_states['cn_country']  . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                       . $a_states['st_acronym']             . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                       . $a_states['cn_country']             . "</td>";
           $output .= "</tr>";
         }
       } else {

@@ -53,7 +53,7 @@ function delete_line( p_script_url ) {
 ?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.states;
+  var af_form = document.updateDialog;
   var af_url;
 
   af_url  = '?update='   + update;
@@ -73,21 +73,51 @@ function clear_fields() {
 }
 
 $(document).ready( function() {
-  $( '#clickAddState' ).click(function() {
-    $( "#dialogState" ).dialog('open');
+  $( '#clickCreate' ).click(function() {
+    $( "#dialogCreate" ).dialog('open');
   });
 
-  $( "#dialogState" ).dialog({
+  $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
     height: 200,
-    width: 1100,
+    width: 600,
     show: 'slide',
     hide: 'slide',
     closeOnEscape: true,
     dialogClass: 'dialogWithDropShadow',
     close: function(event, ui) {
-      $( "#dialogState" ).hide();
+      $( "#dialogCreate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('state.mysql.php?update=-1');
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add State",
+        click: function() {
+          attach_file('state.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+  $( "#dialogUpdate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 200,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogUpdate" ).hide();
     },
     buttons: [
       {
@@ -152,7 +182,7 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickAddState" value="Add State"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add State"></td>
 </tr>
 </table>
 
@@ -162,19 +192,21 @@ $(document).ready( function() {
 
 </div>
 
-<div id="dialogState" title="State Form">
 
-<form name="states">
+<div id="dialogCreate" title="State Form">
+
+<form name="createDialog">
 
 <input type="hidden" name="id" value="0">
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default" colspan="3">State Form</th>
+  <td class="ui-widget-content">State: <input type="text" name="st_state" size="30"></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Acronym: <input type="text" name="st_acronym" size="10"></td>
-  <td class="ui-widget-content">State: <input type="text" name="st_state" size="30"></td>
+</tr>
+<tr>
   <td class="ui-widget-content">Country: <select name="st_country">
 <?php
   $q_string  = "select cn_id,cn_country ";
@@ -192,6 +224,40 @@ $(document).ready( function() {
 </form>
 
 </div>
+
+
+<div id="dialogUpdate" title="State Form">
+
+<form name="updateDialog">
+
+<input type="hidden" name="id" value="0">
+
+<table class="ui-styled-table">
+<tr>
+  <td class="ui-widget-content">State: <input type="text" name="st_state" size="30"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Acronym: <input type="text" name="st_acronym" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Country: <select name="st_country">
+<?php
+  $q_string  = "select cn_id,cn_country ";
+  $q_string .= "from country ";
+  $q_string .= "order by cn_country ";
+  $q_country = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_country = mysqli_fetch_array($q_country)) {
+    print "<option value=\"" . $a_country['cn_id'] . "\">" . $a_country['cn_country'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+</table>
+
+</form>
+
+</div>
+
 
 <?php include($Sitepath . '/footer.php'); ?>
 
