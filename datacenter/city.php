@@ -73,21 +73,51 @@ function clear_fields() {
 }
 
 $(document).ready( function() {
-  $( '#clickAddCity' ).click(function() {
-    $( "#dialogCity" ).dialog('open');
+  $( '#clickCreate' ).click(function() {
+    $( "#dialogCreate" ).dialog('open');
   });
 
-  $( "#dialogCity" ).dialog({
+  $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
     height: 200,
-    width: 1100,
+    width: 600,
     show: 'slide',
     hide: 'slide',
     closeOnEscape: true,
     dialogClass: 'dialogWithDropShadow',
     close: function(event, ui) {
-      $( "#dialogCity" ).hide();
+      $( "#dialogCreate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('city.mysql.php?update=-1');
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add City",
+        click: function() {
+          attach_file('city.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+  $( "#dialogUpdate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 200,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogUpdate" ).hide();
     },
     buttons: [
       {
@@ -152,7 +182,7 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickAddCity" value="Add City"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add City"></td>
 </tr>
 </table>
 
@@ -162,18 +192,18 @@ $(document).ready( function() {
 
 </div>
 
-<div id="dialogCity" title="City/County Form">
 
-<form name="cities">
+<div id="dialogCreate" title="City/County Form">
+
+<form name="createDialog">
 
 <input type="hidden" name="id" value="0">
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default" colspan="3">City/County Form</th>
+  <td class="ui-widget-content">City/County: <input type="text" name="ct_city" size="30"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">City/County: <input type="text" name="ct_city" size="30"></td>
   <td class="ui-widget-content">State: <select name="ct_state">
 <?php
   $q_string  = "select st_id,st_state ";
@@ -186,6 +216,8 @@ $(document).ready( function() {
 
 ?>
 </select></td>
+</tr>
+<tr>
   <td class="ui-widget-content">CLLI Code: <input type="text" name="ct_clli" size="10"></td>
 </tr>
 </table>
@@ -193,6 +225,41 @@ $(document).ready( function() {
 </form>
 
 </div>
+
+
+<div id="dialogUpdate" title="City/County Form">
+
+<form name="updateDialog">
+
+<input type="hidden" name="id" value="0">
+
+<table class="ui-styled-table">
+<tr>
+  <td class="ui-widget-content">City/County: <input type="text" name="ct_city" size="30"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">State: <select name="ct_state">
+<?php
+  $q_string  = "select st_id,st_state ";
+  $q_string .= "from states ";
+  $q_string .= "order by st_state ";
+  $q_states = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_states = mysqli_fetch_array($q_states)) {
+    print "<option value=\"" . $a_states['st_id'] . "\">" . $a_states['st_state'] . "</option>\n";
+  }
+
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">CLLI Code: <input type="text" name="ct_clli" size="10"></td>
+</tr>
+</table>
+
+</form>
+
+</div>
+
 
 <?php include($Sitepath . '/footer.php'); ?>
 

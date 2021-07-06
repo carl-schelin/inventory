@@ -85,9 +85,8 @@
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
-        $output .= "  <th class=\"ui-state-default\">Del</th>\n";
+        $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete City/County</th>\n";
       }
-      $output .= "  <th class=\"ui-state-default\">Id</th>\n";
       $output .= "  <th class=\"ui-state-default\">City/County</th>\n";
       $output .= "  <th class=\"ui-state-default\">State</th>\n";
       $output .= "  <th class=\"ui-state-default\">CLLI Code</th>\n";
@@ -101,7 +100,7 @@
       if (mysqli_num_rows($q_cities) > 0) {
         while ($a_cities = mysqli_fetch_array($q_cities)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('city.fill.php?id="  . $a_cities['ct_id'] . "');jQuery('#dialogCity').dialog('open');return false;\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('city.fill.php?id="  . $a_cities['ct_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('city.del.php?id=" . $a_cities['ct_id'] . "');\">";
           $linkend   = "</a>";
 
@@ -109,15 +108,14 @@
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel                                         . "</td>";
           }
-          $output .= "  <td class=\"ui-widget-content delete\">"   . $linkstart . $a_cities['ct_id']       . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_cities['ct_city']     . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_cities['st_state']    . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_cities['ct_clli']     . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                       . $a_cities['st_state']               . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                       . $a_cities['ct_clli']                . "</td>";
           $output .= "</tr>";
         }
       } else {
         $output .= "<tr>";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"5\">No records found.</td>";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"4\">No records found.</td>";
         $output .= "</tr>";
       }
 

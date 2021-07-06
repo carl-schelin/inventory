@@ -30,14 +30,14 @@
 
       $state = return_Index($db, $a_cities['ct_state'], "select st_id from states order by st_state");
 
-      print "document.cities.ct_city.value = '"    . mysqli_real_escape_string($db, $a_cities['ct_city'])    . "';\n";
-      print "document.cities.ct_clli.value = '"    . mysqli_real_escape_string($db, $a_cities['ct_clli'])    . "';\n";
+      print "document.updateDialog.ct_city.value = '"    . mysqli_real_escape_string($db, $a_cities['ct_city'])    . "';\n";
+      print "document.updateDialog.ct_clli.value = '"    . mysqli_real_escape_string($db, $a_cities['ct_clli'])    . "';\n";
 
       if ($state > 0) {
-        print "document.cities.ct_state['" . $state . "'].selected = true;\n";
+        print "document.updateDialog.ct_state['" . $state . "'].selected = true;\n";
       }
 
-      print "document.cities.id.value = " . $formVars['id'] . ";\n";
+      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
