@@ -265,20 +265,21 @@ $(document).ready( function () {
 #####
     $interface = "";
     $console = "";
-    $q_string = "select int_face,int_addr,int_type,itp_acronym,int_ip6 "
-              . "from interface "
-              . "left join int_types on int_types.itp_id = interface.int_type "
-              . "where int_companyid = \"" . $a_inventory['inv_id'] . "\" and int_type != 7 and int_addr != '' and int_ip6 = 0 "
-              . "order by itp_acronym,int_face";
+    $q_string  = "select int_face,ip_ipv4,int_type,itp_acronym,int_ip6 ";
+    $q_string .= "from interface ";
+    $q_string .= "left join ipaddress on ipaddress.ip_id = interface.int_ipaddressid ";
+    $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
+    $q_string .= "where int_companyid = \"" . $a_inventory['inv_id'] . "\" and int_type != 7 and int_ip6 = 0 ";
+    $q_string .= "order by itp_acronym,int_face";;
     $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     while ($a_interface = mysqli_fetch_array($q_interface)) {
 
 # if a console or LOM interface type
       if ($a_interface['int_type'] == 4 || $a_interface['int_type'] == 6) {
-        $console .= $a_interface['int_face'] . "=" . "<a href=\"http://" . $a_interface['int_addr'] . "\" target=\"_blank\">" . $a_interface['int_addr'] . "</a> ";
+        $console .= $a_interface['int_face'] . "=" . "<a href=\"http://" . $a_interface['ip_ipv4'] . "\" target=\"_blank\">" . $a_interface['ip_ipv4'] . "</a> ";
       } else {
         if ($a_interface['int_type'] == 1 || $a_interface['int_type'] == 2 || $a_interface['int_type'] == 12 || $a_interface['int_type'] == 16) {
-          $interface .= $a_interface['itp_acronym'] . "=" . $a_interface['int_addr'] . " ";
+          $interface .= $a_interface['itp_acronym'] . "=" . $a_interface['ip_ipv4'] . " ";
         }
       }
     }
