@@ -71,10 +71,6 @@ function attach_file( p_script_url, update ) {
   af_url += "&loc_details="     + encode_URI(af_form.loc_details.value);
   af_url += "&loc_default="     + af_form.loc_default.checked;
   af_url += "&loc_instance="    + encode_URI(af_form.loc_instance.value);
-  af_url += "&loc_xpoint="      + encode_URI(af_form.loc_xpoint.value);
-  af_url += "&loc_ypoint="      + encode_URI(af_form.loc_ypoint.value);
-  af_url += "&loc_xlen="        + encode_URI(af_form.loc_xlen.value);
-  af_url += "&loc_ylen="        + encode_URI(af_form.loc_ylen.value);
   af_url += "&loc_identity="    + encode_URI(af_form.loc_identity.value);
   af_url += "&loc_environment=" + encode_URI(af_form.loc_environment.value);
 
@@ -88,23 +84,51 @@ function clear_fields() {
 }
 
 $(document).ready( function() {
-  $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
-
-  $( '#clickAddDatacenter' ).click(function() {
-    $( "#dialogDatacenter" ).dialog('open');
+  $( '#clickCreate' ).click(function() {
+    $( "#dialogCreate" ).dialog('open');
   });
 
-  $( "#dialogDatacenter" ).dialog({
+  $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 440,
-    width: 1100,
+    height: 450,
+    width: 600,
     show: 'slide',
     hide: 'slide',
     closeOnEscape: true,
     dialogClass: 'dialogWithDropShadow',
     close: function(event, ui) {
-      $( "#dialogDatacenter" ).hide();
+      $( "#dialogCreate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('datacenter.mysql.php?update=-1');
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Location",
+        click: function() {
+          attach_file('datacenter.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+  $( "#dialogUpdate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 450,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogUpdate" ).hide();
     },
     buttons: [
       {
@@ -186,53 +210,29 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickAddDatacenter" value="Add Location"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add Location"></td>
 </tr>
 </table>
 
 </form>
 
-<div id="tabs">
-
-<ul>
-  <li><a href="#datacenter">Data Centers</a></li>
-  <li><a href="#noc">NOC Contacts</a></li>
-  <li><a href="#customer">Customers</a></li>
-</ul>
-
-<div id="datacenter">
-<span id="datacenter_mysql"><?php print wait_Process('Waiting...')?></span>
-</div>
-
-
-<div id="noc">
-<span id="noc_mysql"><?php print wait_Process('Waiting...')?></span>
-</div>
-
-
-<div id="customer">
-<span id="customer_mysql"><?php print wait_Process('Waiting...')?></span>
-</div>
-
-
-</div>
+<span id="mysql_table"><?php print wait_Process('Waiting...')?></span>
 
 </div>
 
 
-<div id="dialogDatacenter" title="Location Form">
+<div id="dialogCreate" title="Data Center Form">
 
-<form name="locations">
+<form name="createDialog">
 
 <input type="hidden" name="id" value="0">
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default" colspan="3">Location Form</th>
+  <td class="ui-widget-content">Descriptive Label: <input type="text" name="loc_name" size="50"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Name: <input type="text" name="loc_name" size="50"></td>
-  <td class="ui-widget-content">Type: <select name="loc_type">
+  <td class="ui-widget-content">Location Type: <select name="loc_type">
 <?php
   $q_string  = "select typ_id,typ_name ";
   $q_string .= "from loc_types ";
@@ -243,6 +243,8 @@ $(document).ready( function() {
   }
 ?>
 </select></td>
+</tr>
+<tr>
 <td class="ui-widget-content">Environment: <select name="loc_environment">
 <?php
   $q_string  = "select env_id,env_name ";
@@ -257,11 +259,15 @@ $(document).ready( function() {
 </tr>
 <tr>
   <td class="ui-widget-content">Address 1: <input type="text" name="loc_addr1" size="30"></td>
-  <td class="ui-widget-content" colspan="2">Suite: <input type="text" name="loc_suite" size="12"></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Address 2: <input type="text" name="loc_addr2" size="30"></td>
-  <td class="ui-widget-content" colspan="2"><label>Default Location? <input type="checkbox" name="loc_default"></label></td>
+</tr>
+<tr>
+  <td class="ui-widget-content" colspan="2">Suite: <input type="text" name="loc_suite" size="12"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content" colspan="2"><label>Use in Report Filter? <input type="checkbox" name="loc_default"></label></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Select a City/State/Country: <select name="loc_city">
@@ -277,50 +283,113 @@ $(document).ready( function() {
   }
 ?>
 </select></td>
+</tr>
+<tr>
   <td class="ui-widget-content" colspan="2">Zipcode: <input type="text" name="loc_zipcode" size="12"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Instance (0 for Lab, 1, 2, etc): <input type="text" name="loc_instance" size="5"></td>
-  <td class="ui-widget-content" colspan="2">DC Identity: <input type="text" name="loc_identity" size="10"></td>
-</tr>
-</table>
-
-<table class="ui-styled-table">
-<tr>
-  <th class="ui-state-default">Location Contact Form</th>
+  <td class="ui-widget-content">Site Instance (0 for Lab, 1, 2, etc): <input type="text" name="loc_instance" size="5"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Contact Info <input type="text" name="loc_contact1" size="100"></td>
+  <td class="ui-widget-content" colspan="2">Data Center Identifier: <input type="text" name="loc_identity" size="10"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Alternate Contact Info <input type="text" name="loc_contact2" size="100"></td>
-</tr>
-</table>
-
-<table class="ui-styled-table">
-<tr>
-  <th class="ui-state-default">Location Access Form</th>
+  <td class="ui-widget-content">Contact Info <input type="text" name="loc_contact1" size="10"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Link to Additional Details <input type="text" name="loc_details" size="100"></td>
-</tr>
-</table>
-
-<table class="ui-styled-table">
-<tr>
-  <th class="ui-state-default" colspan="4">Network Grid Form</th>
-</tr>
-<tr>
-  <td class="ui-widget-content">X Axis <input type="number" name="loc_xpoint" size="10"></td>
-  <td class="ui-widget-content">Y Axis <input type="number" name="loc_ypoint" size="10"></td>
-  <td class="ui-widget-content">X Length <input type="number" name="loc_xlen" size="10"></td>
-  <td class="ui-widget-content">Y Height <input type="number" name="loc_ylen" size="10"></td>
+  <td class="ui-widget-content">Link to Additional Details <input type="text" name="loc_details" size="60"></td>
 </tr>
 </table>
 
 </form>
 
 </div>
+
+
+<div id="dialogUpdate" title="Data Center Form">
+
+<form name="updateDialog">
+
+<input type="hidden" name="id" value="0">
+
+<table class="ui-styled-table">
+<tr>
+  <td class="ui-widget-content">Descriptive Label: <input type="text" name="loc_name" size="50"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Location Type: <select name="loc_type">
+<?php
+  $q_string  = "select typ_id,typ_name ";
+  $q_string .= "from loc_types ";
+  $q_string .= "order by typ_name ";
+  $q_loc_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_loc_types = mysqli_fetch_array($q_loc_types)) {
+    print "<option value=\"" . $a_loc_types['typ_id'] . "\">" . $a_loc_types['typ_name'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+<tr>
+<td class="ui-widget-content">Environment: <select name="loc_environment">
+<?php
+  $q_string  = "select env_id,env_name ";
+  $q_string .= "from environment ";
+  $q_string .= "order by env_id ";
+  $q_environment = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_environment = mysqli_fetch_array($q_environment)) {
+    print "<option value=\"" . $a_environment['env_id'] . "\">" . $a_environment['env_name'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Address 1: <input type="text" name="loc_addr1" size="30"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Address 2: <input type="text" name="loc_addr2" size="30"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content" colspan="2">Suite: <input type="text" name="loc_suite" size="12"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content" colspan="2"><label>Use in Report Filter? <input type="checkbox" name="loc_default"></label></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Select a City/State/Country: <select name="loc_city">
+<?php
+  $q_string  = "select ct_id,ct_city,st_acronym,cn_acronym ";
+  $q_string .= "from cities ";
+  $q_string .= "left join states on states.st_id = cities.ct_state ";
+  $q_string .= "left join country on country.cn_id = states.st_country ";
+  $q_string .= "order by ct_city,st_acronym,cn_acronym ";
+  $q_cities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_cities = mysqli_fetch_array($q_cities)) {
+    print "<option value=\"" . $a_cities['ct_id'] . "\">" . $a_cities['ct_city'] . ", " . $a_cities['st_acronym'] . ", " . $a_cities['cn_acronym'] . "</option>";
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content" colspan="2">Zipcode: <input type="text" name="loc_zipcode" size="12"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Site Instance (0 for Lab, 1, 2, etc): <input type="text" name="loc_instance" size="5"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content" colspan="2">Data Center Identifier: <input type="text" name="loc_identity" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Contact Info <input type="text" name="loc_contact1" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Link to Additional Details <input type="text" name="loc_details" size="60"></td>
+</tr>
+</table>
+
+</form>
+
+</div>
+
 
 <?php include($Sitepath . '/footer.php'); ?>
 
