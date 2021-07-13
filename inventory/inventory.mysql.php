@@ -533,8 +533,8 @@
         $q_string .= "left join net_zones  on net_zones.zone_id = interface.int_zone ";
         $q_string .= "left join int_types   on int_types.itp_id   = interface.int_type ";
         $q_string .= "left join int_media on int_media.med_id = interface.int_media ";
-        $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = 0 ";
-        $q_string .= "order by int_server,int_face";
+        $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = 0 and (int_type = 1 or int_type = 2 or int_type = 12 or int_type = 16) ";
+        $q_string .= "order by int_server,itp_acronym";
         $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         if (mysqli_num_rows($q_interface) > 0) {
           while ($a_interface = mysqli_fetch_array($q_interface)) {
@@ -684,8 +684,8 @@
             $q_string .= "left join net_zones  on net_zones.zone_id = interface.int_zone ";
             $q_string .= "left join int_types   on int_types.itp_id   = interface.int_type ";
             $q_string .= "left join int_media on int_media.med_id = interface.int_media ";
-            $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_interface['int_id'] . " ";
-            $q_string .= "order by int_server,int_face";
+            $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_interface['int_id'] . " and (int_type = 1 or int_type = 2 or int_type = 12 or int_type = 16) ";
+            $q_string .= "order by int_server,itp_acronym";
             $q_int_child = mysqli_query($db, $q_string);
             if (mysqli_num_rows($q_int_child) > 0) {
               while ($a_int_child = mysqli_fetch_array($q_int_child)) {
