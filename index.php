@@ -656,16 +656,31 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
 
 <p>
 <?php
-  $q_string  = "select tag_name,count(tag_name) ";
+  $tag_name = '';
+  $q_string  = "select tag_name ";
   $q_string .= "from tags ";
   $q_string .= "where tag_type = 1 ";
-  $q_string .= "group by tag_name ";
+  $q_string .= "order by tag_name ";
   $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_tags = mysqli_fetch_array($q_tags)) {
-    $linkstart = "<a href=\"javascript:;\" onClick=\"javascript:attach_tag('" . $Reportroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "&type=2');\">";
-    $linkend   = "</a>";
+  if (mysqli_num_rows($q_tags) > 0) {
+    while ($a_tags = mysqli_fetch_array($q_tags)) {
 
-    print $linkstart . $a_tags['tag_name'] . " (" . $a_tags['count(tag_name)'] . ")" . $linkend . "&nbsp;&nbsp;";
+      if ($a_tags['tag_name'] != $tag_name) {
+        if ($tag_name != '') {
+          $q_string  = "select tag_id ";
+          $q_string .= "from tags ";
+          $q_string .= "where tag_type = 1 and tag_name = \"" . $a_tags['tag_name'] . "\" ";
+          $q_count = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $tag_count = mysqli_num_rows($q_count);
+
+          $linkstart = "<a href=\"javascript:;\" onClick=\"javascript:attach_tag('" . $Reportroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "&type=2');\">";
+          $linkend   = "</a>";
+
+          print $linkstart . $a_tags['tag_name'] . " (" . $tag_count . ")" . $linkend . "&nbsp;&nbsp;";
+        }
+        $tag_name = $a_tags['tag_name'];
+      }
+    }
   }
 ?>
 </p>
