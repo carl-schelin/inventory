@@ -436,6 +436,54 @@
         }
       }
 
+# edit the mac address field
+      if ($formVars['function'] == 'fae') {
+        if ($formVars['status'] == 1) {
+          print "var cell = document.getElementById('" . $cellid . "');\n";
+          print "var celltext = document.getElementById('" . $cellid . "').innerHTML;\n";
+
+          print "celltext = celltext.replace(\"<u>\",\"\");\n";
+          print "celltext = celltext.replace(\"</u>\",\"\");\n";
+          print "celltext = celltext.replace(\"&nbsp;&nbsp;&nbsp;&nbsp;\",\"\");\n";
+
+          print "cell.innerHTML = '&nbsp;';\n";
+          print "cell.setAttribute(\"onclick\", \"\");\n";
+
+          print "var infield = document.createElement('input');\n";
+
+          print "infield.setAttribute(\"id\",\"edit_data\");\n";
+          print "infield.setAttribute(\"name\",\"edit_data\");\n";
+          print "infield.setAttribute(\"onblur\",\"interface_Completed(" . $formVars['id'] . ",'" . $formVars['function'] . "');\");\n";
+          print "infield.setAttribute(\"type\",\"text\");\n";
+          print "infield.setAttribute(\"value\",celltext);\n";
+          print "infield.setAttribute(\"size\",\"16\");\n";
+
+          print "cell.appendChild(infield);\n";
+
+          print "document.getElementById('edit_data').focus();\n";
+        }
+# close down the cell and put the text in 
+        if ($formVars['status'] == 0) {
+
+          print "var cell = document.getElementById('" . $cellid . "');\n";
+
+          print "cell.setAttribute(\"onclick\", \"edit_Interface(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
+
+          $q_string  = "update ";
+          $q_string .= "interface ";
+          $q_string .= "set ";
+          $q_string .= "int_eth = '" . $formVars['select'] . "' ";
+          $q_string .= "where int_id = " . $formVars['id'] . " ";
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+
+          if ($formVars['select'] == '') {
+            $formVars['select'] = '&nbsp;&nbsp;&nbsp;&nbsp;';
+          }
+          print "cell.innerHTML = '<u>" . $formVars['select'] . "</u>';\n";
+
+        }
+      }
+
 # edit the ip address field
       if ($formVars['function'] == 'fad') {
         if ($formVars['status'] == 1) {
