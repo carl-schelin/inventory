@@ -428,23 +428,23 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      $output .=   "<th class=\"ui-state-default\">Del</th>\n";
-      $output .=   "<th class=\"ui-state-default\">Hostname/FQDN</th>\n";
-      $output .=   "<th class=\"ui-state-default\">Fwd</th>\n";
-      $output .=   "<th class=\"ui-state-default\">Rev</th>\n";
-      $output .=   "<th class=\"ui-state-default\">Logical Interface</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Del</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Hostname/FQDN</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Fwd</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Rev</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Logical Interface</th>\n";
       if (return_Virtual($db, $formVars['int_companyid']) == 0) {
-        $output .=   "<th class=\"ui-state-default\">Physical Port</th>\n";
+        $output .= "  <th class=\"ui-state-default\">Physical Port</th>\n";
       }
-      $output .=   "<th class=\"ui-state-default\">MAC</th>\n";
-      $output .=   "<th class=\"ui-state-default\">IP Address/Netmask</th>\n";
-      $output .=   "<th class=\"ui-state-default\">Gateway</th>\n";
+      $output .= "  <th class=\"ui-state-default\">MAC</th>\n";
+      $output .= "  <th class=\"ui-state-default\">IP Address/Netmask</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Gateway</th>\n";
       if (return_Virtual($db, $formVars['int_companyid']) == 0) {
-        $output .=   "<th class=\"ui-state-default\">Switch</th>\n";
-        $output .=   "<th class=\"ui-state-default\">Port</th>\n";
+        $output .= "  <th class=\"ui-state-default\">Switch</th>\n";
+        $output .= "  <th class=\"ui-state-default\">Port</th>\n";
       }
-      $output .=   "<th class=\"ui-state-default\">Type</th>\n";
-      $output .=   "<th class=\"ui-state-default\">Updated</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Type</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Updated</th>\n";
       $output .= "</tr>\n";
 
       $mgtcount = 0;
@@ -589,7 +589,7 @@
           $linkend = "</a>";
 
           $output .= "<tr>\n";
-          $output .=   "<td"          . $defaultdel . ">" . $linkdel                                                                      . "</td>\n";
+          $output .= "  <td"          . $defaultdel . ">" . $linkdel                                                                      . "</td>\n";
           $output .= "  <td"          . $default    . ">" . $linkstart . $servername   . $redundancy   . $monitor . $management . $backups . $login . $linkend   . "</td>\n";
           $output .= "  <td"          . $defaultdel . " title=\"" . $fwdtitle . "\">" . $linkstart . $forward                 . $linkend   . "</td>\n";
           $output .= "  <td"          . $defaultdel . " title=\"" . $revtitle . "\">" . $linkstart . $reverse                . $linkend   . "</td>\n";
@@ -755,7 +755,7 @@
               $linkend = "</a>";
 
               $output .= "<tr>\n";
-              $output .=   "<td"          . $defaultdel . ">"   . $linkdel                                                                  . "</td>\n";
+              $output .= "  <td"          . $defaultdel . ">"   . $linkdel                                                                  . "</td>\n";
               $output .= "  <td"          . $default    . ">> " . $linkstart . $servername . $redundancy . $group . $monitor . $management . $backups . $login . $linkend . "</td>\n";
               $output .= "  <td"          . $defaultdel . " title=\"" . $fwdtitle . "\">" . $linkstart . $forward                 . $linkend   . "</td>\n";
               $output .= "  <td"          . $defaultdel . " title=\"" . $revtitle . "\">" . $linkstart . $reverse                . $linkend   . "</td>\n";
