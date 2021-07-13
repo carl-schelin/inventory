@@ -32,7 +32,7 @@
       $a_interface = mysqli_fetch_array($q_interface);
       mysqli_free_result($q_interface);
 
-      $int_types     = return_Index($db, $a_interface['int_type'],       "select itp_id from int_types order by itp_id");
+      $inttypes      = return_Index($db, $a_interface['int_type'],       "select itp_id from int_types order by itp_id");
       $intmedia      = return_Index($db, $a_interface['int_media'],      "select med_id from int_media order by med_text");
       $intspeed      = return_Index($db, $a_interface['int_speed'],      "select spd_id from int_speed order by spd_text");
       $intduplex     = return_Index($db, $a_interface['int_duplex'],     "select dup_id from int_duplex order by dup_text");
@@ -49,19 +49,19 @@
       print "document.edit.int_sysport.value = ' "  . mysqli_real_escape_string($db, $a_interface['int_sysport'])   . "';\n";
       print "document.edit.int_groupname.value = '" . mysqli_real_escape_string($db, $a_interface['int_groupname']) . "';\n";
 
-      if ($int_types > 0) {
-        print "document.edit.int_type['"       . $int_types     . "'].selected = true;\n";
+      if ($inttypes > 0) {
+        print "document.edit.int_type['"       . $inttypes      . "'].selected = true;\n";
       }
-      if ($int_types > 0) {
+      if ($intmedia > 0) {
         print "document.edit.int_media['"      . $intmedia      . "'].selected = true;\n";
       }
-      if ($int_types > 0) {
+      if ($intspeed > 0) {
         print "document.edit.int_speed['"      . $intspeed      . "'].selected = true;\n";
       }
-      if ($int_types > 0) {
+      if ($intduplex > 0) {
         print "document.edit.int_duplex['"     . $intduplex     . "'].selected = true;\n";
       }
-      if ($int_types > 0) {
+      if ($intredundancy > 0) {
         print "document.edit.int_redundancy['" . $intredundancy . "'].selected = true;\n";
       }
       print "document.edit.int_ipaddressid['" . $intaddress . "'].selected = true;\n";
