@@ -247,18 +247,20 @@
 
         $q_string  = "select ip_id,ip_ipv4,ip_hostname ";
         $q_string .= "from ipaddress ";
-        $q_string .= "order by ip_hostname ";
+        $q_string .= "order by ip_hostname,ip_ipv4 ";
         $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         if (mysqli_num_rows($q_ipaddress) > 0) {
           while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
 
-#            $q_string  = "select int_id ";
-#            $q_string .= "from interface ";
-#            $q_string .= "where int_ipaddressid = " . $a_ipaddress['ip_id'] . " ";
-#            $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-#            if (mysqli_num_rows($q_interface) == 0) {
+            $q_string  = "select int_id ";
+            $q_string .= "from interface ";
+            $q_string .= "where int_ipaddressid = " . $a_ipaddress['ip_id'] . " ";
+            $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            if (mysqli_num_rows($q_interface) == 0) {
               $output .= "<option value=\"" . $a_ipaddress['ip_id'] . "\">" . $a_ipaddress['ip_hostname'] . " " . $a_ipaddress['ip_ipv4'] . "</option>\n";
-#            }
+            } else {
+              $output .= "<option value=\"" . $a_ipaddress['ip_id'] . "\">" . $a_ipaddress['ip_hostname'] . " " . $a_ipaddress['ip_ipv4'] . "*</option>\n";
+            }
           }
         }
 
