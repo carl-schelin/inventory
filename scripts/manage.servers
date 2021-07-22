@@ -13,6 +13,10 @@ HOSTNAME=`hostname|cut -f1 -d.`
 SVRRUN=/var/www/html/inventory/scripts
 WHOCARES="cschelin@internal.pri"
 
+# crontab entry:
+# create the servers file used in most scripts
+#0 16 * * * /var/www/html/inventory/scripts/manage.servers > /dev/null 2>&1
+
 grep apache /etc/passwd > /dev/null
 if [[ $? -eq 0 ]]
 then
