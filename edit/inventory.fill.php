@@ -24,7 +24,7 @@
       $q_string  = "select inv_name,inv_companyid,inv_function,inv_callpath,inv_document,";
       $q_string .= "       inv_ssh,inv_location,inv_rack,inv_row,inv_unit,inv_zone,inv_front,";
       $q_string .= "       inv_rear,inv_manager,inv_appadmin,inv_class,inv_response,inv_mstart,inv_mend,inv_ansible,";
-      $q_string .= "       inv_mdow,inv_minterval,inv_product,inv_project,inv_department,inv_notes,inv_clusterid,inv_env,";
+      $q_string .= "       inv_mdow,inv_minterval,inv_product,inv_project,inv_department,inv_notes,inv_env,";
       $q_string .= "       inv_appliance,inv_ticket,inv_maint ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_id = " . $formVars['id'];
@@ -49,8 +49,6 @@
         $q_string .= "where mod_type = 48 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name ";
  
-        $invclusterid  = return_Index($db, $a_inventory['inv_clusterid'],  $q_string);
-
         $invlocation   = return_Index($db, $a_inventory['inv_location'],   "select loc_id from locations left join cities on cities.ct_id = locations.loc_city order by ct_city,loc_name");
         $invzone       = return_Index($db, $a_inventory['inv_zone'],       "select zone_id from timezones order by zone_name");
         $invfront      = return_Index($db, $a_inventory['inv_front'],      "select img_id from images where img_facing = 1 order by img_title,img_file");
@@ -77,9 +75,6 @@
 
         if ($invcompanyid > 0) {
           print "document.edit.inv_companyid['"  . $invcompanyid              . "'].selected = true;\n";
-        }
-        if ($invclusterid > 0) {
-          print "document.edit.inv_clusterid['"  . $invclusterid              . "'].selected = true;\n";
         }
         if ($invlocation > 0) {
           print "document.edit.inv_location['"   . $invlocation               . "'].selected = true;\n";
