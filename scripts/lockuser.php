@@ -15,6 +15,10 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
+# crontab entry:
+# users that shouldn't be on the servers any more
+#0 16 * * * /usr/local/bin/php /var/www/html/inventory/scripts/lockuser.php > /usr/local/admin/install/unixsuite/etc/lockuser.dat
+
   print "# This data file is managed by the inventory and is rebuilt daily.\n";
   print "# Do not update this file manually.\n\n";
 
