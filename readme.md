@@ -1457,6 +1457,7 @@ create table ipaddress (
   ip_network int(10) not null default 0,
   ip_subzone int(10) not null default 0,
   ip_type int(10) not null default 0,
+  ip_claimed int(10) not null default 0,
   ip_user int(10) not null default 0,
   ip_timestamp timestamp not null default current_timestamp,
   ip_description char(50) not null default '',
@@ -1632,7 +1633,7 @@ Final:
 
 | int_id         | int(10) unsigned | NO   | PRI | NULL       | auto_increment |
 | int_companyid  | int(10)          | NO   | MUL | 0          |                | - which inventory entry does this belong to>?
-  int_addressid  | int(10)  
+  int_ipaddressid  | int(10)  
 | int_face       | char(20)         | NO   |     |            |                | - interface specific information
 | int_int_id     | int(10)          | NO   |     | 0          |                | - child interfaces - 
 | int_netbios    | char(100)        | NO   |     |            |                | - interface specific information
@@ -1656,7 +1657,7 @@ Final:
 | int_hostname   | int(10)          | NO   |     | 0          |                | - is this the hostname vs something the team entered
 
 
-alter table interface add column int_addressid int(10) not null default 0 after int_companyid;
+alter table interface add column int_ipaddressid int(10) not null default 0 after int_companyid;
 
 Huh, newer versions of mysql requires text files to not have a null value or it kicks back an error. But it fails on older installations.
 
@@ -1674,5 +1675,16 @@ create table backupdays (
   bud_description char(50) not null default '',  # description for more information if necessary.
   primary key (bud_id)
 );
+
+
+
+
+
+Networking Section: Where modifications are made
+
+
+
+
+
 
 
