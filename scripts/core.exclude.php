@@ -17,6 +17,10 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
+# crontab entry:
+# the exclude information to filter logs but server specific. Then centralized message processing
+#0 16 * * * /usr/local/bin/php /var/www/html/inventory/scripts/core.exclude.php > /usr/local/admin/etc/messages.exclude
+
   print "#\n";
   print "# messages.exclude file - by Carl Schelin\n";
   print "#  This file contains a list of common message entries to be excluded from the raw\n";
