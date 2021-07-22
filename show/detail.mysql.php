@@ -310,43 +310,6 @@
     $output .= "</table>";
   }
 
-  $q_string  = "select inv_id,inv_name,inv_function,grp_name,inv_appadmin ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
-  $q_string .= "where inv_clusterid = " . $formVars['id'] . " and inv_status = 0 ";
-  $q_string .= "order by inv_name ";
-  $q_children = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_children) > 0) {
-    $output .= "<table class=\"ui-styled-table\">";
-    $output .= "<tr>";
-    $output .= "<th class=\"ui-state-default\" colspan=\"4\">Cluster Membership Information</th>";
-    $output .= "</tr>";
-    $output .= "<tr>";
-    $output .= "<th class=\"ui-state-default\">Server Name</th>";
-    $output .= "<th class=\"ui-state-default\">Function</th>";
-    $output .= "<th class=\"ui-state-default\">Platform</th>";
-    $output .= "<th class=\"ui-state-default\">Application</th>";
-    $output .= "</tr>";
-    while ($a_children = mysqli_fetch_array($q_children)) {
-      $linkstart = "<a href=\"inventory.php?server=" . $a_children['inv_id'] . "\" target=\"_blank\">";
-      $linkend   = "</a>";
-
-      $q_string  = "select grp_name ";
-      $q_string .= "from a_groups ";
-      $q_string .= "where grp_id = " . $a_children['inv_appadmin'] . " ";
-      $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      $a_groups = mysqli_fetch_array($q_groups);
-
-      $output .= "<tr>";
-      $output .= "<td class=\"ui-widget-content\">" . $linkstart . $a_children['inv_name']     . $linkend . "</td>";
-      $output .= "<td class=\"ui-widget-content\">" . $linkstart . $a_children['inv_function'] . $linkend . "</td>";
-      $output .= "<td class=\"ui-widget-content\">" . $linkstart . $a_children['grp_name']     . $linkend . "</td>";
-      $output .= "<td class=\"ui-widget-content\">" . $linkstart . $a_groups['grp_name']       . $linkend . "</td>";
-      $output .= "</tr>";
-    }
-    $output .= "</table>";
-  }
-
   $q_string  = "select hw_purchased,hw_built,hw_active,mod_eol,hw_retired,hw_reused ";
   $q_string .= "from hardware ";
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
