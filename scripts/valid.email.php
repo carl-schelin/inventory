@@ -15,6 +15,10 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
+# crontab entry:
+# the proper gecos information for users
+#0 16 * * * /usr/local/bin/php /var/www/html/inventory/scripts/valid.email.php > /usr/local/admin/install/unixsuite/etc/valid.email
+
   print "# This data file is managed by the inventory and is rebuilt daily.\n";
   print "# Do not update this file manually.\n\n";
 
