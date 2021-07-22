@@ -26,7 +26,6 @@
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['inv_name'] != 'Blank' && ($formVars['update'] == 0 || $formVars['update'] == 1)) {
         $formVars["inv_companyid"]   = clean($_GET["inv_companyid"],   10);
-        $formVars["inv_clusterid"]   = clean($_GET["inv_clusterid"],   10);
         $formVars["inv_function"]    = clean($_GET["inv_function"],   255);
         $formVars["inv_callpath"]    = clean($_GET["inv_callpath"],    10);
         $formVars["inv_status"]      = clean($_GET["inv_status"],      10);
@@ -98,9 +97,6 @@
         if ($formVars['inv_companyid'] == '') {
           $formVars['inv_companyid'] = 0;
         }
-        if ($formVars['inv_clusterid'] == '') {
-          $formVars['inv_clusterid'] = 0;
-        }
         if ($formVars['inv_callpath'] == 'true' ) {
           $formVars['inv_callpath'] = 1;
         } else {
@@ -136,7 +132,6 @@
           $q_string =
             "inv_name        = \"" . $formVars['inv_name']        . "\"," .
             "inv_companyid   =   " . $formVars['inv_companyid']   . "," .
-            "inv_clusterid   =   " . $formVars['inv_clusterid']   . "," .
             "inv_function    = \"" . $formVars['inv_function']    . "\"," .
             "inv_callpath    =   " . $formVars['inv_callpath']    . "," .
             "inv_document    = \"" . $formVars['inv_document']    . "\"," .
