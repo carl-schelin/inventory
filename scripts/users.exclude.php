@@ -15,6 +15,10 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
+# crontab entry:
+# which system and service account users to ignore
+# 0 16 * * * /usr/local/bin/php /var/www/html/inventory/scripts/users.exclude.php > /usr/local/admin/etc/users.exclude
+
   print "# This data file is managed by the inventory and is rebuilt daily.\n";
   print "# Do not update this file manually.\n\n";
 
