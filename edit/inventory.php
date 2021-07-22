@@ -300,7 +300,6 @@ function attach_detail( p_script_url, update ) {
 
   am_url += "&inv_name="        + encode_URI(am_form.inv_name.value);
   am_url += "&inv_companyid="   + am_form.inv_companyid.value;
-  am_url += "&inv_clusterid="   + am_form.inv_clusterid.value;
   am_url += "&inv_function="    + encode_URI(am_form.inv_function.value);
   am_url += "&inv_callpath="    + am_form.inv_callpath.checked;
   am_url += "&inv_status="      + radio_Loop(am_form.inv_status, 3);
@@ -1038,7 +1037,7 @@ $(document).ready( function() {
 <tr>
   <td class="ui-widget-content"  colspan="3">Link to Documentation: <input type="text" name="inv_document" size="80"></td>
   <td class="ui-widget-content">Server is an Appliance? <input type="checkbox" name="inv_appliance"></td>
-  <td class="ui-widget-content"  colspan="3">Blade Chassis: <select name="inv_companyid">
+  <td class="ui-widget-content"  colspan="3">Parent Device: <select name="inv_companyid">
 <?php
   $q_string  = "select inv_id,inv_name ";
   $q_string .= "from inventory ";
@@ -1049,20 +1048,6 @@ $(document).ready( function() {
   $q_chassis = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_chassis = mysqli_fetch_array($q_chassis)) {
     print "<option value=\"" . $a_chassis['inv_id'] . "\">" . $a_chassis['inv_name'] . "</option>";
-  }
-?>
-</select></td>
-  <td class="ui-widget-content"  colspan="2">Cluster Member: <select name="inv_clusterid">
-<?php
-  $q_string  = "select inv_id,inv_name ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
-  $q_string .= "where mod_type = 48 and inv_manager = " . $_SESSION['group'] . " ";
-  $q_string .= "order by inv_name ";
-  $q_cluster = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_cluster = mysqli_fetch_array($q_cluster)) {
-    print "<option value=\"" . $a_cluster['inv_id'] . "\">" . $a_cluster['inv_name'] . "</option>";
   }
 ?>
 </select></td>
