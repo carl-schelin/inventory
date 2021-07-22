@@ -746,7 +746,7 @@
     $output .= "</table>\n\n";
 
 
-# table five: optional: if a chassis id, list the members.
+# table five: optional: if a parent id, list the members.
     $q_string  = "select inv_name,inv_function,grp_name,inv_appadmin ";
     $q_string .= "from inventory ";
     $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
@@ -757,7 +757,7 @@
       $output .= "<table width=80%>\n";
 
       $output .= "<tr>\n";
-      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Chassis Information</th>\n";
+      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Parent Information</th>\n";
       $output .= "</tr>\n";
       $output .= "<tr>\n";
       $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">Server</th>\n";
@@ -786,47 +786,7 @@
     }
 
 
-# table six: optional: if a cluster id, list the members.
-    $q_string  = "select inv_name,inv_function,grp_name,inv_appadmin ";
-    $q_string .= "from inventory ";
-    $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
-    $q_string .= "where inv_clusterid = " . $a_inventory['inv_id'] . " and inv_status = 0 ";
-    $q_string .= "order by inv_name ";
-    $q_cluster = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    if (mysqli_num_rows($q_cluster) > 0) {
-      $output .= "<table width=80%>\n";
-
-      $output .= "<tr>\n";
-      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Cluster Membership Information</th>\n";
-      $output .= "</tr>\n";
-      $output .= "<tr>\n";
-      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">Server</th>\n";
-      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">Function</th>\n";
-      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">Platform</th>\n";
-      $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\">Application</th>\n";
-      $output .= "</tr>\n";
-      
-      while ($a_cluster = mysqli_fetch_array($q_cluster)) {
-
-        $q_string  = "select grp_name ";
-        $q_string .= "from a_groups ";
-        $q_string .= "where grp_id = " . $a_cluster['inv_appadmin'] . " ";
-        $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_groups = mysqli_fetch_array($q_groups);
-
-        $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
-        $output .= "  <td>" . $a_cluster['inv_name']     . "</td>\n";
-        $output .= "  <td>" . $a_cluster['inv_function'] . "</td>\n";
-        $output .= "  <td>" . $a_cluster['grp_name'] . "</td>\n";
-        $output .= "  <td>" . $a_groups['grp_name'] . "</td>\n";
-        $output .= "</tr>\n";
-
-      }
-      $output .= "</table>\n\n";
-    }
-
-
-# table seven: location information including blade number if it's in a chassis
+# table seven: location information including parent if it exists
     $output .= "<table width=80%>\n";
 
     $output .= "<tr>\n";
@@ -846,21 +806,19 @@
     $output .= "  <td><strong>Data Center</strong>: " . $a_locations['loc_name'] . "</td>\n";
     $output .= "  <td><strong>Location</strong>: " . $a_locations['loc_addr1'] . "  " . $a_locations['ct_city'] . ", " . $a_locations['st_acronym'] . " " . $a_locations['loc_zipcode'] . " (" . $a_locations['cn_acronym'] . ")</td>\n";
 
-# don't provide info if it's a virtual machine
-    if (return_Virtual($db, $a_inventory['inv_id']) == 0) {
-      if ($a_inventory['inv_companyid']) {
-        $q_string  = "select inv_name,inv_rack,inv_row,inv_unit ";
-        $q_string .= "from inventory ";
-        $q_string .= "where inv_id = " . $a_inventory['inv_companyid'] . " ";
-        $q_chassis = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_chassis = mysqli_fetch_array($q_chassis);
+# show any parents of this system
+    if ($a_inventory['inv_companyid']) {
+      $q_string  = "select inv_name,inv_rack,inv_row,inv_unit ";
+      $q_string .= "from inventory ";
+      $q_string .= "where inv_id = " . $a_inventory['inv_companyid'] . " ";
+      $q_parent = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_parent = mysqli_fetch_array($q_chassis);
 
-        $output .= "  <td><strong>Chassis</strong>: " . $a_chassis['inv_name'] . "</td>\n";
-        $output .= "  <td><strong>Chassis Rack/Unit</strong>: " . $a_chassis['inv_rack'] . "-" . $a_chassis['inv_row'] . "/U" . $a_chassis['inv_unit'] . "</td>\n";
-        $output .= "  <td><strong>Blade Number</strong>: " . $a_inventory['inv_unit'] . "</td>\n";
-      } else {
-        $output .= "  <td><strong>Rack/Unit</strong>: " . $a_inventory['inv_rack'] . "-" . $a_inventory['inv_row'] . "/U" . $a_inventory['inv_unit'] . "</td>\n";
-      }
+      $output .= "  <td><strong>Parent Device</strong>: " . $a_parent['inv_name'] . "</td>\n";
+      $output .= "  <td><strong>Parent Rack/Unit</strong>: " . $a_parent['inv_rack'] . "-" . $a_parent['inv_row'] . "/U" . $a_parent['inv_unit'] . "</td>\n";
+      $output .= "  <td><strong>Blade Number</strong>: " . $a_inventory['inv_unit'] . "</td>\n";
+    } else {
+      $output .= "  <td><strong>Rack/Unit</strong>: " . $a_inventory['inv_rack'] . "-" . $a_inventory['inv_row'] . "/U" . $a_inventory['inv_unit'] . "</td>\n";
     }
     $output .= "</tr>\n";
 
