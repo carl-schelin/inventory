@@ -16,6 +16,10 @@
 
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
+# crontab entry:
+# create the ansible inventory
+#* * * * * /usr/local/bin/php /var/www/html/inventory/scripts/ansible.php > /usr/local/admin/etc/hosts 2>&1
+
   $manager = 1;
 
   if ($argc > 1) {
