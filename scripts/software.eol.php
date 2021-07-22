@@ -22,6 +22,10 @@ $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 # Red Hat OEL is here:
 # https://access.redhat.com/articles/3078
 
+# crontab listing:
+# update the current software table with the end of life information.
+#0 16 * * * /usr/local/bin/php /var/www/html/inventory/scripts/software.eol.php > /dev/null 2>&1
+
 print "Updating CentOS\n";
 
 ### CentOS
