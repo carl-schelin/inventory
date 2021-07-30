@@ -18,6 +18,13 @@
 
   logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
+# if help has not been seen yet,
+  if (show_Help($db, $Sitepath . "/" . $package)) {
+    $display = "display: block";
+  } else {
+    $display = "display: none";
+  }
+
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -53,11 +60,10 @@ function delete_line( p_script_url ) {
 ?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.parts;
+  var af_form = document.createDialog;
   var af_url;
 
   af_url  = '?update='   + update;
-  af_url += '&id='       + af_form.id.value;
 
   af_url += "&part_name="     + encode_URI(af_form.part_name.value);
   af_url += "&part_type="     + af_form.part_type.checked;
@@ -68,30 +74,42 @@ function attach_file( p_script_url, update ) {
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
+function update_file( p_script_url, update ) {
+  var uf_form = document.updateDialog;
+  var uf_url;
+
+  uf_url  = '?update='   + update;
+  uf_url += '&id='       + uf_form.id.value;
+
+  uf_url += "&part_name="     + encode_URI(uf_form.part_name.value);
+  uf_url += "&part_type="     + uf_form.part_type.checked;
+  uf_url += "&part_acronym="  + encode_URI(uf_form.part_acronym.value);
+
+  script = document.createElement('script');
+  script.src = p_script_url + uf_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
+}
+
 function clear_fields() {
   show_file('parts.mysql.php?update=-1');
 }
 
 $(document).ready( function() {
-});
-
-$(function() {
-
-  $( '#clickAddPart' ).click(function() {
-    $( "#dialogPart" ).dialog('open');
+  $( '#clickCreate' ).click(function() {
+    $( "#dialogCreate" ).dialog('open');
   });
 
-  $( "#dialogPart" ).dialog({
+  $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 300,
-    width:  500,
+    height: 200,
+    width:  600,
     show: 'slide',
     hide: 'slide',
     closeOnEscape: true,
     dialogClass: 'dialogWithDropShadow',
     close: function(event, ui) {
-      $( "#dialogPart" ).hide();
+      $( "#dialogCreate" ).hide();
     },
     buttons: [
       {
@@ -102,16 +120,46 @@ $(function() {
         }
       },
       {
+        text: "Add Part",
+        click: function() {
+          attach_file('parts.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+  $( "#dialogUpdate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 200,
+    width:  600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogUpdate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          update_file('parts.mysql.php', -1);
+          $( this ).dialog( "close" );
+        }
+      },
+      {
         text: "Update Part",
         click: function() {
-          attach_file('parts.mysql.php', 1);
+          update_file('parts.mysql.php', 1);
           $( this ).dialog( "close" );
         }
       },
       {
         text: "Add Part",
         click: function() {
-          attach_file('parts.mysql.php', 0);
+          update_file('parts.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -129,35 +177,21 @@ $(function() {
 
 <div id="main">
 
-<form name="display">
-
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default">Part Management</th>
+  <th class="ui-state-default">Parts Editor</th>
   <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('part-help');">Help</a></th>
 </tr>
 </table>
 
-<div id="part-help" style="display: none">
+<div id="part-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Buttons</strong>
-  <ul>
-    <li><strong>Update Part</strong> - Save any changes to this form.</li>
-    <li><strong>Add Part</strong> - If you need to add a new platform, change the Platform Name field then click this button to add the device. This button is only active if there are no devices using the same Server Name.</li>
-  </ul></li>
-</ul>
-
-<ul>
-  <li><strong>Part Form</strong>
-  <ul>
-    <li><strong>Name</strong> - The name of this part type.</li>
-    <li><strong>Device Name Acronym</strong> - This provides a part of the device naming convention.</li>
-    <li><strong>Primary Device</strong> - Is this a container. For example a server would be considered a Primary Device as would a Storage Array or a Blade Chassis. Primary Devices are required in order to display a server on the main inventory page.</li>
-  </ul></li>
-</ul>
+<p>This page lists all the parts that are available to the Asset management system. This is one piece of the Asset Management System. You add CPUs here which are then used in the Asset system to configure a server.
+In this situation, you might create a generic CPU vs defining a bunch of specific ones. But you can should you have a system where you
+have a specific purpose and need a specific CPU such as if you have an ARM cluster that hosts VMs, you can define an ARM CPU and then
+create an asset for the CPU and assign it to a device.</p>
 
 </div>
 
@@ -166,27 +200,77 @@ $(function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickAddPart" value="Add Part"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add Part"></td>
 </tr>
 </table>
 
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Parts Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('part-listing-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="part-listing-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+<ul>
+  <li><strong>Part Listing</strong>
+  <ul>
+    <li><strong>Editing</strong> - Click on a part to edit it.</li>
+  </ul></li>
+</ul>
+
+<ul>
+  <li><strong>Notes</strong>
+  <ul>
+    <li>Click the <strong>Part Management</strong> title bar to toggle the <strong>Part Form</strong>.</li>
+  </ul></li>
+</ul>
+
+</div>
+
+</div>
+
+
 <span id="table_mysql"></span>
+
+</div>
+
+
+<div id="dialogCreate" title="Add Part Form">
+
+<form name="createDialog">
+
+<input type="hidden" name="id" value="0">
+
+<table class="ui-styled-table">
+<tr>
+  <td class="ui-widget-content">Name: <input type="text" name="part_name" size="30"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Device Name Acronym: <input type="text" name="part_acronym" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label>Primary Device: <input type="checkbox" name="part_type"></label></td>
+</tr>
+</table>
 
 </form>
 
 </div>
 
 
-<div id="dialogPart" title="Part Form">
+<div id="dialogUpdate" title="Edit Part Form">
 
-<form name="parts">
+<form name="updateDialog">
 
 <input type="hidden" name="id" value="0">
 
 <table class="ui-styled-table">
-<tr>
-  <th class="ui-state-default" colspan="3">Part Form</th>
-</tr>
 <tr>
   <td class="ui-widget-content">Name: <input type="text" name="part_name" size="30"></td>
 </tr>

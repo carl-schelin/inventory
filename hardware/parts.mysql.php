@@ -44,16 +44,15 @@
             "part_acronym = \"" . $formVars['part_acronym'] . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into parts set part_id = NULL, " . $q_string;
+            $q_string = "insert into parts set part_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update parts set " . $q_string . " where part_id = " . $formVars['id'];
+            $q_string = "update parts set " . $q_string . " where part_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['part_name']);
 
-          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
-
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -62,72 +61,58 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-      $output  = "<p></p>";
-      $output .= "<table class=\"ui-styled-table\">";
-      $output .= "<tr>";
-      $output .= "  <th class=\"ui-state-default\">Part Listing</th>";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('part-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"part-listing-help\" style=\"display: none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Part Listing</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li><strong>Editing</strong> - Click on a part to edit it.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Notes</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li>Click the <strong>Part Management</strong> title bar to toggle the <strong>Part Form</strong>.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
       $output .= "<table class=\"ui-styled-table\">";
       $output .= "<tr>";
       if (check_userlevel($db, $AL_Admin)) {
-        $output .= "  <th class=\"ui-state-default\">Del</th>";
+        $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Part</th>";
       }
-      $output .= "  <th class=\"ui-state-default\">Id</th>";
       $output .= "  <th class=\"ui-state-default\">Part Name</th>";
       $output .= "  <th class=\"ui-state-default\">Device Acronym</th>";
       $output .= "  <th class=\"ui-state-default\">Container Type</th>";
+      $output .= "  <th class=\"ui-state-default\">Members</th>";
       $output .= "</tr>";
 
       $q_string  = "select part_id,part_name,part_type,part_acronym ";
       $q_string .= "from parts ";
       $q_string .= "order by part_name";
-      $q_parts = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_parts = mysqli_fetch_array($q_parts)) {
+      $q_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_parts) > 0) {
+        while ($a_parts = mysqli_fetch_array($q_parts)) {
 
-        $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('parts.fill.php?id="     . $a_parts['part_id']   . "');jQuery('#dialogPart').dialog('open');\">";
-        $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('parts.del.php?id=" . $a_parts['part_id'] . "');\">";
-        $linkend   = "</a>";
+          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('parts.fill.php?id="     . $a_parts['part_id']   . "');jQuery('#dialogUpdate').dialog('open');\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('parts.del.php?id=" . $a_parts['part_id'] . "');\">";
+          $linkend   = "</a>";
 
-        if ($a_parts['part_type'] == 1) {
-          $parttype = "Primary";
-        } else {
-          $parttype = "";
+          if ($a_parts['part_type'] == 1) {
+            $parttype = "Primary";
+          } else {
+            $parttype = "";
+          }
+
+          $q_string  = "select mod_id ";
+          $q_string .= "from models ";
+          $q_string .= "where mod_type = " . $a_parts['part_id'] . " ";
+          $q_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $total = mysqli_num_rows($q_models);
+
+          $output .= "<tr>";
+          if (check_userlevel($db, $AL_Admin)) {
+            if ($total == 0) {
+              $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel . "</td>";
+            } else {
+              $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>";
+            }
+          }
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_parts['part_name']    . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $a_parts['part_acronym']            . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $parttype                           . "</td>";
+          $output .= "  <td class=\"ui-widget-content delete\">"              . $total                              . "</td>";
+          $output .= "</tr>";
         }
-
-        $output .= "<tr>";
-        if (check_userlevel($db, $AL_Admin)){
-          $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel                                       . "</td>";
-        }
-        $output .= "  <td class=\"ui-widget-content delete\">" . $linkstart . $a_parts['part_id']      . $linkend . "</td>";
-        $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_parts['part_name']    . $linkend . "</td>";
-        $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_parts['part_acronym'] . $linkend . "</td>";
-        $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $parttype                . $linkend . "</td>";
-        $output .= "</tr>";
+      } else {
+          $output .= "<tr>";
+          $output .= "  <td class=\"ui-widget-content\" colspan=\"5\">No parts found</td>";
+          $output .= "</tr>";
       }
 
       $output .= "</table>";
@@ -135,10 +120,6 @@
       mysqli_free_result($q_parts);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
-
-      print "document.parts.part_name.value = '';\n";
-      print "document.parts.part_acronym.value = '';\n";
-      print "document.parts.part_type.checked = false;\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

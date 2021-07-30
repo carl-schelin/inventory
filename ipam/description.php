@@ -1,5 +1,5 @@
 <?php
-# Script: type.php
+# Script: description.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
 # Description:
@@ -14,7 +14,7 @@
 
   check_login($db, $AL_Edit);
 
-  $package = "type.php";
+  $package = "description.php";
 
   logaccess($db, $_SESSION['uid'], $package, "Viewing the Interface Type table");
 
@@ -23,7 +23,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Manage Interface Types</title>
+<title>Edit Interface Types</title>
 
 <style type='text/css' title='currentStyle' media='screen'>
 <?php include($Sitepath . "/mobile.php"); ?>
