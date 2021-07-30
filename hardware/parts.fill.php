@@ -24,20 +24,20 @@
       $q_string  = "select part_name,part_type,part_acronym ";
       $q_string .= "from parts ";
       $q_string .= "where part_id = " . $formVars['id'];
-      $q_parts = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_parts = mysqli_fetch_array($q_parts);
       mysqli_free_result($q_parts);
 
-      print "document.parts.part_name.value = '"    . mysqli_real_escape_string($db, $a_parts['part_name'])    . "';\n";
-      print "document.parts.part_acronym.value = '" . mysqli_real_escape_string($db, $a_parts['part_acronym']) . "';\n";
+      print "document.updateDialog.part_name.value = '"    . mysqli_real_escape_string($db, $a_parts['part_name'])    . "';\n";
+      print "document.updateDialog.part_acronym.value = '" . mysqli_real_escape_string($db, $a_parts['part_acronym']) . "';\n";
 
       if ($a_parts['part_type']) {
-        print "document.parts.part_type.checked = true;\n";
+        print "document.updateDialog.part_type.checked = true;\n";
       } else {
-        print "document.parts.part_type.checked = false;\n";
+        print "document.updateDialog.part_type.checked = false;\n";
       }
 
-      print "document.parts.id.value = " . $formVars['id'] . ";\n";
+      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
