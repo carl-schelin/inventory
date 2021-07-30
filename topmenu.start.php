@@ -41,16 +41,22 @@
       <li><a href="<?php print $IPAMroot; ?>/ipam.php">IP Address Manager</a></li>
       <li><a href="<?php print $IPAMroot; ?>/subzones.php">IP Address Zones</a></li>
       <li><a href="<?php print $IPAMroot; ?>/types.php">IP Address Types</a></li>
+      <li><a href="<?php print $IPAMroot; ?>/description.php">Interface Descriptions</a></li>
       <li><a href="<?php print $IPAMroot; ?>/network.php">Network Manager</a></li>
       <li><a href="<?php print $IPAMroot; ?>/zones.php">Network Zones</a></li>
     </ul>
   </li>
 
-  <li id="tm_hardware"><a href="<?php print $Siteroot; ?>/index.hardware.php">Hardware</a>
+  <li id="tm_hardware"><a href="<?php print $Siteroot; ?>/index.hardware.php">Assets</a>
     <ul>
+      <li><a href="<?php print $Hardwareroot; ?>/assets.php">Asset Manager</a></li>
+      <li><a href="<?php print $Hardwareroot; ?>/device.php">Device Manager</a></li>
+      <li><a href="<?php print $Hardwareroot; ?>/cpu.php">CPU Manager</a></li>
+      <li><a href="<?php print $Hardwareroot; ?>/memory.php">Memory Manager</a></li>
+      <li><a href="<?php print $Hardwareroot; ?>/storage.php">Storage Manager</a></li>
+      <li><a href="<?php print $Hardwareroot; ?>/other.php">Miscellaneous Hardware</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/hardware.php">Hardware Models</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/parts.php">Part Descriptions</a></li>
-      <li><a href="<?php print $Hardwareroot; ?>/type.php">Interface Names</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/speed.php">Interface Speeds</a></li>
     </ul>
   </li>
