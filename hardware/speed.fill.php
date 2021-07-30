@@ -28,11 +28,9 @@
       $a_int_speed = mysqli_fetch_array($q_int_speed);
       mysqli_free_result($q_int_speed);
 
-      print "document.speed.spd_text.value = '" . mysqli_real_escape_string($db, $a_int_speed['spd_text']) . "';\n";
+      print "document.updateDialog.spd_text.value = '" . mysqli_real_escape_string($db, $a_int_speed['spd_text']) . "';\n";
 
-      print "document.speed.id.value = " . $formVars['id'] . ";\n";
-
-      print "document.speed.update.disabled = false;\n";
+      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
