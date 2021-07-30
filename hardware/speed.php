@@ -18,12 +18,19 @@
 
   logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
+# if help has not been seen yet,
+  if (show_Help($db, $Sitepath . "/" . $package)) {
+    $display = "display: block";
+  } else {
+    $display = "display: none";
+  }
+
 ?>
 <!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Manage Interface Speeds</title>
+<title>Edit Speed Descriptions</title>
 
 <style type='text/css' title='currentStyle' media='screen'>
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -40,7 +47,7 @@
   if (check_userlevel($db, $AL_Admin)) {
 ?>
 function delete_line( p_script_url ) {
-  var answer = confirm("Delete this Interface Speed item?")
+  var answer = confirm("Delete this Speed Description?")
 
   if (answer) {
     script = document.createElement('script');
@@ -53,11 +60,10 @@ function delete_line( p_script_url ) {
 ?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.speed;
+  var af_form = document.createDialog;
   var af_url;
 
   af_url  = '?update='   + update;
-  af_url += '&id='       + af_form.id.value;
 
   af_url += "&spd_text=" + encode_URI(af_form.spd_text.value);
 
@@ -66,11 +72,95 @@ function attach_file( p_script_url, update ) {
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
+function update_file( p_script_url, update ) {
+  var uf_form = document.updateDialog;
+  var uf_url;
+
+  uf_url  = '?update='   + update;
+  uf_url += '&id='       + uf_form.id.value;
+
+  uf_url += "&spd_text=" + encode_URI(uf_form.spd_text.value);
+
+  script = document.createElement('script');
+  script.src = p_script_url + uf_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
+}
+
 function clear_fields() {
   show_file('speed.mysql.php?update=-1');
 }
 
 $(document).ready( function() {
+  $( '#clickCreate' ).click(function() {
+    $( "#dialogCreate" ).dialog('open');
+  });
+
+  $( "#dialogCreate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 150,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogCreate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('speed.mysql.php?update=-1');
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Speed Description",
+        click: function() {
+          attach_file('speed.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+  $( "#dialogUpdate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 150,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogUpdate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('speed.mysql.php?update=-1');
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Update Speed Description",
+        click: function() {
+          update_file('speed.mysql.php', 1);
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Speed Description",
+        click: function() {
+          update_file('speed.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
 });
 
 </script>
@@ -83,57 +173,93 @@ $(document).ready( function() {
 
 <div class="main">
 
-<form name="speed">
-
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default"><a href="javascript:;" onmousedown="toggleDiv('speed-hide');">Interface Speed Management</a></th>
+  <th class="ui-state-default">Speed Description Editor</th>
   <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('speed-help');">Help</a></th>
 </tr>
 </table>
 
-<div id="speed-help" style="display: none">
+<div id="speed-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Buttons</strong>
-  <ul>
-    <li><strong>Update Interface Speed</strong> - Save any changes to this form.</li>
-    <li><strong>Add Interface Speed</strong> - Add a new Interface Speed item.</li>
-  </ul></li>
-</ul>
+<p>For a physical system, you can define the internet speed you wish for the interface.</p>
 
 </div>
 
 </div>
-
-<div id="speed-hide" style="display: none">
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button">
-<input type="button" disabled="true" name="update" value="Update Interface Speed" onClick="javascript:attach_file('speed.mysql.php', 1);hideDiv('speed-hide');">
-<input type="hidden" name="id" value="0">
-<input type="button"                 name="addnew" value="Add Interface Speed"    onClick="javascript:attach_file('speed.mysql.php', 0);">
-</td>
+  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add Speed Description"></td>
 </tr>
 </table>
+
+<p></p>
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default">Interface Speed Form</th>
-</tr>
-<tr>
-  <td class="ui-widget-content">Interface Speed: <input type="text" name="spd_text" size="30"></td>
+  <th class="ui-state-default">Speed Description Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('speed-listing-help');">Help</a></th>
 </tr>
 </table>
 
+<div id="speed-listing-help" style="<?php print $display; ?>">
+
+
+<p><strong>Network Speed Description</strong></p>
+
+<p>This page lists all the defined Network Speeds.</p>
+
+<p>To add a Network Speed Description, click the Add Speed Description button. This will bring up a dialog box which 
+you can use to add a Speed Description.</p>
+
+<p>To edit an existing Speed Description, click on an entry in the listing. A dialog box will be presented where you 
+can edit the current entry, or if there is a small difference, you can make changes and add a new Speed Description.</p>
+
+<p>Note that under the Members colum is a number which indicates the number of times this Speed Description is in use. 
+You cannot delete a Description as long as this value is greater than zero.</p>
+
+
 </div>
+
+</div>
+
+
+<span id="table_mysql"></span>
+
+</div>
+
+
+<div id="dialogCreate" title="Add Speed Description">
+
+<form name="createDialog">
+
+<table class="ui-styled-table">
+<tr>
+  <td class="ui-widget-content">Network Speed Description: <input type="text" name="spd_text" size="30"></td>
+</tr>
+</table>
 
 </form>
 
-<span id="table_mysql"></span>
+</div>
+
+
+<div id="dialogUpdate" title="Update Speed Description">
+
+<form name="updateDialog">
+
+<input type="hidden" name="id" value="0">
+
+<table class="ui-styled-table">
+<tr>
+  <td class="ui-widget-content">Network Speed Description: <input type="text" name="spd_text" size="30"></td>
+</tr>
+</table>
+
+</form>
 
 </div>
 
