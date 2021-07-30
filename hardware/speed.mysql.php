@@ -35,19 +35,15 @@
             "spd_text     = \"" . $formVars['spd_text'] . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into int_speed set spd_id = NULL, " . $q_string;
-            $message = "Interface Speed added.";
+            $q_string = "insert into int_speed set spd_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update int_speed set " . $q_string . " where spd_id = " . $formVars['id'];
-            $message = "Interface Speed updated.";
+            $q_string = "update int_speed set " . $q_string . " where spd_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['spd_text']);
 
-          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
-
-          print "alert('" . $message . "');\n";
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -97,7 +93,7 @@
       $q_string  = "select spd_id,spd_text ";
       $q_string .= "from int_speed ";
       $q_string .= "order by spd_text";
-      $q_int_speed = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_int_speed = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_int_speed) > 0) {
         while ($a_int_speed = mysqli_fetch_array($q_int_speed)) {
 
