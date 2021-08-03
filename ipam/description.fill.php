@@ -34,8 +34,6 @@
 
       print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
 
-      print "document.updateDialog.update.disabled = false;\n";
-
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }

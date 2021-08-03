@@ -56,42 +56,13 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\">Interface Type Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('type-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"type-listing-help\" style=\"display: none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Interface Type Listing</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li><strong>Editing</strong> - Click on a type to edit it.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Notes</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li>Click the <strong>Interface Type Management</strong> title bar to toggle the <strong>Interface Type Form</strong>.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "<table class=\"ui-styled-table\">\n";
+      $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
-        $output .= "  <th class=\"ui-state-default\">Del</th>\n";
+        $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Description</th>\n";
       }
-      $output .= "  <th class=\"ui-state-default\">Acronym</th>\n";
       $output .= "  <th class=\"ui-state-default\">Descriptive Label</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Acronym</th>\n";
       $output .= "  <th class=\"ui-state-default\">Type Description</th>\n";
       $output .= "  <th class=\"ui-state-default\">Members</th>\n";
       $output .= "</tr>\n";
@@ -103,13 +74,13 @@
       if (mysqli_num_rows($q_int_types) > 0) {
         while ($a_int_types = mysqli_fetch_array($q_int_types)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('type.fill.php?id="  . $a_int_types['itp_id'] . "');showDiv('type-hide');\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\"  onclick=\"delete_line('type.del.php?id=" . $a_models['mod_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('description.fill.php?id="  . $a_int_types['itp_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\"  onclick=\"delete_line('description.del.php?id=" . $a_int_types['itp_id'] . "');\">";
           $linkend   = "</a>";
 
           $q_string  = "select ast_id ";
           $q_string .= "from assets ";
-          $q_string .= "where ast_modelid = " . $a_models['mod_id'] . " ";
+          $q_string .= "where ast_modelid = " . $a_int_types['itp_id'] . " ";
           $q_assets = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $total = mysqli_num_rows($q_assets);
 
@@ -139,8 +110,6 @@
       mysqli_free_result($q_int_types);
 
       print "document.getElementById('table_mysql').innerHTML = '"   . mysqli_real_escape_string($db, $output) . "';\n\n";
-
-      print "document.interfacetype.update.disabled = true;\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
