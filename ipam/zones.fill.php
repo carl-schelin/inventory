@@ -24,7 +24,7 @@
       $q_string  = "select zone_zone,zone_acronym ";
       $q_string .= "from net_zones ";
       $q_string .= "where zone_id = " . $formVars['id'];
-      $q_net_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_net_zones = mysqli_fetch_array($q_net_zones);
       mysqli_free_result($q_net_zones);
 

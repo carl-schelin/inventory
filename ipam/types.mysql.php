@@ -38,15 +38,15 @@
             "ip_description =  \"" . $formVars['ip_description'] . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into ip_types set ip_id = NULL, " . $q_string;
+            $q_string = "insert into ip_types set ip_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update ip_types set " . $q_string . " where ip_id = " . $formVars['id'];
+            $q_string = "update ip_types set " . $q_string . " where ip_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['ip_name']);
 
-          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -102,7 +102,7 @@
       $q_string .= "from ip_types ";
       $q_string .= "left join users on users.usr_id = ip_user ";
       $q_string .= "order by ip_name "; 
-      $q_ip_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_ip_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_ip_types) > 0) {
         while ($a_ip_types = mysqli_fetch_array($q_ip_types)) {
 
@@ -114,7 +114,7 @@
           $q_string  = "select ip_id ";
           $q_string .= "from ipaddress ";
           $q_string .= "where ip_type = " . $a_ip_types ['ip_id'] . " ";
-          $q_ipaddress = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_ipaddress) > 0) {
             while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
               $total++;

@@ -92,7 +92,7 @@ which then lets you manage the IP Addresses that are assigned to this network.</
       $q_string  = "select ip_ipv4 ";
       $q_string .= "from ipaddress ";
       $q_string .= "where ip_network = " . $a_network['net_id'] . " ";
-      $q_ipaddress = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_ipaddress) > 0) {
         while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
           $total++;

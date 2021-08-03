@@ -40,15 +40,15 @@
             "sub_description       = \"" . $formVars['sub_description'] . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into sub_zones set sub_id = NULL, " . $q_string;
+            $q_string = "insert into sub_zones set sub_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update sub_zones set " . $q_string . " where sub_id = " . $formVars['id'];
+            $q_string = "update sub_zones set " . $q_string . " where sub_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['sub_name']);
 
-          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -109,7 +109,7 @@
       $q_string .= "left join users on users.usr_id = sub_zones.sub_user ";
       $q_string .= "left join net_zones on net_zones.zone_id = sub_zones.sub_zone ";
       $q_string .= "order by zone_zone,sub_name "; 
-      $q_sub_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_sub_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_sub_zones) > 0) {
         while ($a_sub_zones = mysqli_fetch_array($q_sub_zones)) {
 
@@ -119,7 +119,7 @@
           $q_string .= "left join network on network.net_id = ipaddress.ip_network ";
           $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
           $q_string .= "where ip_subzone = " . $a_sub_zones['sub_id'] . " ";
-          $q_ipaddress = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_ipaddress) > 0) {
             while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
               $total++;
