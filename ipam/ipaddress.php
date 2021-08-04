@@ -195,8 +195,6 @@ $(document).ready( function() {
 
 <div class="main">
 
-<form name="ipaddress">
-
 <table class="ui-styled-table">
 <tr>
   <th class="ui-state-default">IP Address Editor</th>
@@ -222,10 +220,41 @@ the internet. This page provides the ability to identify IP Addresses that will 
 </tr>
 </table>
 
-</form>
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">IP Address Listing <?php print $net_name; ?></th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('ipaddress-listing-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="ipaddress-listing-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+<p><strong>IP Address Listing</strong></p>
+
+<p>This page lists all of the IPv4 or IPv6 IP Addresses associated with the network.</p>
+
+<p>To add a new IP Address, click on the <strong>Add IP Address</strong> button. This will bring up a dialog 
+box which you can use to add a new IP Address.</p>
+
+<p>If an entered IP Address already exists, you will be alerted and the existing line will be <span class="ui-state-error">highlighted</span>. 
+Either enter a different IP Address or edit the existing one.</p>
+
+<p>Note that you should only fill out one of the fields. The default is the IPv4 Address field. If that is 
+filled in, the IPv6 field will be cleared before saving.</p>
+
+<p>To edit an existing IP Address, click on the entry in the listing. A dialog box will be displayed where you 
+can edit the current entry, or if there is a small difference, you can make changes and add a new IP Address</p>
+
+</div>
+
+</div>
 
 
-<span id="table_mysql"></span>
+<span id="table_mysql"><?php print wait_Process('Waiting...')?></span>
 
 </div>
 

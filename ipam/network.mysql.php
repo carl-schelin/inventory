@@ -65,40 +65,7 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\">Network Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('network-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"network-listing-help\" style=\"display: none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-
-      $output .= "<p><strong>Network Listing</strong></p>\n";
-
-      $output .= "<p>This page lists both the IPv4 Networks and the IPv6 Networks which will be used when creating ";
-      $output .= "IP Addresses.</p>\n";
-
-      $output .= "<p>To add a new Network, click the <strong>Add Network</strong> button. This will bring up a dialog ";
-      $output .= "box which you can then use to create a new network.</p>\n";
-
-      $output .= "<p>To edit an existing Network, click on the entry in the listing. A dialog box will be displayed ";
-      $output .= "where you can edit the current entry, or if there is a small difference, you can make changes and ";
-      $output .= "add a new network.</p>\n";
-
-      $output .= "<p>Note that under the Members column is a number which indicates the number of IP addresses that ";
-      $output .= "are currently assigned to this network. You cannot remove a network until this value is zero. ";
-      $output .= "Clicking on the number will take you to the IP Address editing screen where you can delete or change ";
-      $output .= "the network for that IP address.</p>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "<table class=\"ui-styled-table\">\n";
+      $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Network</th>\n";

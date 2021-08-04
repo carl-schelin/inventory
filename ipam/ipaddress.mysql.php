@@ -123,39 +123,7 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\">IP Address Listing" . $net_name . "</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('ipaddress-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"ipaddress-listing-help\" style=\"display: none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-
-      $output .= "<p><strong>IP Address Listing</strong></p>\n";
-
-      $output .= "<p>This page lists all of the IPv4 or IPv6 IP Addresses associated with the network.</p>\n";
-
-      $output .= "<p>To add a new IP Address, click on the <strong>Add IP Address</strong> button. This will bring up a dialog ";
-      $output .= "box which you can use to add a new IP Address.</p>\n";
-
-      $output .= "<p>If an entered IP Address already exists, you will be alerted and the existing line will be <span class=\"ui-state-error\">highlighted</span>. ";
-      $output .= "Either enter a different IP Address or edit the existing one.</p>\n";
-
-      $output .= "<p>Note that you should only fill out one of the fields. The default is the IPv4 Address field. If that is ";
-      $output .= "filled in, the IPv6 field will be cleared before saving.</p>\n";
-
-      $output .= "<p>To edit an existing IP Address, click on the entry in the listing. A dialog box will be displayed where you ";
-      $output .= "can edit the current entry, or if there is a small difference, you can make changes and add a new IP Address</p>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "<table class=\"ui-styled-table\">\n";
+      $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete IP Address</th>\n";

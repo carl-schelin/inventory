@@ -55,38 +55,7 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\">IP Address Type Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('type-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"type-listing-help\" style=\"display:none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-
-      $output .= "<p><strong>IP Address Type Listing</strong></p>\n";
-
-      $output .= "<p>This page simply lists all the IP Address Types currently defined.</p>\n";
-
-      $output .= "<p>To add a new IP Address Type, click on the <strong>Add IP Address Type</strong> ";
-      $output .= "button. A dialog box will be displayed which will let you enter the new IP Address Type.</p>\n";
-
-      $output .= "<p>To edit an existing IP Address Type, click on one of the entries and a dialog box ";
-      $output .= "will be displayed. This will let you edit the existing one, or if you like, you can ";
-      $output .= "make a minor change and save it as a new entry.</p>\n";
-
-      $output .= "Note that under the Members column is a number which indicates the number of IP addresses ";
-      $output .= "that are currently assigned an IP Address Type. You cannot remove an IP Address Type until this ";
-      $output .= "value is zero.";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "<table class=\"ui-styled-table\">\n";
+      $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete IP Address Type</th>\n";

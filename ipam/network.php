@@ -187,8 +187,6 @@ $(document).ready( function() {
 
 <div class="main">
 
-<form name="network">
-
 <table class="ui-styled-table">
 <tr>
   <th class="ui-state-default">Network Editor</th>
@@ -217,10 +215,42 @@ an IP address that is then assigned to a device.</p>
 </tr>
 </table>
 
-</form>
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Network Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('network-listing-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="network-listing-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+<p><strong>Network Listing</strong></p>
+
+<p>This page lists both the IPv4 Networks and the IPv6 Networks which will be used when creating 
+IP Addresses.</p>
+
+<p>To add a new Network, click the <strong>Add Network</strong> button. This will bring up a dialog 
+box which you can then use to create a new network.</p>
+
+<p>To edit an existing Network, click on the entry in the listing. A dialog box will be displayed 
+where you can edit the current entry, or if there is a small difference, you can make changes and 
+add a new network.</p>
+
+<p>Note that under the Members column is a number which indicates the number of IP addresses that 
+are currently assigned to this network. You cannot remove a network until this value is zero. 
+Clicking on the number will take you to the IP Address editing screen where you can delete or change 
+the network for that IP address.</p>\n";
+
+</div>
+
+</div>
 
 
-<span id="table_mysql"></span>
+<span id="table_mysql"><?php print wait_Process('Waiting...')?></span>
 
 </div>
 
