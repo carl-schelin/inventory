@@ -236,7 +236,7 @@ create an asset for the CPU and assign it to a device.</p>
 </div>
 
 
-<span id="table_mysql"></span>
+<span id="mysql_table"><?php print wait_Process('Waiting...')?></span>
 
 </div>
 

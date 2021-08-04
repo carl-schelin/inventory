@@ -227,7 +227,7 @@ You cannot delete a Description as long as this value is greater than zero.</p>
 </div>
 
 
-<span id="table_mysql"></span>
+<span id="mysql_table"><?php print wait_Process('Waiting...')?></span>
 
 </div>
 
