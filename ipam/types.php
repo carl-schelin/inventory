@@ -203,7 +203,39 @@ or more generic descriptions such as servers, switches, or even webcams.</p>
 </tr>
 </table>
 
-</form>
+
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">IP Address Type Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('type-listing-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="type-listing-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+<p><strong>IP Address Type Listing</strong></p>
+
+<p>This page simply lists all the IP Address Types currently defined.</p>
+
+<p>To add a new IP Address Type, click on the <strong>Add IP Address Type</strong> 
+button. A dialog box will be displayed which will let you enter the new IP Address Type.</p>
+
+<p>To edit an existing IP Address Type, click on one of the entries and a dialog box 
+will be displayed. This will let you edit the existing one, or if you like, you can 
+make a minor change and save it as a new entry.</p>
+
+Note that under the Members column is a number which indicates the number of IP addresses 
+that are currently assigned an IP Address Type. You cannot remove an IP Address Type until this 
+value is zero.
+
+</div>
+
+</div>
+
 
 <span id="table_mysql"><?php print wait_Process('Waiting...')?></span>
 

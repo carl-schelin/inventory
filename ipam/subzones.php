@@ -178,8 +178,6 @@ $(document).ready( function() {
 
 <div class="main">
 
-<form name="zones">
-
 <table class="ui-styled-table">
 <tr>
   <th class="ui-state-default">IP Address Zone Editor</th>
@@ -206,7 +204,41 @@ $(document).ready( function() {
 </tr>
 </table>
 
-</form>
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">IP Address Zone Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('sub-listing-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="sub-listing-help" style="display:none">
+
+<div class="main-help ui-widget-content">
+
+<p><strong>IP Address Zone Listing</strong></p>
+
+<p>This page lists all the currently defined IP Address Zones.</p>
+
+<p>To add a new IP Address Zone, click the <strong>Add IP Address Zone</strong> 
+button on the upper right. A dialog box will be displayed that will let you 
+enter the necessary information to create a new IP Address Zone listing.</p>
+
+<p>If you want to edit an existing IP Address Zone, click the entry in the listing. 
+This will bring up a dialog box where you can edit the current listing or, if you 
+have an IP Address Zone with just a minor change, you can edit it and save it as a new 
+listing.</p>
+
+<p>Note that under the Members column is a number which indicates the number of IP 
+addresses that are currently using this IP Address Zone. You cannot remove an IP Address 
+Zone until this value is zero. Clicking on the number will take you to the IP Address 
+editing screen where you can delete or change the IP Address Zone for that IP address.</p>
+
+</div>
+
+</div>
+
 
 <span id="table_mysql"><?php print wait_Process('Waiting...')?></span>
 

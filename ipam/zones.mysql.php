@@ -55,39 +55,7 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\">Network Zone Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('zone-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"zone-listing-help\" style=\"display:none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-
-      $output .= "<p><strong>Network Zone Listing</strong></p>\n";
-
-      $output .= "<p>This page lists all the currently defined network zones.</p>\n";
-
-      $output .= "<p>To add a new Network Zone, click the <strong>Add Network Zone</strong> ";
-      $output .= "button on the upper right. A dialog box will be displayed that will let you ";
-      $output .= "enter the necessary information to create a new Network Zone listing.</p>\n";
-
-      $output .= "<p>If you want to edit an existing Network Zone, click the entry in the listing. ";
-      $output .= "This will bring up a dialog box where you can edit the current listing or, if you ";
-      $output .= "have a Network Zone with just a minor change, you can edit it and save it as a new ";
-      $output .= "listing.</p>\n";
-
-      $output .= "<p>As a note, the Zone Acronym can be used if your hostnames are created using ";
-      $output .= "Network Zone as part of the hostname.</p>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "<table class=\"ui-styled-table\">\n";
+      $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Network Zone</th>\n";

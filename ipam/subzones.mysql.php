@@ -57,41 +57,7 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\">IP Address Zone Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('sub-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"sub-listing-help\" style=\"display:none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-
-      $output .= "<p><strong>IP Address Zone Listing</strong></p>\n";
-
-      $output .= "<p>This page lists all the currently defined IP Address Zones.</p>\n";
-
-      $output .= "<p>To add a new IP Address Zone, click the <strong>Add IP Address Zone</strong> ";
-      $output .= "button on the upper right. A dialog box will be displayed that will let you ";
-      $output .= "enter the necessary information to create a new IP Address Zone listing.</p>\n";
-
-      $output .= "<p>If you want to edit an existing IP Address Zone, click the entry in the listing. ";
-      $output .= "This will bring up a dialog box where you can edit the current listing or, if you ";
-      $output .= "have an IP Address Zone with just a minor change, you can edit it and save it as a new ";
-      $output .= "listing.</p>\n";
-
-      $output .= "<p>Note that under the Members column is a number which indicates the number of IP";
-      $output .= "addresses that are currently using this IP Address Zone. You cannot remove an IP Address ";
-      $output .= "Zone until this value is zero. Clicking on the number will take you to the IP Address ";
-      $output .= "editing screen where you can delete or change the IP Address Zone for that IP address.</p>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "<table class=\"ui-styled-table\">\n";
+      $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete IP Address Zone</th>\n";
@@ -143,12 +109,12 @@
               $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>\n";
             }
           }
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_sub_zones['zone_zone'] . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"          . $a_sub_zones['sub_name'] . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content delete\">"   . $ipstart   . $total                    . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"          . $a_sub_zones['sub_description'] . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"          . $a_sub_zones['usr_first'] . " " . $a_sub_zones['usr_last'] . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"          . $a_sub_zones['sub_timestamp'] . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_sub_zones['zone_zone'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $a_sub_zones['sub_name']             . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content delete\">"              . $ipstart   . $total                  . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $a_sub_zones['sub_description']      . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $a_sub_zones['usr_first'] . " " . $a_sub_zones['usr_last'] . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $a_sub_zones['sub_timestamp']         . "</td>\n";
           $output .= "</tr>\n";
 
         }

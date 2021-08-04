@@ -176,8 +176,6 @@ $(document).ready( function() {
 
 <div class="main">
 
-<form name="zones">
-
 <table class="ui-styled-table">
 <tr>
   <th class="ui-state-default">Network Zone Editor</th>
@@ -204,7 +202,39 @@ $(document).ready( function() {
 </tr>
 </table>
 
-</form>
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Network Zone Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('zone-listing-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="zone-listing-help" style="display:none">
+
+<div class="main-help ui-widget-content">
+
+<p><strong>Network Zone Listing</strong></p>
+
+<p>This page lists all the currently defined network zones.</p>
+
+<p>To add a new Network Zone, click the <strong>Add Network Zone</strong> 
+button on the upper right. A dialog box will be displayed that will let you 
+enter the necessary information to create a new Network Zone listing.</p>
+
+<p>If you want to edit an existing Network Zone, click the entry in the listing. 
+This will bring up a dialog box where you can edit the current listing or, if you 
+have a Network Zone with just a minor change, you can edit it and save it as a new 
+listing.</p>
+
+<p>As a note, the Zone Acronym can be used if your hostnames are created using 
+Network Zone as part of the hostname.</p>
+
+</div>
+
+</div>
+
 
 <span id="table_mysql"><?php print wait_Process('Waiting...')?></span>
 
