@@ -185,13 +185,8 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Business Unit Form</strong>
-  <ul>
-    <li><strong>Business Unit ID</strong> - The official company id for the Business Unit</li>
-    <li><strong>Business Unit Name</strong> - The name of the company Business Unit</li>
-  </ul></li>
-</ul>
+<p>A <strong>business unit</strong> is an entity in an organization that has a specialized function. It develops its own 
+strategy within the organization that aligns with company objectives.</p>
 
 </div>
 
@@ -216,17 +211,16 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Business Unit Listing</strong>
-  <ul>
-<?php
-  if (check_userlevel($db, $AL_Admin)) {
-    print "    <li><strong>Delete (x)</strong> - Click here to delete this business unit from the Inventory.</li>\n";
-  }
-?>
-    <li><strong>Editing</strong> - Click on a business unit to toggle the form and edit the business unit.</li>
-  </ul></li>
-</ul>
+
+<p><strong>Business Unit Listing</strong></p>
+
+<p>This page lists all the currently defined <strong>Business Units</strong> within this organization.</p>
+
+<p>To add a new Business Unit, click the <strong>Add Business Unit</strong> button. This will bring up a dialog box which you can then 
+use to create a new business unit.</p>
+
+<p>To editing an existing business unit, click on an entry in the listing. A dialog box will be displayed where you can edit the current 
+business unit, or if there's a small difference, you can make changes and add a new business unit.</p>
 
 </div>
 
