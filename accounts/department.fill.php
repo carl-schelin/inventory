@@ -28,11 +28,16 @@
       $a_department = mysqli_fetch_array($q_department);
       mysqli_free_result($q_department);
 
-      print "document.department.dep_unit.value = '" . mysqli_real_escape_string($db, $a_department['dep_unit']) . "';\n";
-      print "document.department.dep_dept.value = '" . mysqli_real_escape_string($db, $a_department['dep_dept']) . "';\n";
-      print "document.department.dep_name.value = '" . mysqli_real_escape_string($db, $a_department['dep_name']) . "';\n";
+      $depunit = return_Index($db, $a_department['dep_unit'], "select bus_id from business_unit order by bus_name");
 
-      print "document.department.id.value = '" . $formVars['id'] . "'\n";
+      print "document.updateDialog.dep_name.value = '" . mysqli_real_escape_string($db, $a_department['dep_name']) . "';\n";
+      print "document.updateDialog.dep_dept.value = '" . mysqli_real_escape_string($db, $a_department['dep_dept']) . "';\n";
+
+      if ($depunit > 0) {
+        print "document.updateDialog.dep_unit['" . $depunit  . "'].selected = true;\n";
+      }
+
+      print "document.updateDialog.id.value = '" . $formVars['id'] . "'\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
