@@ -20,11 +20,8 @@ if (isset($_SESSION['username'])) {
     if (check_userlevel($db, $AL_Admin)) {
 ?>
       <li><a href="">-------------------------</a></li>
-      <li><a href="<?php print $Usersroot; ?>/users.php">User Management</a></li>
-      <li><a href="<?php print $Usersroot; ?>/groups.php">Group Management</a></li>
       <li><a href="<?php print $Usersroot; ?>/levels.php">Access Level Management</a></li>
       <li><a href="<?php print $Loginroot; ?>/assume.php">Change Credentials</a></li>
-      <li><a href="<?php print $Adminroot; ?>/rsdpdup.php">Dedup RSDP Records</a></li>
       <li><a href="<?php print $Reportroot;  ?>/logs.php">View Last 7 Days of Logs</a></li>
 <?php
     }

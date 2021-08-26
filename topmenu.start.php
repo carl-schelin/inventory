@@ -76,11 +76,18 @@
     </ul>
   </li>
 
-  <li id="tm_database"><a href="<?php print $Siteroot; ?>/index.manage.php">Database</a>
+  <li id="tm_siteadmin"><a href="<?php print $Siteroot; ?>/index.siteadmin.php">Site Administration</a>
     <ul>
+      <li><a href="<?php print $Usersroot; ?>/organization.php">Organizations</a></li>
       <li><a href="<?php print $Usersroot; ?>/business.php">Business Unit Names</a></li>
       <li><a href="<?php print $Usersroot; ?>/department.php">Department Names</a></li>
-      <li><a href="<?php print $Usersroot; ?>/organization.php">Organizations</a></li>
+      <li><a href="<?php print $Usersroot; ?>/groups.php">Group Management</a></li>
+      <li><a href="<?php print $Usersroot; ?>/users.php">User Management</a></li>
+    </ul>
+  </li>
+
+  <li id="tm_database"><a href="<?php print $Siteroot; ?>/index.manage.php">Database</a>
+    <ul>
       <li><a href="<?php print $Usersroot; ?>/roles.php">Role Names</a></li>
       <li><a href="<?php print $Adminroot; ?>/maintenance.windows.php">Maintenance Windows</a></li>
       <li><a href="<?php print $Adminroot; ?>/product.php">Products and Services</a></li>
