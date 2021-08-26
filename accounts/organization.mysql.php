@@ -35,19 +35,15 @@
             "org_name = \"" . $formVars['org_name'] . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into organizations set org_id = null," . $q_string;
-            $message = "Organization added.";
+            $q_string = "insert into organizations set org_id = null," . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update organizations set " . $q_string . " where org_id = " . $formVars['id'];
-            $message = "Organization updated.";
+            $q_string = "update organizations set " . $q_string . " where org_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['org_name']);
 
-          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
-
-          print "alert('" . $message . "');\n";
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -56,40 +52,15 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\">Organization Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('organization-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"organization-listing-help\" style=\"display: none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Organization Listing</strong>\n";
-      $output .= "  <ul>\n";
-      if (check_userlevel($db, $AL_Admin)) {
-        $output .= "    <li><strong>Delete (x)</strong> - Click here to delete this organization from the Inventory.</li>\n";
-      }
-      $output .= "    <li><strong>Editing</strong> - Click on an organization to toggle the form and edit the organization.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-
-      $output .= "<table class=\"ui-styled-table\">\n";
+      $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
-        $output .= "  <th class=\"ui-state-default\">Del</th>\n";
+        $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Organization</th>\n";
+      } else {
+        $output .= "  <th class=\"ui-state-default\" width=\"160\">Organization</th>\n";
       }
-      $output .= "  <th class=\"ui-state-default\">Id</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Business Unit Name</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Organization</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Members</th>\n";
       $output .= "</tr>\n";
 
       $q_string  = "select org_id,org_name ";
@@ -99,21 +70,40 @@
       if (mysqli_num_rows($q_organizations) > 0) {
         while ($a_organizations = mysqli_fetch_array($q_organizations)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('organization.fill.php?id=" . $a_organizations['org_id'] . "');jQuery('#dialogOrganization').dialog('open');\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('organization.del.php?id=" . $a_organizations['org_id'] . "');\">";
-          $linkend   = "</a>";
+          $total = 0;
+          $q_string  = "select bus_id ";
+          $q_string .= "from business_unit ";
+          $q_string .= "where bus_org = " . $a_organizations['org_id'] . " ";
+          $q_business_unit = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_business_unit) > 0) {
+            while ($a_business_unit = mysqli_fetch_array($q_business_unit)) {
+              $total++;
+            }
+          }
+
+          if (check_userlevel($db, $AL_Admin)) {
+            $linkstart = "<a href=\"#\" onclick=\"show_file('organization.fill.php?id=" . $a_organizations['org_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+            if ($total > 0) {
+              $linkdel = 'Members &gt; 0';
+            } else {
+              $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('organization.del.php?id=" . $a_organizations['org_id'] . "');\">";
+            }
+            $linkend   = "</a>";
+          } else {
+            $linkstart = '';
+            $linkdel = 'Viewing';
+            $linkend = '';
+          }
 
           $output .= "<tr>\n";
-          if (check_userlevel($db, $AL_Admin)) {
-            $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>\n";
-          }
-          $output .= "  <td class=\"ui-widget-content delete\">" . $linkstart . $a_organizations['org_id']   . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_organizations['org_name'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content delete\">"              . $total . "</td>\n";
           $output .= "</tr>\n";
         }
       } else {
         $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"4\">No records found.</td>\n";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"3\">No records found.</td>\n";
         $output .= "</tr>\n";
       }
 
@@ -122,8 +112,6 @@
       mysqli_free_result($q_organizations);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
-
-      print "document.organization.org_name.value = '';\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

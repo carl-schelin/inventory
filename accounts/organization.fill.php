@@ -28,9 +28,9 @@
       $a_organizations = mysqli_fetch_array($q_organizations);
       mysqli_free_result($q_organizations);
 
-      print "document.organization.org_name.value = '" . mysqli_real_escape_string($db, $a_organizations['org_name']) . "';\n";
+      print "document.updateDialog.org_name.value = '" . mysqli_real_escape_string($db, $a_organizations['org_name']) . "';\n";
 
-      print "document.organization.id.value = " . $formVars['id'] . ";\n";
+      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
