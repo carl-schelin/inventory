@@ -63,6 +63,8 @@
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Business Unit</th>\n";
+      } else {
+        $output .= "  <th class=\"ui-state-default\" width=\"160\">Business Unit</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Business Unit Name</th>\n";
       $output .= "  <th class=\"ui-state-default\">Organization</th>\n";
@@ -77,11 +79,6 @@
       if (mysqli_num_rows($q_business_unit) > 0) {
         while ($a_business_unit = mysqli_fetch_array($q_business_unit)) {
 
-
-          $linkstart = "<a href=\"#\" onclick=\"show_file('business.fill.php?id="  . $a_business_unit['bus_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('business.del.php?id=" . $a_business_unit['bus_id'] . "');\">";
-          $linkend   = "</a>";
-
           $total = 0;
           $q_string  = "select dep_id ";
           $q_string .= "from department ";
@@ -93,22 +90,30 @@
             }
           }
 
-          $output .= "<tr>\n";
           if (check_userlevel($db, $AL_Admin)) {
-            if ($total == 0) {
-              $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel . "</td>";
+            $linkstart = "<a href=\"#\" onclick=\"show_file('business.fill.php?id="  . $a_business_unit['bus_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+            if ($total > 0) {
+              $linkdel = 'Members &gt; 0';
             } else {
-              $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>";
+              $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('business.del.php?id=" . $a_business_unit['bus_id'] . "');\">";
             }
+            $linkend   = "</a>";
+          } else {
+            $linkstart = '';
+            $linkdel = 'Viewing';
+            $linkend = '';
           }
-          $output .= "  <td class=\"ui-widget-content\">" . $linkstart . $a_business_unit['bus_name'] . " (" . $a_business_unit['bus_unit'] . ")" . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"              . $a_business_unit['org_name'] . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"              . $total                       . "</td>\n";
+
+          $output .= "<tr>\n";
+          $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_business_unit['bus_name'] . " (" . $a_business_unit['bus_unit'] . ")" . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $a_business_unit['org_name'] . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $total                       . "</td>\n";
           $output .= "</tr>\n";
         }
       } else {
         $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"2\">No records found.</td>\n";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"4\">No records found.</td>\n";
         $output .= "</tr>\n";
       }
 
