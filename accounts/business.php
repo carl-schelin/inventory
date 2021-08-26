@@ -66,6 +66,7 @@ function attach_file( p_script_url, update ) {
 
   af_url += "&bus_unit=" + encode_URI(af_form.bus_unit.value);
   af_url += "&bus_name=" + encode_URI(af_form.bus_name.value);
+  af_url += "&bus_org="  + af_form.bus_org.value;
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
@@ -81,6 +82,7 @@ function update_file( p_script_url, update ) {
 
   uf_url += "&bus_unit=" + encode_URI(uf_form.bus_unit.value);
   uf_url += "&bus_name=" + encode_URI(uf_form.bus_name.value);
+  uf_url += "&bus_org="  + uf_form.bus_org.value;
 
   script = document.createElement('script');
   script.src = p_script_url + uf_url;
@@ -99,7 +101,7 @@ $(document).ready( function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 175,
+    height: 200,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -129,7 +131,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 175,
+    height: 200,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -243,6 +245,21 @@ business unit, or if there's a small difference, you can make changes and add a 
 <tr>
   <td class="ui-widget-content">Business Unit ID: <input type="number" name="bus_unit" size="10"></td>
 </tr>
+<tr>
+  <td class="ui-widget-content">Organization: <select name="bus_org">
+<?php
+  $q_string  = "select org_id,org_name ";
+  $q_string .= "from organizations ";
+  $q_string .= "order by org_name ";
+  $q_organizations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_organizations)) {
+    while ($a_organizations = mysqli_fetch_array($q_organizations)) {
+      print "<option value=\"" . $a_organizations['org_id'] . "\">" . $a_organizations['org_name'] . "</option>\n";
+    }
+  }
+?>
+</select></td>
+</tr>
 </table>
 
 </form>
@@ -262,6 +279,21 @@ business unit, or if there's a small difference, you can make changes and add a 
 </tr>
 <tr>
   <td class="ui-widget-content">Business Unit ID: <input type="number" name="bus_unit" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Organization: <select name="bus_org">
+<?php
+  $q_string  = "select org_id,org_name ";
+  $q_string .= "from organizations ";
+  $q_string .= "order by org_name ";
+  $q_organizations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_organizations)) {
+    while ($a_organizations = mysqli_fetch_array($q_organizations)) {
+      print "<option value=\"" . $a_organizations['org_id'] . "\">" . $a_organizations['org_name'] . "</option>\n";
+    }
+  }
+?>
+</select></td>
 </tr>
 </table>
 

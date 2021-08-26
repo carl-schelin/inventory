@@ -24,6 +24,7 @@
         $formVars['id']       = clean($_GET['id'],       10);
         $formVars['bus_unit'] = clean($_GET['bus_unit'], 10);
         $formVars['bus_name'] = clean($_GET['bus_name'], 60);
+        $formVars['bus_org']  = clean($_GET['bus_org'],  10);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
@@ -36,8 +37,9 @@
           logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
+            "bus_name = \"" . $formVars['bus_name'] . "\"," .
             "bus_unit =   " . $formVars['bus_unit'] . "," .
-            "bus_name = \"" . $formVars['bus_name'] . "\"";
+            "bus_org  =   " . $formVars['bus_org'];
 
           if ($formVars['update'] == 0) {
             $q_string = "insert into business_unit set bus_id = null," . $q_string;
@@ -63,10 +65,13 @@
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Business Unit</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Business Unit Name</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Organization</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Members</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select bus_id,bus_unit,bus_name ";
+      $q_string  = "select bus_id,bus_unit,bus_name,org_name ";
       $q_string .= "from business_unit ";
+      $q_string .= "left join organizations on organizations.org_id = business_unit.bus_org ";
       $q_string .= "order by bus_name ";
       $q_business_unit = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_business_unit) > 0) {
@@ -77,11 +82,28 @@
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('business.del.php?id=" . $a_business_unit['bus_id'] . "');\">";
           $linkend   = "</a>";
 
+          $total = 0;
+          $q_string  = "select dep_id ";
+          $q_string .= "from department ";
+          $q_string .= "where dep_unit = " . $a_business_unit['bus_id'] . " ";
+          $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_department) > 0) {
+            while ($a_department = mysqli_fetch_array($q_department)) {
+              $total++;
+            }
+          }
+
           $output .= "<tr>\n";
           if (check_userlevel($db, $AL_Admin)) {
-            $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel                                             . "</td>\n";
+            if ($total == 0) {
+              $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel . "</td>";
+            } else {
+              $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>";
+            }
           }
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_business_unit['bus_name'] . " (" . $a_business_unit['bus_unit'] . ")" . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">" . $linkstart . $a_business_unit['bus_name'] . " (" . $a_business_unit['bus_unit'] . ")" . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"              . $a_business_unit['org_name'] . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"              . $total                       . "</td>\n";
           $output .= "</tr>\n";
         }
       } else {
