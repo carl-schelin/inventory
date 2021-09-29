@@ -91,17 +91,6 @@
 
 <script type="text/javascript">
 
-function delete_tags( p_script_url ) {
-  var answer = confirm("Delete this Tag?")
-
-  if (answer) {
-    script = document.createElement('script');
-    script.src = p_script_url;
-    document.getElementsByTagName('head')[0].appendChild(script);
-    show_file('tags.mysql.php' + '?update=-1' + '&tag_companyid=<?php print $formVars['server']; ?>');
-  }
-}
-
 function delete_software( p_script_url ) {
   var answer = confirm("Delete this Software Package?")
 
@@ -212,28 +201,13 @@ function delete_association( p_script_url ) {
 ?>
 
 function attach_tags(p_script_url, update) {
-  var at_form = document.edit;
+  var at_form = document.createTagDialog;
   var at_url;
   
   at_url  = '?update='         + update;
   at_url += "&id="             + at_form.tag_companyid.value;
-  at_url += "&copyfrom="       + at_form.tag_copyfrom.value;
   at_url += "&tag_companyid="  + <?php print $formVars['server']; ?>;
   at_url += "&tag_name="       + encode_URI(at_form.tag_name.value);
-
-  script = document.createElement('script');
-  script.src = p_script_url + at_url;
-  document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-function insert_tags(p_script_url, update) {
-  var at_form = document.edit;
-  var at_url;
-  
-  at_url  = '&update='   + update;
-  at_url += "&id="       + at_form.tag_companyid.value;
-
-  at_url += "&tag_companyid=" + <?php print $formVars['server']; ?>;
 
   script = document.createElement('script');
   script.src = p_script_url + at_url;
@@ -846,6 +820,62 @@ $(document).ready( function() {
   $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
   $( "#networktab" ).tabs( ).addClass( "tab-shadow" );
   $( "#sstatus" ).buttonset();
+
+
+
+
+
+
+
+
+
+
+
+  $( '#clickTagCreate' ).click(function() {
+    $( "#dialogTagCreate" ).dialog('open');
+  });
+
+  $( "#dialogTagCreate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 150,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogTagCreate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('tags.mysql.php?update=-1');
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Server Tag",
+        click: function() {
+          attach_tags('tags.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+
+
+
+
+
+
+
+
+
+
+
 });
 
 </script>
@@ -1272,7 +1302,7 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default"><a href="javascript:;" onmousedown="toggleDiv('tags-hide');">Tag Management</a></th>
+  <th class="ui-state-default">Tag Editor</th>
   <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('tags-help');">Help</a></th>
 </tr>
 </table>
@@ -1281,47 +1311,82 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Buttons</strong>
-  <ul>
-    <li><strong>Refresh Tag Listing</strong> - Reloads the Tag Listing table. At times, especially when removing several items, the table fails to refresh.</li>
-    <li><strong>Update Tag</strong> - After selecting a tag to edit, click here to save changes.</li>
-    <li><strong>Add New Tag</strong> - Add a new tag. You can also select an existing piece, make changes if needed, and click this button to add a second item.</li>
-    <li><strong>Copy Tags From:</strong> - Select a server from the listing to copy the tag list from.</li>
-  </ul></li>
-</ul>
+<p>Tags have two uses in the Inventory. To let you create a collection of servers and as a hosts file that is used by Ansible to 
+apply playbooks to a filtered list of servers.</p>
 
-<ul>
-  <li><strong>Tag Form</strong>
-  <ul>
-    <li><strong>Tag Name</strong> - Enter a tag name.</li>
-    <li><strong>Visibility</strong> - Select a cloud to save the tag in.
-    <ul>
-      <li><strong>Private</strong> - This is your private tag cloud. No one else can see these tags so you can feel free to be expressive.</li>
-      <li><strong>Group</strong> - This tag is visible to all members of your team. Other team members can also edit or delete this tag.</li>
-      <li><strong>Public</strong> - This tag is visible to every user of the Inventory program.</li>
-    </ul></li>
-  </ul></li>
-</ul>
+<p>The Server Tags window shows all the tags associated with the server we're currenting editing. Additional windows list out 
+tags for other functions in the Inventory that are associated with this server. The idea is to manage tags without having to 
+add a common tag to a large collection of servers. For example, Data Center Locations can have a tag associated with it. If 
+you've associated a server with a Data Center, the location tag will be listed in the Location Tags window. This works the same 
+for other functions.</p>
 
 </div>
 
 </div>
 
-<div id="tags-hide" style="display: none">
+<table class="ui-styled-table">
+<tr>
+  <td class="ui-widget-content button"><input type="button" id="clickTagCreate" value="Add Server Tag"></td>
+</tr>
+</table>
 
-<div id="main">
 
-<span id="tags_form"><?php print wait_Process("Please Wait"); ?></span>
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Tag Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('tags-listing');">Help</a></th>
+</tr>
+</table>
+
+<div id="tags-listing" style="display: none">
+
+<div class="main-help ui-widget-content">
+
+<p><strong>Tag Listing</strong></p>
+
+<p>This page displays all the tags that are in the system and with a <strong>[bracketed]</strong> keyword, identifies the tags 
+associated with this specific server.</p>
+
+<p>To toggle tags, in the Server Tags list, click on a tag. The tag will then be either removed from the server or added 
+if the server doesn't currently have the tag. If it's the last tag in the database, the tag will disappear and you'll need 
+to manually add it back in.</p>
+
+<p>To add a brand new tag, click on the Add Server Tag button and enter the new tag and save it. Note that if you try to create 
+a tag that already exists, it does check for that and will simply toggle it vs adding a duplicate tag.</p>
 
 </div>
 
 </div>
 
-<span id="tags_table"><?php print wait_Process("Please Wait"); ?></span>
+
+<div class="main ui-widget-content">
+
+<span id="Server_tags"><?php print wait_Process("Please Wait"); ?></span>
 
 </div>
 
+<?php
+
+  $q_string  = "select type_name ";
+  $q_string .= "from tag_types ";
+  $q_string .= "where type_id > 1 ";
+  $q_string .= "order by type_name ";
+  $q_tag_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_tag_types) > 0) {
+    while ($a_tag_types = mysqli_fetch_array($q_tag_types)) {
+
+      print "<div class=\"main ui-widget-content\">\n\n";
+      print "<span id=\"" . $a_tag_types['type_name'] . "_tags\">" . wait_process("Please wait") . "</span>\n\n";
+      print "</div>\n\n";
+
+    }
+  }
+
+?>
+
+</div>
 
 
 
@@ -2190,6 +2255,47 @@ field shows you the limit of the number of characters. This limit is set by the 
 </div>
 
 </form>
+
+
+
+
+
+
+
+
+<div id="dialogTagCreate" title="Add Server Tag">
+
+<form name="createTagDialog">
+
+<input type="hidden" name="tag_companyid" value="<?php print $formVars['tag_companyid']; ?>">
+
+<table class="ui-styled-table">
+<tr>
+  <td class="ui-widget-content">Tag Name <input type="text" name="tag_name" size="40">
+</tr>
+
+</table>
+
+</form>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <?php include($Sitepath . '/footer.php'); ?>
 
