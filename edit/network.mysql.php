@@ -955,8 +955,6 @@
 
       print "document.edit.int_update.disabled = true;\n";
 
-      print "document.edit.int_server.focus();\n";
-
 
 # rebuild the int_int_id drop down in case of changes in the virtual interface listing
       print "var selbox = document.edit.int_int_id;\n\n";
