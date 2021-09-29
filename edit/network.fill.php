@@ -96,8 +96,6 @@
 
       print "document.edit.int_update.disabled = false;\n";
 
-      print "document.edit.int_server.focus();\n";
-
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
