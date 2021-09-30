@@ -35,6 +35,7 @@
         $formVars['loc_default']      = clean($_GET['loc_default'],     10);
         $formVars['loc_instance']     = clean($_GET['loc_instance'],     5);
         $formVars['loc_identity']     = clean($_GET['loc_identity'],    10);
+        $formVars['loc_tags']         = clean($_GET['loc_tags'],       255);
         $formVars['loc_environment']  = clean($_GET['loc_environment'], 10);
 
         if ($formVars['id'] == '') {
@@ -94,19 +95,16 @@
             "loc_environment =   " . $formVars['loc_environment'];
 
           if ($formVars['update'] == 0) {
-            $query = "insert into locations set loc_id = NULL, " . $q_string;
-            $message = "Location added.";
+            $q_string = "insert into locations set loc_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update locations set " . $q_string . " where loc_id = " . $formVars['id'];
-            $message = "Location modified.";
+            $q_string = "update locations set " . $q_string . " where loc_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['loc_name']);
 
-          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+          mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-          print "alert('" . $message . "');\n";
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -143,13 +141,7 @@
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Data Center</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Descriptive Label</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Address 1</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Address 2</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Suite</th>\n";
-      $output .= "  <th class=\"ui-state-default\">City</th>\n";
-      $output .= "  <th class=\"ui-state-default\">State</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Zipcode</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Country</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Address</th>\n";
       $output .= "  <th class=\"ui-state-default\">CLLI</th>\n";
       $output .= "  <th class=\"ui-state-default\">Identity</th>\n";
       $output .= "  <th class=\"ui-state-default\">Instance</th>\n";
@@ -184,17 +176,21 @@
             $output .= "  <td class=\"" . $class . " delete\">" . $linkdel                                            . "</td>";
           }
           $output .= "  <td class=\"" . $class . "\" title=\"ID=" . $a_locations['loc_id'] . "\">"          . $linkstart . $a_locations['loc_name']       . $linkend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"                       . $a_locations['loc_addr1']                 . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"                       . $a_locations['loc_addr2']                 . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"                       . $a_locations['loc_suite']                 . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"                       . $a_locations['ct_city']                   . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"                       . $a_locations['st_acronym']                . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"                       . $a_locations['loc_zipcode']               . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"                       . $a_locations['cn_acronym']                . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"                       . $a_locations['ct_clli']                   . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"                       . $a_locations['loc_identity']              . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"                       . $a_locations['loc_instance']              . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"                       . $a_locations['env_abb']                   . "</td>";
+          $output .= "  <td class=\"" . $class . "\">";
+          if (strlen($a_locations['loc_addr1']) > 0) {
+            $output .= $a_locations['loc_addr1'] . "</br>";
+          }
+          if (strlen($a_locations['loc_addr2']) > 0) {
+            $output .= $a_locations['loc_addr2'] . "</br>";
+          }
+          if (strlen($a_locations['loc_suite']) > 0) {
+            $output .= "Suite: " . $a_locations['loc_suite'] . "</br>";
+          }
+          $output .= $a_locations['ct_city'] . ", " . $a_locations['st_acronym'] . " " . $a_locations['loc_zipcode'] . ", " . $a_locations['cn_acronym'] . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"                       . $a_locations['ct_clli']                   . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"                       . $a_locations['loc_identity']              . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"                       . $a_locations['loc_instance']              . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"                       . $a_locations['env_abb']                   . "</td>";
           $output .= "</tr>";
 
         }
