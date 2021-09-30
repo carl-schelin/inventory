@@ -39,19 +39,15 @@
             "ct_clli        = \"" . $formVars['ct_clli']   . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into cities set ct_id = NULL, " . $q_string;
-            $message = "City added.";
+            $q_string = "insert into cities set ct_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update cities set " . $q_string . " where ct_id = " . $formVars['id'];
-            $message = "City modified.";
+            $q_string = "update cities set " . $q_string . " where ct_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['ct_city']);
 
-          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
-
-          print "alert('" . $message . "');\n";
+          mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
