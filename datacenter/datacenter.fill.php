@@ -38,6 +38,7 @@
 
       $city = return_Index($db, $a_locations['loc_city'], $q_string);
       $type = return_Index($db, $a_locations['loc_type'], "select typ_id from loc_types order by typ_name");
+      $env  = return_Index($db, $a_locations['loc_environment'], "select env_id from environment order by env_name");
 
       print "document.updateDialog.loc_name.value = '"       . mysqli_real_escape_string($db, $a_locations['loc_name'])       . "';\n";
       print "document.updateDialog.loc_addr1.value = '"      . mysqli_real_escape_string($db, $a_locations['loc_addr1'])      . "';\n";
@@ -51,13 +52,13 @@
       print "document.updateDialog.loc_identity.value = '"   . mysqli_real_escape_string($db, $a_locations['loc_identity'])   . "';\n";
 
       if ($city > 0) {
-        print "document.updateDialoupdateDialog.loc_city['"        . $city                           . "'].selected = true;\n";
+        print "document.updateDialog.loc_city['"        . $city . "'].selected = true;\n";
       }
       if ($type > 0) {
-        print "document.updateDialog.loc_type['"        . $type                           . "'].selected = true;\n";
+        print "document.updateDialog.loc_type['"        . $type . "'].selected = true;\n";
       }
       if ($a_locations['loc_environment'] > 0) {
-        print "document.updateDialog.loc_environment['" . $a_locations['loc_environment'] . "'].selected = true;\n";
+        print "document.updateDialog.loc_environment['" . $env  . "'].selected = true;\n";
       }
 
       if ($a_locations['loc_default']) {
