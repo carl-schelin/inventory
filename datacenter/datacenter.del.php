@@ -26,8 +26,6 @@
       $q_string .= "where loc_id = " . $formVars['id'];
       $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-      print "alert('Location deleted.');\n";
-
       print "clear_fields();\n";
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Access denied");
