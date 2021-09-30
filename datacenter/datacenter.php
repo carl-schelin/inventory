@@ -23,7 +23,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Manage Data Center Locations</title>
+<title>Address Editor</title>
 
 <style type='text/css' title='currentStyle' media='screen'>
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -53,7 +53,7 @@ function delete_line( p_script_url ) {
 ?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.locations;
+  var af_form = document.createDialog;
   var af_url;
 
   af_url  = '?update='   + update;
@@ -72,10 +72,39 @@ function attach_file( p_script_url, update ) {
   af_url += "&loc_default="     + af_form.loc_default.checked;
   af_url += "&loc_instance="    + encode_URI(af_form.loc_instance.value);
   af_url += "&loc_identity="    + encode_URI(af_form.loc_identity.value);
+  af_url += "&loc_tags="        + encode_URI(af_form.loc_tags.value);
   af_url += "&loc_environment=" + encode_URI(af_form.loc_environment.value);
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+function update_file( p_script_url, update ) {
+  var uf_form = document.updateDialog;
+  var uf_url;
+
+  uf_url  = '?update='   + update;
+  uf_url += '&id='       + uf_form.id.value;
+
+  uf_url += "&loc_name="        + encode_URI(uf_form.loc_name.value);
+  uf_url += "&loc_type="        + uf_form.loc_type.value;
+  uf_url += "&loc_suite="       + encode_URI(uf_form.loc_suite.value);
+  uf_url += "&loc_addr1="       + encode_URI(uf_form.loc_addr1.value);
+  uf_url += "&loc_addr2="       + encode_URI(uf_form.loc_addr2.value);
+  uf_url += "&loc_city="        + encode_URI(uf_form.loc_city.value);
+  uf_url += "&loc_zipcode="     + encode_URI(uf_form.loc_zipcode.value);
+  uf_url += "&loc_contact1="    + encode_URI(uf_form.loc_contact1.value);
+  uf_url += "&loc_contact2="    + encode_URI(uf_form.loc_contact2.value);
+  uf_url += "&loc_details="     + encode_URI(uf_form.loc_details.value);
+  uf_url += "&loc_default="     + uf_form.loc_default.checked;
+  uf_url += "&loc_instance="    + encode_URI(uf_form.loc_instance.value);
+  uf_url += "&loc_identity="    + encode_URI(uf_form.loc_identity.value);
+  uf_url += "&loc_tags="        + encode_URI(uf_form.loc_tags.value);
+  uf_url += "&loc_environment=" + encode_URI(uf_form.loc_environment.value);
+
+  script = document.createElement('script');
+  script.src = p_script_url + uf_url;
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
@@ -91,7 +120,7 @@ $(document).ready( function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 450,
+    height: 500,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -121,7 +150,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 450,
+    height: 500,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -141,14 +170,14 @@ $(document).ready( function() {
       {
         text: "Update Location",
         click: function() {
-          attach_file('datacenter.mysql.php', 1);
+          update_file('datacenter.mysql.php', 1);
           $( this ).dialog( "close" );
         }
       },
       {
         text: "Add Location",
         click: function() {
-          attach_file('datacenter.mysql.php', 0);
+          update_file('datacenter.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -166,11 +195,9 @@ $(document).ready( function() {
 
 <div class="main">
 
-<form name="mainform">
-
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default">Location Management</th>
+  <th class="ui-state-default">Address Editor</th>
   <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('location-help');">Help</a></th>
 </tr>
 </table>
@@ -214,8 +241,6 @@ $(document).ready( function() {
 </tr>
 </table>
 
-</form>
-
 <span id="mysql_table"><?php print wait_Process('Waiting...')?></span>
 
 </div>
@@ -249,7 +274,7 @@ $(document).ready( function() {
 <?php
   $q_string  = "select env_id,env_name ";
   $q_string .= "from environment ";
-  $q_string .= "order by env_id ";
+  $q_string .= "order by env_name ";
   $q_environment = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_environment = mysqli_fetch_array($q_environment)) {
     print "<option value=\"" . $a_environment['env_id'] . "\">" . $a_environment['env_name'] . "</option>\n";
@@ -294,7 +319,13 @@ $(document).ready( function() {
   <td class="ui-widget-content" colspan="2">Data Center Identifier: <input type="text" name="loc_identity" size="10"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Contact Info <input type="text" name="loc_contact1" size="10"></td>
+  <td class="ui-widget-content">Contact Info <input type="text" name="loc_contact1" size="40"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Secondary Contact Info <input type="text" name="loc_contact2" size="40"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Location Tags <input type="text" name="loc_tags" size="60"></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Link to Additional Details <input type="text" name="loc_details" size="60"></td>
@@ -334,7 +365,7 @@ $(document).ready( function() {
 <?php
   $q_string  = "select env_id,env_name ";
   $q_string .= "from environment ";
-  $q_string .= "order by env_id ";
+  $q_string .= "order by env_name ";
   $q_environment = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_environment = mysqli_fetch_array($q_environment)) {
     print "<option value=\"" . $a_environment['env_id'] . "\">" . $a_environment['env_name'] . "</option>\n";
@@ -379,7 +410,13 @@ $(document).ready( function() {
   <td class="ui-widget-content" colspan="2">Data Center Identifier: <input type="text" name="loc_identity" size="10"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Contact Info <input type="text" name="loc_contact1" size="10"></td>
+  <td class="ui-widget-content">Contact Info <input type="text" name="loc_contact1" size="40"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Secondary Contact Info <input type="text" name="loc_contact2" size="40"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Location Tags <input type="text" name="loc_tags" size="60"></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Link to Additional Details <input type="text" name="loc_details" size="60"></td>
