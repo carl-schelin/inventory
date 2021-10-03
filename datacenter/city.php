@@ -18,12 +18,19 @@
 
   logaccess($db, $_SESSION['uid'], $package, "Viewing the City table");
 
+# if help has not been seen yet,
+  if (show_Help($db, $Sitepath . "/" . $package)) {
+    $display = "display: block";
+  } else {
+    $display = "display: none";
+  }
+
 ?>
 <!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Manage Data Center Locations</title>
+<title>City/County Editor</title>
 
 <style type='text/css' title='currentStyle' media='screen'>
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -53,11 +60,10 @@ function delete_line( p_script_url ) {
 ?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.cities;
+  var af_form = document.createDialog;
   var af_url;
 
   af_url  = '?update='   + update;
-  af_url += '&id='       + af_form.id.value;
 
   af_url += "&ct_city="       + encode_URI(af_form.ct_city.value);
   af_url += "&ct_state="      + af_form.ct_state.value;
@@ -65,6 +71,22 @@ function attach_file( p_script_url, update ) {
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+function update_file( p_script_url, update ) {
+  var uf_form = document.updateDialog;
+  var uf_url;
+
+  uf_url  = '?update='   + update;
+  uf_url += '&id='       + uf_form.id.value;
+
+  uf_url += "&ct_city="       + encode_URI(uf_form.ct_city.value);
+  uf_url += "&ct_state="      + uf_form.ct_state.value;
+  uf_url += "&ct_clli="       + encode_URI(uf_form.ct_clli.value);
+
+  script = document.createElement('script');
+  script.src = p_script_url + uf_url;
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
@@ -130,14 +152,14 @@ $(document).ready( function() {
       {
         text: "Update City",
         click: function() {
-          attach_file('city.mysql.php', 1);
+          update_file('city.mysql.php', 1);
           $( this ).dialog( "close" );
         }
       },
       {
         text: "Add City",
         click: function() {
-          attach_file('city.mysql.php', 0);
+          update_file('city.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -155,16 +177,14 @@ $(document).ready( function() {
 
 <div class="main">
 
-<form name="mainform">
-
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default">City/County Management</th>
+  <th class="ui-state-default">City/County Editor</th>
   <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('city-help');">Help</a></th>
 </tr>
 </table>
 
-<div id="city-help" style="display: none">
+<div id="city-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
 
@@ -186,18 +206,39 @@ $(document).ready( function() {
 </tr>
 </table>
 
-</form>
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">City/County Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('city-listing-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="city-listing-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+<ul>
+  <li><strong>City/County Listing</strong>
+  <ul>
+    <li><strong>Editing</strong> - Click on a city to edit it.</li>
+  </ul></li>
+</ul>
+
+</div>
+
+</div>
+
 
 <span id="table_mysql"><?php print wait_Process('Waiting...')?></span>
 
 </div>
 
 
-<div id="dialogCreate" title="City/County Form">
+<div id="dialogCreate" title="Add City/County">
 
 <form name="createDialog">
-
-<input type="hidden" name="id" value="0">
 
 <table class="ui-styled-table">
 <tr>
@@ -227,7 +268,7 @@ $(document).ready( function() {
 </div>
 
 
-<div id="dialogUpdate" title="City/County Form">
+<div id="dialogUpdate" title="Update City/County">
 
 <form name="updateDialog">
 
