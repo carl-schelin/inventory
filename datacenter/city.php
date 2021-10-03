@@ -120,7 +120,7 @@ $(document).ready( function() {
         }
       },
       {
-        text: "Add City",
+        text: "Add City/County",
         click: function() {
           attach_file('city.mysql.php', 0);
           $( this ).dialog( "close" );
@@ -157,7 +157,7 @@ $(document).ready( function() {
         }
       },
       {
-        text: "Add City",
+        text: "Add City/County",
         click: function() {
           update_file('city.mysql.php', 0);
           $( this ).dialog( "close" );
@@ -188,13 +188,8 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Buttons</strong>
-  <ul>
-    <li><strong>Update City/County</strong> - Save any changes to this form.</li>
-    <li><strong>Add City/County</strong> - Create a new city record. You can copy an existing city by editing it, changing a field and saving it again.</li>
-  </ul></li>
-</ul>
+<p>There isn't much need to describe what a city or county is. The CLLI code is something 
+telecoms have used to have a short, unique code to identify a city or county. </p>
 
 </div>
 
@@ -202,7 +197,7 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add City"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add City/County"></td>
 </tr>
 </table>
 
@@ -219,12 +214,16 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>City/County Listing</strong>
-  <ul>
-    <li><strong>Editing</strong> - Click on a city to edit it.</li>
-  </ul></li>
-</ul>
+<p><strong>City/County Listing</strong></p>
+
+<p>This page lists all the defined cities and counties which are used when editing the address books.</p>
+
+<p>To edit a City or County, click on the entry in the listing. A dialog box will be displayed where you
+can edit the current entry, or if there's some change you wish to make, you can add a new
+City or County.</p>
+
+<p>To add a new City or County, click the Add City/County button. A dialog box will be displayed where you can
+add the necessary information and then save the new City or County.</p>
 
 </div>
 
