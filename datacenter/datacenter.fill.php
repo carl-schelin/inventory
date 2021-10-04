@@ -67,6 +67,20 @@
         print "document.updateDialog.loc_default.checked = false;\n";
       }
 
+      $loc_tags = '';
+      $space = '';
+      $q_string  = "select tag_name ";
+      $q_string .= "from tags ";
+      $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_type = 2 ";
+      $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_tags) > 0) {
+        while ($a_tags = mysqli_fetch_array($q_tags)) {
+          $loc_tags .= $space . $a_tags['tag_name'];
+          $space = " ";
+        }
+      }
+      print "document.updateDialog.loc_tags.value = '" . mysqli_real_escape_string($db, $loc_tags) . "';\n";
+
       print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
 
     } else {
