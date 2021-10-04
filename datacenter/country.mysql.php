@@ -37,15 +37,15 @@
             "cn_country = \"" . $formVars['cn_country'] . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into country set cn_id = NULL, " . $q_string;
+            $q_string = "insert into country set cn_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update country set " . $q_string . " where cn_id = " . $formVars['id'];
+            $q_string = "update country set " . $q_string . " where cn_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['cn_country']);
 
-          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+          mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -54,30 +54,7 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\">Country Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('country-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"country-listing-help\" style=\"display: none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Country Listing</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li><strong>Editing</strong> - Click on a country to edit it.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "<table class=\"ui-styled-table\">\n";
+      $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Country</th>\n";
@@ -89,7 +66,7 @@
       $q_string  = "select cn_id,cn_acronym,cn_country ";
       $q_string .= "from country ";
       $q_string .= "order by cn_country ";
-      $q_country = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_country = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_country) > 0) {
         while ($a_country = mysqli_fetch_array($q_country)) {
 
