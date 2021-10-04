@@ -57,7 +57,7 @@
       if ($type > 0) {
         print "document.updateDialog.loc_type['"        . $type . "'].selected = true;\n";
       }
-      if ($a_locations['loc_environment'] > 0) {
+      if ($env > 0) {
         print "document.updateDialog.loc_environment['" . $env  . "'].selected = true;\n";
       }
 
