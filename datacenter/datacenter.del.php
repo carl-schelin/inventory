@@ -26,6 +26,11 @@
       $q_string .= "where loc_id = " . $formVars['id'];
       $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
+      $q_string  = "delete ";
+      $q_string .= "from tags ";
+      $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_type = 2 ";
+      $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+
       print "clear_fields();\n";
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Access denied");
