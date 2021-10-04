@@ -104,7 +104,6 @@
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['loc_name']);
 
           mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -113,29 +112,7 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\">Data Center Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('datacenter-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"datacenter-listing-help\" style=\"display: none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Location Listing</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li><strong>Editing</strong> - Click on a location to edit it.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "<table class=\"ui-styled-table\">\n";
+      $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Data Center</th>\n";
