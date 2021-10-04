@@ -18,6 +18,13 @@
 
   logaccess($db, $_SESSION['uid'], $package, "Viewing the Country table");
 
+# if help has not been seen yet,
+  if (show_Help($db, $Sitepath . "/" . $package)) {
+    $display = "display: block";
+  } else {
+    $display = "display: none";
+  }
+
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -53,7 +60,7 @@ function delete_line( p_script_url ) {
 ?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.country;
+  var af_form = document.createDialog;
   var af_url;
 
   af_url  = '?update='   + update;
@@ -64,6 +71,21 @@ function attach_file( p_script_url, update ) {
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+function update_file( p_script_url, update ) {
+  var uf_form = document.updateDialog;
+  var uf_url;
+
+  uf_url  = '?update='   + update;
+  uf_url += '&id='       + uf_form.id.value;
+
+  uf_url += "&cn_country="       + encode_URI(uf_form.cn_country.value);
+  uf_url += "&cn_acronym="       + encode_URI(uf_form.cn_acronym.value);
+
+  script = document.createElement('script');
+  script.src = p_script_url + uf_url;
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
@@ -97,7 +119,7 @@ $(document).ready( function() {
         }
       },
       {
-        text: "Add Country",
+        text: "Add",
         click: function() {
           attach_file('country.mysql.php', 0);
           $( this ).dialog( "close" );
@@ -127,16 +149,16 @@ $(document).ready( function() {
         }
       },
       {
-        text: "Update Country",
+        text: "Update",
         click: function() {
-          attach_file('country.mysql.php', 1);
+          update_file('country.mysql.php', 1);
           $( this ).dialog( "close" );
         }
       },
       {
-        text: "Add Country",
+        text: "Add",
         click: function() {
-          attach_file('country.mysql.php', 0);
+          update_file('country.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -154,8 +176,6 @@ $(document).ready( function() {
 
 <div class="main">
 
-<form name="mainform">
-
 <table class="ui-styled-table">
 <tr>
   <th class="ui-state-default">Country Management</th>
@@ -163,17 +183,12 @@ $(document).ready( function() {
 </tr>
 </table>
 
-<div id="country-help" style="display: none">
+<div id="country-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Buttons</strong>
-  <ul>
-    <li><strong>Update Country</strong> - Save any changes to this form.</li>
-    <li><strong>Add Country</strong> - Create a new country record. You can copy an existing country by editing it, changing a field and saving it again.</li>
-  </ul></li>
-</ul>
+<p>Countries are pretty self explanatory. In this case they're used in the Address Book to identify where a state or 
+province is located.</p>
 
 </div>
 
@@ -186,7 +201,37 @@ $(document).ready( function() {
 </tr>
 </table>
 
-</form>
+
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Country Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('country-listing-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="country-listing-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+
+<p><strong>Country Listing</strong></p>
+
+<p>This page lists all the defined countries which are used when editing 
+the address books.</p>
+
+<p>To edit a Country, click on the entry in the listing. A dialog box will 
+be displayed where you can edit the current entry, or if there's some change you 
+wish to make, you can add a new Country.</p>
+
+<p>To add a new Country, click the Add Country button. A dialog box will be 
+displayed where you can add the necessary information and then save the new 
+Country.</p>
+
+</div>
+
+</div>
 
 
 <span id="table_mysql"><?php print wait_Process('Waiting...')?></span>
@@ -197,8 +242,6 @@ $(document).ready( function() {
 <div id="dialogCreate" title="Country Form">
 
 <form name="createDialog">
-
-<input type="hidden" name="id" value="0">
 
 <table class="ui-styled-table">
 <tr>
