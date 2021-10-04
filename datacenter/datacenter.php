@@ -18,12 +18,19 @@
 
   logaccess($db, $_SESSION['uid'], $package, "Viewing the Data Center Location table");
 
+# if help has not been seen yet,
+  if (show_Help($db, $Sitepath . "/" . $package)) {
+    $display = "display: block";
+  } else {
+    $display = "display: none";
+  }
+
 ?>
 <!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Address Editor</title>
+<title>Data Center Editor</title>
 
 <style type='text/css' title='currentStyle' media='screen'>
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -57,7 +64,6 @@ function attach_file( p_script_url, update ) {
   var af_url;
 
   af_url  = '?update='   + update;
-  af_url += '&id='       + af_form.id.value;
 
   af_url += "&loc_name="        + encode_URI(af_form.loc_name.value);
   af_url += "&loc_type="        + af_form.loc_type.value;
@@ -138,7 +144,7 @@ $(document).ready( function() {
         }
       },
       {
-        text: "Add Location",
+        text: "Add",
         click: function() {
           attach_file('datacenter.mysql.php', 0);
           $( this ).dialog( "close" );
@@ -168,14 +174,14 @@ $(document).ready( function() {
         }
       },
       {
-        text: "Update Location",
+        text: "Update",
         click: function() {
           update_file('datacenter.mysql.php', 1);
           $( this ).dialog( "close" );
         }
       },
       {
-        text: "Add Location",
+        text: "Add",
         click: function() {
           update_file('datacenter.mysql.php', 0);
           $( this ).dialog( "close" );
@@ -197,39 +203,18 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default">Address Editor</th>
+  <th class="ui-state-default">Data Center Editor</th>
   <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('location-help');">Help</a></th>
 </tr>
 </table>
 
-<div id="location-help" style="display: none">
+<div id="location-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Buttons</strong>
-  <ul>
-    <li><strong>Update Location</strong> - Save any changes to this form.</li>
-    <li><strong>Add Location</strong> - Create a new location record. You can copy an existing location by editing it, changing a field and saving it again.</li>
-  </ul></li>
-</ul>
+<p>A Data Center is where you have servers and other equipment located. This page lets you create the necessary 
+address both for a Data Center and for any other address you might require.</p>
 
-<ul>
-  <li><strong>Location Form</strong>
-  <ul>
-    <li><strong>Name</strong> Enter the descriptive name of the Location.</li>
-    <li><strong>Suite</strong> If the devices are in a suite, enter that here.</li>
-    <li><strong>Address</strong> Enter the street address. The second Address is for additional information regarding the address.</li>
-    <li><strong>Select a Location</strong> This is a list of cities, states, and countries that can be selected for this data center.</li>
-    <li><strong>Default</strong> Checking this puts this location into the default Home Page Data Center drop down box. Default sites are <span class="ui-state-highlight">highlighted</span>.</li>
-    <li><strong>Zipcode</strong> The location zipcode.</li>
-    <li><strong>CLLI Prefix</strong> The Standard Naming Convention server name prefix for this location. Four character city plus two character state plus data center instance number.</li>
-    <li><strong>DC Identity</strong> The 5 character code identifying a data center.</li>
-  </li></ul>
-  <li><strong>Location Contact Form</strong> - Provide contact information for a location.</li>
-  <li><strong>Location Access Form</strong> - Provide a link to additional documentation on how a field engineer can access this site.</li>
-  <li><strong>Network Grid Form</strong> - Future: for use in creating a site map.</li>
-</ul>
 
 </div>
 
@@ -237,9 +222,48 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add Location"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add Data Center"></td>
 </tr>
 </table>
+
+
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Data Center Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('datacenter-listing-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="datacenter-listing-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+<p><strong>Data Center Listing</strong></p>
+
+<p>This page lists all the locations in the address book including Data Centes.</p>
+
+<p>To edit a Location, click on the entry in the listing. A dialog box will be displayed where 
+you can edit the current entry, or if there's some change you wish to make, you can add a new 
+Location.</p>
+
+<p>To add a new Location, click the Add Data Center button. A dialog box will be displayed 
+where you can add the necessary information and then save the new Location.</p>
+
+<p>Note there is a <strong>Location Tags</strong> option in the forms. This lets you 
+add tags to a location for use in identifying servers in a data center by selecting the 
+tag from the Tag Cloud option but also for use with Ansible for filtering your run 
+against a specific site. The expectation is a single word as a tag so separate 
+tags by a space or a comma.</p>
+
+<p>Note that an entry that is <span class="ui-state-highlight">highlighted</span> has been 
+selected to show up in the report filters. They show up at the top of the report for clarity.</p>
+
+</div>
+
+</div>
+
 
 <span id="mysql_table"><?php print wait_Process('Waiting...')?></span>
 
@@ -249,8 +273,6 @@ $(document).ready( function() {
 <div id="dialogCreate" title="Data Center Form">
 
 <form name="createDialog">
-
-<input type="hidden" name="id" value="0">
 
 <table class="ui-styled-table">
 <tr>
