@@ -18,12 +18,19 @@
 
   logaccess($db, $_SESSION['uid'], $package, "Viewing the State table");
 
+# if help has not been seen yet,
+  if (show_Help($db, $Reportpath . "/" . $package)) {
+    $display = "display: block";
+  } else {
+    $display = "display: none";
+  }
+
 ?>
 <!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Manage States</title>
+<title>State Editor</title>
 
 <style type='text/css' title='currentStyle' media='screen'>
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -53,11 +60,10 @@ function delete_line( p_script_url ) {
 ?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.updateDialog;
+  var af_form = document.createDialog;
   var af_url;
 
   af_url  = '?update='   + update;
-  af_url += '&id='       + af_form.id.value;
 
   af_url += "&st_acronym="    + encode_URI(af_form.st_acronym.value);
   af_url += "&st_state="      + encode_URI(af_form.st_state.value);
@@ -65,6 +71,22 @@ function attach_file( p_script_url, update ) {
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+function update_file( p_script_url, update ) {
+  var uf_form = document.updateDialog;
+  var uf_url;
+
+  uf_url  = '?update='   + update;
+  uf_url += '&id='       + uf_form.id.value;
+
+  uf_url += "&st_acronym="    + encode_URI(uf_form.st_acronym.value);
+  uf_url += "&st_state="      + encode_URI(uf_form.st_state.value);
+  uf_url += "&st_country="    + uf_form.st_country.value;
+
+  script = document.createElement('script');
+  script.src = p_script_url + uf_url;
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
@@ -128,16 +150,16 @@ $(document).ready( function() {
         }
       },
       {
-        text: "Update State",
+        text: "Update",
         click: function() {
-          attach_file('state.mysql.php', 1);
+          update_file('state.mysql.php', 1);
           $( this ).dialog( "close" );
         }
       },
       {
         text: "Add State",
         click: function() {
-          attach_file('state.mysql.php', 0);
+          update_file('state.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -155,26 +177,20 @@ $(document).ready( function() {
 
 <div class="main">
 
-<form name="mainform">
-
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default">State Management</th>
+  <th class="ui-state-default">State Editor</th>
   <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('state-help');">Help</a></th>
 </tr>
 </table>
 
-<div id="state-help" style="display: none">
+<div id="state-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Buttons</strong>
-  <ul>
-    <li><strong>Update State</strong> - Save any changes to this form.</li>
-    <li><strong>Add State</strong> - Create a new state record. You can copy an existing state by editing it, changing a field and saving it again.</li>
-  </ul></li>
-</ul>
+<p>There's not really a lot to describe here. Most folks know what a State is. The idea here is you create a chain 
+where you only need to select the City when managing Address Books as the City will have the State and Country 
+already associated with it.</p>
 
 </div>
 
@@ -186,18 +202,43 @@ $(document).ready( function() {
 </tr>
 </table>
 
-</form>
+
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">State Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('state-listing-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="state-listing-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+<p><strong>State Listing</strong></p>
+
+<p>This page lists all the defined States which are used when editing the address books.</p>
+
+<p>To edit a State, click on the entry in the listing. A dialog box will be displayed where you 
+can edit the current entry, or if there's some change you wish to make, you can add a new 
+State.</p>
+
+<p>To add a new State, click the Add State button. A dialog box will be displayed where you can 
+add the necessary information and then save the new State.</p>
+
+</div>
+
+</div>
 
 <span id="table_mysql"><?php print wait_Process('Waiting...')?></span>
 
 </div>
 
 
-<div id="dialogCreate" title="State Form">
+<div id="dialogCreate" title="Add State">
 
 <form name="createDialog">
-
-<input type="hidden" name="id" value="0">
 
 <table class="ui-styled-table">
 <tr>
@@ -226,7 +267,7 @@ $(document).ready( function() {
 </div>
 
 
-<div id="dialogUpdate" title="State Form">
+<div id="dialogUpdate" title="Update State">
 
 <form name="updateDialog">
 
