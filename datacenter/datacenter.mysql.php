@@ -14,14 +14,17 @@
   if (isset($_SESSION['username'])) {
     $package = "datacenter.mysql.php";
     $formVars['update'] = clean($_GET['update'], 10);
+    $formVars['id']               = clean($_GET['id'],              10);
 
     if ($formVars['update'] == '') {
       $formVars['update'] = -1;
     }
+    if ($formVars['id'] == '') {
+      $formVars['id'] = 0;
+    }
 
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
-        $formVars['id']               = clean($_GET['id'],              10);
         $formVars['loc_name']         = clean($_GET['loc_name'],        60);
         $formVars['loc_type']         = clean($_GET['loc_type'],        10);
         $formVars['loc_suite']        = clean($_GET['loc_suite'],       60);
@@ -38,9 +41,6 @@
         $formVars['loc_tags']         = clean($_GET['loc_tags'],       255);
         $formVars['loc_environment']  = clean($_GET['loc_environment'], 10);
 
-        if ($formVars['id'] == '') {
-          $formVars['id'] = 0;
-        }
         if ($formVars['loc_default'] == 'true') {
           $formVars['loc_default'] = 1;
         } else {
@@ -104,6 +104,44 @@
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['loc_name']);
 
           mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+
+##################
+# Tag Management
+##################
+#
+# Step 1, remove all tags associated with this location. We only need to do this for 
+# locations that are updates. New locations will have all new tags.
+          if ($formVars['update'] == 1) {
+            $q_string  = "delete ";
+            $q_string .= "from tags ";
+            $q_string .= "where tag_type = 2 and tag_companyid = " . $formVars['id'] . " ";
+            mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          }
+
+# Step 2, okay we've cleared all the tags from the tag system for this server.
+# next is to parse the inputted data and create an array. remove any commas and duplicate spaces.
+# as a note, the clean() function will remove any leading or trailing spaces so that
+# prevents blank tags.
+          $formVars['loc_tags'] = str_replace(',', ' ', $formVars['loc_tags']);
+          $formVars['loc_tags'] = preg_replace('!\s+!', ' ', $formVars['loc_tags']);
+
+# Step 3, now loop through the tags and add them to the tags table
+          if (strlen($formVars['loc_tags']) > 0) {
+            $loc_tags = explode(" ", $formVars['loc_tags']);
+            for ($i = 0; $i < count($loc_tags); $i++) {
+
+              $q_string = 
+                "tag_companyid    =   " . $formVars['id'] . "," . 
+                "tag_name         = \"" . $loc_tags[$i]   . "\"," . 
+                "tag_type         =   " . "2"             . "," . 
+                "tag_owner        =   " . $_SESSION['uid'] . "," . 
+                "tag_group        =   " . $_SESSION['group'];
+
+              $q_string = "insert into tags set tag_id = NULL, " . $q_string;
+              mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            }
+          }
+
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -118,6 +156,7 @@
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Data Center</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Location Address</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Location Tags</th>\n";
       $output .= "  <th class=\"ui-state-default\">CLLI</th>\n";
       $output .= "  <th class=\"ui-state-default\">Identity</th>\n";
       $output .= "  <th class=\"ui-state-default\">Instance</th>\n";
@@ -132,7 +171,7 @@
       $q_string .= "left join states  on states.st_id  = cities.ct_state ";
       $q_string .= "left join country on country.cn_id = states.st_country ";
       $q_string .= "left join environment on environment.env_id = locations.loc_environment ";
-      $q_string .= "order by loc_name,ct_city,st_state ";
+      $q_string .= "order by loc_default desc,loc_name,ct_city,st_state ";
       $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_locations) > 0) {
         while ($a_locations = mysqli_fetch_array($q_locations)) {
@@ -145,6 +184,17 @@
             $class = "ui-state-highlight";
           } else {
             $class = "ui-widget-content";
+          }
+
+          $loc_tags = '';
+          $q_string  = "select tag_name ";
+          $q_string .= "from tags ";
+          $q_string .= "where tag_companyid = " . $a_locations['loc_id'] . " and tag_type = 2 ";
+          $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_tags) > 0) {
+            while ($a_tags = mysqli_fetch_array($q_tags)) {
+              $loc_tags .= $a_tags['tag_name'] . " ";
+            }
           }
 
           $output .= "<tr>";
@@ -162,6 +212,7 @@
             $output .= "Suite: " . $a_locations['loc_suite'] . ", ";
           }
           $output .= $a_locations['ct_city'] . ", " . $a_locations['st_acronym'] . " " . $a_locations['loc_zipcode'] . ", " . $a_locations['cn_acronym'] . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"                       . $loc_tags                                 . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"                       . $a_locations['ct_clli']                   . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"                       . $a_locations['loc_identity']              . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"                       . $a_locations['loc_instance']              . "</td>";
