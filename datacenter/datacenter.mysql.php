@@ -117,8 +117,7 @@
       if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Data Center</th>\n";
       }
-      $output .= "  <th class=\"ui-state-default\">Descriptive Label</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Address</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Location Address</th>\n";
       $output .= "  <th class=\"ui-state-default\">CLLI</th>\n";
       $output .= "  <th class=\"ui-state-default\">Identity</th>\n";
       $output .= "  <th class=\"ui-state-default\">Instance</th>\n";
@@ -133,7 +132,7 @@
       $q_string .= "left join states  on states.st_id  = cities.ct_state ";
       $q_string .= "left join country on country.cn_id = states.st_country ";
       $q_string .= "left join environment on environment.env_id = locations.loc_environment ";
-      $q_string .= "order by loc_identity,loc_name,ct_city ";
+      $q_string .= "order by loc_name,ct_city,st_state ";
       $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_locations) > 0) {
         while ($a_locations = mysqli_fetch_array($q_locations)) {
@@ -152,16 +151,15 @@
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"" . $class . " delete\">" . $linkdel                                            . "</td>";
           }
-          $output .= "  <td class=\"" . $class . "\" title=\"ID=" . $a_locations['loc_id'] . "\">"          . $linkstart . $a_locations['loc_name']       . $linkend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">";
+          $output .= "  <td class=\"" . $class . "\">" . $linkstart . $a_locations['loc_name'] . $linkend . ", ";
           if (strlen($a_locations['loc_addr1']) > 0) {
-            $output .= $a_locations['loc_addr1'] . "</br>";
+            $output .= $a_locations['loc_addr1'] . ", ";
           }
           if (strlen($a_locations['loc_addr2']) > 0) {
-            $output .= $a_locations['loc_addr2'] . "</br>";
+            $output .= $a_locations['loc_addr2'] . ", ";
           }
           if (strlen($a_locations['loc_suite']) > 0) {
-            $output .= "Suite: " . $a_locations['loc_suite'] . "</br>";
+            $output .= "Suite: " . $a_locations['loc_suite'] . ", ";
           }
           $output .= $a_locations['ct_city'] . ", " . $a_locations['st_acronym'] . " " . $a_locations['loc_zipcode'] . ", " . $a_locations['cn_acronym'] . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"                       . $a_locations['ct_clli']                   . "</td>";
