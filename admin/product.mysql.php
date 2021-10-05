@@ -110,7 +110,7 @@
 
       $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>";
-      $output .= "  <th class=\"ui-state-default\">Del</th>";
+      $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Product/Service</th>";
       $output .= "  <th class=\"ui-state-default\">Product Code</th>";
       $output .= "  <th class=\"ui-state-default\">Product Name</th>";
       $output .= "  <th class=\"ui-state-default\">Product Description</th>";
