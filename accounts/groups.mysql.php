@@ -99,48 +99,47 @@
         }
       }
 
-      $group  = "<table class=\"ui-styled-table\">\n";
-      $group .= "<tr>\n";
-      $group .= "  <th class=\"ui-state-default\">Group Listing</th>\n";
-      $group .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('group-listing-help');\">Help</a></th>\n";
-      $group .= "</tr>\n";
-      $group .= "</table>\n";
+      $output  = "<table class=\"ui-styled-table\">\n";
+      $output .= "<tr>\n";
+      $output .= "  <th class=\"ui-state-default\">Group Listing</th>\n";
+      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('group-listing-help');\">Help</a></th>\n";
+      $output .= "</tr>\n";
+      $output .= "</table>\n";
 
-      $group .= "<div id=\"group-listing-help\" style=\"display: none\">\n";
+      $output .= "<div id=\"group-listing-help\" style=\"display: none\">\n";
 
-      $header  = "<div class=\"main-help ui-widget-content\">\n";
+      $output  = "<div class=\"main-help ui-widget-content\">\n";
 
-      $header .= "<ul>\n";
-      $header .= "  <li><strong>Group Listing</strong>\n";
-      $header .= "  <ul>\n";
-      $header .= "    <li><strong>Delete (x)</strong> - Click here to delete this group from the Inventory. It's better to disable the user.</li>\n";
-      $header .= "    <li><strong>Editing</strong> - Click on a group to toggle the form and edit the group.</li>\n";
-      $header .= "    <li><strong>Highlight</strong> - If a group is <span class=\"ui-state-error\">highlighted</span>, then the group has been disabled and will not be visible in any selection menus.</li>\n";
-      $header .= "  </ul></li>\n";
-      $header .= "</ul>\n";
+      $output .= "<ul>\n";
+      $output .= "  <li><strong>Group Listing</strong>\n";
+      $output .= "  <ul>\n";
+      $output .= "    <li><strong>Delete (x)</strong> - Click here to delete this group from the Inventory. It's better to disable the user.</li>\n";
+      $output .= "    <li><strong>Editing</strong> - Click on a group to toggle the form and edit the group.</li>\n";
+      $output .= "    <li><strong>Highlight</strong> - If a group is <span class=\"ui-state-error\">highlighted</span>, then the group has been disabled and will not be visible in any selection menus.</li>\n";
+      $output .= "  </ul></li>\n";
+      $output .= "</ul>\n";
 
-      $header .= "</div>\n";
+      $output .= "</div>\n";
 
-      $header .= "</div>\n";
+      $output .= "</div>\n";
 
 
-      $title  = "<table class=\"ui-styled-table\">";
-      $title .= "<tr>";
+      $output  = "<table class=\"ui-styled-table\">";
+      $output .= "<tr>";
       if (check_userlevel($db, $AL_Admin)) {
-        $title .= "  <th class=\"ui-state-default\">Del</th>";
+        $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Group</th>";
       }
-      $title .= "  <th class=\"ui-state-default\">Id</th>";
-      $title .= "  <th class=\"ui-state-default\">Organization</th>";
-      $title .= "  <th class=\"ui-state-default\">Group</th>";
-      $title .= "  <th class=\"ui-state-default\">Role</th>";
-      $title .= "  <th class=\"ui-state-default\">Group EMail</th>";
-      $title .= "  <th class=\"ui-state-default\">Group Manager</th>";
-      $title .= "  <th class=\"ui-state-default\">Status</th>";
-      $title .= "  <th class=\"ui-state-default\">Server</th>";
-      $title .= "  <th class=\"ui-state-default\">Import</th>";
-      $title .= "</tr>";
+      $output .= "  <th class=\"ui-state-default\">Organization</th>";
+      $output .= "  <th class=\"ui-state-default\">Group</th>";
+      $output .= "  <th class=\"ui-state-default\">Role</th>";
+      $output .= "  <th class=\"ui-state-default\">Group EMail</th>";
+      $output .= "  <th class=\"ui-state-default\">Group Manager</th>";
+      $output .= "  <th class=\"ui-state-default\">Status</th>";
+      $output .= "  <th class=\"ui-state-default\">Server</th>";
+      $output .= "  <th class=\"ui-state-default\">Import</th>";
+      $output .= "</tr>";
 
-      $group     .= $header . $title;
+      $output     .= $header . $title;
 
 
       $q_string  = "select grp_id,grp_name,org_name,role_name,grp_email,usr_last,";
@@ -154,7 +153,7 @@
       if (mysqli_num_rows($q_groups) > 0) {
         while ($a_groups = mysqli_fetch_array($q_groups)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('groups.fill.php?id="  . $a_groups['grp_id'] . "');jQuery('#dialogGroup').dialog('open');return false;\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('groups.fill.php?id="  . $a_groups['grp_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('groups.del.php?id=" . $a_groups['grp_id'] . "');\">";
           $linkend = "</a>";
 
@@ -178,39 +177,31 @@
 
           $group .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
-            $group .= "  <td class=\"" . $class . " delete\">" . $linkdel   . "</td>";
+            $output .= "  <td class=\"" . $class . " delete\">" . $linkdel   . "</td>";
           }
-          $group .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['grp_id']           . $linkend . "</td>";
-          $group .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['org_name']         . $linkend . "</td>";
-          $group .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['grp_name']         . $linkend . "</td>";
-          $group .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['role_name']        . $linkend . "</td>";
-          $group .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['grp_email']        . $linkend . "</td>";
-          $group .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['usr_first'] . " " . $a_groups['usr_last'] . $linkend . "</td>";
-          $group .= "  <td class=\"" . $class . "\">"        . $linkstart . $grp_status                   . $linkend . "</td>";
-          $group .= "  <td class=\"" . $class . "\">"        . $linkstart . $grp_server                   . $linkend . "</td>";
-          $group .= "  <td class=\"" . $class . "\">"        . $linkstart . $grp_import                   . $linkend . "</td>";
-          $group .= "</tr>";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['org_name']         . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['grp_name']         . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['role_name']        . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['grp_email']        . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['usr_first'] . " " . $a_groups['usr_last'] . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $grp_status                   . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $grp_server                   . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $grp_import                   . $linkend . "</td>";
+          $output .= "</tr>";
 
 
         }
       } else {
-        $group .= "<tr>";
-        $group .= "  <td class=\"" . $class . "\" colspan=\"6\">No records found.</td>";
-        $group .= "</tr>";
+        $output .= "<tr>";
+        $output .= "  <td class=\"" . $class . "\" colspan=\"10\">No records found.</td>";
+        $output .= "</tr>";
       }
 
       mysqli_free_result($q_groups);
 
-      $group .= "</table>";
+      $output .= "</table>";
 
-      print "document.getElementById('group_mysql').innerHTML = '"     . mysqli_real_escape_string($db, $group)     . "';\n\n";
-
-      print "document.groups.grp_organization[0].selected = true;\n";
-      print "document.groups.grp_name.value = '';\n";
-      print "document.groups.grp_role[0].selected = true;\n";
-      print "document.groups.grp_email.value = '';\n";
-      print "document.groups.grp_manager[0].selected = true;\n";
-      print "document.groups.grp_disabled[0].selected = true;\n";
+      print "document.getElementById('group_mysql').innerHTML = '"     . mysqli_real_escape_string($db, $output)     . "';\n\n";
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
