@@ -18,12 +18,19 @@
 
   logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
+# if help has not been seen yet,
+  if (show_Help($db, $Sitepath . "/" . $package)) {
+    $display = "display: block";
+  } else {
+    $display = "display: none";
+  }
+
 ?>
 <!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Manage <?php print $Sitecompany; ?>Products</title>
+<title>Product/Service Editor</title>
 
 <style type='text/css' title='currentStyle' media='screen'>
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -36,8 +43,11 @@
 
 <script type="text/javascript">
 
+<?php
+  if (check_userlevel($db, $AL_Admin)) {
+?>
 function delete_line( p_script_url ) {
-  var answer = confirm("Delete this <?php print $Sitecompany; ?>Product?")
+  var answer = confirm("Delete this Product/Service?")
 
   if (answer) {
     script = document.createElement('script');
@@ -45,29 +55,22 @@ function delete_line( p_script_url ) {
     document.getElementsByTagName('head')[0].appendChild(script);
   }
 }
+<?php
+  }
+?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.products;
+  var af_form = document.createDialog;
   var af_url;
 
   af_url  = '?update='   + update;
-  af_url += '&id='       + af_form.id.value;
 
+  af_url += "&prod_code="     + encode_URI(af_form.prod_code.value);
   af_url += "&prod_name="     + encode_URI(af_form.prod_name.value);
   af_url += "&prod_desc="     + encode_URI(af_form.prod_desc.value);
-  af_url += "&prod_group="    + af_form.prod_group.value;
-  af_url += "&prod_type="     + encode_URI(af_form.prod_type.value);
-  af_url += "&prod_code="     + encode_URI(af_form.prod_code.value);
-  af_url += "&prod_oldcode="  + encode_URI(af_form.prod_oldcode.value);
-  af_url += "&prod_citype="   + encode_URI(af_form.prod_citype.value);
-  af_url += "&prod_tier1="    + encode_URI(af_form.prod_tier1.value);
-  af_url += "&prod_tier2="    + encode_URI(af_form.prod_tier2.value);
-  af_url += "&prod_tier3="    + encode_URI(af_form.prod_tier3.value);
+  af_url += "&prod_tags="     + encode_URI(af_form.prod_tags.value);
   af_url += "&prod_unit="     + af_form.prod_unit.value;
-  af_url += "&prod_remedy="   + af_form.prod_remedy.checked;
   af_url += "&prod_service="  + af_form.prod_service.value;
-
-
 
   if (af_form.prod_code.value.length != 2) {
     alert("Product code must be unique and 2 characters.");
@@ -78,28 +81,49 @@ function attach_file( p_script_url, update ) {
   }
 }
 
+function update_file( p_script_url, update ) {
+  var uf_form = document.updateDialog;
+  var uf_url;
+
+  uf_url  = '?update='   + update;
+  uf_url += '&id='       + uf_form.id.value;
+
+  uf_url += "&prod_code="     + encode_URI(uf_form.prod_code.value);
+  uf_url += "&prod_name="     + encode_URI(uf_form.prod_name.value);
+  uf_url += "&prod_desc="     + encode_URI(uf_form.prod_desc.value);
+  uf_url += "&prod_tags="     + encode_URI(uf_form.prod_tags.value);
+  uf_url += "&prod_unit="     + uf_form.prod_unit.value;
+  uf_url += "&prod_service="  + uf_form.prod_service.value;
+
+  if (uf_form.prod_code.value.length != 2) {
+    alert("Product code must be unique and 2 characters.");
+  } else {
+    script = document.createElement('script');
+    script.src = p_script_url + uf_url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+}
+
 function clear_fields() {
   show_file('product.mysql.php?update=-1');
 }
 
 $(document).ready( function() {
-  $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
-
-  $( '#clickAddProduct' ).click(function() {
-    $( "#dialogProduct" ).dialog('open');
+  $( '#clickCreate' ).click(function() {
+    $( "#dialogCreate" ).dialog('open');
   });
 
-  $( "#dialogProduct" ).dialog({
+  $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 320,
-    width: 1100,
+    height: 275,
+    width: 600,
     show: 'slide',
     hide: 'slide',
     closeOnEscape: true,
     dialogClass: 'dialogWithDropShadow',
     close: function(event, ui) {
-      $( "#dialogProduct" ).hide();
+      $( "#dialogCreate" ).hide();
     },
     buttons: [
       {
@@ -110,16 +134,46 @@ $(document).ready( function() {
         }
       },
       {
-        text: "Update Product or Service",
+        text: "Add Product/Service",
         click: function() {
-          attach_file('product.mysql.php', 1);
+          attach_file('product.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+  $( "#dialogUpdate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 275,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogUpdate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('product.mysql.php?update=-1');
           $( this ).dialog( "close" );
         }
       },
       {
-        text: "Add Product or Service",
+        text: "Update Product/Service",
         click: function() {
-          attach_file('product.mysql.php', 0);
+          update_file('product.mysql.php', 1);
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Product/Service",
+        click: function() {
+          update_file('product.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -138,26 +192,19 @@ $(document).ready( function() {
 
 <div id="main">
 
-<form name="mainform">
-
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default"><?php print $Sitecompany; ?>Product Management</th>
+  <th class="ui-state-default">Product/Service Editor</th>
   <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('product-help');">Help</a></th>
 </tr>
 </table>
 
-<div id="product-help" style="display: none">
+<div id="product-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Buttons</strong>
-  <ul>
-    <li><strong>Update Product</strong> - Save any changes to this form.</li>
-    <li><strong>Add Product</strong> - Add a new <?php print $Sitecompany; ?>Product.</li>
-  </ul></li>
-</ul>
+<p>A Product or Service is something that the company is providing. This could be anything from an inhouse built application 
+or something like cloud services.</p>
 
 </div>
 
@@ -165,46 +212,61 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickAddProduct" value="Add Product or Service"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add Product/Service"></td>
 </tr>
 </table>
+
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Product/Service Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('product-listing-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="product-listing-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+<p><strong>Product/Service Listing</strong></p>
+
+<p>This page lists all the Products and Services that are offerred by the company.</p>
+
+<p>To add a Product or Service, click the Add Product/Service button. This will bring up a dialog box which 
+you can use to create a new Product or Service.</p>
+
+<p>To edit an existing Product or Service, click on an entry in the listing. A dialog box will be presented 
+where you can edit the current entry, or if there is a small difference, you can make changes and add a new 
+Product or Service.</p>
+
+
+</div>
+
+</div>
+
 
 <span id="table_mysql"><?php print wait_Process('Waiting...')?></span>
 
 </div>
 
-</form>
 
-<div id="dialogProduct" title="Product or Service Form">
+<div id="dialogCreate" title="Add Product/Service">
 
-<form name="products">
-
-<input type="hidden" name="id" value="0">
+<form name="createDialog">
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default" colspan="8">Product or Service Information</th>
-</tr>
-<tr>
-  <td class="ui-widget-content">ID: <input disabled="true" type="text" name="prod_id" size="10"></td>
-  <td class="ui-widget-content" colspan="2">Name: <input type="text" name="prod_name" size="40"></td>
   <td class="ui-widget-content">Code: <input type="text" name="prod_code" size="10"></td>
-  <td class="ui-widget-content">Old Code: <input type="text" name="prod_oldcode" size="10"></td>
-  <td class="ui-widget-content" colspan="3">Description: <input type="text" name="prod_desc" size="40"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content" colspan="3">Group: <select name="prod_group">
-<?php
-  $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from a_groups ";
-  $q_string .= "where grp_disabled = 0 ";
-  $q_string .= "order by grp_name ";
-  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_groups = mysqli_fetch_array($q_groups)) {
-    print "<option value=\"" . $a_groups['grp_id'] . "\">" . $a_groups['grp_name'] . "</option>\n";
-  }
-?></select></td>
-  <td class="ui-widget-content" colspan="2">Business Unit <select name="prod_unit">
+  <td class="ui-widget-content">Name: <input type="text" name="prod_name" size="40"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Description: <input type="text" name="prod_desc" size="40"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Business Unit Ownership <select name="prod_unit">
 <?php
   $q_string  = "select bus_id,bus_name ";
   $q_string .= "from business_unit ";
@@ -215,8 +277,9 @@ $(document).ready( function() {
   }
 ?>
 </select></td>
-  <td class="ui-widget-content">Remedy? <input type="checkbox" name="prod_remedy"></td>
-  <td class="ui-widget-content" colspan="2">Service Class <select name="prod_service">
+</tr>
+<tr>
+  <td class="ui-widget-content">Service Class <select name="prod_service">
 <?php
   $q_string  = "select svc_id,svc_acronym ";
   $q_string .= "from service ";
@@ -228,24 +291,67 @@ $(document).ready( function() {
 ?>
 </select></td>
 </tr>
-</table>
-
-<table>
 <tr>
-  <th class="ui-state-default" colspan="6">Remedy Import Form</th>
-</tr>
-<tr>
-  <td class="ui-widget-content" colspan="3">Product Type: <input type="text" name="prod_type" size="30"></td>
-  <td class="ui-widget-content" colspan="3">CI Type: <input type="text" name="prod_citype" size="30"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content" colspan="2">Product Categorization Tier 1: <input type="text" name="prod_tier1" size="30"></td>
-  <td class="ui-widget-content" colspan="2">Product Categorization Tier 2: <input type="text" name="prod_tier2" size="30"></td>
-  <td class="ui-widget-content" colspan="2">Product Categorization Tier 3: <input type="text" name="prod_tier3" size="30"></td>
+  <td class="ui-widget-content">Product Tags: <input type="text" name="prod_tags" size="60"></td>
 </tr>
 </table>
 
 </form>
+
+</div>
+
+
+<div id="dialogUpdate" title="Edit Product/Service">
+
+<form name="updateDialog">
+
+<input type="hidden" name="id" value="0">
+
+<table class="ui-styled-table">
+<tr>
+  <td class="ui-widget-content">Code: <input type="text" name="prod_code" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Name: <input type="text" name="prod_name" size="40"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Description: <input type="text" name="prod_desc" size="40"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Business Unit Ownership <select name="prod_unit">
+<?php
+  $q_string  = "select bus_id,bus_name ";
+  $q_string .= "from business_unit ";
+  $q_string .= "order by bus_name ";
+  $q_business_unit = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_business_unit = mysqli_fetch_array($q_business_unit)) {
+    print "<option value=\"" . $a_business_unit['bus_id'] . "\">" . $a_business_unit['bus_name'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Service Class <select name="prod_service">
+<?php
+  $q_string  = "select svc_id,svc_acronym ";
+  $q_string .= "from service ";
+  $q_string .= "order by svc_id";
+  $q_service = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_service = mysqli_fetch_array($q_service)) {
+    print "<option value=\"" . $a_service['svc_id'] . "\">" . $a_service['svc_acronym'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Product Tags: <input type="text" name="prod_tags" size="60"></td>
+</tr>
+</table>
+
+</form>
+
+</div>
+
 
 </div>
 
