@@ -243,7 +243,7 @@ add a new network.</p>
 <p>Note that under the Members column is a number which indicates the number of IP addresses that 
 are currently assigned to this network. You cannot remove a network until this value is zero. 
 Clicking on the number will take you to the IP Address editing screen where you can delete or change 
-the network for that IP address.</p>\n";
+the network for that IP address.</p>
 
 </div>
 
