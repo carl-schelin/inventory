@@ -44,19 +44,15 @@
             "lvl_changedby =   " . $formVars['lvl_changedby'];
 
           if ($formVars['update'] == 0) {
-            $query = "insert into levels set lvl_id = NULL," . $q_string;
-            $message = "Level added.";
+            $q_string = "insert into levels set lvl_id = NULL," . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update levels set " . $q_string . " where lvl_id = " . $formVars['id'];
-            $message = "Level updated.";
+            $q_string = "update levels set " . $q_string . " where lvl_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['lvl_name']);
 
-          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
-
-          print "alert('" . $message . "');\n";
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -65,39 +61,14 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\">Level Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('level-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"level-listing-help\" style=\"display: none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Level Listing</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li><strong>Delete (x)</strong> - Click here to delete this access level from the Inventory. It's better to disable the level.</li>\n";
-      $output .= "    <li><strong>Editing</strong> - Click on a level to toggle the form and edit the level.</li>\n";
-      $output .= "    <li><strong>Highlight</strong> - If a level has been <span class=\"ui-state-error\">highlighted</span>, then the level has been disabled and will not be visible in any selection menus and will restrict access to areas that were accessible in the past.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "<table class=\"ui-styled-table\">";
+      $output  = "<table class=\"ui-styled-table\">";
       $output .= "<tr>";
       if (check_userlevel($db, $AL_Admin)) {
-        $output .= "  <th class=\"ui-state-default\">Del</th>";
+        $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Level</th>";
       }
-      $output .= "  <th class=\"ui-state-default\">Id</th>";
       $output .= "  <th class=\"ui-state-default\">Access Level</th>";
       $output .= "  <th class=\"ui-state-default\">Level Name</th>";
+      $output .= "  <th class=\"ui-state-default\">Members</th>";
       $output .= "</tr>";
 
       $q_string  = "select lvl_id,lvl_name,lvl_level,lvl_disabled ";
@@ -107,7 +78,7 @@
       if (mysqli_num_rows($q_levels) > 0) {
         while ($a_levels = mysqli_fetch_array($q_levels)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('levels.fill.php?id=" . $a_levels['lvl_id'] . "');jQuery('#dialogLevel').dialog('open');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('levels.fill.php?id=" . $a_levels['lvl_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_level('levels.del.php?id=" . $a_levels['lvl_id'] . "');\">";
           $linkend = "</a>";
 
@@ -116,18 +87,38 @@
             $class = "ui-state-error";
           }
 
+          $total = 0;
+          $disabled = 0;
+          $q_string  = "select usr_id,usr_disabled ";
+          $q_string .= "from users ";
+          $q_string .= "where usr_level = " . $a_levels['lvl_id'] . " ";
+          $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_users) > 0) {
+            while ($a_users = mysqli_fetch_array($q_users)) {
+              if ($a_users['usr_disabled'] == 0) {
+                $total++;
+              } else {
+                $disabled++;
+              }
+            }
+          }
+
           $output .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
-            $output .= "  <td class=\"" . $class . " delete\">" . $linkdel   . "</td>";
+            if ($total == 0) {
+              $output .= "  <td class=\"" . $class . " delete\">" . $linkdel . "</td>";
+            } else {
+              $output .= "  <td class=\"" . $class . " delete\">Members &gt; 0</td>";
+            }
           }
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_levels['lvl_id']        . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_levels['lvl_level']     . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_levels['lvl_name']      . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">" . $total . " (" . $disabled . ")</td>";
           $output .= "</tr>";
         }
       } else {
         $output .= "<tr>";
-        $output .= "  <td class=\"" . $class . "\" colspan=\"4\">No records found.</td>";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"4\">No records found.</td>";
         $output .= "</tr>";
       }
 
@@ -136,10 +127,6 @@
       mysqli_free_result($q_levels);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
-
-      print "document.levels.lvl_name.value = '';\n";
-      print "document.levels.lvl_level.value = '';\n";
-
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
