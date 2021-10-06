@@ -236,7 +236,7 @@ groups. You select from a list and select whether you're a full member or a read
 
 <div class="main-help ui-widget-content">
 
-<p><strong>IP Address Listing</strong></p>
+<p><strong>Group Listing</strong></p>
 
 <p>This page lists all of the Groups that have been defined for the Inventory.</p>
 
