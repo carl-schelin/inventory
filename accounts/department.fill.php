@@ -28,7 +28,7 @@
       $a_department = mysqli_fetch_array($q_department);
       mysqli_free_result($q_department);
 
-      $depunit = return_Index($db, $a_department['dep_unit'], "select bus_id from business_unit order by bus_name");
+      $depunit = return_Index($db, $a_department['dep_unit'], "select bus_id from business order by bus_name");
 
       print "document.updateDialog.dep_name.value = '" . mysqli_real_escape_string($db, $a_department['dep_name']) . "';\n";
       print "document.updateDialog.dep_dept.value = '" . mysqli_real_escape_string($db, $a_department['dep_dept']) . "';\n";

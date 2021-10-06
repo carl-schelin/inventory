@@ -40,7 +40,7 @@
 
       $q_string  = "select dep_id,dep_unit,dep_dept,dep_name,bus_name ";
       $q_string .= "from department ";
-      $q_string .= "left join business_unit on business_unit.bus_unit = department.dep_unit ";
+      $q_string .= "left join business on business.bus_unit = department.dep_unit ";
       $q_string .= "order by bus_name,dep_name";
 
       $deptname = return_Index($db, $a_users['usr_deptname'], $q_string);

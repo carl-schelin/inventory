@@ -42,10 +42,10 @@
             "bus_org  =   " . $formVars['bus_org'];
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into business_unit set bus_id = null," . $q_string;
+            $q_string = "insert into business set bus_id = null," . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update business_unit set " . $q_string . " where bus_id = " . $formVars['id'];
+            $q_string = "update business set " . $q_string . " where bus_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['bus_name']);
@@ -72,17 +72,17 @@
       $output .= "</tr>\n";
 
       $q_string  = "select bus_id,bus_unit,bus_name,org_name ";
-      $q_string .= "from business_unit ";
-      $q_string .= "left join organizations on organizations.org_id = business_unit.bus_org ";
+      $q_string .= "from business ";
+      $q_string .= "left join organizations on organizations.org_id = business.bus_org ";
       $q_string .= "order by bus_name ";
-      $q_business_unit = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_business_unit) > 0) {
-        while ($a_business_unit = mysqli_fetch_array($q_business_unit)) {
+      $q_business = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_business) > 0) {
+        while ($a_business = mysqli_fetch_array($q_business)) {
 
           $total = 0;
           $q_string  = "select dep_id ";
           $q_string .= "from department ";
-          $q_string .= "where dep_unit = " . $a_business_unit['bus_id'] . " ";
+          $q_string .= "where dep_unit = " . $a_business['bus_id'] . " ";
           $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_department) > 0) {
             while ($a_department = mysqli_fetch_array($q_department)) {
@@ -91,11 +91,11 @@
           }
 
           if (check_userlevel($db, $AL_Admin)) {
-            $linkstart = "<a href=\"#\" onclick=\"show_file('business.fill.php?id="  . $a_business_unit['bus_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+            $linkstart = "<a href=\"#\" onclick=\"show_file('business.fill.php?id="  . $a_business['bus_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
             if ($total > 0) {
               $linkdel = 'Members &gt; 0';
             } else {
-              $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('business.del.php?id=" . $a_business_unit['bus_id'] . "');\">";
+              $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('business.del.php?id=" . $a_business['bus_id'] . "');\">";
             }
             $linkend   = "</a>";
           } else {
@@ -106,8 +106,8 @@
 
           $output .= "<tr>\n";
           $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_business_unit['bus_name'] . " (" . $a_business_unit['bus_unit'] . ")" . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"                     . $a_business_unit['org_name'] . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_business['bus_name'] . " (" . $a_business['bus_unit'] . ")" . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $a_business['org_name'] . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"                     . $total                       . "</td>\n";
           $output .= "</tr>\n";
         }
@@ -119,7 +119,7 @@
 
       $output .= "</table>\n";
 
-      mysqli_free_result($q_business_unit);
+      mysqli_free_result($q_business);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
     } else {

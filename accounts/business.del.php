@@ -19,10 +19,10 @@
     }
 
     if (check_userlevel($db, $AL_Admin)) {
-      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from business_unit");
+      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from business");
 
       $q_string  = "delete ";
-      $q_string .= "from business_unit ";
+      $q_string .= "from business ";
       $q_string .= "where bus_id = " . $formVars['id'];
       $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 

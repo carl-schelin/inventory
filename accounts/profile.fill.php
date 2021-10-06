@@ -38,7 +38,7 @@
       $deptname = 0;
       $q_string  = "select dep_id ";
       $q_string .= "from department ";
-      $q_string .= "left join business_unit on business_unit.bus_unit = department.dep_unit ";
+      $q_string .= "left join business on business.bus_unit = department.dep_unit ";
       $q_string .= "order by bus_name,dep_name";
       $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_department = mysqli_fetch_array($q_department)) {

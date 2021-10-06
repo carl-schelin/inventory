@@ -75,8 +75,8 @@
 
       $q_string  = "select dep_id,dep_unit,dep_dept,dep_name,bus_name,org_name ";
       $q_string .= "from department ";
-      $q_string .= "left join business_unit on business_unit.bus_unit = department.dep_unit ";
-      $q_string .= "left join organizations on organizations.org_id = business_unit.bus_org ";
+      $q_string .= "left join business on business.bus_unit = department.dep_unit ";
+      $q_string .= "left join organizations on organizations.org_id = business.bus_org ";
       $q_string .= "order by dep_name,bus_name,org_name ";
       $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_department) > 0) {
