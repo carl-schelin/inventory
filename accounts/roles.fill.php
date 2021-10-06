@@ -28,9 +28,9 @@
       $a_roles = mysqli_fetch_array($q_roles);
       mysqli_free_result($q_roles);
 
-      print "document.role.role_name.value = '" . mysqli_real_escape_string($db, $a_roles['role_name']) . "';\n";
+      print "document.updateDialog.role_name.value = '" . mysqli_real_escape_string($db, $a_roles['role_name']) . "';\n";
 
-      print "document.role.id.value = " . $formVars['id'] . ";\n";
+      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
