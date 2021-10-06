@@ -183,12 +183,8 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Organization Form</strong>
-  <ul>
-    <li><strong>Organization Name</strong> - The name of the company Organization</li>
-  </ul></li>
-</ul>
+<p>An Organization is the top level description of the entire business. It might be a simply company name 
+or a corporation. The next level down is Business.</p>
 
 </div>
 
@@ -213,13 +209,15 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Organization Listing</strong>
-  <ul>
-    <li><strong>Delete (x)</strong> - Click here to delete this organization from the Inventory.</li>
-    <li><strong>Editing</strong> - Click on an organization to toggle the form and edit the organization.</li>
-  </ul></li>
-</ul>
+<p><strong>Organization Listing</strong></p>
+
+<p>This page lists all the defined Organizations which are used when defining the company structure.</p>
+
+<p>To edit an Organization, click on the entry in the listing. A dialog box will be displayed where you 
+can edit the current entry, or if there's some change you wish to make, you can add a new Organization.</p>
+
+<p>To add a new Organization, click the Add Organization button. A dialog box will be displayed where 
+you can add the necessary information and then save the new Organization.</p>
 
 </div>
 
