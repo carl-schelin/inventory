@@ -131,9 +131,9 @@
       }
       $output .= "  <th class=\"ui-state-default\">Organization</th>";
       $output .= "  <th class=\"ui-state-default\">Group</th>";
-      $output .= "  <th class=\"ui-state-default\">Role</th>";
       $output .= "  <th class=\"ui-state-default\">Group EMail</th>";
       $output .= "  <th class=\"ui-state-default\">Group Manager</th>";
+      $output .= "  <th class=\"ui-state-default\">Members</th>";
       $output .= "  <th class=\"ui-state-default\">Status</th>";
       $output .= "  <th class=\"ui-state-default\">Server</th>";
       $output .= "  <th class=\"ui-state-default\">Import</th>";
@@ -175,25 +175,40 @@
             $grp_import = "Yes";
           }
 
-          $group .= "<tr>";
-          if (check_userlevel($db, $AL_Admin)) {
-            $output .= "  <td class=\"" . $class . " delete\">" . $linkdel   . "</td>";
+          $total = 0;
+          $q_string  = "select usr_id ";
+          $q_string .= "from users ";
+          $q_string .= "where usr_group = " . $a_groups['grp_id'] . " ";
+          $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_users) > 0) {
+            while ($a_users = mysqli_fetch_array($q_users)) {
+              $total++;
+            }
           }
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['org_name']         . $linkend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['grp_name']         . $linkend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['role_name']        . $linkend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['grp_email']        . $linkend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['usr_first'] . " " . $a_groups['usr_last'] . $linkend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $grp_status                   . $linkend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $grp_server                   . $linkend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $grp_import                   . $linkend . "</td>";
+
+          $output .= "<tr>";
+          if (check_userlevel($db, $AL_Admin)) {
+            if ($total == 0) {
+              $output .= "  <td class=\"" . $class . " delete\">" . $linkdel . "</td>";
+            } else {
+              $output .= "  <td class=\"" . $class . " delete\">Members &gt; 0</td>";
+            }
+          }
+          $output .= "  <td class=\"" . $class . "\">"                     . $a_groups['org_name']             . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['grp_name']  . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"                     . $a_groups['grp_email']            . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"                     . $a_groups['usr_first'] . " " . $a_groups['usr_last'] . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"              . $total                            . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"              . $grp_status                       . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"              . $grp_server                       . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"              . $grp_import                       . "</td>";
           $output .= "</tr>";
 
 
         }
       } else {
         $output .= "<tr>";
-        $output .= "  <td class=\"" . $class . "\" colspan=\"10\">No records found.</td>";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"10\">No records found.</td>";
         $output .= "</tr>";
       }
 
