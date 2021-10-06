@@ -51,6 +51,7 @@
     <ul>
       <li><a href="<?php print $Hardwareroot; ?>/assets.php">Asset Manager</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/device.php">Device Manager</a></li>
+      <li><a href="<?php print $Hardwareroot; ?>/devicetype.php">Device Types</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/cpu.php">CPU Manager</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/memory.php">Memory Manager</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/storage.php">Storage Manager</a></li>
@@ -91,7 +92,6 @@
       <li><a href="<?php print $Usersroot; ?>/roles.php">Role Names</a></li>
       <li><a href="<?php print $Adminroot; ?>/maintenance.windows.php">Maintenance Windows</a></li>
       <li><a href="<?php print $Adminroot; ?>/product.php">Products and Services</a></li>
-      <li><a href="<?php print $Adminroot; ?>/device.php">Device Types</a></li>
       <li><a href="<?php print $Adminroot; ?>/service.php">Service Class</a></li>
       <li><a href="<?php print $Adminroot; ?>/software.php">Software Support</a></li>
       <li><a href="<?php print $Adminroot; ?>/support.php">Support Contracts</a></li>
