@@ -108,7 +108,7 @@
           $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_business['bus_name'] . " (" . $a_business['bus_unit'] . ")" . $linkend . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"                     . $a_business['org_name'] . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"                     . $total                       . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content delete\">"              . $total                       . "</td>\n";
           $output .= "</tr>\n";
         }
       } else {
