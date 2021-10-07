@@ -18,12 +18,19 @@
 
   logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
+# if help has not been seen yet,
+  if (show_Help($db, $Sitepath . "/" . $package)) {
+    $display = "display: block";
+  } else {
+    $display = "display: none";
+  }
+
 ?>
 <!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Add/Edit Service Class Levels</title>
+<title>Service Class Editor</title>
 
 <style type='text/css' title='currentStyle' media='screen'>
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -53,11 +60,10 @@ function delete_line( p_script_url ) {
 ?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.service;
+  var af_form = document.createDialog;
   var af_url;
 
   af_url  = '?update='   + update;
-  af_url += '&id='       + af_form.id.value;
 
   af_url += "&svc_name="         + encode_URI(af_form.svc_name.value);
   af_url += "&svc_acronym="      + encode_URI(af_form.svc_acronym.value);
@@ -74,28 +80,48 @@ function attach_file( p_script_url, update ) {
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
+function update_file( p_script_url, update ) {
+  var uf_form = document.updateDialog;
+  var uf_url;
+
+  uf_url  = '?update='   + update;
+  uf_url += '&id='       + uf_form.id.value;
+
+  uf_url += "&svc_name="         + encode_URI(uf_form.svc_name.value);
+  uf_url += "&svc_acronym="      + encode_URI(uf_form.svc_acronym.value);
+  uf_url += "&svc_availability=" + encode_URI(uf_form.svc_availability.value);
+  uf_url += "&svc_downtime="     + encode_URI(uf_form.svc_downtime.value);
+  uf_url += "&svc_mtbf="         + encode_URI(uf_form.svc_mtbf.value);
+  uf_url += "&svc_geographic="   + uf_form.svc_geographic.checked;
+  uf_url += "&svc_mttr="         + encode_URI(uf_form.svc_mttr.value);
+  uf_url += "&svc_resource="     + uf_form.svc_resource.checked;
+  uf_url += "&svc_restore="      + encode_URI(uf_form.svc_restore.value);
+
+  script = document.createElement('script');
+  script.src = p_script_url + uf_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
+}
+
 function clear_fields() {
   show_file('service.mysql.php?update=-1');
 }
 
 $(document).ready( function() {
-  $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
-
-  $( '#clickAddService' ).click(function() {
-    $( "#dialogService" ).dialog('open');
+  $( '#clickCreate' ).click(function() {
+    $( "#dialogCreate" ).dialog('open');
   });
 
-  $( "#dialogService" ).dialog({
+  $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 220,
-    width: 1100,
+    height: 350,
+    width: 600,
     show: 'slide',
     hide: 'slide',
     closeOnEscape: true,
     dialogClass: 'dialogWithDropShadow',
     close: function(event, ui) {
-      $( "#dialogService" ).hide();
+      $( "#dialogCreate" ).hide();
     },
     buttons: [
       {
@@ -106,16 +132,46 @@ $(document).ready( function() {
         }
       },
       {
-        text: "Update Service",
+        text: "Add Service Class",
         click: function() {
-          attach_file('service.mysql.php', 1);
+          attach_file('service.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+  $( "#dialogUpdate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 350,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogUpdate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('service.mysql.php?update=-1');
           $( this ).dialog( "close" );
         }
       },
       {
-        text: "Add Service",
+        text: "Update Service Class",
         click: function() {
-          attach_file('service.mysql.php', 0);
+          update_file('service.mysql.php', 1);
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Service Class",
+        click: function() {
+          update_file('service.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -133,43 +189,19 @@ $(document).ready( function() {
 
 <div id="main">
 
-<form name="mainform">
-
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default">Service Class Management</th>
+  <th class="ui-state-default">Service Class Editor</th>
   <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('service-help');">Help</a></th>
 </tr>
 </table>
 
-<div id="service-help" style="display: none">
+<div id="service-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Buttons</strong>
-  <ul>
-    <li><strong>Update Service Class</strong> - Save any changes to this form.</li>
-    <li><strong>Add Service Class</strong> - Add a new Service Class. You can edit an existing one and use this button to save a new Service Class.</li>
-  </ul></li>
-</ul>
-
-<ul>
-  <li><strong>Service Class Form</strong> - 
-  <ul>
-    <li><strong>Name</strong> - Service Class</li>
-    <li><strong>Acronym</strong> - Acronym for the Service Class</li>
-    <li><strong>Availability</strong> - Percentage of time the <strong>service</strong> is available to the customer.</li>
-    <li><strong>Downtime</strong> - Permitted <strong>service</strong> downtime based on the Service Class.</li>
-    <li><strong>MTBF</strong> - Mean Time Between Failures - How often a <strong>service</strong> can fail.</li>
-    <li><strong>Geographically Redundant</strong> - Do components of the <strong>service</strong> need to in geographically diverse locations.</li>
-    <li><strong>MTTR</strong> - Mean Time To Recovery - How much time it takes for a <strong>service</strong> to recover.</li>
-    <li><strong>Resource Sharing</strong> - Can other services share the same resources?</li>
-    <li><strong>Restore</strong> - Cost/Time to Restore Data and Service.</li>
-  </ul></li>
-</ul>
-
-<p><a href="<?php print $Serviceclass; ?>">Service Class Documentation.</a></p>
+<p>A Service Class defines the availability of a service. It provides definition of how often a service can be unavailable 
+if how redundant, and if geograpic redundancy is required. These are all driven by contractual requirements.</p>
 
 </div>
 
@@ -177,39 +209,77 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickAddService" value="Add Service Class"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add Service Class"></td>
 </tr>
 </table>
 
-</form>
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Service Class Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('service-listing-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="service-listing-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+
+<p><strong>Country Listing</strong></p>
+
+<p>This page lists all the Service Class definitions which are used to provide service 
+availability requirements.</p>
+
+<p>To edit a Service Class, click on the entry in the listing. A dialog box will be 
+displayed where you can edit the current entry, or if there's some change you wish to 
+make, you can add a new Service Class.</p>
+
+<p>To add a new Service Class, click the Add Service Class button. A dialog box will 
+be displayed where you can add the necessary information and then save the new Service Class.</p>
+
+
+</div>
+
+</div>
+
 
 <span id="table_mysql"><?php print wait_Process('Waiting...')?></span>
 
 </div>
 
-<div id="dialogService" title="Service Class Form">
 
-<form name="service">
+<div id="dialogCreate" title="Add Service Class">
 
-<input type="hidden" name="id" value="0">
+<form name="createDialog">
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default" colspan="3">Service Class Form</th>
+  <td class="ui-widget-content">Name: <input type="text" name="svc_name" size="30"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Name: <input type="text" name="svc_name" size="30"></td>
   <td class="ui-widget-content">Acronym: <input type="text" name="svc_acronym" size="5"></td>
+</tr>
+<tr>
   <td class="ui-widget-content">Availability: <input type="text" name="svc_availability" size="12"></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Downtime: <input type="text" name="svc_downtime" size="20"></td>
+</tr>
+<tr>
   <td class="ui-widget-content">MTBF: <input type="text" name="svc_mtbf" size="20"></td>
+</tr>
+<tr>
   <td class="ui-widget-content"><label>Geographically Redundant: <input type="checkbox" name="svc_geographic"></label></td>
 </tr>
 <tr>
   <td class="ui-widget-content">MTTR: <input type="text" name="svc_mttr" size="12"></td>
+</tr>
+<tr>
   <td class="ui-widget-content"><label>Resource Sharing: <input type="checkbox" name="svc_resource"></label></td>
+</tr>
+<tr>
   <td class="ui-widget-content">Restore: <input type="text" name="svc_restore" size="12"></td>
 </tr>
 </table>
@@ -217,6 +287,48 @@ $(document).ready( function() {
 </form>
 
 </div>
+
+
+<div id="dialogUpdate" title="Edit Service Class">
+
+<form name="updateDialog">
+
+<input type="hidden" name="id" value="0">
+
+<table class="ui-styled-table">
+<tr>
+  <td class="ui-widget-content">Name: <input type="text" name="svc_name" size="30"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Acronym: <input type="text" name="svc_acronym" size="5"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Availability: <input type="text" name="svc_availability" size="12"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Downtime: <input type="text" name="svc_downtime" size="20"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">MTBF: <input type="text" name="svc_mtbf" size="20"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label>Geographically Redundant: <input type="checkbox" name="svc_geographic"></label></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">MTTR: <input type="text" name="svc_mttr" size="12"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label>Resource Sharing: <input type="checkbox" name="svc_resource"></label></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Restore: <input type="text" name="svc_restore" size="12"></td>
+</tr>
+</table>
+
+</form>
+
+</div>
+
 
 <?php include($Sitepath . '/footer.php'); ?>
 

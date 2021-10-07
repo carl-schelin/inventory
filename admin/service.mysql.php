@@ -62,19 +62,15 @@
             "svc_restore      = \"" . $formVars['svc_restore']      . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into service set svc_id = NULL, " . $q_string;
-            $message = "Service Class added.";
+            $q_string = "insert into service set svc_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update service set " . $q_string . " where svc_id = " . $formVars['id'];
-            $message = "Service Class updated.";
+            $q_string = "update service set " . $q_string . " where svc_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['svc_name']);
 
-          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
-
-          print "alert('" . $message . "');\n";
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -83,34 +79,11 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\">Service Class Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('service-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"service-listing-help\" style=\"display: none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Service Class Listing</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li><strong>Editing</strong> - Click on a Service Class to edit it.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "<table class=\"ui-styled-table\">\n";
+      $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
-        $output .= "  <th class=\"ui-state-default\">Del</th>\n";
+        $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Service Class</th>\n";
       }
-      $output .= "  <th class=\"ui-state-default\">Id</th>\n";
       $output .= "  <th class=\"ui-state-default\">Name</th>\n";
       $output .= "  <th class=\"ui-state-default\">Acronym</th>\n";
       $output .= "  <th class=\"ui-state-default\">Avail</th>\n";
@@ -130,7 +103,7 @@
       if (mysqli_num_rows($q_service) > 0) {
         while ($a_service = mysqli_fetch_array($q_service)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('service.fill.php?id=" . $a_service['svc_id'] . "');jQuery('#dialogService').dialog('open');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('service.fill.php?id=" . $a_service['svc_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('service.del.php?id="  . $a_service['svc_id'] . "');\">";
           $linkend   = "</a>";
 
@@ -147,7 +120,6 @@
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>";
           }
-          $output .= "  <td class=\"ui-widget-content delete\">"   . $linkstart . $a_service['svc_id']            . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_service['svc_name']          . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_service['svc_acronym']       . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_service['svc_availability']  . $linkend . "</td>";
@@ -170,15 +142,6 @@
       mysqli_free_result($q_service);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
-
-      print "document.service.svc_name.value = '';\n";
-      print "document.service.svc_acronym.value = '';\n";
-      print "document.service.svc_availability.value = '';\n";
-      print "document.service.svc_downtime.value = '';\n";
-      print "document.service.svc_mtbf.value = '';\n";
-      print "document.service.svc_geographic.checked = false;\n";
-      print "document.service.svc_mttr.value = '';\n";
-      print "document.service.svc_restore.value = '';\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
