@@ -52,15 +52,15 @@
               "prod_service   =   " . $formVars['prod_service'];
 
             if ($formVars['update'] == 0) {
-              $query = "insert into products set prod_id = NULL, " . $q_string;
+              $q_string = "insert into products set prod_id = NULL, " . $q_string;
             }
             if ($formVars['update'] == 1) {
-              $query = "update products set " . $q_string . " where prod_id = " . $formVars['id'];
+              $q_string = "update products set " . $q_string . " where prod_id = " . $formVars['id'];
             }
 
             logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['prod_name']);
 
-            mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
+            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 ##################
 # Tag Management
