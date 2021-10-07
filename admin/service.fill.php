@@ -28,27 +28,27 @@
       $a_service = mysqli_fetch_array($q_service);
       mysqli_free_result($q_service);
 
-      print "document.updateDialog.svc_name.value = '"         . mysqli_real_escape_string($db, $a_service['svc_name'])         . "';\n";
-      print "document.updateDialog.svc_acronym.value = '"      . mysqli_real_escape_string($db, $a_service['svc_acronym'])      . "';\n";
-      print "document.updateDialog.svc_availability.value = '" . mysqli_real_escape_string($db, $a_service['svc_availability']) . "';\n";
-      print "document.updateDialog.svc_downtime.value = '"     . mysqli_real_escape_string($db, $a_service['svc_downtime'])     . "';\n";
-      print "document.updateDialog.svc_mtbf.value = '"         . mysqli_real_escape_string($db, $a_service['svc_mtbf'])         . "';\n";
-      print "document.updateDialog.svc_mttr.value = '"         . mysqli_real_escape_string($db, $a_service['svc_mttr'])         . "';\n";
-      print "document.updateDialog.svc_restore.value = '"      . mysqli_real_escape_string($db, $a_service['svc_restore'])      . "';\n";
+      print "document.formUpdate.svc_name.value = '"         . mysqli_real_escape_string($db, $a_service['svc_name'])         . "';\n";
+      print "document.formUpdate.svc_acronym.value = '"      . mysqli_real_escape_string($db, $a_service['svc_acronym'])      . "';\n";
+      print "document.formUpdate.svc_availability.value = '" . mysqli_real_escape_string($db, $a_service['svc_availability']) . "';\n";
+      print "document.formUpdate.svc_downtime.value = '"     . mysqli_real_escape_string($db, $a_service['svc_downtime'])     . "';\n";
+      print "document.formUpdate.svc_mtbf.value = '"         . mysqli_real_escape_string($db, $a_service['svc_mtbf'])         . "';\n";
+      print "document.formUpdate.svc_mttr.value = '"         . mysqli_real_escape_string($db, $a_service['svc_mttr'])         . "';\n";
+      print "document.formUpdate.svc_restore.value = '"      . mysqli_real_escape_string($db, $a_service['svc_restore'])      . "';\n";
 
       if ($a_service['svc_geographic']) {
-        print "document.updateDialog.svc_geographic.checked = true\n;";
+        print "document.formUpdate.svc_geographic.checked = true\n;";
        } else {
-        print "document.updateDialog.svc_geographic.checked = false\n;";
+        print "document.formUpdate.svc_geographic.checked = false\n;";
       }
 
       if ($a_service['svc_resource']) {
-        print "document.updateDialog.svc_resource.checked = true\n;";
+        print "document.formUpdate.svc_resource.checked = true\n;";
        } else {
-        print "document.updateDialog.svc_resource.checked = false\n;";
+        print "document.formUpdate.svc_resource.checked = false\n;";
       }
 
-      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
+      print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

@@ -31,17 +31,17 @@
       $hwresponse   = return_Index($db, $a_support['sup_hwresponse'],  "select slv_id from supportlevel order by slv_value");
       $swresponse   = return_Index($db, $a_support['sup_swresponse'],  "select slv_id from supportlevel order by slv_value");
 
-      print "document.updateDialog.sup_hwresponse['" . $hwresponse . "'].selected = true;\n";
-      print "document.updateDialog.sup_swresponse['" . $swresponse . "'].selected = true;\n";
+      print "document.formUpdate.sup_hwresponse['" . $hwresponse . "'].selected = true;\n";
+      print "document.formUpdate.sup_swresponse['" . $swresponse . "'].selected = true;\n";
 
-      print "document.updateDialog.sup_company.value = '"  . mysqli_real_escape_string($db, $a_support['sup_company'])  . "';\n";
-      print "document.updateDialog.sup_phone.value = '"    . mysqli_real_escape_string($db, $a_support['sup_phone'])    . "';\n";
-      print "document.updateDialog.sup_email.value = '"    . mysqli_real_escape_string($db, $a_support['sup_email'])    . "';\n";
-      print "document.updateDialog.sup_web.value = '"      . mysqli_real_escape_string($db, $a_support['sup_web'])      . "';\n";
-      print "document.updateDialog.sup_contract.value = '" . mysqli_real_escape_string($db, $a_support['sup_contract']) . "';\n";
-      print "document.updateDialog.sup_wiki.value = '"     . mysqli_real_escape_string($db, $a_support['sup_wiki'])     . "';\n";
+      print "document.formUpdate.sup_company.value = '"  . mysqli_real_escape_string($db, $a_support['sup_company'])  . "';\n";
+      print "document.formUpdate.sup_phone.value = '"    . mysqli_real_escape_string($db, $a_support['sup_phone'])    . "';\n";
+      print "document.formUpdate.sup_email.value = '"    . mysqli_real_escape_string($db, $a_support['sup_email'])    . "';\n";
+      print "document.formUpdate.sup_web.value = '"      . mysqli_real_escape_string($db, $a_support['sup_web'])      . "';\n";
+      print "document.formUpdate.sup_contract.value = '" . mysqli_real_escape_string($db, $a_support['sup_contract']) . "';\n";
+      print "document.formUpdate.sup_wiki.value = '"     . mysqli_real_escape_string($db, $a_support['sup_wiki'])     . "';\n";
 
-      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
+      print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

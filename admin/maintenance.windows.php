@@ -60,7 +60,7 @@ function delete_line( p_script_url ) {
 ?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.createDialog;
+  var af_form = document.formCreate;
   var af_url;
 
   af_url  = '?update='   + update;
@@ -73,7 +73,7 @@ function attach_file( p_script_url, update ) {
 }
 
 function update_file( p_script_url, update ) {
-  var uf_form = document.updateDialog;
+  var uf_form = document.formUpdate;
   var uf_url;
 
   uf_url  = '?update='   + update;
@@ -221,7 +221,7 @@ $(document).ready( function() {
 
 <div id="dialogCreate" title="Add Maintenance Window">
 
-<form name="createDialog">
+<form name="formCreate">
 
 <table class="ui-styled-table">
 <tr>
@@ -236,7 +236,7 @@ $(document).ready( function() {
 
 <div id="dialogUpdate" title="Edit Maintenance Window">
 
-<form name="updateDialog">
+<form name="formUpdate">
 
 <input type="hidden" name="id" value="0">
 

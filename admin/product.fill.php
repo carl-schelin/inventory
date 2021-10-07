@@ -31,15 +31,15 @@
       $unit    = return_Index($db, $a_products['prod_unit'],    "select bus_id from business_unit order by bus_name");
       $service = return_Index($db, $a_products['prod_service'], "select svc_id from service order by svc_id");
 
-      print "document.updateDialog.prod_name.value = '"    . mysqli_real_escape_string($db, $a_products['prod_name'])    . "';\n";
-      print "document.updateDialog.prod_code.value = '"    . mysqli_real_escape_string($db, $a_products['prod_code'])    . "';\n";
-      print "document.updateDialog.prod_desc.value = '"    . mysqli_real_escape_string($db, $a_products['prod_desc'])    . "';\n";
+      print "document.formUpdate.prod_name.value = '"    . mysqli_real_escape_string($db, $a_products['prod_name'])    . "';\n";
+      print "document.formUpdate.prod_code.value = '"    . mysqli_real_escape_string($db, $a_products['prod_code'])    . "';\n";
+      print "document.formUpdate.prod_desc.value = '"    . mysqli_real_escape_string($db, $a_products['prod_desc'])    . "';\n";
 
       if ($unit > 0) {
-        print "document.updateDialog.prod_unit['"    . $unit    . "'].selected = true;\n";
+        print "document.formUpdate.prod_unit['"    . $unit    . "'].selected = true;\n";
       }
       if ($service > 0) {
-        print "document.updateDialog.prod_service['" . $service . "'].selected = true;\n";
+        print "document.formUpdate.prod_service['" . $service . "'].selected = true;\n";
       }
 
       $prod_tags = '';
@@ -54,9 +54,9 @@
           $space = " ";
         }
       }
-      print "document.updateDialog.prod_tags.value = '" . mysqli_real_escape_string($db, $prod_tags) . "';\n";
+      print "document.formUpdate.prod_tags.value = '" . mysqli_real_escape_string($db, $prod_tags) . "';\n";
 
-      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
+      print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

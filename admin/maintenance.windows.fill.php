@@ -28,9 +28,9 @@
       $a_window = mysqli_fetch_array($q_window);
       mysqli_free_result($q_window);
 
-      print "document.updateDialog.win_text.value = '" . mysqli_real_escape_string($db, $a_window['win_text'])        . "';\n";
+      print "document.formUpdate.win_text.value = '" . mysqli_real_escape_string($db, $a_window['win_text'])        . "';\n";
 
-      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
+      print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
