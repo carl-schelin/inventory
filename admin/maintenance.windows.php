@@ -18,12 +18,19 @@
 
   logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
+# if help has not been seen yet,
+  if (show_Help($db, $Sitepath . "/" . $package)) {
+    $display = "display: block";
+  } else {
+    $display = "display: none";
+  }
+
 ?>
 <!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Manage Maintenance Windows</title>
+<title>Maintenance Window Editor</title>
 
 <style type="text/css" title="currentStyle" media="screen">
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -53,11 +60,10 @@ function delete_line( p_script_url ) {
 ?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.window;
+  var af_form = document.createDialog;
   var af_url;
 
   af_url  = '?update='   + update;
-  af_url += '&id='       + af_form.id.value;
 
   af_url += "&win_text=" + encode_URI(af_form.win_text.value);
 
@@ -66,28 +72,70 @@ function attach_file( p_script_url, update ) {
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
+function update_file( p_script_url, update ) {
+  var uf_form = document.updateDialog;
+  var uf_url;
+
+  uf_url  = '?update='   + update;
+  uf_url += '&id='       + uf_form.id.value;
+
+  uf_url += "&win_text=" + encode_URI(uf_form.win_text.value);
+
+  script = document.createElement('script');
+  script.src = p_script_url + uf_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
+}
+
 function clear_fields() {
   show_file('maintenance.windows.mysql.php?update=-1');
 }
 
 $(document).ready( function() {
-  $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
-
-  $( '#clickAddWindow' ).click(function() {
-    $( "#dialogWindow" ).dialog('open');
+  $( '#clickCreate' ).click(function() {
+    $( "#dialogCreate" ).dialog('open');
   });
 
-  $( "#dialogWindow" ).dialog({
+  $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 200,
-    width: 1100,
+    height: 150,
+    width: 600,
     show: 'slide',
     hide: 'slide',
     closeOnEscape: true,
     dialogClass: 'dialogWithDropShadow',
     close: function(event, ui) {
-      $( "#dialogWindow" ).hide();
+      $( "#dialogCreate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('maintenance.windows.mysql.php?update=-1');
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Maintenance Window",
+        click: function() {
+          attach_file('maintenance.windows.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+  $( "#dialogUpdate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 150,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogUpdate" ).hide();
     },
     buttons: [
       {
@@ -100,14 +148,14 @@ $(document).ready( function() {
       {
         text: "Update Maintenance Window",
         click: function() {
-          attach_file('maintenance.windows.mysql.php', 1);
+          update_file('maintenance.windows.mysql.php', 1);
           $( this ).dialog( "close" );
         }
       },
       {
         text: "Add Maintenance Window",
         click: function() {
-          attach_file('maintenance.windows.mysql.php', 0);
+          update_file('maintenance.windows.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -125,8 +173,6 @@ $(document).ready( function() {
 
 <div id="main">
 
-<form name="mainform">
-
 <table class="ui-styled-table">
 <tr>
   <th class="ui-state-default">Maintenance Window Management</th>
@@ -134,17 +180,10 @@ $(document).ready( function() {
 </tr>
 </table>
 
-<div id="window-help" style="display: none">
+<div id="window-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Buttons</strong>
-  <ul>
-    <li><strong>Update Maintenance Window</strong> - Save any changes to this form.</li>
-    <li><strong>Add Maintenance Window</strong> - Add a new Maintenance Window to the database. You can edit an existing Maintenance Window and click this button to copy a Maintenance Window.</li>
-  </ul></li>
-</ul>
 
 </div>
 
@@ -152,34 +191,66 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickAddWindow" value="Add Maintenance Window"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add Maintenance Window"></td>
 </tr>
 </table>
 
-</form>
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Maintenance Window Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('window-listing-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="window-listing-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content\">
+
+
+</div>
+
+</div>
+
 
 <span id="window_mysql"><?php print wait_Process('Waiting...')?></span>
 
 </div>
 
-<div id="dialogWindow" title="Maintenance Window Form">
 
-<form name="window">
+<div id="dialogCreate" title="Add Maintenance Window">
 
-<input type="hidden" name="id" value="0">
+<form name="createDialog">
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default">Maintenance Window Form</th>
-</tr>
-<tr>
-  <td class="ui-widget-content">Maintenance Window: <input type="text" name="win_text" size="100"></td>
+  <td class="ui-widget-content">Maintenance Window: <input type="text" name="win_text" size="60"></td>
 </tr>
 </table>
 
 </form>
 
 </div>
+
+
+<div id="dialogUpdate" title="Edit Maintenance Window">
+
+<form name="updateDialog">
+
+<input type="hidden" name="id" value="0">
+
+<table class="ui-styled-table">
+<tr>
+  <td class="ui-widget-content">Maintenance Window: <input type="text" name="win_text" size="60"></td>
+</tr>
+</table>
+
+</form>
+
+</div>
+
+
 
 <?php include($Sitepath . '/footer.php'); ?>
 
