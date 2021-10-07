@@ -26,8 +26,6 @@
       $q_string .= "where sw_id = " . $formVars['id'];
       $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
-      print "alert('Software deleted.');\n";
-
       print "clear_fields();\n";
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Access denied");

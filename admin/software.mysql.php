@@ -39,19 +39,15 @@
             "sw_eos         = \"" . $formVars['sw_eos']        . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into sw_support set sw_id = NULL, " . $q_string;
-            $message = "Software added.";
+            $q_string = "insert into sw_support set sw_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update sw_support set " . $q_string . " where sw_id = " . $formVars['id'];
-            $message = "Software updated.";
+            $q_string = "update sw_support set " . $q_string . " where sw_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['sw_software']);
 
-          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
-
-          print "alert('" . $message . "');\n";
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -60,34 +56,11 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\">Support Contract Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('support-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"support-listing-help\" style=\"display: none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Support Contract Listing</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li><strong>Editing</strong> - Click on a contract to edit it.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "<table class=\"ui-styled-table\">\n";
+      $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
-        $output .= "  <th class=\"ui-state-default\">Del</th>\n";
+        $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Software</th>\n";
       }
-      $output .= "  <th class=\"ui-state-default\">Id</th>\n";
       $output .= "  <th class=\"ui-state-default\">Software</th>\n";
       $output .= "  <th class=\"ui-state-default\">End of Support</th>\n";
       $output .= "  <th class=\"ui-state-default\">End of Life</th>\n";
@@ -99,7 +72,7 @@
       if (mysqli_num_rows($q_sw_support) > 0) {
         while ($a_sw_support = mysqli_fetch_array($q_sw_support)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('software.fill.php?id="  . $a_sw_support['sw_id'] . "');jQuery('#dialogSoftware').dialog('open');return false;\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('software.fill.php?id="  . $a_sw_support['sw_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('software.del.php?id=" . $a_sw_support['sw_id'] . "');\">";
           $linkend   = "</a>";
 
@@ -107,7 +80,6 @@
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>";
           }
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_sw_support['sw_id']        . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_sw_support['sw_software']  . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_sw_support['sw_eos']       . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_sw_support['sw_eol']       . $linkend . "</td>";
@@ -115,7 +87,7 @@
         }
       } else {
         $output .= "<tr>";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"5\">No records found.</td>";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"4\">No records found.</td>";
         $output .= "</tr>";
       }
 
@@ -124,10 +96,6 @@
       mysqli_free_result($q_sw_support);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
-
-      print "document.software.sw_software.value = '';\n";
-      print "document.software.sw_eol.value = '';\n";
-      print "document.software.sw_eos.value = '';\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

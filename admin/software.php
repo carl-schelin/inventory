@@ -18,12 +18,19 @@
 
   logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
+# if help has not been seen yet,
+  if (show_Help($db, $Sitepath . "/" . $package)) {
+    $display = "display: block";
+  } else {
+    $display = "display: none";
+  }
+
 ?>
 <!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Manage Software Lifecycle</title>
+<title>Support Contract Editor</title>
 
 <style type='text/css' title='currentStyle' media='screen'>
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -53,11 +60,10 @@ function delete_line( p_script_url ) {
 ?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.software;
+  var af_form = document.createDialog;
   var af_url;
 
   af_url  = '?update='   + update;
-  af_url += '&id='       + af_form.id.value;
 
   af_url += "&sw_software="   + encode_URI(af_form.sw_software.value);
   af_url += "&sw_eol="        + encode_URI(af_form.sw_eol.value);
@@ -68,28 +74,42 @@ function attach_file( p_script_url, update ) {
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
+function update_file( p_script_url, update ) {
+  var uf_form = document.updateDialog;
+  var uf_url;
+
+  uf_url  = '?update='   + update;
+  uf_url += '&id='       + uf_form.id.value;
+
+  uf_url += "&sw_software="   + encode_URI(uf_form.sw_software.value);
+  uf_url += "&sw_eol="        + encode_URI(uf_form.sw_eol.value);
+  uf_url += "&sw_eos="        + encode_URI(uf_form.sw_eos.value);
+
+  script = document.createElement('script');
+  script.src = p_script_url + uf_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
+}
+
 function clear_fields() {
   show_file('software.mysql.php?update=-1');
 }
 
 $(document).ready( function() {
-  $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
-
-  $( '#clickAddSoftware' ).click(function() {
-    $( "#dialogSoftware" ).dialog('open');
+  $( '#clickCreate' ).click(function() {
+    $( "#dialogCreate" ).dialog('open');
   });
 
-  $( "#dialogSoftware" ).dialog({
+  $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 250,
-    width: 1100,
+    height: 200,
+    width: 600,
     show: 'slide',
     hide: 'slide',
     closeOnEscape: true,
     dialogClass: 'dialogWithDropShadow',
     close: function(event, ui) {
-      $( "#dialogSoftware" ).hide();
+      $( "#dialogCreate" ).hide();
     },
     buttons: [
       {
@@ -100,16 +120,46 @@ $(document).ready( function() {
         }
       },
       {
-        text: "Update Software",
+        text: "Add Support Contract",
         click: function() {
-          attach_file('software.mysql.php', 1);
+          attach_file('software.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+  $( "#dialogUpdate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 200,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogUpdate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('software.mysql.php?update=-1');
           $( this ).dialog( "close" );
         }
       },
       {
-        text: "Add Software",
+        text: "Update Support Contract",
         click: function() {
-          attach_file('software.mysql.php', 0);
+          update_file('software.mysql.php', 1);
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Support Contract",
+        click: function() {
+          update_file('software.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -127,26 +177,19 @@ $(document).ready( function() {
 
 <div id="main">
 
-<form name="mainform">
-
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default">Software Management</th>
+  <th class="ui-state-default">Support Contract Editor</th>
   <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('software-help');">Help</a></th>
 </tr>
 </table>
 
-<div id="software-help" style="display: none">
+<div id="software-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Buttons</strong>
-  <ul>
-    <li><strong>Update Support Contract Record</strong> - Save any changes to this form.</li>
-    <li><strong>Add Support Contract</strong> - Add new Support Contract details.</li>
-  </ul></li>
-</ul>
+<p>The Software Support Contract page provides details on who to contact, what the support level is, and when software 
+is determined to be End of Life and End of Support per the software company.</p>
 
 </div>
 
@@ -154,11 +197,40 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickAddSoftware" value="Add Software"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add Support Contract"></td>
 </tr>
 </table>
 
-</form>
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Support Contract Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('support-listing-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="support-listing-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+
+<p><strong>Support Contract Listing</strong></p>
+
+<p>This page lists all the Support Contracts for Software used at this location.</p>
+
+<p>To edit a Support Contract, click on the entry in the listing. A dialog box will be 
+displayed where you can edit the current entry, or if there's some change you wish to 
+make, you can add a new Support Contract.</p>
+
+<p>To add a new Support Contract, click the Add Support Contract button. A dialog box 
+will be displayed where you can add the necessary information and then save the new 
+Support Contract.</p>
+
+
+</div>
+
+</div>
 
 
 <span id="table_mysql"><?php print wait_Process('Waiting...')?></span>
@@ -167,21 +239,20 @@ $(document).ready( function() {
 
 </div>
 
-<div id="dialogSoftware" title="Software Form">
 
-<form name="software">
 
-<input type="hidden" name="id" value="0">
+<div id="dialogCreate" title="Add Support Contract">
+
+<form name="createDialog">
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default" colspan="2">Software Form</th>
-</tr>
-<tr>
-  <td class="ui-widget-content" colspan="2">Software: <input type="text" name="sw_software" size="80"></td>
+  <td class="ui-widget-content">Software: <input type="text" name="sw_software" size="60"></td>
 </tr>
 <tr>
   <td class="ui-widget-content">End of Support: <input type="date" name="sw_eos" size="20"></td>
+</tr>
+<tr>
   <td class="ui-widget-content">End of Life: <input type="date" name="sw_eol" size="20"></td>
 </tr>
 </table>
@@ -189,6 +260,31 @@ $(document).ready( function() {
 </form>
 
 </div>
+
+
+<div id="dialogUpdate" title="Edit Support Contract">
+
+<form name="updateDialog">
+
+<input type="hidden" name="id" value="0">
+
+<table class="ui-styled-table">
+<tr>
+  <td class="ui-widget-content">Software: <input type="text" name="sw_software" size="60"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">End of Support: <input type="date" name="sw_eos" size="20"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">End of Life: <input type="date" name="sw_eol" size="20"></td>
+</tr>
+</table>
+
+</form>
+
+</div>
+
+
 
 <?php include($Sitepath . '/footer.php'); ?>
 

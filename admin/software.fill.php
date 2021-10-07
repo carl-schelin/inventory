@@ -28,11 +28,11 @@
       $a_sw_support = mysqli_fetch_array($q_sw_support);
       mysqli_free_result($q_sw_support);
 
-      print "document.software.sw_software.value = '"  . $a_sw_support['sw_software']  . "';\n";
-      print "document.software.sw_eol.value = '"       . $a_sw_support['sw_eol']       . "';\n";
-      print "document.software.sw_eos.value = '"       . $a_sw_support['sw_eos']       . "';\n";
+      print "document.updateDialog.sw_software.value = '"  . mysqli_real_escape_string($db, $a_sw_support['sw_software'])  . "';\n";
+      print "document.updateDialog.sw_eol.value = '"       . mysqli_real_escape_string($db, $a_sw_support['sw_eol'])       . "';\n";
+      print "document.updateDialog.sw_eos.value = '"       . mysqli_real_escape_string($db, $a_sw_support['sw_eos'])       . "';\n";
 
-      print "document.software.id.value = " . $formVars['id'] . ";\n";
+      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
