@@ -30,14 +30,14 @@
 
       $busorg = return_Index($db, $a_business['bus_org'], "select org_id from organizations order by org_name");
 
-      print "document.updateDialog.bus_unit.value = '" . mysqli_real_escape_string($db, $a_business['bus_unit']) . "';\n";
-      print "document.updateDialog.bus_name.value = '" . mysqli_real_escape_string($db, $a_business['bus_name']) . "';\n";
+      print "document.formUpdate.bus_unit.value = '" . mysqli_real_escape_string($db, $a_business['bus_unit']) . "';\n";
+      print "document.formUpdate.bus_name.value = '" . mysqli_real_escape_string($db, $a_business['bus_name']) . "';\n";
 
       if ($busorg > 0) {
-        print "document.updateDialog.bus_org['" . $busorg  . "'].selected = true;\n";
+        print "document.formUpdate.bus_org['" . $busorg  . "'].selected = true;\n";
       }
 
-      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
+      print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

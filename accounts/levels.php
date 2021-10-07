@@ -69,7 +69,7 @@ function delete_level( p_script_url ) {
 ?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.createDialog;
+  var af_form = document.formCreate;
   var af_url;
 
   af_url  = '?update='   + update;
@@ -84,7 +84,7 @@ function attach_file( p_script_url, update ) {
 }
 
 function update_file( p_script_url, update ) {
-  var uf_form = document.updateDialog;
+  var uf_form = document.formUpdate;
   var uf_url;
 
   uf_url  = '?update='   + update;
@@ -253,7 +253,7 @@ is the number of users at that level that are currently disabled.</p>
 
 <div id="dialogCreate" title="Add Level">
 
-<form name="createDialog">
+<form name="formCreate">
 
 <table class="ui-styled-table">
 <tr>
@@ -277,7 +277,7 @@ is the number of users at that level that are currently disabled.</p>
 
 <div id="dialogUpdate" title="Add Level">
 
-<form name="updateDialog">
+<form name="formUpdate">
 
 <input type="hidden" name="id" value="0">
 

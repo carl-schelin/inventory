@@ -33,38 +33,38 @@
       $role         = return_Index($db, $a_groups['grp_role'],         "select role_id from roles order by role_name");
       $manager      = return_Index($db, $a_groups['grp_manager'],      "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
 
-      print "document.updateDialog.grp_name.value = '"      . mysqli_real_escape_string($db, $a_groups['grp_name'])      . "';\n";
-      print "document.updateDialog.grp_email.value = '"     . mysqli_real_escape_string($db, $a_groups['grp_email'])     . "';\n";
+      print "document.formUpdate.grp_name.value = '"      . mysqli_real_escape_string($db, $a_groups['grp_name'])      . "';\n";
+      print "document.formUpdate.grp_email.value = '"     . mysqli_real_escape_string($db, $a_groups['grp_email'])     . "';\n";
 
       if ($organization > 0) {
-        print "document.updateDialog.grp_organization['"  . $organization . "'].selected = true;\n";
+        print "document.formUpdate.grp_organization['"  . $organization . "'].selected = true;\n";
       }
       if ($role > 0) {
-        print "document.updateDialog.grp_role['"          . $role         . "'].selected = true;\n";
+        print "document.formUpdate.grp_role['"          . $role         . "'].selected = true;\n";
       }
       if ($manager > 0) {
-        print "document.updateDialog.grp_manager['"       . $manager      . "'].selected = true;\n";
+        print "document.formUpdate.grp_manager['"       . $manager      . "'].selected = true;\n";
       }
 
-      print "document.updateDialog.grp_disabled['" . $a_groups['grp_disabled'] . "'].selected = 'true';\n";
+      print "document.formUpdate.grp_disabled['" . $a_groups['grp_disabled'] . "'].selected = 'true';\n";
 
       if ($a_groups['grp_status']) {
-        print "document.updateDialog.grp_status.checked = true;\n";
+        print "document.formUpdate.grp_status.checked = true;\n";
       } else {
-        print "document.updateDialog.grp_status.checked = false;\n";
+        print "document.formUpdate.grp_status.checked = false;\n";
       }
       if ($a_groups['grp_server']) {
-        print "document.updateDialog.grp_server.checked = true;\n";
+        print "document.formUpdate.grp_server.checked = true;\n";
       } else {
-        print "document.updateDialog.grp_server.checked = false;\n";
+        print "document.formUpdate.grp_server.checked = false;\n";
       }
       if ($a_groups['grp_import']) {
-        print "document.updateDialog.grp_import.checked = true;\n";
+        print "document.formUpdate.grp_import.checked = true;\n";
       } else {
-        print "document.updateDialog.grp_import.checked = false;\n";
+        print "document.formUpdate.grp_import.checked = false;\n";
       }
 
-      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
+      print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

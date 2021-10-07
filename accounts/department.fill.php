@@ -30,14 +30,14 @@
 
       $depunit = return_Index($db, $a_department['dep_unit'], "select bus_id from business order by bus_name");
 
-      print "document.updateDialog.dep_name.value = '" . mysqli_real_escape_string($db, $a_department['dep_name']) . "';\n";
-      print "document.updateDialog.dep_dept.value = '" . mysqli_real_escape_string($db, $a_department['dep_dept']) . "';\n";
+      print "document.formUpdate.dep_name.value = '" . mysqli_real_escape_string($db, $a_department['dep_name']) . "';\n";
+      print "document.formUpdate.dep_dept.value = '" . mysqli_real_escape_string($db, $a_department['dep_dept']) . "';\n";
 
       if ($depunit > 0) {
-        print "document.updateDialog.dep_unit['" . $depunit  . "'].selected = true;\n";
+        print "document.formUpdate.dep_unit['" . $depunit  . "'].selected = true;\n";
       }
 
-      print "document.updateDialog.id.value = '" . $formVars['id'] . "'\n";
+      print "document.formUpdate.id.value = '" . $formVars['id'] . "'\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

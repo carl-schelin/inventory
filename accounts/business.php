@@ -59,7 +59,7 @@ function delete_line( p_script_url ) {
 ?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.createDialog;
+  var af_form = document.formCreate;
   var af_url;
 
   af_url  = '?update='   + update;
@@ -74,7 +74,7 @@ function attach_file( p_script_url, update ) {
 }
 
 function update_file( p_script_url, update ) {
-  var uf_form = document.updateDialog;
+  var uf_form = document.formUpdate;
   var uf_url;
 
   uf_url  = '?update='   + update;
@@ -236,7 +236,7 @@ business unit, or if there's a small difference, you can make changes and add a 
 
 <div id="dialogCreate" title="Add Business Unit">
 
-<form name="createDialog">
+<form name="formCreate">
 
 <table class="ui-styled-table">
 <tr>
@@ -269,7 +269,7 @@ business unit, or if there's a small difference, you can make changes and add a 
 
 <div id="dialogUpdate" title="Edit Business Unit">
 
-<form name="updateDialog">
+<form name="formUpdate">
 
 <input type="hidden" name="id" value="0">
 
