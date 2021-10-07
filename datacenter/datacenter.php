@@ -60,7 +60,7 @@ function delete_line( p_script_url ) {
 ?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.createDialog;
+  var af_form = document.formCreate;
   var af_url;
 
   af_url  = '?update='   + update;
@@ -87,7 +87,7 @@ function attach_file( p_script_url, update ) {
 }
 
 function update_file( p_script_url, update ) {
-  var uf_form = document.updateDialog;
+  var uf_form = document.formUpdate;
   var uf_url;
 
   uf_url  = '?update='   + update;
@@ -272,7 +272,7 @@ selected to show up in the report filters. They show up at the top of the report
 
 <div id="dialogCreate" title="Data Center Form">
 
-<form name="createDialog">
+<form name="formCreate">
 
 <table class="ui-styled-table">
 <tr>
@@ -361,7 +361,7 @@ selected to show up in the report filters. They show up at the top of the report
 
 <div id="dialogUpdate" title="Data Center Form">
 
-<form name="updateDialog">
+<form name="formUpdate">
 
 <input type="hidden" name="id" value="0">
 

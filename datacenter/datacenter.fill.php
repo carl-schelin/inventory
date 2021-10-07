@@ -40,31 +40,31 @@
       $type = return_Index($db, $a_locations['loc_type'], "select typ_id from loc_types order by typ_name");
       $env  = return_Index($db, $a_locations['loc_environment'], "select env_id from environment order by env_name");
 
-      print "document.updateDialog.loc_name.value = '"       . mysqli_real_escape_string($db, $a_locations['loc_name'])       . "';\n";
-      print "document.updateDialog.loc_addr1.value = '"      . mysqli_real_escape_string($db, $a_locations['loc_addr1'])      . "';\n";
-      print "document.updateDialog.loc_addr2.value = '"      . mysqli_real_escape_string($db, $a_locations['loc_addr2'])      . "';\n";
-      print "document.updateDialog.loc_suite.value = '"      . mysqli_real_escape_string($db, $a_locations['loc_suite'])      . "';\n";
-      print "document.updateDialog.loc_zipcode.value = '"    . mysqli_real_escape_string($db, $a_locations['loc_zipcode'])    . "';\n";
-      print "document.updateDialog.loc_contact1.value = '"   . mysqli_real_escape_string($db, $a_locations['loc_contact1'])   . "';\n";
-      print "document.updateDialog.loc_contact2.value = '"   . mysqli_real_escape_string($db, $a_locations['loc_contact2'])   . "';\n";
-      print "document.updateDialog.loc_details.value = '"    . mysqli_real_escape_string($db, $a_locations['loc_details'])    . "';\n";
-      print "document.updateDialog.loc_instance.value = '"   . mysqli_real_escape_string($db, $a_locations['loc_instance'])   . "';\n";
-      print "document.updateDialog.loc_identity.value = '"   . mysqli_real_escape_string($db, $a_locations['loc_identity'])   . "';\n";
+      print "document.formUpdate.loc_name.value = '"       . mysqli_real_escape_string($db, $a_locations['loc_name'])       . "';\n";
+      print "document.formUpdate.loc_addr1.value = '"      . mysqli_real_escape_string($db, $a_locations['loc_addr1'])      . "';\n";
+      print "document.formUpdate.loc_addr2.value = '"      . mysqli_real_escape_string($db, $a_locations['loc_addr2'])      . "';\n";
+      print "document.formUpdate.loc_suite.value = '"      . mysqli_real_escape_string($db, $a_locations['loc_suite'])      . "';\n";
+      print "document.formUpdate.loc_zipcode.value = '"    . mysqli_real_escape_string($db, $a_locations['loc_zipcode'])    . "';\n";
+      print "document.formUpdate.loc_contact1.value = '"   . mysqli_real_escape_string($db, $a_locations['loc_contact1'])   . "';\n";
+      print "document.formUpdate.loc_contact2.value = '"   . mysqli_real_escape_string($db, $a_locations['loc_contact2'])   . "';\n";
+      print "document.formUpdate.loc_details.value = '"    . mysqli_real_escape_string($db, $a_locations['loc_details'])    . "';\n";
+      print "document.formUpdate.loc_instance.value = '"   . mysqli_real_escape_string($db, $a_locations['loc_instance'])   . "';\n";
+      print "document.formUpdate.loc_identity.value = '"   . mysqli_real_escape_string($db, $a_locations['loc_identity'])   . "';\n";
 
       if ($city > 0) {
-        print "document.updateDialog.loc_city['"        . $city . "'].selected = true;\n";
+        print "document.formUpdate.loc_city['"        . $city . "'].selected = true;\n";
       }
       if ($type > 0) {
-        print "document.updateDialog.loc_type['"        . $type . "'].selected = true;\n";
+        print "document.formUpdate.loc_type['"        . $type . "'].selected = true;\n";
       }
       if ($env > 0) {
-        print "document.updateDialog.loc_environment['" . $env  . "'].selected = true;\n";
+        print "document.formUpdate.loc_environment['" . $env  . "'].selected = true;\n";
       }
 
       if ($a_locations['loc_default']) {
-        print "document.updateDialog.loc_default.checked = true;\n";
+        print "document.formUpdate.loc_default.checked = true;\n";
       } else {
-        print "document.updateDialog.loc_default.checked = false;\n";
+        print "document.formUpdate.loc_default.checked = false;\n";
       }
 
       $loc_tags = '';
@@ -79,9 +79,9 @@
           $space = " ";
         }
       }
-      print "document.updateDialog.loc_tags.value = '" . mysqli_real_escape_string($db, $loc_tags) . "';\n";
+      print "document.formUpdate.loc_tags.value = '" . mysqli_real_escape_string($db, $loc_tags) . "';\n";
 
-      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
+      print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

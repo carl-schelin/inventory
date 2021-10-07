@@ -30,14 +30,14 @@
 
       $country = return_Index($db, $a_states['st_country'], "select cn_id from country order by cn_country");
 
-      print "document.updateDialog.st_acronym.value = '"  . mysqli_real_escape_string($db, $a_states['st_acronym'])   . "';\n";
-      print "document.updateDialog.st_state.value = '"    . mysqli_real_escape_string($db, $a_states['st_state'])    . "';\n";
+      print "document.formUpdate.st_acronym.value = '"  . mysqli_real_escape_string($db, $a_states['st_acronym'])   . "';\n";
+      print "document.formUpdate.st_state.value = '"    . mysqli_real_escape_string($db, $a_states['st_state'])    . "';\n";
 
       if ($country > 0) {
-        print "document.updateDialog.st_country['" . $country . "'].selected = true;\n";
+        print "document.formUpdate.st_country['" . $country . "'].selected = true;\n";
       }
 
-      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
+      print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
