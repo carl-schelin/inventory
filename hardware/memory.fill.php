@@ -30,15 +30,15 @@
 
       $modvendor = return_Index($db, $a_models['mod_vendor'], "select ven_id from vendors order by ven_name");
 
-      print "document.updateDialog.mod_name.value = '"   . mysqli_real_escape_string($db, $a_models['mod_name'])   . "';\n";
-      print "document.updateDialog.mod_size.value = '"   . mysqli_real_escape_string($db, $a_models['mod_size'])   . "';\n";
-      print "document.updateDialog.mod_eopur.value = '"  . mysqli_real_escape_string($db, $a_models['mod_eopur'])  . "';\n";
-      print "document.updateDialog.mod_eoship.value = '" . mysqli_real_escape_string($db, $a_models['mod_eoship']) . "';\n";
-      print "document.updateDialog.mod_eol.value = '"    . mysqli_real_escape_string($db, $a_models['mod_eol'])    . "';\n";
+      print "document.formUpdate.mod_name.value = '"   . mysqli_real_escape_string($db, $a_models['mod_name'])   . "';\n";
+      print "document.formUpdate.mod_size.value = '"   . mysqli_real_escape_string($db, $a_models['mod_size'])   . "';\n";
+      print "document.formUpdate.mod_eopur.value = '"  . mysqli_real_escape_string($db, $a_models['mod_eopur'])  . "';\n";
+      print "document.formUpdate.mod_eoship.value = '" . mysqli_real_escape_string($db, $a_models['mod_eoship']) . "';\n";
+      print "document.formUpdate.mod_eol.value = '"    . mysqli_real_escape_string($db, $a_models['mod_eol'])    . "';\n";
 
-      print "document.updateDialog.mod_vendor['" . $modvendor . "'].selected = true;\n";
+      print "document.formUpdate.mod_vendor['" . $modvendor . "'].selected = true;\n";
 
-      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
+      print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

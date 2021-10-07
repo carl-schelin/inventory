@@ -28,17 +28,17 @@
       $a_device = mysqli_fetch_array($q_device);
       mysqli_free_result($q_device);
 
-      print "document.updateDialog.dev_type.value = '"        . mysqli_real_escape_string($db, $a_device['dev_type'])        . "';\n";
-      print "document.updateDialog.dev_description.value = '" . mysqli_real_escape_string($db, $a_device['dev_description']) . "';\n";
-      print "document.updateDialog.dev_notes.value = '"       . mysqli_real_escape_string($db, $a_device['dev_notes'])       . "';\n";
+      print "document.formUpdate.dev_type.value = '"        . mysqli_real_escape_string($db, $a_device['dev_type'])        . "';\n";
+      print "document.formUpdate.dev_description.value = '" . mysqli_real_escape_string($db, $a_device['dev_description']) . "';\n";
+      print "document.formUpdate.dev_notes.value = '"       . mysqli_real_escape_string($db, $a_device['dev_notes'])       . "';\n";
 
       if ($a_device['dev_infrastructure']) {
-        print "document.updateDialog.dev_infrastructure.checked = true\n;";
+        print "document.formUpdate.dev_infrastructure.checked = true\n;";
        } else {
-        print "document.updateDialog.dev_infrastructure.checked = false\n;";
+        print "document.formUpdate.dev_infrastructure.checked = false\n;";
       }
 
-      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
+      print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

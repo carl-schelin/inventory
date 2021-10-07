@@ -28,16 +28,16 @@
       $a_parts = mysqli_fetch_array($q_parts);
       mysqli_free_result($q_parts);
 
-      print "document.updateDialog.part_name.value = '"    . mysqli_real_escape_string($db, $a_parts['part_name'])    . "';\n";
-      print "document.updateDialog.part_acronym.value = '" . mysqli_real_escape_string($db, $a_parts['part_acronym']) . "';\n";
+      print "document.formUpdate.part_name.value = '"    . mysqli_real_escape_string($db, $a_parts['part_name'])    . "';\n";
+      print "document.formUpdate.part_acronym.value = '" . mysqli_real_escape_string($db, $a_parts['part_acronym']) . "';\n";
 
       if ($a_parts['part_type']) {
-        print "document.updateDialog.part_type.checked = true;\n";
+        print "document.formUpdate.part_type.checked = true;\n";
       } else {
-        print "document.updateDialog.part_type.checked = false;\n";
+        print "document.formUpdate.part_type.checked = false;\n";
       }
 
-      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
+      print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

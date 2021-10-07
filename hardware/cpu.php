@@ -60,7 +60,7 @@ function delete_line( p_script_url ) {
 ?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.createDialog;
+  var af_form = document.formCreate;
   var af_url;
 
   af_url  = '?update='   + update;
@@ -79,7 +79,7 @@ function attach_file( p_script_url, update ) {
 }
 
 function update_file( p_script_url, update ) {
-  var uf_form = document.updateDialog;
+  var uf_form = document.formUpdate;
   var uf_url;
 
   uf_url  = '?update='   + update;
@@ -259,7 +259,7 @@ delete a CPU as long as this value is greater than zero.</p>
 
 <div id="dialogCreate" title="Add CPU Form">
 
-<form name="createDialog">
+<form name="formCreate">
 
 <table class="ui-styled-table">
 <tr>
@@ -302,7 +302,7 @@ delete a CPU as long as this value is greater than zero.</p>
 
 <div id="dialogUpdate" title="Update CPU Form">
 
-<form name="updateDialog">
+<form name="formUpdate">
 
 <input type="hidden" name="id" value="0">
 <input type="hidden" name="mod_type" value="8">
