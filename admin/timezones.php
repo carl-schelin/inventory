@@ -18,6 +18,13 @@
 
   logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
+# if help has not been seen yet,
+  if (show_Help($db, $Sitepath . "/" . $package)) {
+    $display = "display: block";
+  } else {
+    $display = "display: none";
+  }
+
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -53,11 +60,10 @@ function delete_line( p_script_url ) {
 ?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.zones;
+  var af_form = document.createDialog;
   var af_url;
 
   af_url  = '?update='   + update;
-  af_url += '&id='       + af_form.id.value;
 
   af_url += "&zone_name="          + encode_URI(af_form.zone_name.value);
   af_url += "&zone_description="   + encode_URI(af_form.zone_description.value);
@@ -68,28 +74,42 @@ function attach_file( p_script_url, update ) {
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
+function update_file( p_script_url, update ) {
+  var uf_form = document.updateDialog;
+  var uf_url;
+
+  uf_url  = '?update='   + update;
+  uf_url += '&id='       + uf_form.id.value;
+
+  uf_url += "&zone_name="          + encode_URI(uf_form.zone_name.value);
+  uf_url += "&zone_description="   + encode_URI(uf_form.zone_description.value);
+  uf_url += "&zone_offset="        + encode_URI(uf_form.zone_offset.value);
+
+  script = document.createElement('script');
+  script.src = p_script_url + uf_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
+}
+
 function clear_fields() {
   show_file('timezones.mysql.php?update=-1');
 }
 
 $(document).ready( function() {
-  $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
-
-  $( '#clickAddZone' ).click(function() {
-    $( "#dialogZone" ).dialog('open');
+  $( '#clickCreate' ).click(function() {
+    $( "#dialogCreate" ).dialog('open');
   });
 
-  $( "#dialogZone" ).dialog({
+  $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
     height: 200,
-    width: 1100,
+    width: 600,
     show: 'slide',
     hide: 'slide',
     closeOnEscape: true,
     dialogClass: 'dialogWithDropShadow',
     close: function(event, ui) {
-      $( "#dialogZone" ).hide();
+      $( "#dialogCreate" ).hide();
     },
     buttons: [
       {
@@ -100,16 +120,46 @@ $(document).ready( function() {
         }
       },
       {
-        text: "Update Timezone",
+        text: "Add Time Zone",
         click: function() {
-          attach_file('timezones.mysql.php', 1);
+          attach_file('timezones.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+  $( "#dialogUpdate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 200,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogUpdate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('timezones.mysql.php?update=-1');
           $( this ).dialog( "close" );
         }
       },
       {
-        text: "Add Timezone",
+        text: "Update Time Zone",
         click: function() {
-          attach_file('timezones.mysql.php', 0);
+          update_file('timezones.mysql.php', 1);
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Time Zone",
+        click: function() {
+          update_file('timezones.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -127,26 +177,17 @@ $(document).ready( function() {
 
 <div id="main">
 
-<form name="mainform">
-
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default">Time Zone Management</th>
+  <th class="ui-state-default">Time Zone Editor</th>
   <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('zones-help');">Help</a></th>
 </tr>
 </table>
 
-<div id="zones-help" style="display: none">
+<div id="zones-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Buttons</strong>
-  <ul>
-    <li><strong>Update Time Zone</strong> - Save any changes to this form.</li>
-    <li><strong>Add Time Zone</strong> - Add a new Time Zone to the database. You can edit an existing Time Zone and click this button to copy a Time Zone.</li>
-  </ul></li>
-</ul>
 
 </div>
 
@@ -154,29 +195,46 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickAddZone" value="Add Timezone"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add Time Zone"></td>
 </tr>
 </table>
 
-</form>
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Time Zone Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('zones-listing-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="zones-listing-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+
+</div>
+
+</div>
+
 
 <span id="table_mysql"><?php print wait_Process('Waiting...')?></span>
 
 </div>
 
-<div id="dialogZone" title="Time Zone Form">
 
-<form name="zones">
+<div id="dialogCreate" title="Add Time Zone">
 
-<input type="hidden" name="id" value="0">
+<form name="createDialog">
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default" colspan="3">Time Zone Form</th>
+  <td class="ui-widget-content">Time Zone: <input type="text" name="zone_name" size="10"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Timezone: <input type="text" name="zone_name" size="10"></td>
   <td class="ui-widget-content">Description: <input type="text" name="zone_description" size="50"></td>
+</tr>
+<tr>
   <td class="ui-widget-content">Time Offset: <input type="text" name="zone_offset" size="5"></td>
 </tr>
 </table>
@@ -184,6 +242,31 @@ $(document).ready( function() {
 </form>
 
 </div>
+
+
+<div id="dialogUpdate" title="Edit Time Zone">
+
+<form name="updateDialog">
+
+<input type="hidden" name="id" value="0">
+
+<table class="ui-styled-table">
+<tr>
+  <td class="ui-widget-content">Time Zone: <input type="text" name="zone_name" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Description: <input type="text" name="zone_description" size="50"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Time Offset: <input type="text" name="zone_offset" size="5"></td>
+</tr>
+</table>
+
+</form>
+
+</div>
+
+
 
 <?php include($Sitepath . '/footer.php'); ?>
 

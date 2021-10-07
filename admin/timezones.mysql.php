@@ -39,19 +39,15 @@
             "zone_offset      =   " . $formVars['zone_offset'];
 
           if ($formVars['update'] == 0) {
-            $query = "insert into zones set zone_id = NULL, " . $q_string;
-            $message = "Time Zone added.";
+            $q_string = "insert into timezones set zone_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update zones set " . $q_string . " where zone_id = " . $formVars['id'];
-            $message = "Time Zone updated.";
+            $q_string = "update timezones set " . $q_string . " where zone_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['zone_name']);
 
-          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
-
-          print "alert('" . $message . "');\n";
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -60,75 +56,47 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\">Time Zone Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('zones-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"zones-listing-help\" style=\"display: none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Time Zone Listing</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li><strong>Editing</strong> - Click on a Time Zone to edit it.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "<table class=\"ui-styled-table\">\n";
+      $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
-        $output .= "  <th class=\"ui-state-default\">Del</th>\n";
+        $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Time Zone</th>\n";
       }
-      $output .= "  <th class=\"ui-state-default\">Id</th>\n";
       $output .= "  <th class=\"ui-state-default\">Name</th>\n";
       $output .= "  <th class=\"ui-state-default\">Description</th>\n";
       $output .= "  <th class=\"ui-state-default\">Offset</th>\n";
       $output .= "</tr>\n";
 
       $q_string  = "select zone_id,zone_name,zone_description,zone_offset ";
-      $q_string .= "from zones ";
+      $q_string .= "from timezones ";
       $q_string .= "order by zone_offset ";
-      $q_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_zones) > 0) {
-        while ($a_zones = mysqli_fetch_array($q_zones)) {
+      $q_timezones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_timezones) > 0) {
+        while ($a_timezones = mysqli_fetch_array($q_timezones)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('timezones.fill.php?id=" . $a_zones['zone_id'] . "');jQuery('#dialogZone').dialog('open');\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('timezones.del.php?id="  . $a_zones['zone_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('timezones.fill.php?id=" . $a_timezones['zone_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('timezones.del.php?id="  . $a_timezones['zone_id'] . "');\">";
           $linkend   = "</a>";
 
           $output .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>";
           }
-          $output .= "  <td class=\"ui-widget-content delete\">"   . $linkstart . $a_zones['zone_id']          . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_zones['zone_name']        . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_zones['zone_description'] . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_zones['zone_offset']      . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_timezones['zone_name']        . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_timezones['zone_description'] . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_timezones['zone_offset']      . $linkend . "</td>";
           $output .= "</tr>";
         }
       } else {
         $output .= "<tr>";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"5\">No records found.</td>";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"4\">No records found.</td>";
         $output .= "</tr>";
       }
 
       $output .= "</table>";
 
-      mysqli_free_result($q_zones);
+      mysqli_free_result($q_timezones);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
-
-      print "document.zones.zone_name.value = '';\n";
-      print "document.zones.zone_description.value = '';\n";
-      print "document.zones.zone_offset.value = '';\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

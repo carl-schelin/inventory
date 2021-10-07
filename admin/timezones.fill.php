@@ -22,17 +22,17 @@
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from zones");
 
       $q_string  = "select zone_name,zone_description,zone_offset ";
-      $q_string .= "from zones ";
+      $q_string .= "from timezones ";
       $q_string .= "where zone_id = " . $formVars['id'];
-      $q_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_zones = mysqli_fetch_array($q_zones);
-      mysqli_free_result($q_zones);
+      $q_timezones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_timezones = mysqli_fetch_array($q_timezones);
+      mysqli_free_result($q_timezones);
 
-      print "document.zones.zone_name.value = '"         . mysqli_real_escape_string($db, $a_zones['zone_name'])        . "';\n";
-      print "document.zones.zone_description.value  = '" . mysqli_real_escape_string($db, $a_zones['zone_description']) . "';\n";
-      print "document.zones.zone_offset.value = '"       . mysqli_real_escape_string($db, $a_zones['zone_offset'])      . "';\n";
+      print "document.updateDialog.zone_name.value = '"         . mysqli_real_escape_string($db, $a_timezones['zone_name'])        . "';\n";
+      print "document.updateDialog.zone_description.value  = '" . mysqli_real_escape_string($db, $a_timezones['zone_description']) . "';\n";
+      print "document.updateDialog.zone_offset.value = '"       . mysqli_real_escape_string($db, $a_timezones['zone_offset'])      . "';\n";
 
-      print "document.zones.id.value = " . $formVars['id'] . ";\n";
+      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
