@@ -62,12 +62,19 @@
     $_SESSION['p_csv'] = 'false';
   }
 
+# if help has not been seen yet,
+  if (show_Help($db, $Sitepath . "/" . $package)) {
+    $display = "display: block";
+  } else {
+    $display = "display: none";
+  }
+
 ?>
 <!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Manage Tags</title>
+<title>Edit Tags</title>
 
 <style type='text/css' title='currentStyle' media='screen'>
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -97,11 +104,10 @@ function delete_line( p_script_url ) {
 ?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.tags;
+  var af_form = document.createDialog;
   var af_url;
 
   af_url  = '?update='   + update;
-  af_url += '&id='       + af_form.id.value;
 
   af_url += "&tag_name="       + encode_URI(af_form.tag_name.value);
   af_url += "&tag_companyid="  + af_form.tag_companyid.value;
@@ -113,28 +119,73 @@ function attach_file( p_script_url, update ) {
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
+function update_file( p_script_url, update ) {
+  var uf_form = document.updateDialog;
+  var uf_url;
+
+  uf_url  = '?update='   + update;
+  uf_url += '&id='       + uf_form.id.value;
+
+  uf_url += "&tag_name="       + encode_URI(uf_form.tag_name.value);
+  uf_url += "&tag_companyid="  + uf_form.tag_companyid.value;
+  uf_url += "&tag_owner="      + uf_form.tag_owner.value;
+  uf_url += "&tag_group="      + uf_form.tag_group.value;
+
+  script = document.createElement('script');
+  script.src = p_script_url + uf_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
+}
+
 function clear_fields() {
   show_file('tags.mysql.php?update=-1');
 }
 
 $(document).ready( function() {
-  $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
-
-  $( '#clickAddTags' ).click(function() {
-    $( "#dialogTags" ).dialog('open');
+  $( '#clickCreate' ).click(function() {
+    $( "#dialogCreate" ).dialog('open');
   });
 
-  $( "#dialogTags" ).dialog({
+  $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 200,
-    width: 900,
+    height: 250,
+    width: 600,
     show: 'slide',
     hide: 'slide',
     closeOnEscape: true,
     dialogClass: 'dialogWithDropShadow',
     close: function(event, ui) {
-      $( "#dialogTags" ).hide();
+      $( "#dialogCreate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('tags.mysql.php?update=-1');
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Tags",
+        click: function() {
+          attach_file('tags.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+  $( "#dialogUpdate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 250,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogUpdate" ).hide();
     },
     buttons: [
       {
@@ -147,14 +198,14 @@ $(document).ready( function() {
       {
         text: "Update Tags",
         click: function() {
-          attach_file('tags.mysql.php', 1);
+          update_file('tags.mysql.php', 1);
           $( this ).dialog( "close" );
         }
       },
       {
         text: "Add Tags",
         click: function() {
-          attach_file('tags.mysql.php', 0);
+          update_file('tags.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -191,8 +242,6 @@ $(document).ready( function() {
 
 <div id="main">
 
-<form name="mainform">
-
 <table class="ui-styled-table">
 <tr>
   <th class="ui-state-default">Tag Management</th>
@@ -200,16 +249,15 @@ $(document).ready( function() {
 </tr>
 </table>
 
-<div id="tag-help" style="display: none">
+<div id="tag-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
 
+<p>Tag Management</p>
 
-Tag Management
+<p>This page is intended to provide a view into a list of servers based on the selection via filters both to show all the tags and to let you verify that all servers for the selection have received the necessary tags.</p>
 
-This page is intended to provide a view into a list of servers based on the selection via filters both to show all the tags and to let you verify that all servers for the selection have received the necessary tags.
-
-In the Tag View page, you can select a tag and it will show you all the servers that have that tag assigned to it but unless you know all the servers that should be 
+<p>In the Tag View page, you can select a tag and it will show you all the servers that have that tag assigned to it but unless you know all the servers that should be </p>
 
 
 <ul>
@@ -226,21 +274,33 @@ In the Tag View page, you can select a tag and it will show you all the servers 
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickAddTags" value="Add Tags"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add Tags"></td>
 </tr>
 </table>
 
-</form>
+<p></p>
 
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Public Tag Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('public-listing-help');">Help</a></th>
+</tr>
+</table>
 
-<div id="tabs">
+<div id="public-listing-help" style="<?php print $display; ?>">
 
+<div class="main-help ui-widget-content">
 <ul>
-  <li><a href="#public_tag">Public Tags</a></li>
+  <li><strong>Public Tag Listing</strong>
+  <ul>
+    <li><strong>Editing</strong> - Click on a contract to edit it.</li>
+  </ul></li>
 </ul>
 
+</div>
 
-<div id="public_tag">
+</div>
+
 
 <span id="public_mysql"><?php print wait_Process('Waiting...')?></span>
 
@@ -249,22 +309,17 @@ In the Tag View page, you can select a tag and it will show you all the servers 
 </div>
 
 
-</div>
 
-</div>
 
-<div id="dialogTags" title="Tag Form">
+<div id="dialogCreate" title="Add Tag">
 
-<form name="tags">
-
-<input type="hidden" name="id" value="0">
+<form name="createDialog">
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default" colspan="3">Tag Form</th>
+  <td class="ui-widget-content" colspan="2">Tag: <input type="text" name="tag_name" size="40"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content" colspan="2">Tag: <input type="text" name="tag_name" size="40"></td>
   <td class="ui-widget-content">Server: <select name="tag_companyid">
 <option value="0">All Servers</option>
 <?php
@@ -296,6 +351,8 @@ In the Tag View page, you can select a tag and it will show you all the servers 
   }
 ?>
 </select></td>
+</tr>
+<tr>
   <td class="ui-widget-content">Group: <select name="tag_group">
 <option value="0">None</option>
 <?php
@@ -311,13 +368,80 @@ In the Tag View page, you can select a tag and it will show you all the servers 
 </select></td>
 </tr>
 <tr>
-  <td class="ui-widget-content" colspan="3"><input type="checkbox" name="applytoall"> Add this Tag definition to all servers in this listing?</td>
+  <td class="ui-widget-content"><input type="checkbox" name="applytoall"> Add this Tag definition to all servers in this listing?</td>
 </tr>
 </table>
 
 </form>
 
 </div>
+
+
+<div id="dialogUpdate" title="EditTag">
+
+<form name="updateDialog">
+
+<input type="hidden" name="id" value="0">
+
+<table class="ui-styled-table">
+<tr>
+  <td class="ui-widget-content" colspan="2">Tag: <input type="text" name="tag_name" size="40"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Server: <select name="tag_companyid">
+<?php
+  $q_string  = "select inv_id,inv_name ";
+  $q_string .= "from inventory ";
+  $q_string .= "where inv_status = 0 ";
+  if ($_SESSION['p_group'] > 0) {
+    $q_string .= "and inv_manager = " . $_SESSION['p_group'] . " ";
+  }
+  $q_string .= "order by inv_name ";
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+    print "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . "</option>\n";
+  }
+?>
+</select> Select All Servers to create a Master Tag.</td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Owner: <select name="tag_owner">
+<?php
+  $q_string  = "select usr_id,usr_last,usr_first ";
+  $q_string .= "from users ";
+  $q_string .= "where usr_disabled = 0 ";
+  $q_string .= "order by usr_last,usr_first ";
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
+    print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Group: <select name="tag_group">
+<?php
+  $q_string  = "select grp_id,grp_name ";
+  $q_string .= "from a_groups ";
+  $q_string .= "where grp_disabled = 0 ";
+  $q_string .= "order by grp_name ";
+  $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_groups = mysqli_fetch_array($q_groups)) {
+    print "<option value=\"" . $a_groups['grp_id'] . "\">" . $a_groups['grp_name'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><input type="checkbox" name="applytoall"> Add this Tag definition to all servers in this listing?</td>
+</tr>
+</table>
+
+</form>
+
+</div>
+
+
 
 <?php include($Sitepath . '/footer.php'); ?>
 

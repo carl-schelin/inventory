@@ -39,19 +39,15 @@
             "tag_group   =   " . $formVars['tag_group'];
 
           if ($formVars['update'] == 0) {
-            $query = "insert into tags set tag_id = NULL, " . $q_string;
-            $message = "Tag added.";
+            $q_string = "insert into tags set tag_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update tags set " . $q_string . " where tag_id = " . $formVars['id'];
-            $message = "Tag updated.";
+            $q_string = "update tags set " . $q_string . " where tag_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['tag_name']);
 
-          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
-
-          print "alert('" . $message . "');\n";
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -127,32 +123,10 @@
       $where = $product . $project . $group . $inwork . $location;
 
 # show tags here
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\">Public Tag Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('public-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"public-listing-help\" style=\"display: none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Public Tag Listing</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li><strong>Editing</strong> - Click on a contract to edit it.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "<table class=\"ui-styled-table\">\n";
+      $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
-        $output .= "  <th class=\"ui-state-default\">Del</th>\n";
+        $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Tag</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Server</th>\n";
       $output .= "  <th class=\"ui-state-default\">Tag Name</th>\n";
@@ -176,7 +150,7 @@
       if (mysqli_num_rows($q_tags) > 0) {
         while ($a_tags = mysqli_fetch_array($q_tags)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('tags.fill.php?id="  . $a_tags['tag_id'] . "');jQuery('#dialogTags').dialog('open');return false;\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('tags.fill.php?id="  . $a_tags['tag_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('tags.del.php?id=" . $a_tags['tag_id'] . "');\">";
           $linkend   = "</a>";
 
@@ -187,7 +161,7 @@
 
           $output .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
-            $output .= "  <td class=\"ui-widget-content delete\" width=\"6\">" . $linkdel   . "</td>";
+            $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>";
           }
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $inv_name                                        . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_tags['tag_name']                              . $linkend . "</td>";
@@ -206,10 +180,6 @@
       mysqli_free_result($q_tags);
 
       print "document.getElementById('public_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
-
-
-      print "document.tags.tag_name.value = '';\n";
-      print "document.tags.tag_companyid.value = 0;\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

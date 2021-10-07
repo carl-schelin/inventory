@@ -39,13 +39,13 @@
       $tag_companyid   = return_Index($db, $a_tags['tag_companyid'], $q_string);
       $tag_group       = return_Index($db, $a_tags['tag_group'],     "select grp_id from a_groups where grp_disabled = 0 order by grp_name");
 
-      print "document.tags.tag_owner['"     . $tag_owner     . "'].selected = true;\n";
-      print "document.tags.tag_companyid['" . $tag_companyid . "'].selected = true;\n";
-      print "document.tags.tag_group['"     . $tag_group     . "'].selected = true;\n";
+      print "document.updateDialog.tag_owner['"     . $tag_owner     . "'].selected = true;\n";
+      print "document.updateDialog.tag_companyid['" . $tag_companyid . "'].selected = true;\n";
+      print "document.updateDialog.tag_group['"     . $tag_group     . "'].selected = true;\n";
 
-      print "document.tags.tag_name.value = '"  . $a_tags['tag_name']  . "';\n";
+      print "document.updateDialog.tag_name.value = '"  . mysqli_real_escape_string($db, $a_tags['tag_name'])  . "';\n";
 
-      print "document.tags.id.value = " . $formVars['id'] . ";\n";
+      print "document.updateDialog.tag_id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
