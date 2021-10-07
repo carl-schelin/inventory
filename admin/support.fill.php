@@ -31,17 +31,17 @@
       $hwresponse   = return_Index($db, $a_support['sup_hwresponse'],  "select slv_id from supportlevel order by slv_value");
       $swresponse   = return_Index($db, $a_support['sup_swresponse'],  "select slv_id from supportlevel order by slv_value");
 
-      print "document.support.sup_hwresponse['" . $hwresponse . "'].selected = true;\n";
-      print "document.support.sup_swresponse['" . $swresponse . "'].selected = true;\n";
+      print "document.updateDialog.sup_hwresponse['" . $hwresponse . "'].selected = true;\n";
+      print "document.updateDialog.sup_swresponse['" . $swresponse . "'].selected = true;\n";
 
-      print "document.support.sup_company.value = '"  . $a_support['sup_company']  . "';\n";
-      print "document.support.sup_phone.value = '"    . $a_support['sup_phone']    . "';\n";
-      print "document.support.sup_email.value = '"    . $a_support['sup_email']    . "';\n";
-      print "document.support.sup_web.value = '"      . $a_support['sup_web']      . "';\n";
-      print "document.support.sup_contract.value = '" . $a_support['sup_contract'] . "';\n";
-      print "document.support.sup_wiki.value = '"     . $a_support['sup_wiki']     . "';\n";
+      print "document.updateDialog.sup_company.value = '"  . mysqli_real_escape_string($db, $a_support['sup_company'])  . "';\n";
+      print "document.updateDialog.sup_phone.value = '"    . mysqli_real_escape_string($db, $a_support['sup_phone'])    . "';\n";
+      print "document.updateDialog.sup_email.value = '"    . mysqli_real_escape_string($db, $a_support['sup_email'])    . "';\n";
+      print "document.updateDialog.sup_web.value = '"      . mysqli_real_escape_string($db, $a_support['sup_web'])      . "';\n";
+      print "document.updateDialog.sup_contract.value = '" . mysqli_real_escape_string($db, $a_support['sup_contract']) . "';\n";
+      print "document.updateDialog.sup_wiki.value = '"     . mysqli_real_escape_string($db, $a_support['sup_wiki'])     . "';\n";
 
-      print "document.support.id.value = " . $formVars['id'] . ";\n";
+      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

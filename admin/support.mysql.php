@@ -49,19 +49,15 @@
             "sup_swresponse =   " . $formVars['sup_swresponse'];
 
           if ($formVars['update'] == 0) {
-            $query = "insert into support set sup_id = NULL, " . $q_string;
-            $message = "Support Contract added.";
+            $q_string = "insert into support set sup_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update support set " . $q_string . " where sup_id = " . $formVars['id'];
-            $message = "Support Contract updated.";
+            $q_string = "update support set " . $q_string . " where sup_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['sup_company']);
 
-          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
-
-          print "alert('" . $message . "');\n";
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -70,34 +66,11 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\">Support Contract Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('support-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"support-listing-help\" style=\"display: none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Support Contract Listing</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li><strong>Editing</strong> - Click on a contract to edit it.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "<table class=\"ui-styled-table\">\n";
+      $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
-        $output .= "  <th class=\"ui-state-default\">Del</th>\n";
+        $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Support Contract</th>\n";
       }
-      $output .= "  <th class=\"ui-state-default\">Id</th>\n";
       $output .= "  <th class=\"ui-state-default\">Company</th>\n";
       $output .= "  <th class=\"ui-state-default\">Contract</th>\n";
       $output .= "  <th class=\"ui-state-default\">Phone</th>\n";
@@ -107,7 +80,8 @@
       $output .= "</tr>\n";
 
       $q_string  = "select sup_id,sup_company,sup_phone,sup_email,sup_web,sup_contract,sup_wiki,sup_hwresponse,sup_swresponse ";
-      $q_string .= "from support";
+      $q_string .= "from support ";
+      $q_string .= "order by sup_company ";
       $q_support = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_support) > 0) {
         while ($a_support = mysqli_fetch_array($q_support)) {
@@ -124,7 +98,7 @@
           $q_swsupport = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_swsupport = mysqli_fetch_array($q_swsupport);
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('support.fill.php?id="  . $a_support['sup_id'] . "');jQuery('#dialogSupport').dialog('open');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('support.fill.php?id="  . $a_support['sup_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('support.del.php?id=" . $a_support['sup_id'] . "');\">";
           $linkend   = "</a>";
 
@@ -132,7 +106,6 @@
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>";
           }
-          $output .= "  <td class=\"ui-widget-content delete\">"   . $linkstart . $a_support['sup_id']       . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_support['sup_company']  . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_support['sup_contract'] . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_support['sup_phone']    . $linkend . "</td>";
@@ -143,7 +116,7 @@
         }
       } else {
         $output .= "<tr>";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"5\">No records found.</td>";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"7\">No records found.</td>";
         $output .= "</tr>";
       }
 
@@ -152,15 +125,6 @@
       mysqli_free_result($q_support);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
-
-      print "document.support.sup_company.value = '';\n";
-      print "document.support.sup_hwresponse[0].selected = true;\n";
-      print "document.support.sup_swresponse[0].selected = true;\n";
-      print "document.support.sup_phone.value = '';\n";
-      print "document.support.sup_email.value = '';\n";
-      print "document.support.sup_contract.value = '';\n";
-      print "document.support.sup_web.value = '';\n";
-      print "document.support.sup_wiki.value = '';\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
