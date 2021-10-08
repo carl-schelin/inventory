@@ -24,7 +24,7 @@
       $q_string  = "select sw_software,sw_eol,sw_eos ";
       $q_string .= "from sw_support ";
       $q_string .= "where sw_id = " . $formVars['id'];
-      $q_sw_support = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_sw_support = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_sw_support = mysqli_fetch_array($q_sw_support);
       mysqli_free_result($q_sw_support);
 

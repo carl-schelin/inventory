@@ -25,7 +25,7 @@
       $q_string  = "select gpl_group ";
       $q_string .= "from grouplist ";
       $q_string .= "where gpl_id = " . $formVars['id'] . " ";
-      $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_grouplist = mysqli_fetch_array($q_grouplist);
       
 # now check to see if the deleter is in the same group as the deletee
@@ -34,13 +34,13 @@
       if (check_userlevel($db, $AL_Admin) == 0) {
         $q_string .= "where gpl_user = " . $_SESSION['uid'] . " and gpl_group = " . $a_grouplist['gpl_group'] . " ";
       }
-      $q_gltest = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_gltest = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 # you are in fact a member of the same group (or an admin)
       if (mysqli_num_rows($q_gltest) > 0) {
         $q_string  = "delete ";
         $q_string .= "from grouplist ";
         $q_string .= "where gpl_id = " . $formVars['id'];
-        $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
         print "alert('Membership removed.');\n";
       } else {

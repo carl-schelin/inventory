@@ -27,7 +27,7 @@
       $q_string .= "usr_manager,usr_title ";
       $q_string .= "from users ";
       $q_string .= "where usr_id = " . $formVars['id'];
-      $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_users = mysqli_fetch_array($q_users);
       mysqli_free_result($q_users);
 

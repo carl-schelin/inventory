@@ -29,7 +29,7 @@
           $q_string  = "select hw_type,hw_vendorid,hw_supportid,hw_primary ";
           $q_string .= "from hardware ";
           $q_string .= "where hw_companyid = " . $formVars['copyfrom'];
-          $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
             $q_string =
@@ -41,8 +41,8 @@
               "hw_supportid =   " . $a_hardware['hw_supportid'] . "," .
               "hw_primary   =   " . $a_hardware['hw_primary'];
 
-            $query = "insert into hardware set hw_id = NULL, " . $q_string;
-            mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
+            $q_string = "insert into hardware set hw_id = NULL, " . $q_string;
+            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           }
         }
       }
@@ -69,7 +69,7 @@
         $q_string .= "from inventory ";
         $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name";
-        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_inventory = mysqli_fetch_array($q_inventory)) {
           $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . "</option>\n";
         }
@@ -163,14 +163,14 @@
         $q_string  = "select inv_manager ";
         $q_string .= "from inventory ";
         $q_string .= "where inv_id = " . $formVars['id'] . " ";
-        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         $a_inventory = mysqli_fetch_array($q_inventory);
 
         $q_string  = "select patch_id,patch_name ";
         $q_string .= "from patching ";
         $q_string .= "where patch_group = " . $a_inventory['inv_manager'] . " ";
         $q_string .= "order by patch_name ";
-        $q_patching = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_patching = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while($a_patching = mysqli_fetch_array($q_patching)) {
           print "<option value=\"" . $a_patching['patch_id'] . "\">" . $a_patching['patch_name'] . "</option>\n";
         }

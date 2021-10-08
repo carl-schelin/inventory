@@ -29,7 +29,7 @@
         $q_string  = "select pwd_user,pwd_gecos ";
         $q_string .= "from syspwd ";
         $q_string .= "where pwd_id = " . $formVars['pwd_id'] . " ";
-        $q_syspwd = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_syspwd = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         $a_syspwd = mysqli_fetch_array($q_syspwd);
         mysqli_free_result($q_syspwd);
 
@@ -50,7 +50,7 @@
         $q_string  = "select mu_username,mu_name,mu_email,mu_account,mu_comment,mu_locked,mu_ticket ";
         $q_string .= "from manageusers ";
         $q_string .= "where mu_id = " . $formVars['id'];
-        $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         $a_manageusers = mysqli_fetch_array($q_manageusers);
         mysqli_free_result($q_manageusers);
 

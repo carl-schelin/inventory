@@ -36,7 +36,7 @@
         $q_string  = "select prod_code ";
         $q_string .= "from products ";
         $q_string .= "where prod_code = \"" . $formVars['prod_code'] . "\" ";
-        $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
         if (mysqli_num_rows($q_products) > 0 && $formVars['prod_code'] != '' && $formVars['update'] == 0) {
           print "alert(\"Product Code must be unique!\");\n";
@@ -60,7 +60,7 @@
 
             logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['prod_name']);
 
-            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 ##################
 # Tag Management
@@ -72,7 +72,7 @@
               $q_string  = "delete ";
               $q_string .= "from tags ";
               $q_string .= "where tag_type = 3 and tag_companyid = " . $formVars['id'] . " ";
-              mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             }
 
 # Step 2, okay we've cleared all the tags from the tag system for this server.
@@ -95,7 +95,7 @@
                   "tag_group        =   " . $_SESSION['group'];
 
                 $q_string = "insert into tags set tag_id = NULL, " . $q_string;
-                mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+                mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               }
             }
 
@@ -124,7 +124,7 @@
       $q_string .= "left join business_unit on business_unit.bus_id = products.prod_unit ";
       $q_string .= "left join service on service.svc_id = products.prod_service ";
       $q_string .= "order by prod_name ";
-      $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_products) > 0) {
         while ($a_products = mysqli_fetch_array($q_products)) {
 
@@ -136,7 +136,7 @@
           $q_string  = "select tag_name ";
           $q_string .= "from tags ";
           $q_string .= "where tag_companyid = " . $a_products['prod_id'] . " and tag_type = 3 ";
-          $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_tags) > 0) {
             while ($a_tags = mysqli_fetch_array($q_tags)) {
               $prod_tags .= $a_tags['tag_name'] . " ";

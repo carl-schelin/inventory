@@ -24,7 +24,7 @@
       $q_string  = "select dep_unit,dep_dept,dep_name ";
       $q_string .= "from department ";
       $q_string .= "where dep_id = " . $formVars['id'];
-      $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_department = mysqli_fetch_array($q_department);
       mysqli_free_result($q_department);
 

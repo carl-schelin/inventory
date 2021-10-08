@@ -24,7 +24,7 @@
       $q_string  = "select zone_name,zone_description,zone_offset ";
       $q_string .= "from timezones ";
       $q_string .= "where zone_id = " . $formVars['id'];
-      $q_timezones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_timezones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_timezones = mysqli_fetch_array($q_timezones);
       mysqli_free_result($q_timezones);
 

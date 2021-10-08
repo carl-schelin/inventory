@@ -83,19 +83,15 @@
             "fs_update    = \"" . date('Y-m-d')             . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into filesystem set fs_id = NULL," . $q_string;
-            $message = "Filesystem added.";
+            $q_string = "insert into filesystem set fs_id = NULL," . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update filesystem set " . $q_string . " where fs_id = " . $formVars['id'];
-            $message = "Filesystem updated.";
+            $q_string = "update filesystem set " . $q_string . " where fs_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['fs_companyid']);
 
-          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
-
-          print "alert('" . $message . "');\n";
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }

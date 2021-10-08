@@ -54,19 +54,15 @@
               "feat_user      =   " . $_SESSION['uid']    . "," . 
               "feat_timestamp = \"" . date("Y-m-d H:i:s") . "\"";
 
-            $query = "insert into features set feat_id = NULL, " . $q_string;
-            $message = "Feature added.";
+            $q_string = "insert into features set feat_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update features set " . $q_string . " where feat_id = " . $formVars['id'];
-            $message = "Feature updated.";
+            $q_string = "update features set " . $q_string . " where feat_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
 
-          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
-
-          print "alert('" . $message . "');\n";
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -98,18 +94,18 @@
               "feat_closed     = \"" . $formVars['feat_closed']     . "\"," .
               "feat_closeby    =   " . $_SESSION['uid'];
 
-            $query = "update features set " . $q_string . " where feat_id = " . $formVars['id'];
+            $q_string = "update features set " . $q_string . " where feat_id = " . $formVars['id'];
 
-            mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
             $q_string = 
               "feat_feat_id =  " . $formVars['id']                            . "," . 
               "feat_text    =\"" . "Issue closed by " . $_SESSION['username'] . ".\"," . 
               "feat_user    =  " . $_SESSION['uid'];
 
-            $query = "insert into features_detail set feat_id=null," . $q_string;
+            $q_string = "insert into features_detail set feat_id=null," . $q_string;
 
-            mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
           } else {
             $formVars['feat_closed'] = '1971-01-01';
@@ -123,18 +119,18 @@
               "feat_closed     = \"" . $formVars['feat_closed']     . "\"," .
               "feat_closeby    =   " . "0";
 
-            $query = "update features set " . $q_string . " where feat_id = " . $formVars['id'];
+            $q_string = "update features set " . $q_string . " where feat_id = " . $formVars['id'];
 
-            mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
             $q_string = 
               "feat_feat_id =  " . $formVars['id']                              . "," . 
               "feat_text    =\"" . "Issue reopened by " . $_SESSION['username'] . ".\"," . 
               "feat_user    =  " . $_SESSION['uid'];
 
-            $query = "insert into features_detail set feat_id=null," . $q_string;
+            $q_string = "insert into features_detail set feat_id=null," . $q_string;
 
-            mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           }
         }
       }

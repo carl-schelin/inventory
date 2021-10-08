@@ -25,7 +25,7 @@
       $q_string .= "sw_licenseid,sw_supportid,sw_department,sw_facing,sw_notification,sw_primary,sw_eolticket,sw_locked ";
       $q_string .= "from software ";
       $q_string .= "where sw_id = " . $formVars['id'];
-      $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_software = mysqli_fetch_array($q_software);
       mysqli_free_result($q_software);
 

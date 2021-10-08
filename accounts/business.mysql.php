@@ -50,7 +50,7 @@
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['bus_name']);
 
-          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -75,7 +75,7 @@
       $q_string .= "from business ";
       $q_string .= "left join organizations on organizations.org_id = business.bus_org ";
       $q_string .= "order by bus_name ";
-      $q_business = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_business = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_business) > 0) {
         while ($a_business = mysqli_fetch_array($q_business)) {
 
@@ -83,7 +83,7 @@
           $q_string  = "select dep_id ";
           $q_string .= "from department ";
           $q_string .= "where dep_unit = " . $a_business['bus_id'] . " ";
-          $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_department) > 0) {
             while ($a_department = mysqli_fetch_array($q_department)) {
               $total++;

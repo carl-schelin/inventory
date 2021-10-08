@@ -47,7 +47,7 @@
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['sw_software']);
 
-          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -68,7 +68,7 @@
 
       $q_string  = "select sw_id,sw_software,sw_eol,sw_eos ";
       $q_string .= "from sw_support";
-      $q_sw_support = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_sw_support = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_sw_support) > 0) {
         while ($a_sw_support = mysqli_fetch_array($q_sw_support)) {
 

@@ -24,7 +24,7 @@
       $q_string  = "select cert_id,cert_desc,cert_url,cert_expire,cert_authority,cert_group,cert_ca,cert_memo,cert_isca ";
       $q_string .= "from certs ";
       $q_string .= "where cert_id = " . $formVars['id'];
-      $q_certs = mysqli_query($db, $q_string) or die($q_string. ": " . mysqli_error($db));
+      $q_certs = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_certs = mysqli_fetch_array($q_certs);
       mysqli_free_result($q_certs);
 

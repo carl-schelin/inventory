@@ -165,14 +165,14 @@
         $q_string .= "where inv_status = 0 and " . $search_on . " ";
       }
       $q_string .= $orderby;
-      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_interface) > 0) {
         while ($a_interface = mysqli_fetch_array($q_interface)) {
 
           $q_string  = "select grp_name ";
           $q_string .= "from a_groups ";
           $q_string .= "where grp_id = " . $a_interface['inv_appadmin'] . " ";
-          $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_groups = mysqli_fetch_array($q_groups);
 
           $editstart     = "<a href=\"" . $Editroot   . "/inventory.php?server=" . $a_interface['int_companyid'] . "\" target=\"_blank\">" . $editpencil . "</a> ";
@@ -304,14 +304,14 @@
         $q_string .= "where inv_status = 0 and " . $search_on . " ";
       }
       $q_string .= $orderby;
-      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_interface) > 0) {
         while ($a_interface = mysqli_fetch_array($q_interface)) {
 
           $q_string  = "select grp_name ";
           $q_string .= "from a_groups ";
           $q_string .= "where grp_id = " . $a_interface['inv_appadmin'] . " ";
-          $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_groups = mysqli_fetch_array($q_groups);
 
           $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_interface['int_companyid'] . "\" target=\"_blank\">";
@@ -444,7 +444,7 @@
         $q_string .= "where inv_status = 0 and " . $search_on . " ";
       }
       $q_string .= $orderby;
-      $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_software) > 0) {
         while ($a_software = mysqli_fetch_array($q_software)) {
 
@@ -585,7 +585,7 @@
         $q_string .= "where inv_status = 0 and " . $search_on . " ";
       }
       $q_string .= $orderby;
-      $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_hardware) > 0) {
         while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
@@ -718,7 +718,7 @@
       $q_string .= "left join a_groups    on a_groups.grp_id    = inventory.inv_manager ";
       $q_string .= "where " . $search_on . " ";
       $q_string .= $orderby;
-      $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_hardware) > 0) {
         while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
@@ -855,7 +855,7 @@
         $q_string .= "where inv_status = 0 and " . $search_on . " ";
       }
       $q_string .= $orderby;
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_inventory) > 0) {
         while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
@@ -980,14 +980,14 @@
         $q_string .= "where inv_status = 0 and " . $search_on . " ";
       }
       $q_string .= $orderby;
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_inventory) > 0) {
         while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
           $q_string  = "select grp_name ";
           $q_string .= "from a_groups ";
           $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
-          $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_groups = mysqli_fetch_array($q_groups);
 
           $groups = '';
@@ -995,7 +995,7 @@
           $q_string .= "from sysgrp_members ";
           $q_string .= "left join sysgrp on sysgrp.grp_id = sysgrp_members.mem_gid ";
           $q_string .= "where mem_uid = " . $a_inventory['pwd_id'] . " ";
-          $q_sysgrp_members = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_sysgrp_members = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           while ($a_sysgrp_members = mysqli_fetch_array($q_sysgrp_members)) {
             $groups .= " " . $a_sysgrp_members['grp_name'];
           }
@@ -1058,14 +1058,14 @@
           $q_string .= "where inv_status = 0 and " . $search_on . " ";
         }
         $q_string .= str_replace('order by ', 'order by pwd_user,', $orderby);
-        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         if (mysqli_num_rows($q_inventory) > 0) {
           while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
             $q_string  = "select grp_name ";
             $q_string .= "from a_groups ";
             $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
-            $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             $a_groups = mysqli_fetch_array($q_groups);
 
             $groups = '';
@@ -1076,7 +1076,7 @@
             $q_string .= "from sysgrp_members ";
             $q_string .= "left join sysgrp on sysgrp.grp_id = sysgrp_members.mem_gid ";
             $q_string .= "where mem_uid = " . $a_inventory['pwd_id'] . " ";
-            $q_sysgrp_members = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $q_sysgrp_members = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             while ($a_sysgrp_members = mysqli_fetch_array($q_sysgrp_members)) {
               $groups .= " " . $a_sysgrp_members['grp_name'];
             }
@@ -1215,7 +1215,7 @@
         $q_string .= "where inv_status = 0 and " . $search_on . " ";
       }
       $q_string .= $orderby;
-      $q_packages = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_packages = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_packages) > 0) {
         while ($a_packages = mysqli_fetch_array($q_packages)) {
 
@@ -1231,7 +1231,7 @@
           $q_string  = "select grp_name ";
           $q_string .= "from a_groups ";
           $q_string .= "where grp_id = " . $a_packages['inv_appadmin'] . " ";
-          $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_groups = mysqli_fetch_array($q_groups);
 
           if ($formVars['csv']) {

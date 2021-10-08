@@ -45,19 +45,15 @@
             "clu_notes       = \"" . $formVars['clu_notes']       . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into cluster set clu_id = NULL," . $q_string;
-            $message = "Association added.";
+            $q_string = "insert into cluster set clu_id = NULL," . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update cluster set " . $q_string . " where clu_id = " . $formVars['id'];
-            $message = "Association updated.";
+            $q_string = "update cluster set " . $q_string . " where clu_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['clu_association']);
 
-          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
-
-          print "alert('" . $message . "');\n";
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -70,7 +66,7 @@
           $q_string  = "select clu_association,clu_notes ";
           $q_string .= "from cluster ";
           $q_string .= "where clu_companyid = " . $formVars['copyfrom'];
-          $q_cluster = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_cluster = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           while ($a_cluster = mysqli_fetch_array($q_cluster)) {
 
             $q_string =
@@ -79,7 +75,7 @@
               "clu_notes       = \"" . $a_cluster['clu_notes']       . "\"";
   
             $query = "insert into cluster set clu_id = NULL, " . $q_string;
-            mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
+            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           }
         }
       }
@@ -107,12 +103,12 @@
         $q_string .= "from inventory ";
         $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name";
-        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_inventory = mysqli_fetch_array($q_inventory)) {
           $q_string  = "select clu_id ";
           $q_string .= "from cluster ";
           $q_string .= "where clu_companyid = " . $a_inventory['inv_id'] . " ";
-          $q_cluster = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_cluster = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $clu_total = mysqli_num_rows($q_cluster);
 
           if ($clu_total > 0) {
@@ -136,7 +132,7 @@
         $q_string .= "from inventory ";
         $q_string .= "where inv_status = 0 ";
         $q_string .= "order by inv_name ";
-        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_inventory = mysqli_fetch_array($q_inventory)) {
           $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . "</option>\n";
         }
@@ -201,7 +197,7 @@
       $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
       $q_string .= "where clu_companyid = " . $formVars['clu_companyid'] . " ";
       $q_string .= "order by inv_name,clu_association,clu_port";
-      $q_cluster = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_cluster = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_cluster) > 0) {
         while ($a_cluster = mysqli_fetch_array($q_cluster)) {
 

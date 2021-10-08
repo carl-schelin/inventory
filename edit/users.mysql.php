@@ -57,21 +57,16 @@
             "mu_ticket     = \"" . $formVars['mu_ticket']     . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into manageusers set mu_id = NULL," . $q_string;
-            $message = "User added.";
+            $q_string = "insert into manageusers set mu_id = NULL," . $q_string;
           }
 
           if ($formVars['update'] == 1) {
-            $query = "update manageusers set " . $q_string . " where mu_id = " . $formVars['id'];
-            $message = "User updated.";
+            $q_string = "update manageusers set " . $q_string . " where mu_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['mu_username']);
 
-          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
-
-          print "alert('" . $message . "');\n";
-
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -171,14 +166,14 @@
       $q_string .= "from syspwd ";
       $q_string .= "where pwd_companyid = " . $formVars['pwd_companyid'] . " ";
       $q_string .= "order by pwd_user";
-      $q_syspwd = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_syspwd = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_syspwd) > 0) {
         while ($a_syspwd = mysqli_fetch_array($q_syspwd)) {
 
           $q_string  = "select mu_id,mu_account,mu_comment,mu_locked,mu_ticket ";
           $q_string .= "from manageusers ";
           $q_string .= "where mu_username = \"" . $a_syspwd['pwd_user'] . "\" ";
-          $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_manageusers) == 0) {
             $account = "--";
             $locked = "--";
@@ -216,7 +211,7 @@
           $q_string  = "select grp_name ";
           $q_string .= "from sysgrp ";
           $q_string .= "where grp_companyid = " . $formVars['pwd_companyid'] . " and grp_gid = " . $a_syspwd['pwd_gid'] . " ";
-          $q_sysgrp = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_sysgrp = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_sysgrp = mysqli_fetch_array($q_sysgrp);
 
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('users.fill.php?id=" . $a_manageusers['mu_id'] . "&pwd_id=" . $a_syspwd['pwd_id'] . "');showDiv('users-hide');\">";

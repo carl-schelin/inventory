@@ -52,7 +52,7 @@
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['lvl_name']);
 
-          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -74,7 +74,7 @@
       $q_string  = "select lvl_id,lvl_name,lvl_level,lvl_disabled ";
       $q_string .= "from levels ";
       $q_string .= "order by lvl_level,lvl_name";
-      $q_levels = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_levels = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_levels) > 0) {
         while ($a_levels = mysqli_fetch_array($q_levels)) {
 
@@ -92,7 +92,7 @@
           $q_string  = "select usr_id,usr_disabled ";
           $q_string .= "from users ";
           $q_string .= "where usr_level = " . $a_levels['lvl_id'] . " ";
-          $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_users) > 0) {
             while ($a_users = mysqli_fetch_array($q_users)) {
               if ($a_users['usr_disabled'] == 0) {

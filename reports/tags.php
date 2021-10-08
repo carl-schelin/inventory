@@ -89,7 +89,7 @@
   $q_string .= "left join a_groups    on a_groups.grp_id    = tags.tag_group ";
   $q_string .= "where inv_status = 0 and tag_type = 1 ";
   $q_string .= $orderby;
-  $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_tags = mysqli_fetch_array($q_tags)) {
 
     print "<tr>";

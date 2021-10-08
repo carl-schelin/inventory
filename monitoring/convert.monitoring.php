@@ -26,7 +26,7 @@
   $q_string .= "from interface ";
   $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
   $q_string .= "where int_openview = 1 or int_nagios = 1 ";
-  $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_interface = mysqli_fetch_array($q_interface)) {
 
     if ($a_interface['int_openview']) {
@@ -35,7 +35,7 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysqli_query($db, $q_string);
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
       }
       if ($a_interface['int_ssh']) {
@@ -43,7 +43,7 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysqli_query($db, $q_string);
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
       }
       if ($a_interface['int_http']) {
@@ -51,7 +51,7 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysqli_query($db, $q_string);
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
       }
       if ($a_interface['int_ftp']) {
@@ -59,7 +59,7 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysqli_query($db, $q_string);
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
       }
       if ($a_interface['int_smtp']) {
@@ -67,7 +67,7 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysqli_query($db, $q_string);
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
       }
       if ($a_interface['int_load']) {
@@ -75,7 +75,7 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysqli_query($db, $q_string);
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
       }
       if ($a_interface['int_uptime']) {
@@ -83,7 +83,7 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysqli_query($db, $q_string);
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
       }
       if ($a_interface['int_cpu']) {
@@ -91,7 +91,7 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysqli_query($db, $q_string);
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
       }
       if ($a_interface['int_swap']) {
@@ -99,7 +99,7 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysqli_query($db, $q_string);
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
       }
       if ($a_interface['int_memory']) {
@@ -107,7 +107,7 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysqli_query($db, $q_string);
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
       }
     }
@@ -118,7 +118,7 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysqli_query($db, $q_string);
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
       }
       if ($a_interface['int_ssh']) {
@@ -126,7 +126,7 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysqli_query($db, $q_string);
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
       }
       if ($a_interface['int_http']) {
@@ -134,7 +134,7 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysqli_query($db, $q_string);
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
       }
       if ($a_interface['int_ftp']) {
@@ -142,7 +142,7 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysqli_query($db, $q_string);
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
       }
       if ($a_interface['int_smtp']) {
@@ -150,7 +150,7 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysqli_query($db, $q_string);
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
       }
       if ($a_interface['int_load']) {
@@ -158,7 +158,7 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysqli_query($db, $q_string);
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
       }
       if ($a_interface['int_uptime']) {
@@ -166,7 +166,7 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysqli_query($db, $q_string);
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
       }
       if ($a_interface['int_cpu']) {
@@ -174,7 +174,7 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysqli_query($db, $q_string);
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
       }
       if ($a_interface['int_swap']) {
@@ -182,7 +182,7 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysqli_query($db, $q_string);
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
       }
       if ($a_interface['int_memory']) {
@@ -190,7 +190,7 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysqli_query($db, $q_string);
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
       }
     }

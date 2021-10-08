@@ -254,7 +254,7 @@ $(document).ready( function() {
   $q_string  = "select bus_id,bus_name ";
   $q_string .= "from business ";
   $q_string .= "order by bus_name ";
-  $q_business = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_business = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   if (mysqli_num_rows($q_business)) {
     while ($a_business = mysqli_fetch_array($q_business)) {
       print "<option value=\"" . $a_business['bus_id'] . "\">" . $a_business['bus_name'] . "</option>\n";
@@ -288,7 +288,7 @@ $(document).ready( function() {
   $q_string  = "select bus_id,bus_name ";
   $q_string .= "from business ";
   $q_string .= "order by bus_name ";
-  $q_business = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_business = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   if (mysqli_num_rows($q_business)) {
     while ($a_business = mysqli_fetch_array($q_business)) {
       print "<option value=\"" . $a_business['bus_id'] . "\">" . $a_business['bus_name'] . "</option>\n";

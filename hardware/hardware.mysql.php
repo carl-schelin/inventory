@@ -63,7 +63,7 @@
           $q_string  = "select part_type ";
           $q_string .= "from parts ";
           $q_string .= "where part_id = " . $formVars['mod_type'];
-          $q_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_parts = mysqli_fetch_array($q_parts);
 
           $formVars['mod_primary'] = $a_parts['part_type'];
@@ -88,18 +88,14 @@
 
           if ($formVars['update'] == 0) {
             $q_string = "insert into models set mod_id = NULL, " . $q_string;
-            $message = "Model added.";
           }
           if ($formVars['update'] == 1) {
             $q_string = "update models set " . $q_string . " where mod_id = " . $formVars['id'];
-            $message = "Model updated.";
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['mod_name']);
 
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-
-          print "alert('" . $message . "');\n";
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -200,7 +196,7 @@
       $q_string .= "left join parts on parts.part_id = models.mod_type ";
       $q_string .= "left join int_volts on int_volts.volt_id = models.mod_volts ";
       $q_string .= "order by mod_vendor,mod_name";
-      $q_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_models) > 0) {
         while ($a_models = mysqli_fetch_array($q_models)) {
 

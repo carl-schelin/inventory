@@ -268,7 +268,7 @@ delete a CPU as long as this value is greater than zero.</p>
   $q_string  = "select ven_id,ven_name ";
   $q_string .= "from vendors ";
   $q_string .= "order by ven_name";
-  $q_vendors = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_vendors = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_vendors = mysqli_fetch_array($q_vendors)) {
     print "<option value=\"" . $a_vendors['ven_id'] . "\">" . $a_vendors['ven_name'] . "</option>\n";
   }
@@ -314,7 +314,7 @@ delete a CPU as long as this value is greater than zero.</p>
   $q_string  = "select ven_id,ven_name ";
   $q_string .= "from vendors ";
   $q_string .= "order by ven_name";
-  $q_vendors = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_vendors = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_vendors = mysqli_fetch_array($q_vendors)) {
     print "<option value=\"" . $a_vendors['ven_id'] . "\">" . $a_vendors['ven_name'] . "</option>\n";
   }

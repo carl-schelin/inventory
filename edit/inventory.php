@@ -35,7 +35,7 @@
     $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
     $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
     $q_string .= "where inv_id = " . $formVars['server'] . " and part_type = 1 ";
-    $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_inventory = mysqli_fetch_array($q_inventory);
 
     if (mysqli_num_rows($q_inventory) == 0) {
@@ -1036,7 +1036,7 @@ $(document).ready( function() {
   $q_string .= "from inventory ";
   $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
   $q_string .= "order by inv_name";
-  $q_c2inv = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_c2inv = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_c2inv = mysqli_fetch_array($q_c2inv)) {
     print "<option value=\"" . $a_c2inv['inv_id'] . "\">" . $a_c2inv['inv_name'] . "</option>\n";
   }
@@ -1075,7 +1075,7 @@ $(document).ready( function() {
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
   $q_string .= "where mod_type = 13 and inv_manager = " . $_SESSION['group'] . " ";
   $q_string .= "order by inv_name ";
-  $q_chassis = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_chassis = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_chassis = mysqli_fetch_array($q_chassis)) {
     print "<option value=\"" . $a_chassis['inv_id'] . "\">" . $a_chassis['inv_name'] . "</option>";
   }
@@ -1098,7 +1098,7 @@ $(document).ready( function() {
   $q_string .= "from locations ";
   $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
   $q_string .= "order by ct_city,loc_name";
-  $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_locations = mysqli_fetch_array($q_locations)) {
     print "<option value=\"" . $a_locations['loc_id'] . "\">" . htmlspecialchars($a_locations['ct_city']) . " (" . htmlspecialchars($a_locations['loc_name']) . ")\n";
   }
@@ -1109,7 +1109,7 @@ $(document).ready( function() {
   $q_string  = "select env_id,env_name ";
   $q_string .= "from environment ";
   $q_string .= "order by env_name ";
-  $q_environment = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_environment = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_environment = mysqli_fetch_array($q_environment)) {
     print "<option value=\"" . $a_environment['env_id'] . "\">" . htmlspecialchars($a_environment['env_name']) . "</option>\n";
   }
@@ -1123,7 +1123,7 @@ $(document).ready( function() {
   $q_string  = "select zone_id,zone_name ";
   $q_string .= "from timezones ";
   $q_string .= "order by zone_name";
-  $q_timezones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_timezones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_timezones = mysqli_fetch_array($q_timezones)) {
     print "<option value=\"" . $a_timezones['zone_id'] . "\">" . htmlspecialchars($a_timezones['zone_name']) . "</option>\n";
   }
@@ -1137,7 +1137,7 @@ $(document).ready( function() {
   $q_string .= "from images ";
   $q_string .= "where img_facing = 1 ";
   $q_string .= "order by img_title,img_file ";
-  $q_images = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_images = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_images = mysqli_fetch_array($q_images)) {
     print "<option value=\"" . $a_images['img_id'] . "\">" . htmlspecialchars($a_images['img_title']) . " (" . htmlspecialchars($a_images['img_file']) . ")</option>\n";
   }
@@ -1151,7 +1151,7 @@ $(document).ready( function() {
   $q_string .= "from images ";
   $q_string .= "where img_facing = 0 ";
   $q_string .= "order by img_title,img_file ";
-  $q_images = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_images = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_images = mysqli_fetch_array($q_images)) {
     print "<option value=\"" . $a_images['img_id'] . "\">" . htmlspecialchars($a_images['img_title']) . " (" . htmlspecialchars($a_images['img_file']) . ")</option>\n";
   }
@@ -1171,7 +1171,7 @@ $(document).ready( function() {
   $q_string .= "from a_groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name";
-  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_groups = mysqli_fetch_array($q_groups)) {
     print "<option value=\"" . $a_groups['grp_id'] . "\">" . htmlspecialchars($a_groups['grp_name']) . "</option>\n";
   }
@@ -1183,7 +1183,7 @@ $(document).ready( function() {
   $q_string .= "from a_groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name";
-  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_groups = mysqli_fetch_array($q_groups)) {
     print "<option value=\"" . $a_groups['grp_id'] . "\">" . htmlspecialchars($a_groups['grp_name']) . "</option>\n";
   }
@@ -1196,7 +1196,7 @@ $(document).ready( function() {
   $q_string  = "select svc_id,svc_name ";
   $q_string .= "from service ";
   $q_string .= "order by svc_id";
-  $q_service = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_service = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_service = mysqli_fetch_array($q_service)) {
     print "<option value=\"" . $a_service['svc_id'] . "\">" . htmlspecialchars($a_service['svc_name']) . "</option>\n";
   }
@@ -1207,7 +1207,7 @@ $(document).ready( function() {
   $q_string  = "select slv_id,slv_value ";
   $q_string .= "from supportlevel ";
   $q_string .= "order by slv_value";
-  $q_supportlevel = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_supportlevel = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_supportlevel = mysqli_fetch_array($q_supportlevel)) {
     print "<option value=\"" . $a_supportlevel['slv_id'] . "\">" . htmlspecialchars($a_supportlevel['slv_value']) . "</option>\n";
   }
@@ -1226,7 +1226,7 @@ $(document).ready( function() {
   $q_string  = "select prod_id,prod_name ";
   $q_string .= "from products ";
   $q_string .= "order by prod_name";
-  $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_products = mysqli_fetch_array($q_products)) {
     print "<option value=\"" . $a_products['prod_id'] . "\">" . htmlspecialchars($a_products['prod_name']) . "</option>\n";
   }
@@ -1238,7 +1238,7 @@ $(document).ready( function() {
   $q_string .= "from projects ";
   $q_string .= "where prj_product = " . $a_inventory['inv_product'] . " ";
   $q_string .= "order by prj_name";
-  $q_projects = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_projects = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_projects = mysqli_fetch_array($q_projects)) {
     print "<option value=\"" . $a_projects['prj_id'] . "\">" . htmlspecialchars($a_projects['prj_name']) . "</option>\n";
   }
@@ -1250,7 +1250,7 @@ $(document).ready( function() {
   $q_string .= "from department  ";
   $q_string .= "left join business_unit on business_unit.bus_unit = department.dep_unit ";
   $q_string .= "order by dep_unit,dep_name";
-  $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_department = mysqli_fetch_array($q_department)) {
     print "<option value=\"" . $a_department['dep_id'] . "\">";
       print htmlspecialchars($a_department['dep_unit']) . "-" . htmlspecialchars($a_department['dep_dept']) . " - ";
@@ -1272,7 +1272,7 @@ $(document).ready( function() {
   $q_string  = "select win_id,win_text ";
   $q_string .= "from maint_window  ";
   $q_string .= "order by win_text";
-  $q_window = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_window = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_window = mysqli_fetch_array($q_window)) {
     print "<option value=\"" . $a_window['win_id'] . "\">" . htmlspecialchars($a_window['win_text']) . "</option>\n";
   }
@@ -1373,7 +1373,7 @@ a tag that already exists, it does check for that and will simply toggle it vs a
   $q_string .= "from tag_types ";
   $q_string .= "where type_id > 1 ";
   $q_string .= "order by type_name ";
-  $q_tag_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_tag_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   if (mysqli_num_rows($q_tag_types) > 0) {
     while ($a_tag_types = mysqli_fetch_array($q_tag_types)) {
 
@@ -1978,12 +1978,12 @@ to modify it and then click the Add User button to begin managing the account.</
   $q_string .= "from inventory ";
   $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
   $q_string .= "order by inv_name";
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
     $q_string  = "select bu_id ";
     $q_string .= "from backups ";
     $q_string .= "where bu_companyid = " . $a_inventory['inv_id'];
-    $q_backups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $q_backups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     if (mysqli_num_rows($q_backups) > 0) {
       print "<option value=\"" . $a_inventory['inv_id'] . "\">" . htmlspecialchars($a_inventory['inv_name']) . "</option>\n";
     }
@@ -2211,7 +2211,7 @@ field shows you the limit of the number of characters. This limit is set by the 
   $q_string  = "select usr_first,usr_last ";
   $q_string .= "from users ";
   $q_string .= "where usr_id = " . $_SESSION['uid'];
-  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   $a_users = mysqli_fetch_array($q_users);
 
   print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_users['usr_first'] . " " . $a_users['usr_last'] . "</option>\n";
@@ -2220,7 +2220,7 @@ field shows you the limit of the number of characters. This limit is set by the 
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first";
-  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_users = mysqli_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . " " . $a_users['usr_first'] . "</option>\n";
   }

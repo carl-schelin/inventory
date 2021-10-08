@@ -251,7 +251,7 @@ business unit, or if there's a small difference, you can make changes and add a 
   $q_string  = "select org_id,org_name ";
   $q_string .= "from organizations ";
   $q_string .= "order by org_name ";
-  $q_organizations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_organizations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   if (mysqli_num_rows($q_organizations)) {
     while ($a_organizations = mysqli_fetch_array($q_organizations)) {
       print "<option value=\"" . $a_organizations['org_id'] . "\">" . $a_organizations['org_name'] . "</option>\n";
@@ -286,7 +286,7 @@ business unit, or if there's a small difference, you can make changes and add a 
   $q_string  = "select org_id,org_name ";
   $q_string .= "from organizations ";
   $q_string .= "order by org_name ";
-  $q_organizations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_organizations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   if (mysqli_num_rows($q_organizations)) {
     while ($a_organizations = mysqli_fetch_array($q_organizations)) {
       print "<option value=\"" . $a_organizations['org_id'] . "\">" . $a_organizations['org_name'] . "</option>\n";

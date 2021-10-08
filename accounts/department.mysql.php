@@ -53,7 +53,7 @@
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['dep_name']);
 
-          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -78,7 +78,7 @@
       $q_string .= "left join business on business.bus_unit = department.dep_unit ";
       $q_string .= "left join organizations on organizations.org_id = business.bus_org ";
       $q_string .= "order by dep_name,bus_name,org_name ";
-      $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_department) > 0) {
         while ($a_department = mysqli_fetch_array($q_department)) {
 
@@ -90,7 +90,7 @@
           $q_string  = "select grp_id ";
           $q_string .= "from a_groups ";
           $q_string .= "where grp_organization = " . $a_department['dep_id'] . " ";
-          $q_a_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_a_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_a_groups) > 0) {
             while ($a_a_groups = mysqli_fetch_array($q_a_groups)) {
               $total++;

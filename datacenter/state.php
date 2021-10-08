@@ -253,7 +253,7 @@ add the necessary information and then save the new State.</p>
   $q_string  = "select cn_id,cn_country ";
   $q_string .= "from country ";
   $q_string .= "order by cn_country ";
-  $q_country = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_country = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_country = mysqli_fetch_array($q_country)) {
     print "<option value=\"" . $a_country['cn_id'] . "\">" . $a_country['cn_country'] . "</option>\n";
   }
@@ -286,7 +286,7 @@ add the necessary information and then save the new State.</p>
   $q_string  = "select cn_id,cn_country ";
   $q_string .= "from country ";
   $q_string .= "order by cn_country ";
-  $q_country = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_country = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_country = mysqli_fetch_array($q_country)) {
     print "<option value=\"" . $a_country['cn_id'] . "\">" . $a_country['cn_country'] . "</option>\n";
   }

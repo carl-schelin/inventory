@@ -67,30 +67,26 @@
             "route_update    = \"" . date('Y-m-d')                . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into routing set route_id = NULL," . $q_string;
-            $message = "Route added.";
+            $q_string = "insert into routing set route_id = NULL," . $q_string;
           }
 
           if ($formVars['update'] == 1) {
-            $query = "update routing set " . $q_string . " where route_id = " . $formVars['id'];
-            $message = "Route updated.";
+            $q_string = "update routing set " . $q_string . " where route_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['var_name']);
 
-          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
-
-          print "alert('" . $message . "');\n";
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 # if repeat description is confirmed, load each route where route_address = route_address and update the interface.
           if ($formVars['route_propagate'] == 'yes') {
             $q_string  = "select route_id ";
             $q_string .= "from routing ";
             $q_string .= "where route_address = '" . $formVars['route_address'] . "' ";
-            $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             while ($a_routing = mysqli_fetch_array($q_routing)) {
               $query = "update routing set route_desc = '" . $formVars['route_desc'] . "' where route_id = " . $a_routing['route_id'];
-              mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
+              mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             }
           }
 
@@ -107,7 +103,7 @@
           $q_string  = "select route_address,route_mask,route_gateway,route_source,route_interface,route_desc,route_static ";
           $q_string .= "from routing ";
           $q_string .= "where route_companyid = " . $formVars['copyfrom'];
-          $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           while ($a_routing = mysqli_fetch_array($q_routing)) {
 
 # so try to match the copied server's interface name with the current server.
@@ -115,13 +111,13 @@
             $q_string  = "select int_face ";
             $q_string .= "from interface ";
             $q_string .= "where int_id = " . $a_routing['route_interface'];
-            $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             $a_interface = mysqli_fetch_array($q_interface);
 
             $q_string  = "select int_id ";
             $q_string .= "from interface ";
             $q_string .= "where int_companyid = " . $formVars['route_companyid'] . " and int_face = '" . $a_interface['int_face'] . "'";
-            $q_interface2 = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $q_interface2 = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             $a_interface2 = mysqli_fetch_array($q_interface2);
 
             if ($a_interface2['int_id'] == '') {
@@ -138,8 +134,8 @@
               "route_static    =   " . $a_routing['route_static']    . "," .
               "route_desc      = \"" . $a_routing['route_desc']      . "\"";
 
-            $query = "insert into routing set route_id = NULL," . $q_string;
-            mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
+            $q_string = "insert into routing set route_id = NULL," . $q_string;
+            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           }
         }
       }
@@ -166,12 +162,12 @@
         $q_string .= "from inventory ";
         $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name";
-        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_inventory = mysqli_fetch_array($q_inventory)) {
           $q_string  = "select route_id ";
           $q_string .= "from routing ";
           $q_string .= "where route_companyid = " . $a_inventory['inv_id'] . " ";
-          $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $route_total = mysqli_num_rows($q_routing);
 
           if ($route_total > 0) {
@@ -208,7 +204,7 @@
         $q_string .= "from interface ";
         $q_string .= "where int_companyid = " . $formVars['route_companyid'] . " ";
         $q_string .= "order by int_face";
-        $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_interface = mysqli_fetch_array($q_interface)) {
           if ($a_interface['int_ip6']) {
             $output .= "<option value=\"" . $a_interface['int_id'] . "\">" . $a_interface['int_face'] . " (ip6)</option>\n";
@@ -288,14 +284,14 @@
       $q_string .= "left join inventory on inventory.inv_id = routing.route_companyid ";
       $q_string .= "where route_companyid = " . $formVars['route_companyid'] . " ";
       $q_string .= "order by route_address";
-      $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_routing) > 0) {
         while ($a_routing = mysqli_fetch_array($q_routing)) {
 
           $q_string  = "select int_face ";
           $q_string .= "from interface ";
           $q_string .= "where int_id = " . $a_routing['route_interface'];
-          $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_interface = mysqli_fetch_array($q_interface);
 
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('routing.fill.php?id=" . $a_routing['route_id'] . "');showDiv('routing-hide');\">";

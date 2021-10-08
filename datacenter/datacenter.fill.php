@@ -26,7 +26,7 @@
       $q_string .= "loc_contact1,loc_contact2,loc_identity,loc_environment ";
       $q_string .= "from locations ";
       $q_string .= "where loc_id = " . $formVars['id'];
-      $q_locations = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_locations = mysqli_fetch_array($q_locations);
       mysqli_free_result($q_locations);
 
@@ -72,7 +72,7 @@
       $q_string  = "select tag_name ";
       $q_string .= "from tags ";
       $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_type = 2 ";
-      $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_tags) > 0) {
         while ($a_tags = mysqli_fetch_array($q_tags)) {
           $loc_tags .= $space . $a_tags['tag_name'];

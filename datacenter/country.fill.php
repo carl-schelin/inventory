@@ -24,7 +24,7 @@
       $q_string  = "select cn_acronym,cn_country ";
       $q_string .= "from country ";
       $q_string .= "where cn_id = " . $formVars['id'];
-      $q_country = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      $q_country = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_country = mysqli_fetch_array($q_country);
       mysqli_free_result($q_country);
 

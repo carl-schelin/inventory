@@ -24,7 +24,7 @@
       $q_string  = "select ct_city,ct_state,ct_clli ";
       $q_string .= "from cities ";
       $q_string .= "where ct_id = " . $formVars['id'];
-      $q_cities = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      $q_cities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_cities = mysqli_fetch_array($q_cities);
       mysqli_free_result($q_cities);
 

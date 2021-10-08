@@ -38,10 +38,10 @@
 
     logaccess($db, $_SESSION['uid'], $package, "Adding detail: " . $formVars['feat_module']);
 
-    $result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+    $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
     $query = "select last_insert_id($db)";
-    $q_result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+    $q_result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_result = mysqli_fetch_array($q_result);
 
     $feature = $a_result['last_insert_id($db)'];
@@ -53,7 +53,7 @@
 
     $query = "insert into features_detail set feat_id = NULL," . $q_string;
 
-    $result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+    $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
     $url = $Featureroot . "/ticket.php?id=" . $feature . "#problem";
 

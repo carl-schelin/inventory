@@ -184,7 +184,7 @@ $(document).ready( function() {
   $q_string .= "from inventory ";
   $q_string .= "where inv_status = 0 and inv_manager = 1 ";
   $q_string .= "order by inv_name ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
     if ($inventory_id == 0) {
       $inventory_id = $a_inventory['inv_id'];
@@ -198,7 +198,7 @@ $(document).ready( function() {
   $q_string .= "from interface ";
   $q_string .= "where int_companyid = " . $inventory_id . " ";
   $q_string .= "order by int_server ";
-  $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_interface = mysqli_fetch_array($q_interface)) {
     print "<option value=\"" . $a_interface['int_id'] . "\">" . $a_interface['int_server'] . "</option>\n";
   }
@@ -211,7 +211,7 @@ $(document).ready( function() {
   $q_string  = "select ms_id,ms_name ";
   $q_string .= "from mon_system ";
   $q_string .= "order by ms_name ";
-  $q_mon_system = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_mon_system = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_mon_system = mysqli_fetch_array($q_mon_system)) {
     print "<option value=\"" . $a_mon_system['ms_id'] . "\">" . $a_mon_system['ms_name'] . "</option>\n";
   }
@@ -224,7 +224,7 @@ $(document).ready( function() {
   $q_string  = "select mt_id,mt_name ";
   $q_string .= "from mon_type ";
   $q_string .= "order by mt_name ";
-  $q_mon_type = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_mon_type = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_mon_type = mysqli_fetch_array($q_mon_type)) {
     print "<option value=\"" . $a_mon_type['mt_id'] . "\">" . $a_mon_type['mt_name'] . "</option>\n";
   }
@@ -238,7 +238,7 @@ $(document).ready( function() {
   $q_string .= "from a_groups ";
   $q_string .= "where grp_page != \"\" and grp_disabled = 0 ";
   $q_string .= "order by grp_name ";
-  $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_groups = mysqli_fetch_array($q_groups)) {
     if ($a_groups['grp_id '] == $_SESSION['group']) {
       print "<option selected value=\"" . $a_groups['grp_id'] . "\">" . $a_groups['grp_name'] . "</option>\n";
@@ -253,7 +253,7 @@ $(document).ready( function() {
   $q_string .= "from users ";
   $q_string .= "where usr_page != \"\" and usr_disabled = 0 and usr_group = " . $_SESSION['group'] . " ";
   $q_string .= "order by usr_last,usr_first ";
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   if (mysqli_num_rows($q_users) > 0) {
     print "<strong>or</strong> <input type=\"radio\" name=\"notification\"> Who to notifiy: <select name=\"mon_user\">\n";
     while ($a_users = mysqli_fetch_array($q_users)) {

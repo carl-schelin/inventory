@@ -82,7 +82,7 @@
   $q_string .= "left join titles on titles.tit_id = users.usr_title ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first ";
-  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_users = mysqli_fetch_array($q_users)) {
 
     if ($a_users['usr_report']) {
@@ -101,7 +101,7 @@
       $q_string  = "select usr_first,usr_last ";
       $q_string .= "from users ";
       $q_string .= "where usr_id = " . $a_users['usr_manager'] . " ";
-      $q_manager = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_manager = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_manager = mysqli_fetch_array($q_manager);
 
       if ($formVars['csv']) {
@@ -114,7 +114,7 @@
         $q_string .= "from grouplist ";
         $q_string .= "left join a_groups on a_groups.grp_id = grouplist.gpl_group ";
         $q_string .= "where gpl_user = " . $a_users['usr_id'] . " ";
-        $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_grouplist = mysqli_fetch_array($q_grouplist)) {
           print $comma . $a_grouplist['grp_name'];
           $comma = ", ";
@@ -135,7 +135,7 @@
         $q_string .= "from grouplist ";
         $q_string .= "left join a_groups on a_groups.grp_id = grouplist.gpl_group ";
         $q_string .= "where gpl_user = " . $a_users['usr_id'] . " ";
-        $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_grouplist = mysqli_fetch_array($q_grouplist)) {
           print $comma . $a_grouplist['grp_name'];
           $comma = ", ";

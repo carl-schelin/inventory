@@ -265,7 +265,7 @@
   $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
   $q_string .= $where;
   $q_string .= $orderby;
-  $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_interface = mysqli_fetch_array($q_interface)) {
 
     if ($a_interface['int_primary']) {

@@ -26,7 +26,7 @@
       $q_string .= "usr_page,usr_pagemail ";
       $q_string .= "from users ";
       $q_string .= "where usr_id = " . $formVars['id'];
-      $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_users = mysqli_fetch_array($q_users);
       mysqli_free_result($q_users);
 
@@ -40,7 +40,7 @@
       $q_string .= "from department ";
       $q_string .= "left join business on business.bus_unit = department.dep_unit ";
       $q_string .= "order by bus_name,dep_name";
-      $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_department = mysqli_fetch_array($q_department)) {
         if ($a_users['usr_deptname'] == $a_department['dep_id']) {
           $deptname = $count;

@@ -28,7 +28,7 @@
       $q_string .= "int_login,int_ipaddressid ";
       $q_string .= "from interface ";
       $q_string .= "where int_id = " . $formVars['id'];
-      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_interface = mysqli_fetch_array($q_interface);
       mysqli_free_result($q_interface);
 

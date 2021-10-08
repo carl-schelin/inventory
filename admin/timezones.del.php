@@ -24,7 +24,7 @@
       $q_string  = "delete ";
       $q_string .= "from timezones ";
       $q_string .= "where zone_id = " . $formVars['id'];
-      $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
       print "clear_fields();\n";
     } else {
