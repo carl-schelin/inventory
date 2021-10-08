@@ -19,6 +19,7 @@
   $formVars['script'] = clean($_GET['script'], 60);
   $formVars['error'] = mysqli_real_escape_string($db, clean($_GET['error'], 1024));
   $formVars['mysql'] = mysqli_real_escape_string($db, clean($_GET['mysql'], 1024));
+  $formVars['called'] = clean($_GET['called'], 10));
 
   $body  = "<p>Error generated in " . $formVars['script'] . "</p>\n\n";
   $body .= "<p>Query String:</br></br>";
@@ -28,7 +29,7 @@
 
   mail($Sitedev, "Inventory Management Error", $body, $headers);
 
-  if ($called == 'no') {
+  if ($formVars['called'] == 'no') {
 ?>
 <!DOCTYPE HTML>
 <html>
