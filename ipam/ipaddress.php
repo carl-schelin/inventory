@@ -65,7 +65,7 @@ function delete_line( p_script_url ) {
 ?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.createDialog;
+  var af_form = document.formCreate;
   var af_url;
 
   af_url  = '?update='   + update;
@@ -87,7 +87,7 @@ function attach_file( p_script_url, update ) {
 }
 
 function update_file( p_script_url, update ) {
-  var uf_form = document.updateDialog;
+  var uf_form = document.formUpdate;
   var uf_url;
 
   uf_url  = '?update='   + update;
@@ -261,7 +261,7 @@ can edit the current entry, or if there is a small difference, you can make chan
 
 <div id="dialogCreate" title="Add IP Address">
 
-<form name="createDialog">
+<form name="formCreate">
 
 <input type="hidden" name="id" value="0">
 <input type="hidden" name="network" value="<?php print $formVars['net_id']; ?>">
@@ -325,7 +325,7 @@ can edit the current entry, or if there is a small difference, you can make chan
 
 <div id="dialogUpdate" title="Edit IP Address">
 
-<form name="updateDialog">
+<form name="formUpdate">
 
 <input type="hidden" name="id" value="0">
 <input type="hidden" name="network" value="<?php print $formVars['net_id']; ?>">

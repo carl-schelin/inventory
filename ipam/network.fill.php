@@ -30,16 +30,16 @@
       $netzone     = return_Index($db, $a_network['net_zone'],     "select zone_id from net_zones order by zone_zone");
       $netlocation = return_Index($db, $a_network['net_location'], "select loc_id from locations order by loc_name");
 
-      print "document.updateDialog.net_ipv4.value = '"        . mysqli_real_escape_string($db, $a_network['net_ipv4'])        . "';\n";
-      print "document.updateDialog.net_ipv6.value = '"        . mysqli_real_escape_string($db, $a_network['net_ipv6'])        . "';\n";
-      print "document.updateDialog.net_vlan.value = '"        . mysqli_real_escape_string($db, $a_network['net_vlan'])        . "';\n";
-      print "document.updateDialog.net_description.value = '" . mysqli_real_escape_string($db, $a_network['net_description']) . "';\n";
+      print "document.formUpdate.net_ipv4.value = '"        . mysqli_real_escape_string($db, $a_network['net_ipv4'])        . "';\n";
+      print "document.formUpdate.net_ipv6.value = '"        . mysqli_real_escape_string($db, $a_network['net_ipv6'])        . "';\n";
+      print "document.formUpdate.net_vlan.value = '"        . mysqli_real_escape_string($db, $a_network['net_vlan'])        . "';\n";
+      print "document.formUpdate.net_description.value = '" . mysqli_real_escape_string($db, $a_network['net_description']) . "';\n";
 
-      print "document.updateDialog.net_mask['"     . $a_network['net_mask'] . "'].selected = true;\n";
-      print "document.updateDialog.net_zone['"     . $netzone               . "'].selected = true;\n";
-      print "document.updateDialog.net_location['" . $netlocation           . "'].selected = true;\n";
+      print "document.formUpdate.net_mask['"     . $a_network['net_mask'] . "'].selected = true;\n";
+      print "document.formUpdate.net_zone['"     . $netzone               . "'].selected = true;\n";
+      print "document.formUpdate.net_location['" . $netlocation           . "'].selected = true;\n";
 
-      print "document.updateDialog.id.value = '" . $formVars['id'] . "';\n";
+      print "document.formUpdate.id.value = '" . $formVars['id'] . "';\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

@@ -60,7 +60,7 @@ function delete_line( p_script_url ) {
 ?>
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.createDialog;
+  var af_form = document.formCreate;
   var af_url;
 
   af_url  = '?update='   + update;
@@ -76,7 +76,7 @@ function attach_file( p_script_url, update ) {
 }
 
 function update_file( p_script_url, update ) {
-  var uf_form = document.updateDialog;
+  var uf_form = document.formUpdate;
   var uf_url;
 
   uf_url  = '?update='   + update;
@@ -247,7 +247,7 @@ editing screen where you can delete or change the IP Address Zone for that IP ad
 
 <div id="dialogCreate" title="Add IP Address Zone">
 
-<form name="createDialog">
+<form name="formCreate">
 
 <input type="hidden" name="id" value="0">
 
@@ -278,7 +278,7 @@ editing screen where you can delete or change the IP Address Zone for that IP ad
 
 <div id="dialogUpdate" title="Update IP Address Zone">
 
-<form name="updateDialog">
+<form name="formUpdate">
 
 <input type="hidden" name="id" value="0">
 

@@ -28,10 +28,10 @@
       $a_net_zones = mysqli_fetch_array($q_net_zones);
       mysqli_free_result($q_net_zones);
 
-      print "document.updateDialog.zone_zone.value = '"        . mysqli_real_escape_string($db, $a_net_zones['zone_zone'])        . "';\n";
-      print "document.updateDialog.zone_acronym.value = '"     . mysqli_real_escape_string($db, $a_net_zones['zone_acronym'])     . "';\n";
+      print "document.formUpdate.zone_zone.value = '"        . mysqli_real_escape_string($db, $a_net_zones['zone_zone'])        . "';\n";
+      print "document.formUpdate.zone_acronym.value = '"     . mysqli_real_escape_string($db, $a_net_zones['zone_acronym'])     . "';\n";
 
-      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
+      print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

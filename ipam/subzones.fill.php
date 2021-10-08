@@ -30,12 +30,12 @@
 
       $subzone     = return_Index($db, $a_sub_zones['sub_zone'],     "select zone_id from net_zones order by zone_zone");
 
-      print "document.updateDialog.sub_name.value = '"        . mysqli_real_escape_string($db, $a_sub_zones['sub_name'])        . "';\n";
-      print "document.updateDialog.sub_description.value = '" . mysqli_real_escape_string($db, $a_sub_zones['sub_description']) . "';\n";
+      print "document.formUpdate.sub_name.value = '"        . mysqli_real_escape_string($db, $a_sub_zones['sub_name'])        . "';\n";
+      print "document.formUpdate.sub_description.value = '" . mysqli_real_escape_string($db, $a_sub_zones['sub_description']) . "';\n";
 
-      print "document.updateDialog.sub_zone['"     . $subzone               . "'].selected = true;\n";
+      print "document.formUpdate.sub_zone['"     . $subzone               . "'].selected = true;\n";
 
-      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
+      print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

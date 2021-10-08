@@ -31,16 +31,16 @@
       $ip_subzone = return_Index($db, $a_ipaddress['ip_subzone'],  "select sub_id from sub_zones where sub_zone = " . $a_ipaddress['net_zone'] . " order by sub_name");
       $ip_type    = return_Index($db, $a_ipaddress['ip_type'],     "select ip_id from ip_types order by ip_name ");
 
-      print "document.updateDialog.ip_ipv4.value = '"          . mysqli_real_escape_string($db, $a_ipaddress['ip_ipv4'])          . "';\n";
-      print "document.updateDialog.ip_ipv6.value = '"          . mysqli_real_escape_string($db, $a_ipaddress['ip_ipv6'])          . "';\n";
-      print "document.updateDialog.ip_hostname.value = '"      . mysqli_real_escape_string($db, $a_ipaddress['ip_hostname'])      . "';\n";
-      print "document.updateDialog.ip_domain.value = '"        . mysqli_real_escape_string($db, $a_ipaddress['ip_domain'])        . "';\n";
-      print "document.updateDialog.ip_description.value = '"   . mysqli_real_escape_string($db, $a_ipaddress['ip_description'])   . "';\n";
+      print "document.formUpdate.ip_ipv4.value = '"          . mysqli_real_escape_string($db, $a_ipaddress['ip_ipv4'])          . "';\n";
+      print "document.formUpdate.ip_ipv6.value = '"          . mysqli_real_escape_string($db, $a_ipaddress['ip_ipv6'])          . "';\n";
+      print "document.formUpdate.ip_hostname.value = '"      . mysqli_real_escape_string($db, $a_ipaddress['ip_hostname'])      . "';\n";
+      print "document.formUpdate.ip_domain.value = '"        . mysqli_real_escape_string($db, $a_ipaddress['ip_domain'])        . "';\n";
+      print "document.formUpdate.ip_description.value = '"   . mysqli_real_escape_string($db, $a_ipaddress['ip_description'])   . "';\n";
 
-      print "document.updateDialog.ip_subzone['"  . $ip_subzone    . "'].selected = true;\n";
-      print "document.updateDialog.ip_type['"     . $ip_type       . "'].selected = true;\n";
+      print "document.formUpdate.ip_subzone['"  . $ip_subzone    . "'].selected = true;\n";
+      print "document.formUpdate.ip_type['"     . $ip_type       . "'].selected = true;\n";
 
-      print "document.updateDialog.id.value = '" . $formVars['id'] . "';\n";
+      print "document.formUpdate.id.value = '" . $formVars['id'] . "';\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

@@ -28,11 +28,11 @@
       $a_int_types = mysqli_fetch_array($q_int_types);
       mysqli_free_result($q_int_types);
 
-      print "document.updateDialog.itp_name.value = '"        . mysqli_real_escape_string($db, $a_int_types['itp_name'])        . "';\n";
-      print "document.updateDialog.itp_acronym.value = '"     . mysqli_real_escape_string($db, $a_int_types['itp_acronym'])     . "';\n";
-      print "document.updateDialog.itp_description.value = '" . mysqli_real_escape_string($db, $a_int_types['itp_description']) . "';\n";
+      print "document.formUpdate.itp_name.value = '"        . mysqli_real_escape_string($db, $a_int_types['itp_name'])        . "';\n";
+      print "document.formUpdate.itp_acronym.value = '"     . mysqli_real_escape_string($db, $a_int_types['itp_acronym'])     . "';\n";
+      print "document.formUpdate.itp_description.value = '" . mysqli_real_escape_string($db, $a_int_types['itp_description']) . "';\n";
 
-      print "document.updateDialog.id.value = " . $formVars['id'] . ";\n";
+      print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
