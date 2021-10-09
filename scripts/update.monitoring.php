@@ -31,7 +31,7 @@
   $q_string .= "int_openview = 0,int_nagios = 0,int_ping = 0,int_ssh = 0 ";
   $q_string .= "where inv_manager = 1 ";
 
-  $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
   print "Identify every system and update if HP Openview is installed.\n";
 
@@ -40,14 +40,14 @@
   $q_string  = "select sw_companyid ";
   $q_string .= "from software ";
   $q_string .= "where sw_vendor = 'HP' and sw_group = 10 ";
-  $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_software = mysqli_fetch_array($q_software)) {
 
     $q_string  = "update interface set ";
     $q_string .= "int_openview = 1,int_nagios = 0,int_ping = 1 ";
     $q_string .= "where int_companyid = " . $a_software['sw_companyid'] . " and int_type = 1 ";
 
-    $insert = mysqli_query($db, $q_string);
+    $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   }
 
   print "Update every console to enable nagios and ping since openview isn't generally enabled to ping\n";
@@ -58,7 +58,7 @@
   $q_string .= "int_nagios = 1,int_ping = 1 ";
   $q_string .= "where (int_type = 4 or int_type = 6) and inv_manager = 1 ";
 
-  $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
   print "Update every management interface to enable nagios and ping but not ssh\n";
 # okay, all the systems managed by openview are identified. now update nagios but all loms as well.
@@ -68,7 +68,7 @@
   $q_string .= "int_nagios = 1,int_ping = 1 ";
   $q_string .= "where int_openview = 0 and (int_type = 1 or int_type = 4 or int_type = 6) and inv_manager = 1 ";
 
-  $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
   print "Update every management interface that's accessible via ssh (inv_ssh = 1) to enable sshing to the system.\n";
 # okay, enable ssh checks for all systems mgt interfaces with ssh
@@ -78,7 +78,7 @@
   $q_string .= "int_nagios = 1,int_ping = 1,int_ssh = 1 ";
   $q_string .= "where int_openview = 0 and int_type = 1 and inv_manager = 1 and inv_ssh = 1 ";
 
-  $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
   mysqli_close($db);
 

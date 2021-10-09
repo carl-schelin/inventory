@@ -30,7 +30,7 @@
   $q_string .= "from inventory ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
   $q_string .= "where sw_type = 'OS' ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     if (stripos($a_inventory['sw_software'], "red hat") !== false || stripos($a_inventory['sw_software'], "centos") !== false ) {
@@ -47,7 +47,7 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
 
       }

@@ -109,7 +109,7 @@
     $q_string  = "select inv_id ";
     $q_string .= "from inventory ";
     $q_string .= "where inv_name = \"" . $fqdn[0] . "\" ";
-    $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     if (mysqli_num_rows($q_inventory) > 0) {
       print "Error: Server already exists in the Inventory\n";
     } else {
@@ -118,7 +118,7 @@
       $q_string  = "select grp_id ";
       $q_string .= "from a_groups ";
       $q_string .= "where grp_name = \"" . $appadmin . "\" and grp_disabled = 0 ";
-      $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_groups) == 0) {
         $grp_test = explode(" ", $appadmin);
         if ($debug == 'yes') {
@@ -128,7 +128,7 @@
         $q_string  = "select grp_id,grp_name ";
         $q_string .= "from a_groups ";
         $q_string .= "where grp_name like \"%" . $grp_test[0] . "%\" and grp_disabled = 0 ";
-        $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         if (mysqli_num_rows($q_groups) == 0) {
           $error .= "Unable to locate AppSupport group: " . $appadmin . " ";
         } else {
@@ -157,7 +157,7 @@
       $q_string  = "select env_id ";
       $q_string .= "from environment ";
       $q_string .= "where env_name = \"" . $environment . "\" ";
-      $q_environment = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_environment = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_environment) == 0) {
         $error .= "Unable to locate environment: " . $environment . " ";
       } else {
@@ -173,7 +173,7 @@
       $q_string .= "where loc_identity = \"" . $location . "\" and loc_environment = " . $inv_env . " and loc_type = 1 ";
       $q_string .= "order by loc_id ";
       $q_string .= "limit 1 ";
-      $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_locations) == 0) {
         $error .= "Unable to identify location: " . $location . " ";
       } else {
@@ -187,7 +187,7 @@
       $q_string  = "select prod_id ";
       $q_string .= "from products ";
       $q_string .= "where prod_name = \"" . $product . "\" ";
-      $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_products) == 0) {
          $error .= "Unable to locate product: " . $product . " ";
       } else {
@@ -201,14 +201,14 @@
       $q_string  = "select prj_id ";
       $q_string .= "from projects ";
       $q_string .= "where prj_name = \"" . $project . "\" and prj_product = " . $inv_product . " ";
-      $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_projects = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_projects) == 0) {
         $error .= "Unable to locate project: " . $project . " in product: " . $product . " ";
 
         $q_string  = "select prj_name ";
         $q_string .= "from projects ";
         $q_string .= "where prj_product = " . $inv_product . " ";
-        $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $q_projects = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         if (mysqli_num_rows($q_projects) > 0) {
           $error .= "\nAvailable Projects:";
           while ($a_projects = mysqli_fetch_array($q_projects)) {
@@ -265,13 +265,13 @@
         if ($debug == 'yes') {
           print $q_string . "\n";
         } else {
-          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
 
         $q_string  = "select inv_id ";
         $q_string .= "from inventory ";
         $q_string .= "where inv_name = \"" . $fqdn[0] . "\" ";
-        $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         if (mysqli_num_rows($q_inventory) == 0) {
           print "Error adding server " . $fqdn[0] . "\n";
         } else {
@@ -291,7 +291,7 @@
           $q_string .= "int_ping        =   " . "1"                    . ",";
           $q_string .= "int_ssh         =   " . "1";
  
-          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
           $q_string  = "insert into hardware set hw_id = null,";
           $q_string .= "hw_companyid = " . $a_inventory['inv_id'] . ",";
@@ -300,7 +300,7 @@
           $q_string .= "hw_primary = " . "1" . ",";
           $q_string .= "hw_group = " . "1";
 
-          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
       }
     }

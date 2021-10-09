@@ -71,7 +71,7 @@
   $q_string .= "left join states on states.st_id = locations.loc_state ";
   $q_string .= "where inv_status = 0 and mod_virtual = 0 and hw_primary = 1 and hw_supid_verified = 0 and inv_manager = " . $manager . " ";
   $q_string .= "order by inv_name ";
-  $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   if (mysqli_num_rows($q_hardware) > 0) {
     while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
@@ -126,7 +126,7 @@
   $q_string .= "left join states on states.st_id = locations.loc_state ";
   $q_string .= "where inv_status = 1 and mod_virtual = 0 and hw_primary = 1 and hw_supid_verified = 1 and hw_reused = '1971-01-01' and inv_manager = " . $manager . " ";
   $q_string .= "order by inv_name ";
-  $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   if (mysqli_num_rows($q_hardware) > 0) {
     while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
@@ -140,7 +140,7 @@
         $or = ' or ';
       }
       $q_string .= ") and inv_status = 0 ";
-      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_inventory) > 0) {
         $a_inventory = mysqli_fetch_array($q_inventory);
         $bgcolor = $color[0];
@@ -177,7 +177,7 @@
   $q_string  = "select grp_email ";
   $q_string .= "from a_groups ";
   $q_string .= "where grp_id = " . $manager . " ";
-  $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   $a_groups = mysqli_fetch_array($q_groups);
 
   if ($debug == 'yes') {

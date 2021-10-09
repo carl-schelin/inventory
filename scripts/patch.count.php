@@ -29,7 +29,7 @@
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "where inv_status = 0 and inv_manager = " . $manager . " and inv_ssh = 1 ";
   $q_string .= "order by inv_name ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $target = 'Unknown';
@@ -37,7 +37,7 @@
     $q_string  = "select sw_software ";
     $q_string .= "from software ";
     $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'OS' ";
-    $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
+    $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_software = mysqli_fetch_array($q_software);
 
     if (strpos($a_software['sw_software'], 'Red Hat') !== false) {

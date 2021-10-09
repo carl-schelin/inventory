@@ -30,45 +30,45 @@ print "Updating CentOS\n";
 
 ### CentOS
 $q_string = "update software set sw_eol = \"2014-01-31\",sw_type = \"OS\" where sw_software = \"CentOS 5.3\" ";
-$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 $q_string = "update software set sw_eol = \"2014-01-31\",sw_type = \"OS\" where sw_software = \"CentOS release 5.3\" ";
-$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 $q_string = "update software set sw_eol = \"2014-01-31\",sw_type = \"OS\" where sw_software = \"CentOS release 5.8 (Final)\" ";
-$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 
 $q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where sw_software = \"CentOS 6.2\" ";
-$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 $q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where sw_software = \"CentOS release 6.2 (Final)\" ";
-$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 $q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where sw_software = \"CentOS release 6.2 (Final)(Santiago)\" ";
-$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 $q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where sw_software = \"CentOS release 6.4 (Final)\" ";
-$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 $q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where sw_software = \"CentOS release 6.5 (Final)\" ";
-$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 $q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where sw_software = \"CentOS release 6.5 (Final) Santiago\" ";
-$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 $q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where sw_software = \"CentOS release 6.7 (Final)\" ";
-$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 $q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where sw_software = \"CentOS release 6.8 (Final)\" ";
-$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 $q_string = "update software set sw_eol = \"2017-06-30\",sw_type = \"OS\" where sw_software = \"CentOS release 6.9 (Final)\" ";
-$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 
 $q_string = "update software set sw_eol = \"2015-03-05\",sw_type = \"OS\" where sw_software = \"CentOS Linux 7 (64-bit)\" ";
-$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 $q_string = "update software set sw_eol = \"2015-03-05\",sw_type = \"OS\" where sw_software = \"CentOS Linux release 7.0.1406 (Core)\" ";
-$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 $q_string = "update software set sw_eol = \"2015-11-19\",sw_type = \"OS\" where sw_software = \"CentOS Linux release 7.1.1503 (Core)\" ";
-$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 $q_string = "update software set sw_eol = \"2016-11-03\",sw_type = \"OS\" where sw_software = \"CentOS Linux release 7.2.1511 (Core)\" ";
-$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 $q_string = "update software set sw_eol = \"2017-07-31\",sw_type = \"OS\" where sw_software = \"CentOS Linux release 7.3.1611 (Core)\" ";
-$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 $q_string = "update software set sw_eol = \"2018-04-10\",sw_type = \"OS\" where sw_software = \"CentOS Linux release 7.4.1708 (Core)\" ";
-$result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
+$result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 $q_string = "update software set sw_eol = \"2018-10-30\",sw_type = \"OS\" where sw_software = \"CentOS Linux release 7.5.1804 (Core)\" ";
 $result = mysqli_query($db, $q_string)or die($q_string . ": " . mysqli_error($db));
 $q_string = "update software set sw_eol = \"2019-08-06\",sw_type = \"OS\" where sw_software = \"CentOS Linux release 7.6.1810 (Core)\" ";

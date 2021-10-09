@@ -26,7 +26,7 @@
   $q_string .= "from manageusers ";
   $q_string .= "where (mu_account = 1 or mu_account = 2) ";
   $q_string .= "order by mu_username ";
-  $q_manageusers = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_manageusers = mysqli_fetch_array($q_manageusers)) {
 
 # only list if the account exists on a live server
@@ -34,7 +34,7 @@
     $q_string .= "from syspwd ";
     $q_string .= "left join inventory on inventory.inv_id = syspwd.pwd_companyid ";
     $q_string .= "where pwd_user = \"" . $a_manageusers['mu_username'] . "\" and inv_status = 0 ";
-    $q_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $q_syspwd = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     if (mysqli_num_rows($q_syspwd) > 0) {
 #      if ($a_manageusers['mu_comment'] != '') {
 #        print "# " . $a_manageusers['mu_comment'] . "\n";
