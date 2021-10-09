@@ -126,7 +126,7 @@
   }
   $q_string .= $where;
   $q_string .= "order by inv_name ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string  . ": " . mysqli_error($db));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     if ($formVars['zone'] != '') {
@@ -134,7 +134,7 @@
       $q_string .= "from interface ";
       $q_string .= "left join net_zones on net_zones.zone_id = interface.int_zone ";
       $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and zone_zone = \"" . $formVars['zone'] . "\" ";
-      $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
       if (mysqli_num_rows($q_interface) > 0) {
         $servers[$a_inventory['inv_name']] = new Server();

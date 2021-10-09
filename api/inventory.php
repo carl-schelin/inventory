@@ -40,13 +40,13 @@
     $q_string .= "and grp_name like \"%" . $formVars['group'] . "%\" ";
   }
   $q_string .= "order by inv_name ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string  . ": " . mysqli_error($db));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $q_string  = "select grp_name ";
     $q_string .= "from a_groups ";
     $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
-    $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_groups = mysqli_fetch_array($q_groups);
 
 
