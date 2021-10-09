@@ -24,7 +24,7 @@
       $q_string  = "select ex_id,ex_companyid,ex_text,ex_comments,ex_expiration,ex_deleted ";
       $q_string .= "from excludes ";
       $q_string .= "where ex_id = " . $formVars['id'];
-      $q_excludes = mysqli_query($db, $q_string) or die($q_string . " " . mysqli_error($db));
+      $q_excludes = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_excludes = mysqli_fetch_array($q_excludes);
       mysqli_free_result($q_excludes);
 

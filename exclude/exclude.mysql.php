@@ -53,19 +53,15 @@
             "ex_deleted     =   " . $formVars['ex_deleted'];
 
           if ($formVars['update'] == 0) {
-            $query = "insert into excludes set ex_id = NULL, " . $q_string;
-            $message = "Exclude Message added.";
+            $q_string = "insert into excludes set ex_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update excludes set " . $q_string . " where ex_id = " . $formVars['id'];
-            $message = "Exclude Message updated.";
+            $q_string = "update excludes set " . $q_string . " where ex_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['ex_text']);
 
-          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
-
-          print "alert('" . $message . "');\n";
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -106,7 +102,7 @@
       $q_string .= "left join inventory on inventory.inv_id = excludes.ex_companyid ";
       $q_string .= "left join users on users.usr_id = excludes.ex_userid ";
       $q_string .= "order by ex_comments,inv_name,ex_text ";
-      $q_excludes = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_excludes = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_excludes = mysqli_fetch_array($q_excludes)) {
 
         $linkstart = "<a href=\"#\" onclick=\"show_file('exclude.fill.php?id=" . $a_excludes['ex_id'] . "');jQuery('#dialogExclude').dialog('open');return false;\">";
@@ -117,7 +113,7 @@
         $q_string  = "select usr_name ";
         $q_string .= "from users ";
         $q_string .= "where usr_id = " . $a_excludes['ex_deleted'] . " ";
-        $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         $a_users = mysqli_fetch_array($q_users);
 
         if ($a_excludes['ex_comments'] != $comment_test) {
@@ -132,7 +128,7 @@
           $q_string  = "select int_server ";
           $q_string .= "from interface ";
           $q_string .= "where int_companyid = " . $a_excludes['ex_companyid'] . " and (int_type = 1 or int_type = 2) ";
-          $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           while ($a_interface = mysqli_fetch_array($q_interface)) {
             if ($comment != '') {
               $output .= "#\n# " . $comment . "\n";
