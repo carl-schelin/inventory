@@ -76,7 +76,7 @@
   if ($hostname == 'inventory.internal.pri') {
     $q_string .= "and hw_active != '1971-01-01' ";
   }
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $groupname = str_replace(" ", "-", $a_inventory['grp_name']);
@@ -118,7 +118,7 @@
       $q_string  = "select int_xpoint,int_ypoint,int_zpoint ";
       $q_string .= "from interface ";
       $q_string .= "where int_addr = '" . $a_inventory['int_gate'] . "' ";
-      $q_intgate = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_intgate = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_intgate = mysqli_fetch_array($q_intgate);
 
       if (($a_inventory['inv_xpoint'] + $a_inventory['inv_ypoint'] + $a_inventory['inv_zpoint']) > 0) {
@@ -271,7 +271,7 @@
   $q_string  = "select prod_id,prod_name ";
   $q_string .= "from products ";
   $q_string .= "order by prod_name ";
-  $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_products = mysqli_fetch_array($q_products)) {
     if (strlen($products[$a_products['prod_id']]) > 0) {
 

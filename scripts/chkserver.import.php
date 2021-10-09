@@ -25,14 +25,14 @@
   $q_string .= "set ";
   $q_string .= "ce_delete = 1 ";
   if ($debug == 'no') {
-    $q_result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $q_result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   }
 
   $q_string  = "select inv_id,inv_name ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_manager = 1 and inv_status = 0 and inv_ssh = 1 ";
   $q_string .= "order by inv_name ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     print $a_inventory['inv_name'] . ": ";
@@ -41,7 +41,7 @@
     $q_string  = "update chkserver ";
     $q_string .= "set chk_import = 1 ";
     $q_string .= "where chk_companyid = " . $a_inventory['inv_id'] . " ";
-    $results = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $results = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
     $servername = '/usr/local/admin/servers/' . $a_inventory['inv_name'] . "/chkserver.output";
 
@@ -90,7 +90,7 @@
           $q_string  = "select ce_id ";
           $q_string .= "from chkerrors ";
           $q_string .= "where ce_error = \"" . $process . "\" ";
-          $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
+          $q_chkerrors = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_chkerrors) == 0) {
 # add the error if it's not there
             $q_string  = "insert ";
@@ -104,7 +104,7 @@
               print "Missing error: " . $process . "\n";
             } else {
               print "e";
-              $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
+              $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             }
           } else {
             $a_chkerrors = mysqli_fetch_array($q_chkerrors);
@@ -116,14 +116,14 @@
             $q_string .= "where ce_id = " . $a_chkerrors['ce_id'] . " ";
 
             print "u";
-            $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           }
 
 # okay, now actually get the id for the update
           $q_string  = "select ce_id ";
           $q_string .= "from chkerrors ";
           $q_string .= "where ce_error = \"" . $process . "\" ";
-          $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_chkerrors = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_chkerrors) == 0) {
             print "Unable to locate: " . $process . "\n";
           } else {
@@ -136,7 +136,7 @@
             $q_string  = "select chk_id ";
             $q_string .= "from chkserver ";
             $q_string .= "where chk_companyid = " . $a_inventory['inv_id'] . " and chk_errorid = " . $a_chkerrors['ce_id'] . " and chk_closed = '1971-01-01 00:00:00' ";
-            $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
+            $q_chkserver = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             if (mysqli_num_rows($q_chkserver) == 0) {
 # add the message flag
               $q_string  = "insert ";
@@ -147,7 +147,7 @@
               $q_string .= "chk_errorid    =   " . $a_chkerrors['ce_id'];
   
               print "s";
-              $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
+              $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             } else {
               $a_chkserver = mysqli_fetch_array($q_chkserver);
 
@@ -157,7 +157,7 @@
               $q_string .= "where chk_id = " . $a_chkserver['chk_id'] . " and chk_closed = '1971-01-01 00:00:00' ";
 
               print "i";
-              $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
+              $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             }
           }
         }
@@ -171,7 +171,7 @@
     $q_string .= "where chk_import = 1 and chk_companyid = " . $a_inventory['inv_id'] . " and chk_closed = '1971-01-01 00:00:00' ";
 
     print "c";
-    $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
+    $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
     print "\n";
   }

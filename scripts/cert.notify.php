@@ -25,7 +25,7 @@
 
   $q_string  = "select cert_url,cert_expire,cert_group ";
   $q_string .= "from certs";
-  $q_certs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_certs = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_certs = mysqli_fetch_array($q_certs)) {
 
     if ($debug) {
@@ -44,7 +44,7 @@
     $q_string  = "select grp_name,grp_email ";
     $q_string .= "from a_groups ";
     $q_string .= "where grp_id = " . $a_certs['cert_group'];
-    $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_groups = mysqli_fetch_array($q_groups);
     if ($debug) {
       print "  email: " . $a_groups['grp_email'] . "\n";
@@ -75,7 +75,7 @@
       $q_string  = "select grp_name,grp_email ";
       $q_string .= "from a_groups ";
       $q_string .= "where grp_id = " . $GRP_WebApps;
-      $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_groups = mysqli_fetch_array($q_groups);
       if (preg_match("/@internal.pri$/i", $a_groups['grp_email'])) {
         $webappsemail = 1;
@@ -98,7 +98,7 @@
     $q_string  = "select usr_id,usr_name,usr_email,usr_notify,usr_freq,usr_countdown ";
     $q_string .= "from users ";
     $q_string .= "where (usr_group = " . $a_certs['cert_group'] . " or usr_group = " . $GRP_WebApps . ") and usr_disabled = 0";
-    $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     while ($a_users = mysqli_fetch_array($q_users)) {
       $email = $a_users['usr_email'];
       $subject = "Certificate is expiring";
@@ -186,7 +186,7 @@
 
 # now update the user record with the new countdown;
       $q_string = "update users set usr_countdown = " . $a_users['usr_countdown'] . " where usr_id = " . $a_users['usr_id'];
-      $r_users = mysqli_query($db, $q_string) or die($q_string . "\n" . mysqli_error($db) . "\n");
+      $r_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     }
   }
 

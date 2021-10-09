@@ -104,7 +104,7 @@
   $q_string  = "select inv_name ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_id = " . $serverid;
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   $a_inventory = mysqli_fetch_array($q_inventory);
 
   print "\n" . $filetype . $a_inventory['inv_name'] . "!";
@@ -137,7 +137,7 @@
         $q_string  = "select pwd_id ";
         $q_string .= "from syspwd ";
         $q_string .= "where pwd_companyid = " . $serverid . " and pwd_user = \"" . $value[0] . "\" ";
-        $q_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $q_syspwd = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         $a_syspwd = mysqli_fetch_array($q_syspwd);
 
         $q_string = 
@@ -162,7 +162,7 @@
           print $query . "\n";
         } else {
           if ($value[2] != '') {
-            $result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+            $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             print $status;
           }
         }
@@ -177,14 +177,14 @@
         $q_string  = "select pwd_id ";
         $q_string .= "from syspwd ";
         $q_string .= "where pwd_companyid = " . $serverid . " and pwd_user = \"" . $value[0] . "\" ";
-        $q_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $q_syspwd = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         $a_syspwd = mysqli_fetch_array($q_syspwd);
 
 # get the grp_id of the group
         $q_string  = "select grp_id ";
         $q_string .= "from sysgrp ";
         $q_string .= "where grp_companyid = " . $serverid . " and grp_gid = \"" . $value[3] . "\" ";
-        $q_sysgrp = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $q_sysgrp = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         $a_sysgrp = mysqli_fetch_array($q_sysgrp);
 
         if (mysqli_num_rows($q_syspwd) > 0 && mysqli_num_rows($q_sysgrp) > 0) {
@@ -192,7 +192,7 @@
           $q_string  = "select mem_id ";
           $q_string .= "from sysgrp_members ";
           $q_string .= "where mem_uid = " . $a_syspwd['pwd_id'] . " and mem_gid = " . $a_sysgrp['grp_id'] . " ";
-          $q_sysgrp_members = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_sysgrp_members = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_sysgrp_members = mysqli_fetch_array($q_sysgrp_members);
 
 # set up the string
@@ -212,7 +212,7 @@
           if ($debug == 'yes') {
             print $query . "\n";
           } else {
-            $result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+            $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             print $status;
           }
         }
@@ -235,7 +235,7 @@
         $q_string  = "select grp_id ";
         $q_string .= "from sysgrp ";
         $q_string .= "where grp_companyid = " . $serverid . " and grp_name = \"" . $value[0] . "\" ";
-        $q_sysgrp = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $q_sysgrp = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         $a_sysgrp = mysqli_fetch_array($q_sysgrp);
 
         $q_string = 
@@ -256,7 +256,7 @@
           print $query . "\n";
         } else {
           print $status;
-          $result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         }
 
 # loop through the user list if it exists and add a link in the sysgrp_members
@@ -272,14 +272,14 @@
             $q_string  = "select pwd_id ";
             $q_string .= "from syspwd ";
             $q_string .= "where pwd_companyid = " . $serverid . " and pwd_user = \"" . $username . "\" ";
-            $q_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $q_syspwd = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             $a_syspwd = mysqli_fetch_array($q_syspwd);
 
 # get the grp_id of the group
             $q_string  = "select grp_id ";
             $q_string .= "from sysgrp ";
             $q_string .= "where grp_companyid = " . $serverid . " and grp_name = \"" . $value[0] . "\" ";
-            $q_sysgrp = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $q_sysgrp = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             $a_sysgrp = mysqli_fetch_array($q_sysgrp);
 
             if (mysqli_num_rows($q_syspwd) > 0 && mysqli_num_rows($q_sysgrp) > 0) {
@@ -287,7 +287,7 @@
               $q_string  = "select mem_id ";
               $q_string .= "from sysgrp_members ";
               $q_string .= "where mem_uid = " . $a_syspwd['pwd_id'] . " and mem_gid = " . $a_sysgrp['grp_id'] . " ";
-              $q_sysgrp_members = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              $q_sysgrp_members = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               $a_sysgrp_members = mysqli_fetch_array($q_sysgrp_members);
 
 # set up the string
@@ -307,7 +307,7 @@
               if ($debug == 'yes') {
                 print $query . "\n";
               } else {
-                $result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+                $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
                 print $status;
               }
             }
