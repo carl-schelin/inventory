@@ -44,7 +44,7 @@
           $q_string  = "select chk_id,chk_closed ";
           $q_string .= "from chkserver ";
           $q_string .= "where chk_id = " . $formVars['id'] . " ";
-          $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_chkserver = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_chkserver = mysqli_fetch_array($q_chkserver);
 
           if ($a_chkserver['chk_closed'] == '1971-01-01 00:00:00') {
@@ -67,12 +67,12 @@
           "chk_priority       =   " . $formVars['chk_priority'];
 
         if ($formVars['update'] == 1) {
-          $query = "update chkserver set " . $q_string . " where chk_id = " . $formVars['id'];
+          $q_string = "update chkserver set " . $q_string . " where chk_id = " . $formVars['id'];
         }
 
         logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $a_inventory['inv_name']);
 
-        mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+        mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       }
 
 
@@ -128,7 +128,7 @@
       $q_string .= "left join service on service.svc_id = inventory.inv_class ";
       $q_string .= "where ce_priority = 1 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
       $q_string .= $orderby;
-      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_chkserver = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
@@ -195,7 +195,7 @@
       $q_string .= "left join service on service.svc_id = inventory.inv_class ";
       $q_string .= "where ce_priority = 2 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
       $q_string .= $orderby;
-      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_chkserver = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
@@ -262,7 +262,7 @@
       $q_string .= "left join service on service.svc_id = inventory.inv_class ";
       $q_string .= "where ce_priority = 3 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
       $q_string .= $orderby;
-      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_chkserver = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
@@ -329,7 +329,7 @@
       $q_string .= "left join service on service.svc_id = inventory.inv_class ";
       $q_string .= "where ce_priority = 4 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
       $q_string .= $orderby;
-      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_chkserver = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
@@ -396,7 +396,7 @@
       $q_string .= "left join service on service.svc_id = inventory.inv_class ";
       $q_string .= "where ce_priority = 5 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
       $q_string .= $orderby;
-      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_chkserver = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
@@ -467,7 +467,7 @@
       $q_string .= "left join users on users.usr_id = chkserver.chk_userid ";
       $q_string .= "where chk_closed != '1971-01-01 00:00:00' " . $where;
       $q_string .= "order by inv_class,ce_error,inv_name ";
-      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_chkserver = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
@@ -546,7 +546,7 @@
       $q_string .= "left join users on users.usr_id = chkserver.chk_userid ";
       $q_string .= "where chk_status = 1 and chk_closed = '1971-01-01 00:00:00' " . $where;
       $q_string .= "order by inv_class,ce_error,inv_name ";
-      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_chkserver = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
@@ -617,7 +617,7 @@
       $q_string .= "left join users on users.usr_id = chkserver.chk_userid ";
       $q_string .= "where chk_status = 2 and chk_closed = '1971-01-01 00:00:00' " . $where;
       $q_string .= "order by inv_class,ce_error,inv_name ";
-      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_chkserver = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
 # want to open the dialog box
