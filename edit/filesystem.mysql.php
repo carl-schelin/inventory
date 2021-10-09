@@ -104,7 +104,7 @@
           $q_string  = "select fs_backup,fs_device,fs_mount,fs_size,fs_wwid,fs_subsystem,fs_volume,fs_lun,fs_volid,fs_path,fs_switch,fs_port,fs_sysport ";
           $q_string .= "from filesystem ";
           $q_string .= "where fs_companyid = " . $formVars['copyfrom'];
-          $q_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           while ($a_filesystem = mysqli_fetch_array($q_filesystem)) {
 
             $q_string = 
@@ -124,8 +124,8 @@
               "fs_port      = \"" . $a_filesystem['fs_port']      . "\"," .
               "fs_sysport   = \"" . $a_filesystem['fs_sysport']   . "\"";
 
-            $query = "insert into filesystem set fs_id = NULL, " . $q_string;
-            mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
+            $q_string = "insert into filesystem set fs_id = NULL, " . $q_string;
+            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           }
         }
       }
@@ -152,7 +152,7 @@
         $q_string .= "from inventory ";
         $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name";
-        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_inventory = mysqli_fetch_array($q_inventory)) {
           $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . htmlspecialchars($a_inventory['inv_name']) . "</option>\n";
         }
@@ -178,7 +178,7 @@
         $q_string .= "from a_groups ";
         $q_string .= "where grp_disabled = 0 ";
         $q_string .= "order by grp_name ";
-        $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_groups = mysqli_fetch_array($q_groups)) {
           $output .= "<option value=\"" . $a_groups['grp_id'] . "\">" . htmlspecialchars($a_groups['grp_name']) . "</option>\n";
         }
@@ -268,7 +268,7 @@
       $q_string  = "select bu_include ";
       $q_string .= "from backups ";
       $q_string .= "where bu_companyid = " . $formVars['fs_companyid'] . " ";
-      $q_backups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_backups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_backups) > 0) {
         $a_backups = mysqli_fetch_array($q_backups);
       } else {
@@ -281,7 +281,7 @@
       $q_string .= "left join a_groups on a_groups.grp_id = filesystem.fs_group ";
       $q_string .= "where fs_companyid = " . $formVars['fs_companyid'] . " ";
       $q_string .= "order by fs_device";
-      $q_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_filesystem) > 0) {
         while ($a_filesystem = mysqli_fetch_array($q_filesystem)) {
 
