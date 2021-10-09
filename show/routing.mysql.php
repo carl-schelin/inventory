@@ -19,7 +19,7 @@
   $q_string = "select inv_manager "
             . "from inventory "
             . "where inv_id = " . $formVars['id'] . " ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   $a_inventory = mysqli_fetch_array($q_inventory);
 
   $output  = "<p></p>";
@@ -82,7 +82,7 @@
   $q_string .= "left join interface on interface.int_id = routing.route_interface ";
   $q_string .= "where route_companyid = " . $formVars['id'] . " and route_ipv6 = 0 ";
   $q_string .= "order by route_address";
-  $q_routing = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_routing = mysqli_fetch_array($q_routing)) {
 
     $checkmark = "";
@@ -142,7 +142,7 @@
   $q_string .= "left join interface on interface.int_id = routing.route_interface ";
   $q_string .= "where route_companyid = " . $formVars['id'] . " and route_ipv6 = 1 ";
   $q_string .= "order by route_address";
-  $q_routing = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_routing = mysqli_fetch_array($q_routing)) {
 
     $ipv6 = 1;

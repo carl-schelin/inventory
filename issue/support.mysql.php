@@ -60,19 +60,15 @@
             "sup_rating    =   " . $formVars['sup_rating'];
 
           if ($formVars['update'] == 0) {
-            $query = "insert into issue_support set sup_id = NULL, " . $q_string;
-            $message = "Support ticket added.";
+            $q_string = "insert into issue_support set sup_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update issue_support set " . $q_string . " where sup_id = " . $formVars['sup_id'];
-            $message = "Support ticket updated.";
+            $q_string = "update issue_support set " . $q_string . " where sup_id = " . $formVars['sup_id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['sup_case']);
 
-          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
-
-          print "alert('" . $message . "');\n";
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -84,7 +80,7 @@
       $q_string  = "select iss_closed ";
       $q_string .= "from issue ";
       $q_string .= "where iss_id = " . $formVars['id'];
-      $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_issue = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_issue = mysqli_fetch_array($q_issue);
 
       $output  = "<p></p>";
@@ -133,7 +129,7 @@
       $q_string .= "from issue_support ";
       $q_string .= "where sup_issue = " . $formVars['id'] . " ";
       $q_string .= "order by sup_timestamp";
-      $q_issue_support = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+      $q_issue_support = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_issue_support) > 0) {
         while ($a_issue_support = mysqli_fetch_array($q_issue_support)) {
 

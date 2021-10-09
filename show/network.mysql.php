@@ -26,7 +26,7 @@
   $q_string  = "select inv_manager ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_id = " . $formVars['id'] . " ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   $a_inventory = mysqli_fetch_array($q_inventory);
 
   $output  = "<table class=\"ui-styled-table\">";
@@ -112,7 +112,7 @@
   $q_string .= "left join int_types  on interface.int_type = int_types.itp_id ";
   $q_string .= "where int_companyid = " . $formVars['id'] . " and int_int_id = 0 and int_ip6 = 0 ";
   $q_string .= "order by int_face,int_addr";
-  $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
   while ( $a_interface = mysqli_fetch_array($q_interface) ) {
 
@@ -220,7 +220,7 @@
     $q_string .= "left join int_types on interface.int_type = int_types.itp_id ";
     $q_string .= "where int_companyid = " . $formVars['id'] . " and int_int_id = " . $a_interface['int_id'] . " and int_ip6 = 0 ";
     $q_string .= "order by int_face,int_addr";
-    $q_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $q_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
     while ( $a_redundancy = mysqli_fetch_array($q_redundancy) ) {
 
@@ -328,7 +328,7 @@
       $q_string .= "left join int_types on interface.int_type = int_types.itp_id ";
       $q_string .= "where int_companyid = " . $formVars['id'] . " and int_int_id = " . $a_redundancy['int_id'] . " and int_ip6 = 0 ";
       $q_string .= "order by int_face,int_addr";
-      $q_secondary = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_secondary = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
       while ( $a_secondary = mysqli_fetch_array($q_secondary) ) {
 
@@ -463,7 +463,7 @@
             . "left join int_types on interface.int_type = int_types.itp_id "
             . "where int_companyid = " . $formVars['id'] . " and int_int_id = 0 and int_ip6 = 1 "
             . "order by int_face,int_addr";
-  $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
   while ( $a_interface = mysqli_fetch_array($q_interface) ) {
 
@@ -544,7 +544,7 @@
               . "left join int_types on interface.int_type = int_types.itp_id "
               . "where int_companyid = " . $formVars['id'] . " and int_int_id = " . $a_interface['int_id'] . " and int_ip6 = 1 "
               . "order by int_face,int_addr";
-    $q_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $q_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
     while ( $a_redundancy = mysqli_fetch_array($q_redundancy) ) {
 
@@ -622,7 +622,7 @@
                 . "left join int_types on interface.int_type = int_types.itp_id "
                 . "where int_companyid = " . $formVars['id'] . " and int_int_id = " . $a_redundancy['int_id'] . " and int_ip6 = 1 "
                 . "order by int_face,int_addr";
-      $q_secondary = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_secondary = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
       while ( $a_secondary = mysqli_fetch_array($q_secondary) ) {
 

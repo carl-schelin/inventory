@@ -79,7 +79,7 @@
           $q_string .= "left join users on users.usr_id = issue.iss_user ";
           $q_string .= "where iss_closed = '1971-01-01' and inv_name like '%" . $formVars['search_for'] . "%' ";
           $q_string .= "order by iss_discovered desc,inv_name";
-          $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_issue = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           while ($a_issue = mysqli_fetch_array($q_issue)) {
 
             $q_string  = "select det_timestamp ";
@@ -87,7 +87,7 @@
             $q_string .= "where det_issue = " . $a_issue['iss_id'] . " ";
             $q_string .= "order by det_timestamp ";
             $q_string .= "limit 1 ";
-            $q_issue_detail = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $q_issue_detail = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             if (mysqli_num_rows($q_issue_detai) > 0) {
               $a_issue_detail = mysqli_fetch_array($q_issue_detail);
               $detail_time = explode(" ", $a_issue_detail['det_timestamp']);
@@ -162,7 +162,7 @@
           $q_string .= "left join users on users.usr_id = issue.iss_user ";
           $q_string .= "where iss_closed != '1971-01-01' and inv_name like '%" . $formVars['search_for'] . "%' ";
           $q_string .= "order by inv_name,iss_discovered desc";
-          $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_issue = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           while ($a_issue = mysqli_fetch_array($q_issue)) {
 
             $linkstart = "<a href=\"" . $Issueroot . "/ticket.php?id="    . $a_issue['iss_id']        . "&server=" . $a_issue['iss_companyid'] . "\">";

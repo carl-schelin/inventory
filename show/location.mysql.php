@@ -17,12 +17,12 @@
   $serverid = clean($_GET['id'], 10);
 
   $q_string = "select inv_location,inv_rack,inv_row,inv_unit,inv_front,inv_rear from inventory where inv_id = $serverid";
-  $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   $a_inventory = mysqli_fetch_array($q_inventory);
 
   $q_string  = "select loc_name,loc_addr1,loc_addr2,loc_suite,loc_city,loc_state,";
   $q_string .= "loc_zipcode,loc_country,loc_details from locations where loc_id = " . $a_inventory['inv_location'];
-  $q_locations = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   $a_locations = mysqli_fetch_array($q_locations);
 
   if ($a_locations['loc_details'] == '') {
@@ -64,7 +64,7 @@
     $q_string  = "select img_file ";
     $q_string .= "from images ";
     $q_string .= "where img_id = " . $a_inventory['inv_front'];
-    $q_images = mysqli_query($db, $q_string . ": " . mysqli_error($db));
+    $q_images = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_images = mysqli_fetch_array($q_images);
 
     $output .= "<td class=\"ui-widget-content\" colspan=3><a href=\"" . $Siteroot . "/pictures/" . $a_images['img_file'] . "\"><img src=\"" . $Siteroot . "/pictures/" . $a_images['img_file'] . "\" width=800></a></td>";
@@ -78,7 +78,7 @@
     $q_string  = "select img_file ";
     $q_string .= "from images ";
     $q_string .= "where img_id = " . $a_inventory['inv_rear'];
-    $q_images = mysqli_query($db, $q_string . ": " . mysqli_error($db));
+    $q_images = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_images = mysqli_fetch_array($q_images);
 
     $output .= "<td class=\"ui-widget-content\" colspan=3><a href=\"" . $Siteroot . "/pictures/" . $a_images['img_file']  . "\"><img src=\"" . $Siteroot . "/pictures/" . $a_images['img_file']  . "\" width=800></a></td>";

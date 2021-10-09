@@ -29,7 +29,7 @@
   $q_string .= "left join users on users.usr_id = issue_detail.det_user ";
   $q_string .= "where det_issue = " . $formVars['id'] . " ";
   $q_string .= "order by det_timestamp";
-  $q_issue_detail = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+  $q_issue_detail = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_issue_detail = mysqli_fetch_array($q_issue_detail)) {
 
     print "<br><hr>";

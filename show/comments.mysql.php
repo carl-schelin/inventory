@@ -65,7 +65,7 @@
       $q_string .= "left join users on users.usr_id = comments.com_user ";
       $q_string .= "where com_companyid = " . $formVars['id'] . " ";
       $q_string .= "order by com_timestamp desc ";
-      $q_comments = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+      $q_comments = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_comments = mysqli_fetch_array($q_comments)) {
 
         $output .= "<tr>";

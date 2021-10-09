@@ -86,7 +86,7 @@
   $q_string .= $leftjoin;
   $q_string .= "where iss_closed != '1971-01-01' " . $where;
   $q_string .= "order by inv_name,iss_discovered desc";
-  $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_issue = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_issue = mysqli_fetch_array($q_issue)) {
 
     $linkstart = "<a href=\"" . $Issueroot . "/ticket.php?id="    . $a_issue['iss_id']        . "&server=" . $a_issue['iss_companyid'] . "\">";

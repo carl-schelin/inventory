@@ -19,7 +19,7 @@
   $q_string  = "select inv_id,inv_name ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_id = " . $formVars['id'] . " ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   $a_inventory = mysqli_fetch_array($q_inventory);
 
   if (isset($_GET["sort"])) {
@@ -126,7 +126,7 @@
   $q_string .= "left join users on users.usr_id = log.log_user ";
   $q_string .= $where;
   $q_string .= $orderby;
-  $q_log = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  $q_log = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_log = mysqli_fetch_array($q_log)) {
 
     $output .= "<tr>\n";

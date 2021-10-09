@@ -50,19 +50,15 @@
               "iss_user      =   " . $_SESSION['uid']    . "," . 
               "iss_timestamp = \"" . date("Y-m-d H:i:s") . "\"";
 
-            $query = "insert into issue set iss_id = NULL, " . $q_string;
-            $message = "Issue added.";
+            $q_string = "insert into issue set iss_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update issue set " . $q_string . " where iss_id = " . $formVars['id'];
-            $message = "Issue updated.";
+            $q_string = "update issue set " . $q_string . " where iss_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
 
-          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
-
-          print "alert('" . $message . "');\n";
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -89,18 +85,18 @@
               "iss_subject    = \"" . $formVars['iss_subject']    . "\",".
               "iss_closed     = \"" . $formVars['iss_closed']     . "\"";
 
-            $query = "update issue set " . $q_string . " where iss_id = " . $formVars['id'];
+            $q_string = "update issue set " . $q_string . " where iss_id = " . $formVars['id'];
 
-            mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
             $q_string = 
               "det_issue =  " . $formVars['id']                              . "," . 
               "det_text  =\"" . "Issue closed by " . $_SESSION['username'] . ".\"," . 
               "det_user  =  " . $_SESSION['uid'];
 
-            $query = "insert into issue_detail set det_id=null," . $q_string;
+            $q_string = "insert into issue_detail set det_id=null," . $q_string;
 
-            mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
           } else {
             $formVars['iss_closed'] = '1971-01-01';
@@ -111,18 +107,18 @@
               "iss_subject    = \"" . $formVars['iss_subject']    . "\",".
               "iss_closed     = \"" . $formVars['iss_closed']     . "\"";
 
-            $query = "update issue set " . $q_string . " where iss_id = " . $formVars['id'];
+            $q_string = "update issue set " . $q_string . " where iss_id = " . $formVars['id'];
 
-            mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
             $q_string = 
               "det_issue =  " . $formVars['id']                              . "," . 
               "det_text  =\"" . "Issue reopened by " . $_SESSION['username'] . ".\"," . 
               "det_user  =  " . $_SESSION['uid'];
 
-            $query = "insert into issue_detail set det_id=null," . $q_string;
+            $q_string = "insert into issue_detail set det_id=null," . $q_string;
 
-            mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           }
         }
       }
