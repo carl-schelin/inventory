@@ -24,7 +24,7 @@
       $q_string  = "select img_file ";
       $q_string .= "from images ";
       $q_string .= "where img_id = " . $formVars['id'];
-      $q_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_images = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_images = mysqli_fetch_array($q_images);
 
       if (file_exists($Picturepath . "/" . $a_images['img_file'])) {
@@ -34,9 +34,7 @@
       $q_string  = "delete ";
       $q_string .= "from images ";
       $q_string .= "where img_id = " . $formVars['id'];
-      $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-
-      print "alert('Image file and data deleted.');\n";
+      $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
       print "clear_fields();\n";
     } else {

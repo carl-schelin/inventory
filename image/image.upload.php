@@ -90,8 +90,9 @@
           "img_file    = \"" . $_FILES['upload']['name'] . "\"," . 
           "img_date    = \"" . date('Y-m-d') . "\"," . 
           "img_owner   =   " . $formVars['id'];
-        $query = "insert into images set img_id = NULL," . $q_string;
-        mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+
+        $q_string = "insert into images set img_id = NULL," . $q_string;
+        mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
         $lastid = last_insert_id($db);
 
