@@ -24,7 +24,7 @@
       $q_string  = "select inv_manager ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_id = " . $formVars['id'] . " ";
-      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_inventory = mysqli_fetch_array($q_inventory);
 
       $formVars['group'] = $a_inventory['inv_manager'];
@@ -113,7 +113,7 @@
           $q_string  = "delete ";
           $q_string .= "from tags ";
           $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_type = 1 ";
-          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 # replace commas if accidentally added
           $formVars['select'] = str_replace(",", " ", $formVars['select']);
@@ -134,7 +134,7 @@
             $q_string .= "tag_owner       =   " . $_SESSION['uid']   . ",";
             $q_string .= "tag_group       =   " . $formVars['group'];
 
-            $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           }
 
 # rebuild the string, just to be sure
@@ -144,7 +144,7 @@
           $q_string .= "from tags ";
           $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_type = 1 ";
           $q_string .= "order by tag_name ";
-          $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_tags) > 0) {
             while ($a_tags = mysqli_fetch_array($q_tags)) {
               $str_output .= $comma . $a_tags['tag_name'];
