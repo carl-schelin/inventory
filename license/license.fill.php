@@ -25,7 +25,7 @@
       $q_string  = "select lic_id,lic_vendor,lic_product,lic_date,lic_vendorpo,lic_po,lic_project,lic_quantity,lic_key,lic_serial,lic_domain ";
       $q_string .= "from licenses ";
       $q_string .= "where lic_id = " . $formVars['id'];
-      $q_licenses = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_licenses = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_licenses = mysqli_fetch_array($q_licenses);
       mysqli_free_result($q_licenses);
 

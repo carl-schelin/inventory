@@ -46,7 +46,7 @@
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['zone_zone']);
 
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -71,7 +71,7 @@
       $q_string .= "from net_zones ";
       $q_string .= "left join users on users.usr_id = zone_user ";
       $q_string .= "order by zone_zone "; 
-      $q_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_net_zones) > 0) {
         while ($a_net_zones = mysqli_fetch_array($q_net_zones)) {
 
@@ -80,7 +80,7 @@
           $q_string .= "from ipaddress ";
           $q_string .= "left join network on network.net_id = ipaddress.ip_network ";
           $q_string .= "where net_zone = " . $a_net_zones['zone_id'] . " ";
-          $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_ipaddress) > 0) {
             while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
               $total++;

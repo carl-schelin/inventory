@@ -24,7 +24,7 @@
       $q_string  = "select net_ipv4,net_ipv6,net_mask,net_zone,net_location,net_vlan,net_description ";
       $q_string .= "from network ";
       $q_string .= "where net_id = " . $formVars['id'];
-      $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_network = mysqli_fetch_array($q_network);
 
       $netzone     = return_Index($db, $a_network['net_zone'],     "select zone_id from net_zones order by zone_zone");

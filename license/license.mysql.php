@@ -65,19 +65,15 @@
             "lic_domain   = \"" . $formVars['lic_domain']   . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into licenses set lic_id = NULL, " . $q_string;
-            $message = "License added.";
+            $q_string = "insert into licenses set lic_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update licenses set " . $q_string . " where lic_id = " . $formVars['id'];
-            $message = "License updated.";
+            $q_string = "update licenses set " . $q_string . " where lic_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['lic_product']);
 
-          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
-
-          print "alert('" . $message . "');\n";
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -141,7 +137,7 @@
       $q_string .= "from licenses ";
       $q_string .= "left join products on products.prod_id = licenses.lic_project ";
       $q_string .= $orderby;
-      $q_licenses = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+      $q_licenses = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_licenses) > 0) {
         while ($a_licenses = mysqli_fetch_array($q_licenses)) {
 
