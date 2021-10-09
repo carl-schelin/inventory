@@ -30,6 +30,13 @@
           $formVars['id'] = 0;
         }
 
+        if ($formVars['sw_eol'] == '0000-00-00') {
+          $formVars['sw_eol'] = '1971-01-01';
+        }
+        if ($formVars['sw_eos'] == '0000-00-00') {
+          $formVars['sw_eos'] = '1971-01-01';
+        }
+
         if (strlen($formVars['sw_software']) > 0) {
           logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
