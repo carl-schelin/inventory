@@ -80,7 +80,7 @@
   $q_string .= "left join modules on modules.mod_id = bugs.bug_module ";
   $q_string .= "where bug_closed = '1971-01-01' " . $where;
   $q_string .= "order by bug_discovered desc,mod_name ";
-  $q_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_bugs = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   if (mysqli_num_rows($q_bugs) > 0) {
     while ($a_bugs = mysqli_fetch_array($q_bugs)) {
 
@@ -89,7 +89,7 @@
       $q_string .= "where bug_bug_id = " . $a_bugs['bug_id'] . " ";
       $q_string .= "order by bug_timestamp ";
       $q_string .= "limit 1 ";
-      $q_bugs_detail = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_bugs_detail = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_bugs_detail) > 0) {
         $a_bugs_detail = mysqli_fetch_array($q_bugs_detail);
         $detail_time = explode(" ", $a_bugs_detail['bug_timestamp']);
