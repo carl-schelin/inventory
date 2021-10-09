@@ -83,7 +83,7 @@ if (isset($_POST['mail_user'])) {
   $q_string  = "select usr_id,usr_name,usr_email ";
   $q_string .= "from users ";
   $q_string .= "where usr_id != 1 and usr_disabled = 0 and (usr_name = '" . $search_q . "' or usr_email = '" . $search_q . "')";
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   if (mysqli_num_rows($q_users) == '1') {
     $a_users = mysqli_fetch_array($q_users);
 
@@ -97,7 +97,7 @@ if (isset($_POST['mail_user'])) {
       $q_string .= "users ";
       $q_string .= "set usr_reset=1,usr_passwd = MD5('$newpassword') ";
       $q_string .= "where usr_id = " . $a_users['usr_id'];
-      $q_newpw = mysqli_query($db, $q_string) or die(mysqli_error($db));
+      $q_newpw = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
       $headers  = "From: Inventory Password Reset <root@" . $Sitehttp . ">\r\n";
       $headers .= "MIME-Version: 1.0\r\n";

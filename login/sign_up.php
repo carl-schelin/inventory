@@ -83,7 +83,11 @@ if (isset($_POST['new_user'])) {
     $error = '<div class="error_message">Attention! Your password must be at least 5 characters.</div>';
   }
 
-  $count = mysqli_num_rows(mysqli_query($db, "select * from users where usr_name='".$username."'"));
+  $q_string  = "select * ";
+  $q_string .= "from users ";
+  $q_string .= "where usr_name = '" . $username . "'";
+  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $count = mysqli_num_rows(q_users);
 
   if ($count > 0) {
     $error = '<div class="error_message">Sorry, username already taken.</div>';
@@ -99,7 +103,7 @@ if (isset($_POST['new_user'])) {
       "usr_passwd   = '" . MD5($password)   . "'," . 
       "usr_report   =  " . '1';
       
-    $q_users = mysqli_query($db, $q_string) or die("Fatal error: " . mysqli_error($db));
+    $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
     echo "<h2>Success!</h2>";	
     echo "<div class='success_message'>Thank you for registering! Go to the <a href='" . $Siteroot . "'>Inventory Management</a> application and log in.</div>";
@@ -120,13 +124,13 @@ if (isset($_POST['new_user'])) {
     $q_string  = "select grp_name ";
     $q_string .= "from a_groups ";
     $q_string .= "where grp_id = " . $group;
-    $q_groups = mysqli_query($db, $q_string) or die(mysqli_error($db));
+    $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_groups = mysqli_fetch_array($q_groups);
 
     $q_string  = "select usr_email ";
     $q_string .= "from users ";
     $q_string .= "where usr_level < 2";
-    $q_users = mysqli_query($db, $q_string) or die("Fatal error: ".mysqli_error($db));
+    $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     while ($a_users = mysqli_fetch_array($q_users)) {
       $usermail = $a_users['usr_email'];
       $subject = "New member in Inventory Management";
@@ -200,7 +204,7 @@ function populate_email() {
   $q_string .= "from a_groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name";
-  $q_groups = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_groups = mysqli_fetch_array($q_groups)) {
     print "  <option value=\"" . $a_groups['grp_id'] . "\">" . $a_groups['grp_name'] . "</option>\n";
   }
