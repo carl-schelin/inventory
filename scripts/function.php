@@ -17,7 +17,7 @@ function clean( $p_input, $p_maxlength ) {
 function logaccess( $p_db, $p_user, $p_source, $p_detail ) {
   include('settings.php');
 
-  $query = "insert into log set " .
+  $q_string = "insert into log set " .
     "log_id        = NULL, " .
     "log_user      = \"" . $p_user   . "\", " .
     "log_source    = \"" . $p_source . "\", " .
@@ -48,7 +48,7 @@ function check_userlevel( $p_db, $p_level ) {
 function last_insert_id($p_db) {
   include('settings.php');
 
-  $query = "select last_insert_id()";
+  $q_string = "select last_insert_id()";
   $q_result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   $a_result = mysqli_fetch_array($q_result);
 
@@ -87,7 +87,7 @@ function changelog( $p_db, $p_serverid, $p_changed, $p_notes, $p_user, $p_table,
     "mod_column       = \"" . $p_column       . "\"," .
     "mod_cleared      =   " . $p_cleared;
 
-  $query = "insert into modified set mod_id = null," . $cl_query;
+  $q_string = "insert into modified set mod_id = null," . $cl_query;
 
   $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
