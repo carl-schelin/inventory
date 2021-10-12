@@ -182,7 +182,7 @@
             $q_hwstring .= "where hw_companyid = " . $formVars['id'];
             $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             while ($a_hardware = mysqli_fetch_array($q_hardware)) {
-              $q_string = 
+              $query = 
                 "update hardware set " .
                 "hw_group   = " . $formVars['inv_manager'] . "," . 
                 "hw_product = " . $formVars['inv_product'] . " " . 
@@ -192,11 +192,11 @@
             }
 
 # update file system ownershps
-            $q_string  = "update ";
-            $q_string .= "filesystem ";
-            $q_string .= "set ";
-            $q_string .= "fs_group = " . $formVars['inv_manager'] . " ";
-            $q_string .= "where fs_companyid = " . $formVars['id'] . " and fs_group = " . $a_inventory['inv_manager'] . " ";
+            $query  = "update ";
+            $query .= "filesystem ";
+            $query .= "set ";
+            $query .= "fs_group = " . $formVars['inv_manager'] . " ";
+            $query .= "where fs_companyid = " . $formVars['id'] . " and fs_group = " . $a_inventory['inv_manager'] . " ";
             $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 # for changelog requirements, compare old inv_name with new inv_name. If changed, save the old name before changing it
@@ -222,8 +222,8 @@
 
 # now save any updated information
             logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['inv_name']);
-            $q_string = "update inventory set " . $q_string . " where inv_id = " . $formVars['id'];
-            $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $query = "update inventory set " . $q_string . " where inv_id = " . $formVars['id'];
+            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
             print "alert('System updated');\n";
 
@@ -234,7 +234,7 @@
             print "document.edit.addnew.disabled = true;\n";
             logaccess($db, $_SESSION['uid'], $package, "Adding: " . $formVars['inv_name']);
 
-            $q_string = "insert into inventory set inv_id = NULL, " . $q_string;
+            $query = "insert into inventory set inv_id = NULL, " . $q_string;
             $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 # get the new inv_id
@@ -273,7 +273,7 @@
                     "hw_supportid =   " . $a_hardware['hw_supportid'] . "," .
                     "hw_primary   =   " . $a_hardware['hw_primary'];
   
-                  $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+                  $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
                 }
               } else {
                 $q_string = "insert into hardware set " . 
@@ -289,7 +289,7 @@
                   "hw_reused    = \"" . '1971-01-01'             . "\"," .
                   "hw_primary   =   " . 1;
 
-                $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+                $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               }
             } else {
               $q_string = "insert into hardware set " . 
@@ -305,7 +305,7 @@
                 "hw_reused    = \"" . '1971-01-01'             . "\"," .
                 "hw_primary   =   " . 1;
 
-              $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             }
 
 #####
@@ -330,7 +330,7 @@
                   "sw_group     =   " . $a_software['sw_group']     . "," .
                   "sw_verified  =   " . $a_software['sw_verified'];
 
-                $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+                $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               }
 
 #####
@@ -358,7 +358,7 @@
                     "int_primary   =   " . $a_interface['int_primary']  . "," .
                     "int_type      =   " . $a_interface['int_type'];
 
-                  $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+                  $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
                 }
               }
             }
@@ -399,7 +399,7 @@
                     "bu_sattime   = \"" . $a_backups['bu_sattime']   . "\"," .
                     "bu_changedby =   " . $a_backups['bu_changedby'];
 
-                  $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+                  $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
                 }
               } else {
                 $q_string = "insert into backups set " .
@@ -411,7 +411,7 @@
                   "bu_saturday  =   " . 1                          . "," .
                   "bu_changedby =   " . $_SESSION['uid'];
 
-                $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+                $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               }
             } else {
               $q_string = "insert into backups set " .
@@ -423,7 +423,7 @@
                 "bu_saturday  =   " . 1                          . "," .
                 "bu_changedby =   " . $_SESSION['uid'];
 
-              $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             }
 
 # okay, go to new server
