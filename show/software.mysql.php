@@ -19,7 +19,7 @@
   $q_string = "select inv_manager "
             . "from inventory "
             . "where inv_id = " . $formVars['id'] . " ";
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_inventory = mysqli_fetch_array($q_inventory);
 
   $output  = "<table class=\"ui-styled-table\">";
@@ -76,7 +76,7 @@
              . "left join a_groups on a_groups.grp_id = software.sw_group "
              . "where sw_companyid = " . $formVars['id'] . " and sw_type != \"Package\" "
              . "order by sw_type,sw_software";
-  $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_software = mysqli_query($db, $q_string) or die(mysqli_error($db));
   while ($a_software = mysqli_fetch_array($q_software)) {
 
     $link_vendor = "<a href=\"" . $Reportroot . "/search.software.php?search_by=3&search_for=" . $a_software['sw_vendor']   . "\" target=\"_blank\">";
@@ -147,7 +147,7 @@
   $q_string .= "left join a_groups on a_groups.grp_id = packages.pkg_grp_id ";
   $q_string .= "where pkg_inv_id = " . $formVars['id'] . " ";
   $q_string .= "order by pkg_name,pkg_update ";
-  $q_packages = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_packages = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_packages = mysqli_fetch_array($q_packages)) {
 
     $checkmark = "";

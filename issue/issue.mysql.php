@@ -25,7 +25,7 @@
 
   if (strlen($formVars['iss_subject']) > 0) {
 
-    $q_string = "insert into issue set iss_id = NULL, " . 
+    $query = "insert into issue set iss_id = NULL, " . 
       "iss_companyid  =   " . $formVars['iss_companyid']  . "," . 
       "iss_discovered = \"" . $formVars['iss_discovered'] . "\"," . 
       "iss_user       =   " . $formVars['iss_user']       . "," . 
@@ -34,10 +34,10 @@
 
     logaccess($db, $_SESSION['uid'], $package, "Adding detail: " . $formVars['iss_companyid']);
 
-    $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
-    $q_string = "select last_insert_id($db)";
-    $q_result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $query = "select last_insert_id($db)";
+    $q_result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
     $a_result = mysqli_fetch_array($q_result);
 
     $issue = $a_result['last_insert_id($db)'];

@@ -19,7 +19,7 @@
   $slvval[0] = '';
   $q_string  = "select slv_id,slv_value ";
   $q_string .= "from supportlevel";
-  $q_supportlevel = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_supportlevel = mysqli_query($db, $q_string);
   while ($a_supportlevel = mysqli_fetch_array($q_supportlevel)) {
     $slvval[$a_supportlevel['slv_id']] = $a_supportlevel['slv_value'];
   }
@@ -57,7 +57,7 @@
             . "from support "
             . "left join hardware on hardware.hw_supportid = support.sup_id "
             . "where hw_companyid = " . $formVars['id'] . " and hw_primary = 1 ";
-  $q_support = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
   if (mysqli_num_rows($q_support) > 0) {
     while ($a_support = mysqli_fetch_array($q_support)) {
@@ -118,7 +118,7 @@
             . "from support "
             . "left join software on software.sw_supportid = support.sup_id "
             . "where sw_companyid = " . $formVars['id'];
-  $q_support = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
   if (mysqli_num_rows($q_support) > 0) {
     while ($a_support = mysqli_fetch_array($q_support)) {

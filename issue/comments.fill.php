@@ -25,7 +25,7 @@
       $q_string  = "select det_text,det_timestamp,det_user ";
       $q_string .= "from issue_detail ";
       $q_string .= "where det_id = " . $formVars['id'];
-      $q_issue_detail = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_issue_detail = mysqli_query($db, $q_string) or die (mysqli_error($db));
       $a_issue_detail = mysqli_fetch_array($q_issue_detail);
       mysqli_free_result($q_issue_detail);
 

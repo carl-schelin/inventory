@@ -28,7 +28,7 @@
   $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
   $q_string .= "where chk_companyid = " . $serverid . " and chk_closed = '1971-01-01 00:00:00' and ce_delete = 0 ";
   $q_string .= "order by ce_priority,chk_priority,ce_error ";
-  $q_chkserver = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
 
     $output .= "<tr>";

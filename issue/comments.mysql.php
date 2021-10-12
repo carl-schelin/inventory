@@ -44,15 +44,19 @@
             "det_user      =   " . $formVars['det_user'];
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into issue_detail set det_id = NULL, " . $q_string;
+            $query = "insert into issue_detail set det_id = NULL, " . $q_string;
+            $message = "Comment added.";
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update issue_detail set " . $q_string . " where det_id = " . $formVars['det_id'];
+            $query = "update issue_detail set " . $q_string . " where det_id = " . $formVars['det_id'];
+            $message = "Comment updated.";
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['det_id']);
 
-          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+
+          print "alert('" . $message . "');\n";
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -64,7 +68,7 @@
       $q_string  = "select iss_closed ";
       $q_string .= "from issue ";
       $q_string .= "where iss_id = " . $formVars['id'];
-      $q_issue = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       $a_issue = mysqli_fetch_array($q_issue);
 
 
@@ -113,7 +117,7 @@
       $q_string .= "left join users on users.usr_id = issue_detail.det_user ";
       $q_string .= "where det_issue = " . $formVars['id'] . " ";
       $q_string .= "order by det_timestamp desc ";
-      $q_issue_detail = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_issue_detail = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
       while ($a_issue_detail = mysqli_fetch_array($q_issue_detail)) {
 
         $updated = preg_replace("/\[:hash:\]/", "#", $a_issue_detail['det_text']);

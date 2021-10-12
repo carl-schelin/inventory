@@ -19,7 +19,7 @@
   $q_string = "select inv_manager "
             . "from inventory "
             . "where inv_id = " . $formVars['id'] . " ";
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_inventory = mysqli_fetch_array($q_inventory);
 
 # get the filesystem information
@@ -78,7 +78,7 @@
   $q_string .= "from filesystem ";
   $q_string .= "where fs_companyid = " . $formVars['id'] . " ";
   $q_string .= "order by fs_device,fs_mount";
-  $q_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
   while ( $a_filesystem = mysqli_fetch_array($q_filesystem) ) {
 

@@ -25,7 +25,7 @@
       $q_string  = "select iss_discovered,iss_closed,iss_subject ";
       $q_string .= "from issue ";
       $q_string .= "where iss_id = " . $formVars['id'];
-      $q_issue = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       $a_issue = mysqli_fetch_array($q_issue);
 
       print "document.start.iss_discovered.value = '" . mysqli_real_escape_string($db, $a_issue['iss_discovered']) . "';\n";

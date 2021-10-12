@@ -30,7 +30,7 @@
   $q_string  = "select inv_id,inv_name,inv_function,inv_document,inv_class,inv_callpath,inv_manager,inv_appadmin,inv_product ";
   $q_string .= "from inventory ";
   $q_string .= "where inv_id = " . $formVars['id'];
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
   $a_inventory = mysqli_fetch_array($q_inventory);
 
   if (isset($_GET['start'])) {

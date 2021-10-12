@@ -25,7 +25,7 @@
       $q_string  = "select sup_company,sup_case,sup_contact,sup_email,sup_phone,sup_govid,sup_timestamp,sup_rating ";
       $q_string .= "from issue_support ";
       $q_string .= "where sup_id = " . $formVars['id'];
-      $q_issue_support = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_issue_support = mysqli_query($db, $q_string) or die (mysqli_error($db));
       $a_issue_support = mysqli_fetch_array($q_issue_support);
 
       print "document.start.sup_company.value = '"   . mysqli_real_escape_string($db, $a_issue_support['sup_company'])   . "';\n";
