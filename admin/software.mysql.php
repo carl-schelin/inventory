@@ -30,10 +30,10 @@
           $formVars['id'] = 0;
         }
 
-        if ($formVars['sw_eol'] == '0000-00-00' || $formVars['sw_eol'] == '') {
+        if ($formVars['sw_eol'] == '0000-00-00') {
           $formVars['sw_eol'] = '1971-01-01';
         }
-        if ($formVars['sw_eos'] == '0000-00-00' || $formVars['sw_eos'] == '') {
+        if ($formVars['sw_eos'] == '0000-00-00') {
           $formVars['sw_eos'] = '1971-01-01';
         }
 
@@ -74,8 +74,7 @@
       $output .= "</tr>\n";
 
       $q_string  = "select sw_id,sw_software,sw_eol,sw_eos ";
-      $q_string .= "from sw_support ";
-      $q_string .= "order by sw_software ";
+      $q_string .= "from sw_support";
       $q_sw_support = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_sw_support) > 0) {
         while ($a_sw_support = mysqli_fetch_array($q_sw_support)) {
@@ -84,21 +83,13 @@
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('software.del.php?id=" . $a_sw_support['sw_id'] . "');\">";
           $linkend   = "</a>";
 
-          $class = "ui-widget-content";
-          if ($a_sw_support['sw_eol'] < date('Y-m-d') && $a_sw_support['sw_eol'] != '1971-01-01') {
-            $class = "ui-state-error";
-          }
-          if ($a_sw_support['sw_eos'] < date('Y-m-d') && $a_sw_support['sw_eos'] != '1971-01-01') {
-            $class = "ui-state-error";
-          }
-
           $output .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
-            $output .= "  <td class=\"" . $class . " delete\">" . $linkdel   . "</td>";
+            $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>";
           }
-          $output .= "  <td class=\"" . $class . "\">"          . $linkstart . $a_sw_support['sw_software']  . $linkend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"          . $linkstart . $a_sw_support['sw_eos']       . $linkend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"          . $linkstart . $a_sw_support['sw_eol']       . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_sw_support['sw_software']  . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_sw_support['sw_eos']       . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_sw_support['sw_eol']       . $linkend . "</td>";
           $output .= "</tr>";
         }
       } else {
