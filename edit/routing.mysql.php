@@ -85,8 +85,8 @@
             $q_string .= "where route_address = '" . $formVars['route_address'] . "' ";
             $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             while ($a_routing = mysqli_fetch_array($q_routing)) {
-              $query = "update routing set route_desc = '" . $formVars['route_desc'] . "' where route_id = " . $a_routing['route_id'];
-              mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              $q_string = "update routing set route_desc = '" . $formVars['route_desc'] . "' where route_id = " . $a_routing['route_id'];
+              $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             }
           }
 
