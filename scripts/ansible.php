@@ -32,7 +32,7 @@
   $q_string .= "where tag_group = " . $manager . " and tag_type = 1 ";
   $q_string .= "group by tag_name ";
   $q_string .= "order by tag_name ";
-  $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_tags) > 0) {
     while ($a_tags = mysqli_fetch_array($q_tags)) {
 
@@ -42,7 +42,7 @@
       $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
       $q_string .= "where inv_status = 0 and inv_ssh = 1 and tag_name = \"" . $a_tags['tag_name'] . "\" and inv_ansible = 1 and int_management = 1 ";
       $q_string .= "order by inv_name ";
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
       if (mysqli_num_rows($q_inventory) > 0) {
         print "[" . str_replace(" ", "_", str_replace("/", "_", $a_tags['tag_name'])) . "]\n";
 
@@ -63,7 +63,7 @@
   $q_string .= "where tag_group = " . $manager . " and tag_type = 2 ";
   $q_string .= "group by tag_name ";
   $q_string .= "order by tag_name ";
-  $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_tags) > 0) {
     while ($a_tags = mysqli_fetch_array($q_tags)) {
 
@@ -72,7 +72,7 @@
       $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
       $q_string .= "where inv_status = 0 and inv_ssh = 1 and inv_location = " . $a_tags['tag_companyid'] . " and inv_ansible = 1 and int_management = 1 ";
       $q_string .= "order by inv_name ";
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
       if (mysqli_num_rows($q_inventory) > 0) {
         print "[" . str_replace(" ", "_", str_replace("/", "_", $a_tags['tag_name'])) . "]\n";
         while ($a_inventory = mysqli_fetch_array($q_inventory)) {
@@ -92,7 +92,7 @@
   $q_string .= "where tag_group = " . $manager . " and tag_type = 3 ";
   $q_string .= "group by tag_name ";
   $q_string .= "order by tag_name ";
-  $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_tags) > 0) {
     while ($a_tags = mysqli_fetch_array($q_tags)) {
 
@@ -101,7 +101,7 @@
       $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
       $q_string .= "where inv_status = 0 and inv_ssh = 1 and inv_product = " . $a_tags['tag_companyid'] . " and inv_ansible = 1 and int_management = 1 ";
       $q_string .= "order by inv_name ";
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
       if (mysqli_num_rows($q_inventory) > 0) {
         print "[" . str_replace(" ", "_", str_replace("/", "_", $a_tags['tag_name'])) . "]\n";
         while ($a_inventory = mysqli_fetch_array($q_inventory)) {

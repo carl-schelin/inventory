@@ -29,7 +29,7 @@
   $q_string .= "left join a_groups    on a_groups.grp_id    = filesystem.fs_group ";
   $q_string .= "where inv_manager = " . $GRP_Unix . " and inv_status = 0 and fs_mount != '' and fs_group != " . $GRP_Unix . " and fs_group != 0 ";
   $q_string .= "order by inv_name,fs_mount ";
-  $q_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_filesystem = mysqli_fetch_array($q_filesystem)) {
 
     print $a_filesystem['inv_name'] . ":" . $a_filesystem['fs_mount'] . ":" . $a_filesystem['grp_name'] . "\n";

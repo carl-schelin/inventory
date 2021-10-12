@@ -53,7 +53,7 @@
   $q_string .= "left join users on users.usr_id       = bugs.bug_openby ";
   $q_string .= "where bug_closeby = 0 ";
   $q_string .= "order by bug_severity,bug_priority,bug_discovered ";
-  $q_bugs = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_bugs) > 0) {
     while ($a_bugs = mysqli_fetch_array($q_bugs)) {
 
@@ -94,7 +94,7 @@
   $q_string .= "left join users on users.usr_id       = features.feat_openby ";
   $q_string .= "where feat_closeby = 0 ";
   $q_string .= "order by feat_severity,feat_priority,feat_discovered ";
-  $q_features = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_features = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_features) > 0) {
     while ($a_features = mysqli_fetch_array($q_features)) {
 

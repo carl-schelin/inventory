@@ -35,7 +35,7 @@
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "where hw_primary = 1 and inv_status = 0 " . $where;
   $q_string .= "order by prod_name,inv_name ";
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     if ($a_inventory['prod_name'] == '') {
@@ -59,13 +59,13 @@
     $q_string  = "select sw_software,sw_eol,sw_eolticket ";
     $q_string .= "from software ";
     $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'OS' ";
-    $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     $a_software = mysqli_fetch_array($q_software);
 
     $q_string  = "select grp_name ";
     $q_string .= "from a_groups ";
     $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
-    $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     $a_groups = mysqli_fetch_array($q_groups);
 
     if ($a_inventory['mod_vendor'] == 'Dell') {

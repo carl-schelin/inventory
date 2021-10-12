@@ -56,7 +56,7 @@
   $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "where hw_retired > '" . $date . "' and inv_manager = " . $manager . " ";
   $q_string .= "order by hw_retired,inv_name ";
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_inventory) > 0) {
     $retired = "<table border=\"1\">\n";
     $retired .= "<tr>\n";
@@ -85,7 +85,7 @@
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where hw_active = '1971-01-01' and hw_primary = 1 and inv_status = 0 and inv_manager = " . $manager . " ";
   $q_string .= "order by inv_name ";
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_inventory) > 0) {
     $built = "<table border=\"1\">\n";
     $built .= "<tr>\n";
@@ -117,7 +117,7 @@
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
   $q_string .= "where inv_status = 0 and inv_ssh = 0 and inv_manager = " . $manager . " and (mod_id = 15 or mod_id = 45) ";
   $q_string .= "order by inv_name ";
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_inventory) > 0) {
     $ssh = "<table border=\"1\">\n";
     $ssh .= "<tr>\n";
@@ -158,7 +158,7 @@
         $q_string .= "from users ";
         $q_string .= "left join grouplist on grouplist.gpl_user = users.usr_id ";
         $q_string .= "where gpl_group = " . $manager . " ";
-        $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         while ($a_users = mysqli_fetch_array($q_users)) {
           if ($a_users['usr_email'] != '') {
             mail($a_users['usr_email'], $date . " Inventory Review", $body, $headers);

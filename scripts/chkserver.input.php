@@ -30,7 +30,7 @@
   $q_string .= "left join rsdp_osteam on rsdp_osteam.os_rsdp = rsdp_server.rsdp_id ";
   $q_string .= "where rsdp_platform = " . $GRP_Unix . " or rsdp_platform = " . $GRP_OpsEng . " ";
   $q_string .= "order by os_sysname ";
-  $q_rsdp_server = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_rsdp_server = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_rsdp_server = mysqli_fetch_array($q_rsdp_server)) {
 
     if ($debug == 'yes') {
@@ -45,7 +45,7 @@
     if ($debug == 'yes') {
       print "  Query: " . $q_string . "\n";
     }
-    $q_rsdp_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $q_rsdp_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     while ($a_rsdp_interface = mysqli_fetch_array($q_rsdp_interface)) {
       $servername = $a_rsdp_interface['if_name'];
 
@@ -78,7 +78,7 @@
       $q_string  = "select fs_volume,fs_size ";
       $q_string .= "from rsdp_filesystem ";
       $q_string .= "where fs_rsdp = " . $a_rsdp_server['rsdp_id'];
-      $q_rsdp_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_rsdp_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_rsdp_filesystem) > 0) {
         while ($a_rsdp_filesystem = mysqli_fetch_array($q_rsdp_filesystem)) {
           $configuration .= $servername . ":Disk:" . $a_rsdp_filesystem['fs_size'] . "\n";
@@ -90,7 +90,7 @@
       $q_string .= "from rsdp_interface ";
       $q_string .= "where if_rsdp = " . $a_rsdp_server['rsdp_id'] . " and if_type != 4 and if_type != 6 ";
       $q_string .= "order by if_interface";
-      $q_rsdp_console = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_rsdp_console = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_rsdp_console = mysqli_fetch_array($q_rsdp_console)) {
 
         if ($a_rsdp_console['if_ipcheck']) {
@@ -118,7 +118,7 @@
         $q_string  = "select bu_retention ";
         $q_string .= "from rsdp_backups ";
         $q_string .= "where bu_rsdp = " . $a_rsdp_server['rsdp_id'] . " ";
-        $q_rsdp_backups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_rsdp_backups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         if (mysqli_num_rows($q_rsdp_backups) > 0) {
           $a_rsdp_backups = mysqli_fetch_array($q_rsdp_backups);
 
@@ -160,7 +160,7 @@
   $q_string .= "from inventory ";
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
   $q_string .= "where inv_status = 0 and inv_ssh = 1 and inv_manager = " . $GRP_Unix . " ";
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
 # default in case there are no management interfaces
@@ -177,7 +177,7 @@
     $q_string .= "from interface ";
     $q_string .= "left join net_zones on net_zones.zone_id = interface.int_zone ";
     $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_management = 1 or int_backup = 1 or int_openview = 1) ";
-    $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     if (mysqli_num_rows($q_interface) > 0) {
       while ($a_interface = mysqli_fetch_array($q_interface)) {
 
@@ -205,7 +205,7 @@
     $q_string .= "from interface ";
     $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_type = 1 or int_type = 2) ";
     $q_string .= "order by int_type desc ";
-    $q_intapp = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $q_intapp = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     if (mysqli_num_rows($q_intapp) > 0) {
       $a_intapp = mysqli_fetch_array($q_intapp);
 
@@ -237,7 +237,7 @@
   $q_string .= "from software ";
   $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
   $q_string .= "where inv_status = 0 and inv_ssh = 1 and sw_software like '%Oracle%' and sw_group = " . $GRP_DBAdmins . " ";
-  $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_software) > 0) {
     while ($a_software = mysqli_fetch_array($q_software)) {
 
@@ -245,7 +245,7 @@
       $q_string  = "select int_server ";
       $q_string .= "from interface ";
       $q_string .= "where int_companyid = " . $a_software['inv_id'] . " and int_type = 2 ";
-      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_interface) > 0) {
         $a_interface = mysqli_fetch_array($q_interface);
         $servername = $a_interface['int_server'];
@@ -253,7 +253,7 @@
         $q_string  = "select int_server ";
         $q_string .= "from interface ";
         $q_string .= "where int_companyid = " . $a_software['inv_id'] . " and int_type = 1 ";
-        $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         if (mysqli_num_rows($q_interface) > 0) {
           $a_interface = mysqli_fetch_array($q_interface);
           $servername = $a_interface['int_server'];
