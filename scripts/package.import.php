@@ -35,7 +35,7 @@
   $q_string .= "from inventory ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
   $q_string .= "where inv_name = \"" . $server . "\" and inv_status = 0 and sw_type = 'OS' ";
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
     $inv_id = $a_inventory['inv_id'];
     $sw_software = $a_inventory['sw_software'];
@@ -77,7 +77,7 @@
         $q_string  = "select pkg_id ";
         $q_string .= "from packages ";
         $q_string .= "where pkg_inv_id = " . $inv_id . " and pkg_name = \"" . $package . "\" ";
-        $q_packages = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_packages = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         if (mysqli_num_rows($q_packages) == 0) {
 
           $q_string  = "insert into packages set ";
@@ -103,7 +103,7 @@
           print $q_string . "\n";
         } else {
           print $status;
-          $q_result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_result = mysqli_query($db, $q_string) or die($q_string . ":  " . mysqli_error($db));
         }
 
         $package = '';
@@ -117,7 +117,7 @@
         $q_string  = "select pkg_id ";
         $q_string .= "from packages ";
         $q_string .= "where pkg_inv_id = " . $inv_id . " and pkg_name = \"" . $process . "\" ";
-        $q_packages = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_packages = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         if (mysqli_num_rows($q_packages) == 0) {
           $q_string  = "insert into packages set ";
           $q_string .= "pkg_inv_id   =   " . $inv_id       . ",";
@@ -142,7 +142,7 @@
           print $q_string . "\n";
         } else {
           print $status;
-          $q_result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_result = mysqli_query($db, $q_string) or die($q_string . ":  " . mysqli_error($db));
         }
       } else {
         $process = trim(fgets($file));

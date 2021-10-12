@@ -26,7 +26,7 @@
   if ($debug == 'yes') {
     print "Marked all email as disabled.\n";
   } else {
-    $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   }
 
   if (($handle = fopen($file, "r")) !== FALSE) {
@@ -38,7 +38,7 @@
         $q_string  = "select mail_id ";
         $q_string .= "from email ";
         $q_string .= "where mail_address = \"" . $data . "\" ";
-        $q_email = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_email = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 # if it doesn't exist, add it.
         if (mysqli_num_rows($q_email) == 0) {
           $q_string  = 
@@ -51,7 +51,7 @@
           if ($debug == 'yes') {
             print $query . "\n";
           } else {
-            $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
           }
         } else {
           $a_email = mysqli_fetch_array($q_email);
@@ -65,7 +65,7 @@
           if ($debug == 'yes') {
             print $query . "\n";
           } else {
-            $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
           }
         }
       }

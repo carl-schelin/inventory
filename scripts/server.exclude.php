@@ -54,7 +54,7 @@
   $q_string .= "left join inventory on inventory.inv_id = excludes.ex_companyid ";
   $q_string .= "where ex_companyid > 0 and ex_deleted = 0 and ex_expiration >= \"" . date('Y-m-d') . "\" ";
   $q_string .= "order by ex_text ";
-  $q_excludes = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_excludes = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_excludes = mysqli_fetch_array($q_excludes)) {
 
     if ($comment != $a_excludes['ex_comments']) {
