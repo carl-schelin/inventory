@@ -30,7 +30,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Certificate Editor</title>
+<title>Certificate Management</title>
 
 <style type='text/css' title='currentStyle' media='screen'>
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -54,7 +54,7 @@ function delete_line( p_script_url ) {
 }
 
 function attach_file( p_script_url, update ) {
-  var af_form = document.formCreate;
+  var af_form = document.dialog;
   var af_url;
 
   af_url  = '?update='   + update;
@@ -74,28 +74,7 @@ function attach_file( p_script_url, update ) {
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
-function update_file( p_script_url, update ) {
-  var uf_form = document.formUpdate;
-  var uf_url;
-
-  uf_url  = '?update='   + update;
-  uf_url += '&id='       + uf_form.id.value;
-
-  uf_url += "&cert_desc="       + encode_URI(uf_form.cert_desc.value);
-  uf_url += "&cert_url="        + encode_URI(uf_form.cert_url.value);
-  uf_url += "&cert_expire="     + encode_URI(uf_form.cert_expire.value);
-  uf_url += "&cert_authority="  + encode_URI(uf_form.cert_authority.value);
-  uf_url += "&cert_group="      + uf_form.cert_group.value;
-  uf_url += "&cert_ca="         + uf_form.cert_ca.value;
-  uf_url += "&cert_memo="       + encode_URI(uf_form.cert_memo.value);
-  uf_url += "&cert_isca="       + uf_form.cert_isca.checked;
-
-  script = document.createElement('script');
-  script.src = p_script_url + uf_url;
-  document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-function textCounter( field, cntfield, maxlimit ) {
+function textCounter(field,cntfield,maxlimit) {
   if (field.value.length > maxlimit)
     field.value = field.value.substring(0, maxlimit);
   else
@@ -107,21 +86,22 @@ function clear_fields() {
 }
 
 $(function() {
-  $( '#clickCreate' ).click(function() {
-    $( "#dialogCreate" ).dialog('open');
+
+  $( '#clickAddCertificate' ).click(function() {
+    $( "#dialogCertificate" ).dialog('open');
   });
 
-  $( "#dialogCreate" ).dialog({
+  $( "#dialogCertificate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 430,
-    width: 600,
+    height: 325,
+    width: 1100,
     show: 'slide',
     hide: 'slide',
     closeOnEscape: true,
     dialogClass: 'dialogWithDropShadow',
     close: function(event, ui) {
-      $( "#dialogCreate" ).hide();
+      $( "#dialogCertificate" ).hide();
     },
     buttons: [
       {
@@ -132,46 +112,16 @@ $(function() {
         }
       },
       {
+        text: "Update Certificate",
+        click: function() {
+          attach_file('certs.mysql.php', 1);
+          $( this ).dialog( "close" );
+        }
+      },
+      {
         text: "Add Certificate",
         click: function() {
           attach_file('certs.mysql.php', 0);
-          $( this ).dialog( "close" );
-        }
-      }
-    ]
-  });
-
-  $( "#dialogUpdate" ).dialog({
-    autoOpen: false,
-    modal: true,
-    height: 430,
-    width: 600,
-    show: 'slide',
-    hide: 'slide',
-    closeOnEscape: true,
-    dialogClass: 'dialogWithDropShadow',
-    close: function(event, ui) {
-      $( "#dialogUpdate" ).hide();
-    },
-    buttons: [
-      {
-        text: "Cancel",
-        click: function() {
-          update_file('certs.mysql.php', -1);
-          $( this ).dialog( "close" );
-        }
-      },
-      {
-        text: "Update Certificate",
-        click: function() {
-          update_file('certs.mysql.php', 1);
-          $( this ).dialog( "close" );
-        }
-      },
-      {
-        text: "Add Certificate",
-        click: function() {
-          update_file('certs.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -189,9 +139,11 @@ $(function() {
 
 <div id="main">
 
+<form name="mainform">
+
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default">Certificate Editor</th>
+  <th class="ui-state-default"><a href="javascript:;" onmousedown="toggleDiv('cert-hide');">Certificate Management</a></th>
   <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('cert-help');">Help</a></th>
 </tr>
 </table>
@@ -231,128 +183,34 @@ $(function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add Certificate"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickAddCertificate" value="Add Certificate"></td>
 </tr>
 </table>
 
-
-<p></p>
-
-<table class="ui-styled-table">
-<tr>
-  <th class="ui-state-default">Certificate Listing</th>
-  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('cert-listing-help');">Help</a></th>
-</tr>
-</table>
-
-<div id="cert-listing-help" style="<?php print $display; ?>">
-
-<div class="main-help ui-widget-content">
-
-<ul>
-  <li><strong>Certificate Listing</strong>
-  <ul>
-    <li><strong>Delete (x)</strong> - Click here to delete this Website Certificate.</li>
-    <li><strong>Editing</strong> - Click on a Certificate to toggle the form and edit the certificate.</li>
-    <li><strong>Highlight</strong> - If a certificate is <span class="ui-state-error">highlighted</span>, 
-then the certificate has expired.</li>
-    <li><strong>Highlight</strong> - If a certificate is <span class="ui-state-highlight">highlighted</span>, 
-then the certificate will expire within the notification period you specified in your profile (default: 
-90 days, your setting: <?php print $a_users['usr_notify']; ?> days).</li>
-  </ul></li>
-</ul>
-
-<ul>
-  <li><strong>Notes</strong>
-  <ul>
-    <li>Click the <strong>Certificate Management</strong> title bar to toggle the <strong>Certificate Form</strong>.</li>
-  </ul></li>
-</ul>
-
-</div>
-
-</div>
-
+</form>
 
 <span id="table_mysql"></span>
 
 </div>
 
 
+<div id="dialogCertificate" title="Certificate Form">
 
-<div id="dialogCreate" title="Add Certificate">
-
-<form name="formCreate">
-
-<table class="ui-styled-table">
-<tr>
-  <td class="ui-widget-content">Description: <input type="text" name="cert_desc" size="40"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">URL: <input type="text" name="cert_url" size="40"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Associated Certificate Authority <select name="cert_ca">
-<?php
-  $q_string  = "select cert_id,cert_desc ";
-  $q_string .= "from certs ";
-  $q_string .= "where cert_isca = 1 ";
-  $q_string .= "order by cert_desc";
-  $q_certs = mysqli_query($db, $q_string) or die(q_string . ": " . mysqli_error($db));
-  while ($a_certs = mysqli_fetch_array($q_certs)) {
-    print "<option value=\"" . $a_certs['cert_id'] . "\">" . htmlspecialchars($a_certs['cert_desc']) . "</option>\n";
-  }
-?>
-</select></td>
-</tr>
-<tr>
-  <td class="ui-widget-content""><label><input type="checkbox" name="cert_isca"> Is this a Certificate Authority?</label></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Expiration Date: <input type="text" name="cert_expire" value="1971-01-01" size="12"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Certificate Authority: <input type="text" name="cert_authority" size="40"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Managed By: <select name="cert_group">
-<?php
-  $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from a_groups ";
-  $q_string .= "where grp_disabled = 0 ";
-  $q_string .= "order by grp_name";
-  $q_groups = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_groups = mysqli_fetch_array($q_groups)) {
-    print "<option value=\"" . $a_groups['grp_id'] . "\">" . htmlspecialchars($a_groups['grp_name']) . "</option>\n";
-  }
-?>
-</select></td>
-</tr>
-<tr>
-  <td class="ui-widget-content"><textarea name="cert_memo" cols="80" rows="5" onKeyDown="textCounter(document.formCreate.cert_memo,document.formCreate.remLen,1024);" onKeyUp="textCounter(document.formCreate.cert_memo,document.formCreate.remLen,1024);"></textarea><br><input readonly type="text" name="remLen" size="4" maxlength="4" value="1024"> characters left</td>
-</tr>
-</table>
-
-</form>
-
-</div>
-
-
-<div id="dialogUpdate" title="Edit Certificate">
-
-<form name="formUpdate">
+<form name="dialog">
 
 <input type="hidden" name="id" value="0">
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content">Description: <input type="text" name="cert_desc" size="40"></td>
+  <th class="ui-state-default" colspan="6">Certificate Form</th>
 </tr>
 <tr>
-  <td class="ui-widget-content">URL: <input type="text" name="cert_url" size="40"></td>
+  <td class="ui-widget-content" colspan="3">Description: <input type="text" name="cert_desc" size="40"></td>
+  <td class="ui-widget-content" colspan="3">URL: <input type="text" name="cert_url" size="40"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Associated Certificate Authority <select name="cert_ca">
+  <td class="ui-widget-content" colspan="4">Associated Certificate Authority <select name="cert_ca">
+<option value="0">Select Certificate Authority</option>
 <?php
   $q_string  = "select cert_id,cert_desc ";
   $q_string .= "from certs ";
@@ -364,18 +222,12 @@ then the certificate will expire within the notification period you specified in
   }
 ?>
 </select></td>
+  <td class="ui-widget-content" colspan="2"><label><input type="checkbox" name="cert_isca"> Is this a Certificate Authority?</label></td>
 </tr>
 <tr>
-  <td class="ui-widget-content"><label><input type="checkbox" name="cert_isca"> Is this a Certificate Authority?</label></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Expiration Date: <input type="text" name="cert_expire" value="1971-01-01" size="12"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Certificate Authority: <input type="text" name="cert_authority" size="40"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Managed By: <select name="cert_group">
+  <td class="ui-widget-content" colspan="2">Expiration Date: <input type="text" name="cert_expire" value="1971-01-01" size="12"></td>
+  <td class="ui-widget-content" colspan="2">Certificate Authority: <input type="text" name="cert_authority" size="40"></td>
+  <td class="ui-widget-content" colspan="2">Managed By: <select name="cert_group">
 <?php
   $q_string  = "select grp_id,grp_name ";
   $q_string .= "from a_groups ";
@@ -389,7 +241,7 @@ then the certificate will expire within the notification period you specified in
 </select></td>
 </tr>
 <tr>
-  <td class="ui-widget-content"><textarea name="cert_memo" cols="80" rows="5" onKeyDown="textCounter(document.formUpdate.cert_memo,document.formUpdate.remLen,1024);" onKeyUp="textCounter(document.formUpdate.cert_memo,document.formUpdate.remLen,1024);"></textarea><br><input readonly type="text" name="remLen" size="4" maxlength="4" value="1024"> characters left</td>
+  <td class="ui-widget-content" colspan="6"><textarea name="cert_memo" cols="140" rows="5" onKeyDown="textCounter(document.dialog.cert_memo,document.dialog.remLen,1024);" onKeyUp="textCounter(document.dialog.cert_memo,document.dialog.remLen,1024);"></textarea><br><input readonly type="text" name="remLen" size="4" maxlength="4" value="1024"> characters left</td>
 </tr>
 </table>
 
