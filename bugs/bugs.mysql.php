@@ -27,7 +27,7 @@
 
   if (strlen($formVars['bug_subject']) > 0) {
 
-    $q_string = "insert into bugs set bug_id = NULL, " . 
+    $query = "insert into bugs set bug_id = NULL, " . 
       "bug_module     =   " . $formVars['bug_module']     . "," . 
       "bug_severity   =   " . $formVars['bug_severity']   . "," . 
       "bug_priority   =   " . $formVars['bug_priority']   . "," . 
