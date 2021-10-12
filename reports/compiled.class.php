@@ -208,7 +208,7 @@ $(document).ready( function() {
   $q_string .= "left join service   on service.svc_id   = inventory.inv_class ";
   $q_string .= $where . " and sw_type = 'OS' ";
   $q_string .= $orderby;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $class = " class=\"ui-widget-content\"";
@@ -288,7 +288,7 @@ $(document).ready( function() {
   $q_string .= "left join service   on service.svc_id   = inventory.inv_class ";
   $q_string .= $where . " and hw_primary = 1 and hw_deleted = 0 ";
   $q_string .= $orderby;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $class = " class=\"ui-widget-content\"";

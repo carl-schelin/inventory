@@ -298,7 +298,7 @@ then the certificate will expire within the notification period you specified in
   $q_string .= "from certs ";
   $q_string .= "where cert_isca = 1 ";
   $q_string .= "order by cert_desc";
-  $q_certs = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_certs = mysqli_query($db, $q_string) or die(q_string . ": " . mysqli_error($db));
   while ($a_certs = mysqli_fetch_array($q_certs)) {
     print "<option value=\"" . $a_certs['cert_id'] . "\">" . htmlspecialchars($a_certs['cert_desc']) . "</option>\n";
   }
@@ -321,7 +321,7 @@ then the certificate will expire within the notification period you specified in
   $q_string .= "from a_groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name";
-  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_groups = mysqli_query($db, $q_string) or die(mysqli_error($db));
   while ($a_groups = mysqli_fetch_array($q_groups)) {
     print "<option value=\"" . $a_groups['grp_id'] . "\">" . htmlspecialchars($a_groups['grp_name']) . "</option>\n";
   }
@@ -358,7 +358,7 @@ then the certificate will expire within the notification period you specified in
   $q_string .= "from certs ";
   $q_string .= "where cert_isca = 1 ";
   $q_string .= "order by cert_desc";
-  $q_certs = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_certs = mysqli_query($db, $q_string) or die(q_string . ": " . mysqli_error($db));
   while ($a_certs = mysqli_fetch_array($q_certs)) {
     print "<option value=\"" . $a_certs['cert_id'] . "\">" . htmlspecialchars($a_certs['cert_desc']) . "</option>\n";
   }
@@ -381,7 +381,7 @@ then the certificate will expire within the notification period you specified in
   $q_string .= "from a_groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name";
-  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_groups = mysqli_query($db, $q_string) or die(mysqli_error($db));
   while ($a_groups = mysqli_fetch_array($q_groups)) {
     print "<option value=\"" . $a_groups['grp_id'] . "\">" . htmlspecialchars($a_groups['grp_name']) . "</option>\n";
   }

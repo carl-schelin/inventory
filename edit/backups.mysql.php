@@ -84,15 +84,15 @@
           "bu_changedby =   " . $formVars['bu_changedby'];
 
         if ($formVars['id'] == 0) {
-          $q_string = "insert into backups set bu_id = NULL," . $q_string;
+          $query = "insert into backups set bu_id = NULL," . $q_string;
         }
         if ($formVars['id'] > 0) {
-          $q_string = "update backups set " . $q_string . " where bu_id = " . $formVars['id'];
+          $query = "update backups set " . $q_string . " where bu_id = " . $formVars['id'];
         }
 
         logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
 
-        mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
       }
 
@@ -104,7 +104,7 @@
         $q_string .= "bu_notes ";
         $q_string .= "from backups ";
         $q_string .= "where bu_companyid = " . $formVars['copyfrom'];
-        $q_backups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_backups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_backups = mysqli_fetch_array($q_backups)) {
 
           $q_string =
@@ -128,8 +128,8 @@
             "bu_sattime   = \"" . $a_backups['bu_sattime']   . "\"," .
             "bu_notes     = \"" . $a_backups['bu_notes']     . "\"";
 
-          $q_string = "insert into backups set bu_id = NULL, " . $q_string;
-          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $query = "insert into backups set bu_id = NULL, " . $q_string;
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
         }
       }
     } else {

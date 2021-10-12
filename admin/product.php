@@ -271,7 +271,7 @@ Product or Service.</p>
   $q_string  = "select bus_id,bus_name ";
   $q_string .= "from business_unit ";
   $q_string .= "order by bus_name ";
-  $q_business_unit = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_business_unit = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_business_unit = mysqli_fetch_array($q_business_unit)) {
     print "<option value=\"" . $a_business_unit['bus_id'] . "\">" . $a_business_unit['bus_name'] . "</option>\n";
   }
@@ -284,7 +284,7 @@ Product or Service.</p>
   $q_string  = "select svc_id,svc_acronym ";
   $q_string .= "from service ";
   $q_string .= "order by svc_id";
-  $q_service = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_service = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_service = mysqli_fetch_array($q_service)) {
     print "<option value=\"" . $a_service['svc_id'] . "\">" . $a_service['svc_acronym'] . "</option>\n";
   }
@@ -323,7 +323,7 @@ Product or Service.</p>
   $q_string  = "select bus_id,bus_name ";
   $q_string .= "from business_unit ";
   $q_string .= "order by bus_name ";
-  $q_business_unit = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_business_unit = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_business_unit = mysqli_fetch_array($q_business_unit)) {
     print "<option value=\"" . $a_business_unit['bus_id'] . "\">" . $a_business_unit['bus_name'] . "</option>\n";
   }
@@ -336,7 +336,7 @@ Product or Service.</p>
   $q_string  = "select svc_id,svc_acronym ";
   $q_string .= "from service ";
   $q_string .= "order by svc_id";
-  $q_service = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_service = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_service = mysqli_fetch_array($q_service)) {
     print "<option value=\"" . $a_service['svc_id'] . "\">" . $a_service['svc_acronym'] . "</option>\n";
   }

@@ -60,7 +60,7 @@
           $q_string  = "select ct_state ";
           $q_string .= "from cities ";
           $q_string .= "where ct_id = " . $formVars['loc_city'];
-          $q_cities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_cities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_cities) > 0) {
             $a_cities = mysqli_fetch_array($q_cities);
           } else {
@@ -69,7 +69,7 @@
           $q_string  = "select st_country ";
           $q_string .= "from states ";
           $q_string .= "where st_id = " . $a_cities['ct_state'];
-          $q_states = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_states = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_states) > 0) {
             $a_states = mysqli_fetch_array($q_states);
           } else {
@@ -103,7 +103,7 @@
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['loc_name']);
 
-          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 ##################
 # Tag Management
@@ -115,7 +115,7 @@
             $q_string  = "delete ";
             $q_string .= "from tags ";
             $q_string .= "where tag_type = 2 and tag_companyid = " . $formVars['id'] . " ";
-            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           }
 
 # Step 2, okay we've cleared all the tags from the tag system for this server.
@@ -138,7 +138,7 @@
                 "tag_group        =   " . $_SESSION['group'];
 
               $q_string = "insert into tags set tag_id = NULL, " . $q_string;
-              mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
             }
           }
 
@@ -172,7 +172,7 @@
       $q_string .= "left join country on country.cn_id = states.st_country ";
       $q_string .= "left join environment on environment.env_id = locations.loc_environment ";
       $q_string .= "order by loc_default desc,loc_name,ct_city,st_state ";
-      $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_locations) > 0) {
         while ($a_locations = mysqli_fetch_array($q_locations)) {
 
@@ -190,7 +190,7 @@
           $q_string  = "select tag_name ";
           $q_string .= "from tags ";
           $q_string .= "where tag_companyid = " . $a_locations['loc_id'] . " and tag_type = 2 ";
-          $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_tags) > 0) {
             while ($a_tags = mysqli_fetch_array($q_tags)) {
               $loc_tags .= $a_tags['tag_name'] . " ";

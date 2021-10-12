@@ -24,7 +24,7 @@
       $q_string  = "select mt_name ";
       $q_string .= "from mon_type ";
       $q_string .= "where mt_id = " . $formVars['id'];
-      $q_mon_type = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_mon_type = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_mon_type = mysqli_fetch_array($q_mon_type);
       mysqli_free_result($q_mon_type);
 

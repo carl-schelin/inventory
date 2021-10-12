@@ -164,7 +164,7 @@ should a problem occur.</p>
   $q_string .= "left join users on users.usr_id = log.log_user ";
   $q_string .= $where;
   $q_string .= $orderby;
-  $q_log = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_log = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_log = mysqli_fetch_array($q_log)) {
 
     print "<tr>\n";

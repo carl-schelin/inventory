@@ -94,31 +94,23 @@
           if (strlen($formVars['usr_passwd']) > 0 && $formVars['usr_passwd'] === $formVars['usr_reenter']) {
             logaccess($db, $_SESSION['uid'], $package, "Resetting user " . $formVars['usr_name'] . " password.");
             $q_string .= ",usr_passwd = '" . MD5($formVars['usr_passwd']) . "' ";
-
-            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-
           }
 
           if ($formVars['update'] == 0) {
-            logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['usr_name']);
-            $q_string = "insert into users set usr_id = NULL, " . $q_string;
+            $query = "insert into users set usr_id = NULL, " . $q_string;
             $formVars['id'] = last_insert_id($db);
-
-            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-
+            $message = "User added.";
           }
           if ($formVars['update'] == 1) {
 # and now update the users information
-            logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['usr_name']);
-            $q_string = "update users set " . $q_string . " where usr_id = " . $formVars['id'];
-
-            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $query = "update users set " . $q_string . " where usr_id = " . $formVars['id'];
+            $message = "User updated.";
 
 # if user is changing groups; change to read-only for old group. Need to get old group info first.
             $q_string  = "select usr_group ";
             $q_string .= "from users ";
             $q_string .= "where usr_id = " . $formVars['id'] . " ";
-            $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             $a_users = mysqli_fetch_array($q_users);
 
 # then see if the user is in the grouplist (should be but let's be sure and get the id to be updated)
@@ -126,7 +118,7 @@
               $q_string  = "select gpl_id ";
               $q_string .= "from grouplist ";
               $q_string .= "where gpl_user = " . $formVars['id'] . " and gpl_group = " . $formVars['usr_group'] . " ";
-              $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               if (mysqli_num_rows($q_grouplist) == 1) {
 # and if > 0, they're there; change to read only...
                 $a_grouplist = mysqli_fetch_array($q_grouplist);
@@ -136,35 +128,41 @@
                 $q_string .= "gpl_edit = 0 ";
                 $q_string .= "where gpl_id = " . $a_grouplist['gpl_id'] . " ";
 
-                mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+                mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               }
             }
           }
+
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['usr_name']);
+
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
+
+          print "alert('" . $message . "');\n";
 
           if ($formVars['usr_disabled'] == 1 ) {
 # clear from grouplist
             $q_string  = "delete ";
             $q_string .= "from grouplist ";
             $q_string .= "where gpl_user = " . $formVars['id'] . " ";
-            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 # also clear any managerial duties.
             $q_string  = "update users ";
             $q_string .= "set usr_manager = 0 ";
             $q_string .= "where usr_manager = " . $formVars['id'] . " ";
-            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 # and clear from a_groups as well.
             $q_string  = "update a_groups ";
             $q_string .= "set grp_manager = 0 ";
             $q_string .= "where grp_manager = " . $formVars['id'] . " ";
-            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
           } else {
             $q_string  = "select gpl_id ";
             $q_string .= "from grouplist ";
             $q_string .= "where gpl_user = " . $formVars['id'] . " and gpl_group = " . $formVars['usr_group'] . " ";
-            $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             if (mysqli_num_rows($q_grouplist) == 0) {
 # if not in the grouplist, add them
 # removing them will be done elsewhere.
@@ -176,7 +174,7 @@
               $q_string .= "gpl_user  = " . $formVars['id'] . ",";
               $q_string .= "gpl_edit  = " . "1";
 
-              mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
             } else {
 # if they're already in the system, change user status to manage assets;
@@ -187,7 +185,7 @@
               $q_string .= "gpl_edit = 1 ";
               $q_string .= "where gpl_id = " . $a_grouplist['gpl_id'] . " ";
 
-              mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             }
           }
 
@@ -262,7 +260,7 @@
       $q_string .= "left join themes on themes.theme_id = users.usr_theme ";
       $q_string .= "where usr_disabled = 0 and usr_group = 0 and usr_level > 1 ";
       $q_string .= "order by usr_last,usr_first";
-      $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_users) > 0) {
         while ($a_users = mysqli_fetch_array($q_users)) {
 
@@ -378,7 +376,7 @@ function display_user( $p_title, $p_toggle, $p_query ) {
   $q_string .= "from a_groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name";
-  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));;
   while ($a_groups = mysqli_fetch_array($q_groups)) {
 
     $group  = "<table class=\"ui-styled-table\">\n";
@@ -407,7 +405,7 @@ function display_user( $p_title, $p_toggle, $p_query ) {
     $q_string .= "left join themes on themes.theme_id = users.usr_theme ";
     $q_string .= "where usr_group = " . $a_groups['grp_id'] . " " . $p_query;
     $q_string .= "order by usr_last,usr_first";
-    $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     if (mysqli_num_rows($q_users) > 0) {
       while ($a_users = mysqli_fetch_array($q_users)) {
 
@@ -441,7 +439,7 @@ function display_user( $p_title, $p_toggle, $p_query ) {
         $q_string  = "select mail_id ";
         $q_string .= "from email ";
         $q_string .= "where mail_address = \"" . $a_users['usr_email'] . "\" and mail_disabled = 0 ";
-        $q_email = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_email = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         if (mysqli_num_rows($q_email) == 0) {
           $missing = "*";
         }

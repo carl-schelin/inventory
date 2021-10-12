@@ -35,15 +35,19 @@
             "mt_name = \"" . $formVars['mt_name'] . "\"";
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into mon_type set mt_id = null," . $q_string;
+            $query = "insert into mon_type set mt_id = null," . $q_string;
+            $message = "Monitoring Types added.";
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update mon_type set " . $q_string . " where mt_id = " . $formVars['id'];
+            $query = "update mon_type set " . $q_string . " where mt_id = " . $formVars['id'];
+            $message = "Monitoring Types updated.";
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['mt_name']);
 
-          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
+
+          print "alert('" . $message . "');\n";
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -89,7 +93,7 @@
       $q_string  = "select mt_id,mt_name ";
       $q_string .= "from mon_type ";
       $q_string .= "order by mt_name ";
-      $q_mon_type = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_mon_type = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_mon_type) > 0) {
         while ($a_mon_type = mysqli_fetch_array($q_mon_type)) {
 

@@ -24,7 +24,7 @@
       $q_string  = "select part_name,part_type,part_acronym ";
       $q_string .= "from parts ";
       $q_string .= "where part_id = " . $formVars['id'];
-      $q_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_parts = mysqli_fetch_array($q_parts);
       mysqli_free_result($q_parts);
 

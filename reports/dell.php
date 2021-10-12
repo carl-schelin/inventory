@@ -185,7 +185,7 @@
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= $where;
   $q_string .= $orderby;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     if ($a_inventory['hw_serial'] != "" && $a_inventory['hw_serial'] != "N/A" && $a_inventory['hw_serial'] != "None" && $a_inventory['hw_serial'] != "VM") {

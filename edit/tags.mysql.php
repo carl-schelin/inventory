@@ -42,7 +42,7 @@
           $q_string  = "select tag_name ";
           $q_string .= "from tags ";
           $q_string .= "where tag_name = \"" . $formVars['tag_name'] . "\" and tag_companyid = " . $formVars['tag_companyid'] . " ";
-          $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_tags) == 0) {
 
             $q_string =
@@ -55,7 +55,7 @@
             $q_string = "insert into tags set tag_id = NULL," . $q_string;
 
             logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['tag_name']);
-            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
          }
         } else {
           print "alert('You must input data before saving changes.');\n";
@@ -69,13 +69,13 @@
         $q_string  = "select tag_id ";
         $q_string .= "from tags ";
         $q_string .= "where tag_name = '" . $formVars['tag_name'] . "' and tag_companyid = " . $formVars['tag_companyid'] . " ";
-        $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         if (mysqli_num_rows($q_tags) > 0) {
           $a_tags = mysqli_fetch_array($q_tags);
 
 # this is a delete task. We found the tag_name that's associated with the server so delete it
           $q_string = "delete from tags where tag_id = " . $a_tags['tag_id'] . " ";
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
         } else {
 # this is an add task. The tag_name for this server wasn't found so add it in for this server.
@@ -87,7 +87,7 @@
             "tag_group     =   " . $formVars['tag_group'];
 
           $q_string  = "insert into tags set tag_id = null," . $q_string;
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
         }
       }
@@ -108,7 +108,7 @@
       $q_string .= "where tag_type = 1 ";
       $q_string .= "group by tag_name ";
       $q_string .= "order by tag_name ";
-      $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_tags) > 0) {
         while ($a_tags = mysqli_fetch_array($q_tags)) {
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('tags.mysql.php?update=-2&tag_companyid="  . $formVars['tag_companyid'] . "&tag_name=" . $a_tags['tag_name'] . "');\">";
@@ -117,7 +117,7 @@
           $q_string  = "select tag_id ";
           $q_string .= "from tags ";
           $q_string .= "where tag_name = \"" . $a_tags['tag_name'] . "\" and tag_companyid = " . $formVars['tag_companyid'] . " ";
-          $q_identity = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_identity = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_identity) > 0) {
             $output .= "<strong>[";
           }
@@ -143,7 +143,7 @@
         $q_string .= "from tag_types ";
         $q_string .= "where type_id > 1 ";   # 1 is Servers which is above. This is showing all the other tags that might be attached.
         $q_string .= "order by type_name ";
-        $q_tag_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_tag_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         if (mysqli_num_rows($q_tag_types) > 0) {
           while ($a_tag_types = mysqli_fetch_array($q_tag_types)) {
 
@@ -160,14 +160,14 @@
             $q_string .= "where tag_type = " . $a_tag_types['type_id'] . " ";
             $q_string .= "group by tag_name ";
             $q_string .= "order by tag_name ";
-            $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             if (mysqli_num_rows($q_tags) > 0) {
               while ($a_tags = mysqli_fetch_array($q_tags)) {
 
                 $q_string  = "select tag_id ";
                 $q_string .= "from tags ";
                 $q_string .= "where tag_name = \"" . $a_tags['tag_name'] . "\" and tag_companyid = " . $formVars['tag_companyid'] . " ";
-                $q_identity = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+                $q_identity = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
                 if (mysqli_num_rows($q_identity) > 0) {
                   $output .= "<strong>[";
                 }

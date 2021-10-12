@@ -43,7 +43,7 @@
           if (check_userlevel($db, $AL_Admin) == 0) {
             $q_string .= "where gpl_user = " . $_SESSION['uid'] . " and gpl_group = " . $formVars['gpl_group'] . " ";
           }
-          $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_grouplist) > 0) {
 
             $q_string =
@@ -52,15 +52,19 @@
               "gpl_edit    =   " . $formVars['gpl_edit'];
 
             if ($formVars['update'] == 0) {
-              $q_string = "insert into grouplist set gpl_id = NULL," . $q_string;
+              $query = "insert into grouplist set gpl_id = NULL," . $q_string;
+              $message = "Group Association added.";
             }
             if ($formVars['update'] == 1) {
-              $q_string = "update grouplist set " . $q_string . " where gpl_id = " . $formVars['id'];
+              $query = "update grouplist set " . $q_string . " where gpl_id = " . $formVars['id'];
+              $message = "Group Association updated.";
             }
 
             logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['fw_source']);
 
-            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
+
+            print "alert('" . $message . "');\n";
           } else {
             print "alert('You are not allowed to manage groups you aren\'t a member of.');\n";
           }
@@ -121,7 +125,7 @@
       $q_string .= "left join titles on titles.tit_id = users.usr_title ";
       $q_string .= "where grp_disabled = 0 ";
       $q_string .= "order by grp_name,usr_last ";
-      $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_grouplist) > 0) {
         while ($a_grouplist = mysqli_fetch_array($q_grouplist)) {
 
@@ -132,7 +136,7 @@
           $q_string  = "select gpl_id ";
           $q_string .= "from grouplist ";
           $q_string .= "where gpl_group = " . $a_grouplist['gpl_group'] . " and gpl_user = " . $_SESSION['uid'] . " "; 
-          $q_gltest = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_gltest = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_gltest) > 0 || check_userlevel($db, $AL_Admin)) {
 
             $linkstart = '';
@@ -157,7 +161,7 @@
               $q_string  = "select usr_last,usr_first ";
               $q_string .= "from users ";
               $q_string .= "where usr_id = " . $a_grouplist['usr_manager'] . " ";
-              $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               $a_users = mysqli_fetch_array($q_users);
             }
 

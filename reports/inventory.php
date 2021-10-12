@@ -154,7 +154,7 @@
   $q_string  = "select inv_id,inv_name ";
   $q_string .= "from inventory ";
   $q_string .= $product;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 # set up the index of systems
     $invindex[$a_inventory['inv_id']] = false;
@@ -166,14 +166,14 @@
   $q_string  = "select hw_companyid ";
   $q_string .= "from hardware ";
   $q_string .= "where hw_deleted = 0 and hw_primary = 1 " . $hwgroup . $hwproduct;
-  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_hardware = mysqli_fetch_array($q_hardware)) {
     $invindex[$a_hardware['hw_companyid']] = true;
   }
 
   $q_string  = "select sw_companyid ";
   $q_string .= "from software" . $swproduct . $swgroup;
-  $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_software = mysqli_fetch_array($q_software)) {
     $invindex[$a_software['sw_companyid']] = true;
   }
@@ -233,7 +233,7 @@ $(document).ready( function () {
     $q_string  = "select grp_name ";
     $q_string .= "from a_groups ";
     $q_string .= "where grp_id = " . $formVars['group'] . " ";
-    $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_groups = mysqli_fetch_array($q_groups);
 
     print "  <th class=\"ui-state-default\">" . $a_groups['grp_name'] . "</th>";
@@ -432,7 +432,7 @@ $(document).ready( function () {
   $q_string .= "left join a_groups  on a_groups.grp_id       = inventory.inv_manager ";
   $q_string .= $product . $inwork . $location . $type . " ";
   $q_string .= $orderby;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     if ($invindex[$a_inventory['inv_id']] === true) {
@@ -441,7 +441,7 @@ $(document).ready( function () {
       $q_string  = "select grp_name ";
       $q_string .= "from a_groups ";
       $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
-      $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_groups) > 0) {
         $a_groups = mysqli_fetch_array($q_groups);
       } else {
@@ -456,7 +456,7 @@ $(document).ready( function () {
       $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
       $q_string .= "where int_companyid = \"" . $a_inventory['inv_id'] . "\" and int_type != 7 and int_ip6 = 0 ";
       $q_string .= "order by itp_acronym,int_face";
-      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_interface = mysqli_fetch_array($q_interface)) {
 
 # if a console or LOM interface type
@@ -482,7 +482,7 @@ $(document).ready( function () {
       $q_string  = "select sw_software ";
       $q_string .= "from software ";
       $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'OS' ";
-      $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_software = mysqli_fetch_array($q_software);
     
       $title="This system is live.";

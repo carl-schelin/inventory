@@ -24,7 +24,7 @@
       $q_string  = "select prod_name,prod_code,prod_desc,prod_unit,prod_service ";
       $q_string .= "from products ";
       $q_string .= "where prod_id = " . $formVars['id'];
-      $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_products = mysqli_fetch_array($q_products);
       mysqli_free_result($q_products);
 
@@ -47,7 +47,7 @@
       $q_string  = "select tag_name ";
       $q_string .= "from tags ";
       $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_type = 3 ";
-      $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_tags) > 0) {
         while ($a_tags = mysqli_fetch_array($q_tags)) {
           $prod_tags .= $space . $a_tags['tag_name'];

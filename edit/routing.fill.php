@@ -24,7 +24,7 @@
       $q_string  = "select route_companyid,route_address,route_gateway,route_mask,route_source,route_interface,route_desc,route_static ";
       $q_string .= "from routing ";
       $q_string .= "where route_id = " . $formVars['id'];
-      $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_routing = mysqli_fetch_array($q_routing);
       mysqli_free_result($q_routing);
 

@@ -203,7 +203,7 @@
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
   $q_string .= $where . $parent;
   $q_string .= $orderby;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     if ($a_inventory['inv_unit'] == 0) {
@@ -248,7 +248,7 @@
     $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
     $q_string .= $where . $and . " inv_companyid = " . $a_inventory['inv_id'] . " ";
     $q_string .= "order by inv_unit ";
-    $q_child = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $q_child = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     while ($a_child = mysqli_fetch_array($q_child)) {
 
       $linkedit = '';

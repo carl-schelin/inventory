@@ -163,7 +163,7 @@
             $q_group  = "select inv_name,inv_manager,inv_location,inv_status ";
             $q_group .= "from inventory ";
             $q_group .= "where inv_id = " . $formVars['id'] . " ";
-            $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $q_inventory = mysqli_query($db, $q_group) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             $a_inventory = mysqli_fetch_array($q_inventory);
 
 # make changes if the software platform owner changes. No need to do extra work if the same
@@ -173,14 +173,14 @@
               $q_software .= "software ";
               $q_software .= "set sw_group = " . $formVars['inv_manager'] . " ";
               $q_software .= "where sw_companyid = " . $formVars['id'] . " and sw_group = " . $a_inventory['inv_manager'] . " ";
-              mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              mysqli_query($db, $q_software) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             }
 
 # making sure all the hardware is owned by the group and associated with the main product as there's no other way to change the owner or product
             $q_hwstring  = "select hw_id ";
             $q_hwstring .= "from hardware ";
             $q_hwstring .= "where hw_companyid = " . $formVars['id'];
-            $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $q_hardware = mysqli_query($db, $q_hwstring) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             while ($a_hardware = mysqli_fetch_array($q_hardware)) {
               $query = 
                 "update hardware set " .
@@ -188,7 +188,7 @@
                 "hw_product = " . $formVars['inv_product'] . " " . 
                 "where hw_id = " . $a_hardware['hw_id'];
 
-              $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              $result = mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
             }
 
 # update file system ownershps
@@ -197,7 +197,7 @@
             $query .= "set ";
             $query .= "fs_group = " . $formVars['inv_manager'] . " ";
             $query .= "where fs_companyid = " . $formVars['id'] . " and fs_group = " . $a_inventory['inv_manager'] . " ";
-            $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $result = mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
 # for changelog requirements, compare old inv_name with new inv_name. If changed, save the old name before changing it
             if ($a_inventory['inv_name'] != $formVars['inv_name']) {
@@ -223,7 +223,7 @@
 # now save any updated information
             logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['inv_name']);
             $query = "update inventory set " . $q_string . " where inv_id = " . $formVars['id'];
-            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
             print "alert('System updated');\n";
 
@@ -235,7 +235,7 @@
             logaccess($db, $_SESSION['uid'], $package, "Adding: " . $formVars['inv_name']);
 
             $query = "insert into inventory set inv_id = NULL, " . $q_string;
-            $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $result = mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
 # get the new inv_id
             $newserver = last_insert_id($db);
@@ -251,7 +251,7 @@
               $q_string .= "hw_group,hw_poid,hw_built,hw_poid,hw_built,hw_active,hw_retired,hw_reused,hw_supportid,hw_primary ";
               $q_string .= "from hardware ";
               $q_string .= "where hw_primary = 1 and hw_companyid = " . $formVars['id'];
-              $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               if (mysqli_num_rows($q_hardware) > 0) {
                 while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
@@ -273,7 +273,7 @@
                     "hw_supportid =   " . $a_hardware['hw_supportid'] . "," .
                     "hw_primary   =   " . $a_hardware['hw_primary'];
   
-                  $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+                  $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
                 }
               } else {
                 $q_string = "insert into hardware set " . 
@@ -289,7 +289,7 @@
                   "hw_reused    = \"" . '1971-01-01'             . "\"," .
                   "hw_primary   =   " . 1;
 
-                $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+                $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               }
             } else {
               $q_string = "insert into hardware set " . 
@@ -305,7 +305,7 @@
                 "hw_reused    = \"" . '1971-01-01'             . "\"," .
                 "hw_primary   =   " . 1;
 
-              $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             }
 
 #####
@@ -315,7 +315,7 @@
               $q_string  = "select sw_id,sw_software,sw_notes,sw_vendor,sw_product,sw_licenseid,sw_type,sw_group,sw_verified ";
               $q_string .= "from software ";
               $q_string .= "where sw_type = 'OS' and sw_companyid = " . $formVars['id'];
-              $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               while ($a_software = mysqli_fetch_array($q_software)) {
 
                 $q_string = "insert into software set " . 
@@ -330,7 +330,7 @@
                   "sw_group     =   " . $a_software['sw_group']     . "," .
                   "sw_verified  =   " . $a_software['sw_verified'];
 
-                $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+                $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               }
 
 #####
@@ -339,7 +339,7 @@
               $q_string  = "select int_id,int_server,int_face,int_ip6,int_addr,int_eth,int_mask,int_gate,int_verified,int_switch,int_primary,int_type ";
               $q_string .= "from interface ";
               $q_string .= "where int_companyid = " . $formVars['id'];
-              $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               if (mysqli_num_rows($q_interface) > 0) {
                 while ($a_interface = mysqli_fetch_array($q_interface)) {
 
@@ -358,7 +358,7 @@
                     "int_primary   =   " . $a_interface['int_primary']  . "," .
                     "int_type      =   " . $a_interface['int_type'];
 
-                  $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+                  $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
                 }
               }
             }
@@ -373,7 +373,7 @@
                         . "bu_tuetime,bu_wedtime,bu_thutime,bu_fritime,bu_sattime,bu_changedby "
                         . "from backups "
                         . "where bu_companyid = " . $formVars['id'];
-              $q_backups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              $q_backups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               if (mysqli_num_rows($q_backups) > 0) {
                 while ($a_backups = mysqli_fetch_array($q_backups)) {
 
@@ -399,7 +399,7 @@
                     "bu_sattime   = \"" . $a_backups['bu_sattime']   . "\"," .
                     "bu_changedby =   " . $a_backups['bu_changedby'];
 
-                  $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+                  $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
                 }
               } else {
                 $q_string = "insert into backups set " .
@@ -411,7 +411,7 @@
                   "bu_saturday  =   " . 1                          . "," .
                   "bu_changedby =   " . $_SESSION['uid'];
 
-                $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+                $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               }
             } else {
               $q_string = "insert into backups set " .
@@ -423,7 +423,7 @@
                 "bu_saturday  =   " . 1                          . "," .
                 "bu_changedby =   " . $_SESSION['uid'];
 
-              $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             }
 
 # okay, go to new server
@@ -443,13 +443,13 @@ print "alert('All Done!');\n";
         $q_string  = "select inv_status ";
         $q_string .= "from inventory ";
         $q_string .= "where inv_id = " . $newserver;
-        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         $a_inventory = mysqli_fetch_array($q_inventory);
 
         $q_string  = "select hw_id,hw_active,hw_retired,hw_reused ";
         $q_string .= "from hardware ";
         $q_string .= "where hw_companyid = " . $newserver . " and hw_primary = 1 and hw_deleted = 0 ";
-        $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         $a_hardware = mysqli_fetch_array($q_hardware);
 
         if ($a_inventory['inv_status'] == 0) {
@@ -496,10 +496,10 @@ print "alert('All Done!');\n";
         }
 
         if (strlen($r_hardware) > 0) {
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $r_hardware) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $r_hardware . "&mysql=" . mysqli_error($db)));
         }
         if (strlen($r_inventory) > 0) {
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $r_inventory) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $r_inventory . "&mysql=" . mysqli_error($db)));
         }
 
       } else {
@@ -519,7 +519,7 @@ print "alert('All Done!');\n";
           $q_string .= "inv_mend,inv_mdow,inv_minterval,inv_product,inv_project,inv_department,inv_ansible,inv_notes ";
           $q_string .= "from inventory ";
           $q_string .= "where inv_id = " . $formVars['copyfrom'];
-          $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
             $q_string =
@@ -550,8 +550,8 @@ print "alert('All Done!');\n";
               "inv_appliance      = \"" . $a_inventory['inv_appliance']      . "\"," .
               "inv_notes          = \"" . $a_inventory['inv_notes']          . "\"";
 
-            $q_string = "update inventory set " . $q_string . " where inv_id = " . $formVars['id'];;
-            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $query = "update inventory set " . $q_string . " where inv_id = " . $formVars['id'];;
+            mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
           }
 
           print "window.location.href = 'inventory.php?server=" . $formVars['id'] . "';\n";

@@ -62,15 +62,19 @@
           "mon_hours      =   " . $formVars['mon_hours'] ;
 
         if ($formVars['update'] == 0) {
-          $q_string = "insert into monitoring set org_id = null," . $q_string;
+          $query = "insert into monitoring set org_id = null," . $q_string;
+          $message = "Monitoring added.";
         }
         if ($formVars['update'] == 1) {
-          $q_string = "update monitoring set " . $q_string . " where mon_id = " . $formVars['id'];
+          $query = "update monitoring set " . $q_string . " where mon_id = " . $formVars['id'];
+          $message = "Monitoring updated.";
         }
 
         logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['mon_system']);
 
-        mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
+
+        print "alert('" . $message . "');\n";
       }
 
 
@@ -129,7 +133,7 @@
       $q_string .= "left join users on users.usr_id = monitoring.mon_user ";
       $q_string .= "where inv_status = 0 ";
       $q_string .= "order by inv_name,int_server ";
-      $q_monitoring = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_monitoring = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_monitoring) > 0) {
         while ($a_monitoring = mysqli_fetch_array($q_monitoring)) {
 

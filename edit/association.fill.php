@@ -24,7 +24,7 @@
       $q_string  = "select clu_companyid,clu_association,clu_notes ";
       $q_string .= "from cluster ";
       $q_string .= "where clu_id = " . $formVars['id'];
-      $q_cluster = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_cluster = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_cluster = mysqli_fetch_array($q_cluster);
       mysqli_free_result($q_cluster);
 

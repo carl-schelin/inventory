@@ -24,7 +24,7 @@
       $q_string  = "select bus_org,bus_unit,bus_name ";
       $q_string .= "from business ";
       $q_string .= "where bus_id = " . $formVars['id'];
-      $q_business = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_business = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_business = mysqli_fetch_array($q_business);
       mysqli_free_result($q_business);
 

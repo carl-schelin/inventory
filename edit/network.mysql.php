@@ -106,7 +106,7 @@
           $q_string  = "select ip_ipv4,ip_hostname,ip_domain,ip_network ";
           $q_string .= "from ipaddress ";
           $q_string .= "where ip_id = " . $formVars['int_ipaddressid'] . " ";
-          $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_ipaddress) > 0) {
             $a_ipaddress = mysqli_fetch_array($q_ipaddress);
 
@@ -114,7 +114,7 @@
             $q_string  = "select net_mask,net_vlan ";
             $q_string .= "from network ";
             $q_string .= "where net_id = " . $a_ipaddress['ip_network'] . " ";
-            $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             if (mysqli_num_rows($q_network) > 0) {
               $a_network = mysqli_fetch_array($q_network);
             } else {
@@ -127,7 +127,7 @@
             $q_string .= "left join ip_types on ip_types.ip_id = ipaddress.ip_type ";
             $q_string .= "where ip_network = " . $a_ipaddress['ip_network'] . " and ip_name = \"Gateway\" ";
             $q_string .= "limit 1 ";
-            $q_addr = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $q_addr = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             if (mysqli_num_rows($q_addr) > 0) {
               $a_addr = mysqli_fetch_array($q_addr);
             } else {
@@ -182,15 +182,19 @@
             "int_login        =   " . $formVars['int_login'];
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into interface set int_id = NULL, " . $q_string;
+            $query = "insert into interface set int_id = NULL, " . $q_string;
+            $message = "Interface added.";
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update interface set " . $q_string . " where int_id = " . $formVars['id'];
+            $query = "update interface set " . $q_string . " where int_id = " . $formVars['id'];
+            $message = "Interface updated.";
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
 
-          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
+
+          print "alert('" . $message . "');\n";
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -218,7 +222,7 @@
         $q_string .= "from inventory ";
         $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name";
-        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_inventory = mysqli_fetch_array($q_inventory)) {
           $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . "</option>\n";
         }
@@ -244,14 +248,14 @@
         $q_string  = "select ip_id,ip_ipv4,ip_hostname ";
         $q_string .= "from ipaddress ";
         $q_string .= "order by ip_hostname,ip_ipv4 ";
-        $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         if (mysqli_num_rows($q_ipaddress) > 0) {
           while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
 
             $q_string  = "select int_id ";
             $q_string .= "from interface ";
             $q_string .= "where int_ipaddressid = " . $a_ipaddress['ip_id'] . " ";
-            $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             if (mysqli_num_rows($q_interface) == 0) {
               $output .= "<option value=\"" . $a_ipaddress['ip_id'] . "\">" . $a_ipaddress['ip_hostname'] . " " . $a_ipaddress['ip_ipv4'] . "</option>\n";
             } else {
@@ -272,7 +276,7 @@
         $q_string  = "select itp_id,itp_name ";
         $q_string .= "from int_types ";
         $q_string .= "order by itp_id";
-        $q_int_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_int_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_int_types = mysqli_fetch_array($q_int_types)) {
           $output .= "<option value=\"" . $a_int_types['itp_id'] . "\">" . $a_int_types['itp_name'] . "</option>\n";
         }
@@ -288,7 +292,7 @@
         $q_string  = "select red_id,red_text ";
         $q_string .= "from int_redundancy ";
         $q_string .= "order by red_text";
-        $q_int_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_int_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_int_redundancy = mysqli_fetch_array($q_int_redundancy)) {
           $output .= "<option value=\"" . $a_int_redundancy['red_id'] . "\">" . $a_int_redundancy['red_text'] . "</option>\n";
         }
@@ -341,7 +345,7 @@
         $output .= "<option value=\"0\">N/A</option>\n";
 
         $q_string = "select med_id,med_text from int_media order by med_text";
-        $q_int_media = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_int_media = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_int_media = mysqli_fetch_array($q_int_media)) {
           $output .= "<option value=\"" . $a_int_media['med_id'] . "\">" . $a_int_media['med_text'] . "</option>\n";
         }
@@ -351,7 +355,7 @@
         $output .= "<option value=\"0\">N/A</option>\n";
 
         $q_string = "select spd_id,spd_text from int_speed order by spd_text";
-        $q_int_speed = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_int_speed = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_int_speed = mysqli_fetch_array($q_int_speed)) {
           $output .= "<option value=\"" . $a_int_speed['spd_id'] . "\">" . $a_int_speed['spd_text'] . "</option>\n";
         }
@@ -361,7 +365,7 @@
         $output .= "<option value=\"0\">N/A</option>\n";
 
         $q_string = "select dup_id,dup_text from int_duplex order by dup_text";
-        $q_int_duplex = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_int_duplex = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_int_duplex = mysqli_fetch_array($q_int_duplex)) {
           $output .= "<option value=\"" . $a_int_duplex['dup_id'] . "\">" . $a_int_duplex['dup_text'] . "</option>\n";
         }
@@ -456,7 +460,7 @@
       $q_string .= "left join users on users.usr_id = interface.int_user ";
       $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = 0 ";
       $q_string .= "order by int_face,int_addr,int_server";
-      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_interface) > 0) {
         while ($a_interface = mysqli_fetch_array($q_interface)) {
 
@@ -618,7 +622,7 @@
           $q_string .= "left join users on users.usr_id = interface.int_user ";
           $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = " . $a_interface['int_id'] . " ";
           $q_string .= "order by int_face,int_addr,int_server";
-          $q_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_redundancy) > 0) {
             while ($a_redundancy = mysqli_fetch_array($q_redundancy)) {
 
@@ -781,7 +785,7 @@
               $q_string .= "left join users on users.usr_id = interface.int_user ";
               $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = " . $a_redundancy['int_id'] . " ";
               $q_string .= "order by int_face,int_addr,int_server";
-              $q_secondary = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              $q_secondary = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               if (mysqli_num_rows($q_secondary) > 0) {
                 while ($a_secondary = mysqli_fetch_array($q_secondary)) {
 
@@ -960,7 +964,7 @@
       $q_string .= "from interface ";
       $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_redundancy > 0 ";
       $q_string .= "order by int_ip6,int_face";
-      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_interface = mysqli_fetch_array($q_interface)) {
         if ($a_interface['int_ip6'] == 1) {
           $ip6 = " (ipv6)";

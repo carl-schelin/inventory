@@ -48,15 +48,19 @@
             "com_user      =   " . $formVars['com_user'];
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into comments set com_id = NULL, " . $q_string;
+            $query = "insert into comments set com_id = NULL, " . $q_string;
+            $message = "Comment added.";
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update comments set " . $q_string . " where com_id = " . $formVars['id'];
+            $query = "update comments set " . $q_string . " where com_id = " . $formVars['id'];
+            $message = "Comment updated.";
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
 
-          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
+
+          print "alert('" . $message . "');\n";
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -110,7 +114,7 @@
       $q_string .= "left join users on users.usr_id = comments.com_user ";
       $q_string .= "where com_companyid = " . $formVars['com_companyid'] . " ";
       $q_string .= "order by com_timestamp desc ";
-      $q_comments = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_comments = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
       while ($a_comments = mysqli_fetch_array($q_comments)) {
 
         $linkstart = "<a href=\"#comments\" onclick=\"show_file('comments.fill.php?id=" . $a_comments['com_id'] . "');showDiv('comments-hide');\">";

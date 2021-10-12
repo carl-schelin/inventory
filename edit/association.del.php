@@ -24,7 +24,7 @@
       $q_string  = "delete ";
       $q_string .= "from cluster ";
       $q_string .= "where clu_id= " . $formVars['id'];
-      $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
       print "alert('Association deleted.');\n";
     } else {

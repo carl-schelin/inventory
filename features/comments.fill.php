@@ -25,7 +25,7 @@
       $q_string  = "select feat_text,feat_timestamp,feat_user ";
       $q_string .= "from features_detail ";
       $q_string .= "where feat_id = " . $formVars['id'];
-      $q_features_detail = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_features_detail = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_features_detail = mysqli_fetch_array($q_features_detail);
       mysqli_free_result($q_features_detail);
 

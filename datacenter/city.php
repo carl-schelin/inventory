@@ -249,7 +249,7 @@ add the necessary information and then save the new City or County.</p>
   $q_string  = "select st_id,st_state ";
   $q_string .= "from states ";
   $q_string .= "order by st_state ";
-  $q_states = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_states = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_states = mysqli_fetch_array($q_states)) {
     print "<option value=\"" . $a_states['st_id'] . "\">" . $a_states['st_state'] . "</option>\n";
   }
@@ -283,7 +283,7 @@ add the necessary information and then save the new City or County.</p>
   $q_string  = "select st_id,st_state ";
   $q_string .= "from states ";
   $q_string .= "order by st_state ";
-  $q_states = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_states = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_states = mysqli_fetch_array($q_states)) {
     print "<option value=\"" . $a_states['st_id'] . "\">" . $a_states['st_state'] . "</option>\n";
   }

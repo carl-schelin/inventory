@@ -24,7 +24,7 @@
       $q_string  = "select st_state,st_acronym,st_country ";
       $q_string .= "from states ";
       $q_string .= "where st_id = " . $formVars['id'];
-      $q_states = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_states = mysqli_query($db, $q_string) or die (mysqli_error($db));
       $a_states = mysqli_fetch_array($q_states);
       mysqli_free_result($q_states);
 

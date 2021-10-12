@@ -176,7 +176,7 @@
   $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
   $q_string .= $where . " and sw_type = 'OS' ";
   $q_string .= $orderby;
-  $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   if (mysqli_num_rows($q_software) > 0) {
     while ($a_software = mysqli_fetch_array($q_software)) {
 

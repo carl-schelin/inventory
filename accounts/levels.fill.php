@@ -24,7 +24,7 @@
       $q_string  = "select lvl_name,lvl_level,lvl_disabled ";
       $q_string .= "from levels ";
       $q_string .= "where lvl_id = " . $formVars['id'];
-      $q_levels = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_levels = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_levels = mysqli_fetch_array($q_levels);
       mysqli_free_result($q_levels);
 

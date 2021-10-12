@@ -24,7 +24,7 @@
       $q_string  = "select role_name ";
       $q_string .= "from roles ";
       $q_string .= "where role_id = " . $formVars['id'];
-      $q_roles = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_roles = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_roles = mysqli_fetch_array($q_roles);
       mysqli_free_result($q_roles);
 
