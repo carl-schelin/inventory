@@ -25,7 +25,7 @@
       $q_string  = "select chk_id,chk_companyid,chk_errorid,chk_userid,chk_status,chk_text,chk_priority,chk_closed ";
       $q_string .= "from chkserver ";
       $q_string .= "where chk_id = " . $formVars['id'];
-      $q_chkserver = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       $a_chkserver = mysqli_fetch_array($q_chkserver);
       mysqli_free_result($q_chkserver);
 
@@ -60,7 +60,7 @@
       $q_string  = "select ce_error ";
       $q_string .= "from chkerrors ";
       $q_string .= "where ce_id = " . $a_chkserver['chk_errorid'] . " ";
-      $q_chkerrors = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       $a_chkerrors = mysqli_fetch_array($q_chkerrors);
 
       print "document.getElementById('error_message').innerHTML = '" . mysqli_real_escape_string($db, $a_chkerrors['ce_error']) . "';\n";
@@ -68,7 +68,7 @@
       $q_string  = "select inv_name ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_id = " . $a_chkserver['chk_companyid'] . " ";
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       $a_inventory = mysqli_fetch_array($q_inventory);
 
       print "document.getElementById('error_server').innerHTML = '" . mysqli_real_escape_string($db, $a_inventory['inv_name']) . "';\n";

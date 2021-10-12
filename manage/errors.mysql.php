@@ -27,12 +27,12 @@
           "ce_priority =   " . $formVars['priority'];
 
         if ($formVars['update'] == 1) {
-          $q_string = "update chkerrors set " . $q_string . " where ce_id = " . $formVars['id'];
+          $query = "update chkerrors set " . $q_string . " where ce_id = " . $formVars['id'];
         }
 
         logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $a_inventory['inv_name']);
 
-        mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
       }
 
 
@@ -51,7 +51,7 @@
       $q_string .= "from chkerrors ";
       $q_string .= "where ce_priority = 1 and ce_delete = 0 ";
       $q_string .= "order by ce_error ";
-      $q_chkerrors = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_chkerrors = mysqli_fetch_array($q_chkerrors)) {
 
         $count++;
@@ -88,7 +88,7 @@
       $q_string .= "from chkerrors ";
       $q_string .= "where ce_priority = 2 and ce_delete = 0 ";
       $q_string .= "order by ce_error ";
-      $q_chkerrors = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_chkerrors = mysqli_fetch_array($q_chkerrors)) {
 
         $count++;
@@ -125,7 +125,7 @@
       $q_string .= "from chkerrors ";
       $q_string .= "where ce_priority = 3 and ce_delete = 0 ";
       $q_string .= "order by ce_error ";
-      $q_chkerrors = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_chkerrors = mysqli_fetch_array($q_chkerrors)) {
 
         $count++;
@@ -162,7 +162,7 @@
       $q_string .= "from chkerrors ";
       $q_string .= "where ce_priority = 4 and ce_delete = 0 ";
       $q_string .= "order by ce_error ";
-      $q_chkerrors = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_chkerrors = mysqli_fetch_array($q_chkerrors)) {
 
         $count++;
@@ -199,7 +199,7 @@
       $q_string .= "from chkerrors ";
       $q_string .= "where ce_priority = 5 and ce_delete = 0 ";
       $q_string .= "order by ce_error ";
-      $q_chkerrors = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_chkerrors = mysqli_fetch_array($q_chkerrors)) {
 
         $count++;

@@ -56,15 +56,19 @@
           "mu_ticket      = \"" . $formVars['mu_ticket']     . "\"";
 
         if ($formVars['update'] == 0) {
-          $q_string = "insert into manageusers set mu_id = null," . $q_string;
+          $query = "insert into manageusers set mu_id = null," . $q_string;
+          $message = "User added.";
         }
         if ($formVars['update'] == 1) {
-          $q_string = "update manageusers set " . $q_string . " where mu_id = " . $formVars['id'];
+          $query = "update manageusers set " . $q_string . " where mu_id = " . $formVars['id'];
+          $message = "User updated.";
         }
 
         logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['mu_username']);
 
-        mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
+
+        print "alert('" . $message . "');\n";
       }
 
 
@@ -112,7 +116,7 @@
       $q_string .= "from manageusers ";
       $q_string .= "where (mu_account = 0 or mu_account = 2) and mu_name != \"\" and mu_email != \"\" ";
       $q_string .= "order by mu_username ";
-      $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_manageusers) > 0) {
         while ($a_manageusers = mysqli_fetch_array($q_manageusers)) {
 
@@ -124,7 +128,7 @@
           $q_string .= "from syspwd ";
           $q_string .= "left join inventory on inventory.inv_id = syspwd.pwd_companyid ";
           $q_string .= "where pwd_user = \"" . $a_manageusers['mu_username'] . "\" and inv_status = 0 ";
-          $q_syspwd = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_syspwd) > 0) {
             $class = "ui-widget-content";
           } else {
@@ -197,7 +201,7 @@
       $q_string .= "from manageusers ";
       $q_string .= "where mu_locked = 1 ";
       $q_string .= "order by mu_username ";
-      $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_manageusers) > 0) {
         while ($a_manageusers = mysqli_fetch_array($q_manageusers)) {
 
@@ -209,7 +213,7 @@
           $q_string .= "from syspwd ";
           $q_string .= "left join inventory on inventory.inv_id = syspwd.pwd_companyid ";
           $q_string .= "where pwd_user = \"" . $a_manageusers['mu_username'] . "\" and inv_status = 0 ";
-          $q_syspwd = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_syspwd) > 0) {
             $class = "ui-widget-content";
           } else {
@@ -282,7 +286,7 @@
       $q_string .= "from manageusers ";
       $q_string .= "where mu_account = 1 ";
       $q_string .= "order by mu_username ";
-      $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_manageusers) > 0) {
         while ($a_manageusers = mysqli_fetch_array($q_manageusers)) {
 
@@ -294,7 +298,7 @@
           $q_string .= "from syspwd ";
           $q_string .= "left join inventory on inventory.inv_id = syspwd.pwd_companyid ";
           $q_string .= "where pwd_user = \"" . $a_manageusers['mu_username'] . "\" and inv_status = 0 ";
-          $q_syspwd = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_syspwd) > 0) {
             $class = "ui-widget-content";
           } else {
@@ -368,7 +372,7 @@
       $q_string .= "from manageusers ";
       $q_string .= "where mu_account = 2 ";
       $q_string .= "order by mu_username ";
-      $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_manageusers) > 0) {
         while ($a_manageusers = mysqli_fetch_array($q_manageusers)) {
 
@@ -380,7 +384,7 @@
           $q_string .= "from syspwd ";
           $q_string .= "left join inventory on inventory.inv_id = syspwd.pwd_companyid ";
           $q_string .= "where pwd_user = \"" . $a_manageusers['mu_username'] . "\" and inv_status = 0 ";
-          $q_syspwd = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_syspwd) > 0) {
             $class = "ui-widget-content";
           } else {
