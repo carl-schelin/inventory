@@ -68,7 +68,7 @@ if (isset($_POST['change_user'])) {
   $q_string  = "select usr_id,usr_name,usr_email ";
   $q_string .= "from users ";
   $q_string .= "where usr_id != 1 and usr_disabled = 0 and (usr_name = '" . $search_q . "' or usr_email = '" . $search_q . "')";
-  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_users) == '1') {
     $a_users = mysqli_fetch_array($q_users);
 
@@ -77,7 +77,7 @@ if (isset($_POST['change_user'])) {
     $q_string .= "from users ";
     $q_string .= "left join themes on themes.theme_id = users.usr_theme ";
     $q_string .= "where usr_name = '" . $a_users['usr_name'] . "' ";
-    $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     $a_users = mysqli_fetch_array($q_users);
 
     $_SESSION['uid']         = $a_users['usr_id'];

@@ -10,7 +10,7 @@
     $q_string .= "where usr_name like '" . $search . "%' or usr_first like '" . $search . "%' or usr_last like '" . $search . "%' ";
     $q_string .= "order by usr_name limit 0, 5";
 
-    $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $q_users = mysqli_query($db, $q_string);
 
     $c_users = mysqli_num_rows($q_users);
 
@@ -37,11 +37,7 @@
         $username = addslashes($_GET['usr_name']); 
       } 
 
-      $q_string  = "select * ";
-      $q_string .= "from users ";
-      $q_string .= "where usr_name = '" . $username . "'";
-      $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $c_users = mysqli_num_rows($q_users);
+      $c_users = mysqli_num_rows(mysqli_query($db, "select * from users where usr_name='" . $username . "'"));
 
       header('Content-Type: text/xml'); 
       header('Pragma: no-cache'); 
@@ -69,11 +65,7 @@
         $level = addslashes($_GET['level']); 
       } 
 
-      $q_string  = "select * ";
-      $q_string .= "from levels ";
-      $q_string .= "where lvl_name = '" . $level . "'";
-      $q_levels = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $c_levels = mysqli_num_rows($q_levels);
+      $c_levels = mysqli_num_rows(mysqli_query($db, "select * from levels where lvl_name='" . $level . "'"));
 
       header('Content-Type: text/xml'); 
       header('Pragma: no-cache'); 

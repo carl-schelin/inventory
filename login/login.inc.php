@@ -104,7 +104,7 @@ if (isset($_POST['login'])) {
       $q_string  = "select usr_id,usr_first,usr_last,usr_group,usr_deptname,usr_email,usr_disposition ";
       $q_string .= "from users ";
       $q_string .= "where usr_name='$user' and usr_passwd='$pass'"; 
-      $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_users = mysqli_query($db, $q_string);
 
 // Check that at least one row was returned 
       $c_users = mysqli_num_rows($q_users); 
@@ -117,7 +117,7 @@ if (isset($_POST['login'])) {
           $q_string .= "usr_checkin = '" . $checkin . "',";
           $q_string .= "usr_ipaddr = '" . $ipaddr . "' ";
           $q_string .= "where usr_id = " . $a_users['usr_id'] . " ";
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 // Start the session and register a variable 
           session_start(); 
