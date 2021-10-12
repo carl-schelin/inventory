@@ -24,7 +24,7 @@
       $q_string  = "select inv_manager ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_id = " . $formVars['id'] . " ";
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       $a_inventory = mysqli_fetch_array($q_inventory);
 
 # if not a member of the group that can edit this server, default to zero which bypasses all the edit functions.
@@ -95,7 +95,7 @@
           $q_string .= "set ";
           $q_string .= "hw_built = '" . $formVars['select'] . "' ";
           $q_string .= "where hw_id = " . $formVars['id'] . " ";
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 # replace the input field with the updated data.
           print "cell.innerHTML = '<u>" . $formVars['select'] . "</u>';\n";
@@ -140,7 +140,7 @@
           $q_string .= "set ";
           $q_string .= "hw_active = '" . $formVars['select'] . "' ";
           $q_string .= "where hw_id = " . $formVars['id'] . " ";
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $formVars['select'] . "</u>';\n";
         }
@@ -181,7 +181,7 @@
           $q_string .= "from a_groups ";
           $q_string .= "where grp_disabled = 0 ";
           $q_string .= "order by grp_name ";
-          $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           while ($a_groups = mysqli_fetch_array($q_groups) ) {
             print "if (celltext == \"" . $a_groups['grp_name'] . "\") {\n";
@@ -210,7 +210,7 @@
           $q_string  = "select grp_id,grp_name ";
           $q_string .= "from a_groups ";
           $q_string .= "where grp_id = " . $formVars['select'] . " ";
-          $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_groups) > 0) {
             $a_groups = mysqli_fetch_array($q_groups);
           } else {
@@ -249,7 +249,7 @@
           $q_string  = "select svc_id,svc_name ";
           $q_string .= "from service ";
           $q_string .= "order by svc_id ";
-          $q_service = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_service = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           while ($a_service = mysqli_fetch_array($q_service) ) {
             print "if (celltext == \"" . $a_service['svc_name'] . "\") {\n";
@@ -274,7 +274,7 @@
           $q_string  = "select svc_id,svc_name ";
           $q_string .= "from service ";
           $q_string .= "where svc_id = " . $formVars['select'] . " ";
-          $q_service = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_service = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_service) > 0) {
             $a_service = mysqli_fetch_array($q_service);
           } else {
@@ -313,7 +313,7 @@
           $q_string .= "from locations ";
           $q_string .= "where loc_type = 1 ";
           $q_string .= "order by loc_name ";
-          $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           while ($a_locations = mysqli_fetch_array($q_locations) ) {
             print "if (celltext == \"" . $a_locations['loc_name'] . "\") {\n";
@@ -338,7 +338,7 @@
           $q_string  = "select loc_id,loc_name ";
           $q_string .= "from locations ";
           $q_string .= "where loc_id = " . $formVars['select'] . " ";
-          $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_locations) > 0) {
             $a_locations = mysqli_fetch_array($q_locations);
           } else {
@@ -416,7 +416,7 @@
           $q_string .= "from operatingsystem ";
           $q_string .= "where os_delete = 0 ";
           $q_string .= "order by os_software ";
-          $q_operatingsystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_operatingsystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           while ($a_operatingsystem = mysqli_fetch_array($q_operatingsystem) ) {
             print "if (celltext == \"" . $a_operatingsystem['os_software'] . "\") {\n";
@@ -441,7 +441,7 @@
           $q_string  = "select os_id,os_software ";
           $q_string .= "from operatingsystem ";
           $q_string .= "where os_id = " . $formVars['select'] . " ";
-          $q_operatingsystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_operatingsystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_operatingsystem) > 0) {
             $a_operatingsystem = mysqli_fetch_array($q_operatingsystem);
           } else {
@@ -668,7 +668,7 @@ if ($formVars['type'] == 20) {
           $q_string .= "from users ";
           $q_string .= "where usr_disabled = 0 ";
           $q_string .= "order by usr_last,usr_first ";
-          $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 // create the javascript bit for populating the user dropdown box.
           while ($a_users = mysqli_fetch_array($q_users) ) {
@@ -694,7 +694,7 @@ if ($formVars['type'] == 20) {
           $q_string  = "select usr_id,usr_last,usr_first ";
           $q_string .= "from users ";
           $q_string .= "where usr_id = " . $formVars['select'] . " ";
-          $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_users) > 0) {
             $a_users = mysqli_fetch_array($q_users);
 

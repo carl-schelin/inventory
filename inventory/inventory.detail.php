@@ -24,7 +24,7 @@
       $q_string  = "select inv_manager ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_id = " . $formVars['id'] . " ";
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       $a_inventory = mysqli_fetch_array($q_inventory);
 
 # if not a member of the group that can edit this server, default to zero which bypasses all the edit functions.
@@ -69,7 +69,7 @@
           $q_string .= "from inventory ";
           $q_string .= "where inv_status = 0 and inv_virtual = 0 ";
           $q_string .= "order by inv_name ";
-          $q_parent = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_parent = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           while ($a_parent = mysqli_fetch_array($q_parent) ) {
             print "if (celltext == \"" . $a_parent['inv_name'] . "\") {\n";
             print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_parent['inv_name']) . "\"," . $a_parent['inv_id'] . ",1,1);\n";
@@ -93,7 +93,7 @@
           $q_string  = "select inv_id,inv_name ";
           $q_string .= "from inventory ";
           $q_string .= "where inv_id = " . $formVars['select'] . " ";
-          $q_parent = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_parent = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_parent) > 0) {
             $a_parent = mysqli_fetch_array($q_parent);
           } else {
@@ -108,7 +108,7 @@
           $q_string .= "set ";
           $q_string .= "inv_companyid = " . $a_parent['inv_id'] . " ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
         }
@@ -153,7 +153,7 @@
           $q_string .= "set ";
           $q_string .= "inv_function = '" . $formVars['select'] . "' ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $formVars['select'] . "</u>';\n";
 
@@ -186,7 +186,7 @@
           $q_string .= "from a_groups ";
           $q_string .= "where grp_disabled = 0 ";
           $q_string .= "order by grp_name ";
-          $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           while ($a_groups = mysqli_fetch_array($q_groups) ) {
             print "if (celltext == \"" . $a_groups['grp_name'] . "\") {\n";
@@ -211,7 +211,7 @@
           $q_string  = "select grp_id,grp_name ";
           $q_string .= "from a_groups ";
           $q_string .= "where grp_id = " . $formVars['select'] . " ";
-          $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_groups) > 0) {
             $a_groups = mysqli_fetch_array($q_groups);
           } else {
@@ -227,7 +227,7 @@
           $q_string .= "set ";
           $q_string .= "inv_manager = " . $a_groups['grp_id'] . " ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 # update the hardware listing; all hardware for this server
           $q_string  = "update ";
@@ -235,7 +235,7 @@
           $q_string .= "set ";
           $q_string .= "hw_group = " . $a_groups['grp_id'] . " ";          
           $q_string .= "where hw_companyid = " . $formVars['id'] . " ";
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 # update the software listing; only software that's owned by the old group
           $q_string  = "update ";
@@ -243,7 +243,7 @@
           $q_string .= "set ";
           $q_string .= "sw_group = " . $a_groups['grp_id'] . " ";          
           $q_string .= "where sw_companyid = " . $formVars['id'] . " and sw_group = " . $formVars['select'] . " ";
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 # update file system ownershps
           $q_string  = "update ";
@@ -251,7 +251,7 @@
           $q_string .= "set ";
           $q_string .= "fs_group = " . $a_groups['grp_id'] . " ";          
           $q_string .= "where fs_companyid = " . $formVars['id'] . " and fs_group = " . $formVars['select'] . " ";
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
 
@@ -283,7 +283,7 @@
           $q_string .= "from a_groups ";
           $q_string .= "where grp_disabled = 0 ";
           $q_string .= "order by grp_name ";
-          $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           while ($a_groups = mysqli_fetch_array($q_groups) ) {
             print "if (celltext == \"" . $a_groups['grp_name'] . "\") {\n";
@@ -308,7 +308,7 @@
           $q_string  = "select grp_id,grp_name ";
           $q_string .= "from a_groups ";
           $q_string .= "where grp_id = " . $formVars['select'] . " ";
-          $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_groups) > 0) {
             $a_groups = mysqli_fetch_array($q_groups);
           } else {
@@ -323,7 +323,7 @@
           $q_string .= "set ";
           $q_string .= "inv_appadmin = " . $a_groups['grp_id'] . " ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 # update the software listing; only software that's owned by the old group
           $q_string  = "update ";
@@ -331,7 +331,7 @@
           $q_string .= "set ";
           $q_string .= "sw_group = " . $a_groups['grp_id'] . " ";          
           $q_string .= "where sw_companyid = " . $formVars['id'] . " and sw_group = " . $formVars['select'] . " ";
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 # update file system ownershps
           $q_string  = "update ";
@@ -339,7 +339,7 @@
           $q_string .= "set ";
           $q_string .= "fs_group = " . $a_groups['grp_id'] . " ";          
           $q_string .= "where fs_companyid = " . $formVars['id'] . " and fs_group = " . $formVars['select'] . " ";
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
 
@@ -371,7 +371,7 @@
           $q_string  = "select prod_id,prod_name ";
           $q_string .= "from products ";
           $q_string .= "order by prod_name ";
-          $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           while ($a_products = mysqli_fetch_array($q_products) ) {
             print "if (celltext == \"" . $a_products['prod_name'] . "\") {\n";
@@ -399,7 +399,7 @@
           $q_string  = "select inv_product ";
           $q_string .= "from inventory ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
-          $q_invcheck = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_invcheck = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           $a_invcheck = mysqli_fetch_array($q_invcheck);
 
           if ($a_invcheck['inv_product'] != $formVars['select']) {
@@ -408,7 +408,7 @@
             $q_string .= "set ";
             $q_string .= "inv_project = 0 ";
             $q_string .= "where inv_id = " . $formVars['id'] . " ";
-            $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
             print "var cellproject = document.getElementById('ipj" . $formVars['id'] . "');\n";
             print "cellproject.innerHTML = '<u>Unassigned</u>';\n";
@@ -417,7 +417,7 @@
           $q_string  = "select prod_id,prod_name ";
           $q_string .= "from products ";
           $q_string .= "where prod_id = " . $formVars['select'] . " ";
-          $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_products) > 0) {
             $a_products = mysqli_fetch_array($q_products);
           } else {
@@ -432,7 +432,7 @@
           $q_string .= "set ";
           $q_string .= "inv_product = " . $a_products['prod_id'] . " ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
         }
@@ -464,14 +464,14 @@
           $q_string  = "select inv_manager,inv_product ";
           $q_string .= "from inventory ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
-          $q_invcheck = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_invcheck = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           $a_invcheck = mysqli_fetch_array($q_invcheck);
 
           $q_string  = "select prj_id,prj_name ";
           $q_string .= "from projects ";
           $q_string .= "where prj_group = " . $a_invcheck['inv_manager'] . " and prj_product = " . $a_invcheck['inv_product'] . " ";
           $q_string .= "order by prj_name ";
-          $q_projects = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           while ($a_projects = mysqli_fetch_array($q_projects) ) {
             print "if (celltext == \"" . $a_projects['prj_name'] . "\") {\n";
@@ -496,7 +496,7 @@
           $q_string  = "select prj_id,prj_name ";
           $q_string .= "from projects ";
           $q_string .= "where prj_id = " . $formVars['select'] . " ";
-          $q_projects = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_projects) > 0) {
             $a_projects = mysqli_fetch_array($q_projects);
           } else {
@@ -511,7 +511,7 @@
           $q_string .= "set ";
           $q_string .= "inv_project = " . $a_projects['prj_id'] . " ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
         }
@@ -541,7 +541,7 @@
           $q_string  = "select svc_id,svc_name ";
           $q_string .= "from service ";
           $q_string .= "order by svc_id ";
-          $q_service = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_service = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           while ($a_service = mysqli_fetch_array($q_service) ) {
             print "if (celltext == \"" . $a_service['svc_name'] . "\") {\n";
@@ -566,7 +566,7 @@
           $q_string  = "select svc_id,svc_name ";
           $q_string .= "from service ";
           $q_string .= "where svc_id = " . $formVars['select'] . " ";
-          $q_service = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_service = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_service) > 0) {
             $a_service = mysqli_fetch_array($q_service);
           } else {
@@ -581,7 +581,7 @@
           $q_string .= "set ";
           $q_string .= "inv_class = " . $a_service['svc_id'] . " ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
         }
@@ -611,7 +611,7 @@
           $q_string  = "select win_id,win_text ";
           $q_string .= "from maint_window ";
           $q_string .= "order by win_text ";
-          $q_window = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_window = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           while ($a_window = mysqli_fetch_array($q_window) ) {
             print "if (celltext == \"" . $a_window['win_text'] . "\") {\n";
@@ -636,7 +636,7 @@
           $q_string  = "select win_id,win_text ";
           $q_string .= "from maint_window ";
           $q_string .= "where win_id = " . $formVars['select'] . " ";
-          $q_window = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_window = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           $a_window = mysqli_fetch_array($q_window);
 
           $display = $a_window['win_text'];
@@ -646,7 +646,7 @@
           $q_string .= "set ";
           $q_string .= "inv_maint = " . $a_window['win_id'] . " ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
         }
@@ -678,7 +678,7 @@
           $q_string .= "from locations ";
           $q_string .= "where loc_type = 1 ";
           $q_string .= "order by loc_name ";
-          $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           while ($a_locations = mysqli_fetch_array($q_locations) ) {
             print "if (celltext == \"" . $a_locations['loc_name'] . "\") {\n";
@@ -703,7 +703,7 @@
           $q_string  = "select loc_id,loc_name ";
           $q_string .= "from locations ";
           $q_string .= "where loc_id = " . $formVars['select'] . " ";
-          $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_locations) > 0) {
             $a_locations = mysqli_fetch_array($q_locations);
           } else {
@@ -718,7 +718,7 @@
           $q_string .= "set ";
           $q_string .= "inv_location = " . $a_locations['loc_id'] . " ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
         }
@@ -762,7 +762,7 @@
           $q_string .= "set ";
           $q_string .= "inv_fqdn = '" . $formVars['select'] . "' ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $formVars['select'] . "</u>';\n";
         }
@@ -806,7 +806,7 @@
           $q_string .= "set ";
           $q_string .= "inv_fqdn = '" . $formVars['select'] . "' ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $formVars['select'] . "</u>';\n";
         }
@@ -850,7 +850,7 @@
           $q_string .= "set ";
           $q_string .= "inv_fqdn = '" . $formVars['select'] . "' ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           print "cell.innerHTML = '<u>" . $formVars['select'] . "</u>';\n";
         }
@@ -864,7 +864,7 @@
         $q_string .= "from inventory ";
         $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
         $q_string .= "where inv_id = " . $formVars['id'] . " and hw_primary = 1 and hw_deleted = 0 ";
-        $q_invlive = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_invlive = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_invlive = mysqli_fetch_array($q_invlive);
 
         if ($a_invlive['hw_active'] == '1971-01-01') {
@@ -878,7 +878,7 @@
         $q_string .= "set ";
         $q_string .= "hw_active = '" . $a_invlive['hw_active'] . "' ";
         $q_string .= "where hw_id = " . $a_invlive['hw_id'] . " ";
-        $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
         if ($a_invlive['hw_active'] == '1971-01-01') {
           print "document.getElementById('ilv" . $formVars['id'] . "').checked = false;\n";
@@ -892,7 +892,7 @@
         $q_string  = "select inv_callpath ";
         $q_string .= "from inventory ";
         $q_string .= "where inv_id = " . $formVars['id'] . " ";
-        $q_invcp = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_invcp = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_invcp = mysqli_fetch_array($q_interface);
 
         if ($a_invcp['inv_callpath']) {
@@ -906,7 +906,7 @@
         $q_string .= "set ";
         $q_string .= "inv_callpath = " . $a_invcp['inv_callpath'] . " ";
         $q_string .= "where inv_id = " . $formVars['id'] . " ";
-        $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
         if ($a_invcp['inv_callpath']) {
           print "document.getElementById('icp" . $formVars['id'] . "').checked = true;\n";
@@ -920,7 +920,7 @@
         $q_string  = "select inv_ansible ";
         $q_string .= "from inventory ";
         $q_string .= "where inv_id = " . $formVars['id'] . " ";
-        $q_invans = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_invans = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_invans = mysqli_fetch_array($q_invans);
 
         if ($a_invans['inv_ansible']) {
@@ -934,7 +934,7 @@
         $q_string .= "set ";
         $q_string .= "inv_ansible = " . $a_invans['inv_ansible'] . " ";
         $q_string .= "where inv_id = " . $formVars['id'] . " ";
-        $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
         if ($a_invans['inv_ansible']) {
           print "document.getElementById('ian" . $formVars['id'] . "').checked = true;\n";
@@ -948,7 +948,7 @@
         $q_string  = "select inv_ssh ";
         $q_string .= "from inventory ";
         $q_string .= "where inv_id = " . $formVars['id'] . " ";
-        $q_invssh = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_invssh = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_invssh = mysqli_fetch_array($q_invssh);
 
         if ($a_invssh['inv_ssh']) {
@@ -962,7 +962,7 @@
         $q_string .= "set ";
         $q_string .= "inv_ssh = " . $a_invssh['inv_ssh'] . " ";
         $q_string .= "where inv_id = " . $formVars['id'] . " ";
-        $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
         if ($a_invssh['inv_ssh']) {
           print "document.getElementById('ius" . $formVars['id'] . "').checked = true;\n";

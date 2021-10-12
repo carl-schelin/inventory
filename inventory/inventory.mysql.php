@@ -79,42 +79,42 @@
 # prepopulate the small tables to increase lookup time.
       $q_string  = "select zone_id,zone_zone ";
       $q_string .= "from net_zones ";
-      $q_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_net_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_net_zones = mysqli_fetch_array($q_net_zones)) {
         $net_zones[$a_net_zones['zone_id']] = $a_net_zones['zone_zone'];
       }
 
       $q_string  = "select med_id,med_text ";
       $q_string .= "from int_media ";
-      $q_int_media = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_int_media = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_int_media = mysqli_fetch_array($q_int_media)) {
         $int_media[$a_int_media['med_id']] = $a_int_media['med_text'];
       }
 
       $q_string  = "select itp_id,itp_acronym ";
       $q_string .= "from int_types ";
-      $q_int_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_int_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_int_types = mysqli_fetch_array($q_int_types)) {
         $int_types[$a_int_types['itp_id']] = $a_int_types['itp_acronym'];
       }
 
       $q_string  = "select spd_id,spd_text ";
       $q_string .= "from int_speed ";
-      $q_int_speed = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_int_speed = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_int_speed = mysqli_fetch_array($q_int_speed)) {
         $int_speed[$a_int_speed['spd_id']] = $a_int_speed['spd_text'];
       }
 
       $q_string  = "select dup_id,dup_text ";
       $q_string .= "from int_duplex ";
-      $q_int_duplex = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_int_duplex = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_int_duplex = mysqli_fetch_array($q_int_duplex)) {
         $int_duplex[$a_int_duplex['dup_id']] = $a_int_duplex['dup_text'];
       }
 
       $q_string  = "select red_id,red_text ";
       $q_string .= "from int_redundancy ";
-      $q_int_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_int_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_int_redundancy = mysqli_fetch_array($q_int_redundancy)) {
         $int_redundancy[$a_int_redundancy['red_id']] = $a_int_redundancy['red_text'];
       }
@@ -184,7 +184,7 @@
       }
       $q_string .= $filter;
       $q_string .= "order by inv_name ";
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
         $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">";
@@ -193,7 +193,7 @@
         $q_string  = "select inv_name ";
 	$q_string .= "from inventory ";
 	$q_string .= "where inv_id = " . $a_inventory['inv_companyid'] . " ";
-        $q_parent = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_parent = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 	if (mysqli_num_rows($q_parent) > 0) {
           $a_parent = mysqli_fetch_array($q_parent);
 	} else {
@@ -203,13 +203,13 @@
         $q_string  = "select grp_name ";
         $q_string .= "from a_groups ";
         $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'];
-        $q_appadmin = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_appadmin = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_appadmin = mysqli_fetch_array($q_appadmin);
 
         $q_string  = "select hw_active ";
         $q_string .= "from hardware ";
         $q_string .= "where hw_primary = 1 and hw_deleted = 0 and hw_companyid = " . $a_inventory['inv_id'] . " ";
-        $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_hardware = mysqli_fetch_array($q_hardware);
 
         if ($formVars['csv'] == 'true') {
@@ -343,7 +343,7 @@
       }
       $q_string .= $filter;
       $q_string .= "order by inv_name ";
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
         $linkstart       = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">";
@@ -357,7 +357,7 @@
         $q_string .= "left join parts  on parts.part_id = hardware.hw_type ";
         $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = 0 ";
         $q_string .= "order by hw_primary desc,part_id,mod_size ";
-        $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
           $hwsize = $a_hardware['mod_size'];
@@ -402,7 +402,7 @@
           $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
           $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " ";
           $q_string .= "order by hw_primary desc,part_id,mod_size ";
-          $q_hw_child = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_hw_child = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           while ($a_hw_child = mysqli_fetch_array($q_hw_child)) {
 
             $hwsize = $a_hw_child['mod_size'];
@@ -520,7 +520,7 @@
       }
       $q_string .= $filter;
       $q_string .= "order by inv_name ";
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
         $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">";
@@ -535,7 +535,7 @@
         $q_string .= "left join int_media on int_media.med_id = interface.int_media ";
         $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = 0 and (int_type = 1 or int_type = 2 or int_type = 12 or int_type = 16) ";
         $q_string .= "order by int_server,itp_acronym";
-        $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         if (mysqli_num_rows($q_interface) > 0) {
           while ($a_interface = mysqli_fetch_array($q_interface)) {
 
@@ -686,7 +686,7 @@
             $q_string .= "left join int_media on int_media.med_id = interface.int_media ";
             $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_interface['int_id'] . " and (int_type = 1 or int_type = 2 or int_type = 12 or int_type = 16) ";
             $q_string .= "order by int_server,itp_acronym";
-            $q_int_child = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $q_int_child = mysqli_query($db, $q_string);
             if (mysqli_num_rows($q_int_child) > 0) {
               while ($a_int_child = mysqli_fetch_array($q_int_child)) {
 
@@ -894,7 +894,7 @@
       }
       $q_string .= $filter;
       $q_string .= "order by inv_name ";
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
         $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">";
@@ -908,7 +908,7 @@
         $q_string .= "from tags ";
         $q_string .= "where tag_companyid = " . $a_inventory['inv_id'] . " and tag_type = 1 ";
         $q_string .= "order by tag_name ";
-        $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         if (mysqli_num_rows($q_tags) > 0) {
           $comma = "";
           while ($a_tags = mysqli_fetch_array($q_tags)) {
