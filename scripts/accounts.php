@@ -151,15 +151,15 @@
           "pwd_update    = \"" . $date     . "\"";
 
         if (mysqli_num_rows($q_syspwd) == 0) {
-          $q_string = "insert into syspwd set pwd_id = null," . $q_string;
+          $query = "insert into syspwd set pwd_id = null," . $q_string;
           $status = 'i';
         } else {
-          $q_string = "update syspwd set " . $q_string . " where pwd_id = " . $a_syspwd['pwd_id'];
+          $query = "update syspwd set " . $q_string . " where pwd_id = " . $a_syspwd['pwd_id'];
           $status = 'u';
         }
 
         if ($debug == 'yes') {
-          print $q_string . "\n";
+          print $query . "\n";
         } else {
           if ($value[2] != '') {
             $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -202,15 +202,15 @@
             "mem_update = \"" . $date . "\"";
 
           if (mysqli_num_rows($q_sysgrp_members) == 0) {
-            $q_string = "insert into sysgrp_members set mem_id = null," . $q_string;
+            $query = "insert into sysgrp_members set mem_id = null," . $q_string;
             $status = "M";
           } else {
-            $q_string = "update sysgrp_members set " . $q_string . " where mem_id = " . $a_sysgrp_members['mem_id'];
+            $query = "update sysgrp_members set " . $q_string . " where mem_id = " . $a_sysgrp_members['mem_id'];
             $status = "m";
           }
 
           if ($debug == 'yes') {
-            print $q_string . "\n";
+            print $query . "\n";
           } else {
             $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             print $status;
@@ -245,15 +245,15 @@
           "grp_update    = \"" . $date     . "\"";
 
         if (mysqli_num_rows($q_sysgrp) == 0) {
-          $q_string = "insert into sysgrp set grp_id = null," . $q_string;
+          $query = "insert into sysgrp set grp_id = null," . $q_string;
           $status = 'I';
         } else {
-          $q_string = "update sysgrp set " . $q_string . " where grp_id = " . $a_sysgrp['grp_id'];
+          $query = "update sysgrp set " . $q_string . " where grp_id = " . $a_sysgrp['grp_id'];
           $status = 'U';
         }
 
         if ($debug == 'yes') {
-          print $q_string . "\n";
+          print $query . "\n";
         } else {
           print $status;
           $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -297,15 +297,15 @@
                 "mem_update = \"" . $date               . "\"";
 
               if (mysqli_num_rows($q_sysgrp_members) == 0) {
-                $q_string = "insert into sysgrp_members set mem_id = null," . $q_string;
+                $query = "insert into sysgrp_members set mem_id = null," . $q_string;
                 $status = "M";
               } else {
-                $q_string = "update sysgrp_members set " . $q_string . " where mem_id = " . $a_sysgrp_members['mem_id'];
+                $query = "update sysgrp_members set " . $q_string . " where mem_id = " . $a_sysgrp_members['mem_id'];
                 $status = "m";
               }
 
               if ($debug == 'yes') {
-                print $q_string . "\n";
+                print $query . "\n";
               } else {
                 $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
                 print $status;
