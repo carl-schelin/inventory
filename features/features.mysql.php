@@ -27,7 +27,7 @@
 
   if (strlen($formVars['feat_subject']) > 0) {
 
-    $q_string = "insert into features set feat_id = NULL, " . 
+    $query = "insert into features set feat_id = NULL, " . 
       "feat_module     =   " . $formVars['feat_module']     . "," . 
       "feat_severity   =   " . $formVars['feat_severity']   . "," . 
       "feat_priority   =   " . $formVars['feat_priority']   . "," . 
@@ -40,7 +40,7 @@
 
     $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
-    $q_string = "select last_insert_id($db)";
+    $query = "select last_insert_id($db)";
     $q_result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_result = mysqli_fetch_array($q_result);
 
@@ -51,7 +51,7 @@
       "feat_text      = \"" . $formVars['feat_subject'] . "\"," . 
       "feat_user      =   " . $formVars['feat_openby'];
 
-    $q_string = "insert into features_detail set feat_id = NULL," . $q_string;
+    $query = "insert into features_detail set feat_id = NULL," . $q_string;
 
     $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
