@@ -62,7 +62,7 @@
   $q_string .= "left join country on country.cn_id = states.st_country ";
   $q_string .= "left join loc_types on loc_types.typ_id = locations.loc_type ";
   $q_string .= $where;
-  $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_locations = mysqli_fetch_array($q_locations)) {
 
     $environment = '';
