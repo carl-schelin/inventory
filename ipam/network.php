@@ -294,7 +294,7 @@ the network for that IP address.</p>
   $q_string  = "select zone_id,zone_zone ";
   $q_string .= "from net_zones ";
   $q_string .= "order by zone_zone ";
-  $q_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_net_zones = mysqli_fetch_array($q_net_zones)) {
     print "<option value=\"" . $a_net_zones['zone_id'] . "\">" . $a_net_zones['zone_zone'] . "</option>\n";
   }
@@ -306,7 +306,7 @@ the network for that IP address.</p>
   $q_string  = "select loc_id,loc_name ";
   $q_string .= "from locations ";
   $q_string .= "order by loc_name ";
-  $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_locations = mysqli_fetch_array($q_locations)) {
     print "<option value=\"" . $a_locations['loc_id'] . "\">" . $a_locations['loc_name'] . "</option>\n";
   }
@@ -362,7 +362,7 @@ the network for that IP address.</p>
   $q_string  = "select zone_id,zone_zone ";
   $q_string .= "from net_zones ";
   $q_string .= "order by zone_zone ";
-  $q_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_net_zones = mysqli_fetch_array($q_net_zones)) {
     print "<option value=\"" . $a_net_zones['zone_id'] . "\">" . $a_net_zones['zone_zone'] . "</option>\n";
   }
@@ -374,7 +374,7 @@ the network for that IP address.</p>
   $q_string  = "select loc_id,loc_name ";
   $q_string .= "from locations ";
   $q_string .= "order by loc_name ";
-  $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_locations = mysqli_fetch_array($q_locations)) {
     print "<option value=\"" . $a_locations['loc_id'] . "\">" . $a_locations['loc_name'] . "</option>\n";
   }

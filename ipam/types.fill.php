@@ -24,7 +24,7 @@
       $q_string  = "select ip_name,ip_description ";
       $q_string .= "from ip_types ";
       $q_string .= "where ip_id = " . $formVars['id'];
-      $q_ip_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_ip_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_ip_types = mysqli_fetch_array($q_ip_types);
       mysqli_free_result($q_ip_types);
 

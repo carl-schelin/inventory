@@ -56,7 +56,7 @@
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['net_ipv6'] . "/" . $formVars['net_ipv6']);
 
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -87,7 +87,7 @@
       $q_string .= "left join locations on locations.loc_id = network.net_location ";
       $q_string .= "where net_ipv4 != '' ";
       $q_string .= "order by net_ipv4 ";
-      $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_network) > 0) {
         while ($a_network = mysqli_fetch_array($q_network)) {
 
@@ -100,7 +100,7 @@
           $q_string  = "select ip_ipv4 ";
           $q_string .= "from ipaddress ";
           $q_string .= "where ip_network = " . $a_network['net_id'] . " ";
-          $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_ipaddress) > 0) {
             while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
               $total++;
@@ -157,7 +157,7 @@
       $q_string .= "left join locations on locations.loc_id = network.net_location ";
       $q_string .= "where net_ipv6 != '' ";
       $q_string .= "order by net_ipv6 ";
-      $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_network) > 0) {
         while ($a_network = mysqli_fetch_array($q_network)) {
 
@@ -170,7 +170,7 @@
           $q_string  = "select ip_ipv6 ";
           $q_string .= "from ipaddress ";
           $q_string .= "where ip_network = " . $a_network['net_id'] . " ";
-          $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_ipaddress) > 0) {
             while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
               $total++;

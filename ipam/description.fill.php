@@ -24,7 +24,7 @@
       $q_string  = "select itp_name,itp_acronym,itp_description ";
       $q_string .= "from int_types ";
       $q_string .= "where itp_id = " . $formVars['id'];
-      $q_int_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_int_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_int_types = mysqli_fetch_array($q_int_types);
       mysqli_free_result($q_int_types);
 

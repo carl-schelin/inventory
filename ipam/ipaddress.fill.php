@@ -25,7 +25,7 @@
       $q_string .= "from ipaddress ";
       $q_string .= "left join network on network.net_id = ipaddress.ip_network ";
       $q_string .= "where ip_id = " . $formVars['id'];
-      $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_ipaddress = mysqli_fetch_array($q_ipaddress);
 
       $ip_subzone = return_Index($db, $a_ipaddress['ip_subzone'],  "select sub_id from sub_zones where sub_zone = " . $a_ipaddress['net_zone'] . " order by sub_name");

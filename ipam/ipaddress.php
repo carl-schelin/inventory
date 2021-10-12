@@ -286,14 +286,14 @@ can edit the current entry, or if there is a small difference, you can make chan
   $q_string  = "select net_zone ";
   $q_string .= "from network ";
   $q_string .= "where net_id = " . $formVars['net_id'] . " ";
-  $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   $a_network = mysqli_fetch_array($q_network);
 
   $q_string  = "select sub_id,sub_name ";
   $q_string .= "from sub_zones ";
   $q_string .= "where sub_zone = " . $a_network['net_zone'] . " ";
   $q_string .= "order by sub_name ";
-  $q_sub_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_sub_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_sub_zones = mysqli_fetch_array($q_sub_zones)) {
     print "<option value=\"" . $a_sub_zones['sub_id'] . "\">" . $a_sub_zones['sub_name'] . "</option>\n";
   }
@@ -307,7 +307,7 @@ can edit the current entry, or if there is a small difference, you can make chan
   $q_string  = "select ip_id,ip_name ";
   $q_string .= "from ip_types ";
   $q_string .= "order by ip_name ";
-  $q_ip_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_ip_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_ip_types = mysqli_fetch_array($q_ip_types)) {
     print "<option value=\"" . $a_ip_types['ip_id'] . "\">" . $a_ip_types['ip_name'] . "</option>\n";
   }
@@ -349,14 +349,14 @@ can edit the current entry, or if there is a small difference, you can make chan
   $q_string  = "select net_zone ";
   $q_string .= "from network ";
   $q_string .= "where net_id = " . $formVars['net_id'] . " ";
-  $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   $a_network = mysqli_fetch_array($q_network);
 
   $q_string  = "select sub_id,sub_name ";
   $q_string .= "from sub_zones ";
   $q_string .= "where sub_zone = \"" . $a_network['net_zone'] . "\" ";
   $q_string .= "order by sub_name ";
-  $q_sub_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_sub_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_sub_zones = mysqli_fetch_array($q_sub_zones)) {
     print "<option value=\"" . $a_sub_zones['sub_id'] . "\">" . $a_sub_zones['sub_name'] . "</option>\n";
   }
@@ -368,7 +368,7 @@ can edit the current entry, or if there is a small difference, you can make chan
   $q_string  = "select ip_id,ip_name ";
   $q_string .= "from ip_types ";
   $q_string .= "order by ip_name ";
-  $q_ip_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_ip_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_ip_types = mysqli_fetch_array($q_ip_types)) {
     print "<option value=\"" . $a_ip_types['ip_id'] . "\">" . $a_ip_types['ip_name'] . "</option>\n";
   }
