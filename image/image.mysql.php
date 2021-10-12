@@ -42,15 +42,19 @@
             "img_date   = \"" . $formVars['img_date']   . "\"";
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into images set img_id = NULL, " . $q_string;
+            $query = "insert into images set img_id = NULL, " . $q_string;
+            $message = "Image added.";
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update images set " . $q_string . " where img_id = " . $formVars['id'];
+            $query = "update images set " . $q_string . " where img_id = " . $formVars['id'];
+            $message = "Image updated.";
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['img_file']);
 
-          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+
+          print "alert('" . $message . "');\n";
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -105,7 +109,7 @@
       $q_string .= "from images ";
       $q_string .= "left join users on users.usr_id = images.img_owner ";
       $q_string .= "order by img_title,img_file";
-      $q_images = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_images) > 0) {
         while ($a_images = mysqli_fetch_array($q_images)) {
 

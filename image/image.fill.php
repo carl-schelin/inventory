@@ -24,7 +24,7 @@
       $q_string  = "select img_title,img_file,img_facing,img_owner,img_date ";
       $q_string .= "from images ";
       $q_string .= "where img_id = " . $formVars['id'];
-      $q_images = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       $a_images = mysqli_fetch_array($q_images);
       mysqli_free_result($q_images);
 
