@@ -38,10 +38,10 @@
 
     logaccess($db, $_SESSION['uid'], $package, "Adding detail: " . $formVars['bug_module']);
 
-    $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
-    $q_string = "select last_insert_id($db)";
-    $q_result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $query = "select last_insert_id($db)";
+    $q_result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
     $a_result = mysqli_fetch_array($q_result);
 
     $bug = $a_result['last_insert_id($db)'];
@@ -51,9 +51,9 @@
       "bug_text      = \"" . $formVars['bug_subject'] . "\"," . 
       "bug_user      =   " . $formVars['bug_openby'];
 
-    $q_string = "insert into bugs_detail set bug_id = NULL," . $q_string;
+    $query = "insert into bugs_detail set bug_id = NULL," . $q_string;
 
-    $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
     $url = $Bugroot . "/ticket.php?id=" . $bug . "#problem";
 

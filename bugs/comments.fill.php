@@ -25,7 +25,7 @@
       $q_string  = "select bug_text,bug_timestamp,bug_user ";
       $q_string .= "from bugs_detail ";
       $q_string .= "where bug_id = " . $formVars['id'];
-      $q_bugs_detail = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_bugs_detail = mysqli_query($db, $q_string) or die (mysqli_error($db));
       $a_bugs_detail = mysqli_fetch_array($q_bugs_detail);
       mysqli_free_result($q_bugs_detail);
 

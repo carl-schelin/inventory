@@ -28,7 +28,7 @@
   $q_string .= "from bugs ";
   $q_string .= "left join modules on modules.mod_id = bugs.bug_module ";
   $q_string .= "where bug_id = " . $formVars['id'];
-  $q_bugs = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_bugs = mysqli_fetch_array($q_bugs);
 
   $bugs = $a_bugs['mod_name'] . ' Bug: ' . $formVars['id'];
@@ -36,7 +36,7 @@
   $q_string  = "select usr_last,usr_first,usr_phone,usr_email ";
   $q_string .= "from users ";
   $q_string .= "where usr_id = " . $a_bugs['bug_openby'];
-  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_users = mysqli_fetch_array($q_users);
 
 ?>
@@ -444,7 +444,7 @@ $(document).ready( function() {
   $q_string .= "from bugs ";
   $q_string .= "left join modules on modules.mod_id = bugs.bug_module ";
   $q_string .= "where bug_id = " . $formVars['id'];
-  $q_bugs = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_bugs = mysqli_fetch_array($q_bugs);
 
   if ($a_bugs['bug_closed'] == '1971-01-01') {
@@ -453,7 +453,7 @@ $(document).ready( function() {
     $q_string  = "select mod_id,mod_name ";
     $q_string .= "from modules ";
     $q_string .= "order by mod_name ";
-    $q_modules = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $q_modules = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     while ($a_modules = mysqli_fetch_array($q_modules)) {
       if ($a_bugs['bug_module'] == $a_modules['mod_id']) {
         print "<option selected value=\"" . $a_modules['mod_id'] . "\">" . $a_modules['mod_name'] . "</option>\n";
@@ -612,7 +612,7 @@ field shows you the limit of the number of characters. This limit is set by the 
   $q_string  = "select usr_first,usr_last ";
   $q_string .= "from users ";
   $q_string .= "where usr_id = " . $_SESSION['uid'];
-  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_users = mysqli_fetch_array($q_users);
 
   print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_users['usr_first'] . " " . $a_users['usr_last'] . "</option>\n";
@@ -621,7 +621,7 @@ field shows you the limit of the number of characters. This limit is set by the 
   $q_string .= "from users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first";
-  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_users = mysqli_fetch_array($q_users)) {
     print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_first'] . " " . $a_users['usr_last'] . "</option>\n";
   }

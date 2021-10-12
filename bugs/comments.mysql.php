@@ -44,15 +44,19 @@
             "bug_user      =   " . $formVars['bug_user'];
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into bugs_detail set bug_id = NULL, " . $q_string;
+            $query = "insert into bugs_detail set bug_id = NULL, " . $q_string;
+            $message = "Comment added.";
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update bugs_detail set " . $q_string . " where bug_id = " . $formVars['bug_id'];
+            $query = "update bugs_detail set " . $q_string . " where bug_id = " . $formVars['bug_id'];
+            $message = "Comment updated.";
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['bug_id']);
 
-          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+
+          print "alert('" . $message . "');\n";
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -64,7 +68,7 @@
       $q_string  = "select bug_closed ";
       $q_string .= "from bugs ";
       $q_string .= "where bug_id = " . $formVars['id'];
-      $q_bugs = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       $a_bugs = mysqli_fetch_array($q_bugs);
 
 
@@ -113,7 +117,7 @@
       $q_string .= "left join users on users.usr_id = bugs_detail.bug_user ";
       $q_string .= "where bug_bug_id = " . $formVars['id'] . " ";
       $q_string .= "order by bug_timestamp desc ";
-      $q_bugs_detail = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_bugs_detail = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
       while ($a_bugs_detail = mysqli_fetch_array($q_bugs_detail)) {
 
         if ($a_bugs['bug_closed'] == '1971-01-01') {

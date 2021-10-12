@@ -54,15 +54,19 @@
               "bug_user      =   " . $_SESSION['uid']    . "," . 
               "bug_timestamp = \"" . date("Y-m-d H:i:s") . "\"";
 
-            $q_string = "insert into bugs set bug_id = NULL, " . $q_string;
+            $query = "insert into bugs set bug_id = NULL, " . $q_string;
+            $message = "Bug added.";
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update bugs set " . $q_string . " where bug_id = " . $formVars['id'];
+            $query = "update bugs set " . $q_string . " where bug_id = " . $formVars['id'];
+            $message = "Bug updated.";
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
 
-          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+
+          print "alert('" . $message . "');\n";
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -94,18 +98,18 @@
               "bug_closed     = \"" . $formVars['bug_closed']     . "\"," .
               "bug_closeby    =   " . $_SESSION['uid'];
 
-            $q_string = "update bugs set " . $q_string . " where bug_id = " . $formVars['id'];
+            $query = "update bugs set " . $q_string . " where bug_id = " . $formVars['id'];
 
-            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
             $q_string = 
               "bug_bug_id =  " . $formVars['id']                              . "," . 
               "bug_text   =\"" . "Issue closed by " . $_SESSION['username'] . ".\"," . 
               "bug_user   =  " . $_SESSION['uid'];
 
-            $q_string = "insert into bugs_detail set bug_id=null," . $q_string;
+            $query = "insert into bugs_detail set bug_id=null," . $q_string;
 
-            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
           } else {
             $formVars['bug_closed'] = '1971-01-01';
@@ -119,18 +123,18 @@
               "bug_closed     = \"" . $formVars['bug_closed']     . "\"," .
               "bug_closeby    =   " . "0";
 
-            $q_string = "update bugs set " . $q_string . " where bug_id = " . $formVars['id'];
+            $query = "update bugs set " . $q_string . " where bug_id = " . $formVars['id'];
 
-            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
             $q_string = 
               "bug_bug_id =  " . $formVars['id']                              . "," . 
               "bug_text   =\"" . "Issue reopened by " . $_SESSION['username'] . ".\"," . 
               "bug_user   =  " . $_SESSION['uid'];
 
-            $q_string = "insert into bugs_detail set bug_id=null," . $q_string;
+            $query = "insert into bugs_detail set bug_id=null," . $q_string;
 
-            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
           }
         }
       }
