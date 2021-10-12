@@ -149,7 +149,8 @@
               changelog($db, $formVars['hw_companyid'], $formVars['hw_vendorid'], "New Primary Hardware", $_SESSION['uid'], "hardware", "hw_vendorid", 0);
             }
 
-            $q_string = "insert into hardware set hw_id = NULL, " . $q_string;
+            $query = "insert into hardware set hw_id = NULL, " . $q_string;
+            $message = "Hardware added.";
           }
 
           if ($formVars['update'] == 1) {
@@ -173,13 +174,15 @@
               }
             }
 
-            $q_string = "update hardware set " . $q_string . " where hw_id = " . $formVars['id'];
+            $query = "update hardware set " . $q_string . " where hw_id = " . $formVars['id'];
+            $message = "Hardware updated.";
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
 
-          $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
+          print "alert('" . $message . "');\n";
 # One additional bit is to set the status bit to 0 if a server is live and 1 if it's retired. Flip off the ssh bit if retired.
           if ($formVars['hw_primary'] == 1) {
             if ($formVars['hw_retired'] == '1971-01-01' && $formVars['hw_reused'] == '1971-01-01') {
@@ -192,8 +195,7 @@
             $q_string  = "update inventory ";
             $q_string .= "set inv_status = " . $invstatus . $invssh . " ";
             $q_string .= "where inv_id = " . $formVars['hw_companyid'];
-
-            $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           }
         } else {
           print "alert('You must input data before saving changes.');\n";
@@ -264,7 +266,7 @@
               "hw_supportid =   " . $a_hardware['hw_supportid'] . "," .
               "hw_primary   =   " . $a_hardware['hw_primary'];
 
-            $q_string = "insert into hardware set hw_id = NULL, " . $q_string;
+            $query = "insert into hardware set hw_id = NULL, " . $q_string;
             mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           }
         }
