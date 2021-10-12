@@ -46,10 +46,10 @@
             "mail_disabled     = "   . 0             . "," . 
             "mail_date         = \"" . date('Y-m-d') . "\"";
 
-          $q_string = "insert into email set mail_id = null," . $q_string;
+          $query = "insert into email set mail_id = null," . $q_string;
 
           if ($debug == 'yes') {
-            print $q_string . "\n";
+            print $query . "\n";
           } else {
             $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           }
@@ -60,10 +60,10 @@
             "mail_disabled     = "   . 0             . "," . 
             "mail_date         = \"" . date('Y-m-d') . "\"";
 
-          $q_string = "update email set " . $q_string . " where mail_id = " . $a_email['mail_id'] . " ";
+          $query = "update email set " . $q_string . " where mail_id = " . $a_email['mail_id'] . " ";
 
           if ($debug == 'yes') {
-            print $q_string . "\n";
+            print $query . "\n";
           } else {
             $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           }
