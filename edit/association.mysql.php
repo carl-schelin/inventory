@@ -74,7 +74,7 @@
               "clu_association =   " . $a_cluster['clu_association'] . "," .
               "clu_notes       = \"" . $a_cluster['clu_notes']       . "\"";
   
-            $query = "insert into cluster set clu_id = NULL, " . $q_string;
+            $q_string = "insert into cluster set clu_id = NULL, " . $q_string;
             mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           }
         }
