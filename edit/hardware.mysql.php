@@ -507,7 +507,7 @@
       $output .= "</tr>\n";
 
       $primary = 0;
-      $q_string  = "select hw_id,hw_companyid,part_name,hw_serial,hw_asset,hw_product,hw_size,hw_vendorid,mod_speed,mod_size,";
+      $q_string  = "select hw_id,hw_companyid,part_name,hw_serial,hw_asset,hw_product,hw_vendorid,mod_speed,mod_size,";
       $q_string .= "mod_name,hw_active,mod_eol,hw_group,hw_primary,hw_retired,hw_deleted,hw_note,hw_rma,hw_verified,hw_update ";
       $q_string .= "from hardware ";
       $q_string .= "left join parts on hardware.hw_type = parts.part_id ";
@@ -550,11 +550,6 @@
             $checkmark = "&#x2713;";
           }
 
-          $hwsize = $a_hardware['mod_size'];
-          if ($a_hardware['hw_vendorid'] == 0) {
-            $hwsize = $a_hardware['hw_size'];
-          }
-
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('hardware.fill.php?id=" . $a_hardware['hw_id'] . "');showDiv('hardware-hide');\">";
           $linkend = "</a>";
   
@@ -566,14 +561,14 @@
           }
           $output .= "<td " . $class .        "\" " . $hwnote   . ">" . $linkstart . $rma . $a_hardware['mod_name']             . $linkend . "</td>\n";
           $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hardware['part_name']            . $linkend . "</td>\n";
-          $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $hwsize                              . $linkend . "</td>\n";
-          $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hardware['mod_speed']             . $linkend . "</td>\n";
+          $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hardware['mod_size']             . $linkend . "</td>\n";
+          $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hardware['mod_speed']            . $linkend . "</td>\n";
           $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hardware['hw_update']            . $checkmark . $linkend . "</td>\n";
           $output .= "</tr>\n";
 
 
 # any associated equipment
-          $q_string  = "select hw_id,hw_companyid,part_name,hw_serial,hw_asset,hw_product,hw_size,hw_vendorid,mod_speed,mod_size,";
+          $q_string  = "select hw_id,hw_companyid,part_name,hw_serial,hw_asset,hw_product,hw_vendorid,mod_speed,mod_size,";
           $q_string .= "mod_name,hw_active,mod_eol,hw_group,hw_primary,hw_retired,hw_deleted,hw_note,hw_rma,hw_verified,hw_update ";
           $q_string .= "from hardware ";
           $q_string .= "left join parts on hardware.hw_type = parts.part_id ";
@@ -616,11 +611,6 @@
                 $checkmark = "&#x2713;";
               }
 
-              $hwsize = $a_hwselect['mod_size'];
-              if ($a_hwselect['hw_vendorid'] == 0) {
-                $hwsize = $a_hwselect['hw_size'];
-              }
-
               $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('hardware.fill.php?id=" . $a_hwselect['hw_id'] . "');showDiv('hardware-hide');\">";
               $linkend = "</a>";
   
@@ -632,15 +622,15 @@
               }
               $output .= "<td " . $class .        "\" " . $hwnote   . ">&gt; " . $linkstart . $rma . $a_hwselect['mod_name']             . $linkend . "</td>\n";
               $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwselect['part_name']            . $linkend . "</td>\n";
-              $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $hwsize                              . $linkend . "</td>\n";
-              $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwselect['mod_speed']             . $linkend . "</td>\n";
+              $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwselect['mod_size']             . $linkend . "</td>\n";
+              $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwselect['mod_speed']            . $linkend . "</td>\n";
               $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwselect['hw_update']            . $checkmark . $linkend . "</td>\n";
               $output .= "</tr>\n";
 
 
 
 # any associated hard disks
-              $q_string  = "select hw_id,hw_companyid,part_name,hw_serial,hw_asset,hw_product,hw_size,hw_vendorid,mod_speed,mod_size,";
+              $q_string  = "select hw_id,hw_companyid,part_name,hw_serial,hw_asset,hw_product,hw_vendorid,mod_speed,mod_size,";
               $q_string .= "mod_name,hw_active,mod_eol,hw_group,hw_primary,hw_retired,hw_deleted,hw_note,hw_rma,hw_verified,hw_update ";
               $q_string .= "from hardware ";
               $q_string .= "left join parts on hardware.hw_type = parts.part_id ";
@@ -683,11 +673,6 @@
                     $checkmark = "&#x2713;";
                   }
 
-                  $hwsize = $a_hwdisk['mod_size'];
-                  if ($a_hwdisk['hw_vendorid'] == 0) {
-                    $hwsize = $a_hwdisk['hw_size'];
-                  }
-
                   $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('hardware.fill.php?id=" . $a_hwdisk['hw_id'] . "');showDiv('hardware-hide');\">";
                   $linkend = "</a>";
   
@@ -699,8 +684,8 @@
                   }
                   $output .= "<td " . $class .        "\" " . $hwnote   . ">&gt;&gt; " . $linkstart . $rma . $a_hwdisk['mod_name']             . $linkend . "</td>\n";
                   $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwdisk['part_name']            . $linkend . "</td>\n";
-                  $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $hwsize                            . $linkend . "</td>\n";
-                  $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwdisk['mod_speed']             . $linkend . "</td>\n";
+                  $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwdisk['mod_size']             . $linkend . "</td>\n";
+                  $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwdisk['mod_speed']            . $linkend . "</td>\n";
                   $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwdisk['hw_update']            . $checkmark . $linkend . "</td>\n";
                   $output .= "</tr>\n";
 
