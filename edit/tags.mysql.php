@@ -164,6 +164,10 @@
             if (mysqli_num_rows($q_tags) > 0) {
               while ($a_tags = mysqli_fetch_array($q_tags)) {
 
+                if ($a_tags['tag_name'] == '') {
+                  $a_tags['tag_name'] = 'blank';
+                }
+
                 $q_string  = "select tag_id ";
                 $q_string .= "from tags ";
                 $q_string .= "where tag_name = \"" . $a_tags['tag_name'] . "\" and tag_companyid = " . $formVars['tag_companyid'] . " ";
