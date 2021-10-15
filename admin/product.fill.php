@@ -28,7 +28,7 @@
       $a_products = mysqli_fetch_array($q_products);
       mysqli_free_result($q_products);
 
-      $unit    = return_Index($db, $a_products['prod_unit'],    "select bus_id from business_unit order by bus_name");
+      $unit    = return_Index($db, $a_products['prod_unit'],    "select bus_id from business order by bus_name");
       $service = return_Index($db, $a_products['prod_service'], "select svc_id from service order by svc_id");
 
       print "document.formUpdate.prod_name.value = '"    . mysqli_real_escape_string($db, $a_products['prod_name'])    . "';\n";
