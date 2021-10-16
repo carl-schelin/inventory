@@ -76,13 +76,18 @@
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('software.del.php?id=" . $a_sw_support['sw_id'] . "');\">";
           $linkend   = "</a>";
 
+          $class = "ui-widget-content";
+          if ($a_sw_support['sw_eol'] < date('Y-m-d')) {
+            $class = "ui-state-error";
+          }
+
           $output .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
-            $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>";
+            $output .= "  <td class=\"" . $class . " delete\">" . $linkdel   . "</td>";
           }
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_sw_support['sw_software']  . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_sw_support['sw_eos']       . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_sw_support['sw_eol']       . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"          . $linkstart . $a_sw_support['sw_software']  . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"          . $linkstart . $a_sw_support['sw_eos']       . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"          . $linkstart . $a_sw_support['sw_eol']       . $linkend . "</td>";
           $output .= "</tr>";
         }
       } else {
