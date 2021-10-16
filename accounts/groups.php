@@ -77,7 +77,6 @@ function attach_file( p_script_url, update ) {
   af_url += "&grp_organization="  + af_form.grp_organization.value;
   af_url += "&grp_name="          + encode_URI(af_form.grp_name.value);
   af_url += "&grp_manager="       + af_form.grp_manager.value;
-  af_url += "&grp_role="          + af_form.grp_role.value;
   af_url += "&grp_email="         + encode_URI(af_form.grp_email.value);
   af_url += "&grp_disabled="      + af_form.grp_disabled.value;
   af_url += "&grp_status="        + af_form.grp_status.checked;
@@ -99,7 +98,6 @@ function update_file( p_script_url, update ) {
   uf_url += "&grp_organization="  + uf_form.grp_organization.value;
   uf_url += "&grp_name="          + encode_URI(uf_form.grp_name.value);
   uf_url += "&grp_manager="       + uf_form.grp_manager.value;
-  uf_url += "&grp_role="          + uf_form.grp_role.value;
   uf_url += "&grp_email="         + encode_URI(uf_form.grp_email.value);
   uf_url += "&grp_disabled="      + uf_form.grp_disabled.value;
   uf_url += "&grp_status="        + uf_form.grp_status.checked;
@@ -279,18 +277,6 @@ the current entry, or if there is a small difference, you can make changes and a
   <td class="ui-widget-content">Group Name: <input type="text" name="grp_name" size="40"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Group Role: <select name="grp_role">
-<?php
-  $q_string  = "select role_id,role_name ";
-  $q_string .= "from roles ";
-  $q_string .= "order by role_name ";
-  $q_roles = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_roles = mysqli_fetch_array($q_roles)) {
-    print "<option value=\"" . $a_roles['role_id'] . "\">" . $a_roles['role_name'] . "</option>\n";
-  }
-?></select></td>
-</tr>
-<tr>
   <td class="ui-widget-content">E-Mail: <input type="text" name="grp_email" size="40"></td>
 </tr>
 <tr>
@@ -350,18 +336,6 @@ the current entry, or if there is a small difference, you can make changes and a
 </tr>
 <tr>
   <td class="ui-widget-content">Group Name: <input type="text" name="grp_name" size="40"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Group Role: <select name="grp_role">
-<?php
-  $q_string  = "select role_id,role_name ";
-  $q_string .= "from roles ";
-  $q_string .= "order by role_name ";
-  $q_roles = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_roles = mysqli_fetch_array($q_roles)) {
-    print "<option value=\"" . $a_roles['role_id'] . "\">" . $a_roles['role_name'] . "</option>\n";
-  }
-?></select></td>
 </tr>
 <tr>
   <td class="ui-widget-content">E-Mail: <input type="text" name="grp_email" size="40"></td>

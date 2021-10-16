@@ -25,7 +25,6 @@
         $formVars['grp_disabled']     = clean($_GET['grp_disabled'],     255);
         $formVars['grp_name']         = clean($_GET['grp_name'],          60);
         $formVars['grp_manager']      = clean($_GET['grp_manager'],       10);
-        $formVars['grp_role']         = clean($_GET['grp_role'],         100);
         $formVars['grp_organization'] = clean($_GET['grp_organization'],  10);
         $formVars['grp_email']        = clean($_GET['grp_email'],        255);
         $formVars['grp_changedby']    = clean($_SESSION['uid'],           10);
@@ -75,7 +74,6 @@
             "grp_name          = \"" . $formVars['grp_name']          . "\"," . 
             "grp_manager       =   " . $formVars['grp_manager']       . "," . 
             "grp_organization  =   " . $formVars['grp_organization']  . "," . 
-            "grp_role          =   " . $formVars['grp_role']          . "," . 
             "grp_email         = \"" . $formVars['grp_email']         . "\"," . 
             "grp_disabled      =   " . $formVars['grp_disabled']      . "," . 
             "grp_changedby     =   " . $formVars['grp_changedby']     . "," . 
@@ -145,7 +143,6 @@
       $q_string .= "usr_first,grp_disabled,grp_status,grp_server,grp_import ";
       $q_string .= "from a_groups ";
       $q_string .= "left join organizations on organizations.org_id = a_groups.grp_organization ";
-      $q_string .= "left join roles on roles.role_id = a_groups.grp_role ";
       $q_string .= "left join users on users.usr_id = a_groups.grp_manager ";
       $q_string .= "order by grp_name";
       $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
