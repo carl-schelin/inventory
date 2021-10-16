@@ -249,7 +249,7 @@ Groups will need to be removed or moved to another Department.</p>
   <td class="ui-widget-content">Department ID: <input type="number" name="dep_dept" size="10"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Business Unit ID: <select name="dep_unit">
+  <td class="ui-widget-content">Business ID: <select name="dep_unit">
 <?php
   $q_string  = "select bus_id,bus_name ";
   $q_string .= "from business ";
@@ -284,7 +284,7 @@ Groups will need to be removed or moved to another Department.</p>
   <td class="ui-widget-content">Department ID: <input type="number" name="dep_dept" size="10"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Business Unit ID: <select name="dep_unit">
+  <td class="ui-widget-content">Business ID: <select name="dep_unit">
 <?php
   $q_string  = "select bus_id,bus_name ";
   $q_string .= "from business ";
