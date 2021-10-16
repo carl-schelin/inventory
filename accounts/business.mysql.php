@@ -62,11 +62,11 @@
       $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
-        $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Business Unit</th>\n";
+        $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Business</th>\n";
       } else {
-        $output .= "  <th class=\"ui-state-default\" width=\"160\">Business Unit</th>\n";
+        $output .= "  <th class=\"ui-state-default\" width=\"160\">Business</th>\n";
       }
-      $output .= "  <th class=\"ui-state-default\">Business Unit Name</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Business Name</th>\n";
       $output .= "  <th class=\"ui-state-default\">Organization</th>\n";
       $output .= "  <th class=\"ui-state-default\">Members</th>\n";
       $output .= "</tr>\n";
