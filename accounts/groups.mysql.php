@@ -139,7 +139,7 @@
       $output     .= $header . $title;
 
 
-      $q_string  = "select grp_id,grp_name,org_name,role_name,grp_email,usr_last,";
+      $q_string  = "select grp_id,grp_name,org_name,grp_email,usr_last,";
       $q_string .= "usr_first,grp_disabled,grp_status,grp_server,grp_import ";
       $q_string .= "from a_groups ";
       $q_string .= "left join organizations on organizations.org_id = a_groups.grp_organization ";
