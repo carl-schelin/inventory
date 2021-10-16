@@ -187,14 +187,7 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Department Form</strong>
-  <ul>
-    <li><strong>Business Unit ID</strong> - The company designated id for this unit.</li>
-    <li><strong>Department ID</strong> - The department id.</li>
-    <li><strong>Department Name</strong> - The name of the department.</li>
-  </ul></li>
-</ul>
+<p>A Department is a subset of a Business consisting of groups like HR, Operations, Engineering, and Development.</p>
 
 </div>
 
@@ -218,12 +211,19 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Department Listing</strong>
-  <ul>
-    <li><strong>Editing</strong> - Click on a department to toggle the form and edit the department.</li>
-  </ul></li>
-</ul>
+<p><strong>Network Zone Listing</strong></p>
+
+<p>This page lists all the currently defined Departments.</p>
+
+<p>To add a new Department, click the Add Department button on the upper right. A dialog box will be displayed that will let 
+you enter the necessary information to create a new Department.
+
+<p>If you want to edit an existing Department, click the entry in the listing. This will bring up a dialog box where you can 
+edit the current listing or, if you have a Department with just a minor change, you can edit it and save it as a new Department.</p>
+
+<p>The Members column tells you how many Groups are associated with that Department. Before deleting a Department, all 
+Groups will need to be removed or moved to another Department.</p>
+
 
 </div>
 
