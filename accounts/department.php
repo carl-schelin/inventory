@@ -239,7 +239,7 @@ $(document).ready( function() {
 
 <div id="dialogCreate" title="Add Department">
 
-<form name="formUpdate">
+<form name="formCreate">
 
 <table class="ui-styled-table">
 <tr>
@@ -268,6 +268,7 @@ $(document).ready( function() {
 </form>
 
 </div>
+
 
 <div id="dialogUpdate" title="Edit Department">
 
