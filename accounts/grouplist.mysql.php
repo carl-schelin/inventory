@@ -52,19 +52,15 @@
               "gpl_edit    =   " . $formVars['gpl_edit'];
 
             if ($formVars['update'] == 0) {
-              $query = "insert into grouplist set gpl_id = NULL," . $q_string;
-              $message = "Group Association added.";
+              $q_string = "insert into grouplist set gpl_id = NULL," . $q_string;
             }
             if ($formVars['update'] == 1) {
-              $query = "update grouplist set " . $q_string . " where gpl_id = " . $formVars['id'];
-              $message = "Group Association updated.";
+              $q_string = "update grouplist set " . $q_string . " where gpl_id = " . $formVars['id'];
             }
 
             logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['fw_source']);
 
-            mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
-
-            print "alert('" . $message . "');\n";
+            mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           } else {
             print "alert('You are not allowed to manage groups you aren\'t a member of.');\n";
           }

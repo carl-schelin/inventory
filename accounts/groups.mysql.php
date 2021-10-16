@@ -84,16 +84,15 @@
             "grp_import        =   " . $formVars['grp_import'];
 
           if ($formVars['update'] == 0) {
-            $query = "insert into a_groups set grp_id = NULL," . $q_string;
+            $q_string = "insert into a_groups set grp_id = NULL," . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update a_groups set " . $q_string . " where grp_id = " . $formVars['id'];
+            $q_string = "update a_groups set " . $q_string . " where grp_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['grp_name']);
 
-          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
-
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }

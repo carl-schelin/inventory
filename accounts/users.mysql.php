@@ -97,15 +97,20 @@
           }
 
           if ($formVars['update'] == 0) {
-            $query = "insert into users set usr_id = NULL, " . $q_string;
+            $q_string = "insert into users set usr_id = NULL, " . $q_string;
             $formVars['id'] = last_insert_id($db);
-            $message = "User added.";
           }
           if ($formVars['update'] == 1) {
 # and now update the users information
-            $query = "update users set " . $q_string . " where usr_id = " . $formVars['id'];
-            $message = "User updated.";
+            $q_string = "update users set " . $q_string . " where usr_id = " . $formVars['id'];
+          }
 
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['usr_name']);
+
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+
+# now manage the grouplist
+          if ($formVars['update'] == 1) {
 # if user is changing groups; change to read-only for old group. Need to get old group info first.
             $q_string  = "select usr_group ";
             $q_string .= "from users ";
@@ -132,12 +137,6 @@
               }
             }
           }
-
-          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['usr_name']);
-
-          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
-
-          print "alert('" . $message . "');\n";
 
           if ($formVars['usr_disabled'] == 1 ) {
 # clear from grouplist
