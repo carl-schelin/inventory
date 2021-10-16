@@ -68,7 +68,7 @@
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Department</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Department Name</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Business Unit</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Business</th>\n";
       $output .= "  <th class=\"ui-state-default\">Organization</th>\n";
       $output .= "  <th class=\"ui-state-default\">Members</th>\n";
       $output .= "</tr>\n";
@@ -108,7 +108,7 @@
           $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_department['dep_name'] . " (" . $a_department['dep_dept'] . ")" . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"                     . $a_department['bus_name'] . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"                     . $a_department['org_name'] . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"                     . $total                    . "</td>";
+          $output .= "  <td class=\"ui-widget-content delete\">"              . $total                    . "</td>";
           $output .= "</tr>";
         }
       } else {
