@@ -74,7 +74,7 @@ function attach_file( p_script_url, update ) {
 
   af_url  = '?update='   + update;
 
-  af_url += "&grp_organization="  + af_form.grp_organization.value;
+  af_url += "&grp_department="    + af_form.grp_department.value;
   af_url += "&grp_name="          + encode_URI(af_form.grp_name.value);
   af_url += "&grp_manager="       + af_form.grp_manager.value;
   af_url += "&grp_email="         + encode_URI(af_form.grp_email.value);
@@ -95,7 +95,7 @@ function update_file( p_script_url, update ) {
   uf_url  = '?update='   + update;
   uf_url += '&id='       + uf_form.id.value;
 
-  uf_url += "&grp_organization="  + uf_form.grp_organization.value;
+  uf_url += "&grp_department="    + uf_form.grp_department.value;
   uf_url += "&grp_name="          + encode_URI(uf_form.grp_name.value);
   uf_url += "&grp_manager="       + uf_form.grp_manager.value;
   uf_url += "&grp_email="         + encode_URI(uf_form.grp_email.value);
@@ -121,7 +121,7 @@ $(document).ready( function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 350,
+    height: 325,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -151,7 +151,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 350,
+    height: 325,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -262,14 +262,14 @@ the current entry, or if there is a small difference, you can make changes and a
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content">Group Organization: <select name="grp_organization">
+  <td class="ui-widget-content">Department: <select name="grp_department">
 <?php
-  $q_string  = "select org_id,org_name ";
-  $q_string .= "from organizations ";
-  $q_string .= "order by org_name ";
-  $q_organizations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_organizations = mysqli_fetch_array($q_organizations)) {
-    print "<option value=\"" . $a_organizations['org_id'] . "\">" . $a_organizations['org_name'] . "</option>\n";
+  $q_string  = "select dep_id,dep_name ";
+  $q_string .= "from department ";
+  $q_string .= "order by dep_name ";
+  $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_department = mysqli_fetch_array($q_department)) {
+    print "<option value=\"" . $a_department['dep_id'] . "\">" . $a_department['dep_name'] . "</option>\n";
   }
 ?></select></td>
 </tr>
@@ -323,14 +323,14 @@ the current entry, or if there is a small difference, you can make changes and a
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content">Group Organization: <select name="grp_organization">
+  <td class="ui-widget-content">Department: <select name="grp_department">
 <?php
-  $q_string  = "select org_id,org_name ";
-  $q_string .= "from organizations ";
-  $q_string .= "order by org_name ";
-  $q_organizations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_organizations = mysqli_fetch_array($q_organizations)) {
-    print "<option value=\"" . $a_organizations['org_id'] . "\">" . $a_organizations['org_name'] . "</option>\n";
+  $q_string  = "select dep_id,dep_name ";
+  $q_string .= "from department ";
+  $q_string .= "order by dep_name ";
+  $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_department = mysqli_fetch_array($q_department)) {
+    print "<option value=\"" . $a_department['dep_id'] . "\">" . $a_department['dep_name'] . "</option>\n";
   }
 ?></select></td>
 </tr>

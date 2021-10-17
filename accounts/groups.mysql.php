@@ -25,7 +25,7 @@
         $formVars['grp_disabled']     = clean($_GET['grp_disabled'],     255);
         $formVars['grp_name']         = clean($_GET['grp_name'],          60);
         $formVars['grp_manager']      = clean($_GET['grp_manager'],       10);
-        $formVars['grp_organization'] = clean($_GET['grp_organization'],  10);
+        $formVars['grp_department']   = clean($_GET['grp_department'],    10);
         $formVars['grp_email']        = clean($_GET['grp_email'],        255);
         $formVars['grp_changedby']    = clean($_SESSION['uid'],           10);
         $formVars['grp_status']       = clean($_GET['grp_status'],        10);
@@ -73,7 +73,7 @@
           $q_string =
             "grp_name          = \"" . $formVars['grp_name']          . "\"," . 
             "grp_manager       =   " . $formVars['grp_manager']       . "," . 
-            "grp_organization  =   " . $formVars['grp_organization']  . "," . 
+            "grp_department    =   " . $formVars['grp_department']    . "," . 
             "grp_email         = \"" . $formVars['grp_email']         . "\"," . 
             "grp_disabled      =   " . $formVars['grp_disabled']      . "," . 
             "grp_changedby     =   " . $formVars['grp_changedby']     . "," . 
@@ -126,10 +126,12 @@
       if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Group</th>";
       }
-      $output .= "  <th class=\"ui-state-default\">Organization</th>";
       $output .= "  <th class=\"ui-state-default\">Group</th>";
+      $output .= "  <th class=\"ui-state-default\">Department</th>";
+      $output .= "  <th class=\"ui-state-default\">Business</th>";
+      $output .= "  <th class=\"ui-state-default\">Organization</th>";
+      $output .= "  <th class=\"ui-state-default\">Manager</th>";
       $output .= "  <th class=\"ui-state-default\">Group EMail</th>";
-      $output .= "  <th class=\"ui-state-default\">Group Manager</th>";
       $output .= "  <th class=\"ui-state-default\">Members</th>";
       $output .= "  <th class=\"ui-state-default\">Status</th>";
       $output .= "  <th class=\"ui-state-default\">Server</th>";
@@ -139,10 +141,12 @@
       $output     .= $header . $title;
 
 
-      $q_string  = "select grp_id,grp_name,org_name,grp_email,usr_last,";
+      $q_string  = "select grp_id,grp_name,dep_name,bus_name,org_name,grp_email,usr_last,";
       $q_string .= "usr_first,grp_disabled,grp_status,grp_server,grp_import ";
       $q_string .= "from a_groups ";
-      $q_string .= "left join organizations on organizations.org_id = a_groups.grp_organization ";
+      $q_string .= "left join department on department.dep_id = a_groups.grp_department ";
+      $q_string .= "left join business on business.bus_id = department.dep_business ";
+      $q_string .= "left join organizations on organizations.org_id = business.bus_organization ";
       $q_string .= "left join users on users.usr_id = a_groups.grp_manager ";
       $q_string .= "order by grp_name";
       $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -190,10 +194,12 @@
               $output .= "  <td class=\"" . $class . " delete\">Members &gt; 0</td>";
             }
           }
-          $output .= "  <td class=\"" . $class . "\">"                     . $a_groups['org_name']             . "</td>";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_groups['grp_name']  . $linkend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"                     . $a_groups['grp_email']            . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"                     . $a_groups['dep_name']             . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"                     . $a_groups['bus_name']             . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"                     . $a_groups['org_name']             . "</td>";
           $output .= "  <td class=\"" . $class . "\">"                     . $a_groups['usr_first'] . " " . $a_groups['usr_last'] . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"                     . $a_groups['grp_email']            . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"              . $total                            . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"              . $grp_status                       . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"              . $grp_server                       . "</td>";

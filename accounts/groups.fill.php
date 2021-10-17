@@ -22,21 +22,21 @@
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from a_groups");
 
       $q_string  = "select grp_disabled,grp_name,grp_email,grp_manager,";
-      $q_string .= "grp_organization,grp_status,grp_server,grp_import ";
+      $q_string .= "grp_department,grp_status,grp_server,grp_import ";
       $q_string .= "from a_groups ";
       $q_string .= "where grp_id = " . $formVars['id'];
       $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_groups = mysqli_fetch_array($q_groups);
       mysqli_free_result($q_groups);
 
-      $organization = return_Index($db, $a_groups['grp_organization'], "select org_id from organizations order by org_name");
-      $manager      = return_Index($db, $a_groups['grp_manager'],      "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
+      $department = return_Index($db, $a_groups['grp_department'], "select dep_id from department order by dep_name");
+      $manager    = return_Index($db, $a_groups['grp_manager'],    "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
 
       print "document.formUpdate.grp_name.value = '"      . mysqli_real_escape_string($db, $a_groups['grp_name'])      . "';\n";
       print "document.formUpdate.grp_email.value = '"     . mysqli_real_escape_string($db, $a_groups['grp_email'])     . "';\n";
 
-      if ($organization > 0) {
-        print "document.formUpdate.grp_organization['"  . $organization . "'].selected = true;\n";
+      if ($department > 0) {
+        print "document.formUpdate.grp_department['"    . $department . "'].selected = true;\n";
       }
       if ($manager > 0) {
         print "document.formUpdate.grp_manager['"       . $manager      . "'].selected = true;\n";
