@@ -34,7 +34,7 @@
       $cert          = return_Index($db, $a_software['sw_cert'],        "select cert_id from certs order by cert_url");
       $support       = return_Index($db, $a_software['sw_supportid'],   "select sup_id from support order by sup_company,sup_contract");
       $license       = return_Index($db, $a_software['sw_licenseid'],   "select lic_id from licenses left join products on products.prod_id = licenses.lic_project order by prod_name,lic_key,lic_id");
-      $department    = return_Index($db, $a_software['sw_department'],  "select dep_id from department order by dep_unit,dep_name");
+      $department    = return_Index($db, $a_software['sw_department'],  "select dep_id from department order by dep_business,dep_name");
 
       print "document.edit.sw_vendor.value = '"       . mysqli_real_escape_string($db, $a_software['sw_vendor'])       . "';\n";
       print "document.edit.sw_software.value = '"     . mysqli_real_escape_string($db, $a_software['sw_software'])     . "';\n";

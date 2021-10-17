@@ -59,7 +59,7 @@
         $invresponse   = return_Index($db, $a_inventory['inv_response'],   "select slv_id from supportlevel order by slv_value");
         $invproduct    = return_Index($db, $a_inventory['inv_product'],    "select prod_id from products order by prod_name");
         $invproject    = return_Index($db, $a_inventory['inv_project'],    "select prj_id from projects where prj_product = " . $a_inventory['inv_product'] . " order by prj_name");
-        $invdepartment = return_Index($db, $a_inventory['inv_department'], "select dep_id from department order by dep_unit,dep_name");
+        $invdepartment = return_Index($db, $a_inventory['inv_department'], "select dep_id from department order by dep_business,dep_name");
         $invenv        = return_Index($db, $a_inventory['inv_env'],        "select env_id from environment order by env_name");
 # no zero in the selection window so off by one each time
         $invmaint      = return_Index($db, $a_inventory['inv_maint'],      "select win_id from maint_window order by win_text") - 1;
