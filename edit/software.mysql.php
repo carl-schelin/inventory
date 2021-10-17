@@ -290,13 +290,13 @@
         $output .= "<tr>\n";
         $output .= "  <td class=\"ui-widget-content\" colspan=\"2\">Business Unit (Department) <select name=\"sw_department\">\n";
 
-        $q_string  = "select dep_id,dep_unit,dep_dept,dep_name,bus_name ";
+        $q_string  = "select dep_id,dep_business,dep_name,bus_name ";
         $q_string .= "from department ";
-        $q_string .= "left join business on business.bus_unit = department.dep_unit ";
-        $q_string .= "order by dep_unit,dep_name";
+        $q_string .= "left join business on business.bus_id = department.dep_business ";
+        $q_string .= "order by dep_business,dep_name";
         $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_department = mysqli_fetch_array($q_department)) {
-          $output .= "<option value=\"" . $a_department['dep_id'] . "\">" . $a_department['dep_unit'] . "-" . $a_department['dep_dept'] . " - " . $a_department['bus_name'] . "-" . $a_department['dep_name'] . "</option>\n";
+          $output .= "<option value=\"" . $a_department['dep_id'] . "\">" . $a_department['bus_name'] . "-" . $a_department['dep_name'] . "</option>\n";
         }
 
         $output .= "</select></td>\n";
