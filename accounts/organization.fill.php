@@ -21,6 +21,7 @@
     if (check_userlevel($db, $AL_Edit)) {
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from organization");
 
+      $q_string  = "select org_name,org_manager ";
       $q_string  = "select org_name ";
       $q_string .= "from organizations ";
       $q_string .= "where org_id = " . $formVars['id'];
@@ -28,7 +29,13 @@
       $a_organizations = mysqli_fetch_array($q_organizations);
       mysqli_free_result($q_organizations);
 
+      $manager = return_Index($db, $a_organizations['org_manager'], 'select usr_id from users where usr_disabled = 0 order by usr_last,usr_first');
+
       print "document.formUpdate.org_name.value = '" . mysqli_real_escape_string($db, $a_organizations['org_name']) . "';\n";
+
+      if ($manager > 0) {
+        print "document.formUpdate.org_manager['" . $manager . "'].selected = true;\n";
+      }
 
       print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 

@@ -64,7 +64,8 @@ function attach_file( p_script_url, update ) {
 
   af_url  = '?update='   + update;
 
-  af_url += "&org_name=" + encode_URI(af_form.org_name.value);
+  af_url += "&org_name="       + encode_URI(af_form.org_name.value);
+  af_url += "&org_manager="    + af_form.org_manager.value;
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
@@ -78,7 +79,8 @@ function update_file( p_script_url, update ) {
   uf_url  = '?update='   + update;
   uf_url += '&id='       + uf_form.id.value;
 
-  uf_url += "&org_name=" + encode_URI(uf_form.org_name.value);
+  uf_url += "&org_name="      + encode_URI(uf_form.org_name.value);
+  uf_url += "&org_manager="   + uf_form.org_manager.value;
 
   script = document.createElement('script');
   script.src = p_script_url + uf_url;
@@ -97,7 +99,7 @@ $(document).ready( function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 125,
+    height: 175,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -127,7 +129,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 125,
+    height: 175,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -239,6 +241,20 @@ you can add the necessary information and then save the new Organization.</p>
 <tr>
   <td class="ui-widget-content">Organization Name: <input type="text" name="org_name" size="60"></td>
 </tr>
+<tr>
+  <td class="ui-widget-content">Manager: <select name="org_manager">
+<?php
+  $q_string  = "select usr_id,usr_last,usr_first ";
+  $q_string .= "from users ";
+  $q_string .= "where usr_disabled = 0 ";
+  $q_string .= "order by usr_last,usr_first ";
+  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_users = mysqli_fetch_array($q_users)) {
+    print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
 </table>
 
 </form>
@@ -254,6 +270,20 @@ you can add the necessary information and then save the new Organization.</p>
 <table class="ui-styled-table">
 <tr>
   <td class="ui-widget-content">Organization Name: <input type="text" name="org_name" size="60"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Manager: <select name="org_manager">
+<?php
+  $q_string  = "select usr_id,usr_last,usr_first ";
+  $q_string .= "from users ";
+  $q_string .= "where usr_disabled = 0 ";
+  $q_string .= "order by usr_last,usr_first ";
+  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_users = mysqli_fetch_array($q_users)) {
+    print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
+  }
+?>
+</select></td>
 </tr>
 </table>
 
