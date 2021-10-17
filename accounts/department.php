@@ -65,9 +65,9 @@ function attach_file( p_script_url, update ) {
 
   af_url  = '?update='   + update;
 
-  af_url += "&dep_name="     + encode_URI(af_form.dep_name.value);
-  af_url += "&dep_dept="     + encode_URI(af_form.dep_dept.value);
-  af_url += "&dep_unit="     + af_form.dep_unit.value;
+  af_url += "&dep_name="       + encode_URI(af_form.dep_name.value);
+  af_url += "&dep_business="   + af_form.dep_business.value;
+  af_url += "&dep_manager="    + af_form.dep_manager.value;
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
@@ -81,9 +81,9 @@ function update_file( p_script_url, update ) {
   uf_url  = '?update='   + update;
   uf_url += '&id='       + uf_form.id.value;
 
-  uf_url += "&dep_name="     + encode_URI(uf_form.dep_name.value);
-  uf_url += "&dep_dept="     + encode_URI(uf_form.dep_dept.value);
-  uf_url += "&dep_unit="     + uf_form.dep_unit.value;
+  uf_url += "&dep_name="        + encode_URI(uf_form.dep_name.value);
+  uf_url += "&dep_business="    + uf_form.dep_business.value;
+  uf_url += "&dep_manager="     + uf_form.dep_manager.value;
 
   script = document.createElement('script');
   script.src = p_script_url + uf_url;
@@ -246,10 +246,7 @@ Groups will need to be removed or moved to another Department.</p>
   <td class="ui-widget-content">Department Name: <input type="text" name="dep_name" size="40"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Department ID: <input type="number" name="dep_dept" size="10"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Business ID: <select name="dep_unit">
+  <td class="ui-widget-content">Business: <select name="dep_business">
 <?php
   $q_string  = "select bus_id,bus_name ";
   $q_string .= "from business ";
@@ -259,6 +256,20 @@ Groups will need to be removed or moved to another Department.</p>
     while ($a_business = mysqli_fetch_array($q_business)) {
       print "<option value=\"" . $a_business['bus_id'] . "\">" . $a_business['bus_name'] . "</option>\n";
     }
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Manager: <select name="bus_manager">
+<?php
+  $q_string  = "select usr_id,usr_last,usr_first ";
+  $q_string .= "from users ";
+  $q_string .= "where usr_disabled = 0 ";
+  $q_string .= "order by usr_last,usr_first ";
+  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_users = mysqli_fetch_array($q_users)) {
+    print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -284,7 +295,7 @@ Groups will need to be removed or moved to another Department.</p>
   <td class="ui-widget-content">Department ID: <input type="number" name="dep_dept" size="10"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Business ID: <select name="dep_unit">
+  <td class="ui-widget-content">Business: <select name="dep_business">
 <?php
   $q_string  = "select bus_id,bus_name ";
   $q_string .= "from business ";
@@ -294,6 +305,20 @@ Groups will need to be removed or moved to another Department.</p>
     while ($a_business = mysqli_fetch_array($q_business)) {
       print "<option value=\"" . $a_business['bus_id'] . "\">" . $a_business['bus_name'] . "</option>\n";
     }
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Manager: <select name="bus_manager">
+<?php
+  $q_string  = "select usr_id,usr_last,usr_first ";
+  $q_string .= "from users ";
+  $q_string .= "where usr_disabled = 0 ";
+  $q_string .= "order by usr_last,usr_first ";
+  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_users = mysqli_fetch_array($q_users)) {
+    print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
   }
 ?>
 </select></td>

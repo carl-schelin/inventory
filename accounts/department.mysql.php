@@ -21,28 +21,22 @@
 
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
-        $formVars['id']       = clean($_GET['id'],             10);
-        $formVars['dep_unit'] = clean($_GET['dep_unit'],       10);
-        $formVars['dep_dept'] = clean($_GET['dep_dept'],       10);
-        $formVars['dep_name'] = clean($_GET['dep_name'],       60);
+        $formVars['id']             = clean($_GET['id'],                 10);
+        $formVars['dep_name']       = clean($_GET['dep_name'],           60);
+        $formVars['dep_business']   = clean($_GET['dep_business'],       10);
+        $formVars['dep_manager']    = clean($_GET['dep_manager'],        10);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
-        }
-        if ($formVars['dep_unit'] == '') {
-          $formVars['dep_unit'] = 0;
-        }
-        if ($formVars['dep_dept'] == '') {
-          $formVars['dep_dept'] = 0;
         }
 
         if (strlen($formVars['dep_name']) > 0) {
           logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
-            "dep_name = \"" . $formVars['dep_name'] . "\"," .
-            "dep_dept =   " . $formVars['dep_dept'] . "," . 
-            "dep_unit =   " . $formVars['dep_unit'];
+            "dep_name       = \"" . $formVars['dep_name']     . "\"," .
+            "dep_business   =   " . $formVars['dep_business'] . "," . 
+            "dep_manager    =   " . $formVars['dep_manager'];
 
           if ($formVars['update'] == 0) {
             $q_string = "insert into department set dep_id = NULL, " . $q_string;
@@ -70,13 +64,15 @@
       $output .= "  <th class=\"ui-state-default\">Department Name</th>\n";
       $output .= "  <th class=\"ui-state-default\">Business</th>\n";
       $output .= "  <th class=\"ui-state-default\">Organization</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Manager</th>\n";
       $output .= "  <th class=\"ui-state-default\">Members</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select dep_id,dep_unit,dep_dept,dep_name,bus_name,org_name ";
+      $q_string  = "select dep_id,dep_name,org_name,bus_name,usr_last,usr_first ";
       $q_string .= "from department ";
-      $q_string .= "left join business on business.bus_unit = department.dep_unit ";
-      $q_string .= "left join organizations on organizations.org_id = business.bus_org ";
+      $q_string .= "left join business      on business.bus_id      = department.dep_business ";
+      $q_string .= "left join organizations on organizations.org_id = business.bus_organization ";
+      $q_string .= "left join users         on users.usr_id         = department.dep_manager ";
       $q_string .= "order by dep_name,bus_name,org_name ";
       $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_department) > 0) {
@@ -89,7 +85,7 @@
           $total = 0;
           $q_string  = "select grp_id ";
           $q_string .= "from a_groups ";
-          $q_string .= "where grp_organization = " . $a_department['dep_id'] . " ";
+          $q_string .= "where grp_department = " . $a_department['dep_id'] . " ";
           $q_a_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_a_groups) > 0) {
             while ($a_a_groups = mysqli_fetch_array($q_a_groups)) {
@@ -105,9 +101,10 @@
               $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>";
             }
           }
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_department['dep_name'] . " (" . $a_department['dep_dept'] . ")" . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_department['dep_name'] . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"                     . $a_department['bus_name'] . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"                     . $a_department['org_name'] . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $a_department['usr_last'] . ", " . $a_department['usr_first'] . "</td>";
           $output .= "  <td class=\"ui-widget-content delete\">"              . $total                    . "</td>";
           $output .= "</tr>";
         }
