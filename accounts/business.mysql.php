@@ -21,10 +21,10 @@
 
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
-        $formVars['id']       = clean($_GET['id'],       10);
-        $formVars['bus_unit'] = clean($_GET['bus_unit'], 10);
-        $formVars['bus_name'] = clean($_GET['bus_name'], 60);
-        $formVars['bus_org']  = clean($_GET['bus_org'],  10);
+        $formVars['id']                = clean($_GET['id'],                10);
+        $formVars['bus_name']          = clean($_GET['bus_name'],          60);
+        $formVars['bus_organization']  = clean($_GET['bus_organization'],  10);
+        $formVars['bus_manager']       = clean($_GET['bus_manager'],       10);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
@@ -37,9 +37,9 @@
           logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
-            "bus_name = \"" . $formVars['bus_name'] . "\"," .
-            "bus_unit =   " . $formVars['bus_unit'] . "," .
-            "bus_org  =   " . $formVars['bus_org'];
+            "bus_name             = \"" . $formVars['bus_name']         . "\"," .
+            "bus_organization     =   " . $formVars['bus_organization'] . "," .
+            "bus_manager          =   " . $formVars['bus_manager'];
 
           if ($formVars['update'] == 0) {
             $q_string = "insert into business set bus_id = null," . $q_string;
@@ -68,12 +68,14 @@
       }
       $output .= "  <th class=\"ui-state-default\">Business Name</th>\n";
       $output .= "  <th class=\"ui-state-default\">Organization</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Manager</th>\n";
       $output .= "  <th class=\"ui-state-default\">Members</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select bus_id,bus_unit,bus_name,org_name ";
+      $q_string  = "select bus_id,bus_name,org_name,usr_last,usr_first ";
       $q_string .= "from business ";
-      $q_string .= "left join organizations on organizations.org_id = business.bus_org ";
+      $q_string .= "left join organizations on organizations.org_id = business.bus_organization ";
+      $q_string .= "left join users on users.usr_id = business.bus_manager ";
       $q_string .= "order by bus_name ";
       $q_business = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_business) > 0) {
@@ -82,7 +84,7 @@
           $total = 0;
           $q_string  = "select dep_id ";
           $q_string .= "from department ";
-          $q_string .= "where dep_unit = " . $a_business['bus_id'] . " ";
+          $q_string .= "where dep_business = " . $a_business['bus_id'] . " ";
           $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_department) > 0) {
             while ($a_department = mysqli_fetch_array($q_department)) {
@@ -106,14 +108,15 @@
 
           $output .= "<tr>\n";
           $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_business['bus_name'] . " (" . $a_business['bus_unit'] . ")" . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_business['bus_name'] . $linkend . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"                     . $a_business['org_name'] . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $a_business['usr_last'] . ", " . $a_business['usr_first'] . "</td>\n";
           $output .= "  <td class=\"ui-widget-content delete\">"              . $total                       . "</td>\n";
           $output .= "</tr>\n";
         }
       } else {
         $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"4\">No records found.</td>\n";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"5\">No records found.</td>\n";
         $output .= "</tr>\n";
       }
 
