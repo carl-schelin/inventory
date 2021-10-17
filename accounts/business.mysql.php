@@ -29,9 +29,6 @@
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
         }
-        if ($formVars['bus_unit'] == '') {
-          $formVars['bus_unit'] = 0;
-        }
 
         if (strlen($formVars['bus_name']) > 0) {
           logaccess($db, $_SESSION['uid'], $package, "Building the query.");

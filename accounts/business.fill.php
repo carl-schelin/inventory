@@ -28,7 +28,7 @@
       $a_business = mysqli_fetch_array($q_business);
       mysqli_free_result($q_business);
 
-      $organization = return_Index($db, $a_business['bus_org'], "select org_id from organizations order by org_name");
+      $organization = return_Index($db, $a_business['bus_organization'], "select org_id from organizations order by org_name");
       $manager = return_Index($db, $a_business['bus_manager'], 'select usr_id from users where usr_disabled = 0 order by usr_last,usr_first');
 
       print "document.formUpdate.bus_name.value = '" . mysqli_real_escape_string($db, $a_business['bus_name']) . "';\n";

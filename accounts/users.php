@@ -325,13 +325,13 @@ $(document).ready( function() {
 </select></td>
   <td class="ui-widget-content" colspan="2">Department: <select name="usr_deptname">
 <?php
-  $q_string  = "select dep_id,dep_unit,dep_dept,dep_name,bus_name ";
+  $q_string  = "select dep_id,dep_business,dep_name,bus_name ";
   $q_string .= "from department ";
-  $q_string .= "left join business on business.bus_unit = department.dep_unit ";
+  $q_string .= "left join business on business.bus_id = department.dep_business ";
   $q_string .= "order by bus_name,dep_name";
   $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_department = mysqli_fetch_array($q_department)) {
-    print "  <option value=\"" . $a_department['dep_id'] . "\">" . htmlspecialchars($a_department['bus_name']) . " " . htmlspecialchars($a_department['dep_name']) . " (" . htmlspecialchars($a_department['dep_unit']) . "-" . htmlspecialchars($a_department['dep_dept']) . ")</option>\n";
+    print "  <option value=\"" . $a_department['dep_id'] . "\">" . htmlspecialchars($a_department['bus_name']) . " " . htmlspecialchars($a_department['dep_name']) . ")</option>\n";
   }
 ?>
   </select></td>
