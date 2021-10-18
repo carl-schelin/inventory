@@ -30,29 +30,27 @@
 
       $group = return_Index($db, $a_filesystem['fs_group'], "select grp_id from a_groups where grp_disabled = 0 order by grp_name");
 
-      print "document.edit.fs_device.value = '"    . mysqli_real_escape_string($db, $a_filesystem['fs_device'])    . "';\n";
-      print "document.edit.fs_mount.value = '"     . mysqli_real_escape_string($db, $a_filesystem['fs_mount'])     . "';\n";
-      print "document.edit.fs_size.value = '"      . mysqli_real_escape_string($db, $a_filesystem['fs_size'])      . "';\n";
-      print "document.edit.fs_wwid.value = '"      . mysqli_real_escape_string($db, $a_filesystem['fs_wwid'])      . "';\n";
-      print "document.edit.fs_subsystem.value = '" . mysqli_real_escape_string($db, $a_filesystem['fs_subsystem']) . "';\n";
-      print "document.edit.fs_volume.value = '"    . mysqli_real_escape_string($db, $a_filesystem['fs_volume'])    . "';\n";
-      print "document.edit.fs_lun.value = '"       . mysqli_real_escape_string($db, $a_filesystem['fs_lun'])       . "';\n";
-      print "document.edit.fs_volid.value = '"     . mysqli_real_escape_string($db, $a_filesystem['fs_volid'])     . "';\n";
-      print "document.edit.fs_path.value = '"      . mysqli_real_escape_string($db, $a_filesystem['fs_path'])      . "';\n";
+      print "document.formFilesystemUpdate.fs_device.value = '"    . mysqli_real_escape_string($db, $a_filesystem['fs_device'])    . "';\n";
+      print "document.formFilesystemUpdate.fs_mount.value = '"     . mysqli_real_escape_string($db, $a_filesystem['fs_mount'])     . "';\n";
+      print "document.formFilesystemUpdate.fs_size.value = '"      . mysqli_real_escape_string($db, $a_filesystem['fs_size'])      . "';\n";
+      print "document.formFilesystemUpdate.fs_wwid.value = '"      . mysqli_real_escape_string($db, $a_filesystem['fs_wwid'])      . "';\n";
+      print "document.formFilesystemUpdate.fs_subsystem.value = '" . mysqli_real_escape_string($db, $a_filesystem['fs_subsystem']) . "';\n";
+      print "document.formFilesystemUpdate.fs_volume.value = '"    . mysqli_real_escape_string($db, $a_filesystem['fs_volume'])    . "';\n";
+      print "document.formFilesystemUpdate.fs_lun.value = '"       . mysqli_real_escape_string($db, $a_filesystem['fs_lun'])       . "';\n";
+      print "document.formFilesystemUpdate.fs_volid.value = '"     . mysqli_real_escape_string($db, $a_filesystem['fs_volid'])     . "';\n";
+      print "document.formFilesystemUpdate.fs_path.value = '"      . mysqli_real_escape_string($db, $a_filesystem['fs_path'])      . "';\n";
 
       if ($group > 0) {
-        print "document.edit.fs_group['" . $group . "'].selected = true;\n";
+        print "document.formFilesystemUpdate.fs_group['" . $group . "'].selected = true;\n";
       }
 
       if ($a_filesystem['fs_backup']) {
-        print "document.edit.fs_backup.checked = true;\n";
+        print "document.formFilesystemUpdate.fs_backup.checked = true;\n";
       } else {
-        print "document.edit.fs_backup.checked = false;\n";
+        print "document.formFilesystemUpdate.fs_backup.checked = false;\n";
       }
 
-      print "document.edit.fs_id.value = "         . mysqli_real_escape_string($db, $formVars['id'])               . ";\n";
-
-      print "document.edit.fs_update.disabled = false;\n";
+      print "document.formFilesystemUpdate.fs_id.value = "         . mysqli_real_escape_string($db, $formVars['id'])               . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
