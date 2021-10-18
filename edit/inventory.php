@@ -153,17 +153,6 @@ function delete_hardware( p_script_url ) {
   }
 }
 
-function delete_filesystem( p_script_url ) {
-  var answer = confirm("Delete this Filesystem?")
-
-  if (answer) {
-    script = document.createElement('script');
-    script.src = p_script_url;
-    document.getElementsByTagName('head')[0].appendChild(script);
-    show_file('filesystem.mysql.php'  + '?update=-1' + '&fs_companyid=<?php    print $formVars['server']; ?>');
-  }
-}
-
 function delete_interface( p_script_url ) {
   var answer = confirm("Delete this Interface?")
 
@@ -200,19 +189,28 @@ function delete_association( p_script_url ) {
   }
 ?>
 
-function attach_tags(p_script_url, update) {
-  var at_form = document.createTagDialog;
-  var at_url;
+
+
+
+function create_tags(p_script_url, update) {
+  var ct_form = document.formTagCreate;
+  var ct_url;
   
-  at_url  = '?update='         + update;
-  at_url += "&id="             + at_form.tag_companyid.value;
-  at_url += "&tag_companyid="  + <?php print $formVars['server']; ?>;
-  at_url += "&tag_name="       + encode_URI(at_form.tag_name.value);
+  ct_url  = '?update='         + update;
+  ct_url += "&id="             + ct_form.tag_companyid.value;
+
+  ct_url += "&tag_companyid="  + <?php print $formVars['server']; ?>;
+  ct_url += "&tag_name="       + encode_URI(ct_form.tag_name.value);
 
   script = document.createElement('script');
-  script.src = p_script_url + at_url;
+  script.src = p_script_url + ct_url;
   document.getElementsByTagName('head')[0].appendChild(script);
 }
+
+
+
+
+
 
 function attach_software( p_script_url, update ) {
   var as_form = document.edit;
@@ -380,34 +378,80 @@ function attach_hardwaretype( p_script_url ) {
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
-function attach_filesystem( p_script_url, update ) {
-  var af_form = document.edit;
-  var af_url;
 
-  af_url  = '?update='   + update;
-  af_url += "&id="       + af_form.fs_id.value;
-  af_url += "&copyfrom=" + af_form.fs_copyfrom.value;
 
-  af_url += "&fs_companyid=" + <?php print $formVars['server']; ?>;
-  af_url += "&fs_backup="    + af_form.fs_backup.checked;
-  af_url += "&fs_device="    + encode_URI(af_form.fs_device.value);
-  af_url += "&fs_mount="     + encode_URI(af_form.fs_mount.value);
-  af_url += "&fs_group="     + af_form.fs_group.value;
-  af_url += "&fs_size="      + encode_URI(af_form.fs_size.value);
-  af_url += "&fs_wwid="      + encode_URI(af_form.fs_wwid.value);
-  af_url += "&fs_subsystem=" + encode_URI(af_form.fs_subsystem.value);
-  af_url += "&fs_volume="    + encode_URI(af_form.fs_volume.value);
-  af_url += "&fs_lun="       + encode_URI(af_form.fs_lun.value);
-  af_url += "&fs_volid="     + encode_URI(af_form.fs_volid.value);
-  af_url += "&fs_path="      + encode_URI(af_form.fs_path.value);
-  af_url += "&fs_switch="    + encode_URI(af_form.fs_switch.value);
-  af_url += "&fs_port="      + encode_URI(af_form.fs_port.value);
-  af_url += "&fs_sysport="   + encode_URI(af_form.fs_sysport.value);
+
+
+function delete_filesystem( p_script_url ) {
+  var answer = confirm("Delete this Filesystem?")
+
+  if (answer) {
+    script = document.createElement('script');
+    script.src = p_script_url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+    show_file('filesystem.mysql.php'  + '?update=-1' + '&fs_companyid=<?php    print $formVars['server']; ?>');
+  }
+}
+
+function create_filesystem( p_script_url, update ) {
+  var cf_form = document.formFilesystemCreate;
+  var cf_url;
+
+  cf_url  = '?update='   + update;
+
+  cf_url += "&fs_companyid=" + <?php print $formVars['server']; ?>;
+  cf_url += "&fs_backup="    + cf_form.fs_backup.checked;
+  cf_url += "&fs_device="    + encode_URI(cf_form.fs_device.value);
+  cf_url += "&fs_mount="     + encode_URI(cf_form.fs_mount.value);
+  cf_url += "&fs_group="     + cf_form.fs_group.value;
+  cf_url += "&fs_size="      + encode_URI(cf_form.fs_size.value);
+  cf_url += "&fs_wwid="      + encode_URI(cf_form.fs_wwid.value);
+  cf_url += "&fs_subsystem=" + encode_URI(cf_form.fs_subsystem.value);
+  cf_url += "&fs_volume="    + encode_URI(cf_form.fs_volume.value);
+  cf_url += "&fs_lun="       + encode_URI(cf_form.fs_lun.value);
+  cf_url += "&fs_volid="     + encode_URI(cf_form.fs_volid.value);
+  cf_url += "&fs_path="      + encode_URI(cf_form.fs_path.value);
+  cf_url += "&fs_switch="    + encode_URI(cf_form.fs_switch.value);
+  cf_url += "&fs_port="      + encode_URI(cf_form.fs_port.value);
+  cf_url += "&fs_sysport="   + encode_URI(cf_form.fs_sysport.value);
 
   script = document.createElement('script');
-  script.src = p_script_url + af_url;
+  script.src = p_script_url + cf_url;
   document.getElementsByTagName('head')[0].appendChild(script);
 }
+
+function update_filesystem( p_script_url, update ) {
+  var uf_form = document.formFilesystemUpdate;
+  var uf_url;
+
+  uf_url  = '?update='   + update;
+  uf_url += "&fs_id="    + uf_form.fs_id.value;
+
+  uf_url += "&fs_companyid=" + <?php print $formVars['server']; ?>;
+  uf_url += "&fs_backup="    + uf_form.fs_backup.checked;
+  uf_url += "&fs_device="    + encode_URI(uf_form.fs_device.value);
+  uf_url += "&fs_mount="     + encode_URI(uf_form.fs_mount.value);
+  uf_url += "&fs_group="     + uf_form.fs_group.value;
+  uf_url += "&fs_size="      + encode_URI(uf_form.fs_size.value);
+  uf_url += "&fs_wwid="      + encode_URI(uf_form.fs_wwid.value);
+  uf_url += "&fs_subsystem=" + encode_URI(uf_form.fs_subsystem.value);
+  uf_url += "&fs_volume="    + encode_URI(uf_form.fs_volume.value);
+  uf_url += "&fs_lun="       + encode_URI(uf_form.fs_lun.value);
+  uf_url += "&fs_volid="     + encode_URI(uf_form.fs_volid.value);
+  uf_url += "&fs_path="      + encode_URI(uf_form.fs_path.value);
+  uf_url += "&fs_switch="    + encode_URI(uf_form.fs_switch.value);
+  uf_url += "&fs_port="      + encode_URI(uf_form.fs_port.value);
+  uf_url += "&fs_sysport="   + encode_URI(uf_form.fs_sysport.value);
+
+  script = document.createElement('script');
+  script.src = p_script_url + uf_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+
+
+
+
 
 function attach_inventory( p_script_url, update ) {
   var ai_form = document.edit;
@@ -798,7 +842,7 @@ function clear_fields() {
 ?>
   show_file('maintenance.mysql.php' + '?update=-3' + '&id=<?php              print $formVars['server']; ?>');
   show_file('hardware.mysql.php'    + '?update=-3' + '&hw_companyid=<?php    print $formVars['server']; ?>');
-  show_file('filesystem.mysql.php'  + '?update=-3' + '&fs_companyid=<?php    print $formVars['server']; ?>');
+  show_file('filesystem.mysql.php'  + '?update=-1' + '&fs_companyid=<?php    print $formVars['server']; ?>');
   show_file('network.mysql.php'     + '?update=-3' + '&int_companyid=<?php   print $formVars['server']; ?>');
   show_file('users.mysql.php'       + '?update=-3' + '&pwd_companyid=<?php   print $formVars['server']; ?>');
   show_file('routing.mysql.php'     + '?update=-3' + '&route_companyid=<?php print $formVars['server']; ?>');
@@ -858,7 +902,80 @@ $(document).ready( function() {
       {
         text: "Add Server Tag",
         click: function() {
-          attach_tags('tags.mysql.php', 0);
+          create_tags('tags.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+
+
+  $( '#clickFilesystemCreate' ).click(function() {
+    $( "#dialogFilesystemCreate" ).dialog('open');
+  });
+
+  $( "#dialogFilesystemCreate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 475,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogFilesystemCreate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('filesystem.mysql.php?update=-1&fs_companyid=<?php print $formVars['server']; ?>');
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Filesystem",
+        click: function() {
+          create_filesystem('filesystem.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+  $( "#dialogFilesystemUpdate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 475,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogFilesystemUpdate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('filesystem.mysql.php?update=-1&fs_companyid=<?php print $formVars['server']; ?>');
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Update Filesystem",
+        click: function() {
+          update_filesystem('filesystem.mysql.php', 1);
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Filesystem",
+        click: function() {
+          update_filesystem('filesystem.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -1306,7 +1423,7 @@ $(document).ready( function() {
 </tr>
 </table>
 
-<div id="tags-help" style="display: none">
+<div id="tags-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
 
@@ -1339,7 +1456,7 @@ for other functions.</p>
 </tr>
 </table>
 
-<div id="tags-listing" style="display: none">
+<div id="tags-listing" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
 
@@ -1558,16 +1675,18 @@ a tag that already exists, it does check for that and will simply toggle it vs a
 </div>
 
 
+
+
 <div id="filesystem">
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default"><a href="javascript:;" onmousedown="toggleDiv('filesystem-hide');">Filesystem Management</a></th>
+  <th class="ui-state-default">Filesystem Editor</th>
   <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('filesystem-help');">Help</a></th>
 </tr>
 </table>
 
-<div id="filesystem-help" style="display: none">
+<div id="filesystem-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
 
@@ -1615,11 +1734,47 @@ a tag that already exists, it does check for that and will simply toggle it vs a
 
 </div>
 
-<div id="filesystem-hide" style="display: none">
+<table class="ui-styled-table">
+<tr>
+  <td class="button ui-widget-content"><input type="button" id="clickFilesystemCreate" value="Add Filesystem"></td>
+</tr>
+</table>
 
-<span id="filesystem_form"><?php print wait_Process("Please Wait"); ?></span>
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+<th class="ui-state-default">Filesystem Listing</th>
+<th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('filesystem-listing-help');">Help</a></th>
+</tr>
+</table>
+
+
+<div id="filesystem-listing-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+<ul>
+  <li><strong>Filesystem Listing</strong>
+  <ul>
+    <li><strong>Highlighted</strong> - Filesystems that are <span class="ui-state-highlight">highlighted</span> are <strong>not</strong> being backed up if the Backup Form "Include all filesystems" checkbox is not checked.</li>
+    <li><strong>Remove</strong> - Clicking the <strong>Remove Button</strong> will delete this filesystem from this server.</li>
+    <li><strong>Editing</strong> - Click on a filesystem to toggle the form for editing.</li>
+  </ul></li>
+</ul>
+
+<ul>
+  <li><strong>Notes</strong>
+  <ul>
+    <li>Rows marked with a checkmark in the Updated column have been automatically captured where possible.</li>
+    <li>Click the <strong>Filesystem Management</strong> title bar to toggle the <strong>Filesystem Form</strong>.</li>
+  </ul></li>
+</ul>
 
 </div>
+
+</div>
+
 
 <span id="filesystem_table"><?php print wait_Process("Please Wait"); ?></span>
 
@@ -2264,15 +2419,14 @@ field shows you the limit of the number of characters. This limit is set by the 
 
 <div id="dialogTagCreate" title="Add Server Tag">
 
-<form name="createTagDialog">
+<form name="formTagCreate">
 
 <input type="hidden" name="tag_companyid" value="<?php print $formVars['tag_companyid']; ?>">
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content">Tag Name <input type="text" name="tag_name" size="40">
+  <td class="ui-widget-content">Tag Name <input type="text" name="tag_name" size="40"></td>
 </tr>
-
 </table>
 
 </form>
@@ -2286,7 +2440,133 @@ field shows you the limit of the number of characters. This limit is set by the 
 
 
 
+<div id="dialogFilesystemCreate" title="Add Filesystem">
 
+<form name="formFilesystemCreate">
+
+<table class="ui-styled-table">
+<tr>
+  <td class="ui-widget-content"><label>Back up? <input type="checkbox" name="fs_backup"></label></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Device:* <input type="text" name="fs_device" size="20"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Mount Point:* <input type="text" name="fs_mount" size="20"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Size:* <input type="text" name="fs_size" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Managed by: <select name="fs_group">
+<?php
+  $q_string  = "select grp_id,grp_name ";
+  $q_string .= "from a_groups ";
+  $q_string .= "where grp_disabled = 0 ";
+  $q_string .= "order by grp_name ";
+  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_groups = mysqli_fetch_array($q_groups)) {
+    print "<option value=\"" . $a_groups['grp_id'] . "\">" . htmlspecialchars($a_groups['grp_name']) . "</option>\n";
+  }
+?>
+</select></td>
+<tr>
+  <td class="ui-widget-content">WWID: <input type="text" name="fs_wwid" size="30"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Subsystem: <input type="text" name="fs_subsystem" size="30"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">LUN: <input type="text" name="fs_lun" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Volume: <input type="text" name="fs_volume" size="30"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">VolID: <input type="text" name="fs_volid" size="30"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Path: <input type="text" name="fs_path" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Switch: <input type="text" name="fs_switch" size="30"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Port: <input type="text" name="fs_port" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Server Port: <input type="text" name="fs_sysport" size="30"></td>
+</tr>
+</table>
+
+</form>
+
+</div>
+
+<div id="dialogFilesystemUpdate" title="Edit Filesystem">
+
+<form name="formFilesystemUpdate">
+
+<input type="hidden" name="fs_id" value="0">
+
+<table class="ui-styled-table">
+<tr>
+  <td class="ui-widget-content"><label>Back up? <input type="checkbox" name="fs_backup"></label></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Device:* <input type="text" name="fs_device" size="20"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Mount Point:* <input type="text" name="fs_mount" size="20"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Size:* <input type="text" name="fs_size" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Managed by: <select name="fs_group">
+<?php
+  $q_string  = "select grp_id,grp_name ";
+  $q_string .= "from a_groups ";
+  $q_string .= "where grp_disabled = 0 ";
+  $q_string .= "order by grp_name ";
+  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_groups = mysqli_fetch_array($q_groups)) {
+    print "<option value=\"" . $a_groups['grp_id'] . "\">" . htmlspecialchars($a_groups['grp_name']) . "</option>\n";
+  }
+?>
+</select></td>
+<tr>
+  <td class="ui-widget-content">WWID: <input type="text" name="fs_wwid" size="30"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Subsystem: <input type="text" name="fs_subsystem" size="30"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">LUN: <input type="text" name="fs_lun" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Volume: <input type="text" name="fs_volume" size="30"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">VolID: <input type="text" name="fs_volid" size="30"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Path: <input type="text" name="fs_path" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Switch: <input type="text" name="fs_switch" size="30"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Port: <input type="text" name="fs_port" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Server Port: <input type="text" name="fs_sysport" size="30"></td>
+</tr>
+</table>
+
+</form>
+
+</div>
 
 
 
