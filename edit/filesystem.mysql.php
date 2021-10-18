@@ -25,7 +25,7 @@
 
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
-        $formVars['id']           = clean($_GET['id'],           10);
+        $formVars['fs_id']        = clean($_GET['fs_id'],        10);
         $formVars['fs_backup']    = clean($_GET['fs_backup'],    10);
         $formVars['fs_device']    = clean($_GET['fs_device'],    60);
         $formVars['fs_mount']     = clean($_GET['fs_mount'],     60);
@@ -41,8 +41,8 @@
         $formVars['fs_port']      = clean($_GET['fs_port'],      50);
         $formVars['fs_sysport']   = clean($_GET['fs_sysport'],   50);
 
-        if ($formVars['id'] == '') {
-          $formVars['id'] = 0;
+        if ($formVars['fs_id'] == '') {
+          $formVars['fs_id'] = 0;
         }
         if ($formVars['fs_backup'] == 'true') {
           $formVars['fs_backup'] = 1;
@@ -83,180 +83,26 @@
             "fs_update    = \"" . date('Y-m-d')             . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into filesystem set fs_id = NULL," . $q_string;
-            $message = "Filesystem added.";
+            $q_string = "insert into filesystem set fs_id = NULL," . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update filesystem set " . $q_string . " where fs_id = " . $formVars['id'];
-            $message = "Filesystem updated.";
+            $q_string = "update filesystem set " . $q_string . " where fs_id = " . $formVars['fs_id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['fs_companyid']);
 
-          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
-
-          print "alert('" . $message . "');\n";
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
       }
 
-      if ($formVars['update'] == -2) {
-        $formVars['copyfrom']     = clean($_GET['copyfrom'],     10);
-
-        if ($formVars['copyfrom'] > 0) {
-          $q_string  = "select fs_backup,fs_device,fs_mount,fs_size,fs_wwid,fs_subsystem,fs_volume,fs_lun,fs_volid,fs_path,fs_switch,fs_port,fs_sysport ";
-          $q_string .= "from filesystem ";
-          $q_string .= "where fs_companyid = " . $formVars['copyfrom'];
-          $q_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          while ($a_filesystem = mysqli_fetch_array($q_filesystem)) {
-
-            $q_string = 
-              "fs_companyid =   " . $formVars['fs_companyid']     . "," .
-              "fs_backup    =   " . $a_filesystem['fs_backup']    . "," .
-              "fs_device    = \"" . $a_filesystem['fs_device']    . "\"," .
-              "fs_mount     = \"" . $a_filesystem['fs_mount']     . "\"," .
-              "fs_group     =   " . $a_filesystem['fs_group']     . "," .
-              "fs_size      =   " . $a_filesystem['fs_size']      . "," .
-              "fs_wwid      = \"" . $a_filesystem['fs_wwid']      . "\"," .
-              "fs_subsystem = \"" . $a_filesystem['fs_subsystem'] . "\"," .
-              "fs_volume    = \"" . $a_filesystem['fs_volume']    . "\"," .
-              "fs_lun       =   " . $a_filesystem['fs_lun']       . "," .
-              "fs_volid     = \"" . $a_filesystem['fs_volid']     . "\"," .
-              "fs_path      = \"" . $a_filesystem['fs_path']      . "\"," .
-              "fs_switch    = \"" . $a_filesystem['fs_switch']    . "\"," .
-              "fs_port      = \"" . $a_filesystem['fs_port']      . "\"," .
-              "fs_sysport   = \"" . $a_filesystem['fs_sysport']   . "\"";
-
-            $query = "insert into filesystem set fs_id = NULL, " . $q_string;
-            mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
-          }
-        }
-      }
-
-
-      if ($formVars['update'] == -3) {
-        logaccess($db, $_SESSION['uid'], $package, "Creating the form for viewing.");
-
-        $output  = "<table class=\"ui-styled-table\">\n";
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"button ui-widget-content\">\n";
-        $output .= "<input type=\"button\" name=\"fs_refresh\" value=\"Refresh Filesystem Listing\" onClick=\"javascript:attach_filesystem('filesystem.mysql.php', -1);\">\n";
-        $output .= "<input type=\"button\" name=\"fs_update\"  value=\"Update Filesystem\" onClick=\"javascript:attach_filesystem('filesystem.mysql.php', 1);hideDiv('filesystem-hide');\">\n";
-        $output .= "<input type=\"hidden\" name=\"fs_id\" value=\"0\">\n";
-        $output .= "<input type=\"button\" name=\"fs_addbtn\"  value=\"Add Filesystem\"    onClick=\"javascript:attach_filesystem('filesystem.mysql.php', 0);\">\n";
-        $output .= "</tr>\n";
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"button ui-widget-content\">\n";
-        $output .= "<input type=\"button\" name=\"copyitem\"  value=\"Copy Filesystem Table From:\" onClick=\"javascript:attach_filesystem('filesystem.mysql.php', -2);\">\n";
-        $output .= "<select name=\"fs_copyfrom\">\n";
-        $output .= "<option value=\"0\">None</option>\n";
-
-        $q_string  = "select inv_id,inv_name ";
-        $q_string .= "from inventory ";
-        $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
-        $q_string .= "order by inv_name";
-        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_inventory = mysqli_fetch_array($q_inventory)) {
-          $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . htmlspecialchars($a_inventory['inv_name']) . "</option>\n";
-        }
-
-        $output .= "</select></td>\n";
-        $output .= "</tr>\n";
-        $output .= "</table>\n";
-
-        $output .= "<table class=\"ui-styled-table\">\n";
-        $output .= "<tr>\n";
-        $output .= "  <th class=\"ui-state-default\" colspan=\"4\">Filesystem Form</th>\n";
-        $output .= "</tr>\n";
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\"><label>Back up? <input type=\"checkbox\" name=\"fs_backup\"></label></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Device:* <input type=\"text\" name=\"fs_device\" size=\"20\"></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Mount Point:* <input type=\"text\" name=\"fs_mount\" size=\"20\"></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Size:* <input type=\"text\" name=\"fs_size\" size=\"10\"></td>\n";
-        $output .= "</tr>\n";
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"4\">Managed by: <select name=\"fs_group\">\n";
-
-        $q_string  = "select grp_id,grp_name ";
-        $q_string .= "from a_groups ";
-        $q_string .= "where grp_disabled = 0 ";
-        $q_string .= "order by grp_name ";
-        $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_groups = mysqli_fetch_array($q_groups)) {
-          $output .= "<option value=\"" . $a_groups['grp_id'] . "\">" . htmlspecialchars($a_groups['grp_name']) . "</option>\n";
-        }
-
-        $output .= "</select></td>\n";
-        $output .= "</tr>\n";
-        $output .= "</table>\n";
-
-        $output .= "<table class=\"ui-styled-table\">\n";
-        $output .= "<tr>\n";
-        $output .= "  <th class=\"ui-state-default\" colspan=\"3\">SAN Form</th>\n";
-        $output .= "</tr>\n";
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\">WWID: <input type=\"text\" name=\"fs_wwid\" size=\"30\"></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Subsystem: <input type=\"text\" name=\"fs_subsystem\" size=\"30\"></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">LUN: <input type=\"text\" name=\"fs_lun\" size=\"10\"></td>\n";
-        $output .= "</tr>\n";
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\">Volume: <input type=\"text\" name=\"fs_volume\" size=\"30\"></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">VolID: <input type=\"text\" name=\"fs_volid\" size=\"30\"></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Path: <input type=\"text\" name=\"fs_path\" size=\"10\"></td>\n";
-        $output .= "</tr>\n";
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\">Switch: <input type=\"text\" name=\"fs_switch\" size=\"30\"></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Port: <input type=\"text\" name=\"fs_port\" size=\"10\"></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Server Port: <input type=\"text\" name=\"fs_sysport\" size=\"30\"></td>\n";
-        $output .= "</tr>\n";
-        $output .= "</table>\n";
-
-        print "document.getElementById('filesystem_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
-
-      }
-
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
+      $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      $output .=   "<th class=\"ui-state-default\">Filesystem Listing</th>\n";
-      $output .=   "<th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('filesystem-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-
-      $output .= "<div id=\"filesystem-listing-help\" style=\"display: none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Filesystem Listing</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li><strong>Highlighted</strong> - Filesystems that are <span class=\"ui-state-highlight\">highlighted</span> are <strong>not</strong> being backed up if the Backup Form \"Include all filesystems\" checkbox is not checked.</li>\n";
-      $output .= "    <li><strong>Delete (x)</strong> - Clicking the <strong>x</strong> will delete this filesystem from this server.</li>\n";
-      $output .= "    <li><strong>Editing</strong> - Click on a filesystem to toggle the form for editing.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Notes</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li>Rows marked with a checkmark in the Updated column have been automatically captured where possible.</li>\n";
-      $output .= "    <li>Click the <strong>Filesystem Management</strong> title bar to toggle the <strong>Filesystem Form</strong>.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .=   "<th class=\"ui-state-default\">Del</th>\n";
+      $output .=   "<th class=\"ui-state-default\" width=\"160\">Delete Filesystem</th>\n";
       $output .=   "<th class=\"ui-state-default\">Device</th>\n";
       $output .=   "<th class=\"ui-state-default\">Mount</th>\n";
       $output .=   "<th class=\"ui-state-default\">Managed By</th>\n";
@@ -269,6 +115,7 @@
       $output .=   "<th class=\"ui-state-default\">Updated</th>\n";
       $output .= "</tr>\n";
 
+# if all filesystems are checked in the backup form, then we don't need checkboxes here
       $q_string  = "select bu_include ";
       $q_string .= "from backups ";
       $q_string .= "where bu_companyid = " . $formVars['fs_companyid'] . " ";
@@ -289,15 +136,17 @@
       if (mysqli_num_rows($q_filesystem) > 0) {
         while ($a_filesystem = mysqli_fetch_array($q_filesystem)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('filesystem.fill.php?id=" . $a_filesystem['fs_id'] . "');showDiv('filesystem-hide');\">";
+          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('filesystem.fill.php?id=" . $a_filesystem['fs_id'] . "');jQuery('#dialogFilesystemUpdate').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_filesystem('filesystem.del.php?id=" . $a_filesystem['fs_id'] . "');\">";
           $linkend   = "</a>";
 
           $class = "ui-widget-content";
+# if all filesystems are not being backed up
           if ($a_backups['bu_include'] == 0) {
             $class = "ui-state-highlight";
-            if ($a_filesystem['fs_backup']) {
-              $class = "ui-widget-content";
+# and if this specific filesystem is not being backed up.
+            if ($a_filesystem['fs_backup'] == 0) {
+              $class = "ui-state-error";
             }
           }
 
@@ -332,8 +181,6 @@
       $output .= "</table>\n";
 
       print "document.getElementById('filesystem_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
-
-      print "document.edit.fs_update.disabled = true;\n";
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
