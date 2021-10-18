@@ -18,6 +18,13 @@
 
   logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
+# if help has not been seen yet,
+  if (show_Help($db, $Sitepath . "/" . $package)) {
+    $display = "display: block";
+  } else {
+    $display = "display: none";
+  }
+
   if (isset($_GET['server'])) {
     $formVars['server'] = clean($_GET['server'], 10);
   }
