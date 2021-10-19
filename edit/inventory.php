@@ -160,17 +160,6 @@ function delete_hardware( p_script_url ) {
   }
 }
 
-function delete_interface( p_script_url ) {
-  var answer = confirm("Delete this Interface?")
-
-  if (answer) {
-    script = document.createElement('script');
-    script.src = p_script_url;
-    document.getElementsByTagName('head')[0].appendChild(script);
-    show_file('network.mysql.php'   + '?update=-1' + '&int_companyid=<?php   print $formVars['server']; ?>');
-  }
-}
-
 function delete_route( p_script_url ) {
   var answer = confirm("Delete this Route?")
 
@@ -474,42 +463,100 @@ function attach_inventory( p_script_url, update ) {
 }
 
 
-function attach_interface( p_script_url, update ) {
-  var ai_form = document.edit;
-  var ai_url;
 
-  ai_url  = '?update='   + update;
-  ai_url += '&id='       + ai_form.int_id.value;
 
-  ai_url += "&int_companyid="  + <?php print $formVars['server']; ?>;
-  ai_url += "&int_ipaddressid="  + ai_form.int_ipaddressid.value;
-  ai_url += "&int_face="       + encode_URI(ai_form.int_face.value);
-  ai_url += "&int_int_id="     + ai_form.int_int_id.value;
-  ai_url += "&int_virtual="    + ai_form.int_virtual.checked;
-  ai_url += "&int_eth="        + encode_URI(ai_form.int_eth.value);
-  ai_url += "&int_note="       + encode_URI(ai_form.int_note.value);
-  ai_url += "&int_switch="     + encode_URI(ai_form.int_switch.value);
-  ai_url += "&int_port="       + encode_URI(ai_form.int_port.value);
-  ai_url += "&int_sysport="    + encode_URI(ai_form.int_sysport.value);
-  ai_url += "&int_primary="    + ai_form.int_primary.checked;
-  ai_url += "&int_type="       + ai_form.int_type.value;
-  ai_url += "&int_media="      + ai_form.int_media.value;
-  ai_url += "&int_speed="      + ai_form.int_speed.value;
-  ai_url += "&int_duplex="     + ai_form.int_duplex.value;
-  ai_url += "&int_redundancy=" + ai_form.int_redundancy.value;
-  ai_url += "&int_groupname="  + encode_URI(ai_form.int_groupname.value);
-  ai_url += "&int_backup="     + ai_form.int_backup.checked;
-  ai_url += "&int_management=" + ai_form.int_management.checked;
-  ai_url += "&int_login="      + ai_form.int_login.checked;
 
-  if (ai_form.int_id.value != 0 && ai_form.int_id.value == ai_form.int_int_id.value) {
+
+
+function delete_interface( p_script_url ) {
+  var answer = confirm("Delete this Interface?")
+
+  if (answer) {
+    script = document.createElement('script');
+    script.src = p_script_url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+    show_file('interface.mysql.php'   + '?update=-1' + '&int_companyid=<?php   print $formVars['server']; ?>');
+  }
+}
+
+function create_interface( p_script_url, update ) {
+  var ci_form = document.formInterfaceCreate;
+  var ci_url;
+
+  ci_url  = '?update='   + update;
+
+  ci_url += "&int_companyid="    + <?php print $formVars['server']; ?>;
+  ci_url += "&int_ipaddressid="  + ci_form.int_ipaddressid.value;
+  ci_url += "&int_face="         + encode_URI(ci_form.int_face.value);
+  ci_url += "&int_int_id="       + ci_form.int_int_id.value;
+  ci_url += "&int_virtual="      + ci_form.int_virtual.checked;
+  ci_url += "&int_eth="          + encode_URI(ci_form.int_eth.value);
+  ci_url += "&int_note="         + encode_URI(ci_form.int_note.value);
+  ci_url += "&int_switch="       + encode_URI(ci_form.int_switch.value);
+  ci_url += "&int_port="         + encode_URI(ci_form.int_port.value);
+  ci_url += "&int_sysport="      + encode_URI(ci_form.int_sysport.value);
+  ci_url += "&int_primary="      + ci_form.int_primary.checked;
+  ci_url += "&int_type="         + ci_form.int_type.value;
+  ci_url += "&int_media="        + ci_form.int_media.value;
+  ci_url += "&int_speed="        + ci_form.int_speed.value;
+  ci_url += "&int_duplex="       + ci_form.int_duplex.value;
+  ci_url += "&int_redundancy="   + ci_form.int_redundancy.value;
+  ci_url += "&int_groupname="    + encode_URI(ci_form.int_groupname.value);
+  ci_url += "&int_backup="       + ci_form.int_backup.checked;
+  ci_url += "&int_management="   + ci_form.int_management.checked;
+  ci_url += "&int_login="        + ci_form.int_login.checked;
+
+  if (ci_form.int_id.value != 0 && ci_form.int_id.value == ci_form.int_int_id.value) {
     alert("You cannot be a child of yourself.");
   } else {
     script = document.createElement('script');
-    script.src = p_script_url + ai_url;
+    script.src = p_script_url + ci_url;
     document.getElementsByTagName('head')[0].appendChild(script);
   }
 }
+
+function update_interface( p_script_url, update ) {
+  var ui_form = document.formInterfaceUpdate;
+  var ui_url;
+
+  ui_url  = '?update='       + update;
+  ui_url += '&int_id='       + ui_form.int_id.value;
+
+  ui_url += "&int_companyid="    + <?php print $formVars['server']; ?>;
+  ui_url += "&int_ipaddressid="  + ui_form.int_ipaddressid.value;
+  ui_url += "&int_face="         + encode_URI(ui_form.int_face.value);
+  ui_url += "&int_int_id="       + ui_form.int_int_id.value;
+  ui_url += "&int_virtual="      + ui_form.int_virtual.checked;
+  ui_url += "&int_eth="          + encode_URI(ui_form.int_eth.value);
+  ui_url += "&int_note="         + encode_URI(ui_form.int_note.value);
+  ui_url += "&int_switch="       + encode_URI(ui_form.int_switch.value);
+  ui_url += "&int_port="         + encode_URI(ui_form.int_port.value);
+  ui_url += "&int_sysport="      + encode_URI(ui_form.int_sysport.value);
+  ui_url += "&int_primary="      + ui_form.int_primary.checked;
+  ui_url += "&int_type="         + ui_form.int_type.value;
+  ui_url += "&int_media="        + ui_form.int_media.value;
+  ui_url += "&int_speed="        + ui_form.int_speed.value;
+  ui_url += "&int_duplex="       + ui_form.int_duplex.value;
+  ui_url += "&int_redundancy="   + ui_form.int_redundancy.value;
+  ui_url += "&int_groupname="    + encode_URI(ui_form.int_groupname.value);
+  ui_url += "&int_backup="       + ui_form.int_backup.checked;
+  ui_url += "&int_management="   + ui_form.int_management.checked;
+  ui_url += "&int_login="        + ui_form.int_login.checked;
+
+  if (ui_form.int_id.value != 0 && ui_form.int_id.value == ui_form.int_int_id.value) {
+    alert("You cannot be a child of yourself.");
+  } else {
+    script = document.createElement('script');
+    script.src = p_script_url + ui_url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+}
+
+
+
+
+
+
 
 function attach_user(p_script_url, update) {
   var au_form = document.edit;
@@ -850,7 +897,7 @@ function clear_fields() {
   show_file('maintenance.mysql.php' + '?update=-3' + '&id=<?php              print $formVars['server']; ?>');
   show_file('hardware.mysql.php'    + '?update=-3' + '&hw_companyid=<?php    print $formVars['server']; ?>');
   show_file('filesystem.mysql.php'  + '?update=-1' + '&fs_companyid=<?php    print $formVars['server']; ?>');
-  show_file('network.mysql.php'     + '?update=-3' + '&int_companyid=<?php   print $formVars['server']; ?>');
+  show_file('interface.mysql.php'   + '?update=-1' + '&int_companyid=<?php   print $formVars['server']; ?>');
   show_file('users.mysql.php'       + '?update=-3' + '&pwd_companyid=<?php   print $formVars['server']; ?>');
   show_file('routing.mysql.php'     + '?update=-3' + '&route_companyid=<?php print $formVars['server']; ?>');
   show_file('backups.fill.php'      + '?id=<?php                             print $formVars['server']; ?>');
@@ -868,8 +915,6 @@ function clear_fields() {
 
 
 $(document).ready( function() {
-  $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
-  $( "#networktab" ).tabs( ).addClass( "tab-shadow" );
   $( "#sstatus" ).buttonset();
 
 
@@ -990,6 +1035,78 @@ $(document).ready( function() {
   });
 
 
+  $( '#clickInterfaceCreate' ).click(function() {
+    $( "#dialogInterfaceCreate" ).dialog('open');
+  });
+
+  $( "#dialogInterfaceCreate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 600,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogInterfaceCreate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('interface.mysql.php?update=-1&int_companyid=<?php print $formVars['server']; ?>');
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Interface",
+        click: function() {
+          create_interface('interface.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+  $( "#dialogInterfaceUpdate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 600,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogInterfaceUpdate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('interface.mysql.php?update=-1&int_companyid=<?php print $formVars['server']; ?>');
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Update Interface",
+        click: function() {
+          update_interface('interface.mysql.php', 1);
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Interface",
+        click: function() {
+          update_interface('interface.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+
 
 
 
@@ -1044,7 +1161,7 @@ $(document).ready( function() {
 <?php
   if (check_grouplevel($db, $a_inventory['inv_manager'])) {
 ?>
-  <li><a href="#network">Network</a></li>
+  <li><a href="#interface">Interfaces</a></li>
   <li><a href="#users">Users</a></li>
   <li><a href="#routing">Routing</a></li>
   <li><a href="#backup">Backup</a></li>
@@ -1855,19 +1972,21 @@ software support date exceeds the company requirements for support.</li>
 
 </div>
 
+
+
 <?php
   if (check_grouplevel($db, $a_inventory['inv_manager'])) {
 ?>
-<div id="network">
+<div id="interface">
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default"><a href="javascript:;" onmousedown="toggleDiv('network-hide');">Network Management</a></th>
-  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('network-help');">Help</a></th>
+  <th class="ui-state-default">Interface Editor</a></th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('interface-help');">Help</a></th>
 </tr>
 </table>
 
-<div id="network-help" style="display: none">
+<div id="interface-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
 
@@ -1931,7 +2050,6 @@ software support date exceeds the company requirements for support.</li>
   <li><strong>Notes</strong>
   <ul>
     <li>Fields marked with an asterisk (*) are automatically captured where possible.</li>
-    <li>Click the <strong>Network Management</strong> title bar to toggle the <strong>Network Form</strong>.</li>
   </ul></li>
 </ul>
 
@@ -1940,38 +2058,58 @@ software support date exceeds the company requirements for support.</li>
 
 </div>
 
-<div id="network-hide" style="display: none">
 
-<span id="network_form"><?php print wait_Process("Please Wait"); ?></span>
+<table class="ui-styled-table">
+<tr>
+  <td class="button ui-widget-content"><input type="button" id="clickInterfaceCreate" value="Add Interface"></td>
+</tr>
+</table>
 
-<div id="networktab">
+
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Interface Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('interface-listing-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="interface-listing-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
 
 <ul>
-  <li><a href="#nwsystem">System Form</a></li>
-  <li><a href="#nwphysical">Physical Form</a></li>
+  <li><strong>Interface Listing</strong>
+  <ul>
+    <li><strong>Highlighted</strong> - This interface is the <span class="ui-state-highlight">Default Route</span>.</li>
+    <li><strong>Highlighted</strong> - This hostname either doesn't match the resolved hostname or is simply <span class="ui-state-error">not in DNS</span>. If incorrect or incomplete, the identified DNS entry will be displayed. If no DNS entry, it will show the IP Address. Not all interfaces need to be in DNS but they will be highlighted if not.</li>
+    <li><strong>Delete</strong> - Clicking the <strong>Delete</strong> button will delete this interface from this server.</li>
+    <li><strong>Bridge</strong> - A bridge interface will be designed with a (b).</li>
+    <li><strong>Virtual Memberships</strong> - If a physical interface is a member of a virtual interface, it will be designated with a &gt; to the left of the name and will listed under the virtual interface. The main virtual interface of the group will be designated with (r). If Group or Teaming names are used, they will be listed next to the physical members of the group.
+    <ul>
+      <li><strong>Solaris</strong> virtual interfaces end in :number (e1000g1:1, e1000g5:1, etc).</li>
+      <li><strong>Linux</strong> virtual interfaces begin with bond (bond0, bond0.87, bond1, etc).</li>
+      <li><strong>HP-UX</strong> virtual interfaces are in the 900 range (lan900, lan901, etc).</li>
+      <li><strong>Windows</strong> virtual interfaces.</li>
+    </ul></li>
+    <li><strong>Virtual</strong> - A Virtual interface will be identified with a (v) next to the Logical Interface name. Not all Virtual interfaces are part of a Redundancy group.</li>
+    <li><strong>Management</strong> - A interface that is designated to pass management traffic will be identified with a (M). There should only be one interface identified as such.</li>
+    <li><strong>Backups</strong> - A interface that is designated to pass backup traffic will be identified with a (B). If it's not designated, by default the (M) interface is assumed to pass backup traffic.</li>
+    <li><strong>Editing</strong> - Click on an interface to edit it.</li>
+  </ul></li>
 </ul>
 
-<div id="nwsystem">
-
-<span id="nwsystem_form"><?php print wait_Process("Please Wait"); ?></span>
-
-</div>
-
-
-<div id="nwphysical">
-
-<span id="nwphysical_form"><?php print wait_Process("Please Wait"); ?></span>
-
-</div>
-
-
 </div>
 
 </div>
 
-<span id="network_table"><?php print wait_Process("Please Wait"); ?></span>
+<span id="interface_table"><?php print wait_Process("Please Wait"); ?></span>
 
 </div>
+
+
+
 
 
 <div id="users">
@@ -2510,6 +2648,7 @@ field shows you the limit of the number of characters. This limit is set by the 
 
 </div>
 
+
 <div id="dialogFilesystemUpdate" title="Edit Filesystem">
 
 <form name="formFilesystemUpdate">
@@ -2574,6 +2713,334 @@ field shows you the limit of the number of characters. This limit is set by the 
 </form>
 
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="dialogInterfaceCreate" title="Add Interface">
+
+<form name="formInterfaceCreate">
+
+<table class="ui-styled-table">
+<tr>
+  <td class="ui-widget-content">IP Address* <select name="int_ipaddressid">
+<?php
+  $q_string  = "select ip_id,ip_ipv4,ip_hostname ";
+  $q_string .= "from ipaddress ";
+  $q_string .= "order by ip_hostname,ip_ipv4 ";
+  $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_ipaddress) > 0) {
+    while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
+
+      $q_string  = "select int_id ";
+      $q_string .= "from interface ";
+      $q_string .= "where int_ipaddressid = " . $a_ipaddress['ip_id'] . " ";
+      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_interface) == 0) {
+        print "<option value=\"" . $a_ipaddress['ip_id'] . "\">" . $a_ipaddress['ip_hostname'] . " " . $a_ipaddress['ip_ipv4'] . "</option>\n";
+      } else {
+        print "<option value=\"" . $a_ipaddress['ip_id'] . "\">" . $a_ipaddress['ip_hostname'] . " " . $a_ipaddress['ip_ipv4'] . "*</option>\n";
+      }
+    }
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label>Virtual Interface? <input type="checkbox" name="int_virtual"></label></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label>Default Route? <input type="checkbox" name="int_primary"></label></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Logical Interface Name* <input type="text" name="int_face" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Interface Type: <select name="int_type">
+<?php
+  $q_string  = "select itp_id,itp_name ";
+  $q_string .= "from int_types ";
+  $q_string .= "order by itp_id";
+  $q_int_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_int_types = mysqli_fetch_array($q_int_types)) {
+    print "<option value=\"" . $a_int_types['itp_id'] . "\">" . $a_int_types['itp_name'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">MAC* <input type="text" name="int_eth" value="00:00:00:00:00:00" size="18"></td>
+</tr>
+
+<tr>
+  <td class="ui-widget-content">Redundancy: <select name="int_redundancy">
+<?php
+  $q_string  = "select red_id,red_text ";
+  $q_string .= "from int_redundancy ";
+  $q_string .= "order by red_text";
+  $q_int_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_int_redundancy = mysqli_fetch_array($q_int_redundancy)) {
+    print "<option value=\"" . $a_int_redundancy['red_id'] . "\">" . $a_int_redundancy['red_text'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">
+<?php
+  $os = return_System($db, $formVars['server']);
+
+  if ($os == "Linux") {
+    print "Bond ";
+  }
+  if ($os == "HP-UX") {
+    print "APA ";
+  }
+  if ($os == "SunOS") {
+    print "IPMP ";
+  }
+  if ($os == "Windows") {
+    print "Teaming ";
+  }
+?>
+Assignment <select name="int_int_id"></select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Group Name: <input type="text" name="int_groupname" size="20"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label><input type="checkbox" name="int_management"> Used for Management traffic</label></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label><input type="checkbox" name="int_backup"> Used for Backup traffic</label></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label><input type="checkbox" name="int_login"> Used for Secure Shell traffic</label></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Note: <input type="text" name="int_note" size="60"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Physical Hardware Port <input type="text" name="int_sysport" size="20"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Media: <select name="int_media">
+<?php
+        $q_string = "select med_id,med_text from int_media order by med_text";
+        $q_int_media = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_int_media = mysqli_fetch_array($q_int_media)) {
+          print "<option value=\"" . $a_int_media['med_id'] . "\">" . $a_int_media['med_text'] . "</option>\n";
+        }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Speed*: <select name="int_speed">
+<?php
+        $q_string = "select spd_id,spd_text from int_speed order by spd_text";
+        $q_int_speed = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_int_speed = mysqli_fetch_array($q_int_speed)) {
+          print "<option value=\"" . $a_int_speed['spd_id'] . "\">" . $a_int_speed['spd_text'] . "</option>\n";
+        }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Duplex*: <select name="int_duplex">
+<?php
+        $q_string = "select dup_id,dup_text from int_duplex order by dup_text";
+        $q_int_duplex = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_int_duplex = mysqli_fetch_array($q_int_duplex)) {
+          print "<option value=\"" . $a_int_duplex['dup_id'] . "\">" . $a_int_duplex['dup_text'] . "</option>\n";
+        }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Switch <input type="text" name="int_switch" size="40"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Port <input type="text" name="int_port" size="20"></td>
+</tr>
+</table>
+
+</form>
+
+</div>
+
+
+<div id="dialogInterfaceUpdate" title="Edit Interface">
+
+<form name="formInterfaceUpdate">
+
+<input type="hidden" name="int_id" value="0">
+
+<table class="ui-styled-table">
+<tr>
+  <td class="ui-widget-content">IP Address* <select name="int_ipaddressid">
+<?php
+  $q_string  = "select ip_id,ip_ipv4,ip_hostname ";
+  $q_string .= "from ipaddress ";
+  $q_string .= "order by ip_hostname,ip_ipv4 ";
+  $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_ipaddress) > 0) {
+    while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
+
+      $q_string  = "select int_id ";
+      $q_string .= "from interface ";
+      $q_string .= "where int_ipaddressid = " . $a_ipaddress['ip_id'] . " ";
+      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_interface) == 0) {
+        print "<option value=\"" . $a_ipaddress['ip_id'] . "\">" . $a_ipaddress['ip_hostname'] . " " . $a_ipaddress['ip_ipv4'] . "</option>\n";
+      } else {
+        print "<option value=\"" . $a_ipaddress['ip_id'] . "\">" . $a_ipaddress['ip_hostname'] . " " . $a_ipaddress['ip_ipv4'] . "*</option>\n";
+      }
+    }
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label>Virtual Interface? <input type="checkbox" name="int_virtual"></label></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label>Default Route? <input type="checkbox" name="int_primary"></label></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Logical Interface Name* <input type="text" name="int_face" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Interface Type: <select name="int_type">
+<?php
+  $q_string  = "select itp_id,itp_name ";
+  $q_string .= "from int_types ";
+  $q_string .= "order by itp_id";
+  $q_int_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_int_types = mysqli_fetch_array($q_int_types)) {
+    print "<option value=\"" . $a_int_types['itp_id'] . "\">" . $a_int_types['itp_name'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">MAC* <input type="text" name="int_eth" value="00:00:00:00:00:00" size="18"></td>
+</tr>
+
+<tr>
+  <td class="ui-widget-content">Redundancy: <select name="int_redundancy">
+<?php
+  $q_string  = "select red_id,red_text ";
+  $q_string .= "from int_redundancy ";
+  $q_string .= "order by red_text";
+  $q_int_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_int_redundancy = mysqli_fetch_array($q_int_redundancy)) {
+    print "<option value=\"" . $a_int_redundancy['red_id'] . "\">" . $a_int_redundancy['red_text'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">
+<?php
+  $os = return_System($db, $formVars['server']);
+
+  if ($os == "Linux") {
+    print "Bond ";
+  }
+  if ($os == "HP-UX") {
+    print "APA ";
+  }
+  if ($os == "SunOS") {
+    print "IPMP ";
+  }
+  if ($os == "Windows") {
+    print "Teaming ";
+  }
+?>
+Assignment <select name="int_int_id"></select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Group Name: <input type="text" name="int_groupname" size="20"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label><input type="checkbox" name="int_management"> Used for Management traffic</label></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label><input type="checkbox" name="int_backup"> Used for Backup traffic</label></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label><input type="checkbox" name="int_login"> Used for Secure Shell traffic</label></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Note: <input type="text" name="int_note" size="60"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Physical Hardware Port <input type="text" name="int_sysport" size="20"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Media: <select name="int_media">
+<?php
+        $q_string = "select med_id,med_text from int_media order by med_text";
+        $q_int_media = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_int_media = mysqli_fetch_array($q_int_media)) {
+          print "<option value=\"" . $a_int_media['med_id'] . "\">" . $a_int_media['med_text'] . "</option>\n";
+        }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Speed*: <select name="int_speed">
+<?php
+        $q_string = "select spd_id,spd_text from int_speed order by spd_text";
+        $q_int_speed = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_int_speed = mysqli_fetch_array($q_int_speed)) {
+          print "<option value=\"" . $a_int_speed['spd_id'] . "\">" . $a_int_speed['spd_text'] . "</option>\n";
+        }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Duplex*: <select name="int_duplex">
+<?php
+        $q_string = "select dup_id,dup_text from int_duplex order by dup_text";
+        $q_int_duplex = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_int_duplex = mysqli_fetch_array($q_int_duplex)) {
+          print "<option value=\"" . $a_int_duplex['dup_id'] . "\">" . $a_int_duplex['dup_text'] . "</option>\n";
+        }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Switch <input type="text" name="int_switch" size="40"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Port <input type="text" name="int_port" size="20"></td>
+</tr>
+</table>
+
+</form>
+
+</div>
+
+
+
+
+
 
 
 

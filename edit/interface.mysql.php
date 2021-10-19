@@ -1,5 +1,5 @@
 <?php
-# Script: network.mysql.php
+# Script: interface.mysql.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
 # Description: Retrieve data and update the database with the new info. Prepare and display the table
@@ -12,7 +12,7 @@
   include($Sitepath . '/function.php');
 
   if (isset($_SESSION['username'])) {
-    $package = "network.mysql.php";
+    $package = "interface.mysql.php";
     $formVars['update']         = clean($_GET['update'],         10);
     $formVars['int_companyid']  = clean($_GET['int_companyid'],  10);
 
@@ -201,234 +201,9 @@
       }
 
 
-      if ($formVars['update'] == -3) {
-        logaccess($db, $_SESSION['uid'], $package, "Creating the form for viewing.");
-
-        $output  = "<table class=\"ui-styled-table\">\n";
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"button ui-widget-content\">\n";
-        $output .= "<input type=\"button\" name=\"int_refresh\" value=\"Refresh Network Listing\" onClick=\"javascript:attach_interface('network.mysql.php', -1);\">\n";
-        $output .= "<input type=\"button\" name=\"int_update\"  value=\"Update Interface\"        onClick=\"javascript:attach_interface('network.mysql.php', 1);hideDiv('network-hide');\">\n";
-        $output .= "<input type=\"hidden\" name=\"int_id\"      value=\"0\">\n";
-        $output .= "<input type=\"button\" name=\"int_addbtn\"  value=\"Add Interface\"           onClick=\"javascript:attach_interface('network.mysql.php', 0);\">\n";
-        $output .= "</tr>\n";
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"button ui-widget-content\">\n";
-        $output .= "<input type=\"button\" name=\"int_copyitem\" value=\"Copy Network Table From:\" onClick=\"javascript:attach_interface('network.mysql.php', -2);\">\n";
-        $output .= "<select name=\"int_copyfrom\">\n";
-        $output .= "<option value=\"0\">None</option>\n";
-
-        $q_string  = "select inv_id,inv_name ";
-        $q_string .= "from inventory ";
-        $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
-        $q_string .= "order by inv_name";
-        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_inventory = mysqli_fetch_array($q_inventory)) {
-          $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . "</option>\n";
-        }
-
-        $output .= "</select></td>\n";
-        $output .= "</tr>\n";
-        $output .= "</table>\n";
-
-        print "document.getElementById('network_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
-
-
-
-
-        $output  = "<table class=\"ui-styled-table\">\n";
-        $output .= "<tr>\n";
-        $output .= "  <th class=\"ui-state-default\" colspan=\"4\">System Form</th>\n";
-        $output .= "</tr>\n";
-
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\">IP Address* <select name=\"int_ipaddressid\">\n";
-        $output .= "<option value=\"0\">Unassigned</option>\n";
-
-        $q_string  = "select ip_id,ip_ipv4,ip_hostname ";
-        $q_string .= "from ipaddress ";
-        $q_string .= "order by ip_hostname,ip_ipv4 ";
-        $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        if (mysqli_num_rows($q_ipaddress) > 0) {
-          while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
-
-            $q_string  = "select int_id ";
-            $q_string .= "from interface ";
-            $q_string .= "where int_ipaddressid = " . $a_ipaddress['ip_id'] . " ";
-            $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-            if (mysqli_num_rows($q_interface) == 0) {
-              $output .= "<option value=\"" . $a_ipaddress['ip_id'] . "\">" . $a_ipaddress['ip_hostname'] . " " . $a_ipaddress['ip_ipv4'] . "</option>\n";
-            } else {
-              $output .= "<option value=\"" . $a_ipaddress['ip_id'] . "\">" . $a_ipaddress['ip_hostname'] . " " . $a_ipaddress['ip_ipv4'] . "*</option>\n";
-            }
-          }
-        }
-
-        $output .= "</select></td>\n";
-        $output .= "  <td class=\"ui-widget-content\"><label>Virtual Interface? <input type=\"checkbox\" name=\"int_virtual\"></label></td>\n"; 
-        $output .= "  <td class=\"ui-widget-content\"><label>Default Route? <input type=\"checkbox\" name=\"int_primary\"></label></td>\n";
-        $output .= "</tr>\n"; 
-
-        $output .= "<tr>\n"; 
-        $output .= "  <td class=\"ui-widget-content\">Logical Interface Name* <input type=\"text\" name=\"int_face\" size=\"10\"></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Interface Type: <select name=\"int_type\">\n";
-
-        $q_string  = "select itp_id,itp_name ";
-        $q_string .= "from int_types ";
-        $q_string .= "order by itp_id";
-        $q_int_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_int_types = mysqli_fetch_array($q_int_types)) {
-          $output .= "<option value=\"" . $a_int_types['itp_id'] . "\">" . $a_int_types['itp_name'] . "</option>\n";
-        }
-
-        $output .= "</select></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">MAC* <input type=\"text\" name=\"int_eth\" value=\"00:00:00:00:00:00\" size=\"18\"></td>\n";
-        $output .= "</tr>\n";
-
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\">Redundancy: <select name=\"int_redundancy\">\n";
-        $output .= "<option value=\"0\">Child Interface</option>\n";
-
-        $q_string  = "select red_id,red_text ";
-        $q_string .= "from int_redundancy ";
-        $q_string .= "order by red_text";
-        $q_int_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_int_redundancy = mysqli_fetch_array($q_int_redundancy)) {
-          $output .= "<option value=\"" . $a_int_redundancy['red_id'] . "\">" . $a_int_redundancy['red_text'] . "</option>\n";
-        }
-        $output .= "</select></td>\n"; 
-        $output .= "  <td class=\"ui-widget-content\">";
-
-        $os = return_System($db, $formVars['int_companyid']);
-
-        if ($os == "Linux") {
-          $output .= "Bond ";
-        }
-        if ($os == "HP-UX") {
-          $output .= "APA ";
-        }
-        if ($os == "SunOS") {
-          $output .= "IPMP ";
-        }
-        if ($os == "Windows") {
-          $output .= "Teaming ";
-        }
-
-        $output .= "Assignment <select name=\"int_int_id\"></select></td>\n"; 
-        $output .= "  <td class=\"ui-widget-content\">Group Name: <input type=\"text\" name=\"int_groupname\" size=\"20\"></td>\n";
-        $output .= "</tr>\n"; 
-
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\"><label><input type=\"checkbox\" name=\"int_management\"> Used for Management traffic</label></td>";
-        $output .= "  <td class=\"ui-widget-content\"><label><input type=\"checkbox\" name=\"int_backup\"> Used for Backup traffic</label></td>";
-        $output .= "  <td class=\"ui-widget-content\"><label><input type=\"checkbox\" name=\"int_login\"> Used for Secure Shell traffic</label></td>";
-        $output .= "</tr>\n";
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"4\">Note: <input type=\"text\" name=\"int_note\" size=\"80\"></td>\n";
-        $output .= "</tr>\n";
-        $output .= "</table>\n";
-
-        print "document.getElementById('nwsystem_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
-
-
-
-        $output  = "<table class=\"ui-styled-table\">\n";
-        $output .= "<tr>\n";
-        $output .= "  <th class=\"ui-state-default\" colspan=\"3\">Physical Form</th>\n";
-        $output .= "</tr>\n";
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"3\">Physical Hardware Port <input type=\"text\" name=\"int_sysport\" size=\"20\"></td>\n";
-        $output .= "</tr>\n";
-        $output .= "<tr>\n";
-
-        $output .= "  <td class=\"ui-widget-content\">Media: <select name=\"int_media\">\n";
-        $output .= "<option value=\"0\">N/A</option>\n";
-
-        $q_string = "select med_id,med_text from int_media order by med_text";
-        $q_int_media = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_int_media = mysqli_fetch_array($q_int_media)) {
-          $output .= "<option value=\"" . $a_int_media['med_id'] . "\">" . $a_int_media['med_text'] . "</option>\n";
-        }
-
-        $output .= "</select></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Speed*: <select name=\"int_speed\">\n";
-        $output .= "<option value=\"0\">N/A</option>\n";
-
-        $q_string = "select spd_id,spd_text from int_speed order by spd_text";
-        $q_int_speed = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_int_speed = mysqli_fetch_array($q_int_speed)) {
-          $output .= "<option value=\"" . $a_int_speed['spd_id'] . "\">" . $a_int_speed['spd_text'] . "</option>\n";
-        }
-
-        $output .= "</select></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Duplex*: <select name=\"int_duplex\">\n";
-        $output .= "<option value=\"0\">N/A</option>\n";
-
-        $q_string = "select dup_id,dup_text from int_duplex order by dup_text";
-        $q_int_duplex = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_int_duplex = mysqli_fetch_array($q_int_duplex)) {
-          $output .= "<option value=\"" . $a_int_duplex['dup_id'] . "\">" . $a_int_duplex['dup_text'] . "</option>\n";
-        }
-
-        $output .= "</select></td>\n";
-        $output .= "</tr>\n";
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"2\">Switch <input type=\"text\" name=\"int_switch\" size=\"40\"></td>\n";
-        $output .= "  <td class=\"ui-widget-content\">Port <input type=\"text\" name=\"int_port\" size=\"20\"></td>\n";
-        $output .= "</tr>\n";
-        $output .= "</table>\n";
-
-        print "document.getElementById('nwphysical_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
-      }
-
-
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\" colspan=\"12\">Interface Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('network-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"network-listing-help\" style=\"display: none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Interface Listing</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li><strong>Highlighted</strong> - This interface is the <span class=\"ui-state-highlight\">Default Route</span>.</li>\n";
-      $output .= "    <li><strong>Highlighted</strong> - This hostname either doesn't match the resolved hostname or is simply <span class=\"ui-state-error\">not in DNS</span>. If incorrect or incomplete, the identified DNS entry will be displayed. If no DNS entry, it will show the IP Address. Not all interfaces need to be in DNS but they will be highlighted if not.</li>\n";
-      $output .= "    <li><strong>Delete</strong> - Clicking the <strong>Delete</strong> button will delete this interface from this server.</li>\n";
-      $output .= "    <li><strong>Bridge</strong> - A bridge interface will be designed with a (b).</li>\n";
-      $output .= "    <li><strong>Virtual Memberships</strong> - If a physical interface is a member of a virtual interface, it will be designated with a &gt; to the left of the name and will listed under the virtual interface. The main virtual interface of the group will be designated with (r). If Group or Teaming names are used, they will be listed next to the physical members of the group.\n";
-      $output .= "    <ul>\n";
-      $output .= "      <li><strong>Solaris</strong> virtual interfaces end in :number (e1000g1:1, e1000g5:1, etc).</li>\n";
-      $output .= "      <li><strong>Linux</strong> virtual interfaces begin with bond (bond0, bond0.87, bond1, etc).</li>\n";
-      $output .= "      <li><strong>HP-UX</strong> virtual interfaces are in the 900 range (lan900, lan901, etc).</li>\n";
-      $output .= "      <li><strong>Windows</strong> virtual interfaces.</li>\n";
-      $output .= "    </ul></li>\n";
-      $output .= "    <li><strong>Virtual</strong> - A Virtual interface will be identified with a (v) next to the Logical Interface name. Not all Virtual interfaces are part of a Redundancy group.</li>\n";
-      $output .= "    <li><strong>Management</strong> - A interface that is designated to pass management traffic will be identified with a (M). There should only be one interface identified as such.</li>\n";
-      $output .= "    <li><strong>Backups</strong> - A interface that is designated to pass backup traffic will be identified with a (B). If it's not designated, by default the (M) interface is assumed to pass backup traffic.</li>\n";
-      $output .= "    <li><strong>Editing</strong> - Click on an interface to edit it.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Notes</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li>Click the <strong>Network Management</strong> title bar to toggle the <strong>Network Form</strong>.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "<table class=\"ui-styled-table\">\n";
+      $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       $output .= "  <th class=\"ui-state-default\">Del</th>\n";
       $output .= "  <th class=\"ui-state-default\">Hostname/FQDN</th>\n";
@@ -586,8 +361,8 @@
             $monitor .= ')';
           }
 
-          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('network.fill.php?id=" . $a_interface['int_id'] . "');showDiv('network-hide');\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_interface('network.del.php?id="  . $a_interface['int_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('interface.fill.php?id=" . $a_interface['int_id'] . "');jQuery('#dialogInterfaceUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_interface('interface.del.php?id="  . $a_interface['int_id'] . "');\">";
           $linkend = "</a>";
 
           $output .= "<tr>\n";
@@ -752,8 +527,8 @@
                 $monitor .= ')';
               }
 
-              $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('network.fill.php?id=" . $a_redundancy['int_id'] . "');showDiv('network-hide');\">";
-              $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_interface('network.del.php?id="  . $a_redundancy['int_id'] . "');\">";
+              $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('interface.fill.php?id=" . $a_redundancy['int_id'] . "');jQuery('#dialogInterfaceUpdate').dialog('open');return false;\">";
+              $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_interface('interface.del.php?id="  . $a_redundancy['int_id'] . "');\">";
               $linkend = "</a>";
 
               $output .= "<tr>\n";
@@ -915,8 +690,8 @@
                     $monitor .= ')';
                   }
 
-                  $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('network.fill.php?id=" . $a_secondary['int_id'] . "');showDiv('network-hide');\">";
-                  $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_interface('network.del.php?id="  . $a_secondary['int_id'] . "');\">";
+                  $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('interface.fill.php?id=" . $a_secondary['int_id'] . "');jQuery('#dialogInterfaceUpdate').dialog('open');return false;\">";
+                  $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_interface('interface.del.php?id="  . $a_secondary['int_id'] . "');\">";
                   $linkend = "</a>";
 
                   $output .= "<tr>\n";
@@ -951,14 +726,14 @@
 
       $output .= "</table>\n";
 
-      print "document.getElementById('network_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
-
-      print "document.edit.int_update.disabled = true;\n";
+      print "document.getElementById('interface_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
 
 # rebuild the int_int_id drop down in case of changes in the virtual interface listing
-      print "var selbox = document.edit.int_int_id;\n\n";
-      print "selbox.options.length = 0;\n";
+      print "var selboxCreate = document.formInterfaceCreate.int_int_id;\n\n";
+      print "var selboxUpdate = document.formInterfaceUpdate.int_int_id;\n\n";
+      print "selboxCreate.options.length = 0;\n";
+      print "selboxUpdate.options.length = 0;\n";
 
       $q_string  = "select int_id,int_face,int_ip6 ";
       $q_string .= "from interface ";
@@ -971,8 +746,10 @@
         } else {
           $ip6 = "";
         }
-        print "selbox.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_interface['int_face'] . $ip6) . "\"," . $a_interface['int_id'] . ");\n";
+        print "selboxCreate.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_interface['int_face'] . $ip6) . "\"," . $a_interface['int_id'] . ");\n";
+        print "selboxUpdate.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_interface['int_face'] . $ip6) . "\"," . $a_interface['int_id'] . ");\n";
       }
+
 
 # Warn folks if there aren't any management devices
       if ($mgtcount == 0 && $formVars['int_companyid'] != 0) {

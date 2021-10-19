@@ -1,5 +1,5 @@
 <?php
-# Script: network.del.php
+# Script: interface.del.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
 # Description: Delete a specified record from the database
@@ -12,7 +12,7 @@
   include($Sitepath . '/function.php');
 
   if (isset($_SESSION['username'])) {
-    $package = "network.del.php";
+    $package = "interface.del.php";
     $formVars['id'] = 0;
     if (isset($_GET['id'])) {
       $formVars['id'] = clean($_GET['id'], 10);
@@ -26,8 +26,7 @@
       $q_string .= "where int_id = " . $formVars['id'];
       $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
-      print "alert('Interface deleted.');\n";
-# Check all interfaces with this int_int_id and revert to 0 so they aren't lost
+# Check all child interfaces of this interface (if any) with this int_int_id and revert to 0 so they aren't lost
       $q_string  = "update ";
       $q_string .= "interface ";
       $q_string .= "set int_int_id = 0 ";

@@ -1,5 +1,5 @@
 <?php
-# Script: network.fill.php
+# Script: interface.fill.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
 # Description: Fill in the table for editing.
@@ -12,7 +12,7 @@
   include($Sitepath . '/function.php');
 
   if (isset($_SESSION['username'])) {
-    $package = "network.fill.php";
+    $package = "interface.fill.php";
     $formVars['id'] = 0;
     if (isset($_GET['id'])) {
       $formVars['id'] = clean($_GET['id'], 10);
@@ -40,61 +40,59 @@
       $intredundancy = return_Index($db, $a_interface['int_redundancy'], "select red_id from int_redundancy order by red_text");
       $intaddress    = return_Index($db, $a_interface['int_ipaddressid'], "select ip_id from ipaddress order by ip_hostname,ip_ipv4") + 1;
 
-      print "document.edit.int_face.value = '"      . mysqli_real_escape_string($db, $a_interface['int_face'])      . "';\n";
-      print "document.edit.int_int_id.value = '"    . mysqli_real_escape_string($db, $a_interface['int_int_id'])    . "';\n";
-      print "document.edit.int_eth.value = '"       . mysqli_real_escape_string($db, $a_interface['int_eth'])       . "';\n";
-      print "document.edit.int_note.value = '"      . mysqli_real_escape_string($db, $a_interface['int_note'])      . "';\n";
-      print "document.edit.int_switch.value = '"    . mysqli_real_escape_string($db, $a_interface['int_switch'])    . "';\n";
-      print "document.edit.int_port.value = '"      . mysqli_real_escape_string($db, $a_interface['int_port'])      . "';\n";
-      print "document.edit.int_sysport.value = ' "  . mysqli_real_escape_string($db, $a_interface['int_sysport'])   . "';\n";
-      print "document.edit.int_groupname.value = '" . mysqli_real_escape_string($db, $a_interface['int_groupname']) . "';\n";
+      print "document.formInterfaceUpdate.int_face.value = '"      . mysqli_real_escape_string($db, $a_interface['int_face'])      . "';\n";
+      print "document.formInterfaceUpdate.int_int_id.value = '"    . mysqli_real_escape_string($db, $a_interface['int_int_id'])    . "';\n";
+      print "document.formInterfaceUpdate.int_eth.value = '"       . mysqli_real_escape_string($db, $a_interface['int_eth'])       . "';\n";
+      print "document.formInterfaceUpdate.int_note.value = '"      . mysqli_real_escape_string($db, $a_interface['int_note'])      . "';\n";
+      print "document.formInterfaceUpdate.int_switch.value = '"    . mysqli_real_escape_string($db, $a_interface['int_switch'])    . "';\n";
+      print "document.formInterfaceUpdate.int_port.value = '"      . mysqli_real_escape_string($db, $a_interface['int_port'])      . "';\n";
+      print "document.formInterfaceUpdate.int_sysport.value = ' "  . mysqli_real_escape_string($db, $a_interface['int_sysport'])   . "';\n";
+      print "document.formInterfaceUpdate.int_groupname.value = '" . mysqli_real_escape_string($db, $a_interface['int_groupname']) . "';\n";
 
       if ($inttypes > 0) {
-        print "document.edit.int_type['"       . $inttypes      . "'].selected = true;\n";
+        print "document.formInterfaceUpdate.int_type['"       . $inttypes      . "'].selected = true;\n";
       }
       if ($intmedia > 0) {
-        print "document.edit.int_media['"      . $intmedia      . "'].selected = true;\n";
+        print "document.formInterfaceUpdate.int_media['"      . $intmedia      . "'].selected = true;\n";
       }
       if ($intspeed > 0) {
-        print "document.edit.int_speed['"      . $intspeed      . "'].selected = true;\n";
+        print "document.formInterfaceUpdate.int_speed['"      . $intspeed      . "'].selected = true;\n";
       }
       if ($intduplex > 0) {
-        print "document.edit.int_duplex['"     . $intduplex     . "'].selected = true;\n";
+        print "document.formInterfaceUpdate.int_duplex['"     . $intduplex     . "'].selected = true;\n";
       }
       if ($intredundancy > 0) {
-        print "document.edit.int_redundancy['" . $intredundancy . "'].selected = true;\n";
+        print "document.formInterfaceUpdate.int_redundancy['" . $intredundancy . "'].selected = true;\n";
       }
-      print "document.edit.int_ipaddressid['" . $intaddress . "'].selected = true;\n";
+      print "document.formInterfaceUpdate.int_ipaddressid['" . $intaddress . "'].selected = true;\n";
 
       if ($a_interface['int_primary']) {
-        print "document.edit.int_primary.checked = true;\n";
+        print "document.formInterfaceUpdate.int_primary.checked = true;\n";
       } else {
-        print "document.edit.int_primary.checked = false;\n";
+        print "document.formInterfaceUpdate.int_primary.checked = false;\n";
       }
       if ($a_interface['int_backup']) {
-        print "document.edit.int_backup.checked = true;\n";
+        print "document.formInterfaceUpdate.int_backup.checked = true;\n";
       } else {
-        print "document.edit.int_backup.checked = false;\n";
+        print "document.formInterfaceUpdate.int_backup.checked = false;\n";
       }
       if ($a_interface['int_management']) {
-        print "document.edit.int_management.checked = true;\n";
+        print "document.formInterfaceUpdate.int_management.checked = true;\n";
       } else {
-        print "document.edit.int_management.checked = false;\n";
+        print "document.formInterfaceUpdate.int_management.checked = false;\n";
       }
       if ($a_interface['int_login']) {
-        print "document.edit.int_login.checked = true;\n";
+        print "document.formInterfaceUpdate.int_login.checked = true;\n";
       } else {
-        print "document.edit.int_login.checked = false;\n";
+        print "document.formInterfaceUpdate.int_login.checked = false;\n";
       }
       if ($a_interface['int_virtual']) {
-        print "document.edit.int_virtual.checked = true;\n";
+        print "document.formInterfaceUpdate.int_virtual.checked = true;\n";
       } else {
-        print "document.edit.int_virtual.checked = false;\n";
+        print "document.formInterfaceUpdate.int_virtual.checked = false;\n";
       }
 
-      print "document.edit.int_id.value = " . $formVars['id'] . ";\n";
-
-      print "document.edit.int_update.disabled = false;\n";
+      print "document.formInterfaceUpdate.int_id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
