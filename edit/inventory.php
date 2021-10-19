@@ -915,6 +915,7 @@ function clear_fields() {
 
 
 $(document).ready( function() {
+  $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
   $( "#sstatus" ).buttonset();
 
 
@@ -2757,6 +2758,8 @@ field shows you the limit of the number of characters. This limit is set by the 
         print "<option value=\"" . $a_ipaddress['ip_id'] . "\">" . $a_ipaddress['ip_hostname'] . " " . $a_ipaddress['ip_ipv4'] . "*</option>\n";
       }
     }
+  } else {
+    print "<option value=\"0\">IPAM is not populated</option>\n";
   }
 ?>
 </select></td>
@@ -2777,8 +2780,12 @@ field shows you the limit of the number of characters. This limit is set by the 
   $q_string .= "from int_types ";
   $q_string .= "order by itp_id";
   $q_int_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_int_types = mysqli_fetch_array($q_int_types)) {
-    print "<option value=\"" . $a_int_types['itp_id'] . "\">" . $a_int_types['itp_name'] . "</option>\n";
+  if (mysqli_num_rows($q_int_types) > 0) {
+    while ($a_int_types = mysqli_fetch_array($q_int_types)) {
+      print "<option value=\"" . $a_int_types['itp_id'] . "\">" . $a_int_types['itp_name'] . "</option>\n";
+    }
+  } else {
+    print "<option value=\"0\">No Interface Types defined</option>\n";
   }
 ?>
 </select></td>
@@ -2794,8 +2801,12 @@ field shows you the limit of the number of characters. This limit is set by the 
   $q_string .= "from int_redundancy ";
   $q_string .= "order by red_text";
   $q_int_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_int_redundancy = mysqli_fetch_array($q_int_redundancy)) {
-    print "<option value=\"" . $a_int_redundancy['red_id'] . "\">" . $a_int_redundancy['red_text'] . "</option>\n";
+  if (mysqli_num_rows($q_int_redundancy) > 0) {
+    while ($a_int_redundancy = mysqli_fetch_array($q_int_redundancy)) {
+      print "<option value=\"" . $a_int_redundancy['red_id'] . "\">" . $a_int_redundancy['red_text'] . "</option>\n";
+    }
+  } else {
+    print "<option value=\"0\">No Redundant Interfaces identified</option>\n";
   }
 ?>
 </select></td>
@@ -2841,33 +2852,45 @@ Assignment <select name="int_int_id"></select></td>
 <tr>
   <td class="ui-widget-content">Media: <select name="int_media">
 <?php
-        $q_string = "select med_id,med_text from int_media order by med_text";
-        $q_int_media = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_int_media = mysqli_fetch_array($q_int_media)) {
-          print "<option value=\"" . $a_int_media['med_id'] . "\">" . $a_int_media['med_text'] . "</option>\n";
-        }
+  $q_string = "select med_id,med_text from int_media order by med_text";
+  $q_int_media = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_int_media) > 0) {
+    while ($a_int_media = mysqli_fetch_array($q_int_media)) {
+      print "<option value=\"" . $a_int_media['med_id'] . "\">" . $a_int_media['med_text'] . "</option>\n";
+    }
+  } else {
+    print "<option value=\"0\">No Interface Media has been defined</option>\n";
+  }
 ?>
 </select></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Speed*: <select name="int_speed">
 <?php
-        $q_string = "select spd_id,spd_text from int_speed order by spd_text";
-        $q_int_speed = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_int_speed = mysqli_fetch_array($q_int_speed)) {
-          print "<option value=\"" . $a_int_speed['spd_id'] . "\">" . $a_int_speed['spd_text'] . "</option>\n";
-        }
+  $q_string = "select spd_id,spd_text from int_speed order by spd_text";
+  $q_int_speed = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_int_speed) > 0) {
+    while ($a_int_speed = mysqli_fetch_array($q_int_speed)) {
+      print "<option value=\"" . $a_int_speed['spd_id'] . "\">" . $a_int_speed['spd_text'] . "</option>\n";
+    }
+  } else {
+    print "<option value=\"0\">No Interface Speeds have been defined</option>\n";
+  }
 ?>
 </select></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Duplex*: <select name="int_duplex">
 <?php
-        $q_string = "select dup_id,dup_text from int_duplex order by dup_text";
-        $q_int_duplex = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_int_duplex = mysqli_fetch_array($q_int_duplex)) {
-          print "<option value=\"" . $a_int_duplex['dup_id'] . "\">" . $a_int_duplex['dup_text'] . "</option>\n";
-        }
+  $q_string = "select dup_id,dup_text from int_duplex order by dup_text";
+  $q_int_duplex = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_int_duplex) > 0) {
+    while ($a_int_duplex = mysqli_fetch_array($q_int_duplex)) {
+      print "<option value=\"" . $a_int_duplex['dup_id'] . "\">" . $a_int_duplex['dup_text'] . "</option>\n";
+    }
+  } else {
+    print "<option value=\"0\">No Interface Duplex have been defined</option>\n";
+  }
 ?>
 </select></td>
 </tr>

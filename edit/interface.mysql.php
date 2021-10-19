@@ -205,7 +205,7 @@
 
       $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\">Del</th>\n";
+      $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Interface</th>\n";
       $output .= "  <th class=\"ui-state-default\">Hostname/FQDN</th>\n";
       $output .= "  <th class=\"ui-state-default\">Fwd</th>\n";
       $output .= "  <th class=\"ui-state-default\">Rev</th>\n";
@@ -740,14 +740,19 @@
       $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_redundancy > 0 ";
       $q_string .= "order by int_ip6,int_face";
       $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      while ($a_interface = mysqli_fetch_array($q_interface)) {
-        if ($a_interface['int_ip6'] == 1) {
-          $ip6 = " (ipv6)";
-        } else {
-          $ip6 = "";
+      if (mysqli_num_rows($q_interface) > 0) {
+        while ($a_interface = mysqli_fetch_array($q_interface)) {
+          if ($a_interface['int_ip6'] == 1) {
+            $ip6 = " (ipv6)";
+          } else {
+            $ip6 = "";
+          }
+          print "selboxCreate.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_interface['int_face'] . $ip6) . "\"," . $a_interface['int_id'] . ");\n";
+          print "selboxUpdate.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_interface['int_face'] . $ip6) . "\"," . $a_interface['int_id'] . ");\n";
         }
-        print "selboxCreate.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_interface['int_face'] . $ip6) . "\"," . $a_interface['int_id'] . ");\n";
-        print "selboxUpdate.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_interface['int_face'] . $ip6) . "\"," . $a_interface['int_id'] . ");\n";
+      } else {
+        print "selboxCreate.options[selbox.options.length] = new Option(\"No Redundant Interfaces identified\",0);\n";
+        print "selboxUpdate.options[selbox.options.length] = new Option(\"No Redundant Interfaces identified\",0);\n";
       }
 
 
@@ -755,6 +760,7 @@
       if ($mgtcount == 0 && $formVars['int_companyid'] != 0) {
         print "alert(\"ERROR: No interfaces have been identified to be processing Management Traffic.\\n\\nSelect an interface and under the Monitoring tab, check the Management checkbox.\");\n";
       }
+
 # Warn folks if a system has more than 1 interface marked for management traffic.
       if ($mgtcount > 1 && $formVars['int_companyid'] != 0) {
         print "alert(\"ERROR: " . $mgtcount . " management interfaces have been associated with this server.\\n\\nIdentify the device that will be permitting Management traffic and uncheck the Management checkbox for the rest of the interfaces.\");\n";
