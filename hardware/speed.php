@@ -180,6 +180,8 @@ $(document).ready( function() {
 </tr>
 </table>
 
+
+
 <div id="speed-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
@@ -189,6 +191,8 @@ $(document).ready( function() {
 </div>
 
 </div>
+
+
 
 <table class="ui-styled-table">
 <tr>
@@ -205,8 +209,11 @@ $(document).ready( function() {
 </tr>
 </table>
 
+
+
 <div id="speed-listing-help" style="<?php print $display; ?>">
 
+<div class="main-help ui-widget-content">
 
 <p><strong>Network Speed Description</strong></p>
 
@@ -220,7 +227,6 @@ can edit the current entry, or if there is a small difference, you can make chan
 
 <p>Note that under the Members colum is a number which indicates the number of times this Speed Description is in use. 
 You cannot delete a Description as long as this value is greater than zero.</p>
-
 
 </div>
 
