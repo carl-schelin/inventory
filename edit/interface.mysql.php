@@ -182,19 +182,15 @@
             "int_login        =   " . $formVars['int_login'];
 
           if ($formVars['update'] == 0) {
-            $query = "insert into interface set int_id = NULL, " . $q_string;
-            $message = "Interface added.";
+            $q_string = "insert into interface set int_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update interface set " . $q_string . " where int_id = " . $formVars['id'];
-            $message = "Interface updated.";
+            $q_string = "update interface set " . $q_string . " where int_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
 
-          mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
-
-          print "alert('" . $message . "');\n";
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
