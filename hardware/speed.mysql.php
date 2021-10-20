@@ -72,11 +72,16 @@
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('speed.del.php?id=" . $a_int_speed['spd_id'] . "');\">";
           $linkend   = "</a>";
 
-          $q_string  = "select ast_id ";
-          $q_string .= "from assets ";
-          $q_string .= "where ast_modelid = " . $a_int_speed['spd_id'] . " ";
-          $q_assets = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          $total = mysqli_num_rows($q_assets);
+          $total = 0;
+          $q_string  = "select int_id ";
+          $q_string .= "from interface ";
+          $q_string .= "where int_speed = " . $a_int_speed['spd_id'] . " ";
+          $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_interface) > 0) {
+            while ($a_interface = mysqli_fetch_array($q_interface)) {
+              $total++;
+            }
+          }
 
           $output .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
