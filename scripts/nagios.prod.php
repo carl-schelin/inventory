@@ -70,7 +70,7 @@
 
   $q_string  = "select inv_id,inv_name,inv_function,";
   $q_string .= "sw_software,";
-  $q_string .= "int_addr,int_gate,inv_ssh,inv_location,inv_product,int_xpoint,int_ypoint,int_zpoint,";
+  $q_string .= "int_addr,int_gate,inv_ssh,inv_location,inv_product,";
   $q_string .= "int_ssh,int_ping,int_http,int_ftp,int_smtp,int_cfg2html,grp_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
@@ -123,18 +123,6 @@
         $a_inventory['inv_function'] = $a_inventory['sw_software'];
       }
 
-      $q_string  = "select int_xpoint,int_ypoint,int_zpoint ";
-      $q_string .= "from interface ";
-      $q_string .= "where int_addr = '" . $a_inventory['int_gate'] . "' ";
-      $q_intgate = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      $a_intgate = mysqli_fetch_array($q_intgate);
-
-      if (($a_inventory['inv_xpoint'] + $a_inventory['inv_ypoint'] + $a_inventory['inv_zpoint']) > 0) {
-        $a_inventory['int_xpoint'] += $a_intgate['int_xpoint'];
-        $a_inventory['int_ypoint'] += $a_intgate['int_ypoint'];
-        $a_inventory['int_zpoint'] += $a_intgate['int_zpoint'];
-      }
-
 # default contact_groups is 'admins'
 # int_hours 0 = workhours, 1 = 24x7
 # default check_period is 24x7
@@ -159,10 +147,6 @@
       print "\taddress\t\t\t" . $a_inventory['int_addr'] . "\n";
       print "\tparents\t\t\t" . $a_inventory['int_gate'] . "\n";
       print "\ticon_image_alt\t\t" . $a_inventory['inv_function'] . "\n";
-      if (($a_inventory['inv_xpoint'] + $a_inventory['inv_ypoint'] + $a_inventory['inv_zpoint']) > 0) {
-        print "\t2d_coords\t\t" . $a_inventory['int_xpoint'] . "," . $a_inventory['int_ypoint'] . "\n";
-        print "\t3d_coords\t\t" . $a_inventory['int_xpoint'] . "," . $a_inventory['int_ypoint'] . "," . $a_inventory['int_zpoint'] . "\n";
-      }
       print "\tcontact_groups\t\t" . $groupname . ",Monitoring\n";
       print $disabled;
       if ($a_inventory['int_hours'] == 0) {

@@ -63,7 +63,7 @@
 
   $q_string  = "select inv_id,inv_name,inv_function,";
   $q_string .= "sw_software,";
-  $q_string .= "int_server,int_addr,int_gate,inv_ssh,inv_location,inv_product,int_xpoint,int_ypoint,int_zpoint,int_ssh,int_ping,int_http,int_ftp,int_smtp,";
+  $q_string .= "int_server,int_addr,int_gate,inv_ssh,inv_location,inv_product,int_ssh,int_ping,int_http,int_ftp,int_smtp,";
   $q_string .= "grp_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
@@ -113,10 +113,6 @@
       print "\ticon_image_alt\t\t" . $a_inventory['inv_function'] . "\n";
       print "\tvrml_image\t\tswitch40.png\n";
       print "\tstatusmap_image\t\tswitch40.gd2\n";
-      if (($a_inventory['inv_xpoint'] + $a_inventory['inv_ypoint'] + $a_inventory['inv_zpoint']) > 0) {
-        print "\t2d_coords\t\t" . $a_inventory['int_xpoint'] . "," . $a_inventory['int_ypoint'] . "\n";
-        print "\t3d_coords\t\t" . $a_inventory['int_xpoint'] . "," . $a_inventory['int_ypoint'] . "," . $a_inventory['int_zpoint'] . "\n";
-      }
       print "\tcontact_groups\t\t" . $groupname . ",Monitoring\n";
       print $disabled;
       if ($a_inventory['int_hours'] == 0) {
