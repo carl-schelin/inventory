@@ -25,7 +25,7 @@
 
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
-        $formVars['id']                 = clean($_GET['id'],                 10);
+        $formVars['int_id']             = clean($_GET['int_id'],             10);
         $formVars['int_ipaddressid']    = clean($_GET['int_ipaddressid'],    10);
         $formVars['int_face']           = clean($_GET['int_face'],           20);
         $formVars['int_int_id']         = clean($_GET['int_int_id'],         10);
@@ -46,8 +46,8 @@
         $formVars['int_management']     = clean($_GET['int_management'],     10);
         $formVars['int_login']          = clean($_GET['int_login'],          10);
 
-        if ($formVars['id'] == '') {
-          $formVars['id'] = 0;
+        if ($formVars['int_id'] == '') {
+          $formVars['int_id'] = 0;
         }
         if ($formVars['int_ipaddressid'] == '') {
           $formVars['int_ipaddressid'] = 0;
@@ -185,10 +185,10 @@
             $q_string = "insert into interface set int_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update interface set " . $q_string . " where int_id = " . $formVars['id'];
+            $q_string = "update interface set " . $q_string . " where int_id = " . $formVars['int_id'];
           }
 
-          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['int_id']);
 
           mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
