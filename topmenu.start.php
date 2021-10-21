@@ -58,7 +58,7 @@
       <li><a href="<?php print $Hardwareroot; ?>/other.php">Miscellaneous Hardware</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/hardware.php">Hardware Models</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/parts.php">Part Descriptions</a></li>
-      <li><a href="<?php print $Hardwareroot; ?>/speed.php">Interface Speeds</a></li>
+      <li><a href="<?php print $Hardwareroot; ?>/duplex.php">Duplex Setting</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/media.php">Media Types</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/redundancy.php">Redundancy Types</a></li>
     </ul>
