@@ -78,7 +78,11 @@
 # now replace duplicate spaces with a single space
     $formVars['search_for'] = preg_replace('!\s+!', ' ', $formVars['search_for']);
 
+
+##########################
 # server name or all - search the inventory and interface
+##########################
+
     if ($formVars['search_by'] == 1 || $formVars['search_by'] == 0) {
 
       if (strlen($formVars['sort']) > 0) {
@@ -219,6 +223,9 @@
         $output .= "</tr>\n";
         $output .= "</table>\n\n";
       }
+
+      print "document.getElementById('server_search_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
+    }
 
 # IP address or all - search the inventory and interface
     if ($formVars['search_by'] == 2 || $formVars['search_by'] == 0) {
