@@ -93,7 +93,7 @@
     <ul>
       <li><a href="<?php print $Usersroot; ?>/roles.php">Role Names</a></li>
       <li><a href="<?php print $Adminroot; ?>/maintenance.windows.php">Maintenance Windows</a></li>
-      <li><a href="<?php print $Adminroot; ?>/product.php">Products and Services</a></li>
+      <li><a href="<?php print $Productroot; ?>/product.php">Products and Services</a></li>
       <li><a href="<?php print $Adminroot; ?>/service.php">Service Class</a></li>
       <li><a href="<?php print $Adminroot; ?>/software.php">Software Support</a></li>
       <li><a href="<?php print $Adminroot; ?>/support.php">Support Contracts</a></li>

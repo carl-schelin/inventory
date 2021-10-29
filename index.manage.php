@@ -51,7 +51,7 @@
 
 <ul>
   <li><a href="<?php print $Adminroot; ?>/device.php">Manage Server Naming Standard Device Type table</a></li>
-  <li><a href="<?php print $Adminroot; ?>/product.php">Manage the Product and Service Listing table</a></li>
+  <li><a href="<?php print $Productroot; ?>/product.php">Manage the Product and Service Listing table</a></li>
   <li><a href="<?php print $Adminroot; ?>/service.php">Manage Service Class Descriptions table</a></li>
   <li><a href="<?php print $Adminroot; ?>/support.php">Manage Support Contract Information table</a></li>
   <li><a href="<?php print $Usersroot; ?>/business.php">Manage Business Unit Names table</a></li>
