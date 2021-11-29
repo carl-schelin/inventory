@@ -34,36 +34,15 @@
       $manager  = return_Index($db, $a_users['usr_manager'],  "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
       $title    = return_Index($db, $a_users['usr_title'],    "select tit_id from titles order by tit_name");
 
-      $count = 1;
-      $deptname = 0;
-      $q_string  = "select dep_id ";
-      $q_string .= "from department ";
-      $q_string .= "left join business on business.bus_id = department.dep_business ";
-      $q_string .= "order by bus_name,dep_name";
-      $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      while ($a_department = mysqli_fetch_array($q_department)) {
-        if ($a_users['usr_deptname'] == $a_department['dep_id']) {
-          $deptname = $count;
-        }
-        $count++;
-      }
-
       print "document.user.usr_first.value = '"      . mysqli_real_escape_string($db, $a_users['usr_first'])    . "';\n";
       print "document.user.usr_last.value = '"       . mysqli_real_escape_string($db, $a_users['usr_last'])     . "';\n";
       print "document.user.usr_email.value = '"      . mysqli_real_escape_string($db, $a_users['usr_email'])    . "';\n";
-      print "document.user.usr_altemail.value = '"   . mysqli_real_escape_string($db, $a_users['usr_altemail']) . "';\n";
-      print "document.user.usr_clientid.value = '"   . mysqli_real_escape_string($db, $a_users['usr_clientid']) . "';\n";
       print "document.user.usr_phone.value = '"      . mysqli_real_escape_string($db, $a_users['usr_phone'])    . "';\n";
       print "document.user.usr_notify.value = '"     . mysqli_real_escape_string($db, $a_users['usr_notify'])   . "';\n";
       print "document.user.usr_freq.value = '"       . mysqli_real_escape_string($db, $a_users['usr_freq'])     . "';\n";
-      print "document.user.usr_page.value = '"       . mysqli_real_escape_string($db, $a_users['usr_page'])     . "';\n";
-      print "document.user.usr_pagemail.value = '"   . mysqli_real_escape_string($db, $a_users['usr_pagemail']) . "';\n";
 
       if ($theme > 0) {
         print "document.user.usr_theme['"    . $theme     . "'].selected = true;\n";
-      }
-      if ($deptname > 0) {
-        print "document.user.usr_deptname['" . $deptname  . "'].selected = true;\n";
       }
       if ($manager > 0) {
         print "document.user.usr_manager['"  . $manager   . "'].selected = true;\n";
@@ -76,16 +55,6 @@
         print "document.user.usr_reset.checked = true;\n";
       } else {
         print "document.user.usr_reset.checked = false;\n";
-      }
-      if ($a_users['usr_report']) {
-        print "document.user.usr_report.checked = true;\n";
-      } else {
-        print "document.user.usr_report.checked = false;\n";
-      }
-      if ($a_users['usr_confirm']) {
-        print "document.user.usr_confirm.checked = true;\n";
-      } else {
-        print "document.user.usr_confirm.checked = false;\n";
       }
 
       print "document.user.update.disabled = false;\n\n";
