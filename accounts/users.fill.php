@@ -38,13 +38,6 @@
       $manager  = return_Index($db, $a_users['usr_manager'],  "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
       $title    = return_Index($db, $a_users['usr_title'],    "select tit_id from titles order by tit_name");
 
-      $q_string  = "select dep_id,dep_business,dep_name,bus_name ";
-      $q_string .= "from department ";
-      $q_string .= "left join business on business.bus_id = department.dep_business ";
-      $q_string .= "order by bus_name,dep_name";
-
-      $deptname = return_Index($db, $a_users['usr_deptname'], $q_string);
-
       print "document.user.usr_name.value = '"       . mysqli_real_escape_string($db, $a_users['usr_name'])     . "';\n";
       print "document.user.usr_first.value = '"      . mysqli_real_escape_string($db, $a_users['usr_first'])    . "';\n";
       print "document.user.usr_last.value = '"       . mysqli_real_escape_string($db, $a_users['usr_last'])     . "';\n";

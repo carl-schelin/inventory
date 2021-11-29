@@ -46,7 +46,6 @@ function attach_users(p_script_url, update) {
   au_url += "&usr_last="       + encode_URI(au_form.usr_last.value);
   au_url += "&usr_email="      + encode_URI(au_form.usr_email.value);
   au_url += "&usr_phone="      + encode_URI(au_form.usr_phone.value);
-  au_url += "&usr_deptname="   + au_form.usr_deptname.value;
   au_url += "&usr_manager="    + au_form.usr_manager.value;
   au_url += "&usr_title="      + au_form.usr_title.value;
   au_url += "&usr_theme="      + au_form.usr_theme.value;
@@ -55,7 +54,6 @@ function attach_users(p_script_url, update) {
   au_url += "&usr_reset="      + au_form.usr_reset.checked;
   au_url += "&usr_notify="     + encode_URI(au_form.usr_notify.value);
   au_url += "&usr_freq="       + encode_URI(au_form.usr_freq.value);
-  au_url += "&usr_confirm="    + au_form.usr_confirm.checked;
 
   script = document.createElement('script');
   script.src = p_script_url + au_url;

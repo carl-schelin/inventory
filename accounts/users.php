@@ -86,7 +86,6 @@ function attach_users(p_script_url, update) {
   au_url += "&usr_reset="      + au_form.usr_reset.checked;
   au_url += "&usr_notify="     + encode_URI(au_form.usr_notify.value);
   au_url += "&usr_freq="       + encode_URI(au_form.usr_freq.value);
-  au_url += "&usr_confirm="    + au_form.usr_confirm.checked;
 
   script = document.createElement('script');
   script.src = p_script_url + au_url;
@@ -323,18 +322,6 @@ $(document).ready( function() {
   }
 ?>
 </select></td>
-  <td class="ui-widget-content" colspan="2">Department: <select name="usr_deptname">
-<?php
-  $q_string  = "select dep_id,dep_business,dep_name,bus_name ";
-  $q_string .= "from department ";
-  $q_string .= "left join business on business.bus_id = department.dep_business ";
-  $q_string .= "order by bus_name,dep_name";
-  $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_department = mysqli_fetch_array($q_department)) {
-    print "  <option value=\"" . $a_department['dep_id'] . "\">" . htmlspecialchars($a_department['bus_name']) . " " . htmlspecialchars($a_department['dep_name']) . ")</option>\n";
-  }
-?>
-  </select></td>
 </tr>
 <tr>
   <td class="ui-widget-content" colspan="2">Title: <select name="usr_title">

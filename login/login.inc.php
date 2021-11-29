@@ -101,7 +101,7 @@ if (isset($_POST['login'])) {
       $user = addslashes($_POST['username']); 
       $pass = md5($_POST['password']); 
 
-      $q_string  = "select usr_id,usr_first,usr_last,usr_group,usr_deptname,usr_email,usr_disposition ";
+      $q_string  = "select usr_id,usr_first,usr_last,usr_group,usr_email,usr_disposition ";
       $q_string .= "from users ";
       $q_string .= "where usr_name='$user' and usr_passwd='$pass'"; 
       $q_users = mysqli_query($db, $q_string);
@@ -127,7 +127,6 @@ if (isset($_POST['login'])) {
           $_SESSION["name"]        = $a_users['usr_first'] . " " . $a_users['usr_last'];
           $_SESSION["username"]    = $user;
           $_SESSION['group']       = $a_users['usr_group'];
-          $_SESSION['dept']        = $a_users['usr_deptname'];
           $_SESSION['email']       = $a_users['usr_email'];
           $_SESSION['rand']        = rand(5,1000);
           $_SESSION['disposition'] = $a_users['usr_disposition'];
