@@ -21,9 +21,8 @@
     if (check_userlevel($db, $AL_Guest)) {
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from users");
 
-      $q_string  = "select usr_id,usr_first,usr_last,usr_email,usr_phone,usr_freq,usr_notify,usr_deptname,";
-      $q_string .= "usr_altemail,usr_theme,usr_reset,usr_clientid,usr_report,usr_confirm,usr_manager,usr_title,";
-      $q_string .= "usr_page,usr_pagemail ";
+      $q_string  = "select usr_id,usr_first,usr_last,usr_email,usr_phone,usr_freq,usr_notify,";
+      $q_string .= "usr_theme,usr_reset,usr_manager,usr_title ";
       $q_string .= "from users ";
       $q_string .= "where usr_id = " . $formVars['id'];
       $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
