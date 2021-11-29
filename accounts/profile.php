@@ -103,7 +103,6 @@ $(document).ready( function() {
     <li><strong>Theme</strong> - Select a theme for the user.</li>
     <li><strong>E-Mail</strong> - The user's official email address. This is important in that several email portions of the system check incoming email against this address.</li>
     <li><strong>Phone Number</strong> - The user's contact phone number. Could be desk phone or cell phone.</li>
-    <li><strong>Department</strong> - The company department the user belongs to.
   </ul></li>
   <li><strong>Password Form</strong>
   <ul>
@@ -135,38 +134,15 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default" colspan="5">Profile Form</th>
+  <th class="ui-state-default"colspan="2">Profile Form</th>
 </tr>
 <tr>
   <td class="ui-widget-content">First Name <input type="text" name="usr_first" size="20"></td>
   <td class="ui-widget-content">Last Name <input type="text" name="usr_last" size="20"></td>
-  <td class="ui-widget-content">E-Mail <input type="email" name="usr_email" size="40"></td>
 </tr>
 <tr>
+  <td class="ui-widget-content">E-Mail <input type="email" name="usr_email" size="40"></td>
   <td class="ui-widget-content">Phone Number <input type="phone" name="usr_phone" size="20"></td>
-  <td class="ui-widget-content">Theme <select name="usr_theme">
-<?php
-  $q_string  = "select theme_id,theme_title ";
-  $q_string .= "from themes ";
-  $q_string .= "order by theme_title";
-  $q_themes = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_themes = mysqli_fetch_array($q_themes)) {
-    print "<option value=\"" . $a_themes['theme_id'] . "\">" . $a_themes['theme_title'] . "</option>\n";
-  }
-?>
-</select></td>
-  <td class="ui-widget-content">Department: <select name="usr_deptname">
-<?php
-  $q_string  = "select dep_id,dep_business,dep_name,bus_name ";
-  $q_string .= "from department ";
-  $q_string .= "left join business on business.bus_id = department.dep_business ";
-  $q_string .= "order by bus_name,dep_name";
-  $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_department = mysqli_fetch_array($q_department)) {
-    print "  <option value=\"" . $a_department['dep_id'] . "\">" . htmlspecialchars($a_department['bus_name']) . " " . htmlspecialchars($a_department['dep_name']) . ")</option>\n";
-  }
-?>
-  </select></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Select Your Title: <select name="usr_title">
@@ -180,7 +156,7 @@ $(document).ready( function() {
   }
 ?>
 </select></td>
-  <td class="ui-widget-content" colspan="3">Select Your Manager: <select name="usr_manager">
+  <td class="ui-widget-content">Select Your Manager: <select name="usr_manager">
 <?php
   $q_string  = "select usr_id,usr_last,usr_first ";
   $q_string .= "from users ";
@@ -192,6 +168,21 @@ $(document).ready( function() {
   }
 ?>
 </select></td>
+</tr>
+<tr>
+</select></td>
+  <td class="ui-widget-content" colspan="2">Inventory Theme <select name="usr_theme">
+<?php
+  $q_string  = "select theme_id,theme_title ";
+  $q_string .= "from themes ";
+  $q_string .= "order by theme_title";
+  $q_themes = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_themes = mysqli_fetch_array($q_themes)) {
+    print "<option value=\"" . $a_themes['theme_id'] . "\">" . $a_themes['theme_title'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
 </table>
 
 <table class="ui-styled-table">
