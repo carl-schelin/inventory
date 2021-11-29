@@ -22,8 +22,8 @@
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from users");
 
       $q_string  = "select usr_id,usr_disabled,usr_first,usr_last,usr_name,usr_level,";
-      $q_string .= "usr_phone,usr_email,usr_altemail,usr_deptname,usr_group,usr_theme,";
-      $q_string .= "usr_reset,usr_clientid,usr_notify,usr_freq,usr_report,usr_confirm,";
+      $q_string .= "usr_phone,usr_email,usr_group,usr_theme,";
+      $q_string .= "usr_reset,usr_notify,usr_freq,";
       $q_string .= "usr_manager,usr_title ";
       $q_string .= "from users ";
       $q_string .= "where usr_id = " . $formVars['id'];
@@ -50,8 +50,6 @@
       print "document.user.usr_last.value = '"       . mysqli_real_escape_string($db, $a_users['usr_last'])     . "';\n";
       print "document.user.usr_email.value = '"      . mysqli_real_escape_string($db, $a_users['usr_email'])    . "';\n";
       print "document.user.usr_phone.value = '"      . mysqli_real_escape_string($db, $a_users['usr_phone'])    . "';\n";
-      print "document.user.usr_clientid.value = '"   . mysqli_real_escape_string($db, $a_users['usr_clientid']) . "';\n";
-      print "document.user.usr_altemail.value = '"   . mysqli_real_escape_string($db, $a_users['usr_altemail']) . "';\n";
       print "document.user.usr_notify.value = '"     . mysqli_real_escape_string($db, $a_users['usr_notify'])   . "';\n";
       print "document.user.usr_freq.value = '"       . mysqli_real_escape_string($db, $a_users['usr_freq'])     . "';\n";
 
@@ -67,9 +65,6 @@
       if ($theme > 0) {
         print "document.user.usr_theme['"    . $theme    . "'].selected = true;\n";
       }
-      if ($deptname > 0) {
-        print "document.user.usr_deptname['" . $deptname . "'].selected = true;\n";
-      }
       if ($manager > 0) {
         print "document.user.usr_manager['"  . $manager  . "'].selected = true;\n";
       }
@@ -81,16 +76,6 @@
         print "document.user.usr_reset.checked = true;\n";
       } else {
         print "document.user.usr_reset.checked = false;\n";
-      }
-      if ($a_users['usr_report']) {
-        print "document.user.usr_report.checked = true;\n";
-      } else {
-        print "document.user.usr_report.checked = false;\n";
-      }
-      if ($a_users['usr_confirm']) {
-        print "document.user.usr_confirm.checked = true;\n";
-      } else {
-        print "document.user.usr_confirm.checked = false;\n";
       }
 
       print "document.user.id.value = '" . $formVars['id'] . "'\n";

@@ -31,8 +31,6 @@
         $formVars['usr_title']      = clean($_GET['usr_title'],      10);
         $formVars['usr_email']      = clean($_GET['usr_email'],     255);
         $formVars['usr_group']      = clean($_GET['usr_group'],      10);
-        $formVars['usr_clientid']   = clean($_GET['usr_clientid'],   30);
-        $formVars['usr_altemail']   = clean($_GET['usr_altemail'],  255);
         $formVars['usr_theme']      = clean($_GET['usr_theme'],      10);
         $formVars['usr_passwd']     = clean($_GET['usr_passwd'],     32);
         $formVars['usr_reenter']    = clean($_GET['usr_reenter'],    32);
@@ -40,8 +38,6 @@
         $formVars['usr_phone']      = clean($_GET['usr_phone'],      15);
         $formVars['usr_notify']     = clean($_GET['usr_notify'],     10);
         $formVars['usr_freq']       = clean($_GET['usr_freq'],       10);
-        $formVars['usr_report']     = clean($_GET['usr_report'],     10);
-        $formVars['usr_confirm']    = clean($_GET['usr_confirm'],    10);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
@@ -56,16 +52,6 @@
           $formVars['usr_reset'] = 1;
         } else {
           $formVars['usr_reset'] = 0;
-        }
-        if ($formVars['usr_report'] == 'true') {
-          $formVars['usr_report'] = 1;
-        } else {
-          $formVars['usr_report'] = 0;
-        }
-        if ($formVars['usr_confirm'] == 'true') {
-          $formVars['usr_confirm'] = 1;
-        } else {
-          $formVars['usr_confirm'] = 0;
         }
 
         if (strlen($formVars['usr_name']) > 0) {
@@ -84,12 +70,8 @@
             "usr_group       =   " . $formVars['usr_group']     . "," .
             "usr_notify      =   " . $formVars['usr_notify']    . "," .
             "usr_freq        =   " . $formVars['usr_freq']      . "," .
-            "usr_clientid    = \"" . $formVars['usr_clientid']  . "\"," .
-            "usr_altemail    = \"" . $formVars['usr_altemail']  . "\"," .
             "usr_theme       =   " . $formVars['usr_theme']     . "," .
-            "usr_reset       =   " . $formVars['usr_reset']     . "," .
-            "usr_report      =   " . $formVars['usr_report']    . "," .
-            "usr_confirm     =   " . $formVars['usr_confirm'];
+            "usr_reset       =   " . $formVars['usr_reset'];
 
           if (strlen($formVars['usr_passwd']) > 0 && $formVars['usr_passwd'] === $formVars['usr_reenter']) {
             logaccess($db, $_SESSION['uid'], $package, "Resetting user " . $formVars['usr_name'] . " password.");
@@ -244,15 +226,13 @@
       $output .=   "<th class=\"ui-state-default\">First Name</th>\n";
       $output .=   "<th class=\"ui-state-default\">Last Name</th>\n";
       $output .=   "<th class=\"ui-state-default\">E-Mail</th>\n";
-      $output .=   "<th class=\"ui-state-default\">Alternate E-Mail</th>\n";
       $output .=   "<th class=\"ui-state-default\">Reset</th>\n";
       $output .=   "<th class=\"ui-state-default\">Group</th>\n";
       $output .=   "<th class=\"ui-state-default\">Registered Date</th>\n";
-      $output .=   "<th class=\"ui-state-default\">ClientID</th>\n";
       $output .=   "<th class=\"ui-state-default\">Theme</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select usr_id,lvl_name,usr_disabled,usr_name,usr_clientid,usr_first,usr_last,usr_email,usr_altemail,usr_reset,grp_name,usr_timestamp,theme_title ";
+      $q_string  = "select usr_id,lvl_name,usr_disabled,usr_name,usr_first,usr_last,usr_email,usr_reset,grp_name,usr_timestamp,theme_title ";
       $q_string .= "from users ";
       $q_string .= "left join levels on levels.lvl_id = users.usr_level ";
       $q_string .= "left join a_groups on a_groups.grp_id = users.usr_group ";
@@ -297,11 +277,9 @@
           $output .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_first']              . $linkend . "</td>\n";
           $output .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_last']               . $linkend . "</td>\n";
           $output .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_email']              . $linkend . "</td>\n";
-          $output .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_altemail']           . $linkend . "</td>\n";
           $output .= "  <td" . $default    . ">" . $linkstart . $pwreset                           . $linkend . "</td>\n";
           $output .= "  <td" . $default    . ">" . $linkstart . $a_users['grp_name']               . $linkend . "</td>\n";
           $output .= "  <td" . $default    . ">" . $linkstart . $reg_date                          . $linkend . "</td>\n";
-          $output .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_clientid']           . $linkend . "</td>\n";
           $output .= "  <td" . $default    . ">" . $linkstart . $a_users['theme_title']            . $linkend . "</td>\n";
           $output .= "</tr>\n";
         }
@@ -327,9 +305,7 @@
       print "document.user.usr_first.value = '';\n";
       print "document.user.usr_last.value = '';\n";
       print "document.user.usr_email.value = '';\n";
-      print "document.user.usr_altemail.value = '';\n";
       print "document.user.usr_reset.checked = false;\n";
-      print "document.user.usr_clientid.value = '';\n";
       print "document.user.usr_theme[0].selected = true;\n";
 
     } else {
@@ -390,15 +366,13 @@ function display_user( $p_title, $p_toggle, $p_query ) {
     $group .=   "<th class=\"ui-state-default\">First Name</th>\n";
     $group .=   "<th class=\"ui-state-default\">Last Name</th>\n";
     $group .=   "<th class=\"ui-state-default\">E-Mail</th>\n";
-    $group .=   "<th class=\"ui-state-default\">Alternate E-Mail</th>\n";
     $group .=   "<th class=\"ui-state-default\">Force Password Change</th>\n";
     $group .=   "<th class=\"ui-state-default\">Registered Date</th>\n";
-    $group .=   "<th class=\"ui-state-default\">ClientID</th>\n";
     $group .=   "<th class=\"ui-state-default\">Theme</th>\n";
     $group .= "</tr>\n";
 
     $count = 0;
-    $q_string  = "select usr_id,lvl_name,usr_disabled,usr_name,usr_clientid,usr_first,usr_last,usr_email,usr_altemail,usr_reset,usr_group,usr_timestamp,theme_title ";
+    $q_string  = "select usr_id,lvl_name,usr_disabled,usr_name,usr_first,usr_last,usr_email,usr_reset,usr_group,usr_timestamp,theme_title ";
     $q_string .= "from users ";
     $q_string .= "left join levels on levels.lvl_id = users.usr_level ";
     $q_string .= "left join themes on themes.theme_id = users.usr_theme ";
@@ -451,10 +425,8 @@ function display_user( $p_title, $p_toggle, $p_query ) {
         $group .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_first']              . $linkend . "</td>\n";
         $group .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_last']               . $linkend . "</td>\n";
         $group .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_email'] . $missing   . $linkend . "</td>\n";
-        $group .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_altemail']           . $linkend . "</td>\n";
         $group .= "  <td" . $default    . ">" . $linkstart . $pwreset                           . $linkend . "</td>\n";
         $group .= "  <td" . $default    . ">" . $linkstart . $reg_date                          . $linkend . "</td>\n";
-        $group .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_clientid']           . $linkend . "</td>\n";
         $group .= "  <td" . $default    . ">" . $linkstart . $a_users['theme_title']            . $linkend . "</td>\n";
         $group .= "</tr>\n";
         $count++;
