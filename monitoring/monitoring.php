@@ -251,7 +251,7 @@ $(document).ready( function() {
 <?php
   $q_string  = "select usr_id,usr_last,usr_first ";
   $q_string .= "from users ";
-  $q_string .= "where usr_page != \"\" and usr_disabled = 0 and usr_group = " . $_SESSION['group'] . " ";
+  $q_string .= "where usr_disabled = 0 and usr_group = " . $_SESSION['group'] . " ";
   $q_string .= "order by usr_last,usr_first ";
   $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_users) > 0) {
