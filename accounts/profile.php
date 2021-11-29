@@ -56,8 +56,6 @@ function attach_users(p_script_url, update) {
   au_url += "&usr_notify="     + encode_URI(au_form.usr_notify.value);
   au_url += "&usr_freq="       + encode_URI(au_form.usr_freq.value);
   au_url += "&usr_confirm="    + au_form.usr_confirm.checked;
-  au_url += "&usr_page="       + encode_URI(au_form.usr_page.value);
-  au_url += "&usr_pagemail="   + encode_URI(au_form.usr_pagemail.value);
 
   script = document.createElement('script');
   script.src = p_script_url + au_url;
