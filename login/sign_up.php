@@ -96,8 +96,7 @@ if (isset($_POST['new_user'])) {
       "usr_last     = '" . $lname           . "'," . 
       "usr_email    = '" . $email           . "'," . 
       "usr_name     = '" . $username        . "'," . 
-      "usr_passwd   = '" . MD5($password)   . "'," . 
-      "usr_report   =  " . '1';
+      "usr_passwd   = '" . MD5($password)   . "'";
       
     $q_users = mysqli_query($db, $q_string) or die("Fatal error: " . mysqli_error($db));
 
