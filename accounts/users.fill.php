@@ -38,40 +38,40 @@
       $manager  = return_Index($db, $a_users['usr_manager'],  "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
       $title    = return_Index($db, $a_users['usr_title'],    "select tit_id from titles order by tit_name");
 
-      print "document.user.usr_name.value = '"       . mysqli_real_escape_string($db, $a_users['usr_name'])     . "';\n";
-      print "document.user.usr_first.value = '"      . mysqli_real_escape_string($db, $a_users['usr_first'])    . "';\n";
-      print "document.user.usr_last.value = '"       . mysqli_real_escape_string($db, $a_users['usr_last'])     . "';\n";
-      print "document.user.usr_email.value = '"      . mysqli_real_escape_string($db, $a_users['usr_email'])    . "';\n";
-      print "document.user.usr_phone.value = '"      . mysqli_real_escape_string($db, $a_users['usr_phone'])    . "';\n";
-      print "document.user.usr_notify.value = '"     . mysqli_real_escape_string($db, $a_users['usr_notify'])   . "';\n";
-      print "document.user.usr_freq.value = '"       . mysqli_real_escape_string($db, $a_users['usr_freq'])     . "';\n";
+      print "document.formUpdate.usr_name.value = '"       . mysqli_real_escape_string($db, $a_users['usr_name'])     . "';\n";
+      print "document.formUpdate.usr_first.value = '"      . mysqli_real_escape_string($db, $a_users['usr_first'])    . "';\n";
+      print "document.formUpdate.usr_last.value = '"       . mysqli_real_escape_string($db, $a_users['usr_last'])     . "';\n";
+      print "document.formUpdate.usr_email.value = '"      . mysqli_real_escape_string($db, $a_users['usr_email'])    . "';\n";
+      print "document.formUpdate.usr_phone.value = '"      . mysqli_real_escape_string($db, $a_users['usr_phone'])    . "';\n";
+      print "document.formUpdate.usr_notify.value = '"     . mysqli_real_escape_string($db, $a_users['usr_notify'])   . "';\n";
+      print "document.formUpdate.usr_freq.value = '"       . mysqli_real_escape_string($db, $a_users['usr_freq'])     . "';\n";
 
       if ($groups > 0) {
-        print "document.user.usr_group['"    . $groups   . "'].selected = true;\n";
+        print "document.formUpdate.usr_group['"    . $groups   . "'].selected = true;\n";
       }
       if ($disabled > 0) {
-        print "document.user.usr_disabled['" . $disabled . "'].selected = true;\n";
+        print "document.formUpdate.usr_disabled['" . $disabled . "'].selected = true;\n";
       }
       if ($levels > 0) {
-        print "document.user.usr_level['"    . $levels   . "'].selected = true;\n";
+        print "document.formUpdate.usr_level['"    . $levels   . "'].selected = true;\n";
       }
       if ($theme > 0) {
-        print "document.user.usr_theme['"    . $theme    . "'].selected = true;\n";
+        print "document.formUpdate.usr_theme['"    . $theme    . "'].selected = true;\n";
       }
       if ($manager > 0) {
-        print "document.user.usr_manager['"  . $manager  . "'].selected = true;\n";
+        print "document.formUpdate.usr_manager['"  . $manager  . "'].selected = true;\n";
       }
       if ($title > 0) {
-        print "document.user.usr_title['"    . $title    . "'].selected = true;\n";
+        print "document.formUpdate.usr_title['"    . $title    . "'].selected = true;\n";
       }
 
       if ($a_users['usr_reset']) {
-        print "document.user.usr_reset.checked = true;\n";
+        print "document.formUpdate.usr_reset.checked = true;\n";
       } else {
-        print "document.user.usr_reset.checked = false;\n";
+        print "document.formUpdate.usr_reset.checked = false;\n";
       }
 
-      print "document.user.id.value = '" . $formVars['id'] . "'\n";
+      print "document.formUpdate.id.value = '" . $formVars['id'] . "'\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

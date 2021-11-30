@@ -18,12 +18,19 @@
 
   logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
+# if help has not been seen yet,
+  if (show_Help($db, $Sitepath . "/" . $package)) {
+    $display = "display: block";
+  } else {
+    $display = "display: none";
+  }
+
 ?>
 <!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Manage Users</title>
+<title>User Editor</title>
 
 <style type="text/css" title="currentStyle" media="screen">
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -63,32 +70,60 @@ function delete_user( p_script_url ) {
   }
 ?>
 
-function attach_users(p_script_url, update) {
-  var au_form = document.user;
-  var au_url;
+function attach_file(p_script_url, update) {
+  var af_form = document.formCreate;
+  var af_url;
 
-  au_url  = '?update='   + update;
-  au_url += "&id="       + au_form.id.value;
+  af_url  = '?update='   + update;
 
-  au_url += "&usr_first="      + encode_URI(au_form.usr_first.value);
-  au_url += "&usr_last="       + encode_URI(au_form.usr_last.value);
-  au_url += "&usr_name="       + encode_URI(au_form.usr_name.value);
-  au_url += "&usr_disabled="   + au_form.usr_disabled.value;
-  au_url += "&usr_level="      + au_form.usr_level.value;
-  au_url += "&usr_manager="    + au_form.usr_manager.value;
-  au_url += "&usr_title="      + au_form.usr_title.value;
-  au_url += "&usr_email="      + encode_URI(au_form.usr_email.value);
-  au_url += "&usr_phone="      + encode_URI(au_form.usr_phone.value);
-  au_url += "&usr_group="      + au_form.usr_group.value;
-  au_url += "&usr_theme="      + au_form.usr_theme.value;
-  au_url += "&usr_passwd="     + encode_URI(au_form.usr_passwd.value);
-  au_url += "&usr_reenter="    + encode_URI(au_form.usr_reenter.value);
-  au_url += "&usr_reset="      + au_form.usr_reset.checked;
-  au_url += "&usr_notify="     + encode_URI(au_form.usr_notify.value);
-  au_url += "&usr_freq="       + encode_URI(au_form.usr_freq.value);
+  af_url += "&usr_first="      + encode_URI(af_form.usr_first.value);
+  af_url += "&usr_last="       + encode_URI(af_form.usr_last.value);
+  af_url += "&usr_name="       + encode_URI(af_form.usr_name.value);
+  af_url += "&usr_disabled="   + af_form.usr_disabled.value;
+  af_url += "&usr_level="      + af_form.usr_level.value;
+  af_url += "&usr_manager="    + af_form.usr_manager.value;
+  af_url += "&usr_title="      + af_form.usr_title.value;
+  af_url += "&usr_email="      + encode_URI(af_form.usr_email.value);
+  af_url += "&usr_phone="      + encode_URI(af_form.usr_phone.value);
+  af_url += "&usr_group="      + af_form.usr_group.value;
+  af_url += "&usr_theme="      + af_form.usr_theme.value;
+  af_url += "&usr_passwd="     + encode_URI(af_form.usr_passwd.value);
+  af_url += "&usr_reenter="    + encode_URI(af_form.usr_reenter.value);
+  af_url += "&usr_reset="      + af_form.usr_reset.checked;
+  af_url += "&usr_notify="     + encode_URI(af_form.usr_notify.value);
+  af_url += "&usr_freq="       + encode_URI(af_form.usr_freq.value);
 
   script = document.createElement('script');
-  script.src = p_script_url + au_url;
+  script.src = p_script_url + af_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+function update_file(p_script_url, update) {
+  var uf_form = document.formUpdate;
+  var uf_url;
+
+  uf_url  = '?update='   + update;
+  uf_url += "&id="       + uf_form.id.value;
+
+  uf_url += "&usr_first="      + encode_URI(uf_form.usr_first.value);
+  uf_url += "&usr_last="       + encode_URI(uf_form.usr_last.value);
+  uf_url += "&usr_name="       + encode_URI(uf_form.usr_name.value);
+  uf_url += "&usr_disabled="   + uf_form.usr_disabled.value;
+  uf_url += "&usr_level="      + uf_form.usr_level.value;
+  uf_url += "&usr_manager="    + uf_form.usr_manager.value;
+  uf_url += "&usr_title="      + uf_form.usr_title.value;
+  uf_url += "&usr_email="      + encode_URI(uf_form.usr_email.value);
+  uf_url += "&usr_phone="      + encode_URI(uf_form.usr_phone.value);
+  uf_url += "&usr_group="      + uf_form.usr_group.value;
+  uf_url += "&usr_theme="      + uf_form.usr_theme.value;
+  uf_url += "&usr_passwd="     + encode_URI(uf_form.usr_passwd.value);
+  uf_url += "&usr_reenter="    + encode_URI(uf_form.usr_reenter.value);
+  uf_url += "&usr_reset="      + uf_form.usr_reset.checked;
+  uf_url += "&usr_notify="     + encode_URI(uf_form.usr_notify.value);
+  uf_url += "&usr_freq="       + encode_URI(uf_form.usr_freq.value);
+
+  script = document.createElement('script');
+  script.src = p_script_url + uf_url;
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
@@ -99,11 +134,11 @@ function clear_fields() {
 $(document).ready( function() {
   $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
 
-  $( '#clickAddUser' ).click(function() {
-    $( "#dialogUser" ).dialog('open');
+  $( '#clickCreate' ).click(function() {
+    $( "#dialogCreate" ).dialog('open');
   });
 
-  $( "#dialogUser" ).dialog({
+  $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
     height: 515,
@@ -113,7 +148,37 @@ $(document).ready( function() {
     closeOnEscape: true,
     dialogClass: 'dialogWithDropShadow',
     close: function(event, ui) {
-      $( "#dialogUser" ).hide();
+      $( "#dialogCreate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('users.mysql.php?update=-1');
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add User",
+        click: function() {
+          attach_file('users.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+  $( "#dialogUpdate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 515,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogUpdate" ).hide();
     },
     buttons: [
       {
@@ -126,14 +191,14 @@ $(document).ready( function() {
       {
         text: "Update User",
         click: function() {
-          attach_users('users.mysql.php', 1);
+          update_file('users.mysql.php', 1);
           $( this ).dialog( "close" );
         }
       },
       {
         text: "Add User",
         click: function() {
-          attach_users('users.mysql.php', 0);
+          update_file('users.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -149,8 +214,6 @@ $(document).ready( function() {
 <?php include($Sitepath . "/topmenu.start.php"); ?>
 <?php include($Sitepath . "/topmenu.end.php"); ?>
 
-<form name="mainform">
-
 <div id="main">
 
 <table class="ui-styled-table">
@@ -160,7 +223,7 @@ $(document).ready( function() {
 </tr>
 </table>
 
-<div id="user-help" style="display: none">
+<div id="user-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
 
@@ -197,7 +260,7 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickAddUser" value="Add User"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add User"></td>
 </tr>
 </table>
 
@@ -217,12 +280,78 @@ $(document).ready( function() {
 
 <div id="newuser">
 
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">New User Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('newuser-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="newuser-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+<ul>
+  <li><strong>New User Listing</strong>
+  <ul>
+    <li><strong>Delete (x)</strong> - Click here to delete this user from the Inventory. It's better to disable the user.</li>
+    <li><strong>Editing</strong> - Click on a user to toggle the form and edit the user.</li>
+    <li><strong>Highlight</strong> - If a user is <span class="ui-state-highlight">highlighted</span>, then the user's Reset Password on Next Login flag has been set.</li>
+  </ul></li>
+</ul>
+
+<ul>
+  <li><strong>Notes</strong>
+  <ul>
+    <li>Click the <strong>User Management</strong> title bar to toggle the <strong>User Form</strong>.</li>
+  </ul></li>
+</ul>
+
+</div>
+
+</div>
+
 <span id="new_users_table"><?php print wait_Process('Loading Users...')?></span>
 
 </div>
 
 
 <div id="registered">
+
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Registered Users Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('registered-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="registered-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+<ul>
+  <li><strong>New User Listing</strong>
+  <ul>
+    <li><strong>Delete (x)</strong> - Click here to delete this user from the Inventory. It's better to disable the user.</li>
+    <li><strong>Editing</strong> - Click on a user to toggle the form and edit the user.</li>
+    <li><strong>Highlight</strong> - If a user is <span class="ui-state-highlight">highlighted</span>, then the user's Reset Password on Next Login flag has been set.</li>
+  </ul></li>
+</ul>
+
+<ul>
+  <li><strong>Notes</strong>
+  <ul>
+    <li>Click the <strong>User Management</strong> title bar to toggle the <strong>User Form</strong>.</li>
+  </ul></li>
+</ul>
+
+</div>
+
+</div>
 
 <span id="registered_users_table"><?php print wait_Process('Loading Users...')?></span>
 
@@ -231,12 +360,78 @@ $(document).ready( function() {
 
 <div id="admin">
 
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Admin Users Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('admin-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="admin-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+<ul>
+  <li><strong>New User Listing</strong>
+  <ul>
+    <li><strong>Delete (x)</strong> - Click here to delete this user from the Inventory. It's better to disable the user.</li>
+    <li><strong>Editing</strong> - Click on a user to toggle the form and edit the user.</li>
+    <li><strong>Highlight</strong> - If a user is <span class="ui-state-highlight">highlighted</span>, then the user's Reset Password on Next Login flag has been set.</li>
+  </ul></li>
+</ul>
+
+<ul>
+  <li><strong>Notes</strong>
+  <ul>
+    <li>Click the <strong>User Management</strong> title bar to toggle the <strong>User Form</strong>.</li>
+  </ul></li>
+</ul>
+
+</div>
+
+</div>
+
 <span id="admin_users_table"><?php print wait_Process('Loading Users...')?></span>
 
 </div>
 
 
 <div id="readonly">
+
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Read/Only Users Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('readonly-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="readonly-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+<ul>
+  <li><strong>New User Listing</strong>
+  <ul>
+    <li><strong>Delete (x)</strong> - Click here to delete this user from the Inventory. It's better to disable the user.</li>
+    <li><strong>Editing</strong> - Click on a user to toggle the form and edit the user.</li>
+    <li><strong>Highlight</strong> - If a user is <span class="ui-state-highlight">highlighted</span>, then the user's Reset Password on Next Login flag has been set.</li>
+  </ul></li>
+</ul>
+
+<ul>
+  <li><strong>Notes</strong>
+  <ul>
+    <li>Click the <strong>User Management</strong> title bar to toggle the <strong>User Form</strong>.</li>
+  </ul></li>
+</ul>
+
+</div>
+
+</div>
 
 <span id="readonly_users_table"><?php print wait_Process('Loading Users...')?></span>
 
@@ -245,12 +440,78 @@ $(document).ready( function() {
 
 <div id="guest">
 
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Guest Users Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('guest-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="guest-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+<ul>
+  <li><strong>New User Listing</strong>
+  <ul>
+    <li><strong>Delete (x)</strong> - Click here to delete this user from the Inventory. It's better to disable the user.</li>
+    <li><strong>Editing</strong> - Click on a user to toggle the form and edit the user.</li>
+    <li><strong>Highlight</strong> - If a user is <span class="ui-state-highlight">highlighted</span>, then the user's Reset Password on Next Login flag has been set.</li>
+  </ul></li>
+</ul>
+
+<ul>
+  <li><strong>Notes</strong>
+  <ul>
+    <li>Click the <strong>User Management</strong> title bar to toggle the <strong>User Form</strong>.</li>
+  </ul></li>
+</ul>
+
+</div>
+
+</div>
+
 <span id="guest_users_table"><?php print wait_Process('Loading Users...')?></span>
 
 </div>
 
 
 <div id="disabled">
+
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Disabled Users Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('disabled-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="disabled-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+<ul>
+  <li><strong>New User Listing</strong>
+  <ul>
+    <li><strong>Delete (x)</strong> - Click here to delete this user from the Inventory. It's better to disable the user.</li>
+    <li><strong>Editing</strong> - Click on a user to toggle the form and edit the user.</li>
+    <li><strong>Highlight</strong> - If a user is <span class="ui-state-highlight">highlighted</span>, then the user's Reset Password on Next Login flag has been set.</li>
+  </ul></li>
+</ul>
+
+<ul>
+  <li><strong>Notes</strong>
+  <ul>
+    <li>Click the <strong>User Management</strong> title bar to toggle the <strong>User Form</strong>.</li>
+  </ul></li>
+</ul>
+
+</div>
+
+</div>
 
 <span id="disabled_users_table"><?php print wait_Process('Loading Users...')?></span>
 
@@ -261,11 +522,129 @@ $(document).ready( function() {
 
 </div>
 
+
+
+<div id="dialogCreate" title="Add User">
+
+<form name="formCreate">
+
+<table class="ui-styled-table">
+<tr>
+  <td class="ui-widget-content">User Access <select name="usr_disabled">
+<option value="0">Enabled</option>
+<option value="1">Disabled</option>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Edit Level <select name="usr_level">
+<?php
+  $q_string  = "select lvl_id,lvl_name ";
+  $q_string .= "from levels ";
+  $q_string .= "where lvl_disabled = 0 ";
+  $q_string .= "order by lvl_id";
+  $q_levels = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_levels = mysqli_fetch_array($q_levels)) {
+    print "<option value=\"" . $a_levels['lvl_id'] . "\">" . $a_levels['lvl_name'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">User Login <input type="text" name="usr_name" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">First Name <input type="text" name="usr_first" size="20"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Last Name <input type="text" name="usr_last" size="20"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">E-Mail <input type="text" name="usr_email" size="40"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Phone Number <input type="text" name="usr_phone" size="20"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content" colspan="2">Title: <select name="usr_title">
+<?php
+  $q_string  = "select tit_id,tit_name ";
+  $q_string .= "from titles ";
+  $q_string .= "order by tit_name ";
+  $q_titles = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_titles = mysqli_fetch_array($q_titles)) {
+    print "<option value=\"" . $a_titles['tit_id'] . "\">" . $a_titles['tit_name'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Group <select name="usr_group">
+<?php
+  $q_string  = "select grp_id,grp_name ";
+  $q_string .= "from a_groups ";
+  $q_string .= "where grp_disabled = 0 ";
+  $q_string .= "order by grp_name";
+  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_groups = mysqli_fetch_array($q_groups)) {
+    print "<option value=\"" . $a_groups['grp_id'] . "\">" . $a_groups['grp_name'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content" colspan="2">Manager: <select name="usr_manager">
+<?php
+  $q_string  = "select usr_id,usr_last,usr_first ";
+  $q_string .= "from users ";
+  $q_string .= "where usr_disabled = 0 ";
+  $q_string .= "order by usr_last,usr_first ";
+  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_users = mysqli_fetch_array($q_users)) {
+    print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Inventory Theme <select name="usr_theme">
+<?php
+  $q_string  = "select theme_id,theme_title ";
+  $q_string .= "from themes ";
+  $q_string .= "order by theme_title";
+  $q_themes = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_themes = mysqli_fetch_array($q_themes)) {
+    print "<option value=\"" . $a_themes['theme_id'] . "\">" . $a_themes['theme_title'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content" id="password">Reset User Password <input type="password" autocomplete="off" name="usr_passwd" size="30" onKeyDown="javascript:show_file('validate.password.php?password=' + usr_passwd.value + '&reenter=' + usr_reenter.value);" onKeyUp="javascript:show_file('validate.password.php?password=' + usr_passwd.value + '&reenter=' + usr_reenter.value);"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content" id="reenter">Re-Enter Password <input type="password" name="usr_reenter" size="30" onKeyDown="javascript:show_file('validate.password.php?password=' + usr_passwd.value + '&reenter=' + usr_reenter.value);" onKeyUp="javascript:show_file('validate.password.php?password=' + usr_passwd.value + '&reenter=' + usr_reenter.value);"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label>Force Password Reset on Next Login? <input type="checkbox" checked="true" name="usr_reset"></label></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Number of Days Prior to Website Certification Expiration to be Notified: <input type="text" name="usr_notify" size="5"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Notification Repeats Every <input type="text" name="usr_freq" size="5"> Days After First Notification</td>
+</tr>
+</table>
+
 </form>
 
-<div id="dialogUser" title="Add User Form">
+</div>
 
-<form name="user">
+
+
+
+<div id="dialogUpdate" title="Edit User">
+
+<form name="formUpdate">
 
 <input type="hidden" name="id" value="0">
 
@@ -379,6 +758,8 @@ $(document).ready( function() {
 </form>
 
 </div>
+
+
 
 <?php include($Sitepath . '/footer.php'); ?>
 

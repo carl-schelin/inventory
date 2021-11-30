@@ -182,39 +182,7 @@
 # New User Listing
 ######
 
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\">New User Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('newuser-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"newuser-help\" style=\"display: none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>New User Listing</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li><strong>Delete (x)</strong> - Click here to delete this user from the Inventory. It's better to disable the user.</li>\n";
-      $output .= "    <li><strong>Editing</strong> - Click on a user to toggle the form and edit the user.</li>\n";
-      $output .= "    <li><strong>Highlight</strong> - If a user is <span class=\"ui-state-highlight\">highlighted</span>, then the user's Reset Password on Next Login flag has been set.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Notes</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li>Click the <strong>User Management</strong> title bar to toggle the <strong>User Form</strong>.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "<table class=\"ui-styled-table\">\n";
+      $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       $output .=   "<th class=\"ui-state-default\" colspan=\"13\">New Users</th>\n";
       $output .= "</tr>\n";
@@ -242,7 +210,7 @@
       if (mysqli_num_rows($q_users) > 0) {
         while ($a_users = mysqli_fetch_array($q_users)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('users.fill.php?id=" . $a_users['usr_id'] . "');jQuery('#dialogUser').dialog('open');return false;\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('users.fill.php?id=" . $a_users['usr_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_user('users.del.php?id=" . $a_users['usr_id'] . "');\">";
           $linkend = "</a>";
 
@@ -317,38 +285,9 @@ function display_user( $p_title, $p_toggle, $p_query ) {
 
   $db = db_connect($DBserver, $DBname, $DBuser, $DBpassword);
 
-  $output  = "<p></p>\n";
-  $output .= "<table class=\"ui-styled-table\">\n";
-  $output .= "<tr>\n";
-  $output .=   "<th class=\"ui-state-default\">" . $p_title . " User Listing</th>\n";
-  $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('" . $p_toggle . "-user-help');\">Help</a></th>\n";
-  $output .= "</tr>\n";
-  $output .= "</table>\n";
+  $output = '';
 
-  $output .= "<div id=\"" . $p_toggle . "-user-help\" style=\"display: none\">\n";
-
-  $output .= "<div class=\"main-help ui-widget-content\">\n";
-
-  $output .= "<ul>\n";
-  $output .= "  <li><strong>Disabled User Listing</strong>\n";
-  $output .= "  <ul>\n";
-  $output .= "    <li><strong>Delete (x)</strong> - Click here to delete this user from the Inventory. It's better to disable the user.</li>\n";
-  $output .= "    <li><strong>Editing</strong> - Click on a user to toggle the form and edit the user.</li>\n";
-  $output .= "    <li><strong>Highlight</strong> - If a user is <span class=\"ui-state-error\">highlighted</span>, then the user has been disabled.</li>\n";
-  $output .= "  </ul></li>\n";
-  $output .= "</ul>\n";
-
-  $output .= "<ul>\n";
-  $output .= "  <li><strong>Notes</strong>\n";
-  $output .= "  <ul>\n";
-  $output .= "    <li>Click the <strong>User Management</strong> title bar to toggle the <strong>User Form</strong>.</li>\n";
-  $output .= "  </ul></li>\n";
-  $output .= "</ul>\n";
-
-  $output .= "</div>\n";
-
-  $output .= "</div>\n";
-
+  $groups = 0;
   $q_string  = "select grp_id,grp_name ";
   $q_string .= "from a_groups ";
   $q_string .= "where grp_disabled = 0 ";
@@ -384,7 +323,7 @@ function display_user( $p_title, $p_toggle, $p_query ) {
       if (mysqli_num_rows($q_users) > 0) {
         while ($a_users = mysqli_fetch_array($q_users)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('users.fill.php?id=" . $a_users['usr_id'] . "');jQuery('#dialogUser').dialog('open');return false;\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('users.fill.php?id=" . $a_users['usr_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_user('users.del.php?id="  . $a_users['usr_id'] . "');\">";
           $linkend = "</a>";
 
@@ -437,8 +376,31 @@ function display_user( $p_title, $p_toggle, $p_query ) {
 
       if ($count > 0) {
         $output .= $group;
+        $groups++;
       }
     }
+  }
+
+  if ($groups == 0) {
+    $output .= "<table class=\"ui-styled-table\">\n";
+    $output .= "<tr>\n";
+    $output .=   "<th class=\"ui-state-default\" colspan=\"13\">No Users</th>\n";
+    $output .= "</tr>\n";
+    $output .= "<tr>\n";
+    $output .=   "<th class=\"ui-state-default\" width=\"160\">Delete User</th>\n";
+    $output .=   "<th class=\"ui-state-default\">Level</th>\n";
+    $output .=   "<th class=\"ui-state-default\">Login</th>\n";
+    $output .=   "<th class=\"ui-state-default\">First Name</th>\n";
+    $output .=   "<th class=\"ui-state-default\">Last Name</th>\n";
+    $output .=   "<th class=\"ui-state-default\">E-Mail</th>\n";
+    $output .=   "<th class=\"ui-state-default\">Force Password Change</th>\n";
+    $output .=   "<th class=\"ui-state-default\">Date Registered</th>\n";
+    $output .=   "<th class=\"ui-state-default\">Theme</th>\n";
+    $output .= "</tr>\n";
+    $output .= "<tr>\n";
+    $output .= "  <td class=\"ui-widget-content\" colspan=\"13\">No Users Found</td>\n";
+    $output .= "</tr>\n";
+    $output .= "</table>\n";
   }
 
   print "document.getElementById('" . $p_toggle . "_users_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
