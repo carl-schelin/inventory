@@ -433,31 +433,11 @@ function display_user( $p_title, $p_toggle, $p_query ) {
           $count++;
         }
       }
-    }
-    $group .= "</table>\n";
+      $group .= "</table>\n";
 
-    if ($count > 0) {
-      $output .= $group;
-    } else {
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .=   "<th class=\"ui-state-default\" colspan=\"13\">Groups</th>\n";
-      $output .= "</tr>\n";
-      $output .= "<tr>\n";
-      $output .=   "<th class=\"ui-state-default\" width=\"160\">Delete User</th>\n";
-      $output .=   "<th class=\"ui-state-default\">Level</th>\n";
-      $output .=   "<th class=\"ui-state-default\">Login</th>\n";
-      $output .=   "<th class=\"ui-state-default\">First Name</th>\n";
-      $output .=   "<th class=\"ui-state-default\">Last Name</th>\n";
-      $output .=   "<th class=\"ui-state-default\">E-Mail</th>\n";
-      $output .=   "<th class=\"ui-state-default\">Force Password Change</th>\n";
-      $output .=   "<th class=\"ui-state-default\">Date Registered</th>\n";
-      $output .=   "<th class=\"ui-state-default\">Theme</th>\n";
-      $output .= "</tr>\n";
-      $output .= "<tr>\n";
-      $output .=   "<td class=\"ui-widget-content\" colspan=\"13\">No records found</td>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
+      if ($count > 0) {
+        $output .= $group;
+      }
     }
   }
 
