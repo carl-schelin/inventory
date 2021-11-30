@@ -1,3 +1,14 @@
+### Updates
+
+The following sections list out the changes in the mysql database during the transition over to Inventory 4.0.
+
+As I identify changes, I'll start with a timestamp so we know when changes occurred.
+
+When the changes are applied to the running systems, I'll drop another timestamp indicating databases are updated and which systems have been updated.
+
+
+### Maintain Tables
+
 We'll be keeping the following tables. After tables will be a list of modifications. Mostly changing the default date from 0000-00-00 00:00:00 to 
 1971-01-01 00:00:00 where needed. The new MySQL/MariaDB doesn't like defaults of 0000. The code's already been changed.
 
@@ -84,8 +95,7 @@ x vlans - vlan table; part of the ip manager. should be empty
 x zones - time zones.
 
 
-
-new tables:
+### New Tables
 
 tag_types
 CREATE TABLE `tag_types` (
@@ -94,7 +104,7 @@ CREATE TABLE `tag_types` (
   PRIMARY KEY (`type_id`)
 );
 
-add the following data and index. There is code that uses this data as listed:
+add the following data and index to this table. There is code that uses this data as listed:
 1: Servers
 2: Locations
 3: Products
@@ -105,7 +115,7 @@ new column in tags table for tag_types data:
 
 alter table tags add column tag_type int(10) not null default 0 after tag_name;
 
-And for existing servers:
+And for existing servers to note entries as Servers:
 
 update tags set tag_type = 1;
 
@@ -114,6 +124,8 @@ renamed tables due to changes in database reserved words:
 
 groups was renamed to a_groups.
 window was renamed to maint_window
+
+probably going to simply rename all tables to inv_[tablename] eventually to prevent this from happening in the future.
 
 
 renamed columns:
@@ -318,8 +330,9 @@ update vulnerabilities set vuln_deldate = '1971-01-01' where vuln_deldate = '000
 
 
 
+### Table Cleanup
 
-table cleanup; where we drop columns that aren't used any more.
+where we drop columns that aren't used any more. This will continue as the system is upgraded
 
 a_groups:
 
@@ -354,7 +367,9 @@ users table:
 alter table users drop column usr_bigfix;
 
 
-table purging; these tables should be empty upon new installation
+### Table Purge
+
+these tables should be empty upon new installation. Just making sure of a clean system installation.
 
 backups:
 
@@ -407,8 +422,9 @@ In the tags table, the default is 0 right now but all should be set to 1 for 'Se
 update tags set tag_type = 1;
 
 
+### Database Verification
 
-done checking databases:
+done checking databases for columns that aren't used or should be cleared:
 
 x ./accounts/research/database.output
 x ./admin/research/database.output
@@ -445,6 +461,10 @@ x ./swm/research/database.output
 x ./tm/research/database.output
 
 
+### New table
+
+The text columns can't be null
+
 alter table backups change bu_notes bu_notes text not null default "";
 
 I want to modify backups anyway to have a sub table of when to run backups.
@@ -461,27 +481,22 @@ create table backupdays (
 );
 
 
-
-
-
-Networking Section: Where modifications are made
-
-
-=== New Section ===
+### New Section 
 
 This should be a chain; org, bu, group, user so adding the next level up.
 
 alter table business_unit add column bus_org int(10) not null default 0 after bus_id;
 
 
-=== 20210929 ===
+### Timestamp 2021-09-29 
 
 alter table tags change tag_name tag_name char(255) not null default '';
 
 Change project to Software in tag_types table
 Add Hardware to tag_types table
 
-==== 20211004 ===
+
+### Timestamp 2021-10-04
 
 alter table products drop column prod_oldcode;
 alter table products drop column prod_remedy;
@@ -492,7 +507,8 @@ alter table products drop column prod_tier2;
 alter table products drop column prod_tier3;
 alter table products drop column prod_group;
 
-==== 20211006 ===
+
+### Timestamp 2021-10-06
 
 Removing grp_role and adding grp_business. It should be a chain where org is at top, then business, then group.
 
@@ -500,7 +516,8 @@ alter table a_groups drop column grp_role;
 alter table a_groups add column grp_department int(10) not null default 0 after grp_organization;
 rename table business_unit to business
 
-==== 20211016 =====
+
+### Timestamp 2021-10-16
 
 Basically changing to be more org structure like. Org at top, then bus, then dept, then groups, then users.
 
@@ -521,7 +538,7 @@ dep_unit
 grp_organization
 
 
-==== 20211019 ====
+### Timestamp 2021-10-19
 
 Search for the following interface columns as they can be replaced by the new IPAM.
 
@@ -565,14 +582,14 @@ int_notify - monitoring.mon_notify
 int_hours - monitoring.mon_hours
 
 
-==== 20211029 ====
+### Timestamp 2021-10-29
 
 Updated lnmt1cuomtool11 and inventory with the above table changes.
 
 
-==== 20211126 ====
+### Timestamp 2021-11-26
 
-Updated Inteliquent with the above table changes.
+Updated mysql on RHEL8 with the above table changes.
 
 Error:
 
@@ -584,7 +601,7 @@ modify mysql:
 SET GLOBAL sql_mode(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
 
 
-==== 20211129 ====
+### Timestamp 20211129
 
 Remove the following from the users table:
 
@@ -602,11 +619,6 @@ alter table users drop column usr_headers;
 alter table users drop column usr_start;
 alter table users drop column usr_end;
 alter table users drop column usr_maillist;
-
-
-
-
-
 
 
 
