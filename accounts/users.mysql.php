@@ -219,8 +219,7 @@
       $output .=   "<th class=\"ui-state-default\" colspan=\"13\">New Users</th>\n";
       $output .= "</tr>\n";
       $output .= "<tr>\n";
-      $output .=   "<th class=\"ui-state-default\">Del</th>\n";
-      $output .=   "<th class=\"ui-state-default\">ID</th>\n";
+      $output .=   "<th class=\"ui-state-default\" width=\"160\">Delete User</th>\n";
       $output .=   "<th class=\"ui-state-default\">Level</th>\n";
       $output .=   "<th class=\"ui-state-default\">Login</th>\n";
       $output .=   "<th class=\"ui-state-default\">First Name</th>\n";
@@ -228,7 +227,7 @@
       $output .=   "<th class=\"ui-state-default\">E-Mail</th>\n";
       $output .=   "<th class=\"ui-state-default\">Reset</th>\n";
       $output .=   "<th class=\"ui-state-default\">Group</th>\n";
-      $output .=   "<th class=\"ui-state-default\">Registered Date</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Date Registered</th>\n";
       $output .=   "<th class=\"ui-state-default\">Theme</th>\n";
       $output .= "</tr>\n";
 
@@ -270,17 +269,16 @@
           }
 
           $output .= "<tr>\n";
-          $output .=   "<td" . $defaultdel . ">" . $linkdel   . "</td>\n";
-          $output .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_id']                 . $linkend . "</td>\n";
-          $output .= "  <td" . $default    . ">" . $linkstart . $a_users['lvl_name']               . $linkend . "</td>\n";
-          $output .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_name']               . $linkend . "</td>\n";
-          $output .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_first']              . $linkend . "</td>\n";
-          $output .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_last']               . $linkend . "</td>\n";
-          $output .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_email']              . $linkend . "</td>\n";
-          $output .= "  <td" . $default    . ">" . $linkstart . $pwreset                           . $linkend . "</td>\n";
-          $output .= "  <td" . $default    . ">" . $linkstart . $a_users['grp_name']               . $linkend . "</td>\n";
-          $output .= "  <td" . $default    . ">" . $linkstart . $reg_date                          . $linkend . "</td>\n";
-          $output .= "  <td" . $default    . ">" . $linkstart . $a_users['theme_title']            . $linkend . "</td>\n";
+          $output .=   "<td" . $defaultdel . ">" . $linkdel                                        . "</td>\n";
+          $output .= "  <td" . $default    . ">"              . $a_users['lvl_name']               . "</td>\n";
+          $output .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_name']    . $linkend . "</td>\n";
+          $output .= "  <td" . $default    . ">"              . $a_users['usr_first']              . "</td>\n";
+          $output .= "  <td" . $default    . ">"              . $a_users['usr_last']               . "</td>\n";
+          $output .= "  <td" . $default    . ">"              . $a_users['usr_email']              . "</td>\n";
+          $output .= "  <td" . $default    . ">"              . $pwreset                           . "</td>\n";
+          $output .= "  <td" . $default    . ">"              . $a_users['grp_name']               . "</td>\n";
+          $output .= "  <td" . $default    . ">"              . $reg_date                          . "</td>\n";
+          $output .= "  <td" . $default    . ">"              . $a_users['theme_title']            . "</td>\n";
           $output .= "</tr>\n";
         }
       } else {
@@ -314,6 +312,10 @@
   }
 
 function display_user( $p_title, $p_toggle, $p_query ) {
+
+  include('settings.php');
+
+  $db = db_connect($DBserver, $DBname, $DBuser, $DBpassword);
 
   $output  = "<p></p>\n";
   $output .= "<table class=\"ui-styled-table\">\n";
@@ -350,95 +352,113 @@ function display_user( $p_title, $p_toggle, $p_query ) {
   $q_string  = "select grp_id,grp_name ";
   $q_string .= "from a_groups ";
   $q_string .= "where grp_disabled = 0 ";
-  $q_string .= "order by grp_name";
+  $q_string .= "order by grp_name ";
   $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));;
-  while ($a_groups = mysqli_fetch_array($q_groups)) {
+  if (mysqli_num_rows($q_groups) > 0) {
+    while ($a_groups = mysqli_fetch_array($q_groups)) {
 
-    $group  = "<table class=\"ui-styled-table\">\n";
-    $group .= "<tr>\n";
-    $group .=   "<th class=\"ui-state-default\" colspan=\"13\">" . $a_groups['grp_name'] . "</th>\n";
-    $group .= "</tr>\n";
-    $group .= "<tr>\n";
-    $group .=   "<th class=\"ui-state-default\">Del</th>\n";
-    $group .=   "<th class=\"ui-state-default\">ID</th>\n";
-    $group .=   "<th class=\"ui-state-default\">Level</th>\n";
-    $group .=   "<th class=\"ui-state-default\">Login</th>\n";
-    $group .=   "<th class=\"ui-state-default\">First Name</th>\n";
-    $group .=   "<th class=\"ui-state-default\">Last Name</th>\n";
-    $group .=   "<th class=\"ui-state-default\">E-Mail</th>\n";
-    $group .=   "<th class=\"ui-state-default\">Force Password Change</th>\n";
-    $group .=   "<th class=\"ui-state-default\">Registered Date</th>\n";
-    $group .=   "<th class=\"ui-state-default\">Theme</th>\n";
-    $group .= "</tr>\n";
+      $group  = "<table class=\"ui-styled-table\">\n";
+      $group .= "<tr>\n";
+      $group .=   "<th class=\"ui-state-default\" colspan=\"13\">" . $a_groups['grp_name'] . "</th>\n";
+      $group .= "</tr>\n";
+      $group .= "<tr>\n";
+      $group .=   "<th class=\"ui-state-default\" width=\"160\">Delete User</th>\n";
+      $group .=   "<th class=\"ui-state-default\">Level</th>\n";
+      $group .=   "<th class=\"ui-state-default\">Login</th>\n";
+      $group .=   "<th class=\"ui-state-default\">First Name</th>\n";
+      $group .=   "<th class=\"ui-state-default\">Last Name</th>\n";
+      $group .=   "<th class=\"ui-state-default\">E-Mail</th>\n";
+      $group .=   "<th class=\"ui-state-default\">Force Password Change</th>\n";
+      $group .=   "<th class=\"ui-state-default\">Date Registered</th>\n";
+      $group .=   "<th class=\"ui-state-default\">Theme</th>\n";
+      $group .= "</tr>\n";
 
-    $count = 0;
-    $q_string  = "select usr_id,lvl_name,usr_disabled,usr_name,usr_first,usr_last,usr_email,usr_reset,usr_group,usr_timestamp,theme_title ";
-    $q_string .= "from users ";
-    $q_string .= "left join levels on levels.lvl_id = users.usr_level ";
-    $q_string .= "left join themes on themes.theme_id = users.usr_theme ";
-    $q_string .= "where usr_group = " . $a_groups['grp_id'] . " " . $p_query;
-    $q_string .= "order by usr_last,usr_first";
-    $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    if (mysqli_num_rows($q_users) > 0) {
-      while ($a_users = mysqli_fetch_array($q_users)) {
+      $count = 0;
+      $q_string  = "select usr_id,lvl_name,usr_disabled,usr_name,usr_first,usr_last,usr_email,usr_reset,usr_group,usr_timestamp,theme_title ";
+      $q_string .= "from users ";
+      $q_string .= "left join levels on levels.lvl_id = users.usr_level ";
+      $q_string .= "left join themes on themes.theme_id = users.usr_theme ";
+      $q_string .= "where usr_group = " . $a_groups['grp_id'] . " " . $p_query;
+      $q_string .= "order by usr_last,usr_first";
+      $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_users) > 0) {
+        while ($a_users = mysqli_fetch_array($q_users)) {
 
-        $linkstart = "<a href=\"#\" onclick=\"show_file('users.fill.php?id=" . $a_users['usr_id'] . "');jQuery('#dialogUser').dialog('open');return false;\">";
-        $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_user('users.del.php?id="  . $a_users['usr_id'] . "');\">";
-        $linkend = "</a>";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('users.fill.php?id=" . $a_users['usr_id'] . "');jQuery('#dialogUser').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_user('users.del.php?id="  . $a_users['usr_id'] . "');\">";
+          $linkend = "</a>";
 
-        if ($a_users['usr_reset']) {
-          $default = " class=\"ui-state-highlight\"";
-          $defaultdel = " class=\"ui-state-highlight delete\"";
-        } else {
-          if ($a_users['usr_disabled']) {
-            $default = " class=\"ui-state-error\"";
-            $defaultdel = " class=\"ui-state-error delete\"";
+          if ($a_users['usr_reset']) {
+            $default = " class=\"ui-state-highlight\"";
+            $defaultdel = " class=\"ui-state-highlight delete\"";
           } else {
-            $default = " class=\"ui-widget-content\"";
-            $defaultdel = " class=\"ui-widget-content delete\"";
+            if ($a_users['usr_disabled']) {
+              $default = " class=\"ui-state-error\"";
+              $defaultdel = " class=\"ui-state-error delete\"";
+            } else {
+              $default = " class=\"ui-widget-content\"";
+              $defaultdel = " class=\"ui-widget-content delete\"";
+            }
           }
+
+          $timestamp = strtotime($a_users['usr_timestamp']);
+          $reg_date = date('d M y @ H:i' ,$timestamp);
+
+          if ($a_users['usr_reset']) {
+            $pwreset = 'Yes';
+          } else {
+            $pwreset = 'No';
+          }
+
+          $missing = "";
+          $q_string  = "select mail_id ";
+          $q_string .= "from email ";
+          $q_string .= "where mail_address = \"" . $a_users['usr_email'] . "\" and mail_disabled = 0 ";
+          $q_email = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_email) == 0) {
+            $missing = "*";
+          }
+
+          $group .= "<tr>\n";
+          $group .=   "<td" . $defaultdel . ">" . $linkdel   . "</td>\n";
+          $group .= "  <td" . $default    . ">"              . $a_users['lvl_name']               . $linkend . "</td>\n";
+          $group .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_name']                          . "</td>\n";
+          $group .= "  <td" . $default    . ">"              . $a_users['usr_first']              . $linkend . "</td>\n";
+          $group .= "  <td" . $default    . ">"              . $a_users['usr_last']                          . "</td>\n";
+          $group .= "  <td" . $default    . ">"              . $a_users['usr_email'] . $missing              . "</td>\n";
+          $group .= "  <td" . $default    . ">"              . $pwreset                                      . "</td>\n";
+          $group .= "  <td" . $default    . ">"              . $reg_date                                     . "</td>\n";
+          $group .= "  <td" . $default    . ">"              . $a_users['theme_title']                       . "</td>\n";
+          $group .= "</tr>\n";
+          $count++;
         }
-
-        $timestamp = strtotime($a_users['usr_timestamp']);
-        $reg_date = date('d M y @ H:i' ,$timestamp);
-
-        if ($a_users['usr_reset']) {
-          $pwreset = 'Yes';
-        } else {
-          $pwreset = 'No';
-        }
-
-        $missing = "";
-        $q_string  = "select mail_id ";
-        $q_string .= "from email ";
-        $q_string .= "where mail_address = \"" . $a_users['usr_email'] . "\" and mail_disabled = 0 ";
-        $q_email = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        if (mysqli_num_rows($q_email) == 0) {
-          $missing = "*";
-        }
-
-        $group .= "<tr>\n";
-        $group .=   "<td" . $defaultdel . ">" . $linkdel   . "</td>\n";
-        $group .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_id']                 . $linkend . "</td>\n";
-        $group .= "  <td" . $default    . ">" . $linkstart . $a_users['lvl_name']               . $linkend . "</td>\n";
-        $group .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_name']               . $linkend . "</td>\n";
-        $group .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_first']              . $linkend . "</td>\n";
-        $group .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_last']               . $linkend . "</td>\n";
-        $group .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_email'] . $missing   . $linkend . "</td>\n";
-        $group .= "  <td" . $default    . ">" . $linkstart . $pwreset                           . $linkend . "</td>\n";
-        $group .= "  <td" . $default    . ">" . $linkstart . $reg_date                          . $linkend . "</td>\n";
-        $group .= "  <td" . $default    . ">" . $linkstart . $a_users['theme_title']            . $linkend . "</td>\n";
-        $group .= "</tr>\n";
-        $count++;
       }
     }
-
     $group .= "</table>\n";
 
     if ($count > 0) {
       $output .= $group;
+    } else {
+      $output .= "<table class=\"ui-styled-table\">\n";
+      $output .= "<tr>\n";
+      $output .=   "<th class=\"ui-state-default\" colspan=\"13\">Groups</th>\n";
+      $output .= "</tr>\n";
+      $output .= "<tr>\n";
+      $output .=   "<th class=\"ui-state-default\" width=\"160\">Delete User</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Level</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Login</th>\n";
+      $output .=   "<th class=\"ui-state-default\">First Name</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Last Name</th>\n";
+      $output .=   "<th class=\"ui-state-default\">E-Mail</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Force Password Change</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Date Registered</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Theme</th>\n";
+      $output .= "</tr>\n";
+      $output .= "<tr>\n";
+      $output .=   "<td class=\"ui-widget-content\" colspan=\"13\">No records found</td>\n";
+      $output .= "</tr>\n";
+      $output .= "</table>\n";
     }
-
   }
 
   print "document.getElementById('" . $p_toggle . "_users_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
