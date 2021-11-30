@@ -106,8 +106,8 @@ $(document).ready( function() {
   $( "#dialogUser" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 450,
-    width: 1100,
+    height: 515,
+    width: 600,
     show: 'slide',
     hide: 'slide',
     closeOnEscape: true,
@@ -263,7 +263,7 @@ $(document).ready( function() {
 
 </form>
 
-<div id="dialogUser" title="User Form">
+<div id="dialogUser" title="Add User Form">
 
 <form name="user">
 
@@ -271,14 +271,12 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default" colspan="5">Profile Form</th>
-</tr>
-<tr>
-  <td class="ui-widget-content">User Login <input type="text" name="usr_name" size="10"></td>
   <td class="ui-widget-content">User Access <select name="usr_disabled">
 <option value="0">Enabled</option>
 <option value="1">Disabled</option>
 </select></td>
+</tr>
+<tr>
   <td class="ui-widget-content">Edit Level <select name="usr_level">
 <?php
   $q_string  = "select lvl_id,lvl_name ";
@@ -291,25 +289,36 @@ $(document).ready( function() {
   }
 ?>
 </select></td>
-  <td class="ui-widget-content">Theme <select name="usr_theme">
+</tr>
+<tr>
+  <td class="ui-widget-content">User Login <input type="text" name="usr_name" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">First Name <input type="text" name="usr_first" size="20"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Last Name <input type="text" name="usr_last" size="20"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">E-Mail <input type="text" name="usr_email" size="40"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Phone Number <input type="text" name="usr_phone" size="20"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content" colspan="2">Title: <select name="usr_title">
 <?php
-  $q_string  = "select theme_id,theme_title ";
-  $q_string .= "from themes ";
-  $q_string .= "order by theme_title";
-  $q_themes = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_themes = mysqli_fetch_array($q_themes)) {
-    print "<option value=\"" . $a_themes['theme_id'] . "\">" . $a_themes['theme_title'] . "</option>\n";
+  $q_string  = "select tit_id,tit_name ";
+  $q_string .= "from titles ";
+  $q_string .= "order by tit_name ";
+  $q_titles = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_titles = mysqli_fetch_array($q_titles)) {
+    print "<option value=\"" . $a_titles['tit_id'] . "\">" . $a_titles['tit_name'] . "</option>\n";
   }
 ?>
 </select></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">First Name <input type="text" name="usr_first" size="20"></td>
-  <td class="ui-widget-content">Last Name <input type="text" name="usr_last" size="20"></td>
-  <td class="ui-widget-content" colspan="2">E-Mail <input type="text" name="usr_email" size="40"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Phone Number <input type="text" name="usr_phone" size="20"></td>
   <td class="ui-widget-content">Group <select name="usr_group">
 <?php
   $q_string  = "select grp_id,grp_name ";
@@ -324,17 +333,6 @@ $(document).ready( function() {
 </select></td>
 </tr>
 <tr>
-  <td class="ui-widget-content" colspan="2">Title: <select name="usr_title">
-<?php
-  $q_string  = "select tit_id,tit_name ";
-  $q_string .= "from titles ";
-  $q_string .= "order by tit_name ";
-  $q_titles = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_titles = mysqli_fetch_array($q_titles)) {
-    print "<option value=\"" . $a_titles['tit_id'] . "\">" . $a_titles['tit_name'] . "</option>\n";
-  }
-?>
-</select></td>
   <td class="ui-widget-content" colspan="2">Manager: <select name="usr_manager">
 <?php
   $q_string  = "select usr_id,usr_last,usr_first ";
@@ -348,27 +346,33 @@ $(document).ready( function() {
 ?>
 </select></td>
 </tr>
-</table>
-
-<table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default" colspan="3">Password Form</th>
+  <td class="ui-widget-content">Inventory Theme <select name="usr_theme">
+<?php
+  $q_string  = "select theme_id,theme_title ";
+  $q_string .= "from themes ";
+  $q_string .= "order by theme_title";
+  $q_themes = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_themes = mysqli_fetch_array($q_themes)) {
+    print "<option value=\"" . $a_themes['theme_id'] . "\">" . $a_themes['theme_title'] . "</option>\n";
+  }
+?>
+</select></td>
 </tr>
 <tr>
   <td class="ui-widget-content" id="password">Reset User Password <input type="password" autocomplete="off" name="usr_passwd" size="30" onKeyDown="javascript:show_file('validate.password.php?password=' + usr_passwd.value + '&reenter=' + usr_reenter.value);" onKeyUp="javascript:show_file('validate.password.php?password=' + usr_passwd.value + '&reenter=' + usr_reenter.value);"></td>
-  <td class="ui-widget-content" id="reenter">Re-Enter Password <input type="password" name="usr_reenter" size="30" onKeyDown="javascript:show_file('validate.password.php?password=' + usr_passwd.value + '&reenter=' + usr_reenter.value);" 
-onKeyUp="javascript:show_file('validate.password.php?password=' + usr_passwd.value + '&reenter=' + usr_reenter.value);"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content" id="reenter">Re-Enter Password <input type="password" name="usr_reenter" size="30" onKeyDown="javascript:show_file('validate.password.php?password=' + usr_passwd.value + '&reenter=' + usr_reenter.value);" onKeyUp="javascript:show_file('validate.password.php?password=' + usr_passwd.value + '&reenter=' + usr_reenter.value);"></td>
+</tr>
+<tr>
   <td class="ui-widget-content"><label>Force Password Reset on Next Login? <input type="checkbox" checked="true" name="usr_reset"></label></td>
 </tr>
-</table>
-
-<table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default" colspan="2">Website Certificate Form</th>
+  <td class="ui-widget-content">Number of Days Prior to Website Certification Expiration to be Notified: <input type="text" name="usr_notify" size="5"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Number of Days Prior to Expiration: <input type="text" name="usr_notify" size="20"></td>
-  <td class="ui-widget-content">Reminder Increment: <input type="text" name="usr_freq" size="20"></td>
+  <td class="ui-widget-content">Notification Repeats Every <input type="text" name="usr_freq" size="5"> Days After First Notification</td>
 </tr>
 </table>
 
