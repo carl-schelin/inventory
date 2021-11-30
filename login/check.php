@@ -10,7 +10,7 @@ if (isset($_SESSION['username'])) {
     $username_s = $_SESSION['username']; 
 
     $q_string  = "select usr_id,usr_level,usr_disabled,usr_name,usr_first,usr_last,";
-    $q_string .= "usr_group,usr_reset,usr_disposition,theme_name ";
+    $q_string .= "usr_group,usr_reset,theme_name ";
     $q_string .= "from users ";
     $q_string .= "left join themes on themes.theme_id = users.usr_theme ";
     $q_string .= "where usr_name = '$username_s'"; 
@@ -53,7 +53,6 @@ if (isset($_SESSION['username'])) {
       $_SESSION['name']        = $a_users['usr_first'] . " " . $a_users['usr_last'];
       $_SESSION['group']       = $a_users['usr_group'];
       $_SESSION['theme']       = $a_users['theme_name'];
-      $_SESSION['disposition'] = $a_users['usr_disposition'];
     } else {
 # reset the changeable environment variables (first/last, group, and department) in case levels and such change.
       include('user_level.php');
