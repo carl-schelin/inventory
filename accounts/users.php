@@ -227,32 +227,7 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Profile Form</strong>
-  <ul>
-    <li><strong>User Login</strong> - Used by the user to log in to the system. This can be changed but the user needs to know the new name.</li>
-    <li><strong>User Access</strong> - It's best to disable a user to maintain any ownerships in the system. Change to Disabled to deny access to an account.</li>
-    <li><strong>Edit Level</strong> - There are four levels. The site has restrictions for access. Most users are set to Edit mode since they have parts of the Inventory that they need to be able to edit.</li>
-    <li><strong>Theme</strong> - Select a theme for the user.</li>
-    <li><strong>First Name</strong> - The user's first name.</li>
-    <li><strong>Last Name</strong> - The user's last name.</li>
-    <li><strong>E-Mail</strong> - The user's official email address. This is important in that several email portions of the system check incoming email against this address.</li>
-    <li><strong>Phone Number</strong> - The user's contact phone number. Could be desk phone or cell phone.</li>
-    <li><strong>Group</strong> - The group the user belongs to. This gives the user ownership over editing equipment owned by that group.</li>
-    <li><strong>Department</strong> - The department the user belongs to.
-  </ul></li>
-  <li><strong>Password Form</strong>
-  <ul>
-    <li><strong>Reset User Password</strong> - Enter in a new password for the user here.</li>
-    <li><strong>Re-Enter Password</strong> - Enter the password in again. If the passwords don't match, the two boxes <span class="ui-state-error">change to indicate</span> a mismatch</li>
-    <li><strong>Force Password Reset on Next Login</strong> - Check this box if you're resetting a user password or otherwise want to force a password reset.</li>
-  </ul></li>
-  <li><strong>Website Certificate Form</strong>
-  <ul>
-    <li><strong>Number of Days Prior to Expiration</strong> - If a user has been identified by the Web Applications team as being responsible for a web site certificate, they will need to be notified when the certificate is going to expire. This should be set to a sufficiently large number to ensure notifications are made in a timely manner.</li>
-    <li><strong>Reminder Increment</strong> - Once the initial notification goes out, the user will want to be notified regularly until the certificate has been updated.</li>
-  </ul></li>
-</ul>
+<p>This page lets you manage users for the Inventory. If a user adds an account, it is in the first tab waiting for you to approve the access.
 
 </div>
 
@@ -293,21 +268,19 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>New User Listing</strong>
-  <ul>
-    <li><strong>Delete (x)</strong> - Click here to delete this user from the Inventory. It's better to disable the user.</li>
-    <li><strong>Editing</strong> - Click on a user to toggle the form and edit the user.</li>
-    <li><strong>Highlight</strong> - If a user is <span class="ui-state-highlight">highlighted</span>, then the user's Reset Password on Next Login flag has been set.</li>
-  </ul></li>
-</ul>
+<p><strong>New User Listing</strong></p>
 
-<ul>
-  <li><strong>Notes</strong>
-  <ul>
-    <li>Click the <strong>User Management</strong> title bar to toggle the <strong>User Form</strong>.</li>
-  </ul></li>
-</ul>
+<p>This page lists all the new users requesting access to the system.</p>
+
+<p>To add a New User, click the Add User button. This will bring up a dialog box which you can then use to create a new user.</p>
+
+<p>To edit a New User, click on the user in the listing. A dialog box will be displayed where you can edit the current user.</p>
+
+<p>Every user has the option to receive Certificate Notifications. The second to the last field lets you set the number of days 
+before a Certificate expires where the user will receive an email. Generally you want to provide sufficient time to both generate 
+a new certificate and the amount of time to get approval to apply the certificate.</p>
+
+<p>In addition, the last field lets you remind the user every few days as defined.</p>
 
 </div>
 
@@ -333,21 +306,19 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>New User Listing</strong>
-  <ul>
-    <li><strong>Delete (x)</strong> - Click here to delete this user from the Inventory. It's better to disable the user.</li>
-    <li><strong>Editing</strong> - Click on a user to toggle the form and edit the user.</li>
-    <li><strong>Highlight</strong> - If a user is <span class="ui-state-highlight">highlighted</span>, then the user's Reset Password on Next Login flag has been set.</li>
-  </ul></li>
-</ul>
+<p><strong>Registered Users Listing</strong></p>
 
-<ul>
-  <li><strong>Notes</strong>
-  <ul>
-    <li>Click the <strong>User Management</strong> title bar to toggle the <strong>User Form</strong>.</li>
-  </ul></li>
-</ul>
+<p>This page lists all active users in the system.</p>
+
+<p>To add a New User, click the Add User button. This will bring up a dialog box which you can then use to create a new user.</p>
+
+<p>To edit a User, click on the user in the listing. A dialog box will be displayed where you can edit the current user.</p>
+
+<p>Every user has the option to receive Certificate Notifications. The second to the last field lets you set the number of days
+before a Certificate expires where the user will receive an email. Generally you want to provide sufficient time to both generate
+a new certificate and the amount of time to get approval to apply the certificate.</p>
+
+<p>In addition, the last field lets you remind the user every few days as defined.</p>
 
 </div>
 
@@ -373,21 +344,19 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>New User Listing</strong>
-  <ul>
-    <li><strong>Delete (x)</strong> - Click here to delete this user from the Inventory. It's better to disable the user.</li>
-    <li><strong>Editing</strong> - Click on a user to toggle the form and edit the user.</li>
-    <li><strong>Highlight</strong> - If a user is <span class="ui-state-highlight">highlighted</span>, then the user's Reset Password on Next Login flag has been set.</li>
-  </ul></li>
-</ul>
+<p><strong>Admin Users Listing</strong></p>
 
-<ul>
-  <li><strong>Notes</strong>
-  <ul>
-    <li>Click the <strong>User Management</strong> title bar to toggle the <strong>User Form</strong>.</li>
-  </ul></li>
-</ul>
+<p>This page lists all the users that have Administrative privileges.</p>
+
+<p>To add a New User, click the Add User button. This will bring up a dialog box which you can then use to create a new user.</p>
+
+<p>To edit a User, click on the user in the listing. A dialog box will be displayed where you can edit the current user.</p>
+
+<p>Every user has the option to receive Certificate Notifications. The second to the last field lets you set the number of days
+before a Certificate expires where the user will receive an email. Generally you want to provide sufficient time to both generate
+a new certificate and the amount of time to get approval to apply the certificate.</p>
+
+<p>In addition, the last field lets you remind the user every few days as defined.</p>
 
 </div>
 
@@ -413,21 +382,19 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>New User Listing</strong>
-  <ul>
-    <li><strong>Delete (x)</strong> - Click here to delete this user from the Inventory. It's better to disable the user.</li>
-    <li><strong>Editing</strong> - Click on a user to toggle the form and edit the user.</li>
-    <li><strong>Highlight</strong> - If a user is <span class="ui-state-highlight">highlighted</span>, then the user's Reset Password on Next Login flag has been set.</li>
-  </ul></li>
-</ul>
+<p><strong>Read/Only Users Listing</strong></p>
 
-<ul>
-  <li><strong>Notes</strong>
-  <ul>
-    <li>Click the <strong>User Management</strong> title bar to toggle the <strong>User Form</strong>.</li>
-  </ul></li>
-</ul>
+<p>This page lists all the users that have been set to Read/Only.</p>
+
+<p>To add a New User, click the Add User button. This will bring up a dialog box which you can then use to create a new user.</p>
+
+<p>To edit a User, click on the user in the listing. A dialog box will be displayed where you can edit the current user.</p>
+
+<p>Every user has the option to receive Certificate Notifications. The second to the last field lets you set the number of days
+before a Certificate expires where the user will receive an email. Generally you want to provide sufficient time to both generate
+a new certificate and the amount of time to get approval to apply the certificate.</p>
+
+<p>In addition, the last field lets you remind the user every few days as defined.</p>
 
 </div>
 
@@ -453,21 +420,19 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>New User Listing</strong>
-  <ul>
-    <li><strong>Delete (x)</strong> - Click here to delete this user from the Inventory. It's better to disable the user.</li>
-    <li><strong>Editing</strong> - Click on a user to toggle the form and edit the user.</li>
-    <li><strong>Highlight</strong> - If a user is <span class="ui-state-highlight">highlighted</span>, then the user's Reset Password on Next Login flag has been set.</li>
-  </ul></li>
-</ul>
+<p><strong>Guest Users Listing</strong></p>
 
-<ul>
-  <li><strong>Notes</strong>
-  <ul>
-    <li>Click the <strong>User Management</strong> title bar to toggle the <strong>User Form</strong>.</li>
-  </ul></li>
-</ul>
+<p>This page lists all the users that have been identified as Guests.</p>
+
+<p>To add a New User, click the Add User button. This will bring up a dialog box which you can then use to create a new user.</p>
+
+<p>To edit a User, click on the user in the listing. A dialog box will be displayed where you can edit the current user.</p>
+
+<p>Every user has the option to receive Certificate Notifications. The second to the last field lets you set the number of days
+before a Certificate expires where the user will receive an email. Generally you want to provide sufficient time to both generate
+a new certificate and the amount of time to get approval to apply the certificate.</p>
+
+<p>In addition, the last field lets you remind the user every few days as defined.</p>
 
 </div>
 
@@ -493,21 +458,19 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>New User Listing</strong>
-  <ul>
-    <li><strong>Delete (x)</strong> - Click here to delete this user from the Inventory. It's better to disable the user.</li>
-    <li><strong>Editing</strong> - Click on a user to toggle the form and edit the user.</li>
-    <li><strong>Highlight</strong> - If a user is <span class="ui-state-highlight">highlighted</span>, then the user's Reset Password on Next Login flag has been set.</li>
-  </ul></li>
-</ul>
+<p><strong>Disabled Users Listing</strong></p>
 
-<ul>
-  <li><strong>Notes</strong>
-  <ul>
-    <li>Click the <strong>User Management</strong> title bar to toggle the <strong>User Form</strong>.</li>
-  </ul></li>
-</ul>
+<p>This page lists all the users that have been disabled.</p>
+
+<p>To add a New User, click the Add User button. This will bring up a dialog box which you can then use to create a new user.</p>
+
+<p>To edit a User, click on the user in the listing. A dialog box will be displayed where you can edit the current user.</p>
+
+<p>Every user has the option to receive Certificate Notifications. The second to the last field lets you set the number of days
+before a Certificate expires where the user will receive an email. Generally you want to provide sufficient time to both generate
+a new certificate and the amount of time to get approval to apply the certificate.</p>
+
+<p>In addition, the last field lets you remind the user every few days as defined.</p>
 
 </div>
 
