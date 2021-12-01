@@ -493,7 +493,12 @@ alter table business_unit add column bus_org int(10) not null default 0 after bu
 alter table tags change tag_name tag_name char(255) not null default '';
 
 Change project to Software in tag_types table
+
+update tag_types set type_name = 'Software' where type_id = 4;
+
 Add Hardware to tag_types table
+
+insert into tag_types set type_id = null, type_name = 'Hardware';
 
 
 ### Timestamp 2021-10-04
@@ -514,7 +519,7 @@ Removing grp_role and adding grp_business. It should be a chain where org is at 
 
 alter table a_groups drop column grp_role;
 alter table a_groups add column grp_department int(10) not null default 0 after grp_organization;
-rename table business_unit to business
+rename table business_unit to business;
 
 
 ### Timestamp 2021-10-16
@@ -601,7 +606,7 @@ modify mysql:
 SET GLOBAL sql_mode(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
 
 
-### Timestamp 20211129
+### Timestamp 2021-11-29
 
 Remove the following from the users table:
 
@@ -610,7 +615,7 @@ alter table users drop column usr_clientid;
 alter table users drop column usr_page;
 alter table users drop column usr_pagemail;
 alter table users drop column usr_deptname;
-alter table users drop column usr_magic
+alter table users drop column usr_magic;
 alter table users drop column usr_report;
 alter table users drop column usr_confirm;
 alter table users drop column usr_maint;
@@ -619,6 +624,10 @@ alter table users drop column usr_headers;
 alter table users drop column usr_start;
 alter table users drop column usr_end;
 alter table users drop column usr_maillist;
+
+### Timestamp 2021-11-30
+
+Updated nikodemus tables
 
 
 
