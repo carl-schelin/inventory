@@ -65,19 +65,16 @@
             "lic_domain   = \"" . $formVars['lic_domain']   . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into licenses set lic_id = NULL, " . $q_string;
-            $message = "License added.";
+            $q_string = "insert into licenses set lic_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update licenses set " . $q_string . " where lic_id = " . $formVars['id'];
-            $message = "License updated.";
+            $q_string = "update licenses set " . $q_string . " where lic_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['lic_product']);
 
-          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
+          mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
-          print "alert('" . $message . "');\n";
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -123,7 +120,7 @@
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
-        $output .= "<th class=\"ui-state-default\">Del</th>\n";
+        $output .= "<th class=\"ui-state-default\" width=\"160\">Delete License</th>\n";
       }
       $output .= "<th class=\"ui-state-default\">" . $linksort . "&sort=lic_vendor');\">Vendor</a></th>\n";
       $output .= "<th class=\"ui-state-default\">" . $linksort . "&sort=lic_product');\">Product</a></th>\n";
@@ -145,13 +142,13 @@
       if (mysqli_num_rows($q_licenses) > 0) {
         while ($a_licenses = mysqli_fetch_array($q_licenses)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('license.fill.php?id="  . $a_licenses['lic_id'] . "');showDiv('license-hide');\">";
-          $linkdel   = "<a href=\"#\" onclick=\"delete_line('license.del.php?id=" . $a_licenses['lic_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('license.fill.php?id="  . $a_licenses['lic_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('license.del.php?id=" . $a_licenses['lic_id'] . "');\">";
           $linkend   = "</a>";
 
           $output .= "<tr>\n";
           if (check_userlevel($db, $AL_Admin)) {
-            $output .= "<td class=\"ui-widget-content delete\">" . $linkdel   . "x"                         . $linkend . "</td>\n";
+            $output .= "<td class=\"ui-widget-content delete\">" . $linkdel . "</td>\n";
           }
           $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_licenses['lic_vendor']   . $linkend . "</td>\n";
           $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_licenses['lic_product']  . $linkend . "</td>\n";
@@ -177,7 +174,6 @@
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
-      print "document.license.update.disabled = true;\n";
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
