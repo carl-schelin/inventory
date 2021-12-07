@@ -62,7 +62,9 @@
 </ul>
 
 <ul>
-  <li><a href="<?php print $Licenseroot; ?>/license.php">Manage Software Licenses table</a></li>
+  <li><a href="<?php print $Softwareroot; ?>/software.php">Manage Software table</a></li>
+  <li><a href="<?php print $Softwareroot; ?>/license.php">Manage Software Licenses table</a></li>
+  <li><a href="<?php print $Softwareroot; ?>/support.php">Manage Software Support table</a></li>
   <li><a href="<?php print $Adminroot; ?>/timezones.php">Manage System Timezones table</a></li>
 </ul>
 
