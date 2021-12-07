@@ -629,5 +629,8 @@ alter table users drop column usr_maillist;
 
 Updated nikodemus tables
 
+### Timestamp 2021-12-06
+
+Fixed missing default setting for a blank drop down menu.
 
 
