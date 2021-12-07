@@ -32,6 +32,9 @@
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
         }
+        if ($formVars['prod_unit'] == '') {
+          $formVars['prod_unit'] = 0;
+        }
 
         $q_string  = "select prod_code ";
         $q_string .= "from products ";
@@ -66,8 +69,8 @@
 # Tag Management
 ##################
 #
-# Step 1, remove all tags associated with this location. We only need to do this for
-# locations that are updates. New locations will have all new tags.
+# Step 1, remove all tags associated with this product. We only need to do this for
+# products that are updates. New products will have all new tags.
             if ($formVars['update'] == 1) {
               $q_string  = "delete ";
               $q_string .= "from tags ";
