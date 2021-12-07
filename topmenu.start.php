@@ -66,7 +66,9 @@
 
   <li id="tm_software"><a href="<?php print $Siteroot; ?>/index.software.php">Software</a>
     <ul>
-      <li><a href="<?php print $Licenseroot; ?>/license.php">License Manager</a></li>
+      <li><a href="<?php print $Softwareroot; ?>/software.php">Software Manager</a></li>
+      <li><a href="<?php print $Softwareroot; ?>/license.php">License Manager</a></li>
+      <li><a href="<?php print $Softwareroot; ?>/support.php">Software Support Manager</a></li>
     </ul>
   </li>
 
