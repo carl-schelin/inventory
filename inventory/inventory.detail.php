@@ -239,10 +239,10 @@
 
 # update the software listing; only software that's owned by the old group
           $q_string  = "update ";
-          $q_string .= "software ";
+          $q_string .= "svr_software ";
           $q_string .= "set ";
-          $q_string .= "sw_group = " . $a_groups['grp_id'] . " ";          
-          $q_string .= "where sw_companyid = " . $formVars['id'] . " and sw_group = " . $formVars['select'] . " ";
+          $q_string .= "svr_group = " . $a_groups['grp_id'] . " ";          
+          $q_string .= "where srv_companyid = " . $formVars['id'] . " and srv_group = " . $formVars['select'] . " ";
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 # update file system ownershps
