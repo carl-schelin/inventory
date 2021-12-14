@@ -393,9 +393,9 @@
           for ($i = 0; $i < count($search_for); $i++) {
             $search_on .= $or . "(" . 
               "   inv_name    like '%" . $search_for[$i] . "%' " . 
-              "or sw_vendor   like '%" . $search_for[$i] . "%' " . 
+              "or ven_name    like '%" . $search_for[$i] . "%' " . 
               "or sw_software like '%" . $search_for[$i] . "%' " . 
-              "or sw_type     like '%" . $search_for[$i] . "%' " .
+              "or typ_name    like '%" . $search_for[$i] . "%' " .
               "or ct_city     like '%" . $search_for[$i] . "%' " .
               "or ct_state    like '%" . $search_for[$i] . "%' " .
             ") ";
@@ -404,9 +404,9 @@
         } else {
           $search_on = "(" . 
             "   inv_name    like '%" . $formVars['search_for'] . "%' " . 
-            "or sw_vendor   like '%" . $formVars['search_for'] . "%' " . 
+            "or ven_name    like '%" . $formVars['search_for'] . "%' " . 
             "or sw_software like '%" . $formVars['search_for'] . "%' " . 
-            "or sw_type     like '%" . $formVars['search_for'] . "%' " .
+            "or typ_name    like '%" . $formVars['search_for'] . "%' " .
             "or ct_city     like '%" . $formVars['search_for'] . "%' " .
             "or ct_state    like '%" . $formVars['search_for'] . "%' " .
           ") ";
@@ -431,20 +431,23 @@
         $output .= "<table class=\"ui-styled-table\">\n";
         $output .= "<tr>\n";
         $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=inv_name');\">Server Name</a></th>\n";
-        $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=sw_vendor');\">Vendor</a></th>\n";
+        $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=ven_name');\">Vendor</a></th>\n";
         $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=sw_software');\">Software</a></th>\n";
-        $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=sw_type');\">Type</a></th>\n";
+        $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=typ_name');\">Type</a></th>\n";
         $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=grp_name');\">Applications Managed By</a></th>\n";
         $output .= "</tr>\n";
       }
 
-      $q_string  = "select inv_name,sw_companyid,sw_software,sw_vendor,sw_type,grp_name,inv_status ";
-      $q_string .= "from software ";
-      $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
+      $q_string  = "select inv_name,svr_companyid,sw_software,ven_name,typ_name,grp_name,inv_status ";
+      $q_string .= "from inventory ";
+      $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id ";
+      $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
+      $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
+      $q_string .= "left join vendors   on vendors.ven_id = software.sw_vendor ";
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
       $q_string .= "left join cities    on cities.ct_id     = locations.loc_city ";
       $q_string .= "left join states    on states.st_id     = locations.loc_state ";
-      $q_string .= "left join a_groups on a_groups.grp_id = software.sw_group ";
+      $q_string .= "left join a_groups on a_groups.grp_id = svr_software.svr_groupid ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";
       } else {
@@ -455,11 +458,11 @@
       if (mysqli_num_rows($q_software) > 0) {
         while ($a_software = mysqli_fetch_array($q_software)) {
 
-          $linkswstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_software['sw_companyid'] . "#software\" target=\"_blank\">";
-          $link_vendor = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=3&search_on=sw_vendor&search_for="   . $a_software['sw_vendor']   . "&retired=" . $formVars['retired'] . "');\">";
+          $linkswstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_software['svr_companyid'] . "#software\" target=\"_blank\">";
+          $link_vendor = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=3&search_on=ven_name&search_for="   . $a_software['ven_name']   . "&retired=" . $formVars['retired'] . "');\">";
           $link_name   = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=3&search_on=sw_software&search_for=" . $a_software['sw_software'] . "&retired=" . $formVars['retired'] . "');\">";
-          $link_type   = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=3&search_on=sw_type&search_for="     . $a_software['sw_type']     . "&retired=" . $formVars['retired'] . "');\">";
-          $linkstart   = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_software['sw_companyid'] . "\" target=\"_blank\">";
+          $link_type   = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=3&search_on=typ_name&search_for="     . $a_software['typ_name']     . "&retired=" . $formVars['retired'] . "');\">";
+          $linkstart   = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_software['svr_companyid'] . "\" target=\"_blank\">";
           $linkend     = "</a>";
 
           $class = "ui-widget-content";
@@ -469,16 +472,16 @@
 
           if ($formVars['csv']) {
             $output .= "\"" . $a_software['inv_name']    . "\",";
-            $output .= "\"" . $a_software['sw_vendor']   . "\",";
+            $output .= "\"" . $a_software['ven_name']   . "\",";
             $output .= "\"" . $a_software['sw_software'] . "\",";
-            $output .= "\"" . $a_software['sw_type']     . "\",";
+            $output .= "\"" . $a_software['typ_id']     . "\",";
             $output .= "\"" . $a_software['grp_name']    . "\"<br>";
           } else {
             $output .= "<tr>\n";
             $output .= "  <td class=\"" . $class . "\">" . $linkswstart . $a_software['inv_name']    . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $link_vendor . $a_software['sw_vendor']   . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $link_vendor . $a_software['ven_name']   . $linkend . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">" . $link_name   . $a_software['sw_software'] . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $link_type   . $a_software['sw_type']     . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $link_type   . $a_software['typ_name']     . $linkend . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"                . $a_software['grp_name']               . "</td>\n";
             $output .= "</tr>\n";
           }
