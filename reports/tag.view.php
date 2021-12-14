@@ -285,11 +285,13 @@ $(document).ready( function () {
     }
 
 #####
-# Get software information
+# Get software operating system information
 #####
     $q_string = "select sw_software "
-              . "from software "
-              . "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'OS' ";
+              . "from svr_software "
+              . "left join software on software.sw_id = svr_software.svr_softwareid "
+              . "left join sw_types on sw_types.typ_id = software.sw_type "
+              . "where svr_companyid = " . $a_inventory['inv_id'] . " and typ_name = 'OS' ";
     $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_software = mysqli_fetch_array($q_software);
     
