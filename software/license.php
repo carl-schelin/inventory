@@ -213,12 +213,41 @@ $(document).ready( function() {
 
 </div>
 
-
 <table class="ui-styled-table">
 <tr>
   <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add License"></td>
 </tr>
 </table>
+
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">License Key Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('license-listing-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="license-listing-help" style="display: none">
+
+<div class="main-help ui-widget-content">
+<ul>
+  <li><strong>License Key Listing</strong>
+  <ul>
+    <li><strong>Editing</strong> - Click on a License to edit it.</li>
+  </ul></li>
+</ul>
+
+<ul>
+  <li><strong>Notes</strong>
+  <ul>
+    <li>Click the <strong>License Key Management</strong> title bar to toggle the <strong>License Key Form</strong>.</li>
+  </ul></li>
+</ul>
+
+</div>
+
+</div>
 
 
 <span id="table_mysql"><?php print wait_Process("Please Wait"); ?></span>
@@ -226,7 +255,6 @@ $(document).ready( function() {
 </div>
 
 </div>
-
 
 
 <div id="dialogCreate" title="Add License">
