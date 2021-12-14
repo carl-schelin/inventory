@@ -71,7 +71,7 @@
 
   $group = '';
   if ($formVars['group'] > 0) {
-    $group = $and . " (inv_manager = " . $formVars['group'] . " or inv_appadmin = " . $formVars['group'] . " or sw_group = " . $formVars['group'] . ") ";
+    $group = $and . " (inv_manager = " . $formVars['group'] . " or inv_appadmin = " . $formVars['group'] . " or svr_groupid = " . $formVars['group'] . ") ";
     $and = " and";
   }
 
@@ -119,7 +119,7 @@
     $and = " and";
   }
 
-  $where = $product . $group . $inwork . $location . $type . $and . " sw_type = 'OS' ";;
+  $where = $product . $group . $inwork . $location . $type;
 
   $total = 0;
   $grandtotal = 0;
@@ -199,45 +199,57 @@ $(document).ready( function() {
 
   $q_string  = "select inv_id,inv_name,inv_callpath,svc_name,sw_software,sw_eol ";
   $q_string .= "from inventory ";
-  $q_string .= "left join software  on inventory.inv_id = software.sw_companyid ";
-  $q_string .= "left join hardware  on inventory.inv_id = hardware.hw_companyid ";
-  $q_string .= "left join a_groups    on a_groups.grp_id    = hardware.hw_group ";
-  $q_string .= "left join models    on models.mod_id    = hardware.hw_vendorid ";
-  $q_string .= "left join support   on support.sup_id   = hardware.hw_supportid ";
-  $q_string .= "left join products  on products.prod_id = inventory.inv_product ";
-  $q_string .= "left join service   on service.svc_id   = inventory.inv_class ";
-  $q_string .= $where . " and sw_type = 'OS' ";
+  $q_string .= "left join svr_software  on svr_software.svr_companyid = inventory.inv_id ";
+  $q_string .= "left join software      on software.sw_id = svr_software.svr_softwareid ";
+  $q_string .= "left join sw_types      on sw_types.typ_id = software.sw_type ";
+  $q_string .= "left join hardware      on inventory.inv_id = hardware.hw_companyid ";
+  $q_string .= "left join a_groups      on a_groups.grp_id  = hardware.hw_group ";
+  $q_string .= "left join models        on models.mod_id    = hardware.hw_vendorid ";
+  $q_string .= "left join support       on support.sup_id   = hardware.hw_supportid ";
+  $q_string .= "left join products      on products.prod_id = inventory.inv_product ";
+  $q_string .= "left join service       on service.svc_id   = inventory.inv_class ";
+  $q_string .= $where . " and typ_name = 'OS' ";
   $q_string .= $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  if (mysqli_num_rows($q_inventory) > 0) {
+    while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
-    $class = " class=\"ui-widget-content\"";
+      $class = " class=\"ui-widget-content\"";
 
-    $callpath = "No";
-    if ($a_inventory['inv_callpath']) {
-      $callpath = "Yes";
-    }
+      $callpath = "No";
+      if ($a_inventory['inv_callpath']) {
+        $callpath = "Yes";
+      }
 
-    if ($a_inventory['sw_eol'] < date('Y-m-d') && $a_inventory['sw_eol'] != '1971-01-01') {
+      if ($a_inventory['sw_eol'] < date('Y-m-d') && $a_inventory['sw_eol'] != '1971-01-01') {
 
-      if ($formVars['csv']) {
-        print "\"" . $a_inventory['inv_name']     . "\",";
-        print "\"" . $callpath                    . "\",";
-        print "\"" . $a_inventory['svc_name']     . "\",";
-        print "\"" . $a_inventory['sw_software']  . "\",";
-        print "\"" . $a_inventory['sw_eol']       . "\"</br>\n";
-      } else {
-        print "<tr>\n";
-        print "<td" . $class . ">" . $a_inventory['inv_name'] . "</td>\n";
-        print "<td" . $class . ">" . $callpath . "</td>\n";
-        print "<td" . $class . ">" . $a_inventory['svc_name'] . "</td>\n";
-        print "<td" . $class . ">" . $a_inventory['sw_software'] . "</td>\n";
-        print "<td" . $class . ">" . $a_inventory['sw_eol'] . "</td>\n";
-        print "</tr>\n";
+        if ($formVars['csv']) {
+          print "\"" . $a_inventory['inv_name']     . "\",";
+          print "\"" . $callpath                    . "\",";
+          print "\"" . $a_inventory['svc_name']     . "\",";
+          print "\"" . $a_inventory['sw_software']  . "\",";
+          print "\"" . $a_inventory['sw_eol']       . "\"</br>\n";
+        } else {
+          print "<tr>\n";
+          print "<td" . $class . ">" . $a_inventory['inv_name'] . "</td>\n";
+          print "<td" . $class . ">" . $callpath . "</td>\n";
+          print "<td" . $class . ">" . $a_inventory['svc_name'] . "</td>\n";
+          print "<td" . $class . ">" . $a_inventory['sw_software'] . "</td>\n";
+          print "<td" . $class . ">" . $a_inventory['sw_eol'] . "</td>\n";
+          print "</tr>\n";
+        }
       }
     }
+  } else {
+    if ($formVars['csv']) {
+      print "No records found.\n";
+      print "</p>\n";
+    } else {
+      print "<tr>\n";
+      print "<td class=\"wi-widget-content\" colspan=\"5\">No records found.</td>\n";
+      print "</tr>\n";
+    }
   }
-
   if ($formVars['csv']) {
     print "</textarea>";
     print "</p>\n";
@@ -277,60 +289,74 @@ $(document).ready( function() {
     print "</tr>\n";
   }
 
-  $q_string  = "select inv_id,inv_name,inv_callpath,svc_name,hw_purchased,mod_eol,mod_vendor,mod_name ";
+  $q_string  = "select inv_id,inv_name,inv_callpath,svc_name,hw_purchased,mod_eol,ven_name,mod_name ";
   $q_string .= "from inventory ";
-  $q_string .= "left join software  on inventory.inv_id = software.sw_companyid ";
-  $q_string .= "left join hardware  on inventory.inv_id = hardware.hw_companyid ";
-  $q_string .= "left join a_groups    on a_groups.grp_id    = hardware.hw_group ";
-  $q_string .= "left join models    on models.mod_id    = hardware.hw_vendorid ";
-  $q_string .= "left join support   on support.sup_id   = hardware.hw_supportid ";
-  $q_string .= "left join products  on products.prod_id = inventory.inv_product ";
-  $q_string .= "left join service   on service.svc_id   = inventory.inv_class ";
-  $q_string .= $where . " and hw_primary = 1 and hw_deleted = 0 ";
+  $q_string .= "left join svr_software  on svr_software.svr_companyid = inventory.inv_id ";
+  $q_string .= "left join software      on software.sw_id             = svr_software.svr_softwareid ";
+  $q_string .= "left join sw_types      on sw_types.typ_id            = software.sw_type ";
+  $q_string .= "left join hardware      on inventory.inv_id           = hardware.hw_companyid ";
+  $q_string .= "left join a_groups      on a_groups.grp_id            = hardware.hw_group ";
+  $q_string .= "left join models        on models.mod_id              = hardware.hw_vendorid ";
+  $q_string .= "left join vendors       on vendors.ven_id             = models.mod_vendor ";
+  $q_string .= "left join support       on support.sup_id             = hardware.hw_supportid ";
+  $q_string .= "left join products      on products.prod_id           = inventory.inv_product ";
+  $q_string .= "left join service       on service.svc_id             = inventory.inv_class ";
+  $q_string .= $where . " and hw_primary = 1 and hw_deleted = 0 and typ_name = 'OS' ";
   $q_string .= $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  if (mysqli_num_rows($q_inventory) > 0) {
+    while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
-    $class = " class=\"ui-widget-content\"";
+      $class = " class=\"ui-widget-content\"";
 
-    $callpath = "No";
-    if ($a_inventory['inv_callpath']) {
-      $callpath = "Yes";
-    }
-
-    if ($a_inventory['mod_vendor'] == 'Dell') {
-      # For Dell, the end of support is 5 years after the purchase date
-      $date = explode("-", $a_inventory['hw_purchased']);
-      $support = mktime(0,0,0,$date[1],$date[2],$date[0] + 5);
-      $newdate = date("Y-m-d",$support);
-    } else {
-      if ($a_inventory['mod_eol'] == '') {
-        $a_inventory['mod_eol'] = '1971-01-01';
+      $callpath = "No";
+      if ($a_inventory['inv_callpath']) {
+        $callpath = "Yes";
       }
-      $date = explode("-", $a_inventory['mod_eol']);
-      $support = mktime(0,0,0,$date[1],$date[2],$date[0]);
-      $newdate = $a_inventory['mod_eol'];
-    }
 
-    if ($newdate < date('Y-m-d') && $newdate != '1971-01-01') {
-
-      if ($formVars['csv']) {
-        print "\"" . $a_inventory['inv_name']   . "\",";
-        print "\"" . $callpath                  . "\",";
-        print "\"" . $a_inventory['svc_name']   . "\",";
-        print "\"" . $a_inventory['mod_vendor'] . "\",";
-        print "\"" . $a_inventory['mod_name']   . "\",";
-        print "\"" . $newdate                   . "\"</br>\n";
+      if ($a_inventory['mod_vendor'] == 'Dell') {
+        # For Dell, the end of support is 5 years after the purchase date
+        $date = explode("-", $a_inventory['hw_purchased']);
+        $support = mktime(0,0,0,$date[1],$date[2],$date[0] + 5);
+        $newdate = date("Y-m-d",$support);
       } else {
-        print "<tr>\n";
-        print "<td" . $class . ">" . $a_inventory['inv_name'] . "</td>\n";
-        print "<td" . $class . ">" . $callpath . "</td>\n";
-        print "<td" . $class . ">" . $a_inventory['svc_name'] . "</td>\n";
-        print "<td" . $class . ">" . $a_inventory['mod_vendor'] . "</td>\n";
-        print "<td" . $class . ">" . $a_inventory['mod_name'] . "</td>\n";
-        print "<td" . $class . ">" . $newdate . "</td>\n";
-        print "</tr>\n";
+        if ($a_inventory['mod_eol'] == '') {
+          $a_inventory['mod_eol'] = '1971-01-01';
+        }
+        $date = explode("-", $a_inventory['mod_eol']);
+        $support = mktime(0,0,0,$date[1],$date[2],$date[0]);
+        $newdate = $a_inventory['mod_eol'];
       }
+
+      if ($newdate < date('Y-m-d') && $newdate != '1971-01-01') {
+
+        if ($formVars['csv']) {
+          print "\"" . $a_inventory['inv_name']   . "\",";
+          print "\"" . $callpath                  . "\",";
+          print "\"" . $a_inventory['svc_name']   . "\",";
+          print "\"" . $a_inventory['mod_vendor'] . "\",";
+          print "\"" . $a_inventory['mod_name']   . "\",";
+          print "\"" . $newdate                   . "\"</br>\n";
+        } else {
+          print "<tr>\n";
+          print "<td" . $class . ">" . $a_inventory['inv_name'] . "</td>\n";
+          print "<td" . $class . ">" . $callpath . "</td>\n";
+          print "<td" . $class . ">" . $a_inventory['svc_name'] . "</td>\n";
+          print "<td" . $class . ">" . $a_inventory['ven_name'] . "</td>\n";
+          print "<td" . $class . ">" . $a_inventory['mod_name'] . "</td>\n";
+          print "<td" . $class . ">" . $newdate . "</td>\n";
+          print "</tr>\n";
+        }
+      }
+    }
+  } else {
+    if ($formVars['csv']) {
+      print "No records found.\n";
+      print "</p>\n";
+    } else {
+      print "<tr>\n";
+      print "<td class=\"wi-widget-content\" colspan=\"6\">No records found.</td>\n";
+      print "</tr>\n";
     }
   }
 
