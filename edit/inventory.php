@@ -105,7 +105,7 @@ function delete_software( p_script_url ) {
     script = document.createElement('script');
     script.src = p_script_url;
     document.getElementsByTagName('head')[0].appendChild(script);
-    show_file('software.mysql.php'    + '?update=-1' + '&sw_companyid=<?php    print $formVars['server']; ?>');
+    show_file('software.mysql.php'    + '?update=-1' + '&svr_companyid=<?php    print $formVars['server']; ?>');
   }
 }
 
@@ -205,36 +205,42 @@ function create_tags(p_script_url, update) {
 
 
 
+function create_software( p_script_url, update ) {
+  var cs_form = document.formSoftwareCreate;
+  var cs_url;
 
+  cs_url  = '?update='   + update;
 
-
-function attach_software( p_script_url, update ) {
-  var as_form = document.edit;
-  var as_url;
-
-  as_url  = '?update='   + update;
-  as_url += '&id='       + as_form.sw_id.value;
-  as_url += '&copyfrom=' + as_form.sw_copyfrom.value;
-
-  as_url += "&sw_companyid="    + <?php print $formVars['server']; ?>;
-  as_url += "&sw_type="         + as_form.sw_type.value;
-  as_url += "&sw_software="     + encode_URI(as_form.sw_software.value);
-  as_url += "&sw_vendor="       + encode_URI(as_form.sw_vendor.value);
-  as_url += "&sw_product="      + as_form.sw_product.value;
-  as_url += "&sw_group="        + as_form.sw_group.value;
-  as_url += "&sw_eol="          + encode_URI(as_form.sw_eol.value);
-  as_url += "&sw_eolticket="    + encode_URI(as_form.sw_eolticket.value);
-  as_url += "&sw_cert="         + as_form.sw_cert.value;
-  as_url += "&sw_supportid="    + as_form.sw_supportid.value;
-  as_url += "&sw_licenseid="    + as_form.sw_licenseid.value;
-  as_url += "&sw_department="   + as_form.sw_department.value;
-  as_url += "&sw_facing="       + as_form.sw_facing.checked;
-  as_url += "&sw_notification=" + encode_URI(as_form.sw_notification.value);
-  as_url += "&sw_primary="      + as_form.sw_primary.checked;
-  as_url += "&sw_locked="       + as_form.sw_locked.checked;
+  cs_url += "&svr_companyid="    + <?php print $formVars['server']; ?>;
+  cs_url += "&svr_softwareid="   + cs_form.svr_softwareid.value;
+  cs_url += "&svr_groupid="      + cs_form.svr_groupid.value;
+  cs_url += "&svr_certid="       + cs_form.svr_certid.value;
+  cs_url += "&svr_facing="       + cs_form.svr_facing.checked;
+  cs_url += "&svr_primary="      + cs_form.svr_primary.checked;
+  cs_url += "&svr_locked="       + cs_form.svr_locked.checked;
 
   script = document.createElement('script');
-  script.src = p_script_url + as_url;
+  script.src = p_script_url + cs_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+function update_software( p_script_url, update ) {
+  var us_form = document.formSoftwareUpdate;
+  var us_url;
+
+  us_url  = '?update='   + update;
+  us_url += '&id='       + us_form.svr_id.value;
+
+  us_url += "&svr_companyid="    + <?php print $formVars['server']; ?>;
+  us_url += "&svr_softwareid="   + us_form.svr_softwareid.value;
+  us_url += "&svr_groupid="      + us_form.svr_groupid.value;
+  us_url += "&svr_certid="       + us_form.svr_certid.value;
+  us_url += "&svr_facing="       + us_form.svr_facing.checked;
+  us_url += "&svr_primary="      + us_form.svr_primary.checked;
+  us_url += "&svr_locked="       + us_form.svr_locked.checked;
+
+  script = document.createElement('script');
+  script.src = p_script_url + us_url;
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
@@ -890,7 +896,7 @@ function clear_fields() {
   if ($a_inventory['inv_name'] != 'Blank') {
 ?>
   show_file('tags.mysql.php'        + '?update=-3' + '&tag_companyid=<?php print $formVars['server']; ?>');
-  show_file('software.mysql.php'    + '?update=-3' + '&sw_companyid=<?php    print $formVars['server']; ?>');
+  show_file('software.mysql.php'    + '?update=-3' + '&svr_companyid=<?php print $formVars['server']; ?>');
 <?php
   if (check_grouplevel($db, $a_inventory['inv_manager'])) {
 ?>
@@ -917,15 +923,6 @@ function clear_fields() {
 $(document).ready( function() {
   $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
   $( "#sstatus" ).buttonset();
-
-
-
-
-
-
-
-
-
 
 
   $( '#clickTagCreate' ).click(function() {
@@ -1101,6 +1098,82 @@ $(document).ready( function() {
         text: "Add Interface",
         click: function() {
           update_interface('interface.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+
+
+
+
+
+  $( '#clickSoftwareCreate' ).click(function() {
+    $( "#dialogSoftwareCreate" ).dialog('open');
+  });
+
+  $( "#dialogSoftwareCreate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 600,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogSoftwareCreate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('software.mysql.php?update=-1&svr_companyid=<?php print $formVars['server']; ?>');
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Software",
+        click: function() {
+          create_software('software.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+  $( "#dialogSoftwareUpdate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 600,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogSoftwareUpdate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('software.mysql.php?update=-1&svr_companyid=<?php print $formVars['server']; ?>');
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Update Software",
+        click: function() {
+          update_software('software.mysql.php', 1);
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Software",
+        click: function() {
+          update_software('software.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -1912,66 +1985,54 @@ a tag that already exists, it does check for that and will simply toggle it vs a
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default"><a href="javascript:;" onmousedown="toggleDiv('software-hide');">Software Management</a></th>
+  <th class="ui-state-default">Software Management</th>
   <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('software-help');">Help</a></th>
 </tr>
 </table>
 
-<div id="software-help" style="display: none">
+<div id="software-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Buttons</strong>
-  <ul>
-    <li><strong>Refresh Software Listing</strong> - Reloads the Software Listing table. At times, especially when removing several items, the table fails to refresh.</li>
-    <li><strong>Update Software</strong> - After selecting software to edit, click here to save changes.</li>
-    <li><strong>Add Software</strong> - Add new software. You can also select an existing item, make changes if needed, and click this button to add a second item.</li>
-    <li><strong>Copy Software Table From:</strong> - Select a server from the listing to duplicate a list of software.</li>
-  </ul></li>
-</ul>
-
-<ul>
-  <li><strong>Software Form</strong>
-  <ul>
-    <li><strong>Group</strong> - Responsible group for maintaining the listed software.</li>
-    <li><strong>Software</strong> - Name of the software including version.</li>
-    <li><strong>Product</strong> - Select the product this software is being used for.</li>
-    <li><strong>Vendor</strong> - The software vendor.</li>
-    <li><strong>License</strong> - Select the appropriate license for the installed software.</li>
-    <li><strong>Type</strong> - Enter the type of software.</li>
-    <li><strong>SSL Certificate</strong> - If this is a web server, select the appropriate Certificate.</li>
-    <li><strong>Support</strong> - Select the appropriate support contact and contract information.</li>
-    <li><strong>Business Unit (Department)</strong> - Select the business unit that purchased this software.</li>
-    <li><strong>End of Life</strong> - Date the software is not supported by the vendor. In some cases the vendor has multiple support dates. Enter the date the 
-software support date exceeds the company requirements for support.</li>
-    <li><strong>Software Defines This System?</strong> - Check if the software is the primary or focus of this system's service.</li>
-    <li><strong>Software is Customer Facing?</strong> - Check if the software is customer facing.</li>
-    <li><strong>Notification Requirements</strong> - If Customer Facing, enter the requirements for notifying the customer in the event of an outage.</li>
-  </ul></li>
-</ul>
-
-<ul>
-  <li><strong>Notes</strong>
-  <ul>
-    <li>Fields marked with an asterisk (*) are automatically captured where possible.</li>
-    <li>Click the <strong>Software Management</strong> title bar to toggle the <strong>Software Form</strong>.</li>
-  </ul></li>
-</ul>
+<p>Insert Software Help Here</p>
 
 </div>
 
 </div>
 
-<div id="software-hide" style="display: none">
 
-<span id="software_form"><?php print wait_Process("Please Wait"); ?></span>
+<table class="ui-styled-table">
+<tr>
+  <td class="button ui-widget-content"><input type="button" id="clickSoftwareCreate" value="Add Software"></td>
+</tr>
+</table>
+
+
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Software Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('software-listing-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="software-listing-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+<p>Insert Software Help Here</p>
 
 </div>
+
+</div>
+
 
 <span id="software_table"><?php print wait_Process("Please Wait"); ?></span>
 
 </div>
+
+
 
 
 
@@ -3061,6 +3122,144 @@ Assignment <select name="int_int_id"></select></td>
 </div>
 
 
+
+
+
+
+
+
+<div id="dialogSoftwareCreate" title="Add Software">
+
+<form name="formSoftwareCreate">
+
+<table class="ui-styled-table">
+<tr>
+  <td class="ui-widget-content">Group: <select name="svr_group">
+<?php
+  $q_string  = "select grp_id,grp_name ";
+  $q_string .= "from a_groups ";
+  $q_string .= "where grp_disabled = 0 ";
+  $q_string .= "order by grp_name";
+  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_groups = mysqli_fetch_array($q_groups)) {
+    if ($_SESSION['group'] == $a_groups['grp_id']) {
+      print "<option selected value=\"" . $a_groups['grp_id'] . "\">" . $a_groups['grp_name'] . "</option>\n";
+    } else {
+      print "<option value=\"" . $a_groups['grp_id'] . "\">" . $a_groups['grp_name'] . "</option>\n";
+    }
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Software: <select name="svr_softwareid">
+<?php
+  $q_string  = "select sw_id,sw_software,prod_name ";
+  $q_string .= "from software ";
+  $q_string .= "left join products on products.prod_id = software.sw_product ";
+  $q_string .= "order by sw_software,prod_name";
+  $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_software = mysqli_fetch_array($q_software)) {
+    print "<option value=\"" . $a_software['sw_id'] . "\">" . $a_software['sw_software'] . " (" . $a_software['prod_name'] . ")</option>\n";
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">RHEL Yum Versionlocked? <input type="checkbox" name="svr_locked"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">SSL Certificate <select name="svr_certid">
+<?php
+  $q_string  = "select cert_id,cert_desc ";
+  $q_string .= "from certs ";
+  $q_string .= "where cert_ca = 0 ";
+  $q_string .= "order by cert_desc";
+  $q_certs = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_certs = mysqli_fetch_array($q_certs)) {
+    print "<option value=\"" . $a_certs['cert_id'] . "\">" . $a_certs['cert_desc'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label><input type="checkbox" name="svr_primary"> Software Defines The System?</label></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label><input type="checkbox" name="svr_facing"> Software is Customer Facing?</label></td>
+</table>
+
+</form>
+
+</div>
+
+
+<div id="dialogSoftwareUpdate" title="Edit Software">
+
+<form name="formSoftwareUpdate">
+
+<input type="hidden" name="svr_id" value="0">
+
+<table class="ui-styled-table">
+<tr>
+  <td class="ui-widget-content">Group: <select name="svr_groupid">
+<?php
+  $q_string  = "select grp_id,grp_name ";
+  $q_string .= "from a_groups ";
+  $q_string .= "where grp_disabled = 0 ";
+  $q_string .= "order by grp_name";
+  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_groups = mysqli_fetch_array($q_groups)) {
+    if ($_SESSION['group'] == $a_groups['grp_id']) {
+      print "<option selected value=\"" . $a_groups['grp_id'] . "\">" . $a_groups['grp_name'] . "</option>\n";
+    } else {
+      print "<option value=\"" . $a_groups['grp_id'] . "\">" . $a_groups['grp_name'] . "</option>\n";
+    }
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Software: <select name="svr_softwareid">
+<?php
+  $q_string  = "select sw_id,sw_software,prod_name ";
+  $q_string .= "from software ";
+  $q_string .= "left join products on products.prod_id = software.sw_product ";
+  $q_string .= "order by sw_software,prod_name";
+  $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_software = mysqli_fetch_array($q_software)) {
+    print "<option value=\"" . $a_software['sw_id'] . "\">" . $a_software['sw_software'] . " (" . $a_software['prod_name'] . ")</option>\n";
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">RHEL Yum Versionlocked? <input type="checkbox" name="svr_locked"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">SSL Certificate <select name="svr_certid">
+<?php
+  $q_string  = "select cert_id,cert_desc ";
+  $q_string .= "from certs ";
+  $q_string .= "where cert_ca = 0 ";
+  $q_string .= "order by cert_desc";
+  $q_certs = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_certs = mysqli_fetch_array($q_certs)) {
+    print "<option value=\"" . $a_certs['cert_id'] . "\">" . $a_certs['cert_desc'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label><input type="checkbox" name="svr_primary"> Software Defines The System?</label></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label><input type="checkbox" name="svr_facing"> Software is Customer Facing?</label></td>
+</table>
+
+</form>
+
+</div>
 
 
 
