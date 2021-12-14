@@ -110,7 +110,7 @@
     $swgroup = '';
   } else {
     $hwgroup = $hwand . ' hw_group = ' . $formVars['group'];
-    $swgroup = $swand . ' sw_group = ' . $formVars['group'];
+    $swgroup = $swand . ' svr_groupid = ' . $formVars['group'];
     $hwand = " and";
     $swand = " and";
   }
@@ -135,11 +135,11 @@
     $invindex[$a_hardware['hw_companyid']] = true;
   }
 
-  $q_string  = "select sw_companyid ";
-  $q_string .= "from software" . $swproduct . $swgroup;
+  $q_string  = "select svr_companyid ";
+  $q_string .= "from svr_software" . $swproduct . $swgroup;
   $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_software = mysqli_fetch_array($q_software)) {
-    $invindex[$a_software['sw_companyid']] = true;
+    $invindex[$a_software['svr_companyid']] = true;
   }
 
 # if help has not been seen yet,
@@ -440,9 +440,11 @@ $(document).ready( function () {
         }
       }
 
-      $q_string = "select sw_software "
-                . "from software "
-                . "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'OS' ";
+      $q_string  = "select sw_software ";
+      $q_string .= "from svr_software ";
+      $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
+      $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
+      $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " and typ_name = 'OS' ";
       $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_software = mysqli_fetch_array($q_software);
     
