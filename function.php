@@ -507,9 +507,11 @@ function return_System( $p_db, $p_string ) {
   $package = "function.php";
 
   $output = '';
-  $q_string = "select sw_software ";
+  $q_string  = "select sw_software ";
   $q_string .= "from software ";
-  $q_string .= "where sw_type = 'OS' and sw_companyid = " . $p_string;
+  $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
+  $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
+  $q_string .= "where typ_name = 'OS' and svr_companyid = " . $p_string;
   $q_software = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
   $a_software = mysqli_fetch_array($q_software);
 
