@@ -64,6 +64,10 @@
             logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['prod_name']);
 
             mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+# need to get the new prod_id in case there is a tag too.
+            if ($formVars['update'] == 0) {
+              $formVars['id'] = last_insert_id($db);
+            }
 
 ##################
 # Tag Management
@@ -71,34 +75,34 @@
 #
 # Step 1, remove all tags associated with this product. We only need to do this for
 # products that are updates. New products will have all new tags.
-            if ($formVars['update'] == 1) {
+            if ($formVars['updatre'] == 0 || $formVars['update'] == 1) {
               $q_string  = "delete ";
               $q_string .= "from tags ";
               $q_string .= "where tag_type = 3 and tag_companyid = " . $formVars['id'] . " ";
               mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-            }
 
 # Step 2, okay we've cleared all the tags from the tag system for this server.
 # next is to parse the inputted data and create an array. remove any commas and duplicate spaces.
 # as a note, the clean() function will remove any leading or trailing spaces so that
 # prevents blank tags.
-            $formVars['prod_tags'] = str_replace(',', ' ', $formVars['prod_tags']);
-            $formVars['prod_tags'] = preg_replace('!\s+!', ' ', $formVars['prod_tags']);
+              $formVars['prod_tags'] = str_replace(',', ' ', $formVars['prod_tags']);
+              $formVars['prod_tags'] = preg_replace('!\s+!', ' ', $formVars['prod_tags']);
 
 # Step 3, now loop through the tags and add them to the tags table
-            if (strlen($formVars['prod_tags']) > 0) {
-              $prod_tags = explode(" ", $formVars['prod_tags']);
-              for ($i = 0; $i < count($prod_tags); $i++) {
+              if (strlen($formVars['prod_tags']) > 0) {
+                $prod_tags = explode(" ", $formVars['prod_tags']);
+                for ($i = 0; $i < count($prod_tags); $i++) {
 
-                $q_string =
-                  "tag_companyid    =   " . $formVars['id'] . "," .
-                  "tag_name         = \"" . $prod_tags[$i]  . "\"," .
-                  "tag_type         =   " . "3"             . "," .
-                  "tag_owner        =   " . $_SESSION['uid'] . "," .
-                  "tag_group        =   " . $_SESSION['group'];
+                  $q_string =
+                    "tag_companyid    =   " . $formVars['id'] . "," .
+                    "tag_name         = \"" . $prod_tags[$i]  . "\"," .
+                    "tag_type         =   " . "3"             . "," .
+                    "tag_owner        =   " . $_SESSION['uid'] . "," .
+                    "tag_group        =   " . $_SESSION['group'];
 
-                $q_string = "insert into tags set tag_id = NULL, " . $q_string;
-                mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+                  $q_string = "insert into tags set tag_id = NULL, " . $q_string;
+                  mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+                }
               }
             }
 
