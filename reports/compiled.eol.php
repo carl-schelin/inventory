@@ -71,7 +71,7 @@
 
   $group = '';
   if ($formVars['group'] > 0) {
-    $group = $and . " (inv_manager = " . $formVars['group'] . " or inv_appadmin = " . $formVars['group'] . " or sw_group = " . $formVars['group'] . ") ";
+    $group = $and . " (inv_manager = " . $formVars['group'] . " or inv_appadmin = " . $formVars['group'] . " or svr_groupid = " . $formVars['group'] . ") ";
     $and = " and";
   }
 
@@ -119,7 +119,7 @@
     $and = " and";
   }
 
-  $where = $product . $group . $inwork . $location . $type . $and . " sw_type = 'OS' ";;
+  $where = $product . $group . $inwork . $location . $type;
 
   $total = 0;
   $grandtotal = 0;
@@ -163,16 +163,19 @@
   $passthrough = "&group=" . $formVars['group'];
 
   $product = '';
-  $q_string  = "select inv_id,inv_name,inv_function,prod_name,hw_group,mod_vendor,mod_name,mod_virtual,mod_eol,";
+  $q_string  = "select inv_id,inv_name,inv_function,prod_name,hw_group,ven_name,mod_name,mod_virtual,mod_eol,";
   $q_string .= "hw_serial,hw_purchased,grp_name,inv_appadmin,sup_company,sup_contract,hw_eolticket ";
-  $q_string .= "from software ";
-  $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
+  $q_string .= "from inventory ";
+  $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id ";
+  $q_string .= "left join software  on software.sw_id = svr_software.svr_softwareid ";
+  $q_string .= "left join sw_types  on sw_types.typ_id = software.sw_type ";
   $q_string .= "left join hardware  on inventory.inv_id = hardware.hw_companyid ";
-  $q_string .= "left join a_groups    on a_groups.grp_id    = hardware.hw_group ";
+  $q_string .= "left join a_groups  on a_groups.grp_id    = hardware.hw_group ";
   $q_string .= "left join models    on models.mod_id    = hardware.hw_vendorid ";
+  $q_string .= "left join vendors    on vendors.ven_id    = models.mod_vendor ";
   $q_string .= "left join support   on support.sup_id   = hardware.hw_supportid ";
   $q_string .= "left join products  on products.prod_id = inventory.inv_product ";
-  $q_string .= $where;
+  $q_string .= $where . "and typ_name = 'OS' ";
   $q_string .= $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
@@ -197,7 +200,6 @@
         print "\"Function\",";
         print "\"Operating System\",";
         print "\"End of Life\",";
-        print "\"Ticket\",";
         print "\"Hardware\",";
         print "\"End of Life\",";
         print "\"Ticket\"</br>\n";
@@ -213,7 +215,6 @@
         print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=inv_function" . $passthrough . "\">Function</a></th>\n";
         print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=inv_function" . $passthrough . "\">Operating System</a></th>\n";
         print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=mod_eol"      . $passthrough . "\">End of Life</a></th>\n";
-        print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=sw_eolticket" . $passthrough . "\">Ticket</a></th>\n";
         print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=hw_purchased" . $passthrough . "\">Hardware</a></th>\n";
         print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=mod_eol"      . $passthrough . "\">End of Life</a></th>\n";
         print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=hw_eolticket" . $passthrough . "\">Ticket</a></th>\n";
@@ -222,11 +223,13 @@
       $product = $a_inventory['prod_name'];
     }
 
-    $q_string  = "select sw_software,sw_eol,sw_eolticket ";
-    $q_string .= "from software ";
-    $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'OS' ";
-    $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    $a_software = mysqli_fetch_array($q_software);
+    $q_string  = "select sw_software,sw_eol ";
+    $q_string .= "from svr_software ";
+    $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
+    $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
+    $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " and typ_name = 'OS' ";
+    $q_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_svr_software = mysqli_fetch_array($q_svr_software);
 
     $q_string  = "select grp_name ";
     $q_string .= "from a_groups ";
@@ -234,7 +237,7 @@
     $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_groups = mysqli_fetch_array($q_groups);
 
-    if ($a_inventory['mod_vendor'] == 'Dell') {
+    if ($a_inventory['ven_name'] == 'Dell') {
       # For Dell, the end of support is 5 years after the purchase date
       $date = explode("-", $a_inventory['hw_purchased']);
       $support = mktime(0,0,0,$date[1],$date[2],$date[0] + 5);
@@ -248,7 +251,7 @@
       $newdate = $a_inventory['mod_eol'];
     }
     $current = time();
-    $moddate = $a_software['sw_eol'];
+    $moddate = $a_svr_software['sw_eol'];
 
     $hwstatus = " class=\"ui-widget-content\"";
     if ($current > $support) {
@@ -256,7 +259,7 @@
       $grandtotal++;
       $hwstatus = " class=\"ui-state-error\"";
     }
-    if ($a_software['sw_eol'] > date('Y-m-d')) {
+    if ($a_svr_software['sw_eol'] > date('Y-m-d')) {
       $swstatus = " class=\"ui-widget-content\"";
     } else {
       $software++;
@@ -268,7 +271,7 @@
       $newdate = '----------';
       $hwstatus = " class=\"ui-state-highlight\"";
     }
-    if ($a_software['sw_eol'] == '' || $a_software['sw_eol'] == '1971-01-01') {
+    if ($a_svr_software['sw_eol'] == '' || $a_svr_software['sw_eol'] == '1971-01-01') {
       $moddate = '----------';
       $swstatus = " class=\"ui-state-highlight\"";
     }
@@ -295,10 +298,9 @@
       print "\"" . $a_inventory['grp_name'] . "\",";
       print "\"" . $a_groups['grp_name'] . "\",";
       print "\"" . $a_inventory['inv_function'] . "\",";
-      print "\"" . $a_software['sw_software'] . "\",";
+      print "\"" . $a_svr_software['sw_software'] . "\",";
       print "\"" . $moddate . "\",";
-      print "\"" . $a_software['sw_eolticket'] . "\",";
-      print "\"" . $a_inventory['mod_vendor'] . " " . $a_inventory['mod_name'] . "\",";
+      print "\"" . $a_inventory['ven_name'] . " " . $a_inventory['mod_name'] . "\",";
       print "\"" . $newdate . "\",";
       print "\"" . $a_inventory['hw_eolticket'] . "\"</br>\n";
     } else {
@@ -307,10 +309,9 @@
       print "  <td" . $nodate   . ">"              . $a_inventory['grp_name']                                    . "</td>\n";
       print "  <td" . $nodate   . ">"              . $a_groups['grp_name']                                       . "</td>\n";
       print "  <td" . $nodate   . ">"              . $a_inventory['inv_function']                                . "</td>\n";
-      print "  <td" . $swstatus . ">"              . $a_software['sw_software']                                  . "</td>\n";
+      print "  <td" . $swstatus . ">"              . $a_svr_software['sw_software']                                  . "</td>\n";
       print "  <td" . $swstatus . ">"              . $moddate                                                    . "</td>\n";
-      print "  <td" . $swstatus . ">"              . $a_software['sw_eolticket']                                 . "</td>\n";
-      print "  <td" . $hwstatus . ">"              . $a_inventory['mod_vendor'] . " " . $a_inventory['mod_name'] . "</td>\n";
+      print "  <td" . $hwstatus . ">"              . $a_inventory['ven_name'] . " " . $a_inventory['mod_name'] . "</td>\n";
       print "  <td" . $hwstatus . ">"              . $newdate                                                    . "</td>\n";
       print "  <td" . $hwstatus . ">"              . $a_inventory['hw_eolticket']                                . "</td>\n";
       print "</tr>\n";
