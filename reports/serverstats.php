@@ -352,7 +352,7 @@ to software and hardware section.</p>
 
   $q_string  = "select count(*) ";
   $q_string .= "from hardware ";
-  $q_string .= "left join software on software.sw_companyid = hardware.hw_companyid ";
+  $q_string .= "left join svr_software on svr_software.svr_companyid = hardware.hw_companyid ";
   $q_string .= "where hw_companyid != 0 " . $admin . " ";
   $q_string .= "and hw_built = '1971-01-01' ";
   $q_string .= "and hw_primary = 1";
@@ -437,9 +437,12 @@ to software and hardware section.</p>
 
   $q_string  = "select sw_software,count(sw_software) ";
   $q_string .= "from inventory ";
-  $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
-  $q_string .= "where inv_status = 0 and sw_type = 'OS' " . $admin . " ";
+  $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id ";
+  $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
+  $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
+  $q_string .= "where inv_status = 0 and typ_name = 'OS' " . $admin . " ";
   $q_string .= "group by sw_software";
+print $q_string;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
@@ -531,9 +534,10 @@ to software and hardware section.</p>
   }
   $total = 0;
 
-  $q_string  = "select part_name,mod_vendor,mod_name,mod_virtual,count(inv_name) ";
+  $q_string  = "select part_name,ven_name,mod_name,mod_virtual,count(inv_name) ";
   $q_string .= "from hardware ";
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+  $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
   $q_string .= "left join parts on parts.part_id = models.mod_type ";
   $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
   $q_string .= "where mod_primary = 1 and inv_status = 0 " . $admin . " ";
@@ -548,7 +552,7 @@ to software and hardware section.</p>
 
     print "<tr>\n";
     print "  <td class=\"ui-widget-content\">" . $linktype   . $a_hardware['part_name']       . $linkend . "</td>\n";
-    print "  <td class=\"ui-widget-content\">" . $linkvendor . $a_hardware['mod_vendor']      . $linkend . "</td>\n";
+    print "  <td class=\"ui-widget-content\">" . $linkvendor . $a_hardware['ven_name']      . $linkend . "</td>\n";
     print "  <td class=\"ui-widget-content\">" . $linkname   . $a_hardware['mod_name']        . $linkend . "</td>\n";
     print "  <td class=\"ui-widget-content\">"               . $a_hardware['count(inv_name)']            . "</td>\n";
     print "</tr>\n";
