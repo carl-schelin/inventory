@@ -57,10 +57,10 @@
     $group = '';
   } else {
     if ($formVars['group'] == -1) {
-      $group = $and . " sw_group = 0 ";
+      $group = $and . " svr_groupid = 0 ";
       $and = " and";
     } else {
-      $group = $and . " sw_group = " . $formVars['group'] . " ";
+      $group = $and . " svr_groupid = " . $formVars['group'] . " ";
       $and = " and";
     }
   }
@@ -130,16 +130,19 @@
   print "  <th class=\"ui-state-default\">" . $sorting . "&sort=int_ipaddr\">IP Address</a></th>\n";
   print "  <th class=\"ui-state-default\">" . $sorting . "&sort=inv_function\">Function</a></th>\n";
   print "  <th class=\"ui-state-default\">" . $sorting . "&sort=sw_software\">Software</a></th>\n";
-  print "  <th class=\"ui-state-default\">" . $sorting . "&sort=sw_type\">Instance Name</a></th>\n";
+  print "  <th class=\"ui-state-default\">" . $sorting . "&sort=typ_name\">Instance Name</a></th>\n";
   print "  <th class=\"ui-state-default\">" . $sorting . "&sort=hw_type\">Hardware</a></th>\n";
   print "  <th class=\"ui-state-default\">" . $sorting . "&sort=sw_os\">Operating System</a></th>\n";
   print "</tr>\n";
 
-  $q_string  = "select inv_id,inv_name,inv_function,sw_id,sw_companyid,sw_software,sw_vendor,sw_product,sw_type,sw_group,sw_verified ";
+  $q_string  = "select inv_id,inv_name,inv_function,sw_id,svr_companyid,sw_software,ven_name,sw_product,typ_name,svr_groupid,svr_verified ";
   $q_string .= "from inventory ";
-  $q_string .= "left join software  on software.sw_companyid = inventory.inv_id ";
-  $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
+  $q_string .= "left join svr_software  on svr_software.svr_companyid = inventory.inv_id ";
+  $q_string .= "left join software      on software.sw_id             = svr_software.svr_softwareid ";
+  $q_string .= "left join sw_types      on sw_types.typ_id            = software.sw_type ";
+  $q_string .= "left join vendors       on vendors.ven_id             = software.sw_vendor ";
+  $q_string .= "left join hardware      on hardware.hw_companyid      = inventory.inv_id ";
+  $q_string .= "left join locations     on locations.loc_id           = inventory.inv_location ";
   $q_string .= $where;
   $q_string .= "order by inv_name";
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -152,7 +155,7 @@
     $q_string  = "select int_face,int_addr,int_type,itp_acronym,int_ip6 ";
     $q_string .= "from interface ";
     $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
-    $q_string .= "where int_companyid = " . $a_inventory['sw_companyid'] . " and int_type != 7 and int_type != 6 and int_addr != '' and int_ip6 = 0 ";
+    $q_string .= "where int_companyid = " . $a_inventory['svr_companyid'] . " and int_type != 7 and int_type != 6 and int_addr != '' and int_ip6 = 0 ";
     $q_string .= "order by itp_acronym ";
     $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     while ($a_interface = mysqli_fetch_array($q_interface)) {
@@ -160,16 +163,20 @@
     }
 
     $q_string  = "select sw_software ";
-    $q_string .= "from software ";
-    $q_string .= "where sw_type = 'OS' and sw_companyid = " . $a_inventory['sw_companyid'];
+    $q_string .= "from svr_software ";
+    $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
+    $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
+    $q_string .= "where typ_name = 'OS' and svr_companyid = " . $a_inventory['svr_companyid'];
     $q_os = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_os = mysqli_fetch_array($q_os);
 
     $instances = "";
     $comma = "";
     $q_string  = "select sw_software ";
-    $q_string .= "from software ";
-    $q_string .= "where sw_type = 'Instance' and sw_companyid = " . $a_inventory['sw_companyid'] . " ";
+    $q_string .= "from svr_software ";
+    $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
+    $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
+    $q_string .= "where typ_name = 'Instance' and svr_companyid = " . $a_inventory['svr_companyid'] . " ";
     $q_string .= "order by sw_software";
     $q_instance = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     while ($a_instance = mysqli_fetch_array($q_instance)) {
@@ -179,7 +186,7 @@
 
     $q_string  = "select hw_vendorid ";
     $q_string .= "from hardware ";
-    $q_string .= "where hw_companyid = " . $a_inventory['sw_companyid'] . " and hw_type = 15 ";
+    $q_string .= "where hw_companyid = " . $a_inventory['svr_companyid'] . " and hw_type = 15 ";
     $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_hardware = mysqli_fetch_array($q_hardware);
 
