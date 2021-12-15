@@ -16,9 +16,9 @@
 
   $formVars['id'] = clean($_GET['id'], 10);
 
-  $q_string = "select inv_manager "
-            . "from inventory "
-            . "where inv_id = " . $formVars['id'] . " ";
+  $q_string  = "select inv_manager ";
+  $q_string .= "from inventory ";
+  $q_string .= "where inv_id = " . $formVars['id'] . " ";
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_inventory = mysqli_fetch_array($q_inventory);
 
@@ -76,7 +76,7 @@
   $q_string .= "left join sw_types     on sw_types.typ_id             = software.sw_type ";
   $q_string .= "left join vendors      on vendors.ven_id              = software.sw_vendor ";
   $q_string .= "left join products     on products.prod_id            = software.sw_product ";
-  $q_string .= "left join a_groups     on a_groups.grp_id             = software.svr_groupid ";
+  $q_string .= "left join a_groups     on a_groups.grp_id             = svr_software.svr_groupid ";
   $q_string .= "where svr_companyid = " . $formVars['id'] . " and typ_name != \"Package\" ";
   $q_string .= "order by typ_name,sw_software";
   $q_software = mysqli_query($db, $q_string) or die(mysqli_error($db));
