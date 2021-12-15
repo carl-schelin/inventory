@@ -70,40 +70,43 @@
   $output .= "<th class=\"ui-state-default\">Updated</th>";
   $output .= "</tr>";
 
-  $q_string  = "select prod_name,sw_vendor,sw_software,sw_type,grp_name,sw_verified,sw_update,sw_primary,sw_facing "
-             . "from software "
-             . "left join products on products.prod_id = software.sw_product "
-             . "left join a_groups on a_groups.grp_id = software.sw_group "
-             . "where sw_companyid = " . $formVars['id'] . " and sw_type != \"Package\" "
-             . "order by sw_type,sw_software";
+  $q_string  = "select prod_name,ven_name,sw_software,typ_name,grp_name,svr_verified,svr_update,svr_primary,svr_facing ";
+  $q_string .= "from software ";
+  $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
+  $q_string .= "left join sw_types     on sw_types.typ_id             = software.sw_type ";
+  $q_string .= "left join vendors      on vendors.ven_id              = software.sw_vendor ";
+  $q_string .= "left join products     on products.prod_id            = software.sw_product ";
+  $q_string .= "left join a_groups     on a_groups.grp_id             = software.svr_groupid ";
+  $q_string .= "where svr_companyid = " . $formVars['id'] . " and typ_name != \"Package\" ";
+  $q_string .= "order by typ_name,sw_software";
   $q_software = mysqli_query($db, $q_string) or die(mysqli_error($db));
   while ($a_software = mysqli_fetch_array($q_software)) {
 
-    $link_vendor = "<a href=\"" . $Reportroot . "/search.software.php?search_by=3&search_for=" . $a_software['sw_vendor']   . "\" target=\"_blank\">";
+    $link_vendor = "<a href=\"" . $Reportroot . "/search.software.php?search_by=3&search_for=" . $a_software['ven_name']    . "\" target=\"_blank\">";
     $link_name   = "<a href=\"" . $Reportroot . "/search.software.php?search_by=3&search_for=" . $a_software['sw_software'] . "\" target=\"_blank\">";
-    $link_type   = "<a href=\"" . $Reportroot . "/search.software.php?search_by=3&search_for=" . $a_software['sw_type']     . "\" target=\"_blank\">";
+    $link_type   = "<a href=\"" . $Reportroot . "/search.software.php?search_by=3&search_for=" . $a_software['typ_name']    . "\" target=\"_blank\">";
     $linkend     = "</a>";
 
     $checkmark = "";
-    if ($a_software['sw_verified']) {
+    if ($a_software['svr_verified']) {
       $checkmark = "&#x2713;";
     }
 
     $class = "ui-widget-content";
-    if ($a_software['sw_primary']) {
+    if ($a_software['svr_primary']) {
       $class = "ui-state-highlight";
     }
-    if ($a_software['sw_facing']) {
+    if ($a_software['svr_facing']) {
       $class = "ui-state-error";
     }
 
     $output .= "<tr>";
     $output .= "<td class=\"" . $class . "\">"                . $a_software['prod_name']                           . "</td>";
-    $output .= "<td class=\"" . $class . "\">" . $link_vendor . $a_software['sw_vendor']                . $linkend . "</td>";
+    $output .= "<td class=\"" . $class . "\">" . $link_vendor . $a_software['ven_name']                 . $linkend . "</td>";
     $output .= "<td class=\"" . $class . "\">" . $link_name   . $a_software['sw_software']              . $linkend . "</td>";
-    $output .= "<td class=\"" . $class . "\">" . $link_type   . $a_software['sw_type']                  . $linkend . "</td>";
+    $output .= "<td class=\"" . $class . "\">" . $link_type   . $a_software['typ_name']                 . $linkend . "</td>";
     $output .= "<td class=\"" . $class . "\">"                . $a_software['grp_name']                            . "</td>";
-    $output .= "<td class=\"" . $class . "\">"                . $a_software['sw_update']   . $checkmark            . "</td>";
+    $output .= "<td class=\"" . $class . "\">"                . $a_software['svr_update']  . $checkmark            . "</td>";
     $output .= "</tr>";
 
   }
