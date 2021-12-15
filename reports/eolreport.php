@@ -382,10 +382,13 @@
 
         }
 
-        $q_string  = "select sw_software,sw_vendor,sw_type,sw_eol ";
+        $q_string  = "select sw_software,ven_name,typ_name,sw_eol ";
         $q_string .= "from software ";
-        $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
-        $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " ";
+        $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
+        $q_string .= "left join inventory on inventory.inv_id = svr_software.svr_companyid ";
+        $q_string .= "left join vendors on vendors.ven_id = software.sw_vendor ";
+        $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
+        $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " ";
         $q_string .= "order by sw_software ";
         $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_software = mysqli_fetch_array($q_software)) {
@@ -429,7 +432,8 @@
 
       $q_string  = "select sw_eol ";
       $q_string .= "from software ";
-      $q_string .= "left join inventory       on inventory.inv_id               = software.sw_companyid ";
+      $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
+      $q_string .= "left join inventory on inventory.inv_id = svr_software.svr_companyid ";
       $q_string .= "where inv_product = " . $a_products['prod_id'] . " and inv_status = 0 ";
       if ($formVars['group'] > 0) {
         $q_string .= "and inv_manager = " . $formVars['group'] . " ";
