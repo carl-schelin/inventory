@@ -222,7 +222,7 @@ $(document).ready( function() {
       $linkend   = "</a>";
 
       $checkmark = "";
-      if ($a_software['sw_verified']) {
+      if ($a_software['svr_verified']) {
         $checkmark = "&#x2713;";
       }
 
