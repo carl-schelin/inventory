@@ -260,8 +260,10 @@ reviewed and worked on.</li>
   $q_string .= "left join interface on inventory.inv_id      = interface.int_companyid ";
   $q_string .= "left join timezones on timezones.zone_id     = inventory.inv_zone ";
   $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
-  $q_string .= "left join software  on software.sw_companyid = inventory.inv_id ";
-  $q_string .= $where . " and sw_type = 'OS' and int_management = 1 ";
+  $q_string .= "left join svr_software  on svr_software.svr_companyid = inventory.inv_id ";
+  $q_string .= "left join software  on software.sw_id = svr_software.svr_softwareid ";
+  $q_string .= "left join sw_types  on sw_types.typ_id = software.sw_type ";
+  $q_string .= $where . " and typ_name = 'OS' and int_management = 1 ";
   $q_string .= $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
