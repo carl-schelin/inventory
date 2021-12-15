@@ -88,7 +88,7 @@
 
   $group = '';
   if ($formVars['group'] > 0) {
-    $group = $and . " sw_group = " . $formVars['group'] . " ";
+    $group = $and . " svr_groupid = " . $formVars['group'] . " ";
     $and = " and";
   }
 
@@ -170,38 +170,41 @@
   print "<tr>";
   print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=inv_name"     . $passthrough . "\">Server</a></th>\n";
   print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=prod_name"    . $passthrough . "\">Product</a></th>\n";
-  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=sw_vendor"    . $passthrough . "\">Vendor</a></th>\n";
+  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=ven_name"     . $passthrough . "\">Vendor</a></th>\n";
   print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=sw_software"  . $passthrough . "\">Software</a></th>\n";
-  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=sw_type"      . $passthrough . "\">Type</a></th>\n";
+  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=typ_name"     . $passthrough . "\">Type</a></th>\n";
   print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=grp_name"     . $passthrough . "\">Group</a></th>\n";
-  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=sw_update"    . $passthrough . "\">Updated</a></th>\n";
+  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=svr_update"   . $passthrough . "\">Updated</a></th>\n";
   print "</tr>";
 
-  $q_string  = "select sw_id,sw_software,sw_vendor,sw_product,sw_type,sw_verified,sw_update,inv_name,grp_name,prod_name ";
+  $q_string  = "select sw_id,sw_software,ven_name,sw_product,typ_name,svr_verified,svr_update,inv_name,grp_name,prod_name ";
   $q_string .= "from software ";
-  $q_string .= "left join inventory on software.sw_companyid = inventory.inv_id ";
-  $q_string .= "left join a_groups    on a_groups.grp_id         = software.sw_group ";
-  $q_string .= "left join products  on products.prod_id      = software.sw_product ";
-  $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
+  $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
+  $q_string .= "left join inventory    on inventory.inv_id            = svr_software.svr_companyid ";
+  $q_string .= "left join a_groups     on a_groups.grp_id             = svr_software.svr_groupid ";
+  $q_string .= "left join sw_types     on sw_types.typ_id             = software.sw_type ";
+  $q_string .= "left join products     on products.prod_id            = software.sw_product ";
+  $q_string .= "left join vendors      on vendors.ven_id              = software.sw_vendor ";
+  $q_string .= "left join hardware     on hardware.hw_companyid       = inventory.inv_id ";
+  $q_string .= "left join locations    on locations.loc_id            = inventory.inv_location ";
   $q_string .= $where;
   $q_string .= $orderby;
   $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_software = mysqli_fetch_array($q_software)) {
 
     $checkmark = '';
-    if ($a_software['sw_verified']) {
+    if ($a_software['svr_verified']) {
       $checkmark = "&#x2713;&nbsp;";
     }
 
     print "<tr>\n";
     print "  <td class=\"ui-widget-content\">" . $a_software['inv_name']                  . "</a></td>\n";
     print "  <td class=\"ui-widget-content\">" . $a_software['prod_name']                 . "</a></td>\n";
-    print "  <td class=\"ui-widget-content\">" . $a_software['sw_vendor']                 . "</a></td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_software['ven_name']                 . "</a></td>\n";
     print "  <td class=\"ui-widget-content\">" . $a_software['sw_software']               . "</a></td>\n";
-    print "  <td class=\"ui-widget-content\">" . $a_software['sw_type']                   . "</a></td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_software['typ_name']                   . "</a></td>\n";
     print "  <td class=\"ui-widget-content\">" . $a_software['grp_name']                  . "</a></td>\n";
-    print "  <td class=\"ui-widget-content\">" . $a_software['sw_update']    . $checkmark . "</a></td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_software['svr_update']    . $checkmark . "</a></td>\n";
     print "</tr>";
 
   }
