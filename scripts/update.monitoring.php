@@ -37,15 +37,18 @@
 
 # get all software owned by monitoring and with a vendor of HP
 # it's an assuption but not a bad one.
-  $q_string  = "select sw_companyid ";
+  $q_string  = "select svr_companyid ";
   $q_string .= "from software ";
-  $q_string .= "where sw_vendor = 'HP' and sw_group = 10 ";
+  $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
+  $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
+  $q_string .= "left join vendors on vendors.ven_id = software.sw_vendor ";
+  $q_string .= "where ven_name = 'HP' and svr_groupid = 10 ";
   $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_software = mysqli_fetch_array($q_software)) {
 
     $q_string  = "update interface set ";
     $q_string .= "int_openview = 1,int_nagios = 0,int_ping = 1 ";
-    $q_string .= "where int_companyid = " . $a_software['sw_companyid'] . " and int_type = 1 ";
+    $q_string .= "where int_companyid = " . $a_software['svr_companyid'] . " and int_type = 1 ";
 
     $insert = mysqli_query($db, $q_string);
   }
