@@ -16,6 +16,7 @@ function clean( $p_input, $p_maxlength ) {
 
 function logaccess( $p_db, $p_user, $p_source, $p_detail ) {
   include('settings.php');
+  $package = "function.php";
 
   $query = "insert into log set " .
     "log_id        = NULL, " .
@@ -27,6 +28,8 @@ function logaccess( $p_db, $p_user, $p_source, $p_detail ) {
 }
 
 function check_userlevel( $p_db, $p_level ) {
+  $package = "function.php";
+
   if (isset($_SESSION['username'])) {
     include('settings.php');
     $q_string  = "select usr_level ";
@@ -45,8 +48,35 @@ function check_userlevel( $p_db, $p_level ) {
   }
 }
 
+
+# get the version of mysql and return a 1 if newer than 5.6
+function new_Mysql($p_db) {
+  $r_result = 0;
+
+  $q_string = "select version()";
+  $q_version = mysqli_query($p_db, $q_string);
+  $a_version = mysqli_fetch_array($q_version);
+
+  $e_version = explode('.', $a_version['version()']);
+
+  $c_version = $e_version[0] . "." . $e_version[1];
+
+  switch ($c_version) {
+    case "8.0": $r_result = 1;
+            break;
+    case "5.7": $r_result = 1;
+            break;
+    case "5.5": $r_result = 0;
+            break;
+  }
+
+  return $r_result;
+}
+
+
 function last_insert_id($p_db) {
   include('settings.php');
+  $package = "function.php";
 
   $query = "select last_insert_id()";
   $q_result = mysqli_query($p_db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($p_db)));
@@ -98,6 +128,8 @@ function changelog( $p_db, $p_serverid, $p_changed, $p_notes, $p_user, $p_table,
 # if the group matches or the user is an admin
 # return yes.
 function check_grouplevel( $p_db, $p_group ) {
+  $package = "function.php";
+
 # somewhere it's passing a blank value for 'p_group' so for now; if blank set to 0.
   if ($p_group == '') {
     $p_group = 0;
@@ -209,9 +241,10 @@ function ping( $p_host ) {
 
 function return_Index( $p_db, $p_check, $p_string ) {
   include('settings.php');
+  $package = "function.php";
 
   $r_index = 0;
-  $count = 1;
+  $count = 0;
   $q_table = mysqli_query($p_db, $p_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
   while ($a_table = mysqli_fetch_row($q_table)) {
     if ($p_check == $a_table[0]) {
@@ -256,6 +289,7 @@ function wait_Process( $p_string ) {
 
 function return_ServerID( $p_db, $p_string ) {
   include('settings.php');
+  $package = "function.php";
 
   $output = 1109;
 
@@ -317,6 +351,7 @@ function return_ServerID( $p_db, $p_string ) {
 
 function return_Virtual( $p_db, $p_string ) {
   include('settings.php');
+  $package = "function.php";
 
   $output = 0;
 
@@ -469,11 +504,14 @@ function return_ShortOS( $p_string ) {
 
 function return_System( $p_db, $p_string ) {
   include('settings.php');
+  $package = "function.php";
 
   $output = '';
-  $q_string = "select sw_software ";
+  $q_string  = "select sw_software ";
   $q_string .= "from software ";
-  $q_string .= "where sw_type = 'OS' and sw_companyid = " . $p_string;
+  $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
+  $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
+  $q_string .= "where typ_name = 'OS' and svr_companyid = " . $p_string;
   $q_software = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
   $a_software = mysqli_fetch_array($q_software);
 
@@ -604,6 +642,16 @@ function show_Help( $p_db, $p_script ) {
   } else {
     return 0;
   }
+}
+
+# connect to the server
+function db_connect($p_server, $p_database, $p_user, $p_pass){
+
+  $r_db = mysqli_connect($p_server, $p_user, $p_pass, $p_database);
+
+  $db_select = mysqli_select_db($r_db, $p_database);
+
+  return $r_db;
 }
 
 ?>
