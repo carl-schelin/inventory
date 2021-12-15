@@ -146,7 +146,7 @@
     $swgroup = '';
   } else {
     $hwgroup = $hwand . ' hw_group = ' . $formVars['group'];
-    $swgroup = $swand . ' sw_group = ' . $formVars['group'];
+    $swgroup = $swand . ' svr_groupid = ' . $formVars['group'];
     $hwand = " and";
     $swand = " and";
   }
@@ -171,11 +171,13 @@
     $invindex[$a_hardware['hw_companyid']] = true;
   }
 
-  $q_string  = "select sw_companyid ";
-  $q_string .= "from software" . $swproduct . $swgroup;
+  $q_string  = "select svr_companyid ";
+  $q_string .= "from software ";
+  $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
+  $q_string .= $swproduct . $swgroup;
   $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_software = mysqli_fetch_array($q_software)) {
-    $invindex[$a_software['sw_companyid']] = true;
+    $invindex[$a_software['svr_companyid']] = true;
   }
 
 # if help has not been seen yet,
@@ -330,7 +332,7 @@ $(document).ready( function () {
       print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=grp_name" . $passed . "\">Platform Owner</a></th>\n";
     }
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=inv_appadmin" . $passed . "\">App Owner</a></th>\n";
-    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=mod_vendor,mod_name" . $passed . "\">Model</a></th>\n";
+    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=ven_name,mod_name" . $passed . "\">Model</a></th>\n";
     print "  <th class=\"ui-state-default\">Operating System</th>\n";
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=ct_city" . $passed . "\">Location (TZ)</a></th>\n";
     print "  <th class=\"ui-state-default\">Identity</th>\n";
@@ -422,13 +424,14 @@ $(document).ready( function () {
 
   $total_servers = 0;
   $q_string  = "select inv_id,inv_name,inv_function,inv_document,inv_manager,inv_appadmin,grp_name,";
-  $q_string .= "ct_city,loc_identity,zone_name,inv_ssh,hw_active,hw_retired,hw_reused,mod_vendor,mod_name,inv_status ";
+  $q_string .= "ct_city,loc_identity,zone_name,inv_ssh,hw_active,hw_retired,hw_reused,ven_name,mod_name,inv_status ";
   $q_string .= "from inventory ";
   $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join cities    on cities.ct_id          = locations.loc_city ";
   $q_string .= "left join timezones on timezones.zone_id     = inventory.inv_zone ";
   $q_string .= "left join models    on models.mod_id         = hardware.hw_vendorid ";
+  $q_string .= "left join vendors    on vendors.ven_id         = models.mod_vendor ";
   $q_string .= "left join a_groups  on a_groups.grp_id       = inventory.inv_manager ";
   $q_string .= $product . $inwork . $location . $type . " ";
   $q_string .= $orderby;
@@ -481,7 +484,9 @@ $(document).ready( function () {
 
       $q_string  = "select sw_software ";
       $q_string .= "from software ";
-      $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'OS' ";
+      $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
+      $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
+      $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " and typ_name = 'OS' ";
       $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_software = mysqli_fetch_array($q_software);
     
@@ -539,7 +544,7 @@ $(document).ready( function () {
           print "  <td " . $class . "><nobr>" . $a_inventory['grp_name'] . "</nobr></td>\n";
         }
         print "  <td " . $class . "><nobr>" . $edaastart . $shswstart . $a_groups['grp_name']                                               . $showend                     . "</nobr></td>\n";
-        print "  <td " . $class . "><nobr>" . $edhwstart . $shhwstart . $a_inventory['mod_vendor'] . " " . $a_inventory['mod_name']         . $showend                     . "</nobr></td>\n";
+        print "  <td " . $class . "><nobr>" . $edhwstart . $shhwstart . $a_inventory['ven_name'] . " " . $a_inventory['mod_name']         . $showend                     . "</nobr></td>\n";
         print "  <td " . $class . "><nobr>" . $edswstart . $shswstart . return_ShortOS($a_software['sw_software'])                          . $showend                     . "</nobr></td>\n";
         print "  <td " . $class . "><nobr>"              . $showstart . $a_inventory['ct_city']    . " (" . $a_inventory['zone_name'] . ")" . $showend                     . "</nobr></td>\n";
         print "  <td " . $class . "><nobr>"              . $showstart . $a_inventory['loc_identity']                                        . $showend                     . "</nobr></td>\n";
@@ -552,7 +557,7 @@ $(document).ready( function () {
           print "\"" . $a_inventory['grp_name'] . "\",";
         }
         print "\"" . $a_groups['grp_name'] . "\",";
-        print "\"" . $a_inventory['mod_vendor'] . " " . $a_inventory['mod_name'] . "\",";
+        print "\"" . $a_inventory['ven_name'] . " " . $a_inventory['mod_name'] . "\",";
         print "\"" . $a_software['sw_software'] . "\",";
         print "\"" . $a_inventory['ct_city']    . " (" . $a_inventory['zone_name'] . ")\",";
         print "\"" . $a_inventory['loc_identity'] . "\",";
