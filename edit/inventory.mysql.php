@@ -321,14 +321,14 @@
               while ($a_svr_software = mysqli_fetch_array($q_svr_software)) {
 
                 $q_string = "insert into svr_software set " . 
-                  "svr_id            =   " . "NULL"                            . "," . 
-                  "svr_companyid     =   " . $newserver                        . "," .
-                  "svr_softwareid    =   " . $a_svr_software['sw_softwareid']  . "," .
-                  "svr_groupid       =   " . $a_svr_software['sw_groupid']     . "," .
-                  "svr_facing        =   " . $a_svr_software['sw_facing']      . "," .
-                  "svr_primary       =   " . $a_svr_software['sw_primary']     . "," .
-                  "svr_locked        =   " . $a_svr_software['sw_locked']      . "," .
-                  "svr_verified      =   " . $a_svr_software['sw_verified'];
+                  "svr_id            =   " . "NULL"                             . "," . 
+                  "svr_companyid     =   " . $newserver                         . "," .
+                  "svr_softwareid    =   " . $a_svr_software['svr_softwareid']  . "," .
+                  "svr_groupid       =   " . $a_svr_software['svr_groupid']     . "," .
+                  "svr_facing        =   " . $a_svr_software['svr_facing']      . "," .
+                  "svr_primary       =   " . $a_svr_software['svr_primary']     . "," .
+                  "svr_locked        =   " . $a_svr_software['svr_locked']      . "," .
+                  "svr_verified      =   " . $a_svr_software['svr_verified'];
 
                 $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               }
