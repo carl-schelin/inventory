@@ -356,9 +356,12 @@
         printf("%20s %20s %100s %15s %30s\n", "Product", "Vendor", "Software", "Type", "Group");
       }
 
-      $q_string  = "select sw_product,sw_vendor,sw_software,sw_type,sw_group,sw_verified,sw_update ";
+      $q_string  = "select sw_product,ven_name,sw_software,typ_name,svr_groupid,svr_verified,svr_update ";
       $q_string .= "from software ";
-      $q_string .= "where (sw_type != 'PKG' and sw_type != 'RPM') and sw_companyid = " . $a_inventory['inv_id'] . " ";
+      $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
+      $q_string .= "left join vendors on vendors.ven_id = software.sw_vendor ";
+      $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
+      $q_string .= "where (typ_name != 'PKG' and typ_name != 'RPM') and svr_companyid = " . $a_inventory['inv_id'] . " ";
       $q_string .= "order by sw_software";
       $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
       while ($a_software = mysqli_fetch_array($q_software)) {
@@ -368,18 +371,18 @@
 
         $q_string  = "select grp_name ";
         $q_string .= "from a_groups ";
-        $q_string .= "where grp_id = " . $a_software['sw_group'];
+        $q_string .= "where grp_id = " . $a_software['svr_groupid'];
         $q_groups = mysqli_query($db, $q_string) or die($q_string . ":(5): " . mysqli_error($db) . "\n\n");
         $a_groups = mysqli_fetch_array($q_groups);
 
         if ($csv == 'yes') {
           print "\"" . $a_products['prod_name']   . "\",";
-          print "\"" . $a_software['sw_vendor']   . "\",";
+          print "\"" . $a_software['ven_name']   . "\",";
           print "\"" . $a_software['sw_software'] . "\",";
-          print "\"" . $a_software['sw_type']     . "\",";
+          print "\"" . $a_software['typ_name']     . "\",";
           print "\"" . $a_groups['grp_name']      . "\"\n";
         } else {
-          printf("%20s %20s %100s %15s %30s\n", $a_products['prod_name'], $a_software['sw_vendor'], $a_software['sw_software'], $a_software['sw_type'], $a_groups['grp_name']);
+          printf("%20s %20s %100s %15s %30s\n", $a_products['prod_name'], $a_software['ven_name'], $a_software['sw_software'], $a_software['typ_name'], $a_groups['grp_name']);
         }
         
       }
@@ -438,7 +441,7 @@
 #issue.sql:         `iss_companyid`   int(10) NOT NULL default '0',
 #packages.sql:      `pkg_inv_id`      int(10) NOT NULL default '0',
 #routing.sql:       `route_companyid` int(10) NOT NULL default '0',
-#software.sql:      `sw_companyid`    int(10) NOT NULL default '0',
+#svr_software.sql:  `svr_companyid`   int(10) NOT NULL default '0',
 #sysgrp.sql:        `grp_companyid`   int(10) NOT NULL default '0',
 #syspwd.sql:        `pwd_companyid`   int(10) NOT NULL default '0',
 #tags.sql:          `tag_companyid`   int(10) NOT NULL default '0',
@@ -564,13 +567,13 @@
       }
 
       $software = 0;
-      $q_string  = "select sw_companyid ";
-      $q_string .= "from software ";
-      $q_string .= "where sw_companyid = " . $remove . " ";
-      $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_software) > 0) {
-        print "There are " . mysqli_num_rows($q_software) . " software records for " . $a_inventory['inv_name'] . "\n";
-        $software = mysqli_num_rows($q_software);
+      $q_string  = "select svr_companyid ";
+      $q_string .= "from svr_software ";
+      $q_string .= "where svr_companyid = " . $remove . " ";
+      $q_svr_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_svr_software) > 0) {
+        print "There are " . mysqli_num_rows($q_svr_software) . " software records for " . $a_inventory['inv_name'] . "\n";
+        $svr_software = mysqli_num_rows($q_svr_software);
       }
 
       $groups = 0;
@@ -710,9 +713,9 @@
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 
-      if ($software > 0) {
+      if ($svr_software > 0) {
         print "Software ";
-        $q_string = "delete from software   where sw_companyid    = " . $remove;
+        $q_string = "delete from svr_software   where svr_companyid    = " . $remove;
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 
