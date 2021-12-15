@@ -80,7 +80,7 @@
     }
   } else {
     $hardware .= "<tr>";
-    $hardware .= "<td class=\"ui-widget-content\" colspan=\"6\">No Hardware Support Contracts</td>";
+    $hardware .= "<td class=\"ui-widget-content\" colspan=\"7\">No Hardware Support Contracts</td>";
     $hardware .= "</tr>";
   }
 
@@ -114,10 +114,11 @@
   $software .= "<th class=\"ui-state-default\">Software</th>";
   $software .= "</tr>";
 
-  $q_string = "select sup_company,sup_phone,sup_email,sup_web,sup_contract,sup_wiki,sup_hwresponse,sup_swresponse "
-            . "from support "
-            . "left join software on software.sw_supportid = support.sup_id "
-            . "where sw_companyid = " . $formVars['id'];
+  $q_string  = "select sup_company,sup_phone,sup_email,sup_web,sup_contract,sup_wiki,sup_hwresponse,sup_swresponse ";
+  $q_string .= "from support ";
+  $q_string .= "left join software on software.sw_supportid = support.sup_id ";
+  $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
+  $q_string .= "where svr_companyid = " . $formVars['id'];
   $q_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
   if (mysqli_num_rows($q_support) > 0) {
