@@ -121,7 +121,7 @@
       if (mysqli_num_rows($q_svr_software) > 0) {
         while ($a_svr_software = mysqli_fetch_array($q_svr_software)) {
 
-          if (check_grouplevel($db, $a_svr_software['inv_manager']) || check_grouplevel($db, $a_svr_software['sw_group'])) {
+          if (check_grouplevel($db, $a_svr_software['inv_manager']) || check_grouplevel($db, $a_svr_software['svr_groupid'])) {
             $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('software.fill.php?id=" . $a_svr_software['svr_id'] . "');jQuery('#dialogSoftwareUpdate').dialog('open');return false;\">";
             $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_software('software.del.php?id=" . $a_svr_software['svr_id'] . "');\">";
             $linkend   = "</a>";
