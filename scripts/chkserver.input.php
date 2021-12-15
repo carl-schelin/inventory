@@ -235,8 +235,9 @@
 
   $q_string  = "select inv_id,inv_name,sw_software ";
   $q_string .= "from software ";
-  $q_string .= "left join inventory on inventory.inv_id = software.sw_companyid ";
-  $q_string .= "where inv_status = 0 and inv_ssh = 1 and sw_software like '%Oracle%' and sw_group = " . $GRP_DBAdmins . " ";
+  $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
+  $q_string .= "left join inventory on inventory.inv_id = svr_software.svr_companyid ";
+  $q_string .= "where inv_status = 0 and inv_ssh = 1 and sw_software like '%Oracle%' and svr_groupid = " . $GRP_DBAdmins . " ";
   $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_software) > 0) {
     while ($a_software = mysqli_fetch_array($q_software)) {
