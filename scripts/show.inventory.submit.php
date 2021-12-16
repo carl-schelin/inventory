@@ -506,7 +506,8 @@
 
     $q_string  = "select inv_id,inv_name,inv_function,grp_name,inv_appadmin ";
     $q_string .= "from inventory ";
-    $q_string .= "left join software on inventory.inv_id = software.sw_companyid ";
+    $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id ";
+    $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
     $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
     $q_string .= "where inv_status = 0 and sw_product = " . $a_products['prod_id'] . " ";
     $q_string .= "group by inv_name";
@@ -732,15 +733,18 @@
     $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Primary Software/Operating System Information</th>\n";
     $output .= "</tr>\n";
 
-    $q_string  = "select sw_software,sw_vendor ";
+    $q_string  = "select sw_software,ven_name ";
     $q_string .= "from software ";
-    $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'OS' ";
+    $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
+    $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
+    $q_string .= "left join vendors on vendors.ven_id = software.sw_vendor ";
+    $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " and typ_name = 'OS' ";
     $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
     $a_software = mysqli_fetch_array($q_software);
 
     $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
     $output .= "  <td><strong>Software</strong>: " . $a_software['sw_software'] . "</td>\n";
-    $output .= "  <td><strong>Vendor</strong>: "   . $a_software['sw_vendor']   . "</td>\n";
+    $output .= "  <td><strong>Vendor</strong>: "   . $a_software['ven_name']   . "</td>\n";
     $output .= "</tr>\n";
 
     $output .= "</table>\n\n";
@@ -931,9 +935,12 @@
       $output .= "  <th>Last</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select sw_product,sw_vendor,sw_software,sw_type,sw_group,sw_verified,sw_update ";
+      $q_string  = "select sw_product,ven_name,sw_software,typ_name,svr_groupid,svr_verified,svr_update ";
       $q_string .= "from software ";
-      $q_string .= "where (sw_type != 'PKG' and sw_type != 'RPM') and sw_companyid = " . $a_inventory['inv_id'] . " ";
+      $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
+      $q_string .= "left join vendors on vendors.ven_id = software.sw_vendor ";
+      $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
+      $q_string .= "where (typ_name != 'PKG' and typ_name != 'RPM') and svr_companyid = " . $a_inventory['inv_id'] . " ";
       $q_string .= "order by sw_software";
       $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
       while ($a_software = mysqli_fetch_array($q_software)) {
@@ -941,11 +948,11 @@
         $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
         $a_products = mysqli_fetch_array($q_products);
 
-        $q_string = "select grp_name from a_groups where grp_id = " . $a_software['sw_group'];
+        $q_string = "select grp_name from a_groups where grp_id = " . $a_software['svr_groupid'];
         $q_groups = mysqli_query($db, $q_string) or die($q_string . ":(5): " . mysqli_error($db) . "\n\n");
         $a_groups = mysqli_fetch_array($q_groups);
 
-        if ($a_software['sw_verified'] == 1) {
+        if ($a_software['svr_verified'] == 1) {
           $bgcolor = $color[1];
         } else {
           $bgcolor = $color[0];
@@ -953,11 +960,11 @@
 
         $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
         $output .= "  <td>" . $a_products['prod_name']   . "</td>\n";
-        $output .= "  <td>" . $a_software['sw_vendor']   . "</td>\n";
+        $output .= "  <td>" . $a_software['ven_name']   . "</td>\n";
         $output .= "  <td>" . $a_software['sw_software'] . "</td>\n";
         $output .= "  <td>" . $a_software['sw_type']     . "</td>\n";
         $output .= "  <td>" . $a_groups['grp_name']      . "</td>\n";
-        $output .= "  <td>" . $a_software['sw_update']   . "</td>\n";
+        $output .= "  <td>" . $a_software['svr_update']   . "</td>\n";
         $output .= "</tr>\n";
       }
       $output .= "</table>\n\n";
