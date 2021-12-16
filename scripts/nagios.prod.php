@@ -68,60 +68,67 @@
 
 # get systems to be managed through nagios
 
-  $q_string  = "select inv_id,inv_name,inv_function,";
-  $q_string .= "sw_software,";
-  $q_string .= "int_addr,int_gate,inv_ssh,inv_location,inv_product,";
+  $q_string  = "select inv_id,inv_name,inv_function,sw_software,int_addr,int_gate,inv_ssh,inv_location,inv_product,";
   $q_string .= "int_ssh,int_ping,int_http,int_ftp,int_smtp,int_cfg2html,grp_name ";
   $q_string .= "from inventory ";
-  $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
+  $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id ";
+  $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
+  $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
   if ($hostname == 'inventory.internal.pri') {
     $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
   }
   $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
   $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
   $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
-  $q_string .= "where int_nagios = 1 and inv_status = 0 and sw_type = 'OS' and int_ip6 = 0 and int_management = 1 and loc_instance > 0 and inv_manager = 1 ";
+  $q_string .= "where int_nagios = 1 and inv_status = 0 and typ_name = 'OS' and int_ip6 = 0 and int_management = 1 and loc_instance > 0 and inv_manager = 1 ";
   if ($hostname == 'inventory.internal.pri') {
     $q_string .= "and hw_active != '1971-01-01' ";
   }
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  if (mysqli_num_rows($q_inventory) > 0) {
+    while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
-    $groupname = str_replace(" ", "-", $a_inventory['grp_name']);
+      $groupname = str_replace(" ", "-", $a_inventory['grp_name']);
 
-    if (filter_var($a_inventory['int_addr'], FILTER_VALIDATE_IP)) {
+      if (filter_var($a_inventory['int_addr'], FILTER_VALIDATE_IP)) {
 
 # determine operating system
-      $value = process(" ", $a_inventory['sw_software']);
+        $value = explode(" ", $a_inventory['sw_software']);
 
 # straight linux check
-      if ($value[0] == 'Linux' || $value[1] == 'Linux' || $value[2] == 'Linux') {
-        $os = "linux-server";
-      }
-# red hat based systems
-      if ($value[0] == 'CentOS' || $value[0] == 'Fedora' || $value[0] == 'Red') {
-        $os = "linux-server";
-      }
-# misc non redhat/linux systems
-      if ($value[0] == 'Debian' || $value[0] == 'Ubuntu' || $value[0] == 'SUSE') {
-        $os = "linux-server";
-      }
-      if ($value[0] == "Solaris" || $value[1] == 'Solaris') {
-        $os = "solaris-server";
-      }
-      if ($value[0] == "HP-UX") {
-        $os = "hpux-server";
-      }
-      if ($value[0] == "Tru64") {
-        $os = "osf1-server";
-      }
-      if ($value[0] == "Free") {
-        $os = "freebsd-server";
-      }
+        if ($value[0] == 'Linux' || $value[1] == 'Linux' || $value[2] == 'Linux') {
+          $os = "linux-server";
+        }
 
-      if (strlen($a_inventory['inv_function']) == 0) {
-        $a_inventory['inv_function'] = $a_inventory['sw_software'];
-      }
+# red hat based systems
+        if ($value[0] == 'CentOS' || $value[0] == 'Fedora' || $value[0] == 'Red') {
+          $os = "linux-server";
+        }
+
+# misc non redhat/linux systems
+        if ($value[0] == 'Debian' || $value[0] == 'Ubuntu' || $value[0] == 'SUSE') {
+          $os = "linux-server";
+        }
+
+        if ($value[0] == "Solaris" || $value[1] == 'Solaris') {
+          $os = "solaris-server";
+        }
+
+        if ($value[0] == "HP-UX") {
+          $os = "hpux-server";
+        }
+
+        if ($value[0] == "Tru64") {
+          $os = "osf1-server";
+        }
+
+        if ($value[0] == "Free") {
+          $os = "freebsd-server";
+        }
+
+        if (strlen($a_inventory['inv_function']) == 0) {
+          $a_inventory['inv_function'] = $a_inventory['sw_software'];
+        }
 
 # default contact_groups is 'admins'
 # int_hours 0 = workhours, 1 = 24x7
@@ -131,98 +138,102 @@
 # if none and email, normal group,
 # if page, tack on -page,
 
-      $disabled = '';
-      if ($a_inventory['int_notify'] == 0) {
-        $disabled = "\tnotifications_enabled\t0\n";
-      }
+        $disabled = '';
+        if ($a_inventory['int_notify'] == 0) {
+          $disabled = "\tnotifications_enabled\t0\n";
+        }
 
-      if ($a_inventory['int_notify'] == 2) {
-        $groupname = $groupname . "-page";
-      }
+        if ($a_inventory['int_notify'] == 2) {
+          $groupname = $groupname . "-page";
+        }
 
-      print "define host{\n";
-      print "\tuse\t\t\t" . $os . "\n";
-      print "\thost_name\t\t" . $a_inventory['inv_name'] . "\n";
-      print "\talias\t\t\t" . $a_inventory['inv_name'] . "\n";
-      print "\taddress\t\t\t" . $a_inventory['int_addr'] . "\n";
-      print "\tparents\t\t\t" . $a_inventory['int_gate'] . "\n";
-      print "\ticon_image_alt\t\t" . $a_inventory['inv_function'] . "\n";
-      print "\tcontact_groups\t\t" . $groupname . ",Monitoring\n";
-      print $disabled;
-      if ($a_inventory['int_hours'] == 0) {
-        print "\tcheck_period\t\tworkhours\n";
-      } else {
-        print "\tcheck_period\t\t24x7\n";
-      }
+        print "define host{\n";
+        print "\tuse\t\t\t" . $os . "\n";
+        print "\thost_name\t\t" . $a_inventory['inv_name'] . "\n";
+        print "\talias\t\t\t" . $a_inventory['inv_name'] . "\n";
+        print "\taddress\t\t\t" . $a_inventory['int_addr'] . "\n";
+        print "\tparents\t\t\t" . $a_inventory['int_gate'] . "\n";
+        print "\ticon_image_alt\t\t" . $a_inventory['inv_function'] . "\n";
+        print "\tcontact_groups\t\t" . $groupname . ",Monitoring\n";
+        print $disabled;
+        if ($a_inventory['int_hours'] == 0) {
+          print "\tcheck_period\t\tworkhours\n";
+        } else {
+          print "\tcheck_period\t\t24x7\n";
+        }
 
-      print "\t}\n\n";
+        print "\t}\n\n";
 
-      if (!isset($productcomma[$a_inventory['inv_product']])) {
-        $productcomma[$a_inventory['inv_product']] = '';
-      }
+        if (!isset($productcomma[$a_inventory['inv_product']])) {
+          $productcomma[$a_inventory['inv_product']] = '';
+        }
 # add to production hostgroups
-      if ($a_inventory['inv_product'] > 0) {
-        $products[$a_inventory['inv_product']] .= $productcomma[$a_inventory['inv_product']] . $a_inventory['inv_name'];
-        $productcomma[$a_inventory['inv_product']] = ',';
-      }
+        if ($a_inventory['inv_product'] > 0) {
+          $products[$a_inventory['inv_product']] .= $productcomma[$a_inventory['inv_product']] . $a_inventory['inv_name'];
+          $productcomma[$a_inventory['inv_product']] = ',';
+        }
 
 # production longmont
-      if ($a_inventory['inv_location'] == 3) {
-        $prodservers .= $prodcomma . $a_inventory['inv_name'];
-        $prodcomma = ",";
-      }
+        if ($a_inventory['inv_location'] == 3) {
+          $prodservers .= $prodcomma . $a_inventory['inv_name'];
+          $prodcomma = ",";
+        }
 # sqa servers
-      if ($a_inventory['inv_location'] == 39) {
-        $sqaservers .= $sqacomma . $a_inventory['inv_name'];
-        $sqacomma = ",";
-      }
+        if ($a_inventory['inv_location'] == 39) {
+          $sqaservers .= $sqacomma . $a_inventory['inv_name'];
+          $sqacomma = ",";
+        }
 # lab servers
-      if ($a_inventory['inv_location'] == 31) {
-        $labservers .= $labcomma . $a_inventory['inv_name'];
-        $labcomma = ",";
-      }
+        if ($a_inventory['inv_location'] == 31) {
+          $labservers .= $labcomma . $a_inventory['inv_name'];
+          $labcomma = ",";
+        }
 # contact one servers
-      if ($a_inventory['inv_location'] == 29) {
-        $contactoneservers .= $contactonecomma . $a_inventory['inv_name'];
-        $contactonecomma = ",";
-      }
+        if ($a_inventory['inv_location'] == 29) {
+          $contactoneservers .= $contactonecomma . $a_inventory['inv_name'];
+          $contactonecomma = ",";
+        }
 # ssh to servers; but only if ssh is checked
-      if ($a_inventory['int_ssh'] == 1 and $a_inventory['inv_ssh'] == 1) {
-        $sshservers .= $sshcomma . $a_inventory['inv_name'];
-        $sshcomma = ",";
-      }
+        if ($a_inventory['int_ssh'] == 1 and $a_inventory['inv_ssh'] == 1) {
+          $sshservers .= $sshcomma . $a_inventory['inv_name'];
+          $sshcomma = ",";
+        }
 # check uptime output but only if ssh is checked
-      if ($a_inventory['int_ssh'] == 1) {
-        $uptimeservers .= $uptimecomma . $a_inventory['inv_name'];
-        $uptimecomma = ",";
-      }
+        if ($a_inventory['int_ssh'] == 1) {
+          $uptimeservers .= $uptimecomma . $a_inventory['inv_name'];
+          $uptimecomma = ",";
+        }
 # check cfg2html output but only if ssh is checked
-      if ($a_inventory['int_cfg2html'] == 0 and $a_inventory['int_ssh'] == 1) {
-        $c2hservers .= $c2hcomma . $a_inventory['inv_name'];
-        $c2hcomma = ",";
-      }
+        if ($a_inventory['int_cfg2html'] == 0 and $a_inventory['int_ssh'] == 1) {
+          $c2hservers .= $c2hcomma . $a_inventory['inv_name'];
+          $c2hcomma = ",";
+        }
 # ping servers
-      if ($a_inventory['int_ping'] == 1) {
-        $pingservers .= $pingcomma . $a_inventory['inv_name'];
-        $pingcomma = ",";
-      }
+        if ($a_inventory['int_ping'] == 1) {
+          $pingservers .= $pingcomma . $a_inventory['inv_name'];
+          $pingcomma = ",";
+        }
 # http servers
-      if ($a_inventory['int_http'] == 1) {
-        $httpservers .= $httpcomma . $a_inventory['inv_name'];
-        $httpcomma = ",";
-      }
+        if ($a_inventory['int_http'] == 1) {
+          $httpservers .= $httpcomma . $a_inventory['inv_name'];
+          $httpcomma = ",";
+        }
 # ftp servers
-      if ($a_inventory['int_ftp'] == 1) {
-        $ftpservers .= $ftpcomma . $a_inventory['inv_name'];
-        $ftpcomma = ",";
-      }
+        if ($a_inventory['int_ftp'] == 1) {
+          $ftpservers .= $ftpcomma . $a_inventory['inv_name'];
+          $ftpcomma = ",";
+        }
 # smtp servers
-      if ($a_inventory['int_smtp'] == 1) {
-        $smtpservers .= $smtpcomma . $a_inventory['inv_name'];
-        $smtpcomma = ",";
+        if ($a_inventory['int_smtp'] == 1) {
+          $smtpservers .= $smtpcomma . $a_inventory['inv_name'];
+          $smtpcomma = ",";
+        }
+      } else {
+        print "validate ip error\n";
       }
-
     }
+  } else {
+    print "No servers identified\n";
   }
 
   print "\n";
