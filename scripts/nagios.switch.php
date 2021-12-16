@@ -66,10 +66,12 @@
   $q_string .= "int_server,int_addr,int_gate,inv_ssh,inv_location,inv_product,int_ssh,int_ping,int_http,int_ftp,int_smtp,";
   $q_string .= "grp_name ";
   $q_string .= "from inventory ";
-  $q_string .= "left join software on software.sw_companyid = inventory.inv_id ";
+  $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id ";
+  $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
+  $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
   $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
   $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
-  $q_string .= "where int_nagios = 1 and inv_status = 0 and sw_type = 'OS' and int_ip6 = 0 and int_type = 1 and inv_manager = 12 ";
+  $q_string .= "where int_nagios = 1 and inv_status = 0 and typ_name = 'OS' and int_ip6 = 0 and int_type = 1 and inv_manager = 12 ";
   $q_string .= "order by int_addr ";
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
