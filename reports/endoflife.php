@@ -172,10 +172,10 @@
   $q_string  = "select inv_id,inv_name,sw_software,sw_eol,prod_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id ";
-  $q_string .= "left join software on software.sw_id      = svr_software.svr_softwareid ";
-  $q_string .= "left join products  on products.prod_id      = software.sw_product ";
-  $q_string .= "left join sw_types on sw_types.typ_id      = software.sw_type ";
-  $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
+  $q_string .= "left join software     on software.sw_id             = svr_software.svr_softwareid ";
+  $q_string .= "left join products     on products.prod_id           = software.sw_product ";
+  $q_string .= "left join sw_types     on sw_types.typ_id            = software.sw_type ";
+  $q_string .= "left join locations    on locations.loc_id           = inventory.inv_location ";
   $q_string .= $where . " and typ_name = 'OS' ";
   $q_string .= $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -201,6 +201,10 @@
       print "</tr>\n";
 
     }
+  } else {
+    print "<tr>\n";
+    print "  <td class=\"ui-widget-content\">No Records found</td>\n";
+    print "</tr>\n";
   }
 
 ?>
