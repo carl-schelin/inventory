@@ -203,7 +203,7 @@
     }
   } else {
     print "<tr>\n";
-    print "  <td class=\"ui-widget-content\">No Records found</td>\n";
+    print "  <td class=\"ui-widget-content\" colspan=\"4\">No Records found</td>\n";
     print "</tr>\n";
   }
 
