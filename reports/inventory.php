@@ -512,10 +512,10 @@ $(document).ready( function () {
       if (check_userlevel($db, $AL_Edit)) {
         $editpencil = "<img class=\"ui-icon-edit\" src=\"" . $Imgsroot . "/pencil.gif\" height=\"10\"></a>";
         if (check_grouplevel($db, $a_inventory['inv_manager'])) {
-          $editstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\"          target=\"_blank\">" . $editpencil;
-          $edhwstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "#hardware\" target=\"_blank\">" . $editpencil;
-          $edipstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "#network\"  target=\"_blank\">" . $editpencil;
-          $edswstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "#software\" target=\"_blank\">" . $editpencil;
+          $editstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\"           target=\"_blank\">" . $editpencil;
+          $edhwstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "#hardware\"  target=\"_blank\">" . $editpencil;
+          $edipstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "#interface\" target=\"_blank\">" . $editpencil;
+          $edswstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "#software\"  target=\"_blank\">" . $editpencil;
         }
 # all groups can edit the software; that way they can identify systems to be associated with their group.
         $edaastart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "#software\" target=\"_blank\">" . $editpencil;
@@ -523,10 +523,10 @@ $(document).ready( function () {
 
 # used only for the server to view the inventory data;
       $editend = "</a>";
-      $showstart    = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inventory['inv_id'] . "\"          target=\"_blank\">";
-      $shhwstart    = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inventory['inv_id'] . "#hardware\" target=\"_blank\">";
-      $shswstart    = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inventory['inv_id'] . "#software\" target=\"_blank\">";
-      $shipstart    = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inventory['inv_id'] . "#network\"  target=\"_blank\">";
+      $showstart    = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inventory['inv_id'] . "\"           target=\"_blank\">";
+      $shhwstart    = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inventory['inv_id'] . "#hardware\"  target=\"_blank\">";
+      $shswstart    = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inventory['inv_id'] . "#software\"  target=\"_blank\">";
+      $shipstart    = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inventory['inv_id'] . "#interface\" target=\"_blank\">";
       $showend = "</a>";
 
       if (strlen($a_inventory['inv_document']) > 0) {
