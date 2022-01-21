@@ -512,13 +512,9 @@ function create_interface( p_script_url, update ) {
   ci_url += "&int_management="   + ci_form.int_management.checked;
   ci_url += "&int_login="        + ci_form.int_login.checked;
 
-  if (ci_form.int_id.value != 0 && ci_form.int_id.value == ci_form.int_int_id.value) {
-    alert("You cannot be a child of yourself.");
-  } else {
-    script = document.createElement('script');
-    script.src = p_script_url + ci_url;
-    document.getElementsByTagName('head')[0].appendChild(script);
-  }
+  script = document.createElement('script');
+  script.src = p_script_url + ci_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
 }
 
 function update_interface( p_script_url, update ) {
