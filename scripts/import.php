@@ -556,6 +556,43 @@
                 $os = "FreeBSD";
               }
 
+
+see if the OS in $value[3] is in the software table.
+if not, get the type id for OS
+and get the vendor id for vendor
+and create the software entry
+then get the id
+and create the svr_software record.
+
+
+
+              $q_string  = "select typ_id ";
+              $q_string .= "from sw_types ";
+              $q_string .= "where typ_name = \"OS\" ";
+              $q_sw_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              if (mysqli_num_rows($q_sw_types) > 0) {
+                $a_sw_types = mysqli_fetch_array($q_sw_types);
+              } else {
+                $a_sw_types['typ_id'] = 0;
+              }
+
+              $q_string  = "select ven_id ";
+              $q_string .= "from vendors ";
+              $q_string .= "where ven_name = \"" . $vendor . "\" ";
+              $q_vendors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              if (mysqli_num_rows($q_vendors) > 0) {
+                $a_vendors = mysqli_fetch_array($q_vendors);
+              } else {
+                $q_string  =
+                  "insert " .
+                  "into vendors " .
+                  "set " .
+                  "ven_id   = \"" . "null"  . \"," . 
+                  "ven_name = \"" . $vendor . \"";
+                $q_vendors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+                $a_vendors['ven_id'] = last_insert_id($db);
+              }
+
               $q_string  = "select sw_id ";
               $q_string .= "from software ";
               $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'OS'";
@@ -566,8 +603,8 @@
                 "sw_companyid =   " . $a_inventory['inv_id']      . "," . 
                 "sw_product   =   " . $a_inventory['inv_product'] . "," . 
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
-                "sw_vendor    = \"" . $vendor                     . "\"," . 
-                "sw_type      = \"" . 'OS'                        . "\"," . 
+                "sw_vendor    = \"" . $a_vendors['ven_id']        . "\"," . 
+                "sw_type      =   " . $a_sw_types['typ_id']       . "," . 
                 "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
