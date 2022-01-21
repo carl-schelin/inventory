@@ -633,4 +633,415 @@ Updated nikodemus tables
 
 Fixed missing default setting for a blank drop down menu.
 
+### Timestamp 2021-12-13
+
+For the converted systems, get the first server id in the inventory and delete all software on servers that don't exist.
+For a new site, this isn't necessary.
+
+Then run the inventory/software/migrate.php script to change ownerships to the proper table
+
+create table svr_software (
+  svr_id int(10) not null auto_increment,
+  svr_companyid int(10) not null default 0,
+  svr_softwareid int(10) not null default 0,
+  svr_groupid int(10) not null default 0,
+  svr_certid int(10) not null default 0,
+  svr_facing int(10) not null default 0,
+  svr_primary int(10) not null default 0,
+  svr_locked int(10) not null default 0,
+  svr_userid int(10) not null default 0,
+  svr_verified int(10) not null default 0,
+  svr_update date not null default '1971-01-01',
+  primary key (svr_id)
+);
+
+create table sw_types (
+  typ_id int(10) not null auto_increment,
+  typ_name char(255) not null default '',
+  primary key (typ_id)
+);
+
+for existing sites or converted ones, the order is correct for the rest of the updates that follow.
+
+insert into sw_types set typ_id = null,typ_name = 'Application';
+insert into sw_types set typ_id = null,typ_name = 'Authentication';
+insert into sw_types set typ_id = null,typ_name = 'Backups';
+insert into sw_types set typ_id = null,typ_name = 'Cluster';
+insert into sw_types set typ_id = null,typ_name = 'Application Server';
+insert into sw_types set typ_id = null,typ_name = 'Cell Broadcast';
+insert into sw_types set typ_id = null,typ_name = 'Centrify';
+insert into sw_types set typ_id = null,typ_name = 'OS';
+insert into sw_types set typ_id = null,typ_name = 'Open Source';
+insert into sw_types set typ_id = null,typ_name = 'CIL';
+insert into sw_types set typ_id = null,typ_name = 'Commercial';
+insert into sw_types set typ_id = null,typ_name = 'Custom';
+insert into sw_types set typ_id = null,typ_name = 'Database';
+insert into sw_types set typ_id = null,typ_name = 'Database Client';
+insert into sw_types set typ_id = null,typ_name = 'Database Manager/Interpreter';
+insert into sw_types set typ_id = null,typ_name = 'E911 Control Plane PDE';
+insert into sw_types set typ_id = null,typ_name = 'ESXi';
+insert into sw_types set typ_id = null,typ_name = 'Firmware';
+insert into sw_types set typ_id = null,typ_name = 'Hawaii';
+insert into sw_types set typ_id = null,typ_name = 'Hypervisor';
+insert into sw_types set typ_id = null,typ_name = 'IEN Voice';
+insert into sw_types set typ_id = null,typ_name = 'Instance';
+insert into sw_types set typ_id = null,typ_name = 'Management';
+insert into sw_types set typ_id = null,typ_name = 'Middleware';
+insert into sw_types set typ_id = null,typ_name = 'Monitoring';
+insert into sw_types set typ_id = null,typ_name = 'National';
+insert into sw_types set typ_id = null,typ_name = 'Perl Library';
+insert into sw_types set typ_id = null,typ_name = 'Position Determination';
+insert into sw_types set typ_id = null,typ_name = 'Qwest';
+insert into sw_types set typ_id = null,typ_name = 'RDB';
+insert into sw_types set typ_id = null,typ_name = 'Schema';
+insert into sw_types set typ_id = null,typ_name = 'Script';
+insert into sw_types set typ_id = null,typ_name = 'SS7 Stack';
+insert into sw_types set typ_id = null,typ_name = 'Storage Array';
+insert into sw_types set typ_id = null,typ_name = 'TCP/IP Commercial UP PDE';
+insert into sw_types set typ_id = null,typ_name = 'Vendor';
+insert into sw_types set typ_id = null,typ_name = 'Web Server';
+insert into sw_types set typ_id = null,typ_name = 'Wiki';
+
+
+alter table software drop column sw_companyid;
+alter table software drop column sw_notes;
+alter table software drop column sw_group;
+alter table software drop column sw_facing;
+alter table software drop column sw_primary;
+alter table software drop column sw_locked;
+alter table software drop column sw_eolticket;
+alter table software drop column sw_eosticket;
+alter table software drop column sw_cert;
+alter table software drop column sw_verified;
+alter table software drop column sw_update;
+alter table software drop column sw_notification;
+
+
+update software set sw_type = 0 where sw_type = '';
+update software set sw_type = 1 where sw_type = 'Application' or sw_type = 'App' or sw_type = 'Applicatiion' or sw_type = 'Applicatoin';
+update software set sw_type = 2 where sw_type = 'Authentication';
+update software set sw_type = 3 where sw_type = 'Backups';
+update software set sw_type = 4 where sw_type = 'Cluster';
+update software set sw_type = 5 where sw_type = 'Application Server';
+update software set sw_type = 6 where sw_type = 'Cell Broadcast';
+update software set sw_type = 7 where sw_type = 'centrify';
+update software set sw_type = 8 where sw_type = 'OS';
+update software set sw_type = 9 where sw_type = 'Open Source';
+update software set sw_type = 10 where sw_type = 'CIL';
+update software set sw_type = 11 where sw_type = 'Commercial' or sw_type = 'Commerical' or sw_type = 'Commericial';
+update software set sw_type = 12 where sw_type = 'Custom';
+update software set sw_type = 13 where sw_type = 'Database';
+update software set sw_type = 14 where sw_type = 'Database Client';
+update software set sw_type = 15 where sw_type = 'Database Manager/Interpreter';
+update software set sw_type = 16 where sw_type = 'E911 Control Plane PDE';
+update software set sw_type = 17 where sw_type = 'ESXi';
+update software set sw_type = 18 where sw_type = 'Firmware';
+update software set sw_type = 19 where sw_type = 'Hawaii';
+update software set sw_type = 20 where sw_type = 'Hypervisor';
+update software set sw_type = 21 where sw_type = 'IEN Voice';
+update software set sw_type = 22 where sw_type = 'Instance';
+update software set sw_type = 23 where sw_type = 'Management';
+update software set sw_type = 24 where sw_type = 'Middleware';
+update software set sw_type = 25 where sw_type = 'Monitoring';
+update software set sw_type = 26 where sw_type = 'National';
+update software set sw_type = 27 where sw_type = 'Perl Library';
+update software set sw_type = 28 where sw_type = 'Position Determination';
+update software set sw_type = 29 where sw_type = 'Qwest';
+update software set sw_type = 30 where sw_type = 'RDB';
+update software set sw_type = 31 where sw_type = 'Schema';
+update software set sw_type = 32 where sw_type = 'Script';
+update software set sw_type = 33 where sw_type = 'SS7 Stack';
+update software set sw_type = 34 where sw_type = 'Storage Array';
+update software set sw_type = 35 where sw_type = 'TCP/IP Commercial UP PDE';
+update software set sw_type = 36 where sw_type = 'Vendor';
+update software set sw_type = 37 where sw_type = 'Web Server' or sw_type = 'Webserver';
+update software set sw_type = 38 where sw_type = 'Wiki';
+
+update software set sw_vendor = 0 where sw_vendor = '';
+update software set sw_vendor = 1 where sw_vendor = 'AMD';
+update software set sw_vendor = 2 where sw_vendor = 'BlackBox';
+update software set sw_vendor = 3 where sw_vendor = 'Cisco';
+update software set sw_vendor = 4 where sw_vendor = 'Compaq';
+update software set sw_vendor = 5 where sw_vendor = 'Compellent';
+update software set sw_vendor = 6 where sw_vendor = 'Dell';
+update software set sw_vendor = 7 where sw_vendor = 'Dell Compellent';
+update software set sw_vendor = 8 where sw_vendor = 'Digi';
+update software set sw_vendor = 9 where sw_vendor = 'Epson';
+update software set sw_vendor = 10 where sw_vendor = 'Extreme Networks';
+update software set sw_vendor = 11 where sw_vendor = 'F5 Networks';
+update software set sw_vendor = 12 where sw_vendor = 'Force10 Networks, Inc.';
+update software set sw_vendor = 13 where sw_vendor = 'Foundry Networks';
+update software set sw_vendor = 14 where sw_vendor = 'Fujitsu';
+update software set sw_vendor = 15 where sw_vendor = 'Hitachi';
+update software set sw_vendor = 16 where sw_vendor = 'HP' or sw_vendor = 'Unknown: OSF1 v5.1';
+update software set sw_vendor = 17 where sw_vendor = 'Intel';
+update software set sw_vendor = 18 where sw_vendor = 'Juniper';
+update software set sw_vendor = 19 where sw_vendor = 'Kontron';
+update software set sw_vendor = 20 where sw_vendor = 'Maxtor';
+update software set sw_vendor = 21 where sw_vendor = 'Micron Electronic, Inc.';
+update software set sw_vendor = 22 where sw_vendor = 'Microsoft';
+update software set sw_vendor = 23 where sw_vendor = 'MRV';
+update software set sw_vendor = 24 where sw_vendor = 'NEC';
+update software set sw_vendor = 25 where sw_vendor = 'NetScreen Technologies';
+update software set sw_vendor = 26 where sw_vendor = 'Nexsan';
+update software set sw_vendor = 27 where sw_vendor = 'Oracle' or sw_vendor = 'Unknown: Oracle Red Hat Enterprise Linux ES release 4 (Nahant Update 7)';
+update software set sw_vendor = 28 where sw_vendor = 'Pure Storage';
+update software set sw_vendor = 29 where sw_vendor = 'Quantum';
+update software set sw_vendor = 30 where sw_vendor = 'Radware';
+update software set sw_vendor = 31 where sw_vendor = 'Red Hat' or sw_vendor = 'RedHat';
+update software set sw_vendor = 32 where sw_vendor = 'Ricoh';
+update software set sw_vendor = 33 where sw_vendor = 'Seagate';
+update software set sw_vendor = 34 where sw_vendor = 'Sonus Networks, Inc.';
+update software set sw_vendor = 35 where sw_vendor = 'Stratus';
+update software set sw_vendor = 36 where sw_vendor = 'Sun Microsystems';
+update software set sw_vendor = 37 where sw_vendor = 'Toshiba';
+update software set sw_vendor = 38 where sw_vendor = 'Veritas';
+update software set sw_vendor = 39 where sw_vendor = 'VMware' or sw_vendor = 'VMware/Dell';
+update software set sw_vendor = 43 where sw_vendor = 'Unknown';
+update software set sw_vendor = 44 where sw_vendor = 'Acronis';
+update software set sw_vendor = 45 where sw_vendor = 'Andrews';
+update software set sw_vendor = 46 where sw_vendor = 'Apache' or sw_vendor = 'Apache Foundation';
+update software set sw_vendor = 47 where sw_vendor = 'Axway';
+update software set sw_vendor = 48 where sw_vendor = 'Carl Schelin';
+update software set sw_vendor = 49 where sw_vendor = 'CentOS';
+update software set sw_vendor = 50 where sw_vendor = 'Centrify';
+update software set sw_vendor = 51 where sw_vendor = 'CollabNet';
+update software set sw_vendor = 52 where sw_vendor = 'Customer Internal';
+update software set sw_vendor = 53 where sw_vendor = 'Debian';
+update software set sw_vendor = 54 where sw_vendor = 'Elk';
+update software set sw_vendor = 55 where sw_vendor = 'Empirix';
+update software set sw_vendor = 56 where sw_vendor = 'Entrust' or sw_vendor = 'Enrust';
+update software set sw_vendor = 57 where sw_vendor = 'ESRI';
+update software set sw_vendor = 58 where sw_vendor = 'ESX';
+update software set sw_vendor = 59 where sw_vendor = 'Generic';
+update software set sw_vendor = 60 where sw_vendor = 'GSI';
+update software set sw_vendor = 61 where sw_vendor = 'HP / Stratavia';
+update software set sw_vendor = 62 where sw_vendor = 'IBM';
+update software set sw_vendor = 63 where sw_vendor = 'Informix';
+update software set sw_vendor = 64 where sw_vendor = 'Intrado' or sw_vendor = 'Intado';
+update software set sw_vendor = 65 where sw_vendor = 'Internal';
+update software set sw_vendor = 66 where sw_vendor = 'Internal Custom';
+update software set sw_vendor = 67 where sw_vendor = 'JBoss';
+update software set sw_vendor = 68 where sw_vendor = 'Linux';
+update software set sw_vendor = 69 where sw_vendor = 'Mango Springs';
+update software set sw_vendor = 70 where sw_vendor = 'MediaWiki';
+update software set sw_vendor = 71 where sw_vendor = 'Mobile Arts';
+update software set sw_vendor = 72 where sw_vendor = 'Mongo';
+update software set sw_vendor = 73 where sw_vendor = 'Nagios';
+update software set sw_vendor = 74 where sw_vendor = 'NewRelic';
+update software set sw_vendor = 75 where sw_vendor = 'Novell';
+update software set sw_vendor = 76 where sw_vendor = 'One2Many';
+update software set sw_vendor = 77 where sw_vendor = 'Open Code';
+update software set sw_vendor = 78 where sw_vendor = 'Open Source';
+update software set sw_vendor = 79 where sw_vendor = 'PostGres' or sw_vendor = 'PostGreSQL';
+update software set sw_vendor = 80 where sw_vendor = 'Radisys';
+update software set sw_vendor = 81 where sw_vendor = 'Riverbed';
+update software set sw_vendor = 82 where sw_vendor = 'Runner Technologies';
+update software set sw_vendor = 83 where sw_vendor = 'Sansay';
+update software set sw_vendor = 84 where sw_vendor = 'Secure Computing';
+update software set sw_vendor = 85 where sw_vendor = 'Spark';
+update software set sw_vendor = 86 where sw_vendor = 'Splunk';
+update software set sw_vendor = 87 where sw_vendor = 'Sterling Commerce';
+update software set sw_vendor = 88 where sw_vendor = 'Sudo';
+update software set sw_vendor = 89 where sw_vendor = 'Symantec';
+update software set sw_vendor = 90 where sw_vendor = 'Ubuntu';
+update software set sw_vendor = 91 where sw_vendor = 'Ulticom';
+update software set sw_vendor = 93 where sw_vendor = 'Verint';
+update software set sw_vendor = 94 where sw_vendor = 'Vordel';
+update software set sw_vendor = 95 where sw_vendor = 'West' or sw_vendor = 'West Corp';
+update software set sw_vendor = 96 where sw_vendor = 'Zones';
+update software set sw_vendor = 97 where sw_vendor = 'Unknown: FreeBSD 4.6-RELEASE';
+update software set sw_vendor = 98 where sw_vendor = 'MicroStrategy';
+update software set sw_vendor = 99 where sw_vendor = 'CoreOS';
+update software set sw_vendor = 100 where sw_vendor = 'Unknown: OpenBSD 6.8';
+update software set sw_vendor = 43 where sw_vendor = 'Unknown: Unknown';
+update software set sw_vendor = 97 where sw_vendor = 'FreeBSD';
+
+
+create table vendors (
+  ven_id int(10) not null auto_increment,
+  ven_name char(100) not null default '',
+  primary key (ven_id)
+);
+
+
+
+insert into vendors set ven_id = null, ven_name = 'AMD';
+insert into vendors set ven_id = null, ven_name = 'BlackBox';
+insert into vendors set ven_id = null, ven_name = 'Cisco Systems';
+insert into vendors set ven_id = null, ven_name = 'Compaq';
+insert into vendors set ven_id = null, ven_name = 'Compellent';
+insert into vendors set ven_id = null, ven_name = 'Dell';
+insert into vendors set ven_id = null, ven_name = 'Dell Compellent';
+insert into vendors set ven_id = null, ven_name = 'Digi';
+insert into vendors set ven_id = null, ven_name = 'Epson';
+insert into vendors set ven_id = null, ven_name = 'Extreme Networks';
+insert into vendors set ven_id = null, ven_name = 'F5 Networks';
+insert into vendors set ven_id = null, ven_name = 'Force10 Networks, Inc.';
+insert into vendors set ven_id = null, ven_name = 'Foundry Networks';
+insert into vendors set ven_id = null, ven_name = 'Fujitsu';
+insert into vendors set ven_id = null, ven_name = 'Hitachi';
+insert into vendors set ven_id = null, ven_name = 'HP';
+insert into vendors set ven_id = null, ven_name = 'Intel';
+insert into vendors set ven_id = null, ven_name = 'Juniper';
+insert into vendors set ven_id = null, ven_name = 'Kontron';
+insert into vendors set ven_id = null, ven_name = 'Maxtor';
+insert into vendors set ven_id = null, ven_name = 'Micron Electronic, Inc.';
+insert into vendors set ven_id = null, ven_name = 'Microsoft';
+insert into vendors set ven_id = null, ven_name = 'MRV';
+insert into vendors set ven_id = null, ven_name = 'NEC';
+insert into vendors set ven_id = null, ven_name = 'NetScreen Technologies';
+insert into vendors set ven_id = null, ven_name = 'Nexsan';
+insert into vendors set ven_id = null, ven_name = 'Oracle';
+insert into vendors set ven_id = null, ven_name = 'Pure Storage';
+insert into vendors set ven_id = null, ven_name = 'Quantum';
+insert into vendors set ven_id = null, ven_name = 'Radware';
+insert into vendors set ven_id = null, ven_name = 'Red Hat';
+insert into vendors set ven_id = null, ven_name = 'Richoh';
+insert into vendors set ven_id = null, ven_name = 'Seagate';
+insert into vendors set ven_id = null, ven_name = 'Sonus Networks, Inc.';
+insert into vendors set ven_id = null, ven_name = 'Stratus';
+insert into vendors set ven_id = null, ven_name = 'Sun Microsystems';
+insert into vendors set ven_id = null, ven_name = 'Toshiba';
+insert into vendors set ven_id = null, ven_name = 'Veritas';
+insert into vendors set ven_id = null, ven_name = 'VMware';
+insert into vendors set ven_id = null, ven_name = 'Watchguard';
+insert into vendors set ven_id = null, ven_name = 'Western Digital';
+insert into vendors set ven_id = null, ven_name = 'Data Foundry';
+insert into vendors set ven_id = null, ven_name = 'Unknown';
+insert into vendors set ven_id = null, ven_name = 'Acronis';
+insert into vendors set ven_id = null, ven_name = 'Andrews';
+insert into vendors set ven_id = null, ven_name = 'Apache Foundation';
+insert into vendors set ven_id = null, ven_name = 'Axway';
+insert into vendors set ven_id = null, ven_name = 'Carl Schelin';
+insert into vendors set ven_id = null, ven_name = 'CentOS';
+insert into vendors set ven_id = null, ven_name = 'Centrify';
+insert into vendors set ven_id = null, ven_name = 'CollabNet';
+insert into vendors set ven_id = null, ven_name = 'Customer Internal';
+insert into vendors set ven_id = null, ven_name = 'Debian';
+insert into vendors set ven_id = null, ven_name = 'Elk';
+insert into vendors set ven_id = null, ven_name = 'Empirix';
+insert into vendors set ven_id = null, ven_name = 'Entrust';
+insert into vendors set ven_id = null, ven_name = 'ESRI';
+insert into vendors set ven_id = null, ven_name = 'ESX';
+insert into vendors set ven_id = null, ven_name = 'Generic';
+insert into vendors set ven_id = null, ven_name = 'GSI';
+insert into vendors set ven_id = null, ven_name = 'HP / Stratavia';
+insert into vendors set ven_id = null, ven_name = 'IBM';
+insert into vendors set ven_id = null, ven_name = 'Informix';
+insert into vendors set ven_id = null, ven_name = 'Intrado';
+insert into vendors set ven_id = null, ven_name = 'Internal';
+insert into vendors set ven_id = null, ven_name = 'Internal Custom';
+insert into vendors set ven_id = null, ven_name = 'JBoss';
+insert into vendors set ven_id = null, ven_name = 'Linux';
+insert into vendors set ven_id = null, ven_name = 'Mango Springs';
+insert into vendors set ven_id = null, ven_name = 'Mediawiki';
+insert into vendors set ven_id = null, ven_name = 'Mobile Arts';
+insert into vendors set ven_id = null, ven_name = 'Mongo';
+insert into vendors set ven_id = null, ven_name = 'Nagios';
+insert into vendors set ven_id = null, ven_name = 'NewRelic';
+insert into vendors set ven_id = null, ven_name = 'Novell';
+insert into vendors set ven_id = null, ven_name = 'One2Many';
+insert into vendors set ven_id = null, ven_name = 'Open Code';
+insert into vendors set ven_id = null, ven_name = 'Open Source';
+insert into vendors set ven_id = null, ven_name = 'PostGreSQL';
+insert into vendors set ven_id = null, ven_name = 'Radisys';
+insert into vendors set ven_id = null, ven_name = 'Riverbed';
+insert into vendors set ven_id = null, ven_name = 'Runner Technologies';
+insert into vendors set ven_id = null, ven_name = 'Sansay';
+insert into vendors set ven_id = null, ven_name = 'Secure Computing';
+insert into vendors set ven_id = null, ven_name = 'Spark';
+insert into vendors set ven_id = null, ven_name = 'Splunk';
+insert into vendors set ven_id = null, ven_name = 'Sterling Commerce';
+insert into vendors set ven_id = null, ven_name = 'Sudo';
+insert into vendors set ven_id = null, ven_name = 'Symantec';
+insert into vendors set ven_id = null, ven_name = 'Ubuntu';
+insert into vendors set ven_id = null, ven_name = 'Ulticom';
+insert into vendors set ven_id = null, ven_name = 'Unknown';
+insert into vendors set ven_id = null, ven_name = 'Verint';
+insert into vendors set ven_id = null, ven_name = 'Vordel';
+insert into vendors set ven_id = null, ven_name = 'West Corp';
+insert into vendors set ven_id = null, ven_name = 'Zones';
+insert into vendors set ven_id = null, ven_name = 'FreeBSD';
+insert into vendors set ven_id = null, ven_name = 'MicroStrategy';
+insert into vendors set ven_id = null, ven_name = 'CoreOS';
+insert into vendors set ven_id = null, ven_name = 'OpenBSD';
+
+
+alter table software change sw_vendor sw_vendor int(10) not null default 0;
+alter table software change sw_type sw_type int(10) not null default 0;
+
+Going through all files with the various software changes.
+
+
+update models set mod_vendor = 1 where mod_vendor = 'AMD';
+update models set mod_vendor = 2 where mod_vendor = 'BlackBox';
+update models set mod_vendor = 3 where mod_vendor = 'Cisco Systems';
+update models set mod_vendor = 4 where mod_vendor = 'Compaq';
+update models set mod_vendor = 5 where mod_vendor = 'Compellent';
+update models set mod_vendor = 42 where mod_vendor = 'Data Foundry';
+update models set mod_vendor = 6 where mod_vendor = 'Dell';
+update models set mod_vendor = 7 where mod_vendor = 'Dell Compellent';
+update models set mod_vendor = 8 where mod_vendor = 'Digi';
+update models set mod_vendor = 9 where mod_vendor = 'Epson';
+update models set mod_vendor = 10 where mod_vendor = 'Extreme Networks';
+update models set mod_vendor = 11 where mod_vendor = 'F5';
+update models set mod_vendor = 11 where mod_vendor = 'F5 Networks';
+update models set mod_vendor = 12 where mod_vendor = 'Force10 Networks, Inc.';
+update models set mod_vendor = 13 where mod_vendor = 'Foundry Networks';
+update models set mod_vendor = 14 where mod_vendor = 'Fujitsu';
+update models set mod_vendor = 41 where mod_vendor = 'HGST';
+update models set mod_vendor = 15 where mod_vendor = 'Hitachi';
+update models set mod_vendor = 16 where mod_vendor = 'HP';
+update models set mod_vendor = 17 where mod_vendor = 'Intel';
+update models set mod_vendor = 18 where mod_vendor = 'Juniper';
+update models set mod_vendor = 19 where mod_vendor = 'Kontron';
+update models set mod_vendor = 20 where mod_vendor = 'Maxtor';
+update models set mod_vendor = 21 where mod_vendor = 'Micron Electronic, Inc';
+update models set mod_vendor = 22 where mod_vendor = 'Microsoft';
+update models set mod_vendor = 23 where mod_vendor = 'MRV';
+update models set mod_vendor = 43 where mod_vendor = 'N/A';
+update models set mod_vendor = 24 where mod_vendor = 'NEC';
+update models set mod_vendor = 25 where mod_vendor = 'NetScreen Technologies';
+update models set mod_vendor = 26 where mod_vendor = 'Nexsan';
+update models set mod_vendor = 27 where mod_vendor = 'Oracle';
+update models set mod_vendor = 28 where mod_vendor = 'Pure Storage';
+update models set mod_vendor = 29 where mod_vendor = 'Quantum';
+update models set mod_vendor = 30 where mod_vendor = 'Radware';
+update models set mod_vendor = 31 where mod_vendor = 'Red Hat';
+update models set mod_vendor = 32 where mod_vendor = 'Ricoh';
+update models set mod_vendor = 33 where mod_vendor = 'Seagate';
+update models set mod_vendor = 34 where mod_vendor = 'Sonus';
+update models set mod_vendor = 35 where mod_vendor = 'Stratus';
+update models set mod_vendor = 36 where mod_vendor = 'Sun';
+update models set mod_vendor = 37 where mod_vendor = 'TOSHIBA';
+update models set mod_vendor = 43 where mod_vendor = 'Unknown';
+update models set mod_vendor = 43 where mod_vendor = 'Varies';
+update models set mod_vendor = 43 where mod_vendor = 'Vendor';
+update models set mod_vendor = 38 where mod_vendor = 'Veritas';
+update models set mod_vendor = 39 where mod_vendor = 'VMWare';
+update models set mod_vendor = 40 where mod_vendor = 'Watchguard';
+update models set mod_vendor = 41 where mod_vendor = 'Western Digital' or mod_vendor = 'Western Digitial';
+
+
+alter table models change mod_vendor mod_vendor int(10) not null default 0;
+
+### Timestamp 2021-12-23
+
+Updated lnmt1cuomtool11 and inventory to this point.
+
+### Timestamp 2022-01-21
+
+Updated int_redundancy. This is just the conversion part. New systems won't need to do this.
+
+alter table int_redundancy add column red_default int not null default 0;
+insert into int_redundancy set red_id = null,red_name = 'N/A', red_default = 1;
+update int_redundancy set red_default = 1 where red_id = 12;
+
+For existing entries;
+
+update interface set int_redundancy = 12 where int_redundancy = 0;
+
+Note that lnmt1cuomtool11 and bldr0cuomdev1 are already updated.
+
 
