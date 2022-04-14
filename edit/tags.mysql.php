@@ -137,11 +137,171 @@
       print "document.getElementById('Server_tags').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
 
+### Location Tags
+      $output = "<t4>Location Tags</t4>\n";
+
+      $output .= "<p>\n";
+
+      $q_string  = "select inv_location ";
+      $q_string .= "from inventory ";
+      $q_string .= "where inv_id = " . $formVars['tag_companyid'] . " ";
+      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inventory) > 0) {
+        $a_inventory = mysqli_fetch_array($q_inventory);
+      } else {
+        $a_inventory['inv_location'] = 0;
+      }
+
+      if (new_Mysql($db)) {
+        $q_string  = "select ANY_VALUE(tag_id) as tagid,tag_name ";
+      } else {
+        $q_string  = "select tag_id as tagid,tag_name ";
+      }
+      $q_string .= "from tags ";
+      $q_string .= "where tag_type = 2 ";
+      $q_string .= "group by tag_name ";
+      $q_string .= "order by tag_name ";
+      $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_tags) > 0) {
+        while ($a_tags = mysqli_fetch_array($q_tags)) {
+
+          $q_string  = "select tag_name ";
+          $q_string .= "from tags ";
+          $q_string .= "where tag_name = \"" . $a_tags['tag_name'] . "\" and tag_companyid = " . $a_inventory['inv_location'] . " and tag_type = 2 ";
+          $q_identity = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_identity) > 0) {
+            $output .= "<strong>";
+          }
+
+          $output .= $a_tags['tag_name'];
+
+          if (mysqli_num_rows($q_identity) > 0) {
+            $output .= "</strong>";
+          }
+
+          $output .= " ";
+        }
+      }
+
+      $output .= "</p>\n";
+
+      print "document.getElementById('Location_tags').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
+
+
+### Product Tags
+      $output = "<t4>Product Tags</t4>\n";
+
+      $output .= "<p>\n";
+
+      $q_string  = "select inv_product ";
+      $q_string .= "from inventory ";
+      $q_string .= "where inv_id = " . $formVars['tag_companyid'] . " ";
+      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inventory) > 0) {
+        $a_inventory = mysqli_fetch_array($q_inventory);
+      } else {
+        $a_inventory['inv_product'] = 0;
+      }
+
+      if (new_Mysql($db)) {
+        $q_string  = "select ANY_VALUE(tag_id) as tagid,tag_name ";
+      } else {
+        $q_string  = "select tag_id as tagid,tag_name ";
+      }
+      $q_string .= "from tags ";
+      $q_string .= "where tag_type = 3 ";
+      $q_string .= "group by tag_name ";
+      $q_string .= "order by tag_name ";
+      $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_tags) > 0) {
+        while ($a_tags = mysqli_fetch_array($q_tags)) {
+
+          $q_string  = "select tag_name ";
+          $q_string .= "from tags ";
+          $q_string .= "where tag_name = \"" . $a_tags['tag_name'] . "\" and tag_companyid = " . $a_inventory['inv_product'] . " and tag_type = 3 ";
+          $q_identity = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_identity) > 0) {
+            $output .= "<strong>";
+          }
+
+          $output .= $a_tags['tag_name'];
+
+          if (mysqli_num_rows($q_identity) > 0) {
+            $output .= "</strong>";
+          }
+
+          $output .= " ";
+        }
+      }
+
+      $output .= "</p>\n";
+
+      print "document.getElementById('Product_tags').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
+
+
+### Software Tags
+# this one is a bit different in that you have to get a list of software and then see if 
+# get a list of software owned by the tag_companyid
+# need the ID of the software installed on the server.
+      $output = "<t4>Software Tags</t4>\n";
+
+      $output .= "<p>\n";
+
+# get all the software keywords, sorted and uniq
+# then get the list of software associated with a server
+# then display all the keywords, highlighting the ones associated with the server being viewed
+
+      if (new_Mysql($db)) {
+        $q_string  = "select ANY_VALUE(tag_id) as tagid,tag_name ";
+      } else {
+        $q_string  = "select tag_id as tagid,tag_name ";
+      }
+      $q_string .= "from tags ";
+      $q_string .= "where tag_type = 4 ";
+      $q_string .= "group by tag_name ";
+      $q_string .= "order by tag_name ";
+      $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_tags) > 0) {
+        while ($a_tags = mysqli_fetch_array($q_tags)) {
+
+          $flag = 0;
+          $q_string  = "select svr_softwareid ";
+          $q_string .= "from svr_software ";
+          $q_string .= "where svr_companyid = " . $formVars['tag_companyid'] . " ";
+          $q_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_svr_software) > 0) {
+            while ($a_svr_software = mysqli_fetch_array($q_svr_software)) {
+
+              $q_string  = "select tag_name ";
+              $q_string .= "from tags ";
+              $q_string .= "where tag_name = \"" . $a_tags['tag_name'] . "\" and tag_companyid = " . $a_svr_software['svr_softwareid'] . " and tag_type = 4 ";
+              $q_identity = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              if (mysqli_num_rows($q_identity) > 0) {
+                $flag = 1;
+                $output .= "<strong>";
+                $output .= $a_tags['tag_name'];
+                $output .= "</strong>";
+              }
+            }
+          }
+          if ( $flag == 0) {
+            $output .= $a_tags['tag_name'];
+          }
+
+          $output .= " ";
+        }
+      }
+
+      $output .= "</p>\n";
+
+      print "document.getElementById('Software_tags').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
+
+
       if ($formVars['update'] == -3) {
 
         $q_string  = "select type_id,type_name ";
         $q_string .= "from tag_types ";
-        $q_string .= "where type_id > 1 ";   # 1 is Servers which is above. This is showing all the other tags that might be attached.
+        $q_string .= "where type_id > 4 ";   # 1 is Servers which is above. This is showing all the other tags that might be attached.
         $q_string .= "order by type_name ";
         $q_tag_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         if (mysqli_num_rows($q_tag_types) > 0) {
