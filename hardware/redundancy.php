@@ -65,7 +65,8 @@ function attach_file( p_script_url, update ) {
 
   af_url  = '?update='   + update;
 
-  af_url += "&red_text=" + encode_URI(af_form.red_text.value);
+  af_url += "&red_text="    + encode_URI(af_form.red_text.value);
+  af_url += "&red_default=" + af_form.red_default.value;
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
@@ -79,7 +80,8 @@ function update_file( p_script_url, update ) {
   uf_url  = '?update='   + update;
   uf_url += '&id='       + uf_form.id.value;
 
-  uf_url += "&red_text=" + encode_URI(uf_form.red_text.value);
+  uf_url += "&red_text="    + encode_URI(uf_form.red_text.value);
+  af_url += "&red_default=" + af_form.red_default.value;
 
   script = document.createElement('script');
   script.src = p_script_url + uf_url;
@@ -98,7 +100,7 @@ $(document).ready( function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 150,
+    height: 175,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -128,7 +130,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 150,
+    height: 175,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -186,7 +188,47 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<p>For a physical system, you can define the redundancy you wish for the interface.</p>
+<p>Redundancy when used with network interfaces generally means you're associating at least two physical or in 
+some cases, virtual interfaces into a bonded pair. This provides redundancy as each interface would be connected 
+to a different switch so that if a switch (or cable or interface) failed, the system would still be accessible. 
+Different vendors and operating systems use different approaches but all are effectively similar in that they 
+bond multiple interfaces into a single virtual one.</p>
+
+<p>Below I'll provide a quick description of each of the options to make it easier for you to track down the 
+purpose and configuration if necessary.</p>
+
+<ul>
+  <li>Adaptive Load Balancing (ALB) / Active/Active or Source Level Bonding (SLB). ALB is a Linux configuration 
+generally used as a balance-alb setting in LACP. SLB is more specific to Xen for Virtual Machines running on a 
+physical server with physical interfaces (PIF)</li>
+  <li>Auto Port Aggregation (APA). This is a HP-UX specific configuration used to bond at least two physical 
+interfaces into a single virtual interface.</li>
+  <li>Bond. This is the pretty standard method for pairing multiple physical interfaces.</li>
+  <li>EtherChannel is a port link aggregation technology or port-channel architecture used primarily on Cisco 
+switches. It allows grouping of several physical Ethernet links to create one logical Ethernet link for the 
+purpose of providing fault-tolerance and high-speed links between switches, routers and servers</li>
+  <li>IP network multipathing (IPMP) provides physical interface failure detection and transparent network 
+access failover for a system with multiple interfaces on the same IP link. IPMP also provides load spreading 
+of packets for systems with multiple interfaces.</li>
+  <li>Link Aggregation Control Protocol or LACP is one element of an IEEE specification (802.3ad) that provides 
+guidance on the practice of link aggregation for data connections. Importantly, LACP typically applies to 
+strategies that bundle individual links of Ethernet connections, and not wireless transfers. (Note that I've 
+used LACP on a physical server when created a Bridge interface used with KVM based servers.)</li>
+  <li>Multi-link trunking (MLT) is a link aggregation technology developed at Nortel in 1999. It allows grouping 
+several physical Ethernet links into one logical Ethernet link to provide fault-tolerance and high-speed links 
+between routers, switches, and servers.</li>
+  <li>System Fault Tolerance (SFT) is a fault tolerant system built into NetWare operating systems.
+  <ul>
+    <li>SFT Level I - Disk block level fault tolerance.</li>
+    <li>SFT Level II - Fault tolerance on the disk level. Effectively RAID level 1.</li>
+    <li>SFT Level III - Fault tolerance on the system level. Controllers connect two systems so that if one 
+fails, the second takes over seamlessly.</li>
+  </ul></li>
+  <li>Adapter teaming with Intel(r) Advanced Network Services (Intel(r) ANS) uses an intermediate driver to 
+group multiple physical ports. You can use teaming to add fault tolerance, load balancing, and link aggregation 
+features to a group of ports. Note that support for this ended with Windows Server 2012 R2.</li>
+  <li>Windows Teaming with nVidia is supported at Windows Server 2012 and above.</li>
+</ul>
 
 </div>
 
@@ -217,15 +259,20 @@ $(document).ready( function() {
 
 <p><strong>Network Redundancy Description</strong></p>
 
-<p>This page lists all the defined Media Types.</p>
+<p>This page lists all the defined Network Redundancies.</p>
 
-<p>To add a Media Type, click the Add Media Description button. This will bring up a dialog box which 
-you can use to add a Media Description.</p>
+<p>To add a Network Redundancy Description, click the Add Redundancy Description button. This will bring up a dialog box which 
+you can use to add a Network Redundancy Description.</p>
 
-<p>To edit an existing Media Description, click on an entry in the listing. A dialog box will be presented where you 
-can edit the current entry, or if there is a small difference, you can make changes and add a new Media Description.</p>
+<p>To edit an existing Network Redundancy Description, click on an entry in the listing. A dialog box will be presented where you 
+can edit the current entry, or if there is a small difference, you can make changes and add a new Network Redundancy Description.</p>
 
-<p>Note that under the Members colum is a number which indicates the number of times this Media Description is in use. 
+<p>The Default setting indicates this is the top displayed item in the menu and generally means that this isn't an 
+interface that's used for redundancy. The text can be anything descriptive. Note that when this is selected and saved, 
+the (r) won't be displayed, any interface tied to this interface will be returned to zero (aka no parent interface). In the 
+listing below, a Redundancy configured as a Default will be <span class="ui-state-highlight">highlighted</span>.</p>
+
+<p>Note that under the Members colum is a number which indicates the number of times this Network Redundancy Description is in use. 
 You cannot delete a Description as long as this value is greater than zero.</p>
 
 </div>
@@ -246,6 +293,9 @@ You cannot delete a Description as long as this value is greater than zero.</p>
 <tr>
   <td class="ui-widget-content">Network Redundancy Description: <input type="text" name="red_text" size="30"></td>
 </tr>
+<tr>
+  <td class="ui-widget-content">Default? <input type="checkbox" name="red_default"></td>
+</tr>
 </table>
 
 </form>
@@ -262,6 +312,9 @@ You cannot delete a Description as long as this value is greater than zero.</p>
 <table class="ui-styled-table">
 <tr>
   <td class="ui-widget-content">Network Redundancy Description: <input type="text" name="red_text" size="30"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Default? <input type="checkbox" name="red_default"></td>
 </tr>
 </table>
 
