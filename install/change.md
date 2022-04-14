@@ -1035,7 +1035,7 @@ Updated lnmt1cuomtool11 and inventory to this point.
 Updated int_redundancy. This is just the conversion part. New systems won't need to do this.
 
 alter table int_redundancy add column red_default int not null default 0;
-insert into int_redundancy set red_id = null,red_name = 'N/A', red_default = 1;
+insert into int_redundancy set red_id = null,red_name = 'Unassigned', red_default = 1;
 update int_redundancy set red_default = 1 where red_id = 12;
 
 For existing entries;
@@ -1044,4 +1044,16 @@ update interface set int_redundancy = 12 where int_redundancy = 0;
 
 Note that lnmt1cuomtool11 and bldr0cuomdev1 are already updated.
 
+
+### Timestamp 2022-04-14
+
+Now the rest of the interface information. 
+
+alter table int_media add column med_default int(10) not null default 0;
+alter table int_speed add column spd_default int(10) not null default 0 ;
+alter table int_duplex add column dup_default int(10) not null default 0;
+
+insert into int_media set med_id = null,med_name = "Unassigned", med_default = 1;
+insert into int_speed set spd_id = null,spd_name = "Unassigned", spd_default = 1;
+insert into int_duplex set dup_id = null,dup_name = "Unassigned", dup_default = 1;
 
