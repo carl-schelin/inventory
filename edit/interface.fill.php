@@ -33,11 +33,11 @@
       mysqli_free_result($q_interface);
 
       $inttypes      = return_Index($db, $a_interface['int_type'],       "select itp_id from int_types order by itp_id");
-      $intmedia      = return_Index($db, $a_interface['int_media'],      "select med_id from int_media order by med_text");
-      $intspeed      = return_Index($db, $a_interface['int_speed'],      "select spd_id from int_speed order by spd_text");
-      $intduplex     = return_Index($db, $a_interface['int_duplex'],     "select dup_id from int_duplex order by dup_text");
+      $intmedia      = return_Index($db, $a_interface['int_media'],      "select med_id from int_media order by med_default desc,med_text");
+      $intspeed      = return_Index($db, $a_interface['int_speed'],      "select spd_id from int_speed order by spd_default desc,spd_text");
+      $intduplex     = return_Index($db, $a_interface['int_duplex'],     "select dup_id from int_duplex order by dup_default desc,dup_text");
       $intintid      = return_Index($db, $a_interface['int_int_id'],     "select int_id from interface where int_companyid = " . $a_interface['int_companyid'] . " and int_redundancy > 0 order by int_face");
-      $intredundancy = return_Index($db, $a_interface['int_redundancy'], "select red_id from int_redundancy order by red_text");
+      $intredundancy = return_Index($db, $a_interface['int_redundancy'], "select red_id from int_redundancy order by red_default desc,red_text");
       $intaddress    = return_Index($db, $a_interface['int_ipaddressid'], "select ip_id from ipaddress order by ip_hostname,ip_ipv4");
 
       print "document.formInterfaceUpdate.int_face.value = '"      . mysqli_real_escape_string($db, $a_interface['int_face'])      . "';\n";
