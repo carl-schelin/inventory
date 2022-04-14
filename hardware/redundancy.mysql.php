@@ -21,18 +21,26 @@
 
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
-        $formVars['id']        = clean($_GET['id'],         10);
-        $formVars['red_text']  = clean($_GET['red_text'],  100);
+        $formVars['id']           = clean($_GET['id'],           10);
+        $formVars['red_text']     = clean($_GET['red_text'],    100);
+        $formVars['red_default']  = clean($_GET['red_default'],  10);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
         }
+        if ($formVars['red_default'] == 'true') {
+          $formVars['red_default'] = 1;
+        } else {
+          $formVars['red_default'] = 0;
+        }
+
 
         if (strlen($formVars['red_text']) > 0) {
           logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
-            "red_text     = \"" . $formVars['red_text'] . "\"";
+            "red_text     = \"" . $formVars['red_text']    . "\"," .
+            "red_default  =   " . $formVars['red_default'];
 
           if ($formVars['update'] == 0) {
             $q_string = "insert into int_redundancy set red_id = NULL, " . $q_string;
@@ -61,7 +69,7 @@
       $output .= "  <th class=\"ui-state-default\">Members</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select red_id,red_text ";
+      $q_string  = "select red_id,red_text,red_default ";
       $q_string .= "from int_redundancy ";
       $q_string .= "order by red_text";
       $q_int_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -83,6 +91,11 @@
             }
           }
 
+          $class = "ui-widget-content";
+          if ($a_int_redundancy['red_default']) {
+            $class = "ui-state-highlight";
+          }
+
           $output .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
             if ($total == 0) {
@@ -91,8 +104,8 @@
               $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>";
             }
           }
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_int_redundancy['red_text'] . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content delete\">"              . $total                              . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_int_redundancy['red_text'] . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"              . $total                              . "</td>";
           $output .= "</tr>";
         }
       } else {
