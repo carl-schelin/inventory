@@ -16,6 +16,11 @@
 
   $package = "software.php";
 
+  $formVars['type'] = '';
+  if (isset($_GET['type'])) {
+    $formVars['type'] = clean($_GET['type'], 40);
+  }
+
   logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
 # if help has not been seen yet,
@@ -64,6 +69,7 @@ function attach_file( p_script_url, update ) {
 
   af_url  = '?update='   + update;
 
+  uf_url += "&type="           + "<?php print $formVars['type']; ?>";
   af_url += "&sw_software="    + encode_URI(af_form.sw_software.value);
   af_url += "&sw_vendor="      + af_form.sw_vendor.value;
   af_url += "&sw_product="     + af_form.sw_product.value;
@@ -87,6 +93,7 @@ function update_file( p_script_url, update ) {
   uf_url  = '?update='   + update;
   uf_url += '&id='       + uf_form.id.value;
 
+  uf_url += "&type="           + "<?php print $formVars['type']; ?>";
   uf_url += "&sw_software="    + encode_URI(uf_form.sw_software.value);
   uf_url += "&sw_vendor="      + uf_form.sw_vendor.value;
   uf_url += "&sw_product="     + uf_form.sw_product.value;
@@ -104,7 +111,7 @@ function update_file( p_script_url, update ) {
 }
 
 function clear_fields() {
-  show_file('software.mysql.php?update=-1');
+  show_file('software.mysql.php?update=-1&type=<?php print $formVars['type']; ?>');
 }
 
 $(document).ready( function() {
