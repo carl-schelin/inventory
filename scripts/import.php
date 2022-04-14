@@ -557,12 +557,12 @@
               }
 
 
-see if the OS in $value[3] is in the software table.
-if not, get the type id for OS
-and get the vendor id for vendor
-and create the software entry
-then get the id
-and create the svr_software record.
+#see if the OS in $value[3] is in the software table.
+#if not, get the type id for OS
+#and get the vendor id for vendor
+#and create the software entry
+#then get the id
+#and create the svr_software record.
 
 
 
@@ -583,12 +583,11 @@ and create the svr_software record.
               if (mysqli_num_rows($q_vendors) > 0) {
                 $a_vendors = mysqli_fetch_array($q_vendors);
               } else {
-                $q_string  =
-                  "insert " .
-                  "into vendors " .
-                  "set " .
-                  "ven_id   = \"" . "null"  . \"," . 
-                  "ven_name = \"" . $vendor . \"";
+                $q_string  = "insert ";
+                $q_string .= "into vendors ";
+                $q_string .= "set ";
+                $q_string .= "ven_id   = \"" . "null"  . "\",";
+                $q_string .= "ven_name = \"" . $vendor . "\" ";
                 $q_vendors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
                 $a_vendors['ven_id'] = last_insert_id($db);
               }
