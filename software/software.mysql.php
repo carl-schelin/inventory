@@ -14,6 +14,7 @@
   if (isset($_SESSION['username'])) {
     $package = "software.mysql.php";
     $formVars['update']         = clean($_GET['update'],         10);
+    $formVars['type']           = clean($_GET['type'],           40);
 
     if ($formVars['update'] == '') {
       $formVars['update'] = -1;
@@ -167,6 +168,9 @@
       $q_string .= "left join support on support.sup_id = software.sw_supportid ";
       $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
       $q_string .= "left join department on department.dep_id = software.sw_department ";
+      if ($formVars['type'] != '') {
+        $q_string .= "where typ_name = \"" . $formVars['type'] . "\" ";
+      }
       $q_string .= $orderby;
       $q_software = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_software) > 0) {
@@ -176,6 +180,8 @@
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('software.del.php?id=" . $a_software['sw_id'] . "');\">";
           $svrstart  = "<a href=\"servers.php?id=" . $a_software['sw_id'] . "\" target=\"_blank\">";
           $linkend   = "</a>";
+
+          $linktype = "<a href=\"software.php?type="  . $a_software['typ_name'] . "\">";
 
           $sw_tags = '';
           $q_string  = "select tag_name ";
@@ -213,7 +219,7 @@
           $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_software['prod_name']     . $linkend . "</td>\n";
           $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_software['lic_product']   . $linkend . "</td>\n";
           $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_software['sup_company']   . $linkend . "</td>\n";
-          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_software['typ_name']      . $linkend . "</td>\n";
+          $output .= "<td class=\"ui-widget-content\">"        . $linktype  . $a_software['typ_name']      . $linkend . "</td>\n";
           $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_software['dep_name']      . $linkend . "</td>\n";
           $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $sw_tags                     . $linkend . "</td>\n";
           $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_software['sw_eol']        . $linkend . "</td>\n";
