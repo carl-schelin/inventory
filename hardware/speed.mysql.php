@@ -21,18 +21,25 @@
 
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
-        $formVars['id']        = clean($_GET['id'],         10);
-        $formVars['spd_text']  = clean($_GET['spd_text'],   30);
+        $formVars['id']           = clean($_GET['id'],            10);
+        $formVars['spd_text']     = clean($_GET['spd_text'],      30);
+        $formVars['spd_default']  = clean($_GET['spd_default'],   10);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
+        }
+        if ($formVars['spd_default'] == 'true') {
+          $formVars['spd_default'] = 1;
+        } else {
+          $formVars['spd_default'] = 0;
         }
 
         if (strlen($formVars['spd_text']) > 0) {
           logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
-            "spd_text     = \"" . $formVars['spd_text'] . "\"";
+            "spd_text     = \"" . $formVars['spd_text']     . "\"," .
+            "spd_default  =   " . $formVars['spd_default'];
 
           if ($formVars['update'] == 0) {
             $q_string = "insert into int_speed set spd_id = NULL, " . $q_string;
@@ -61,7 +68,7 @@
       $output .= "  <th class=\"ui-state-default\">Members</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select spd_id,spd_text ";
+      $q_string  = "select spd_id,spd_text,spd_default ";
       $q_string .= "from int_speed ";
       $q_string .= "order by spd_text";
       $q_int_speed = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -83,16 +90,21 @@
             }
           }
 
+          $class = "ui-widget-content";
+          if ($a_int_speed['spd_default']) {
+            $class = "ui-state-highlight";
+          }
+
           $output .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
             if ($total == 0) {
-              $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel . "</td>";
+              $output .= "  <td class=\"" . $class . " delete\">" . $linkdel . "</td>";
             } else {
-              $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>";
+              $output .= "  <td class=\"" . $class . " delete\">Members &gt; 0</td>";
             }
           }
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_int_speed['spd_text'] . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content delete\">"              . $total                              . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_int_speed['spd_text'] . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"              . $total                              . "</td>";
           $output .= "</tr>";
         }
       } else {

@@ -66,7 +66,7 @@ function attach_file( p_script_url, update ) {
   af_url  = '?update='   + update;
 
   af_url += "&red_text="    + encode_URI(af_form.red_text.value);
-  af_url += "&red_default=" + af_form.red_default.value;
+  af_url += "&red_default=" + af_form.red_default.checked;
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
@@ -81,7 +81,7 @@ function update_file( p_script_url, update ) {
   uf_url += '&id='       + uf_form.id.value;
 
   uf_url += "&red_text="    + encode_URI(uf_form.red_text.value);
-  af_url += "&red_default=" + af_form.red_default.value;
+  uf_url += "&red_default=" + uf_form.red_default.checked;
 
   script = document.createElement('script');
   script.src = p_script_url + uf_url;

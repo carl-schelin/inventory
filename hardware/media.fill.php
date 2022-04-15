@@ -21,7 +21,7 @@
     if (check_userlevel($db, $AL_Edit)) {
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from int_media");
 
-      $q_string  = "select med_text ";
+      $q_string  = "select med_text,med_default ";
       $q_string .= "from int_media ";
       $q_string .= "where med_id = " . $formVars['id'];
       $q_int_media = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -29,6 +29,12 @@
       mysqli_free_result($q_int_media);
 
       print "document.formUpdate.med_text.value = '" . mysqli_real_escape_string($db, $a_int_media['med_text']) . "';\n";
+
+      if ($a_int_media['med_default']) {
+        print "document.formUpdate.med_default.checked = true;\n";
+      } else {
+        print "document.formUpdate.med_default.checked = false;\n";
+      }
 
       print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 

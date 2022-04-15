@@ -21,7 +21,7 @@
     if (check_userlevel($db, $AL_Edit)) {
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from int_duplex");
 
-      $q_string  = "select dup_text ";
+      $q_string  = "select dup_text,dup_default ";
       $q_string .= "from int_duplex ";
       $q_string .= "where dup_id = " . $formVars['id'];
       $q_int_duplex = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -29,6 +29,12 @@
       mysqli_free_result($q_int_duplex);
 
       print "document.formUpdate.dup_text.value = '" . mysqli_real_escape_string($db, $a_int_dupex['dup_text']) . "';\n";
+
+      if ($a_int_duplex['dup_default']) {
+        print "document.formUpdate.dup_default.checked = true;\n";
+      } else {
+        print "document.formUpdate.dup_default.checked = false;\n";
+      }
 
       print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 

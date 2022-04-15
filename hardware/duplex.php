@@ -65,7 +65,8 @@ function attach_file( p_script_url, update ) {
 
   af_url  = '?update='   + update;
 
-  af_url += "&dup_text=" + encode_URI(af_form.dup_text.value);
+  af_url += "&dup_text="      + encode_URI(af_form.dup_text.value);
+  af_url += "&dup_default="   + af_form.dup_default.checked;
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
@@ -79,7 +80,8 @@ function update_file( p_script_url, update ) {
   uf_url  = '?update='   + update;
   uf_url += '&id='       + uf_form.id.value;
 
-  uf_url += "&dup_text=" + encode_URI(uf_form.dup_text.value);
+  uf_url += "&dup_text="      + encode_URI(uf_form.dup_text.value);
+  uf_url += "&dup_default="   + uf_form.dup_default.checked;
 
   script = document.createElement('script');
   script.src = p_script_url + uf_url;
@@ -98,7 +100,7 @@ $(document).ready( function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 150,
+    height: 175,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -128,7 +130,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 150,
+    height: 175,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -225,6 +227,10 @@ you can use to add a Duplex Description.</p>
 <p>To edit an existing Duplex Description, click on an entry in the listing. A dialog box will be presented where you 
 can edit the current entry, or if there is a small difference, you can make changes and add a new Duplex Description.</p>
 
+<p>The Default setting indicates this is the top displayed item in the menu and generally means that this isn't an
+interface that's used to define duplex. The text can be anything descriptive. In the listing below, a Network Duplex
+configured as a Default will be <span class="ui-state-highlight">highlighted</span>.</p>
+
 <p>Note that under the Members colum is a number which indicates the number of times this Duplex Description is in use. 
 You cannot delete a Description as long as this value is greater than zero.</p>
 
@@ -246,6 +252,9 @@ You cannot delete a Description as long as this value is greater than zero.</p>
 <tr>
   <td class="ui-widget-content">Network Duplex Description: <input type="text" name="dup_text" size="30"></td>
 </tr>
+<tr>
+  <td class="ui-widget-content">Default? <input type="checkbox" name="dup_default"></td>
+</tr>
 </table>
 
 </form>
@@ -262,6 +271,9 @@ You cannot delete a Description as long as this value is greater than zero.</p>
 <table class="ui-styled-table">
 <tr>
   <td class="ui-widget-content">Network Duplex Description: <input type="text" name="dup_text" size="30"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Default? <input type="checkbox" name="dup_default"></td>
 </tr>
 </table>
 

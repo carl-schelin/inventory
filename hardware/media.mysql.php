@@ -21,18 +21,25 @@
 
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
-        $formVars['id']        = clean($_GET['id'],         10);
-        $formVars['med_text']  = clean($_GET['med_text'],   30);
+        $formVars['id']           = clean($_GET['id'],            10);
+        $formVars['med_text']     = clean($_GET['med_text'],      30);
+        $formVars['med_default']  = clean($_GET['med_default'],   10);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
+        }
+        if ($formVars['med_default'] == 'true') {
+          $formVars['med_default'] = 1;
+        } else {
+          $formVars['med_default'] = 0;
         }
 
         if (strlen($formVars['med_text']) > 0) {
           logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
-            "med_text     = \"" . $formVars['med_text'] . "\"";
+            "med_text     = \"" . $formVars['med_text']    . "\"," .
+            "med_default  =   " . $formVars['med_default'];
 
           if ($formVars['update'] == 0) {
             $q_string = "insert into int_media set med_id = NULL, " . $q_string;
@@ -61,7 +68,7 @@
       $output .= "  <th class=\"ui-state-default\">Members</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select med_id,med_text ";
+      $q_string  = "select med_id,med_text,med_default ";
       $q_string .= "from int_media ";
       $q_string .= "order by med_text";
       $q_int_media = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -82,17 +89,21 @@
               $total++;
             }
           }
+          $class = "ui-widget-content";
+          if ($a_int_media['med_default']) {
+            $class = "ui-state-highlight";
+          }
 
           $output .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
             if ($total == 0) {
-              $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel . "</td>";
+              $output .= "  <td class=\"" . $class . " delete\">" . $linkdel . "</td>";
             } else {
-              $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>";
+              $output .= "  <td class=\"" . $class . " delete\">Members &gt; 0</td>";
             }
           }
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_int_media['med_text'] . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content delete\">"              . $total                              . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_int_media['med_text'] . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"              . $total                              . "</td>";
           $output .= "</tr>";
         }
       } else {
