@@ -1053,7 +1053,12 @@ alter table int_media add column med_default int(10) not null default 0;
 alter table int_speed add column spd_default int(10) not null default 0 ;
 alter table int_duplex add column dup_default int(10) not null default 0;
 
-insert into int_media set med_id = null,med_name = "Unassigned", med_default = 1;
-insert into int_speed set spd_id = null,spd_name = "Unassigned", spd_default = 1;
-insert into int_duplex set dup_id = null,dup_name = "Unassigned", dup_default = 1;
+insert into int_media set med_id = null,med_text = "Unassigned", med_default = 1;
+insert into int_speed set spd_id = null,spd_text = "Unassigned", spd_default = 1;
+insert into int_duplex set dup_id = null,dup_text = "Unassigned", dup_default = 1;
+
+### Timestamp 2022-04-15
+
+Updated lnmt1cuomtool11
+
 
