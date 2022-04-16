@@ -13,8 +13,9 @@
 
   if (isset($_SESSION['username'])) {
     $package = "ipaddress.mysql.php";
-    $formVars['update'] = clean($_GET['update'], 10);
-    $formVars['network'] = clean($_GET['network'], 10);
+    $formVars['update']  = clean($_GET['update'],   10);
+    $formVars['network'] = clean($_GET['network'],  10);
+    $formVars['sort']    = clean($_GET['sort'],     50);
 
     if ($formVars['update'] == '') {
       $formVars['update'] = -1;
@@ -123,18 +124,27 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
+      $passthrough = "&network=" . $formVars['network'] . " ";
+      $orderv4 = "ip_ipv4";
+      if ($formVars['sort'] != '') {
+        $orderv4 = $formVars['sort'];
+      }
+      if ($formVars['sort'] == 'ip_ipv6') {
+        $orderv4 = "ip_ipv4";
+      }
+
       $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete IP Address</th>\n";
       }
-      $output .= "  <th class=\"ui-state-default\">IPv4 Address/Mask</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Hostname</th>\n";
-      $output .= "  <th class=\"ui-state-default\">IP Zone</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Type</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Description</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Created By</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Date</th>\n";
+      $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=ip_ipv4"            . $passthrough . "\">IPv4 Address/Mask</a></th>\n";
+      $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=ip_hostname"        . $passthrough . "\">Hostname</a></th>\n";
+      $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=sub_name"           . $passthrough . "\">IP Zone</a></th>\n";
+      $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=ip_type"            . $passthrough . "\">Type</a></th>\n";
+      $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=ip_description"     . $passthrough . "\">Description</a></th>\n";
+      $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=usr_last,usr_first" . $passthrough . "\">Created By</a></th>\n";
+      $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=ip_timestamp"       . $passthrough . "\">Date</a></th>\n";
       $output .= "</tr>\n";
 
       $q_string  = "select ip_id,ip_ipv4,ip_hostname,ip_domain,net_mask,ip_type,usr_first,usr_last,ip_timestamp,ip_description,sub_name ";
@@ -144,7 +154,7 @@
       $q_string .= "left join network  on network.net_id = ipaddress.ip_network ";
       $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
       $q_string .= "where ip_ipv4 != '' " . $where;
-      $q_string .= "order by ip_ipv4 ";
+      $q_string .= "order by " . $orderv4 . " ";
       $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_ipaddress) > 0) {
         while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
@@ -191,18 +201,26 @@
 
       mysqli_free_result($q_ipaddress);
 
+      $orderv6 = "ip_ipv6";
+      if ($formVars['sort'] != '') {
+        $orderv6 = $formVars['sort'];
+      }
+      if ($formVars['sort'] == 'ip_ipv4') {
+        $orderv6 = "ip_ipv6";
+      }
+
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete IP Address</th>\n";
       }
-      $output .= "  <th class=\"ui-state-default\">IPv6 Address/Mask</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Hostname</th>\n";
-      $output .= "  <th class=\"ui-state-default\">IP Zone</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Type</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Description</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Created By</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Date</th>\n";
+      $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=ip_ipv6"            . $passthrough . "\">IPv6 Address/Mask</a></th>\n";
+      $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=ip_hostname"        . $passthrough . "\">Hostname</a></th>\n";
+      $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=sub_name"           . $passthrough . "\">IP Zone</a></th>\n";
+      $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=ip_type"            . $passthrough . "\">Type</a></th>\n";
+      $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=ip_description"     . $passthrough . "\">Description</a></th>\n";
+      $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=usr_last,usr_first" . $passthrough . "\">Created By</a></th>\n";
+      $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=ip_timestamp"       . $passthrough . "\">Date</a></th>\n";
       $output .= "</tr>\n";
 
       $q_string  = "select ip_id,ip_ipv6,ip_hostname,ip_domain,net_mask,ip_type,usr_first,usr_last,ip_timestamp,ip_description,sub_name ";
@@ -211,7 +229,7 @@
       $q_string .= "left join sub_zones  on sub_zones.sub_id = ipaddress.ip_subzone ";
       $q_string .= "left join network  on network.net_id = ipaddress.ip_network ";
       $q_string .= "where ip_ipv6 != '' " . $where;
-      $q_string .= "order by ip_ipv6 ";
+      $q_string .= "order by " . $orderv6 . " ";
       $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_ipaddress) > 0) {
         while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
