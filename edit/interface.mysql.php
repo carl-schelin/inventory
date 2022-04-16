@@ -221,14 +221,15 @@
       $output .= "</tr>\n";
 
       $mgtcount = 0;
-      $q_string  = "select int_id,int_server,int_domain,int_companyid,int_redundancy,int_management,int_login,";
+      $q_string  = "select int_id,int_server,int_domain,int_companyid,red_text,red_default,int_management,int_login,";
       $q_string .= "int_backup,int_face,int_addr,int_eth,int_mask,int_switch,int_vaddr,int_veth,int_vgate,";
-      $q_string .= "int_redundancy,int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,";
+      $q_string .= "int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,";
       $q_string .= "itp_description,int_gate,int_update,usr_name,int_nagios,int_openview,int_ip6,ip_ipv4 ";
       $q_string .= "from interface ";
       $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
       $q_string .= "left join ipaddress on ipaddress.ip_id = interface.int_ipaddressid ";
       $q_string .= "left join users on users.usr_id = interface.int_user ";
+      $q_string .= "left join int_redundancy on int_redundancy.red_id = interface.int_redundancy ";
       $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = 0 ";
       $q_string .= "order by int_face,int_addr,int_server";
       $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -319,10 +320,11 @@
             $checked = "&#x2713;";
           }
           $redundancy = '';
-          if ($a_interface['int_redundancy'] > 0) {
+# if not one of the default interfaces, then it's redundant
+          if ($a_interface['red_default'] == 0) {
             $redundancy = ' (r)';
 # new bridge interface
-            if ($a_interface['int_redundancy'] == 12) {
+            if ($a_interface['red_text'] == "LACP") {
               $redundancy = ' (b)';
             }
           }
@@ -387,10 +389,11 @@
           $q_string .= "int_eth,int_mask,int_switch,int_groupname,int_vaddr,int_veth,int_vgate,";
           $q_string .= "int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,";
           $q_string .= "itp_description,int_gate,int_update,usr_name,int_nagios,int_openview,";
-          $q_string .= "int_redundancy,int_management,int_backup,int_ip6,int_login ";
+          $q_string .= "red_text,red_default,int_management,int_backup,int_ip6,int_login ";
           $q_string .= "from interface ";
           $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
           $q_string .= "left join users on users.usr_id = interface.int_user ";
+          $q_string .= "left join int_redundancy on int_redundancy.red_id = interface.int_redundancy ";
           $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = " . $a_interface['int_id'] . " ";
           $q_string .= "order by int_face,int_addr,int_server";
           $q_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -481,10 +484,11 @@
                 $checked = "&#x2713;";
               }
               $redundancy = '';
-              if ($a_redundancy['int_redundancy'] > 0) {
+# basically if not a default interface, then redundancy exists
+              if ($a_redundancy['red_default'] == 0) {
                 $redundancy = ' (r)';
 # new bridge interface
-                if ($a_redundancy['int_redundancy'] == 12) {
+                if ($a_redundancy['red_text'] == 'LACP') {
                   $redundancy = ' (b)';
                 }
               }
@@ -550,10 +554,11 @@
 # Display any secondary redundancy memberships here
               $q_string  = "select int_id,int_server,int_domain,int_companyid,int_face,int_addr,int_eth,int_mask,int_switch,int_groupname,int_vaddr,int_veth,int_vgate,";
               $q_string .= "int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,itp_description,int_gate,int_update,usr_name,";
-              $q_string .= "int_nagios,int_openview,int_management,int_backup,int_ip6,int_login ";
+              $q_string .= "red_text,red_default,int_nagios,int_openview,int_management,int_backup,int_ip6,int_login ";
               $q_string .= "from interface ";
               $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
               $q_string .= "left join users on users.usr_id = interface.int_user ";
+              $q_string .= "left join int_redundancy on int_redundancy.red_id = interface.int_redundancy ";
               $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = " . $a_redundancy['int_id'] . " ";
               $q_string .= "order by int_face,int_addr,int_server";
               $q_secondary = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -644,10 +649,11 @@
                     $checked = "&#x2713;";
                   }
                   $redundancy = '';
-                  if ($a_secondary['int_redundancy'] > 0) {
+# basically if not a default value which is 'no redundancy', then it's redundant
+                  if ($a_secondary['red_default'] == 0) {
                     $redundancy = ' (r)';
 # new bridge interface
-                    if ($a_secondary['int_redundancy'] == 12) {
+                    if ($a_secondary['red_text'] == 'LACP') {
                       $redundancy = ' (b)';
                     }
                   }
@@ -733,7 +739,8 @@
 
       $q_string  = "select int_id,int_face,int_ip6 ";
       $q_string .= "from interface ";
-      $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_redundancy > 0 ";
+      $q_string .= "left join int_redundancy on int_redundancy.red_id = interface.int_redundancy ";
+      $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and red_default = 0 ";
       $q_string .= "order by int_ip6,int_face";
       $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_interface) > 0) {
