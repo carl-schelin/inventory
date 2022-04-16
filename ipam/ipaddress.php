@@ -22,6 +22,10 @@
   if (isset($_GET['network'])) {
     $formVars['net_id'] = clean($_GET['network'], 10);
   }
+  $formVars['sort'] = '';
+  if (isset($_GET['sort'])) {
+    $formVars['sort'] = clean($_GET['sort'], 40);
+  }
 
 # if help has not been seen yet,
   if (show_Help($db, $Sitepath . "/" . $package)) {
@@ -109,7 +113,7 @@ function update_file( p_script_url, update ) {
 }
 
 function clear_fields() {
-  show_file('ipaddress.mysql.php?update=-1&network=<?php print $formVars['net_id']; ?>');
+  show_file('ipaddress.mysql.php?update=-1&network=<?php print $formVars['net_id']; ?>&sort=<?php print $formVars['sort']; ?>');
 }
 
 $(document).ready( function() {
