@@ -45,9 +45,9 @@
 
 # if your group matches the cert group for the item or if you're in webapps (group 25) or if the user is an admin
       if (check_grouplevel($db, $GRP_WebApps)) {
-        print "document.formUpdate.cert_group[" . ($group - 1) . "].selected = true;\n";
+        print "document.formUpdate.cert_group[" . $group . "].selected = true;\n";
       } else {
-        print "document.formUpdate.cert_group.value = " . ($group - 1) . ";\n";
+        print "document.formUpdate.cert_group.value = " . $group . ";\n";
       }
 
       print "document.formUpdate.cert_ca[" . $cert . "].selected = true;\n";
