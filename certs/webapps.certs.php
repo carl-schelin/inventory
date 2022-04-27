@@ -12,6 +12,13 @@
 
   logaccess($db, $formVars['uid'], $package, "Accessing script");
 
+# if help has not been seen yet,
+  if (show_Help($db, $Sitepath . "/" . $package)) {
+    $display = "display: block";
+  } else {
+    $display = "display: none";
+  }
+
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -35,6 +42,44 @@
 <?php include($Sitepath . '/topmenu.end.php'); ?>
 
 <div id="main">
+
+<table class="ui-styled-table">
+  <th class="ui-state-default">Certificate Viewing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('cert-viewing-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="cert-viewing-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+<p><strong>Certificate Viewing</strong></p>
+
+<p>This page provides the viewing user a list of all the certificates currently being managed in addition to a list of services and servers that use the certificate.</p>
+
+<p>The report displays a single line describing the certificate.</p>
+
+<ul>
+  <li><strong>Description</strong>> - A description of the certificate.</li>
+  <li><strong>Expiration</strong> - The certificate expiration date. The certificate line will be <span class="ui-state-highlight">highlighted</span> 
+if the expiration date is within 60 days and <span class="ui-state-error">highlighted</span> if the certificate has expired.</li>
+  <li><strong>Authority</strong> - The name of the certificate authority for this certificate.</li>
+  <li><strong>Certificate Manager</strong> - The team that manages the certificate.</li>
+</ul>
+
+<p>This can be followed by one or more lines listing the services or server that uses the certicate.</p>
+
+<ul>
+  <li><strong>Server Name</strong>> - The name of the server or service that uses this certificate.</li>
+  <li><strong>Software</strong> - The software that is configured with this certificate.</li>
+  <li><strong>Product</strong> - The company product that will need impacted if the certificate expires.</li>
+  <li><strong>Responsible Group</strong> - The group that manages this service or server and will need to be contacted to get the certificate updated.</li>
+</ul>
+
+</div>
+
+</div>
+
 
 <table class="ui-styled-table">
 <tr>
@@ -76,7 +121,7 @@
       print "  <td" . $class . " title=\"" . $a_certs['cert_url'] . "\">" . $a_certs['cert_desc']      . "</td>";
       print "  <td" . $class . ">"                                        . $a_certs['cert_expire']    . "</td>";
       print "  <td" . $class . ">"                                        . $a_certs['cert_authority'] . "</td>";
-      print "  <td" . $class . ">"                                        . $a_certs['grp_name']       . "</td>";
+      print "  <td" . $class . " colspan=\"2\">"                                        . $a_certs['grp_name']       . "</td>";
       print "</tr>";
 
       $q_string  = "select svr_id,inv_name,sw_software,prod_name,grp_name ";
@@ -94,7 +139,7 @@
           print "  <td class=\"ui-widget-content\">--" . $a_svr_software['inv_name']    . "</td>\n";
           print "  <td class=\"ui-widget-content\">"   . $a_svr_software['sw_software'] . "</td>\n";
           print "  <td class=\"ui-widget-content\">"   . $a_svr_software['prod_name']   . "</td>\n";
-          print "  <td class=\"ui-widget-content\">"   . $a_svr_software['grp_name']    . "</td>\n";
+          print "  <td class=\"ui-widget-content\" colspan=\"2\">"   . $a_svr_software['grp_name']    . "</td>\n";
           print "</tr>\n";
 
         }
@@ -102,7 +147,7 @@
     }
   } else {
       print "<tr>";
-      print "  <td class=\"ui-widget-content\" colspan=\"4\">No Certificates Defined</td>\n";
+      print "  <td class=\"ui-widget-content\" colspan=\"5\">No Certificates Defined</td>\n";
       print "</tr>";
   }
 
