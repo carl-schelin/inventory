@@ -29,7 +29,7 @@
       $a_users = mysqli_fetch_array($q_users);
       mysqli_free_result($q_users);
 
-      $theme    = return_Index($db, $a_users['usr_theme'],    "select theme_id from themes order by theme_title") - 1;
+      $theme    = return_Index($db, $a_users['usr_theme'],    "select theme_id from themes order by theme_title");
       $manager  = return_Index($db, $a_users['usr_manager'],  "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
       $title    = return_Index($db, $a_users['usr_title'],    "select tit_id from titles order by tit_name");
 
