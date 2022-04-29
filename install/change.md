@@ -638,8 +638,6 @@ Fixed missing default setting for a blank drop down menu.
 For the converted systems, get the first server id in the inventory and delete all software on servers that don't exist.
 For a new site, this isn't necessary.
 
-Then run the inventory/software/migrate.php script to change ownerships to the proper table
-
 create table svr_software (
   svr_id int(10) not null auto_increment,
   svr_companyid int(10) not null default 0,
@@ -702,6 +700,7 @@ insert into sw_types set typ_id = null,typ_name = 'Vendor';
 insert into sw_types set typ_id = null,typ_name = 'Web Server';
 insert into sw_types set typ_id = null,typ_name = 'Wiki';
 
+Then run the inventory/software/migrate.php script to change ownerships to the proper table
 
 alter table software drop column sw_companyid;
 alter table software drop column sw_notes;
@@ -857,6 +856,11 @@ update software set sw_vendor = 100 where sw_vendor = 'Unknown: OpenBSD 6.8';
 update software set sw_vendor = 43 where sw_vendor = 'Unknown: Unknown';
 update software set sw_vendor = 97 where sw_vendor = 'FreeBSD';
 
+Check the table to see if there are any unassigned vendors.
+
+select sw_vendor from software;
+
+If not, continue.
 
 create table vendors (
   ven_id int(10) not null auto_increment,
@@ -966,6 +970,7 @@ insert into vendors set ven_id = null, ven_name = 'FreeBSD';
 insert into vendors set ven_id = null, ven_name = 'MicroStrategy';
 insert into vendors set ven_id = null, ven_name = 'CoreOS';
 insert into vendors set ven_id = null, ven_name = 'OpenBSD';
+insert into vendors set ven_id = null, ven_name = 'HPE';
 
 
 alter table software change sw_vendor sw_vendor int(10) not null default 0;
@@ -1022,6 +1027,7 @@ update models set mod_vendor = 38 where mod_vendor = 'Veritas';
 update models set mod_vendor = 39 where mod_vendor = 'VMWare';
 update models set mod_vendor = 40 where mod_vendor = 'Watchguard';
 update models set mod_vendor = 41 where mod_vendor = 'Western Digital' or mod_vendor = 'Western Digitial';
+update models set mod_vendor = 101 where mod_vendor = 'HPE';
 
 
 alter table models change mod_vendor mod_vendor int(10) not null default 0;
@@ -1035,12 +1041,12 @@ Updated lnmt1cuomtool11 and inventory to this point.
 Updated int_redundancy. This is just the conversion part. New systems won't need to do this.
 
 alter table int_redundancy add column red_default int not null default 0;
-insert into int_redundancy set red_id = null,red_name = 'Unassigned', red_default = 1;
-update int_redundancy set red_default = 1 where red_id = 12;
+insert into int_redundancy set red_id = null,red_text = 'Unassigned', red_default = 1;
+update int_redundancy set red_default = 1 where red_id = 13;
 
 For existing entries;
 
-update interface set int_redundancy = 12 where int_redundancy = 0;
+update interface set int_redundancy = 13 where int_redundancy = 0;
 
 Note that lnmt1cuomtool11 and bldr0cuomdev1 are already updated.
 
@@ -1060,5 +1066,13 @@ insert into int_duplex set dup_id = null,dup_text = "Unassigned", dup_default = 
 ### Timestamp 2022-04-15
 
 Updated lnmt1cuomtool11
+
+### Timestamp 2022-04-26
+
+Updated remote inventory
+
+Removed all the license information. Only needed when transfering the database vs a brand new installation.
+
+delete from licenses;
 
 
