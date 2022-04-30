@@ -30,24 +30,31 @@
 
       $users = return_Index($db, $a_images['img_owner'], "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
 
-      print "document.images.img_title.value = '" . mysqli_real_escape_string($db, $a_images['img_title'])    . "';\n";
-      print "document.images.img_file.value = '"  . mysqli_real_escape_string($db, $a_images['img_file'])     . "';\n";
-      print "document.images.img_date.value = '"  . mysqli_real_escape_string($db, $a_images['img_date'])     . "';\n";
+      print "document.formUpdate.img_title.value = '" . mysqli_real_escape_string($db, $a_images['img_title'])    . "';\n";
+      print "document.formUpdate.img_file.value = '"  . mysqli_real_escape_string($db, $a_images['img_file'])     . "';\n";
+      print "document.formUpdate.img_date.value = '"  . mysqli_real_escape_string($db, $a_images['img_date'])     . "';\n";
 
       if ($users > 0) {
-        print "document.images.img_owner['"  . $users                  . "'].selected = true;\n";
+        print "document.formUpdate.img_owner['"  . $users                  . "'].selected = true;\n";
       }
-      if ($a_images['img_facing'] > 0) {
-        print "document.images.img_facing['" . $a_images['img_facing'] . "'].checked  = true;\n";
+      if ($a_image['img_facing']) {
+        print "document.formUpdate.img_facing['" . $a_images['img_facing'] . "'].checked  = true;\n";
+      } else {
+        print "document.formUpdate.img_facing['" . $a_images['img_facing'] . "'].checked  = true;\n";
       }
 
-      print "document.images.id.value = " . $formVars['id'] . ";\n";
+      print "var cell = document.getElementById('image_name');\n";
+      if ($a_images['img_file'] == '') {
+        print "cell.innerHTML = 'No image found';\n";
+      } else {
+        if ( file_exists($Picturepath . "/" . $a_images['img_file'])) {
+          print "cell.innerHTML = '<img src=\"" . $Pictureroot . "/" . $a_images['img_file'] . "\" width=\"500\">';\n";
+        } else {
+          print "cell.innerHTML = 'Invalid Image Name';\n";
+        }
+      }
 
-      print "document.images.update.disabled = false;\n";
-
-#      $output .= "<div id="main">\n"
-#      $output .= "<center><a href=\"" . $Pictureroot . "/" . $a_images['img_file'] . "\"><img src=\"" . $Pictureroot . "/" . $a_images['img_file'] . "\" width=\"800\"></a></center>\n";
-#      $output .= "</div>\n";
+      print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
