@@ -42,19 +42,15 @@
             "img_date   = \"" . $formVars['img_date']   . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into images set img_id = NULL, " . $q_string;
-            $message = "Image added.";
+            $q_string = "insert into images set img_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update images set " . $q_string . " where img_id = " . $formVars['id'];
-            $message = "Image updated.";
+            $q_string = "update images set " . $q_string . " where img_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['img_file']);
 
-          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
-
-          print "alert('" . $message . "');\n";
+          $q_image = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&called=" . $called . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -63,44 +59,13 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
+      $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\">Image Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('image-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"image-listing-help\" style=\"display: none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Image Listing</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li><strong>Editing</strong> - Click on an Image to edit it.</li>\n";
-      $output .= "    <li><strong>Highlighted</strong> - A line that is <span class=\"ui-state-highlight\">highlighted</span> indicates an entry where the file is missing.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Notes</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li>Click the <strong>Image Management</strong> title bar to toggle the <strong>Image Form</strong>.</li>\n";
-      $output .= "    <li>Click the <strong>File Management</strong> title bar to toggle the <strong>File Form</strong>.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\">Del</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Id</th>\n";
+      $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Image</th>\n";
       $output .= "  <th class=\"ui-state-default\">Description</th>\n";
       $output .= "  <th class=\"ui-state-default\">Image Name</th>\n";
       $output .= "  <th class=\"ui-state-default\">Image Facing</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Image Members</th>\n";
       $output .= "  <th class=\"ui-state-default\">Image Date</th>\n";
       $output .= "  <th class=\"ui-state-default\">Image Owner</th>\n";
       $output .= "</tr>\n";
@@ -113,38 +78,67 @@
       if (mysqli_num_rows($q_images) > 0) {
         while ($a_images = mysqli_fetch_array($q_images)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('image.fill.php?id="  . $a_images['img_id'] . "');showDiv('image-hide');\">";
-          $linkdel   = "<a href=\"#\" onclick=\"delete_line('image.del.php?id=" . $a_images['img_id'] . "');\">";
-          $linkend   = "</a>";
-
-          if ($a_images['img_facing'] == 1) {
-            $facing = "Front";
-          } else {
-            $facing = "Rear";
-          }
+          $linkstart  = "<a href=\"#\" onclick=\"show_file('image.fill.php?id="  . $a_images['img_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $totalstart = "<a href=\"#\" onclick=\"show_file('image.servers.php?id="  . $a_images['img_id'] . "');jQuery('#dialogServers').dialog('open');return false;\">";
+          $linkdel    = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('image.del.php?id=" . $a_images['img_id'] . "');\">";
+          $linkend    = "</a>";
 
           $class = "ui-state-highlight";
           if (file_exists($Picturepath . "/" . $a_images['img_file'])) {
             $class = "ui-widget-content";
           }
 
+          $title = $a_images['img_title'];
+          if ($a_images['img_title'] == '') {
+            $title = "Edit Description";
+          }
+
+          $total = 0;
+          if ($a_images['img_facing'] == 1) {
+            $facing = "Front";
+            $q_string  = "select inv_id ";
+            $q_string .= "from inventory ";
+            $q_string .= "where inv_front = " . $a_images['img_id'] . " ";
+            $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            if (mysqli_num_rows($q_inventory) > 0) {
+              while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+                $total++;
+              }
+            }
+          } else {
+            $facing = "Rear";
+            $q_string  = "select inv_id ";
+            $q_string .= "from inventory ";
+            $q_string .= "where inv_rear = " . $a_images['img_id'] . " ";
+            $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            if (mysqli_num_rows($q_inventory) > 0) {
+              while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+                $total++;
+              }
+            }
+          }
+
           $output .= "<tr>";
           if ($a_images['img_owner'] == $_SESSION['uid'] || check_userlevel($db, $AL_Admin)) {
-            $output .= "  <td class=\"" . $class . " delete\">" . $linkdel   . 'x'                          . $linkend . "</td>";
+            if ($total == 0) {
+              $output .= "  <td class=\"" . $class . " delete\">" . $linkdel . "</td>";
+            } else {
+              $output .= "  <td class=\"" . $class . " delete\">Members &gt; 0</td>";
+            }
           } else {
-            $output .= "  <td class=\"" . $class . " delete\">" .              '--'                                    . "</td>";
+            $output .= "  <td class=\"" . $class . " delete\">" . '--'     . "</td>";
           }
-          $output .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_images['img_id']                                  . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_images['img_title']                               . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_images['img_file']                                . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $facing                                              . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_images['img_date']                                . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_images['usr_first'] . " " . $a_images['usr_last'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart  . $title                                    . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"                      . $a_images['img_file']                                . "</td>\n";
+          $output .= "  <td class=\"" . $class . " delete\">"               . $facing                                              . "</td>\n";
+          $output .= "  <td class=\"" . $class . " delete\">" . $totalstart . $total                                    . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . " delete\">"               . $a_images['img_date']                                . "</td>\n";
+          $output .= "  <td class=\"" . $class . " delete\">"               . $a_images['usr_first'] . " " . $a_images['usr_last'] . "</td>\n";
           $output .= "</tr>";
         }
       } else {
         $output .= "<tr>";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"8\">No records found.</td>";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"7\">No records found.</td>";
         $output .= "</tr>";
       }
 
@@ -153,10 +147,6 @@
       mysqli_free_result($q_images);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
-
-      if ($formVars['id'] == 0) {
-        print "document.images.update.disabled = true;\n";
-      }
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
