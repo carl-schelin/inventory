@@ -20,12 +20,12 @@
     if ($formVars['update'] == '') {
       $formVars['update'] = -1;
     }
-    $net_name = "";
+    $range = array();
     $where = '';
     if ($formVars['network'] > 0) {
       $where = "and net_id = " . $formVars['network'] . " ";
 
-# get the passed network for the title bar.
+# get the passed network range. You can't get here without it so it'll always be > 0
       $q_string  = "select net_ipv4,net_ipv6,net_mask,zone_zone ";
       $q_string .= "from network ";
       $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
@@ -34,13 +34,11 @@
       if (mysqli_num_rows($q_network) > 0) {
         $a_network = mysqli_fetch_array($q_network);
 
-        if (strlen($a_network['net_ipv4']) == 0) {
-          $net_name = " for " . $a_network['net_ipv6'] . "/" . $a_network['net_mask'] . " " . $a_network['zone_zone'] . " Zone";
-        } else {
-          $net_name = " for " . $a_network['net_ipv4'] . "/" . $a_network['net_mask'] . " " . $a_network['zone_zone'] . " Zone";
-        }
-      } else {
-        $net_name = "";
+        $range = ipRange($a_network['net_ipv4'] . "/" . $a_network['net_mask']);
+
+        $startip = ip2long($range[0]);
+        $endip   = ip2long($range[1]);
+        $count = $endip - $startip;
       }
     }
 
@@ -133,6 +131,7 @@
         $orderv4 = "ip_ipv4";
       }
 
+# show listing
       $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
@@ -147,17 +146,20 @@
       $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=ip_timestamp"       . $passthrough . "\">Date</a></th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select ip_id,ip_ipv4,ip_hostname,ip_domain,net_mask,ip_type,usr_first,usr_last,ip_timestamp,ip_description,sub_name ";
-      $q_string .= "from ipaddress ";
-      $q_string .= "left join users on users.usr_id = ipaddress.ip_user ";
-      $q_string .= "left join sub_zones on sub_zones.sub_id = ipaddress.ip_subzone ";
-      $q_string .= "left join network  on network.net_id = ipaddress.ip_network ";
-      $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
-      $q_string .= "where ip_ipv4 != '' " . $where;
-      $q_string .= "order by " . $orderv4 . " ";
-      $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_ipaddress) > 0) {
-        while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
+      for ($i = $startip; $i <= $endip; $i++) {
+
+        $ipaddr = long2ip($i);
+
+        $q_string  = "select ip_id,ip_ipv4,ip_hostname,ip_domain,net_mask,ip_type,usr_first,usr_last,ip_timestamp,ip_description,sub_name ";
+        $q_string .= "from ipaddress ";
+        $q_string .= "left join users on users.usr_id = ipaddress.ip_user ";
+        $q_string .= "left join sub_zones on sub_zones.sub_id = ipaddress.ip_subzone ";
+        $q_string .= "left join network  on network.net_id = ipaddress.ip_network ";
+        $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
+        $q_string .= "where ip_ipv4 = \"" . $ipaddr . "\" ";
+        $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        if (mysqli_num_rows($q_ipaddress) > 0) {
+          $a_ipaddress = mysqli_fetch_array($q_ipaddress);
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('ipaddress.fill.php?id="  . $a_ipaddress['ip_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('ipaddress.del.php?id=" . $a_ipaddress['ip_id'] . "');\">";
@@ -173,6 +175,29 @@
             $a_ip_types['ip_name'] = "Unassigned";
           }
 
+          if (strlen($iprange) > 0) {
+
+            if (strlen($ipendrange) > 0) {
+              $iprange .= "-" . $ipendrange;
+            }
+
+            $class = 'ui-state-highlight';
+            $output .= "<tr>";
+            if (check_userlevel($db, $AL_Admin)) {
+              $output .= "  <td class=\"" . $class . " delete\">--</td>";
+            }
+            $output .= "  <td class=\"" . $class . "\">" . $iprange . "</td>";
+            $output .= "  <td class=\"" . $class . "\">" . "&nbsp;" . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . "&nbsp;" . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . "&nbsp;" . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . "Unassigned" . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . "&nbsp;" . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . "&nbsp;" . "</td>\n";
+            $output .= "</tr>";
+
+            $iprange = '';
+          }
+
           $class = 'ui-widget-content';
           if ($assigned == 'Yes' && $a_ipaddress['ip_ipv4'] == $formVars['ip_ipv4']) {
             $class = 'ui-state-error';
@@ -182,7 +207,7 @@
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"" . $class . " delete\">" . $linkdel . "</td>";
           }
-          $output .= "  <td class=\"" . $class . "\">" . $linkstart . $a_ipaddress['ip_ipv4'] . "/" . $a_ipaddress['net_mask'] . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">" . $linkstart . $ipaddr . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_hostname'] . "." . $a_ipaddress['ip_domain'] . "</td>";
           $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['sub_name']           . "</td>";
           $output .= "  <td class=\"" . $class . "\">"              . $a_ip_types['ip_name']             . "</td>";
@@ -190,11 +215,38 @@
           $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['usr_first'] . " " . $a_ipaddress['usr_last'] . "</td>";
           $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_timestamp']             . "</td>";
           $output .= "</tr>";
+
+        } else {
+          if ($iprange == '') {
+            $iprange = $ipaddr;
+          } else {
+            $ipendrange = $ipaddr;
+          }
+
         }
-      } else {
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"8\">No records found.</td>\n";
-        $output .= "</tr>\n";
+      }
+
+      if (strlen($iprange) > 0) {
+
+        if (strlen($ipendrange) > 0) {
+          $iprange .= "-" . $ipendrange;
+        }
+
+        $class = 'ui-state-highlight';
+        $output .= "<tr>";
+        if (check_userlevel($db, $AL_Admin)) {
+          $output .= "  <td class=\"" . $class . " delete\">--</td>";
+        }
+        $output .= "  <td class=\"" . $class . "\">" . $iprange . "</td>";
+        $output .= "  <td class=\"" . $class . "\">" . "&nbsp;" . "</td>\n";
+        $output .= "  <td class=\"" . $class . "\">" . "&nbsp;" . "</td>\n";
+        $output .= "  <td class=\"" . $class . "\">" . "&nbsp;" . "</td>\n";
+        $output .= "  <td class=\"" . $class . "\">" . "Unassigned" . "</td>\n";
+        $output .= "  <td class=\"" . $class . "\">" . "&nbsp;" . "</td>\n";
+        $output .= "  <td class=\"" . $class . "\">" . "&nbsp;" . "</td>\n";
+        $output .= "</tr>";
+
+        $iprange = '';
       }
 
       $output .= "</table>";
