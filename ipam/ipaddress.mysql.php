@@ -196,6 +196,7 @@
             $output .= "</tr>";
 
             $iprange = '';
+            $ipendrange = '';
           }
 
           $class = 'ui-widget-content';
