@@ -27,6 +27,26 @@
     $formVars['sort'] = clean($_GET['sort'], 40);
   }
 
+# get the passed network for the title bar.
+  $net_name = "";
+  $q_string  = "select net_ipv4,net_ipv6,net_mask,zone_zone ";
+  $q_string .= "from network ";
+  $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
+  $q_string .= "where net_id = " . $formVars['net_id'] . " ";
+  $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_network) > 0) {
+    $a_network = mysqli_fetch_array($q_network);
+
+    if (strlen($a_network['net_ipv4']) == 0) {
+      $net_name = " for " . $a_network['net_ipv6'] . "/" . $a_network['net_mask'] . " " . $a_network['zone_zone'] . " Zone";
+    } else {
+      $net_name = " for " . $a_network['net_ipv4'] . "/" . $a_network['net_mask'] . " " . $a_network['zone_zone'] . " Zone";
+    }
+  } else {
+    $net_name = "";
+  }
+
+
 # if help has not been seen yet,
   if (show_Help($db, $Sitepath . "/" . $package)) {
     $display = "display: block";
