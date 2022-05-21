@@ -91,27 +91,14 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Profile Form</strong>
-  <ul>
-    <li><strong>First Name</strong> - The user's first name.</li>
-    <li><strong>Last Name</strong> - The user's last name.</li>
-    <li><strong>Theme</strong> - Select a theme for the user.</li>
-    <li><strong>E-Mail</strong> - The user's official email address. This is important in that several email portions of the system check incoming email against this address.</li>
-    <li><strong>Phone Number</strong> - The user's contact phone number. Could be desk phone or cell phone.</li>
-  </ul></li>
-  <li><strong>Password Form</strong>
-  <ul>
-    <li><strong>Reset User Password</strong> - Enter in a new password for the user here.</li>
-    <li><strong>Re-Enter Password</strong> - Enter the password in again. If the passwords don't match, the two boxes <span class="ui-state-highlight">change to indicate</span> a mismatch</li>
-    <li><strong>Force Password Reset on Next Login</strong> - Check this box if you're resetting a user password or otherwise want to force a password reset.</li>
-  </ul></li>
-  <li><strong>Website Certificate Form</strong>
-  <ul>
-    <li><strong>Number of Days Prior to Expiration</strong> - If a user has been identified by the Web Applications team as being responsible for a web site certificate, they will need to be notified when the certificate is going to expire. This should be set to a sufficiently large number to ensure notifications are made in a timely manner. To disable notifications, set to -1.</li>
-    <li><strong>Reminder Increment</strong> - Once the initial notification goes out, the user will want to be notified regularly until the certificate has been updated. This value is the number of days after the initial notification you wish to be notified about the pending expiration. This continues every X days until the certificate is renewed. Set to -1 to disable.</li>
-  </ul></li>
-</ul>
+<p>This page displays your information with regards to the Inventory. Certainly most fields are self explanatory.</p>
+
+<p>The Website Certificate Form provides information on if and how you want to be notified if you're identified as an 
+owner of a website certificate. It can take some time to get a certificate generated depending on your system so setting 
+the first field sufficiently early ensures you will be notified in enough time to get and apply the new certificate. 
+The Reminder Increment lists how often you want to be reminded of the certificate's expiration coming due.</p>
+
+<p>Setting the Days Prior to Expiration to -1 will disable notifications.</p>
 
 </div>
 
