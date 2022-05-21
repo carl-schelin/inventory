@@ -292,9 +292,6 @@ Groups will need to be removed or moved to another Department.</p>
   <td class="ui-widget-content">Department Name: <input type="text" name="dep_name" size="40"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Department ID: <input type="number" name="dep_business" size="10"></td>
-</tr>
-<tr>
   <td class="ui-widget-content">Business: <select name="dep_business">
 <?php
   $q_string  = "select bus_id,bus_name ";
