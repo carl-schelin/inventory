@@ -1075,4 +1075,19 @@ Removed all the license information. Only needed when transfering the database v
 
 delete from licenses;
 
+### Timestamp 2022-05-19
+
+Added table:
+
+create table assets (
+  ast_id int(10) not null auto_increment,
+  ast_parentid int(10) not null default 0,
+  ast_modelid int(10) not null default 0,
+  ast_serial char(100) not null default '',
+  ast_asset char(100) not null default '',
+  primary key (ast_id)
+);
+
+Updated lnmt1cuomtool11 and remote inventory
+
 
