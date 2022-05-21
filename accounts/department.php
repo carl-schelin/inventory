@@ -211,7 +211,7 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<p><strong>Network Zone Listing</strong></p>
+<p><strong>Department Listing</strong></p>
 
 <p>This page lists all the currently defined Departments.</p>
 
