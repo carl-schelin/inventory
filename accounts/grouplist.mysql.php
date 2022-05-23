@@ -40,9 +40,11 @@
 
           $q_string  = "select gpl_id ";
           $q_string .= "from grouplist ";
+          $q_string .= "where gpl_group = " . $formVars['gpl_group'] . " ";
           if (check_userlevel($db, $AL_Admin) == 0) {
-            $q_string .= "where gpl_user = " . $_SESSION['uid'] . " and gpl_group = " . $formVars['gpl_group'] . " ";
+            $q_string .= "and gpl_user = " . $_SESSION['uid'] . " ";
           }
+
           $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_grouplist) > 0) {
 
@@ -58,7 +60,7 @@
               $q_string = "update grouplist set " . $q_string . " where gpl_id = " . $formVars['id'];
             }
 
-            logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['fw_source']);
+            logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['gpl_group']);
 
             mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           } else {
@@ -72,42 +74,10 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .=   "<th class=\"ui-state-default\">Group Membership Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('group-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"group-listing-help\" style=\"display: none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Group Membership Listing</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li><strong>Delete (x)</strong> - Delete this association.</li>\n";
-      $output .= "    <li><strong>Editing</strong> - Click on an association to bring up the form and edit it.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Notes</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li>Users that are <span class=\"ui-state-highlight\">highlighted</span> indicate this is their <strong>Primary</strong> group. Removing them here may not prevent their access to the group's assets if they've only changed organizations within the company. Contact the Inventory Admin to correct the Primary group membership.</li>\n";
-      $output .= "    <li>Users that are <span class=\"ui-state-error\">highlighted</span> are users who have been Disabled in the system and should be removed from the group.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "<table class=\"ui-styled-table\">\n";
+      $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "</tr>\n";
       $output .= "<tr>\n";
-      $output .=   "<th class=\"ui-state-default\">Del</th>\n";
+      $output .=   "<th class=\"ui-state-default\" width=\"160\">Delete Membershp</th>\n";
       $output .=   "<th class=\"ui-state-default\">Group</th>\n";
       $output .=   "<th class=\"ui-state-default\">User</th>\n";
       $output .=   "<th class=\"ui-state-default\">Title</th>\n";
@@ -135,13 +105,19 @@
           $q_gltest = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_gltest) > 0 || check_userlevel($db, $AL_Admin)) {
 
-            $linkstart = '';
-            $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_grouplist('grouplist.del.php?id=" . $a_grouplist['gpl_id'] . "');\">";
-            $linkend   = '';
+            if ($a_grouplist['usr_disabled']) {
+              $linkstart = "";
+              $linkend   = '';
+            } else {
+              $linkstart = "<a href=\"#\" onclick=\"show_file('grouplist.fill.php?id="  . $a_grouplist['gpl_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+              $linkend   = '</a>';
+            }
 
-            $primary = "";
+            $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_grouplist('grouplist.del.php?id=" . $a_grouplist['gpl_id'] . "');\">";
+
+            $readwrite = "";
             if ($a_grouplist['gpl_edit']) {
-              $primary = "*";
+              $readwrite = "*";
             }
 
             $class = "ui-widget-content";
@@ -153,7 +129,7 @@
               $class = "ui-state-error";
             }
 
-            if ($a_grouplist['usr_manager'] != '') {
+            if ($a_grouplist['usr_manager'] > 0) {
               $q_string  = "select usr_last,usr_first ";
               $q_string .= "from users ";
               $q_string .= "where usr_id = " . $a_grouplist['usr_manager'] . " ";
@@ -163,16 +139,16 @@
 
             $output .= "<tr>\n";
             $output .= "  <td class=\"" . $class . " delete\">" . $linkdel                                                                . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_grouplist['grp_name'] . $primary                        . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_grouplist['usr_first'] . " " . $a_grouplist['usr_last'] . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_grouplist['tit_name']                                   . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_users['usr_first'] . " " . $a_users['usr_last']         . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_grouplist['grp_name']                        . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"                     . $a_grouplist['usr_first'] . " " . $a_grouplist['usr_last'] . $readwrite . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"                     . $a_grouplist['tit_name']                                   . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"                     . $a_users['usr_first'] . " " . $a_users['usr_last']         . "</td>\n";
             $output .= "</tr>\n";
           }
         }
       } else {
         $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"3\">No records found.</td>\n";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"5\">No records found.</td>\n";
         $output .= "</tr>\n";
       }
 
@@ -181,9 +157,6 @@
       mysqli_free_result($q_grouplist);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
-
-      print "document.grouplist.gpl_group[0].selected = true;\n";
-      print "document.grouplist.gpl_user[0].selected = true;\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
