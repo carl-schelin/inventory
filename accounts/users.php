@@ -141,7 +141,7 @@ $(document).ready( function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 515,
+    height: 525,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -171,7 +171,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 515,
+    height: 525,
     width: 600,
     show: 'slide',
     hide: 'slide',
