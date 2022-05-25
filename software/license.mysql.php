@@ -28,7 +28,7 @@
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['id'],             10);
-        $formVars['lic_vendor']     = clean($_GET['lic_vendor'],     30);
+        $formVars['lic_vendor']     = clean($_GET['lic_vendor'],     10);
         $formVars['lic_product']    = clean($_GET['lic_product'],    32);
         $formVars['lic_date']       = clean($_GET['lic_date'],       15);
         $formVars['lic_vendorpo']   = clean($_GET['lic_vendorpo'],   20);
@@ -53,7 +53,7 @@
           logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
-            "lic_vendor   = \"" . $formVars['lic_vendor']   . "\"," . 
+            "lic_vendor   =   " . $formVars['lic_vendor']   . "," . 
             "lic_product  = \"" . $formVars['lic_product']  . "\"," . 
             "lic_date     = \"" . $formVars['lic_date']     . "\"," . 
             "lic_vendorpo = \"" . $formVars['lic_vendorpo'] . "\"," . 
@@ -93,7 +93,7 @@
       if (check_userlevel($db, $AL_Admin)) {
         $output .= "<th class=\"ui-state-default\" width=\"160\">Delete License</th>\n";
       }
-      $output .= "<th class=\"ui-state-default\">" . $linksort . "&sort=lic_vendor');\">Vendor</a></th>\n";
+      $output .= "<th class=\"ui-state-default\">" . $linksort . "&sort=ven_name');\">Vendor</a></th>\n";
       $output .= "<th class=\"ui-state-default\">" . $linksort . "&sort=lic_product');\">Product</a></th>\n";
       $output .= "<th class=\"ui-state-default\">" . $linksort . "&sort=lic_date');\">Date Acquired</a></th>\n";
       $output .= "<th class=\"ui-state-default\">" . $linksort . "&sort=lic_vendorpo');\">Vendor PO</a></th>\n";
@@ -105,9 +105,10 @@
       $output .= "<th class=\"ui-state-default\">" . $linksort . "&sort=lic_domain');\">Domain</a></th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select lic_id,lic_vendor,lic_product,lic_date,lic_vendorpo,lic_po,prod_name,lic_quantity,lic_key,lic_serial,lic_domain ";
+      $q_string  = "select lic_id,ven_name,lic_product,lic_date,lic_vendorpo,lic_po,prod_name,lic_quantity,lic_key,lic_serial,lic_domain ";
       $q_string .= "from licenses ";
       $q_string .= "left join products on products.prod_id = licenses.lic_project ";
+      $q_string .= "left join vendors  on vendors.ven_id   = licenses.lic_vendor ";
       $q_string .= $orderby;
       $q_licenses = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_licenses) > 0) {
@@ -121,16 +122,16 @@
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "<td class=\"ui-widget-content delete\">" . $linkdel . "</td>\n";
           }
-          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_licenses['lic_vendor']   . $linkend . "</td>\n";
-          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_licenses['lic_product']  . $linkend . "</td>\n";
-          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_licenses['lic_date']     . $linkend . "</td>\n";
-          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_licenses['lic_vendorpo'] . $linkend . "</td>\n";
-          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_licenses['lic_po']       . $linkend . "</td>\n";
-          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_licenses['prod_name']    . $linkend . "</td>\n";
-          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_licenses['lic_quantity'] . $linkend . "</td>\n";
-          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_licenses['lic_key']      . $linkend . "</td>\n";
-          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_licenses['lic_serial']   . $linkend . "</td>\n";
-          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_licenses['lic_domain']   . $linkend . "</td>\n";
+          $output .= "<td class=\"ui-widget-content\">" . $linkstart . $a_licenses['ven_name']     . $linkend . "</td>\n";
+          $output .= "<td class=\"ui-widget-content\">"              . $a_licenses['lic_product']             . "</td>\n";
+          $output .= "<td class=\"ui-widget-content\">"              . $a_licenses['lic_date']                . "</td>\n";
+          $output .= "<td class=\"ui-widget-content\">"              . $a_licenses['lic_vendorpo']            . "</td>\n";
+          $output .= "<td class=\"ui-widget-content\">"              . $a_licenses['lic_po']                  . "</td>\n";
+          $output .= "<td class=\"ui-widget-content\">"              . $a_licenses['prod_name']               . "</td>\n";
+          $output .= "<td class=\"ui-widget-content\">"              . $a_licenses['lic_quantity']            . "</td>\n";
+          $output .= "<td class=\"ui-widget-content\">"              . $a_licenses['lic_key']                 . "</td>\n";
+          $output .= "<td class=\"ui-widget-content\">"              . $a_licenses['lic_serial']              . "</td>\n";
+          $output .= "<td class=\"ui-widget-content\">"              . $a_licenses['lic_domain']              . "</td>\n";
           $output .= "</tr>\n";
         }
       } else {
