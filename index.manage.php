@@ -77,6 +77,13 @@
   <li><a href="<?php print $Hardwareroot; ?>/zones.php">Manage Network Zones table</a></li>
 </ul>
 
+<ul>
+  <li><a href="<?php print $Securityroot; ?>/severity.php">Manage Severity Levels</a></li>
+  <li><a href="<?php print $Securityroot; ?>/family.php">Manage Families</a></li>
+  <li><a href="<?php print $Securityroot; ?>/security.php">Manage Security Listing</a></li>
+  <li><a href="<?php print $Securityroot; ?>/vulnowner.php">Vulnerabilty Onwers</a></li>
+</ul>
+
 </div>
 
 </div>
