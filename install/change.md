@@ -1090,4 +1090,71 @@ create table assets (
 
 Updated lnmt1cuomtool11 and remote inventory
 
+### Timestamp 2022-05-25
+
+Added the Tenable module back in, into the tenable directory.
+
+Added the following tables back into the inventory:
+
+CREATE TABLE `vulnerabilities` (
+  `vuln_id` int(10) NOT NULL auto_increment,
+  `vuln_interface` int(10) NOT NULL default '0',
+  `vuln_securityid` int(10) NOT NULL default '0',
+  `vuln_group` int(10) NOT NULL default '0',
+  `vuln_date` date NOT NULL default '0000-00-00',
+  `vuln_duplicate` int(10) NOT NULL default '0',
+  `vuln_delete` int(10) NOT NULL default '0',
+  `vuln_deldate` date NOT NULL default '0000-00-00',
+  PRIMARY KEY  (`vuln_id`),
+  KEY `vuln_interface_idx` (`vuln_interface`)
+);
+
+CREATE TABLE `security` (
+  `sec_id` int(10) NOT NULL auto_increment,
+  `sec_name` char(255) NOT NULL default '',
+  `sec_family` int(10) NOT NULL default '0',
+  `sec_severity` int(10) NOT NULL default '0',
+  PRIMARY KEY  (`sec_id`)
+);
+
+CREATE TABLE `family` (
+  `fam_id` int(10) NOT NULL auto_increment,
+  `fam_name` char(60) NOT NULL default '',
+  PRIMARY KEY  (`fam_id`)
+);
+
+severity - table already exists
+
+CREATE TABLE `vulnowner` (
+  `vul_id` int(10) NOT NULL auto_increment,
+  `vul_interface` int(10) NOT NULL default '0',
+  `vul_security` int(10) NOT NULL default '0',
+  `vul_group` int(10) NOT NULL default '0',
+  `vul_ticket` char(20) NOT NULL default '',
+  `vul_exception` int(10) NOT NULL default '0',
+  `vul_description` char(100) NOT NULL default '',
+  PRIMARY KEY  (`vul_id`)
+);
+
+CREATE TABLE `intvuln` (
+  `iv_id` int(10) NOT NULL auto_increment,
+  `iv_intid` int(10) NOT NULL default '0',
+  `iv_securityid` int(10) NOT NULL default '0',
+  `iv_date` date NOT NULL default '0000-00-00',
+  PRIMARY KEY  (`iv_id`)
+);
+
+Added the following to the settings.php file
+
+## Tenable path
+$Securitypath            = $Sitepath . "/show";
+$Securityroot            = $Siteroot . "/tenable";
+
+In the scripts directory, added in the following files
+
+extract.vulnerability
+upload.family.php
+upload.security.php
+upload.vulnerability.php
+
 

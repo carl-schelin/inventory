@@ -519,6 +519,7 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
   <li><a href="#inventory">Inventory Reports</a></li>
   <li><a href="#general">General Reports</a></li>
   <li><a href="#group">Group Reports</a></li>
+  <li><a href="#tenable">Security Reports</a></li>
   <li><a href="#lifecycle">Life-Cycle Reports</a></li>
   <li><a href="#archived">Archived Reports</a></li>
   <li><a href="#tagcloud">Tag Cloud</a></li>
@@ -591,6 +592,23 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
     <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Manageroot; ?>/manage.php');">Manage Server Errors</a> - Review and address individual server errors from the chkserver script.</li>
   </ul></li>
   <li><a href="<?php print $Reportroot; ?>/esxlisting.php">Listing of ESX hosts and a count of Guests</a></li>
+</ul>
+
+</div>
+
+
+<div id="tenable">
+
+<p><strong>Security Management</strong></p>
+
+<ul>
+  <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/tenable.php');">SecurityCenter</a> - IP Ranges for Security Center Asset Lists.</li>
+  <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Securityroot; ?>/vulnerability.php');">Vulnerability Review</a> - Ticket management report. Assign vulnerability ownership, ticket numbers, unassigned vulnerabilities.</li>
+  <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Securityroot; ?>/scanreport.php');">Scan Report</a> - Breakdown of the vulnerabilities by team and type.</li>
+  <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Securityroot; ?>/servers.php');">Report on Vulnerabilities</a> - Lists vulnerabilities and includes when it arrived in the Inventory report.</li>
+  <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Securityroot; ?>/server.report.php');">List of IPs, IP names, and count of vulnerabilities. If no interface was scanned, it's called out.</a></li>
+  <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Securityroot; ?>/notscanned.php');">IPs Not Scanned</a> - List of IPs that have no scan results.</li>
+  <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Securityroot; ?>/vulnreport.php');">List of Projects/Servers And Vulnerability Count</a> - If you select a Project in the Filters, a list of servers will be displayed.</li>
 </ul>
 
 </div>
