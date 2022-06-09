@@ -41,11 +41,11 @@
         $q_string .= "from grouplist ";
         $q_string .= "where gpl_id = " . $formVars['id'];
         $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-
-        print "alert('Membership removed.');\n";
       } else {
         print "alert('You are not allowed to manage groups you aren\'t a member of.');\n";
       }
+
+      print "clear_fields();\n";
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Access denied");
     }

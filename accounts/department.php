@@ -211,7 +211,7 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<p><strong>Network Zone Listing</strong></p>
+<p><strong>Department Listing</strong></p>
 
 <p>This page lists all the currently defined Departments.</p>
 
@@ -290,9 +290,6 @@ Groups will need to be removed or moved to another Department.</p>
 <table class="ui-styled-table">
 <tr>
   <td class="ui-widget-content">Department Name: <input type="text" name="dep_name" size="40"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Department ID: <input type="number" name="dep_business" size="10"></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Business: <select name="dep_business">

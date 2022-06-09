@@ -228,9 +228,9 @@ button. A dialog box will be displayed which will let you enter the new IP Addre
 will be displayed. This will let you edit the existing one, or if you like, you can 
 make a minor change and save it as a new entry.</p>
 
-Note that under the Members column is a number which indicates the number of IP addresses 
+<p>Note that under the Members column is a number which indicates the number of IP addresses 
 that are currently assigned an IP Address Type. You cannot remove an IP Address Type until this 
-value is zero.
+value is zero.</p>
 
 </div>
 

@@ -29,6 +29,8 @@
 
 # get the passed network for the title bar.
   $net_name = "";
+  $ipv4 = 0;
+  $ipv6 = 0;
   $q_string  = "select net_ipv4,net_ipv6,net_mask,zone_zone ";
   $q_string .= "from network ";
   $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
@@ -38,8 +40,10 @@
     $a_network = mysqli_fetch_array($q_network);
 
     if (strlen($a_network['net_ipv4']) == 0) {
+      $ipv6 = 1;
       $net_name = " for " . $a_network['net_ipv6'] . "/" . $a_network['net_mask'] . " " . $a_network['zone_zone'] . " Zone";
     } else {
+      $ipv4 = 1;
       $net_name = " for " . $a_network['net_ipv4'] . "/" . $a_network['net_mask'] . " " . $a_network['zone_zone'] . " Zone";
     }
   } else {
@@ -144,7 +148,7 @@ $(document).ready( function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 300,
+    height: 275,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -174,7 +178,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 300,
+    height: 275,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -277,10 +281,10 @@ can edit the current entry, or if there is a small difference, you can make chan
 
 </div>
 
-
 <span id="table_mysql"><?php print wait_Process('Waiting...')?></span>
 
 </div>
+
 
 
 <div id="dialogCreate" title="Add IP Address">
@@ -291,12 +295,22 @@ can edit the current entry, or if there is a small difference, you can make chan
 <input type="hidden" name="network" value="<?php print $formVars['net_id']; ?>">
 
 <table class="ui-styled-table">
-<tr>
-  <td class="ui-widget-content">IPv4 Address: <input type="text" name="ip_ipv4" size="20"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">IPv6 Address: <input type="text" name="ip_ipv6" size="50"></td>
-</tr>
+<?php
+  if ($ipv4) {
+    print "<tr>\n";
+    print "  <td class=\"ui-widget-content\">IPv4 Address: <input type=\"text\" name=\"ip_ipv4\" size=\"20\"></td>\n";
+    print "</tr>\n";
+  } else {
+    print "<input type=\"hidden\" name=\"ip_ipv4\" value=\"\">\n";
+  }
+  if ($ipv6) {
+    print "<tr>\n";
+    print "  <td class=\"ui-widget-content\">IPv6 Address: <input type=\"text\" name=\"ip_ipv6\" size=\"50\"></td>\n";
+    print "</tr>\n";
+  } else {
+    print "<input type=\"hidden\" name=\"ip_ipv6\" value=\"\">\n";
+  }
+?>
 <tr>
   <td class="ui-widget-content">Hostname: <input type="text" name="ip_hostname" size="40"></td>
 </tr>
@@ -355,12 +369,22 @@ can edit the current entry, or if there is a small difference, you can make chan
 <input type="hidden" name="network" value="<?php print $formVars['net_id']; ?>">
 
 <table class="ui-styled-table">
-<tr>
-  <td class="ui-widget-content">IPv4 Address: <input type="text" name="ip_ipv4" size="20"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">IPv6 Address: <input type="text" name="ip_ipv6" size="50"></td>
-</tr>
+<?php
+  if ($ipv4) {
+    print "<tr>\n";
+    print "  <td class=\"ui-widget-content\">IPv4 Address: <input type=\"text\" name=\"ip_ipv4\" size=\"20\"></td>\n";
+    print "</tr>\n";
+  } else {
+    print "<input type=\"hidden\" name=\"ip_ipv4\" value=\"\">\n";
+  }
+  if ($ipv6) {
+    print "<tr>\n";
+    print "  <td class=\"ui-widget-content\">IPv6 Address: <input type=\"text\" name=\"ip_ipv6\" size=\"50\"></td>\n";
+    print "</tr>\n";
+  } else {
+    print "<input type=\"hidden\" name=\"ip_ipv6\" value=\"\">\n";
+  }
+?>
 <tr>
   <td class="ui-widget-content">Hostname: <input type="text" name="ip_hostname" size="40"></td>
 </tr>
