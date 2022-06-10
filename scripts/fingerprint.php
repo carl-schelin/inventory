@@ -24,14 +24,15 @@
     $server = $argv[1];
   }
 
-  $q_string  = "select inv_id,inv_name,inv_fqdn,inv_ssh,svc_acronym,inv_callpath,zone_name,prod_name,prj_name,loc_identity,grp_name,inv_appadmin,inv_appliance,inv_maint ";
+  $q_string  = "select inv_id,inv_name,inv_fqdn,inv_ssh,svc_acronym,inv_callpath,zone_name,inv_product,";
+  $q_string .= "prod_name,prj_name,inv_location,loc_identity,grp_name,inv_appadmin,inv_appliance,inv_maint ";
   $q_string .= "from inventory ";
   $q_string .= "left join timezones on timezones.zone_id = inventory.inv_zone ";
-  $q_string .= "left join service on service.svc_id = inventory.inv_class ";
-  $q_string .= "left join products on products.prod_id = inventory.inv_product ";
-  $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
-  $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
-  $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
+  $q_string .= "left join service   on service.svc_id    = inventory.inv_class ";
+  $q_string .= "left join products  on products.prod_id  = inventory.inv_product ";
+  $q_string .= "left join projects  on projects.prj_id   = inventory.inv_project ";
+  $q_string .= "left join locations on locations.loc_id  = inventory.inv_location ";
+  $q_string .= "left join a_groups  on a_groups.grp_id   = inventory.inv_manager ";
   $q_string .= "where inv_name = \"" . $server . "\" and inv_status = 0 and inv_ssh = 1 ";
   $q_string .= "order by inv_name";
   $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
@@ -47,13 +48,74 @@
 
   $os = return_System($db, $a_inventory['inv_id']);
 
+#       1 | Server    |
   $tags = '';
+  $comma = '';
   $q_string  = "select tag_name ";
   $q_string .= "from tags ";
-  $q_string .= "where tag_companyid = " . $a_inventory['inv_id'];
+  $q_string .= "where tag_companyid = " . $a_inventory['inv_id'] . " and tag_type = 1 ";
   $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_tags = mysqli_fetch_array($q_tags)) {
-    $tags .= "," . $a_tags['tag_name'] . ",";
+    $tags .= $comma . $a_tags['tag_name'];
+    $comma = ",";
+  }
+
+#       2 | Location  |
+# it's a loop because there can be more than one tag associated with a location
+  $q_string  = "select tag_name ";
+  $q_string .= "from tags ";
+  $q_string .= "where tag_companyid = " . $a_inventory['inv_location'] . " and tag_type = 2 ";
+  $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_tags = mysqli_fetch_array($q_tags)) {
+    $tags .= $comma . $a_tags['tag_name'];
+    $comma = ",";
+  }
+
+#       3 | Product   |
+# it's a loop because there can be more than one tag associated with a product
+  $q_string  = "select tag_name ";
+  $q_string .= "from tags ";
+  $q_string .= "where tag_companyid = " . $a_inventory['inv_product'] . " and tag_type = 3 ";
+  $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_tags = mysqli_fetch_array($q_tags)) {
+    $tags .= $comma . $a_tags['tag_name'];
+    $comma = ",";
+  }
+
+#       4 | Software  |
+# get all the software the server owns
+# need the svr_softwareid
+# it's a loop because there can be more than one tag associated with software
+  $q_string  = "select svr_softwareid ";
+  $q_string .= "from svr_software ";
+  $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " ";
+  $q_svr_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_svr_software = mysqli_fetch_array($q_svr_software)) {
+    $q_string  = "select tag_name ";
+    $q_string .= "from tags ";
+    $q_string .= "where tag_companyid = " . $a_svr_software['svr_softwareid'] . " and tag_type = 4 ";
+    $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_tags = mysqli_fetch_array($q_tags)) {
+      $tags .= $comma . $a_tags['tag_name'];
+      $comma = ",";
+    }
+  }
+
+#       5 | Hardware  |
+# it's a loop because there can be more than one tag associated with hardware
+  $q_string  = "select svr_hardwareid ";
+  $q_string .= "from svr_hardware ";
+  $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " ";
+  $q_svr_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_svr_hardware = mysqli_fetch_array($q_svr_hardware)) {
+    $q_string  = "select tag_name ";
+    $q_string .= "from tags ";
+    $q_string .= "where tag_companyid = " . $a_svr_hardware['svr_hardwareid'] . " and tag_type = 5 ";
+    $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_tags = mysqli_fetch_array($q_tags)) {
+      $tags .= $comma . $a_tags['tag_name'];
+      $comma = ",";
+    }
   }
 
   $appadmin = 'Unassigned';
