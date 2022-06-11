@@ -1157,4 +1157,21 @@ upload.family.php
 upload.security.php
 upload.vulnerability.php
 
+### Timestamp 2022-06-09
+
+Updated the four environments.
+
+Added the following hardware table:
+
+create table svr_hardware (
+    svr_id int(10) not null auto_increment,
+    svr_companyid int(10) not null default 0,
+    svr_hardwareid int(10) not null default 0,
+    svr_groupid int(10) not null default 0,
+    svr_userid int(10) not null default 0,
+    svr_verified int(10) not null default 0,
+    svr_update date not null default '1971-01-01',
+    primary key (svr_id)
+);
+
 
