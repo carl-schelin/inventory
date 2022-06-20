@@ -60,6 +60,7 @@
         $formVars['ip_subzone']      = clean($_GET['ip_subzone'],     10);
         $formVars['ip_type']         = clean($_GET['ip_type'],        10);
         $formVars['ip_description']  = clean($_GET['ip_description'], 50);
+        $formVars['ip_notes']        = clean($_GET['ip_notes'],     1000);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
@@ -108,7 +109,8 @@
               "ip_subzone       =   " . $formVars['ip_subzone']        . "," . 
               "ip_type          =   " . $formVars['ip_type']           . "," . 
               "ip_user          =   " . $_SESSION['uid']               . "," . 
-              "ip_description   = \"" . $formVars['ip_description']    . "\"";
+              "ip_description   = \"" . $formVars['ip_description']    . "\"," . 
+              "ip_notes         = \"" . $formVars['ip_notes']          . "\"";
   
             if ($formVars['update'] == 0) {
               $q_string = "insert into ipaddress set ip_id = NULL, " . $q_string;
@@ -151,6 +153,7 @@
         $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=sub_name"           . $passthrough . "\">IP Zone</a></th>\n";
         $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=ip_type"            . $passthrough . "\">Type</a></th>\n";
         $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=ip_description"     . $passthrough . "\">Description</a></th>\n";
+        $output .= "  <th class=\"ui-state-default\">Notes</th>\n";
         $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=usr_last,usr_first" . $passthrough . "\">Created By</a></th>\n";
         $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=ip_timestamp"       . $passthrough . "\">Date</a></th>\n";
         $output .= "</tr>\n";
@@ -159,7 +162,7 @@
 
           $ipaddr = long2ip($i);
 
-          $q_string  = "select ip_id,ip_ipv4,ip_hostname,ip_domain,net_mask,ip_type,usr_first,usr_last,ip_timestamp,ip_description,sub_name ";
+          $q_string  = "select ip_id,ip_ipv4,ip_hostname,ip_domain,net_mask,ip_type,usr_first,usr_last,ip_timestamp,ip_description,ip_notes,sub_name ";
           $q_string .= "from ipaddress ";
           $q_string .= "left join users on users.usr_id = ipaddress.ip_user ";
           $q_string .= "left join sub_zones on sub_zones.sub_id = ipaddress.ip_subzone ";
@@ -193,15 +196,16 @@
               $class = 'ui-state-highlight';
               $output .= "<tr>";
               if (check_userlevel($db, $AL_Admin)) {
-                $output .= "  <td class=\"" . $class . " delete\">--</td>";
+                $output .= "  <td class=\"" . $class . " delete\">--</td>\n";
               }
-              $output .= "  <td class=\"" . $class . "\">" . $iprange . "</td>";
-              $output .= "  <td class=\"" . $class . "\">" . "&nbsp;" . "</td>\n";
-              $output .= "  <td class=\"" . $class . "\">" . "&nbsp;" . "</td>\n";
-              $output .= "  <td class=\"" . $class . "\">" . "&nbsp;" . "</td>\n";
+              $output .= "  <td class=\"" . $class . "\">" . $iprange     . "</td>\n";
+              $output .= "  <td class=\"" . $class . "\">" . "&nbsp;"     . "</td>\n";
+              $output .= "  <td class=\"" . $class . "\">" . "&nbsp;"     . "</td>\n";
+              $output .= "  <td class=\"" . $class . "\">" . "&nbsp;"     . "</td>\n";
               $output .= "  <td class=\"" . $class . "\">" . "Unassigned" . "</td>\n";
-              $output .= "  <td class=\"" . $class . "\">" . "&nbsp;" . "</td>\n";
-              $output .= "  <td class=\"" . $class . "\">" . "&nbsp;" . "</td>\n";
+              $output .= "  <td class=\"" . $class . "\">" . "&nbsp;"     . "</td>\n";
+              $output .= "  <td class=\"" . $class . "\">" . "&nbsp;"     . "</td>\n";
+              $output .= "  <td class=\"" . $class . "\">" . "&nbsp;"     . "</td>\n";
               $output .= "</tr>";
 
               $iprange = '';
@@ -213,17 +217,23 @@
               $class = 'ui-state-error';
             }
 
+            $notes = 'No';
+            if (strlen($a_ipaddress['ip_notes']) > 0) {
+              $notes = 'Yes';
+            }
+
             $output .= "<tr>";
             if (check_userlevel($db, $AL_Admin)) {
               $output .= "  <td class=\"" . $class . " delete\">" . $linkdel . "</td>";
             }
-            $output .= "  <td class=\"" . $class . "\">" . $linkstart . $ipaddr . $linkend . "</td>";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_hostname'] . "." . $a_ipaddress['ip_domain'] . "</td>";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['sub_name']           . "</td>";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ip_types['ip_name']             . "</td>";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_description']             . "</td>";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['usr_first'] . " " . $a_ipaddress['usr_last'] . "</td>";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_timestamp']             . "</td>";
+            $output .= "  <td class=\"" . $class . "\">" . $linkstart . $ipaddr                                            . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_hostname'] . "." . $a_ipaddress['ip_domain'] . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['sub_name']                                      . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_ip_types['ip_name']                                        . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_description']                                . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\" title=\"Notes: " . $a_ipaddress['ip_notes'] . "\">" . $notes                   . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['usr_first'] . " " . $a_ipaddress['usr_last']    . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_timestamp']                                  . "</td>\n";
             $output .= "</tr>";
 
           } else {
@@ -245,15 +255,16 @@
           $class = 'ui-state-highlight';
           $output .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
-            $output .= "  <td class=\"" . $class . " delete\">--</td>";
+            $output .= "  <td class=\"" . $class . " delete\">--</td>\n";
           }
-          $output .= "  <td class=\"" . $class . "\">" . $iprange . "</td>";
-          $output .= "  <td class=\"" . $class . "\">" . "&nbsp;" . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">" . "&nbsp;" . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">" . "&nbsp;" . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">" . $iprange     . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">" . "&nbsp;"     . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">" . "&nbsp;"     . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">" . "&nbsp;"     . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">" . "Unassigned" . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">" . "&nbsp;" . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">" . "&nbsp;" . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">" . "&nbsp;"     . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">" . "&nbsp;"     . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">" . "&nbsp;"     . "</td>\n";
           $output .= "</tr>";
 
           $iprange = '';
@@ -286,11 +297,12 @@
         $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=sub_name"           . $passthrough . "\">IP Zone</a></th>\n";
         $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=ip_type"            . $passthrough . "\">Type</a></th>\n";
         $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=ip_description"     . $passthrough . "\">Description</a></th>\n";
+        $output .= "  <th class=\"ui-state-default\">Notes</th>\n";
         $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=usr_last,usr_first" . $passthrough . "\">Created By</a></th>\n";
         $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=ip_timestamp"       . $passthrough . "\">Date</a></th>\n";
         $output .= "</tr>\n";
 
-        $q_string  = "select ip_id,ip_ipv6,ip_hostname,ip_domain,net_mask,ip_type,usr_first,usr_last,ip_timestamp,ip_description,sub_name ";
+        $q_string  = "select ip_id,ip_ipv6,ip_hostname,ip_domain,net_mask,ip_type,usr_first,usr_last,ip_timestamp,ip_description,ip_notes,sub_name ";
         $q_string .= "from ipaddress ";
         $q_string .= "left join users  on users.usr_id = ipaddress.ip_user ";
         $q_string .= "left join sub_zones  on sub_zones.sub_id = ipaddress.ip_subzone ";
@@ -320,22 +332,28 @@
               $class = 'ui-state-error';
             }
 
+            $notes = 'No';
+            if (strlen($a_ipaddress['ip_notes']) > 0) {
+              $notes = 'Yes';
+            }
+
             $output .= "<tr>";
             if (check_userlevel($db, $AL_Admin)) {
               $output .= "  <td class=\"" . $class . " delete\">" . $linkdel . "</td>";
             }
-            $output .= "  <td class=\"" . $class . "\">" . $linkstart . $a_ipaddress['ip_ipv6'] . "/" . $a_ipaddress['net_mask'] . $linkend . "</td>";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_hostname'] . "." . $a_ipaddress['ip_domain'] . "</td>";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['sub_name']          . "</td>";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ip_types['ip_name']             . "</td>";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_description']             . "</td>";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['usr_first'] . " " . $a_ipaddress['usr_last'] . "</td>";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_timestamp']             . "</td>";
+            $output .= "  <td class=\"" . $class . "\">" . $linkstart . $a_ipaddress['ip_ipv6'] . "/" . $a_ipaddress['net_mask'] . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_hostname'] . "." . $a_ipaddress['ip_domain']       . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['sub_name']                                            . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_ip_types['ip_name']                                              . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_description']                                      . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\" title=\"Notes: " . $ip_address['ip_notes'] . "\">" . $notes                          . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['usr_first'] . " " . $a_ipaddress['usr_last']          . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_timestamp']                                        . "</td>\n";
             $output .= "</tr>";
           }
         } else {
           $output .= "<tr>\n";
-          $output .= "  <td class=\"ui-widget-content\" colspan=\"8\">No records found.</td>\n";
+          $output .= "  <td class=\"ui-widget-content\" colspan=\"9\">No records found.</td>\n";
           $output .= "</tr>\n";
         }
 
