@@ -21,7 +21,7 @@
     if (check_userlevel($db, $AL_Edit)) {
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from ipaddress");
 
-      $q_string  = "select ip_ipv4,ip_ipv6,ip_hostname,ip_domain,ip_type,ip_subzone,ip_description,net_zone ";
+      $q_string  = "select ip_ipv4,ip_ipv6,ip_hostname,ip_domain,ip_type,ip_subzone,ip_description,ip_notes,net_zone ";
       $q_string .= "from ipaddress ";
       $q_string .= "left join network on network.net_id = ipaddress.ip_network ";
       $q_string .= "where ip_id = " . $formVars['id'];
@@ -36,6 +36,7 @@
       print "document.formUpdate.ip_hostname.value = '"      . mysqli_real_escape_string($db, $a_ipaddress['ip_hostname'])      . "';\n";
       print "document.formUpdate.ip_domain.value = '"        . mysqli_real_escape_string($db, $a_ipaddress['ip_domain'])        . "';\n";
       print "document.formUpdate.ip_description.value = '"   . mysqli_real_escape_string($db, $a_ipaddress['ip_description'])   . "';\n";
+      print "document.formUpdate.ip_notes.value = '"         . mysqli_real_escape_string($db, $a_ipaddress['ip_notes'])         . "';\n";
 
       print "document.formUpdate.ip_subzone['"  . $ip_subzone    . "'].selected = true;\n";
       print "document.formUpdate.ip_type['"     . $ip_type       . "'].selected = true;\n";
