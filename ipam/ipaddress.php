@@ -108,6 +108,7 @@ function attach_file( p_script_url, update ) {
   af_url += "&ip_type="           + af_form.ip_type.value;
   af_url += "&network="           + af_form.network.value;
   af_url += "&ip_description="    + encode_URI(af_form.ip_description.value);
+  af_url += "&ip_notes="          + encode_URI(af_form.ip_notes.value);
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
@@ -130,6 +131,7 @@ function update_file( p_script_url, update ) {
   uf_url += "&ip_type="           + uf_form.ip_type.value;
   uf_url += "&network="           + uf_form.network.value;
   uf_url += "&ip_description="    + encode_URI(uf_form.ip_description.value);
+  uf_url += "&ip_notes="          + encode_URI(uf_form.ip_notes.value);
 
   script = document.createElement('script');
   script.src = p_script_url + uf_url;
@@ -148,7 +150,7 @@ $(document).ready( function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 275,
+    height: 375,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -178,7 +180,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 275,
+    height: 375,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -354,6 +356,9 @@ can edit the current entry, or if there is a small difference, you can make chan
 <tr>
   <td class="ui-widget-content">Description: <input type="text" name="ip_description" size="50"></td>
 </tr>
+<tr>
+  <td class="ui-widget-content">Notes:<br><textarea name="ip_notes" rows="3" cols="80"></textarea></td>
+</tr>
 </table>
 
 </form>
@@ -424,6 +429,9 @@ can edit the current entry, or if there is a small difference, you can make chan
 </tr>
 <tr>
   <td class="ui-widget-content">Description: <input type="text" name="ip_description" size="50"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Notes:<br><textarea name="ip_notes" rows="3" cols="80"></textarea></td>
 </tr>
 </table>
 
