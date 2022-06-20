@@ -1194,5 +1194,13 @@ create table svr_hardware (
 Updated remote and local copy of the remote inventory
 
 
+### Timestamp 2022-06-20
+
+Altered the IP address table to add a notes column.
+
+alter table ipaddress add column ip_notes text not null after ip_description;
+
+Note, the clean function limits this to 1,000 characters
+
 
 
