@@ -654,7 +654,7 @@ function db_connect($p_server, $p_database, $p_user, $p_pass){
   return $r_db;
 }
 
-# return a range
+# return a range; range[0] is the first or network address. range[1] is the last or the broadcast address.
 function ipRange($cidr) {
    $range = array();
    $cidr = explode('/', $cidr);
