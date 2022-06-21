@@ -158,7 +158,7 @@
         $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=ip_timestamp"       . $passthrough . "\">Date</a></th>\n";
         $output .= "</tr>\n";
 
-        for ($i = $startip; $i <= $endip; $i++) {
+        for ($i = $startip + 1; $i < $endip; $i++) {
 
           $ipaddr = long2ip($i);
 
