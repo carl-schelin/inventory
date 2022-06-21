@@ -5,7 +5,7 @@
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content">Group: <select name="svr_group">
+  <td class="ui-widget-content">Group: <select name="svr_groupid">
 <?php
   $q_string  = "select grp_id,grp_name ";
   $q_string .= "from a_groups ";
