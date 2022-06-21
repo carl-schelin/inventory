@@ -208,13 +208,8 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Buttons</strong>
-  <ul>
-    <li><strong>Update License</strong> - Save any changes to this form.</li>
-    <li><strong>Add License</strong> - Add a new License.</li>
-  </ul></li>
-</ul>
+<p>This listing provides a selectable and taggable list of software than can be selected for a server. Use 
+the License Manager to create licenses (even Unsupported).</p>
 
 </div>
 
@@ -236,22 +231,20 @@ $(document).ready( function() {
 </tr>
 </table>
 
-<div id="license-listing-help" style="<?php print $display; ?>">
+<div id="software-listing-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
-<ul>
-  <li><strong>License Key Listing</strong>
-  <ul>
-    <li><strong>Editing</strong> - Click on a License to edit it.</li>
-  </ul></li>
-</ul>
 
-<ul>
-  <li><strong>Notes</strong>
-  <ul>
-    <li>Click the <strong>License Key Management</strong> title bar to toggle the <strong>License Key Form</strong>.</li>
-  </ul></li>
-</ul>
+
+
+<p><strong>Software Listing</strong></p>
+
+<p>This page lists the software that's available for servers.</p>
+
+<p>To add software, click the Add Software button. This will bring up a dialog box which you can then use to create a new software entry.</p>
+
+<p>To edit software, click on the entry in the listing. A dialog box will be displayed where you can edit the current entry, or if there 
+is a small difference, you can make changes and add a new software entry.</p>
 
 </div>
 

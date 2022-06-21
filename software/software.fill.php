@@ -37,16 +37,27 @@
       $sw_department = return_Index($db, $a_software['sw_department'], "select dep_id  from department order by dep_name");
 
       print "document.formUpdate.sw_software.value = '"   . mysqli_real_escape_string($db, $a_software['sw_software'])   . "';\n";
-      print "document.formUpdate.sw_vendor.value = '"     . mysqli_real_escape_string($db, $a_software['sw_vendor'])     . "';\n";
       print "document.formUpdate.sw_eol.value = '"        . mysqli_real_escape_string($db, $a_software['sw_eol'])        . "';\n";
       print "document.formUpdate.sw_eos.value = '"        . mysqli_real_escape_string($db, $a_software['sw_eos'])        . "';\n";
 
-      print "document.formUpdate.sw_vendor['"     . $sw_vendor     . "'].selected = true;\n";
-      print "document.formUpdate.sw_product['"    . $sw_product    . "'].selected = true;\n";
-      print "document.formUpdate.sw_licenseid['"  . $sw_licenseid  . "'].selected = true;\n";
-      print "document.formUpdate.sw_supportid['"  . $sw_supportid  . "'].selected = true;\n";
-      print "document.formUpdate.sw_type['"       . $sw_type       . "'].selected = true;\n";
-      print "document.formUpdate.sw_department['" . $sw_department . "'].selected = true;\n";
+      if ($sw_vendor > 0) {
+        print "document.formUpdate.sw_vendor['"     . $sw_vendor     . "'].selected = true;\n";
+      }
+      if ($sw_product > 0) {
+        print "document.formUpdate.sw_product['"    . $sw_product    . "'].selected = true;\n";
+      }
+      if ($sw_licenseid > 0) {
+        print "document.formUpdate.sw_licenseid['"  . $sw_licenseid  . "'].selected = true;\n";
+      }
+      if ($sw_supportid > 0) {
+        print "document.formUpdate.sw_supportid['"  . $sw_supportid  . "'].selected = true;\n";
+      }
+      if ($sw_type > 0) {
+        print "document.formUpdate.sw_type['"       . $sw_type       . "'].selected = true;\n";
+      }
+      if ($sw_department > 0) {
+        print "document.formUpdate.sw_department['" . $sw_department . "'].selected = true;\n";
+      }
 
       $sw_tags = '';
       $space = '';
