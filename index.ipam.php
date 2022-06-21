@@ -227,7 +227,7 @@ Network and you'll be taken to the IP Address Editor.</p>
 
 <img src="imgs/ipam.png">
 
-<p><strong><u>IP Addresses></u></strong></p>
+<p><strong><u>IP Addresses</u></strong></p>
 
 <p>The <strong>IP Address</strong> editor is where you allocate an <strong>IP Address</strong> which 
 will be used by a network device. When defined, the <strong>IP Address</strong> becomes selectable 
@@ -237,19 +237,25 @@ when you're building a device. </p>
 be taken to a page that lists all the <strong>IP Addresses</strong> currently allocated to that 
 network. You'll be presented with the following screen. The listing header displays the network 
 and mask along with the network zone. Initially there will be no <strong>IP Addresses</strong>. 
-Click the <strong>Add IP Address</strong> button to add a new <strong>IP Address</strong>.</p>
+You will see a <span class="ui-state-highlight">highlighted</span> range of IP Addresses as defined 
+in the Network Editor. The unassigned range will be displayed for any IP Addresses that are 
+available to be allocated. Note that the first IP Address, the Network, will not be displayed and the 
+last IP address, the Broadcast Address, will also not be displayed. Click the <strong>Add IP Address</strong> 
+button to add a new <strong>IP Address</strong>.</p>
 
 <img src="imgs/ipaddress.png">
 
 <p>The following dialog box will be presented. There are multiple fields here. Most don't 
-need much of a description. Note that if both the IPv4 and IPv6 fields are filled in, only 
-the IPv4 data will be saved.</p>
+need much of a description. There is a Notes field that is 1,000 characters in length. In the IP 
+Address Editor, the Notes column will indicate whether there is a note or not and will have hover 
+text if there is a note. If tne network was defined as IPv6, the first field will be described as 
+IPv6 Address.</p>
 
 <img src="imgs/ipaddress2.png">
 
 <p>When added, you'll see the entry in the listing as shown below. The fields should be pretty 
-obvious. IPv4 or IPv6 Network/Mask, HOstname, IP Address Zone, IP Address Type, Description, 
-Created By, and Date are reasonably clear.</p>
+obvious. IPv4 or IPv6 Network, HOstname, IP Address Zone, IP Address Type, Description, Notes, 
+Created By, and Date should be reasonably clear.</p>
 
 <p>If you wish to edit an <strong>IP Address</strong>, click on the <strong>IPv4 or IPv6 IP 
 Address</strong> name in the listing.</p>
