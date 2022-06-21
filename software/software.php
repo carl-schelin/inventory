@@ -69,7 +69,7 @@ function attach_file( p_script_url, update ) {
 
   af_url  = '?update='   + update;
 
-  uf_url += "&type="           + "<?php print $formVars['type']; ?>";
+  af_url += "&type="           + "<?php print $formVars['type']; ?>";
   af_url += "&sw_software="    + encode_URI(af_form.sw_software.value);
   af_url += "&sw_vendor="      + af_form.sw_vendor.value;
   af_url += "&sw_product="     + af_form.sw_product.value;
