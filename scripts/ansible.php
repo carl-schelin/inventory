@@ -115,6 +115,45 @@
 
 
 # by software tags
+# Get a list of all the type 4 tags, type 4 being software tags
+# the tag_companyid field points to the software_id in the software table.
+# from there retrieve a list of all servers that have that software
+
+  $q_string  = "select tag_name ";
+  $q_string .= "from tags ";
+  $q_string .= "where tag_type = 4 ";
+  $q_string .= "group by tag_name ";
+  $q_string .= "order by tag_name ";
+  $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_tags) > 0) {
+    while ($a_tags = mysqli_fetch_array($q_tags)) {
+
+      print "[" . str_replace(" ", "_", str_replace("/", "_", $a_tags['tag_name'])) . "]\n";
+
+      $q_string  = "select tag_companyid ";
+      $q_string .= "from tags ";
+      $q_string .= "where tag_type = 4 and tag_name = \"" . $a_tags['tag_name'] . "\" ";
+      $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_software) > 0) {
+        while ($a_software = mysqli_fetch_array($q_software)) {
+
+          $q_string  = "select inv_name ";
+          $q_string .= "from svr_software ";
+          $q_string .= "left join inventory on inventory.inv_id = svr_software.svr_companyid ";
+          $q_string .= "where svr_softwareid = " . $a_software['tag_companyid'] . " ";
+          $q_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_svr_software) > 0) {
+            while ($a_svr_software = mysqli_fetch_array($q_svr_software)) {
+
+              print $a_svr_software['inv_name'] . "\n";
+
+            }
+          }
+        }
+        print "\n";
+      }
+    }
+  }
 
 
 # by hardare tags
