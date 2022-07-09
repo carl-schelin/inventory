@@ -1112,7 +1112,7 @@ $(document).ready( function() {
   $( "#dialogSoftwareCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 600,
+    height: 275,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -1142,7 +1142,7 @@ $(document).ready( function() {
   $( "#dialogSoftwareUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 600,
+    height: 275,
     width: 600,
     show: 'slide',
     hide: 'slide',
