@@ -163,7 +163,7 @@
         }
       } else {
         $output .= "<tr>";
-        $output .= "  <td class=\"ui-widget-content\">No software assigned</td>";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"8\">No software assigned</td>";
         $output .= "</tr>";
       }
       $output .= "</table>";
