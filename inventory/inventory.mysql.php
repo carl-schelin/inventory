@@ -845,27 +845,21 @@
       $q_string .= "from inventory ";
       $q_string .= "where inv_manager = " . $formVars['group'] . " ";
 
-
-
-
-
-
-
-
-
-
-
-
       print "document.getElementById('tree_mysql').innerHTML = '" . mysqli_real_escape_string($db, "testing") . "';\n";
+
 
 
       $tags  = "<table id=\"interface-table\" class=\"ui-styled-table\">\n";
       $tags .= "<tr>\n";
       $tags .= "  <th class=\"ui-state-default\">Server Name</th>\n";
-      $tags .= "  <th class=\"ui-state-default\">Tags</th>\n";
+      $tags .= "  <th class=\"ui-state-default\">Server Tags</th>\n";
+      $tags .= "  <th class=\"ui-state-default\">Location Tags</th>\n";
+      $tags .= "  <th class=\"ui-state-default\">Product Tags</th>\n";
+      $tags .= "  <th class=\"ui-state-default\">Software Tags</th>\n";
+#      $tags .= "  <th class=\"ui-state-default\">Hardware Tags</th>\n";
       $tags .= "</tr>\n";
 
-      $q_string  = "select inv_id,inv_name ";
+      $q_string  = "select inv_id,inv_name,inv_location,inv_product ";
       $q_string .= "from inventory ";
       $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
       $q_string .= "left join products on products.prod_id = inventory.inv_product ";
@@ -910,12 +904,81 @@
         }
         $tags .= "  <td class=\"ui-widget-content\" id=\"tagu" . $a_inventory['inv_id'] . "\" onclick=\"edit_Tags(" . $a_inventory['inv_id'] . ",'tagu');\">" . $tmp_tags . "</td>\n";
 
+
+        $location = '';
+        $comma = '';
+        $q_string  = "select tag_name ";
+        $q_string .= "from tags ";
+        $q_string .= "where tag_type = 2 and tag_companyid = " . $a_inventory['inv_location'] . " ";
+        $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_tags = mysqli_fetch_array($q_tags)) {
+          $location .= $comma . $a_tags['tag_name'];
+          $comma = ', ';
+        }
+
+        $tags .= "  <td class=\"ui-widget-content\">" . $location . "</td>\n";
+
+
+        $product = '';
+        $comma = '';
+        $q_string  = "select tag_name ";
+        $q_string .= "from tags ";
+        $q_string .= "where tag_type = 3 and tag_companyid = " . $a_inventory['inv_product'] . " ";
+        $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_tags = mysqli_fetch_array($q_tags)) {
+          $product .= $comma . $a_tags['tag_name'];
+          $comma = ', ';
+        }
+
+        $tags .= "  <td class=\"ui-widget-content\">" . $product . "</td>\n";
+
+
+        $software = '';
+        $comma = '';
+        if (new_Mysql($db)) {
+          $q_string  = "select ANY_VALUE(tag_id) as tagid,tag_name ";
+        } else {
+            $q_string  = "select tag_id as tagid,tag_name ";
+        }
+        $q_string .= "from tags ";
+        $q_string .= "where tag_type = 4 ";
+        $q_string .= "group by tag_name ";
+        $q_string .= "order by tag_name ";
+        $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_tags) > 0) {
+          while ($a_tags = mysqli_fetch_array($q_tags)) {
+
+            $q_string  = "select svr_softwareid ";
+            $q_string .= "from svr_software ";
+            $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " ";
+            $q_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            if (mysqli_num_rows($q_svr_software) > 0) {
+              while ($a_svr_software = mysqli_fetch_array($q_svr_software)) {
+
+                $q_string  = "select tag_name ";
+                $q_string .= "from tags ";
+                $q_string .= "where tag_name = \"" . $a_tags['tag_name'] . "\" and tag_companyid = " . $a_svr_software['svr_softwareid'] . " and tag_type = 4 ";
+                $q_identity = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+                if (mysqli_num_rows($q_identity) > 0) {
+                  $software .= $comma . $a_tags['tag_name'];
+                  $comma = ", ";
+                }
+              }
+            }
+          }
+        }
+
+        $tags .= "  <td class=\"ui-widget-content\">" . $software . "</td>\n";
+
+
+        $tags .= "  <td class=\"ui-widget-content\">" . "Hardware Todo" . "</td>\n";
+
         $tags .= "</tr>\n";
       }
 
       $tags .= "</table>\n";
 
-      print "document.getElementById('tags_mysql').innerHTML = '" . mysqli_real_escape_string($db, $tags) . "';\n";
+#      print "document.getElementById('tags_mysql').innerHTML = '" . mysqli_real_escape_string($db, $tags) . "';\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
