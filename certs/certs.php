@@ -106,7 +106,7 @@ function update_file( p_script_url, update ) {
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
-function textCounter(field,cntfield,maxlimit) {
+function textCounter(field, cntfield, maxlimit) {
   if (field.value.length > maxlimit)
     field.value = field.value.substring(0, maxlimit);
   else
@@ -212,27 +212,9 @@ $(function() {
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Buttons</strong>
-  <ul>
-    <li><strong>Update Certificate</strong> - Update the Certificate being editied.</li>
-    <li><strong>Add Certificate</strong> - Add a new Certificate.</li>
-  </ul></li>
-</ul>
+<p>Certificate management is important to the company as an expired certificate can result in a system that is inaccessible.</p>
 
-<ul>
-  <li><strong>Certificate Form</strong>
-  <ul>
-    <li><strong>Description</strong> - A description of the Certificate.</li>
-    <li><strong>URL</strong> - What is the URL or server that is using this certificate.</li>
-    <li><strong>Associated Certificate Authority</strong> - Select an Associated Certificate Authority</li>
-    <li><strong>Is this a Certificate Authority?</strong> - If this is checked, the Certificate Authority entered below will be added to the Associated Certificate Authority list.</li>
-    <li><strong>Expiration Date</strong> - When this Certificate expires. Your profile indicates whether you want to be notified of a pending expiration or an expired Certificate.</li>
-    <li><strong>Certificate Authority</strong> - If this entry is a Certificate Authority, enter that here.</li>
-    <li><strong>Managed By</strong> - Which group will receive notification emails about this Certificate prior to expiration and when it does expire.</li>
-    <li><strong>Certificate Text</strong> - Enter up to 1024 characters of information to provide details about the Certificate.</li>
-  </ul></li>
-</ul>
+<p>When adding certificates, there should be a top level certificate authority defined and any new certs are attached to that CA.</p>
 
 <p><strong>NOTE:</strong> Regardless of the 'Managed By' group email, the Web Applications team will also receive copies of the email for verification.</p>
 
@@ -261,22 +243,20 @@ $(function() {
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Certificate Listing</strong>
-  <ul>
-    <li><strong>Delete (x)</strong> - Click here to delete this Website Certificate.</li>
-    <li><strong>Editing</strong> - Click on a Certificate to toggle the form and edit the certificate.</li>
-    <li><strong>Highlight</strong> - If a certificate is <span class=\"ui-state-error\">highlighted</span>, then the certificate has expired.</li>
-    <li><strong>Highlight</strong> - If a certificate is <span class=\"ui-state-highlight\">highlighted</span>, then the certificate will expire within the notification period you specified in your profile (default: 90 days, your setting: " . $a_users['usr_notify'] . " days).</li>
-  </ul></li>
-</ul>
+<p><strong>Certificate Management Listing</strong></p>
 
-<ul>
-  <li><strong>Notes</strong>
-  <ul>
-    <li>Click the <strong>Certificate Management</strong> title bar to toggle the <strong>Certificate Form</strong>.</li>
-  </ul></li>
-</ul>
+<p>This page lists all the certificate authorities and certificates that are associated with those CAs. These certificates can be 
+used for a multitude of purposes from websites to monitoring agents to kubernetes.</p>
+
+<p>To add a certificate, click the Add Certificate button. This will bring up a dialog box which you can then use to add a 
+certificate to the manager.</p>
+
+<p>To edit an existing certificate, click on the entry in the listing. A dialog box will be displayed where you can edit the current 
+entry, or to easily make a change, you can create a new entry.</p>
+
+<p>Note that under the Members column is a number which indicates the number of servers that are currently associated with the 
+certificate. You cannot remove a certificate until this value is zero. Clicking on the number will take you to a listing of 
+servers that are using this certificate.</p>
 
 </div>
 
@@ -319,7 +299,7 @@ $(function() {
   <td class="ui-widget-content"><label><input type="checkbox" name="cert_isca"> Is this a Certificate Authority?</label></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Expiration Date: <input type="text" name="cert_expire" value="1971-01-01" size="12"></td>
+  <td class="ui-widget-content">Expiration Date: <input type="date" name="cert_expire" value="1971-01-01" size="12"></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Certificate Authority: <input type="text" name="cert_authority" size="40"></td>
@@ -339,7 +319,7 @@ $(function() {
 </select></td>
 </tr>
 <tr>
-  <td class="ui-widget-content"><textarea name="cert_memo" cols="80" rows="5" onKeyDown="textCounter(document.dialog.cert_memo,document.dialog.remLen,1024);" onKeyUp="textCounter(document.dialog.cert_memo,document.dialog.remLen,1024);"></textarea><br><input readonly type="text" name="remLen" size="4" maxlength="4" value="1024"> characters left</td>
+  <td class="ui-widget-content"><textarea name="cert_memo" cols="80" rows="5" onKeyDown="textCounter(document.formCreate.cert_memo,document.formCreate.remLenCreate,1024);" onKeyUp="textCounter(document.formCreate.cert_memo,document.formCreate.remLenCreate,1024);"></textarea><br><input readonly type="text" name="remLenCreate" size="4" maxlength="4" value="1024"> characters left</td>
 </tr>
 </table>
 
@@ -380,7 +360,7 @@ $(function() {
   <td class="ui-widget-content"><label><input type="checkbox" name="cert_isca"> Is this a Certificate Authority?</label></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Expiration Date: <input type="text" name="cert_expire" value="1971-01-01" size="12"></td>
+  <td class="ui-widget-content">Expiration Date: <input type="date" name="cert_expire" value="1971-01-01" size="12"></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Certificate Authority: <input type="text" name="cert_authority" size="40"></td>
@@ -400,7 +380,7 @@ $(function() {
 </select></td>
 </tr>
 <tr>
-  <td class="ui-widget-content"><textarea name="cert_memo" cols="80" rows="5" onKeyDown="textCounter(document.dialog.cert_memo,document.dialog.remLen,1024);" onKeyUp="textCounter(document.dialog.cert_memo,document.dialog.remLen,1024);"></textarea><br><input readonly type="text" name="remLen" size="4" maxlength="4" value="1024"> characters left</td>
+  <td class="ui-widget-content"><textarea name="cert_memo" cols="80" rows="5" onKeyDown="textCounter(document.formUpdate.cert_memo,document.formUpdate.remLenUpdate,1024);" onKeyUp="textCounter(document.formUpdate.cert_memo,document.formUpdate.remLenUpdate,1024);"></textarea><br><input readonly type="text" name="remLenUpdate" size="4" maxlength="4" value="1024"> characters left</td>
 </tr>
 </table>
 
