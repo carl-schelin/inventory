@@ -230,9 +230,9 @@ provided.</p>
   <li>Nagios (Nag) - This is a special case used by the Unix team to monitor servers that aren't Production or otherwise monitored by the monitoring team.</li>
 </ul>
 
-<p>The Assigned Tags tag shows the three types of tags associated with the servers. Private are the tags you create for the servers and only seen by you. 
-Group are tags that are created for use by the group you are a member of. Public are seen by all users. Public are also the ones 
-used to create the hosts file used by Ansible.</p>
+<p>The Assigned Tags tag shows the tags that are assigned to the individual servers. In addition, any tags that have been added to a location, 
+any tags that have been assigned to a product, and any tags that have been assigned to software that's installed on the server are displayed. 
+These tags are all used when creating the hosts file that is used by Ansible.</p>
 
 <p>Note: The server names are clickable links to the server detail pages. Fields that are <u>underscored</u> are editable.</p>
 
