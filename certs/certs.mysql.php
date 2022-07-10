@@ -264,7 +264,7 @@
                   $output .= "  <td" . $class . " delete\">"                                                            . $isca                                      . "</td>\n";
                   $output .= "  <td" . $class . " delete\">"                                                            . $a_grandchild['cert_expire']               . "</td>\n";
                   $output .= "  <td" . $class . "\">"                                                                   . $a_grandchild['cert_authority']            . "</td>\n";
-                  $output .= "  <td" . $class . "\">"                                                                   . $a_cgrandchild['grp_name']                 . "</td>\n";
+                  $output .= "  <td" . $class . "\">"                                                                   . $a_grandchild['grp_name']                  . "</td>\n";
                   $output .= "  <td" . $class . " delete\">"                                               . $linkstart . $total                          . $linkend . "</td>\n";
                   $output .= "</tr>\n";
                 }
