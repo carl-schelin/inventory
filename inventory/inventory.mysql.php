@@ -971,14 +971,14 @@
         $tags .= "  <td class=\"ui-widget-content\">" . $software . "</td>\n";
 
 
-        $tags .= "  <td class=\"ui-widget-content\">" . "Hardware Todo" . "</td>\n";
+#        $tags .= "  <td class=\"ui-widget-content\">" . "Hardware Todo" . "</td>\n";
 
         $tags .= "</tr>\n";
       }
 
       $tags .= "</table>\n";
 
-#      print "document.getElementById('tags_mysql').innerHTML = '" . mysqli_real_escape_string($db, $tags) . "';\n";
+      print "document.getElementById('tags_mysql').innerHTML = '" . mysqli_real_escape_string($db, $tags) . "';\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
