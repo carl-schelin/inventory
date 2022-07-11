@@ -117,6 +117,7 @@
           }
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('certs.fill.php?id=" . $a_certs['cert_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $certstart = "<a href=\"servers.php?id=" . $a_certs['cert_id'] . "\" target=\"_blank\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('certs.del.php?id=" . $a_certs['cert_id'] . "');\">";
           $linkend   = "</a>";
 
@@ -145,7 +146,7 @@
           $output .= "  <td" . $class . " delete\">"                                              . $a_certs['cert_expire']               . "</td>\n";
           $output .= "  <td" . $class . "\">"                                                     . $a_certs['cert_authority']            . "</td>\n";
           $output .= "  <td" . $class . "\">"                                                     . $a_certs['grp_name']                  . "</td>\n";
-          $output .= "  <td" . $class . " delete\">"                                 . $linkstart . $total                     . $linkend . "</td>\n";
+          $output .= "  <td" . $class . " delete\">"                                 . $certstart . $total                     . $linkend . "</td>\n";
           $output .= "</tr>\n";
           $count++;
 
@@ -177,6 +178,7 @@
               }
 
               $linkstart = "<a href=\"#\" onclick=\"show_file('certs.fill.php?id=" . $a_child['cert_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+              $certstart = "<a href=\"servers.php?id=" . $a_child['cert_id'] . "\" target=\"_blank\">";
               $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('certs.del.php?id=" . $a_child['cert_id'] . "');\">";
               $linkend   = "</a>";
 
@@ -205,7 +207,7 @@
               $output .= "  <td" . $class . " delete\">"                                                   . $a_child['cert_expire']               . "</td>\n";
               $output .= "  <td" . $class . "\">"                                                          . $a_child['cert_authority']            . "</td>\n";
               $output .= "  <td" . $class . "\">"                                                          . $a_child['grp_name']                  . "</td>\n";
-              $output .= "  <td" . $class . " delete\">"                                      . $linkstart . $total                     . $linkend . "</td>\n";
+              $output .= "  <td" . $class . " delete\">"                                      . $certstart . $total                     . $linkend . "</td>\n";
               $output .= "</tr>\n";
 
 
@@ -237,6 +239,7 @@
                   }
 
                   $linkstart = "<a href=\"#\" onclick=\"show_file('certs.fill.php?id=" . $a_grandchild['cert_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+                  $certstart = "<a href=\"servers.php?id=" . $a_grandchild['cert_id'] . "\" target=\"_blank\">";
                   $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('certs.del.php?id=" . $a_grandchild['cert_id'] . "');\">";
                   $linkend   = "</a>";
 
@@ -265,7 +268,7 @@
                   $output .= "  <td" . $class . " delete\">"                                                            . $a_grandchild['cert_expire']               . "</td>\n";
                   $output .= "  <td" . $class . "\">"                                                                   . $a_grandchild['cert_authority']            . "</td>\n";
                   $output .= "  <td" . $class . "\">"                                                                   . $a_grandchild['grp_name']                  . "</td>\n";
-                  $output .= "  <td" . $class . " delete\">"                                               . $linkstart . $total                          . $linkend . "</td>\n";
+                  $output .= "  <td" . $class . " delete\">"                                               . $certstart . $total                          . $linkend . "</td>\n";
                   $output .= "</tr>\n";
                 }
               }
