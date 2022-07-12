@@ -948,7 +948,7 @@
           if (mysqli_num_rows($q_tags) > 0) {
           while ($a_tags = mysqli_fetch_array($q_tags)) {
 
-            $q_string  = "select svr_softwareid ";
+            $q_string  = "select svr_softwareid,svr_primary,svr_facing ";
             $q_string .= "from svr_software ";
             $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " ";
             $q_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -960,7 +960,18 @@
                 $q_string .= "where tag_name = \"" . $a_tags['tag_name'] . "\" and tag_companyid = " . $a_svr_software['svr_softwareid'] . " and tag_type = 4 ";
                 $q_identity = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
                 if (mysqli_num_rows($q_identity) > 0) {
-                  $software .= $comma . $a_tags['tag_name'];
+                  $asterisk = '';
+                  if ($a_svr_software['svr_primary']) {
+                    $asterisk = '*';
+                  }
+                  $startbold = '';
+                  $endbold = '';
+                  if ($a_svr_software['svr_facing']) {
+                    $startbold = '<strong>';
+                    $endbold = '<strong>';
+                  }
+
+                  $software .= $comma . $startbold . $a_tags['tag_name'] .$endbold . $asterisk;
                   $comma = ", ";
                 }
               }
