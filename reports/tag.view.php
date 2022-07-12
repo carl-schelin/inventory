@@ -154,23 +154,11 @@ $(document).ready( function () {
   }
 
   $title = '';
-# if private
-  if ($formVars['type'] == 0) {
-    $tag = $and . " tag_name = '" . $formVars['tag'] . "' and tag_owner = " . $_SESSION['user'] . " ";
-    $and = " and";
-    $title = "Private Tag View: " . $formVars['tag'];
-  }
-# if group
-  if ($formVars['type'] == 1) {
-    $tag = $and . " tag_name = '" . $formVars['tag'] . "' and tag_group = " . $_SESSION['group'] . " ";
-    $and = " and";
-    $title = "Group Tag View: " . $formVars['tag'];
-  }
 # if all
   if ($formVars['type'] == 2) {
     $tag = $and . " tag_name = '" . $formVars['tag'] . "' ";
     $and = " and";
-    $title = "Public Tag View: " . $formVars['tag'];
+    $title = "Tag View: " . $formVars['tag'];
   }
 
   $where = $product . $inwork . $location . $type . $tag;
@@ -245,18 +233,19 @@ $(document).ready( function () {
   print "  <th class=\"ui-state-default\">IP Address</th>\n";
   print "</tr>\n";
 
-  $q_string = "select inv_id,inv_name,inv_function,inv_document,inv_manager,grp_name,ct_city,"
-            . "mod_vendor,mod_name,zone_name,inv_ssh,hw_active,hw_retired,hw_reused "
-            . "from inventory "
-            . "left join hardware  on hardware.hw_companyid = inventory.inv_id "
-            . "left join models    on models.mod_id         = hardware.hw_vendorid "
-            . "left join locations on locations.loc_id      = inventory.inv_location "
-            . "left join cities    on cities.ct_id          = locations.loc_city "
-            . "left join a_groups  on a_groups.grp_id       = inventory.inv_manager "
-            . "left join timezones on timezones.zone_id     = inventory.inv_zone "
-            . "left join tags      on tags.tag_companyid    = inventory.inv_id "
-            . $where
-            . "order by inv_name";
+  $q_string  = "select inv_id,inv_name,inv_function,inv_document,inv_manager,grp_name,ct_city,";
+  $q_string .= "ven_name,mod_name,zone_name,inv_ssh,hw_active,hw_retired,hw_reused ";
+  $q_string .= "from inventory ";
+  $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "left join models    on models.mod_id         = hardware.hw_vendorid ";
+  $q_string .= "left join vendors   on vendors.ven_id        = models.mod_vendor ";
+  $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
+  $q_string .= "left join cities    on cities.ct_id          = locations.loc_city ";
+  $q_string .= "left join a_groups  on a_groups.grp_id       = inventory.inv_manager ";
+  $q_string .= "left join timezones on timezones.zone_id     = inventory.inv_zone ";
+  $q_string .= "left join tags      on tags.tag_companyid    = inventory.inv_id ";
+  $q_string .= $where . " ";
+  $q_string .= "order by inv_name ";;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
@@ -287,11 +276,11 @@ $(document).ready( function () {
 #####
 # Get software operating system information
 #####
-    $q_string = "select sw_software "
-              . "from svr_software "
-              . "left join software on software.sw_id = svr_software.svr_softwareid "
-              . "left join sw_types on sw_types.typ_id = software.sw_type "
-              . "where svr_companyid = " . $a_inventory['inv_id'] . " and typ_name = 'OS' ";
+    $q_string  = "select sw_software ";
+    $q_string .= "from svr_software ";
+    $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
+    $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
+    $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " and typ_name = 'OS' ";
     $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_software = mysqli_fetch_array($q_software);
     
@@ -354,7 +343,7 @@ $(document).ready( function () {
     print "  <td title=\"" . $title . "\"" . $class . ">" . $editmain     . $showstart    . $a_inventory['inv_name']                            . $sshaccess . $showend . "</td>\n";
     print "  <td " . $class . ">"                                         . $showdoc      . $a_inventory['inv_function']                                     . $showend . "</td>\n";
     print "  <td " . $class . ">"                                                         . $a_inventory['grp_name']                                                    . "</td>\n";
-    print "  <td " . $class . ">"                         . $edithwstart  . $showhwstart  . $a_inventory['mod_vendor'] . " " . $a_inventory['mod_name']      . $showend . "</td>\n";
+    print "  <td " . $class . ">"                         . $edithwstart  . $showhwstart  . $a_inventory['ven_name'] . " " . $a_inventory['mod_name']      . $showend . "</td>\n";
     print "  <td " . $class . ">"                         . $editswstart  . $showswstart  . $a_software['sw_software']                                       . $showend . "</td>\n";
     print "  <td " . $class . ">"                                         . $showlocstart . $a_inventory['ct_city'] . " (" . $a_inventory['zone_name'] . ")" . $showend . "</td>\n";
     print "  <td " . $class . ">"                         . $editintstart . $shownetstart . $interface . $showend . "<br>"                        . $console            . "</td>\n";
