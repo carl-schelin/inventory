@@ -710,14 +710,15 @@
     $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
     $a_hardware = mysqli_fetch_array($q_hardware);
 
-    $q_string  = "select mod_vendor,mod_name ";
+    $q_string  = "select ven_name,mod_name ";
     $q_string .= "from models ";
-    $q_string .= "where mod_id = " . $a_hardware['hw_vendorid'];
+    $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
+    $q_string .= "where mod_id = " . $a_hardware['hw_vendorid'] . " ";
     $q_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
     $a_models = mysqli_fetch_array($q_models);
 
     $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
-    $output .= "  <td><strong>Vendor</strong>: "           . $a_models['mod_vendor']   . "</td>\n";
+    $output .= "  <td><strong>Vendor</strong>: "           . $a_models['ven_name']     . "</td>\n";
     $output .= "  <td><strong>Model</strong>: "            . $a_models['mod_name']     . "</td>\n";
     $output .= "  <td><strong>Serial Number</strong>: "    . $a_hardware['hw_serial']  . "</td>\n";
     $output .= "  <td><strong>Asset Tag</strong>: "        . $a_hardware['hw_asset']   . "</td>\n";
@@ -856,7 +857,10 @@
       $q_string .= "order by part_name";
       $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
       while ($a_hardware = mysqli_fetch_array($q_hardware)) {
-        $q_string  = "select mod_vendor,mod_name,mod_size,mod_speed from models where mod_id = " . $a_hardware['hw_vendorid'];
+        $q_string  = "select ven_name,mod_name,mod_size,mod_speed ";
+        $q_string .= "from models ";
+        $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
+        $q_string .= "where mod_id = " . $a_hardware['hw_vendorid'] . " ";
         $q_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
         $a_models = mysqli_fetch_array($q_models);
 
@@ -869,10 +873,10 @@
         $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
         $output .= "  <td>" . $a_hardware['hw_serial']  . "</td>\n";
         $output .= "  <td>" . $a_hardware['hw_asset']   . "</td>\n";
-        $output .= "  <td>" . $a_models['mod_vendor']   . "</td>\n";
+        $output .= "  <td>" . $a_models['ven_name']     . "</td>\n";
         $output .= "  <td>" . $a_models['mod_name']     . "</td>\n";
-        $output .= "  <td>" . $a_models['mod_size']    . "</td>\n";
-        $output .= "  <td>" . $a_models['mod_speed']   . "</td>\n";
+        $output .= "  <td>" . $a_models['mod_size']     . "</td>\n";
+        $output .= "  <td>" . $a_models['mod_speed']    . "</td>\n";
         $output .= "  <td>" . $a_hardware['part_name']  . "</td>\n";
         $output .= "  <td>" . $a_hardware['hw_update']  . "</td>\n";
         $output .= "</tr>\n";
