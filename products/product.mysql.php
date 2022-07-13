@@ -117,11 +117,14 @@
 
       $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>";
-      $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Product/Service</th>";
+      if (check_userlevel($db, $AL_Admin)) {
+        $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Product/Service</th>";
+      }
       $output .= "  <th class=\"ui-state-default\">Product Code</th>";
       $output .= "  <th class=\"ui-state-default\">Product Name</th>";
       $output .= "  <th class=\"ui-state-default\">Product Description</th>";
       $output .= "  <th class=\"ui-state-default\">Product Tags</th>";
+      $output .= "  <th class=\"ui-state-default\">Members</th>";
       $output .= "  <th class=\"ui-state-default\">Business</th>";
       $output .= "  <th class=\"ui-state-default\">Svc Class</th>";
       $output .= "</tr>";
@@ -137,6 +140,7 @@
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('product.fill.php?id="  . $a_products['prod_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('product.del.php?id=" . $a_products['prod_id'] . "');\">";
+          $prodstart = "<a href=\"servers.php?id=" . $a_products['prod_id'] . "\" target=\"_blank\">";
           $linkend = "</a>";
 
           $prod_tags = '';
@@ -152,12 +156,30 @@
 
           $class = "ui-widget-content";
 
+          $total = 0;
+          $q_string  = "select inv_id ";
+          $q_string .= "from inventory ";
+          $q_string .= "where inv_product = " . $a_products['prod_id'] . " ";
+          $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inventory) > 0) {
+            while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+              $total++;
+            }
+          }
+
           $output .= "<tr>";
-          $output .= "  <td class=\"" . $class . " delete\">" . $linkdel                                              . "</td>";
+          if (check_userlevel($db, $AL_Admin)) {
+            if ($total == 0) {
+              $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel . "</td>";
+            } else {
+              $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>";
+            }
+          }
           $output .= "  <td class=\"" . $class . "\">"                     . $a_products['prod_code']                 . "</td>";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_products['prod_name']      . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . "\">"                     . $a_products['prod_desc']                 . "</td>";
           $output .= "  <td class=\"" . $class . "\">"                     . $prod_tags                               . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">" . $prodstart . $total                        . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . "\">"                     . $a_products['bus_name']                  . "</td>";
           $output .= "  <td class=\"" . $class . "\">"                     . $a_products['svc_acronym']               . "</td>";
           $output .= "</tr>";
