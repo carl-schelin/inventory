@@ -35,14 +35,16 @@
       print "selbox.options.length = 0;\n";
 
 // retrieve type list
-      $q_string  = "select mod_id,mod_vendor,mod_name from models ";
+      $q_string  = "select mod_id,ven_name,mod_name ";
+      $q_string .= "from models ";
+      $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
       $q_string .= "where mod_type = " . $a_hardware['hw_type'] . " ";
-      $q_string .= "order by mod_vendor,mod_name";
+      $q_string .= "order by ven_name,mod_name";
       $q_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 // create the javascript bit for populating the model dropdown box.
       while ($a_models = mysqli_fetch_array($q_models) ) {
-        print "selbox.options[selbox.options.length] = new Option(\"" . $a_models['mod_name'] . " (" . $a_models['mod_vendor'] . ")\"," . $a_models['mod_id'] . ");\n";
+        print "selbox.options[selbox.options.length] = new Option(\"" . $a_models['mod_name'] . " (" . $a_models['ven_name'] . ")\"," . $a_models['mod_id'] . ");\n";
       }
 
 # for the fill part, we want to not present the current hw_id as a selectable option (can't be a sub-system of yourself).
@@ -51,15 +53,16 @@
       print "selbox.options.length = 0;\n";
 
 # retrieve hardware list
-      $q_string  = "select hw_id,mod_vendor,mod_name ";
+      $q_string  = "select hw_id,ven_name,mod_name ";
       $q_string .= "from hardware ";
-      $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+      $q_string .= "left join models  on models.mod_id  = hardware.hw_vendorid ";
+      $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
       $q_string .= "where hw_companyid = " . $a_hardware['hw_companyid'] . " and hw_hw_id = 0 and hw_id != " . $formVars['id'] . " ";
       $q_hwselect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 # create the javascript bit for populating the hardware dropdown box.
       while ($a_hwselect = mysqli_fetch_array($q_hwselect)) {
-        print "selbox.options[selbox.options.length] = new Option(\"" . $a_hwselect['mod_vendor'] . ": " . $a_hwselect['mod_name'] . "\"," . $a_hwselect['hw_id'] . ");\n";
+        print "selbox.options[selbox.options.length] = new Option(\"" . $a_hwselect['ven_name'] . ": " . $a_hwselect['mod_name'] . "\"," . $a_hwselect['hw_id'] . ");\n";
       }
 
 
@@ -80,7 +83,7 @@
       }
 
       $product  = return_Index($db, $a_hardware['hw_product'],   "select prod_id from products order by prod_name");
-      $model    = return_Index($db, $a_hardware['hw_vendorid'],  "select mod_id from models where mod_type = " . $a_hardware['hw_type'] . " order by mod_vendor,mod_name");
+      $model    = return_Index($db, $a_hardware['hw_vendorid'],  "select mod_id from models left join vendors on vendors.ven_id = models.mod_vendor where mod_type = " . $a_hardware['hw_type'] . " order by ven_name,mod_name");
       $type     = return_Index($db, $a_hardware['hw_type'],      "select part_id from parts order by part_name");
       $support  = return_Index($db, $a_hardware['hw_supportid'], "select sup_id from support order by sup_company,sup_contract");
       $response = return_Index($db, $a_hardware['hw_response'],  "select slv_id from supportlevel order by slv_value");

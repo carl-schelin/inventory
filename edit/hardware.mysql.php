@@ -369,13 +369,14 @@
         $output .= "<tr>\n";
         $output .= "  <td class=\"ui-widget-content\">Main Hardware Container <select name=\"hw_hw_id\">\n";
 
-        $q_string  = "select hw_id,mod_vendor,mod_name ";
+        $q_string  = "select hw_id,ven_name,mod_name ";
         $q_string .= "from hardware ";
-        $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+        $q_string .= "left join models  on models.mod_id  = hardware.hw_vendorid ";
+        $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
         $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = 0 ";
         $q_hwselect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_hwselect = mysqli_fetch_array($q_hwselect)) {
-          $output .= "<option value=\"" . $a_hwselect['hw_id'] . "\">" . $a_hwselect['mod_vendor'] . ": " . $a_hwselect['mod_name'] . "</option>\n";
+          $output .= "<option value=\"" . $a_hwselect['hw_id'] . "\">" . $a_hwselect['ven_name'] . ": " . $a_hwselect['mod_name'] . "</option>\n";
         }
 
         $output .= "</select></td>\n";
@@ -430,15 +431,16 @@
       print "selbox.options.length = 0;\n";
 
 # retrieve hardware list
-      $q_string  = "select hw_id,mod_vendor,mod_name ";
+      $q_string  = "select hw_id,ven_name,mod_name ";
       $q_string .= "from hardware ";
-      $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+      $q_string .= "left join models  on models.mod_id  = hardware.hw_vendorid ";
+      $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
       $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = 0 ";
       $q_hwselect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 # create the javascript bit for populating the hardware dropdown box.
       while ($a_hwselect = mysqli_fetch_array($q_hwselect)) {
-        print "selbox.options[selbox.options.length] = new Option(\"" . $a_hwselect['mod_vendor'] . ": " . $a_hwselect['mod_name'] . "\"," . $a_hwselect['hw_id'] . ");\n";
+        print "selbox.options[selbox.options.length] = new Option(\"" . $a_hwselect['ven_name'] . ": " . $a_hwselect['mod_name'] . "\"," . $a_hwselect['hw_id'] . ");\n";
       }
 
 

@@ -75,7 +75,7 @@
     $formVars['group'] = -1;
   }
 
-  $where = "where hw_serial != '' and mod_vendor = 'Dell' and mod_virtual = 0 and inv_status = 0 ";
+  $where = "where hw_serial != '' and ven_name = 'Dell' and mod_virtual = 0 and inv_status = 0 ";
   if ($formVars['group'] != -1) {
     $where .= " and (grp_id = " . $formVars['group'] . " or inv_appadmin = " . $formVars['group'] . ") ";
   }
@@ -178,11 +178,12 @@
 
   $q_string  = "select inv_id,inv_name,inv_function,prod_name,hw_group,hw_serial,hw_purchased,grp_name,sup_company,sup_contract,hw_supid_verified ";
   $q_string .= "from inventory ";
-  $q_string .= "left join hardware on inventory.inv_id = hardware.hw_companyid ";
-  $q_string .= "left join a_groups   on a_groups.grp_id    = hardware.hw_group ";
-  $q_string .= "left join models   on models.mod_id    = hardware.hw_vendorid ";
-  $q_string .= "left join support  on support.sup_id   = hardware.hw_supportid ";
-  $q_string .= "left join products on products.prod_id = inventory.inv_product ";
+  $q_string .= "left join hardware on inventory.inv_id  = hardware.hw_companyid ";
+  $q_string .= "left join a_groups on a_groups.grp_id   = hardware.hw_group ";
+  $q_string .= "left join models   on models.mod_id     = hardware.hw_vendorid ";
+  $q_string .= "left join vendors  on vendors.ven_id    = models.mod_vendor ";
+  $q_string .= "left join support  on support.sup_id    = hardware.hw_supportid ";
+  $q_string .= "left join products on products.prod_id  = inventory.inv_product ";
   $q_string .= $where;
   $q_string .= $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
