@@ -107,17 +107,18 @@
           $body .= "  </ul></li>\n";
 
 
-          $q_string  = "select part_name,hw_serial,hw_asset,mod_vendor,mod_name,hw_rma ";
+          $q_string  = "select part_name,hw_serial,hw_asset,ven_name,mod_name,hw_rma ";
           $q_string .= "from hardware ";
-          $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
-          $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
+          $q_string .= "left join models  on models.mod_id  = hardware.hw_vendorid ";
+          $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
+          $q_string .= "left join parts   on parts.part_id  = hardware.hw_type ";
           $q_string .= "where hw_id = " . $formVars['hw_id'];
           $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           $a_hardware = mysqli_fetch_array($q_hardware);
 
           $body .= "  <li>Failed Hardware\n";
           $body .= "  <ul>\n";
-          $body .= "    <li>Vendor: "                  . $a_hardware['mod_vendor'] . "</li>\n";
+          $body .= "    <li>Vendor: "                  . $a_hardware['ven_name']   . "</li>\n";
           $body .= "    <li>Model: "                   . $a_hardware['mod_name']   . "</li>\n";
           $body .= "    <li>Type: "                    . $a_hardware['part_name']  . "</li>\n";
           $body .= "    <li>RMA: "                     . $a_hardware['hw_rma']     . "</li>\n";

@@ -243,11 +243,12 @@ needs to be set on the original equipment. If the system is confirmed as retired
     print "</tr>\n";
   }
 
-  $q_string  = "select inv_id,inv_name,inv_status,mod_vendor,mod_name,ct_city,st_acronym,slv_value,sup_company,inv_response,";
+  $q_string  = "select inv_id,inv_name,inv_status,ven_name,mod_name,ct_city,st_acronym,slv_value,sup_company,inv_response,";
   $q_string .= "hw_serial,hw_asset,hw_built,hw_active,hw_retired,hw_reused,hw_supid_verified,hw_supportstart,hw_supportend ";
   $q_string .= "from inventory ";
   $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join models       on models.mod_id         = hardware.hw_vendorid ";
+  $q_string .= "left join vendors      on vendors.ven_id        = models.mod_vendor ";
   $q_string .= "left join support      on support.sup_id        = hardware.hw_supportid ";
   $q_string .= "left join supportlevel on supportlevel.slv_id   = hardware.hw_response ";
   $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
@@ -282,7 +283,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
 
     if ($formVars['csv'] == 'true') {
       print "\"" . $a_inventory['inv_name'] . "\",";
-      print "\"" . $a_inventory['mod_vendor'] . "\",";
+      print "\"" . $a_inventory['ven_name'] . "\",";
       print "\"" . $a_inventory['mod_name'] . "\",";
       print "\"" . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym'] . "\",";
       print "\"" . $a_inventory['hw_asset'] . "\",";
@@ -295,7 +296,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
     } else {
       print "<tr>\n";
       print "  <td class=\"" . $class . "\">" . $linkstart . $a_inventory['inv_name']                                    . $linkend . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['mod_vendor']                                             . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inventory['ven_name']                                               . "</td>\n";
       print "  <td class=\"" . $class . "\">"              . $a_inventory['mod_name']                                               . "</td>\n";
       print "  <td class=\"" . $class . "\">"              . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym']            . "</td>\n";
       print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_asset']                                               . "</td>\n";
@@ -344,11 +345,12 @@ needs to be set on the original equipment. If the system is confirmed as retired
     print "</tr>\n";
   }
 
-  $q_string  = "select inv_id,inv_name,inv_status,mod_vendor,mod_name,ct_city,st_acronym,slv_value,sup_company,";
+  $q_string  = "select inv_id,inv_name,inv_status,ven_name,mod_name,ct_city,st_acronym,slv_value,sup_company,";
   $q_string .= "hw_serial,hw_asset,hw_built,hw_active,hw_retired,hw_reused,hw_supid_verified,hw_supportstart,hw_supportend ";
   $q_string .= "from inventory ";
   $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join models       on models.mod_id         = hardware.hw_vendorid ";
+  $q_string .= "left join vendors      on vendors.ven_id        = models.mod_vendor ";
   $q_string .= "left join support      on support.sup_id        = hardware.hw_supportid ";
   $q_string .= "left join supportlevel on supportlevel.slv_id   = inventory.inv_response ";
   $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
@@ -372,7 +374,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
 
       if ($formVars['csv'] == 'true') {
         print "\"" . $a_inventory['inv_name'] . "\",";
-        print "\"" . $a_inventory['mod_vendor'] . "\",";
+        print "\"" . $a_inventory['ven_name'] . "\",";
         print "\"" . $a_inventory['mod_name'] . "\",";
         print "\"" . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym'] . "\",";
         print "\"" . $a_inventory['hw_asset'] . "\",";
@@ -384,7 +386,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
       } else {
         print "<tr>\n";
         print "  <td class=\"" . $class . "\">" . $linkstart . $a_inventory['inv_name']                                    . $linkend . "</td>\n";
-        print "  <td class=\"" . $class . "\">"              . $a_inventory['mod_vendor']                                             . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inventory['ven_name']                                               . "</td>\n";
         print "  <td class=\"" . $class . "\">"              . $a_inventory['mod_name']                                               . "</td>\n";
         print "  <td class=\"" . $class . "\">"              . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym']            . "</td>\n";
         print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_asset']                                               . "</td>\n";
@@ -432,11 +434,12 @@ needs to be set on the original equipment. If the system is confirmed as retired
     print "</tr>\n";
   }
 
-  $q_string  = "select inv_id,inv_name,inv_status,mod_vendor,mod_name,ct_city,st_acronym,slv_value,sup_company,";
+  $q_string  = "select inv_id,inv_name,inv_status,ven_name,mod_name,ct_city,st_acronym,slv_value,sup_company,";
   $q_string .= "hw_serial,hw_asset,hw_built,hw_active,hw_retired,hw_reused,hw_supid_verified,hw_supportstart,hw_supportend ";
   $q_string .= "from inventory ";
   $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join models       on models.mod_id         = hardware.hw_vendorid ";
+  $q_string .= "left join vendors      on vendors.ven_id        = models.mod_vendor ";
   $q_string .= "left join support      on support.sup_id        = hardware.hw_supportid ";
   $q_string .= "left join supportlevel on supportlevel.slv_id   = inventory.inv_response ";
   $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
@@ -460,7 +463,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
 
       if ($formVars['csv'] == 'true') {
         print "\"" . $a_inventory['inv_name'] . "\",";
-        print "\"" . $a_inventory['mod_vendor'] . "\",";
+        print "\"" . $a_inventory['ven_name'] . "\",";
         print "\"" . $a_inventory['mod_name'] . "\",";
         print "\"" . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym'] . "\",";
         print "\"" . $a_inventory['hw_asset'] . "\",";
@@ -472,7 +475,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
       } else {
         print "<tr>\n";
         print "  <td class=\"" . $class . "\">" . $linkstart . $a_inventory['inv_name']                                    . $linkend . "</td>\n";
-        print "  <td class=\"" . $class . "\">"              . $a_inventory['mod_vendor']                                             . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inventory['ven_name']                                               . "</td>\n";
         print "  <td class=\"" . $class . "\">"              . $a_inventory['mod_name']                                               . "</td>\n";
         print "  <td class=\"" . $class . "\">"              . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym']            . "</td>\n";
         print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_asset']                                               . "</td>\n";
@@ -517,11 +520,12 @@ needs to be set on the original equipment. If the system is confirmed as retired
     print "</tr>\n";
   }
 
-  $q_string  = "select inv_id,inv_name,inv_status,mod_vendor,mod_name,ct_city,st_acronym,slv_value,sup_company,";
+  $q_string  = "select inv_id,inv_name,inv_status,ven_name,mod_name,ct_city,st_acronym,slv_value,sup_company,";
   $q_string .= "hw_serial,hw_asset,hw_built,hw_active,hw_retired,hw_reused,hw_supid_verified ";
   $q_string .= "from inventory ";
   $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join models       on models.mod_id         = hardware.hw_vendorid ";
+  $q_string .= "left join vendors      on vendors.mod_id        = models.mod_vendor ";
   $q_string .= "left join support      on support.sup_id        = hardware.hw_supportid ";
   $q_string .= "left join supportlevel on supportlevel.slv_id   = hardware.hw_response ";
   $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
@@ -545,7 +549,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
 
     if ($formVars['csv'] == 'true') {
       print "\"" . $a_inventory['inv_name'] . "\",";
-      print "\"" . $a_inventory['mod_vendor'] . "\",";
+      print "\"" . $a_inventory['ven_name'] . "\",";
       print "\"" . $a_inventory['mod_name'] . "\",";
       print "\"" . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym'] . "\",";
       print "\"" . $a_inventory['hw_asset'] . "\",";
@@ -553,7 +557,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
     } else {
       print "<tr>\n";
       print "  <td class=\"" . $class . "\">" . $linkstart . $a_inventory['inv_name']                                    . $linkend . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['mod_vendor']                                             . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inventory['ven_name']                                               . "</td>\n";
       print "  <td class=\"" . $class . "\">"              . $a_inventory['mod_name']                                               . "</td>\n";
       print "  <td class=\"" . $class . "\">"              . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym']            . "</td>\n";
       print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_asset']                                               . "</td>\n";
@@ -598,11 +602,12 @@ needs to be set on the original equipment. If the system is confirmed as retired
     print "</tr>\n";
   }
 
-  $q_string  = "select inv_id,inv_name,inv_status,mod_vendor,mod_name,ct_city,st_acronym,slv_value,sup_company,hw_retired,";
+  $q_string  = "select inv_id,inv_name,inv_status,ven_name,mod_name,ct_city,st_acronym,slv_value,sup_company,hw_retired,";
   $q_string .= "hw_serial,hw_asset,hw_built,hw_active,hw_retired,hw_reused,hw_supid_verified,hw_supportstart,hw_supportend ";
   $q_string .= "from inventory ";
   $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join models       on models.mod_id         = hardware.hw_vendorid ";
+  $q_string .= "left join vendors      on vendors.ven_id        = models.mod_vendor ";
   $q_string .= "left join support      on support.sup_id        = hardware.hw_supportid ";
   $q_string .= "left join supportlevel on supportlevel.slv_id   = inventory.inv_response ";
   $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
@@ -647,7 +652,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
       print "\"" . $a_inventory['inv_name'] . "\",";
       print "\"" . $a_inv['inv_name'] . "\",";
       print "\"" . $a_inventory['hw_retired'] . "\",";
-      print "\"" . $a_inventory['mod_vendor'] . "\",";
+      print "\"" . $a_inventory['ven_name'] . "\",";
       print "\"" . $a_inventory['mod_name'] . "\",";
       print "\"" . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym'] . "\",";
       print "\"" . $a_inventory['hw_asset'] . "\",";
@@ -661,7 +666,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
       print "  <td class=\"" . $class . "\">" . $linkstart . $a_inventory['inv_name']                                    . $linkend . "</td>\n";
       print "  <td class=\"" . $class . "\">"              . $a_inv['inv_name']                                                     . "</td>\n";
       print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_retired']                                             . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['mod_vendor']                                             . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inventory['ven_name']                                               . "</td>\n";
       print "  <td class=\"" . $class . "\">"              . $a_inventory['mod_name']                                               . "</td>\n";
       print "  <td class=\"" . $class . "\">"              . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym']            . "</td>\n";
       print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_asset']                                               . "</td>\n";

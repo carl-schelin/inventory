@@ -293,7 +293,7 @@ $(document).ready( function () {
       print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=grp_name" . $passed . "\">Platform Owner</a></th>\n";
     }
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=inv_appadmin" . $passed . "\">Location</a></th>\n";
-    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=mod_vendor,mod_name" . $passed . "\">Address</a></th>\n";
+    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=ven_name,mod_name" . $passed . "\">Address</a></th>\n";
     print "  <th class=\"ui-state-default\">Address</th>\n";
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=ct_city" . $passed . "\">Suite</a></th>\n";
     print "  <th class=\"ui-state-default\">City</th>\n";
@@ -387,20 +387,21 @@ $(document).ready( function () {
   $dnsdead = 'yes';
 
   $total_servers = 0;
-  $q_string = "select inv_id,inv_name,inv_function,inv_document,inv_manager,inv_appadmin,grp_name,"
-            . "ct_city,zone_name,inv_ssh,hw_active,hw_retired,hw_reused,mod_vendor,mod_name,inv_status,st_acronym,cn_acronym,"
-            . "loc_type,loc_name,loc_addr1,loc_addr2,loc_suite,loc_city,loc_state,loc_zipcode,loc_country,loc_identity "
-            . "from inventory "
-            . "left join hardware  on hardware.hw_companyid = inventory.inv_id "
-            . "left join locations on locations.loc_id      = inventory.inv_location "
-            . "left join cities    on cities.ct_id          = locations.loc_city "
-            . "left join states    on states.st_id          = cities.ct_state "
-            . "left join country   on country.cn_id         = states.st_country "
-            . "left join timezones on timezones.zone_id     = inventory.inv_zone "
-            . "left join models    on models.mod_id         = hardware.hw_vendorid "
-            . "left join a_groups  on a_groups.grp_id       = inventory.inv_manager "
-            . $product . $inwork . $location . $type . " "
-            . $orderby;
+  $q_string  = "select inv_id,inv_name,inv_function,inv_document,inv_manager,inv_appadmin,grp_name,";
+  $q_string .= "ct_city,zone_name,inv_ssh,hw_active,hw_retired,hw_reused,ven_name,mod_name,inv_status,st_acronym,cn_acronym,";
+  $q_string .= "loc_type,loc_name,loc_addr1,loc_addr2,loc_suite,loc_city,loc_state,loc_zipcode,loc_country,loc_identity ";
+  $q_string .= "from inventory ";
+  $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
+  $q_string .= "left join cities    on cities.ct_id          = locations.loc_city ";
+  $q_string .= "left join states    on states.st_id          = cities.ct_state ";
+  $q_string .= "left join country   on country.cn_id         = states.st_country ";
+  $q_string .= "left join timezones on timezones.zone_id     = inventory.inv_zone ";
+  $q_string .= "left join models    on models.mod_id         = hardware.hw_vendorid ";
+  $q_string .= "left join vendors   on vendors.ven_id        = models.mod_vendor ";
+  $q_string .= "left join a_groups  on a_groups.grp_id       = inventory.inv_manager ";
+  $q_string .= $product . $inwork . $location . $type . " ";
+  $q_string .= $orderby . " ";
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 

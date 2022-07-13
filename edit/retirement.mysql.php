@@ -314,18 +314,19 @@
       $output .= "<tr>\n";
       $output .= "  <td class=\"ui-widget-content\">The following servers are being retired. Please uncable and remove the following systems and deliver them to my desk at 1K3005 for disposal:<br><br>";
 
-      $q_string  = "select inv_name,hw_asset,hw_serial,inv_rack,inv_row,inv_unit,mod_vendor,mod_name,loc_identity ";
+      $q_string  = "select inv_name,hw_asset,hw_serial,inv_rack,inv_row,inv_unit,ven_name,mod_name,loc_identity ";
       $q_string .= "from inventory ";
-      $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
-      $q_string .= "left join models   on models.mod_id         = hardware.hw_vendorid ";
-      $q_string .= "left join locations   on locations.loc_id         = inventory.inv_location ";
+      $q_string .= "left join hardware  on hardware.hw_companyid    = inventory.inv_id ";
+      $q_string .= "left join models    on models.mod_id            = hardware.hw_vendorid ";
+      $q_string .= "left join vendors   on vendors.ven_id           = models.mod_vendor ";
+      $q_string .= "left join locations on locations.loc_id         = inventory.inv_location ";
       $q_string .= "where inv_id = " . $formVars['ret_companyid'] . " ";
       $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_inventory = mysqli_fetch_array($q_inventory);
 
 
 
-      $output .= "Label: " . $a_inventory['inv_name'] . ", Vendor: " . $a_inventory['mod_vendor'] . ", Model: " . $a_inventory['mod_name'] . ", Asset Tag: " . $a_inventory['hw_asset'] . ", Serial/Service: " . $a_inventory['hw_serial'] . ", Location: " . $a_inventory['loc_identity'] . " " . $a_inventory['inv_row'] . "-" . $a_inventory['inv_rack'] . " U" . $a_inventory['inv_unit'] . "</td>\n";
+      $output .= "Label: " . $a_inventory['inv_name'] . ", Vendor: " . $a_inventory['ven_name'] . ", Model: " . $a_inventory['mod_name'] . ", Asset Tag: " . $a_inventory['hw_asset'] . ", Serial/Service: " . $a_inventory['hw_serial'] . ", Location: " . $a_inventory['loc_identity'] . " " . $a_inventory['inv_row'] . "-" . $a_inventory['inv_rack'] . " U" . $a_inventory['inv_unit'] . "</td>\n";
       $output .= "</tr>\n";
       $output .= "</table>\n";
 

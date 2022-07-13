@@ -325,9 +325,10 @@
       $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
-        $q_string  = "select mod_vendor,mod_name,mod_eol,mod_virtual,hw_purchased ";
+        $q_string  = "select ven_name,mod_name,mod_eol,mod_virtual,hw_purchased ";
         $q_string .= "from models ";
         $q_string .= "left join hardware on hardware.hw_vendorid = models.mod_id ";
+        $q_string .= "left join vendors  on vendors.ven_id       = models.mod_vendor ";
         $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1 and hw_deleted = 0 ";
         $q_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_models = mysqli_fetch_array($q_models)) {
@@ -336,7 +337,7 @@
 
           $newdate = '1971-01-01';
           if ($a_models['mod_virtual'] == 0) {
-            if ($a_models['mod_vendor'] == 'Dell') {
+            if ($a_models['ven_name'] == 'Dell') {
 # For Dell, the end of support is 5 years after the purchase date
               $date = explode("-", $a_models['hw_purchased']);
               $support = mktime(0,0,0,$date[1],$date[2],$date[0] + 5);
@@ -368,14 +369,14 @@
             print "<tr>\n";
             print "  <td class=\"" . $class . "\">"        . $linkstart . $a_inventory['inv_name'] . $linkend . "</td>\n";
             print "  <td class=\"" . $class . " delete\">" . "Hardware"                                       . "</td>\n";
-            print "  <td class=\"" . $class . "\">"        . $a_models['mod_vendor']                          . "</td>\n";
+            print "  <td class=\"" . $class . "\">"        . $a_models['ven_name']                            . "</td>\n";
             print "  <td class=\"" . $class . "\">"        . $a_models['mod_name']                            . "</td>\n";
             print "  <td class=\"" . $class . " delete\">" . $newdate                                         . "</td>\n";
             print "</tr>\n";
           } else {
             print "\"" . $a_inventory['inv_name'] . "\",";
             print "\"" . "Hardware"               . "\",";
-            print "\"" . $a_models['mod_vendor']  . "\",";
+            print "\"" . $a_models['ven_name']    . "\",";
             print "\"" . $a_models['mod_name']    . "\",";
             print "\"" . $newdate                 . "\"\n";
           }
@@ -450,9 +451,10 @@
           }
         }
       }
-      $q_string  = "select mod_vendor,hw_purchased,mod_eol ";
+      $q_string  = "select ven_name,hw_purchased,mod_eol ";
       $q_string .= "from hardware ";
-      $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+      $q_string .= "left join models  on models.mod_id  = hardware.hw_vendorid ";
+      $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
       $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
       $q_string .= "where inv_product = " . $a_products['prod_id'] . " and inv_status = 0 and hw_primary = 1 and hw_deleted = 0 and mod_virtual = 0 ";
       if ($formVars['group'] > 0) {
@@ -464,7 +466,7 @@
         $hwtotal++;
         $totalhardware++;
 
-        if ($a_hardware['mod_vendor'] == 'Dell') {
+        if ($a_hardware['ven_name'] == 'Dell') {
 # For Dell, the end of support is 5 years after the purchase date
           $date = explode("-", $a_hardware['hw_purchased']);
           $support = mktime(0,0,0,$date[1],$date[2],$date[0] + 5);

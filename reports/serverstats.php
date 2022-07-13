@@ -536,12 +536,12 @@ print $q_string;
 
   $q_string  = "select part_name,ven_name,mod_name,mod_virtual,count(inv_name) ";
   $q_string .= "from hardware ";
-  $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
-  $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
-  $q_string .= "left join parts on parts.part_id = models.mod_type ";
+  $q_string .= "left join models    on models.mod_id    = hardware.hw_vendorid ";
+  $q_string .= "left join vendors   on vendors.ven_id   = models.mod_vendor ";
+  $q_string .= "left join parts     on parts.part_id    = models.mod_type ";
   $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
   $q_string .= "where mod_primary = 1 and inv_status = 0 " . $admin . " ";
-  $q_string .= "group by mod_vendor,mod_name ";
+  $q_string .= "group by ven_name,mod_name ";
   $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 

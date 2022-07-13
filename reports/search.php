@@ -531,7 +531,7 @@
           for ($i = 0; $i < count($search_for); $i++) {
             $search_on .= $or . "(" . 
               "   inv_name     like '%" . $search_for[$i] . "%' " . 
-              "or mod_vendor   like '%" . $search_for[$i] . "%' " . 
+              "or ven_name     like '%" . $search_for[$i] . "%' " . 
               "or mod_name     like '%" . $search_for[$i] . "%' " . 
               "or part_name    like '%" . $search_for[$i] . "%' " .
               "or ct_city      like '%" . $search_for[$i] . "%' " .
@@ -542,7 +542,7 @@
         } else {
           $search_on = "(" . 
             "   inv_name     like '%" . $formVars['search_for'] . "%' " . 
-            "or mod_vendor   like '%" . $formVars['search_for'] . "%' " . 
+            "or ven_name     like '%" . $formVars['search_for'] . "%' " . 
             "or mod_name     like '%" . $formVars['search_for'] . "%' " . 
             "or part_name    like '%" . $formVars['search_for'] . "%' " .
             "or ct_city      like '%" . $formVars['search_for'] . "%' " .
@@ -571,7 +571,7 @@
         $output .= "<table class=\"ui-styled-table\">\n";
         $output .= "<tr>\n";
         $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=inv_name');\">Server Name</a></th>\n";
-        $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=mod_vendor');\">Vendor</a></th>\n";
+        $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=ven_name');\">Vendor</a></th>\n";
         $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=mod_name');\">Model</a></th>\n";
         $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=mod_type');\">Type</a></th>\n";
         $output .= "  <th class=\"ui-state-default\">" . $linkstart . "&sort=mod_type');\">Asset Tag</a></th>\n";
@@ -580,15 +580,16 @@
         $output .= "</tr>\n";
       }
 
-      $q_string  = "select hw_companyid,inv_name,grp_name,mod_vendor,mod_name,part_name,mod_type,inv_status,hw_serial,hw_asset ";
+      $q_string  = "select hw_companyid,inv_name,grp_name,ven_name,mod_name,part_name,mod_type,inv_status,hw_serial,hw_asset ";
       $q_string .= "from hardware ";
       $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
       $q_string .= "left join cities    on cities.ct_id     = locations.loc_city ";
       $q_string .= "left join states    on states.st_id     = locations.loc_state ";
-      $q_string .= "left join a_groups on a_groups.grp_id = hardware.hw_group ";
-      $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
-      $q_string .= "left join parts on parts.part_id = models.mod_type ";
+      $q_string .= "left join a_groups  on a_groups.grp_id  = hardware.hw_group ";
+      $q_string .= "left join models    on models.mod_id    = hardware.hw_vendorid ";
+      $q_string .= "left join vendors   on vendors.ven_id   = models.mod_vendor ";
+      $q_string .= "left join parts     on parts.part_id    = models.mod_type ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";
       } else {
@@ -600,7 +601,7 @@
         while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
           $linkhwstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_hardware['hw_companyid'] . "#hardware\" target=\"_blank\">";
-          $link_vendor = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=4&search_on=mod_vendor&search_for=" . $a_hardware['mod_vendor'] . "&retired=" . $formVars['retired'] . "');\">";
+          $link_vendor = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=4&search_on=ven_name&search_for="   . $a_hardware['ven_name']   . "&retired=" . $formVars['retired'] . "');\">";
           $link_name   = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=4&search_on=mod_name&search_for="   . $a_hardware['mod_name']   . "&retired=" . $formVars['retired'] . "');\">";
           $link_type   = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=4&search_on=part_name&search_for="  . $a_hardware['part_name']  . "&retired=" . $formVars['retired'] . "');\">";
           $linkstart   = "<a href=\"" . $Showroot . "/inventory.php?server="   . $a_hardware['hw_companyid'] . "\" target=\"_blank\">";
@@ -613,16 +614,16 @@
 
           if ($formVars['csv']) {
             $output .= "\"" . $a_hardware['inv_name']   . "\",";
-            $output .= "\"" . $a_hardware['mod_vendor'] . "\",";
+            $output .= "\"" . $a_hardware['ven_name']   . "\",";
             $output .= "\"" . $a_hardware['mod_name']   . "\",";
             $output .= "\"" . $a_hardware['part_name']  . "\",";
-            $output .= "\"" . $a_hardware['hw_asset']  . "\",";
+            $output .= "\"" . $a_hardware['hw_asset']   . "\",";
             $output .= "\"" . $a_hardware['hw_serial']  . "\",";
             $output .= "\"" . $a_hardware['grp_name']   . "\"<br>";
           } else {
             $output .= "<tr>\n";
             $output .= "  <td class=\"" . $class . "\">" . $linkhwstart . $a_hardware['inv_name']   . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $link_vendor . $a_hardware['mod_vendor'] . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $link_vendor . $a_hardware['ven_name']   . $linkend . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">" . $link_name   . $a_hardware['mod_name']   . $linkend . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">" . $link_type   . $a_hardware['part_name']  . $linkend . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"                . $a_hardware['hw_asset']              . "</td>\n";
@@ -636,7 +637,7 @@
           $output .= "Search results not found.<br>\n";
         } else {
           $output .= "<tr>\n";
-          $output .= "  <td class=\"ui-widget-content\" colspan=\"5\">Search results not found.</td>\n";
+          $output .= "  <td class=\"ui-widget-content\" colspan=\"6\">Search results not found.</td>\n";
           $output .= "</tr>\n";
         }
       }

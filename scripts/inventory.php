@@ -139,16 +139,17 @@
     $server = $a_inventory['inv_name'];
   }
 
-  $q_string  = "select inv_id,inv_name,inv_companyid,inv_function,prod_name,grp_name,inv_appadmin,mod_vendor,mod_name,hw_serial,";
+  $q_string  = "select inv_id,inv_name,inv_companyid,inv_function,prod_name,grp_name,inv_appadmin,ven_name,mod_name,hw_serial,";
   $q_string .= "hw_asset,hw_service,loc_name,loc_addr1,ct_city,st_state,loc_zipcode,inv_status,inv_rack,inv_row,inv_unit ";
   $q_string .= "from inventory ";
-  $q_string .= "left join products on products.prod_id = inventory.inv_product ";
-  $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
-  $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
-  $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
-  $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
-  $q_string .= "left join states on states.st_id = locations.loc_state ";
+  $q_string .= "left join products  on products.prod_id        = inventory.inv_product ";
+  $q_string .= "left join a_groups  on a_groups.grp_id         = inventory.inv_manager ";
+  $q_string .= "left join hardware  on hardware.hw_companyid   = inventory.inv_id ";
+  $q_string .= "left join models    on models.mod_id           = hardware.hw_vendorid ";
+  $q_string .= "left join vendors   on vendors.ven_id          = models.mod_vendor ";
+  $q_string .= "left join locations on locations.loc_id        = inventory.inv_location ";
+  $q_string .= "left join cities    on cities.ct_id            = locations.loc_city ";
+  $q_string .= "left join states    on states.st_id            = locations.loc_state ";
   $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
   if (strlen($server) > 0) {
     $q_string .= "where inv_name = '" . $server . "' ";
@@ -196,18 +197,18 @@
       } else {
         print "\"Rack/Unit\"\n";
       }
-      print "\"" . $a_inventory['inv_id']       . "\",";
+      print "\"" . $a_inventory['inv_id']              . "\",";
       print "\"" . $a_inventory['inv_name'] . $retired . "\",";
-      print "\"" . $a_inventory['inv_function'] . "\",";
-      print "\"" . $a_inventory['prod_name']    . "\",";
-      print "\"" . $a_inventory['grp_name']     . "\",";
-      print "\"" . $a_groups['grp_name']        . "\",";
-      print "\"" . $a_inventory['mod_vendor']   . "\",";
-      print "\"" . $a_inventory['mod_name']     . "\",";
-      print "\"" . $a_inventory['hw_serial']    . "\",";
-      print "\"" . $a_inventory['hw_asset']     . "\",";
-      print "\"" . $a_inventory['hw_service']   . "\",";
-      print "\"" . $a_inventory['loc_name']     . "\",";
+      print "\"" . $a_inventory['inv_function']        . "\",";
+      print "\"" . $a_inventory['prod_name']           . "\",";
+      print "\"" . $a_inventory['grp_name']            . "\",";
+      print "\"" . $a_groups['grp_name']               . "\",";
+      print "\"" . $a_inventory['ven_name']            . "\",";
+      print "\"" . $a_inventory['mod_name']            . "\",";
+      print "\"" . $a_inventory['hw_serial']           . "\",";
+      print "\"" . $a_inventory['hw_asset']            . "\",";
+      print "\"" . $a_inventory['hw_service']          . "\",";
+      print "\"" . $a_inventory['loc_name']            . "\",";
       print "\"" . $a_inventory['loc_addr1'] . " " . $a_inventory['ct_city'] . " " . $a_inventory['st_state'] . " " . $a_inventory['loc_zipcode'] . "\",";
       if ($a_inventory['inv_companyid']) {
         $q_string  = "select inv_name,inv_rack,inv_row,inv_unit ";
@@ -232,7 +233,7 @@
       print "----------------------------\n";
       print "Primary Hardware Information\n";
       print "----------------------------\n";
-      print "Vendor: " . $a_inventory['mod_vendor'] . "\n";
+      print "Vendor: " . $a_inventory['ven_name'] . "\n";
       print "Model: " . $a_inventory['mod_name'] . "\n";
       print "Serial Number: " . $a_inventory['hw_serial'] . "\n";
       print "Asset Tag: " . $a_inventory['hw_asset'] . "\n";
@@ -276,7 +277,10 @@
       $q_string .= "order by part_name";
       $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
       while ($a_hardware = mysqli_fetch_array($q_hardware)) {
-        $q_string  = "select mod_vendor,mod_name,mod_size,mod_speed from models where mod_id = " . $a_hardware['hw_vendorid'];
+        $q_string  = "select ven_name,mod_name,mod_size,mod_speed ";
+        $q_string .= "from models ";
+        $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
+        $q_string .= "where mod_id = " . $a_hardware['hw_vendorid'] . " ";
         $q_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
         $a_models = mysqli_fetch_array($q_models);
 
@@ -284,13 +288,13 @@
           print "\"" . $a_hardware['hw_serial']  . "\",";
           print "\"" . $a_hardware['hw_asset']   . "\",";
           print "\"" . $a_hardware['hw_service'] . "\",";
-          print "\"" . $a_models['mod_vendor']   . "\",";
+          print "\"" . $a_models['ven_name']     . "\",";
           print "\"" . $a_models['mod_name']     . "\",";
-          print "\"" . $a_models['mod_size']    . "\",";
-          print "\"" . $a_models['mod_speed']   . "\",";
+          print "\"" . $a_models['mod_size']     . "\",";
+          print "\"" . $a_models['mod_speed']    . "\",";
           print "\"" . $a_hardware['part_name']  . "\"\n";
         } else {
-          printf("%20s %10s %8s %20s %30s %20s %15s %20s\n", $a_hardware['hw_serial'], $a_hardware['hw_asset'], $a_hardware['hw_service'], $a_models['mod_vendor'], $a_models['mod_name'], $a_models['mod_size'], $a_models['mod_speed'], $a_hardware['part_name']);
+          printf("%20s %10s %8s %20s %30s %20s %15s %20s\n", $a_hardware['hw_serial'], $a_hardware['hw_asset'], $a_hardware['hw_service'], $a_models['ven_name'], $a_models['mod_name'], $a_models['mod_size'], $a_models['mod_speed'], $a_hardware['part_name']);
         }
 
         $q_string  = "select hw_id,hw_serial,hw_asset,hw_service,hw_vendorid,part_name,hw_verified,hw_update ";
@@ -300,7 +304,10 @@
         $q_string .= "order by part_name";
         $q_hwselect = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
         while ($a_hwselect = mysqli_fetch_array($q_hwselect)) {
-          $q_string  = "select mod_vendor,mod_name,mod_size,mod_speed from models where mod_id = " . $a_hwselect['hw_vendorid'];
+          $q_string  = "select ven_name,mod_name,mod_size,mod_speed ";
+          $q_string .= "from models ";
+          $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
+          $q_string .= "where mod_id = " . $a_hwselect['hw_vendorid'] . " ";
           $q_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
           $a_models = mysqli_fetch_array($q_models);
 
@@ -308,13 +315,13 @@
             print "\"" . $a_hwselect['hw_serial']  . "\",";
             print "\"" . $a_hwselect['hw_asset']   . "\",";
             print "\"" . $a_hwselect['hw_service'] . "\",";
-            print "\"" . $a_models['mod_vendor']   . "\",";
+            print "\"" . $a_models['ven_name']   . "\",";
             print "\"" . $a_models['mod_name']     . "\",";
             print "\"" . $a_models['mod_size']    . "\",";
             print "\"" . $a_models['mod_speed']   . "\",";
             print "\"" . $a_hwselect['part_name']  . "\"\n";
           } else {
-            printf("%20s %10s %8s %20s >%29s %20s %15s %20s\n", $a_hwselect['hw_serial'], $a_hwselect['hw_asset'], $a_hwselect['hw_service'], $a_models['mod_vendor'], $a_models['mod_name'], $a_models['mod_size'], $a_models['mod_speed'], $a_hwselect['part_name']);
+            printf("%20s %10s %8s %20s >%29s %20s %15s %20s\n", $a_hwselect['hw_serial'], $a_hwselect['hw_asset'], $a_hwselect['hw_service'], $a_models['ven_name'], $a_models['mod_name'], $a_models['mod_size'], $a_models['mod_speed'], $a_hwselect['part_name']);
           }
 
           $q_string  = "select hw_id,hw_serial,hw_asset,hw_service,hw_vendorid,part_name,hw_verified,hw_update ";
@@ -324,7 +331,10 @@
           $q_string .= "order by part_name";
           $q_hwdisk = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
           while ($a_hwdisk = mysqli_fetch_array($q_hwdisk)) {
-            $q_string  = "select mod_vendor,mod_name,mod_size,mod_speed from models where mod_id = " . $a_hwdisk['hw_vendorid'];
+            $q_string  = "select ven_name,mod_name,mod_size,mod_speed ";
+            $q_string .= "from models ";
+            $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
+            $q_string .= "where mod_id = " . $a_hwdisk['hw_vendorid'] . " ";
             $q_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
             $a_models = mysqli_fetch_array($q_models);
 
@@ -332,13 +342,13 @@
               print "\"" . $a_hwdisk['hw_serial']  . "\",";
               print "\"" . $a_hwdisk['hw_asset']   . "\",";
               print "\"" . $a_hwdisk['hw_service'] . "\",";
-              print "\"" . $a_models['mod_vendor']   . "\",";
-              print "\"" . $a_models['mod_name']     . "\",";
-              print "\"" . $a_models['mod_size']    . "\",";
-              print "\"" . $a_models['mod_speed']   . "\",";
+              print "\"" . $a_models['ven_name']   . "\",";
+              print "\"" . $a_models['mod_name']   . "\",";
+              print "\"" . $a_models['mod_size']   . "\",";
+              print "\"" . $a_models['mod_speed']  . "\",";
               print "\"" . $a_hwdisk['part_name']  . "\"\n";
             } else {
-              printf("%20s %10s %8s %20s >>%28s %20s %15s %20s\n", $a_hwdisk['hw_serial'], $a_hwdisk['hw_asset'], $a_hwdisk['hw_service'], $a_models['mod_vendor'], $a_models['mod_name'], $a_models['mod_size'], $a_models['mod_speed'], $a_hwdisk['part_name']);
+              printf("%20s %10s %8s %20s >>%28s %20s %15s %20s\n", $a_hwdisk['hw_serial'], $a_hwdisk['hw_asset'], $a_hwdisk['hw_service'], $a_models['ven_name'], $a_models['mod_name'], $a_models['mod_size'], $a_models['mod_speed'], $a_hwdisk['part_name']);
             }
           }
         }

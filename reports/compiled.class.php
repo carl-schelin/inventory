@@ -314,7 +314,7 @@ $(document).ready( function() {
         $callpath = "Yes";
       }
 
-      if ($a_inventory['mod_vendor'] == 'Dell') {
+      if ($a_inventory['ven_name'] == 'Dell') {
         # For Dell, the end of support is 5 years after the purchase date
         $date = explode("-", $a_inventory['hw_purchased']);
         $support = mktime(0,0,0,$date[1],$date[2],$date[0] + 5);
@@ -334,7 +334,7 @@ $(document).ready( function() {
           print "\"" . $a_inventory['inv_name']   . "\",";
           print "\"" . $callpath                  . "\",";
           print "\"" . $a_inventory['svc_name']   . "\",";
-          print "\"" . $a_inventory['mod_vendor'] . "\",";
+          print "\"" . $a_inventory['ven_name']   . "\",";
           print "\"" . $a_inventory['mod_name']   . "\",";
           print "\"" . $newdate                   . "\"</br>\n";
         } else {
