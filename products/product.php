@@ -19,7 +19,7 @@
   logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
 # if help has not been seen yet,
-  if (show_Help($db, $Sitepath . "/" . $package)) {
+  if (show_Help($db, $Productpath . "/" . $package)) {
     $display = "display: block";
   } else {
     $display = "display: none";
@@ -239,6 +239,10 @@ you can use to create a new Product or Service.</p>
 <p>To edit an existing Product or Service, click on an entry in the listing. A dialog box will be presented 
 where you can edit the current entry, or if there is a small difference, you can make changes and add a new 
 Product or Service.</p>
+
+<p>Note that under the Members column is a number which indicates the number of servers that are part of 
+this project. You cannot remove a product until this value is zero. Clicking on the number will take you 
+to a server listing where you can edit the servers and remove them from the product.</p>
 
 
 </div>
