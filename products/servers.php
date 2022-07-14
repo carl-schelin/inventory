@@ -89,22 +89,16 @@ $(document).ready( function() {
 <table class="ui-styled-table">
 <tr>
   <th class="ui-state-default">Server</th>
-  <th class="ui-state-default">Software</th>
-  <th class="ui-state-default">Vendor</th>
+  <th class="ui-state-default">Function</th>
   <th class="ui-state-default">Product</th>
-  <th class="ui-state-default">Type</th>
   <th class="ui-state-default">Department</th>
 </tr>
 <?php
 
-  $q_string  = "select inv_id,inv_name,sw_software,ven_name,prod_name,typ_name,dep_name ";
+  $q_string  = "select inv_id,inv_name,inv_function,prod_name,dep_name ";
   $q_string .= "from inventory ";
-  $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id ";
-  $q_string .= "left join software     on software.sw_id             = svr_software.svr_softwareid ";
-  $q_string .= "left join vendors      on vendors.ven_id             = software.sw_vendor ";
-  $q_string .= "left join products     on products.prod_id           = software.sw_product ";
-  $q_string .= "left join sw_types     on sw_types.typ_id            = software.sw_type ";
-  $q_string .= "left join department   on department.dep_id          = software.sw_department ";
+  $q_string .= "left join products     on products.prod_id           = inventory.inv_product ";
+  $q_string .= "left join department   on department.dep_id          = inventory.inv_department ";
   $q_string .= "where inv_product = " . $formVars['id'] . " ";
   $q_string .= "order by inv_name ";
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -116,16 +110,14 @@ $(document).ready( function() {
 
       print "<tr>\n";
       print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inventory['inv_name']    . $linkend . "</td>";
-      print "  <td class=\"ui-widget-content\">"              . $a_inventory['sw_software']            . "</td>";
-      print "  <td class=\"ui-widget-content\">"              . $a_inventory['ven_name']               . "</td>";
+      print "  <td class=\"ui-widget-content\">"              . $a_inventory['inv_function']           . "</td>";
       print "  <td class=\"ui-widget-content\">"              . $a_inventory['prod_name']              . "</td>";
-      print "  <td class=\"ui-widget-content\">"              . $a_inventory['typ_name']               . "</td>";
       print "  <td class=\"ui-widget-content\">"              . $a_inventory['dep_name']               . "</td>";
       print "</tr>\n";
     }
   } else {
     print "<tr>\n";
-    print "  <td class=\"ui-widget-content\" colspan=\"7\">No servers are associated with this product.</td>";
+    print "  <td class=\"ui-widget-content\" colspan=\"4\">No servers are associated with this product.</td>";
     print "</tr>\n";
   }
 ?>
