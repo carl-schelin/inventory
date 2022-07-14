@@ -26,6 +26,7 @@
         $formVars['cert_url']       = clean($_GET['cert_url'],       80);
         $formVars['cert_expire']    = clean($_GET['cert_expire'],    12);
         $formVars['cert_authority'] = clean($_GET['cert_authority'], 60);
+        $formVars['cert_subject']   = clean($_GET['cert_subject'],   60);
         $formVars['cert_group']     = clean($_GET['cert_group'],     10);
         $formVars['cert_ca']        = clean($_GET['cert_ca'],        10);
         $formVars['cert_memo']      = clean($_GET['cert_memo'],    1024);
@@ -48,6 +49,7 @@
             "cert_url       = \"" . $formVars['cert_url']       . "\"," .
             "cert_expire    = \"" . $formVars['cert_expire']    . "\"," .
             "cert_authority = \"" . $formVars['cert_authority'] . "\"," .
+            "cert_subject   = \"" . $formVars['cert_subject']   . "\"," .
             "cert_group     =   " . $formVars['cert_group']     . "," . 
             "cert_ca        =   " . $formVars['cert_ca']        . "," .
             "cert_memo      = \"" . $formVars['cert_memo']      . "\"," . 
@@ -83,14 +85,15 @@
       }
       $output .= "  <th class=\"ui-state-default\">Description</th>\n";
       $output .= "  <th class=\"ui-state-default\">CA?</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Expiration</th>\n";
-      $output .= "  <th class=\"ui-state-default\">Authority</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Not After</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Issuer</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Subject</th>\n";
       $output .= "  <th class=\"ui-state-default\">Managed By</th>\n";
       $output .= "  <th class=\"ui-state-default\">Members</th>\n";
       $output .= "</tr>\n";
 
       $count = 0;
-      $q_string  = "select cert_desc,cert_id,cert_url,cert_expire,cert_authority,cert_group,grp_name,cert_isca ";
+      $q_string  = "select cert_desc,cert_id,cert_url,cert_expire,cert_authority,cert_subject,cert_group,grp_name,cert_isca ";
       $q_string .= "from certs ";
       $q_string .= "left join a_groups on a_groups.grp_id = certs.cert_group ";
       $q_string .= "where cert_ca = 0 ";
@@ -145,6 +148,7 @@
           $output .= "  <td" . $class . " delete\">"                                              . $isca                                 . "</td>\n";
           $output .= "  <td" . $class . " delete\">"                                              . $a_certs['cert_expire']               . "</td>\n";
           $output .= "  <td" . $class . "\">"                                                     . $a_certs['cert_authority']            . "</td>\n";
+          $output .= "  <td" . $class . "\">"                                                     . $a_certs['cert_subject']              . "</td>\n";
           $output .= "  <td" . $class . "\">"                                                     . $a_certs['grp_name']                  . "</td>\n";
           $output .= "  <td" . $class . " delete\">"                                 . $certstart . $total                     . $linkend . "</td>\n";
           $output .= "</tr>\n";
@@ -206,6 +210,7 @@
               $output .= "  <td" . $class . " delete\">"                                                   . $isca                                 . "</td>\n";
               $output .= "  <td" . $class . " delete\">"                                                   . $a_child['cert_expire']               . "</td>\n";
               $output .= "  <td" . $class . "\">"                                                          . $a_child['cert_authority']            . "</td>\n";
+              $output .= "  <td" . $class . "\">"                                                          . $a_child['cert_subject']              . "</td>\n";
               $output .= "  <td" . $class . "\">"                                                          . $a_child['grp_name']                  . "</td>\n";
               $output .= "  <td" . $class . " delete\">"                                      . $certstart . $total                     . $linkend . "</td>\n";
               $output .= "</tr>\n";
@@ -267,6 +272,7 @@
                   $output .= "  <td" . $class . " delete\">"                                                            . $isca                                      . "</td>\n";
                   $output .= "  <td" . $class . " delete\">"                                                            . $a_grandchild['cert_expire']               . "</td>\n";
                   $output .= "  <td" . $class . "\">"                                                                   . $a_grandchild['cert_authority']            . "</td>\n";
+                  $output .= "  <td" . $class . "\">"                                                                   . $a_grandchild['cert_subject']              . "</td>\n";
                   $output .= "  <td" . $class . "\">"                                                                   . $a_grandchild['grp_name']                  . "</td>\n";
                   $output .= "  <td" . $class . " delete\">"                                               . $certstart . $total                          . $linkend . "</td>\n";
                   $output .= "</tr>\n";
