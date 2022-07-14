@@ -464,6 +464,7 @@ print "alert('All Done!');\n";
 
         $r_hardware = '';
         $r_inventory = '';
+        $r_tags = '';
         if ($current == 'work') {
           if ($formVars['inv_status'] == 1) {
             $r_hardware = "update hardware set hw_active = '" . date('Y-m-d') . "' where hw_id = " . $a_hardware['hw_id'] . " ";
@@ -488,6 +489,7 @@ print "alert('All Done!');\n";
           if ($formVars['inv_status'] == 0) {
             $r_hardware = "update hardware set hw_retired = '1971-01-01' where hw_id = " . $a_hardware['hw_id'] . " ";
             $r_inventory = "update inventory set inv_status = 0 where inv_id = " . $newserver . " ";
+            $r_tags = "delete from tags where tag_type = 1 and tag_companyid = " . $newserver . " ";
           }
           if ($formVars['inv_status'] == 1) {
             $r_hardware = "update hardware set hw_active = '" . date('Y-m-d') . "', hw_retired = '1971-01-01' where hw_id = " . $a_hardware['hw_id'] . " ";
@@ -500,6 +502,9 @@ print "alert('All Done!');\n";
         }
         if (strlen($r_inventory) > 0) {
           $result = mysqli_query($db, $r_inventory) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $r_inventory . "&mysql=" . mysqli_error($db)));
+        }
+        if (strlen($r_tags) > 0) {
+          $result = mysqli_query($db, $r_tags) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $r_tags . "&mysql=" . mysqli_error($db)));
         }
 
       } else {
