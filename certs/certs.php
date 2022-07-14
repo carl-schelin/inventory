@@ -75,6 +75,7 @@ function attach_file( p_script_url, update ) {
   af_url += "&cert_url="        + encode_URI(af_form.cert_url.value);
   af_url += "&cert_expire="     + encode_URI(af_form.cert_expire.value);
   af_url += "&cert_authority="  + encode_URI(af_form.cert_authority.value);
+  af_url += "&cert_subject="    + encode_URI(af_form.cert_subject.value);
   af_url += "&cert_group="      + af_form.cert_group.value;
   af_url += "&cert_ca="         + af_form.cert_ca.value;
   af_url += "&cert_memo="       + encode_URI(af_form.cert_memo.value);
@@ -96,6 +97,7 @@ function update_file( p_script_url, update ) {
   uf_url += "&cert_url="        + encode_URI(uf_form.cert_url.value);
   uf_url += "&cert_expire="     + encode_URI(uf_form.cert_expire.value);
   uf_url += "&cert_authority="  + encode_URI(uf_form.cert_authority.value);
+  uf_url += "&cert_subject="    + encode_URI(uf_form.cert_subject.value);
   uf_url += "&cert_group="      + uf_form.cert_group.value;
   uf_url += "&cert_ca="         + uf_form.cert_ca.value;
   uf_url += "&cert_memo="       + encode_URI(uf_form.cert_memo.value);
@@ -203,7 +205,7 @@ $(function() {
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default">Certificate Editor</th>
+  <th class="ui-state-default">Certificate Manager</th>
   <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('cert-help');">Help</a></th>
 </tr>
 </table>
@@ -275,7 +277,7 @@ servers that are using this certificate.</p>
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content">Description: <input type="text" name="cert_desc" size="40"></td>
+  <td class="ui-widget-content">Description: <input type="text" name="cert_desc" size="60"></td>
 </tr>
 <tr>
   <td class="ui-widget-content">URL: <input type="text" name="cert_url" size="40"></td>
@@ -299,10 +301,13 @@ servers that are using this certificate.</p>
   <td class="ui-widget-content"><label><input type="checkbox" name="cert_isca"> Is this a Certificate Authority?</label></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Expiration Date: <input type="date" name="cert_expire" value="1971-01-01" size="12"></td>
+  <td class="ui-widget-content">Not After Date: <input type="date" name="cert_expire" value="1971-01-01" size="12"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Certificate Authority: <input type="text" name="cert_authority" size="40"></td>
+  <td class="ui-widget-content">Certificate Issuer: <input type="text" name="cert_authority" size="60"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Certificate Subject: <input type="text" name="cert_subject" size="60"></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Managed By: <select name="cert_group">
@@ -336,7 +341,7 @@ servers that are using this certificate.</p>
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content">Description: <input type="text" name="cert_desc" size="40"></td>
+  <td class="ui-widget-content">Description: <input type="text" name="cert_desc" size="60"></td>
 </tr>
 <tr>
   <td class="ui-widget-content">URL: <input type="text" name="cert_url" size="40"></td>
@@ -360,10 +365,13 @@ servers that are using this certificate.</p>
   <td class="ui-widget-content"><label><input type="checkbox" name="cert_isca"> Is this a Certificate Authority?</label></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Expiration Date: <input type="date" name="cert_expire" value="1971-01-01" size="12"></td>
+  <td class="ui-widget-content">Not After Date: <input type="date" name="cert_expire" value="1971-01-01" size="12"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Certificate Authority: <input type="text" name="cert_authority" size="40"></td>
+  <td class="ui-widget-content">Certificate Issuer: <input type="text" name="cert_authority" size="60"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Certificate Subject: <input type="text" name="cert_subject" size="60"></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Managed By: <select name="cert_group">
