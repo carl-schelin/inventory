@@ -14,9 +14,17 @@
   if (isset($_SESSION['username'])) {
     $package = "certs.mysql.php";
     $formVars['update']         = clean($_GET['update'],         10);
+    $formVars['top']            = clean($_GET['top'],            10);
+    $andtop = '';
 
     if ($formVars['update'] == '') {
       $formVars['update'] = -1;
+    }
+    if ($formVars['top'] == '') {
+      $formVars['top'] = 0;
+    }
+    if ($formVars['top'] > 0) {
+      $andtop = "and cert_id = " . $formVars['top'];
     }
 
     if (check_userlevel($db, $AL_Edit)) {
@@ -28,13 +36,11 @@
         $formVars['cert_authority'] = clean($_GET['cert_authority'], 60);
         $formVars['cert_subject']   = clean($_GET['cert_subject'],   60);
         $formVars['cert_group']     = clean($_GET['cert_group'],     10);
-        $formVars['cert_ca']        = clean($_GET['cert_ca'],        10);
+        $formVars['cert_top']       = clean($_GET['cert_top'],       10);
         $formVars['cert_memo']      = clean($_GET['cert_memo'],    1024);
         $formVars['cert_isca']      = clean($_GET['cert_isca'],      10);
+        $formVars['cert_ca']        = clean($_GET['cert_ca'],        10);
 
-        if ($formVars['id'] == '') {
-          $formVars['id'] = 0;
-        }
         if ($formVars['cert_isca'] == 'true') {
           $formVars['cert_isca'] = 1;
         } else {
@@ -53,7 +59,8 @@
             "cert_group     =   " . $formVars['cert_group']     . "," . 
             "cert_ca        =   " . $formVars['cert_ca']        . "," .
             "cert_memo      = \"" . $formVars['cert_memo']      . "\"," . 
-            "cert_isca      =   " . $formVars['cert_isca'];
+            "cert_isca      =   " . $formVars['cert_isca']      . "," . 
+            "cert_top       =   " . $formVars['cert_top'];
 
           if ($formVars['update'] == 0) {
             $query = "insert into certs set cert_id = NULL, " . $q_string;
@@ -93,14 +100,17 @@
       $output .= "</tr>\n";
 
       $count = 0;
-      $q_string  = "select cert_desc,cert_id,cert_url,cert_expire,cert_authority,cert_subject,cert_group,grp_name,cert_isca ";
+      $q_string  = "select cert_desc,cert_id,cert_url,cert_expire,cert_authority,cert_subject,cert_group,grp_name,cert_isca,cert_top ";
       $q_string .= "from certs ";
       $q_string .= "left join a_groups on a_groups.grp_id = certs.cert_group ";
-      $q_string .= "where cert_ca = 0 ";
+      $q_string .= "where cert_ca = 0 " . $andtop . " ";
       $q_string .= "order by cert_desc,cert_expire";
       $q_certs = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_certs) > 0) {
         while ($a_certs = mysqli_fetch_array($q_certs)) {
+
+# reset if andtop succeeds here
+          $andtop = '';
 
           $certtime = strtotime($a_certs['cert_expire']);
 
@@ -117,6 +127,12 @@
             $isca = "Yes";
           } else {
             $isca = "No";
+          }
+
+          if ($a_certs['cert_top']) {
+            $topstart = "<a href=\"certs.php?top=" . $a_certs['cert_id'] . "\" target=\"_blank\">*</a>";
+          } else {
+            $topstart  = "";
           }
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('certs.fill.php?id=" . $a_certs['cert_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
@@ -144,25 +160,28 @@
               $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>";
             }
           }
-          $output .= "  <td" . $class . "\" title=\"" . $a_certs['cert_url'] . "\">" . $linkstart . $a_certs['cert_desc']      . $linkend . "</td>\n";
-          $output .= "  <td" . $class . " delete\">"                                              . $isca                                 . "</td>\n";
-          $output .= "  <td" . $class . " delete\">"                                              . $a_certs['cert_expire']               . "</td>\n";
-          $output .= "  <td" . $class . "\">"                                                     . $a_certs['cert_authority']            . "</td>\n";
-          $output .= "  <td" . $class . "\">"                                                     . $a_certs['cert_subject']              . "</td>\n";
-          $output .= "  <td" . $class . "\">"                                                     . $a_certs['grp_name']                  . "</td>\n";
-          $output .= "  <td" . $class . " delete\">"                                 . $certstart . $total                     . $linkend . "</td>\n";
+          $output .= "  <td" . $class . "\" title=\"" . $a_certs['cert_url'] . "\">" . $topstart . $linkstart . $a_certs['cert_desc']      . $linkend . "</td>\n";
+          $output .= "  <td" . $class . " delete\">"                                                          . $isca                                 . "</td>\n";
+          $output .= "  <td" . $class . " delete\">"                                                          . $a_certs['cert_expire']               . "</td>\n";
+          $output .= "  <td" . $class . "\">"                                                                 . $a_certs['cert_authority']            . "</td>\n";
+          $output .= "  <td" . $class . "\">"                                                                 . $a_certs['cert_subject']              . "</td>\n";
+          $output .= "  <td" . $class . "\">"                                                                 . $a_certs['grp_name']                  . "</td>\n";
+          $output .= "  <td" . $class . " delete\">"                                             . $certstart . $total                     . $linkend . "</td>\n";
           $output .= "</tr>\n";
           $count++;
 
 
-          $q_string  = "select cert_desc,cert_id,cert_url,cert_expire,cert_authority,cert_group,grp_name,cert_isca ";
+          $q_string  = "select cert_desc,cert_id,cert_url,cert_expire,cert_authority,cert_group,grp_name,cert_isca,cert_top ";
           $q_string .= "from certs ";
           $q_string .= "left join a_groups on a_groups.grp_id = certs.cert_group ";
-          $q_string .= "where cert_ca = " . $a_certs['cert_id'] . " ";
+          $q_string .= "where cert_ca = " . $a_certs['cert_id'] . " " . $andtop . " ";
           $q_string .= "order by cert_desc,cert_expire";
           $q_child = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_child) > 0) {
             while ($a_child = mysqli_fetch_array($q_child)) {
+
+# reset if andtop succeeds here
+              $andtop = '';
 
               $certtime = strtotime($a_child['cert_expire']);
 
@@ -179,6 +198,12 @@
                 $isca = "Yes";
               } else {
                 $isca = "No";
+              }
+
+              if ($a_child['cert_top']) {
+                $topstart = "<a href=\"certs.php?top=" . $a_child['cert_id'] . "\" target=\"_blank\">*</a>";
+              } else {
+                $topstart  = "";
               }
 
               $linkstart = "<a href=\"#\" onclick=\"show_file('certs.fill.php?id=" . $a_child['cert_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
@@ -206,25 +231,28 @@
                   $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>";
                 }
               }
-              $output .= "  <td" . $class . "\" title=\"" . $a_child['cert_url'] . "\">&gt; " . $linkstart . $a_child['cert_desc']      . $linkend . "</td>\n";
-              $output .= "  <td" . $class . " delete\">"                                                   . $isca                                 . "</td>\n";
-              $output .= "  <td" . $class . " delete\">"                                                   . $a_child['cert_expire']               . "</td>\n";
-              $output .= "  <td" . $class . "\">"                                                          . $a_child['cert_authority']            . "</td>\n";
-              $output .= "  <td" . $class . "\">"                                                          . $a_child['cert_subject']              . "</td>\n";
-              $output .= "  <td" . $class . "\">"                                                          . $a_child['grp_name']                  . "</td>\n";
-              $output .= "  <td" . $class . " delete\">"                                      . $certstart . $total                     . $linkend . "</td>\n";
+              $output .= "  <td" . $class . "\" title=\"" . $a_child['cert_url'] . "\">&gt; " . $topstart . $linkstart . $a_child['cert_desc']      . $linkend . "</td>\n";
+              $output .= "  <td" . $class . " delete\">"                                                               . $isca                                 . "</td>\n";
+              $output .= "  <td" . $class . " delete\">"                                                               . $a_child['cert_expire']               . "</td>\n";
+              $output .= "  <td" . $class . "\">"                                                                      . $a_child['cert_authority']            . "</td>\n";
+              $output .= "  <td" . $class . "\">"                                                                      . $a_child['cert_subject']              . "</td>\n";
+              $output .= "  <td" . $class . "\">"                                                                      . $a_child['grp_name']                  . "</td>\n";
+              $output .= "  <td" . $class . " delete\">"                                                  . $certstart . $total                     . $linkend . "</td>\n";
               $output .= "</tr>\n";
 
 
 
-              $q_string  = "select cert_desc,cert_id,cert_url,cert_expire,cert_authority,cert_group,grp_name,cert_isca ";
+              $q_string  = "select cert_desc,cert_id,cert_url,cert_expire,cert_authority,cert_group,grp_name,cert_isca,cert_top ";
               $q_string .= "from certs ";
               $q_string .= "left join a_groups on a_groups.grp_id = certs.cert_group ";
-              $q_string .= "where cert_ca = " . $a_child['cert_id'] . " ";
+              $q_string .= "where cert_ca = " . $a_child['cert_id'] . " " . $andtop . " ";
               $q_string .= "order by cert_desc,cert_expire";
               $q_grandchild = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
               if (mysqli_num_rows($q_grandchild) > 0) {
                 while ($a_grandchild = mysqli_fetch_array($q_grandchild)) {
+
+# reset if andtop succeeds here
+                  $andtop = '';
 
                   $certtime = strtotime($a_grandchild['cert_expire']);
 
@@ -241,6 +269,12 @@
                     $isca = "Yes";
                   } else {
                     $isca = "No";
+                  }
+
+                  if ($a_grandchild['cert_top']) {
+                    $topstart = "<a href=\"certs.php?top=" . $a_grandchild['cert_id'] . "\" target=\"_blank\">*</a>";
+                  } else {
+                    $topstart  = "";
                   }
 
                   $linkstart = "<a href=\"#\" onclick=\"show_file('certs.fill.php?id=" . $a_grandchild['cert_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
@@ -268,13 +302,13 @@
                       $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>";
                     }
                   }
-                  $output .= "  <td" . $class . "\" title=\"" . $a_grandchild['cert_url'] . "\">&gt;&gt; " . $linkstart . $a_grandchild['cert_desc']      . $linkend . "</td>\n";
-                  $output .= "  <td" . $class . " delete\">"                                                            . $isca                                      . "</td>\n";
-                  $output .= "  <td" . $class . " delete\">"                                                            . $a_grandchild['cert_expire']               . "</td>\n";
-                  $output .= "  <td" . $class . "\">"                                                                   . $a_grandchild['cert_authority']            . "</td>\n";
-                  $output .= "  <td" . $class . "\">"                                                                   . $a_grandchild['cert_subject']              . "</td>\n";
-                  $output .= "  <td" . $class . "\">"                                                                   . $a_grandchild['grp_name']                  . "</td>\n";
-                  $output .= "  <td" . $class . " delete\">"                                               . $certstart . $total                          . $linkend . "</td>\n";
+                  $output .= "  <td" . $class . "\" title=\"" . $a_grandchild['cert_url'] . "\">&gt;&gt; " . $topstart . $linkstart . $a_grandchild['cert_desc']      . $linkend . "</td>\n";
+                  $output .= "  <td" . $class . " delete\">"                                                                        . $isca                                      . "</td>\n";
+                  $output .= "  <td" . $class . " delete\">"                                                                        . $a_grandchild['cert_expire']               . "</td>\n";
+                  $output .= "  <td" . $class . "\">"                                                                               . $a_grandchild['cert_authority']            . "</td>\n";
+                  $output .= "  <td" . $class . "\">"                                                                               . $a_grandchild['cert_subject']              . "</td>\n";
+                  $output .= "  <td" . $class . "\">"                                                                               . $a_grandchild['grp_name']                  . "</td>\n";
+                  $output .= "  <td" . $class . " delete\">"                                                           . $certstart . $total                          . $linkend . "</td>\n";
                   $output .= "</tr>\n";
                 }
               }
@@ -284,7 +318,7 @@
 
       } else {
         $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"6\">No Certificates Defined</td>\n";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"8\">No Certificates Defined</td>\n";
         $output .= "</tr>\n";
       }
 
