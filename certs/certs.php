@@ -267,6 +267,8 @@ entry, or to easily make a change, you can create a new entry.</p>
 <p>A user's selection for notification will be used when highlighting expirations. If the user hasn't selected a value, a default 
 value of 90 days will be used.</p>
 
+<p>The [^] identifies a top level entry. You can click on that icon to restrict all work to that site, cluster, or server as needed.</p>
+
 <p>Note that under the Members column is a number which indicates the number of servers that are currently associated with the 
 certificate. You cannot remove a certificate until this value is zero. Clicking on the number will take you to a listing of 
 servers that are using this certificate.</p>
