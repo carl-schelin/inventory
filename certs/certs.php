@@ -18,7 +18,6 @@
 
   logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
-
   $q_string  = "select usr_notify ";
   $q_string .= "from users ";
   $q_string .= "where usr_id = " . $_SESSION['uid'];
@@ -27,6 +26,11 @@
 
   if ($a_users['usr_notify'] == 0) {
     $a_users['usr_notify'] = 90;
+  }
+
+  $formVars['top'] = 0;
+  if (isset($_GET['top'])) {
+    $formVars['top'] = clean($_GET['top'], 10);
   }
 
 
@@ -42,7 +46,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Certificate Editor</title>
+<title>Certificate Manager</title>
 
 <style type='text/css' title='currentStyle' media='screen'>
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -70,6 +74,7 @@ function attach_file( p_script_url, update ) {
   var af_url;
 
   af_url  = '?update='   + update;
+  af_url += '&top='      + <?php print $formVars['top']; ?>;
 
   af_url += "&cert_desc="       + encode_URI(af_form.cert_desc.value);
   af_url += "&cert_url="        + encode_URI(af_form.cert_url.value);
@@ -80,6 +85,7 @@ function attach_file( p_script_url, update ) {
   af_url += "&cert_ca="         + af_form.cert_ca.value;
   af_url += "&cert_memo="       + encode_URI(af_form.cert_memo.value);
   af_url += "&cert_isca="       + af_form.cert_isca.checked;
+  af_url += "&cert_top="        + af_form.cert_top.checked;
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
@@ -91,6 +97,7 @@ function update_file( p_script_url, update ) {
   var uf_url;
 
   uf_url  = '?update='   + update;
+  uf_url += '&top='      + <?php print $formVars['top']; ?>;
   uf_url += '&id='       + uf_form.id.value;
 
   uf_url += "&cert_desc="       + encode_URI(uf_form.cert_desc.value);
@@ -102,6 +109,7 @@ function update_file( p_script_url, update ) {
   uf_url += "&cert_ca="         + uf_form.cert_ca.value;
   uf_url += "&cert_memo="       + encode_URI(uf_form.cert_memo.value);
   uf_url += "&cert_isca="       + uf_form.cert_isca.checked;
+  uf_url += "&cert_top="        + uf_form.cert_top.checked;
 
   script = document.createElement('script');
   script.src = p_script_url + uf_url;
@@ -116,7 +124,7 @@ function textCounter(field, cntfield, maxlimit) {
 }
 
 function clear_fields() {
-  show_file('certs.mysql.php?update=-1');
+  show_file('certs.mysql.php?update=-1&top=<?php print $formVars['top']; ?>');
 }
 
 $(function() {
@@ -128,7 +136,7 @@ $(function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 450,
+    height: 475,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -158,7 +166,7 @@ $(function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 450,
+    height: 475,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -256,6 +264,11 @@ certificate to the manager.</p>
 <p>To edit an existing certificate, click on the entry in the listing. A dialog box will be displayed where you can edit the current 
 entry, or to easily make a change, you can create a new entry.</p>
 
+<p>A user's selection for notification will be used when highlighting expirations. If the user hasn't selected a value, a default 
+value of 90 days will be used.</p>
+
+<p>The [^] identifies a top level entry. You can click on that icon to restrict all work to that site, cluster, or server as needed.</p>
+
 <p>Note that under the Members column is a number which indicates the number of servers that are currently associated with the 
 certificate. You cannot remove a certificate until this value is zero. Clicking on the number will take you to a listing of 
 servers that are using this certificate.</p>
@@ -299,6 +312,9 @@ servers that are using this certificate.</p>
 </tr>
 <tr>
   <td class="ui-widget-content"><label><input type="checkbox" name="cert_isca"> Is this a Certificate Authority?</label></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label><input type="checkbox" name="cert_top"> Is this a Site, Cluster, or Server?</label></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Not After Date: <input type="date" name="cert_expire" value="1971-01-01" size="12"></td>
@@ -363,6 +379,9 @@ servers that are using this certificate.</p>
 </tr>
 <tr>
   <td class="ui-widget-content"><label><input type="checkbox" name="cert_isca"> Is this a Certificate Authority?</label></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label><input type="checkbox" name="cert_top"> Is this a Site, Cluster, or Server?</label></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Not After Date: <input type="date" name="cert_expire" value="1971-01-01" size="12"></td>
