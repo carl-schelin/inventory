@@ -171,7 +171,7 @@
           $count++;
 
 
-          $q_string  = "select cert_desc,cert_id,cert_url,cert_expire,cert_authority,cert_group,grp_name,cert_isca,cert_top ";
+          $q_string  = "select cert_desc,cert_id,cert_url,cert_expire,cert_authority,cert_subject,cert_group,grp_name,cert_isca,cert_top ";
           $q_string .= "from certs ";
           $q_string .= "left join a_groups on a_groups.grp_id = certs.cert_group ";
           $q_string .= "where cert_ca = " . $a_certs['cert_id'] . " " . $andtop . " ";
@@ -242,7 +242,7 @@
 
 
 
-              $q_string  = "select cert_desc,cert_id,cert_url,cert_expire,cert_authority,cert_group,grp_name,cert_isca,cert_top ";
+              $q_string  = "select cert_desc,cert_id,cert_url,cert_expire,cert_authority,cert_subject,cert_group,grp_name,cert_isca,cert_top ";
               $q_string .= "from certs ";
               $q_string .= "left join a_groups on a_groups.grp_id = certs.cert_group ";
               $q_string .= "where cert_ca = " . $a_child['cert_id'] . " " . $andtop . " ";
@@ -310,6 +310,83 @@
                   $output .= "  <td" . $class . "\">"                                                                               . $a_grandchild['grp_name']                  . "</td>\n";
                   $output .= "  <td" . $class . " delete\">"                                                           . $certstart . $total                          . $linkend . "</td>\n";
                   $output .= "</tr>\n";
+
+
+
+                  $q_string  = "select cert_desc,cert_id,cert_url,cert_expire,cert_authority,cert_subject,cert_group,grp_name,cert_isca,cert_top ";
+                  $q_string .= "from certs ";
+                  $q_string .= "left join a_groups on a_groups.grp_id = certs.cert_group ";
+                  $q_string .= "where cert_ca = " . $a_grandchild['cert_id'] . " " . $andtop . " ";
+                  $q_string .= "order by cert_desc,cert_expire";
+                  $q_greatgrandchild = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+                  if (mysqli_num_rows($q_greatgrandchild) > 0) {
+                    while ($a_greatgrandchild = mysqli_fetch_array($q_greatgrandchild)) {
+
+# reset if andtop succeeds here
+                      $andtop = '';
+
+                      $certtime = strtotime($a_greatgrandchild['cert_expire']);
+
+                      $class = " class=\"ui-widget-content";
+                      if ($certtime < $date) {
+                        $class = " class=\"ui-state-error";
+                      } else {
+                        if ($certtime < $warningdate) {
+                          $class = " class=\"ui-state-highlight";
+                        }
+                      }
+
+                      if ($a_greatgrandchild['cert_isca']) {
+                        $isca = "Yes";
+                      } else {
+                        $isca = "No";
+                      }
+
+                      if ($a_greatgrandchild['cert_top']) {
+                        $topstart = "<a href=\"certs.php?top=" . $a_greatgrandchild['cert_id'] . "\" target=\"_blank\">[^]</a> ";
+                      } else {
+                        $topstart  = "";
+                      }
+
+                      $linkstart = "<a href=\"#\" onclick=\"show_file('certs.fill.php?id=" . $a_greatgrandchild['cert_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+                      $certstart = "<a href=\"servers.php?id=" . $a_greatgrandchild['cert_id'] . "\" target=\"_blank\">";
+                      $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('certs.del.php?id=" . $a_greatgrandchild['cert_id'] . "');\">";
+                      $linkend   = "</a>";
+
+                      $total = 0;
+                      $q_string  = "select svr_certid ";
+                      $q_string .= "from svr_software ";
+                      $q_string .= "where svr_certid = " . $a_greatgrandchild['cert_id'] . " ";
+                      $q_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+                      if (mysqli_num_rows($q_svr_software) > 0) {
+                        while ($a_svr_software = mysqli_fetch_array($q_svr_software)) {
+                          $total++;
+                        }
+                      }
+
+# if a member of the webapps team or an admin, permit editing.
+                      $output .= "<tr>";
+                          if (check_grouplevel($db, $GRP_WebApps)) {
+                        if ($total == 0) {
+                          $output .= "  <td" . $class . " delete\">" . $linkdel . "</td>\n";
+                        } else {
+                          $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>";
+                        }
+                      }
+                      $output .= "  <td" . $class . "\" title=\"" . $a_greatgrandchild['cert_url'] . "\">&gt;&gt; " . $topstart . $linkstart . $a_greatgrandchild['cert_desc']      . $linkend . "</td>\n";
+                      $output .= "  <td" . $class . " delete\">"                                                                        . $isca                                      . "</td>\n";
+                      $output .= "  <td" . $class . " delete\">"                                                                        . $a_greatgrandchild['cert_expire']               . "</td>\n";
+                      $output .= "  <td" . $class . "\">"                                                                               . $a_greatgrandchild['cert_authority']            . "</td>\n";
+                      $output .= "  <td" . $class . "\">"                                                                               . $a_greatgrandchild['cert_subject']              . "</td>\n";
+                      $output .= "  <td" . $class . "\">"                                                                               . $a_greatgrandchild['grp_name']                  . "</td>\n";
+                      $output .= "  <td" . $class . " delete\">"                                                           . $certstart . $total                          . $linkend . "</td>\n";
+                      $output .= "</tr>\n";
+                    }
+                  }
+
+
+
+
                 }
               }
             }
