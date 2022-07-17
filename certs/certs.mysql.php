@@ -130,7 +130,7 @@
           }
 
           if ($a_certs['cert_top']) {
-            $topstart = "<a href=\"certs.php?top=" . $a_certs['cert_id'] . "\" target=\"_blank\">[*]</a> ";
+            $topstart = "<a href=\"certs.php?top=" . $a_certs['cert_id'] . "\" target=\"_blank\">[^]</a> ";
           } else {
             $topstart  = "";
           }
@@ -201,7 +201,7 @@
               }
 
               if ($a_child['cert_top']) {
-                $topstart = "<a href=\"certs.php?top=" . $a_child['cert_id'] . "\" target=\"_blank\">[*]</a> ";
+                $topstart = "<a href=\"certs.php?top=" . $a_child['cert_id'] . "\" target=\"_blank\">[^]</a> ";
               } else {
                 $topstart  = "";
               }
@@ -272,7 +272,7 @@
                   }
 
                   if ($a_grandchild['cert_top']) {
-                    $topstart = "<a href=\"certs.php?top=" . $a_grandchild['cert_id'] . "\" target=\"_blank\">[*]</a> ";
+                    $topstart = "<a href=\"certs.php?top=" . $a_grandchild['cert_id'] . "\" target=\"_blank\">[^]</a> ";
                   } else {
                     $topstart  = "";
                   }
