@@ -21,7 +21,7 @@
     if (check_userlevel($db, $AL_Edit)) {
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from certs");
 
-      $q_string  = "select cert_id,cert_desc,cert_url,cert_expire,cert_authority,cert_subject,cert_group,cert_ca,cert_memo,cert_isca ";
+      $q_string  = "select cert_id,cert_desc,cert_url,cert_expire,cert_authority,cert_subject,cert_group,cert_ca,cert_memo,cert_isca,cert_top ";
       $q_string .= "from certs ";
       $q_string .= "where cert_id = " . $formVars['id'];
       $q_certs = mysqli_query($db, $q_string) or die($q_string. ": " . mysqli_error($db));
@@ -29,7 +29,11 @@
       mysqli_free_result($q_certs);
 
       $group = return_Index($db, $a_certs['cert_group'], "select grp_id from a_groups where grp_disabled = 0 order by grp_name");
-      $cert  = return_Index($db, $a_certs['cert_ca'],    "select cert_id from certs where cert_isca = 1 order by cert_desc");
+      $cert  = return_Index($db, $a_certs['cert_ca'],    "select cert_id from certs where cert_isca = 1 order by cert_desc") + 1;
+
+      if ($a_certs['cert_ca'] == 0) {
+        $cert = 0;
+      }
 
       print "document.formUpdate.cert_desc.value = '"      . mysqli_real_escape_string($db, $a_certs['cert_desc'])      . "';\n";
       print "document.formUpdate.cert_url.value = '"       . mysqli_real_escape_string($db, $a_certs['cert_url'])       . "';\n";
@@ -42,6 +46,11 @@
         print "document.formUpdate.cert_isca.checked = true;\n";
       } else {
         print "document.formUpdate.cert_isca.checked = false;\n";
+      }
+      if ($a_certs['cert_top']) {
+        print "document.formUpdate.cert_top.checked = true;\n";
+      } else {
+        print "document.formUpdate.cert_top.checked = false;\n";
       }
 
 # if your group matches the cert group for the item or if you're in webapps (group 25) or if the user is an admin

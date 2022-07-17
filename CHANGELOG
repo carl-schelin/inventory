@@ -1210,3 +1210,17 @@ Updated the certs table
 alter table certs add column cert_subject char(60) not null default '' after cert_authority;
 
 Remote table updated.
+
+All tables updated.
+
+
+### Timestamp 2022-07-16
+
+Updated the certs table
+
+alter table certs add column cert_top int(10) not null default 0;
+
+
+
+
+
