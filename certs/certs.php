@@ -78,6 +78,7 @@ function attach_file( p_script_url, update ) {
 
   af_url += "&cert_desc="       + encode_URI(af_form.cert_desc.value);
   af_url += "&cert_url="        + encode_URI(af_form.cert_url.value);
+  af_url += "&cert_filename="   + encode_URI(af_form.cert_filename.value);
   af_url += "&cert_expire="     + encode_URI(af_form.cert_expire.value);
   af_url += "&cert_authority="  + encode_URI(af_form.cert_authority.value);
   af_url += "&cert_subject="    + encode_URI(af_form.cert_subject.value);
@@ -102,6 +103,7 @@ function update_file( p_script_url, update ) {
 
   uf_url += "&cert_desc="       + encode_URI(uf_form.cert_desc.value);
   uf_url += "&cert_url="        + encode_URI(uf_form.cert_url.value);
+  uf_url += "&cert_filename="   + encode_URI(uf_form.cert_filename.value);
   uf_url += "&cert_expire="     + encode_URI(uf_form.cert_expire.value);
   uf_url += "&cert_authority="  + encode_URI(uf_form.cert_authority.value);
   uf_url += "&cert_subject="    + encode_URI(uf_form.cert_subject.value);
@@ -136,7 +138,7 @@ $(function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 475,
+    height: 500,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -166,7 +168,7 @@ $(function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 475,
+    height: 500,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -226,6 +228,9 @@ $(function() {
 
 <p>When adding certificates, there should be a top level certificate authority defined and any new certs are attached to that CA.</p>
 
+<p>Ultimately there are two goals for the Certificate Manager. To notify interested parties in sufficient time to update the cert and 
+to ensure the interested parties know what file needs to be updated.</p>
+
 <p><strong>NOTE:</strong> Regardless of the 'Managed By' group email, the Web Applications team will also receive copies of the email for verification.</p>
 
 </div>
@@ -267,7 +272,8 @@ entry, or to easily make a change, you can create a new entry.</p>
 <p>A user's selection for notification will be used when highlighting expirations. If the user hasn't selected a value, a default 
 value of 90 days will be used.</p>
 
-<p>The [^] identifies a top level entry. You can click on that icon to restrict all work to that site, cluster, or server as needed.</p>
+<p>To reduce the listing to be more managable, in the CA column will be a Top link. If you click on that link, you'll redisplay the 
+certificate manager to show just certificates for that site, cluster, or server.</p>
 
 <p>Note that under the Members column is a number which indicates the number of servers that are currently associated with the 
 certificate. You cannot remove a certificate until this value is zero. Clicking on the number will take you to a listing of 
@@ -294,6 +300,9 @@ servers that are using this certificate.</p>
 </tr>
 <tr>
   <td class="ui-widget-content">URL: <input type="text" name="cert_url" size="40"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Filename: <input type="text" name="cert_filename" size="60"></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Associated Certificate Authority <select name="cert_ca">
@@ -361,6 +370,9 @@ servers that are using this certificate.</p>
 </tr>
 <tr>
   <td class="ui-widget-content">URL: <input type="text" name="cert_url" size="40"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Filename: <input type="text" name="cert_filename" size="60"></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Associated Certificate Authority <select name="cert_ca">
