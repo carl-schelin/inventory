@@ -124,7 +124,7 @@
   $q_string .= "where tag_type = 4 ";
   $q_string .= "group by tag_name ";
   $q_string .= "order by tag_name ";
-  $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_tags) > 0) {
     while ($a_tags = mysqli_fetch_array($q_tags)) {
 
@@ -133,19 +133,20 @@
       $q_string  = "select tag_companyid ";
       $q_string .= "from tags ";
       $q_string .= "where tag_type = 4 and tag_name = \"" . $a_tags['tag_name'] . "\" ";
-      $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_software) > 0) {
         while ($a_software = mysqli_fetch_array($q_software)) {
 
-          $q_string  = "select inv_name ";
+          $q_string  = "select int_server ";
           $q_string .= "from svr_software ";
+          $q_string .= "left join interface on interface.int_companyid = svr_software.svr_companyid ";
           $q_string .= "left join inventory on inventory.inv_id = svr_software.svr_companyid ";
-          $q_string .= "where svr_softwareid = " . $a_software['tag_companyid'] . " ";
-          $q_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $q_string .= "where svr_softwareid = " . $a_software['tag_companyid'] . " and inv_ssh = 1 and inv_ansible = 1 and int_management = 1 ";
+          $q_svr_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_svr_software) > 0) {
             while ($a_svr_software = mysqli_fetch_array($q_svr_software)) {
 
-              print $a_svr_software['inv_name'] . "\n";
+              print $a_svr_software['int_server'] . "\n";
 
             }
           }

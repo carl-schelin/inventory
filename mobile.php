@@ -21,7 +21,7 @@ foreach ($Apple['Types'] as $d => $t) {
     if (stripos($ua,'android') !== false) {
       print "  @import \"" . $Siteroot . "/css/android.css\";\n";
     } else {
-      print "  @import \"" . $Siteroot . "/css/themes/" . $_SESSION['theme'] . "/jquery-ui.min.css\";\n";
+      print "  @import \"" . $Siteroot . "/css/jquery-ui-themes/themes/" . $_SESSION['theme'] . "/jquery-ui.min.css\";\n";
       print "  @import \"" . $Siteroot . "/css/inventory.css\";\n";
       print "  @import \"" . $Siteroot . "/css/table.css\";\n";
     }
