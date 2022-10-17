@@ -51,8 +51,8 @@
 </style>
 
 <script type="text/javascript" language="javascript" src="<?php print $Siteroot; ?>/css/jquery.js"></script>
-<script type="text/javascript" language="javascript" src="<?php print $Siteroot; ?>/css/themes/<?php print $_SESSION['theme']; ?>/jquery-ui.js"></script>
-<link   rel="stylesheet" type="text/css"            href="<?php print $Siteroot; ?>/css/themes/<?php print $_SESSION['theme']; ?>/jquery-ui.css">
+<script type="text/javascript" language="javascript" src="<?php print $Siteroot; ?>/css/jquery-ui/jquery-ui.js"></script>
+<link   rel="stylesheet" type="text/css"            href="<?php print $Siteroot; ?>/css/jquery-ui-themes/themes/<?php print $_SESSION['theme']; ?>/jquery-ui.css">
 <script type="text/javascript" language="javascript" src="<?php print $Siteroot; ?>/functions/jquery.inventory.js"></script>
 
 <script type="text/javascript">
@@ -87,7 +87,7 @@ function attach_file( p_script_url, update ) {
 }
 
 function attach_detail( p_script_url, update ) {
-  var af_form = document.start;
+  var af_form = document.formCreate;
   var af_url;
 
   af_url  = '?update='   + update;
@@ -103,34 +103,28 @@ function attach_detail( p_script_url, update ) {
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
-function reset_detail() {
-  document.start.bug_text.value = '';
-  document.start.remLen.value = 1800;
-  document.start.bug_user[0].selected = true;
-  document.start.bug_timestamp.value = 'Current Time';
-  document.start.bugupdate.disabled = true;
-  document.start.bug_id.value = 0;
-  document.start.format_bold.value = 0;
-  document.start.format_italic.value = 0;
-  document.start.format_underline.value = 0;
-  document.start.format_preserve.value = 0;
-<?php
-  if (!preg_match('/MSIE/i',$_SERVER['HTTP_USER_AGENT'])) {
-?>
-  document.getElementById('show_bold').innerHTML = 'Bold';
-  document.getElementById('show_italic').innerHTML = 'Italic';
-  document.getElementById('show_underline').innerHTML = 'Underline';
-  document.getElementById('show_preserve').innerHTML = 'Preserve Formatting';
-<?php
-  }
-?>
+function update_detail( p_script_url, update ) {
+  var uf_form = document.formUpdate;
+  var uf_url;
+
+  uf_url  = '?update='   + update;
+  uf_url += '&id='       + <?php print $formVars['id']; ?>;
+
+  uf_url += '&bug_id='        + uf_form.bug_id.value;
+  uf_url += "&bug_text="      + encode_URI(uf_form.bug_text.value);
+  uf_url += "&bug_timestamp=" + encode_URI(uf_form.bug_timestamp.value);
+  uf_url += "&bug_user="      + uf_form.bug_user.value;
+
+  script = document.createElement('script');
+  script.src = p_script_url + uf_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
 }
 
-function textCounter(field,cntfield,maxlimit) {
-  if (field.value.length > maxlimit)
-    field.value = field.value.substring(0, maxlimit);
+function textCounter(p_field, p_cntfield, p_maxlimit) {
+  if (p_field.value.length > p_maxlimit)
+    p_field.value = p_field.value.substring(0, p_maxlimit);
   else
-    cntfield.value = maxlimit - field.value.length;
+    p_cntfield.value = p_maxlimit - p_field.value.length;
 }
 
 function clear_fields() {
@@ -145,8 +139,8 @@ function clear_fields() {
   if (!preg_match('/MSIE/i',$_SERVER['HTTP_USER_AGENT'])) {
 ?>
 // the purpose here is to permit the insertion/replacement of formatted text
-function formatText(p_format) {
-  var ft_form = document.start;
+function formatText(p_field, p_format) {
+  var ft_form = p_field;
   var ft_text = ft_form.bug_text.value;
 
   ft_form.bug_text.focus();
@@ -329,7 +323,78 @@ function setCaretPosition(elemId, caretPos) {
 ?>
 
 $(document).ready( function() {
-  $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
+  $( "#tabs" ).tabs( );
+
+  $( '#clickCreate' ).click(function() {
+    $( "#dialogCreate" ).dialog('open');
+  });
+
+  $( "#dialogCreate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 525,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogCreate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('comments.mysql.php?update=-1');
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Comment",
+        click: function() {
+          attach_detail('comments.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+  $( "#dialogUpdate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 525,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogUpdate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('ipaddress.mysql.php?update=-1');
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Update Comment",
+        click: function() {
+          update_detail('comments.mysql.php', 1);
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Comment",
+        click: function() {
+          update_detail('comments.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
 });
 
 </script>
@@ -340,16 +405,20 @@ $(document).ready( function() {
 <?php include($Sitepath . '/topmenu.start.php'); ?>
 <?php include($Sitepath . '/topmenu.end.php'); ?>
 
-<div id="main">
+<div class="main">
 
-<form name="start">
+<!-- This is the start of the tab block -->
 
 <div id="tabs">
 
 <ul>
   <li><a href="#bug"><?php print $a_bugs['mod_name']; ?> Bug</a></li>
-  <li><a href="#problem">Problem Form</a></li>
+  <li><a href="#comments">Problem Form</a></li>
 </ul>
+
+
+
+<!-- This is the start of the bug tab -->
 
 <div id="bug">
 
@@ -510,11 +579,18 @@ $(document).ready( function() {
 </div>
 
 
-<div id="problem">
+<!-- This is the end of the bug tab -->
+
+
+
+
+<!-- This is the start of the problem tab -->
+
+<div id="comments">
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default"><a href="javascript:;" onmousedown="toggleDiv('problem-hide');">Problem Management</a></th>
+  <th class="ui-state-default">Problem Management</th>
   <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('problem-help');">Help</a></th>
 </tr>
 </table>
@@ -523,90 +599,77 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Buttons</strong>
-  <ul>
-    <li><strong>Reset</strong> - Reset the data entry form clearing the textarea and resetting the formatting buttons and data entry fields.</li>
-    <li><strong>Update Detail</strong> - After selecting a detail record to edit, click here to save any changes.</li>
-    <li><strong>Save New Detail</strong> - Add a new detail record. You can also select an existing record, make changes if needed, and click this button to add a second detail.</li>
-  </ul></li>
-</ul>
 
-<ul>
-  <li><strong>Problem Form</strong>
-  <ul>
-    <li><strong>Data Entry</strong> - Enter data about the issue here. The Bold, Italic, Underline, 
-and Preserve Formatting buttons let you format the output of the data. The <strong>character count</strong> 
-field shows you the limit of the number of characters. This limit is set by the browser.</li>
-    <li><strong>Timestamp</strong> - The time the work was done.</li>
-    <li><strong>Support Tech</strong> - The person performing the work.</li>
-    <li><strong>Generate Wiki Page</strong> - Generates a formated page for insertion into a wiki.</li>
-    <li><strong>Generate Text Page</strong> - Generates a formated log suitable for emailing to a support technician.</li>
-  </ul></li>
-</ul>
 
-<ul>
-  <li><strong>Notes</strong>
-  <ul>
-    <li>Click the <strong>Problem Management</strong> title bar to toggle the <strong>Problem Form</strong>.</li>
-  </ul></li>
-</ul>
 
 </div>
 
 </div>
 
-
-<div id="problem-hide" style="display: none">
 
 <?php
+# basically the ability to add a comment only exists if the bug is open
+# so check to see if it's set to the default date, and assume it's open if so.
   if ($a_bugs['bug_closed'] == '1971-01-01') {
 ?>
 <table class="ui-styled-table">
 <tr>
-  <td colspan="7" class="ui-widget-content button">
-<input type="button"                 name="reset"       value="Reset"           onClick="javascript:reset_detail();">
-<input type="button" disabled="true" name="bugupdate"   value="Update Bug"   onClick="javascript:attach_detail('comments.mysql.php', 1);hideDiv('problem-hide');">
-<input type="hidden" name="bug_id" value="0">
-<input type="hidden" name="format_bold" value="0">
-<input type="hidden" name="format_italic" value="0">
-<input type="hidden" name="format_underline" value="0">
-<input type="hidden" name="format_preserve" value="0">
-<input type="button"                 name="bugbutton" value="Save New Bug" onClick="javascript:attach_detail('comments.mysql.php', 0);"></td>
+  <td colspan="7" class="ui-widget-content button"><input type="button" id="clickCreate" value="Add Comment"></td>
 </tr>
 </table>
 
 <p></p>
 
+<span id="detail_mysql"></span>
+
+
+
+
+
+<div id="dialogCreate" title="Add Comment">
+
+<form name="formCreate">
+
+<input type="hidden" name="bug_id" value="0">
+<input type="hidden" name="format_bold" value="0">
+<input type="hidden" name="format_italic" value="0">
+<input type="hidden" name="format_underline" value="0">
+<input type="hidden" name="format_preserve" value="0">
+
 <table class="ui-styled-table">
-<tr>
-  <th class="ui-state-default" colspan="7">Problem Form</th>
-</tr>
 <?php
+
+# only allow button formatting if not IE.
+
   if (!preg_match('/MSIE/i',$_SERVER['HTTP_USER_AGENT'])) {
 ?>
 <tr>
-  <td class="ui-widget-content delete"><input type="button" id="show_bold"      value="Bold"                onclick="javascript:formatText('bold');"></td>
-  <td class="ui-widget-content delete"><input type="button" id="show_italic"    value="Italic"              onclick="javascript:formatText('italic');"></td>
-  <td class="ui-widget-content delete"><input type="button" id="show_underline" value="Underline"           onclick="javascript:formatText('underline');"></td>
-  <td class="ui-widget-content delete"><input type="button" id="show_preserve"  value="Preserve Formatting" onclick="javascript:formatText('preserve');"></td>
-  <td class="ui-widget-content" colspan="3">&nbsp;</td>
+  <td class="ui-widget-content delete">
+    <input type="button" id="show_bold"      value="Bold"                onclick="javascript:formatText(formCreate, 'bold');">
+    <input type="button" id="show_italic"    value="Italic"              onclick="javascript:formatText(formCreate, 'italic');">
+    <input type="button" id="show_underline" value="Underline"           onclick="javascript:formatText(formCreate, 'underline');">
+    <input type="button" id="show_preserve"  value="Preserve Formatting" onclick="javascript:formatText(formCreate, 'preserve');">
+  </td>
 </tr>
 <?php
   }
+
+
 ?>
 <tr>
-  <td class="ui-widget-content" colspan="7">
-<textarea id="bug_text" name="bug_text" cols="130" rows="10" 
-  onKeyDown="textCounter(document.start.bug_text, document.start.remLen, 1800);" 
-  onKeyUp  ="textCounter(document.start.bug_text, document.start.remLen, 1800);">
+  <td class="ui-widget-content">
+<textarea id="bug_text" name="bug_text" cols="80" rows="16" 
+  onKeyDown="textCounter(document.formCreate.bug_text, document.formCreate.remLen, 1800);" 
+  onKeyUp  ="textCounter(document.formCreate.bug_text, document.formCreate.remLen, 1800);">
 </textarea>
 
 <br><input readonly type="text" name="remLen" size="5" maxlength="5" value="1800"> characters left
-</td>
+  </td>
 </tr>
 <tr>
   <td class="ui-widget-content" title="Leave Timestamp field set to Current Time to use current time, otherwise use YYYY-MM-DD HH:MM:SS." colspan="4">Timestamp: <input type="text" name="bug_timestamp" value="Current Time" size=23></td>
+</tr>
+<tr>
   <td class="ui-widget-content">Comment by: <select name="bug_user">
 <?php
   $q_string  = "select usr_first,usr_last ";
@@ -628,17 +691,98 @@ field shows you the limit of the number of characters. This limit is set by the 
 ?>
 </select></td>
 </tr>
+
 </table>
+
+</form>
+
+</div>
+
+
+
+<div id="dialogUpdate" title="Edit Comment">
+
+<form name="formUpdate">
+
+<input type="hidden" name="bug_id" value="0">
+<input type="hidden" name="format_bold" value="0">
+<input type="hidden" name="format_italic" value="0">
+<input type="hidden" name="format_underline" value="0">
+<input type="hidden" name="format_preserve" value="0">
+
+<table class="ui-styled-table">
+<?php
+
+# only allow button formatting if not IE.
+
+  if (!preg_match('/MSIE/i',$_SERVER['HTTP_USER_AGENT'])) {
+?>
+<tr>
+  <td class="ui-widget-content delete">
+    <input type="button" id="show_bold"      value="Bold"                onclick="javascript:formatText(formUpdate, 'bold');">
+    <input type="button" id="show_italic"    value="Italic"              onclick="javascript:formatText(formUpdate, 'italic');">
+    <input type="button" id="show_underline" value="Underline"           onclick="javascript:formatText(formUpdate, 'underline');">
+    <input type="button" id="show_preserve"  value="Preserve Formatting" onclick="javascript:formatText(formUpdate, 'preserve');">
+  </td>
+</tr>
+<?php
+  }
+
+
+?>
+<tr>
+  <td class="ui-widget-content">
+<textarea id="bug_text" name="bug_text" cols="80" rows="16"
+  onKeyDown="textCounter(document.formUpdate.bug_text, document.formUpdate.remLen, 1800);"
+  onKeyUp  ="textCounter(document.formUpdate.bug_text, document.formUpdate.remLen, 1800);">
+</textarea>
+
+<br><input readonly type="text" name="remLen" size="5" maxlength="5" value="1800"> characters left
+  </td>
+</tr>
+<tr>
+  <td class="ui-widget-content" title="Leave Timestamp field set to Current Time to use current time, otherwise use YYYY-MM-DD HH:MM:SS." colspan="4">Timestamp: <input type="text" name="bug_timestamp" value="Current Time" size=23></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Comment by: <select name="bug_user">
+<?php
+  $q_string  = "select usr_first,usr_last ";
+  $q_string .= "from users ";
+  $q_string .= "where usr_id = " . $_SESSION['uid'];
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_users = mysqli_fetch_array($q_users);
+
+  print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_users['usr_first'] . " " . $a_users['usr_last'] . "</option>\n";
+
+  $q_string  = "select usr_id,usr_first,usr_last ";
+  $q_string .= "from users ";
+  $q_string .= "where usr_disabled = 0 ";
+  $q_string .= "order by usr_last,usr_first";
+  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_users = mysqli_fetch_array($q_users)) {
+    print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_first'] . " " . $a_users['usr_last'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+
+</table>
+
+</form>
+
+</div>
+
+
 <?php
   }
 ?>
 
+
+
+<!-- This is the end of the problem tab -->
 </div>
 
-<span id="detail_mysql"></span>
-
-</div>
-
+<!-- This is the end of the tab block -->
 </div>
 
 </div>
