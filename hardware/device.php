@@ -103,7 +103,7 @@ function clear_fields() {
 }
 
 $(document).ready( function() {
-  $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
+  $( "#tabs" ).tabs( );
 
   $( '#clickCreate' ).click(function() {
     $( "#dialogCreate" ).dialog('open');
