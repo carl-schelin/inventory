@@ -26,7 +26,7 @@
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars["bug_id"]          = clean($_GET["bug_id"],          10);
-        $formVars["bug_text"]        = clean($_GET["bug_text"],      2000);
+        $formVars["bug_text"]        = mysqli_real_escape_string($db, clean($_GET["bug_text"],      2000));
         $formVars["bug_timestamp"]   = clean($_GET["bug_timestamp"],   60);
         $formVars["bug_user"]        = clean($_GET["bug_user"],        10);
 
@@ -44,19 +44,15 @@
             "bug_user      =   " . $formVars['bug_user'];
 
           if ($formVars['update'] == 0) {
-            $query = "insert into bugs_detail set bug_id = NULL, " . $q_string;
-            $message = "Comment added.";
+            $q_string = "insert into bugs_detail set bug_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update bugs_detail set " . $q_string . " where bug_id = " . $formVars['bug_id'];
-            $message = "Comment updated.";
+            $q_string = "update bugs_detail set " . $q_string . " where bug_id = " . $formVars['bug_id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['bug_id']);
 
-          mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
-
-          print "alert('" . $message . "');\n";
+          mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -106,7 +102,7 @@
 
       $output .= "<table class=\"ui-styled-table\">";
       $output .= "<tr>";
-      $output .= "  <th class=\"ui-state-default\">Del</th>";
+      $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Comment</th>";
       $output .= "  <th class=\"ui-state-default\">Date/Time</th>";
       $output .= "  <th class=\"ui-state-default\">User</th>";
       $output .= "  <th class=\"ui-state-default\">Detail</th>";
@@ -118,25 +114,29 @@
       $q_string .= "where bug_bug_id = " . $formVars['id'] . " ";
       $q_string .= "order by bug_timestamp desc ";
       $q_bugs_detail = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
-      while ($a_bugs_detail = mysqli_fetch_array($q_bugs_detail)) {
+      if (mysqli_num_rows($q_bugs_detail) > 0) {
+        while ($a_bugs_detail = mysqli_fetch_array($q_bugs_detail)) {
 
-        if ($a_bugs['bug_closed'] == '1971-01-01') {
-          $linkstart = "<a href=\"#details\" onclick=\"show_file('"     . $Bugroot . "/comments.fill.php?id=" . $a_bugs_detail['bug_id'] . "');showDiv('problem-hide');\">";
-          $linkdel   = "<a href=\"#details\" onclick=\"delete_detail('" . $Bugroot . "/comments.del.php?id="  . $a_bugs_detail['bug_id'] . "');\">";
-          $linkend   = "</a>";
-          $linktext  = "x";
-        } else {
-          $linkstart = '';
-          $linkend = '';
-          $linkdel = '';
-          $linktext  = "--";
+          if ($a_bugs['bug_closed'] == '1971-01-01') {
+            $linkstart = "<a href=\"#comments\" onclick=\"show_file('"     . $Bugroot . "/comments.fill.php?id=" . $a_bugs_detail['bug_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+            $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_detail('comments.del.php?id=" . $a_bugs_detail['bug_id'] . "');\">";
+            $linkend   = "</a>";
+          } else {
+            $linkstart = '';
+            $linkend = '';
+            $linkdel = "--";
+          }
+
+          $output .= "<tr>";
+          $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_bugs_detail['bug_timestamp']                                . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_bugs_detail['usr_first'] . " " . $a_bugs_detail['usr_last'] . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $a_bugs_detail['bug_text']                                                . "</td>";
+          $output .= "</tr>";
         }
-
+      } else {
         $output .= "<tr>";
-        $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . $linktext                                                      . $linkend . "</td>";
-        $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_bugs_detail['bug_timestamp']                                . $linkend . "</td>";
-        $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_bugs_detail['usr_first'] . " " . $a_bugs_detail['usr_last'] . $linkend . "</td>";
-        $output .= "  <td class=\"ui-widget-content\">"                     . $a_bugs_detail['bug_text']                                                . "</td>";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"4\">No comments found</td>";
         $output .= "</tr>";
       }
 
@@ -145,12 +145,6 @@
       $output .= "</table>";
 
       print "document.getElementById('detail_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
-
-      if ($a_bugs['bug_closed'] == '1971-01-01') {
-        print "document.start.bug_text.value = '';\n";
-        print "document.start.bug_timestamp.value = 'Current Time';\n";
-        print "document.start.bugupdate.disabled = true;\n";
-      }
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

@@ -29,16 +29,14 @@
       $a_bugs_detail = mysqli_fetch_array($q_bugs_detail);
       mysqli_free_result($q_bugs_detail);
 
-      $selected = return_Index($db, $a_bugs_detail['bug_user'],       "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
+      $selected = return_Index($db, $a_bugs_detail['bug_user'],       "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first") + 1;
 
-      print "document.start.bug_text.value = '"      . mysqli_real_escape_string($db, $a_bugs_detail['bug_text'])      . "';\n";
-      print "document.start.bug_timestamp.value = '" . mysqli_real_escape_string($db, $a_bugs_detail['bug_timestamp']) . "';\n";
+      print "document.formUpdate.bug_text.value = '"      . mysqli_real_escape_string($db, $a_bugs_detail['bug_text'])      . "';\n";
+      print "document.formUpdate.bug_timestamp.value = '" . mysqli_real_escape_string($db, $a_bugs_detail['bug_timestamp']) . "';\n";
 
-      print "document.start.bug_user['" . $selected . "'].selected = true;\n";
+      print "document.formUpdate.bug_user['" . $selected . "'].selected = true;\n";
 
-      print "document.start.bug_id.value = " . $formVars['id'] . ";\n";
-
-      print "document.start.bugupdate.disabled = false;\n";
+      print "document.formUpdate.bug_id.value = " . $formVars['id'] . ";\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

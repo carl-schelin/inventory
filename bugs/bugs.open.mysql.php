@@ -57,14 +57,14 @@
 
   $output .= "<table class=\"ui-styled-table\">";
   $output .= "<tr>";
-  $output .=   "<th class=\"ui-state-default\">Del</th>";
+  $output .=   "<th class=\"ui-state-default\" width=\"160\">Delete Bug</th>";
   $output .=   "<th class=\"ui-state-default\">Module</th>";
   $output .=   "<th class=\"ui-state-default\">Severity</th>";
   $output .=   "<th class=\"ui-state-default\">Priority</th>";
   $output .=   "<th class=\"ui-state-default\">Discovered</th>";
-  $output .=   "<th class=\"ui-state-default\">Last Update</th>";
+  $output .=   "<th class=\"ui-state-default\"><nobr>Last Update</nobr></th>";
   $output .=   "<th class=\"ui-state-default\">Subject</th>";
-  $output .=   "<th class=\"ui-state-default\">Opened By</th>";
+  $output .=   "<th class=\"ui-state-default\"><nobr>Opened By</nobr></th>";
   $output .= "</tr>";
 
   $severity[0] = 'Note';
@@ -100,15 +100,7 @@
       $linkstart = "<a href=\"" . $Bugroot . "/ticket.php?id=" . $a_bugs['bug_id']     . "#problem\">";
       $linklist  = "<a href=\"" . $Bugroot . "/bugs.php?id="   . $a_bugs['bug_module'] . "#open\">";
       $linkend   = "</a>";
-      if ($a_bugs['bug_openby'] == $_SESSION['uid'] || check_userlevel($db, $AL_Admin)) {
-        $delstart = "<a href=\"#\" onclick=\"javascript:delete_bug('" . $Bugroot . "/bugs.open.del.php?id=" . $a_bugs['bug_id'] . "');\">";
-        $delend   = "</a>";
-        $deltext  = 'x';
-      } else {
-        $delstart = "";
-        $delend   = "";
-        $deltext  = '--';
-      }
+      $delstart = "<input type=\"button\" value=\"Remove\" onclick=\"delete_bug('bugs.open.del.php?id=" . $a_bugs['but_id'] . "');\">";
 
       $sevclass = "ui-widget-content";
       if ($a_bugs['bug_severity'] == 2) {
@@ -126,8 +118,12 @@
       }
 
       $output .= "<tr>";
-      $output .= "  <td class=\"ui-widget-content delete\">" . $delstart  . $deltext                            . $delend  . "</td>";
-      $output .=   "<td class=\"ui-widget-content\">"        . $linklist  . $a_bugs['mod_name']                 . $linkend . "</td>";
+      if ($a_bugs['bug_openby'] == $_SESSION['uid'] || check_userlevel($db, $AL_Admin)) {
+        $output .= "  <td class=\"ui-widget-content delete\">" . $delstart . "</td>";
+      } else {
+        $output .= "  <td class=\"ui-widget-content delete\">--</td>";
+      }
+      $output .=   "<td class=\"ui-widget-content\"><nobr>"  . $linklist  . $a_bugs['mod_name']          . $linkend . "</nobr></td>";
       $output .=   "<td class=\"" . $sevclass . "\">"                     . $severity[$a_bugs['bug_severity']]             . "</td>";
       $output .=   "<td class=\"" . $prclass  . "\">"                     . $priority[$a_bugs['bug_priority']]             . "</td>";
       $output .=   "<td class=\"ui-widget-content\">"                     . $a_bugs['bug_discovered']                      . "</td>";
