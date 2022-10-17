@@ -1220,7 +1220,15 @@ Updated the certs table
 
 alter table certs add column cert_top int(10) not null default 0;
 
+Remote table updated 
+
+All tables updated
 
 
+### Timestamp 2022-07-19
+
+Updated the certs table
+
+alter table certs add column cert_filename char(80) not null default '' after cert_url;
 
 
