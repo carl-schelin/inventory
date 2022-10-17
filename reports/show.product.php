@@ -46,7 +46,7 @@
 <script language="javascript">
 
 $(document).ready( function() {
-  $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
+  $( "#tabs" ).tabs( );
 });
 
 </script>

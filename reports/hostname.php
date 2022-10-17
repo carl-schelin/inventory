@@ -63,7 +63,7 @@ function check_decode() {
 }
 
 $(document).ready( function() {
-  $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
+  $( "#tabs" ).tabs( );
 });
 
 </script>
