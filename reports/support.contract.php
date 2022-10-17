@@ -88,8 +88,8 @@
 <script language="javascript">
 
 $(document).ready( function() {
-  $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
-  $( "#search-tabs" ).tabs( ).addClass( "tab-shadow" );
+  $( "#tabs" ).tabs( );
+  $( "#search-tabs" ).tabs( );
 
 });
 

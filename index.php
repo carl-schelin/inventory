@@ -303,8 +303,8 @@ function submit_handler() {
 }
 
 $(document).ready( function() {
-  $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
-  $( "#search-tabs" ).tabs( ).addClass( "tab-shadow" );
+  $( "#tabs" ).tabs( );
+  $( "#search-tabs" ).tabs( );
 
   $( '#search-input' ).on("keypress", function(e) {
     if (e.keyCode == 13) {

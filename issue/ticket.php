@@ -430,7 +430,7 @@ function setCaretPosition(elemId, caretPos) {
 ?>
 
 $(document).ready( function() {
-  $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
+  $( "#tabs" ).tabs( );
 });
 
 </script>

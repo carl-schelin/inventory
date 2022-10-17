@@ -162,7 +162,7 @@ function clear_Filter( p_inventory ) {
 
 
 $(document).ready( function() {
-  $( "#tabs" ).tabs().addClass( "tab-shadow" );
+  $( "#tabs" ).tabs();
 });
 
 </script>

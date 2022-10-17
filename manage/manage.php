@@ -200,7 +200,7 @@ function clear_fields() {
 }
 
 $(document).ready( function() {
-  $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
+  $( "#tabs" ).tabs( );
 
   $( "#dialogError" ).dialog({
     autoOpen: false,

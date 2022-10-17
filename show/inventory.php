@@ -95,9 +95,9 @@ function clear_fields() {
 }
 
 $(document).ready( function() {
-  $( "#tabs" ).tabs( ).addClass( "tab-shadow" );
-  $( "#vuln-tabs" ).tabs( ).addClass( "tab-shadow" );
-  $( "#issue-tabs" ).tabs( ).addClass( "tab-shadow" );
+  $( "#tabs" ).tabs( );
+  $( "#vuln-tabs" ).tabs( );
+  $( "#issue-tabs" ).tabs( );
 
   $.datepicker.setDefaults({
     dateFormat: 'yy-mm-dd'
