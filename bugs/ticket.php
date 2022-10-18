@@ -39,6 +39,13 @@
   $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_users = mysqli_fetch_array($q_users);
 
+# if help has not been seen yet,
+  if (show_Help($db, $Sitepath . "/" . $package)) {
+    $display = "display: block";
+  } else {
+    $display = "display: none";
+  }
+
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -412,7 +419,7 @@ $(document).ready( function() {
 <div id="tabs">
 
 <ul>
-  <li><a href="#bug"><?php print $a_bugs['mod_name']; ?> Bug</a></li>
+  <li><a href="#bug"><strong><?php print $a_bugs['mod_name']; ?></strong> Bug</a></li>
   <li><a href="#comments">Problem Form</a></li>
 </ul>
 
@@ -429,27 +436,25 @@ $(document).ready( function() {
 </tr>
 </table>
 
-<div id="bug-help" style="display: none">
+<div id="bug-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Buttons</strong>
-  <ul>
-    <li><strong>Close Bug</strong> - Sets the Closed field to today's date which closed the bug.</li>
-    <li><strong>Save Bug Changes</strong> - If you update the Bug Form, click here to save changes.</li>
-    <li><strong>Reopen Bug</strong> - Reopen a closed bug. Resets the Closed field to '1971-01-01'.</li>
-  </ul></li>
-</ul>
+<p><strong>Bug Reporting</strong></p>
 
-<ul>
-  <li><strong>Bug Form</strong>
-  <ul>
-    <li><strong>Discovered</strong> - The date the problem was discovered.</li>
-    <li><strong>Closed</strong> - Enter the date to close the Bug. 'Current Date' is replaced by today's date.</li>
-    <li><strong>Problem Description</strong> - Enter a short description of the problem here.</li>
-  </ul></li>
-</ul>
+<p>This form comes in two states. Either an open or new ticket or a closed ticket. The two states have different options.</p>
+
+<p><strong>Open/New Ticket</strong></p>
+
+<p>In this state, the Requestor information is already filled in. You need to identify the Module that's affected and then the severity 
+and priority of the bug. Then a brief description of the problem. Under the Problem Form, you can provide additional details about the 
+issue.</p>
+
+<p><strong>Closed Ticket</strong></p>
+
+<p>In this state, you are able to view the ticket details and all the comments that have been made about the problem. Unless you reopen 
+the ticket, no new comments can be added.</p>
+
 
 </div>
 
@@ -558,7 +563,7 @@ $(document).ready( function() {
   <td class="ui-widget-content"><strong>Closed</strong>:              <input type="text" name="bug_closed"     size="15" value="Current Date"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content" colspan="6"><strong>Problem Description</strong>: <input type="text" name="bug_subject"    size="100" value="<?php print $a_bugs['bug_subject']; ?>"></td>
+  <td class="ui-widget-content" colspan="6"><strong>Brief Description</strong>: <input type="text" name="bug_subject"    size="100" value="<?php print $a_bugs['bug_subject']; ?>"></td>
 <?php
   } else {
 ?>
@@ -569,7 +574,7 @@ $(document).ready( function() {
   <td class="ui-widget-content"><strong>Closed</strong>:              <?php print $a_bugs['bug_closed']; ?>     <input type="hidden" name="bug_closed"     value="<?php print $a_bugs['bug_closed']; ?>"</td>
 </tr>
 <tr>
-  <td class="ui-widget-content" colspan="6"><strong>Problem Description</strong>: <?php print $a_bugs['bug_subject']; ?>    <input type="hidden" name="bug_subject"    value="<?php print $a_bugs['bug_subject']; ?>"</td>
+  <td class="ui-widget-content" colspan="6"><strong>Brief Description</strong>: <?php print $a_bugs['bug_subject']; ?>    <input type="hidden" name="bug_subject"    value="<?php print $a_bugs['bug_subject']; ?>"</td>
 <?php
   }
 ?>
@@ -595,21 +600,22 @@ $(document).ready( function() {
 </tr>
 </table>
 
-<div id="problem-help" style="display: none">
+<div id="problem-help" style="<?php print $display;?>">
 
 <div class="main-help ui-widget-content">
 
+<p><strong>Comments</strong></p>
 
+<p>This tab lets you add comments about the reported bug either more details or comments on how the problem was solved.</p>
 
+<p>When the reported bug has been solved and the ticket closed, you are able to view all the comments however you cannot 
+manage the comments without reopening the ticket.</p>
 
 </div>
 
 </div>
-
 
 <?php
-# basically the ability to add a comment only exists if the bug is open
-# so check to see if it's set to the default date, and assume it's open if so.
   if ($a_bugs['bug_closed'] == '1971-01-01') {
 ?>
 <table class="ui-styled-table">
@@ -617,12 +623,38 @@ $(document).ready( function() {
   <td colspan="7" class="ui-widget-content button"><input type="button" id="clickCreate" value="Add Comment"></td>
 </tr>
 </table>
+<?php
+  }
+?>
 
 <p></p>
 
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Problem Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('problem-listing-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="problem-listing-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+<p><strong>Problem Listing</strong></p>
+
+<p>This page lists all comments related to this bug.</p>
+
+<p>To add a new Comment, click the Add Comment button. This will bring up a dialog box which you can then use to add a comment.</p>
+
+<p>To edit an existing Comment, click on the entry in the listing. A dialog box will be displayed where you can edit the current 
+entry, or if there is a small difference, you can make changes and add a new comment.</p>
+
+
+</div>
+
+</div>
+
 <span id="detail_mysql"></span>
-
-
 
 
 
@@ -771,11 +803,6 @@ $(document).ready( function() {
 </form>
 
 </div>
-
-
-<?php
-  }
-?>
 
 
 

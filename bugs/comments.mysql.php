@@ -68,38 +68,6 @@
       $a_bugs = mysqli_fetch_array($q_bugs);
 
 
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">";
-      $output .= "<tr>";
-      $output .= "  <th class=\"ui-state-default\">Problem Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('problem-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"problem-listing-help\" style=\"display: none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Problem Listing</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li><strong>Delete (x)</strong> - Click here to Delete this detail record.</li>\n";
-      $output .= "    <li><strong>Editing</strong> - Click on a detail record to load the data which lets you make changes.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Notes</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li>Click the <strong>Problem Management</strong> title bar to toggle the <strong>Problem Form</strong>.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-
       $output .= "<table class=\"ui-styled-table\">";
       $output .= "<tr>";
       $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Comment</th>";
