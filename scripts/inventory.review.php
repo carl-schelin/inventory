@@ -156,7 +156,7 @@
       if ($email == '') {
         $q_string  = "select usr_email ";
         $q_string .= "from users ";
-        $q_string .= "left join grouplist on grouplist.gpl_user = users.usr_id ";
+        $q_string .= "left join inv_grouplist on inv_grouplist.gpl_user = users.usr_id ";
         $q_string .= "where gpl_group = " . $manager . " ";
         $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         while ($a_users = mysqli_fetch_array($q_users)) {

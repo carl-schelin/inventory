@@ -87,12 +87,12 @@
 
     $comma = '';
     $q_string  = "select grp_name ";
-    $q_string .= "from grouplist ";
-    $q_string .= "left join inv_groups on inv_groups.grp_id = grouplist.gpl_group ";
+    $q_string .= "from inv_grouplist ";
+    $q_string .= "left join inv_groups on inv_groups.grp_id = inv_grouplist.gpl_group ";
     $q_string .= "where gpl_user = " . $a_users['usr_id'] . " ";
-    $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    while ($a_grouplist = mysqli_fetch_array($q_grouplist)) {
-      print $comma . $a_grouplist['grp_name'];
+    $q_inv_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    while ($a_inv_grouplist = mysqli_fetch_array($q_inv_grouplist)) {
+      print $comma . $a_inv_grouplist['grp_name'];
       $comma = ", ";
     }
     print "</td>\n";

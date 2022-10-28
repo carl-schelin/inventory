@@ -103,17 +103,17 @@
 # then see if the user is in the grouplist (should be but let's be sure and get the id to be updated)
             if ($a_users['usr_group'] != $formVars['usr_group']) {
               $q_string  = "select gpl_id ";
-              $q_string .= "from grouplist ";
+              $q_string .= "from inv_grouplist ";
               $q_string .= "where gpl_user = " . $formVars['id'] . " and gpl_group = " . $formVars['usr_group'] . " ";
-              $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-              if (mysqli_num_rows($q_grouplist) == 1) {
+              $q_inv_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              if (mysqli_num_rows($q_inv_grouplist) == 1) {
 # and if > 0, they're there; change to read only...
-                $a_grouplist = mysqli_fetch_array($q_grouplist);
+                $a_inv_grouplist = mysqli_fetch_array($q_inv_grouplist);
 
-                $q_string  = "update grouplist ";
+                $q_string  = "update inv_grouplist ";
                 $q_string .= "set ";
                 $q_string .= "gpl_edit = 0 ";
-                $q_string .= "where gpl_id = " . $a_grouplist['gpl_id'] . " ";
+                $q_string .= "where gpl_id = " . $a_inv_grouplist['gpl_id'] . " ";
 
                 mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               }
@@ -123,7 +123,7 @@
           if ($formVars['usr_disabled'] == 1 ) {
 # clear from grouplist
             $q_string  = "delete ";
-            $q_string .= "from grouplist ";
+            $q_string .= "from inv_grouplist ";
             $q_string .= "where gpl_user = " . $formVars['id'] . " ";
             mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
@@ -141,14 +141,14 @@
 
           } else {
             $q_string  = "select gpl_id ";
-            $q_string .= "from grouplist ";
+            $q_string .= "from inv_grouplist ";
             $q_string .= "where gpl_user = " . $formVars['id'] . " and gpl_group = " . $formVars['usr_group'] . " ";
-            $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-            if (mysqli_num_rows($q_grouplist) == 0) {
+            $q_inv_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            if (mysqli_num_rows($q_inv_grouplist) == 0) {
 # if not in the grouplist, add them
 # removing them will be done elsewhere.
               $q_string  = "insert ";
-              $q_string .= "into grouplist ";
+              $q_string .= "into inv_grouplist ";
               $q_string .= "set ";
               $q_string .= "gpl_id = null,";
               $q_string .= "gpl_group = " . $formVars['usr_group'] . ",";
@@ -159,12 +159,12 @@
 
             } else {
 # if they're already in the system, change user status to manage assets;
-              $a_grouplist = mysqli_fetch_array($q_grouplist);
+              $a_inv_grouplist = mysqli_fetch_array($q_inv_grouplist);
 
-              $q_string  = "update grouplist ";
+              $q_string  = "update inv_grouplist ";
               $q_string .= "set ";
               $q_string .= "gpl_edit = 1 ";
-              $q_string .= "where gpl_id = " . $a_grouplist['gpl_id'] . " ";
+              $q_string .= "where gpl_id = " . $a_inv_grouplist['gpl_id'] . " ";
 
               mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             }
