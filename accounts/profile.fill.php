@@ -31,7 +31,7 @@
 
       $theme    = return_Index($db, $a_users['usr_theme'],    "select theme_id from themes order by theme_title");
       $manager  = return_Index($db, $a_users['usr_manager'],  "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
-      $title    = return_Index($db, $a_users['usr_title'],    "select tit_id from titles order by tit_name");
+      $title    = return_Index($db, $a_users['usr_title'],    "select tit_id from inv_titles order by tit_name");
 
       print "document.user.usr_first.value = '"      . mysqli_real_escape_string($db, $a_users['usr_first'])    . "';\n";
       print "document.user.usr_last.value = '"       . mysqli_real_escape_string($db, $a_users['usr_last'])     . "';\n";

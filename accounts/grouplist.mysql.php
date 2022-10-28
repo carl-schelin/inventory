@@ -88,7 +88,7 @@
       $q_string .= "from grouplist ";
       $q_string .= "left join inv_groups on inv_groups.grp_id = grouplist.gpl_group ";
       $q_string .= "left join users on users.usr_id = grouplist.gpl_user ";
-      $q_string .= "left join titles on titles.tit_id = users.usr_title ";
+      $q_string .= "left join inv_titles on inv_titles.tit_id = users.usr_title ";
       $q_string .= "where grp_disabled = 0 ";
       $q_string .= "order by grp_name,usr_last ";
       $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
