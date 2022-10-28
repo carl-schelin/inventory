@@ -178,16 +178,16 @@
           print "selbox.options.length = 0;\n";
 
           $q_string  = "select grp_id,grp_name ";
-          $q_string .= "from a_groups ";
+          $q_string .= "from inv_groups ";
           $q_string .= "where grp_disabled = 0 ";
           $q_string .= "order by grp_name ";
-          $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-          while ($a_groups = mysqli_fetch_array($q_groups) ) {
-            print "if (celltext == \"" . $a_groups['grp_name'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_groups['grp_name']) . "\"," . $a_groups['grp_id'] . ",1,1);\n";
+          while ($a_inv_groups = mysqli_fetch_array($q_inv_groups) ) {
+            print "if (celltext == \"" . $a_inv_groups['grp_name'] . "\") {\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_groups['grp_name']) . "\"," . $a_inv_groups['grp_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_groups['grp_name']) . "\"," . $a_groups['grp_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_groups['grp_name']) . "\"," . $a_inv_groups['grp_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -208,17 +208,17 @@
           }
 
           $q_string  = "select grp_id,grp_name ";
-          $q_string .= "from a_groups ";
+          $q_string .= "from inv_groups ";
           $q_string .= "where grp_id = " . $formVars['select'] . " ";
-          $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_groups) > 0) {
-            $a_groups = mysqli_fetch_array($q_groups);
+          $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_groups) > 0) {
+            $a_inv_groups = mysqli_fetch_array($q_inv_groups);
           } else {
-            $a_groups['grp_id']   = 0;
-            $a_groups['grp_name'] = "Unassigned";
+            $a_inv_groups['grp_id']   = 0;
+            $a_inv_groups['grp_name'] = "Unassigned";
           }
 
-          $display = $a_groups['grp_name'];
+          $display = $a_inv_groups['grp_name'];
 
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
 
@@ -413,16 +413,16 @@
           print "selbox.options.length = 0;\n";
 
           $q_string  = "select os_id,os_software ";
-          $q_string .= "from operatingsystem ";
+          $q_string .= "from inv_operatingsystem ";
           $q_string .= "where os_delete = 0 ";
           $q_string .= "order by os_software ";
-          $q_operatingsystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_inv_operatingsystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-          while ($a_operatingsystem = mysqli_fetch_array($q_operatingsystem) ) {
-            print "if (celltext == \"" . $a_operatingsystem['os_software'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_operatingsystem['os_software']) . "\"," . $a_operatingsystem['os_id'] . ",1,1);\n";
+          while ($a_inv_operatingsystem = mysqli_fetch_array($q_inv_operatingsystem) ) {
+            print "if (celltext == \"" . $a_inv_operatingsystem['os_software'] . "\") {\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_operatingsystem['os_software']) . "\"," . $a_inv_operatingsystem['os_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_operatingsystem['os_software']) . "\"," . $a_operatingsystem['os_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_operatingsystem['os_software']) . "\"," . $a_inv_operatingsystem['os_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -439,17 +439,17 @@
           print "cell.setAttribute(\"onclick\", \"operating_System('" . $formVars['id'] . "');" . "\");\n";
 
           $q_string  = "select os_id,os_software ";
-          $q_string .= "from operatingsystem ";
+          $q_string .= "from inv_operatingsystem ";
           $q_string .= "where os_id = " . $formVars['select'] . " ";
-          $q_operatingsystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_operatingsystem) > 0) {
-            $a_operatingsystem = mysqli_fetch_array($q_operatingsystem);
+          $q_inv_operatingsystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_operatingsystem) > 0) {
+            $a_inv_operatingsystem = mysqli_fetch_array($q_inv_operatingsystem);
           } else {
-            $a_operatingsystem['os_id']   = 0;
-            $a_operatingsystem['os_software'] = "Unassigned";
+            $a_inv_operatingsystem['os_id']   = 0;
+            $a_inv_operatingsystem['os_software'] = "Unassigned";
           }
 
-          $display = $a_operatingsystem['os_software'];
+          $display = $a_inv_operatingsystem['os_software'];
 
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
         }
