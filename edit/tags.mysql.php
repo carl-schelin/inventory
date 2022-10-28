@@ -300,14 +300,14 @@
       if ($formVars['update'] == -3) {
 
         $q_string  = "select type_id,type_name ";
-        $q_string .= "from tag_types ";
+        $q_string .= "from inv_tag_types ";
         $q_string .= "where type_id > 4 ";   # 1 is Servers which is above. This is showing all the other tags that might be attached.
         $q_string .= "order by type_name ";
-        $q_tag_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        if (mysqli_num_rows($q_tag_types) > 0) {
-          while ($a_tag_types = mysqli_fetch_array($q_tag_types)) {
+        $q_inv_tag_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        if (mysqli_num_rows($q_inv_tag_types) > 0) {
+          while ($a_inv_tag_types = mysqli_fetch_array($q_inv_tag_types)) {
 
-            $output = "<t4>" . $a_tag_types['type_name'] . " Tags</t4>\n";
+            $output = "<t4>" . $a_inv_tag_types['type_name'] . " Tags</t4>\n";
 
             $output .= "<p>\n";
 
@@ -317,7 +317,7 @@
               $q_string  = "select tag_id as tagid,tag_name ";
             }
             $q_string .= "from tags ";
-            $q_string .= "where tag_type = " . $a_tag_types['type_id'] . " ";
+            $q_string .= "where tag_type = " . $a_inv_tag_types['type_id'] . " ";
             $q_string .= "group by tag_name ";
             $q_string .= "order by tag_name ";
             $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -348,7 +348,7 @@
 
             $output .= "</p>\n";
 
-            print "document.getElementById('" . $a_tag_types['type_name'] . "_tags').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
+            print "document.getElementById('" . $a_inv_tag_types['type_name'] . "_tags').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
           }
         }
       }

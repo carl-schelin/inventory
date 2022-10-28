@@ -1680,15 +1680,15 @@ a tag that already exists, it does check for that and will simply toggle it vs a
 <?php
 
   $q_string  = "select type_name ";
-  $q_string .= "from tag_types ";
+  $q_string .= "from inv_tag_types ";
   $q_string .= "where type_id > 1 ";
   $q_string .= "order by type_name ";
-  $q_tag_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_tag_types) > 0) {
-    while ($a_tag_types = mysqli_fetch_array($q_tag_types)) {
+  $q_inv_tag_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_tag_types) > 0) {
+    while ($a_inv_tag_types = mysqli_fetch_array($q_inv_tag_types)) {
 
       print "<div class=\"main ui-widget-content\">\n\n";
-      print "<span id=\"" . $a_tag_types['type_name'] . "_tags\">" . wait_process("Please wait") . "</span>\n\n";
+      print "<span id=\"" . $a_inv_tag_types['type_name'] . "_tags\">" . wait_process("Please wait") . "</span>\n\n";
       print "</div>\n\n";
 
     }
