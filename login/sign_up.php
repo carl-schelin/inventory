@@ -117,10 +117,10 @@ if (isset($_POST['new_user'])) {
 
 // Notify the admin that a new member has arrived.
     $q_string  = "select grp_name ";
-    $q_string .= "from a_groups ";
+    $q_string .= "from inv_groups ";
     $q_string .= "where grp_id = " . $group;
-    $q_groups = mysqli_query($db, $q_string) or die(mysqli_error($db));
-    $a_groups = mysqli_fetch_array($q_groups);
+    $q_inv_groups = mysqli_query($db, $q_string) or die(mysqli_error($db));
+    $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
     $q_string  = "select usr_email ";
     $q_string .= "from users ";
@@ -129,7 +129,7 @@ if (isset($_POST['new_user'])) {
     while ($a_users = mysqli_fetch_array($q_users)) {
       $usermail = $a_users['usr_email'];
       $subject = "New member in Inventory Management";
-      $body = "$fname $lname has created an account and requested access to the " . $a_groups['grp_name'] . " group and is currently waiting for confirmation.";
+      $body = "$fname $lname has created an account and requested access to the " . $a_inv_groups['grp_name'] . " group and is currently waiting for confirmation.";
       mail($usermail, $subject, $body);
     }
   }
@@ -196,12 +196,12 @@ function populate_email() {
 <select style="width: 49%;" name="group">
 <?php 
   $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from a_groups ";
+  $q_string .= "from inv_groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name";
-  $q_groups = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_groups = mysqli_fetch_array($q_groups)) {
-    print "  <option value=\"" . $a_groups['grp_id'] . "\">" . $a_groups['grp_name'] . "</option>\n";
+  $q_inv_groups = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_groups = mysqli_fetch_array($q_inv_groups)) {
+    print "  <option value=\"" . $a_inv_groups['grp_id'] . "\">" . $a_inv_groups['grp_name'] . "</option>\n";
   }
 ?>
 </select><br /> 

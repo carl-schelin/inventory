@@ -32,7 +32,7 @@
   $q_string .= "left join products  on products.prod_id  = inventory.inv_product ";
   $q_string .= "left join projects  on projects.prj_id   = inventory.inv_project ";
   $q_string .= "left join locations on locations.loc_id  = inventory.inv_location ";
-  $q_string .= "left join a_groups  on a_groups.grp_id   = inventory.inv_manager ";
+  $q_string .= "left join inv_groups  on inv_groups.grp_id   = inventory.inv_manager ";
   $q_string .= "where inv_name = \"" . $server . "\" and inv_status = 0 and inv_ssh = 1 ";
   $q_string .= "order by inv_name";
   $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
@@ -120,12 +120,12 @@
 
   $appadmin = 'Unassigned';
   $q_string  = "select grp_name ";
-  $q_string .= "from a_groups ";
+  $q_string .= "from inv_groups ";
   $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'];
-  $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_groups) > 0) {
-    $a_groups = mysqli_fetch_array($q_groups);
-    $appadmin = $a_groups['grp_name'];
+  $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inv_groups) > 0) {
+    $a_inv_groups = mysqli_fetch_array($q_inv_groups);
+    $appadmin = $a_inv_groups['grp_name'];
   }
 
   $interfaces = '';

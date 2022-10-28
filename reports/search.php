@@ -162,7 +162,7 @@
       $q_string .= "left join int_types   on int_types.itp_id   = interface.int_type ";
       $q_string .= "left join products  on products.prod_id = inventory.inv_product ";
       $q_string .= "left join projects  on projects.prj_id  = inventory.inv_project ";
-      $q_string .= "left join a_groups    on a_groups.grp_id    = inventory.inv_manager ";
+      $q_string .= "left join inv_groups    on inv_groups.grp_id    = inventory.inv_manager ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";
       } else {
@@ -174,10 +174,10 @@
         while ($a_interface = mysqli_fetch_array($q_interface)) {
 
           $q_string  = "select grp_name ";
-          $q_string .= "from a_groups ";
+          $q_string .= "from inv_groups ";
           $q_string .= "where grp_id = " . $a_interface['inv_appadmin'] . " ";
-          $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          $a_groups = mysqli_fetch_array($q_groups);
+          $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
           $editstart     = "<a href=\"" . $Editroot   . "/inventory.php?server=" . $a_interface['int_companyid'] . "\" target=\"_blank\">" . $editpencil . "</a> ";
           $linkstart     = "<a href=\"" . $Showroot   . "/inventory.php?server=" . $a_interface['int_companyid'] . "\" target=\"_blank\">";
@@ -196,7 +196,7 @@
             $output .= "\"" . $a_interface['prj_name']     . "\",";
             $output .= "\"" . $a_interface['prod_name']    . "\",";
             $output .= "\"" . $a_interface['grp_name']     . "\",";
-            $output .= "\"" . $a_groups['grp_name']        . "\"<br>";
+            $output .= "\"" . $a_inv_groups['grp_name']        . "\"<br>";
           } else {
             $output .= "<tr>\n";
             $output .= "  <td class=\"" . $class . "\">" . $editstart . $linkstart     . $a_interface['int_server']   . $linkend . "</td>\n";
@@ -204,7 +204,7 @@
             $output .= "  <td class=\"" . $class . "\">"              . $linkprjstart  . $a_interface['prj_name']     . $linkend . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"              . $linkprodstart . $a_interface['prod_name']    . $linkend . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"              . $linkstart     . $a_interface['grp_name']     . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"              . $linkstart     . $a_groups['grp_name']        . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $linkstart     . $a_inv_groups['grp_name']        . $linkend . "</td>\n";
             $output .= "</tr>\n";
           }
         }
@@ -304,7 +304,7 @@
       $q_string .= "left join cities    on cities.ct_id     = locations.loc_city ";
       $q_string .= "left join states    on states.st_id     = locations.loc_state ";
       $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
-      $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
+      $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";
       } else {
@@ -316,10 +316,10 @@
         while ($a_interface = mysqli_fetch_array($q_interface)) {
 
           $q_string  = "select grp_name ";
-          $q_string .= "from a_groups ";
+          $q_string .= "from inv_groups ";
           $q_string .= "where grp_id = " . $a_interface['inv_appadmin'] . " ";
-          $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          $a_groups = mysqli_fetch_array($q_groups);
+          $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
           $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_interface['int_companyid'] . "\" target=\"_blank\">";
           $linknwstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_interface['int_companyid'] . "#network\" target=\"_blank\">";
@@ -336,7 +336,7 @@
             $output .= "\"" . $a_interface['itp_name']   . "\",";
             $output .= "\"" . $a_interface['int_server'] . "\",";
             $output .= "\"" . $a_interface['grp_name']   . "\",";
-            $output .= "\"" . $a_groups['grp_name']      . "\"<br>";
+            $output .= "\"" . $a_inv_groups['grp_name']      . "\"<br>";
           } else {
             $output .= "<tr>\n";
             $output .= "  <td class=\"" . $class . "\">" . $linknwstart . $a_interface['int_addr']   . $linkend . "</td>\n";
@@ -344,7 +344,7 @@
             $output .= "  <td class=\"" . $class . "\">" . $linknwstart . $a_interface['itp_name']   . $linkend . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">" . $linkstart   . $a_interface['int_server'] . $linkend . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">" . $linkstart   . $a_interface['grp_name']   . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $linkstart   . $a_groups['grp_name']      . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $linkstart   . $a_inv_groups['grp_name']      . $linkend . "</td>\n";
             $output .= "</tr>\n";
           }
         }
@@ -447,7 +447,7 @@
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
       $q_string .= "left join cities    on cities.ct_id     = locations.loc_city ";
       $q_string .= "left join states    on states.st_id     = locations.loc_state ";
-      $q_string .= "left join a_groups on a_groups.grp_id = svr_software.svr_groupid ";
+      $q_string .= "left join inv_groups on inv_groups.grp_id = svr_software.svr_groupid ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";
       } else {
@@ -586,7 +586,7 @@
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
       $q_string .= "left join cities    on cities.ct_id     = locations.loc_city ";
       $q_string .= "left join states    on states.st_id     = locations.loc_state ";
-      $q_string .= "left join a_groups  on a_groups.grp_id  = hardware.hw_group ";
+      $q_string .= "left join inv_groups  on inv_groups.grp_id  = hardware.hw_group ";
       $q_string .= "left join models    on models.mod_id    = hardware.hw_vendorid ";
       $q_string .= "left join vendors   on vendors.ven_id   = models.mod_vendor ";
       $q_string .= "left join parts     on parts.part_id    = models.mod_type ";
@@ -726,7 +726,7 @@
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
       $q_string .= "left join cities    on cities.ct_id     = locations.loc_city ";
       $q_string .= "left join states    on states.st_id     = locations.loc_state ";
-      $q_string .= "left join a_groups    on a_groups.grp_id    = inventory.inv_manager ";
+      $q_string .= "left join inv_groups    on inv_groups.grp_id    = inventory.inv_manager ";
       $q_string .= "where " . $search_on . " ";
       $q_string .= $orderby;
       $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -855,7 +855,7 @@
       $q_string  = "select inv_id,loc_name,ct_city,st_acronym,cn_acronym,inv_name,grp_name,typ_name,inv_status ";
       $q_string .= "from inventory ";
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
-      $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
+      $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
       $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
       $q_string .= "left join states on states.st_id = locations.loc_state ";
       $q_string .= "left join country on country.cn_id = locations.loc_country ";
@@ -983,7 +983,7 @@
 
       $q_string  = "select pwd_id,pwd_user,pwd_update,inv_id,inv_name,IFNULL(inv_appadmin, 0) as inv_appadmin,grp_name ";
       $q_string .= "from inventory ";
-      $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
+      $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
       $q_string .= "left join syspwd on syspwd.pwd_companyid = inventory.inv_id ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";
@@ -996,10 +996,10 @@
         while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
           $q_string  = "select grp_name ";
-          $q_string .= "from a_groups ";
+          $q_string .= "from inv_groups ";
           $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
-          $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          $a_groups = mysqli_fetch_array($q_groups);
+          $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
           $groups = '';
           $q_string  = "select grp_name ";
@@ -1031,7 +1031,7 @@
             $output .= "\"" . $groups                    . "\",";
             $output .= "\"" . $a_inventory['inv_name']   . "\",";
             $output .= "\"" . $a_inventory['grp_name']   . "\",";
-            $output .= "\"" . $a_groups['grp_name']      . "\"<br>";
+            $output .= "\"" . $a_inv_groups['grp_name']      . "\"<br>";
           } else {
             $output .= "<tr>\n";
             $output .= "  <td class=\"" . $class . "\">"                 . $a_inventory['pwd_user']              . "</td>\n";
@@ -1039,7 +1039,7 @@
             $output .= "  <td class=\"" . $class . "\">"                 . $groups                               . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">" . $linkstart    . $a_inventory['inv_name']   . $linkend . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"                 . $a_inventory['grp_name']              . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"                 . $a_groups['grp_name']                 . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"                 . $a_inv_groups['grp_name']                 . "</td>\n";
             $output .= "</tr>\n";
           }
         }
@@ -1061,7 +1061,7 @@
 
         $q_string  = "select pwd_id,pwd_user,pwd_update,inv_id,inv_name,IFNULL(inv_appadmin, 0) as inv_appadmin,grp_name ";
         $q_string .= "from inventory ";
-        $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
+        $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
         $q_string .= "left join syspwd on syspwd.pwd_companyid = inventory.inv_id ";
         if ($formVars['retired'] == 'true') {
           $q_string .= "where " . $search_on . " ";
@@ -1074,10 +1074,10 @@
           while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
             $q_string  = "select grp_name ";
-            $q_string .= "from a_groups ";
+            $q_string .= "from inv_groups ";
             $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
-            $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-            $a_groups = mysqli_fetch_array($q_groups);
+            $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
             $groups = '';
             if ($a_inventory['pwd_id'] == '') {
@@ -1112,7 +1112,7 @@
               $output .= "\"" . $groups                    . "\",";
               $output .= "\"" . $a_inventory['inv_name']   . "\",";
               $output .= "\"" . $a_inventory['grp_name']   . "\",";
-              $output .= "\"" . $a_groups['grp_name']      . "\"<br>";
+              $output .= "\"" . $a_inv_groups['grp_name']      . "\"<br>";
             } else {
               $output .= "<tr>\n";
               $output .= "  <td class=\"" . $class . "\">"                 . $a_inventory['pwd_user']              . "</td>\n";
@@ -1120,7 +1120,7 @@
               $output .= "  <td class=\"" . $class . "\">"                 . $groups                               . "</td>\n";
               $output .= "  <td class=\"" . $class . "\">" . $linkstart    . $a_inventory['inv_name']   . $linkend . "</td>\n";
               $output .= "  <td class=\"" . $class . "\">"                 . $a_inventory['grp_name']              . "</td>\n";
-              $output .= "  <td class=\"" . $class . "\">"                 . $a_groups['grp_name']                 . "</td>\n";
+              $output .= "  <td class=\"" . $class . "\">"                 . $a_inv_groups['grp_name']                 . "</td>\n";
               $output .= "</tr>\n";
             }
           }
@@ -1219,7 +1219,7 @@
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
       $q_string .= "left join cities    on cities.ct_id     = locations.loc_city ";
       $q_string .= "left join states    on states.st_id     = locations.loc_state ";
-      $q_string .= "left join a_groups    on a_groups.grp_id    = inventory.inv_manager ";
+      $q_string .= "left join inv_groups    on inv_groups.grp_id    = inventory.inv_manager ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";
       } else {
@@ -1240,10 +1240,10 @@
           }
 
           $q_string  = "select grp_name ";
-          $q_string .= "from a_groups ";
+          $q_string .= "from inv_groups ";
           $q_string .= "where grp_id = " . $a_packages['inv_appadmin'] . " ";
-          $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          $a_groups = mysqli_fetch_array($q_groups);
+          $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
           if ($formVars['csv']) {
             $output .= "\"" . $a_packages['inv_name']    . "\",";
@@ -1251,7 +1251,7 @@
             $output .= "\"" . $a_packages['pkg_name']    . "\",";
             $output .= "\"" . $a_packages['pkg_os']      . "\",";
             $output .= "\"" . $a_packages['grp_name']    . "\",";
-            $output .= "\"" . $a_groups['grp_name']      . "\"<br>";
+            $output .= "\"" . $a_inv_groups['grp_name']      . "\"<br>";
           } else {
             $output .= "<tr>\n";
             $output .= "  <td class=\"" . $class . "\">" . $linkpkgstart . $a_packages['inv_name']    . $linkend . "</td>\n";
@@ -1259,7 +1259,7 @@
             $output .= "  <td class=\"" . $class . "\">" . $link_name    . $a_packages['pkg_name']    . $linkend . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"                 . $a_packages['pkg_os']                 . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"                 . $a_packages['grp_name']               . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"                 . $a_groups['grp_name']                 . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"                 . $a_inv_groups['grp_name']                 . "</td>\n";
             $output .= "</tr>\n";
           }
         }

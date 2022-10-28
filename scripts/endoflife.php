@@ -29,7 +29,7 @@
   $q_string .= "hw_serial,hw_purchased,grp_name,inv_appadmin,sup_company,sup_contract,hw_eolticket ";
   $q_string .= "from inventory ";
   $q_string .= "left join hardware on inventory.inv_id = hardware.hw_companyid ";
-  $q_string .= "left join a_groups on a_groups.grp_id  = hardware.hw_group ";
+  $q_string .= "left join inv_groups on inv_groups.grp_id  = hardware.hw_group ";
   $q_string .= "left join models   on models.mod_id    = hardware.hw_vendorid ";
   $q_string .= "left join vendors  on vendors.ven_id   = models.mod_vendor ";
   $q_string .= "left join support  on support.sup_id   = hardware.hw_supportid ";
@@ -66,10 +66,10 @@
     $a_software = mysqli_fetch_array($q_software);
 
     $q_string  = "select grp_name ";
-    $q_string .= "from a_groups ";
+    $q_string .= "from inv_groups ";
     $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
-    $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_groups = mysqli_fetch_array($q_groups);
+    $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
     if ($a_inventory['ven_name'] == 'Dell') {
       # For Dell, the end of support is 5 years after the purchase date
@@ -106,7 +106,7 @@
 
     print "\"" . $a_inventory['inv_name'] . "\",";
     print "\"" . $a_inventory['grp_name'] . "\",";
-    print "\"" . $a_groups['grp_name'] . "\",";
+    print "\"" . $a_inv_groups['grp_name'] . "\",";
     print "\"" . $a_inventory['inv_function'] . "\",";
     print "\"" . $a_software['sw_software'] . "\",";
     print "\"" . $moddate . "\",";

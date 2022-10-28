@@ -143,7 +143,7 @@
   $q_string .= "hw_asset,hw_service,loc_name,loc_addr1,ct_city,st_state,loc_zipcode,inv_status,inv_rack,inv_row,inv_unit ";
   $q_string .= "from inventory ";
   $q_string .= "left join products  on products.prod_id        = inventory.inv_product ";
-  $q_string .= "left join a_groups  on a_groups.grp_id         = inventory.inv_manager ";
+  $q_string .= "left join inv_groups  on inv_groups.grp_id         = inventory.inv_manager ";
   $q_string .= "left join hardware  on hardware.hw_companyid   = inventory.inv_id ";
   $q_string .= "left join models    on models.mod_id           = hardware.hw_vendorid ";
   $q_string .= "left join vendors   on vendors.ven_id          = models.mod_vendor ";
@@ -182,10 +182,10 @@
     }
 
     $q_string  = "select grp_name ";
-    $q_string .= "from a_groups ";
+    $q_string .= "from inv_groups ";
     $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
-    $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_groups = mysqli_fetch_array($q_groups);
+    $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
     print "--------------------\n";
     print "Inventory Management\n";
@@ -202,7 +202,7 @@
       print "\"" . $a_inventory['inv_function']        . "\",";
       print "\"" . $a_inventory['prod_name']           . "\",";
       print "\"" . $a_inventory['grp_name']            . "\",";
-      print "\"" . $a_groups['grp_name']               . "\",";
+      print "\"" . $a_inv_groups['grp_name']               . "\",";
       print "\"" . $a_inventory['ven_name']            . "\",";
       print "\"" . $a_inventory['mod_name']            . "\",";
       print "\"" . $a_inventory['hw_serial']           . "\",";
@@ -229,7 +229,7 @@
       print "Function: " . $a_inventory['inv_function'] . "\n";
       print "Product: " . $a_inventory['prod_name'] . "\n";
       print "Platform Managed By: " . $a_inventory['grp_name'] . "\n";
-      print "Applications Managed By: " . $a_groups['grp_name'] . "\n";
+      print "Applications Managed By: " . $a_inv_groups['grp_name'] . "\n";
       print "----------------------------\n";
       print "Primary Hardware Information\n";
       print "----------------------------\n";
@@ -380,19 +380,19 @@
         $a_products = mysqli_fetch_array($q_products);
 
         $q_string  = "select grp_name ";
-        $q_string .= "from a_groups ";
+        $q_string .= "from inv_groups ";
         $q_string .= "where grp_id = " . $a_software['svr_groupid'];
-        $q_groups = mysqli_query($db, $q_string) or die($q_string . ":(5): " . mysqli_error($db) . "\n\n");
-        $a_groups = mysqli_fetch_array($q_groups);
+        $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ":(5): " . mysqli_error($db) . "\n\n");
+        $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
         if ($csv == 'yes') {
           print "\"" . $a_products['prod_name']   . "\",";
           print "\"" . $a_software['ven_name']   . "\",";
           print "\"" . $a_software['sw_software'] . "\",";
           print "\"" . $a_software['typ_name']     . "\",";
-          print "\"" . $a_groups['grp_name']      . "\"\n";
+          print "\"" . $a_inv_groups['grp_name']      . "\"\n";
         } else {
-          printf("%20s %20s %100s %15s %30s\n", $a_products['prod_name'], $a_software['ven_name'], $a_software['sw_software'], $a_software['typ_name'], $a_groups['grp_name']);
+          printf("%20s %20s %100s %15s %30s\n", $a_products['prod_name'], $a_software['ven_name'], $a_software['sw_software'], $a_software['typ_name'], $a_inv_groups['grp_name']);
         }
         
       }

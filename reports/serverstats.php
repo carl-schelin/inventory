@@ -21,13 +21,13 @@
   }
 
   if ($formVars['group'] == -1) {
-    $a_groups['grp_name'] = "All";
+    $a_inv_groups['grp_name'] = "All";
   } else {
     $q_string  = "select grp_name ";
-    $q_string .= "from a_groups ";
+    $q_string .= "from inv_groups ";
     $q_string .= "where grp_id = " . $formVars['group'];
-    $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    $a_groups = mysqli_fetch_array($q_groups);
+    $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_inv_groups = mysqli_fetch_array($q_inv_groups);
   }
 
 # if help has not been seen yet,
@@ -42,7 +42,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title><?php print $a_groups['grp_name']; ?> Server Growth Data</title>
+<title><?php print $a_inv_groups['grp_name']; ?> Server Growth Data</title>
 
 <style type="text/css" title="currentStyle" media="screen">
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -71,7 +71,7 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default"><?php print $a_groups['grp_name']; ?> Servers</th>
+  <th class="ui-state-default"><?php print $a_inv_groups['grp_name']; ?> Servers</th>
   <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('help');">Help</a></th>
 </tr>
 </table>

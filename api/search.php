@@ -166,7 +166,7 @@
   $q_string .= "from inventory ";
   $q_string .= "left join timezones on timezones.zone_id = inventory.inv_zone ";
   $q_string .= "left join maint_window on maint_window.win_id = inventory.inv_maint ";
-  $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
+  $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where inv_status = 0 and inv_id = " . $formVars['inv_id'] . " ";
@@ -184,16 +184,16 @@
     }
 
     $q_string  = "select grp_name ";
-    $q_string .= "from a_groups ";
+    $q_string .= "from inv_groups ";
     $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
-    $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_groups = mysqli_fetch_array($q_groups);
+    $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
     $servers[$a_inventory['inv_name']] = new Server();
     $servers[$a_inventory['inv_name']]->inventory_name               = $a_inventory['inv_name'];
     $servers[$a_inventory['inv_name']]->inventory_fqdn               = $fqdn;
     $servers[$a_inventory['inv_name']]->inventory_sysadmins          = $a_inventory['grp_name'];
-    $servers[$a_inventory['inv_name']]->inventory_appadmins          = $a_groups['grp_name'];
+    $servers[$a_inventory['inv_name']]->inventory_appadmins          = $a_inv_groups['grp_name'];
     $servers[$a_inventory['inv_name']]->inventory_uuid               = $a_inventory['inv_uuid'];
     $servers[$a_inventory['inv_name']]->inventory_satellite_uuid     = $a_inventory['inv_satuuid'];
     $servers[$a_inventory['inv_name']]->inventory_function           = $a_inventory['inv_function'];

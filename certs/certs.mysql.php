@@ -106,7 +106,7 @@
       $q_string  = "select cert_desc,cert_id,cert_url,cert_expire,cert_authority,";
       $q_string .= "cert_filename,cert_subject,cert_group,grp_name,cert_isca,cert_top ";
       $q_string .= "from certs ";
-      $q_string .= "left join a_groups on a_groups.grp_id = certs.cert_group ";
+      $q_string .= "left join inv_groups on inv_groups.grp_id = certs.cert_group ";
       $q_string .= "where cert_ca = 0 " . $andtop . " ";
       $q_string .= "order by cert_desc,cert_expire";
       $q_certs = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
@@ -178,7 +178,7 @@
           $q_string  = "select cert_desc,cert_id,cert_url,cert_expire,cert_authority,";
           $q_string .= "cert_filename,cert_subject,cert_group,grp_name,cert_isca,cert_top ";
           $q_string .= "from certs ";
-          $q_string .= "left join a_groups on a_groups.grp_id = certs.cert_group ";
+          $q_string .= "left join inv_groups on inv_groups.grp_id = certs.cert_group ";
           $q_string .= "where cert_ca = " . $a_certs['cert_id'] . " " . $andtop . " ";
           $q_string .= "order by cert_desc,cert_expire";
           $q_child = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
@@ -249,7 +249,7 @@
               $q_string  = "select cert_desc,cert_id,cert_url,cert_expire,cert_authority,";
               $q_string .= "cert_filename,cert_subject,cert_group,grp_name,cert_isca,cert_top ";
               $q_string .= "from certs ";
-              $q_string .= "left join a_groups on a_groups.grp_id = certs.cert_group ";
+              $q_string .= "left join inv_groups on inv_groups.grp_id = certs.cert_group ";
               $q_string .= "where cert_ca = " . $a_child['cert_id'] . " " . $andtop . " ";
               $q_string .= "order by cert_desc,cert_expire";
               $q_grandchild = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
@@ -320,7 +320,7 @@
                   $q_string  = "select cert_desc,cert_id,cert_url,cert_expire,cert_authority,";
                   $q_string .= "cert_filename,cert_subject,cert_group,grp_name,cert_isca,cert_top ";
                   $q_string .= "from certs ";
-                  $q_string .= "left join a_groups on a_groups.grp_id = certs.cert_group ";
+                  $q_string .= "left join inv_groups on inv_groups.grp_id = certs.cert_group ";
                   $q_string .= "where cert_ca = " . $a_grandchild['cert_id'] . " " . $andtop . " ";
                   $q_string .= "order by cert_desc,cert_expire";
                   $q_greatgrandchild = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));

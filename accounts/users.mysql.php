@@ -133,8 +133,8 @@
             $q_string .= "where usr_manager = " . $formVars['id'] . " ";
             mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
-# and clear from a_groups as well.
-            $q_string  = "update a_groups ";
+# and clear from inv_groups as well.
+            $q_string  = "update inv_groups ";
             $q_string .= "set grp_manager = 0 ";
             $q_string .= "where grp_manager = " . $formVars['id'] . " ";
             mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -202,7 +202,7 @@
       $q_string  = "select usr_id,lvl_name,usr_disabled,usr_name,usr_first,usr_last,usr_email,usr_reset,grp_name,usr_timestamp,theme_title ";
       $q_string .= "from users ";
       $q_string .= "left join levels on levels.lvl_id = users.usr_level ";
-      $q_string .= "left join a_groups on a_groups.grp_id = users.usr_group ";
+      $q_string .= "left join inv_groups on inv_groups.grp_id = users.usr_group ";
       $q_string .= "left join themes on themes.theme_id = users.usr_theme ";
       $q_string .= "where usr_disabled = 0 and usr_group = 0 and usr_level > 1 ";
       $q_string .= "order by usr_last,usr_first";
@@ -289,16 +289,16 @@ function display_user( $p_title, $p_toggle, $p_query ) {
 
   $groups = 0;
   $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from a_groups ";
+  $q_string .= "from inv_groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name ";
-  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));;
-  if (mysqli_num_rows($q_groups) > 0) {
-    while ($a_groups = mysqli_fetch_array($q_groups)) {
+  $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));;
+  if (mysqli_num_rows($q_inv_groups) > 0) {
+    while ($a_inv_groups = mysqli_fetch_array($q_inv_groups)) {
 
       $group  = "<table class=\"ui-styled-table\">\n";
       $group .= "<tr>\n";
-      $group .=   "<th class=\"ui-state-default\" colspan=\"13\">" . $a_groups['grp_name'] . "</th>\n";
+      $group .=   "<th class=\"ui-state-default\" colspan=\"13\">" . $a_inv_groups['grp_name'] . "</th>\n";
       $group .= "</tr>\n";
       $group .= "<tr>\n";
       $group .=   "<th class=\"ui-state-default\" width=\"160\">Delete User</th>\n";
@@ -317,7 +317,7 @@ function display_user( $p_title, $p_toggle, $p_query ) {
       $q_string .= "from users ";
       $q_string .= "left join levels on levels.lvl_id = users.usr_level ";
       $q_string .= "left join themes on themes.theme_id = users.usr_theme ";
-      $q_string .= "where usr_group = " . $a_groups['grp_id'] . " " . $p_query;
+      $q_string .= "where usr_group = " . $a_inv_groups['grp_id'] . " " . $p_query;
       $q_string .= "order by usr_last,usr_first";
       $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_users) > 0) {

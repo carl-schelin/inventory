@@ -175,16 +175,16 @@
   $body = $output;
 
   $q_string  = "select grp_email ";
-  $q_string .= "from a_groups ";
+  $q_string .= "from inv_groups ";
   $q_string .= "where grp_id = " . $manager . " ";
-  $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_groups = mysqli_fetch_array($q_groups);
+  $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
   if ($debug == 'yes') {
     mail($Sitedev, "Unsupported Hardware Report", $body, $headers);
   } else {
-    if ($a_groups['grp_email'] != '') {
-      mail($a_groups['grp_email'], "Unsupported Hardware Report", $body, $headers);
+    if ($a_inv_groups['grp_email'] != '') {
+      mail($a_inv_groups['grp_email'], "Unsupported Hardware Report", $body, $headers);
     } else {
       mail($Sitedev, "Invalid Group Email: " . $manager, $body, $headers);
     }

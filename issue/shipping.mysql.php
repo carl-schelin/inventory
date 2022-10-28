@@ -61,10 +61,10 @@
 
 // get the e-mail address of shipping and receiving.
           $q_string  = "select grp_email ";
-          $q_string .= "from a_groups ";
+          $q_string .= "from inv_groups ";
           $q_string .= "where grp_id = " . $GRP_Shipping . " ";
-          $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          $a_groups = mysqli_fetch_array($q_groups);
+          $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
 // get the e-mail address of the user
           $q_string  = "select usr_first,usr_last,usr_email ";
@@ -133,7 +133,7 @@
           $body .= "<br>This mail box is not monitored, replies will be ignored.</p>\n\n";
 
           if ($Siteenv == 'PROD') {
-            $mailto = $a_groups['grp_email'];
+            $mailto = $a_inv_groups['grp_email'];
           } else {
             if (strlen($_SESSION['email']) > 0 && $_SESSION['email'] != $Sitedev) {
               $mailto = $Sitedev . "," . $_SESSION['email'];

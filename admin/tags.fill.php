@@ -37,7 +37,7 @@
       }
       $q_string .= "order by inv_name ";
       $tag_companyid   = return_Index($db, $a_tags['tag_companyid'], $q_string);
-      $tag_group       = return_Index($db, $a_tags['tag_group'],     "select grp_id from a_groups where grp_disabled = 0 order by grp_name");
+      $tag_group       = return_Index($db, $a_tags['tag_group'],     "select grp_id from inv_groups where grp_disabled = 0 order by grp_name");
 
       print "document.formUpdate.tag_owner['"     . $tag_owner     . "'].selected = true;\n";
       print "document.formUpdate.tag_companyid['" . $tag_companyid . "'].selected = true;\n";

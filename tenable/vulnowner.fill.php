@@ -39,7 +39,7 @@
 # get vulowner and ticket from interface id and security id in vulowner table
       $q_string  = "select grp_name,vul_group,vul_ticket,vul_exception,vul_description ";
       $q_string .= "from inv_vulnowner ";
-      $q_string .= "left join a_groups on a_groups.grp_id = inv_vulnowner.vul_group ";
+      $q_string .= "left join inv_groups on inv_groups.grp_id = inv_vulnowner.vul_group ";
       $q_string .= "where vul_security = " . $a_inv_vulnowner['sec_id'] . " and vul_interface = " . $a_inv_vulnowner['int_id'] . " ";
       $q_inv_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_inv_vulnowner) > 0) {
@@ -48,7 +48,7 @@
         print "document.owner.vul_ticket.value = '"      . mysqli_real_escape_string($db, $a_inv_vulnowner['vul_ticket'])      . "';\n";
         print "document.owner.vul_description.value = '" . mysqli_real_escape_string($db, $a_inv_vulnowner['vul_description']) . "';\n";
 
-        $group = return_Index($db, $a_inv_vulnowner['vul_group'], "select grp_id from a_groups where grp_disabled = 0 order by grp_name");
+        $group = return_Index($db, $a_inv_vulnowner['vul_group'], "select grp_id from inv_groups where grp_disabled = 0 order by grp_name");
 
         print "document.owner.vul_group['" . $group . "'].selected = true;\n";
 

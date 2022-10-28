@@ -225,7 +225,7 @@
         $secid = 0;
         $q_string  = "select vul_id,inv_name,int_server,int_addr,vul_interface,vul_security,sec_name,sev_name,grp_name,vul_ticket,vul_exception,vul_description ";
         $q_string .= "from inv_vulnowner ";
-        $q_string .= "left join a_groups on a_groups.grp_id = inv_vulnowner.vul_group ";
+        $q_string .= "left join inv_groups on inv_groups.grp_id = inv_vulnowner.vul_group ";
         $q_string .= "left join interface on interface.int_id = inv_vulnowner.vul_interface ";
         $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
         $q_string .= "left join security on security.sec_id = inv_vulnowner.vul_security ";

@@ -29,7 +29,7 @@
       $a_certs = mysqli_fetch_array($q_certs);
       mysqli_free_result($q_certs);
 
-      $group = return_Index($db, $a_certs['cert_group'], "select grp_id from a_groups where grp_disabled = 0 order by grp_name");
+      $group = return_Index($db, $a_certs['cert_group'], "select grp_id from inv_groups where grp_disabled = 0 order by grp_name");
       $cert  = return_Index($db, $a_certs['cert_ca'],    "select cert_id from certs where cert_isca = 1 order by cert_desc") + 1;
 
       if ($a_certs['cert_ca'] == 0) {

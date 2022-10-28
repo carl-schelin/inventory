@@ -225,7 +225,7 @@
             . "left join locations on locations.loc_id      = inventory.inv_location "
             . "left join cities    on cities.ct_id          = locations.loc_city "
             . "left join states    on states.st_id          = locations.loc_state "
-            . "left join a_groups    on a_groups.grp_id         = inventory.inv_manager "
+            . "left join inv_groups    on inv_groups.grp_id         = inventory.inv_manager "
             . $where . " " 
             . $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

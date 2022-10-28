@@ -42,14 +42,14 @@
 
 # first check the affected group
     $q_string  = "select grp_name,grp_email ";
-    $q_string .= "from a_groups ";
+    $q_string .= "from inv_groups ";
     $q_string .= "where grp_id = " . $a_certs['cert_group'];
-    $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_groups = mysqli_fetch_array($q_groups);
+    $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inv_groups = mysqli_fetch_array($q_inv_groups);
     if ($debug) {
-      print "  email: " . $a_groups['grp_email'] . "\n";
+      print "  email: " . $a_inv_groups['grp_email'] . "\n";
     }
-    if (preg_match("/@internal.pri$/i", $a_groups['grp_email'])) {
+    if (preg_match("/@internal.pri$/i", $a_inv_groups['grp_email'])) {
       if ($a_certs['cert_group'] == 25) {
         $webappsemail = 1;
       } else {
@@ -64,20 +64,20 @@
 # if it's a good e-mail address and it's right on the expiration date, send an e-mail to the group
     if ($certtime == $warningdate && (($webappsemail + $groupemail) > 0)) {
       if ($debug) {
-        print "  " . $a_groups['grp_email'] . " Certificate is expiring" . " The certificate for \"" . $a_certs['cert_url'] . "\" is expiring on " . $a_certs['cert_expire'] . ".\n";
+        print "  " . $a_inv_groups['grp_email'] . " Certificate is expiring" . " The certificate for \"" . $a_certs['cert_url'] . "\" is expiring on " . $a_certs['cert_expire'] . ".\n";
       } else {
-        mail($a_groups['grp_email'], "Certificate is expiring", "The certificate for \"" . $a_certs['cert_url'] . "\" is expiring on " . $a_certs['cert_expire'] . ".");
+        mail($a_inv_groups['grp_email'], "Certificate is expiring", "The certificate for \"" . $a_certs['cert_url'] . "\" is expiring on " . $a_certs['cert_expire'] . ".");
       }
     }
 
 # then check the WebApps group assuming the previous group check wasn't the webapps folks
     if ($webappsemail == 0) {
       $q_string  = "select grp_name,grp_email ";
-      $q_string .= "from a_groups ";
+      $q_string .= "from inv_groups ";
       $q_string .= "where grp_id = " . $GRP_WebApps;
-      $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      $a_groups = mysqli_fetch_array($q_groups);
-      if (preg_match("/@internal.pri$/i", $a_groups['grp_email'])) {
+      $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_inv_groups = mysqli_fetch_array($q_inv_groups);
+      if (preg_match("/@internal.pri$/i", $a_inv_groups['grp_email'])) {
         $webappsemail = 1;
       }
     }
@@ -89,9 +89,9 @@
 # now send it to the webapps email assuming it's a good address
     if ($certtime == $warningdate && $webappsemail == 1) {
       if ($debug) {
-        print "  " . $a_groups['grp_email'] . " Certificate is expiring" . " The certificate for \"" . $a_certs['cert_url'] . "\" is expiring on " . $a_certs['cert_expire'] . ".\n";
+        print "  " . $a_inv_groups['grp_email'] . " Certificate is expiring" . " The certificate for \"" . $a_certs['cert_url'] . "\" is expiring on " . $a_certs['cert_expire'] . ".\n";
       } else {
-        mail($a_groups['grp_email'], "Certificate is expiring", "The certificate for \"" . $a_certs['cert_url'] . "\" is expiring on " . $a_certs['cert_expire'] . ".");
+        mail($a_inv_groups['grp_email'], "Certificate is expiring", "The certificate for \"" . $a_certs['cert_url'] . "\" is expiring on " . $a_certs['cert_expire'] . ".");
       }
     }
 

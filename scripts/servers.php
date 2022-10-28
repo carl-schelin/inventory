@@ -27,25 +27,25 @@
 
 # add a header with settings and email target
   $q_string  = "select grp_email,grp_status,grp_server,grp_import ";
-  $q_string .= "from a_groups ";
+  $q_string .= "from inv_groups ";
   $q_string .= "where grp_id = " . $mygroup . " ";
-  $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_groups = mysqli_fetch_array($q_groups);
+  $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
   $chkstatus = 'No';
-  if ($a_groups['grp_status']) {
+  if ($a_inv_groups['grp_status']) {
     $chkstatus = 'Yes';
   }
   $chkserver = 'No';
-  if ($a_groups['grp_server']) {
+  if ($a_inv_groups['grp_server']) {
     $chkserver = 'Yes';
   }
   $import = 'No';
-  if ($a_groups['grp_import']) {
+  if ($a_inv_groups['grp_import']) {
     $import = 'Yes';
   }
 
-  print "#email: " . $a_groups['grp_email'] . " chkstatus: " . $chkstatus . " chkserver: " . $chkserver . " import: " . $import . "\n";
+  print "#email: " . $a_inv_groups['grp_email'] . " chkstatus: " . $chkstatus . " chkserver: " . $chkserver . " import: " . $import . "\n";
 
   $q_string  = "select inv_id,inv_name,inv_fqdn,inv_ssh,zone_name,prod_name,prj_name ";
   $q_string .= "from inventory ";

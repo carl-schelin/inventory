@@ -114,7 +114,7 @@ $(document).ready( function() {
   $q_string  = "select hw_id,inv_id,inv_name,hw_asset,hw_serial,mod_name,grp_name,inv_ansible,inv_ssh,hw_verified,hw_update ";
   $q_string .= "from hardware ";
   $q_string .= "left join inventory on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join a_groups on hardware.hw_group = a_groups.grp_id ";
+  $q_string .= "left join inv_groups on hardware.hw_group = inv_groups.grp_id ";
   $q_string .= "left join models on hardware.hw_vendorid = models.mod_id ";
   $q_string .= "where hw_product = " . $formVars['id'] . " and inv_status = 0 and hw_primary = 1 ";
   $q_string .= "order by inv_name";
@@ -202,7 +202,7 @@ $(document).ready( function() {
   $q_string .= "from software ";
   $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
   $q_string .= "left join inventory    on inventory.inv_id            = svr_software.svr_companyid ";
-  $q_string .= "left join a_groups     on svr_software.svr_groupid    = a_groups.grp_id ";
+  $q_string .= "left join inv_groups     on svr_software.svr_groupid    = inv_groups.grp_id ";
   $q_string .= "left join vendors      on vendors.ven_id              = software.sw_vendor ";
   $q_string .= "left join sw_types     on sw_types.typ_id             = software.sw_type ";
   $q_string .= "where sw_product = " . $formVars['id'] . " and inv_status = 0 ";

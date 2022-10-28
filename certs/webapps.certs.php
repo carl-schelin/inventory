@@ -100,7 +100,7 @@ if the expiration date is within 60 days and <span class="ui-state-error">highli
 
   $q_string  = "select cert_id,cert_desc,cert_url,cert_expire,cert_authority,grp_name ";
   $q_string .= "from certs ";
-  $q_string .= "left join a_groups on a_groups.grp_id = certs.cert_group ";
+  $q_string .= "left join inv_groups on inv_groups.grp_id = certs.cert_group ";
   $q_string .= "order by cert_url,cert_expire";
   $q_certs = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   if (mysqli_num_rows($q_certs) > 0) {
@@ -129,7 +129,7 @@ if the expiration date is within 60 days and <span class="ui-state-error">highli
       $q_string .= "left join software  on software.sw_id     = svr_software.svr_softwareid ";
       $q_string .= "left join inventory on inventory.inv_id   = svr_software.svr_companyid ";
       $q_string .= "left join products  on products.prod_id   = software.sw_product ";
-      $q_string .= "left join a_groups  on a_groups.grp_id    = svr_software.svr_groupid ";
+      $q_string .= "left join inv_groups  on inv_groups.grp_id    = svr_software.svr_groupid ";
       $q_string .= "where svr_certid = " . $a_certs['cert_id'];
       $q_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_svr_software) > 0) {

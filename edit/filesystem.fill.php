@@ -28,7 +28,7 @@
       $a_filesystem = mysqli_fetch_array($q_filesystem);
       mysqli_free_result($q_filesystem);
 
-      $group = return_Index($db, $a_filesystem['fs_group'], "select grp_id from a_groups where grp_disabled = 0 order by grp_name");
+      $group = return_Index($db, $a_filesystem['fs_group'], "select grp_id from inv_groups where grp_disabled = 0 order by grp_name");
 
       print "document.formFilesystemUpdate.fs_device.value = '"    . mysqli_real_escape_string($db, $a_filesystem['fs_device'])    . "';\n";
       print "document.formFilesystemUpdate.fs_mount.value = '"     . mysqli_real_escape_string($db, $a_filesystem['fs_mount'])     . "';\n";

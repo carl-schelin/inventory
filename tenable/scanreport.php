@@ -314,32 +314,32 @@
   print "</tr>\n";
 
   $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from a_groups ";
+  $q_string .= "from inv_groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name ";
-  $q_a_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_groups = mysqli_fetch_array($q_a_groups)) {
+  $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_groups = mysqli_fetch_array($q_inv_groups)) {
     $groupset = 0;
 
     $output  = "<tr>\n";
-    $output .= "<td class=\"ui-widget-content\">" . $a_groups['grp_name'] . "</td>\n";
+    $output .= "<td class=\"ui-widget-content\">" . $a_inv_groups['grp_name'] . "</td>\n";
 
-    if (isset($group[$a_groups['grp_id']])) {
-      $output .= "<td class=\"ui-widget-content\">" . $group[$a_groups['grp_id']] . "</td>\n";
+    if (isset($group[$a_inv_groups['grp_id']])) {
+      $output .= "<td class=\"ui-widget-content\">" . $group[$a_inv_groups['grp_id']] . "</td>\n";
       $groupset++;
     } else {
       $output .= "<td class=\"ui-widget-content\">0</td>\n";
     }
 
-    if (isset($group_exc[$a_groups['grp_id']])) {
-      $output .= "<td class=\"ui-widget-content\">" . $group_exc[$a_groups['grp_id']] . "</td>\n";
+    if (isset($group_exc[$a_inv_groups['grp_id']])) {
+      $output .= "<td class=\"ui-widget-content\">" . $group_exc[$a_inv_groups['grp_id']] . "</td>\n";
       $groupset++;
     } else {
       $output .= "<td class=\"ui-widget-content\">0</td>\n";
     }
 
-    if (isset($group_res[$a_groups['grp_id']])) {
-      $output .= "<td class=\"ui-widget-content\">" . $group_res[$a_groups['grp_id']] . "</td>\n";
+    if (isset($group_res[$a_inv_groups['grp_id']])) {
+      $output .= "<td class=\"ui-widget-content\">" . $group_res[$a_inv_groups['grp_id']] . "</td>\n";
       $groupset++;
     } else {
       $output .= "<td class=\"ui-widget-content\">0</td>\n";

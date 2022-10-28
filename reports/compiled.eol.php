@@ -170,7 +170,7 @@
   $q_string .= "left join software  on software.sw_id    = svr_software.svr_softwareid ";
   $q_string .= "left join sw_types  on sw_types.typ_id   = software.sw_type ";
   $q_string .= "left join hardware  on inventory.inv_id  = hardware.hw_companyid ";
-  $q_string .= "left join a_groups  on a_groups.grp_id   = hardware.hw_group ";
+  $q_string .= "left join inv_groups  on inv_groups.grp_id   = hardware.hw_group ";
   $q_string .= "left join models    on models.mod_id     = hardware.hw_vendorid ";
   $q_string .= "left join vendors   on vendors.ven_id    = models.mod_vendor ";
   $q_string .= "left join support   on support.sup_id    = hardware.hw_supportid ";
@@ -232,10 +232,10 @@
     $a_svr_software = mysqli_fetch_array($q_svr_software);
 
     $q_string  = "select grp_name ";
-    $q_string .= "from a_groups ";
+    $q_string .= "from inv_groups ";
     $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
-    $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    $a_groups = mysqli_fetch_array($q_groups);
+    $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
     if ($a_inventory['ven_name'] == 'Dell') {
       # For Dell, the end of support is 5 years after the purchase date
@@ -296,7 +296,7 @@
     if ($formVars['csv']) {
       print "\"" . $a_inventory['inv_name'] . "\",";
       print "\"" . $a_inventory['grp_name'] . "\",";
-      print "\"" . $a_groups['grp_name'] . "\",";
+      print "\"" . $a_inv_groups['grp_name'] . "\",";
       print "\"" . $a_inventory['inv_function'] . "\",";
       print "\"" . $a_svr_software['sw_software'] . "\",";
       print "\"" . $moddate . "\",";
@@ -307,7 +307,7 @@
       print "<tr>\n";
       print "  <td" . $nodate   . ">" . $linkstart . $a_inventory['inv_name']                         . $linkend . "</td>\n";
       print "  <td" . $nodate   . ">"              . $a_inventory['grp_name']                                    . "</td>\n";
-      print "  <td" . $nodate   . ">"              . $a_groups['grp_name']                                       . "</td>\n";
+      print "  <td" . $nodate   . ">"              . $a_inv_groups['grp_name']                                       . "</td>\n";
       print "  <td" . $nodate   . ">"              . $a_inventory['inv_function']                                . "</td>\n";
       print "  <td" . $swstatus . ">"              . $a_svr_software['sw_software']                                  . "</td>\n";
       print "  <td" . $swstatus . ">"              . $moddate                                                    . "</td>\n";

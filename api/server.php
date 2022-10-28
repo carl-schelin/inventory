@@ -148,7 +148,7 @@
   $q_string .= "from inventory ";
   $q_string .= "left join timezones on timezones.zone_id = inventory.inv_zone ";
   $q_string .= "left join maint_window on maint_window.win_id = inventory.inv_maint ";
-  $q_string .= "left join a_groups on a_groups.grp_id = inventory.inv_manager ";
+  $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where inv_status = 0 ";
@@ -169,15 +169,15 @@
     }
 
     $q_string  = "select grp_name ";
-    $q_string .= "from a_groups ";
+    $q_string .= "from inv_groups ";
     $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
-    $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_groups = mysqli_fetch_array($q_groups);
+    $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
     $servers[$a_inventory['inv_name']] = new Server();
     $servers[$a_inventory['inv_name']]->inventory_name               = $a_inventory['inv_name'];
     $servers[$a_inventory['inv_name']]->inventory_sysadmins          = $a_inventory['grp_name'];
-    $servers[$a_inventory['inv_name']]->inventory_appadmins          = $a_groups['grp_name'];
+    $servers[$a_inventory['inv_name']]->inventory_appadmins          = $a_inv_groups['grp_name'];
     $servers[$a_inventory['inv_name']]->inventory_uuid               = $a_inventory['inv_uuid'];
     $servers[$a_inventory['inv_name']]->inventory_satellite_uuid     = $a_inventory['inv_satuuid'];
     $servers[$a_inventory['inv_name']]->inventory_function           = $a_inventory['inv_function'];
@@ -467,10 +467,10 @@
     while ($a_hardware = mysqli_fetch_array($q_hardware)) {
 
       $q_string  = "select grp_name ";
-      $q_string .= "from a_groups ";
+      $q_string .= "from inv_groups ";
       $q_string .= "where grp_id = " . $a_hardware['hw_group'] . " ";
-      $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      $a_groups = mysqli_fetch_array($q_groups);
+      $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
       if ($a_hardware['mod_type'] != '') {
         $q_string  = "select part_name ";
@@ -497,7 +497,7 @@
         $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_speed          = $a_hardware['mod_speed'];
         $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_project        = $a_hardware['prj_name'];
         $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_product        = $a_hardware['prod_name'];
-        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_admins         = $a_groups['grp_name'];
+        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_admins         = $a_inv_groups['grp_name'];
         $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_purchased      = $a_hardware['hw_purchased'];
         $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_built          = $a_hardware['hw_built'];
         $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_active         = $a_hardware['hw_active'];
@@ -518,10 +518,10 @@
         while ($a_internal = mysqli_fetch_array($q_internal)) {
 
           $q_string  = "select grp_name ";
-          $q_string .= "from a_groups ";
+          $q_string .= "from inv_groups ";
           $q_string .= "where grp_id = " . $a_internal['hw_group'] . " ";
-          $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          $a_groups = mysqli_fetch_array($q_groups);
+          $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
           if ($a_internal['mod_type'] != '') {
             $q_string  = "select part_name ";
@@ -547,7 +547,7 @@
           $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->inventory_hardware[$cindex]->hardware_speed          = $a_internal['mod_speed'];
           $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->inventory_hardware[$cindex]->hardware_project        = $a_internal['prj_name'];
           $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->inventory_hardware[$cindex]->hardware_product        = $a_internal['prod_name'];
-          $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->inventory_hardware[$cindex]->hardware_admins         = $a_groups['grp_name'];
+          $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->inventory_hardware[$cindex]->hardware_admins         = $a_inv_groups['grp_name'];
           $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->inventory_hardware[$cindex]->hardware_purchased      = $a_internal['hw_purchased'];
           $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->inventory_hardware[$cindex]->hardware_built          = $a_internal['hw_built'];
           $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->inventory_hardware[$cindex]->hardware_active         = $a_internal['hw_active'];

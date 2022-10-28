@@ -116,37 +116,37 @@
 # get the appadmin group id
       $inv_appadmin = 0;
       $q_string  = "select grp_id ";
-      $q_string .= "from a_groups ";
+      $q_string .= "from inv_groups ";
       $q_string .= "where grp_name = \"" . $appadmin . "\" and grp_disabled = 0 ";
-      $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_groups) == 0) {
+      $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_groups) == 0) {
         $grp_test = explode(" ", $appadmin);
         if ($debug == 'yes') {
            print "Unable to locate this group: " . $appadmin . ", trying " . $grp_test[0] . "\n";
         }
 
         $q_string  = "select grp_id,grp_name ";
-        $q_string .= "from a_groups ";
+        $q_string .= "from inv_groups ";
         $q_string .= "where grp_name like \"%" . $grp_test[0] . "%\" and grp_disabled = 0 ";
-        $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        if (mysqli_num_rows($q_groups) == 0) {
+        $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_inv_groups) == 0) {
           $error .= "Unable to locate AppSupport group: " . $appadmin . " ";
         } else {
-          if (mysqli_num_rows($q_groups) == 1) {
-            $a_groups = mysqli_fetch_array($q_groups);
-            $inv_appadmin = $a_groups['grp_id'];
-            $appadmin = $a_groups['grp_name'];
+          if (mysqli_num_rows($q_inv_groups) == 1) {
+            $a_inv_groups = mysqli_fetch_array($q_inv_groups);
+            $inv_appadmin = $a_inv_groups['grp_id'];
+            $appadmin = $a_inv_groups['grp_name'];
           } else {
             $error .= "Unable to locate AppSupport group " . $appadmin . " but found these possibilities:";
-            while ($a_groups = mysqli_fetch_array($q_groups)) {
-              $error .= " " . $a_groups['grp_name'];
+            while ($a_inv_groups = mysqli_fetch_array($q_inv_groups)) {
+              $error .= " " . $a_inv_groups['grp_name'];
             }
             $error .= " ";
           }
         }
       } else {
-        $a_groups = mysqli_fetch_array($q_groups);
-        $inv_appadmin = $a_groups['grp_id'];
+        $a_inv_groups = mysqli_fetch_array($q_inv_groups);
+        $inv_appadmin = $a_inv_groups['grp_id'];
         if ($debug == 'yes') {
            print "Found this group: " . $appadmin . ", ID " . $inv_appadmin . "\n";
         }

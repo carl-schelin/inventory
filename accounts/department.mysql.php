@@ -84,11 +84,11 @@
 
           $total = 0;
           $q_string  = "select grp_id ";
-          $q_string .= "from a_groups ";
+          $q_string .= "from inv_groups ";
           $q_string .= "where grp_department = " . $a_department['dep_id'] . " ";
-          $q_a_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_a_groups) > 0) {
-            while ($a_a_groups = mysqli_fetch_array($q_a_groups)) {
+          $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_groups) > 0) {
+            while ($a_inv_groups = mysqli_fetch_array($q_inv_groups)) {
               $total++;
             }
           }

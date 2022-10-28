@@ -195,12 +195,12 @@ $(document).ready( function () {
 
   if ($formVars['group'] != -1) {
     $q_string  = "select grp_name ";
-    $q_string .= "from a_groups ";
+    $q_string .= "from inv_groups ";
     $q_string .= "where grp_id = " . $formVars['group'] . " ";
-    $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    $a_groups = mysqli_fetch_array($q_groups);
+    $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
-    print "  <th class=\"ui-state-default\">" . $a_groups['grp_name'] . "</th>";
+    print "  <th class=\"ui-state-default\">" . $a_inv_groups['grp_name'] . "</th>";
   } else {
     print "  <th class=\"ui-state-default\">Inventory Table</th>";
   }
@@ -399,7 +399,7 @@ $(document).ready( function () {
   $q_string .= "left join timezones on timezones.zone_id     = inventory.inv_zone ";
   $q_string .= "left join models    on models.mod_id         = hardware.hw_vendorid ";
   $q_string .= "left join vendors   on vendors.ven_id        = models.mod_vendor ";
-  $q_string .= "left join a_groups  on a_groups.grp_id       = inventory.inv_manager ";
+  $q_string .= "left join inv_groups  on inv_groups.grp_id       = inventory.inv_manager ";
   $q_string .= $product . $inwork . $location . $type . " ";
   $q_string .= $orderby . " ";
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -409,10 +409,10 @@ $(document).ready( function () {
 
       $total_servers++;
       $q_string = "select grp_name "
-                . "from a_groups "
+                . "from inv_groups "
                 . "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
-      $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_groups = mysqli_fetch_array($q_groups);
+      $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
       $interface = "";
       $console = "";
