@@ -107,10 +107,10 @@
           $linkend   = "</a>";
 
           $q_string  = "select ast_id ";
-          $q_string .= "from assets ";
+          $q_string .= "from inv_assets ";
           $q_string .= "where ast_modelid = " . $a_models['mod_id'] . " ";
-          $q_assets = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          $total = mysqli_num_rows($q_assets);
+          $q_inv_assets = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $total = mysqli_num_rows($q_inv_assets);
 
           $output .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
