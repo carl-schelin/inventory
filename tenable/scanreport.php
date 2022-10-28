@@ -93,7 +93,7 @@
   $q_string .= "left join severity on severity.sev_id = security.sec_severity ";
   $q_string .= "left join interface on interface.int_id = vulnerabilities.vuln_interface ";
   $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
-  $q_string .= "left join vulnowner on vulnowner.vul_interface = vulnerabilities.vuln_interface and vulnowner.vul_security = vulnerabilities.vuln_securityid ";
+  $q_string .= "left join inv_vulnowner on inv_vulnowner.vul_interface = vulnerabilities.vuln_interface and inv_vulnowner.vul_security = vulnerabilities.vuln_securityid ";
   $q_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_vulnerabilities = mysqli_fetch_array($q_vulnerabilities)) {
     if (!isset($group[$a_vulnerabilities['vul_group']])) {
@@ -179,8 +179,8 @@
 
 # identify resolved vulnerabilities.
 # when a vulnerability has been resolved, it drops off of the csv file. As long as 
-# a vulnerability has an owner though, it stays in the vulnowner table. to identify 
-# resolved scans, just identify the ones in the vulnowner table that have no 
+# a vulnerability has an owner though, it stays in the inv_vulnowner table. to identify 
+# resolved scans, just identify the ones in the inv_vulnowner table that have no 
 # associated entries in the vulnerability table.
 # to get this right, I'll need to import them from the first report. This makes 
 # sure all vulnerabilities have owners
@@ -194,33 +194,33 @@
   $low_resolved = 0;
   $info_resolved = 0;
   $q_string  = "select vul_id,vul_interface,vul_security,vul_group,inv_product ";
-  $q_string .= "from vulnowner ";
-  $q_string .= "left join interface on interface.int_id = vulnowner.vul_interface ";
+  $q_string .= "from inv_vulnowner ";
+  $q_string .= "left join interface on interface.int_id = inv_vulnowner.vul_interface ";
   $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
-  $q_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_vulnowner = mysqli_fetch_array($q_vulnowner)) {
+  $q_inv_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_vulnowner = mysqli_fetch_array($q_inv_vulnowner)) {
     $q_string  = "select vuln_id ";
     $q_string .= "from vulnerabilities ";
-    $q_string .= "where vuln_securityid = " . $a_vulnowner['vul_security'] . " and vuln_interface = " . $a_vulnowner['vul_interface'] . " ";
+    $q_string .= "where vuln_securityid = " . $a_inv_vulnowner['vul_security'] . " and vuln_interface = " . $a_inv_vulnowner['vul_interface'] . " ";
     $q_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     if (mysqli_num_rows($q_vulnerabilities) == 0) {
 
       $q_string  = "select sev_name ";
       $q_string .= "from security ";
       $q_string .= "left join severity on severity.sev_id = security.sec_severity ";
-      $q_string .= "where sec_id = " . $a_vulnowner['vul_security'] . " ";
+      $q_string .= "where sec_id = " . $a_inv_vulnowner['vul_security'] . " ";
       $q_security = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_security = mysqli_fetch_array($q_security);
 
-      if (isset($group_res[$a_vulnowner['vul_group']])) {
-        $group_res[$a_vulnowner['vul_group']]++;
+      if (isset($group_res[$a_inv_vulnowner['vul_group']])) {
+        $group_res[$a_inv_vulnowner['vul_group']]++;
       } else {
-        $group_res[$a_vulnowner['vul_group']] = 1;
+        $group_res[$a_inv_vulnowner['vul_group']] = 1;
       }
-      if (isset($product_res[$a_vulnowner['inv_product']])) {
-        $product_res[$a_vulnowner['inv_product']]++;
+      if (isset($product_res[$a_inv_vulnowner['inv_product']])) {
+        $product_res[$a_inv_vulnowner['inv_product']]++;
       } else {
-        $product_res[$a_vulnowner['inv_product']] = 1;
+        $product_res[$a_inv_vulnowner['inv_product']] = 1;
       }
 
       if ($a_security['sev_name'] == 'Critical') {
@@ -409,27 +409,27 @@
 # let's get a ticket count now. anything in vulowner which has number of entries, number of entries with tickets, and number of unique tickets.
 
   $q_string  = "select count(vul_id) ";
-  $q_string .= "from vulnowner ";
-  $q_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_vulnowner = mysqli_fetch_row($q_vulnowner);
+  $q_string .= "from inv_vulnowner ";
+  $q_inv_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_vulnowner = mysqli_fetch_row($q_inv_vulnowner);
 
-  $total_entries = $a_vulnowner[0];
+  $total_entries = $a_inv_vulnowner[0];
 
   $q_string  = "select count(vul_id) ";
-  $q_string .= "from vulnowner ";
+  $q_string .= "from inv_vulnowner ";
   $q_string .= "where vul_ticket != '' ";
-  $q_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_vulnowner = mysqli_fetch_row($q_vulnowner);
+  $q_inv_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_vulnowner = mysqli_fetch_row($q_inv_vulnowner);
 
-  $total_tickets = $a_vulnowner[0];
+  $total_tickets = $a_inv_vulnowner[0];
 
   $total_unique = 0;
   $q_string  = "select vul_id ";
-  $q_string .= "from vulnowner ";
+  $q_string .= "from inv_vulnowner ";
   $q_string .= "where vul_ticket != '' ";
   $q_string .= "group by vul_ticket ";
-  $q_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_vulnowner = mysqli_fetch_row($q_vulnowner)) {
+  $q_inv_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_vulnowner = mysqli_fetch_row($q_inv_vulnowner)) {
     $total_unique++;
   }
 

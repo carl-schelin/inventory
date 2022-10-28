@@ -62,17 +62,17 @@
             "vul_description = \"" . $formVars['vul_description']  . "\"";
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into vulnowner set vul_id = NULL, " . $q_string;
+            $q_string = "insert into inv_vulnowner set vul_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
             $q_vulstr  = "select vul_id ";
-            $q_vulstr .= "from vulnowner ";
+            $q_vulstr .= "from inv_vulnowner ";
             $q_vulstr .= "where vul_interface = " . $formVars['int_id'] . " and vul_security = " . $formVars['sec_id'] . " ";
-            $q_vulnowner = mysqli_query($db, $q_vulstr) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_vulstr . "&mysql=" . mysqli_error($db)));
-            $a_vulnowner = mysqli_fetch_array($q_vulnowner);
-            $formVars['id'] = $a_vulnowner['vul_id'];
+            $q_inv_vulnowner = mysqli_query($db, $q_vulstr) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_vulstr . "&mysql=" . mysqli_error($db)));
+            $a_inv_vulnowner = mysqli_fetch_array($q_inv_vulnowner);
+            $formVars['id'] = $a_inv_vulnowner['vul_id'];
 
-            $q_string = "update vulnowner set " . $q_string . " where vul_id = " . $formVars['id'];
+            $q_string = "update inv_vulnowner set " . $q_string . " where vul_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
@@ -224,23 +224,23 @@
         $intid = 0;
         $secid = 0;
         $q_string  = "select vul_id,inv_name,int_server,int_addr,vul_interface,vul_security,sec_name,sev_name,grp_name,vul_ticket,vul_exception,vul_description ";
-        $q_string .= "from vulnowner ";
-        $q_string .= "left join a_groups on a_groups.grp_id = vulnowner.vul_group ";
-        $q_string .= "left join interface on interface.int_id = vulnowner.vul_interface ";
+        $q_string .= "from inv_vulnowner ";
+        $q_string .= "left join a_groups on a_groups.grp_id = inv_vulnowner.vul_group ";
+        $q_string .= "left join interface on interface.int_id = inv_vulnowner.vul_interface ";
         $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
-        $q_string .= "left join security on security.sec_id = vulnowner.vul_security ";
+        $q_string .= "left join security on security.sec_id = inv_vulnowner.vul_security ";
         $q_string .= "left join severity on severity.sev_id = security.sec_severity ";
 #        $q_string .= $where;
 #        $q_string .= $orderby;
         $q_string .= "order by vul_interface,vul_security ";
-        $q_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        if (mysqli_num_rows($q_vulnowner) > 0) {
-          while ($a_vulnowner = mysqli_fetch_array($q_vulnowner)) {
+        $q_inv_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        if (mysqli_num_rows($q_inv_vulnowner) > 0) {
+          while ($a_inv_vulnowner = mysqli_fetch_array($q_inv_vulnowner)) {
 
-            $linkstart = "<a href=\"#\" onclick=\"show_file('vulnowner.fill.php?id="  . $a_vulnowner['vul_id'] . "');showDiv('vulnerability-hide');\">";
+            $linkstart = "<a href=\"#\" onclick=\"show_file('inv_vulnowner.fill.php?id="  . $a_inv_vulnowner['vul_id'] . "');showDiv('vulnerability-hide');\">";
             $linkend   = "</a>";
 
-            if ($product != $a_vulnowner['prod_name']) {
+            if ($product != $a_inv_vulnowner['prod_name']) {
               $output   .= "<tr>";
               $output .= "  <th class=\"ui-state-default\" colspan=\"10\">" . $a_vulnerabilities['prod_name'] . "</th>\n";
               $output   .= "</tr>";
@@ -248,35 +248,35 @@
             }
 
             $class = "ui-widget-content";
-            if ($a_vulnowner['vul_interface'] == $intid && $a_vulnowner['vul_security'] == $secid) {
+            if ($a_inv_vulnowner['vul_interface'] == $intid && $a_inv_vulnowner['vul_security'] == $secid) {
               $class = "ui-state-error";
             }
 
-#            if ($a_vulnowner['sev_name'] == 'Critical') {
+#            if ($a_inv_vulnowner['sev_name'] == 'Critical') {
 #              $class = "ui-state-error";
 #            }
-#            if ($a_vulnowner['sev_name'] == 'High') {
+#            if ($a_inv_vulnowner['sev_name'] == 'High') {
 #              $class = "ui-state-highlight";
 #            }
 
             $output   .= "<tr>";
-            $output   .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_vulnowner['vul_id']             . $linkend . "</td>";
-            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_vulnowner['vul_interface']      . $linkend . "</td>";
-            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_vulnowner['vul_security']       . $linkend . "</td>";
-            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_vulnowner['inv_name']           . $linkend . "</td>";
-            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_vulnowner['int_server']         . $linkend . "</td>";
-            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_vulnowner['int_addr']           . $linkend . "</td>";
-            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_vulnowner['sec_name']           . $linkend . "</td>";
-            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_vulnowner['sev_name']           . $linkend . "</td>";
-            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_vulnowner['grp_name']           . $linkend . "</td>";
-            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_vulnowner['vul_ticket']         . $linkend . "</td>";
-            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_vulnowner['vul_exception']      . $linkend . "</td>";
-            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_vulnowner['vul_description']    . $linkend . "</td>";
+            $output   .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_inv_vulnowner['vul_id']             . $linkend . "</td>";
+            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_vulnowner['vul_interface']      . $linkend . "</td>";
+            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_vulnowner['vul_security']       . $linkend . "</td>";
+            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_vulnowner['inv_name']           . $linkend . "</td>";
+            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_vulnowner['int_server']         . $linkend . "</td>";
+            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_vulnowner['int_addr']           . $linkend . "</td>";
+            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_vulnowner['sec_name']           . $linkend . "</td>";
+            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_vulnowner['sev_name']           . $linkend . "</td>";
+            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_vulnowner['grp_name']           . $linkend . "</td>";
+            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_vulnowner['vul_ticket']         . $linkend . "</td>";
+            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_vulnowner['vul_exception']      . $linkend . "</td>";
+            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_vulnowner['vul_description']    . $linkend . "</td>";
             $output   .= "  <td class=\"" . $class . "\">"        . "<input type=\"checkbox\">"                                . "</td>";
             $output   .= "</tr>";
 
-            $intid = $a_vulnowner['vul_interface'];
-            $secid = $a_vulnowner['vul_security'];
+            $intid = $a_inv_vulnowner['vul_interface'];
+            $secid = $a_inv_vulnowner['vul_security'];
 
           }
         } else {
@@ -287,7 +287,7 @@
 
         $output .= "</table>";
 
-        mysqli_free_result($q_vulnowner);
+        mysqli_free_result($q_inv_vulnowner);
 
         print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $help . $header . $output) . "';\n\n";
 
