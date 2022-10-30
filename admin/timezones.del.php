@@ -22,7 +22,7 @@
       logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from zones");
 
       $q_string  = "delete ";
-      $q_string .= "from timezones ";
+      $q_string .= "from inv_timezones ";
       $q_string .= "where zone_id = " . $formVars['id'];
       $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 

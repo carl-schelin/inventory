@@ -22,15 +22,15 @@
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from zones");
 
       $q_string  = "select zone_name,zone_description,zone_offset ";
-      $q_string .= "from timezones ";
+      $q_string .= "from inv_timezones ";
       $q_string .= "where zone_id = " . $formVars['id'];
-      $q_timezones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_timezones = mysqli_fetch_array($q_timezones);
-      mysqli_free_result($q_timezones);
+      $q_inv_timezones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_timezones = mysqli_fetch_array($q_inv_timezones);
+      mysqli_free_result($q_inv_timezones);
 
-      print "document.formUpdate.zone_name.value = '"         . mysqli_real_escape_string($db, $a_timezones['zone_name'])        . "';\n";
-      print "document.formUpdate.zone_description.value  = '" . mysqli_real_escape_string($db, $a_timezones['zone_description']) . "';\n";
-      print "document.formUpdate.zone_offset.value = '"       . mysqli_real_escape_string($db, $a_timezones['zone_offset'])      . "';\n";
+      print "document.formUpdate.zone_name.value = '"         . mysqli_real_escape_string($db, $a_inv_timezones['zone_name'])        . "';\n";
+      print "document.formUpdate.zone_description.value  = '" . mysqli_real_escape_string($db, $a_inv_timezones['zone_description']) . "';\n";
+      print "document.formUpdate.zone_offset.value = '"       . mysqli_real_escape_string($db, $a_inv_timezones['zone_offset'])      . "';\n";
 
       print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 

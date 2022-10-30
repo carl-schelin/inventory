@@ -39,10 +39,10 @@
             "zone_offset      =   " . $formVars['zone_offset'];
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into timezones set zone_id = NULL, " . $q_string;
+            $q_string = "insert into inv_timezones set zone_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update timezones set " . $q_string . " where zone_id = " . $formVars['id'];
+            $q_string = "update inv_timezones set " . $q_string . " where zone_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['zone_name']);
@@ -67,23 +67,23 @@
       $output .= "</tr>\n";
 
       $q_string  = "select zone_id,zone_name,zone_description,zone_offset ";
-      $q_string .= "from timezones ";
+      $q_string .= "from inv_timezones ";
       $q_string .= "order by zone_offset ";
-      $q_timezones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_timezones) > 0) {
-        while ($a_timezones = mysqli_fetch_array($q_timezones)) {
+      $q_inv_timezones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_timezones) > 0) {
+        while ($a_inv_timezones = mysqli_fetch_array($q_inv_timezones)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('timezones.fill.php?id=" . $a_timezones['zone_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('timezones.del.php?id="  . $a_timezones['zone_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('timezones.fill.php?id=" . $a_inv_timezones['zone_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('timezones.del.php?id="  . $a_inv_timezones['zone_id'] . "');\">";
           $linkend   = "</a>";
 
           $output .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>";
           }
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_timezones['zone_name']        . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_timezones['zone_description'] . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_timezones['zone_offset']      . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_timezones['zone_name']        . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_timezones['zone_description'] . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_timezones['zone_offset']      . $linkend . "</td>";
           $output .= "</tr>";
         }
       } else {
@@ -94,7 +94,7 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_timezones);
+      mysqli_free_result($q_inv_timezones);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
