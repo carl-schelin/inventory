@@ -168,16 +168,16 @@
       $output .= "</tr>\n";
 
       $q_string  = "select pwd_id,pwd_user,pwd_uid,pwd_gid,pwd_gecos,pwd_home,pwd_shell ";
-      $q_string .= "from syspwd ";
+      $q_string .= "from inv_syspwd ";
       $q_string .= "where pwd_companyid = " . $formVars['pwd_companyid'] . " ";
       $q_string .= "order by pwd_user";
-      $q_syspwd = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_syspwd) > 0) {
-        while ($a_syspwd = mysqli_fetch_array($q_syspwd)) {
+      $q_inv_syspwd = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_syspwd) > 0) {
+        while ($a_inv_syspwd = mysqli_fetch_array($q_inv_syspwd)) {
 
           $q_string  = "select mu_id,mu_account,mu_comment,mu_locked,mu_ticket ";
           $q_string .= "from manageusers ";
-          $q_string .= "where mu_username = \"" . $a_syspwd['pwd_user'] . "\" ";
+          $q_string .= "where mu_username = \"" . $a_inv_syspwd['pwd_user'] . "\" ";
           $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_manageusers) == 0) {
             $account = "--";
@@ -206,34 +206,34 @@
             }
           }
 
-          $gecos = explode(",", $a_syspwd['pwd_gecos']);
+          $gecos = explode(",", $a_inv_syspwd['pwd_gecos']);
 
 # system account so can't be locked.
-          if ($a_syspwd['pwd_uid'] <= 100) {
+          if ($a_inv_syspwd['pwd_uid'] <= 100) {
             $locked = '--';
           }
 
           $q_string  = "select grp_name ";
           $q_string .= "from sysgrp ";
-          $q_string .= "where grp_companyid = " . $formVars['pwd_companyid'] . " and grp_gid = " . $a_syspwd['pwd_gid'] . " ";
+          $q_string .= "where grp_companyid = " . $formVars['pwd_companyid'] . " and grp_gid = " . $a_inv_syspwd['pwd_gid'] . " ";
           $q_sysgrp = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_sysgrp = mysqli_fetch_array($q_sysgrp);
 
-          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('users.fill.php?id=" . $a_manageusers['mu_id'] . "&pwd_id=" . $a_syspwd['pwd_id'] . "');showDiv('users-hide');\">";
+          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('users.fill.php?id=" . $a_manageusers['mu_id'] . "&pwd_id=" . $a_inv_syspwd['pwd_id'] . "');showDiv('users-hide');\">";
           $linkend   = "</a>";
 
           $class = "ui-widget-content";
 
           $output .= "<tr>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_syspwd['pwd_user'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_syspwd['pwd_user'] . $linkend . "</td>\n";
           $output .=   "<td class=\"" . $class . " delete\">"              . $locked                          . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"                     . $account                         . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"                     . $a_syspwd['pwd_uid']             . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"                     . $a_sysgrp['grp_name'] . " (" . $a_syspwd['pwd_gid'] . ")</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_syspwd['pwd_uid']             . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"                     . $a_sysgrp['grp_name'] . " (" . $a_inv_syspwd['pwd_gid'] . ")</td>\n";
           $output .= "  <td class=\"" . $class . "\">"                     . $gecos[0]                        . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"                     . $gecos[1]                        . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"                     . $a_syspwd['pwd_home']            . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"                     . $a_syspwd['pwd_shell']           . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_syspwd['pwd_home']            . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_syspwd['pwd_shell']           . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"                     . $a_manageusers['mu_ticket']      . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"                     . $a_manageusers['mu_comment']     . "</td>\n";
           $output .= "</tr>\n";
@@ -245,7 +245,7 @@
         $output .= "</tr>\n";
       }
 
-      mysqli_free_result($q_syspwd);
+      mysqli_free_result($q_inv_syspwd);
 
       $output .= "</table>\n";
 

@@ -24,18 +24,18 @@
 
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['id'] == '' || $formVars['id'] == 0) {
-        logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from syspwd");
+        logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_syspwd");
 
         $q_string  = "select pwd_user,pwd_gecos ";
-        $q_string .= "from syspwd ";
+        $q_string .= "from inv_syspwd ";
         $q_string .= "where pwd_id = " . $formVars['pwd_id'] . " ";
-        $q_syspwd = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        $a_syspwd = mysqli_fetch_array($q_syspwd);
-        mysqli_free_result($q_syspwd);
+        $q_inv_syspwd = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_inv_syspwd = mysqli_fetch_array($q_inv_syspwd);
+        mysqli_free_result($q_inv_syspwd);
 
-        $gecos = explode(",", $a_syspwd['pwd_gecos']);
+        $gecos = explode(",", $a_inv_syspwd['pwd_gecos']);
 
-        $username = $a_syspwd['pwd_user'];
+        $username = $a_inv_syspwd['pwd_user'];
         $name = $gecos[0];
         $email = $gecos[1];
         $account = 0;
