@@ -31,11 +31,11 @@
 
 # only list if the account exists on a live server
     $q_string  = "select pwd_user ";
-    $q_string .= "from syspwd ";
-    $q_string .= "left join inventory on inventory.inv_id = syspwd.pwd_companyid ";
+    $q_string .= "from inv_syspwd ";
+    $q_string .= "left join inventory on inventory.inv_id = inv_syspwd.pwd_companyid ";
     $q_string .= "where pwd_user = \"" . $a_manageusers['mu_username'] . "\" and inv_status = 0 ";
-    $q_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    if (mysqli_num_rows($q_syspwd) > 0) {
+    $q_inv_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_inv_syspwd) > 0) {
 #      if ($a_manageusers['mu_comment'] != '') {
 #        print "# " . $a_manageusers['mu_comment'] . "\n";
 #      }

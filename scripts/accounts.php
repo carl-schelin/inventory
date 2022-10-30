@@ -4,7 +4,7 @@
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
 # This script reads in a colon delimited passwd and group file from each live server
-# which are parsed by this script and then imported into the syspwd and sysgrp tables.
+# which are parsed by this script and then imported into the inv_syspwd and sysgrp tables.
 
   include('settings.php');
   include($Sitepath . '/function.php');
@@ -135,10 +135,10 @@
 # need to see if the user exists
       if ($value[0] != '') {
         $q_string  = "select pwd_id ";
-        $q_string .= "from syspwd ";
+        $q_string .= "from inv_syspwd ";
         $q_string .= "where pwd_companyid = " . $serverid . " and pwd_user = \"" . $value[0] . "\" ";
-        $q_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_syspwd = mysqli_fetch_array($q_syspwd);
+        $q_inv_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_inv_syspwd = mysqli_fetch_array($q_inv_syspwd);
 
         $q_string = 
           "pwd_companyid =   " . $serverid . "," . 
@@ -150,11 +150,11 @@
           "pwd_shell     = \"" . $value[6] . "\"," . 
           "pwd_update    = \"" . $date     . "\"";
 
-        if (mysqli_num_rows($q_syspwd) == 0) {
-          $query = "insert into syspwd set pwd_id = null," . $q_string;
+        if (mysqli_num_rows($q_inv_syspwd) == 0) {
+          $query = "insert into inv_syspwd set pwd_id = null," . $q_string;
           $status = 'i';
         } else {
-          $query = "update syspwd set " . $q_string . " where pwd_id = " . $a_syspwd['pwd_id'];
+          $query = "update inv_syspwd set " . $q_string . " where pwd_id = " . $a_inv_syspwd['pwd_id'];
           $status = 'u';
         }
 
@@ -175,10 +175,10 @@
       if (isset($value[3]) && $value[3] != '') {
 # get the pwd_id of the user
         $q_string  = "select pwd_id ";
-        $q_string .= "from syspwd ";
+        $q_string .= "from inv_syspwd ";
         $q_string .= "where pwd_companyid = " . $serverid . " and pwd_user = \"" . $value[0] . "\" ";
-        $q_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_syspwd = mysqli_fetch_array($q_syspwd);
+        $q_inv_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_inv_syspwd = mysqli_fetch_array($q_inv_syspwd);
 
 # get the grp_id of the group
         $q_string  = "select grp_id ";
@@ -187,17 +187,17 @@
         $q_sysgrp = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_sysgrp = mysqli_fetch_array($q_sysgrp);
 
-        if (mysqli_num_rows($q_syspwd) > 0 && mysqli_num_rows($q_sysgrp) > 0) {
+        if (mysqli_num_rows($q_inv_syspwd) > 0 && mysqli_num_rows($q_sysgrp) > 0) {
 # now see if they're in the members table
           $q_string  = "select mem_id ";
           $q_string .= "from sysgrp_members ";
-          $q_string .= "where mem_uid = " . $a_syspwd['pwd_id'] . " and mem_gid = " . $a_sysgrp['grp_id'] . " ";
+          $q_string .= "where mem_uid = " . $a_inv_syspwd['pwd_id'] . " and mem_gid = " . $a_sysgrp['grp_id'] . " ";
           $q_sysgrp_members = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           $a_sysgrp_members = mysqli_fetch_array($q_sysgrp_members);
 
 # set up the string
           $q_string = 
-            "mem_uid    =   " . $a_syspwd['pwd_id'] . "," . 
+            "mem_uid    =   " . $a_inv_syspwd['pwd_id'] . "," . 
             "mem_gid    =   " . $a_sysgrp['grp_id'] . "," . 
             "mem_update = \"" . $date . "\"";
 
@@ -270,10 +270,10 @@
           foreach ($users as &$username) {
 # get the pwd_id of the user
             $q_string  = "select pwd_id ";
-            $q_string .= "from syspwd ";
+            $q_string .= "from inv_syspwd ";
             $q_string .= "where pwd_companyid = " . $serverid . " and pwd_user = \"" . $username . "\" ";
-            $q_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-            $a_syspwd = mysqli_fetch_array($q_syspwd);
+            $q_inv_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $a_inv_syspwd = mysqli_fetch_array($q_inv_syspwd);
 
 # get the grp_id of the group
             $q_string  = "select grp_id ";
@@ -282,17 +282,17 @@
             $q_sysgrp = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
             $a_sysgrp = mysqli_fetch_array($q_sysgrp);
 
-            if (mysqli_num_rows($q_syspwd) > 0 && mysqli_num_rows($q_sysgrp) > 0) {
+            if (mysqli_num_rows($q_inv_syspwd) > 0 && mysqli_num_rows($q_sysgrp) > 0) {
 # now see if they're in the members table
               $q_string  = "select mem_id ";
               $q_string .= "from sysgrp_members ";
-              $q_string .= "where mem_uid = " . $a_syspwd['pwd_id'] . " and mem_gid = " . $a_sysgrp['grp_id'] . " ";
+              $q_string .= "where mem_uid = " . $a_inv_syspwd['pwd_id'] . " and mem_gid = " . $a_sysgrp['grp_id'] . " ";
               $q_sysgrp_members = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
               $a_sysgrp_members = mysqli_fetch_array($q_sysgrp_members);
 
 # set up the string
               $q_string = 
-                "mem_uid    =   " . $a_syspwd['pwd_id'] . "," . 
+                "mem_uid    =   " . $a_inv_syspwd['pwd_id'] . "," . 
                 "mem_gid    =   " . $a_sysgrp['grp_id'] . "," . 
                 "mem_update = \"" . $date               . "\"";
 

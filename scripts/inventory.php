@@ -453,7 +453,7 @@
 #routing.sql:       `route_companyid` int(10) NOT NULL default '0',
 #svr_software.sql:  `svr_companyid`   int(10) NOT NULL default '0',
 #sysgrp.sql:        `grp_companyid`   int(10) NOT NULL default '0',
-#syspwd.sql:        `pwd_companyid`   int(10) NOT NULL default '0',
+#inv_syspwd.sql:    `pwd_companyid`   int(10) NOT NULL default '0',
 #tags.sql:          `tag_companyid`   int(10) NOT NULL default '0',
 
       print "\n\n=========================[REMOVE SERVER]=========================\n\n";
@@ -598,12 +598,12 @@
 
       $users = 0;
       $q_string  = "select pwd_companyid ";
-      $q_string .= "from syspwd ";
+      $q_string .= "from inv_syspwd ";
       $q_string .= "where pwd_companyid = " . $remove . " ";
-      $q_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_syspwd) > 0) {
-        print "There are " . mysqli_num_rows($q_syspwd) . " system user records for " . $a_inventory['inv_name'] . "\n";
-        $users = mysqli_num_rows($q_syspwd);
+      $q_inv_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_syspwd) > 0) {
+        print "There are " . mysqli_num_rows($q_inv_syspwd) . " system user records for " . $a_inventory['inv_name'] . "\n";
+        $users = mysqli_num_rows($q_inv_syspwd);
       }
 
       $tags = 0;
@@ -737,7 +737,7 @@
 
       if ($users > 0) {
         print "System Users ";
-        $q_string = "delete from syspwd     where pwd_companyid   = " . $remove;
+        $q_string = "delete from inv_syspwd where pwd_companyid   = " . $remove;
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 
