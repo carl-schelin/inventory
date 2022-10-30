@@ -71,7 +71,7 @@
 
       $q_string  = "select bus_id,bus_name,org_name,usr_last,usr_first ";
       $q_string .= "from business ";
-      $q_string .= "left join organizations on organizations.org_id = business.bus_organization ";
+      $q_string .= "left join inv_organizations on inv_organizations.org_id = business.bus_organization ";
       $q_string .= "left join users on users.usr_id = business.bus_manager ";
       $q_string .= "order by bus_name ";
       $q_business = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
