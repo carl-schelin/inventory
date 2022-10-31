@@ -19,19 +19,19 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from security");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_security");
 
       $q_string  = "select sec_name,sec_family.sec_severity ";
-      $q_string .= "from security ";
+      $q_string .= "from inv_security ";
       $q_string .= "where sec_id = " . $formVars['id'];
-      $q_security = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_security = mysqli_fetch_array($a_security);
-      mysqli_free_result($q_security);
+      $q_inv_security = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_security = mysqli_fetch_array($a_inv_security);
+      mysqli_free_result($q_inv_security);
 
-      $family   = return_Index($db, $a_security['sec_family'],   "select fam_id from family order by fam_name");
-      $severity = return_Index($db, $a_security['sec_severity'], "select sev_id from severity order by sev_name");
+      $family   = return_Index($db, $a_inv_security['sec_family'],   "select fam_id from family order by fam_name");
+      $severity = return_Index($db, $a_inv_security['sec_severity'], "select sev_id from severity order by sev_name");
 
-      print "document.security.sec_name.value = '"   . mysqli_real_escape_string($db, $a_security['sec_name'])   . "';\n";
+      print "document.security.sec_name.value = '"   . mysqli_real_escape_string($db, $a_inv_security['sec_name'])   . "';\n";
 
       print "document.security.sec_family['"   . $family   . "'].selected = true;\n";
       print "document.security.sec_severity['" . $severity . "'].selected = true;\n";

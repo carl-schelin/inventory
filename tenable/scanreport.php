@@ -89,8 +89,8 @@
   $info_exception = 0;
   $q_string  = "select vuln_id,vul_exception,vul_group,vuln_group,sev_name,inv_product ";
   $q_string .= "from vulnerabilities ";
-  $q_string .= "left join security on security.sec_id = vulnerabilities.vuln_securityid ";
-  $q_string .= "left join severity on severity.sev_id = security.sec_severity ";
+  $q_string .= "left join inv_security on inv_security.sec_id = vulnerabilities.vuln_securityid ";
+  $q_string .= "left join severity on severity.sev_id = inv_security.sec_severity ";
   $q_string .= "left join interface on interface.int_id = vulnerabilities.vuln_interface ";
   $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
   $q_string .= "left join inv_vulnowner on inv_vulnowner.vul_interface = vulnerabilities.vuln_interface and inv_vulnowner.vul_security = vulnerabilities.vuln_securityid ";
@@ -206,11 +206,11 @@
     if (mysqli_num_rows($q_vulnerabilities) == 0) {
 
       $q_string  = "select sev_name ";
-      $q_string .= "from security ";
-      $q_string .= "left join severity on severity.sev_id = security.sec_severity ";
+      $q_string .= "from inv_security ";
+      $q_string .= "left join severity on severity.sev_id = inv_security.sec_severity ";
       $q_string .= "where sec_id = " . $a_inv_vulnowner['vul_security'] . " ";
-      $q_security = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_security = mysqli_fetch_array($q_security);
+      $q_inv_security = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_security = mysqli_fetch_array($q_inv_security);
 
       if (isset($group_res[$a_inv_vulnowner['vul_group']])) {
         $group_res[$a_inv_vulnowner['vul_group']]++;
@@ -223,23 +223,23 @@
         $product_res[$a_inv_vulnowner['inv_product']] = 1;
       }
 
-      if ($a_security['sev_name'] == 'Critical') {
+      if ($a_inv_security['sev_name'] == 'Critical') {
         $critical_resolved++;
         $total_resolved++;
       }
-      if ($a_security['sev_name'] == 'High') {
+      if ($a_inv_security['sev_name'] == 'High') {
         $high_resolved++;
         $total_resolved++;
       }
-      if ($a_security['sev_name'] == 'Medium') {
+      if ($a_inv_security['sev_name'] == 'Medium') {
         $medium_resolved++;
         $total_resolved++;
       }
-      if ($a_security['sev_name'] == 'Low') {
+      if ($a_inv_security['sev_name'] == 'Low') {
         $low_resolved++;
         $total_resolved++;
       }
-      if ($a_security['sev_name'] == 'Info') {
+      if ($a_inv_security['sev_name'] == 'Info') {
         $info_resolved++;
         $total_resolved++;
       }
