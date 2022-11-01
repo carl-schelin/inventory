@@ -19,13 +19,13 @@
   logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
   $q_string  = "select usr_notify ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_id = " . $_SESSION['uid'];
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . $mysqli_error($db));
-  $a_users = mysqli_fetch_array($q_users);
+  $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . $mysqli_error($db));
+  $a_inv_users = mysqli_fetch_array($q_inv_users);
 
-  if ($a_users['usr_notify'] == 0) {
-    $a_users['usr_notify'] = 90;
+  if ($a_inv_users['usr_notify'] == 0) {
+    $a_inv_users['usr_notify'] = 90;
   }
 
   $formVars['top'] = 0;

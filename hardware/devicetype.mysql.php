@@ -81,7 +81,7 @@
 
       $q_string  = "select dev_id,dev_type,dev_description,dev_infrastructure,dev_notes,dev_update,usr_last,usr_first ";
       $q_string .= "from device ";
-      $q_string .= "left join users on users.usr_id = device.dev_userid ";
+      $q_string .= "left join inv_users on inv_users.usr_id = device.dev_userid ";
       $q_string .= "order by dev_type";
       $q_device = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_device) > 0) {

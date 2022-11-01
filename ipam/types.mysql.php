@@ -69,7 +69,7 @@
 
       $q_string  = "select ip_id,ip_name,usr_first,usr_last,ip_timestamp,ip_description ";
       $q_string .= "from ip_types ";
-      $q_string .= "left join users on users.usr_id = ip_user ";
+      $q_string .= "left join inv_users on inv_users.usr_id = ip_user ";
       $q_string .= "order by ip_name "; 
       $q_ip_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_ip_types) > 0) {

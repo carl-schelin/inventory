@@ -137,7 +137,7 @@
       $q_string  = "select tag_id,tag_name,inv_name,usr_first,usr_last,grp_name ";
       $q_string .= "from tags ";
       $q_string .= "left join inventory    on inventory.inv_id      = tags.tag_companyid ";
-      $q_string .= "left join users        on users.usr_id          = tags.tag_owner ";
+      $q_string .= "left join inv_users        on inv_users.usr_id          = tags.tag_owner ";
       $q_string .= "left join inv_groups       on inv_groups.grp_id         = tags.tag_group ";
       $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
       $q_string .= "left join models       on models.mod_id         = hardware.hw_vendorid ";

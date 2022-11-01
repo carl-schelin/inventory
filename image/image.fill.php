@@ -28,7 +28,7 @@
       $a_images = mysqli_fetch_array($q_images);
       mysqli_free_result($q_images);
 
-      $users = return_Index($db, $a_images['img_owner'], "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
+      $users = return_Index($db, $a_images['img_owner'], "select usr_id from inv_users where usr_disabled = 0 order by usr_last,usr_first");
 
       print "document.formUpdate.img_title.value = '" . mysqli_real_escape_string($db, $a_images['img_title'])    . "';\n";
       print "document.formUpdate.img_file.value = '"  . mysqli_real_escape_string($db, $a_images['img_file'])     . "';\n";

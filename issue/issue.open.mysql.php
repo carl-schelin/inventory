@@ -85,8 +85,8 @@
   $q_string  = "select iss_id,iss_companyid,iss_discovered,iss_subject,iss_user,usr_name,usr_group,grp_id,inv_name ";
   $q_string .= "from issue ";
   $q_string .= "left join inventory on issue.iss_companyid = inventory.inv_id ";
-  $q_string .= "left join users on users.usr_id = issue.iss_user ";
-  $q_string .= "left join inv_groups on inv_groups.grp_id = users.usr_group ";
+  $q_string .= "left join inv_users on inv_users.usr_id = issue.iss_user ";
+  $q_string .= "left join inv_groups on inv_groups.grp_id = inv_users.usr_group ";
   $q_string .= $leftjoin;
   $q_string .= "where iss_closed = '1971-01-01' " . $where . " ";
   $q_string .= "order by iss_discovered desc,inv_name";

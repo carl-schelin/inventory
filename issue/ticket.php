@@ -31,10 +31,10 @@
 
   if ($formVars['id'] == 0) {
     $q_string  = "select usr_last,usr_first,usr_phone,usr_email ";
-    $q_string .= "from users ";
+    $q_string .= "from inv_users ";
     $q_string .= "where usr_id = " . $_SESSION['uid'];
-    $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_users = mysqli_fetch_array($q_users);
+    $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inv_users = mysqli_fetch_array($q_inv_users);
   } else {
     $q_string  = "select iss_discovered,iss_closed,iss_subject,iss_user ";
     $q_string .= "from issue ";
@@ -43,10 +43,10 @@
     $a_issue = mysqli_fetch_array($q_issue);
 
     $q_string  = "select usr_last,usr_first,usr_phone,usr_email ";
-    $q_string .= "from users ";
+    $q_string .= "from inv_users ";
     $q_string .= "where usr_id = " . $a_issue['iss_user'];
-    $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_users = mysqli_fetch_array($q_users);
+    $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inv_users = mysqli_fetch_array($q_inv_users);
   }
 
   $q_string  = "select inv_name ";
@@ -520,9 +520,9 @@ $(document).ready( function() {
 </tr>
 <?php
   print "<tr>\n";
-  print "  <td class=\"ui-widget-content\"><strong>User</strong>: "   . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\"><strong>Phone</strong>: "  . $a_users['usr_phone'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\"><strong>E-Mail</strong>: " . $a_users['usr_email'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>User</strong>: "   . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>Phone</strong>: "  . $a_inv_users['usr_phone'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>E-Mail</strong>: " . $a_inv_users['usr_email'] . "</td>\n";
   print "</tr>\n";
 ?>
 </table>
@@ -872,20 +872,20 @@ field shows you the limit of the number of characters. This limit is set by the 
   <td class="ui-widget-content">Support Tech: <select name="det_user">
 <?php
   $q_string  = "select usr_first,usr_last ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_id = " . $_SESSION['uid'];
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_users = mysqli_fetch_array($q_users);
+  $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_users = mysqli_fetch_array($q_inv_users);
 
-  print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
+  print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "</option>\n";
 
   $q_string  = "select usr_id,usr_first,usr_last ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first";
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_users = mysqli_fetch_array($q_users)) {
-    print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
+  $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
+    print "<option value=\"" . $a_inv_users['usr_id'] . "\">" . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "</option>\n";
   }
 ?>
 </select></td>

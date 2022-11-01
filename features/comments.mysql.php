@@ -114,7 +114,7 @@
 
       $q_string  = "select feat_id,feat_text,feat_timestamp,usr_first,usr_last ";
       $q_string .= "from features_detail ";
-      $q_string .= "left join users on users.usr_id = features_detail.feat_user ";
+      $q_string .= "left join inv_users on inv_users.usr_id = features_detail.feat_user ";
       $q_string .= "where feat_feat_id = " . $formVars['id'] . " ";
       $q_string .= "order by feat_timestamp desc ";
       $q_features_detail = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

@@ -237,11 +237,11 @@
 #      }
 
 # send e-mail to Lynda Lilly
-#      $q_string = "select usr_email from users where usr_id = 13";
-#      $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-#      $a_users = mysqli_fetch_array($q_users);
+#      $q_string = "select usr_email from inv_users where usr_id = 13";
+#      $q_inv_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+#      $a_inv_users = mysqli_fetch_array($q_inv_users);
 #
-#      mail($a_users['usr_email'], "Inventory: Production System Active", $body, $headers);
+#      mail($a_inv_users['usr_email'], "Inventory: Production System Active", $body, $headers);
 #    }
 
 

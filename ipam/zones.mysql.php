@@ -69,7 +69,7 @@
 
       $q_string  = "select zone_id,zone_zone,zone_acronym,usr_first,usr_last,zone_timestamp ";
       $q_string .= "from net_zones ";
-      $q_string .= "left join users on users.usr_id = zone_user ";
+      $q_string .= "left join inv_users on inv_users.usr_id = zone_user ";
       $q_string .= "order by zone_zone "; 
       $q_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_net_zones) > 0) {

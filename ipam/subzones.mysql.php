@@ -72,7 +72,7 @@
 
       $q_string  = "select sub_id,sub_name,zone_zone,usr_first,usr_last,sub_timestamp,sub_description ";
       $q_string .= "from sub_zones ";
-      $q_string .= "left join users on users.usr_id = sub_zones.sub_user ";
+      $q_string .= "left join inv_users on inv_users.usr_id = sub_zones.sub_user ";
       $q_string .= "left join net_zones on net_zones.zone_id = sub_zones.sub_zone ";
       $q_string .= "order by zone_zone,sub_name "; 
       $q_sub_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

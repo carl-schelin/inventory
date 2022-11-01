@@ -28,7 +28,7 @@
       $a_tags = mysqli_fetch_array($q_tags);
       mysqli_free_result($q_tags);
 
-      $tag_owner       = return_Index($db, $a_tags['tag_owner'],     "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
+      $tag_owner       = return_Index($db, $a_tags['tag_owner'],     "select usr_id from inv_users where usr_disabled = 0 order by usr_last,usr_first");
       $q_string  = "select inv_id ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_status = 0 ";

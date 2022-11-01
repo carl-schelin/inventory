@@ -68,22 +68,22 @@
 
 // get the e-mail address of the user
           $q_string  = "select usr_first,usr_last,usr_email ";
-          $q_string .= "from users ";
+          $q_string .= "from inv_users ";
           $q_string .= "where usr_id = " . $_SESSION['uid'];
-          $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          $a_users = mysqli_fetch_array($q_users);
+          $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_inv_users = mysqli_fetch_array($q_inv_users);
 
 // set the subject line
           $subject = "Notice: Hardware replacement in progress.";
 
 // set the headers
           $headers  = "From: Inventory <root@" . $Sitehttp . ">\r\n";
-          $headers .= "CC: " . $a_users['usr_email'] . "," . $Siteadmins . "\r\n";
+          $headers .= "CC: " . $a_inv_users['usr_email'] . "," . $Siteadmins . "\r\n";
           $headers .= "MIME-Version: 1.0\r\n";
           $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
 // build the message
-          $body  = "<p>" . $a_users['usr_first'] . " " . $a_users['usr_last'] . " is notifying your group that the hardware ";
+          $body  = "<p>" . $a_inv_users['usr_first'] . " " . $a_inv_users['usr_last'] . " is notifying your group that the hardware ";
           $body .= "identified below has failed and a replacement is being shipped to the company.</p>\n";
 
 

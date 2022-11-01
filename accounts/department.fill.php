@@ -29,7 +29,7 @@
       mysqli_free_result($q_department);
 
       $business = return_Index($db, $a_department['dep_business'], "select bus_id from business order by bus_name");
-      $manager = return_Index($db, $a_department['dep_manager'], 'select usr_id from users where usr_disabled = 0 order by usr_last,usr_first');
+      $manager = return_Index($db, $a_department['dep_manager'], 'select usr_id from inv_users where usr_disabled = 0 order by usr_last,usr_first');
 
       print "document.formUpdate.dep_name.value = '" . mysqli_real_escape_string($db, $a_department['dep_name']) . "';\n";
 

@@ -78,7 +78,7 @@
 
       $q_string  = "select bug_id,bug_text,bug_timestamp,usr_first,usr_last ";
       $q_string .= "from bugs_detail ";
-      $q_string .= "left join users on users.usr_id = bugs_detail.bug_user ";
+      $q_string .= "left join inv_users on inv_users.usr_id = bugs_detail.bug_user ";
       $q_string .= "where bug_bug_id = " . $formVars['id'] . " ";
       $q_string .= "order by bug_timestamp desc ";
       $q_bugs_detail = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));

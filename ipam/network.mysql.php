@@ -82,7 +82,7 @@
 
       $q_string  = "select net_id,net_ipv4,net_mask,zone_zone,loc_name,net_vlan,net_description,usr_first,usr_last,net_timestamp ";
       $q_string .= "from network ";
-      $q_string .= "left join users on users.usr_id = network.net_user ";
+      $q_string .= "left join inv_users on inv_users.usr_id = network.net_user ";
       $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
       $q_string .= "left join locations on locations.loc_id = network.net_location ";
       $q_string .= "where net_ipv4 != '' ";
@@ -152,7 +152,7 @@
 
       $q_string  = "select net_id,net_ipv6,net_mask,zone_zone,loc_name,net_vlan,net_description,usr_first,usr_last,net_timestamp ";
       $q_string .= "from network ";
-      $q_string .= "left join users on users.usr_id = network.net_user ";
+      $q_string .= "left join inv_users on inv_users.usr_id = network.net_user ";
       $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
       $q_string .= "left join locations on locations.loc_id = network.net_location ";
       $q_string .= "where net_ipv6 != '' ";

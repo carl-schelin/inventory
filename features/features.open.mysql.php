@@ -76,7 +76,7 @@
   $priority[2] = 'High';
   $q_string  = "select feat_id,feat_module,feat_severity,feat_priority,feat_discovered,feat_subject,mod_name,feat_openby,usr_name ";
   $q_string .= "from features ";
-  $q_string .= "left join users on users.usr_id = features.feat_openby ";
+  $q_string .= "left join inv_users on inv_users.usr_id = features.feat_openby ";
   $q_string .= "left join modules on modules.mod_id = features.feat_module ";
   $q_string .= "where feat_closed = '1971-01-01' " . $where;
   $q_string .= "order by feat_discovered desc,mod_name ";

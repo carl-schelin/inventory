@@ -11,16 +11,16 @@ if (isset($_SESSION['username'])) {
 
     $q_string  = "select usr_id,usr_level,usr_disabled,usr_name,usr_first,usr_last,";
     $q_string .= "usr_group,usr_reset,theme_name ";
-    $q_string .= "from users ";
-    $q_string .= "left join inv_themes on inv_themes.theme_id = users.usr_theme ";
+    $q_string .= "from inv_users ";
+    $q_string .= "left join inv_themes on inv_themes.theme_id = inv_users.usr_theme ";
     $q_string .= "where usr_name = '$username_s'"; 
-    $q_users = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
-    $a_users = mysqli_fetch_array($q_users);
+    $q_inv_users = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
+    $a_inv_users = mysqli_fetch_array($q_inv_users);
 
 # get the user level, disable status, and whether a password reset is needed
-    $user_level = $a_users['usr_level'];
-    $restricted = $a_users['usr_disabled'];
-    $pwreset    = $a_users['usr_reset'];
+    $user_level = $a_inv_users['usr_level'];
+    $restricted = $a_inv_users['usr_disabled'];
+    $pwreset    = $a_inv_users['usr_reset'];
 
     $q_string  = "select lvl_disabled ";
     $q_string .= "from levels ";
@@ -48,11 +48,11 @@ if (isset($_SESSION['username'])) {
       exit();
     } elseif ($user_level <= $p_level) {
 // User has authority to view this page.		
-      $_SESSION['uid']         = $a_users['usr_id'];
-      $_SESSION['username']    = $a_users['usr_name'];
-      $_SESSION['name']        = $a_users['usr_first'] . " " . $a_users['usr_last'];
-      $_SESSION['group']       = $a_users['usr_group'];
-      $_SESSION['theme']       = $a_users['theme_name'];
+      $_SESSION['uid']         = $a_inv_users['usr_id'];
+      $_SESSION['username']    = $a_inv_users['usr_name'];
+      $_SESSION['name']        = $a_inv_users['usr_first'] . " " . $a_inv_users['usr_last'];
+      $_SESSION['group']       = $a_inv_users['usr_group'];
+      $_SESSION['theme']       = $a_inv_users['theme_name'];
     } else {
 # reset the changeable environment variables (first/last, group, and department) in case levels and such change.
       include('user_level.php');

@@ -37,7 +37,7 @@
       $q_string .= "group by grp_name";
 
       $gpl_group  = return_Index($db, $a_inv_grouplist['gpl_group'], $q_string);
-      $gpl_user   = return_Index($db, $a_inv_grouplist['gpl_user'], "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
+      $gpl_user   = return_Index($db, $a_inv_grouplist['gpl_user'], "select usr_id from inv_users where usr_disabled = 0 order by usr_last,usr_first");
 
       if ($gpl_group > 0) {
         print "document.formUpdate.gpl_group['" . $gpl_group   . "'].selected = true;\n";

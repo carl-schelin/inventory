@@ -85,7 +85,7 @@
 
       $date = time();
 #      $date = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
-      $warningdate = mktime(0, 0, 0, date('m'), date('d') + $a_users['usr_notify'], date('Y'));
+      $warningdate = mktime(0, 0, 0, date('m'), date('d') + $a_inv_users['usr_notify'], date('Y'));
 
       $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";

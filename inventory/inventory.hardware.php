@@ -665,17 +665,17 @@ if ($formVars['type'] == 20) {
           print "selbox.options.length = 0;\n";
 
           $q_string  = "select usr_id,usr_last,usr_first ";
-          $q_string .= "from users ";
+          $q_string .= "from inv_users ";
           $q_string .= "where usr_disabled = 0 ";
           $q_string .= "order by usr_last,usr_first ";
-          $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 // create the javascript bit for populating the user dropdown box.
-          while ($a_users = mysqli_fetch_array($q_users) ) {
-            print "if (celltext == \"" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_users['usr_last'] . ", " . $a_users['usr_first']) . "\"," . $a_users['usr_id'] . ",1,1);\n";
+          while ($a_inv_users = mysqli_fetch_array($q_inv_users) ) {
+            print "if (celltext == \"" . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "\") {\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first']) . "\"," . $a_inv_users['usr_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_users['usr_last'] . ", " . $a_users['usr_first']) . "\"," . $a_users['usr_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first']) . "\"," . $a_inv_users['usr_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -692,15 +692,15 @@ if ($formVars['type'] == 20) {
           print "cell.setAttribute(\"onclick\", \"" . $onclickstring . "\");\n";
 
           $q_string  = "select usr_id,usr_last,usr_first ";
-          $q_string .= "from users ";
+          $q_string .= "from inv_users ";
           $q_string .= "where usr_id = " . $formVars['select'] . " ";
-          $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_users) > 0) {
-            $a_users = mysqli_fetch_array($q_users);
+          $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_users) > 0) {
+            $a_inv_users = mysqli_fetch_array($q_inv_users);
 
-            $display = $a_users['usr_last'] . ", " . $a_users['usr_first'];
+            $display = $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'];
           } else {
-            $a_users['usr_id']   = 0;
+            $a_inv_users['usr_id']   = 0;
 
             $display = "--";
           }

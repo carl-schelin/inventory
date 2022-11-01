@@ -34,10 +34,10 @@
   $features = $a_features['mod_name'] . ' Feature: ' . $formVars['id'];
 
   $q_string  = "select usr_last,usr_first,usr_phone,usr_email ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_id = " . $a_features['feat_openby'];
-  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_users = mysqli_fetch_array($q_users);
+  $q_inv_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_users = mysqli_fetch_array($q_inv_users);
 
 ?>
 <!DOCTYPE HTML>
@@ -416,9 +416,9 @@ $(document).ready( function() {
 </tr>
 <?php
   print "<tr>\n";
-  print "  <td class=\"ui-widget-content\"><strong>User</strong>: " . $a_users['usr_first'] . " " . $a_users['usr_last'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\"><strong>Phone</strong>: " . $a_users['usr_phone'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\"><strong>E-Mail</strong>: " . $a_users['usr_email'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>User</strong>: " . $a_inv_users['usr_first'] . " " . $a_inv_users['usr_last'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>Phone</strong>: " . $a_inv_users['usr_phone'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>E-Mail</strong>: " . $a_inv_users['usr_email'] . "</td>\n";
   print "</tr>\n";
 ?>
 </table>
@@ -607,20 +607,20 @@ The <strong>character count</strong> field shows you the limit of the number of 
   <td class="ui-widget-content">Comment by: <select name="feat_user">
 <?php
   $q_string  = "select usr_first,usr_last ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_id = " . $_SESSION['uid'];
-  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_users = mysqli_fetch_array($q_users);
+  $q_inv_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_users = mysqli_fetch_array($q_inv_users);
 
-  print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_users['usr_first'] . " " . $a_users['usr_last'] . "</option>\n";
+  print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_inv_users['usr_first'] . " " . $a_inv_users['usr_last'] . "</option>\n";
 
   $q_string  = "select usr_id,usr_first,usr_last ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first";
-  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_users = mysqli_fetch_array($q_users)) {
-    print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_first'] . " " . $a_users['usr_last'] . "</option>\n";
+  $q_inv_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
+    print "<option value=\"" . $a_inv_users['usr_id'] . "\">" . $a_inv_users['usr_first'] . " " . $a_inv_users['usr_last'] . "</option>\n";
   }
 ?>
 </select></td>

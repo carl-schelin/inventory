@@ -33,7 +33,7 @@ function check_userlevel( $p_db, $p_level ) {
   if (isset($_SESSION['username'])) {
     include('settings.php');
     $q_string  = "select usr_level ";
-    $q_string .= "from users ";
+    $q_string .= "from inv_users ";
     $q_string .= "where usr_id = " . $_SESSION['uid'];
     $q_user_level = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
     $a_user_level = mysqli_fetch_array($q_user_level);
@@ -139,12 +139,12 @@ function check_grouplevel( $p_db, $p_group ) {
 
 # if primary group, just return
     $q_string  = "select usr_level,usr_group ";
-    $q_string .= "from users ";
+    $q_string .= "from inv_users ";
     $q_string .= "where usr_id = " . $_SESSION['uid'];
-    $q_users = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
-    $a_users = mysqli_fetch_array($q_users);
+    $q_inv_users = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
+    $a_inv_users = mysqli_fetch_array($q_inv_users);
 
-    if ($p_group == $a_users['usr_group'] || $a_users['usr_level'] == $AL_Admin) {
+    if ($p_group == $a_inv_users['usr_group'] || $a_inv_users['usr_level'] == $AL_Admin) {
       return(1);
     }
 
@@ -654,7 +654,7 @@ function db_connect($p_server, $p_database, $p_user, $p_pass){
   return $r_db;
 }
 
-# return a range
+# return a range; range[0] is the first or network address. range[1] is the last or the broadcast address.
 function ipRange($cidr) {
    $range = array();
    $cidr = explode('/', $cidr);

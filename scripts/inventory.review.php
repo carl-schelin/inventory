@@ -155,13 +155,13 @@
 
       if ($email == '') {
         $q_string  = "select usr_email ";
-        $q_string .= "from users ";
-        $q_string .= "left join inv_grouplist on inv_grouplist.gpl_user = users.usr_id ";
+        $q_string .= "from inv_users ";
+        $q_string .= "left join inv_grouplist on inv_grouplist.gpl_user = inv_users.usr_id ";
         $q_string .= "where gpl_group = " . $manager . " ";
-        $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        while ($a_users = mysqli_fetch_array($q_users)) {
-          if ($a_users['usr_email'] != '') {
-            mail($a_users['usr_email'], $date . " Inventory Review", $body, $headers);
+        $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
+          if ($a_inv_users['usr_email'] != '') {
+            mail($a_inv_users['usr_email'], $date . " Inventory Review", $body, $headers);
           }
         }
       } else {

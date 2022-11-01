@@ -79,12 +79,12 @@
           }
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into users set usr_id = NULL, " . $q_string;
+            $q_string = "insert into inv_users set usr_id = NULL, " . $q_string;
             $formVars['id'] = last_insert_id($db);
           }
           if ($formVars['update'] == 1) {
 # and now update the users information
-            $q_string = "update users set " . $q_string . " where usr_id = " . $formVars['id'];
+            $q_string = "update inv_users set " . $q_string . " where usr_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['usr_name']);
@@ -95,13 +95,13 @@
           if ($formVars['update'] == 1) {
 # if user is changing groups; change to read-only for old group. Need to get old group info first.
             $q_string  = "select usr_group ";
-            $q_string .= "from users ";
+            $q_string .= "from inv_users ";
             $q_string .= "where usr_id = " . $formVars['id'] . " ";
-            $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-            $a_users = mysqli_fetch_array($q_users);
+            $q_inv_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $a_inv_users = mysqli_fetch_array($q_inv_users);
 
 # then see if the user is in the grouplist (should be but let's be sure and get the id to be updated)
-            if ($a_users['usr_group'] != $formVars['usr_group']) {
+            if ($a_inv_users['usr_group'] != $formVars['usr_group']) {
               $q_string  = "select gpl_id ";
               $q_string .= "from inv_grouplist ";
               $q_string .= "where gpl_user = " . $formVars['id'] . " and gpl_group = " . $formVars['usr_group'] . " ";
@@ -128,7 +128,7 @@
             mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 # also clear any managerial duties.
-            $q_string  = "update users ";
+            $q_string  = "update inv_users ";
             $q_string .= "set usr_manager = 0 ";
             $q_string .= "where usr_manager = " . $formVars['id'] . " ";
             mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -200,25 +200,25 @@
       $output .= "</tr>\n";
 
       $q_string  = "select usr_id,lvl_name,usr_disabled,usr_name,usr_first,usr_last,usr_email,usr_reset,grp_name,usr_timestamp,theme_title ";
-      $q_string .= "from users ";
-      $q_string .= "left join levels on levels.lvl_id = users.usr_level ";
-      $q_string .= "left join inv_groups on inv_groups.grp_id = users.usr_group ";
-      $q_string .= "left join inv_themes on inv_themes.theme_id = users.usr_theme ";
+      $q_string .= "from inv_users ";
+      $q_string .= "left join levels on levels.lvl_id = inv_users.usr_level ";
+      $q_string .= "left join inv_groups on inv_groups.grp_id = inv_users.usr_group ";
+      $q_string .= "left join inv_themes on inv_themes.theme_id = inv_users.usr_theme ";
       $q_string .= "where usr_disabled = 0 and usr_group = 0 and usr_level > 1 ";
       $q_string .= "order by usr_last,usr_first";
-      $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_users) > 0) {
-        while ($a_users = mysqli_fetch_array($q_users)) {
+      $q_inv_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_users) > 0) {
+        while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('users.fill.php?id=" . $a_users['usr_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_user('users.del.php?id=" . $a_users['usr_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('users.fill.php?id=" . $a_inv_users['usr_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_user('users.del.php?id=" . $a_inv_users['usr_id'] . "');\">";
           $linkend = "</a>";
 
-          if ($a_users['usr_reset']) {
+          if ($a_inv_users['usr_reset']) {
             $default = " class=\"ui-state-highlight\"";
             $defaultdel = " class=\"ui-state-highlight delete\"";
           } else {
-            if ($a_users['usr_disabled']) {
+            if ($a_inv_users['usr_disabled']) {
               $default = " class=\"ui-state-error\"";
               $defaultdel = " class=\"ui-state-error delete\"";
             } else {
@@ -227,10 +227,10 @@
             }
           }
 
-          $timestamp = strtotime($a_users['usr_timestamp']);
+          $timestamp = strtotime($a_inv_users['usr_timestamp']);
           $reg_date = date('d M y @ H:i' ,$timestamp);
 
-          if ($a_users['usr_reset']) {
+          if ($a_inv_users['usr_reset']) {
             $pwreset = 'Yes';
           } else {
             $pwreset = 'No';
@@ -238,15 +238,15 @@
 
           $output .= "<tr>\n";
           $output .=   "<td" . $defaultdel . ">" . $linkdel                                        . "</td>\n";
-          $output .= "  <td" . $default    . ">"              . $a_users['lvl_name']               . "</td>\n";
-          $output .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_name']    . $linkend . "</td>\n";
-          $output .= "  <td" . $default    . ">"              . $a_users['usr_first']              . "</td>\n";
-          $output .= "  <td" . $default    . ">"              . $a_users['usr_last']               . "</td>\n";
-          $output .= "  <td" . $default    . ">"              . $a_users['usr_email']              . "</td>\n";
+          $output .= "  <td" . $default    . ">"              . $a_inv_users['lvl_name']               . "</td>\n";
+          $output .= "  <td" . $default    . ">" . $linkstart . $a_inv_users['usr_name']    . $linkend . "</td>\n";
+          $output .= "  <td" . $default    . ">"              . $a_inv_users['usr_first']              . "</td>\n";
+          $output .= "  <td" . $default    . ">"              . $a_inv_users['usr_last']               . "</td>\n";
+          $output .= "  <td" . $default    . ">"              . $a_inv_users['usr_email']              . "</td>\n";
           $output .= "  <td" . $default    . ">"              . $pwreset                           . "</td>\n";
-          $output .= "  <td" . $default    . ">"              . $a_users['grp_name']               . "</td>\n";
+          $output .= "  <td" . $default    . ">"              . $a_inv_users['grp_name']               . "</td>\n";
           $output .= "  <td" . $default    . ">"              . $reg_date                          . "</td>\n";
-          $output .= "  <td" . $default    . ">"              . $a_users['theme_title']            . "</td>\n";
+          $output .= "  <td" . $default    . ">"              . $a_inv_users['theme_title']            . "</td>\n";
           $output .= "</tr>\n";
         }
       } else {
@@ -314,24 +314,24 @@ function display_user( $p_title, $p_toggle, $p_query ) {
 
       $count = 0;
       $q_string  = "select usr_id,lvl_name,usr_disabled,usr_name,usr_first,usr_last,usr_email,usr_reset,usr_group,usr_timestamp,theme_title ";
-      $q_string .= "from users ";
-      $q_string .= "left join levels on levels.lvl_id = users.usr_level ";
-      $q_string .= "left join inv_themes on inv_themes.theme_id = users.usr_theme ";
+      $q_string .= "from inv_users ";
+      $q_string .= "left join levels on levels.lvl_id = inv_users.usr_level ";
+      $q_string .= "left join inv_themes on inv_themes.theme_id = inv_users.usr_theme ";
       $q_string .= "where usr_group = " . $a_inv_groups['grp_id'] . " " . $p_query;
       $q_string .= "order by usr_last,usr_first";
-      $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_users) > 0) {
-        while ($a_users = mysqli_fetch_array($q_users)) {
+      $q_inv_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_users) > 0) {
+        while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('users.fill.php?id=" . $a_users['usr_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_user('users.del.php?id="  . $a_users['usr_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('users.fill.php?id=" . $a_inv_users['usr_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_user('users.del.php?id="  . $a_inv_users['usr_id'] . "');\">";
           $linkend = "</a>";
 
-          if ($a_users['usr_reset']) {
+          if ($a_inv_users['usr_reset']) {
             $default = " class=\"ui-state-highlight\"";
             $defaultdel = " class=\"ui-state-highlight delete\"";
           } else {
-            if ($a_users['usr_disabled']) {
+            if ($a_inv_users['usr_disabled']) {
               $default = " class=\"ui-state-error\"";
               $defaultdel = " class=\"ui-state-error delete\"";
             } else {
@@ -340,10 +340,10 @@ function display_user( $p_title, $p_toggle, $p_query ) {
             }
           }
 
-          $timestamp = strtotime($a_users['usr_timestamp']);
+          $timestamp = strtotime($a_inv_users['usr_timestamp']);
           $reg_date = date('d M y @ H:i' ,$timestamp);
 
-          if ($a_users['usr_reset']) {
+          if ($a_inv_users['usr_reset']) {
             $pwreset = 'Yes';
           } else {
             $pwreset = 'No';
@@ -352,7 +352,7 @@ function display_user( $p_title, $p_toggle, $p_query ) {
           $missing = "";
           $q_string  = "select mail_id ";
           $q_string .= "from email ";
-          $q_string .= "where mail_address = \"" . $a_users['usr_email'] . "\" and mail_disabled = 0 ";
+          $q_string .= "where mail_address = \"" . $a_inv_users['usr_email'] . "\" and mail_disabled = 0 ";
           $q_email = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_email) == 0) {
             $missing = "*";
@@ -360,14 +360,14 @@ function display_user( $p_title, $p_toggle, $p_query ) {
 
           $group .= "<tr>\n";
           $group .=   "<td" . $defaultdel . ">" . $linkdel   . "</td>\n";
-          $group .= "  <td" . $default    . ">"              . $a_users['lvl_name']               . $linkend . "</td>\n";
-          $group .= "  <td" . $default    . ">" . $linkstart . $a_users['usr_name']                          . "</td>\n";
-          $group .= "  <td" . $default    . ">"              . $a_users['usr_first']              . $linkend . "</td>\n";
-          $group .= "  <td" . $default    . ">"              . $a_users['usr_last']                          . "</td>\n";
-          $group .= "  <td" . $default    . ">"              . $a_users['usr_email'] . $missing              . "</td>\n";
+          $group .= "  <td" . $default    . ">"              . $a_inv_users['lvl_name']               . $linkend . "</td>\n";
+          $group .= "  <td" . $default    . ">" . $linkstart . $a_inv_users['usr_name']                          . "</td>\n";
+          $group .= "  <td" . $default    . ">"              . $a_inv_users['usr_first']              . $linkend . "</td>\n";
+          $group .= "  <td" . $default    . ">"              . $a_inv_users['usr_last']                          . "</td>\n";
+          $group .= "  <td" . $default    . ">"              . $a_inv_users['usr_email'] . $missing              . "</td>\n";
           $group .= "  <td" . $default    . ">"              . $pwreset                                      . "</td>\n";
           $group .= "  <td" . $default    . ">"              . $reg_date                                     . "</td>\n";
-          $group .= "  <td" . $default    . ">"              . $a_users['theme_title']                       . "</td>\n";
+          $group .= "  <td" . $default    . ">"              . $a_inv_users['theme_title']                       . "</td>\n";
           $group .= "</tr>\n";
           $count++;
         }

@@ -87,8 +87,8 @@
       $q_string  = "select gpl_id,gpl_group,gpl_edit,grp_name,usr_first,usr_last,usr_disabled,usr_group,tit_name,usr_manager ";
       $q_string .= "from inv_grouplist ";
       $q_string .= "left join inv_groups on inv_groups.grp_id = inv_grouplist.gpl_group ";
-      $q_string .= "left join users on users.usr_id = inv_grouplist.gpl_user ";
-      $q_string .= "left join inv_titles on inv_titles.tit_id = users.usr_title ";
+      $q_string .= "left join inv_users on inv_users.usr_id = inv_grouplist.gpl_user ";
+      $q_string .= "left join inv_titles on inv_titles.tit_id = inv_users.usr_title ";
       $q_string .= "where grp_disabled = 0 ";
       $q_string .= "order by grp_name,usr_last ";
       $q_inv_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -131,10 +131,10 @@
 
             if ($a_inv_grouplist['usr_manager'] > 0) {
               $q_string  = "select usr_last,usr_first ";
-              $q_string .= "from users ";
+              $q_string .= "from inv_users ";
               $q_string .= "where usr_id = " . $a_inv_grouplist['usr_manager'] . " ";
-              $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-              $a_users = mysqli_fetch_array($q_users);
+              $q_inv_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              $a_inv_users = mysqli_fetch_array($q_inv_users);
             }
 
             $output .= "<tr>\n";
@@ -142,7 +142,7 @@
             $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_grouplist['grp_name']                        . $linkend . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_grouplist['usr_first'] . " " . $a_inv_grouplist['usr_last'] . $readwrite . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_grouplist['tit_name']                                   . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"                     . $a_users['usr_first'] . " " . $a_users['usr_last']         . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_users['usr_first'] . " " . $a_inv_users['usr_last']         . "</td>\n";
             $output .= "</tr>\n";
           }
         }

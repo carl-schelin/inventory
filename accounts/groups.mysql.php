@@ -63,7 +63,7 @@
             $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 # got it, now update everyone in the same group with the same old manager assuming the group already exists.
             $q_string  = "update ";
-            $q_string .= "users ";
+            $q_string .= "inv_users ";
             $q_string .= "set usr_manager = " . $formVars['grp_manager'] . " ";
             $q_string .= "where usr_group = " . $formVars['id'] . " and (usr_manager = " . $a_inv_groups['grp_manager'] . " or usr_manager = 0) ";
             $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -147,7 +147,7 @@
       $q_string .= "left join department on department.dep_id = inv_groups.grp_department ";
       $q_string .= "left join business on business.bus_id = department.dep_business ";
       $q_string .= "left join inv_organizations on inv_organizations.org_id = business.bus_organization ";
-      $q_string .= "left join users on users.usr_id = inv_groups.grp_manager ";
+      $q_string .= "left join inv_users on inv_users.usr_id = inv_groups.grp_manager ";
       $q_string .= "order by grp_name";
       $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_inv_groups) > 0) {
@@ -177,11 +177,11 @@
 
           $total = 0;
           $q_string  = "select usr_id ";
-          $q_string .= "from users ";
+          $q_string .= "from inv_users ";
           $q_string .= "where usr_group = " . $a_inv_groups['grp_id'] . " ";
-          $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_users) > 0) {
-            while ($a_users = mysqli_fetch_array($q_users)) {
+          $q_inv_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_users) > 0) {
+            while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
               $total++;
             }
           }

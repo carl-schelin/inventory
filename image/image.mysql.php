@@ -72,7 +72,7 @@
 
       $q_string  = "select img_id,img_title,img_file,img_owner,usr_first,usr_last,img_facing,img_date ";
       $q_string .= "from images ";
-      $q_string .= "left join users on users.usr_id = images.img_owner ";
+      $q_string .= "left join inv_users on inv_users.usr_id = images.img_owner ";
       $q_string .= "order by img_title,img_file";
       $q_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_images) > 0) {

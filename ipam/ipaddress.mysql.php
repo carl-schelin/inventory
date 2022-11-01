@@ -164,7 +164,7 @@
 
           $q_string  = "select ip_id,ip_ipv4,ip_hostname,ip_domain,net_mask,ip_type,usr_first,usr_last,ip_timestamp,ip_description,ip_notes,sub_name ";
           $q_string .= "from ipaddress ";
-          $q_string .= "left join users on users.usr_id = ipaddress.ip_user ";
+          $q_string .= "left join inv_users on inv_users.usr_id = ipaddress.ip_user ";
           $q_string .= "left join sub_zones on sub_zones.sub_id = ipaddress.ip_subzone ";
           $q_string .= "left join network  on network.net_id = ipaddress.ip_network ";
           $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
@@ -304,7 +304,7 @@
 
         $q_string  = "select ip_id,ip_ipv6,ip_hostname,ip_domain,net_mask,ip_type,usr_first,usr_last,ip_timestamp,ip_description,ip_notes,sub_name ";
         $q_string .= "from ipaddress ";
-        $q_string .= "left join users  on users.usr_id = ipaddress.ip_user ";
+        $q_string .= "left join inv_users  on inv_users.usr_id = ipaddress.ip_user ";
         $q_string .= "left join sub_zones  on sub_zones.sub_id = ipaddress.ip_subzone ";
         $q_string .= "left join network  on network.net_id = ipaddress.ip_network ";
         $q_string .= "where ip_ipv6 != '' " . $where;

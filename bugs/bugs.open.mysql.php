@@ -76,7 +76,7 @@
   $priority[2] = 'High';
   $q_string  = "select bug_id,bug_module,bug_severity,bug_priority,bug_discovered,bug_subject,mod_name,bug_openby,usr_name ";
   $q_string .= "from bugs ";
-  $q_string .= "left join users   on users.usr_id   = bugs.bug_openby ";
+  $q_string .= "left join inv_users   on inv_users.usr_id   = bugs.bug_openby ";
   $q_string .= "left join modules on modules.mod_id = bugs.bug_module ";
   $q_string .= "where bug_closed = '1971-01-01' " . $where;
   $q_string .= "order by bug_discovered desc,mod_name ";

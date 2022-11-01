@@ -90,12 +90,12 @@
           $total = 0;
           $disabled = 0;
           $q_string  = "select usr_id,usr_disabled ";
-          $q_string .= "from users ";
+          $q_string .= "from inv_users ";
           $q_string .= "where usr_level = " . $a_levels['lvl_id'] . " ";
-          $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_users) > 0) {
-            while ($a_users = mysqli_fetch_array($q_users)) {
-              if ($a_users['usr_disabled'] == 0) {
+          $q_inv_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_users) > 0) {
+            while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
+              if ($a_inv_users['usr_disabled'] == 0) {
                 $total++;
               } else {
                 $disabled++;

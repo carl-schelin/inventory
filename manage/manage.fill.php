@@ -30,8 +30,8 @@
       mysqli_free_result($q_chkserver);
 
       $q_string  = "select usr_id,usr_last,usr_first ";
-      $q_string .= "from users ";
-      $q_string .= "left join inv_grouplist on inv_grouplist.gpl_user = users.usr_id ";
+      $q_string .= "from inv_users ";
+      $q_string .= "left join inv_grouplist on inv_grouplist.gpl_user = inv_users.usr_id ";
       $q_string .= "where gpl_group = 1 and usr_disabled = 0 ";
       $q_string .= "order by usr_last ";
 

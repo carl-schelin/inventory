@@ -190,20 +190,20 @@ $(document).ready( function() {
   <td class="ui-widget-content">Tech Resource: <select name="iss_user">
 <?php
   $q_string  = "select usr_first,usr_last ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_id = " . $_SESSION['uid'];
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_users = mysqli_fetch_array($q_users);
+  $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_users = mysqli_fetch_array($q_inv_users);
 
-  print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
+  print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "</option>\n";
 
   $q_string  = "select usr_id,usr_first,usr_last ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first";
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_users = mysqli_fetch_array($q_users)) {
-    print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
+  $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
+    print "<option value=\"" . $a_inv_users['usr_id'] . "\">" . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "</option>\n";
   }
 ?>
 </select></td>

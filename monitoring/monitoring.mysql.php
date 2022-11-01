@@ -130,7 +130,7 @@
       $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
       $q_string .= "left join mon_type on mon_type.mt_id = monitoring.mon_type ";
       $q_string .= "left join inv_groups on inv_groups.grp_id = monitoring.mon_group ";
-      $q_string .= "left join users on users.usr_id = monitoring.mon_user ";
+      $q_string .= "left join inv_users on inv_users.usr_id = monitoring.mon_user ";
       $q_string .= "where inv_status = 0 ";
       $q_string .= "order by inv_name,int_server ";
       $q_monitoring = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

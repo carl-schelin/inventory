@@ -53,15 +53,15 @@
   }
 
   $q_string  = "select usr_name ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_id != 1 and usr_email = '" . $email . "'";
   if ($debug == 'yes') {
     print $q_string . "\n\n";
   }
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
-  $a_users = mysqli_fetch_array($q_users);
+  $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+  $a_inv_users = mysqli_fetch_array($q_inv_users);
 
-  logaccess($db, $a_users['usr_name'], "show.inventory.submit.php", $subjectline);
+  logaccess($db, $a_inv_users['usr_name'], "show.inventory.submit.php", $subjectline);
 
 # if the script name and e-mail address is all, then default to active
   $productlist = '';

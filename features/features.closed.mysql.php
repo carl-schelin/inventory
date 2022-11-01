@@ -67,7 +67,7 @@
   $q_string  = "select feat_id,feat_module,feat_discovered,feat_closed,feat_closeby,feat_subject,mod_name,usr_name ";
   $q_string .= "from features ";
   $q_string .= "left join modules on modules.mod_id = features.feat_module ";
-  $q_string .= "left join users   on users.usr_id   = features.feat_openby ";
+  $q_string .= "left join inv_users   on inv_users.usr_id   = features.feat_openby ";
   $q_string .= "where feat_closed != '1971-01-01' " . $where;
   $q_string .= "order by mod_name,feat_discovered desc";
   $q_features = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -75,10 +75,10 @@
     while ($a_features = mysqli_fetch_array($q_features)) {
 
       $q_string  = "select usr_name ";
-      $q_string .= "from users ";
+      $q_string .= "from inv_users ";
       $q_string .= "where usr_id = " . $a_features['feat_closeby'] . " ";
-      $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_users = mysqli_fetch_array($q_users);
+      $q_inv_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_users = mysqli_fetch_array($q_inv_users);
 
       $linkstart = "<a href=\"" . $Featureroot . "/ticket.php?id="   . $a_features['feat_id']     . "\">";
       $linklist  = "<a href=\"" . $Featureroot . "/features.php?id=" . $a_features['feat_module'] . "#closed\">";
@@ -90,7 +90,7 @@
       $output .=   "<td class=\"ui-widget-content\">"              . $a_features['feat_closed']                  . "</td>";
       $output .=   "<td class=\"ui-widget-content\">" . $linkstart . $a_features['feat_subject']      . $linkend . "</td>";
       $output .=   "<td class=\"ui-widget-content\">"              . $a_features['usr_name']                     . "</td>";
-      $output .=   "<td class=\"ui-widget-content\">"              . $a_users['usr_name']                        . "</td>";
+      $output .=   "<td class=\"ui-widget-content\">"              . $a_inv_users['usr_name']                        . "</td>";
       $output .= "</tr>";
     }
   } else {

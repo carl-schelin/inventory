@@ -6,21 +6,21 @@
     $search = trim(addslashes($_GET['search']));
 
     $q_string  = "select distinct usr_name as suggest, usr_id, usr_first, usr_last ";
-    $q_string .= "from users ";
+    $q_string .= "from inv_users ";
     $q_string .= "where usr_name like '" . $search . "%' or usr_first like '" . $search . "%' or usr_last like '" . $search . "%' ";
     $q_string .= "order by usr_name limit 0, 5";
 
-    $q_users = mysqli_query($db, $q_string);
+    $q_inv_users = mysqli_query($db, $q_string);
 
-    $c_users = mysqli_num_rows($q_users);
+    $c_inv_users = mysqli_num_rows($q_inv_users);
 
-    if ($c_users == 0) {
+    if ($c_inv_users == 0) {
       echo "<div class='suggestions' style='color: #08c;'>No suggestions</div>\n";
     } else { // Display suggestions found.
       echo "<div class='suggestions''>Suggestions</div>\n";
 
-      while ($a_users = mysqli_fetch_array($q_users)) {
-        echo "<div class='suggest_link'><a href='user_edit.php?uid=" . $a_users['usr_id'] . "'>" . $a_users['suggest'] . "</a></div>\n";
+      while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
+        echo "<div class='suggest_link'><a href='user_edit.php?uid=" . $a_inv_users['usr_id'] . "'>" . $a_inv_users['suggest'] . "</a></div>\n";
       }
     }
   }
@@ -37,14 +37,14 @@
         $username = addslashes($_GET['usr_name']); 
       } 
 
-      $c_users = mysqli_num_rows(mysqli_query($db, "select * from users where usr_name='" . $username . "'"));
+      $c_inv_users = mysqli_num_rows(mysqli_query($db, "select * from inv_users where usr_name='" . $username . "'"));
 
       header('Content-Type: text/xml'); 
       header('Pragma: no-cache'); 
       echo '<?xml version="1.0" encoding="UTF-8"?>';
 
       echo '<result>'; 
-      if ($c_users > 0) {
+      if ($c_inv_users > 0) {
         echo 'exists';
       } else {
         echo 'avail';

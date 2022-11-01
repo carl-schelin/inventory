@@ -104,7 +104,7 @@
       $q_string  = "select ex_id,ex_companyid,inv_name,ex_text,ex_comments,ex_expiration,usr_name,ex_deleted ";
       $q_string .= "from excludes ";
       $q_string .= "left join inventory on inventory.inv_id = excludes.ex_companyid ";
-      $q_string .= "left join users on users.usr_id = excludes.ex_userid ";
+      $q_string .= "left join inv_users on inv_users.usr_id = excludes.ex_userid ";
       $q_string .= "order by ex_comments,inv_name,ex_text ";
       $q_excludes = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_excludes = mysqli_fetch_array($q_excludes)) {
@@ -115,10 +115,10 @@
         $linkend = "</a>";
 
         $q_string  = "select usr_name ";
-        $q_string .= "from users ";
+        $q_string .= "from inv_users ";
         $q_string .= "where usr_id = " . $a_excludes['ex_deleted'] . " ";
-        $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_users = mysqli_fetch_array($q_users);
+        $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_inv_users = mysqli_fetch_array($q_inv_users);
 
         if ($a_excludes['ex_comments'] != $comment_test) {
           $comment = $a_excludes['ex_comments'];
@@ -179,7 +179,7 @@
           }
           $output .= " (Entered by: " . $a_excludes['usr_name'] . ")";
           if ($a_excludes['ex_deleted'] > 0) {
-            $output .= " (Deleted by: " . $a_users['usr_name'] . " " . $linkremove . ")\n";
+            $output .= " (Deleted by: " . $a_inv_users['usr_name'] . " " . $linkremove . ")\n";
           } else {
             $output .= " (" . $linkdel . ")\n";
           }

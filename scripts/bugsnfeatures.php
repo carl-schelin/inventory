@@ -50,7 +50,7 @@
   $q_string .= "from bugs ";
   $q_string .= "left join modules on modules.mod_id   = bugs.bug_module ";
   $q_string .= "left join severity on severity.sev_id = bugs.bug_severity ";
-  $q_string .= "left join users on users.usr_id       = bugs.bug_openby ";
+  $q_string .= "left join inv_users on inv_users.usr_id       = bugs.bug_openby ";
   $q_string .= "where bug_closeby = 0 ";
   $q_string .= "order by bug_severity,bug_priority,bug_discovered ";
   $q_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -91,7 +91,7 @@
   $q_string .= "from features ";
   $q_string .= "left join modules on modules.mod_id   = features.feat_module ";
   $q_string .= "left join severity on severity.sev_id = features.feat_severity ";
-  $q_string .= "left join users on users.usr_id       = features.feat_openby ";
+  $q_string .= "left join inv_users on inv_users.usr_id       = features.feat_openby ";
   $q_string .= "where feat_closeby = 0 ";
   $q_string .= "order by feat_severity,feat_priority,feat_discovered ";
   $q_features = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));

@@ -161,7 +161,7 @@ should a problem occur.</p>
 
   $q_string  = "select log_id,log_user,log_source,log_date,log_detail,usr_name ";
   $q_string .= "from log ";
-  $q_string .= "left join users on users.usr_id = log.log_user ";
+  $q_string .= "left join inv_users on inv_users.usr_id = log.log_user ";
   $q_string .= $where;
   $q_string .= $orderby;
   $q_log = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

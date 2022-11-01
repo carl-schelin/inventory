@@ -29,7 +29,7 @@
       $a_bugs_detail = mysqli_fetch_array($q_bugs_detail);
       mysqli_free_result($q_bugs_detail);
 
-      $selected = return_Index($db, $a_bugs_detail['bug_user'],       "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first") + 1;
+      $selected = return_Index($db, $a_bugs_detail['bug_user'],       "select usr_id from inv_users where usr_disabled = 0 order by usr_last,usr_first") + 1;
 
       print "document.formUpdate.bug_text.value = '"      . mysqli_real_escape_string($db, $a_bugs_detail['bug_text'])      . "';\n";
       print "document.formUpdate.bug_timestamp.value = '" . mysqli_real_escape_string($db, $a_bugs_detail['bug_timestamp']) . "';\n";

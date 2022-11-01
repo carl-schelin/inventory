@@ -68,7 +68,7 @@
 
       $q_string  = "select org_id,org_name,usr_last,usr_first ";
       $q_string .= "from inv_organizations ";
-      $q_string .= "left join users on users.usr_id = inv_organizations.org_manager ";
+      $q_string .= "left join inv_users on inv_users.usr_id = inv_organizations.org_manager ";
       $q_string .= "order by org_name ";
       $q_inv_organizations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_inv_organizations) > 0) {
