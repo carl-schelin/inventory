@@ -229,7 +229,7 @@
         $q_string .= "left join interface on interface.int_id = inv_vulnowner.vul_interface ";
         $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
         $q_string .= "left join inv_security on inv_security.sec_id = inv_vulnowner.vul_security ";
-        $q_string .= "left join severity on severity.sev_id = inv_security.sec_severity ";
+        $q_string .= "left join inv_severity on inv_severity.sev_id = inv_security.sec_severity ";
 #        $q_string .= $where;
 #        $q_string .= $orderby;
         $q_string .= "order by vul_interface,vul_security ";

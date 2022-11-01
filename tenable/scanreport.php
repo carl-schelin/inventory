@@ -90,7 +90,7 @@
   $q_string  = "select vuln_id,vul_exception,vul_group,vuln_group,sev_name,inv_product ";
   $q_string .= "from vulnerabilities ";
   $q_string .= "left join inv_security on inv_security.sec_id = vulnerabilities.vuln_securityid ";
-  $q_string .= "left join severity on severity.sev_id = inv_security.sec_severity ";
+  $q_string .= "left join inv_severity on inv_severity.sev_id = inv_security.sec_severity ";
   $q_string .= "left join interface on interface.int_id = vulnerabilities.vuln_interface ";
   $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
   $q_string .= "left join inv_vulnowner on inv_vulnowner.vul_interface = vulnerabilities.vuln_interface and inv_vulnowner.vul_security = vulnerabilities.vuln_securityid ";
@@ -207,7 +207,7 @@
 
       $q_string  = "select sev_name ";
       $q_string .= "from inv_security ";
-      $q_string .= "left join severity on severity.sev_id = inv_security.sec_severity ";
+      $q_string .= "left join inv_severity on inv_severity.sev_id = inv_security.sec_severity ";
       $q_string .= "where sec_id = " . $a_inv_vulnowner['vul_security'] . " ";
       $q_inv_security = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_inv_security = mysqli_fetch_array($q_inv_security);

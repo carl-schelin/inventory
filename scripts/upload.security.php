@@ -48,10 +48,10 @@
       $a_family = mysqli_fetch_array($q_family);
 
       $q_string  = "select sev_id ";
-      $q_string .= "from severity ";
+      $q_string .= "from inv_severity ";
       $q_string .= "where sev_name = '" . $data[3] . "'";
-      $q_severity = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      $a_severity = mysqli_fetch_array($q_severity);
+      $q_inv_severity = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_inv_severity = mysqli_fetch_array($q_inv_severity);
 
       $q_string  = "select sec_id,sec_severity ";
       $q_string .= "from inv_security ";
@@ -66,7 +66,7 @@
         $q_string .= "sec_id       =  " . $data[0]                           . ",";
         $q_string .= "sec_name     = '" . mysqli_real_escape_string($db, $data[1]) . "',";
         $q_string .= "sec_family   =  " . $a_family['fam_id']                . ",";
-        $q_string .= "sec_severity =  " . $a_severity['sev_id']              . " ";
+        $q_string .= "sec_severity =  " . $a_inv_severity['sev_id']              . " ";
         $insert = mysqli_query($db, $q_string) or die("\nQuery: " . $q_string . "\nFamily: " . $data[2] . "\nSeverity: " . $data[3] . "\n" . mysqli_error($db) . "\n");
         print "+";
       } else {
@@ -78,7 +78,7 @@
           $q_string .= "inv_security ";
           $q_string .= "set ";
           $q_string .= "sec_name     = \"" . mysqli_real_escape_string($db, $data[1]) . "\",";
-          $q_string .= "sec_severity =   " . $a_severity['sev_id'] . " ";
+          $q_string .= "sec_severity =   " . $a_inv_severity['sev_id'] . " ";
           $q_string .= "where sec_id = " . $a_inv_security['sec_id'];
           $update = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           print "^";

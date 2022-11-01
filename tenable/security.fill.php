@@ -29,7 +29,7 @@
       mysqli_free_result($q_inv_security);
 
       $family   = return_Index($db, $a_inv_security['sec_family'],   "select fam_id from family order by fam_name");
-      $severity = return_Index($db, $a_inv_security['sec_severity'], "select sev_id from severity order by sev_name");
+      $severity = return_Index($db, $a_inv_security['sec_severity'], "select sev_id from inv_severity order by sev_name");
 
       print "document.security.sec_name.value = '"   . mysqli_real_escape_string($db, $a_inv_security['sec_name'])   . "';\n";
 

@@ -193,7 +193,7 @@ if needed.</p>
   $q_string  = "select vuln_id,vuln_securityid,vuln_date,vuln_delete,vuln_deldate,sec_name,sev_name,prod_name,int_server,int_addr,inv_name,grp_name ";
   $q_string .= "from vulnerabilities ";
   $q_string .= "left join inv_security  on inv_security.sec_id   = vulnerabilities.vuln_securityid ";
-  $q_string .= "left join severity  on severity.sev_id   = inv_security.sec_severity ";
+  $q_string .= "left join inv_severity  on inv_severity.sev_id   = inv_security.sec_severity ";
   $q_string .= "left join interface on interface.int_id  = vulnerabilities.vuln_interface ";
   $q_string .= "left join inventory on inventory.inv_id  = interface.int_companyid ";
   $q_string .= "left join inv_groups  on inv_groups.grp_id   = inventory.inv_manager ";

@@ -99,7 +99,7 @@
       $q_string  = "select sec_id,sec_name,fam_name,sev_name ";
       $q_string .= "from inv_security ";
       $q_string .= "left join family on family.fam_id = inv_security.sec_family ";
-      $q_string .= "left join severity on severity.sev_id = inv_security.sec_severity ";
+      $q_string .= "left join inv_severity on inv_severity.sev_id = inv_security.sec_severity ";
       $q_string .= "order by sec_name";
       $q_inv_security = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_inv_security) > 0) {
