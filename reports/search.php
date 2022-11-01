@@ -1213,8 +1213,8 @@
       }
 
       $q_string  = "select inv_name,pkg_inv_id,pkg_name,pkg_os,inv_status,prod_name,grp_name,IFNULL(inv_appadmin, 0) as inv_appadmin ";
-      $q_string .= "from packages ";
-      $q_string .= "left join inventory on inventory.inv_id = packages.pkg_inv_id ";
+      $q_string .= "from inv_packages ";
+      $q_string .= "left join inventory on inventory.inv_id = inv_packages.pkg_inv_id ";
       $q_string .= "left join products  on products.prod_id = inventory.inv_product ";
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
       $q_string .= "left join cities    on cities.ct_id     = locations.loc_city ";
@@ -1226,39 +1226,39 @@
         $q_string .= "where inv_status = 0 and " . $search_on . " ";
       }
       $q_string .= $orderby;
-      $q_packages = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_packages) > 0) {
-        while ($a_packages = mysqli_fetch_array($q_packages)) {
+      $q_inv_packages = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_packages) > 0) {
+        while ($a_inv_packages = mysqli_fetch_array($q_inv_packages)) {
 
-          $linkpkgstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_packages['pkg_inv_id'] . "#software\" target=\"_blank\">";
-          $link_name    = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=8&search_on=pkg_name&search_for=" . $a_packages['pkg_name'] . "&retired=" . $formVars['retired'] . "');\">";
+          $linkpkgstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inv_packages['pkg_inv_id'] . "#software\" target=\"_blank\">";
+          $link_name    = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=8&search_on=pkg_name&search_for=" . $a_inv_packages['pkg_name'] . "&retired=" . $formVars['retired'] . "');\">";
           $linkend      = "</a>";
 
           $class = "ui-widget-content";
-          if ($a_packages['inv_status']) {
+          if ($a_inv_packages['inv_status']) {
             $class = "ui-state-error";
           }
 
           $q_string  = "select grp_name ";
           $q_string .= "from inv_groups ";
-          $q_string .= "where grp_id = " . $a_packages['inv_appadmin'] . " ";
+          $q_string .= "where grp_id = " . $a_inv_packages['inv_appadmin'] . " ";
           $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
           if ($formVars['csv']) {
-            $output .= "\"" . $a_packages['inv_name']    . "\",";
-            $output .= "\"" . $a_packages['prod_name']   . "\",";
-            $output .= "\"" . $a_packages['pkg_name']    . "\",";
-            $output .= "\"" . $a_packages['pkg_os']      . "\",";
-            $output .= "\"" . $a_packages['grp_name']    . "\",";
+            $output .= "\"" . $a_inv_packages['inv_name']    . "\",";
+            $output .= "\"" . $a_inv_packages['prod_name']   . "\",";
+            $output .= "\"" . $a_inv_packages['pkg_name']    . "\",";
+            $output .= "\"" . $a_inv_packages['pkg_os']      . "\",";
+            $output .= "\"" . $a_inv_packages['grp_name']    . "\",";
             $output .= "\"" . $a_inv_groups['grp_name']      . "\"<br>";
           } else {
             $output .= "<tr>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $linkpkgstart . $a_packages['inv_name']    . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"                 . $a_packages['prod_name']              . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $link_name    . $a_packages['pkg_name']    . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"                 . $a_packages['pkg_os']                 . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"                 . $a_packages['grp_name']               . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $linkpkgstart . $a_inv_packages['inv_name']    . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"                 . $a_inv_packages['prod_name']              . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $link_name    . $a_inv_packages['pkg_name']    . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"                 . $a_inv_packages['pkg_os']                 . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"                 . $a_inv_packages['grp_name']               . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"                 . $a_inv_groups['grp_name']                 . "</td>\n";
             $output .= "</tr>\n";
           }

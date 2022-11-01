@@ -77,12 +77,12 @@
 
 # locate the package. If it exists, update the date only. If it doesn't exist, create a new entry
         $q_string  = "select pkg_id ";
-        $q_string .= "from packages ";
+        $q_string .= "from inv_packages ";
         $q_string .= "where pkg_inv_id = " . $inv_id . " and pkg_name = \"" . $package . "\" ";
-        $q_packages = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        if (mysqli_num_rows($q_packages) == 0) {
+        $q_inv_packages = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_inv_packages) == 0) {
 
-          $q_string  = "insert into packages set ";
+          $q_string  = "insert into inv_packages set ";
           $q_string .= "pkg_inv_id   =   " . $inv_id       . ",";
           $q_string .= "pkg_name     = \"" . $package      . "\",";
           $q_string .= "pkg_update   = \"" . $date         . "\",";
@@ -92,11 +92,11 @@
 
           $status = "i";
         } else {
-          $a_packages = mysqli_fetch_array($q_packages);
+          $a_inv_packages = mysqli_fetch_array($q_inv_packages);
 
-          $q_string  = "update packages set ";
+          $q_string  = "update inv_packages set ";
           $q_string .= "pkg_update = \"" . $date . "\" ";
-          $q_string .= "where pkg_id = " . $a_packages['pkg_id'] . " ";
+          $q_string .= "where pkg_id = " . $a_inv_packages['pkg_id'] . " ";
 
           $status = "u";
         }
@@ -117,11 +117,11 @@
         $process = trim(fgets($file));
 
         $q_string  = "select pkg_id ";
-        $q_string .= "from packages ";
+        $q_string .= "from inv_packages ";
         $q_string .= "where pkg_inv_id = " . $inv_id . " and pkg_name = \"" . $process . "\" ";
-        $q_packages = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        if (mysqli_num_rows($q_packages) == 0) {
-          $q_string  = "insert into packages set ";
+        $q_inv_packages = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_inv_packages) == 0) {
+          $q_string  = "insert into inv_packages set ";
           $q_string .= "pkg_inv_id   =   " . $inv_id       . ",";
           $q_string .= "pkg_name     = \"" . $process      . "\",";
           $q_string .= "pkg_update   = \"" . $date         . "\",";
@@ -131,11 +131,11 @@
 
           $status = "i";
         } else {
-          $a_packages = mysqli_fetch_array($q_packages);
+          $a_inv_packages = mysqli_fetch_array($q_inv_packages);
 
-          $q_string  = "update packages set ";
+          $q_string  = "update inv_packages set ";
           $q_string .= "pkg_update = \"" . $date . "\" ";
-          $q_string .= "where pkg_id = " . $a_packages['pkg_id'] . " ";
+          $q_string .= "where pkg_id = " . $a_inv_packages['pkg_id'] . " ";
 
           $status = "u";
         }

@@ -558,12 +558,12 @@
 
       $packages = 0;
       $q_string  = "select pkg_inv_id ";
-      $q_string .= "from packages ";
+      $q_string .= "from inv_packages ";
       $q_string .= "where pkg_inv_id = " . $remove . " ";
-      $q_packages = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_packages) > 0) {
-        print "There are " . mysqli_num_rows($q_packages) . " package records for " . $a_inventory['inv_name'] . "\n";
-        $packages = mysqli_num_rows($q_packages);
+      $q_inv_packages = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_packages) > 0) {
+        print "There are " . mysqli_num_rows($q_inv_packages) . " package records for " . $a_inventory['inv_name'] . "\n";
+        $packages = mysqli_num_rows($q_inv_packages);
       }
 
       $routes = 0;
@@ -713,7 +713,7 @@
 
       if ($packages > 0) {
         print "Packages ";
-        $q_string = "delete from packages   where pkg_inv_id      = " . $remove;
+        $q_string = "delete from inv_packages   where pkg_inv_id      = " . $remove;
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 

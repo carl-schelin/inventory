@@ -146,22 +146,22 @@
   $package .= "</tr>";
 
   $q_string  = "select pkg_name,pkg_update,pkg_os,grp_name ";
-  $q_string .= "from packages ";
-  $q_string .= "left join inv_groups on inv_groups.grp_id = packages.pkg_grp_id ";
+  $q_string .= "from inv_packages ";
+  $q_string .= "left join inv_groups on inv_groups.grp_id = inv_packages.pkg_grp_id ";
   $q_string .= "where pkg_inv_id = " . $formVars['id'] . " ";
   $q_string .= "order by pkg_name,pkg_update ";
-  $q_packages = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_packages = mysqli_fetch_array($q_packages)) {
+  $q_inv_packages = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_packages = mysqli_fetch_array($q_inv_packages)) {
 
     $checkmark = "";
     if ($a_software['svr_verified']) {
       $checkmark = "&#x2713;";
     }
     $package .= "<tr>";
-    $package .= "<td class=\"ui-widget-content\">" . $a_packages['pkg_name'] . "</td>";
-    $package .= "<td class=\"ui-widget-content\">" . $a_packages['pkg_update'] . "</td>";
-    $package .= "<td class=\"ui-widget-content\">" . $a_packages['grp_name'] . "</td>";
-    $package .= "<td class=\"ui-widget-content\">" . $a_packages['pkg_os'] . "</td>";
+    $package .= "<td class=\"ui-widget-content\">" . $a_inv_packages['pkg_name'] . "</td>";
+    $package .= "<td class=\"ui-widget-content\">" . $a_inv_packages['pkg_update'] . "</td>";
+    $package .= "<td class=\"ui-widget-content\">" . $a_inv_packages['grp_name'] . "</td>";
+    $package .= "<td class=\"ui-widget-content\">" . $a_inv_packages['pkg_os'] . "</td>";
     $package .= "</tr>";
 
   }
