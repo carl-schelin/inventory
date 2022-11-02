@@ -56,11 +56,11 @@
           "mu_ticket      = \"" . $formVars['mu_ticket']     . "\"";
 
         if ($formVars['update'] == 0) {
-          $query = "insert into manageusers set mu_id = null," . $q_string;
+          $query = "insert into inv_manageusers set mu_id = null," . $q_string;
           $message = "User added.";
         }
         if ($formVars['update'] == 1) {
-          $query = "update manageusers set " . $q_string . " where mu_id = " . $formVars['id'];
+          $query = "update inv_manageusers set " . $q_string . " where mu_id = " . $formVars['id'];
           $message = "User updated.";
         }
 
@@ -113,21 +113,21 @@
       $output .= "</tr>\n";
 
       $q_string  = "select mu_id,mu_username,mu_name,mu_email,mu_comment ";
-      $q_string .= "from manageusers ";
+      $q_string .= "from inv_manageusers ";
       $q_string .= "where (mu_account = 0 or mu_account = 2) and mu_name != \"\" and mu_email != \"\" ";
       $q_string .= "order by mu_username ";
-      $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_manageusers) > 0) {
-        while ($a_manageusers = mysqli_fetch_array($q_manageusers)) {
+      $q_inv_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_manageusers) > 0) {
+        while ($a_inv_manageusers = mysqli_fetch_array($q_inv_manageusers)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('users.fill.php?id=" . $a_manageusers['mu_id'] . "');jQuery('#dialogUsers').dialog('open');\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_users('users.del.php?id=" . $a_manageusers['mu_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('users.fill.php?id=" . $a_inv_manageusers['mu_id'] . "');jQuery('#dialogUsers').dialog('open');\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_users('users.del.php?id=" . $a_inv_manageusers['mu_id'] . "');\">";
           $linkend   = "</a>";
 
           $q_string  = "select pwd_user ";
           $q_string .= "from inv_syspwd ";
           $q_string .= "left join inventory on inventory.inv_id = inv_syspwd.pwd_companyid ";
-          $q_string .= "where pwd_user = \"" . $a_manageusers['mu_username'] . "\" and inv_status = 0 ";
+          $q_string .= "where pwd_user = \"" . $a_inv_manageusers['mu_username'] . "\" and inv_status = 0 ";
           $q_inv_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_inv_syspwd) > 0) {
             $class = "ui-widget-content";
@@ -139,10 +139,10 @@
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"" . $class . " delete\" width=\"60\">" . $linkdel   . "</td>\n";
           }
-          $output .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_manageusers['mu_id']   . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_manageusers['mu_username'] . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_manageusers['mu_name'] . "," . $a_manageusers['mu_email'] . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_manageusers['mu_comment'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_inv_manageusers['mu_id']   . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_manageusers['mu_username'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_manageusers['mu_name'] . "," . $a_inv_manageusers['mu_email'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_manageusers['mu_comment'] . $linkend . "</td>\n";
           $output .= "</tr>\n";
         }
       } else {
@@ -153,7 +153,7 @@
 
       $output .= "</table>\n";
 
-      mysqli_free_result($q_manageusers);
+      mysqli_free_result($q_inv_manageusers);
 
       print "document.getElementById('gecos_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
@@ -198,21 +198,21 @@
       $output .= "</tr>\n";
 
       $q_string  = "select mu_id,mu_username,mu_email,mu_ticket,mu_comment ";
-      $q_string .= "from manageusers ";
+      $q_string .= "from inv_manageusers ";
       $q_string .= "where mu_locked = 1 ";
       $q_string .= "order by mu_username ";
-      $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_manageusers) > 0) {
-        while ($a_manageusers = mysqli_fetch_array($q_manageusers)) {
+      $q_inv_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_manageusers) > 0) {
+        while ($a_inv_manageusers = mysqli_fetch_array($q_inv_manageusers)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('users.fill.php?id=" . $a_manageusers['mu_id'] . "');jQuery('#dialogUsers').dialog('open');\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_users('users.del.php?id=" . $a_manageusers['mu_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('users.fill.php?id=" . $a_inv_manageusers['mu_id'] . "');jQuery('#dialogUsers').dialog('open');\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_users('users.del.php?id=" . $a_inv_manageusers['mu_id'] . "');\">";
           $linkend   = "</a>";
 
           $q_string  = "select pwd_user ";
           $q_string .= "from inv_syspwd ";
           $q_string .= "left join inventory on inventory.inv_id = inv_syspwd.pwd_companyid ";
-          $q_string .= "where pwd_user = \"" . $a_manageusers['mu_username'] . "\" and inv_status = 0 ";
+          $q_string .= "where pwd_user = \"" . $a_inv_manageusers['mu_username'] . "\" and inv_status = 0 ";
           $q_inv_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_inv_syspwd) > 0) {
             $class = "ui-widget-content";
@@ -224,11 +224,11 @@
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"" . $class . " delete\" width=\"60\">" . $linkdel   . "</td>\n";
           }
-          $output .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_manageusers['mu_id']   . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_manageusers['mu_username'] . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_manageusers['mu_email'] . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_manageusers['mu_ticket'] . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_manageusers['mu_comment'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_inv_manageusers['mu_id']   . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_manageusers['mu_username'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_manageusers['mu_email'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_manageusers['mu_ticket'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_manageusers['mu_comment'] . $linkend . "</td>\n";
           $output .= "</tr>\n";
         }
       } else {
@@ -239,7 +239,7 @@
 
       $output .= "</table>\n";
 
-      mysqli_free_result($q_manageusers);
+      mysqli_free_result($q_inv_manageusers);
 
       print "document.getElementById('lockuser_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
@@ -283,21 +283,21 @@
       $output .= "</tr>\n";
 
       $q_string  = "select mu_id,mu_username ";
-      $q_string .= "from manageusers ";
+      $q_string .= "from inv_manageusers ";
       $q_string .= "where mu_account = 1 ";
       $q_string .= "order by mu_username ";
-      $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_manageusers) > 0) {
-        while ($a_manageusers = mysqli_fetch_array($q_manageusers)) {
+      $q_inv_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_manageusers) > 0) {
+        while ($a_inv_manageusers = mysqli_fetch_array($q_inv_manageusers)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('users.fill.php?id=" . $a_manageusers['mu_id'] . "');jQuery('#dialogUsers').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_users('users.del.php?id=" . $a_manageusers['mu_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('users.fill.php?id=" . $a_inv_manageusers['mu_id'] . "');jQuery('#dialogUsers').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_users('users.del.php?id=" . $a_inv_manageusers['mu_id'] . "');\">";
           $linkend   = "</a>";
 
           $q_string  = "select pwd_user ";
           $q_string .= "from inv_syspwd ";
           $q_string .= "left join inventory on inventory.inv_id = inv_syspwd.pwd_companyid ";
-          $q_string .= "where pwd_user = \"" . $a_manageusers['mu_username'] . "\" and inv_status = 0 ";
+          $q_string .= "where pwd_user = \"" . $a_inv_manageusers['mu_username'] . "\" and inv_status = 0 ";
           $q_inv_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_inv_syspwd) > 0) {
             $class = "ui-widget-content";
@@ -309,9 +309,9 @@
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"" . $class . " delete\" width=\"60\">" . $linkdel   . "</td>\n";
           }
-          $output .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_manageusers['mu_id']   . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_manageusers['mu_username'] . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_manageusers['mu_comment'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_inv_manageusers['mu_id']   . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_manageusers['mu_username'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_manageusers['mu_comment'] . $linkend . "</td>\n";
           $output .= "</tr>\n";
         }
       } else {
@@ -322,7 +322,7 @@
 
       $output .= "</table>\n";
 
-      mysqli_free_result($q_manageusers);
+      mysqli_free_result($q_inv_manageusers);
 
       print "document.getElementById('system_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
@@ -369,21 +369,21 @@
       $output .= "</tr>\n";
 
       $q_string  = "select mu_id,mu_username,mu_name,mu_email,mu_comment ";
-      $q_string .= "from manageusers ";
+      $q_string .= "from inv_manageusers ";
       $q_string .= "where mu_account = 2 ";
       $q_string .= "order by mu_username ";
-      $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_manageusers) > 0) {
-        while ($a_manageusers = mysqli_fetch_array($q_manageusers)) {
+      $q_inv_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_manageusers) > 0) {
+        while ($a_inv_manageusers = mysqli_fetch_array($q_inv_manageusers)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('users.fill.php?id=" . $a_manageusers['mu_id'] . "');jQuery('#dialogUsers').dialog('open');\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_users('users.del.php?id=" . $a_manageusers['mu_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('users.fill.php?id=" . $a_inv_manageusers['mu_id'] . "');jQuery('#dialogUsers').dialog('open');\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_users('users.del.php?id=" . $a_inv_manageusers['mu_id'] . "');\">";
           $linkend   = "</a>";
 
           $q_string  = "select pwd_user ";
           $q_string .= "from inv_syspwd ";
           $q_string .= "left join inventory on inventory.inv_id = inv_syspwd.pwd_companyid ";
-          $q_string .= "where pwd_user = \"" . $a_manageusers['mu_username'] . "\" and inv_status = 0 ";
+          $q_string .= "where pwd_user = \"" . $a_inv_manageusers['mu_username'] . "\" and inv_status = 0 ";
           $q_inv_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_inv_syspwd) > 0) {
             $class = "ui-widget-content";
@@ -395,10 +395,10 @@
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"" . $class . " delete\" width=\"60\">" . $linkdel   . "</td>\n";
           }
-          $output .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_manageusers['mu_id']   . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_manageusers['mu_username'] . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_manageusers['mu_name'] . "," . $a_manageusers['mu_email'] . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_manageusers['mu_comment'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_inv_manageusers['mu_id']   . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_manageusers['mu_username'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_manageusers['mu_name'] . "," . $a_inv_manageusers['mu_email'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_manageusers['mu_comment'] . $linkend . "</td>\n";
           $output .= "</tr>\n";
         }
       } else {
@@ -409,7 +409,7 @@
 
       $output .= "</table>\n";
 
-      mysqli_free_result($q_manageusers);
+      mysqli_free_result($q_inv_manageusers);
 
       print "document.getElementById('service_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 

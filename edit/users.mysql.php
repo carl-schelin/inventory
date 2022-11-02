@@ -57,12 +57,12 @@
             "mu_ticket     = \"" . $formVars['mu_ticket']     . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into manageusers set mu_id = NULL," . $q_string;
+            $query = "insert into inv_manageusers set mu_id = NULL," . $q_string;
             $message = "User added.";
           }
 
           if ($formVars['update'] == 1) {
-            $query = "update manageusers set " . $q_string . " where mu_id = " . $formVars['id'];
+            $query = "update inv_manageusers set " . $q_string . " where mu_id = " . $formVars['id'];
             $message = "User updated.";
           }
 
@@ -176,32 +176,32 @@
         while ($a_inv_syspwd = mysqli_fetch_array($q_inv_syspwd)) {
 
           $q_string  = "select mu_id,mu_account,mu_comment,mu_locked,mu_ticket ";
-          $q_string .= "from manageusers ";
+          $q_string .= "from inv_manageusers ";
           $q_string .= "where mu_username = \"" . $a_inv_syspwd['pwd_user'] . "\" ";
-          $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_manageusers) == 0) {
+          $q_inv_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_manageusers) == 0) {
             $account = "--";
             $locked = "--";
-            $a_manageusers['mu_id'] = 0;
-            $a_manageusers['mu_account'] = 0;
-            $a_manageusers['mu_comment'] = '';
-            $a_manageusers['mu_ticket'] = '';
+            $a_inv_manageusers['mu_id'] = 0;
+            $a_inv_manageusers['mu_account'] = 0;
+            $a_inv_manageusers['mu_comment'] = '';
+            $a_inv_manageusers['mu_ticket'] = '';
           } else {
-            $a_manageusers = mysqli_fetch_array($q_manageusers);
+            $a_inv_manageusers = mysqli_fetch_array($q_inv_manageusers);
 
             $account = "--";
-            if ($a_manageusers['mu_account'] == 0) {
+            if ($a_inv_manageusers['mu_account'] == 0) {
               $account = "User";
             }
-            if ($a_manageusers['mu_account'] == 1) {
+            if ($a_inv_manageusers['mu_account'] == 1) {
               $account = "System";
             }
-            if ($a_manageusers['mu_account'] == 2) {
+            if ($a_inv_manageusers['mu_account'] == 2) {
               $account = "Service";
             }
 
             $locked = 'No';
-            if ($a_manageusers['mu_locked']) {
+            if ($a_inv_manageusers['mu_locked']) {
               $locked = 'Yes';
             }
           }
@@ -219,7 +219,7 @@
           $q_sysgrp = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_sysgrp = mysqli_fetch_array($q_sysgrp);
 
-          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('users.fill.php?id=" . $a_manageusers['mu_id'] . "&pwd_id=" . $a_inv_syspwd['pwd_id'] . "');showDiv('users-hide');\">";
+          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('users.fill.php?id=" . $a_inv_manageusers['mu_id'] . "&pwd_id=" . $a_inv_syspwd['pwd_id'] . "');showDiv('users-hide');\">";
           $linkend   = "</a>";
 
           $class = "ui-widget-content";
@@ -234,8 +234,8 @@
           $output .= "  <td class=\"" . $class . "\">"                     . $gecos[1]                        . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_syspwd['pwd_home']            . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_syspwd['pwd_shell']           . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"                     . $a_manageusers['mu_ticket']      . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"                     . $a_manageusers['mu_comment']     . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_manageusers['mu_ticket']      . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_manageusers['mu_comment']     . "</td>\n";
           $output .= "</tr>\n";
 
         }

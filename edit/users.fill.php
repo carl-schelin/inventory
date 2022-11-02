@@ -45,22 +45,22 @@
 
         print "document.edit.mu_update.disabled = true;\n";
       } else {
-        logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from manageusers");
+        logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_manageusers");
 
         $q_string  = "select mu_username,mu_name,mu_email,mu_account,mu_comment,mu_locked,mu_ticket ";
-        $q_string .= "from manageusers ";
+        $q_string .= "from inv_manageusers ";
         $q_string .= "where mu_id = " . $formVars['id'];
-        $q_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        $a_manageusers = mysqli_fetch_array($q_manageusers);
-        mysqli_free_result($q_manageusers);
+        $q_inv_manageusers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_inv_manageusers = mysqli_fetch_array($q_inv_manageusers);
+        mysqli_free_result($q_inv_manageusers);
 
-        $username = $a_manageusers['mu_username'];
-        $name     = $a_manageusers['mu_name'];
-        $email    = $a_manageusers['mu_email'];
-        $account  = $a_manageusers['mu_account'];
-        $comment  = $a_manageusers['mu_comment'];
-        $locked   = $a_manageusers['mu_locked'];
-        $ticket   = $a_manageusers['mu_ticket'];
+        $username = $a_inv_manageusers['mu_username'];
+        $name     = $a_inv_manageusers['mu_name'];
+        $email    = $a_inv_manageusers['mu_email'];
+        $account  = $a_inv_manageusers['mu_account'];
+        $comment  = $a_inv_manageusers['mu_comment'];
+        $locked   = $a_inv_manageusers['mu_locked'];
+        $ticket   = $a_inv_manageusers['mu_ticket'];
 
         print "document.edit.mu_id.value = " . $formVars['id'] . ";\n";
 
