@@ -210,23 +210,23 @@
   $maintday = $dayname['0'];
   $maintstart = 0;
   $maintend = 0;
-  $q_string  = "select win_day,win_start,win_end ";
-  $q_string .= "from maint_window ";
-  $q_string .= "where win_id = " . $a_inventory['inv_maint'] . " ";
-  $q_window = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_window) > 0) {
-    $a_window = mysqli_fetch_array($q_window);
+  $q_string  = "select man_day,man_start,man_end ";
+  $q_string .= "from inv_maintenance ";
+  $q_string .= "where man_id = " . $a_inventory['inv_maint'] . " ";
+  $q_inv_maintenance = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inv_maintenance) > 0) {
+    $a_inv_maintenance = mysqli_fetch_array($q_inv_maintenance);
 
 # getting the day for the maintenance window, not today's day
-    $maintday = $dayname[$a_window['win_day']];
+    $maintday = $dayname[$a_inv_maintenance['man_day']];
 
 # while we know the central time zone for the patching, we need to match it up with 
 # the system's designated timezone, which we do pull from the server and the inventory.
 # we want to convert the current time to Central Time in order for the maint start and end 
 # numbers to be correct.
 
-    $maintstart = $a_window['win_start'];
-    $maintstop = $a_window['win_end'];
+    $maintstart = $a_inv_maintenance['man_start'];
+    $maintstop = $a_inv_maintenance['man_end'];
 
   }
 

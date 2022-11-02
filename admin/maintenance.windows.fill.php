@@ -19,16 +19,16 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from maint_window");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_maintenance");
 
-      $q_string  = "select win_text ";
-      $q_string .= "from maint_window ";
-      $q_string .= "where win_id = " . $formVars['id'];
-      $q_window = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_window = mysqli_fetch_array($q_window);
-      mysqli_free_result($q_window);
+      $q_string  = "select man_text ";
+      $q_string .= "from inv_maintenance ";
+      $q_string .= "where man_id = " . $formVars['id'];
+      $q_inv_maintenance = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_maintenance = mysqli_fetch_array($q_inv_maintenance);
+      mysqli_free_result($q_inv_maintenance);
 
-      print "document.formUpdate.win_text.value = '" . mysqli_real_escape_string($db, $a_window['win_text'])        . "';\n";
+      print "document.formUpdate.man_text.value = '" . mysqli_real_escape_string($db, $a_inv_maintenance['man_text'])        . "';\n";
 
       print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 

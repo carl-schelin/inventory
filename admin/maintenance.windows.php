@@ -65,7 +65,7 @@ function attach_file( p_script_url, update ) {
 
   af_url  = '?update='   + update;
 
-  af_url += "&win_text=" + encode_URI(af_form.win_text.value);
+  af_url += "&man_text=" + encode_URI(af_form.man_text.value);
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
@@ -79,7 +79,7 @@ function update_file( p_script_url, update ) {
   uf_url  = '?update='   + update;
   uf_url += '&id='       + uf_form.id.value;
 
-  uf_url += "&win_text=" + encode_URI(uf_form.win_text.value);
+  uf_url += "&man_text=" + encode_URI(uf_form.man_text.value);
 
   script = document.createElement('script');
   script.src = p_script_url + uf_url;
@@ -225,7 +225,7 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content">Maintenance Window: <input type="text" name="win_text" size="60"></td>
+  <td class="ui-widget-content">Maintenance Window: <input type="text" name="man_text" size="60"></td>
 </tr>
 </table>
 
@@ -242,7 +242,7 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content">Maintenance Window: <input type="text" name="win_text" size="60"></td>
+  <td class="ui-widget-content">Maintenance Window: <input type="text" name="man_text" size="60"></td>
 </tr>
 </table>
 

@@ -161,11 +161,11 @@
     }
   }
 
-  $q_string  = "select inv_id,inv_name,inv_uuid,inv_satuuid,inv_class,inv_location,inv_function,win_text,";
+  $q_string  = "select inv_id,inv_name,inv_uuid,inv_satuuid,inv_class,inv_location,inv_function,man_text,";
   $q_string .= "inv_document,inv_power,inv_rack,inv_row,inv_unit,prod_name,prj_name,zone_name,grp_name,inv_appadmin ";
   $q_string .= "from inventory ";
   $q_string .= "left join timezones on timezones.zone_id = inventory.inv_zone ";
-  $q_string .= "left join maint_window on maint_window.win_id = inventory.inv_maint ";
+  $q_string .= "left join inv_maintenance on inv_maintenance.man_id = inventory.inv_maint ";
   $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
@@ -201,7 +201,7 @@
     $servers[$a_inventory['inv_name']]->inventory_product            = $a_inventory['prod_name'];
     $servers[$a_inventory['inv_name']]->inventory_project            = $a_inventory['prj_name'];
     $servers[$a_inventory['inv_name']]->inventory_timezone           = $a_inventory['zone_name'];
-    $servers[$a_inventory['inv_name']]->inventory_maintenance_window = $a_inventory['win_text'];
+    $servers[$a_inventory['inv_name']]->inventory_maintenance_window = $a_inventory['man_text'];
 
     $q_string  = "select loc_identity ";
     $q_string .= "from locations ";

@@ -608,16 +608,16 @@
 
           print "selbox.options.length = 0;\n";
 
-          $q_string  = "select win_id,win_text ";
-          $q_string .= "from maint_window ";
-          $q_string .= "order by win_text ";
-          $q_window = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_string  = "select man_id,man_text ";
+          $q_string .= "from inv_maintenance ";
+          $q_string .= "order by man_text ";
+          $q_inv_maintenance = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-          while ($a_window = mysqli_fetch_array($q_window) ) {
-            print "if (celltext == \"" . $a_window['win_text'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_window['win_text']) . "\"," . $a_window['win_id'] . ",1,1);\n";
+          while ($a_inv_maintenance = mysqli_fetch_array($q_inv_maintenance) ) {
+            print "if (celltext == \"" . $a_inv_maintenance['man_text'] . "\") {\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_maintenance['man_text']) . "\"," . $a_inv_maintenance['man_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_window['win_text']) . "\"," . $a_window['win_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_maintenance['man_text']) . "\"," . $a_inv_maintenance['man_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -633,18 +633,18 @@
 
           print "cell.setAttribute(\"onclick\", \"edit_Detail(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
-          $q_string  = "select win_id,win_text ";
-          $q_string .= "from maint_window ";
-          $q_string .= "where win_id = " . $formVars['select'] . " ";
-          $q_window = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          $a_window = mysqli_fetch_array($q_window);
+          $q_string  = "select man_id,man_text ";
+          $q_string .= "from inv_maintenance ";
+          $q_string .= "where man_id = " . $formVars['select'] . " ";
+          $q_inv_maintenance = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_inv_maintenance = mysqli_fetch_array($q_inv_maintenance);
 
-          $display = $a_window['win_text'];
+          $display = $a_inv_maintenance['man_text'];
 
           $q_string  = "update ";
           $q_string .= "inventory ";
           $q_string .= "set ";
-          $q_string .= "inv_maint = " . $a_window['win_id'] . " ";
+          $q_string .= "inv_maint = " . $a_inv_maintenance['man_id'] . " ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 

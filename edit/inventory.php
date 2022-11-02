@@ -1579,12 +1579,12 @@ $(document).ready( function() {
 <tr>
   <td class="ui-widget-content">Maintenance Window <select name="inv_maint">
 <?php
-  $q_string  = "select win_id,win_text ";
-  $q_string .= "from maint_window  ";
-  $q_string .= "order by win_text";
-  $q_window = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_window = mysqli_fetch_array($q_window)) {
-    print "<option value=\"" . $a_window['win_id'] . "\">" . htmlspecialchars($a_window['win_text']) . "</option>\n";
+  $q_string  = "select man_id,man_text ";
+  $q_string .= "from inv_maintenance ";
+  $q_string .= "order by man_text";
+  $q_inv_maintenance = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_maintenance = mysqli_fetch_array($q_inv_maintenance)) {
+    print "<option value=\"" . $a_inv_maintenance['man_id'] . "\">" . htmlspecialchars($a_inv_maintenance['man_text']) . "</option>\n";
   }
 ?>
 </select></td>
