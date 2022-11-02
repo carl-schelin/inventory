@@ -214,7 +214,7 @@ $(document).ready( function() {
 </div>
 
 
-<span id="window_mysql"><?php print wait_Process('Waiting...')?></span>
+<span id="maintenance_mysql"><?php print wait_Process('Waiting...')?></span>
 
 </div>
 
