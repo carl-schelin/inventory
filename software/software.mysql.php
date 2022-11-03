@@ -166,7 +166,7 @@
       $q_string .= "left join products on products.prod_id = software.sw_product ";
       $q_string .= "left join licenses on licenses.lic_id = software.sw_licenseid ";
       $q_string .= "left join support on support.sup_id = software.sw_supportid ";
-      $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
+      $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
       $q_string .= "left join department on department.dep_id = software.sw_department ";
       if ($formVars['type'] != '') {
         $q_string .= "where typ_name = \"" . $formVars['type'] . "\" ";

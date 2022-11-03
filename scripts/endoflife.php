@@ -60,7 +60,7 @@
     $q_string  = "select sw_software,sw_eol ";
     $q_string .= "from software ";
     $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
-    $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
+    $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
     $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " and typ_name = 'OS' ";
     $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     $a_software = mysqli_fetch_array($q_software);

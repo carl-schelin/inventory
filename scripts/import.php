@@ -567,13 +567,13 @@
 
 
               $q_string  = "select typ_id ";
-              $q_string .= "from sw_types ";
+              $q_string .= "from inv_sw_types ";
               $q_string .= "where typ_name = \"OS\" ";
-              $q_sw_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              if (mysqli_num_rows($q_sw_types) > 0) {
-                $a_sw_types = mysqli_fetch_array($q_sw_types);
+              $q_inv_sw_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              if (mysqli_num_rows($q_inv_sw_types) > 0) {
+                $a_inv_sw_types = mysqli_fetch_array($q_inv_sw_types);
               } else {
-                $a_sw_types['typ_id'] = 0;
+                $a_inv_sw_types['typ_id'] = 0;
               }
 
               $q_string  = "select ven_id ";
@@ -603,7 +603,7 @@
                 "sw_product   =   " . $a_inventory['inv_product'] . "," . 
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . $a_vendors['ven_id']        . "\"," . 
-                "sw_type      =   " . $a_sw_types['typ_id']       . "," . 
+                "sw_type      =   " . $a_inv_sw_types['typ_id']       . "," . 
                 "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";

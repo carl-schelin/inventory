@@ -178,7 +178,7 @@
   $q_string .= "left join models       on models.mod_id              = hardware.hw_vendorid ";
   $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id  ";
   $q_string .= "left join software     on software.sw_id             = svr_software.svr_softwareid  ";
-  $q_string .= "left join sw_types     on sw_types.typ_id            = software.sw_type  ";
+  $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = software.sw_type  ";
   $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_deleted = 0 and hw_primary = 1 and typ_name = \"OS\" ";
   $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_hardware) > 0) {

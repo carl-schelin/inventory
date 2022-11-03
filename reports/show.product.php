@@ -204,7 +204,7 @@ $(document).ready( function() {
   $q_string .= "left join inventory    on inventory.inv_id            = svr_software.svr_companyid ";
   $q_string .= "left join inv_groups     on svr_software.svr_groupid    = inv_groups.grp_id ";
   $q_string .= "left join vendors      on vendors.ven_id              = software.sw_vendor ";
-  $q_string .= "left join sw_types     on sw_types.typ_id             = software.sw_type ";
+  $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = software.sw_type ";
   $q_string .= "where sw_product = " . $formVars['id'] . " and inv_status = 0 ";
   $q_string .= "order by inv_name,sw_software";
   $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

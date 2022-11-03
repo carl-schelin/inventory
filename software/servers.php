@@ -103,7 +103,7 @@ $(document).ready( function() {
   $q_string .= "left join software     on software.sw_id             = svr_software.svr_softwareid ";
   $q_string .= "left join vendors      on vendors.ven_id             = software.sw_vendor ";
   $q_string .= "left join products     on products.prod_id           = software.sw_product ";
-  $q_string .= "left join sw_types     on sw_types.typ_id            = software.sw_type ";
+  $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = software.sw_type ";
   $q_string .= "left join department   on department.dep_id          = software.sw_department ";
   $q_string .= "where svr_softwareid = " . $formVars['id'] . " ";
   $q_string .= "order by inv_name ";

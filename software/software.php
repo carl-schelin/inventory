@@ -324,11 +324,11 @@ is a small difference, you can make changes and add a new software entry.</p>
   <td class="ui-widget-content">Software Type: <select name="sw_type">
 <?php
   $q_string  = "select typ_id,typ_name ";
-  $q_string .= "from sw_types ";
+  $q_string .= "from inv_sw_types ";
   $q_string .= "order by typ_name";
-  $q_sw_types = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_sw_types = mysqli_fetch_array($q_sw_types)) {
-    print "<option value=\"" . $a_sw_types['typ_id'] . "\">" . $a_sw_types['typ_name'] . "</option>\n";
+  $q_inv_sw_types = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_sw_types = mysqli_fetch_array($q_inv_sw_types)) {
+    print "<option value=\"" . $a_inv_sw_types['typ_id'] . "\">" . $a_inv_sw_types['typ_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -428,11 +428,11 @@ is a small difference, you can make changes and add a new software entry.</p>
   <td class="ui-widget-content">Software Type: <select name="sw_type">
 <?php
   $q_string  = "select typ_id,typ_name ";
-  $q_string .= "from sw_types ";
+  $q_string .= "from inv_sw_types ";
   $q_string .= "order by typ_name";
-  $q_sw_types = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_sw_types = mysqli_fetch_array($q_sw_types)) {
-    print "<option value=\"" . $a_sw_types['typ_id'] . "\">" . $a_sw_types['typ_name'] . "</option>\n";
+  $q_inv_sw_types = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_sw_types = mysqli_fetch_array($q_inv_sw_types)) {
+    print "<option value=\"" . $a_inv_sw_types['typ_id'] . "\">" . $a_inv_sw_types['typ_name'] . "</option>\n";
   }
 ?>
 </select></td>

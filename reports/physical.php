@@ -182,7 +182,7 @@
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
   $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id ";
   $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
-  $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
+  $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
 #  $q_string .= $where . " and int_eth not like \"00:50:56%\" and int_eth != '' and typ_name = 'OS' and sw_software like \"Red Hat%\" and (int_type = 1 or int_type = 2) ";
 #  $q_string .= $where . " and mod_virtual = 0 and typ_name = 'OS' and sw_software like \"Red Hat%\" ";
   $q_string .= $where . " and mod_virtual = 0 ";
