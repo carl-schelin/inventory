@@ -190,10 +190,10 @@
         if (mysqli_num_rows($q_inv_syspwd) > 0 && mysqli_num_rows($q_sysgrp) > 0) {
 # now see if they're in the members table
           $q_string  = "select mem_id ";
-          $q_string .= "from sysgrp_members ";
+          $q_string .= "from inv_sysgrp_members ";
           $q_string .= "where mem_uid = " . $a_inv_syspwd['pwd_id'] . " and mem_gid = " . $a_sysgrp['grp_id'] . " ";
-          $q_sysgrp_members = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          $a_sysgrp_members = mysqli_fetch_array($q_sysgrp_members);
+          $q_inv_sysgrp_members = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_inv_sysgrp_members = mysqli_fetch_array($q_inv_sysgrp_members);
 
 # set up the string
           $q_string = 
@@ -201,11 +201,11 @@
             "mem_gid    =   " . $a_sysgrp['grp_id'] . "," . 
             "mem_update = \"" . $date . "\"";
 
-          if (mysqli_num_rows($q_sysgrp_members) == 0) {
-            $query = "insert into sysgrp_members set mem_id = null," . $q_string;
+          if (mysqli_num_rows($q_inv_sysgrp_members) == 0) {
+            $query = "insert into inv_sysgrp_members set mem_id = null," . $q_string;
             $status = "M";
           } else {
-            $query = "update sysgrp_members set " . $q_string . " where mem_id = " . $a_sysgrp_members['mem_id'];
+            $query = "update inv_sysgrp_members set " . $q_string . " where mem_id = " . $a_inv_sysgrp_members['mem_id'];
             $status = "m";
           }
 
@@ -285,10 +285,10 @@
             if (mysqli_num_rows($q_inv_syspwd) > 0 && mysqli_num_rows($q_sysgrp) > 0) {
 # now see if they're in the members table
               $q_string  = "select mem_id ";
-              $q_string .= "from sysgrp_members ";
+              $q_string .= "from inv_sysgrp_members ";
               $q_string .= "where mem_uid = " . $a_inv_syspwd['pwd_id'] . " and mem_gid = " . $a_sysgrp['grp_id'] . " ";
-              $q_sysgrp_members = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              $a_sysgrp_members = mysqli_fetch_array($q_sysgrp_members);
+              $q_inv_sysgrp_members = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              $a_inv_sysgrp_members = mysqli_fetch_array($q_inv_sysgrp_members);
 
 # set up the string
               $q_string = 
@@ -296,11 +296,11 @@
                 "mem_gid    =   " . $a_sysgrp['grp_id'] . "," . 
                 "mem_update = \"" . $date               . "\"";
 
-              if (mysqli_num_rows($q_sysgrp_members) == 0) {
-                $query = "insert into sysgrp_members set mem_id = null," . $q_string;
+              if (mysqli_num_rows($q_inv_sysgrp_members) == 0) {
+                $query = "insert into inv_sysgrp_members set mem_id = null," . $q_string;
                 $status = "M";
               } else {
-                $query = "update sysgrp_members set " . $q_string . " where mem_id = " . $a_sysgrp_members['mem_id'];
+                $query = "update inv_sysgrp_members set " . $q_string . " where mem_id = " . $a_inv_sysgrp_members['mem_id'];
                 $status = "m";
               }
 

@@ -1003,12 +1003,12 @@
 
           $groups = '';
           $q_string  = "select grp_name ";
-          $q_string .= "from sysgrp_members ";
-          $q_string .= "left join sysgrp on sysgrp.grp_id = sysgrp_members.mem_gid ";
+          $q_string .= "from inv_sysgrp_members ";
+          $q_string .= "left join sysgrp on sysgrp.grp_id = inv_sysgrp_members.mem_gid ";
           $q_string .= "where mem_uid = " . $a_inventory['pwd_id'] . " ";
-          $q_sysgrp_members = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          while ($a_sysgrp_members = mysqli_fetch_array($q_sysgrp_members)) {
-            $groups .= " " . $a_sysgrp_members['grp_name'];
+          $q_inv_sysgrp_members = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_inv_sysgrp_members = mysqli_fetch_array($q_inv_sysgrp_members)) {
+            $groups .= " " . $a_inv_sysgrp_members['grp_name'];
           }
 
           $linkstart     = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">";
@@ -1084,12 +1084,12 @@
               $a_inventory['pwd_id'] = 0;
             }
             $q_string  = "select grp_name ";
-            $q_string .= "from sysgrp_members ";
-            $q_string .= "left join sysgrp on sysgrp.grp_id = sysgrp_members.mem_gid ";
+            $q_string .= "from inv_sysgrp_members ";
+            $q_string .= "left join sysgrp on sysgrp.grp_id = inv_sysgrp_members.mem_gid ";
             $q_string .= "where mem_uid = " . $a_inventory['pwd_id'] . " ";
-            $q_sysgrp_members = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-            while ($a_sysgrp_members = mysqli_fetch_array($q_sysgrp_members)) {
-              $groups .= " " . $a_sysgrp_members['grp_name'];
+            $q_inv_sysgrp_members = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            while ($a_inv_sysgrp_members = mysqli_fetch_array($q_inv_sysgrp_members)) {
+              $groups .= " " . $a_inv_sysgrp_members['grp_name'];
             }
 
             $linkstart     = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">";

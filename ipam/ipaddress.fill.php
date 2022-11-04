@@ -28,7 +28,7 @@
       $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_ipaddress = mysqli_fetch_array($q_ipaddress);
 
-      $ip_subzone = return_Index($db, $a_ipaddress['ip_subzone'],  "select sub_id from sub_zones where sub_zone = " . $a_ipaddress['net_zone'] . " order by sub_name");
+      $ip_subzone = return_Index($db, $a_ipaddress['ip_subzone'],  "select sub_id from inv_sub_zones where sub_zone = " . $a_ipaddress['net_zone'] . " order by sub_name");
       $ip_type    = return_Index($db, $a_ipaddress['ip_type'],     "select ip_id from ip_types order by ip_name ");
 
       print "document.formUpdate.ip_ipv4.value = '"          . mysqli_real_escape_string($db, $a_ipaddress['ip_ipv4'])          . "';\n";

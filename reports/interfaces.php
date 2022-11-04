@@ -261,7 +261,7 @@
   $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
   $q_string .= "left join states on states.st_id = locations.loc_state ";
   $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join sub_zones on sub_zones.sub_id = interface.int_zone ";
+  $q_string .= "left join inv_sub_zones on inv_sub_zones.sub_id = interface.int_zone ";
   $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
   $q_string .= $where;
   $q_string .= $orderby;
