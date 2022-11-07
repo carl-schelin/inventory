@@ -167,12 +167,12 @@
         $a_inventory = mysqli_fetch_array($q_inventory);
 
         $q_string  = "select patch_id,patch_name ";
-        $q_string .= "from patching ";
+        $q_string .= "from inv_patching ";
         $q_string .= "where patch_group = " . $a_inventory['inv_manager'] . " ";
         $q_string .= "order by patch_name ";
-        $q_patching = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while($a_patching = mysqli_fetch_array($q_patching)) {
-          print "<option value=\"" . $a_patching['patch_id'] . "\">" . $a_patching['patch_name'] . "</option>\n";
+        $q_inv_patching = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while($a_inv_patching = mysqli_fetch_array($q_inv_patching)) {
+          print "<option value=\"" . $a_inv_patching['patch_id'] . "\">" . $a_inv_patching['patch_name'] . "</option>\n";
         }
 
         $output .= "</select></td>\n";
