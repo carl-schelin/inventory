@@ -149,7 +149,7 @@
   $q_string .= "left join vendors   on vendors.ven_id          = models.mod_vendor ";
   $q_string .= "left join locations on locations.loc_id        = inventory.inv_location ";
   $q_string .= "left join cities    on cities.ct_id            = locations.loc_city ";
-  $q_string .= "left join states    on states.st_id            = locations.loc_state ";
+  $q_string .= "left join inv_states    on inv_states.st_id            = locations.loc_state ";
   $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
   if (strlen($server) > 0) {
     $q_string .= "where inv_name = '" . $server . "' ";

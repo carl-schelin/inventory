@@ -253,7 +253,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "left join supportlevel on supportlevel.slv_id   = hardware.hw_response ";
   $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join cities       on cities.ct_id          = locations.loc_city ";
-  $q_string .= "left join states       on states.st_id          = locations.loc_state ";
+  $q_string .= "left join inv_states       on inv_states.st_id          = locations.loc_state ";
   $q_string .= $where . " and inv_status = 0 and hw_supportend > '" . date('Y-m-d') . "' and hw_supportend != '1971-01-01' ";
 #and hw_supid_verified = 1 ";
   $q_string .= $orderby;
@@ -355,7 +355,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "left join supportlevel on supportlevel.slv_id   = inventory.inv_response ";
   $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join cities       on cities.ct_id          = locations.loc_city ";
-  $q_string .= "left join states       on states.st_id          = locations.loc_state ";
+  $q_string .= "left join inv_states       on inv_states.st_id          = locations.loc_state ";
   $q_string .= $where . " and inv_status = 0 and hw_supportend < '" . date('Y-m-d') . "' and hw_active != \"1971-01-01\" ";
   $q_string .= $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -444,7 +444,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "left join supportlevel on supportlevel.slv_id   = inventory.inv_response ";
   $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join cities       on cities.ct_id          = locations.loc_city ";
-  $q_string .= "left join states       on states.st_id          = locations.loc_state ";
+  $q_string .= "left join inv_states       on inv_states.st_id          = locations.loc_state ";
   $q_string .= $where . " and inv_status = 0 and hw_supportend < '" . date('Y-m-d') . "' and hw_active = \"1971-01-01\" ";
   $q_string .= $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -530,7 +530,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "left join supportlevel on supportlevel.slv_id   = hardware.hw_response ";
   $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join cities       on cities.ct_id          = locations.loc_city ";
-  $q_string .= "left join states       on states.st_id          = locations.loc_state ";
+  $q_string .= "left join inv_states       on inv_states.st_id          = locations.loc_state ";
   $q_string .= $where . " and inv_status = 0 and hw_supid_verified = 0 and hw_serial = '' ";
   $q_string .= $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -612,7 +612,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "left join supportlevel on supportlevel.slv_id   = inventory.inv_response ";
   $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join cities       on cities.ct_id          = locations.loc_city ";
-  $q_string .= "left join states       on states.st_id          = locations.loc_state ";
+  $q_string .= "left join inv_states       on inv_states.st_id          = locations.loc_state ";
   $q_string .= $where . " and inv_status = 1 and hw_supid_verified = 1 and hw_reused = '1971-01-01' ";
   $q_string .= $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

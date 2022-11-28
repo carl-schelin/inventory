@@ -247,11 +247,11 @@ add the necessary information and then save the new City or County.</p>
   <td class="ui-widget-content">State: <select name="ct_state">
 <?php
   $q_string  = "select st_id,st_state ";
-  $q_string .= "from states ";
+  $q_string .= "from inv_states ";
   $q_string .= "order by st_state ";
-  $q_states = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_states = mysqli_fetch_array($q_states)) {
-    print "<option value=\"" . $a_states['st_id'] . "\">" . $a_states['st_state'] . "</option>\n";
+  $q_inv_states = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_states = mysqli_fetch_array($q_inv_states)) {
+    print "<option value=\"" . $a_inv_states['st_id'] . "\">" . $a_inv_states['st_state'] . "</option>\n";
   }
 
 ?>
@@ -281,11 +281,11 @@ add the necessary information and then save the new City or County.</p>
   <td class="ui-widget-content">State: <select name="ct_state">
 <?php
   $q_string  = "select st_id,st_state ";
-  $q_string .= "from states ";
+  $q_string .= "from inv_states ";
   $q_string .= "order by st_state ";
-  $q_states = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_states = mysqli_fetch_array($q_states)) {
-    print "<option value=\"" . $a_states['st_id'] . "\">" . $a_states['st_state'] . "</option>\n";
+  $q_inv_states = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_states = mysqli_fetch_array($q_inv_states)) {
+    print "<option value=\"" . $a_inv_states['st_id'] . "\">" . $a_inv_states['st_state'] . "</option>\n";
   }
 
 ?>

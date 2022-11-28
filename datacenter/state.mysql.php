@@ -39,10 +39,10 @@
             "st_country      =   " . $formVars['st_country'];
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into states set st_id = NULL, " . $q_string;
+            $q_string = "insert into inv_states set st_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update states set " . $q_string . " where st_id = " . $formVars['id'];
+            $q_string = "update inv_states set " . $q_string . " where st_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['st_state']);
@@ -67,24 +67,24 @@
       $output .= "</tr>\n";
 
       $q_string  = "select st_id,st_acronym,st_state,cn_country ";
-      $q_string .= "from states ";
-      $q_string .= "left join country on country.cn_id = states.st_country ";
+      $q_string .= "from inv_states ";
+      $q_string .= "left join country on country.cn_id = inv_states.st_country ";
       $q_string .= "order by st_state,cn_country ";
-      $q_states = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_states) > 0) {
-        while ($a_states = mysqli_fetch_array($q_states)) {
+      $q_inv_states = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_states) > 0) {
+        while ($a_inv_states = mysqli_fetch_array($q_inv_states)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('state.fill.php?id="  . $a_states['st_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('state.del.php?id=" . $a_states['st_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('state.fill.php?id="  . $a_inv_states['st_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('state.del.php?id=" . $a_inv_states['st_id'] . "');\">";
           $linkend   = "</a>";
 
           $output .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>";
           }
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_states['st_state']    . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"                       . $a_states['st_acronym']             . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"                       . $a_states['cn_country']             . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_states['st_state']    . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                       . $a_inv_states['st_acronym']             . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                       . $a_inv_states['cn_country']             . "</td>";
           $output .= "</tr>";
         }
       } else {
@@ -95,7 +95,7 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_states);
+      mysqli_free_result($q_inv_states);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 

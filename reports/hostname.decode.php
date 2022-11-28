@@ -172,12 +172,12 @@
           $formVars['08location']  = $a_locations['loc_name'];
 
           $q_string  = "select st_state ";
-          $q_string .= "from states ";
+          $q_string .= "from inv_states ";
           $q_string .= "where st_acronym = '" . $os_state . "' ";
-          $q_states = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          $a_states = mysqli_fetch_array($q_states);
+          $q_inv_states = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_inv_states = mysqli_fetch_array($q_inv_states);
 
-          $formVars['08state']     = $a_states['st_state'];
+          $formVars['08state']     = $a_inv_states['st_state'];
 
           $formVars['08type'] = $os_site;
           if ($os_site == 'dc') {
@@ -248,12 +248,12 @@
                 $formVars['location'] = 'Lab Data Center - Longmont';
               } else {
                 $q_string  = "select st_state ";
-                $q_string .= "from states ";
+                $q_string .= "from inv_states ";
                 $q_string .= "where st_acronym = '" . $os_state . "' ";
-                $q_states = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-                $a_states = mysqli_fetch_array($q_states);
+                $q_inv_states = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+                $a_inv_states = mysqli_fetch_array($q_inv_states);
 
-                $formVars['state'] = $a_states['st_state'];
+                $formVars['state'] = $a_inv_states['st_state'];
               }
             }
           }

@@ -198,7 +198,7 @@
   $q_string .= "from inventory ";
   $q_string .= "left join locations on inventory.inv_location = locations.loc_id ";
   $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
-  $q_string .= "left join states on states.st_id = locations.loc_state ";
+  $q_string .= "left join inv_states on inv_states.st_id = locations.loc_state ";
   $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
   $q_string .= $where . $parent;
@@ -243,7 +243,7 @@
     $q_string .= "from inventory ";
     $q_string .= "left join locations on inventory.inv_location = locations.loc_id ";
     $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
-    $q_string .= "left join states on states.st_id = locations.loc_state ";
+    $q_string .= "left join inv_states on inv_states.st_id = locations.loc_state ";
     $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
     $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
     $q_string .= $where . $and . " inv_companyid = " . $a_inventory['inv_id'] . " ";

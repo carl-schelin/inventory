@@ -16,18 +16,18 @@
 
   $formVars['id'] = clean($_GET['id'], 10);
 
-  $q_string = "select inv_name,inv_companyid,inv_function,inv_class,inv_manager,inv_appadmin,"
-            . "grp_name,inv_callpath,inv_rack,inv_row,inv_unit,inv_front,inv_rear,loc_name,loc_addr1,"
-            . "loc_addr2,loc_suite,ct_city,st_acronym,loc_zipcode,cn_acronym,loc_details,prod_name,prj_name "
-            . "from inventory "
-            . "left join locations on locations.loc_id = inventory.inv_location "
-            . "left join products on products.prod_id = inventory.inv_product "
-            . "left join projects on projects.prj_id = inventory.inv_project "
-            . "left join inv_groups on inv_groups.grp_id = inventory.inv_manager "
-            . "left join cities on cities.ct_id = locations.loc_city "
-            . "left join states on states.st_id = locations.loc_state "
-            . "left join country on country.cn_id = locations.loc_country "
-            . "where inv_id = " . $formVars['id'] . " ";
+  $q_string  = "select inv_name,inv_companyid,inv_function,inv_class,inv_manager,inv_appadmin,";
+  $q_string .= "grp_name,inv_callpath,inv_rack,inv_row,inv_unit,inv_front,inv_rear,loc_name,loc_addr1,";
+  $q_string .= "loc_addr2,loc_suite,ct_city,st_acronym,loc_zipcode,cn_acronym,loc_details,prod_name,prj_name ";
+  $q_string .= "from inventory ";
+  $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
+  $q_string .= "left join products on products.prod_id = inventory.inv_product ";
+  $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
+  $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
+  $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
+  $q_string .= "left join inv_states on inv_states.st_id = locations.loc_state ";
+  $q_string .= "left join country on country.cn_id = locations.loc_country ";
+  $q_string .= "where inv_id = " . $formVars['id'] . " ";
   $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
   $a_inventory = mysqli_fetch_array($q_inventory);
 

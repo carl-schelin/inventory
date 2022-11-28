@@ -68,7 +68,7 @@
 
       $q_string  = "select ct_id,ct_city,st_state,ct_clli ";
       $q_string .= "from cities ";
-      $q_string .= "left join states on states.st_id = cities.ct_state ";
+      $q_string .= "left join inv_states on inv_states.st_id = cities.ct_state ";
       $q_string .= "order by ct_city,st_state ";
       $q_cities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_cities) > 0) {

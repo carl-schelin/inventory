@@ -30,14 +30,14 @@
       print "selbox.options[selbox.options.length] = new Option(\"State\",0);\n";
 
       $q_string  = "select st_id,st_state ";
-      $q_string .= "from states ";
+      $q_string .= "from inv_states ";
       $q_string .= "where st_country = " . $formVars['country'] . " ";
       $q_string .= "order by st_state ";
-      $q_states = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_states) > 0) {
-        while ($a_states = mysqli_fetch_array($q_states)) {
-          print "selbox.options[selbox.options.length] = new Option(\"" . $a_states['st_state'] . "\"," . $a_states['st_id'] . ");\n";
-          if ($formVars['state'] == $a_states['st_id']) {
+      $q_inv_states = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_states) > 0) {
+        while ($a_inv_states = mysqli_fetch_array($q_inv_states)) {
+          print "selbox.options[selbox.options.length] = new Option(\"" . $a_inv_states['st_state'] . "\"," . $a_inv_states['st_id'] . ");\n";
+          if ($formVars['state'] == $a_inv_states['st_id']) {
             print "selbox.options[selbox.options.length - 1].selected = true;\n";
           }
         }

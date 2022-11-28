@@ -197,7 +197,7 @@ if ($formVars['inwork'] == '') {
   $q_string .= "left join projects  on projects.prj_id       = inventory.inv_project ";
   $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join cities    on cities.ct_id          = locations.loc_city ";
-  $q_string .= "left join states    on states.st_id          = locations.loc_state ";
+  $q_string .= "left join inv_states    on inv_states.st_id          = locations.loc_state ";
   $q_string .= $where . " and int_ip6 = 0 and int_type != 7 and inv_status = 0 ";
   $q_string .= "order by int_server,int_addr ";
   $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

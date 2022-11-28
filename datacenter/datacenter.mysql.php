@@ -67,20 +67,20 @@
             $a_cities['ct_state'] = 0;
           }
           $q_string  = "select st_country ";
-          $q_string .= "from states ";
+          $q_string .= "from inv_states ";
           $q_string .= "where st_id = " . $a_cities['ct_state'];
-          $q_states = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_states) > 0) {
-            $a_states = mysqli_fetch_array($q_states);
+          $q_inv_states = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_states) > 0) {
+            $a_inv_states = mysqli_fetch_array($q_inv_states);
           } else {
-            $a_states['st_country'] = 0;
+            $a_inv_states['st_country'] = 0;
           }
 
           $q_string =
             "loc_name        = \"" . $formVars['loc_name']        . "\"," .
             "loc_type        =   " . $formVars['loc_type']        . "," .
             "loc_suite       = \"" . $formVars['loc_suite']       . "\"," .
-            "loc_country     =   " . $a_states['st_country']      . "," .
+            "loc_country     =   " . $a_inv_states['st_country']      . "," .
             "loc_addr1       = \"" . $formVars['loc_addr1']       . "\"," .
             "loc_addr2       = \"" . $formVars['loc_addr2']       . "\"," .
             "loc_city        =   " . $formVars['loc_city']        . "," .
@@ -172,8 +172,8 @@
       $q_string .= "env_abb ";
       $q_string .= "from locations ";
       $q_string .= "left join cities  on cities.ct_id  = locations.loc_city ";
-      $q_string .= "left join states  on states.st_id  = cities.ct_state ";
-      $q_string .= "left join country on country.cn_id = states.st_country ";
+      $q_string .= "left join inv_states  on inv_states.st_id  = cities.ct_state ";
+      $q_string .= "left join country on country.cn_id = inv_states.st_country ";
       $q_string .= "left join environment on environment.env_id = locations.loc_environment ";
       $q_string .= "order by loc_default desc,loc_name,ct_city,st_state ";
       $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));

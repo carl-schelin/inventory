@@ -28,7 +28,7 @@
       $a_cities = mysqli_fetch_array($q_cities);
       mysqli_free_result($q_cities);
 
-      $state = return_Index($db, $a_cities['ct_state'], "select st_id from states order by st_state");
+      $state = return_Index($db, $a_cities['ct_state'], "select st_id from inv_states order by st_state");
 
       print "document.formUpdate.ct_city.value = '"    . mysqli_real_escape_string($db, $a_cities['ct_city'])    . "';\n";
       print "document.formUpdate.ct_clli.value = '"    . mysqli_real_escape_string($db, $a_cities['ct_clli'])    . "';\n";
