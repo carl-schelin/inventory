@@ -1505,11 +1505,11 @@ $(document).ready( function() {
   <td class="ui-widget-content">Service Class <select name="inv_class">
 <?php
   $q_string  = "select svc_id,svc_name ";
-  $q_string .= "from service ";
+  $q_string .= "from inv_service ";
   $q_string .= "order by svc_id";
-  $q_service = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_service = mysqli_fetch_array($q_service)) {
-    print "<option value=\"" . $a_service['svc_id'] . "\">" . htmlspecialchars($a_service['svc_name']) . "</option>\n";
+  $q_inv_service = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_service = mysqli_fetch_array($q_inv_service)) {
+    print "<option value=\"" . $a_inv_service['svc_id'] . "\">" . htmlspecialchars($a_inv_service['svc_name']) . "</option>\n";
   }
 ?>
 </select></td>

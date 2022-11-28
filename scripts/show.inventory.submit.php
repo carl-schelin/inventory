@@ -567,8 +567,8 @@
     $q_string  = "select inv_id,inv_name,inv_companyid,inv_function,inv_location,inv_product,inv_rack,";
     $q_string .= "inv_row,inv_unit,grp_name,inv_appadmin,inv_callpath,svc_acronym,inv_notes,inv_document,man_text ";
     $q_string .= "from inventory ";
-    $q_string .= "left join service on service.svc_id = inventory.inv_class ";
-    $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
+    $q_string .= "left join inv_service     on inv_service.svc_id     = inventory.inv_class ";
+    $q_string .= "left join inv_groups      on inv_groups.grp_id      = inventory.inv_manager ";
     $q_string .= "left join inv_maintenance on inv_maintenance.man_id = inventory.inv_maint ";
     $q_string .= "where inv_name = '" . $server . "' and inv_status = 0";
     if ($debug == 'yes') {
@@ -624,7 +624,7 @@
 
       $q_string = "select prod_name,svc_name ";
       $q_string .= "from products ";
-      $q_string .= "left join service on service.svc_id = products.prod_service ";
+      $q_string .= "left join inv_service on inv_service.svc_id = products.prod_service ";
       $q_string .= "where prod_id = " . $a_inventory['inv_product'] . " ";
       $q_products = mysqli_query($db, $q_string) or die($q_string .= ": " . mysqli_error($db));
       $a_products = mysqli_fetch_array($q_products);

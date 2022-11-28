@@ -112,7 +112,7 @@
     $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
   }
   if ($formVars['service'] != 'no') {
-    $q_string .= "left join service on service.svc_id = inventory.inv_class ";
+    $q_string .= "left join inv_service on inv_service.svc_id = inventory.inv_class ";
   }
   if ($formVars['product'] != 'no') {
     $q_string .= "left join products on products.prod_id = inventory.inv_product ";

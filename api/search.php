@@ -212,12 +212,12 @@
     $servers[$a_inventory['inv_name']]->inventory_location = $a_locations['loc_identity'];
 
     $q_string  = "select svc_name ";
-    $q_string .= "from service ";
+    $q_string .= "from inv_service ";
     $q_string .= "where svc_id = " . $a_inventory['inv_class'] . " ";
-    $q_service = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_service = mysqli_fetch_array($q_service);
+    $q_inv_service = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inv_service = mysqli_fetch_array($q_inv_service);
 
-    $servers[$a_inventory['inv_name']]->inventory_service_class = $a_service['svc_name'];
+    $servers[$a_inventory['inv_name']]->inventory_service_class = $a_inv_service['svc_name'];
 
     $count = 0;
     $q_string  = "select int_id,int_server,int_domain,int_face,int_addr,int_eth,int_mask,int_gate,int_vlan,itp_name,";

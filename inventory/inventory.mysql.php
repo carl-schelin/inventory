@@ -169,7 +169,7 @@
       $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
       $q_string .= "left join products on products.prod_id = inventory.inv_product ";
       $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
-      $q_string .= "left join service on service.svc_id = inventory.inv_class ";
+      $q_string .= "left join inv_service on inv_service.svc_id = inventory.inv_class ";
       $q_string .= "left join inv_maintenance on inv_maintenance.man_id = inventory.inv_maint ";
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
       $q_string .= "where inv_status = 0 and inv_manager = " . $formVars['group'] . " ";
@@ -498,7 +498,7 @@
       $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
       $q_string .= "left join products on products.prod_id = inventory.inv_product ";
       $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
-      $q_string .= "left join service on service.svc_id = inventory.inv_class ";
+      $q_string .= "left join inv_service on inv_service.svc_id = inventory.inv_class ";
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
       $q_string .= "where inv_status = 0 and inv_manager = " . $formVars['group'] . " ";
       if ($formVars['location'] > 0) {
@@ -866,7 +866,7 @@
       $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
       $q_string .= "left join products on products.prod_id = inventory.inv_product ";
       $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
-      $q_string .= "left join service on service.svc_id = inventory.inv_class ";
+      $q_string .= "left join inv_service on inv_service.svc_id = inventory.inv_class ";
       $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
       $q_string .= "where inv_status = 0 and inv_manager = " . $formVars['group'] . " ";
       if ($formVars['location'] > 0) {

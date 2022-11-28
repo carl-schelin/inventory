@@ -236,24 +236,24 @@
 
 
     $q_string  = "select svc_name,svc_acronym,svc_availability,svc_downtime,svc_mtbf,svc_geographic,svc_mttr,svc_resource,svc_restore ";
-    $q_string .= "from service ";
+    $q_string .= "from inv_service ";
     $q_string .= "where svc_id = " . $a_inventory['inv_class'] . " ";
-    $q_service = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_service = mysqli_fetch_array($q_service);
+    $q_inv_service = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inv_service = mysqli_fetch_array($q_inv_service);
 
     if ($formVars['service'] == 'yes') {
       $servers[$a_inventory['inv_name']]->inventory_service_class = new ServiceClass();
-      $servers[$a_inventory['inv_name']]->inventory_service_class->service_name         = $a_service['svc_name'];
-      $servers[$a_inventory['inv_name']]->inventory_service_class->service_acronym      = $a_service['svc_acronym'];
-      $servers[$a_inventory['inv_name']]->inventory_service_class->service_availability = $a_service['svc_availability'];
-      $servers[$a_inventory['inv_name']]->inventory_service_class->service_downtime     = $a_service['svc_downtime'];
-      $servers[$a_inventory['inv_name']]->inventory_service_class->service_mtbf         = $a_service['svc_mtbf'];
-      $servers[$a_inventory['inv_name']]->inventory_service_class->service_redundant    = ($a_service['svc_geographic'] ? 'Yes' : 'No');
-      $servers[$a_inventory['inv_name']]->inventory_service_class->service_mttr         = $a_service['svc_mttr'];
-      $servers[$a_inventory['inv_name']]->inventory_service_class->service_sharing      = ($a_service['svc_resource'] ? 'Yes' : 'No');
-      $servers[$a_inventory['inv_name']]->inventory_service_class->service_restore      = $a_service['svc_restore'];
+      $servers[$a_inventory['inv_name']]->inventory_service_class->service_name         = $a_inv_service['svc_name'];
+      $servers[$a_inventory['inv_name']]->inventory_service_class->service_acronym      = $a_inv_service['svc_acronym'];
+      $servers[$a_inventory['inv_name']]->inventory_service_class->service_availability = $a_inv_service['svc_availability'];
+      $servers[$a_inventory['inv_name']]->inventory_service_class->service_downtime     = $a_inv_service['svc_downtime'];
+      $servers[$a_inventory['inv_name']]->inventory_service_class->service_mtbf         = $a_inv_service['svc_mtbf'];
+      $servers[$a_inventory['inv_name']]->inventory_service_class->service_redundant    = ($a_inv_service['svc_geographic'] ? 'Yes' : 'No');
+      $servers[$a_inventory['inv_name']]->inventory_service_class->service_mttr         = $a_inv_service['svc_mttr'];
+      $servers[$a_inventory['inv_name']]->inventory_service_class->service_sharing      = ($a_inv_service['svc_resource'] ? 'Yes' : 'No');
+      $servers[$a_inventory['inv_name']]->inventory_service_class->service_restore      = $a_inv_service['svc_restore'];
     } else {
-      $servers[$a_inventory['inv_name']]->inventory_service_class = $a_service['svc_name'];
+      $servers[$a_inventory['inv_name']]->inventory_service_class = $a_inv_service['svc_name'];
     }
     
     $count = 0;

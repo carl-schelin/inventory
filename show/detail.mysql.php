@@ -138,29 +138,29 @@
   $output .= "</tr>";
 
   $q_string  = "select svc_name,svc_availability,svc_downtime,svc_mtbf,svc_geographic,svc_mttr,svc_resource,svc_restore ";
-  $q_string .= "from service ";
+  $q_string .= "from inv_service ";
   $q_string .= "where svc_id = " . $a_inventory['inv_class'];
-  $q_service = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_service = mysqli_fetch_array($q_service);
+  $q_inv_service = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_service = mysqli_fetch_array($q_inv_service);
 
   $geographic = 'No';
-  if ($a_service['svc_geographic']) {
+  if ($a_inv_service['svc_geographic']) {
     $geographic = 'Yes';
   }
   $resource = 'No';
-  if ($a_service['svc_resource']) {
+  if ($a_inv_service['svc_resource']) {
     $resource = 'Yes';
   }
 
   $output .= "<tr>\n";
-  $output .= "  <td class=\"" . $class_detail . "\"><strong>Class</strong>: "                . $a_service['svc_name']         . "</td>\n";
-  $output .= "  <td class=\"" . $class_detail . "\"><strong>Availability</strong>: "         . $a_service['svc_availability'] . "</td>\n";
-  $output .= "  <td class=\"" . $class_detail . "\"><strong>Downtime</strong>: "             . $a_service['svc_downtime']     . "</td>\n";
-  $output .= "  <td class=\"" . $class_detail . "\"><strong>MTBF</strong>: "                 . $a_service['svc_mtbf']         . "</td>\n";
+  $output .= "  <td class=\"" . $class_detail . "\"><strong>Class</strong>: "                . $a_inv_service['svc_name']         . "</td>\n";
+  $output .= "  <td class=\"" . $class_detail . "\"><strong>Availability</strong>: "         . $a_inv_service['svc_availability'] . "</td>\n";
+  $output .= "  <td class=\"" . $class_detail . "\"><strong>Downtime</strong>: "             . $a_inv_service['svc_downtime']     . "</td>\n";
+  $output .= "  <td class=\"" . $class_detail . "\"><strong>MTBF</strong>: "                 . $a_inv_service['svc_mtbf']         . "</td>\n";
   $output .= "  <td class=\"" . $class_detail . "\"><strong>Geographic Diversity</strong>: " . $geographic                    . "</td>\n";
-  $output .= "  <td class=\"" . $class_detail . "\"><strong>MTTR</strong>: "                 . $a_service['svc_mttr']         . "</td>\n";
+  $output .= "  <td class=\"" . $class_detail . "\"><strong>MTTR</strong>: "                 . $a_inv_service['svc_mttr']         . "</td>\n";
   $output .= "  <td class=\"" . $class_detail . "\"><strong>Resource Sharing</strong>: "     . $resource                      . "</td>\n";
-  $output .= "  <td class=\"" . $class_detail . "\"><strong>Restore</strong>: "              . $a_service['svc_restore']      . "</td>\n";
+  $output .= "  <td class=\"" . $class_detail . "\"><strong>Restore</strong>: "              . $a_inv_service['svc_restore']      . "</td>\n";
   $output .= "</tr>\n";
   $output .= "</table>";
 

@@ -539,15 +539,15 @@
           print "selbox.options.length = 0;\n";
 
           $q_string  = "select svc_id,svc_name ";
-          $q_string .= "from service ";
+          $q_string .= "from inv_service ";
           $q_string .= "order by svc_id ";
-          $q_service = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_inv_service = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-          while ($a_service = mysqli_fetch_array($q_service) ) {
-            print "if (celltext == \"" . $a_service['svc_name'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_service['svc_name']) . "\"," . $a_service['svc_id'] . ",1,1);\n";
+          while ($a_inv_service = mysqli_fetch_array($q_inv_service) ) {
+            print "if (celltext == \"" . $a_inv_service['svc_name'] . "\") {\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_service['svc_name']) . "\"," . $a_inv_service['svc_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_service['svc_name']) . "\"," . $a_service['svc_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_service['svc_name']) . "\"," . $a_inv_service['svc_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -564,22 +564,22 @@
           print "cell.setAttribute(\"onclick\", \"edit_Detail(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "select svc_id,svc_name ";
-          $q_string .= "from service ";
+          $q_string .= "from inv_service ";
           $q_string .= "where svc_id = " . $formVars['select'] . " ";
-          $q_service = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_service) > 0) {
-            $a_service = mysqli_fetch_array($q_service);
+          $q_inv_service = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_service) > 0) {
+            $a_inv_service = mysqli_fetch_array($q_inv_service);
           } else {
-            $a_service['svc_id']   = 0;
-            $a_service['svc_name'] = "Unassigned";
+            $a_inv_service['svc_id']   = 0;
+            $a_inv_service['svc_name'] = "Unassigned";
           }
 
-          $display = $a_service['svc_name'];
+          $display = $a_inv_service['svc_name'];
 
           $q_string  = "update ";
           $q_string .= "inventory ";
           $q_string .= "set ";
-          $q_string .= "inv_class = " . $a_service['svc_id'] . " ";
+          $q_string .= "inv_class = " . $a_inv_service['svc_id'] . " ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 

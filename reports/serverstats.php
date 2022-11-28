@@ -643,48 +643,48 @@ print $q_string;
   }
 
   $q_string  = "select svc_id,svc_name,svc_acronym,svc_availability,svc_downtime,svc_mtbf,svc_geographic,svc_mttr,svc_resource,svc_restore ";
-  $q_string .= "from service ";
+  $q_string .= "from inv_service ";
   $q_string .= "order by svc_id ";
-  $q_service = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_service = mysqli_fetch_array($q_service)) {
+  $q_inv_service = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_service = mysqli_fetch_array($q_inv_service)) {
   
     $geographic = 'No';
-    if ($a_service['svc_geographic'] == 1) {
+    if ($a_inv_service['svc_geographic'] == 1) {
       $geographic = 'Yes';
     }
     $resource = 'No';
-    if ($a_service['svc_resource'] == 1) {
+    if ($a_inv_service['svc_resource'] == 1) {
       $resource = 'Yes';
     }
 
     print "<tr>\n";
-    print "  <td class=\"ui-widget-content\">" . $a_service['svc_name'] . "</td>\n";
-    print "  <td class=\"ui-widget-content delete\">" . $a_service['svc_acronym'] . "</td>\n";
-    print "  <td class=\"ui-widget-content delete\">" . $a_service['svc_availability'] . "</td>\n";
-    print "  <td class=\"ui-widget-content delete\">" . $a_service['svc_downtime'] . "</td>\n";
-    print "  <td class=\"ui-widget-content delete\">" . $a_service['svc_mtbf'] . "</td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_service['svc_name'] . "</td>\n";
+    print "  <td class=\"ui-widget-content delete\">" . $a_inv_service['svc_acronym'] . "</td>\n";
+    print "  <td class=\"ui-widget-content delete\">" . $a_inv_service['svc_availability'] . "</td>\n";
+    print "  <td class=\"ui-widget-content delete\">" . $a_inv_service['svc_downtime'] . "</td>\n";
+    print "  <td class=\"ui-widget-content delete\">" . $a_inv_service['svc_mtbf'] . "</td>\n";
     print "  <td class=\"ui-widget-content delete\">" . $geographic . "</td>\n";
-    print "  <td class=\"ui-widget-content delete\">" . $a_service['svc_mttr'] . "</td>\n";
+    print "  <td class=\"ui-widget-content delete\">" . $a_inv_service['svc_mttr'] . "</td>\n";
     print "  <td class=\"ui-widget-content delete\">" . $resource . "</td>\n";
-    print "  <td class=\"ui-widget-content delete\">" . $a_service['svc_restore'] . "</td>\n";
+    print "  <td class=\"ui-widget-content delete\">" . $a_inv_service['svc_restore'] . "</td>\n";
 
 
-    if ($a_service['svc_id'] == 1) {
+    if ($a_inv_service['svc_id'] == 1) {
       print "  <td class=\"ui-widget-content delete\">" . $lmcs . "/" . $callpath . "</td>\n";
     }
-    if ($a_service['svc_id'] == 2) {
+    if ($a_inv_service['svc_id'] == 2) {
       print "  <td class=\"ui-widget-content delete\">" . $bcs . "</td>\n";
     }
-    if ($a_service['svc_id'] == 3) {
+    if ($a_inv_service['svc_id'] == 3) {
       print "  <td class=\"ui-widget-content delete\">" . $bes . "</td>\n";
     }
-    if ($a_service['svc_id'] == 4) {
+    if ($a_inv_service['svc_id'] == 4) {
       print "  <td class=\"ui-widget-content delete\">" . $bss . "</td>\n";
     }
-    if ($a_service['svc_id'] == 5) {
+    if ($a_inv_service['svc_id'] == 5) {
       print "  <td class=\"ui-widget-content delete\">" . $ubs . "</td>\n";
     }
-    if ($a_service['svc_id'] == 6) {
+    if ($a_inv_service['svc_id'] == 6) {
       print "  <td class=\"ui-widget-content delete\">" . $lab . "</td>\n";
     }
 

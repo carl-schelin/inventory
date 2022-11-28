@@ -157,7 +157,7 @@
   $q_string .= "left join models   on models.mod_id    = hardware.hw_vendorid ";
   $q_string .= "left join support  on support.sup_id   = hardware.hw_supportid ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
-  $q_string .= "left join service  on service.svc_id   = inventory.inv_class ";
+  $q_string .= "left join inv_service  on inv_service.svc_id   = inventory.inv_class ";
   $q_string .= $leftjoin;
   $q_string .= $where;
   $q_string .= $orderby;

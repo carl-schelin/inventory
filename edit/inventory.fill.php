@@ -55,7 +55,7 @@
         $invrear       = return_Index($db, $a_inventory['inv_rear'],       "select img_id from images where img_facing = 0 order by img_title,img_file");
         $invmanager    = return_Index($db, $a_inventory['inv_manager'],    "select grp_id from inv_groups where grp_disabled = 0 order by grp_name");
         $invappadmin   = return_Index($db, $a_inventory['inv_appadmin'],   "select grp_id from inv_groups where grp_disabled = 0 order by grp_name");
-        $invclass      = return_Index($db, $a_inventory['inv_class'],      "select svc_id from service order by svc_id");
+        $invclass      = return_Index($db, $a_inventory['inv_class'],      "select svc_id from inv_service order by svc_id");
         $invresponse   = return_Index($db, $a_inventory['inv_response'],   "select slv_id from supportlevel order by slv_value");
         $invproduct    = return_Index($db, $a_inventory['inv_product'],    "select prod_id from products order by prod_name");
         $invproject    = return_Index($db, $a_inventory['inv_project'],    "select prj_id from projects where prj_product = " . $a_inventory['inv_product'] . " order by prj_name");
