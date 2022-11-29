@@ -169,17 +169,17 @@
 # get the location. need to compare to the environment and just get the first instance since most earlier servers were L&S data center.
       $inv_location = 0;
       $q_string  = "select loc_id ";
-      $q_string .= "from locations ";
+      $q_string .= "from inv_locations ";
       $q_string .= "where loc_identity = \"" . $location . "\" and loc_environment = " . $inv_env . " and loc_type = 1 ";
       $q_string .= "order by loc_id ";
       $q_string .= "limit 1 ";
-      $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_locations) == 0) {
+      $q_inv_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_locations) == 0) {
         $error .= "Unable to identify location: " . $location . " ";
       } else {
-        $a_locations = mysqli_fetch_array($q_locations);
+        $a_inv_locations = mysqli_fetch_array($q_inv_locations);
 
-        $inv_location = $a_locations['loc_id'];
+        $inv_location = $a_inv_locations['loc_id'];
       }
 
 # get the product id

@@ -28,7 +28,7 @@
       $a_network = mysqli_fetch_array($q_network);
 
       $netzone     = return_Index($db, $a_network['net_zone'],     "select zone_id from net_zones order by zone_zone");
-      $netlocation = return_Index($db, $a_network['net_location'], "select loc_id from locations order by loc_name");
+      $netlocation = return_Index($db, $a_network['net_location'], "select loc_id from inv_locations order by loc_name");
 
       print "document.formUpdate.net_ipv4.value = '"        . mysqli_real_escape_string($db, $a_network['net_ipv4'])        . "';\n";
       print "document.formUpdate.net_ipv6.value = '"        . mysqli_real_escape_string($db, $a_network['net_ipv6'])        . "';\n";

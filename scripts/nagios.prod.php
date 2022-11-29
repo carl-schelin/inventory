@@ -79,7 +79,7 @@
   }
   $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
   $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
-  $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "where int_nagios = 1 and inv_status = 0 and typ_name = 'OS' and int_ip6 = 0 and int_management = 1 and loc_instance > 0 and inv_manager = 1 ";
   if ($hostname == 'inventory.internal.pri') {
     $q_string .= "and hw_active != '1971-01-01' ";

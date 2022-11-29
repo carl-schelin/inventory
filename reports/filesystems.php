@@ -181,7 +181,7 @@
   $q_string .= "from filesystem ";
   $q_string .= "left join inventory on inventory.inv_id      = filesystem.fs_companyid ";
   $q_string .= "left join products on products.prod_id       = inventory.inv_product ";
-  $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= $where . " ";
   $q_string .= $orderby;

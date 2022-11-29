@@ -204,12 +204,12 @@
     $servers[$a_inventory['inv_name']]->inventory_maintenance_window = $a_inventory['man_text'];
 
     $q_string  = "select loc_identity ";
-    $q_string .= "from locations ";
+    $q_string .= "from inv_locations ";
     $q_string .= "where loc_id = " . $a_inventory['inv_location'] . " ";
-    $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_locations = mysqli_fetch_array($q_locations);
+    $q_inv_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inv_locations = mysqli_fetch_array($q_inv_locations);
 
-    $servers[$a_inventory['inv_name']]->inventory_location = $a_locations['loc_identity'];
+    $servers[$a_inventory['inv_name']]->inventory_location = $a_inv_locations['loc_identity'];
 
     $q_string  = "select svc_name ";
     $q_string .= "from inv_service ";

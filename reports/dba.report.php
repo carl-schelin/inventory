@@ -142,7 +142,7 @@
   $q_string .= "left join inv_sw_types      on inv_sw_types.typ_id            = software.sw_type ";
   $q_string .= "left join vendors       on vendors.ven_id             = software.sw_vendor ";
   $q_string .= "left join hardware      on hardware.hw_companyid      = inventory.inv_id ";
-  $q_string .= "left join locations     on locations.loc_id           = inventory.inv_location ";
+  $q_string .= "left join inv_locations     on inv_locations.loc_id           = inventory.inv_location ";
   $q_string .= $where;
   $q_string .= "order by inv_name";
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

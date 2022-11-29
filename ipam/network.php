@@ -304,11 +304,11 @@ the network for that IP address.</p>
   <td class="ui-widget-content">Location: <select name="net_location">
 <?php
   $q_string  = "select loc_id,loc_name ";
-  $q_string .= "from locations ";
+  $q_string .= "from inv_locations ";
   $q_string .= "order by loc_name ";
-  $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_locations = mysqli_fetch_array($q_locations)) {
-    print "<option value=\"" . $a_locations['loc_id'] . "\">" . $a_locations['loc_name'] . "</option>\n";
+  $q_inv_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_locations = mysqli_fetch_array($q_inv_locations)) {
+    print "<option value=\"" . $a_inv_locations['loc_id'] . "\">" . $a_inv_locations['loc_name'] . "</option>\n";
   }
 
 ?></select></td>
@@ -372,11 +372,11 @@ the network for that IP address.</p>
   <td class="ui-widget-content">Location: <select name="net_location">
 <?php
   $q_string  = "select loc_id,loc_name ";
-  $q_string .= "from locations ";
+  $q_string .= "from inv_locations ";
   $q_string .= "order by loc_name ";
-  $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_locations = mysqli_fetch_array($q_locations)) {
-    print "<option value=\"" . $a_locations['loc_id'] . "\">" . $a_locations['loc_name'] . "</option>\n";
+  $q_inv_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_locations = mysqli_fetch_array($q_inv_locations)) {
+    print "<option value=\"" . $a_inv_locations['loc_id'] . "\">" . $a_inv_locations['loc_name'] . "</option>\n";
   }
 
 ?></select></td>

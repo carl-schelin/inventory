@@ -55,7 +55,7 @@
   $q_string .= "from chkserver ";
   $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
   $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
-  $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where ce_priority = 1 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
@@ -67,7 +67,7 @@
   $q_string .= "from chkserver ";
   $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
   $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
-  $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where ce_priority = 2 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
@@ -79,7 +79,7 @@
   $q_string .= "from chkserver ";
   $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
   $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
-  $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where ce_priority = 3 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
@@ -91,7 +91,7 @@
   $q_string .= "from chkserver ";
   $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
   $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
-  $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where ce_priority = 4 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
@@ -103,7 +103,7 @@
   $q_string .= "from chkserver ";
   $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
   $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
-  $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where ce_priority = 5 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
@@ -115,7 +115,7 @@
   $q_string .= "from chkserver ";
   $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
   $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
-  $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where chk_closed != '1971-01-01 00:00:00' " . $where;
@@ -128,7 +128,7 @@
   $q_string .= "from chkserver ";
   $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
   $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
-  $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where chk_status = 1 and chk_closed = '1971-01-01 00:00:00' " . $where;
@@ -141,7 +141,7 @@
   $q_string .= "from chkserver ";
   $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
   $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
-  $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where chk_status = 2 and chk_closed = '1971-01-01 00:00:00' " . $where;

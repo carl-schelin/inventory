@@ -156,9 +156,9 @@
       $q_string  = "select int_server,int_companyid,int_addr,int_eth,itp_name,grp_name,IFNULL(inv_appadmin,0) as inv_appadmin,inv_status,inv_function,inv_project,prj_name,inv_product,prod_name ";
       $q_string .= "from interface ";
       $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
-      $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
-      $q_string .= "left join cities    on cities.ct_id     = locations.loc_city ";
-      $q_string .= "left join inv_states    on inv_states.st_id     = locations.loc_state ";
+      $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
+      $q_string .= "left join cities    on cities.ct_id     = inv_locations.loc_city ";
+      $q_string .= "left join inv_states    on inv_states.st_id     = inv_locations.loc_state ";
       $q_string .= "left join int_types   on int_types.itp_id   = interface.int_type ";
       $q_string .= "left join products  on products.prod_id = inventory.inv_product ";
       $q_string .= "left join projects  on projects.prj_id  = inventory.inv_project ";
@@ -300,9 +300,9 @@
       $q_string  = "select int_server,int_companyid,int_addr,int_eth,itp_name,grp_name,IFNULL(inv_appadmin, 0) as inv_appadmin,inv_status ";
       $q_string .= "from interface ";
       $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
-      $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
-      $q_string .= "left join cities    on cities.ct_id     = locations.loc_city ";
-      $q_string .= "left join inv_states    on inv_states.st_id     = locations.loc_state ";
+      $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
+      $q_string .= "left join cities    on cities.ct_id     = inv_locations.loc_city ";
+      $q_string .= "left join inv_states    on inv_states.st_id     = inv_locations.loc_state ";
       $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
       $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
       if ($formVars['retired'] == 'true') {
@@ -444,9 +444,9 @@
       $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
       $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
       $q_string .= "left join vendors   on vendors.ven_id = software.sw_vendor ";
-      $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
-      $q_string .= "left join cities    on cities.ct_id     = locations.loc_city ";
-      $q_string .= "left join inv_states    on inv_states.st_id     = locations.loc_state ";
+      $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
+      $q_string .= "left join cities    on cities.ct_id     = inv_locations.loc_city ";
+      $q_string .= "left join inv_states    on inv_states.st_id     = inv_locations.loc_state ";
       $q_string .= "left join inv_groups on inv_groups.grp_id = svr_software.svr_groupid ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";
@@ -583,9 +583,9 @@
       $q_string  = "select hw_companyid,inv_name,grp_name,ven_name,mod_name,part_name,mod_type,inv_status,hw_serial,hw_asset ";
       $q_string .= "from hardware ";
       $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
-      $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
-      $q_string .= "left join cities    on cities.ct_id     = locations.loc_city ";
-      $q_string .= "left join inv_states    on inv_states.st_id     = locations.loc_state ";
+      $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
+      $q_string .= "left join cities    on cities.ct_id     = inv_locations.loc_city ";
+      $q_string .= "left join inv_states    on inv_states.st_id     = inv_locations.loc_state ";
       $q_string .= "left join inv_groups  on inv_groups.grp_id  = hardware.hw_group ";
       $q_string .= "left join models    on models.mod_id    = hardware.hw_vendorid ";
       $q_string .= "left join vendors   on vendors.ven_id   = models.mod_vendor ";
@@ -723,9 +723,9 @@
       $q_string  = "select hw_asset,hw_companyid,hw_serial,inv_name,loc_name,grp_name,inv_status ";
       $q_string .= "from hardware ";
       $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
-      $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
-      $q_string .= "left join cities    on cities.ct_id     = locations.loc_city ";
-      $q_string .= "left join inv_states    on inv_states.st_id     = locations.loc_state ";
+      $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
+      $q_string .= "left join cities    on cities.ct_id     = inv_locations.loc_city ";
+      $q_string .= "left join inv_states    on inv_states.st_id     = inv_locations.loc_state ";
       $q_string .= "left join inv_groups    on inv_groups.grp_id    = inventory.inv_manager ";
       $q_string .= "where " . $search_on . " ";
       $q_string .= $orderby;
@@ -854,12 +854,12 @@
 
       $q_string  = "select inv_id,loc_name,ct_city,st_acronym,cn_acronym,inv_name,grp_name,typ_name,inv_status ";
       $q_string .= "from inventory ";
-      $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
+      $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
       $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
-      $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
-      $q_string .= "left join inv_states on inv_states.st_id = locations.loc_state ";
-      $q_string .= "left join country on country.cn_id = locations.loc_country ";
-      $q_string .= "left join loc_types on loc_types.typ_id = locations.loc_type ";
+      $q_string .= "left join cities on cities.ct_id = inv_locations.loc_city ";
+      $q_string .= "left join inv_states on inv_states.st_id = inv_locations.loc_state ";
+      $q_string .= "left join country on country.cn_id = inv_locations.loc_country ";
+      $q_string .= "left join loc_types on loc_types.typ_id = inv_locations.loc_type ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";
       } else {
@@ -1216,9 +1216,9 @@
       $q_string .= "from inv_packages ";
       $q_string .= "left join inventory on inventory.inv_id = inv_packages.pkg_inv_id ";
       $q_string .= "left join products  on products.prod_id = inventory.inv_product ";
-      $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
-      $q_string .= "left join cities    on cities.ct_id     = locations.loc_city ";
-      $q_string .= "left join inv_states    on inv_states.st_id     = locations.loc_state ";
+      $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
+      $q_string .= "left join cities    on cities.ct_id     = inv_locations.loc_city ";
+      $q_string .= "left join inv_states    on inv_states.st_id     = inv_locations.loc_state ";
       $q_string .= "left join inv_groups    on inv_groups.grp_id    = inventory.inv_manager ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";

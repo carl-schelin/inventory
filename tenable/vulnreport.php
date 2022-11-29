@@ -280,8 +280,8 @@
   $q_string .= "from products ";
   $q_string .= "left join inventory on inventory.inv_product = products.prod_id ";
   $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
-  $q_string .= "left join cities    on cities.ct_id          = locations.loc_city ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
+  $q_string .= "left join cities    on cities.ct_id          = inv_locations.loc_city ";
   $q_string .= "left join net_zones on net_zones.zone_id     = inventory.inv_zone ";
   $q_string .= "left join models    on models.mod_id         = hardware.hw_vendorid ";
   $q_string .= "left join inv_groups  on inv_groups.grp_id       = inventory.inv_manager ";

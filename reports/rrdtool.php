@@ -146,7 +146,7 @@
   $q_string  = "select inv_id,IF(INSTR(inv_name,'/'),LEFT(inv_name,LOCATE('/',inv_name)-1),inv_name) as inv_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join hardware on inventory.inv_id = hardware.hw_companyid ";
-  $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= $where;
   $q_string .= $orderby;

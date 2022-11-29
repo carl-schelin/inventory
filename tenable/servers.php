@@ -203,7 +203,7 @@ if needed.</p>
     $q_string .= "left join projects  on projects.prj_id = inventory.inv_project ";
   }
   if (($formVars['locations'] + $formVars['country'] + $formVars['state'] + $formVars['city']) > 0) {
-    $q_string .= "left join locations  on locations.loc_id = inventory.inv_location ";
+    $q_string .= "left join inv_locations  on inv_locations.loc_id = inventory.inv_location ";
   }
 # want to add in cities, states, and country tables as well.
   if ($formVars['inwork'] == 'true') {

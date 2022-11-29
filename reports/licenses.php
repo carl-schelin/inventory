@@ -171,7 +171,7 @@
   $q_string .= "left join products  on products.prod_id      = software.sw_product ";
   $q_string .= "left join svr_software on svr_software.svr_softwareid      = software.sw_id ";
   $q_string .= "left join inventory on inventory.inv_id      = svr_software.svr_companyid ";
-  $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
   $q_string .= $where . " and sw_licenseid > 0 ";
   $q_string .= $orderby;
   $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

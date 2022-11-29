@@ -491,12 +491,12 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
 <option value="0">Data Center</option>
 <?php
   $q_string  = "select loc_id,loc_name,loc_identity ";
-  $q_string .= "from locations ";
+  $q_string .= "from inv_locations ";
   $q_string .= "where loc_type = 1 ";
   $q_string .= "order by loc_name ";
-  $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_locations = mysqli_fetch_array($q_locations)) {
-    print "<option value=\"" . $a_locations['loc_id'] . "\">" . $a_locations['loc_name'] . " (" . $a_locations['loc_identity'] . ")</option>";
+  $q_inv_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_locations = mysqli_fetch_array($q_inv_locations)) {
+    print "<option value=\"" . $a_inv_locations['loc_id'] . "\">" . $a_inv_locations['loc_name'] . " (" . $a_inv_locations['loc_identity'] . ")</option>";
   }
 ?>
 </select>

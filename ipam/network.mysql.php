@@ -84,7 +84,7 @@
       $q_string .= "from network ";
       $q_string .= "left join inv_users on inv_users.usr_id = network.net_user ";
       $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
-      $q_string .= "left join locations on locations.loc_id = network.net_location ";
+      $q_string .= "left join inv_locations on inv_locations.loc_id = network.net_location ";
       $q_string .= "where net_ipv4 != '' ";
       $q_string .= "order by net_ipv4 ";
       $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -154,7 +154,7 @@
       $q_string .= "from network ";
       $q_string .= "left join inv_users on inv_users.usr_id = network.net_user ";
       $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
-      $q_string .= "left join locations on locations.loc_id = network.net_location ";
+      $q_string .= "left join inv_locations on inv_locations.loc_id = network.net_location ";
       $q_string .= "where net_ipv6 != '' ";
       $q_string .= "order by net_ipv6 ";
       $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

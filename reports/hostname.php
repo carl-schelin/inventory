@@ -121,13 +121,13 @@ $(document).ready( function() {
   <td class="ui-widget-content">Select the Data Center where the server will be located: <select name="location" onclick="check_encode();" onblur="check_encode();">
 <?php
   $q_string  = "select loc_id,loc_name,ct_clli,loc_instance ";
-  $q_string .= "from locations ";
-  $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
+  $q_string .= "from inv_locations ";
+  $q_string .= "left join cities on cities.ct_id = inv_locations.loc_city ";
   $q_string .= "where loc_type = 1 and ct_clli != '' ";
   $q_string .= "order by ct_clli,loc_instance ";
-  $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_locations = mysqli_fetch_array($q_locations)) {
-    print "<option value=\"" . $a_locations['loc_id'] . "\">" . $a_locations['ct_clli'] . $a_locations['loc_instance'] . " (" . $a_locations['loc_name'] . ")</option>\n";
+  $q_inv_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_locations = mysqli_fetch_array($q_inv_locations)) {
+    print "<option value=\"" . $a_inv_locations['loc_id'] . "\">" . $a_inv_locations['ct_clli'] . $a_inv_locations['loc_instance'] . " (" . $a_inv_locations['loc_name'] . ")</option>\n";
   }
 ?>
 </select></td>

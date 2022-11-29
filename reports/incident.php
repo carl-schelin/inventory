@@ -222,9 +222,9 @@
             . "from inventory "
             . "left join hardware  on hardware.hw_companyid = inventory.inv_id "
             . "left join products  on products.prod_id      = inventory.inv_product "
-            . "left join locations on locations.loc_id      = inventory.inv_location "
-            . "left join cities    on cities.ct_id          = locations.loc_city "
-            . "left join inv_states    on inv_states.st_id          = locations.loc_state "
+            . "left join inv_locations on inv_locations.loc_id      = inventory.inv_location "
+            . "left join cities    on cities.ct_id          = inv_locations.loc_city "
+            . "left join inv_states    on inv_states.st_id          = inv_locations.loc_state "
             . "left join inv_groups    on inv_groups.grp_id         = inventory.inv_manager "
             . $where . " " 
             . $orderby;

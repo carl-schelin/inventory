@@ -49,7 +49,7 @@
         $q_string .= "where mod_type = 48 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name ";
  
-        $invlocation   = return_Index($db, $a_inventory['inv_location'],   "select loc_id from locations left join cities on cities.ct_id = locations.loc_city order by ct_city,loc_name");
+        $invlocation   = return_Index($db, $a_inventory['inv_location'],   "select loc_id from inv_locations left join cities on cities.ct_id = inv_locations.loc_city order by ct_city,loc_name");
         $invzone       = return_Index($db, $a_inventory['inv_zone'],       "select zone_id from timezones order by zone_name");
         $invfront      = return_Index($db, $a_inventory['inv_front'],      "select img_id from images where img_facing = 1 order by img_title,img_file");
         $invrear       = return_Index($db, $a_inventory['inv_rear'],       "select img_id from images where img_facing = 0 order by img_title,img_file");

@@ -75,13 +75,13 @@
       if (is_numeric($os_instance) === true) {
 
         $q_string  = "select loc_name ";
-        $q_string .= "from locations ";
-        $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
+        $q_string .= "from inv_locations ";
+        $q_string .= "left join cities on cities.ct_id = inv_locations.loc_city ";
         $q_string .= "where ct_clli = '" . $os_location . "' and loc_instance = " . $os_instance . " and loc_type = 1 ";
-        $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        $a_locations = mysqli_fetch_array($q_locations);
+        $q_inv_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_inv_locations = mysqli_fetch_array($q_inv_locations);
 
-        $formVars['i15location'] = $a_locations['loc_name'];
+        $formVars['i15location'] = $a_inv_locations['loc_name'];
 
         $formVars['i15instance'] = $os_instance;
 
@@ -163,13 +163,13 @@
           $os_interface = strtolower(substr($formVars['server'], $svr_length, 1));
 
           $q_string  = "select loc_name ";
-          $q_string .= "from locations ";
-          $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
+          $q_string .= "from inv_locations ";
+          $q_string .= "left join cities on cities.ct_id = inv_locations.loc_city ";
           $q_string .= "where ct_clli = '" . $os_location . "' and loc_type = 1 ";
-          $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          $a_locations = mysqli_fetch_array($q_locations);
+          $q_inv_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_inv_locations = mysqli_fetch_array($q_inv_locations);
 
-          $formVars['08location']  = $a_locations['loc_name'];
+          $formVars['08location']  = $a_inv_locations['loc_name'];
 
           $q_string  = "select st_state ";
           $q_string .= "from inv_states ";

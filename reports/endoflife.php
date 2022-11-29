@@ -175,7 +175,7 @@
   $q_string .= "left join software     on software.sw_id             = svr_software.svr_softwareid ";
   $q_string .= "left join products     on products.prod_id           = software.sw_product ";
   $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = software.sw_type ";
-  $q_string .= "left join locations    on locations.loc_id           = inventory.inv_location ";
+  $q_string .= "left join inv_locations    on inv_locations.loc_id           = inventory.inv_location ";
   $q_string .= $where . " and typ_name = 'OS' ";
   $q_string .= $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

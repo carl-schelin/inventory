@@ -26,11 +26,11 @@
   $zone[5] = "M";
 
   $q_string  = "select loc_instance,ct_clli ";
-  $q_string .= "from locations ";
-  $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
+  $q_string .= "from inv_locations ";
+  $q_string .= "left join cities on cities.ct_id = inv_locations.loc_city ";
   $q_string .= "where loc_id = " . $formVars['location'] . " ";
-  $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_locations = mysqli_fetch_array($q_locations);
+  $q_inv_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_locations = mysqli_fetch_array($q_inv_locations);
 
   $q_string  = "select dev_type,dev_infrastructure ";
   $q_string .= "from device ";
@@ -60,8 +60,8 @@
 
 # now build the hostname
   $formVars['hostname'] = 
-    $a_locations['ct_clli']      . 
-    $a_locations['loc_instance'] . 
+    $a_inv_locations['ct_clli']      . 
+    $a_inv_locations['loc_instance'] . 
     $zone[$formVars['zone']]     . 
     $a_device['dev_type']        . 
     $a_products['prod_code']     . 

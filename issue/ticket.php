@@ -620,10 +620,10 @@ $(document).ready( function() {
 <?php
   $q_string  = "select loc_name,loc_addr1,loc_addr2,ct_city,st_acronym,loc_zipcode,cn_acronym,inv_row,inv_rack,inv_unit ";
   $q_string .= "from inventory ";
-  $q_string .= "left join locations on inventory.inv_location = locations.loc_id ";
-  $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
-  $q_string .= "left join inv_states on inv_states.st_id = locations.loc_state ";
-  $q_string .= "left join country on country.cn_id = locations.loc_country ";
+  $q_string .= "left join inv_locations on inventory.inv_location = inv_locations.loc_id ";
+  $q_string .= "left join cities on cities.ct_id = inv_locations.loc_city ";
+  $q_string .= "left join inv_states on inv_states.st_id = inv_locations.loc_state ";
+  $q_string .= "left join country on country.cn_id = inv_locations.loc_country ";
   $q_string .= "where inv_id = " . $formVars['server'];
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_inventory = mysqli_fetch_array($q_inventory);

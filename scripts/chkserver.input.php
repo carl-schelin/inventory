@@ -158,7 +158,7 @@
 # just get a list of all the servers
   $q_string  = "select inv_id,inv_name,loc_identity ";
   $q_string .= "from inventory ";
-  $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "where inv_status = 0 and inv_ssh = 1 and inv_manager = " . $GRP_Unix . " ";
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {

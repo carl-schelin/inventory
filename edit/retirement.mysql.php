@@ -319,7 +319,7 @@
       $q_string .= "left join hardware  on hardware.hw_companyid    = inventory.inv_id ";
       $q_string .= "left join models    on models.mod_id            = hardware.hw_vendorid ";
       $q_string .= "left join vendors   on vendors.ven_id           = models.mod_vendor ";
-      $q_string .= "left join locations on locations.loc_id         = inventory.inv_location ";
+      $q_string .= "left join inv_locations on inv_locations.loc_id         = inventory.inv_location ";
       $q_string .= "where inv_id = " . $formVars['ret_companyid'] . " ";
       $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_inventory = mysqli_fetch_array($q_inventory);

@@ -799,17 +799,17 @@
     $output .= "</tr>\n";
 
     $q_string  = "select loc_name,loc_addr1,ct_city,st_acronym,loc_zipcode,cn_acronym ";
-    $q_string .= "from locations ";
-    $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
+    $q_string .= "from inv_locations ";
+    $q_string .= "left join cities on cities.ct_id = inv_locations.loc_city ";
     $q_string .= "left join inv_states on inv_states.st_id = cities.ct_state ";
     $q_string .= "left join country on country.cn_id = inv_states.st_country ";
     $q_string .= "where loc_id = " . $a_inventory['inv_location'];
-    $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
-    $a_locations = mysqli_fetch_array($q_locations);
+    $q_inv_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+    $a_inv_locations = mysqli_fetch_array($q_inv_locations);
 
     $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
-    $output .= "  <td><strong>Data Center</strong>: " . $a_locations['loc_name'] . "</td>\n";
-    $output .= "  <td><strong>Location</strong>: " . $a_locations['loc_addr1'] . "  " . $a_locations['ct_city'] . ", " . $a_locations['st_acronym'] . " " . $a_locations['loc_zipcode'] . " (" . $a_locations['cn_acronym'] . ")</td>\n";
+    $output .= "  <td><strong>Data Center</strong>: " . $a_inv_locations['loc_name'] . "</td>\n";
+    $output .= "  <td><strong>Location</strong>: " . $a_inv_locations['loc_addr1'] . "  " . $a_inv_locations['ct_city'] . ", " . $a_inv_locations['st_acronym'] . " " . $a_inv_locations['loc_zipcode'] . " (" . $a_inv_locations['cn_acronym'] . ")</td>\n";
 
 # show any parents of this system
     if ($a_inventory['inv_companyid']) {

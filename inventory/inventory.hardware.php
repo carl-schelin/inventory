@@ -310,16 +310,16 @@
           print "selbox.options.length = 0;\n";
 
           $q_string  = "select loc_id,loc_name ";
-          $q_string .= "from locations ";
+          $q_string .= "from inv_locations ";
           $q_string .= "where loc_type = 1 ";
           $q_string .= "order by loc_name ";
-          $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_inv_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-          while ($a_locations = mysqli_fetch_array($q_locations) ) {
-            print "if (celltext == \"" . $a_locations['loc_name'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_locations['loc_name']) . "\"," . $a_locations['loc_id'] . ",1,1);\n";
+          while ($a_inv_locations = mysqli_fetch_array($q_inv_locations) ) {
+            print "if (celltext == \"" . $a_inv_locations['loc_name'] . "\") {\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_locations['loc_name']) . "\"," . $a_inv_locations['loc_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_locations['loc_name']) . "\"," . $a_locations['loc_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_locations['loc_name']) . "\"," . $a_inv_locations['loc_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -336,17 +336,17 @@
           print "cell.setAttribute(\"onclick\", \"data_Center('" . $formVars['id'] . "');" . "\");\n";
 
           $q_string  = "select loc_id,loc_name ";
-          $q_string .= "from locations ";
+          $q_string .= "from inv_locations ";
           $q_string .= "where loc_id = " . $formVars['select'] . " ";
-          $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_locations) > 0) {
-            $a_locations = mysqli_fetch_array($q_locations);
+          $q_inv_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_locations) > 0) {
+            $a_inv_locations = mysqli_fetch_array($q_inv_locations);
           } else {
-            $a_locations['loc_id']   = 0;
-            $a_locations['loc_name'] = "Unassigned";
+            $a_inv_locations['loc_id']   = 0;
+            $a_inv_locations['loc_name'] = "Unassigned";
           }
 
-          $display = $a_locations['loc_name'];
+          $display = $a_inv_locations['loc_name'];
 
           print "cell.innerHTML = '<u>" . $display . "</u>';\n";
         }

@@ -188,50 +188,50 @@
     $servers[$a_inventory['inv_name']]->inventory_maintenance_window = $a_inventory['man_text'];
 
     $q_string  = "select typ_name,loc_name,loc_addr1,loc_addr2,loc_suite,ct_city,st_state,loc_zipcode,cn_country,ct_clli,loc_instance,loc_identity,loc_environment ";
-    $q_string .= "from locations ";
-    $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
+    $q_string .= "from inv_locations ";
+    $q_string .= "left join cities on cities.ct_id = inv_locations.loc_city ";
     $q_string .= "left join inv_states on inv_states.st_id = cities.ct_state ";
     $q_string .= "left join country on country.cn_id = inv_states.st_country ";
-    $q_string .= "left join loc_types on loc_types.typ_id = locations.loc_type ";
+    $q_string .= "left join loc_types on loc_types.typ_id = inv_locations.loc_type ";
     $q_string .= "where loc_id = " . $a_inventory['inv_location'] . " ";
-    $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_locations = mysqli_fetch_array($q_locations);
+    $q_inv_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inv_locations = mysqli_fetch_array($q_inv_locations);
 
     $environment = '';
-    if ($a_locations['loc_environment'] == 1) {
+    if ($a_inv_locations['loc_environment'] == 1) {
       $environment = 'Production';
     }
-    if ($a_locations['loc_environment'] == 2) {
+    if ($a_inv_locations['loc_environment'] == 2) {
       $environment = 'Pre-Production';
     }
-    if ($a_locations['loc_environment'] == 3) {
+    if ($a_inv_locations['loc_environment'] == 3) {
       $environment = 'Quality Assurance';
     }
-    if ($a_locations['loc_environment'] == 4) {
+    if ($a_inv_locations['loc_environment'] == 4) {
       $environment = 'Engineering';
     }
-    if ($a_locations['loc_environment'] == 5) {
+    if ($a_inv_locations['loc_environment'] == 5) {
       $environment = 'Development';
     }
 
     if ($formVars['location'] == 'yes') {
       $servers[$a_inventory['inv_name']]->inventory_location = new Location();
-      $servers[$a_inventory['inv_name']]->inventory_location->location_type        = $a_locations['typ_name'];
-      $servers[$a_inventory['inv_name']]->inventory_location->location_name        = $a_locations['loc_name'];
-      $servers[$a_inventory['inv_name']]->inventory_location->location_address1    = $a_locations['loc_addr1'];
-      $servers[$a_inventory['inv_name']]->inventory_location->location_address2    = $a_locations['loc_addr2'];
-      $servers[$a_inventory['inv_name']]->inventory_location->location_suite       = $a_locations['loc_suite'];
+      $servers[$a_inventory['inv_name']]->inventory_location->location_type        = $a_inv_locations['typ_name'];
+      $servers[$a_inventory['inv_name']]->inventory_location->location_name        = $a_inv_locations['loc_name'];
+      $servers[$a_inventory['inv_name']]->inventory_location->location_address1    = $a_inv_locations['loc_addr1'];
+      $servers[$a_inventory['inv_name']]->inventory_location->location_address2    = $a_inv_locations['loc_addr2'];
+      $servers[$a_inventory['inv_name']]->inventory_location->location_suite       = $a_inv_locations['loc_suite'];
       $servers[$a_inventory['inv_name']]->inventory_location->location_datacenter  = $a_inventory['inv_row'] . "-" . $a_inventory['inv_rack'] . "/U" . $a_inventory['inv_unit'];
-      $servers[$a_inventory['inv_name']]->inventory_location->location_city        = $a_locations['ct_city'];
-      $servers[$a_inventory['inv_name']]->inventory_location->location_state       = $a_locations['st_state'];
-      $servers[$a_inventory['inv_name']]->inventory_location->location_zipcode     = $a_locations['loc_zipcode'];
-      $servers[$a_inventory['inv_name']]->inventory_location->location_country     = $a_locations['cn_country'];
-      $servers[$a_inventory['inv_name']]->inventory_location->location_clli        = $a_locations['ct_clli'];
-      $servers[$a_inventory['inv_name']]->inventory_location->location_instance    = $a_locations['loc_instance'];
-      $servers[$a_inventory['inv_name']]->inventory_location->location_designation = $a_locations['loc_identity'];
+      $servers[$a_inventory['inv_name']]->inventory_location->location_city        = $a_inv_locations['ct_city'];
+      $servers[$a_inventory['inv_name']]->inventory_location->location_state       = $a_inv_locations['st_state'];
+      $servers[$a_inventory['inv_name']]->inventory_location->location_zipcode     = $a_inv_locations['loc_zipcode'];
+      $servers[$a_inventory['inv_name']]->inventory_location->location_country     = $a_inv_locations['cn_country'];
+      $servers[$a_inventory['inv_name']]->inventory_location->location_clli        = $a_inv_locations['ct_clli'];
+      $servers[$a_inventory['inv_name']]->inventory_location->location_instance    = $a_inv_locations['loc_instance'];
+      $servers[$a_inventory['inv_name']]->inventory_location->location_designation = $a_inv_locations['loc_identity'];
       $servers[$a_inventory['inv_name']]->inventory_location->location_environment = $environment;
     } else {
-      $servers[$a_inventory['inv_name']]->inventory_location = $a_locations['loc_identity'];
+      $servers[$a_inventory['inv_name']]->inventory_location = $a_inv_locations['loc_identity'];
     }
 
 

@@ -392,8 +392,8 @@ $(document).ready( function () {
   $q_string .= "loc_type,loc_name,loc_addr1,loc_addr2,loc_suite,loc_city,loc_state,loc_zipcode,loc_country,loc_identity ";
   $q_string .= "from inventory ";
   $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
-  $q_string .= "left join cities    on cities.ct_id          = locations.loc_city ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
+  $q_string .= "left join cities    on cities.ct_id          = inv_locations.loc_city ";
   $q_string .= "left join inv_states    on inv_states.st_id          = cities.ct_state ";
   $q_string .= "left join country   on country.cn_id         = inv_states.st_country ";
   $q_string .= "left join inv_timezones on inv_timezones.zone_id     = inventory.inv_zone ";

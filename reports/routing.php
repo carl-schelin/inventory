@@ -182,7 +182,7 @@
             . "left join routing   on routing.route_companyid = inventory.inv_id "
             . "left join interface on interface.int_id        = routing.route_interface "
             . "left join hardware  on hardware.hw_companyid   = inventory.inv_id "
-            . "left join locations on locations.loc_id        = inventory.inv_location "
+            . "left join inv_locations on inv_locations.loc_id        = inventory.inv_location "
             . "left join models    on models.mod_id           = hardware.hw_vendorid "
             . "left join inv_groups    on inv_groups.grp_id           = inventory.inv_manager "
             . "left join int_types   on int_types.itp_id          = interface.int_type "
@@ -243,7 +243,7 @@
   $q_string = "select inv_id,inv_name "
             . "from inventory "
             . "left join hardware  on hardware.hw_companyid   = inventory.inv_id "
-            . "left join locations on locations.loc_id        = inventory.inv_location "
+            . "left join inv_locations on inv_locations.loc_id        = inventory.inv_location "
             . "left join inv_groups    on inv_groups.grp_id           = inventory.inv_manager "
             . $where
             . "order by inv_name";

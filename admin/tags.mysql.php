@@ -141,9 +141,9 @@
       $q_string .= "left join inv_groups       on inv_groups.grp_id         = tags.tag_group ";
       $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
       $q_string .= "left join models       on models.mod_id         = hardware.hw_vendorid ";
-      $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
-      $q_string .= "left join cities       on cities.ct_id          = locations.loc_city ";
-      $q_string .= "left join inv_states       on inv_states.st_id          = locations.loc_state ";
+      $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";
+      $q_string .= "left join cities       on cities.ct_id          = inv_locations.loc_city ";
+      $q_string .= "left join inv_states       on inv_states.st_id          = inv_locations.loc_state ";
       $q_string .= $where . "and tag_type = 1 ";
       $q_string .= "order by tag_name,inv_name,grp_name,usr_last,usr_first ";
       $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

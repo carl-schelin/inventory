@@ -196,9 +196,9 @@
   $q_string  = "select inv_id,inv_name,inv_rack,inv_row,inv_unit,inv_manager,loc_name,";
   $q_string .= "ct_city,st_acronym,hw_asset,hw_serial ";
   $q_string .= "from inventory ";
-  $q_string .= "left join locations on inventory.inv_location = locations.loc_id ";
-  $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
-  $q_string .= "left join inv_states on inv_states.st_id = locations.loc_state ";
+  $q_string .= "left join inv_locations on inventory.inv_location = inv_locations.loc_id ";
+  $q_string .= "left join cities on cities.ct_id = inv_locations.loc_city ";
+  $q_string .= "left join inv_states on inv_states.st_id = inv_locations.loc_state ";
   $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
   $q_string .= $where . $parent;
@@ -241,9 +241,9 @@
     $q_string  = "select inv_id,inv_name,inv_rack,inv_row,inv_unit,inv_manager,loc_name,";
     $q_string .= "ct_city,st_acronym,hw_asset,hw_serial ";
     $q_string .= "from inventory ";
-    $q_string .= "left join locations on inventory.inv_location = locations.loc_id ";
-    $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
-    $q_string .= "left join inv_states on inv_states.st_id = locations.loc_state ";
+    $q_string .= "left join inv_locations on inventory.inv_location = inv_locations.loc_id ";
+    $q_string .= "left join cities on cities.ct_id = inv_locations.loc_city ";
+    $q_string .= "left join inv_states on inv_states.st_id = inv_locations.loc_state ";
     $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
     $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
     $q_string .= $where . $and . " inv_companyid = " . $a_inventory['inv_id'] . " ";
