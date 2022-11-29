@@ -1004,7 +1004,7 @@
           $groups = '';
           $q_string  = "select grp_name ";
           $q_string .= "from inv_sysgrp_members ";
-          $q_string .= "left join sysgrp on sysgrp.grp_id = inv_sysgrp_members.mem_gid ";
+          $q_string .= "left join inv_sysgrp on inv_sysgrp.grp_id = inv_sysgrp_members.mem_gid ";
           $q_string .= "where mem_uid = " . $a_inventory['pwd_id'] . " ";
           $q_inv_sysgrp_members = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           while ($a_inv_sysgrp_members = mysqli_fetch_array($q_inv_sysgrp_members)) {
@@ -1085,7 +1085,7 @@
             }
             $q_string  = "select grp_name ";
             $q_string .= "from inv_sysgrp_members ";
-            $q_string .= "left join sysgrp on sysgrp.grp_id = inv_sysgrp_members.mem_gid ";
+            $q_string .= "left join inv_sysgrp on inv_sysgrp.grp_id = inv_sysgrp_members.mem_gid ";
             $q_string .= "where mem_uid = " . $a_inventory['pwd_id'] . " ";
             $q_inv_sysgrp_members = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             while ($a_inv_sysgrp_members = mysqli_fetch_array($q_inv_sysgrp_members)) {

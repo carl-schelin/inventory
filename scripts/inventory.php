@@ -588,12 +588,12 @@
 
       $groups = 0;
       $q_string  = "select grp_companyid ";
-      $q_string .= "from sysgrp ";
+      $q_string .= "from inv_sysgrp ";
       $q_string .= "where grp_companyid = " . $remove . " ";
-      $q_sysgrp = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_sysgrp) > 0) {
-        print "There are " . mysqli_num_rows($q_sysgrp) . " system group records for " . $a_inventory['inv_name'] . "\n";
-        $groups = mysqli_num_rows($q_sysgrp);
+      $q_inv_sysgrp = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_sysgrp) > 0) {
+        print "There are " . mysqli_num_rows($q_inv_sysgrp) . " system group records for " . $a_inventory['inv_name'] . "\n";
+        $groups = mysqli_num_rows($q_inv_sysgrp);
       }
 
       $users = 0;
@@ -731,7 +731,7 @@
 
       if ($groups > 0) {
         print "System Groups ";
-        $q_string = "delete from sysgrp     where grp_companyid   = " . $remove;
+        $q_string = "delete from inv_sysgrp     where grp_companyid   = " . $remove;
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 

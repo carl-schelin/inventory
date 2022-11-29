@@ -214,10 +214,10 @@
           }
 
           $q_string  = "select grp_name ";
-          $q_string .= "from sysgrp ";
+          $q_string .= "from inv_sysgrp ";
           $q_string .= "where grp_companyid = " . $formVars['pwd_companyid'] . " and grp_gid = " . $a_inv_syspwd['pwd_gid'] . " ";
-          $q_sysgrp = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          $a_sysgrp = mysqli_fetch_array($q_sysgrp);
+          $q_inv_sysgrp = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_inv_sysgrp = mysqli_fetch_array($q_inv_sysgrp);
 
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('users.fill.php?id=" . $a_inv_manageusers['mu_id'] . "&pwd_id=" . $a_inv_syspwd['pwd_id'] . "');showDiv('users-hide');\">";
           $linkend   = "</a>";
@@ -229,7 +229,7 @@
           $output .=   "<td class=\"" . $class . " delete\">"              . $locked                          . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"                     . $account                         . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_syspwd['pwd_uid']             . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"                     . $a_sysgrp['grp_name'] . " (" . $a_inv_syspwd['pwd_gid'] . ")</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_sysgrp['grp_name'] . " (" . $a_inv_syspwd['pwd_gid'] . ")</td>\n";
           $output .= "  <td class=\"" . $class . "\">"                     . $gecos[0]                        . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"                     . $gecos[1]                        . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_syspwd['pwd_home']            . "</td>\n";
