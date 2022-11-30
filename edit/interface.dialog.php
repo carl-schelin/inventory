@@ -164,15 +164,15 @@ Assignment <select name="int_int_id"></select></td>
   <td class="ui-widget-content">Duplex*: <select name="int_duplex">
 <?php
   $q_string  = "select dup_id,dup_default,dup_text ";
-  $q_string .= "from int_duplex ";
+  $q_string .= "from inv_int_duplex ";
   $q_string .= "order by dup_default desc,dup_text";
-  $q_int_duplex = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_int_duplex) > 0) {
-    while ($a_int_duplex = mysqli_fetch_array($q_int_duplex)) {
-      if ($a_int_duplex['dup_default']) {
-        print "<option selected value=\"" . $a_int_duplex['dup_id'] . "\">" . $a_int_duplex['dup_text'] . "</option>\n";
+  $q_inv_int_duplex = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_int_duplex) > 0) {
+    while ($a_inv_int_duplex = mysqli_fetch_array($q_inv_int_duplex)) {
+      if ($a_inv_int_duplex['dup_default']) {
+        print "<option selected value=\"" . $a_inv_int_duplex['dup_id'] . "\">" . $a_inv_int_duplex['dup_text'] . "</option>\n";
       } else {
-        print "<option value=\"" . $a_int_duplex['dup_id'] . "\">" . $a_int_duplex['dup_text'] . "</option>\n";
+        print "<option value=\"" . $a_inv_int_duplex['dup_id'] . "\">" . $a_inv_int_duplex['dup_text'] . "</option>\n";
       }
     }
   } else {
@@ -334,11 +334,11 @@ Assignment <select name="int_int_id"></select></td>
   <td class="ui-widget-content">Duplex*: <select name="int_duplex">
 <?php
         $q_string  = "select dup_id,dup_text ";
-        $q_string .= "from int_duplex ";
+        $q_string .= "from inv_int_duplex ";
         $q_string .= "order by dup_default desc,dup_text";
-        $q_int_duplex = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_int_duplex = mysqli_fetch_array($q_int_duplex)) {
-          print "<option value=\"" . $a_int_duplex['dup_id'] . "\">" . $a_int_duplex['dup_text'] . "</option>\n";
+        $q_inv_int_duplex = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inv_int_duplex = mysqli_fetch_array($q_inv_int_duplex)) {
+          print "<option value=\"" . $a_inv_int_duplex['dup_id'] . "\">" . $a_inv_int_duplex['dup_text'] . "</option>\n";
         }
 ?>
 </select></td>
