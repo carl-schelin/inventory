@@ -312,7 +312,7 @@
 
   $q_string  = "select hw_purchased,hw_built,hw_active,mod_eol,hw_retired,hw_reused ";
   $q_string .= "from hardware ";
-  $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+  $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
   $q_string .= "where hw_companyid = " . $formVars['id'] . " ";
   $q_string .= "and hw_primary = 1";
   $q_hardware = mysqli_query($db, $q_string) or die(mysqli_error($db));

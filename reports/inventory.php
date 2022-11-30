@@ -430,8 +430,8 @@ $(document).ready( function () {
   $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city ";
   $q_string .= "left join inv_timezones on inv_timezones.zone_id     = inventory.inv_zone ";
-  $q_string .= "left join models    on models.mod_id         = hardware.hw_vendorid ";
-  $q_string .= "left join vendors   on vendors.ven_id        = models.mod_vendor ";
+  $q_string .= "left join inv_models    on inv_models.mod_id         = hardware.hw_vendorid ";
+  $q_string .= "left join vendors   on vendors.ven_id        = inv_models.mod_vendor ";
   $q_string .= "left join inv_groups  on inv_groups.grp_id       = inventory.inv_manager ";
   $q_string .= $product . $inwork . $location . $type . " ";
   $q_string .= $orderby;

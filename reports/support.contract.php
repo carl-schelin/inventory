@@ -247,8 +247,8 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "hw_serial,hw_asset,hw_built,hw_active,hw_retired,hw_reused,hw_supid_verified,hw_supportstart,hw_supportend ";
   $q_string .= "from inventory ";
   $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join models       on models.mod_id         = hardware.hw_vendorid ";
-  $q_string .= "left join vendors      on vendors.ven_id        = models.mod_vendor ";
+  $q_string .= "left join inv_models       on inv_models.mod_id         = hardware.hw_vendorid ";
+  $q_string .= "left join vendors      on vendors.ven_id        = inv_models.mod_vendor ";
   $q_string .= "left join support      on support.sup_id        = hardware.hw_supportid ";
   $q_string .= "left join supportlevel on supportlevel.slv_id   = hardware.hw_response ";
   $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";
@@ -349,8 +349,8 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "hw_serial,hw_asset,hw_built,hw_active,hw_retired,hw_reused,hw_supid_verified,hw_supportstart,hw_supportend ";
   $q_string .= "from inventory ";
   $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join models       on models.mod_id         = hardware.hw_vendorid ";
-  $q_string .= "left join vendors      on vendors.ven_id        = models.mod_vendor ";
+  $q_string .= "left join inv_models       on inv_models.mod_id         = hardware.hw_vendorid ";
+  $q_string .= "left join vendors      on vendors.ven_id        = inv_models.mod_vendor ";
   $q_string .= "left join support      on support.sup_id        = hardware.hw_supportid ";
   $q_string .= "left join supportlevel on supportlevel.slv_id   = inventory.inv_response ";
   $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";
@@ -438,8 +438,8 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "hw_serial,hw_asset,hw_built,hw_active,hw_retired,hw_reused,hw_supid_verified,hw_supportstart,hw_supportend ";
   $q_string .= "from inventory ";
   $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join models       on models.mod_id         = hardware.hw_vendorid ";
-  $q_string .= "left join vendors      on vendors.ven_id        = models.mod_vendor ";
+  $q_string .= "left join inv_models       on inv_models.mod_id         = hardware.hw_vendorid ";
+  $q_string .= "left join vendors      on vendors.ven_id        = inv_models.mod_vendor ";
   $q_string .= "left join support      on support.sup_id        = hardware.hw_supportid ";
   $q_string .= "left join supportlevel on supportlevel.slv_id   = inventory.inv_response ";
   $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";
@@ -524,8 +524,8 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "hw_serial,hw_asset,hw_built,hw_active,hw_retired,hw_reused,hw_supid_verified ";
   $q_string .= "from inventory ";
   $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join models       on models.mod_id         = hardware.hw_vendorid ";
-  $q_string .= "left join vendors      on vendors.mod_id        = models.mod_vendor ";
+  $q_string .= "left join inv_models       on inv_models.mod_id         = hardware.hw_vendorid ";
+  $q_string .= "left join vendors      on vendors.mod_id        = inv_models.mod_vendor ";
   $q_string .= "left join support      on support.sup_id        = hardware.hw_supportid ";
   $q_string .= "left join supportlevel on supportlevel.slv_id   = hardware.hw_response ";
   $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";
@@ -606,8 +606,8 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "hw_serial,hw_asset,hw_built,hw_active,hw_retired,hw_reused,hw_supid_verified,hw_supportstart,hw_supportend ";
   $q_string .= "from inventory ";
   $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join models       on models.mod_id         = hardware.hw_vendorid ";
-  $q_string .= "left join vendors      on vendors.ven_id        = models.mod_vendor ";
+  $q_string .= "left join inv_models       on inv_models.mod_id         = hardware.hw_vendorid ";
+  $q_string .= "left join vendors      on vendors.ven_id        = inv_models.mod_vendor ";
   $q_string .= "left join support      on support.sup_id        = hardware.hw_supportid ";
   $q_string .= "left join supportlevel on supportlevel.slv_id   = inventory.inv_response ";
   $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";

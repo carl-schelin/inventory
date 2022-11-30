@@ -200,7 +200,7 @@
   $q_string .= "left join inv_cities on inv_cities.ct_id = inv_locations.loc_city ";
   $q_string .= "left join inv_states on inv_states.st_id = inv_locations.loc_state ";
   $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+  $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
   $q_string .= $where . $parent;
   $q_string .= $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -245,7 +245,7 @@
     $q_string .= "left join inv_cities on inv_cities.ct_id = inv_locations.loc_city ";
     $q_string .= "left join inv_states on inv_states.st_id = inv_locations.loc_state ";
     $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
-    $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+    $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
     $q_string .= $where . $and . " inv_companyid = " . $a_inventory['inv_id'] . " ";
     $q_string .= "order by inv_unit ";
     $q_child = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

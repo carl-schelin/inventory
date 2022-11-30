@@ -353,8 +353,8 @@
 
         $q_string  = "select hw_id,hw_built,hw_active,hw_update,hw_verified,hw_asset,hw_serial,hw_vendorid,part_name,ven_name,mod_name,mod_size,mod_speed ";
         $q_string .= "from hardware ";
-        $q_string .= "left join models  on models.mod_id  = hardware.hw_vendorid ";
-        $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
+        $q_string .= "left join inv_models  on inv_models.mod_id  = hardware.hw_vendorid ";
+        $q_string .= "left join vendors on vendors.ven_id = inv_models.mod_vendor ";
         $q_string .= "left join parts   on parts.part_id  = hardware.hw_type ";
         $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = 0 ";
         $q_string .= "order by hw_primary desc,part_id,mod_size ";
@@ -394,8 +394,8 @@
 
           $q_string  = "select hw_id,hw_built,hw_active,hw_update,hw_verified,hw_asset,hw_serial,hw_vendorid,part_name,ven_name,mod_name,mod_size,mod_speed ";
           $q_string .= "from hardware ";
-          $q_string .= "left join models  on models.mod_id  = hardware.hw_vendorid ";
-          $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
+          $q_string .= "left join inv_models  on inv_models.mod_id  = hardware.hw_vendorid ";
+          $q_string .= "left join vendors on vendors.ven_id = inv_models.mod_vendor ";
           $q_string .= "left join parts   on parts.part_id  = hardware.hw_type ";
           $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " ";
           $q_string .= "order by hw_primary desc,part_id,mod_size ";

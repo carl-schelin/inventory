@@ -204,7 +204,7 @@ $(document).ready( function() {
   $q_string .= "left join inv_sw_types      on inv_sw_types.typ_id  = software.sw_type ";
   $q_string .= "left join hardware      on inventory.inv_id = hardware.hw_companyid ";
   $q_string .= "left join inv_groups        on inv_groups.grp_id    = hardware.hw_group ";
-  $q_string .= "left join models        on models.mod_id    = hardware.hw_vendorid ";
+  $q_string .= "left join inv_models        on inv_models.mod_id    = hardware.hw_vendorid ";
   $q_string .= "left join support       on support.sup_id   = hardware.hw_supportid ";
   $q_string .= "left join products      on products.prod_id = inventory.inv_product ";
   $q_string .= "left join inv_service       on inv_service.svc_id   = inventory.inv_class ";
@@ -296,8 +296,8 @@ $(document).ready( function() {
   $q_string .= "left join inv_sw_types      on inv_sw_types.typ_id            = software.sw_type ";
   $q_string .= "left join hardware      on inventory.inv_id           = hardware.hw_companyid ";
   $q_string .= "left join inv_groups      on inv_groups.grp_id            = hardware.hw_group ";
-  $q_string .= "left join models        on models.mod_id              = hardware.hw_vendorid ";
-  $q_string .= "left join vendors       on vendors.ven_id             = models.mod_vendor ";
+  $q_string .= "left join inv_models        on inv_models.mod_id              = hardware.hw_vendorid ";
+  $q_string .= "left join vendors       on vendors.ven_id             = inv_models.mod_vendor ";
   $q_string .= "left join support       on support.sup_id             = hardware.hw_supportid ";
   $q_string .= "left join products      on products.prod_id           = inventory.inv_product ";
   $q_string .= "left join service       on service.svc_id             = inventory.inv_class ";

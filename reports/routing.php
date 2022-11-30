@@ -183,7 +183,7 @@
             . "left join interface on interface.int_id        = routing.route_interface "
             . "left join hardware  on hardware.hw_companyid   = inventory.inv_id "
             . "left join inv_locations on inv_locations.loc_id        = inventory.inv_location "
-            . "left join models    on models.mod_id           = hardware.hw_vendorid "
+            . "left join inv_models    on inv_models.mod_id           = hardware.hw_vendorid "
             . "left join inv_groups    on inv_groups.grp_id           = inventory.inv_manager "
             . "left join int_types   on int_types.itp_id          = interface.int_type "
             . $where

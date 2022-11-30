@@ -536,9 +536,9 @@ print $q_string;
 
   $q_string  = "select part_name,ven_name,mod_name,mod_virtual,count(inv_name) ";
   $q_string .= "from hardware ";
-  $q_string .= "left join models    on models.mod_id    = hardware.hw_vendorid ";
-  $q_string .= "left join vendors   on vendors.ven_id   = models.mod_vendor ";
-  $q_string .= "left join parts     on parts.part_id    = models.mod_type ";
+  $q_string .= "left join inv_models    on inv_models.mod_id    = hardware.hw_vendorid ";
+  $q_string .= "left join vendors   on vendors.ven_id   = inv_models.mod_vendor ";
+  $q_string .= "left join parts     on parts.part_id    = inv_models.mod_type ";
   $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
   $q_string .= "where mod_primary = 1 and inv_status = 0 " . $admin . " ";
   $q_string .= "group by ven_name,mod_name ";

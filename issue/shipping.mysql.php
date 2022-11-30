@@ -109,8 +109,8 @@
 
           $q_string  = "select part_name,hw_serial,hw_asset,ven_name,mod_name,hw_rma ";
           $q_string .= "from hardware ";
-          $q_string .= "left join models  on models.mod_id  = hardware.hw_vendorid ";
-          $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
+          $q_string .= "left join inv_models  on inv_models.mod_id  = hardware.hw_vendorid ";
+          $q_string .= "left join vendors on vendors.ven_id = inv_models.mod_vendor ";
           $q_string .= "left join parts   on parts.part_id  = hardware.hw_type ";
           $q_string .= "where hw_id = " . $formVars['hw_id'];
           $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -199,7 +199,7 @@
       $q_string  = "select hw_id,part_name,hw_serial,hw_asset,mod_name,mod_speed,mod_size,hhw_primary,hw_rma ";
       $q_string .= "from hardware ";
       $q_string .= "left join parts  on parts.part_id = hardware.hw_type ";
-      $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+      $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
       $q_string .= "where hw_deleted = 0 and hw_companyid = " . $formVars['hw_server'] . " ";
       $q_string .= "order by hw_type,hw_vendorid";
       $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));

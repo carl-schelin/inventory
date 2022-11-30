@@ -114,7 +114,7 @@
   $q_string  = "select inv_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+  $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
   $q_string .= "where inv_status = 0 and inv_ssh = 0 and inv_manager = " . $manager . " and (mod_id = 15 or mod_id = 45) ";
   $q_string .= "order by inv_name ";
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));

@@ -449,7 +449,7 @@
               $skip = 'no';
               $q_string  = "select hw_id,mod_id,mod_speed ";
               $q_string .= "from hardware ";
-              $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+              $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
               $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_type = 8 and mod_name = '" . trim($value[3]) . "' and mod_size = '" . $value[4] . "' and hw_verified = 0 ";
               $q_string .= "limit 1";
               $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -471,17 +471,17 @@
                 }
               } else {
                 $q_string  = "select mod_id,mod_speed ";
-                $q_string .= "from models ";
+                $q_string .= "from inv_models ";
                 $q_string .= "where mod_name = '" . trim($value[3]) . "' and mod_size = '" . $value[4] . "' ";
-                $q_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-                if (mysqli_num_rows($q_models) > 0) {
-                  $a_models = mysqli_fetch_array($q_models);
+                $q_inv_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+                if (mysqli_num_rows($q_inv_models) > 0) {
+                  $a_inv_models = mysqli_fetch_array($q_inv_models);
 
                   $query = 
                     "hw_companyid =  " . $a_inventory['inv_id']      . "," . 
                     "hw_hw_id     =  " . $primary                    . "," . 
                     "hw_type      =  " . "8"                         . "," . 
-                    "hw_vendorid  =  " . $a_models['mod_id']         . "," . 
+                    "hw_vendorid  =  " . $a_inv_models['mod_id']         . "," . 
                     "hw_verified  =  " . '1'                         . "," . 
                     "hw_user      =  " . '1'                         . "," . 
                     "hw_update    = '" . $date                       . "'";

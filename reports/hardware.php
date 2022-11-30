@@ -189,7 +189,7 @@
   $q_string .= "from hardware ";
   $q_string .= "left join inventory      on inventory.inv_id    = hardware.hw_companyid ";
   $q_string .= "left join inv_locations      on inv_locations.loc_id    = inventory.inv_location ";
-  $q_string .= "left join models         on models.mod_id       = hardware.hw_vendorid ";
+  $q_string .= "left join inv_models         on inv_models.mod_id       = hardware.hw_vendorid ";
   $q_string .= "left join parts          on parts.part_id       = hardware.hw_type ";
   $q_string .= "left join products       on products.prod_id    = hardware.hw_product ";
   $q_string .= "left join support        on support.sup_id      = hardware.hw_supportid ";

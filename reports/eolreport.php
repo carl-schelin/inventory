@@ -296,7 +296,7 @@
   $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city ";
   $q_string .= "left join inv_timezones on inv_timezones.zone_id     = inventory.inv_zone ";
-  $q_string .= "left join models    on models.mod_id         = hardware.hw_vendorid ";
+  $q_string .= "left join inv_models    on inv_models.mod_id         = hardware.hw_vendorid ";
   $q_string .= "left join inv_groups    on inv_groups.grp_id         = inventory.inv_manager ";
   $q_string .= $group . $product . $inwork . $location . $type . " ";
   $q_string .= "group by prod_name ";
@@ -326,28 +326,28 @@
       while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
         $q_string  = "select ven_name,mod_name,mod_eol,mod_virtual,hw_purchased ";
-        $q_string .= "from models ";
-        $q_string .= "left join hardware on hardware.hw_vendorid = models.mod_id ";
-        $q_string .= "left join vendors  on vendors.ven_id       = models.mod_vendor ";
+        $q_string .= "from inv_models ";
+        $q_string .= "left join hardware on hardware.hw_vendorid = inv_models.mod_id ";
+        $q_string .= "left join vendors  on vendors.ven_id       = inv_models.mod_vendor ";
         $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1 and hw_deleted = 0 ";
-        $q_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_models = mysqli_fetch_array($q_models)) {
+        $q_inv_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inv_models = mysqli_fetch_array($q_inv_models)) {
           $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inventory['inv_id'] . "#hardware\" target=\"_blank\">";
           $linkend = "</a>";
 
           $newdate = '1971-01-01';
-          if ($a_models['mod_virtual'] == 0) {
-            if ($a_models['ven_name'] == 'Dell') {
+          if ($a_inv_models['mod_virtual'] == 0) {
+            if ($a_inv_models['ven_name'] == 'Dell') {
 # For Dell, the end of support is 5 years after the purchase date
-              $date = explode("-", $a_models['hw_purchased']);
+              $date = explode("-", $a_inv_models['hw_purchased']);
               $support = mktime(0,0,0,$date[1],$date[2],$date[0] + 5);
               $newdate = date("Y-m-d",$support);
             } else {
-              if ($a_models['mod_eol'] == '') {
-                $a_models['mod_eol'] = '1971-01-01';
+              if ($a_inv_models['mod_eol'] == '') {
+                $a_inv_models['mod_eol'] = '1971-01-01';
               }
 # just commonalizing the newdate value for the check
-              $newdate = $a_models['mod_eol'];
+              $newdate = $a_inv_models['mod_eol'];
             }
 
             if ($newdate == '1971-01-01') {
@@ -369,15 +369,15 @@
             print "<tr>\n";
             print "  <td class=\"" . $class . "\">"        . $linkstart . $a_inventory['inv_name'] . $linkend . "</td>\n";
             print "  <td class=\"" . $class . " delete\">" . "Hardware"                                       . "</td>\n";
-            print "  <td class=\"" . $class . "\">"        . $a_models['ven_name']                            . "</td>\n";
-            print "  <td class=\"" . $class . "\">"        . $a_models['mod_name']                            . "</td>\n";
+            print "  <td class=\"" . $class . "\">"        . $a_inv_models['ven_name']                            . "</td>\n";
+            print "  <td class=\"" . $class . "\">"        . $a_inv_models['mod_name']                            . "</td>\n";
             print "  <td class=\"" . $class . " delete\">" . $newdate                                         . "</td>\n";
             print "</tr>\n";
           } else {
             print "\"" . $a_inventory['inv_name'] . "\",";
             print "\"" . "Hardware"               . "\",";
-            print "\"" . $a_models['ven_name']    . "\",";
-            print "\"" . $a_models['mod_name']    . "\",";
+            print "\"" . $a_inv_models['ven_name']    . "\",";
+            print "\"" . $a_inv_models['mod_name']    . "\",";
             print "\"" . $newdate                 . "\"\n";
           }
 
@@ -453,8 +453,8 @@
       }
       $q_string  = "select ven_name,hw_purchased,mod_eol ";
       $q_string .= "from hardware ";
-      $q_string .= "left join models  on models.mod_id  = hardware.hw_vendorid ";
-      $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
+      $q_string .= "left join inv_models  on inv_models.mod_id  = hardware.hw_vendorid ";
+      $q_string .= "left join vendors on vendors.ven_id = inv_models.mod_vendor ";
       $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
       $q_string .= "where inv_product = " . $a_products['prod_id'] . " and inv_status = 0 and hw_primary = 1 and hw_deleted = 0 and mod_virtual = 0 ";
       if ($formVars['group'] > 0) {

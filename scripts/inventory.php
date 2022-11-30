@@ -145,8 +145,8 @@
   $q_string .= "left join products  on products.prod_id        = inventory.inv_product ";
   $q_string .= "left join inv_groups  on inv_groups.grp_id         = inventory.inv_manager ";
   $q_string .= "left join hardware  on hardware.hw_companyid   = inventory.inv_id ";
-  $q_string .= "left join models    on models.mod_id           = hardware.hw_vendorid ";
-  $q_string .= "left join vendors   on vendors.ven_id          = models.mod_vendor ";
+  $q_string .= "left join inv_models    on inv_models.mod_id           = hardware.hw_vendorid ";
+  $q_string .= "left join vendors   on vendors.ven_id          = inv_models.mod_vendor ";
   $q_string .= "left join inv_locations on inv_locations.loc_id        = inventory.inv_location ";
   $q_string .= "left join inv_cities    on inv_cities.ct_id            = inv_locations.loc_city ";
   $q_string .= "left join inv_states    on inv_states.st_id            = inv_locations.loc_state ";
@@ -278,23 +278,23 @@
       $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
       while ($a_hardware = mysqli_fetch_array($q_hardware)) {
         $q_string  = "select ven_name,mod_name,mod_size,mod_speed ";
-        $q_string .= "from models ";
-        $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
+        $q_string .= "from inv_models ";
+        $q_string .= "left join vendors on vendors.ven_id = inv_models.mod_vendor ";
         $q_string .= "where mod_id = " . $a_hardware['hw_vendorid'] . " ";
-        $q_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
-        $a_models = mysqli_fetch_array($q_models);
+        $q_inv_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+        $a_inv_models = mysqli_fetch_array($q_inv_models);
 
         if ($csv == 'yes') {
           print "\"" . $a_hardware['hw_serial']  . "\",";
           print "\"" . $a_hardware['hw_asset']   . "\",";
           print "\"" . $a_hardware['hw_service'] . "\",";
-          print "\"" . $a_models['ven_name']     . "\",";
-          print "\"" . $a_models['mod_name']     . "\",";
-          print "\"" . $a_models['mod_size']     . "\",";
-          print "\"" . $a_models['mod_speed']    . "\",";
+          print "\"" . $a_inv_models['ven_name']     . "\",";
+          print "\"" . $a_inv_models['mod_name']     . "\",";
+          print "\"" . $a_inv_models['mod_size']     . "\",";
+          print "\"" . $a_inv_models['mod_speed']    . "\",";
           print "\"" . $a_hardware['part_name']  . "\"\n";
         } else {
-          printf("%20s %10s %8s %20s %30s %20s %15s %20s\n", $a_hardware['hw_serial'], $a_hardware['hw_asset'], $a_hardware['hw_service'], $a_models['ven_name'], $a_models['mod_name'], $a_models['mod_size'], $a_models['mod_speed'], $a_hardware['part_name']);
+          printf("%20s %10s %8s %20s %30s %20s %15s %20s\n", $a_hardware['hw_serial'], $a_hardware['hw_asset'], $a_hardware['hw_service'], $a_inv_models['ven_name'], $a_inv_models['mod_name'], $a_inv_models['mod_size'], $a_inv_models['mod_speed'], $a_hardware['part_name']);
         }
 
         $q_string  = "select hw_id,hw_serial,hw_asset,hw_service,hw_vendorid,part_name,hw_verified,hw_update ";
@@ -305,23 +305,23 @@
         $q_hwselect = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
         while ($a_hwselect = mysqli_fetch_array($q_hwselect)) {
           $q_string  = "select ven_name,mod_name,mod_size,mod_speed ";
-          $q_string .= "from models ";
-          $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
+          $q_string .= "from inv_models ";
+          $q_string .= "left join vendors on vendors.ven_id = inv_models.mod_vendor ";
           $q_string .= "where mod_id = " . $a_hwselect['hw_vendorid'] . " ";
-          $q_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
-          $a_models = mysqli_fetch_array($q_models);
+          $q_inv_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+          $a_inv_models = mysqli_fetch_array($q_inv_models);
 
           if ($csv == 'yes') {
             print "\"" . $a_hwselect['hw_serial']  . "\",";
             print "\"" . $a_hwselect['hw_asset']   . "\",";
             print "\"" . $a_hwselect['hw_service'] . "\",";
-            print "\"" . $a_models['ven_name']   . "\",";
-            print "\"" . $a_models['mod_name']     . "\",";
-            print "\"" . $a_models['mod_size']    . "\",";
-            print "\"" . $a_models['mod_speed']   . "\",";
+            print "\"" . $a_inv_models['ven_name']   . "\",";
+            print "\"" . $a_inv_models['mod_name']     . "\",";
+            print "\"" . $a_inv_models['mod_size']    . "\",";
+            print "\"" . $a_inv_models['mod_speed']   . "\",";
             print "\"" . $a_hwselect['part_name']  . "\"\n";
           } else {
-            printf("%20s %10s %8s %20s >%29s %20s %15s %20s\n", $a_hwselect['hw_serial'], $a_hwselect['hw_asset'], $a_hwselect['hw_service'], $a_models['ven_name'], $a_models['mod_name'], $a_models['mod_size'], $a_models['mod_speed'], $a_hwselect['part_name']);
+            printf("%20s %10s %8s %20s >%29s %20s %15s %20s\n", $a_hwselect['hw_serial'], $a_hwselect['hw_asset'], $a_hwselect['hw_service'], $a_inv_models['ven_name'], $a_inv_models['mod_name'], $a_inv_models['mod_size'], $a_inv_models['mod_speed'], $a_hwselect['part_name']);
           }
 
           $q_string  = "select hw_id,hw_serial,hw_asset,hw_service,hw_vendorid,part_name,hw_verified,hw_update ";
@@ -332,23 +332,23 @@
           $q_hwdisk = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
           while ($a_hwdisk = mysqli_fetch_array($q_hwdisk)) {
             $q_string  = "select ven_name,mod_name,mod_size,mod_speed ";
-            $q_string .= "from models ";
-            $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
+            $q_string .= "from inv_models ";
+            $q_string .= "left join vendors on vendors.ven_id = inv_models.mod_vendor ";
             $q_string .= "where mod_id = " . $a_hwdisk['hw_vendorid'] . " ";
-            $q_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
-            $a_models = mysqli_fetch_array($q_models);
+            $q_inv_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+            $a_inv_models = mysqli_fetch_array($q_inv_models);
 
             if ($csv == 'yes') {
               print "\"" . $a_hwdisk['hw_serial']  . "\",";
               print "\"" . $a_hwdisk['hw_asset']   . "\",";
               print "\"" . $a_hwdisk['hw_service'] . "\",";
-              print "\"" . $a_models['ven_name']   . "\",";
-              print "\"" . $a_models['mod_name']   . "\",";
-              print "\"" . $a_models['mod_size']   . "\",";
-              print "\"" . $a_models['mod_speed']  . "\",";
+              print "\"" . $a_inv_models['ven_name']   . "\",";
+              print "\"" . $a_inv_models['mod_name']   . "\",";
+              print "\"" . $a_inv_models['mod_size']   . "\",";
+              print "\"" . $a_inv_models['mod_speed']  . "\",";
               print "\"" . $a_hwdisk['part_name']  . "\"\n";
             } else {
-              printf("%20s %10s %8s %20s >>%28s %20s %15s %20s\n", $a_hwdisk['hw_serial'], $a_hwdisk['hw_asset'], $a_hwdisk['hw_service'], $a_models['ven_name'], $a_models['mod_name'], $a_models['mod_size'], $a_models['mod_speed'], $a_hwdisk['part_name']);
+              printf("%20s %10s %8s %20s >>%28s %20s %15s %20s\n", $a_hwdisk['hw_serial'], $a_hwdisk['hw_asset'], $a_hwdisk['hw_service'], $a_inv_models['ven_name'], $a_inv_models['mod_name'], $a_inv_models['mod_size'], $a_inv_models['mod_speed'], $a_hwdisk['part_name']);
             }
           }
         }

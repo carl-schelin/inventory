@@ -192,10 +192,10 @@
 
     if ($a_hardware['hw_vendorid'] != '') {
       $q_string  = "select mod_name ";
-      $q_string .= "from models ";
+      $q_string .= "from inv_models ";
       $q_string .= "where mod_id = " . $a_hardware['hw_vendorid'];
-      $q_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_models = mysqli_fetch_array($q_models);
+      $q_inv_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_models = mysqli_fetch_array($q_inv_models);
     }
 
     print "<tr>\n";
@@ -204,7 +204,7 @@
     print "  <td class=\"ui-widget-content\">" . $a_inventory['inv_function'] . "</td>\n";
     print "  <td class=\"ui-widget-content\">" . $a_inventory['sw_software'] . "</td>\n";
     print "  <td class=\"ui-widget-content\">" . $instances . "</td>\n";
-    print "  <td class=\"ui-widget-content\">" . $a_models['mod_name'] . "</td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_models['mod_name'] . "</td>\n";
     print "  <td class=\"ui-widget-content\">" . $a_os['sw_software'] . "</td>\n";
     print "</tr>\n";
 

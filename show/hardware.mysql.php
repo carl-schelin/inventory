@@ -83,7 +83,7 @@
   $support = 0;
   $q_string  = "select hw_id,part_name,hw_serial,hw_asset,mod_name,mod_speed,mod_size,hw_supportid,hw_primary,hw_verified,hw_note,hw_update ";
   $q_string .= "from hardware ";
-  $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+  $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
   $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
   $q_string .= "where hw_deleted = 0 and hw_companyid = " . $formVars['id'] . " and hw_hw_id = 0 and hw_hd_id = 0 ";
   $q_string .= "order by hw_type,hw_serial";
@@ -118,7 +118,7 @@
 
     $q_string  = "select hw_id,part_name,hw_serial,hw_asset,mod_name,mod_speed,mod_size,hw_supportid,hw_primary,hw_verified,hw_note,hw_update ";
     $q_string .= "from hardware ";
-    $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+    $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
     $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
     $q_string .= "where hw_deleted = 0 and hw_companyid = " . $formVars['id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " and hw_hd_id = 0 ";
     $q_string .= "order by hw_type,hw_serial";
@@ -153,7 +153,7 @@
 
       $q_string  = "select part_name,hw_serial,hw_asset,mod_name,mod_speed,mod_size,hw_supportid,hw_primary,hw_verified,hw_note,hw_update ";
       $q_string .= "from hardware ";
-      $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+      $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
       $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
       $q_string .= "where hw_companyid = " . $formVars['id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " and hw_hd_id = " . $a_hwselect['hw_id'] . " ";
       $q_string .= "order by hw_type,hw_serial";

@@ -458,8 +458,8 @@
     $q_string .= "hw_purchased,hw_built,hw_active,mod_eol,hw_primary ";
     $q_string .= "from hardware ";
     $q_string .= "left join parts    on parts.part_id    = hardware.hw_type ";
-    $q_string .= "left join models   on models.mod_id    = hardware.hw_vendorid ";
-    $q_string .= "left join vendors  on vendors.ven_id   = models.mod_vendor ";
+    $q_string .= "left join inv_models   on inv_models.mod_id    = hardware.hw_vendorid ";
+    $q_string .= "left join vendors  on vendors.ven_id   = inv_models.mod_vendor ";
     $q_string .= "left join projects on projects.prj_id  = hardware.hw_projectid ";
     $q_string .= "left join products on products.prod_id = hardware.hw_product ";
     $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = 0 and hw_deleted = 0 ";
@@ -509,8 +509,8 @@
         $q_string .= "hw_purchased,hw_built,hw_active,mod_eol ";
         $q_string .= "from hardware ";
         $q_string .= "left join parts    on parts.part_id    = hardware.hw_type ";
-        $q_string .= "left join models   on models.mod_id    = hardware.hw_vendorid ";
-        $q_string .= "left join vendors  on vendors.ven_id   = models.mod_vendor ";
+        $q_string .= "left join inv_models   on inv_models.mod_id    = hardware.hw_vendorid ";
+        $q_string .= "left join vendors  on vendors.ven_id   = inv_models.mod_vendor ";
         $q_string .= "left join projects on projects.prj_id  = hardware.hw_projectid ";
         $q_string .= "left join products on products.prod_id = hardware.hw_product ";
         $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " ";

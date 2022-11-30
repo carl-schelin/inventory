@@ -36,15 +36,15 @@
 
 // retrieve type list
       $q_string  = "select mod_id,ven_name,mod_name ";
-      $q_string .= "from models ";
-      $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
+      $q_string .= "from inv_models ";
+      $q_string .= "left join vendors on vendors.ven_id = inv_models.mod_vendor ";
       $q_string .= "where mod_type = " . $a_hardware['hw_type'] . " ";
       $q_string .= "order by ven_name,mod_name";
-      $q_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_inv_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 // create the javascript bit for populating the model dropdown box.
-      while ($a_models = mysqli_fetch_array($q_models) ) {
-        print "selbox.options[selbox.options.length] = new Option(\"" . $a_models['mod_name'] . " (" . $a_models['ven_name'] . ")\"," . $a_models['mod_id'] . ");\n";
+      while ($a_inv_models = mysqli_fetch_array($q_inv_models) ) {
+        print "selbox.options[selbox.options.length] = new Option(\"" . $a_inv_models['mod_name'] . " (" . $a_inv_models['ven_name'] . ")\"," . $a_inv_models['mod_id'] . ");\n";
       }
 
 # for the fill part, we want to not present the current hw_id as a selectable option (can't be a sub-system of yourself).
@@ -55,8 +55,8 @@
 # retrieve hardware list
       $q_string  = "select hw_id,ven_name,mod_name ";
       $q_string .= "from hardware ";
-      $q_string .= "left join models  on models.mod_id  = hardware.hw_vendorid ";
-      $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
+      $q_string .= "left join inv_models  on inv_models.mod_id  = hardware.hw_vendorid ";
+      $q_string .= "left join vendors on vendors.ven_id = inv_models.mod_vendor ";
       $q_string .= "where hw_companyid = " . $a_hardware['hw_companyid'] . " and hw_hw_id = 0 and hw_id != " . $formVars['id'] . " ";
       $q_hwselect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
@@ -73,7 +73,7 @@
 # retrieve hardware list
       $q_string  = "select hw_id,hw_serial,hw_asset,mod_name ";
       $q_string .= "from hardware ";
-      $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+      $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
       $q_string .= "where hw_companyid = " . $a_hardware['hw_companyid'] . " and mod_name like \"RAID%\" and hw_id != " . $formVars['id'] . " ";
       $q_hwselect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
@@ -83,12 +83,12 @@
       }
 
       $product  = return_Index($db, $a_hardware['hw_product'],   "select prod_id from products order by prod_name");
-      $model    = return_Index($db, $a_hardware['hw_vendorid'],  "select mod_id from models left join vendors on vendors.ven_id = models.mod_vendor where mod_type = " . $a_hardware['hw_type'] . " order by ven_name,mod_name");
+      $model    = return_Index($db, $a_hardware['hw_vendorid'],  "select mod_id from inv_models left join vendors on vendors.ven_id = inv_models.mod_vendor where mod_type = " . $a_hardware['hw_type'] . " order by ven_name,mod_name");
       $type     = return_Index($db, $a_hardware['hw_type'],      "select part_id from parts order by part_name");
       $support  = return_Index($db, $a_hardware['hw_supportid'], "select sup_id from support order by sup_company,sup_contract");
       $response = return_Index($db, $a_hardware['hw_response'],  "select slv_id from supportlevel order by slv_value");
       $hwselect = return_Index($db, $a_hardware['hw_hw_id'],     "select hw_id from hardware where hw_companyid = " . $a_hardware['hw_companyid'] . " and hw_hw_id = 0 and hw_id != " . $formVars['id']);
-      $hwdisk   = return_Index($db, $a_hardware['hw_hd_id'],     "select hw_id from hardware left join models on models.mod_id = hardware.hw_vendorid where hw_companyid = " . $a_hardware['hw_companyid'] . " and mod_name like \"RAID%\" and hw_id != " . $formVars['id']);
+      $hwdisk   = return_Index($db, $a_hardware['hw_hd_id'],     "select hw_id from hardware left join inv_models on inv_models.mod_id = hardware.hw_vendorid where hw_companyid = " . $a_hardware['hw_companyid'] . " and mod_name like \"RAID%\" and hw_id != " . $formVars['id']);
 
       print "document.edit.hw_serial.value = '"    . mysqli_real_escape_string($db, $a_hardware['hw_serial'])    . "';\n";
       print "document.edit.hw_asset.value = '"     . mysqli_real_escape_string($db, $a_hardware['hw_asset'])     . "';\n";

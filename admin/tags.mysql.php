@@ -140,7 +140,7 @@
       $q_string .= "left join inv_users        on inv_users.usr_id          = tags.tag_owner ";
       $q_string .= "left join inv_groups       on inv_groups.grp_id         = tags.tag_group ";
       $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
-      $q_string .= "left join models       on models.mod_id         = hardware.hw_vendorid ";
+      $q_string .= "left join inv_models       on inv_models.mod_id         = hardware.hw_vendorid ";
       $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";
       $q_string .= "left join inv_cities       on inv_cities.ct_id          = inv_locations.loc_city ";
       $q_string .= "left join inv_states       on inv_states.st_id          = inv_locations.loc_state ";

@@ -419,7 +419,7 @@
     $hwcount = 0;
     $q_string  = "select mod_name ";
     $q_string .= "from hardware ";
-    $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+    $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
     $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = 0 and hw_deleted = 0 and hw_primary = 1 ";
     $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     $a_hardware = mysqli_fetch_array($q_hardware);

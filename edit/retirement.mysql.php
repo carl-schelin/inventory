@@ -317,8 +317,8 @@
       $q_string  = "select inv_name,hw_asset,hw_serial,inv_rack,inv_row,inv_unit,ven_name,mod_name,loc_identity ";
       $q_string .= "from inventory ";
       $q_string .= "left join hardware  on hardware.hw_companyid    = inventory.inv_id ";
-      $q_string .= "left join models    on models.mod_id            = hardware.hw_vendorid ";
-      $q_string .= "left join vendors   on vendors.ven_id           = models.mod_vendor ";
+      $q_string .= "left join inv_models    on inv_models.mod_id            = hardware.hw_vendorid ";
+      $q_string .= "left join vendors   on vendors.ven_id           = inv_models.mod_vendor ";
       $q_string .= "left join inv_locations on inv_locations.loc_id         = inventory.inv_location ";
       $q_string .= "where inv_id = " . $formVars['ret_companyid'] . " ";
       $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

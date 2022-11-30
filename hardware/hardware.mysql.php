@@ -87,11 +87,11 @@
             "mod_virtual    =   " . $formVars['mod_virtual'];
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into models set mod_id = NULL, " . $q_string;
+            $q_string = "insert into inv_models set mod_id = NULL, " . $q_string;
             $message = "Model added.";
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update models set " . $q_string . " where mod_id = " . $formVars['id'];
+            $q_string = "update inv_models set " . $q_string . " where mod_id = " . $formVars['id'];
             $message = "Model updated.";
           }
 
@@ -196,53 +196,53 @@
       $misc   = $misc   . $header . $secondary;
 
       $q_string  = "select mod_id,mod_vendor,mod_name,mod_type,mod_size,mod_speed,volt_text,mod_start,mod_draw,mod_btu,part_type,part_name ";
-      $q_string .= "from models ";
-      $q_string .= "left join parts on parts.part_id = models.mod_type ";
-      $q_string .= "left join int_volts on int_volts.volt_id = models.mod_volts ";
+      $q_string .= "from inv_models ";
+      $q_string .= "left join parts on parts.part_id = inv_models.mod_type ";
+      $q_string .= "left join int_volts on int_volts.volt_id = inv_models.mod_volts ";
       $q_string .= "order by mod_vendor,mod_name";
-      $q_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_models) > 0) {
-        while ($a_models = mysqli_fetch_array($q_models)) {
+      $q_inv_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_models) > 0) {
+        while ($a_inv_models = mysqli_fetch_array($q_inv_models)) {
 
-          if ($a_models['part_type']) {
+          if ($a_inv_models['part_type']) {
             $class = "ui-state-highlight";
           } else {
             $class = "ui-widget-content";
           }
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('hardware.fill.php?id="  . $a_models['mod_id'] . "');showDiv('hardware-hide');\">";
-          $linkdel   = "<a href=\"#\" onclick=\"delete_line('hardware.del.php?id=" . $a_models['mod_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('hardware.fill.php?id="  . $a_inv_models['mod_id'] . "');showDiv('hardware-hide');\">";
+          $linkdel   = "<a href=\"#\" onclick=\"delete_line('hardware.del.php?id=" . $a_inv_models['mod_id'] . "');\">";
           $linkend   = "</a>";
 
           $table  = "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
             $table .= "  <td class=\"" . $class . " delete\">" . $linkdel . 'x'                     . $linkend . "</td>";
           }
-          $table .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_models['mod_id']     . $linkend . "</td>";
-          $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_models['mod_vendor'] . $linkend . "</td>";
-          $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_models['mod_name']   . $linkend . "</td>";
-          $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_models['part_name']  . $linkend . "</td>";
-          if ($a_models['part_type'] == 1) {
-            $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_models['volt_text'] . $linkend . "</td>";
-            $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_models['mod_draw']  . $linkend . "</td>";
-            $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_models['mod_btu']   . $linkend . "</td>";
-            $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_models['mod_size']   . $linkend . "</td>";
+          $table .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_inv_models['mod_id']     . $linkend . "</td>";
+          $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_models['mod_vendor'] . $linkend . "</td>";
+          $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_models['mod_name']   . $linkend . "</td>";
+          $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_models['part_name']  . $linkend . "</td>";
+          if ($a_inv_models['part_type'] == 1) {
+            $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_models['volt_text'] . $linkend . "</td>";
+            $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_models['mod_draw']  . $linkend . "</td>";
+            $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_models['mod_btu']   . $linkend . "</td>";
+            $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_models['mod_size']   . $linkend . "</td>";
           } else {
-            $table .= "  <td class=\"" . $class . "\" colspan=\"2\">" . $linkstart . $a_models['mod_size']  . $linkend . "</td>";
-            $table .= "  <td class=\"" . $class . "\">"               . $linkstart . $a_models['mod_speed'] . $linkend . "</td>";
+            $table .= "  <td class=\"" . $class . "\" colspan=\"2\">" . $linkstart . $a_inv_models['mod_size']  . $linkend . "</td>";
+            $table .= "  <td class=\"" . $class . "\">"               . $linkstart . $a_inv_models['mod_speed'] . $linkend . "</td>";
           }
           $table .= "</tr>";
 
-          if ($a_models['part_type'] == 1) {
+          if ($a_inv_models['part_type'] == 1) {
             $server .= $table;
           } else {
-            if ($a_models['mod_type'] == 2) {
+            if ($a_inv_models['mod_type'] == 2) {
               $disk .= $table;
             } else {
-              if ($a_models['mod_type'] == 8) {
+              if ($a_inv_models['mod_type'] == 8) {
                 $cpu .= $table;
               } else {
-                if ($a_models['mod_type'] == 4) {
+                if ($a_inv_models['mod_type'] == 4) {
                   $memory .= $table;
                 } else {
                   $misc .= $table;
@@ -267,7 +267,7 @@
       $memory .= $footer;
       $misc   .= $footer;
 
-      mysqli_free_result($q_models);
+      mysqli_free_result($q_inv_models);
 
       print "document.getElementById('server_mysql').innerHTML = '" . mysqli_real_escape_string($db, $server) . "';\n\n";
       print "document.getElementById('disk_mysql').innerHTML = '"   . mysqli_real_escape_string($db, $disk) . "';\n\n";

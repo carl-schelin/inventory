@@ -115,7 +115,7 @@ $(document).ready( function() {
   $q_string .= "from hardware ";
   $q_string .= "left join inventory on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join inv_groups on hardware.hw_group = inv_groups.grp_id ";
-  $q_string .= "left join models on hardware.hw_vendorid = models.mod_id ";
+  $q_string .= "left join inv_models on hardware.hw_vendorid = inv_models.mod_id ";
   $q_string .= "where hw_product = " . $formVars['id'] . " and inv_status = 0 and hw_primary = 1 ";
   $q_string .= "order by inv_name";
   $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

@@ -598,7 +598,7 @@ $(document).ready( function() {
   $q_string  = "select part_name,hw_serial,hw_asset,mod_name ";
   $q_string .= "from hardware ";
   $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
-  $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+  $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
   $q_string .= "where hw_primary = 1 and hw_companyid = " . $formVars['server'] . " ";
   $q_string .= "order by hw_type,hw_vendorid";
   $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));

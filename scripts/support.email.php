@@ -65,7 +65,7 @@
   $q_string  = "select inv_name,mod_name,ct_city,st_state,hw_asset,hw_serial ";
   $q_string .= "from hardware ";
   $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
-  $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+  $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join inv_cities on inv_cities.ct_id = inv_locations.loc_city ";
   $q_string .= "left join inv_states on inv_states.st_id = inv_locations.loc_state ";
@@ -120,7 +120,7 @@
   $q_string  = "select inv_name,mod_name,ct_city,st_state,hw_asset,hw_serial,hw_retired,hw_supportstart,hw_supportend ";
   $q_string .= "from hardware ";
   $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
-  $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+  $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join inv_cities on inv_cities.ct_id = inv_locations.loc_city ";
   $q_string .= "left join inv_states on inv_states.st_id = inv_locations.loc_state ";
