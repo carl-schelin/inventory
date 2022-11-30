@@ -428,7 +428,7 @@ $(document).ready( function () {
   $q_string .= "from inventory ";
   $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
-  $q_string .= "left join cities    on cities.ct_id          = inv_locations.loc_city ";
+  $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city ";
   $q_string .= "left join inv_timezones on inv_timezones.zone_id     = inventory.inv_zone ";
   $q_string .= "left join models    on models.mod_id         = hardware.hw_vendorid ";
   $q_string .= "left join vendors   on vendors.ven_id        = models.mod_vendor ";

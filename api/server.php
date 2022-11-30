@@ -189,8 +189,8 @@
 
     $q_string  = "select typ_name,loc_name,loc_addr1,loc_addr2,loc_suite,ct_city,st_state,loc_zipcode,cn_country,ct_clli,loc_instance,loc_identity,loc_environment ";
     $q_string .= "from inv_locations ";
-    $q_string .= "left join cities on cities.ct_id = inv_locations.loc_city ";
-    $q_string .= "left join inv_states on inv_states.st_id = cities.ct_state ";
+    $q_string .= "left join inv_cities on inv_cities.ct_id = inv_locations.loc_city ";
+    $q_string .= "left join inv_states on inv_states.st_id = inv_cities.ct_state ";
     $q_string .= "left join country on country.cn_id = inv_states.st_country ";
     $q_string .= "left join loc_types on loc_types.typ_id = inv_locations.loc_type ";
     $q_string .= "where loc_id = " . $a_inventory['inv_location'] . " ";

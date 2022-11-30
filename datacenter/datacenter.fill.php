@@ -31,8 +31,8 @@
       mysqli_free_result($q_inv_locations);
 
       $q_string  = "select ct_id,ct_city,st_acronym,cn_acronym ";
-      $q_string .= "from cities ";
-      $q_string .= "left join inv_states on inv_states.st_id = cities.ct_state ";
+      $q_string .= "from inv_cities ";
+      $q_string .= "left join inv_states on inv_states.st_id = inv_cities.ct_state ";
       $q_string .= "left join country on country.cn_id = inv_states.st_country ";
       $q_string .= "order by ct_city,st_acronym,cn_acronym ";
 

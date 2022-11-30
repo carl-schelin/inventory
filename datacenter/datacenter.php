@@ -320,13 +320,13 @@ selected to show up in the report filters. They show up at the top of the report
   <td class="ui-widget-content">Select a City/State/Country: <select name="loc_city">
 <?php
   $q_string  = "select ct_id,ct_city,st_acronym,cn_acronym ";
-  $q_string .= "from cities ";
-  $q_string .= "left join inv_states on inv_states.st_id = cities.ct_state ";
+  $q_string .= "from inv_cities ";
+  $q_string .= "left join inv_states on inv_states.st_id = inv_cities.ct_state ";
   $q_string .= "left join country on country.cn_id = inv_states.st_country ";
   $q_string .= "order by ct_city,st_acronym,cn_acronym ";
-  $q_cities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_cities = mysqli_fetch_array($q_cities)) {
-    print "<option value=\"" . $a_cities['ct_id'] . "\">" . $a_cities['ct_city'] . ", " . $a_cities['st_acronym'] . ", " . $a_cities['cn_acronym'] . "</option>";
+  $q_inv_cities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_cities = mysqli_fetch_array($q_inv_cities)) {
+    print "<option value=\"" . $a_inv_cities['ct_id'] . "\">" . $a_inv_cities['ct_city'] . ", " . $a_inv_cities['st_acronym'] . ", " . $a_inv_cities['cn_acronym'] . "</option>";
   }
 ?>
 </select></td>
@@ -411,13 +411,13 @@ selected to show up in the report filters. They show up at the top of the report
   <td class="ui-widget-content">Select a City/State/Country: <select name="loc_city">
 <?php
   $q_string  = "select ct_id,ct_city,st_acronym,cn_acronym ";
-  $q_string .= "from cities ";
-  $q_string .= "left join inv_states on inv_states.st_id = cities.ct_state ";
+  $q_string .= "from inv_cities ";
+  $q_string .= "left join inv_states on inv_states.st_id = inv_cities.ct_state ";
   $q_string .= "left join country on country.cn_id = inv_states.st_country ";
   $q_string .= "order by ct_city,st_acronym,cn_acronym ";
-  $q_cities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_cities = mysqli_fetch_array($q_cities)) {
-    print "<option value=\"" . $a_cities['ct_id'] . "\">" . $a_cities['ct_city'] . ", " . $a_cities['st_acronym'] . ", " . $a_cities['cn_acronym'] . "</option>";
+  $q_inv_cities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_cities = mysqli_fetch_array($q_inv_cities)) {
+    print "<option value=\"" . $a_inv_cities['ct_id'] . "\">" . $a_inv_cities['ct_city'] . ", " . $a_inv_cities['st_acronym'] . ", " . $a_inv_cities['cn_acronym'] . "</option>";
   }
 ?>
 </select></td>

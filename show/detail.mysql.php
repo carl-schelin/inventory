@@ -24,7 +24,7 @@
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
-  $q_string .= "left join cities on cities.ct_id = inv_locations.loc_city ";
+  $q_string .= "left join inv_cities on inv_cities.ct_id = inv_locations.loc_city ";
   $q_string .= "left join inv_states on inv_states.st_id = inv_locations.loc_state ";
   $q_string .= "left join country on country.cn_id = inv_locations.loc_country ";
   $q_string .= "where inv_id = " . $formVars['id'] . " ";

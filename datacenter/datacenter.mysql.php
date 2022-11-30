@@ -58,17 +58,17 @@
 # add them to the location in order to do the reverse selection on the main page
 # select country, select state, select city/county, select data center.
           $q_string  = "select ct_state ";
-          $q_string .= "from cities ";
+          $q_string .= "from inv_cities ";
           $q_string .= "where ct_id = " . $formVars['loc_city'];
-          $q_cities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_cities) > 0) {
-            $a_cities = mysqli_fetch_array($q_cities);
+          $q_inv_cities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_cities) > 0) {
+            $a_inv_cities = mysqli_fetch_array($q_inv_cities);
           } else {
-            $a_cities['ct_state'] = 0;
+            $a_inv_cities['ct_state'] = 0;
           }
           $q_string  = "select st_country ";
           $q_string .= "from inv_states ";
-          $q_string .= "where st_id = " . $a_cities['ct_state'];
+          $q_string .= "where st_id = " . $a_inv_cities['ct_state'];
           $q_inv_states = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_inv_states) > 0) {
             $a_inv_states = mysqli_fetch_array($q_inv_states);
@@ -84,7 +84,7 @@
             "loc_addr1       = \"" . $formVars['loc_addr1']       . "\"," .
             "loc_addr2       = \"" . $formVars['loc_addr2']       . "\"," .
             "loc_city        =   " . $formVars['loc_city']        . "," .
-            "loc_state       =   " . $a_cities['ct_state']        . "," .
+            "loc_state       =   " . $a_inv_cities['ct_state']        . "," .
             "loc_zipcode     = \"" . $formVars['loc_zipcode']     . "\"," .
             "loc_contact1    = \"" . $formVars['loc_contact1']    . "\"," .
             "loc_contact2    = \"" . $formVars['loc_contact2']    . "\"," .
@@ -171,8 +171,8 @@
       $q_string .= "st_acronym,loc_zipcode,cn_acronym,loc_details,loc_default,ct_clli,loc_instance,";
       $q_string .= "env_abb ";
       $q_string .= "from inv_locations ";
-      $q_string .= "left join cities  on cities.ct_id  = inv_locations.loc_city ";
-      $q_string .= "left join inv_states  on inv_states.st_id  = cities.ct_state ";
+      $q_string .= "left join inv_cities  on inv_cities.ct_id  = inv_locations.loc_city ";
+      $q_string .= "left join inv_states  on inv_states.st_id  = inv_cities.ct_state ";
       $q_string .= "left join country on country.cn_id = inv_states.st_country ";
       $q_string .= "left join environment on environment.env_id = inv_locations.loc_environment ";
       $q_string .= "order by loc_default desc,loc_name,ct_city,st_state ";

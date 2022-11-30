@@ -122,7 +122,7 @@ $(document).ready( function() {
 <?php
   $q_string  = "select loc_id,loc_name,ct_clli,loc_instance ";
   $q_string .= "from inv_locations ";
-  $q_string .= "left join cities on cities.ct_id = inv_locations.loc_city ";
+  $q_string .= "left join inv_cities on inv_cities.ct_id = inv_locations.loc_city ";
   $q_string .= "where loc_type = 1 and ct_clli != '' ";
   $q_string .= "order by ct_clli,loc_instance ";
   $q_inv_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

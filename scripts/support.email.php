@@ -67,7 +67,7 @@
   $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
-  $q_string .= "left join cities on cities.ct_id = inv_locations.loc_city ";
+  $q_string .= "left join inv_cities on inv_cities.ct_id = inv_locations.loc_city ";
   $q_string .= "left join inv_states on inv_states.st_id = inv_locations.loc_state ";
   $q_string .= "where inv_status = 0 and mod_virtual = 0 and hw_primary = 1 and hw_supid_verified = 0 and inv_manager = " . $manager . " ";
   $q_string .= "order by inv_name ";
@@ -122,7 +122,7 @@
   $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
   $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
-  $q_string .= "left join cities on cities.ct_id = inv_locations.loc_city ";
+  $q_string .= "left join inv_cities on inv_cities.ct_id = inv_locations.loc_city ";
   $q_string .= "left join inv_states on inv_states.st_id = inv_locations.loc_state ";
   $q_string .= "where inv_status = 1 and mod_virtual = 0 and hw_primary = 1 and hw_supid_verified = 1 and hw_reused = '1971-01-01' and inv_manager = " . $manager . " ";
   $q_string .= "order by inv_name ";

@@ -39,10 +39,10 @@
             "ct_clli        = \"" . $formVars['ct_clli']   . "\"";
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into cities set ct_id = NULL, " . $q_string;
+            $q_string = "insert into inv_cities set ct_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update cities set " . $q_string . " where ct_id = " . $formVars['id'];
+            $q_string = "update inv_cities set " . $q_string . " where ct_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['ct_city']);
@@ -67,24 +67,24 @@
       $output .= "</tr>\n";
 
       $q_string  = "select ct_id,ct_city,st_state,ct_clli ";
-      $q_string .= "from cities ";
-      $q_string .= "left join inv_states on inv_states.st_id = cities.ct_state ";
+      $q_string .= "from inv_cities ";
+      $q_string .= "left join inv_states on inv_states.st_id = inv_cities.ct_state ";
       $q_string .= "order by ct_city,st_state ";
-      $q_cities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_cities) > 0) {
-        while ($a_cities = mysqli_fetch_array($q_cities)) {
+      $q_inv_cities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_cities) > 0) {
+        while ($a_inv_cities = mysqli_fetch_array($q_inv_cities)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('city.fill.php?id="  . $a_cities['ct_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('city.del.php?id=" . $a_cities['ct_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('city.fill.php?id="  . $a_inv_cities['ct_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('city.del.php?id=" . $a_inv_cities['ct_id'] . "');\">";
           $linkend   = "</a>";
 
           $output .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel                                         . "</td>";
           }
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_cities['ct_city']     . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"                       . $a_cities['st_state']               . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"                       . $a_cities['ct_clli']                . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_cities['ct_city']     . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                       . $a_inv_cities['st_state']               . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                       . $a_inv_cities['ct_clli']                . "</td>";
           $output .= "</tr>";
         }
       } else {
@@ -95,7 +95,7 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_cities);
+      mysqli_free_result($q_inv_cities);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
