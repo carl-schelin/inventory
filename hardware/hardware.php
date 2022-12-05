@@ -224,11 +224,11 @@ $(document).ready( function() {
 <option value="0">None</option>
 <?php
   $q_string  = "select plug_id,plug_text ";
-  $q_string .= "from int_plugtype ";
+  $q_string .= "from inv_int_plugtype ";
   $q_string .= "order by plug_id";
-  $q_int_plugtype = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_int_plugtype = mysqli_fetch_array($q_int_plugtype)) {
-    print "<option value=\"" . $a_int_plugtype['plug_id'] . "\">" . $a_int_plugtype['plug_text'] . "</option>\n";
+  $q_inv_int_plugtype = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_int_plugtype = mysqli_fetch_array($q_inv_int_plugtype)) {
+    print "<option value=\"" . $a_inv_int_plugtype['plug_id'] . "\">" . $a_inv_int_plugtype['plug_text'] . "</option>\n";
   }
 ?>
 </select></td>
