@@ -85,14 +85,14 @@
     while ($a_inv_bugs = mysqli_fetch_array($q_inv_bugs)) {
 
       $q_string  = "select bug_timestamp ";
-      $q_string .= "from bugs_detail ";
+      $q_string .= "from inv_bugs_detail ";
       $q_string .= "where bug_bug_id = " . $a_inv_bugs['bug_id'] . " ";
       $q_string .= "order by bug_timestamp ";
       $q_string .= "limit 1 ";
-      $q_bugs_detail = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_bugs_detail) > 0) {
-        $a_bugs_detail = mysqli_fetch_array($q_bugs_detail);
-        $detail_time = explode(" ", $a_bugs_detail['bug_timestamp']);
+      $q_inv_bugs_detail = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_bugs_detail) > 0) {
+        $a_inv_bugs_detail = mysqli_fetch_array($q_inv_bugs_detail);
+        $detail_time = explode(" ", $a_inv_bugs_detail['bug_timestamp']);
       } else {
         $detail_time[0] = 'No Details';
       }

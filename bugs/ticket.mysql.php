@@ -107,7 +107,7 @@
               "bug_text   =\"" . "Issue closed by " . $_SESSION['username'] . ".\"," . 
               "bug_user   =  " . $_SESSION['uid'];
 
-            $query = "insert into bugs_detail set bug_id=null," . $q_string;
+            $query = "insert into inv_bugs_detail set bug_id=null," . $q_string;
 
             mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -132,7 +132,7 @@
               "bug_text   =\"" . "Issue reopened by " . $_SESSION['username'] . ".\"," . 
               "bug_user   =  " . $_SESSION['uid'];
 
-            $query = "insert into bugs_detail set bug_id=null," . $q_string;
+            $query = "insert into inv_bugs_detail set bug_id=null," . $q_string;
 
             mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
           }

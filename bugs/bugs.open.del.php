@@ -20,16 +20,16 @@
 
     if (check_userlevel($db, $AL_Guest)) {
       $q_string  = "select bug_id ";
-      $q_string .= "from bugs_detail ";
+      $q_string .= "from inv_bugs_detail ";
       $q_string .= "where bug_bug_id = " . $formVars['id'];
-      $q_bugs_detail = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_bugs_detail = mysqli_fetch_array($q_bugs_detail)) {
+      $q_inv_bugs_detail = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_bugs_detail = mysqli_fetch_array($q_inv_bugs_detail)) {
 
-        logaccess($db, $_SESSION['uid'], $package, "Deleting " . $a_bugs_detail['bug_id'] . " from bugs_detail");
+        logaccess($db, $_SESSION['uid'], $package, "Deleting " . $a_inv_bugs_detail['bug_id'] . " from inv_bugs_detail");
 
         $q_string  = "delete ";
-        $q_string .= "from bugs_detail ";
-        $q_string .= "where bug_id = " . $a_bugs_detail['bug_id'];
+        $q_string .= "from inv_bugs_detail ";
+        $q_string .= "where bug_id = " . $a_inv_bugs_detail['bug_id'];
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 

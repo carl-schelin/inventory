@@ -51,7 +51,7 @@
       "bug_text      = \"" . $formVars['bug_subject'] . "\"," . 
       "bug_user      =   " . $formVars['bug_openby'];
 
-    $query = "insert into bugs_detail set bug_id = NULL," . $q_string;
+    $query = "insert into inv_bugs_detail set bug_id = NULL," . $q_string;
 
     $result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
