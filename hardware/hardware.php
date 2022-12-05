@@ -236,11 +236,11 @@ $(document).ready( function() {
 <option value="0">None</option>
 <?php
   $q_string  = "select volt_id,volt_text ";
-  $q_string .= "from int_volts ";
+  $q_string .= "from inv_int_volts ";
   $q_string .= "order by volt_id";
-  $q_int_volts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_int_volts = mysqli_fetch_array($q_int_volts)) {
-    print "<option value=\"" . $a_int_volts['volt_id'] . "\">" . $a_int_volts['volt_text'] . "</option>\n";
+  $q_inv_int_volts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_int_volts = mysqli_fetch_array($q_inv_int_volts)) {
+    print "<option value=\"" . $a_inv_int_volts['volt_id'] . "\">" . $a_inv_int_volts['volt_text'] . "</option>\n";
   }
 ?>
 </select></td>

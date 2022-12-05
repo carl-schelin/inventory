@@ -198,7 +198,7 @@
       $q_string  = "select mod_id,mod_vendor,mod_name,mod_type,mod_size,mod_speed,volt_text,mod_start,mod_draw,mod_btu,part_type,part_name ";
       $q_string .= "from inv_models ";
       $q_string .= "left join parts on parts.part_id = inv_models.mod_type ";
-      $q_string .= "left join int_volts on int_volts.volt_id = inv_models.mod_volts ";
+      $q_string .= "left join inv_int_volts on inv_int_volts.volt_id = inv_models.mod_volts ";
       $q_string .= "order by mod_vendor,mod_name";
       $q_inv_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_inv_models) > 0) {
