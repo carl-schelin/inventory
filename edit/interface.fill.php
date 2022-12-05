@@ -37,7 +37,7 @@
       $intspeed      = return_Index($db, $a_interface['int_speed'],      "select spd_id from int_speed order by spd_default desc,spd_text");
       $intduplex     = return_Index($db, $a_interface['int_duplex'],     "select dup_id from inv_int_duplex order by dup_default desc,dup_text");
       $intintid      = return_Index($db, $a_interface['int_int_id'],     "select int_id from interface where int_companyid = " . $a_interface['int_companyid'] . " and int_redundancy > 0 order by int_face");
-      $intredundancy = return_Index($db, $a_interface['int_redundancy'], "select red_id from int_redundancy order by red_default desc,red_text");
+      $intredundancy = return_Index($db, $a_interface['int_redundancy'], "select red_id from inv_int_redundancy order by red_default desc,red_text");
       $intaddress    = return_Index($db, $a_interface['int_ipaddressid'], "select ip_id from ipaddress order by ip_hostname,ip_ipv4");
 
       print "document.formInterfaceUpdate.int_face.value = '"      . mysqli_real_escape_string($db, $a_interface['int_face'])      . "';\n";

@@ -113,10 +113,10 @@
       }
 
       $q_string  = "select red_id,red_text ";
-      $q_string .= "from int_redundancy ";
-      $q_int_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_int_redundancy = mysqli_fetch_array($q_int_redundancy)) {
-        $int_redundancy[$a_int_redundancy['red_id']] = $a_int_redundancy['red_text'];
+      $q_string .= "from inv_int_redundancy ";
+      $q_inv_int_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_int_redundancy = mysqli_fetch_array($q_inv_int_redundancy)) {
+        $int_redundancy[$a_inv_int_redundancy['red_id']] = $a_inv_int_redundancy['red_text'];
       }
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");

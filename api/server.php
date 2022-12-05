@@ -286,12 +286,12 @@
           $fqdn = $a_interface['int_server'] . "." . $a_interface['int_domain'];
         }
         $q_string  = "select red_text ";
-        $q_string .= "from int_redundancy ";
+        $q_string .= "from inv_int_redundancy ";
         $q_string .= "where red_id = " . $a_interface['int_redundancy'] . " ";
-        $q_int_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_int_redundancy = mysqli_fetch_array($q_int_redundancy);
-        if ($a_int_redundancy['red_text'] == '') {
-          $a_int_redundancy['red_text'] = "None";
+        $q_inv_int_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_inv_int_redundancy = mysqli_fetch_array($q_inv_int_redundancy);
+        if ($a_inv_int_redundancy['red_text'] == '') {
+          $a_inv_int_redundancy['red_text'] = "None";
         }
 
         $notify = 'None';
@@ -321,7 +321,7 @@
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_type         = $a_interface['itp_name'];
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_default      = ($a_interface['int_primary'] ? "Default Route" : "");
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_role         = $a_interface['rol_text'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_redundant    = $a_int_redundancy['red_text'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_redundant    = $a_inv_int_redundancy['red_text'];
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_groupname    = $a_interface['int_groupname'];
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_virtual      = $virtual;
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_netzone      = $a_interface['zone_zone'];
@@ -376,12 +376,12 @@
           }
 
           $q_string  = "select red_text ";
-          $q_string .= "from int_redundancy ";
+          $q_string .= "from inv_int_redundancy ";
           $q_string .= "where red_id = " . $a_internal['int_redundancy'] . " ";
-          $q_int_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          $a_int_redundancy = mysqli_fetch_array($q_int_redundancy);
-          if ($a_int_redundancy['red_text'] == '') {
-            $a_int_redundancy['red_text'] = "Child";
+          $q_inv_int_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_inv_int_redundancy = mysqli_fetch_array($q_inv_int_redundancy);
+          if ($a_inv_int_redundancy['red_text'] == '') {
+            $a_inv_int_redundancy['red_text'] = "Child";
           }
 
           $notify = 'None';
@@ -411,7 +411,7 @@
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_type         = $a_internal['itp_name'];
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_default      = ($a_internal['int_primary'] ? "Default Route" : "");
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_role         = $a_internal['rol_text'];
-          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_redundant    = $a_int_redundancy['red_text'];
+          $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_redundant    = $a_inv_int_redundancy['red_text'];
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_groupname    = $a_internal['int_groupname'];
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_virtual      = $virtual;
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_netzone      = $a_internal['zone_zone'];

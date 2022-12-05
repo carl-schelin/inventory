@@ -229,7 +229,7 @@
       $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
       $q_string .= "left join ipaddress on ipaddress.ip_id = interface.int_ipaddressid ";
       $q_string .= "left join inv_users on inv_users.usr_id = interface.int_user ";
-      $q_string .= "left join int_redundancy on int_redundancy.red_id = interface.int_redundancy ";
+      $q_string .= "left join inv_int_redundancy on inv_int_redundancy.red_id = interface.int_redundancy ";
       $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = 0 ";
       $q_string .= "order by int_face,int_addr,int_server";
       $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -393,7 +393,7 @@
           $q_string .= "from interface ";
           $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
           $q_string .= "left join inv_users on inv_users.usr_id = interface.int_user ";
-          $q_string .= "left join int_redundancy on int_redundancy.red_id = interface.int_redundancy ";
+          $q_string .= "left join inv_int_redundancy on inv_int_redundancy.red_id = interface.int_redundancy ";
           $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = " . $a_interface['int_id'] . " ";
           $q_string .= "order by int_face,int_addr,int_server";
           $q_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -558,7 +558,7 @@
               $q_string .= "from interface ";
               $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
               $q_string .= "left join inv_users on inv_users.usr_id = interface.int_user ";
-              $q_string .= "left join int_redundancy on int_redundancy.red_id = interface.int_redundancy ";
+              $q_string .= "left join inv_int_redundancy on inv_int_redundancy.red_id = interface.int_redundancy ";
               $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = " . $a_redundancy['int_id'] . " ";
               $q_string .= "order by int_face,int_addr,int_server";
               $q_secondary = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -739,7 +739,7 @@
 
       $q_string  = "select int_id,int_face,int_ip6 ";
       $q_string .= "from interface ";
-      $q_string .= "left join int_redundancy on int_redundancy.red_id = interface.int_redundancy ";
+      $q_string .= "left join inv_int_redundancy on inv_int_redundancy.red_id = interface.int_redundancy ";
       $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and red_default = 0 ";
       $q_string .= "order by int_ip6,int_face";
       $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

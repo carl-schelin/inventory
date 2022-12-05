@@ -63,15 +63,15 @@
   <td class="ui-widget-content">Redundancy: <select name="int_redundancy">
 <?php
   $q_string  = "select red_id,red_default,red_text ";
-  $q_string .= "from int_redundancy ";
+  $q_string .= "from inv_int_redundancy ";
   $q_string .= "order by red_default desc,red_text";
-  $q_int_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_int_redundancy) > 0) {
-    while ($a_int_redundancy = mysqli_fetch_array($q_int_redundancy)) {
-      if ($a_int_redundancy['red_default']) {
-        print "<option selected=\"true\" value=\"" . $a_int_redundancy['red_id'] . "\">" . $a_int_redundancy['red_text'] . "</option>\n";
+  $q_inv_int_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_int_redundancy) > 0) {
+    while ($a_inv_int_redundancy = mysqli_fetch_array($q_inv_int_redundancy)) {
+      if ($a_inv_int_redundancy['red_default']) {
+        print "<option selected=\"true\" value=\"" . $a_inv_int_redundancy['red_id'] . "\">" . $a_inv_int_redundancy['red_text'] . "</option>\n";
       } else {
-        print "<option value=\"" . $a_int_redundancy['red_id'] . "\">" . $a_int_redundancy['red_text'] . "</option>\n";
+        print "<option value=\"" . $a_inv_int_redundancy['red_id'] . "\">" . $a_inv_int_redundancy['red_text'] . "</option>\n";
       }
     }
   } else {
@@ -257,11 +257,11 @@ Assignment <select name="int_int_id"></select></td>
   <td class="ui-widget-content">Redundancy: <select name="int_redundancy">
 <?php
   $q_string  = "select red_id,red_text ";
-  $q_string .= "from int_redundancy ";
+  $q_string .= "from inv_int_redundancy ";
   $q_string .= "order by red_default desc,red_text";
-  $q_int_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_int_redundancy = mysqli_fetch_array($q_int_redundancy)) {
-    print "<option value=\"" . $a_int_redundancy['red_id'] . "\">" . $a_int_redundancy['red_text'] . "</option>\n";
+  $q_inv_int_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_int_redundancy = mysqli_fetch_array($q_inv_int_redundancy)) {
+    print "<option value=\"" . $a_inv_int_redundancy['red_id'] . "\">" . $a_inv_int_redundancy['red_text'] . "</option>\n";
   }
 ?>
 </select></td>
