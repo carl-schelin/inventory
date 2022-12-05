@@ -42,10 +42,10 @@
             "med_default  =   " . $formVars['med_default'];
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into int_media set med_id = NULL, " . $q_string;
+            $q_string = "insert into inv_int_media set med_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update int_media set " . $q_string . " where med_id = " . $formVars['id'];
+            $q_string = "update inv_int_media set " . $q_string . " where med_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['med_text']);
@@ -69,20 +69,20 @@
       $output .= "</tr>\n";
 
       $q_string  = "select med_id,med_text,med_default ";
-      $q_string .= "from int_media ";
+      $q_string .= "from inv_int_media ";
       $q_string .= "order by med_text";
-      $q_int_media = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_int_media) > 0) {
-        while ($a_int_media = mysqli_fetch_array($q_int_media)) {
+      $q_inv_int_media = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_int_media) > 0) {
+        while ($a_inv_int_media = mysqli_fetch_array($q_inv_int_media)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('media.fill.php?id=" . $a_int_media['med_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('media.del.php?id=" . $a_int_media['med_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('media.fill.php?id=" . $a_inv_int_media['med_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('media.del.php?id=" . $a_inv_int_media['med_id'] . "');\">";
           $linkend   = "</a>";
 
           $total = 0;
           $q_string  = "select int_id ";
           $q_string .= "from interface ";
-          $q_string .= "where int_media = " . $a_int_media['med_id'] . " ";
+          $q_string .= "where inv_int_media = " . $a_inv_int_media['med_id'] . " ";
           $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_interface) > 0) {
             while ($a_interface = mysqli_fetch_array($q_interface)) {
@@ -90,7 +90,7 @@
             }
           }
           $class = "ui-widget-content";
-          if ($a_int_media['med_default']) {
+          if ($a_inv_int_media['med_default']) {
             $class = "ui-state-highlight";
           }
 
@@ -102,7 +102,7 @@
               $output .= "  <td class=\"" . $class . " delete\">Members &gt; 0</td>";
             }
           }
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_int_media['med_text'] . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_int_media['med_text'] . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"              . $total                              . "</td>";
           $output .= "</tr>";
         }
@@ -114,7 +114,7 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_int_media);
+      mysqli_free_result($q_inv_int_media);
 
       print "document.getElementById('mysql_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 

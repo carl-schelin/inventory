@@ -838,16 +838,16 @@
           print "selbox.options.length = 0;\n";
 
           $q_string  = "select med_id,med_text ";
-          $q_string .= "from int_media ";
+          $q_string .= "from inv_int_media ";
           $q_string .= "order by med_text ";
-          $q_int_media = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_inv_int_media = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 // create the javascript bit for populating the user dropdown box.
-          while ($a_int_media = mysqli_fetch_array($q_int_media) ) {
-            print "if (celltext == \"" . $a_int_media['med_text'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_int_media['med_text']) . "\"," . $a_int_media['med_id'] . ",1,1);\n";
+          while ($a_inv_int_media = mysqli_fetch_array($q_inv_int_media) ) {
+            print "if (celltext == \"" . $a_inv_int_media['med_text'] . "\") {\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_int_media['med_text']) . "\"," . $a_inv_int_media['med_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_int_media['med_text']) . "\"," . $a_int_media['med_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_int_media['med_text']) . "\"," . $a_inv_int_media['med_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -864,22 +864,22 @@
           print "cell.setAttribute(\"onclick\", \"edit_Interface(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "select med_id,med_text ";
-          $q_string .= "from int_media ";
+          $q_string .= "from inv_int_media ";
           $q_string .= "where med_id = " . $formVars['select'] . " ";
-          $q_int_media = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_int_media) > 0) {
-            $a_int_media = mysqli_fetch_array($q_int_media);
+          $q_inv_int_media = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_int_media) > 0) {
+            $a_inv_int_media = mysqli_fetch_array($q_inv_int_media);
           } else {
-            $a_int_media['med_id']   = 0;
-            $a_int_media['med_text'] = "Unassigned";
+            $a_inv_int_media['med_id']   = 0;
+            $a_inv_int_media['med_text'] = "Unassigned";
           }
 
-          $display = $a_int_media['med_text'];
+          $display = $a_inv_int_media['med_text'];
 
           $q_string  = "update ";
           $q_string .= "interface ";
           $q_string .= "set ";
-          $q_string .= "int_media = " . $a_int_media['med_id'] . " ";
+          $q_string .= "inv_int_media = " . $a_inv_int_media['med_id'] . " ";
           $q_string .= "where int_id = " . $formVars['id'] . " ";
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 

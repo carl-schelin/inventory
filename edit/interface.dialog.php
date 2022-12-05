@@ -122,15 +122,15 @@ Assignment <select name="int_int_id"></select></td>
   <td class="ui-widget-content">Media: <select name="int_media">
 <?php
   $q_string  = "select med_id,med_default,med_text ";
-  $q_string .= "from int_media ";
+  $q_string .= "from inv_int_media ";
   $q_string .= "order by med_default desc,med_text";
-  $q_int_media = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_int_media) > 0) {
-    while ($a_int_media = mysqli_fetch_array($q_int_media)) {
-      if ($a_int_media['med_default']) {
-        print "<option selected value=\"" . $a_int_media['med_id'] . "\">" . $a_int_media['med_text'] . "</option>\n";
+  $q_inv_int_media = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_int_media) > 0) {
+    while ($a_inv_int_media = mysqli_fetch_array($q_inv_int_media)) {
+      if ($a_inv_int_media['med_default']) {
+        print "<option selected value=\"" . $a_inv_int_media['med_id'] . "\">" . $a_inv_int_media['med_text'] . "</option>\n";
       } else {
-        print "<option value=\"" . $a_int_media['med_id'] . "\">" . $a_int_media['med_text'] . "</option>\n";
+        print "<option value=\"" . $a_inv_int_media['med_id'] . "\">" . $a_inv_int_media['med_text'] . "</option>\n";
       }
     }
   } else {
@@ -308,11 +308,11 @@ Assignment <select name="int_int_id"></select></td>
   <td class="ui-widget-content">Media: <select name="int_media">
 <?php
         $q_string  = "select med_id,med_text ";
-        $q_string .= "from int_media ";
+        $q_string .= "from inv_int_media ";
         $q_string .= "order by med_default desc,med_text";
-        $q_int_media = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_int_media = mysqli_fetch_array($q_int_media)) {
-          print "<option value=\"" . $a_int_media['med_id'] . "\">" . $a_int_media['med_text'] . "</option>\n";
+        $q_inv_int_media = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inv_int_media = mysqli_fetch_array($q_inv_int_media)) {
+          print "<option value=\"" . $a_inv_int_media['med_id'] . "\">" . $a_inv_int_media['med_text'] . "</option>\n";
         }
 ?>
 </select></td>
