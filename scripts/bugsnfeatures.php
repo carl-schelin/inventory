@@ -48,7 +48,7 @@
 
   $q_string  = "select mod_name,sev_name,bug_priority,bug_discovered,usr_first,usr_last,bug_subject ";
   $q_string .= "from inv_bugs ";
-  $q_string .= "left join modules on modules.mod_id   = inv_bugs.bug_module ";
+  $q_string .= "left join inv_modules on inv_modules.mod_id   = inv_bugs.bug_module ";
   $q_string .= "left join inv_severity on inv_severity.sev_id = inv_bugs.bug_severity ";
   $q_string .= "left join inv_users on inv_users.usr_id       = inv_bugs.bug_openby ";
   $q_string .= "where bug_closeby = 0 ";
@@ -89,7 +89,7 @@
 
   $q_string  = "select mod_name,sev_name,feat_priority,feat_discovered,usr_first,usr_last,feat_subject ";
   $q_string .= "from features ";
-  $q_string .= "left join modules on modules.mod_id   = features.feat_module ";
+  $q_string .= "left join inv_modules on inv_modules.mod_id   = features.feat_module ";
   $q_string .= "left join inv_severity on inv_severity.sev_id = features.feat_severity ";
   $q_string .= "left join inv_users on inv_users.usr_id       = features.feat_openby ";
   $q_string .= "where feat_closeby = 0 ";

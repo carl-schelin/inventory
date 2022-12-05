@@ -155,14 +155,14 @@ $(document).ready( function() {
   <td class="ui-widget-content" id="system">Module: <select name="bug_module">
 <?php
   $q_string  = "select mod_id,mod_name ";
-  $q_string .= "from modules ";
+  $q_string .= "from inv_modules ";
   $q_string .= "order by mod_name ";
-  $q_modules = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_modules = mysqli_fetch_array($q_modules)) {
-    if ($formVars['id'] == $a_modules['mod_id']) {
-      print "<option selected value=\"" . $a_modules['mod_id'] . "\">" . $a_modules['mod_name'] . "</option>\n";
+  $q_inv_modules = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_modules = mysqli_fetch_array($q_inv_modules)) {
+    if ($formVars['id'] == $a_inv_modules['mod_id']) {
+      print "<option selected value=\"" . $a_inv_modules['mod_id'] . "\">" . $a_inv_modules['mod_name'] . "</option>\n";
     } else {
-      print "<option value=\"" . $a_modules['mod_id'] . "\">" . $a_modules['mod_name'] . "</option>\n";
+      print "<option value=\"" . $a_inv_modules['mod_id'] . "\">" . $a_inv_modules['mod_name'] . "</option>\n";
     }
   }
 ?>

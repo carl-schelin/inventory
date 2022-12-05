@@ -66,7 +66,7 @@
 
   $q_string  = "select feat_id,feat_module,feat_discovered,feat_closed,feat_closeby,feat_subject,mod_name,usr_name ";
   $q_string .= "from features ";
-  $q_string .= "left join modules on modules.mod_id = features.feat_module ";
+  $q_string .= "left join inv_modules on inv_modules.mod_id = features.feat_module ";
   $q_string .= "left join inv_users   on inv_users.usr_id   = features.feat_openby ";
   $q_string .= "where feat_closed != '1971-01-01' " . $where;
   $q_string .= "order by mod_name,feat_discovered desc";

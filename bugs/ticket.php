@@ -26,7 +26,7 @@
 
   $q_string  = "select mod_name,bug_discovered,bug_closed,bug_subject,bug_openby ";
   $q_string .= "from inv_bugs ";
-  $q_string .= "left join modules on modules.mod_id = inv_bugs.bug_module ";
+  $q_string .= "left join inv_modules on inv_modules.mod_id = inv_bugs.bug_module ";
   $q_string .= "where bug_id = " . $formVars['id'];
   $q_inv_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_inv_bugs = mysqli_fetch_array($q_inv_bugs);
@@ -516,7 +516,7 @@ the ticket, no new comments can be added.</p>
 
   $q_string  = "select bug_module,mod_name,bug_severity,bug_priority,bug_discovered,bug_closed,bug_subject ";
   $q_string .= "from inv_bugs ";
-  $q_string .= "left join modules on modules.mod_id = inv_bugs.bug_module ";
+  $q_string .= "left join inv_modules on inv_modules.mod_id = inv_bugs.bug_module ";
   $q_string .= "where bug_id = " . $formVars['id'];
   $q_inv_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_inv_bugs = mysqli_fetch_array($q_inv_bugs);
@@ -525,14 +525,14 @@ the ticket, no new comments can be added.</p>
     print "  <td class=\"ui-widget-content\"><strong>Module</strong>: <select name=\"bug_module\">\n";
 
     $q_string  = "select mod_id,mod_name ";
-    $q_string .= "from modules ";
+    $q_string .= "from inv_modules ";
     $q_string .= "order by mod_name ";
-    $q_modules = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    while ($a_modules = mysqli_fetch_array($q_modules)) {
-      if ($a_inv_bugs['bug_module'] == $a_modules['mod_id']) {
-        print "<option selected value=\"" . $a_modules['mod_id'] . "\">" . $a_modules['mod_name'] . "</option>\n";
+    $q_inv_modules = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_inv_modules = mysqli_fetch_array($q_inv_modules)) {
+      if ($a_inv_bugs['bug_module'] == $a_inv_modules['mod_id']) {
+        print "<option selected value=\"" . $a_inv_modules['mod_id'] . "\">" . $a_inv_modules['mod_name'] . "</option>\n";
       } else {
-        print "<option value=\"" . $a_modules['mod_id'] . "\">" . $a_modules['mod_name'] . "</option>\n";
+        print "<option value=\"" . $a_inv_modules['mod_id'] . "\">" . $a_inv_modules['mod_name'] . "</option>\n";
       }
     }
 ?>

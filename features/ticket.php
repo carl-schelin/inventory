@@ -26,7 +26,7 @@
 
   $q_string  = "select mod_name,feat_discovered,feat_closed,feat_subject,feat_openby ";
   $q_string .= "from features ";
-  $q_string .= "left join modules on modules.mod_id = features.feat_module ";
+  $q_string .= "left join inv_modules on inv_modules.mod_id = features.feat_module ";
   $q_string .= "where feat_id = " . $formVars['id'];
   $q_features = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   $a_features = mysqli_fetch_array($q_features);
@@ -442,7 +442,7 @@ $(document).ready( function() {
 
   $q_string  = "select feat_module,mod_name,feat_severity,feat_priority,feat_discovered,feat_closed,feat_subject ";
   $q_string .= "from features ";
-  $q_string .= "left join modules on modules.mod_id = features.feat_module ";
+  $q_string .= "left join inv_modules on inv_modules.mod_id = features.feat_module ";
   $q_string .= "where feat_id = " . $formVars['id'];
   $q_features = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   $a_features = mysqli_fetch_array($q_features);
@@ -451,14 +451,14 @@ $(document).ready( function() {
     print "  <td class=\"ui-widget-content\"><strong>Module</strong>: <select name=\"feat_module\">\n";
 
     $q_string  = "select mod_id,mod_name ";
-    $q_string .= "from modules ";
+    $q_string .= "from inv_modules ";
     $q_string .= "order by mod_name ";
-    $q_modules = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    while ($a_modules = mysqli_fetch_array($q_modules)) {
-      if ($a_features['feat_module'] == $a_modules['mod_id']) {
-        print "<option selected value=\"" . $a_modules['mod_id'] . "\">" . $a_modules['mod_name'] . "</option>\n";
+    $q_inv_modules = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    while ($a_inv_modules = mysqli_fetch_array($q_inv_modules)) {
+      if ($a_features['feat_module'] == $a_inv_modules['mod_id']) {
+        print "<option selected value=\"" . $a_inv_modules['mod_id'] . "\">" . $a_inv_modules['mod_name'] . "</option>\n";
       } else {
-        print "<option value=\"" . $a_modules['mod_id'] . "\">" . $a_modules['mod_name'] . "</option>\n";
+        print "<option value=\"" . $a_inv_modules['mod_id'] . "\">" . $a_inv_modules['mod_name'] . "</option>\n";
       }
     }
 ?>

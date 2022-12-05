@@ -68,7 +68,7 @@
 
   $q_string  = "select bug_id,bug_module,bug_discovered,bug_closed,bug_closeby,bug_subject,mod_name,usr_name ";
   $q_string .= "from inv_bugs ";
-  $q_string .= "left join modules on modules.mod_id = inv_bugs.bug_module ";
+  $q_string .= "left join inv_modules on inv_modules.mod_id = inv_bugs.bug_module ";
   $q_string .= "left join inv_users   on inv_users.usr_id   = inv_bugs.bug_openby ";
   $q_string .= "where bug_closed != '1971-01-01' " . $where;
   $q_string .= "order by mod_name,bug_discovered desc";
