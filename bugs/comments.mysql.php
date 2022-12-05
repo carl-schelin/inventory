@@ -62,10 +62,10 @@
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $q_string  = "select bug_closed ";
-      $q_string .= "from bugs ";
+      $q_string .= "from inv_bugs ";
       $q_string .= "where bug_id = " . $formVars['id'];
-      $q_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      $a_bugs = mysqli_fetch_array($q_bugs);
+      $q_inv_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_inv_bugs = mysqli_fetch_array($q_inv_bugs);
 
 
       $output .= "<table class=\"ui-styled-table\">";
@@ -85,7 +85,7 @@
       if (mysqli_num_rows($q_bugs_detail) > 0) {
         while ($a_bugs_detail = mysqli_fetch_array($q_bugs_detail)) {
 
-          if ($a_bugs['bug_closed'] == '1971-01-01') {
+          if ($a_inv_bugs['bug_closed'] == '1971-01-01') {
             $linkstart = "<a href=\"#comments\" onclick=\"show_file('"     . $Bugroot . "/comments.fill.php?id=" . $a_bugs_detail['bug_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
             $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_detail('comments.del.php?id=" . $a_bugs_detail['bug_id'] . "');\">";
             $linkend   = "</a>";

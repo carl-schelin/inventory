@@ -33,10 +33,10 @@
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 
-      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from bugs");
+      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from inv_bugs");
 
       $q_string  = "delete ";
-      $q_string .= "from bugs ";
+      $q_string .= "from inv_bugs ";
       $q_string .= "where bug_id = " . $formVars['id'];
       $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 

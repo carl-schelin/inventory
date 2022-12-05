@@ -47,23 +47,23 @@
   $output .= "</tr>\n";
 
   $q_string  = "select mod_name,sev_name,bug_priority,bug_discovered,usr_first,usr_last,bug_subject ";
-  $q_string .= "from bugs ";
-  $q_string .= "left join modules on modules.mod_id   = bugs.bug_module ";
-  $q_string .= "left join inv_severity on inv_severity.sev_id = bugs.bug_severity ";
-  $q_string .= "left join inv_users on inv_users.usr_id       = bugs.bug_openby ";
+  $q_string .= "from inv_bugs ";
+  $q_string .= "left join modules on modules.mod_id   = inv_bugs.bug_module ";
+  $q_string .= "left join inv_severity on inv_severity.sev_id = inv_bugs.bug_severity ";
+  $q_string .= "left join inv_users on inv_users.usr_id       = inv_bugs.bug_openby ";
   $q_string .= "where bug_closeby = 0 ";
   $q_string .= "order by bug_severity,bug_priority,bug_discovered ";
-  $q_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_bugs) > 0) {
-    while ($a_bugs = mysqli_fetch_array($q_bugs)) {
+  $q_inv_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inv_bugs) > 0) {
+    while ($a_inv_bugs = mysqli_fetch_array($q_inv_bugs)) {
 
       $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
-      $output .= "  <td>" . $a_bugs['mod_name']                               . "</td>\n";
-      $output .= "  <td>" . $a_bugs['sev_name']                               . "</td>\n";
-      $output .= "  <td>" . $a_bugs['bug_priority']                           . "</td>\n";
-      $output .= "  <td>" . $a_bugs['bug_discovered']                         . "</td>\n";
-      $output .= "  <td>" . $a_bugs['usr_last'] . ", " . $a_bugs['usr_first'] . "</td>\n";
-      $output .= "  <td>" . $a_bugs['bug_subject']                            . "</td>\n";
+      $output .= "  <td>" . $a_inv_bugs['mod_name']                               . "</td>\n";
+      $output .= "  <td>" . $a_inv_bugs['sev_name']                               . "</td>\n";
+      $output .= "  <td>" . $a_inv_bugs['bug_priority']                           . "</td>\n";
+      $output .= "  <td>" . $a_inv_bugs['bug_discovered']                         . "</td>\n";
+      $output .= "  <td>" . $a_inv_bugs['usr_last'] . ", " . $a_inv_bugs['usr_first'] . "</td>\n";
+      $output .= "  <td>" . $a_inv_bugs['bug_subject']                            . "</td>\n";
       $output .= "</tr>\n";
     }
   } else {

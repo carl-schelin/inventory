@@ -75,18 +75,18 @@
   $priority[1] = 'Medium';
   $priority[2] = 'High';
   $q_string  = "select bug_id,bug_module,bug_severity,bug_priority,bug_discovered,bug_subject,mod_name,bug_openby,usr_name ";
-  $q_string .= "from bugs ";
-  $q_string .= "left join inv_users   on inv_users.usr_id   = bugs.bug_openby ";
-  $q_string .= "left join modules on modules.mod_id = bugs.bug_module ";
+  $q_string .= "from inv_bugs ";
+  $q_string .= "left join inv_users   on inv_users.usr_id   = inv_bugs.bug_openby ";
+  $q_string .= "left join modules on modules.mod_id = inv_bugs.bug_module ";
   $q_string .= "where bug_closed = '1971-01-01' " . $where;
   $q_string .= "order by bug_discovered desc,mod_name ";
-  $q_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_bugs) > 0) {
-    while ($a_bugs = mysqli_fetch_array($q_bugs)) {
+  $q_inv_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inv_bugs) > 0) {
+    while ($a_inv_bugs = mysqli_fetch_array($q_inv_bugs)) {
 
       $q_string  = "select bug_timestamp ";
       $q_string .= "from bugs_detail ";
-      $q_string .= "where bug_bug_id = " . $a_bugs['bug_id'] . " ";
+      $q_string .= "where bug_bug_id = " . $a_inv_bugs['bug_id'] . " ";
       $q_string .= "order by bug_timestamp ";
       $q_string .= "limit 1 ";
       $q_bugs_detail = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -97,39 +97,39 @@
         $detail_time[0] = 'No Details';
       }
 
-      $linkstart = "<a href=\"" . $Bugroot . "/ticket.php?id=" . $a_bugs['bug_id']     . "#problem\">";
-      $linklist  = "<a href=\"" . $Bugroot . "/bugs.php?id="   . $a_bugs['bug_module'] . "#open\">";
+      $linkstart = "<a href=\"" . $Bugroot . "/ticket.php?id=" . $a_inv_bugs['bug_id']     . "#problem\">";
+      $linklist  = "<a href=\"" . $Bugroot . "/bugs.php?id="   . $a_inv_bugs['bug_module'] . "#open\">";
       $linkend   = "</a>";
-      $delstart = "<input type=\"button\" value=\"Remove\" onclick=\"delete_bug('bugs.open.del.php?id=" . $a_bugs['but_id'] . "');\">";
+      $delstart = "<input type=\"button\" value=\"Remove\" onclick=\"delete_bug('bugs.open.del.php?id=" . $a_inv_bugs['but_id'] . "');\">";
 
       $sevclass = "ui-widget-content";
-      if ($a_bugs['bug_severity'] == 2) {
+      if ($a_inv_bugs['bug_severity'] == 2) {
         $sevclass = "ui-state-highlight";
       }
-      if ($a_bugs['bug_severity'] == 3) {
+      if ($a_inv_bugs['bug_severity'] == 3) {
         $sevclass = "ui-state-error";
       }
       $prclass = "ui-widget-content";
-      if ($a_bugs['bug_priority'] == 1) {
+      if ($a_inv_bugs['bug_priority'] == 1) {
         $prclass = "ui-state-highlight";
       }
-      if ($a_bugs['bug_priority'] == 2) {
+      if ($a_inv_bugs['bug_priority'] == 2) {
         $prclass = "ui-state-error";
       }
 
       $output .= "<tr>";
-      if ($a_bugs['bug_openby'] == $_SESSION['uid'] || check_userlevel($db, $AL_Admin)) {
+      if ($a_inv_bugs['bug_openby'] == $_SESSION['uid'] || check_userlevel($db, $AL_Admin)) {
         $output .= "  <td class=\"ui-widget-content delete\">" . $delstart . "</td>";
       } else {
         $output .= "  <td class=\"ui-widget-content delete\">--</td>";
       }
-      $output .=   "<td class=\"ui-widget-content\"><nobr>"  . $linklist  . $a_bugs['mod_name']          . $linkend . "</nobr></td>";
-      $output .=   "<td class=\"" . $sevclass . "\">"                     . $severity[$a_bugs['bug_severity']]             . "</td>";
-      $output .=   "<td class=\"" . $prclass  . "\">"                     . $priority[$a_bugs['bug_priority']]             . "</td>";
-      $output .=   "<td class=\"ui-widget-content\">"                     . $a_bugs['bug_discovered']                      . "</td>";
+      $output .=   "<td class=\"ui-widget-content\"><nobr>"  . $linklist  . $a_inv_bugs['mod_name']          . $linkend . "</nobr></td>";
+      $output .=   "<td class=\"" . $sevclass . "\">"                     . $severity[$a_inv_bugs['bug_severity']]             . "</td>";
+      $output .=   "<td class=\"" . $prclass  . "\">"                     . $priority[$a_inv_bugs['bug_priority']]             . "</td>";
+      $output .=   "<td class=\"ui-widget-content\">"                     . $a_inv_bugs['bug_discovered']                      . "</td>";
       $output .=   "<td class=\"ui-widget-content\">"                     . $detail_time[0]                                . "</td>";
-      $output .=   "<td class=\"ui-widget-content\">"        . $linkstart . $a_bugs['bug_subject']              . $linkend . "</td>";
-      $output .=   "<td class=\"ui-widget-content\">"                     . $a_bugs['usr_name']                            . "</td>";
+      $output .=   "<td class=\"ui-widget-content\">"        . $linkstart . $a_inv_bugs['bug_subject']              . $linkend . "</td>";
+      $output .=   "<td class=\"ui-widget-content\">"                     . $a_inv_bugs['usr_name']                            . "</td>";
       $output .= "</tr>";
     }
   } else {
@@ -140,7 +140,7 @@
 
   $output .= "</table>";
 
-  mysqli_free_result($q_bugs);
+  mysqli_free_result($q_inv_bugs);
 
   print "document.getElementById('open_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
