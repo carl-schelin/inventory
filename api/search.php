@@ -229,7 +229,7 @@
     $q_string .= "left join int_types    on int_types.itp_id    = interface.int_type ";
     $q_string .= "left join inv_int_duplex on inv_int_duplex.dup_id = interface.int_duplex ";
     $q_string .= "left join inv_int_media  on inv_int_media.med_id  = interface.int_media ";
-    $q_string .= "left join int_speed  on int_speed.spd_id  = interface.int_speed ";
+    $q_string .= "left join inv_int_speed  on inv_int_speed.spd_id  = interface.int_speed ";
     $q_string .= "left join inv_int_role   on inv_int_role.rol_id   = interface.int_role ";
     $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = 0 ";
     $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -322,7 +322,7 @@
         $q_string .= "left join int_types    on int_types.itp_id    = interface.int_type ";
         $q_string .= "left join inv_int_duplex on inv_int_duplex.dup_id = interface.int_duplex ";
         $q_string .= "left join inv_int_media  on inv_int_media.med_id  = interface.int_media ";
-        $q_string .= "left join int_speed  on int_speed.spd_id  = interface.int_speed ";
+        $q_string .= "left join inv_int_speed  on inv_int_speed.spd_id  = interface.int_speed ";
         $q_string .= "left join inv_int_role   on inv_int_role.rol_id   = interface.int_role ";
         $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_interface['int_id'] . " ";
         $q_internal = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));

@@ -143,15 +143,15 @@ Assignment <select name="int_int_id"></select></td>
   <td class="ui-widget-content">Speed*: <select name="int_speed">
 <?php
   $q_string  = "select spd_id,spd_default,spd_text ";
-  $q_string .= "from int_speed ";
+  $q_string .= "from inv_int_speed ";
   $q_string .= "order by spd_default desc,spd_text";
-  $q_int_speed = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_int_speed) > 0) {
-    while ($a_int_speed = mysqli_fetch_array($q_int_speed)) {
-      if ($a_int_speed['spd_default']) {
-        print "<option selected value=\"" . $a_int_speed['spd_id'] . "\">" . $a_int_speed['spd_text'] . "</option>\n";
+  $q_inv_int_speed = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_int_speed) > 0) {
+    while ($a_inv_int_speed = mysqli_fetch_array($q_inv_int_speed)) {
+      if ($a_inv_int_speed['spd_default']) {
+        print "<option selected value=\"" . $a_inv_int_speed['spd_id'] . "\">" . $a_inv_int_speed['spd_text'] . "</option>\n";
       } else {
-        print "<option value=\"" . $a_int_speed['spd_id'] . "\">" . $a_int_speed['spd_text'] . "</option>\n";
+        print "<option value=\"" . $a_inv_int_speed['spd_id'] . "\">" . $a_inv_int_speed['spd_text'] . "</option>\n";
       }
     }
   } else {
@@ -321,11 +321,11 @@ Assignment <select name="int_int_id"></select></td>
   <td class="ui-widget-content">Speed*: <select name="int_speed">
 <?php
         $q_string  = "select spd_id,spd_text ";
-        $q_string .= "from int_speed ";
+        $q_string .= "from inv_int_speed ";
         $q_string .= "order by spd_default desc,spd_text";
-        $q_int_speed = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_int_speed = mysqli_fetch_array($q_int_speed)) {
-          print "<option value=\"" . $a_int_speed['spd_id'] . "\">" . $a_int_speed['spd_text'] . "</option>\n";
+        $q_inv_int_speed = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inv_int_speed = mysqli_fetch_array($q_inv_int_speed)) {
+          print "<option value=\"" . $a_inv_int_speed['spd_id'] . "\">" . $a_inv_int_speed['spd_text'] . "</option>\n";
         }
 ?>
 </select></td>

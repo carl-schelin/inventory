@@ -99,10 +99,10 @@
       }
 
       $q_string  = "select spd_id,spd_text ";
-      $q_string .= "from int_speed ";
-      $q_int_speed = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_int_speed = mysqli_fetch_array($q_int_speed)) {
-        $int_speed[$a_int_speed['spd_id']] = $a_int_speed['spd_text'];
+      $q_string .= "from inv_int_speed ";
+      $q_inv_int_speed = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_int_speed = mysqli_fetch_array($q_inv_int_speed)) {
+        $int_speed[$a_inv_int_speed['spd_id']] = $a_inv_int_speed['spd_text'];
       }
 
       $q_string  = "select dup_id,dup_text ";
