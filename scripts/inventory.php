@@ -417,10 +417,10 @@
       $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
       while ($a_interface = mysqli_fetch_array($q_interface)) {
         $q_string  = "select itp_acronym ";
-        $q_string .= "from int_types ";
+        $q_string .= "from inv_int_types ";
         $q_string .= "where itp_id = " . $a_interface['int_type'];
-        $q_int_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
-        $a_int_types = mysqli_fetch_array($q_int_types);
+        $q_inv_int_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+        $a_inv_int_types = mysqli_fetch_array($q_inv_int_types);
 
         if ($csv == 'yes') {
           print "\"" . $a_interface['int_server'] . "\",";
@@ -428,7 +428,7 @@
           print "\"" . $a_interface['int_addr']   . "/" . $a_interface['int_mask'] . "\",";
           print "\"" . $a_interface['int_eth']    . "\",";
           print "\"" . $a_interface['int_gate']   . "\",";
-          print "\"" . $a_int_types['itp_acronym']  . "\"\n";
+          print "\"" . $a_inv_int_types['itp_acronym']  . "\"\n";
           print "\"" . $a_interface['zone_zone']  . "\"\n";
         } else {
           printf("%30s %10s %20s %20s %20s %5s %10s\n", $a_interface['int_server'], $a_interface['int_face'], $a_interface['int_addr'] . "/" . $a_interface['int_mask'], $a_interface['int_eth'], $a_interface['int_gate'], $a_int_types['itp_acronym'], $a_interface['zone_zone']);

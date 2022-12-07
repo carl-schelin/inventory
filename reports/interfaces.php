@@ -262,7 +262,7 @@
   $q_string .= "left join inv_states on inv_states.st_id = inv_locations.loc_state ";
   $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join inv_sub_zones on inv_sub_zones.sub_id = interface.int_zone ";
-  $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
+  $q_string .= "left join inv_int_types on inv_int_types.itp_id = interface.int_type ";
   $q_string .= $where;
   $q_string .= $orderby;
   $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

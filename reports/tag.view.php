@@ -257,7 +257,7 @@ $(document).ready( function () {
     $q_string  = "select int_face,ip_ipv4,int_type,itp_acronym,int_ip6 ";
     $q_string .= "from interface ";
     $q_string .= "left join ipaddress on ipaddress.ip_id = interface.int_ipaddressid ";
-    $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
+    $q_string .= "left join inv_int_types on inv_int_types.itp_id = interface.int_type ";
     $q_string .= "where int_companyid = \"" . $a_inventory['inv_id'] . "\" and int_type != 7 and int_ip6 = 0 ";
     $q_string .= "order by itp_acronym,int_face";;
     $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

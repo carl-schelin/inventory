@@ -185,7 +185,7 @@
             . "left join inv_locations on inv_locations.loc_id        = inventory.inv_location "
             . "left join inv_models    on inv_models.mod_id           = hardware.hw_vendorid "
             . "left join inv_groups    on inv_groups.grp_id           = inventory.inv_manager "
-            . "left join int_types   on int_types.itp_id          = interface.int_type "
+            . "left join inv_int_types on inv_int_types.itp_id        = interface.int_type "
             . $where
             . $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

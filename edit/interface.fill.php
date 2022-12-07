@@ -32,7 +32,7 @@
       $a_interface = mysqli_fetch_array($q_interface);
       mysqli_free_result($q_interface);
 
-      $inttypes      = return_Index($db, $a_interface['int_type'],       "select itp_id from int_types order by itp_id");
+      $inttypes      = return_Index($db, $a_interface['int_type'],       "select itp_id from inv_int_types order by itp_id");
       $intmedia      = return_Index($db, $a_interface['int_media'],      "select med_id from inv_int_media order by med_default desc,med_text");
       $intspeed      = return_Index($db, $a_interface['int_speed'],      "select spd_id from inv_int_speed order by spd_default desc,spd_text");
       $intduplex     = return_Index($db, $a_interface['int_duplex'],     "select dup_id from inv_int_duplex order by dup_default desc,dup_text");

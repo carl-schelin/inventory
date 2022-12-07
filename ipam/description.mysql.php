@@ -39,10 +39,10 @@
             "itp_description = \"" . $formVars['itp_description'] . "\"";
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into int_types set itp_id = NULL, " . $q_string;
+            $q_string = "insert into inv_int_types set itp_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update int_types set " . $q_string . " where itp_id = " . $formVars['id'];
+            $q_string = "update inv_int_types set " . $q_string . " where itp_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['itp_name']);
@@ -68,19 +68,19 @@
       $output .= "</tr>\n";
 
       $q_string  = "select itp_id,itp_name,itp_acronym,itp_description ";
-      $q_string .= "from int_types ";
+      $q_string .= "from inv_int_types ";
       $q_string .= "order by itp_name ";
-      $q_int_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_int_types) > 0) {
-        while ($a_int_types = mysqli_fetch_array($q_int_types)) {
+      $q_inv_int_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_int_types) > 0) {
+        while ($a_inv_int_types = mysqli_fetch_array($q_inv_int_types)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('description.fill.php?id="  . $a_int_types['itp_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\"  onclick=\"delete_line('description.del.php?id=" . $a_int_types['itp_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('description.fill.php?id="  . $a_inv_int_types['itp_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\"  onclick=\"delete_line('description.del.php?id=" . $a_inv_int_types['itp_id'] . "');\">";
           $linkend   = "</a>";
 
           $q_string  = "select ast_id ";
           $q_string .= "from inv_assets ";
-          $q_string .= "where ast_modelid = " . $a_int_types['itp_id'] . " ";
+          $q_string .= "where ast_modelid = " . $a_inv_int_types['itp_id'] . " ";
           $q_inv_assets = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $total = mysqli_num_rows($q_inv_assets);
 
@@ -92,9 +92,9 @@
               $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>";
             }
           }
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_int_types['itp_name']        . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"                     . $a_int_types['itp_acronym']                . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"                     . $a_int_types['itp_description']            . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_int_types['itp_name']        . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $a_inv_int_types['itp_acronym']                . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $a_inv_int_types['itp_description']            . "</td>\n";
           $output .= "  <td class=\"ui-widget-content delete\">"              . $total                                     . "</td>\n";
           $output .= "</tr>\n";
 
@@ -107,7 +107,7 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_int_types);
+      mysqli_free_result($q_inv_int_types);
 
       print "document.getElementById('table_mysql').innerHTML = '"   . mysqli_real_escape_string($db, $output) . "';\n\n";
 

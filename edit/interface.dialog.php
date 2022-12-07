@@ -42,12 +42,12 @@
   <td class="ui-widget-content">Interface Type: <select name="int_type">
 <?php
   $q_string  = "select itp_id,itp_name ";
-  $q_string .= "from int_types ";
+  $q_string .= "from inv_int_types ";
   $q_string .= "order by itp_id";
-  $q_int_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_int_types) > 0) {
-    while ($a_int_types = mysqli_fetch_array($q_int_types)) {
-      print "<option value=\"" . $a_int_types['itp_id'] . "\">" . $a_int_types['itp_name'] . "</option>\n";
+  $q_inv_int_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_int_types) > 0) {
+    while ($a_inv_int_types = mysqli_fetch_array($q_inv_int_types)) {
+      print "<option value=\"" . $a_inv_int_types['itp_id'] . "\">" . $a_inv_int_types['itp_name'] . "</option>\n";
     }
   } else {
     print "<option value=\"0\">No Interface Types defined</option>\n";
@@ -240,11 +240,11 @@ Assignment <select name="int_int_id"></select></td>
   <td class="ui-widget-content">Interface Type: <select name="int_type">
 <?php
   $q_string  = "select itp_id,itp_name ";
-  $q_string .= "from int_types ";
+  $q_string .= "from inv_int_types ";
   $q_string .= "order by itp_id";
-  $q_int_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_int_types = mysqli_fetch_array($q_int_types)) {
-    print "<option value=\"" . $a_int_types['itp_id'] . "\">" . $a_int_types['itp_name'] . "</option>\n";
+  $q_inv_int_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_int_types = mysqli_fetch_array($q_inv_int_types)) {
+    print "<option value=\"" . $a_inv_int_types['itp_id'] . "\">" . $a_inv_int_types['itp_name'] . "</option>\n";
   }
 ?>
 </select></td>

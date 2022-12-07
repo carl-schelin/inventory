@@ -339,16 +339,16 @@
           print "selbox.options.length = 0;\n";
 
           $q_string  = "select itp_id,itp_name,itp_acronym ";
-          $q_string .= "from int_types ";
+          $q_string .= "from inv_int_types ";
           $q_string .= "order by itp_name ";
-          $q_int_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_inv_int_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 // create the javascript bit for populating the user dropdown box.
-          while ($a_int_types = mysqli_fetch_array($q_int_types) ) {
-            print "if (celltext == \"" . $a_int_types['itp_acronym'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_int_types['itp_name']) . "\"," . $a_int_types['itp_id'] . ",1,1);\n";
+          while ($a_inv_int_types = mysqli_fetch_array($q_inv_int_types) ) {
+            print "if (celltext == \"" . $a_inv_int_types['itp_acronym'] . "\") {\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_int_types['itp_name']) . "\"," . $a_inv_int_types['itp_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_int_types['itp_name']) . "\"," . $a_int_types['itp_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_int_types['itp_name']) . "\"," . $a_inv_int_types['itp_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -365,22 +365,22 @@
           print "cell.setAttribute(\"onclick\", \"edit_Interface(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "select itp_id,itp_acronym ";
-          $q_string .= "from int_types ";
+          $q_string .= "from inv_int_types ";
           $q_string .= "where itp_id = " . $formVars['select'] . " ";
-          $q_int_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_int_types) > 0) {
-            $a_int_types = mysqli_fetch_array($q_int_types);
+          $q_inv_int_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_int_types) > 0) {
+            $a_inv_int_types = mysqli_fetch_array($q_inv_int_types);
           } else {
-            $a_int_types['itp_id']   = 0;
-            $a_int_types['itp_acronym'] = "Unassigned";
+            $a_inv_int_types['itp_id']   = 0;
+            $a_inv_int_types['itp_acronym'] = "Unassigned";
           }
 
-          $display = $a_int_types['itp_acronym'];
+          $display = $a_inv_int_types['itp_acronym'];
 
           $q_string  = "update ";
           $q_string .= "interface ";
           $q_string .= "set ";
-          $q_string .= "int_type = " . $a_int_types['itp_id'] . " ";
+          $q_string .= "int_type = " . $a_inv_int_types['itp_id'] . " ";
           $q_string .= "where int_id = " . $formVars['id'] . " ";
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
