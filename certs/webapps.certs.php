@@ -99,14 +99,14 @@ if the expiration date is within 60 days and <span class="ui-state-error">highli
   $warningdate = mktime(0, 0, 0, date('m'), date('d') + 90, date('Y'));
 
   $q_string  = "select cert_id,cert_desc,cert_url,cert_expire,cert_authority,grp_name ";
-  $q_string .= "from certs ";
-  $q_string .= "left join inv_groups on inv_groups.grp_id = certs.cert_group ";
+  $q_string .= "from inv_certs ";
+  $q_string .= "left join inv_groups on inv_groups.grp_id = inv_certs.cert_group ";
   $q_string .= "order by cert_url,cert_expire";
-  $q_certs = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_certs) > 0) {
-    while ($a_certs = mysqli_fetch_array($q_certs)) {
+  $q_inv_certs = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_certs) > 0) {
+    while ($a_inv_certs = mysqli_fetch_array($q_inv_certs)) {
 
-      $certtime = strtotime($a_certs['cert_expire']);
+      $certtime = strtotime($a_inv_certs['cert_expire']);
 
       $class = " class=\"ui-widget-content\"";
       if ($certtime < $date) {
@@ -118,10 +118,10 @@ if the expiration date is within 60 days and <span class="ui-state-error">highli
       }
 
       print "<tr>";
-      print "  <td" . $class . " title=\"" . $a_certs['cert_url'] . "\">" . $a_certs['cert_desc']      . "</td>";
-      print "  <td" . $class . ">"                                        . $a_certs['cert_expire']    . "</td>";
-      print "  <td" . $class . ">"                                        . $a_certs['cert_authority'] . "</td>";
-      print "  <td" . $class . " colspan=\"2\">"                                        . $a_certs['grp_name']       . "</td>";
+      print "  <td" . $class . " title=\"" . $a_inv_certs['cert_url'] . "\">" . $a_inv_certs['cert_desc']      . "</td>";
+      print "  <td" . $class . ">"                                        . $a_inv_certs['cert_expire']    . "</td>";
+      print "  <td" . $class . ">"                                        . $a_inv_certs['cert_authority'] . "</td>";
+      print "  <td" . $class . " colspan=\"2\">"                                        . $a_inv_certs['grp_name']       . "</td>";
       print "</tr>";
 
       $q_string  = "select svr_id,inv_name,sw_software,prod_name,grp_name ";
@@ -130,7 +130,7 @@ if the expiration date is within 60 days and <span class="ui-state-error">highli
       $q_string .= "left join inventory on inventory.inv_id   = svr_software.svr_companyid ";
       $q_string .= "left join products  on products.prod_id   = software.sw_product ";
       $q_string .= "left join inv_groups  on inv_groups.grp_id    = svr_software.svr_groupid ";
-      $q_string .= "where svr_certid = " . $a_certs['cert_id'];
+      $q_string .= "where svr_certid = " . $a_inv_certs['cert_id'];
       $q_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_svr_software) > 0) {
         while ($a_svr_software = mysqli_fetch_array($q_svr_software)) {
@@ -151,7 +151,7 @@ if the expiration date is within 60 days and <span class="ui-state-error">highli
       print "</tr>";
   }
 
-  mysqli_free_result($q_certs);
+  mysqli_free_result($q_inv_certs);
 
   print "</table>\n";
 ?>

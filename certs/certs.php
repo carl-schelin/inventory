@@ -309,12 +309,12 @@ servers that are using this certificate.</p>
 <option value="0">Select Certificate Authority</option>
 <?php
   $q_string  = "select cert_id,cert_desc ";
-  $q_string .= "from certs ";
+  $q_string .= "from inv_certs ";
   $q_string .= "where cert_isca = 1 ";
   $q_string .= "order by cert_desc";
-  $q_certs = mysqli_query($db, $q_string) or die(q_string . ": " . mysqli_error($db));
-  while ($a_certs = mysqli_fetch_array($q_certs)) {
-    print "<option value=\"" . $a_certs['cert_id'] . "\">" . htmlspecialchars($a_certs['cert_desc']) . "</option>\n";
+  $q_inv_certs = mysqli_query($db, $q_string) or die(q_string . ": " . mysqli_error($db));
+  while ($a_inv_certs = mysqli_fetch_array($q_inv_certs)) {
+    print "<option value=\"" . $a_inv_certs['cert_id'] . "\">" . htmlspecialchars($a_inv_certs['cert_desc']) . "</option>\n";
   }
 ?>
 </select></td>
@@ -379,12 +379,12 @@ servers that are using this certificate.</p>
 <option value="0">Select Certificate Authority</option>
 <?php
   $q_string  = "select cert_id,cert_desc ";
-  $q_string .= "from certs ";
+  $q_string .= "from inv_certs ";
   $q_string .= "where cert_isca = 1 ";
   $q_string .= "order by cert_desc";
-  $q_certs = mysqli_query($db, $q_string) or die(q_string . ": " . mysqli_error($db));
-  while ($a_certs = mysqli_fetch_array($q_certs)) {
-    print "<option value=\"" . $a_certs['cert_id'] . "\">" . htmlspecialchars($a_certs['cert_desc']) . "</option>\n";
+  $q_inv_certs = mysqli_query($db, $q_string) or die(q_string . ": " . mysqli_error($db));
+  while ($a_inv_certs = mysqli_fetch_array($q_inv_certs)) {
+    print "<option value=\"" . $a_inv_certs['cert_id'] . "\">" . htmlspecialchars($a_inv_certs['cert_desc']) . "</option>\n";
   }
 ?>
 </select></td>

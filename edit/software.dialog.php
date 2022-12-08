@@ -43,12 +43,12 @@
   <td class="ui-widget-content">SSL Certificate <select name="svr_certid">
 <?php
   $q_string  = "select cert_id,cert_desc ";
-  $q_string .= "from certs ";
+  $q_string .= "from inv_certs ";
   $q_string .= "where cert_ca = 0 ";
   $q_string .= "order by cert_desc";
-  $q_certs = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_certs = mysqli_fetch_array($q_certs)) {
-    print "<option value=\"" . $a_certs['cert_id'] . "\">" . $a_certs['cert_desc'] . "</option>\n";
+  $q_inv_certs = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_certs = mysqli_fetch_array($q_inv_certs)) {
+    print "<option value=\"" . $a_inv_certs['cert_id'] . "\">" . $a_inv_certs['cert_desc'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -111,12 +111,12 @@
   <td class="ui-widget-content">SSL Certificate <select name="svr_certid">
 <?php
   $q_string  = "select cert_id,cert_desc ";
-  $q_string .= "from certs ";
+  $q_string .= "from inv_certs ";
   $q_string .= "where cert_ca = 0 ";
   $q_string .= "order by cert_desc";
-  $q_certs = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_certs = mysqli_fetch_array($q_certs)) {
-    print "<option value=\"" . $a_certs['cert_id'] . "\">" . $a_certs['cert_desc'] . "</option>\n";
+  $q_inv_certs = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_certs = mysqli_fetch_array($q_inv_certs)) {
+    print "<option value=\"" . $a_inv_certs['cert_id'] . "\">" . $a_inv_certs['cert_desc'] . "</option>\n";
   }
 ?>
 </select></td>

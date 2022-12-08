@@ -65,10 +65,10 @@
             "cert_top       =   " . $formVars['cert_top'];
 
           if ($formVars['update'] == 0) {
-            $query = "insert into certs set cert_id = NULL, " . $q_string;
+            $query = "insert into inv_certs set cert_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $query = "update certs set " . $q_string . " where cert_id = " . $formVars['id'];
+            $query = "update inv_certs set " . $q_string . " where cert_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['cert_desc']);
@@ -105,18 +105,18 @@
       $count = 0;
       $q_string  = "select cert_desc,cert_id,cert_url,cert_expire,cert_authority,";
       $q_string .= "cert_filename,cert_subject,cert_group,grp_name,cert_isca,cert_top ";
-      $q_string .= "from certs ";
-      $q_string .= "left join inv_groups on inv_groups.grp_id = certs.cert_group ";
+      $q_string .= "from inv_certs ";
+      $q_string .= "left join inv_groups on inv_groups.grp_id = inv_certs.cert_group ";
       $q_string .= "where cert_ca = 0 " . $andtop . " ";
       $q_string .= "order by cert_desc,cert_expire";
-      $q_certs = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_certs) > 0) {
-        while ($a_certs = mysqli_fetch_array($q_certs)) {
+      $q_inv_certs = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_certs) > 0) {
+        while ($a_inv_certs = mysqli_fetch_array($q_inv_certs)) {
 
 # reset if andtop succeeds here
           $andtop = '';
 
-          $certtime = strtotime($a_certs['cert_expire']);
+          $certtime = strtotime($a_inv_certs['cert_expire']);
 
           $class = " class=\"ui-widget-content";
           if ($certtime < $date) {
@@ -127,26 +127,26 @@
             }
           }
 
-          if ($a_certs['cert_isca']) {
+          if ($a_inv_certs['cert_isca']) {
             $isca = "Yes";
           } else {
             $isca = "No";
           }
 
 # show as top if a top level
-          if ($a_certs['cert_top']) {
-            $isca = "<a href=\"certs.php?top=" . $a_certs['cert_id'] . "\" target=\"_blank\">Top</a>";
+          if ($a_inv_certs['cert_top']) {
+            $isca = "<a href=\"certs.php?top=" . $a_inv_certs['cert_id'] . "\" target=\"_blank\">Top</a>";
           }
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('certs.fill.php?id=" . $a_certs['cert_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $certstart = "<a href=\"servers.php?id=" . $a_certs['cert_id'] . "\" target=\"_blank\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('certs.del.php?id=" . $a_certs['cert_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('certs.fill.php?id=" . $a_inv_certs['cert_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $certstart = "<a href=\"servers.php?id=" . $a_inv_certs['cert_id'] . "\" target=\"_blank\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('certs.del.php?id=" . $a_inv_certs['cert_id'] . "');\">";
           $linkend   = "</a>";
 
           $total = 0;
           $q_string  = "select svr_certid ";
           $q_string .= "from svr_software ";
-          $q_string .= "where svr_certid = " . $a_certs['cert_id'] . " ";
+          $q_string .= "where svr_certid = " . $a_inv_certs['cert_id'] . " ";
           $q_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_svr_software) > 0) {
             while ($a_svr_software = mysqli_fetch_array($q_svr_software)) {
@@ -163,13 +163,13 @@
               $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>";
             }
           }
-          $output .= "  <td" . $class . "\" title=\"" . $a_certs['cert_url'] . "\">" . $linkstart . $a_certs['cert_desc']      . $linkend . "</td>\n";
-          $output .= "  <td" . $class . "\">"                                                     . $a_certs['cert_filename']             . "</td>\n";
+          $output .= "  <td" . $class . "\" title=\"" . $a_inv_certs['cert_url'] . "\">" . $linkstart . $a_inv_certs['cert_desc']      . $linkend . "</td>\n";
+          $output .= "  <td" . $class . "\">"                                                     . $a_inv_certs['cert_filename']             . "</td>\n";
           $output .= "  <td" . $class . " delete\">"                                              . $isca                                 . "</td>\n";
-          $output .= "  <td" . $class . " delete\">"                                              . $a_certs['cert_expire']               . "</td>\n";
-          $output .= "  <td" . $class . "\">"                                                     . $a_certs['cert_authority']            . "</td>\n";
-          $output .= "  <td" . $class . "\">"                                                     . $a_certs['cert_subject']              . "</td>\n";
-          $output .= "  <td" . $class . "\">"                                                     . $a_certs['grp_name']                  . "</td>\n";
+          $output .= "  <td" . $class . " delete\">"                                              . $a_inv_certs['cert_expire']               . "</td>\n";
+          $output .= "  <td" . $class . "\">"                                                     . $a_inv_certs['cert_authority']            . "</td>\n";
+          $output .= "  <td" . $class . "\">"                                                     . $a_inv_certs['cert_subject']              . "</td>\n";
+          $output .= "  <td" . $class . "\">"                                                     . $a_inv_certs['grp_name']                  . "</td>\n";
           $output .= "  <td" . $class . " delete\">"                                 . $certstart . $total                     . $linkend . "</td>\n";
           $output .= "</tr>\n";
           $count++;
@@ -177,9 +177,9 @@
 
           $q_string  = "select cert_desc,cert_id,cert_url,cert_expire,cert_authority,";
           $q_string .= "cert_filename,cert_subject,cert_group,grp_name,cert_isca,cert_top ";
-          $q_string .= "from certs ";
-          $q_string .= "left join inv_groups on inv_groups.grp_id = certs.cert_group ";
-          $q_string .= "where cert_ca = " . $a_certs['cert_id'] . " " . $andtop . " ";
+          $q_string .= "from inv_certs ";
+          $q_string .= "left join inv_groups on inv_groups.grp_id = inv_certs.cert_group ";
+          $q_string .= "where cert_ca = " . $a_inv_certs['cert_id'] . " " . $andtop . " ";
           $q_string .= "order by cert_desc,cert_expire";
           $q_child = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_child) > 0) {
@@ -248,8 +248,8 @@
 
               $q_string  = "select cert_desc,cert_id,cert_url,cert_expire,cert_authority,";
               $q_string .= "cert_filename,cert_subject,cert_group,grp_name,cert_isca,cert_top ";
-              $q_string .= "from certs ";
-              $q_string .= "left join inv_groups on inv_groups.grp_id = certs.cert_group ";
+              $q_string .= "from inv_certs ";
+              $q_string .= "left join inv_groups on inv_groups.grp_id = inv_certs.cert_group ";
               $q_string .= "where cert_ca = " . $a_child['cert_id'] . " " . $andtop . " ";
               $q_string .= "order by cert_desc,cert_expire";
               $q_grandchild = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
@@ -319,8 +319,8 @@
 
                   $q_string  = "select cert_desc,cert_id,cert_url,cert_expire,cert_authority,";
                   $q_string .= "cert_filename,cert_subject,cert_group,grp_name,cert_isca,cert_top ";
-                  $q_string .= "from certs ";
-                  $q_string .= "left join inv_groups on inv_groups.grp_id = certs.cert_group ";
+                  $q_string .= "from inv_certs ";
+                  $q_string .= "left join inv_groups on inv_groups.grp_id = inv_certs.cert_group ";
                   $q_string .= "where cert_ca = " . $a_grandchild['cert_id'] . " " . $andtop . " ";
                   $q_string .= "order by cert_desc,cert_expire";
                   $q_greatgrandchild = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
