@@ -117,13 +117,13 @@
 
 # if all filesystems are checked in the backup form, then we don't need checkboxes here
       $q_string  = "select bu_include ";
-      $q_string .= "from backups ";
+      $q_string .= "from inv_backups ";
       $q_string .= "where bu_companyid = " . $formVars['fs_companyid'] . " ";
-      $q_backups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_backups) > 0) {
-        $a_backups = mysqli_fetch_array($q_backups);
+      $q_inv_backups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_backups) > 0) {
+        $a_inv_backups = mysqli_fetch_array($q_inv_backups);
       } else {
-        $a_backups['bu_include'] = 0;
+        $a_inv_backups['bu_include'] = 0;
       }
 
       $q_string  = "select fs_id,fs_backup,fs_wwid,fs_volume,fs_device,fs_size,fs_mount,fs_verified,fs_update,grp_name,fs_used,fs_avail,fs_percent ";
@@ -142,7 +142,7 @@
 
           $class = "ui-widget-content";
 # if all filesystems are not being backed up
-          if ($a_backups['bu_include'] == 0) {
+          if ($a_inv_backups['bu_include'] == 0) {
             $class = "ui-state-highlight";
 # and if this specific filesystem is not being backed up.
             if ($a_filesystem['fs_backup'] == 0) {

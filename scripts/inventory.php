@@ -468,12 +468,12 @@
 # let's show the number of entries for each of the tables for this server id.
       $backups = 0;
       $q_string  = "select bu_companyid ";
-      $q_string .= "from backups ";
+      $q_string .= "from inv_backups ";
       $q_string .= "where bu_companyid = " . $remove . " ";
-      $q_backups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_backups) > 0) {
-        print "There is a backup record " . mysqli_num_rows($q_backups) . " for " . $a_inventory['inv_name'] . "\n";
-        $backups = mysqli_num_rows($q_backups);
+      $q_inv_backups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_backups) > 0) {
+        print "There is a backup record " . mysqli_num_rows($q_inv_backups) . " for " . $a_inventory['inv_name'] . "\n";
+        $backups = mysqli_num_rows($q_inv_backups);
       }
 
       $cluster = 0;
@@ -650,7 +650,7 @@
 
       if ($backups > 0) {
         print "Backups ";
-        $q_string = "delete from backups    where bu_companyid    = " . $remove;
+        $q_string = "delete from inv_backups    where bu_companyid    = " . $remove;
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 

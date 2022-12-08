@@ -72,21 +72,21 @@
   $q_string  = "select bu_start,bu_include,bu_retention,bu_sunday,bu_monday,bu_tuesday,bu_wednesday,";
   $q_string .= "bu_thursday,bu_friday,bu_saturday,bu_suntime,bu_montime,bu_tuetime,bu_wedtime,";
   $q_string .= "bu_thutime,bu_fritime,bu_sattime,bu_notes ";
-  $q_string .= "from backups ";
+  $q_string .= "from inv_backups ";
   $q_string .= "where bu_companyid = " . $formVars['id'] . " ";
-  $q_backups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_backups) > 0) {
-    $a_backups = mysqli_fetch_array($q_backups);
+  $q_inv_backups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inv_backups) > 0) {
+    $a_inv_backups = mysqli_fetch_array($q_inv_backups);
 
     $output .= "<table class=\"ui-styled-table\">";
     $output .= "<tr>";
     $output .= "  <th class=\"ui-state-default\" colspan=\"7\">Backup Details</th>";
     $output .= "</tr>";
     $output .= "<tr>";
-    $output .= "  <td class=\"ui-widget-content\">Start: " . $a_backups['bu_start'] . "</td>";
-    $output .= "  <td class=\"ui-widget-content\">Include: " . $a_backups['bu_include'] . "</td>";
-    $output .= "  <td class=\"ui-widget-content\">Retention: " . $retention[$a_backups['bu_retention']] . "</td>";
-    $output .= "  <td class=\"ui-widget-content\">Notes: " . $a_backups['bu_notes'] . "</td>";
+    $output .= "  <td class=\"ui-widget-content\">Start: "     . $a_inv_backups['bu_start']                 . "</td>";
+    $output .= "  <td class=\"ui-widget-content\">Include: "   . $a_inv_backups['bu_include']               . "</td>";
+    $output .= "  <td class=\"ui-widget-content\">Retention: " . $retention[$a_inv_backups['bu_retention']] . "</td>";
+    $output .= "  <td class=\"ui-widget-content\">Notes: "     . $a_inv_backups['bu_notes']                 . "</td>";
     $output .= "</tr>";
     $output .= "</table>\n";
 
@@ -96,48 +96,48 @@
     $output .= "</tr>";
 
     $output .= "<tr>";
-    if ($a_backups['bu_sunday']) {
+    if ($a_inv_backups['bu_sunday']) {
       $type = 'Incremental';
     } else {
       $type = 'Full';
     }
-    $output .= "<td class=\"ui-widget-content\">Sunday: "    . $type . " at " . $a_backups['bu_suntime'] . "</td>\n";
-    if ($a_backups['bu_monday']) {
+    $output .= "<td class=\"ui-widget-content\">Sunday: "    . $type . " at " . $a_inv_backups['bu_suntime'] . "</td>\n";
+    if ($a_inv_backups['bu_monday']) {
       $type = 'Incremental';
     } else {
       $type = 'Full';
     }
-    $output .= "<td class=\"ui-widget-content\">Monday: "    . $type . " at " . $a_backups['bu_montime'] . "</td>\n";
-    if ($a_backups['bu_tuesday']) {
+    $output .= "<td class=\"ui-widget-content\">Monday: "    . $type . " at " . $a_inv_backups['bu_montime'] . "</td>\n";
+    if ($a_inv_backups['bu_tuesday']) {
       $type = 'Incremental';
     } else {
       $type = 'Full';
     }
-    $output .= "<td class=\"ui-widget-content\">Tuesday: "   . $type . " at " . $a_backups['bu_tuetime'] . "</td>\n";
-    if ($a_backups['bu_wednesday']) {
+    $output .= "<td class=\"ui-widget-content\">Tuesday: "   . $type . " at " . $a_inv_backups['bu_tuetime'] . "</td>\n";
+    if ($a_inv_backups['bu_wednesday']) {
       $type = 'Incremental';
     } else {
       $type = 'Full';
     }
-    $output .= "<td class=\"ui-widget-content\">Wednesday: " . $type . " at " . $a_backups['bu_wedtime'] . "</td>\n";
-    if ($a_backups['bu_thursday']) {
+    $output .= "<td class=\"ui-widget-content\">Wednesday: " . $type . " at " . $a_inv_backups['bu_wedtime'] . "</td>\n";
+    if ($a_inv_backups['bu_thursday']) {
       $type = 'Incremental';
     } else {
       $type = 'Full';
     }
-    $output .= "<td class=\"ui-widget-content\">Thursday: "  . $type . " at " . $a_backups['bu_thutime'] . "</td>\n";
-    if ($a_backups['bu_friday']) {
+    $output .= "<td class=\"ui-widget-content\">Thursday: "  . $type . " at " . $a_inv_backups['bu_thutime'] . "</td>\n";
+    if ($a_inv_backups['bu_friday']) {
       $type = 'Incremental';
     } else {
       $type = 'Full';
     }
-    $output .= "<td class=\"ui-widget-content\">Friday: "    . $type . " at " . $a_backups['bu_fritime'] . "</td>\n";
-    if ($a_backups['bu_saturday']) {
+    $output .= "<td class=\"ui-widget-content\">Friday: "    . $type . " at " . $a_inv_backups['bu_fritime'] . "</td>\n";
+    if ($a_inv_backups['bu_saturday']) {
       $type = 'Incremental';
     } else {
       $type = 'Full';
     }
-    $output .= "<td class=\"ui-widget-content\">Saturday: "  . $type . " at " . $a_backups['bu_sattime'] . "</td>\n";
+    $output .= "<td class=\"ui-widget-content\">Saturday: "  . $type . " at " . $a_inv_backups['bu_sattime'] . "</td>\n";
     $output .= "</tr>";
 
     $output .= "</table>";
