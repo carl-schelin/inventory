@@ -41,13 +41,13 @@ if (($handle = fopen($Uploadpath . "/" . $argv[1], "r")) !== FALSE) {
   while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
 
     $q_string  = "select fam_name ";
-    $q_string .= "from family ";
+    $q_string .= "from inv_family ";
     $q_string .= "where fam_name = \"" . $data[2] . "\" ";
-    $q_family = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $q_inv_family = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-    if (mysqli_num_rows($q_family) == 0) {
+    if (mysqli_num_rows($q_inv_family) == 0) {
       $q_string  = "insert ";
-      $q_string .= "into family ";
+      $q_string .= "into inv_family ";
       $q_string .= "set fam_id = null,";
       $q_string .= "fam_name = \"" . $data[2] . "\"";
 

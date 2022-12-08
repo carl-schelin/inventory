@@ -35,10 +35,10 @@
             "fam_name     = \"" . $formVars['fam_name']   . "\"";
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into family set fam_id = NULL, " . $q_string;
+            $q_string = "insert into inv_family set fam_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update family set " . $q_string . " where fam_id = " . $formVars['id'];
+            $q_string = "update inv_family set " . $q_string . " where fam_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['fam_name']);
@@ -90,22 +90,22 @@
       $output .= "</tr>\n";
 
       $q_string  = "select fam_id,fam_name ";
-      $q_string .= "from family ";
+      $q_string .= "from inv_family ";
       $q_string .= "order by fam_name";
-      $q_family = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_family) > 0) {
-        while ($a_family = mysqli_fetch_array($q_family)) {
+      $q_inv_family = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_family) > 0) {
+        while ($a_inv_family = mysqli_fetch_array($q_inv_family)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('family.fill.php?id="  . $a_family['fam_id'] . "');showDiv('family-hide');\">";
-          $linkdel   = "<a href=\"#\" onclick=\"delete_line('family.del.php?id=" . $a_family['fam_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('family.fill.php?id="  . $a_inv_family['fam_id'] . "');showDiv('family-hide');\">";
+          $linkdel   = "<a href=\"#\" onclick=\"delete_line('family.del.php?id=" . $a_inv_family['fam_id'] . "');\">";
           $linkend   = "</a>";
 
           $output   .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . 'x'                     . $linkend . "</td>";
           }
-          $output   .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . $a_family['fam_id']   . $linkend . "</td>";
-          $output   .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_family['fam_name'] . $linkend . "</td>";
+          $output   .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . $a_inv_family['fam_id']   . $linkend . "</td>";
+          $output   .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_family['fam_name'] . $linkend . "</td>";
           $output   .= "</tr>";
         }
       } else {
@@ -116,7 +116,7 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_family);
+      mysqli_free_result($q_inv_family);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 

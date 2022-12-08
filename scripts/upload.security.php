@@ -42,10 +42,10 @@
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
 
       $q_string  = "select fam_id ";
-      $q_string .= "from family ";
+      $q_string .= "from inv_family ";
       $q_string .= "where fam_name = '" . $data[2] . "'";
-      $q_family = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      $a_family = mysqli_fetch_array($q_family);
+      $q_inv_family = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_inv_family = mysqli_fetch_array($q_inv_family);
 
       $q_string  = "select sev_id ";
       $q_string .= "from inv_severity ";
@@ -65,7 +65,7 @@
         $q_string .= "into inv_security set ";
         $q_string .= "sec_id       =  " . $data[0]                           . ",";
         $q_string .= "sec_name     = '" . mysqli_real_escape_string($db, $data[1]) . "',";
-        $q_string .= "sec_family   =  " . $a_family['fam_id']                . ",";
+        $q_string .= "sec_family   =  " . $a_inv_family['fam_id']                . ",";
         $q_string .= "sec_severity =  " . $a_inv_severity['sev_id']              . " ";
         $insert = mysqli_query($db, $q_string) or die("\nQuery: " . $q_string . "\nFamily: " . $data[2] . "\nSeverity: " . $data[3] . "\n" . mysqli_error($db) . "\n");
         print "+";
