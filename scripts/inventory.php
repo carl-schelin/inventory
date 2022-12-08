@@ -478,12 +478,12 @@
 
       $cluster = 0;
       $q_string  = "select clu_companyid ";
-      $q_string .= "from cluster ";
+      $q_string .= "from inv_cluster ";
       $q_string .= "where clu_companyid = " . $remove . " ";
-      $q_cluster = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_cluster) > 0) {
-        print "There are " . mysqli_num_rows($q_cluster) . " cluster records for " . $a_inventory['inv_name'] . "\n";
-        $cluster = mysqli_num_rows($q_cluster);
+      $q_inv_cluster = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_cluster) > 0) {
+        print "There are " . mysqli_num_rows($q_inv_cluster) . " cluster records for " . $a_inventory['inv_name'] . "\n";
+        $cluster = mysqli_num_rows($q_inv_cluster);
       }
 
       $filesystem = 0;
@@ -656,7 +656,7 @@
 
       if ($cluster > 0) {
         print "Cluster ";
-        $q_string = "delete from cluster    where clu_companyid   = " . $remove;
+        $q_string = "delete from inv_cluster    where clu_companyid   = " . $remove;
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 

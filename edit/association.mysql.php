@@ -45,11 +45,11 @@
             "clu_notes       = \"" . $formVars['clu_notes']       . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into cluster set clu_id = NULL," . $q_string;
+            $query = "insert into inv_cluster set clu_id = NULL," . $q_string;
             $message = "Association added.";
           }
           if ($formVars['update'] == 1) {
-            $query = "update cluster set " . $q_string . " where clu_id = " . $formVars['id'];
+            $query = "update inv_cluster set " . $q_string . " where clu_id = " . $formVars['id'];
             $message = "Association updated.";
           }
 
@@ -68,17 +68,17 @@
 
         if ($formVars['copyfrom'] > 0) {
           $q_string  = "select clu_association,clu_notes ";
-          $q_string .= "from cluster ";
+          $q_string .= "from inv_cluster ";
           $q_string .= "where clu_companyid = " . $formVars['copyfrom'];
-          $q_cluster = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          while ($a_cluster = mysqli_fetch_array($q_cluster)) {
+          $q_inv_cluster = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_inv_cluster = mysqli_fetch_array($q_inv_cluster)) {
 
             $q_string =
               "clu_companyid   =   " . $formVars['clu_companyid']    . "," .
-              "clu_association =   " . $a_cluster['clu_association'] . "," .
-              "clu_notes       = \"" . $a_cluster['clu_notes']       . "\"";
+              "clu_association =   " . $a_inv_cluster['clu_association'] . "," .
+              "clu_notes       = \"" . $a_inv_cluster['clu_notes']       . "\"";
   
-            $query = "insert into cluster set clu_id = NULL, " . $q_string;
+            $query = "insert into inv_cluster set clu_id = NULL, " . $q_string;
             mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
           }
         }
@@ -110,10 +110,10 @@
         $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_inventory = mysqli_fetch_array($q_inventory)) {
           $q_string  = "select clu_id ";
-          $q_string .= "from cluster ";
+          $q_string .= "from inv_cluster ";
           $q_string .= "where clu_companyid = " . $a_inventory['inv_id'] . " ";
-          $q_cluster = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          $clu_total = mysqli_num_rows($q_cluster);
+          $q_inv_cluster = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $clu_total = mysqli_num_rows($q_inv_cluster);
 
           if ($clu_total > 0) {
             $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . " (" . $clu_total . ")</option>\n";
@@ -196,24 +196,24 @@
       $output .= "</tr>\n";
 
       $q_string  = "select clu_id,clu_association,clu_notes,grp_name,inv_name ";
-      $q_string .= "from cluster ";
-      $q_string .= "left join inventory on inventory.inv_id = cluster.clu_companyid ";
+      $q_string .= "from inv_cluster ";
+      $q_string .= "left join inventory on inventory.inv_id = inv_cluster.clu_companyid ";
       $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
       $q_string .= "where clu_companyid = " . $formVars['clu_companyid'] . " ";
       $q_string .= "order by inv_name,clu_association,clu_port";
-      $q_cluster = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_cluster) > 0) {
-        while ($a_cluster = mysqli_fetch_array($q_cluster)) {
+      $q_inv_cluster = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_cluster) > 0) {
+        while ($a_inv_cluster = mysqli_fetch_array($q_inv_cluster)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('association.fill.php?id=" . $a_cluster['clu_id'] . "');showDiv('association-hide');\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_association('association.del.php?id="  . $a_cluster['clu_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('association.fill.php?id=" . $a_inv_cluster['clu_id'] . "');showDiv('association-hide');\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_association('association.del.php?id="  . $a_inv_cluster['clu_id'] . "');\">";
           $linkend   = "</a>";
 
           $output .= "<tr>\n";
           $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel                                          . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_cluster['inv_name']    . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_cluster['grp_name']    . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_cluster['clu_notes']   . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_cluster['inv_name']    . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_cluster['grp_name']    . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_cluster['clu_notes']   . $linkend . "</td>\n";
           $output .= "</tr>\n";
 
         }
@@ -222,7 +222,7 @@
       }
       $output .= "</table>\n";
 
-      mysqli_free_result($q_cluster);
+      mysqli_free_result($q_inv_cluster);
 
       print "document.getElementById('association_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
