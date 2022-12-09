@@ -37,7 +37,7 @@
 // retrieve type list
       $q_string  = "select mod_id,ven_name,mod_name ";
       $q_string .= "from inv_models ";
-      $q_string .= "left join vendors on vendors.ven_id = inv_models.mod_vendor ";
+      $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
       $q_string .= "where mod_type = " . $a_hardware['hw_type'] . " ";
       $q_string .= "order by ven_name,mod_name";
       $q_inv_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -56,7 +56,7 @@
       $q_string  = "select hw_id,ven_name,mod_name ";
       $q_string .= "from hardware ";
       $q_string .= "left join inv_models  on inv_models.mod_id  = hardware.hw_vendorid ";
-      $q_string .= "left join vendors on vendors.ven_id = inv_models.mod_vendor ";
+      $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
       $q_string .= "where hw_companyid = " . $a_hardware['hw_companyid'] . " and hw_hw_id = 0 and hw_id != " . $formVars['id'] . " ";
       $q_hwselect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
@@ -83,7 +83,7 @@
       }
 
       $product  = return_Index($db, $a_hardware['hw_product'],   "select prod_id from products order by prod_name");
-      $model    = return_Index($db, $a_hardware['hw_vendorid'],  "select mod_id from inv_models left join vendors on vendors.ven_id = inv_models.mod_vendor where mod_type = " . $a_hardware['hw_type'] . " order by ven_name,mod_name");
+      $model    = return_Index($db, $a_hardware['hw_vendorid'],  "select mod_id from inv_models left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor where mod_type = " . $a_hardware['hw_type'] . " order by ven_name,mod_name");
       $type     = return_Index($db, $a_hardware['hw_type'],      "select part_id from parts order by part_name");
       $support  = return_Index($db, $a_hardware['hw_supportid'], "select sup_id from support order by sup_company,sup_contract");
       $response = return_Index($db, $a_hardware['hw_response'],  "select slv_id from supportlevel order by slv_value");

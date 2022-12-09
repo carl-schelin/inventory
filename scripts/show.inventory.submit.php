@@ -712,7 +712,7 @@
 
     $q_string  = "select ven_name,mod_name ";
     $q_string .= "from inv_models ";
-    $q_string .= "left join vendors on vendors.ven_id = inv_models.mod_vendor ";
+    $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
     $q_string .= "where mod_id = " . $a_hardware['hw_vendorid'] . " ";
     $q_inv_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
     $a_inv_models = mysqli_fetch_array($q_inv_models);
@@ -738,7 +738,7 @@
     $q_string .= "from software ";
     $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
     $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
-    $q_string .= "left join vendors on vendors.ven_id = software.sw_vendor ";
+    $q_string .= "left join inv_vendors on inv_vendors.ven_id = software.sw_vendor ";
     $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " and typ_name = 'OS' ";
     $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
     $a_software = mysqli_fetch_array($q_software);
@@ -859,7 +859,7 @@
       while ($a_hardware = mysqli_fetch_array($q_hardware)) {
         $q_string  = "select ven_name,mod_name,mod_size,mod_speed ";
         $q_string .= "from inv_models ";
-        $q_string .= "left join vendors on vendors.ven_id = inv_models.mod_vendor ";
+        $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
         $q_string .= "where mod_id = " . $a_hardware['hw_vendorid'] . " ";
         $q_inv_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
         $a_inv_models = mysqli_fetch_array($q_inv_models);
@@ -942,7 +942,7 @@
       $q_string  = "select sw_product,ven_name,sw_software,typ_name,svr_groupid,svr_verified,svr_update ";
       $q_string .= "from software ";
       $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
-      $q_string .= "left join vendors on vendors.ven_id = software.sw_vendor ";
+      $q_string .= "left join inv_vendors on inv_vendors.ven_id = software.sw_vendor ";
       $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
       $q_string .= "where (typ_name != 'PKG' and typ_name != 'RPM') and svr_companyid = " . $a_inventory['inv_id'] . " ";
       $q_string .= "order by sw_software";

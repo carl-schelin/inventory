@@ -28,7 +28,7 @@
       $a_inv_models = mysqli_fetch_array($q_inv_models);
       mysqli_free_result($q_inv_models);
 
-      $modvendor = return_Index($db, $a_inv_models['mod_vendor'], "select ven_id from vendors order by ven_name");
+      $modvendor = return_Index($db, $a_inv_models['mod_vendor'], "select ven_id from inv_vendors order by ven_name");
 
       print "document.formUpdate.mod_name.value = '"   . mysqli_real_escape_string($db, $a_inv_models['mod_name'])   . "';\n";
       print "document.formUpdate.mod_size.value = '"   . mysqli_real_escape_string($db, $a_inv_models['mod_size'])   . "';\n";

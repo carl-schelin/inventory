@@ -162,7 +162,7 @@
       $q_string  = "select sw_id,sw_software,ven_name,prod_name,lic_product,sup_company,typ_name,";
       $q_string .= "dep_name,sw_eol,sw_eos ";
       $q_string .= "from software ";
-      $q_string .= "left join vendors on vendors.ven_id = software.sw_vendor ";
+      $q_string .= "left join inv_vendors on inv_vendors.ven_id = software.sw_vendor ";
       $q_string .= "left join products on products.prod_id = software.sw_product ";
       $q_string .= "left join licenses on licenses.lic_id = software.sw_licenseid ";
       $q_string .= "left join support on support.sup_id = software.sw_supportid ";
@@ -185,12 +185,12 @@
 
           $sw_tags = '';
           $q_string  = "select tag_name ";
-          $q_string .= "from tags ";
+          $q_string .= "from inv_tags ";
           $q_string .= "where tag_companyid = " . $a_software['sw_id'] . " and tag_type = 4 ";
-          $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_tags) > 0) {
-            while ($a_tags = mysqli_fetch_array($q_tags)) {
-              $sw_tags .= $a_tags['tag_name'] . " ";
+          $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_tags) > 0) {
+            while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
+              $sw_tags .= $a_inv_tags['tag_name'] . " ";
             }
           }
 

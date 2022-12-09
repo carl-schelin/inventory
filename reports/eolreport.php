@@ -328,7 +328,7 @@
         $q_string  = "select ven_name,mod_name,mod_eol,mod_virtual,hw_purchased ";
         $q_string .= "from inv_models ";
         $q_string .= "left join hardware on hardware.hw_vendorid = inv_models.mod_id ";
-        $q_string .= "left join vendors  on vendors.ven_id       = inv_models.mod_vendor ";
+        $q_string .= "left join inv_vendors  on inv_vendors.ven_id       = inv_models.mod_vendor ";
         $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1 and hw_deleted = 0 ";
         $q_inv_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_inv_models = mysqli_fetch_array($q_inv_models)) {
@@ -387,7 +387,7 @@
         $q_string .= "from software ";
         $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
         $q_string .= "left join inventory on inventory.inv_id = svr_software.svr_companyid ";
-        $q_string .= "left join vendors on vendors.ven_id = software.sw_vendor ";
+        $q_string .= "left join inv_vendors on inv_vendors.ven_id = software.sw_vendor ";
         $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
         $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " ";
         $q_string .= "order by sw_software ";
@@ -454,7 +454,7 @@
       $q_string  = "select ven_name,hw_purchased,mod_eol ";
       $q_string .= "from hardware ";
       $q_string .= "left join inv_models  on inv_models.mod_id  = hardware.hw_vendorid ";
-      $q_string .= "left join vendors on vendors.ven_id = inv_models.mod_vendor ";
+      $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
       $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
       $q_string .= "where inv_product = " . $a_products['prod_id'] . " and inv_status = 0 and hw_primary = 1 and hw_deleted = 0 and mod_virtual = 0 ";
       if ($formVars['group'] > 0) {

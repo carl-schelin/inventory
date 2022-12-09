@@ -73,7 +73,7 @@
   $leftjoin = '';
   if ($formVars['server'] == 0) {
     if (strlen($formVars['tag']) > 0) {
-      $leftjoin = "left join tags on tags.tag_companyid = issue.iss_companyid ";
+      $leftjoin = "left join inv_tags on inv_tags.tag_companyid = issue.iss_companyid ";
       $where = " and tag_name = '" . $formVars['tag'] . "' ";
     } else {
       $where = " and (inv_manager = " . $_SESSION['group'] . " or iss_user = " . $_SESSION['uid'] . ") ";

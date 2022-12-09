@@ -117,7 +117,7 @@
 # locations that are updates. New locations will have all new tags.
           if ($formVars['update'] == 0 || $formVars['update'] == 1) {
             $q_string  = "delete ";
-            $q_string .= "from tags ";
+            $q_string .= "from inv_tags ";
             $q_string .= "where tag_type = 2 and tag_companyid = " . $formVars['id'] . " ";
             mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
@@ -140,7 +140,7 @@
                   "tag_owner        =   " . $_SESSION['uid'] . "," . 
                   "tag_group        =   " . $_SESSION['group'];
 
-                $q_string = "insert into tags set tag_id = NULL, " . $q_string;
+                $q_string = "insert into inv_tags set tag_id = NULL, " . $q_string;
                 mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
               }
             }
@@ -192,12 +192,12 @@
 
           $loc_tags = '';
           $q_string  = "select tag_name ";
-          $q_string .= "from tags ";
+          $q_string .= "from inv_tags ";
           $q_string .= "where tag_companyid = " . $a_inv_locations['loc_id'] . " and tag_type = 2 ";
-          $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_tags) > 0) {
-            while ($a_tags = mysqli_fetch_array($q_tags)) {
-              $loc_tags .= $a_tags['tag_name'] . " ";
+          $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_tags) > 0) {
+            while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
+              $loc_tags .= $a_inv_tags['tag_name'] . " ";
             }
           }
 

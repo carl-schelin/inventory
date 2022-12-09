@@ -372,7 +372,7 @@
         $q_string  = "select hw_id,ven_name,mod_name ";
         $q_string .= "from hardware ";
         $q_string .= "left join inv_models  on inv_models.mod_id  = hardware.hw_vendorid ";
-        $q_string .= "left join vendors on vendors.ven_id = inv_models.mod_vendor ";
+        $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
         $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = 0 ";
         $q_hwselect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_hwselect = mysqli_fetch_array($q_hwselect)) {
@@ -434,7 +434,7 @@
       $q_string  = "select hw_id,ven_name,mod_name ";
       $q_string .= "from hardware ";
       $q_string .= "left join inv_models  on inv_models.mod_id  = hardware.hw_vendorid ";
-      $q_string .= "left join vendors on vendors.ven_id = inv_models.mod_vendor ";
+      $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
       $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = 0 ";
       $q_hwselect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 

@@ -19,16 +19,16 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from tags");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_tags");
 
       $q_string  = "select tag_companyid,tag_name,tag_owner,tag_group ";
-      $q_string .= "from tags ";
+      $q_string .= "from inv_tags ";
       $q_string .= "where tag_id = " . $formVars['id'] . " and tag_type = 1 ";
-      $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_tags = mysqli_fetch_array($q_tags);
-      mysqli_free_result($q_tags);
+      $q_inv_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_tags = mysqli_fetch_array($q_inv_tags);
+      mysqli_free_result($q_inv_tags);
 
-      $tag_owner       = return_Index($db, $a_tags['tag_owner'],     "select usr_id from inv_users where usr_disabled = 0 order by usr_last,usr_first");
+      $tag_owner       = return_Index($db, $a_inv_tags['tag_owner'],     "select usr_id from inv_users where usr_disabled = 0 order by usr_last,usr_first");
       $q_string  = "select inv_id ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_status = 0 ";
@@ -36,14 +36,14 @@
         $q_string .= "and inv_manager = " . $_SESSION['p_group'] . " ";
       }
       $q_string .= "order by inv_name ";
-      $tag_companyid   = return_Index($db, $a_tags['tag_companyid'], $q_string);
-      $tag_group       = return_Index($db, $a_tags['tag_group'],     "select grp_id from inv_groups where grp_disabled = 0 order by grp_name");
+      $tag_companyid   = return_Index($db, $a_inv_tags['tag_companyid'], $q_string);
+      $tag_group       = return_Index($db, $a_inv_tags['tag_group'],     "select grp_id from inv_groups where grp_disabled = 0 order by grp_name");
 
       print "document.formUpdate.tag_owner['"     . $tag_owner     . "'].selected = true;\n";
       print "document.formUpdate.tag_companyid['" . $tag_companyid . "'].selected = true;\n";
       print "document.formUpdate.tag_group['"     . $tag_group     . "'].selected = true;\n";
 
-      print "document.formUpdate.tag_name.value = '"  . mysqli_real_escape_string($db, $a_tags['tag_name'])  . "';\n";
+      print "document.formUpdate.tag_name.value = '"  . mysqli_real_escape_string($db, $a_inv_tags['tag_name'])  . "';\n";
 
       print "document.formUpdate.tag_id.value = " . $formVars['id'] . ";\n";
 

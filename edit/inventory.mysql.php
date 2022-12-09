@@ -489,7 +489,7 @@ print "alert('All Done!');\n";
           if ($formVars['inv_status'] == 0) {
             $r_hardware = "update hardware set hw_retired = '1971-01-01' where hw_id = " . $a_hardware['hw_id'] . " ";
             $r_inventory = "update inventory set inv_status = 0 where inv_id = " . $newserver . " ";
-            $r_tags = "delete from tags where tag_type = 1 and tag_companyid = " . $newserver . " ";
+            $r_tags = "delete from inv_tags where tag_type = 1 and tag_companyid = " . $newserver . " ";
           }
           if ($formVars['inv_status'] == 1) {
             $r_hardware = "update hardware set hw_active = '" . date('Y-m-d') . "', hw_retired = '1971-01-01' where hw_id = " . $a_hardware['hw_id'] . " ";

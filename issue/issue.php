@@ -271,15 +271,15 @@ $(document).ready( function() {
 <ul id="cloud">
 <?php
   $q_string  = "select tag_name,count(tag_name) ";
-  $q_string .= "from tags ";
+  $q_string .= "from inv_tags ";
   $q_string .= "where tag_type = 1 ";
   $q_string .= "group by tag_name ";
-  $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_tags = mysqli_fetch_array($q_tags)) {
-    $linkstart = "<a href=\"" . $Issueroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "&type=2\">";
+  $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
+    $linkstart = "<a href=\"" . $Issueroot . "/tag.view.php?tag=" . $a_inv_tags['tag_name'] . "&type=2\">";
     $linkend   = "</a>";
 
-    print "  <li>" . $linkstart . $a_tags['tag_name'] . " (" . $a_tags['count(tag_name)'] . ")" . $linkend . "</li>\n";
+    print "  <li>" . $linkstart . $a_inv_tags['tag_name'] . " (" . $a_inv_tags['count(tag_name)'] . ")" . $linkend . "</li>\n";
   }
 ?>
 </ul>

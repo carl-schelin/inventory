@@ -111,7 +111,7 @@
 # that might be the easiest method.
 
           $q_string  = "delete ";
-          $q_string .= "from tags ";
+          $q_string .= "from inv_tags ";
           $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_type = 1 ";
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
@@ -125,7 +125,7 @@
           foreach ($list as $index) {
 
             $q_string  = "insert ";
-            $q_string .= "into tags ";
+            $q_string .= "into inv_tags ";
             $q_string .= "set ";
             $q_string .= "tag_id          =   " . "null"             . ",";
             $q_string .= "tag_companyid   =   " . $formVars['id']    . ",";
@@ -141,13 +141,13 @@
           $str_output = "";
           $comma = "";
           $q_string  = "select tag_name ";
-          $q_string .= "from tags ";
+          $q_string .= "from inv_tags ";
           $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_type = 1 ";
           $q_string .= "order by tag_name ";
-          $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_tags) > 0) {
-            while ($a_tags = mysqli_fetch_array($q_tags)) {
-              $str_output .= $comma . $a_tags['tag_name'];
+          $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_tags) > 0) {
+            while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
+              $str_output .= $comma . $a_inv_tags['tag_name'];
               $comma = ", ";
             }
           }

@@ -676,25 +676,25 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
 <?php
   $tag_name = '';
   $q_string  = "select tag_name ";
-  $q_string .= "from tags ";
+  $q_string .= "from inv_tags ";
   $q_string .= "where tag_type = 1 ";
   $q_string .= "order by tag_name ";
-  $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_tags) > 0) {
-    while ($a_tags = mysqli_fetch_array($q_tags)) {
+  $q_inv_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_tags) > 0) {
+    while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
 
-      if ($a_tags['tag_name'] != $tag_name || $tag_name == '') {
+      if ($a_inv_tags['tag_name'] != $tag_name || $tag_name == '') {
         $q_string  = "select tag_id ";
-        $q_string .= "from tags ";
-        $q_string .= "where tag_type = 1 and tag_name = \"" . $a_tags['tag_name'] . "\" ";
+        $q_string .= "from inv_tags ";
+        $q_string .= "where tag_type = 1 and tag_name = \"" . $a_inv_tags['tag_name'] . "\" ";
         $q_count = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         $tag_count = mysqli_num_rows($q_count);
 
-        $linkstart = "<a href=\"javascript:;\" onClick=\"javascript:attach_tag('" . $Reportroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "&type=2');\">";
+        $linkstart = "<a href=\"javascript:;\" onClick=\"javascript:attach_tag('" . $Reportroot . "/tag.view.php?tag=" . $a_inv_tags['tag_name'] . "&type=2');\">";
         $linkend   = "</a>";
 
-        print $linkstart . $a_tags['tag_name'] . " (" . $tag_count . ")" . $linkend . "&nbsp;&nbsp;";
-        $tag_name = $a_tags['tag_name'];
+        print $linkstart . $a_inv_tags['tag_name'] . " (" . $tag_count . ")" . $linkend . "&nbsp;&nbsp;";
+        $tag_name = $a_inv_tags['tag_name'];
       }
     }
   }

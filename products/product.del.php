@@ -27,7 +27,7 @@
       $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
       $q_string  = "delete ";
-      $q_string .= "from tags ";
+      $q_string .= "from inv_tags ";
       $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_type = 3 ";
       $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 

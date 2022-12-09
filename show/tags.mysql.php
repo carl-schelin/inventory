@@ -62,15 +62,15 @@
   $output .= "<ul id=\"cloud\">\n";
 
   $q_string  = "select tag_name ";
-  $q_string .= "from tags ";
+  $q_string .= "from inv_tags ";
   $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_type = 1 ";
   $q_string .= "group by tag_name ";
-  $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_tags = mysqli_fetch_array($q_tags)) {
-    $linkstart = "<a href=\"" . $Reportroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "\">";
+  $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
+    $linkstart = "<a href=\"" . $Reportroot . "/tag.view.php?tag=" . $a_inv_tags['tag_name'] . "\">";
     $linkend   = "</a>";
 
-    $output .= "  <li>" . $linkstart . $a_tags['tag_name'] . $linkend . "</li>\n";
+    $output .= "  <li>" . $linkstart . $a_inv_tags['tag_name'] . $linkend . "</li>\n";
   }
 
   $output .= "</ul>\n";

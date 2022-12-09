@@ -92,7 +92,7 @@
 
       $q_string  = "select mod_id,ven_name,mod_name,part_name  ";
       $q_string .= "from inv_models ";
-      $q_string .= "left join vendors on vendors.ven_id = inv_models.mod_vendor ";
+      $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
       $q_string .= "left join parts on parts.part_id = inv_models.mod_type ";
       $q_string .= "where mod_type != 2 and mod_type != 4 and mod_type != 8 and mod_primary != 1 ";
       $q_string .= "order by ven_name,mod_name ";

@@ -146,7 +146,7 @@
   $q_string .= "left join inv_groups  on inv_groups.grp_id         = inventory.inv_manager ";
   $q_string .= "left join hardware  on hardware.hw_companyid   = inventory.inv_id ";
   $q_string .= "left join inv_models    on inv_models.mod_id           = hardware.hw_vendorid ";
-  $q_string .= "left join vendors   on vendors.ven_id          = inv_models.mod_vendor ";
+  $q_string .= "left join inv_vendors   on inv_vendors.ven_id          = inv_models.mod_vendor ";
   $q_string .= "left join inv_locations on inv_locations.loc_id        = inventory.inv_location ";
   $q_string .= "left join inv_cities    on inv_cities.ct_id            = inv_locations.loc_city ";
   $q_string .= "left join inv_states    on inv_states.st_id            = inv_locations.loc_state ";
@@ -279,7 +279,7 @@
       while ($a_hardware = mysqli_fetch_array($q_hardware)) {
         $q_string  = "select ven_name,mod_name,mod_size,mod_speed ";
         $q_string .= "from inv_models ";
-        $q_string .= "left join vendors on vendors.ven_id = inv_models.mod_vendor ";
+        $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
         $q_string .= "where mod_id = " . $a_hardware['hw_vendorid'] . " ";
         $q_inv_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
         $a_inv_models = mysqli_fetch_array($q_inv_models);
@@ -306,7 +306,7 @@
         while ($a_hwselect = mysqli_fetch_array($q_hwselect)) {
           $q_string  = "select ven_name,mod_name,mod_size,mod_speed ";
           $q_string .= "from inv_models ";
-          $q_string .= "left join vendors on vendors.ven_id = inv_models.mod_vendor ";
+          $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
           $q_string .= "where mod_id = " . $a_hwselect['hw_vendorid'] . " ";
           $q_inv_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
           $a_inv_models = mysqli_fetch_array($q_inv_models);
@@ -333,7 +333,7 @@
           while ($a_hwdisk = mysqli_fetch_array($q_hwdisk)) {
             $q_string  = "select ven_name,mod_name,mod_size,mod_speed ";
             $q_string .= "from inv_models ";
-            $q_string .= "left join vendors on vendors.ven_id = inv_models.mod_vendor ";
+            $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
             $q_string .= "where mod_id = " . $a_hwdisk['hw_vendorid'] . " ";
             $q_inv_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
             $a_inv_models = mysqli_fetch_array($q_inv_models);
@@ -369,7 +369,7 @@
       $q_string  = "select sw_product,ven_name,sw_software,typ_name,svr_groupid,svr_verified,svr_update ";
       $q_string .= "from software ";
       $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
-      $q_string .= "left join vendors on vendors.ven_id = software.sw_vendor ";
+      $q_string .= "left join inv_vendors on inv_vendors.ven_id = software.sw_vendor ";
       $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
       $q_string .= "where (typ_name != 'PKG' and typ_name != 'RPM') and svr_companyid = " . $a_inventory['inv_id'] . " ";
       $q_string .= "order by sw_software";
@@ -608,12 +608,12 @@
 
       $tags = 0;
       $q_string  = "select tag_companyid ";
-      $q_string .= "from tags ";
+      $q_string .= "from inv_tags ";
       $q_string .= "where tag_companyid = " . $remove . " ";
-      $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_tags) > 0) {
-        print "There are " . mysqli_num_rows($q_tags) . " tags records for " . $a_inventory['inv_name'] . "\n";
-        $tags = mysqli_num_rows($q_tags);
+      $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_tags) > 0) {
+        print "There are " . mysqli_num_rows($q_inv_tags) . " tags records for " . $a_inventory['inv_name'] . "\n";
+        $tags = mysqli_num_rows($q_inv_tags);
       }
 
 
@@ -743,7 +743,7 @@
 
       if ($tags > 0) {
         print "Tags ";
-        $q_string = "delete from tags       where tag_companyid    = " . $remove;
+        $q_string = "delete from inv_tags       where tag_companyid    = " . $remove;
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 

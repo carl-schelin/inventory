@@ -30,7 +30,7 @@
       mysqli_free_result($q_licenses);
 
       $licproject = return_Index($db, $a_licenses['lic_project'], "select prod_id from products order by prod_name");
-      $licvendor  = return_Index($db, $a_licenses['lic_vendor'], "select ven_id from vendors order by ven_name");
+      $licvendor  = return_Index($db, $a_licenses['lic_vendor'], "select ven_id from inv_vendors order by ven_name");
 
       print "document.formUpdate.lic_product.value = '"  . mysqli_real_escape_string($db, $a_licenses['lic_product'])  . "';\n";
       print "document.formUpdate.lic_date.value = '"     . mysqli_real_escape_string($db, $a_licenses['lic_date'])     . "';\n";

@@ -210,7 +210,7 @@ $(document).ready( function() {
   $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
   $q_string .= "left join inventory on srv_software.srv_companyid = inventory.inv_id ";
   $q_string .= "left join inv_groups on svr_software.svr_groupid = inv_groups.grp_id ";
-  $q_string .= "left join vendors on vendors.ven_id = software.sw_vendor ";
+  $q_string .= "left join inv_vendors on inv_vendors.ven_id = software.sw_vendor ";
   $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
   $q_string .= "where inv_project = " . $formVars['id'] . " and inv_status = 0 ";
   $q_string .= "order by inv_name,sw_software";

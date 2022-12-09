@@ -108,7 +108,7 @@
       $q_string  = "select lic_id,ven_name,lic_product,lic_date,lic_vendorpo,lic_po,prod_name,lic_quantity,lic_key,lic_serial,lic_domain ";
       $q_string .= "from licenses ";
       $q_string .= "left join products on products.prod_id = licenses.lic_project ";
-      $q_string .= "left join vendors  on vendors.ven_id   = licenses.lic_vendor ";
+      $q_string .= "left join inv_vendors  on inv_vendors.ven_id   = licenses.lic_vendor ";
       $q_string .= $orderby;
       $q_licenses = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_licenses) > 0) {

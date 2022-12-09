@@ -238,12 +238,12 @@ $(document).ready( function () {
   $q_string .= "from inventory ";
   $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join inv_models    on inv_models.mod_id         = hardware.hw_vendorid ";
-  $q_string .= "left join vendors   on vendors.ven_id        = inv_models.mod_vendor ";
+  $q_string .= "left join inv_vendors   on inv_vendors.ven_id        = inv_models.mod_vendor ";
   $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city ";
   $q_string .= "left join inv_groups    on inv_groups.grp_id         = inventory.inv_manager ";
   $q_string .= "left join inv_timezones on inv_timezones.zone_id     = inventory.inv_zone ";
-  $q_string .= "left join tags      on tags.tag_companyid    = inventory.inv_id ";
+  $q_string .= "left join inv_tags      on inv_tags.tag_companyid    = inventory.inv_id ";
   $q_string .= $where . " ";
   $q_string .= "order by inv_name ";;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

@@ -577,19 +577,19 @@
               }
 
               $q_string  = "select ven_id ";
-              $q_string .= "from vendors ";
+              $q_string .= "from inv_vendors ";
               $q_string .= "where ven_name = \"" . $vendor . "\" ";
-              $q_vendors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              if (mysqli_num_rows($q_vendors) > 0) {
-                $a_vendors = mysqli_fetch_array($q_vendors);
+              $q_inv_vendors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              if (mysqli_num_rows($q_inv_vendors) > 0) {
+                $a_inv_vendors = mysqli_fetch_array($q_inv_vendors);
               } else {
                 $q_string  = "insert ";
-                $q_string .= "into vendors ";
+                $q_string .= "into inv_vendors ";
                 $q_string .= "set ";
                 $q_string .= "ven_id   = \"" . "null"  . "\",";
                 $q_string .= "ven_name = \"" . $vendor . "\" ";
-                $q_vendors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-                $a_vendors['ven_id'] = last_insert_id($db);
+                $q_inv_vendors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+                $a_inv_vendors['ven_id'] = last_insert_id($db);
               }
 
               $q_string  = "select sw_id ";
@@ -602,7 +602,7 @@
                 "sw_companyid =   " . $a_inventory['inv_id']      . "," . 
                 "sw_product   =   " . $a_inventory['inv_product'] . "," . 
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
-                "sw_vendor    = \"" . $a_vendors['ven_id']        . "\"," . 
+                "sw_vendor    = \"" . $a_inv_vendors['ven_id']        . "\"," . 
                 "sw_type      =   " . $a_inv_sw_types['typ_id']       . "," . 
                 "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 

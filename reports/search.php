@@ -442,12 +442,12 @@
       $q_string .= "from inventory ";
       $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id ";
       $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
-      $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
-      $q_string .= "left join vendors   on vendors.ven_id = software.sw_vendor ";
+      $q_string .= "left join inv_sw_types  on inv_sw_types.typ_id  = software.sw_type ";
+      $q_string .= "left join inv_vendors   on inv_vendors.ven_id   = software.sw_vendor ";
       $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
       $q_string .= "left join inv_cities    on inv_cities.ct_id     = inv_locations.loc_city ";
       $q_string .= "left join inv_states    on inv_states.st_id     = inv_locations.loc_state ";
-      $q_string .= "left join inv_groups on inv_groups.grp_id = svr_software.svr_groupid ";
+      $q_string .= "left join inv_groups    on inv_groups.grp_id    = svr_software.svr_groupid ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";
       } else {
@@ -586,9 +586,9 @@
       $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
       $q_string .= "left join inv_cities    on inv_cities.ct_id     = inv_locations.loc_city ";
       $q_string .= "left join inv_states    on inv_states.st_id     = inv_locations.loc_state ";
-      $q_string .= "left join inv_groups  on inv_groups.grp_id  = hardware.hw_group ";
+      $q_string .= "left join inv_groups    on inv_groups.grp_id    = hardware.hw_group ";
       $q_string .= "left join inv_models    on inv_models.mod_id    = hardware.hw_vendorid ";
-      $q_string .= "left join vendors   on vendors.ven_id   = inv_models.mod_vendor ";
+      $q_string .= "left join inv_vendors   on inv_vendors.ven_id   = inv_models.mod_vendor ";
       $q_string .= "left join parts     on parts.part_id    = inv_models.mod_type ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";

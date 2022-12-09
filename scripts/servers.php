@@ -70,11 +70,11 @@
 
     $tags = '';
     $q_string  = "select tag_name ";
-    $q_string .= "from tags ";
+    $q_string .= "from inv_tags ";
     $q_string .= "where tag_companyid = " . $a_inventory['inv_id'];
-    $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    while ($a_tags = mysqli_fetch_array($q_tags)) {
-      $tags .= "," . $a_tags['tag_name'] . ",";
+    $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
+      $tags .= "," . $a_inv_tags['tag_name'] . ",";
     }
 
     $interfaces = '';

@@ -29,7 +29,7 @@
       $a_software = mysqli_fetch_array($q_software);
       mysqli_free_result($q_software);
 
-      $sw_vendor     = return_Index($db, $a_software['sw_vendor'],     "select ven_id  from vendors    order by ven_name");
+      $sw_vendor     = return_Index($db, $a_software['sw_vendor'],     "select ven_id  from inv_vendors    order by ven_name");
       $sw_product    = return_Index($db, $a_software['sw_product'],    "select prod_id from products   order by prod_name");
       $sw_licenseid  = return_Index($db, $a_software['sw_licenseid'],  "select lic_id  from licenses   order by lic_product");
       $sw_supportid  = return_Index($db, $a_software['sw_supportid'],  "select sup_id  from support    order by sup_company");
@@ -62,12 +62,12 @@
       $sw_tags = '';
       $space = '';
       $q_string  = "select tag_name ";
-      $q_string .= "from tags ";
+      $q_string .= "from inv_tags ";
       $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_type = 4 ";
-      $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_tags) > 0) {
-        while ($a_tags = mysqli_fetch_array($q_tags)) {
-          $sw_tags .= $space . $a_tags['tag_name'];
+      $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_tags) > 0) {
+        while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
+          $sw_tags .= $space . $a_inv_tags['tag_name'];
           $space = " ";
         }
       }

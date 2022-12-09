@@ -140,7 +140,7 @@
   $q_string .= "left join svr_software  on svr_software.svr_companyid = inventory.inv_id ";
   $q_string .= "left join software      on software.sw_id             = svr_software.svr_softwareid ";
   $q_string .= "left join inv_sw_types      on inv_sw_types.typ_id            = software.sw_type ";
-  $q_string .= "left join vendors       on vendors.ven_id             = software.sw_vendor ";
+  $q_string .= "left join inv_vendors       on inv_vendors.ven_id             = software.sw_vendor ";
   $q_string .= "left join hardware      on hardware.hw_companyid      = inventory.inv_id ";
   $q_string .= "left join inv_locations     on inv_locations.loc_id           = inventory.inv_location ";
   $q_string .= $where;

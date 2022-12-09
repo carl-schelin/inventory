@@ -354,7 +354,7 @@
         $q_string  = "select hw_id,hw_built,hw_active,hw_update,hw_verified,hw_asset,hw_serial,hw_vendorid,part_name,ven_name,mod_name,mod_size,mod_speed ";
         $q_string .= "from hardware ";
         $q_string .= "left join inv_models  on inv_models.mod_id  = hardware.hw_vendorid ";
-        $q_string .= "left join vendors on vendors.ven_id = inv_models.mod_vendor ";
+        $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
         $q_string .= "left join parts   on parts.part_id  = hardware.hw_type ";
         $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = 0 ";
         $q_string .= "order by hw_primary desc,part_id,mod_size ";
@@ -395,7 +395,7 @@
           $q_string  = "select hw_id,hw_built,hw_active,hw_update,hw_verified,hw_asset,hw_serial,hw_vendorid,part_name,ven_name,mod_name,mod_size,mod_speed ";
           $q_string .= "from hardware ";
           $q_string .= "left join inv_models  on inv_models.mod_id  = hardware.hw_vendorid ";
-          $q_string .= "left join vendors on vendors.ven_id = inv_models.mod_vendor ";
+          $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
           $q_string .= "left join parts   on parts.part_id  = hardware.hw_type ";
           $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " ";
           $q_string .= "order by hw_primary desc,part_id,mod_size ";
@@ -891,14 +891,14 @@
 
         $tmp_tags = '';
         $q_string  = "select tag_id,tag_name ";
-        $q_string .= "from tags ";
+        $q_string .= "from inv_tags ";
         $q_string .= "where tag_companyid = " . $a_inventory['inv_id'] . " and tag_type = 1 ";
         $q_string .= "order by tag_name ";
-        $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        if (mysqli_num_rows($q_tags) > 0) {
+        $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_inv_tags) > 0) {
           $comma = "";
-          while ($a_tags = mysqli_fetch_array($q_tags)) {
-            $tmp_tags .= $comma . "<u>" . $a_tags['tag_name'] . "</u>";
+          while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
+            $tmp_tags .= $comma . "<u>" . $a_inv_tags['tag_name'] . "</u>";
             $comma = ", ";
           }
         } else {
@@ -910,11 +910,11 @@
         $location = '';
         $comma = '';
         $q_string  = "select tag_name ";
-        $q_string .= "from tags ";
+        $q_string .= "from inv_tags ";
         $q_string .= "where tag_type = 2 and tag_companyid = " . $a_inventory['inv_location'] . " ";
-        $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        while ($a_tags = mysqli_fetch_array($q_tags)) {
-          $location .= $comma . $a_tags['tag_name'];
+        $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
+          $location .= $comma . $a_inv_tags['tag_name'];
           $comma = ', ';
         }
 
@@ -924,11 +924,11 @@
         $product = '';
         $comma = '';
         $q_string  = "select tag_name ";
-        $q_string .= "from tags ";
+        $q_string .= "from inv_tags ";
         $q_string .= "where tag_type = 3 and tag_companyid = " . $a_inventory['inv_product'] . " ";
-        $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        while ($a_tags = mysqli_fetch_array($q_tags)) {
-          $product .= $comma . $a_tags['tag_name'];
+        $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
+          $product .= $comma . $a_inv_tags['tag_name'];
           $comma = ', ';
         }
 
@@ -942,13 +942,13 @@
         } else {
             $q_string  = "select tag_id as tagid,tag_name ";
         }
-        $q_string .= "from tags ";
+        $q_string .= "from inv_tags ";
         $q_string .= "where tag_type = 4 ";
         $q_string .= "group by tag_name ";
         $q_string .= "order by tag_name ";
-        $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_tags) > 0) {
-          while ($a_tags = mysqli_fetch_array($q_tags)) {
+        $q_inv_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_tags) > 0) {
+          while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
 
             $q_string  = "select svr_softwareid,svr_primary,svr_facing ";
             $q_string .= "from svr_software ";
@@ -958,8 +958,8 @@
               while ($a_svr_software = mysqli_fetch_array($q_svr_software)) {
 
                 $q_string  = "select tag_name ";
-                $q_string .= "from tags ";
-                $q_string .= "where tag_name = \"" . $a_tags['tag_name'] . "\" and tag_companyid = " . $a_svr_software['svr_softwareid'] . " and tag_type = 4 ";
+                $q_string .= "from inv_tags ";
+                $q_string .= "where tag_name = \"" . $a_inv_tags['tag_name'] . "\" and tag_companyid = " . $a_svr_software['svr_softwareid'] . " and tag_type = 4 ";
                 $q_identity = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
                 if (mysqli_num_rows($q_identity) > 0) {
                   $asterisk = '';
@@ -973,7 +973,7 @@
                     $endbold = '<strong>';
                   }
 
-                  $software .= $comma . $startbold . $a_tags['tag_name'] .$endbold . $asterisk;
+                  $software .= $comma . $startbold . $a_inv_tags['tag_name'] .$endbold . $asterisk;
                   $comma = ", ";
                 }
               }
