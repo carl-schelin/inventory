@@ -144,9 +144,9 @@
       $q_string  = "select grp_id,grp_name,dep_name,bus_name,org_name,grp_email,usr_last,";
       $q_string .= "usr_first,grp_disabled,grp_status,grp_server,grp_import ";
       $q_string .= "from inv_groups ";
-      $q_string .= "left join department on department.dep_id = inv_groups.grp_department ";
-      $q_string .= "left join business on business.bus_id = department.dep_business ";
-      $q_string .= "left join inv_organizations on inv_organizations.org_id = business.bus_organization ";
+      $q_string .= "left join department    on department.dep_id = inv_groups.grp_department ";
+      $q_string .= "left join inv_business      on inv_business.bus_id      = department.dep_business ";
+      $q_string .= "left join inv_organizations on inv_organizations.org_id = inv_business.bus_organization ";
       $q_string .= "left join inv_users on inv_users.usr_id = inv_groups.grp_manager ";
       $q_string .= "order by grp_name";
       $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

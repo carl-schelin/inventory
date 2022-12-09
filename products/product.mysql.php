@@ -131,7 +131,7 @@
 
       $q_string  = "select prod_id,prod_name,prod_code,prod_desc,bus_name,svc_acronym ";
       $q_string .= "from products ";
-      $q_string .= "left join business on business.bus_id = products.prod_unit ";
+      $q_string .= "left join inv_business on inv_business.bus_id = products.prod_unit ";
       $q_string .= "left join inv_service on inv_service.svc_id = products.prod_service ";
       $q_string .= "order by prod_name ";
       $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

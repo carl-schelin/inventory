@@ -1559,7 +1559,7 @@ $(document).ready( function() {
 <?php
   $q_string  = "select dep_id,bus_name,dep_business,dep_name ";
   $q_string .= "from department  ";
-  $q_string .= "left join business on business.bus_id = department.dep_business ";
+  $q_string .= "left join inv_business on inv_business.bus_id = department.dep_business ";
   $q_string .= "order by dep_business,dep_name";
   $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_department = mysqli_fetch_array($q_department)) {

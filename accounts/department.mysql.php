@@ -70,8 +70,8 @@
 
       $q_string  = "select dep_id,dep_name,org_name,bus_name,usr_last,usr_first ";
       $q_string .= "from department ";
-      $q_string .= "left join business      on business.bus_id      = department.dep_business ";
-      $q_string .= "left join inv_organizations on inv_organizations.org_id = business.bus_organization ";
+      $q_string .= "left join inv_business      on inv_business.bus_id      = department.dep_business ";
+      $q_string .= "left join inv_organizations on inv_organizations.org_id = inv_business.bus_organization ";
       $q_string .= "left join inv_users         on inv_users.usr_id         = department.dep_manager ";
       $q_string .= "order by dep_name,bus_name,org_name ";
       $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

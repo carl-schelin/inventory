@@ -76,11 +76,11 @@
 
           $total = 0;
           $q_string  = "select bus_id ";
-          $q_string .= "from business ";
+          $q_string .= "from inv_business ";
           $q_string .= "where bus_organization = " . $a_inv_organizations['org_id'] . " ";
-          $q_business = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_business) > 0) {
-            while ($a_business = mysqli_fetch_array($q_business)) {
+          $q_inv_business = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_business) > 0) {
+            while ($a_inv_business = mysqli_fetch_array($q_inv_business)) {
               $total++;
             }
           }
