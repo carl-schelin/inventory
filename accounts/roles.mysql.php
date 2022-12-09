@@ -35,10 +35,10 @@
             "role_name = \"" . $formVars['role_name'] . "\"";
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into roles set role_id = null," . $q_string;
+            $q_string = "insert into inv_roles set role_id = null," . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update roles set " . $q_string . " where role_id = " . $formVars['id'];
+            $q_string = "update inv_roles set " . $q_string . " where role_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['role_name']);
@@ -61,21 +61,21 @@
       $output .= "</tr>\n";
 
       $q_string  = "select role_id,role_name ";
-      $q_string .= "from roles ";
+      $q_string .= "from inv_roles ";
       $q_string .= "order by role_name ";
-      $q_roles = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_roles) > 0) {
-        while ($a_roles = mysqli_fetch_array($q_roles)) {
+      $q_inv_roles = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_roles) > 0) {
+        while ($a_inv_roles = mysqli_fetch_array($q_inv_roles)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('roles.fill.php?id="  . $a_roles['role_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('roles.del.php?id=" . $a_roles['role_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('roles.fill.php?id="  . $a_inv_roles['role_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('roles.del.php?id=" . $a_inv_roles['role_id'] . "');\">";
           $linkend   = "</a>";
 
           $output .= "<tr>\n";
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>\n";
           }
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_roles['role_name'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_roles['role_name'] . $linkend . "</td>\n";
           $output .= "</tr>\n";
         }
       } else {
@@ -86,7 +86,7 @@
 
       $output .= "</table>\n";
 
-      mysqli_free_result($q_roles);
+      mysqli_free_result($q_inv_roles);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
