@@ -53,7 +53,7 @@
 # get the totals for each problem to properly display tabs
   $q_string  = "select count(chk_id) ";
   $q_string .= "from inv_chkserver ";
-  $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
+  $q_string .= "left join inv_chkerrors on inv_chkerrors.ce_id = inv_chkserver.chk_errorid ";
   $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
@@ -65,7 +65,7 @@
 
   $q_string  = "select count(chk_id) ";
   $q_string .= "from inv_chkserver ";
-  $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
+  $q_string .= "left join inv_chkerrors on inv_chkerrors.ce_id = inv_chkserver.chk_errorid ";
   $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
@@ -77,7 +77,7 @@
 
   $q_string  = "select count(chk_id) ";
   $q_string .= "from inv_chkserver ";
-  $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
+  $q_string .= "left join inv_chkerrors on inv_chkerrors.ce_id = inv_chkserver.chk_errorid ";
   $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
@@ -89,7 +89,7 @@
 
   $q_string  = "select count(chk_id) ";
   $q_string .= "from inv_chkserver ";
-  $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
+  $q_string .= "left join inv_chkerrors on inv_chkerrors.ce_id = inv_chkserver.chk_errorid ";
   $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
@@ -101,7 +101,7 @@
 
   $q_string  = "select count(chk_id) ";
   $q_string .= "from inv_chkserver ";
-  $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
+  $q_string .= "left join inv_chkerrors on inv_chkerrors.ce_id = inv_chkserver.chk_errorid ";
   $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
@@ -113,7 +113,7 @@
 
   $q_string  = "select count(chk_id) ";
   $q_string .= "from inv_chkserver ";
-  $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
+  $q_string .= "left join inv_chkerrors on inv_chkerrors.ce_id = inv_chkserver.chk_errorid ";
   $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
@@ -126,7 +126,7 @@
 # chk_status = 1 == claimed
   $q_string  = "select count(chk_id) ";
   $q_string .= "from inv_chkserver ";
-  $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
+  $q_string .= "left join inv_chkerrors on inv_chkerrors.ce_id = inv_chkserver.chk_errorid ";
   $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
@@ -139,7 +139,7 @@
 # chk_status = 2 == pending
   $q_string  = "select count(chk_id) ";
   $q_string .= "from inv_chkserver ";
-  $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
+  $q_string .= "left join inv_chkerrors on inv_chkerrors.ce_id = inv_chkserver.chk_errorid ";
   $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";

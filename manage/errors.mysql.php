@@ -27,7 +27,7 @@
           "ce_priority =   " . $formVars['priority'];
 
         if ($formVars['update'] == 1) {
-          $query = "update chkerrors set " . $q_string . " where ce_id = " . $formVars['id'];
+          $query = "update inv_chkerrors set " . $q_string . " where ce_id = " . $formVars['id'];
         }
 
         logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $a_inventory['inv_name']);
@@ -48,21 +48,21 @@
       $output .= "</tr>\n";
 
       $q_string  = "select ce_id,ce_error ";
-      $q_string .= "from chkerrors ";
+      $q_string .= "from inv_chkerrors ";
       $q_string .= "where ce_priority = 1 and ce_delete = 0 ";
       $q_string .= "order by ce_error ";
-      $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_chkerrors = mysqli_fetch_array($q_chkerrors)) {
+      $q_inv_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_chkerrors = mysqli_fetch_array($q_inv_chkerrors)) {
 
         $count++;
         $output .= "<tr>\n";
-        $output .= "<td class=\"ui-widget-content\">" . $a_chkerrors['ce_error'] . "</td>\n";
+        $output .= "<td class=\"ui-widget-content\">" . $a_inv_chkerrors['ce_error'] . "</td>\n";
         $output .= "<td class=\"ui-widget-content\">";
-        $output .= "<input type=\"radio\" checked=\"checked\" value=\"1\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=1');\"> 1 ";
-        $output .= "<input type=\"radio\"                     value=\"2\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=2');\"> 2 ";
-        $output .= "<input type=\"radio\"                     value=\"3\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=3');\"> 3 ";
-        $output .= "<input type=\"radio\"                     value=\"4\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=4');\"> 4 ";
-        $output .= "<input type=\"radio\"                     value=\"5\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=5');\"> 5";
+        $output .= "<input type=\"radio\" checked=\"checked\" value=\"1\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=1');\"> 1 ";
+        $output .= "<input type=\"radio\"                     value=\"2\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=2');\"> 2 ";
+        $output .= "<input type=\"radio\"                     value=\"3\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=3');\"> 3 ";
+        $output .= "<input type=\"radio\"                     value=\"4\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=4');\"> 4 ";
+        $output .= "<input type=\"radio\"                     value=\"5\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=5');\"> 5";
         $output .= "</td>\n";
         $output .= "</tr>\n";
 
@@ -85,21 +85,21 @@
       $output .= "</tr>\n";
 
       $q_string  = "select ce_id,ce_error ";
-      $q_string .= "from chkerrors ";
+      $q_string .= "from inv_chkerrors ";
       $q_string .= "where ce_priority = 2 and ce_delete = 0 ";
       $q_string .= "order by ce_error ";
-      $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_chkerrors = mysqli_fetch_array($q_chkerrors)) {
+      $q_inv_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_chkerrors = mysqli_fetch_array($q_inv_chkerrors)) {
 
         $count++;
         $output .= "<tr>\n";
-        $output .= "<td class=\"ui-widget-content\">" . $a_chkerrors['ce_error'] . "</td>\n";
+        $output .= "<td class=\"ui-widget-content\">" . $a_inv_chkerrors['ce_error'] . "</td>\n";
         $output .= "<td class=\"ui-widget-content\">";
-        $output .= "<input type=\"radio\"                     value=\"1\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=1');\"> 1 ";
-        $output .= "<input type=\"radio\" checked=\"checked\" value=\"2\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=2');\"> 2 ";
-        $output .= "<input type=\"radio\"                     value=\"3\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=3');\"> 3 ";
-        $output .= "<input type=\"radio\"                     value=\"4\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=4');\"> 4 ";
-        $output .= "<input type=\"radio\"                     value=\"5\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=5');\"> 5";
+        $output .= "<input type=\"radio\"                     value=\"1\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=1');\"> 1 ";
+        $output .= "<input type=\"radio\" checked=\"checked\" value=\"2\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=2');\"> 2 ";
+        $output .= "<input type=\"radio\"                     value=\"3\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=3');\"> 3 ";
+        $output .= "<input type=\"radio\"                     value=\"4\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=4');\"> 4 ";
+        $output .= "<input type=\"radio\"                     value=\"5\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=5');\"> 5";
         $output .= "</td>\n";
         $output .= "</tr>\n";
 
@@ -122,21 +122,21 @@
       $output .= "</tr>\n";
 
       $q_string  = "select ce_id,ce_error ";
-      $q_string .= "from chkerrors ";
+      $q_string .= "from inv_chkerrors ";
       $q_string .= "where ce_priority = 3 and ce_delete = 0 ";
       $q_string .= "order by ce_error ";
-      $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_chkerrors = mysqli_fetch_array($q_chkerrors)) {
+      $q_inv_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_chkerrors = mysqli_fetch_array($q_inv_chkerrors)) {
 
         $count++;
         $output .= "<tr>\n";
-        $output .= "<td class=\"ui-widget-content\">" . $a_chkerrors['ce_error'] . "</td>\n";
+        $output .= "<td class=\"ui-widget-content\">" . $a_inv_chkerrors['ce_error'] . "</td>\n";
         $output .= "<td class=\"ui-widget-content\">";
-        $output .= "<input type=\"radio\"                     value=\"1\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=1');\"> 1 ";
-        $output .= "<input type=\"radio\"                     value=\"2\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=2');\"> 2 ";
-        $output .= "<input type=\"radio\" checked=\"checked\" value=\"3\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=3');\"> 3 ";
-        $output .= "<input type=\"radio\"                     value=\"4\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=4');\"> 4 ";
-        $output .= "<input type=\"radio\"                     value=\"5\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=5');\"> 5";
+        $output .= "<input type=\"radio\"                     value=\"1\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=1');\"> 1 ";
+        $output .= "<input type=\"radio\"                     value=\"2\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=2');\"> 2 ";
+        $output .= "<input type=\"radio\" checked=\"checked\" value=\"3\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=3');\"> 3 ";
+        $output .= "<input type=\"radio\"                     value=\"4\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=4');\"> 4 ";
+        $output .= "<input type=\"radio\"                     value=\"5\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=5');\"> 5";
         $output .= "</td>\n";
         $output .= "</tr>\n";
 
@@ -159,21 +159,21 @@
       $output .= "</tr>\n";
 
       $q_string  = "select ce_id,ce_error ";
-      $q_string .= "from chkerrors ";
+      $q_string .= "from inv_chkerrors ";
       $q_string .= "where ce_priority = 4 and ce_delete = 0 ";
       $q_string .= "order by ce_error ";
-      $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_chkerrors = mysqli_fetch_array($q_chkerrors)) {
+      $q_inv_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_chkerrors = mysqli_fetch_array($q_inv_chkerrors)) {
 
         $count++;
         $output .= "<tr>\n";
-        $output .= "<td class=\"ui-widget-content\">" . $a_chkerrors['ce_error'] . "</td>\n";
+        $output .= "<td class=\"ui-widget-content\">" . $a_inv_chkerrors['ce_error'] . "</td>\n";
         $output .= "<td class=\"ui-widget-content\">";
-        $output .= "<input type=\"radio\"                     value=\"1\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=1');\"> 1 ";
-        $output .= "<input type=\"radio\"                     value=\"2\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=2');\"> 2 ";
-        $output .= "<input type=\"radio\"                     value=\"3\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=3');\"> 3 ";
-        $output .= "<input type=\"radio\" checked=\"checked\" value=\"4\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=4');\"> 4 ";
-        $output .= "<input type=\"radio\"                     value=\"5\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=5');\"> 5";
+        $output .= "<input type=\"radio\"                     value=\"1\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=1');\"> 1 ";
+        $output .= "<input type=\"radio\"                     value=\"2\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=2');\"> 2 ";
+        $output .= "<input type=\"radio\"                     value=\"3\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=3');\"> 3 ";
+        $output .= "<input type=\"radio\" checked=\"checked\" value=\"4\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=4');\"> 4 ";
+        $output .= "<input type=\"radio\"                     value=\"5\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=5');\"> 5";
         $output .= "</td>\n";
         $output .= "</tr>\n";
 
@@ -196,21 +196,21 @@
       $output .= "</tr>\n";
 
       $q_string  = "select ce_id,ce_error ";
-      $q_string .= "from chkerrors ";
+      $q_string .= "from inv_chkerrors ";
       $q_string .= "where ce_priority = 5 and ce_delete = 0 ";
       $q_string .= "order by ce_error ";
-      $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_chkerrors = mysqli_fetch_array($q_chkerrors)) {
+      $q_inv_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_chkerrors = mysqli_fetch_array($q_inv_chkerrors)) {
 
         $count++;
         $output .= "<tr>\n";
-        $output .= "<td class=\"ui-widget-content\">" . $a_chkerrors['ce_error'] . "</td>\n";
+        $output .= "<td class=\"ui-widget-content\">" . $a_inv_chkerrors['ce_error'] . "</td>\n";
         $output .= "<td class=\"ui-widget-content\">";
-        $output .= "<input type=\"radio\"                     value=\"1\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=1');\"> 1 ";
-        $output .= "<input type=\"radio\"                     value=\"2\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=2');\"> 2 ";
-        $output .= "<input type=\"radio\"                     value=\"3\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=3');\"> 3 ";
-        $output .= "<input type=\"radio\"                     value=\"4\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=4');\"> 4 ";
-        $output .= "<input type=\"radio\" checked=\"checked\" value=\"5\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_chkerrors['ce_id'] . "&priority=5');\"> 5";
+        $output .= "<input type=\"radio\"                     value=\"1\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=1');\"> 1 ";
+        $output .= "<input type=\"radio\"                     value=\"2\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=2');\"> 2 ";
+        $output .= "<input type=\"radio\"                     value=\"3\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=3');\"> 3 ";
+        $output .= "<input type=\"radio\"                     value=\"4\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=4');\"> 4 ";
+        $output .= "<input type=\"radio\" checked=\"checked\" value=\"5\" onclick=\"show_file('errors.mysql.php?update=1&id="  . $a_inv_chkerrors['ce_id'] . "&priority=5');\"> 5";
         $output .= "</td>\n";
         $output .= "</tr>\n";
 

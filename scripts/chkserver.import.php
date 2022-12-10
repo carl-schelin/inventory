@@ -21,7 +21,7 @@
 
 # clear out the chkerror table to keep the cruft down to a minimum.
   $q_string  = "update ";
-  $q_string .= "chkerrors ";
+  $q_string .= "inv_chkerrors ";
   $q_string .= "set ";
   $q_string .= "ce_delete = 1 ";
   if ($debug == 'no') {
@@ -88,13 +88,13 @@
 
         if ($check) {
           $q_string  = "select ce_id ";
-          $q_string .= "from chkerrors ";
+          $q_string .= "from inv_chkerrors ";
           $q_string .= "where ce_error = \"" . $process . "\" ";
-          $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
-          if (mysqli_num_rows($q_chkerrors) == 0) {
+          $q_inv_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
+          if (mysqli_num_rows($q_inv_chkerrors) == 0) {
 # add the error if it's not there
             $q_string  = "insert ";
-            $q_string .= "into chkerrors ";
+            $q_string .= "into inv_chkerrors ";
             $q_string .= "set ";
             $q_string .= "ce_id = null,";
             $q_string .= "ce_error    = \"" . $process  . "\",";
@@ -107,13 +107,13 @@
               $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
             }
           } else {
-            $a_chkerrors = mysqli_fetch_array($q_chkerrors);
+            $a_inv_chkerrors = mysqli_fetch_array($q_inv_chkerrors);
 
             $q_string  = "update ";
-            $q_string .= "chkerrors ";
+            $q_string .= "inv_chkerrors ";
             $q_string .= "set ";
             $q_string .= "ce_delete = 0 ";
-            $q_string .= "where ce_id = " . $a_chkerrors['ce_id'] . " ";
+            $q_string .= "where ce_id = " . $a_inv_chkerrors['ce_id'] . " ";
 
             print "u";
             $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -121,13 +121,13 @@
 
 # okay, now actually get the id for the update
           $q_string  = "select ce_id ";
-          $q_string .= "from chkerrors ";
+          $q_string .= "from inv_chkerrors ";
           $q_string .= "where ce_error = \"" . $process . "\" ";
-          $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_chkerrors) == 0) {
+          $q_inv_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_chkerrors) == 0) {
             print "Unable to locate: " . $process . "\n";
           } else {
-            $a_chkerrors = mysqli_fetch_array($q_chkerrors);
+            $a_inv_chkerrors = mysqli_fetch_array($q_inv_chkerrors);
 
 # the idea is to see if the server and id exists and hasn't been closed yet.
 # and got the id, now see if the id already exists in the chkserver table
@@ -135,7 +135,7 @@
 # add a record only when the server was found with the same error but has been closed
             $q_string  = "select chk_id ";
             $q_string .= "from inv_chkserver ";
-            $q_string .= "where chk_companyid = " . $a_inventory['inv_id'] . " and chk_errorid = " . $a_chkerrors['ce_id'] . " and chk_closed = '1971-01-01 00:00:00' ";
+            $q_string .= "where chk_companyid = " . $a_inventory['inv_id'] . " and chk_errorid = " . $a_inv_chkerrors['ce_id'] . " and chk_closed = '1971-01-01 00:00:00' ";
             $q_inv_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
             if (mysqli_num_rows($q_inv_chkserver) == 0) {
 # add the message flag
@@ -144,7 +144,7 @@
               $q_string .= "set ";
               $q_string .= "chk_id = null,";
               $q_string .= "chk_companyid  =   " . $a_inventory['inv_id']  . ",";
-              $q_string .= "chk_errorid    =   " . $a_chkerrors['ce_id'];
+              $q_string .= "chk_errorid    =   " . $a_inv_chkerrors['ce_id'];
   
               print "s";
               $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");

@@ -58,12 +58,12 @@
       }
 
       $q_string  = "select ce_error ";
-      $q_string .= "from chkerrors ";
+      $q_string .= "from inv_chkerrors ";
       $q_string .= "where ce_id = " . $a_inv_chkserver['chk_errorid'] . " ";
-      $q_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      $a_chkerrors = mysqli_fetch_array($q_chkerrors);
+      $q_inv_chkerrors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_inv_chkerrors = mysqli_fetch_array($q_inv_chkerrors);
 
-      print "document.getElementById('error_message').innerHTML = '" . mysqli_real_escape_string($db, $a_chkerrors['ce_error']) . "';\n";
+      print "document.getElementById('error_message').innerHTML = '" . mysqli_real_escape_string($db, $a_inv_chkerrors['ce_error']) . "';\n";
 
       $q_string  = "select inv_name ";
       $q_string .= "from inventory ";
