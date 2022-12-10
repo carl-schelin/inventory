@@ -38,7 +38,7 @@
     print $a_inventory['inv_name'] . ": ";
 
 # In order to automatically close errors, set import to 1. As errors are checked, update the flag
-    $q_string  = "update chkserver ";
+    $q_string  = "update inv_chkserver ";
     $q_string .= "set chk_import = 1 ";
     $q_string .= "where chk_companyid = " . $a_inventory['inv_id'] . " ";
     $results = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -134,13 +134,13 @@
 # if it was in place, update the date.
 # add a record only when the server was found with the same error but has been closed
             $q_string  = "select chk_id ";
-            $q_string .= "from chkserver ";
+            $q_string .= "from inv_chkserver ";
             $q_string .= "where chk_companyid = " . $a_inventory['inv_id'] . " and chk_errorid = " . $a_chkerrors['ce_id'] . " and chk_closed = '1971-01-01 00:00:00' ";
-            $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
-            if (mysqli_num_rows($q_chkserver) == 0) {
+            $q_inv_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
+            if (mysqli_num_rows($q_inv_chkserver) == 0) {
 # add the message flag
               $q_string  = "insert ";
-              $q_string .= "into chkserver ";
+              $q_string .= "into inv_chkserver ";
               $q_string .= "set ";
               $q_string .= "chk_id = null,";
               $q_string .= "chk_companyid  =   " . $a_inventory['inv_id']  . ",";
@@ -149,12 +149,12 @@
               print "s";
               $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
             } else {
-              $a_chkserver = mysqli_fetch_array($q_chkserver);
+              $a_inv_chkserver = mysqli_fetch_array($q_inv_chkserver);
 
-              $q_string  = "update chkserver ";
+              $q_string  = "update inv_chkserver ";
               $q_string .= "set ";
               $q_string .= "chk_import = 0 ";
-              $q_string .= "where chk_id = " . $a_chkserver['chk_id'] . " and chk_closed = '1971-01-01 00:00:00' ";
+              $q_string .= "where chk_id = " . $a_inv_chkserver['chk_id'] . " and chk_closed = '1971-01-01 00:00:00' ";
 
               print "i";
               $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
@@ -165,7 +165,7 @@
     }
 
 # Auto-close: need to now update any entry that is set to 1 to the current date and time if it's not already set.
-    $q_string  = "update chkserver ";
+    $q_string  = "update inv_chkserver ";
     $q_string .= "set ";
     $q_string .= "chk_closed = '" . date('Y-m-d H:i:s') . "' ";
     $q_string .= "where chk_import = 1 and chk_companyid = " . $a_inventory['inv_id'] . " and chk_closed = '1971-01-01 00:00:00' ";

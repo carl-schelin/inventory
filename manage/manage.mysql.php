@@ -42,15 +42,15 @@
         }
         if ($formVars['chk_closed'] == 'true') {
           $q_string  = "select chk_id,chk_closed ";
-          $q_string .= "from chkserver ";
+          $q_string .= "from inv_chkserver ";
           $q_string .= "where chk_id = " . $formVars['id'] . " ";
-          $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          $a_chkserver = mysqli_fetch_array($q_chkserver);
+          $q_inv_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_inv_chkserver = mysqli_fetch_array($q_inv_chkserver);
 
-          if ($a_chkserver['chk_closed'] == '1971-01-01 00:00:00') {
+          if ($a_inv_chkserver['chk_closed'] == '1971-01-01 00:00:00') {
             $formVars['chk_closed'] = date('Y-m-d H:i:s');
           } else {
-            $formVars['chk_closed'] = $a_chkserver['chk_closed'];
+            $formVars['chk_closed'] = $a_inv_chkserver['chk_closed'];
           }
 
         } else {
@@ -67,7 +67,7 @@
           "chk_priority       =   " . $formVars['chk_priority'];
 
         if ($formVars['update'] == 1) {
-          $query = "update chkserver set " . $q_string . " where chk_id = " . $formVars['id'];
+          $query = "update inv_chkserver set " . $q_string . " where chk_id = " . $formVars['id'];
         }
 
         logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $a_inventory['inv_name']);
@@ -119,35 +119,35 @@
       $output .= "</tr>\n";
 
       $q_string  = "select inv_id,inv_name,inv_callpath,svc_name,ce_error,chk_id,chk_priority,chk_opened ";
-      $q_string .= "from chkserver ";
-      $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
+      $q_string .= "from inv_chkserver ";
+      $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
       $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
       $q_string .= "left join products on products.prod_id = inventory.inv_product ";
       $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
-      $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
+      $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
       $q_string .= "left join inv_service on inv_service.svc_id = inventory.inv_class ";
       $q_string .= "where ce_priority = 1 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
       $q_string .= $orderby;
-      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
+      $q_inv_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_chkserver = mysqli_fetch_array($q_inv_chkserver)) {
 
 # want to open the dialog box
         if (check_grouplevel($db, $GRP_Unix)) {
-          $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
-          $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
+          $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_inv_chkserver['inv_id'] . "\" target=\"_blank\">";
+          $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_inv_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
         } else {
-          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
+          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inv_chkserver['inv_id'] . "\" target=\"_blank\">";
           $linkerror = $linkstart;
         }
         $linkend   = "</a>";
 
-        if ($a_chkserver['svc_name'] == '') {
+        if ($a_inv_chkserver['svc_name'] == '') {
           $service = 'No Service Class Assigned';
         } else {
-          $service = $a_chkserver['svc_name'];
+          $service = $a_inv_chkserver['svc_name'];
         }
 
-        if ($a_chkserver['inv_callpath']) {
+        if ($a_inv_chkserver['inv_callpath']) {
           $class = 'ui-state-error';
         } else {
           $class = 'ui-widget-content';
@@ -155,11 +155,11 @@
 
         $count++;
         $output .= "<tr>\n";
-        $output .= "<td class=\"" . $class . "\">" . $linkstart . $a_chkserver['inv_name']     . $linkend . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">" . $linkstart . $a_inv_chkserver['inv_name']     . $linkend . "</td>\n";
         $output .= "<td class=\"" . $class . "\">"              . $service                                . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">"              . $a_chkserver['chk_priority']            . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">" . $linkerror . $a_chkserver['ce_error']     . $linkend . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">"              . $a_chkserver['chk_opened']              . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">"              . $a_inv_chkserver['chk_priority']            . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">" . $linkerror . $a_inv_chkserver['ce_error']     . $linkend . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">"              . $a_inv_chkserver['chk_opened']              . "</td>\n";
         $output .= "</tr>\n";
 
       }
@@ -186,35 +186,35 @@
       $output .= "</tr>\n";
 
       $q_string  = "select inv_id,inv_name,inv_callpath,svc_name,ce_error,chk_id,chk_priority,chk_opened ";
-      $q_string .= "from chkserver ";
-      $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
+      $q_string .= "from inv_chkserver ";
+      $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
       $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
       $q_string .= "left join products on products.prod_id = inventory.inv_product ";
       $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
-      $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
+      $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
       $q_string .= "left join inv_service on inv_service.svc_id = inventory.inv_class ";
       $q_string .= "where ce_priority = 2 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
       $q_string .= $orderby;
-      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
+      $q_inv_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_chkserver = mysqli_fetch_array($q_inv_chkserver)) {
 
 # want to open the dialog box
         if (check_grouplevel($db, $GRP_Unix)) {
-          $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
-          $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
+          $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_inv_chkserver['inv_id'] . "\" target=\"_blank\">";
+          $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_inv_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
         } else {
-          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
+          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inv_chkserver['inv_id'] . "\" target=\"_blank\">";
           $linkerror = $linkstart;
         }
         $linkend   = "</a>";
 
-        if ($a_chkserver['svc_name'] == '') {
+        if ($a_inv_chkserver['svc_name'] == '') {
           $service = 'No Service Class Assigned';
         } else {
-          $service = $a_chkserver['svc_name'];
+          $service = $a_inv_chkserver['svc_name'];
         }
 
-        if ($a_chkserver['inv_callpath']) {
+        if ($a_inv_chkserver['inv_callpath']) {
           $class = 'ui-state-error';
         } else {
           $class = 'ui-widget-content';
@@ -222,11 +222,11 @@
 
         $count++;
         $output .= "<tr>\n";
-        $output .= "<td class=\"" . $class . "\">" . $linkstart . $a_chkserver['inv_name']     . $linkend . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">" . $linkstart . $a_inv_chkserver['inv_name']     . $linkend . "</td>\n";
         $output .= "<td class=\"" . $class . "\">"              . $service                                . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">"              . $a_chkserver['chk_priority']            . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">" . $linkerror . $a_chkserver['ce_error']     . $linkend . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">"              . $a_chkserver['chk_opened']              . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">"              . $a_inv_chkserver['chk_priority']            . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">" . $linkerror . $a_inv_chkserver['ce_error']     . $linkend . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">"              . $a_inv_chkserver['chk_opened']              . "</td>\n";
         $output .= "</tr>\n";
 
       }
@@ -253,35 +253,35 @@
       $output .= "</tr>\n";
 
       $q_string  = "select inv_id,inv_name,inv_callpath,svc_name,ce_error,chk_id,chk_priority,chk_opened ";
-      $q_string .= "from chkserver ";
-      $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
+      $q_string .= "from inv_chkserver ";
+      $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
       $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
       $q_string .= "left join products on products.prod_id = inventory.inv_product ";
       $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
-      $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
+      $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
       $q_string .= "left join inv_service on inv_service.svc_id = inventory.inv_class ";
       $q_string .= "where ce_priority = 3 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
       $q_string .= $orderby;
-      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
+      $q_inv_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_chkserver = mysqli_fetch_array($q_inv_chkserver)) {
 
 # want to open the dialog box
         if (check_grouplevel($db, $GRP_Unix)) {
-          $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
-          $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
+          $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_inv_chkserver['inv_id'] . "\" target=\"_blank\">";
+          $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_inv_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
         } else {
-          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
+          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inv_chkserver['inv_id'] . "\" target=\"_blank\">";
           $linkerror = $linkstart;
         }
         $linkend   = "</a>";
 
-        if ($a_chkserver['svc_name'] == '') {
+        if ($a_inv_chkserver['svc_name'] == '') {
           $service = 'No Service Class Assigned';
         } else {
-          $service = $a_chkserver['svc_name'];
+          $service = $a_inv_chkserver['svc_name'];
         }
 
-        if ($a_chkserver['inv_callpath']) {
+        if ($a_inv_chkserver['inv_callpath']) {
           $class = 'ui-state-error';
         } else {
           $class = 'ui-widget-content';
@@ -289,11 +289,11 @@
 
         $count++;
         $output .= "<tr>\n";
-        $output .= "<td class=\"" . $class . "\">" . $linkstart . $a_chkserver['inv_name']     . $linkend . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">" . $linkstart . $a_inv_chkserver['inv_name']     . $linkend . "</td>\n";
         $output .= "<td class=\"" . $class . "\">"              . $service                                . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">"              . $a_chkserver['chk_priority']            . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">" . $linkerror . $a_chkserver['ce_error']     . $linkend . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">"              . $a_chkserver['chk_opened']              . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">"              . $a_inv_chkserver['chk_priority']            . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">" . $linkerror . $a_inv_chkserver['ce_error']     . $linkend . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">"              . $a_inv_chkserver['chk_opened']              . "</td>\n";
         $output .= "</tr>\n";
 
       }
@@ -320,35 +320,35 @@
       $output .= "</tr>\n";
 
       $q_string  = "select inv_id,inv_name,inv_callpath,svc_name,ce_error,chk_id,chk_priority,chk_opened ";
-      $q_string .= "from chkserver ";
-      $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
+      $q_string .= "from inv_chkserver ";
+      $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
       $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
       $q_string .= "left join products on products.prod_id = inventory.inv_product ";
       $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
-      $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
+      $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
       $q_string .= "left join inv_service on inv_service.svc_id = inventory.inv_class ";
       $q_string .= "where ce_priority = 4 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
       $q_string .= $orderby;
-      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
+      $q_inv_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_chkserver = mysqli_fetch_array($q_inv_chkserver)) {
 
 # want to open the dialog box
         if (check_grouplevel($db, $GRP_Unix)) {
-          $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
-          $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
+          $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_inv_chkserver['inv_id'] . "\" target=\"_blank\">";
+          $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_inv_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
         } else {
-          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
+          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inv_chkserver['inv_id'] . "\" target=\"_blank\">";
           $linkerror = $linkstart;
         }
         $linkend   = "</a>";
 
-        if ($a_chkserver['svc_name'] == '') {
+        if ($a_inv_chkserver['svc_name'] == '') {
           $service = 'No Service Class Assigned';
         } else {
-          $service = $a_chkserver['svc_name'];
+          $service = $a_inv_chkserver['svc_name'];
         }
 
-        if ($a_chkserver['inv_callpath']) {
+        if ($a_inv_chkserver['inv_callpath']) {
           $class = 'ui-state-error';
         } else {
           $class = 'ui-widget-content';
@@ -356,11 +356,11 @@
 
         $count++;
         $output .= "<tr>\n";
-        $output .= "<td class=\"" . $class . "\">" . $linkstart . $a_chkserver['inv_name']     . $linkend . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">" . $linkstart . $a_inv_chkserver['inv_name']     . $linkend . "</td>\n";
         $output .= "<td class=\"" . $class . "\">"              . $service                                . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">"              . $a_chkserver['chk_priority']            . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">" . $linkerror . $a_chkserver['ce_error']     . $linkend . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">"              . $a_chkserver['chk_opened']              . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">"              . $a_inv_chkserver['chk_priority']            . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">" . $linkerror . $a_inv_chkserver['ce_error']     . $linkend . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">"              . $a_inv_chkserver['chk_opened']              . "</td>\n";
         $output .= "</tr>\n";
 
       }
@@ -387,35 +387,35 @@
       $output .= "</tr>\n";
 
       $q_string  = "select inv_id,inv_name,inv_callpath,svc_name,ce_error,chk_id,chk_priority,chk_opened ";
-      $q_string .= "from chkserver ";
-      $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
+      $q_string .= "from inv_chkserver ";
+      $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
       $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
       $q_string .= "left join products on products.prod_id = inventory.inv_product ";
       $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
-      $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
+      $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
       $q_string .= "left join inv_service on inv_service.svc_id = inventory.inv_class ";
       $q_string .= "where ce_priority = 5 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
       $q_string .= $orderby;
-      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
+      $q_inv_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_chkserver = mysqli_fetch_array($q_inv_chkserver)) {
 
 # want to open the dialog box
         if (check_grouplevel($db, $GRP_Unix)) {
-          $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
-          $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
+          $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_inv_chkserver['inv_id'] . "\" target=\"_blank\">";
+          $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_inv_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
         } else {
-          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
+          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inv_chkserver['inv_id'] . "\" target=\"_blank\">";
           $linkerror = $linkstart;
         }
         $linkend   = "</a>";
 
-        if ($a_chkserver['svc_name'] == '') {
+        if ($a_inv_chkserver['svc_name'] == '') {
           $service = 'No Service Class Assigned';
         } else {
-          $service = $a_chkserver['svc_name'];
+          $service = $a_inv_chkserver['svc_name'];
         }
 
-        if ($a_chkserver['inv_callpath']) {
+        if ($a_inv_chkserver['inv_callpath']) {
           $class = 'ui-state-error';
         } else {
           $class = 'ui-widget-content';
@@ -423,11 +423,11 @@
 
         $count++;
         $output .= "<tr>\n";
-        $output .= "<td class=\"" . $class . "\">" . $linkstart . $a_chkserver['inv_name']     . $linkend . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">" . $linkstart . $a_inv_chkserver['inv_name']     . $linkend . "</td>\n";
         $output .= "<td class=\"" . $class . "\">"              . $service                                . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">"              . $a_chkserver['chk_priority']            . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">" . $linkerror . $a_chkserver['ce_error']     . $linkend . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">"              . $a_chkserver['chk_opened']              . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">"              . $a_inv_chkserver['chk_priority']            . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">" . $linkerror . $a_inv_chkserver['ce_error']     . $linkend . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">"              . $a_inv_chkserver['chk_opened']              . "</td>\n";
         $output .= "</tr>\n";
 
       }
@@ -457,54 +457,54 @@
       $output .= "</tr>\n";
 
       $q_string  = "select inv_id,inv_name,inv_callpath,svc_name,ce_error,chk_id,chk_opened,chk_closed,chk_userid,usr_name ";
-      $q_string .= "from chkserver ";
-      $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
+      $q_string .= "from inv_chkserver ";
+      $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
       $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
       $q_string .= "left join products on products.prod_id = inventory.inv_product ";
       $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
-      $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
+      $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
       $q_string .= "left join inv_service on inv_service.svc_id = inventory.inv_class ";
-      $q_string .= "left join inv_users on inv_users.usr_id = chkserver.chk_userid ";
+      $q_string .= "left join inv_users on inv_users.usr_id = inv_chkserver.chk_userid ";
       $q_string .= "where chk_closed != '1971-01-01 00:00:00' " . $where;
       $q_string .= "order by inv_class,ce_error,inv_name ";
-      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
+      $q_inv_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_chkserver = mysqli_fetch_array($q_inv_chkserver)) {
 
 # want to open the dialog box
         if (check_grouplevel($db, $GRP_Unix)) {
-          $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
-          $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
+          $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_inv_chkserver['inv_id'] . "\" target=\"_blank\">";
+          $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_inv_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
         } else {
-          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
+          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inv_chkserver['inv_id'] . "\" target=\"_blank\">";
           $linkerror = $linkstart;
         }
         $linkend   = "</a>";
 
-        if ($a_chkserver['svc_name'] == '') {
+        if ($a_inv_chkserver['svc_name'] == '') {
           $service = 'No Service Class Assigned';
         } else {
-          $service = $a_chkserver['svc_name'];
+          $service = $a_inv_chkserver['svc_name'];
         }
 
-        if ($a_chkserver['inv_callpath']) {
+        if ($a_inv_chkserver['inv_callpath']) {
           $class = 'ui-state-error';
         } else {
           $class = 'ui-widget-content';
         }
 
-        if ($a_chkserver['chk_userid'] == 0) {
+        if ($a_inv_chkserver['chk_userid'] == 0) {
           $closedby = 'Automatic';
         } else {
-          $closedby = $a_chkserver['usr_name'];
+          $closedby = $a_inv_chkserver['usr_name'];
         }
 
         $count++;
         $output .= "<tr>\n";
-        $output .= "<td class=\"" . $class . "\">" . $linkstart . $a_chkserver['inv_name']     . $linkend . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">" . $linkstart . $a_inv_chkserver['inv_name']     . $linkend . "</td>\n";
         $output .= "<td class=\"" . $class . "\">"              . $service                                . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">" . $linkerror . $a_chkserver['ce_error']     . $linkend . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">"              . $a_chkserver['chk_opened']              . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">"              . $a_chkserver['chk_closed']              . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">" . $linkerror . $a_inv_chkserver['ce_error']     . $linkend . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">"              . $a_inv_chkserver['chk_opened']              . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">"              . $a_inv_chkserver['chk_closed']              . "</td>\n";
         $output .= "<td class=\"" . $class . "\">"              . $closedby                               . "</td>\n";
         $output .= "</tr>\n";
 
@@ -536,36 +536,36 @@
       $output .= "</tr>\n";
 
       $q_string  = "select inv_id,inv_name,inv_callpath,svc_name,ce_error,chk_text,chk_id,chk_opened,usr_name ";
-      $q_string .= "from chkserver ";
-      $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
+      $q_string .= "from inv_chkserver ";
+      $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
       $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
       $q_string .= "left join products on products.prod_id = inventory.inv_product ";
       $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
-      $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
+      $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
       $q_string .= "left join inv_service on inv_service.svc_id = inventory.inv_class ";
-      $q_string .= "left join inv_users on inv_users.usr_id = chkserver.chk_userid ";
+      $q_string .= "left join inv_users on inv_users.usr_id = inv_chkserver.chk_userid ";
       $q_string .= "where chk_status = 1 and chk_closed = '1971-01-01 00:00:00' " . $where;
       $q_string .= "order by inv_class,ce_error,inv_name ";
-      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
+      $q_inv_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_chkserver = mysqli_fetch_array($q_inv_chkserver)) {
 
 # want to open the dialog box
         if (check_grouplevel($db, $GRP_Unix)) {
-          $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
-          $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
+          $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_inv_chkserver['inv_id'] . "\" target=\"_blank\">";
+          $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_inv_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
         } else {
-          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
+          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inv_chkserver['inv_id'] . "\" target=\"_blank\">";
           $linkerror = $linkstart;
         }
         $linkend   = "</a>";
 
-        if ($a_chkserver['svc_name'] == '') {
+        if ($a_inv_chkserver['svc_name'] == '') {
           $service = 'No Service Class Assigned';
         } else {
-          $service = $a_chkserver['svc_name'];
+          $service = $a_inv_chkserver['svc_name'];
         }
 
-        if ($a_chkserver['inv_callpath']) {
+        if ($a_inv_chkserver['inv_callpath']) {
           $class = 'ui-state-error';
         } else {
           $class = 'ui-widget-content';
@@ -573,12 +573,12 @@
 
         $count++;
         $output .= "<tr>\n";
-        $output .= "<td class=\"" . $class . "\">" . $linkstart . $a_chkserver['inv_name']     . $linkend . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">" . $linkstart . $a_inv_chkserver['inv_name']     . $linkend . "</td>\n";
         $output .= "<td class=\"" . $class . "\">"              . $service                                . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">" . $linkerror . $a_chkserver['ce_error']     . $linkend . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">"              . $a_chkserver['usr_name']                . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">"              . $a_chkserver['chk_text']                . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">"              . $a_chkserver['chk_opened']              . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">" . $linkerror . $a_inv_chkserver['ce_error']     . $linkend . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">"              . $a_inv_chkserver['usr_name']                . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">"              . $a_inv_chkserver['chk_text']                . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">"              . $a_inv_chkserver['chk_opened']              . "</td>\n";
         $output .= "</tr>\n";
 
       }
@@ -607,36 +607,36 @@
       $output .= "</tr>\n";
 
       $q_string  = "select inv_id,inv_name,inv_callpath,svc_name,ce_error,chk_text,chk_id,chk_opened,usr_name ";
-      $q_string .= "from chkserver ";
-      $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
+      $q_string .= "from inv_chkserver ";
+      $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
       $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
       $q_string .= "left join products on products.prod_id = inventory.inv_product ";
       $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
-      $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
+      $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
       $q_string .= "left join inv_service on inv_service.svc_id = inventory.inv_class ";
-      $q_string .= "left join inv_users on inv_users.usr_id = chkserver.chk_userid ";
+      $q_string .= "left join inv_users on inv_users.usr_id = inv_chkserver.chk_userid ";
       $q_string .= "where chk_status = 2 and chk_closed = '1971-01-01 00:00:00' " . $where;
       $q_string .= "order by inv_class,ce_error,inv_name ";
-      $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_chkserver = mysqli_fetch_array($q_chkserver)) {
+      $q_inv_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_chkserver = mysqli_fetch_array($q_inv_chkserver)) {
 
 # want to open the dialog box
         if (check_grouplevel($db, $GRP_Unix)) {
-          $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
-          $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
+          $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server="  . $a_inv_chkserver['inv_id'] . "\" target=\"_blank\">";
+          $linkerror = "<a href=\"#\" onclick=\"show_file('manage.fill.php?id="  . $a_inv_chkserver['chk_id'] . "');jQuery('#dialogError').dialog('open');return false;\">";
         } else {
-          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_chkserver['inv_id'] . "\" target=\"_blank\">";
+          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inv_chkserver['inv_id'] . "\" target=\"_blank\">";
           $linkerror = $linkstart;
         }
         $linkend   = "</a>";
 
-        if ($a_chkserver['svc_name'] == '') {
+        if ($a_inv_chkserver['svc_name'] == '') {
           $service = 'No Service Class Assigned';
         } else {
-          $service = $a_chkserver['svc_name'];
+          $service = $a_inv_chkserver['svc_name'];
         }
 
-        if ($a_chkserver['inv_callpath']) {
+        if ($a_inv_chkserver['inv_callpath']) {
           $class = 'ui-state-error';
         } else {
           $class = 'ui-widget-content';
@@ -644,12 +644,12 @@
 
         $count++;
         $output .= "<tr>\n";
-        $output .= "<td class=\"" . $class . "\">" . $linkstart . $a_chkserver['inv_name']     . $linkend . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">" . $linkstart . $a_inv_chkserver['inv_name']     . $linkend . "</td>\n";
         $output .= "<td class=\"" . $class . "\">"              . $service                                . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">" . $linkerror . $a_chkserver['ce_error']     . $linkend . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">"              . $a_chkserver['usr_name']                . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">"              . $a_chkserver['chk_text']                . "</td>\n";
-        $output .= "<td class=\"" . $class . "\">"              . $a_chkserver['chk_opened']              . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">" . $linkerror . $a_inv_chkserver['ce_error']     . $linkend . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">"              . $a_inv_chkserver['usr_name']                . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">"              . $a_inv_chkserver['chk_text']                . "</td>\n";
+        $output .= "<td class=\"" . $class . "\">"              . $a_inv_chkserver['chk_opened']              . "</td>\n";
         $output .= "</tr>\n";
 
       }

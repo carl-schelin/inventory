@@ -52,102 +52,102 @@
 
 # get the totals for each problem to properly display tabs
   $q_string  = "select count(chk_id) ";
-  $q_string .= "from chkserver ";
-  $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
-  $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
+  $q_string .= "from inv_chkserver ";
+  $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
+  $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where ce_priority = 1 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
-  $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_chkserver = mysqli_fetch_array($q_chkserver);
-  $priority1 = $a_chkserver['count(chk_id)'];
+  $q_inv_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_chkserver = mysqli_fetch_array($q_inv_chkserver);
+  $priority1 = $a_inv_chkserver['count(chk_id)'];
 
   $q_string  = "select count(chk_id) ";
-  $q_string .= "from chkserver ";
-  $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
-  $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
+  $q_string .= "from inv_chkserver ";
+  $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
+  $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where ce_priority = 2 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
-  $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_chkserver = mysqli_fetch_array($q_chkserver);
-  $priority2 = $a_chkserver['count(chk_id)'];
+  $q_inv_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_chkserver = mysqli_fetch_array($q_inv_chkserver);
+  $priority2 = $a_inv_chkserver['count(chk_id)'];
 
   $q_string  = "select count(chk_id) ";
-  $q_string .= "from chkserver ";
-  $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
-  $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
+  $q_string .= "from inv_chkserver ";
+  $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
+  $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where ce_priority = 3 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
-  $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_chkserver = mysqli_fetch_array($q_chkserver);
-  $priority3 = $a_chkserver['count(chk_id)'];
+  $q_inv_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_chkserver = mysqli_fetch_array($q_inv_chkserver);
+  $priority3 = $a_inv_chkserver['count(chk_id)'];
 
   $q_string  = "select count(chk_id) ";
-  $q_string .= "from chkserver ";
-  $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
-  $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
+  $q_string .= "from inv_chkserver ";
+  $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
+  $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where ce_priority = 4 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
-  $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_chkserver = mysqli_fetch_array($q_chkserver);
-  $priority4 = $a_chkserver['count(chk_id)'];
+  $q_inv_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_chkserver = mysqli_fetch_array($q_inv_chkserver);
+  $priority4 = $a_inv_chkserver['count(chk_id)'];
 
   $q_string  = "select count(chk_id) ";
-  $q_string .= "from chkserver ";
-  $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
-  $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
+  $q_string .= "from inv_chkserver ";
+  $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
+  $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where ce_priority = 5 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
-  $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_chkserver = mysqli_fetch_array($q_chkserver);
-  $priority5 = $a_chkserver['count(chk_id)'];
+  $q_inv_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_chkserver = mysqli_fetch_array($q_inv_chkserver);
+  $priority5 = $a_inv_chkserver['count(chk_id)'];
 
   $q_string  = "select count(chk_id) ";
-  $q_string .= "from chkserver ";
-  $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
-  $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
+  $q_string .= "from inv_chkserver ";
+  $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
+  $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where chk_closed != '1971-01-01 00:00:00' " . $where;
-  $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_chkserver = mysqli_fetch_array($q_chkserver);
-  $closed = $a_chkserver['count(chk_id)'];
+  $q_inv_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_chkserver = mysqli_fetch_array($q_inv_chkserver);
+  $closed = $a_inv_chkserver['count(chk_id)'];
 
 # chk_status = 1 == claimed
   $q_string  = "select count(chk_id) ";
-  $q_string .= "from chkserver ";
-  $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
-  $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
+  $q_string .= "from inv_chkserver ";
+  $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
+  $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where chk_status = 1 and chk_closed = '1971-01-01 00:00:00' " . $where;
-  $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_chkserver = mysqli_fetch_array($q_chkserver);
-  $claimed = $a_chkserver['count(chk_id)'];
+  $q_inv_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_chkserver = mysqli_fetch_array($q_inv_chkserver);
+  $claimed = $a_inv_chkserver['count(chk_id)'];
 
 # chk_status = 2 == pending
   $q_string  = "select count(chk_id) ";
-  $q_string .= "from chkserver ";
-  $q_string .= "left join chkerrors on chkerrors.ce_id = chkserver.chk_errorid ";
-  $q_string .= "left join inventory on inventory.inv_id = chkserver.chk_companyid ";
+  $q_string .= "from inv_chkserver ";
+  $q_string .= "left join chkerrors on chkerrors.ce_id = inv_chkserver.chk_errorid ";
+  $q_string .= "left join inventory on inventory.inv_id = inv_chkserver.chk_companyid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
   $q_string .= "left join products on products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where chk_status = 2 and chk_closed = '1971-01-01 00:00:00' " . $where;
-  $q_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_chkserver = mysqli_fetch_array($q_chkserver);
-  $pending = $a_chkserver['count(chk_id)'];
+  $q_inv_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_chkserver = mysqli_fetch_array($q_inv_chkserver);
+  $pending = $a_inv_chkserver['count(chk_id)'];
 
 # if help has not been seen yet,
   if (show_Help($db, 'manageerrors')) {
