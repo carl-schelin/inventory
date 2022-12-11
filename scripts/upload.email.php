@@ -22,7 +22,7 @@
 
   $file = "/opt/unixsuite/etc/company.email";
 
-  $q_string  = "update email set mail_disabled = 1";
+  $q_string  = "update inv_email set mail_disabled = 1";
   if ($debug == 'yes') {
     print "Marked all email as disabled.\n";
   } else {
@@ -36,17 +36,17 @@
 
       if ($data != '') {
         $q_string  = "select mail_id ";
-        $q_string .= "from email ";
+        $q_string .= "from inv_email ";
         $q_string .= "where mail_address = \"" . $data . "\" ";
-        $q_email = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $q_inv_email = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 # if it doesn't exist, add it.
-        if (mysqli_num_rows($q_email) == 0) {
+        if (mysqli_num_rows($q_inv_email) == 0) {
           $q_string  = 
             "mail_address      = \"" . $data         . "\"," . 
             "mail_disabled     = "   . 0             . "," . 
             "mail_date         = \"" . date('Y-m-d') . "\"";
 
-          $query = "insert into email set mail_id = null," . $q_string;
+          $query = "insert into inv_email set mail_id = null," . $q_string;
 
           if ($debug == 'yes') {
             print $query . "\n";
@@ -54,13 +54,13 @@
             $result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
           }
         } else {
-          $a_email = mysqli_fetch_array($q_email);
+          $a_inv_email = mysqli_fetch_array($q_inv_email);
           $q_string  = 
             "mail_address      = \"" . $data         . "\"," . 
             "mail_disabled     = "   . 0             . "," . 
             "mail_date         = \"" . date('Y-m-d') . "\"";
 
-          $query = "update email set " . $q_string . " where mail_id = " . $a_email['mail_id'] . " ";
+          $query = "update inv_email set " . $q_string . " where mail_id = " . $a_inv_email['mail_id'] . " ";
 
           if ($debug == 'yes') {
             print $query . "\n";

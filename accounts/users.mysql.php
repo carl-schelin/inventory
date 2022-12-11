@@ -351,10 +351,10 @@ function display_user( $p_title, $p_toggle, $p_query ) {
 
           $missing = "";
           $q_string  = "select mail_id ";
-          $q_string .= "from email ";
+          $q_string .= "from inv_email ";
           $q_string .= "where mail_address = \"" . $a_inv_users['usr_email'] . "\" and mail_disabled = 0 ";
-          $q_email = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_email) == 0) {
+          $q_inv_email = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_email) == 0) {
             $missing = "*";
           }
 
