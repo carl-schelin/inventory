@@ -162,12 +162,12 @@
       $q_string  = "select sw_id,sw_software,ven_name,prod_name,lic_product,sup_company,typ_name,";
       $q_string .= "dep_name,sw_eol,sw_eos ";
       $q_string .= "from software ";
-      $q_string .= "left join inv_vendors on inv_vendors.ven_id = software.sw_vendor ";
-      $q_string .= "left join products on products.prod_id = software.sw_product ";
-      $q_string .= "left join licenses on licenses.lic_id = software.sw_licenseid ";
-      $q_string .= "left join support on support.sup_id = software.sw_supportid ";
-      $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
-      $q_string .= "left join department on department.dep_id = software.sw_department ";
+      $q_string .= "left join inv_vendors    on inv_vendors.ven_id        = software.sw_vendor ";
+      $q_string .= "left join products   on products.prod_id      = software.sw_product ";
+      $q_string .= "left join licenses   on licenses.lic_id       = software.sw_licenseid ";
+      $q_string .= "left join support    on support.sup_id        = software.sw_supportid ";
+      $q_string .= "left join inv_sw_types   on inv_sw_types.typ_id       = software.sw_type ";
+      $q_string .= "left join inv_department on inv_department.dep_id     = software.sw_department ";
       if ($formVars['type'] != '') {
         $q_string .= "where typ_name = \"" . $formVars['type'] . "\" ";
       }

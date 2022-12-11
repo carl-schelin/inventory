@@ -98,7 +98,7 @@ $(document).ready( function() {
   $q_string  = "select inv_id,inv_name,inv_function,prod_name,dep_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join products     on products.prod_id           = inventory.inv_product ";
-  $q_string .= "left join department   on department.dep_id          = inventory.inv_department ";
+  $q_string .= "left join inv_department   on inv_department.dep_id          = inventory.inv_department ";
   $q_string .= "where inv_product = " . $formVars['id'] . " ";
   $q_string .= "order by inv_name ";
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));

@@ -80,11 +80,11 @@
 
           $total = 0;
           $q_string  = "select dep_id ";
-          $q_string .= "from department ";
+          $q_string .= "from inv_department ";
           $q_string .= "where dep_business = " . $a_inv_business['bus_id'] . " ";
-          $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_department) > 0) {
-            while ($a_department = mysqli_fetch_array($q_department)) {
+          $q_inv_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_department) > 0) {
+            while ($a_inv_department = mysqli_fetch_array($q_inv_department)) {
               $total++;
             }
           }

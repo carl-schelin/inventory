@@ -1558,13 +1558,13 @@ $(document).ready( function() {
   <td class="ui-widget-content">Business Unit (Department) <select name="inv_department">
 <?php
   $q_string  = "select dep_id,bus_name,dep_business,dep_name ";
-  $q_string .= "from department  ";
-  $q_string .= "left join inv_business on inv_business.bus_id = department.dep_business ";
+  $q_string .= "from inv_department  ";
+  $q_string .= "left join inv_business on inv_business.bus_id = inv_department.dep_business ";
   $q_string .= "order by dep_business,dep_name";
-  $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_department = mysqli_fetch_array($q_department)) {
-    print "<option value=\"" . $a_department['dep_id'] . "\">";
-      print htmlspecialchars($a_department['bus_name']) . "-" . htmlspecialchars($a_department['dep_name']);
+  $q_inv_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_department = mysqli_fetch_array($q_inv_department)) {
+    print "<option value=\"" . $a_inv_department['dep_id'] . "\">";
+      print htmlspecialchars($a_inv_department['bus_name']) . "-" . htmlspecialchars($a_inv_department['dep_name']);
     print "</option>\n";
   }
 ?>

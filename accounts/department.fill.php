@@ -19,19 +19,19 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from department");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_department");
 
       $q_string  = "select dep_name,dep_business,dep_manager ";
-      $q_string .= "from department ";
+      $q_string .= "from inv_department ";
       $q_string .= "where dep_id = " . $formVars['id'];
-      $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_department = mysqli_fetch_array($q_department);
-      mysqli_free_result($q_department);
+      $q_inv_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_department = mysqli_fetch_array($q_inv_department);
+      mysqli_free_result($q_inv_department);
 
-      $business = return_Index($db, $a_department['dep_business'], "select bus_id from inv_business order by bus_name");
-      $manager  = return_Index($db, $a_department['dep_manager'],  'select usr_id from inv_users where usr_disabled = 0 order by usr_last,usr_first');
+      $business = return_Index($db, $a_inv_department['dep_business'], "select bus_id from inv_business order by bus_name");
+      $manager  = return_Index($db, $a_inv_department['dep_manager'],  'select usr_id from inv_users where usr_disabled = 0 order by usr_last,usr_first');
 
-      print "document.formUpdate.dep_name.value = '" . mysqli_real_escape_string($db, $a_department['dep_name']) . "';\n";
+      print "document.formUpdate.dep_name.value = '" . mysqli_real_escape_string($db, $a_inv_department['dep_name']) . "';\n";
 
       if ($business > 0) {
         print "document.formUpdate.dep_business['" . $business  . "'].selected = true;\n";

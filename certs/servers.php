@@ -104,7 +104,7 @@ impacted, and which group needs to be contacted to get the certificate updated.<
   $q_string .= "left join inv_vendors      on inv_vendors.ven_id             = software.sw_vendor ";
   $q_string .= "left join products     on products.prod_id           = software.sw_product ";
   $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = software.sw_type ";
-  $q_string .= "left join department   on department.dep_id          = software.sw_department ";
+  $q_string .= "left join inv_department   on inv_department.dep_id          = software.sw_department ";
   $q_string .= "where svr_certid = " . $formVars['id'] . " ";
   $q_string .= "order by inv_name ";
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));

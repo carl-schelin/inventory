@@ -39,10 +39,10 @@
             "dep_manager    =   " . $formVars['dep_manager'];
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into department set dep_id = NULL, " . $q_string;
+            $q_string = "insert into inv_department set dep_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update department set " . $q_string . " where dep_id = " . $formVars['id'];
+            $q_string = "update inv_department set " . $q_string . " where dep_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['dep_name']);
@@ -69,23 +69,23 @@
       $output .= "</tr>\n";
 
       $q_string  = "select dep_id,dep_name,org_name,bus_name,usr_last,usr_first ";
-      $q_string .= "from department ";
-      $q_string .= "left join inv_business      on inv_business.bus_id      = department.dep_business ";
+      $q_string .= "from inv_department ";
+      $q_string .= "left join inv_business      on inv_business.bus_id      = inv_department.dep_business ";
       $q_string .= "left join inv_organizations on inv_organizations.org_id = inv_business.bus_organization ";
-      $q_string .= "left join inv_users         on inv_users.usr_id         = department.dep_manager ";
+      $q_string .= "left join inv_users         on inv_users.usr_id         = inv_department.dep_manager ";
       $q_string .= "order by dep_name,bus_name,org_name ";
-      $q_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_department) > 0) {
-        while ($a_department = mysqli_fetch_array($q_department)) {
+      $q_inv_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_department) > 0) {
+        while ($a_inv_department = mysqli_fetch_array($q_inv_department)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('department.fill.php?id="  . $a_department['dep_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('department.del.php?id=" . $a_department['dep_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('department.fill.php?id="  . $a_inv_department['dep_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('department.del.php?id=" . $a_inv_department['dep_id'] . "');\">";
           $linkend   = "</a>";
 
           $total = 0;
           $q_string  = "select grp_id ";
           $q_string .= "from inv_groups ";
-          $q_string .= "where grp_department = " . $a_department['dep_id'] . " ";
+          $q_string .= "where grp_department = " . $a_inv_department['dep_id'] . " ";
           $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_inv_groups) > 0) {
             while ($a_inv_groups = mysqli_fetch_array($q_inv_groups)) {
@@ -101,10 +101,10 @@
               $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>";
             }
           }
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_department['dep_name'] . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"                     . $a_department['bus_name'] . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"                     . $a_department['org_name'] . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"                     . $a_department['usr_last'] . ", " . $a_department['usr_first'] . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_department['dep_name'] . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $a_inv_department['bus_name'] . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $a_inv_department['org_name'] . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $a_inv_department['usr_last'] . ", " . $a_inv_department['usr_first'] . "</td>";
           $output .= "  <td class=\"ui-widget-content delete\">"              . $total                    . "</td>";
           $output .= "</tr>";
         }
@@ -114,7 +114,7 @@
         $output .= "</tr>";
       }
 
-      mysqli_free_result($q_department);
+      mysqli_free_result($q_inv_department);
 
       $output .= "</table>";
 

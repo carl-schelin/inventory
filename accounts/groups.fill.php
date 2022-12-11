@@ -29,7 +29,7 @@
       $a_inv_groups = mysqli_fetch_array($q_inv_groups);
       mysqli_free_result($q_inv_groups);
 
-      $department = return_Index($db, $a_inv_groups['grp_department'], "select dep_id from department order by dep_name");
+      $department = return_Index($db, $a_inv_groups['grp_department'], "select dep_id from inv_department order by dep_name");
       $manager    = return_Index($db, $a_inv_groups['grp_manager'],    "select usr_id from inv_users where usr_disabled = 0 order by usr_last,usr_first");
 
       print "document.formUpdate.grp_name.value = '"      . mysqli_real_escape_string($db, $a_inv_groups['grp_name'])      . "';\n";
