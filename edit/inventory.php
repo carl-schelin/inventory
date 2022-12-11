@@ -1418,11 +1418,11 @@ $(document).ready( function() {
   <td class="ui-widget-content">Environment <select name="inv_env">
 <?php
   $q_string  = "select env_id,env_name ";
-  $q_string .= "from environment ";
+  $q_string .= "from inv_environment ";
   $q_string .= "order by env_name ";
-  $q_environment = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_environment = mysqli_fetch_array($q_environment)) {
-    print "<option value=\"" . $a_environment['env_id'] . "\">" . htmlspecialchars($a_environment['env_name']) . "</option>\n";
+  $q_inv_environment = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_environment = mysqli_fetch_array($q_inv_environment)) {
+    print "<option value=\"" . $a_inv_environment['env_id'] . "\">" . htmlspecialchars($a_inv_environment['env_name']) . "</option>\n";
   }
 ?>
 </select></td>

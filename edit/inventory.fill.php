@@ -49,18 +49,18 @@
         $q_string .= "where mod_type = 48 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name ";
  
-        $invlocation   = return_Index($db, $a_inventory['inv_location'],   "select loc_id from inv_locations left join inv_cities on inv_cities.ct_id = inv_locations.loc_city order by ct_city,loc_name");
-        $invzone       = return_Index($db, $a_inventory['inv_zone'],       "select zone_id from timezones order by zone_name");
-        $invfront      = return_Index($db, $a_inventory['inv_front'],      "select img_id from images where img_facing = 1 order by img_title,img_file");
-        $invrear       = return_Index($db, $a_inventory['inv_rear'],       "select img_id from images where img_facing = 0 order by img_title,img_file");
-        $invmanager    = return_Index($db, $a_inventory['inv_manager'],    "select grp_id from inv_groups where grp_disabled = 0 order by grp_name");
-        $invappadmin   = return_Index($db, $a_inventory['inv_appadmin'],   "select grp_id from inv_groups where grp_disabled = 0 order by grp_name");
-        $invclass      = return_Index($db, $a_inventory['inv_class'],      "select svc_id from inv_service order by svc_id");
-        $invresponse   = return_Index($db, $a_inventory['inv_response'],   "select slv_id from supportlevel order by slv_value");
+        $invlocation   = return_Index($db, $a_inventory['inv_location'],   "select loc_id  from inv_locations left join inv_cities on inv_cities.ct_id = inv_locations.loc_city order by ct_city,loc_name");
+        $invzone       = return_Index($db, $a_inventory['inv_zone'],       "select zone_id from inv_timezones order by zone_name");
+        $invfront      = return_Index($db, $a_inventory['inv_front'],      "select img_id  from images where img_facing = 1 order by img_title,img_file");
+        $invrear       = return_Index($db, $a_inventory['inv_rear'],       "select img_id  from images where img_facing = 0 order by img_title,img_file");
+        $invmanager    = return_Index($db, $a_inventory['inv_manager'],    "select grp_id  from inv_groups where grp_disabled = 0 order by grp_name");
+        $invappadmin   = return_Index($db, $a_inventory['inv_appadmin'],   "select grp_id  from inv_groups where grp_disabled = 0 order by grp_name");
+        $invclass      = return_Index($db, $a_inventory['inv_class'],      "select svc_id  from inv_service order by svc_id");
+        $invresponse   = return_Index($db, $a_inventory['inv_response'],   "select slv_id  from supportlevel order by slv_value");
         $invproduct    = return_Index($db, $a_inventory['inv_product'],    "select prod_id from products order by prod_name");
-        $invproject    = return_Index($db, $a_inventory['inv_project'],    "select prj_id from projects where prj_product = " . $a_inventory['inv_product'] . " order by prj_name");
-        $invdepartment = return_Index($db, $a_inventory['inv_department'], "select dep_id from inv_department order by dep_business,dep_name");
-        $invenv        = return_Index($db, $a_inventory['inv_env'],        "select env_id from environment order by env_name");
+        $invproject    = return_Index($db, $a_inventory['inv_project'],    "select prj_id  from projects where prj_product = " . $a_inventory['inv_product'] . " order by prj_name");
+        $invdepartment = return_Index($db, $a_inventory['inv_department'], "select dep_id  from inv_department order by dep_business,dep_name");
+        $invenv        = return_Index($db, $a_inventory['inv_env'],        "select env_id  from inv_environment order by env_name");
 # no zero in the selection window so off by one each time
         $invmaint      = return_Index($db, $a_inventory['inv_maint'],      "select man_id from inv_maintenance order by man_text") - 1;
 

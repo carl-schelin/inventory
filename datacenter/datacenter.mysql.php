@@ -171,10 +171,10 @@
       $q_string .= "st_acronym,loc_zipcode,cn_acronym,loc_details,loc_default,ct_clli,loc_instance,";
       $q_string .= "env_abb ";
       $q_string .= "from inv_locations ";
-      $q_string .= "left join inv_cities  on inv_cities.ct_id  = inv_locations.loc_city ";
-      $q_string .= "left join inv_states  on inv_states.st_id  = inv_cities.ct_state ";
+      $q_string .= "left join inv_cities      on inv_cities.ct_id       = inv_locations.loc_city ";
+      $q_string .= "left join inv_states      on inv_states.st_id       = inv_cities.ct_state ";
       $q_string .= "left join country on country.cn_id = inv_states.st_country ";
-      $q_string .= "left join environment on environment.env_id = inv_locations.loc_environment ";
+      $q_string .= "left join inv_environment on inv_environment.env_id = inv_locations.loc_environment ";
       $q_string .= "order by loc_default desc,loc_name,ct_city,st_state ";
       $q_inv_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_inv_locations) > 0) {

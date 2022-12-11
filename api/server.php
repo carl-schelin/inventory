@@ -146,11 +146,11 @@
   $q_string  = "select inv_id,inv_name,inv_uuid,inv_satuuid,inv_class,inv_location,inv_function,man_text,";
   $q_string .= "inv_document,inv_power,inv_rack,inv_row,inv_unit,prod_name,prj_name,zone_name,grp_name,inv_appadmin ";
   $q_string .= "from inventory ";
-  $q_string .= "left join timezones on timezones.zone_id = inventory.inv_zone ";
+  $q_string .= "left join inv_timezones   on inv_timezones.zone_id  = inventory.inv_zone ";
   $q_string .= "left join inv_maintenance on inv_maintenance.man_id = inventory.inv_maint ";
-  $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
-  $q_string .= "left join products on products.prod_id = inventory.inv_product ";
-  $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
+  $q_string .= "left join inv_groups      on inv_groups.grp_id      = inventory.inv_manager ";
+  $q_string .= "left join products    on products.prod_id       = inventory.inv_product ";
+  $q_string .= "left join projects    on projects.prj_id        = inventory.inv_project ";
   $q_string .= "where inv_status = 0 ";
   if ($formVars['server'] != '') {
     $q_string .= "and inv_name = \"" . $formVars['server'] . "\" ";

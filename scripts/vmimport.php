@@ -155,15 +155,15 @@
 # get the environment. need to get this before we get the location
       $inv_env = 0;
       $q_string  = "select env_id ";
-      $q_string .= "from environment ";
+      $q_string .= "from inv_environment ";
       $q_string .= "where env_name = \"" . $environment . "\" ";
-      $q_environment = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_environment) == 0) {
+      $q_inv_environment = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_environment) == 0) {
         $error .= "Unable to locate environment: " . $environment . " ";
       } else {
-        $a_environment = mysqli_fetch_array($q_environment);
+        $a_inv_environment = mysqli_fetch_array($q_inv_environment);
 
-        $inv_env = $a_environment['env_id'];
+        $inv_env = $a_inv_environment['env_id'];
       }
 
 # get the location. need to compare to the environment and just get the first instance since most earlier servers were L&S data center.

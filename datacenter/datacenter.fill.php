@@ -38,7 +38,7 @@
 
       $city = return_Index($db, $a_inv_locations['loc_city'], $q_string);
       $type = return_Index($db, $a_inv_locations['loc_type'], "select typ_id from loc_types order by typ_name");
-      $env  = return_Index($db, $a_inv_locations['loc_environment'], "select env_id from environment order by env_name");
+      $env  = return_Index($db, $a_inv_locations['loc_environment'], "select env_id from inv_environment order by env_name");
 
       print "document.formUpdate.loc_name.value = '"       . mysqli_real_escape_string($db, $a_inv_locations['loc_name'])       . "';\n";
       print "document.formUpdate.loc_addr1.value = '"      . mysqli_real_escape_string($db, $a_inv_locations['loc_addr1'])      . "';\n";
