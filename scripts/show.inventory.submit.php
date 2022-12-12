@@ -800,9 +800,9 @@
 
     $q_string  = "select loc_name,loc_addr1,ct_city,st_acronym,loc_zipcode,cn_acronym ";
     $q_string .= "from inv_locations ";
-    $q_string .= "left join inv_cities on inv_cities.ct_id = inv_locations.loc_city ";
-    $q_string .= "left join inv_states on inv_states.st_id = inv_cities.ct_state ";
-    $q_string .= "left join country on country.cn_id = inv_states.st_country ";
+    $q_string .= "left join inv_cities  on inv_cities.ct_id  = inv_locations.loc_city ";
+    $q_string .= "left join inv_states  on inv_states.st_id  = inv_cities.ct_state ";
+    $q_string .= "left join inv_country on inv_country.cn_id = inv_states.st_country ";
     $q_string .= "where loc_id = " . $a_inventory['inv_location'];
     $q_inv_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
     $a_inv_locations = mysqli_fetch_array($q_inv_locations);

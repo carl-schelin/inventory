@@ -855,10 +855,10 @@
       $q_string  = "select inv_id,loc_name,ct_city,st_acronym,cn_acronym,inv_name,grp_name,typ_name,inv_status ";
       $q_string .= "from inventory ";
       $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
-      $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
-      $q_string .= "left join inv_cities on inv_cities.ct_id = inv_locations.loc_city ";
-      $q_string .= "left join inv_states on inv_states.st_id = inv_locations.loc_state ";
-      $q_string .= "left join country on country.cn_id = inv_locations.loc_country ";
+      $q_string .= "left join inv_groups    on inv_groups.grp_id    = inventory.inv_manager ";
+      $q_string .= "left join inv_cities    on inv_cities.ct_id     = inv_locations.loc_city ";
+      $q_string .= "left join inv_states    on inv_states.st_id     = inv_locations.loc_state ";
+      $q_string .= "left join inv_country   on inv_country.cn_id    = inv_locations.loc_country ";
       $q_string .= "left join loc_types on loc_types.typ_id = inv_locations.loc_type ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";

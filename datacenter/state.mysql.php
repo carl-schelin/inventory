@@ -68,7 +68,7 @@
 
       $q_string  = "select st_id,st_acronym,st_state,cn_country ";
       $q_string .= "from inv_states ";
-      $q_string .= "left join country on country.cn_id = inv_states.st_country ";
+      $q_string .= "left join inv_country on inv_country.cn_id = inv_states.st_country ";
       $q_string .= "order by st_state,cn_country ";
       $q_inv_states = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_inv_states) > 0) {

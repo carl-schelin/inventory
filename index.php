@@ -462,19 +462,19 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
 <option value="0">Country</option>
 <?php
   $q_string = "select cn_id,cn_country "
-            . "from country "
+            . "from inv_country "
             . "where cn_acronym = 'US' ";
-  $q_country = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_country = mysqli_fetch_array($q_country);
-  print "<option value=\"" . $a_country['cn_id'] . "\">" . $a_country['cn_country'] . "</option>";
+  $q_inv_country = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_country = mysqli_fetch_array($q_inv_country);
+  print "<option value=\"" . $a_inv_country['cn_id'] . "\">" . $a_inv_country['cn_country'] . "</option>";
 
   $q_string = "select cn_id,cn_country "
-            . "from country "
+            . "from inv_country "
             . "where cn_acronym != 'US' "
             . "order by cn_country ";
-  $q_country = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_country = mysqli_fetch_array($q_country)) {
-    print "<option value=\"" . $a_country['cn_id'] . "\">" . $a_country['cn_country'] . "</option>";
+  $q_inv_country = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_country = mysqli_fetch_array($q_inv_country)) {
+    print "<option value=\"" . $a_inv_country['cn_id'] . "\">" . $a_inv_country['cn_country'] . "</option>";
   }
 ?>
 </select>

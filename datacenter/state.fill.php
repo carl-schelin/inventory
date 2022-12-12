@@ -28,7 +28,7 @@
       $a_inv_states = mysqli_fetch_array($q_inv_states);
       mysqli_free_result($q_inv_states);
 
-      $country = return_Index($db, $a_inv_states['st_country'], "select cn_id from country order by cn_country");
+      $country = return_Index($db, $a_inv_states['st_country'], "select cn_id from inv_country order by cn_country");
 
       print "document.formUpdate.st_acronym.value = '"  . mysqli_real_escape_string($db, $a_inv_states['st_acronym'])   . "';\n";
       print "document.formUpdate.st_state.value = '"    . mysqli_real_escape_string($db, $a_inv_states['st_state'])    . "';\n";

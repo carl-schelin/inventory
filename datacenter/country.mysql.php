@@ -37,10 +37,10 @@
             "cn_country = \"" . $formVars['cn_country'] . "\"";
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into country set cn_id = NULL, " . $q_string;
+            $q_string = "insert into inv_country set cn_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update country set " . $q_string . " where cn_id = " . $formVars['id'];
+            $q_string = "update inv_country set " . $q_string . " where cn_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['cn_country']);
@@ -64,22 +64,22 @@
       $output .= "</tr>\n";
 
       $q_string  = "select cn_id,cn_acronym,cn_country ";
-      $q_string .= "from country ";
+      $q_string .= "from inv_country ";
       $q_string .= "order by cn_country ";
-      $q_country = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_country) > 0) {
-        while ($a_country = mysqli_fetch_array($q_country)) {
+      $q_inv_country = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_country) > 0) {
+        while ($a_inv_country = mysqli_fetch_array($q_inv_country)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('country.fill.php?id="  . $a_country['cn_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('country.del.php?id=" . $a_country['cn_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('country.fill.php?id="  . $a_inv_country['cn_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('country.del.php?id=" . $a_inv_country['cn_id'] . "');\">";
           $linkend   = "</a>";
 
           $output .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel    . "</td>";
           }
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_country['cn_country']     . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"                       . $a_country['cn_acronym']                . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_country['cn_country']     . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                       . $a_inv_country['cn_acronym']                . "</td>";
           $output .= "</tr>";
         }
       } else {
@@ -90,7 +90,7 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_country);
+      mysqli_free_result($q_inv_country);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
