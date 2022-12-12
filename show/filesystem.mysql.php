@@ -75,28 +75,28 @@
   $output .= "</tr>";
 
   $q_string  = "select fs_device,fs_size,fs_volume,fs_mount,fs_wwid,fs_verified,fs_update,fs_used,fs_avail,fs_percent ";
-  $q_string .= "from filesystem ";
+  $q_string .= "from inv_filesystem ";
   $q_string .= "where fs_companyid = " . $formVars['id'] . " ";
   $q_string .= "order by fs_device,fs_mount";
-  $q_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_inv_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-  while ( $a_filesystem = mysqli_fetch_array($q_filesystem) ) {
+  while ( $a_inv_filesystem = mysqli_fetch_array($q_inv_filesystem) ) {
 
     $checkmark = "";
-    if ($a_filesystem['fs_verified']) {
+    if ($a_inv_filesystem['fs_verified']) {
       $checkmark = "&#x2713;";
     }
 
     $output .= "<tr>";
-    $output .= "<td class=\"ui-widget-content\">" . $a_filesystem['fs_device']              . "</td>";
-    $output .= "<td class=\"ui-widget-content\">" . $a_filesystem['fs_mount']               . "</td>";
-    $output .= "<td class=\"ui-widget-content\">" . $a_filesystem['fs_size']                . " K</td>";
-    $output .= "<td class=\"ui-widget-content\">" . $a_filesystem['fs_used']                . " K</td>";
-    $output .= "<td class=\"ui-widget-content\">" . $a_filesystem['fs_avail']               . " K</td>";
-    $output .= "<td class=\"ui-widget-content\">" . $a_filesystem['fs_percent']             . " %</td>";
-    $output .= "<td class=\"ui-widget-content\">" . $a_filesystem['fs_volume']              . "</td>";
-    $output .= "<td class=\"ui-widget-content\">" . $a_filesystem['fs_wwid']                . "</td>";
-    $output .= "<td class=\"ui-widget-content\">" . $a_filesystem['fs_update'] . $checkmark . "</td>";
+    $output .= "<td class=\"ui-widget-content\">" . $a_inv_filesystem['fs_device']              . "</td>";
+    $output .= "<td class=\"ui-widget-content\">" . $a_inv_filesystem['fs_mount']               . "</td>";
+    $output .= "<td class=\"ui-widget-content\">" . $a_inv_filesystem['fs_size']                . " K</td>";
+    $output .= "<td class=\"ui-widget-content\">" . $a_inv_filesystem['fs_used']                . " K</td>";
+    $output .= "<td class=\"ui-widget-content\">" . $a_inv_filesystem['fs_avail']               . " K</td>";
+    $output .= "<td class=\"ui-widget-content\">" . $a_inv_filesystem['fs_percent']             . " %</td>";
+    $output .= "<td class=\"ui-widget-content\">" . $a_inv_filesystem['fs_volume']              . "</td>";
+    $output .= "<td class=\"ui-widget-content\">" . $a_inv_filesystem['fs_wwid']                . "</td>";
+    $output .= "<td class=\"ui-widget-content\">" . $a_inv_filesystem['fs_update'] . $checkmark . "</td>";
     $output .= "</tr>";
 
   }

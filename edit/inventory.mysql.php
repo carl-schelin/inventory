@@ -193,7 +193,7 @@
 
 # update file system ownershps
             $query  = "update ";
-            $query .= "filesystem ";
+            $query .= "inv_filesystem ";
             $query .= "set ";
             $query .= "fs_group = " . $formVars['inv_manager'] . " ";
             $query .= "where fs_companyid = " . $formVars['id'] . " and fs_group = " . $a_inventory['inv_manager'] . " ";

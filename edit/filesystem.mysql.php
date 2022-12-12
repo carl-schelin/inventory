@@ -83,10 +83,10 @@
             "fs_update    = \"" . date('Y-m-d')             . "\"";
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into filesystem set fs_id = NULL," . $q_string;
+            $q_string = "insert into inv_filesystem set fs_id = NULL," . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update filesystem set " . $q_string . " where fs_id = " . $formVars['fs_id'];
+            $q_string = "update inv_filesystem set " . $q_string . " where fs_id = " . $formVars['fs_id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['fs_companyid']);
@@ -127,17 +127,17 @@
       }
 
       $q_string  = "select fs_id,fs_backup,fs_wwid,fs_volume,fs_device,fs_size,fs_mount,fs_verified,fs_update,grp_name,fs_used,fs_avail,fs_percent ";
-      $q_string .= "from filesystem ";
-      $q_string .= "left join inventory on inventory.inv_id = filesystem.fs_companyid ";
-      $q_string .= "left join inv_groups on inv_groups.grp_id = filesystem.fs_group ";
+      $q_string .= "from inv_filesystem ";
+      $q_string .= "left join inventory on inventory.inv_id = inv_filesystem.fs_companyid ";
+      $q_string .= "left join inv_groups on inv_groups.grp_id = inv_filesystem.fs_group ";
       $q_string .= "where fs_companyid = " . $formVars['fs_companyid'] . " ";
       $q_string .= "order by fs_device";
-      $q_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_filesystem) > 0) {
-        while ($a_filesystem = mysqli_fetch_array($q_filesystem)) {
+      $q_inv_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_filesystem) > 0) {
+        while ($a_inv_filesystem = mysqli_fetch_array($q_inv_filesystem)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('filesystem.fill.php?id=" . $a_filesystem['fs_id'] . "');jQuery('#dialogFilesystemUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_filesystem('filesystem.del.php?id=" . $a_filesystem['fs_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('filesystem.fill.php?id=" . $a_inv_filesystem['fs_id'] . "');jQuery('#dialogFilesystemUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_filesystem('filesystem.del.php?id=" . $a_inv_filesystem['fs_id'] . "');\">";
           $linkend   = "</a>";
 
           $class = "ui-widget-content";
@@ -145,28 +145,28 @@
           if ($a_inv_backups['bu_include'] == 0) {
             $class = "ui-state-highlight";
 # and if this specific filesystem is not being backed up.
-            if ($a_filesystem['fs_backup'] == 0) {
+            if ($a_inv_filesystem['fs_backup'] == 0) {
               $class = "ui-state-error";
             }
           }
 
           $checked = "";
-          if ($a_filesystem['fs_verified']) {
+          if ($a_inv_filesystem['fs_verified']) {
             $checked = "&#x2713;";
           }
 
           $output .= "<tr>\n";
           $output .= "  <td class=\"" . $class . " delete\">" . $linkdel                                                      . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['fs_device']            . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['fs_mount']             . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['grp_name']             . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['fs_size']              . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['fs_used']              . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['fs_avail']             . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['fs_percent']           . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['fs_volume']            . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['fs_wwid']              . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_filesystem['fs_update'] . $checked . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_device']            . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_mount']             . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['grp_name']             . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_size']              . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_used']              . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_avail']             . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_percent']           . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_volume']            . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_wwid']              . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_update'] . $checked . $linkend . "</td>\n";
           $output .= "</tr>\n";
 
         }
@@ -176,7 +176,7 @@
           $output .= "</tr>\n";
       }
 
-      mysqli_free_result($q_filesystem);
+      mysqli_free_result($q_inv_filesystem);
 
       $output .= "</table>\n";
 

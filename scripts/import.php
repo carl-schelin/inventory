@@ -283,13 +283,13 @@
 # basically if the fs_group info isn't assigned, assign to the unix group
               $fs_group = $GRP_Unix;
               $q_string  = "select fs_group ";
-              $q_string .= "from filesystem ";
+              $q_string .= "from inv_filesystem ";
               $q_string .= "where fs_companyid = " . $a_inventory['inv_id'] . " and fs_device = \"" . $value[3] . "\" ";
-              $q_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              if (mysqli_num_rows($q_filesystem) > 0) {
-                $a_filesystem = mysqli_fetch_array($q_filesystem);
-                if ($a_filesystem['fs_group'] > 0) {
-                  $fs_group = $a_filesystem['fs_group'];
+              $q_inv_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              if (mysqli_num_rows($q_inv_filesystem) > 0) {
+                $a_inv_filesystem = mysqli_fetch_array($q_inv_filesystem);
+                if ($a_inv_filesystem['fs_group'] > 0) {
+                  $fs_group = $a_inv_filesystem['fs_group'];
                 }
               }
 
@@ -307,18 +307,18 @@
                 "fs_update    = \"" . $date                  . "\"";
 
               $q_string  = "select fs_id ";
-              $q_string .= "from filesystem ";
+              $q_string .= "from inv_filesystem ";
               $q_string .= "where fs_device = '" . $value[3] . "' and fs_companyid = " . $a_inventory['inv_id'];
-              $q_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              $a_filesystem = mysqli_fetch_array($q_filesystem);
+              $q_inv_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              $a_inv_filesystem = mysqli_fetch_array($q_inv_filesystem);
 
-              if ($a_filesystem['fs_id'] == '') {
-                $q_string = "insert into filesystem set fs_id = null," . $query;
+              if ($a_inv_filesystem['fs_id'] == '') {
+                $q_string = "insert into inv_filesystem set fs_id = null," . $query;
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
               } else {
-                $q_string = "update filesystem set " . $query . " where fs_id = " . $a_filesystem['fs_id'];
+                $q_string = "update inv_filesystem set " . $query . " where fs_id = " . $a_inv_filesystem['fs_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }

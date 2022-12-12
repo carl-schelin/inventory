@@ -74,28 +74,28 @@
 
         if ($formVars['copyfrom'] > 0) {
           $q_string  = "select fs_backup,fs_device,fs_mount,fs_size,fs_wwid,fs_subsystem,fs_volume,fs_lun,fs_volid,fs_path,fs_switch,fs_port,fs_sysport ";
-          $q_string .= "from filesystem ";
+          $q_string .= "from inv_filesystem ";
           $q_string .= "where fs_companyid = " . $formVars['copyfrom'];
-          $q_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          while ($a_filesystem = mysqli_fetch_array($q_filesystem)) {
+          $q_inv_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_inv_filesystem = mysqli_fetch_array($q_inv_filesystem)) {
 
             $q_string = 
               "fs_companyid =   " . $formVars['fs_companyid']     . "," .
-              "fs_backup    =   " . $a_filesystem['fs_backup']    . "," .
-              "fs_device    = \"" . $a_filesystem['fs_device']    . "\"," .
-              "fs_mount     = \"" . $a_filesystem['fs_mount']     . "\"," .
-              "fs_size      =   " . $a_filesystem['fs_size']      . "," .
-              "fs_wwid      = \"" . $a_filesystem['fs_wwid']      . "\"," .
-              "fs_subsystem = \"" . $a_filesystem['fs_subsystem'] . "\"," .
-              "fs_volume    = \"" . $a_filesystem['fs_volume']    . "\"," .
-              "fs_lun       =   " . $a_filesystem['fs_lun']       . "," .
-              "fs_volid     = \"" . $a_filesystem['fs_volid']     . "\"," .
-              "fs_path      = \"" . $a_filesystem['fs_path']      . "\"," .
-              "fs_switch    = \"" . $a_filesystem['fs_switch']    . "\"," .
-              "fs_port      = \"" . $a_filesystem['fs_port']      . "\"," .
-              "fs_sysport   = \"" . $a_filesystem['fs_sysport']   . "\"";
+              "fs_backup    =   " . $a_inv_filesystem['fs_backup']    . "," .
+              "fs_device    = \"" . $a_inv_filesystem['fs_device']    . "\"," .
+              "fs_mount     = \"" . $a_inv_filesystem['fs_mount']     . "\"," .
+              "fs_size      =   " . $a_inv_filesystem['fs_size']      . "," .
+              "fs_wwid      = \"" . $a_inv_filesystem['fs_wwid']      . "\"," .
+              "fs_subsystem = \"" . $a_inv_filesystem['fs_subsystem'] . "\"," .
+              "fs_volume    = \"" . $a_inv_filesystem['fs_volume']    . "\"," .
+              "fs_lun       =   " . $a_inv_filesystem['fs_lun']       . "," .
+              "fs_volid     = \"" . $a_inv_filesystem['fs_volid']     . "\"," .
+              "fs_path      = \"" . $a_inv_filesystem['fs_path']      . "\"," .
+              "fs_switch    = \"" . $a_inv_filesystem['fs_switch']    . "\"," .
+              "fs_port      = \"" . $a_inv_filesystem['fs_port']      . "\"," .
+              "fs_sysport   = \"" . $a_inv_filesystem['fs_sysport']   . "\"";
 
-            $query = "insert into filesystem set fs_id = NULL, " . $q_string;
+            $query = "insert into inv_filesystem set fs_id = NULL, " . $q_string;
             mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
           }
         }

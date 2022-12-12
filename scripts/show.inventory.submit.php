@@ -900,11 +900,11 @@
       $output .= "</tr>\n";
 
       $q_string  = "select fs_device,fs_size,fs_volume,fs_mount,fs_wwid,fs_verified,fs_update ";
-      $q_string .= "from filesystem ";
+      $q_string .= "from inv_filesystem ";
       $q_string .= "where fs_companyid = " . $a_inventory['inv_id'] . " ";
       $q_string .= "order by fs_device,fs_mount";
-      $q_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
-      while ( $a_filesystem = mysqli_fetch_array($q_filesystem) ) {
+      $q_inv_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+      while ( $a_inv_filesystem = mysqli_fetch_array($q_inv_filesystem) ) {
 
         if ($a_filesystem['fs_verified'] == 1) {
           $bgcolor = $color[1];
@@ -913,12 +913,12 @@
         }
 
         $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">";
-        $output .= "<td>" . $a_filesystem['fs_device'] . "</td>\n";
-        $output .= "<td>" . $a_filesystem['fs_size']   . "</td>\n";
-        $output .= "<td>" . $a_filesystem['fs_volume'] . "</td>\n";
-        $output .= "<td>" . $a_filesystem['fs_mount']  . "</td>\n";
-        $output .= "<td>" . $a_filesystem['fs_wwid']   . "</td>\n";
-        $output .= "<td>" . $a_filesystem['fs_update'] . "</td>\n";
+        $output .= "<td>" . $a_inv_filesystem['fs_device'] . "</td>\n";
+        $output .= "<td>" . $a_inv_filesystem['fs_size']   . "</td>\n";
+        $output .= "<td>" . $a_inv_filesystem['fs_volume'] . "</td>\n";
+        $output .= "<td>" . $a_inv_filesystem['fs_mount']  . "</td>\n";
+        $output .= "<td>" . $a_inv_filesystem['fs_wwid']   . "</td>\n";
+        $output .= "<td>" . $a_inv_filesystem['fs_update'] . "</td>\n";
         $output .= "</tr>\n";
       }
       $output .= "</table>\n\n";

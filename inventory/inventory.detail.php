@@ -247,7 +247,7 @@
 
 # update file system ownershps
           $q_string  = "update ";
-          $q_string .= "filesystem ";
+          $q_string .= "inv_filesystem ";
           $q_string .= "set ";
           $q_string .= "fs_group = " . $a_inv_groups['grp_id'] . " ";          
           $q_string .= "where fs_companyid = " . $formVars['id'] . " and fs_group = " . $formVars['select'] . " ";
@@ -335,7 +335,7 @@
 
 # update file system ownershps
           $q_string  = "update ";
-          $q_string .= "filesystem ";
+          $q_string .= "inv_filesystem ";
           $q_string .= "set ";
           $q_string .= "fs_group = " . $a_inv_groups['grp_id'] . " ";          
           $q_string .= "where fs_companyid = " . $formVars['id'] . " and fs_group = " . $formVars['select'] . " ";

@@ -488,12 +488,12 @@
 
       $filesystem = 0;
       $q_string  = "select fs_companyid ";
-      $q_string .= "from filesystem ";
+      $q_string .= "from inv_filesystem ";
       $q_string .= "where fs_companyid = " . $remove . " ";
-      $q_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_filesystem) > 0) {
-        print "There are " . mysqli_num_rows($q_filesystem) . " filesystem records for " . $a_inventory['inv_name'] . "\n";
-        $filesystem = mysqli_num_rows($q_filesystem);
+      $q_inv_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_filesystem) > 0) {
+        print "There are " . mysqli_num_rows($q_inv_filesystem) . " filesystem records for " . $a_inventory['inv_name'] . "\n";
+        $filesystem = mysqli_num_rows($q_inv_filesystem);
       }
 
       $hardware = 0;
@@ -662,7 +662,7 @@
 
       if ($filesystem > 0) {
         print "Filesystem ";
-        $q_string = "delete from filesystem where fs_companyid    = " . $remove;
+        $q_string = "delete from inv_filesystem where fs_companyid    = " . $remove;
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 
