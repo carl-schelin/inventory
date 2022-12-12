@@ -33,10 +33,10 @@
   $a_inv_locations = mysqli_fetch_array($q_inv_locations);
 
   $q_string  = "select dev_type,dev_infrastructure ";
-  $q_string .= "from device ";
+  $q_string .= "from inv_device ";
   $q_string .= "where dev_id = " . $formVars['device'] . " ";
-  $q_device = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_device = mysqli_fetch_array($q_device);
+  $q_inv_device = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_device = mysqli_fetch_array($q_inv_device);
 
   $q_string  = "select prod_code ";
   $q_string .= "from products ";
@@ -44,7 +44,7 @@
   $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   $a_products = mysqli_fetch_array($q_products);
 
-  if ($a_device['dev_infrastructure']) {
+  if ($a_inv_device['dev_infrastructure']) {
     $a_products['prod_code'] = '';
     print "document.getElementById(\"service\").disabled = true;\n";
     print "document.getElementById('characters').innerHTML = 'six';\n";
@@ -63,7 +63,7 @@
     $a_inv_locations['ct_clli']      . 
     $a_inv_locations['loc_instance'] . 
     $zone[$formVars['zone']]     . 
-    $a_device['dev_type']        . 
+    $a_inv_device['dev_type']        . 
     $a_products['prod_code']     . 
     strtoupper($formVars['freeform']);
 

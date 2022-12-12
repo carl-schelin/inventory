@@ -19,20 +19,20 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from device");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_device");
 
       $q_string  = "select dev_type,dev_description,dev_infrastructure,dev_notes ";
-      $q_string .= "from device ";
+      $q_string .= "from inv_device ";
       $q_string .= "where dev_id = " . $formVars['id'];
-      $q_device = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_device = mysqli_fetch_array($q_device);
-      mysqli_free_result($q_device);
+      $q_inv_device = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_device = mysqli_fetch_array($q_inv_device);
+      mysqli_free_result($q_inv_device);
 
-      print "document.formUpdate.dev_type.value = '"        . mysqli_real_escape_string($db, $a_device['dev_type'])        . "';\n";
-      print "document.formUpdate.dev_description.value = '" . mysqli_real_escape_string($db, $a_device['dev_description']) . "';\n";
-      print "document.formUpdate.dev_notes.value = '"       . mysqli_real_escape_string($db, $a_device['dev_notes'])       . "';\n";
+      print "document.formUpdate.dev_type.value = '"        . mysqli_real_escape_string($db, $a_inv_device['dev_type'])        . "';\n";
+      print "document.formUpdate.dev_description.value = '" . mysqli_real_escape_string($db, $a_inv_device['dev_description']) . "';\n";
+      print "document.formUpdate.dev_notes.value = '"       . mysqli_real_escape_string($db, $a_inv_device['dev_notes'])       . "';\n";
 
-      if ($a_device['dev_infrastructure']) {
+      if ($a_inv_device['dev_infrastructure']) {
         print "document.formUpdate.dev_infrastructure.checked = true\n;";
        } else {
         print "document.formUpdate.dev_infrastructure.checked = false\n;";

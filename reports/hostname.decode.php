@@ -105,12 +105,12 @@
 
         if (strlen($os_device) > 0) {
           $q_string  = "select dev_id,dev_type,dev_description,dev_infrastructure ";
-          $q_string .= "from device ";
-          $q_device = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          while ($a_device = mysqli_fetch_array($q_device)) {
-            if ($os_device == strtolower($a_device['dev_type'])) {
-              $formVars['i15device'] = $a_device['dev_type'] . " (" . $a_device['dev_description'] . ")";
-              $os_infrastructure = $a_device['dev_infrastructure'];
+          $q_string .= "from inv_device ";
+          $q_inv_device = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_inv_device = mysqli_fetch_array($q_inv_device)) {
+            if ($os_device == strtolower($a_inv_device['dev_type'])) {
+              $formVars['i15device'] = $a_inv_device['dev_type'] . " (" . $a_inv_device['dev_description'] . ")";
+              $os_infrastructure = $a_inv_device['dev_infrastructure'];
             }
           }
         }

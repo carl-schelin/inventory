@@ -145,11 +145,11 @@ $(document).ready( function() {
   <td class="ui-widget-content">Select the Unique Device Type: <select name="device" onclick="check_encode();" onblur="check_encode();">
 <?php
   $q_string  = "select dev_id,dev_type,dev_description ";
-  $q_string .= "from device ";
+  $q_string .= "from inv_device ";
   $q_string .= "order by dev_type ";
-  $q_device = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_device = mysqli_fetch_array($q_device)) {
-    print "<option value=\"" . $a_device['dev_id'] . "\">" . $a_device['dev_type'] . " (" . $a_device['dev_description'] . ")</option>\n";
+  $q_inv_device = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_device = mysqli_fetch_array($q_inv_device)) {
+    print "<option value=\"" . $a_inv_device['dev_id'] . "\">" . $a_inv_device['dev_type'] . " (" . $a_inv_device['dev_description'] . ")</option>\n";
   }
 ?>
 </select></td>
