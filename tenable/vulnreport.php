@@ -329,8 +329,8 @@
 
         $q_string  = "select sev_name,vuln_delete ";
         $q_string .= "from interface ";
-        $q_string .= "left join vulnerabilities on vulnerabilities.vuln_interface = interface.int_id ";
-        $q_string .= "left join inv_security        on inv_security.sec_id                = vulnerabilities.vuln_securityid ";
+        $q_string .= "left join inv_vulnerabilities on inv_vulnerabilities.vuln_interface = interface.int_id ";
+        $q_string .= "left join inv_security        on inv_security.sec_id                = inv_vulnerabilities.vuln_securityid ";
         $q_string .= "left join inv_severity        on inv_severity.sev_id                = inv_security.sec_severity ";
         $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " ";
         $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -411,8 +411,8 @@
       $q_string  = "select sev_name,vuln_delete ";
       $q_string .= "from interface ";
       $q_string .= "left join inventory       on inventory.inv_id               = interface.int_companyid ";
-      $q_string .= "left join vulnerabilities on vulnerabilities.vuln_interface = interface.int_id ";
-      $q_string .= "left join inv_security        on inv_security.sec_id                = vulnerabilities.vuln_securityid ";
+      $q_string .= "left join inv_vulnerabilities on inv_vulnerabilities.vuln_interface = interface.int_id ";
+      $q_string .= "left join inv_security        on inv_security.sec_id                = inv_vulnerabilities.vuln_securityid ";
       $q_string .= "left join inv_severity        on inv_severity.sev_id                = inv_security.sec_severity ";
       $q_string .= "where inv_product = " . $a_products['prod_id'] . " and inv_status = 0 ";
       if ($formVars['group'] > 0) {

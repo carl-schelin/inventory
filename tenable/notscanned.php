@@ -168,10 +168,10 @@
       $a_hardware = mysqli_fetch_array($q_hardware);
 
       $q_string  = "select vuln_id ";
-      $q_string .= "from vulnerabilities ";
+      $q_string .= "from inv_vulnerabilities ";
       $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " ";
-      $q_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_vulnerabilities) == 0) {
+      $q_inv_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_vulnerabilities) == 0) {
 
         $class = "ui-widget-content";
         if ($a_hardware['hw_active'] == '0000-00-00') {

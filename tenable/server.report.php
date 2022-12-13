@@ -205,44 +205,44 @@ if ($formVars['inwork'] == '') {
 
 # check for Info
     $q_string  = "select count(sec_severity) ";
-    $q_string .= "from vulnerabilities ";
-    $q_string .= "left join inv_security on inv_security.sec_id = vulnerabilities.vuln_securityid ";
+    $q_string .= "from inv_vulnerabilities ";
+    $q_string .= "left join inv_security on inv_security.sec_id = inv_vulnerabilities.vuln_securityid ";
     $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " and sec_severity = 5 ";
-    $q_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    $a_vulnerabilities = mysqli_fetch_array($q_vulnerabilities);
-    $info = $a_vulnerabilities['count(sec_severity)'];
+    $q_inv_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_inv_vulnerabilities = mysqli_fetch_array($q_inv_vulnerabilities);
+    $info = $a_inv_vulnerabilities['count(sec_severity)'];
 # check for Low
     $q_string  = "select count(sec_severity) ";
-    $q_string .= "from vulnerabilities ";
-    $q_string .= "left join inv_security on inv_security.sec_id = vulnerabilities.vuln_securityid ";
+    $q_string .= "from inv_vulnerabilities ";
+    $q_string .= "left join inv_security on inv_security.sec_id = inv_vulnerabilities.vuln_securityid ";
     $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " and sec_severity = 4 ";
-    $q_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    $a_vulnerabilities = mysqli_fetch_array($q_vulnerabilities);
-    $low = $a_vulnerabilities['count(sec_severity)'];
+    $q_inv_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_inv_vulnerabilities = mysqli_fetch_array($q_inv_vulnerabilities);
+    $low = $a_inv_vulnerabilities['count(sec_severity)'];
 # check for medium
     $q_string  = "select count(sec_severity) ";
-    $q_string .= "from vulnerabilities ";
-    $q_string .= "left join inv_security on inv_security.sec_id = vulnerabilities.vuln_securityid ";
+    $q_string .= "from inv_vulnerabilities ";
+    $q_string .= "left join inv_security on inv_security.sec_id = inv_vulnerabilities.vuln_securityid ";
     $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " and sec_severity = 3 ";
-    $q_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    $a_vulnerabilities = mysqli_fetch_array($q_vulnerabilities);
-    $medium = $a_vulnerabilities['count(sec_severity)'];
+    $q_inv_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_inv_vulnerabilities = mysqli_fetch_array($q_inv_vulnerabilities);
+    $medium = $a_inv_vulnerabilities['count(sec_severity)'];
 # check for high
     $q_string  = "select count(sec_severity) ";
-    $q_string .= "from vulnerabilities ";
-    $q_string .= "left join inv_security on inv_security.sec_id = vulnerabilities.vuln_securityid ";
+    $q_string .= "from inv_vulnerabilities ";
+    $q_string .= "left join inv_security on inv_security.sec_id = inv_vulnerabilities.vuln_securityid ";
     $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " and sec_severity = 2 ";
-    $q_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    $a_vulnerabilities = mysqli_fetch_array($q_vulnerabilities);
-    $high = $a_vulnerabilities['count(sec_severity)'];
+    $q_inv_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_inv_vulnerabilities = mysqli_fetch_array($q_inv_vulnerabilities);
+    $high = $a_inv_vulnerabilities['count(sec_severity)'];
 # check for critical
     $q_string  = "select count(sec_severity) ";
-    $q_string .= "from vulnerabilities ";
-    $q_string .= "left join inv_security on inv_security.sec_id = vulnerabilities.vuln_securityid ";
+    $q_string .= "from inv_vulnerabilities ";
+    $q_string .= "left join inv_security on inv_security.sec_id = inv_vulnerabilities.vuln_securityid ";
     $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " and sec_severity = 1 ";
-    $q_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    $a_vulnerabilities = mysqli_fetch_array($q_vulnerabilities);
-    $critical = $a_vulnerabilities['count(sec_severity)'];
+    $q_inv_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_inv_vulnerabilities = mysqli_fetch_array($q_inv_vulnerabilities);
+    $critical = $a_inv_vulnerabilities['count(sec_severity)'];
 
     $total += $info + $low + $warning + $high + $critical;
 

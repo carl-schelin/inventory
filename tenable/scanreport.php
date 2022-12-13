@@ -88,91 +88,91 @@
   $info = 0;
   $info_exception = 0;
   $q_string  = "select vuln_id,vul_exception,vul_group,vuln_group,sev_name,inv_product ";
-  $q_string .= "from vulnerabilities ";
-  $q_string .= "left join inv_security on inv_security.sec_id = vulnerabilities.vuln_securityid ";
+  $q_string .= "from inv_vulnerabilities ";
+  $q_string .= "left join inv_security on inv_security.sec_id = inv_vulnerabilities.vuln_securityid ";
   $q_string .= "left join inv_severity on inv_severity.sev_id = inv_security.sec_severity ";
-  $q_string .= "left join interface on interface.int_id = vulnerabilities.vuln_interface ";
+  $q_string .= "left join interface on interface.int_id = inv_vulnerabilities.vuln_interface ";
   $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
-  $q_string .= "left join inv_vulnowner on inv_vulnowner.vul_interface = vulnerabilities.vuln_interface and inv_vulnowner.vul_security = vulnerabilities.vuln_securityid ";
-  $q_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_vulnerabilities = mysqli_fetch_array($q_vulnerabilities)) {
-    if (!isset($group[$a_vulnerabilities['vul_group']])) {
-      $group[$a_vulnerabilities['vul_group']] = 0;
+  $q_string .= "left join inv_vulnowner on inv_vulnowner.vul_interface = inv_vulnerabilities.vuln_interface and inv_vulnowner.vul_security = inv_vulnerabilities.vuln_securityid ";
+  $q_inv_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_vulnerabilities = mysqli_fetch_array($q_inv_vulnerabilities)) {
+    if (!isset($group[$a_inv_vulnerabilities['vul_group']])) {
+      $group[$a_inv_vulnerabilities['vul_group']] = 0;
     }
-    if (!isset($group_exc[$a_vulnerabilities['vul_group']])) {
-      $group_exc[$a_vulnerabilities['vul_group']] = 0;
-    }
-
-    if (!isset($product[$a_vulnerabilities['inv_product']])) {
-      $product[$a_vulnerabilities['inv_product']] = 0;
-    }
-    if (!isset($product_dup[$a_vulnerabilities['inv_product']])) {
-      $product_dup[$a_vulnerabilities['inv_product']] = 0;
+    if (!isset($group_exc[$a_inv_vulnerabilities['vul_group']])) {
+      $group_exc[$a_inv_vulnerabilities['vul_group']] = 0;
     }
 
-    if ($a_vulnerabilities['sev_name'] == "Critical") {
-      if ($a_vulnerabilities['vul_exception']) {
+    if (!isset($product[$a_inv_vulnerabilities['inv_product']])) {
+      $product[$a_inv_vulnerabilities['inv_product']] = 0;
+    }
+    if (!isset($product_dup[$a_inv_vulnerabilities['inv_product']])) {
+      $product_dup[$a_inv_vulnerabilities['inv_product']] = 0;
+    }
+
+    if ($a_inv_vulnerabilities['sev_name'] == "Critical") {
+      if ($a_inv_vulnerabilities['vul_exception']) {
         $critical_exception++;
         $total_exception++;
-        $group_exc[$a_vulnerabilities['vul_group']]++;
-        $product_dup[$a_vulnerabilities['inv_product']]++;
+        $group_exc[$a_inv_vulnerabilities['vul_group']]++;
+        $product_dup[$a_inv_vulnerabilities['inv_product']]++;
       } else {
         $critical++;
         $total++;
-        $group[$a_vulnerabilities['vul_group']]++;
-        $product[$a_vulnerabilities['inv_product']]++;
+        $group[$a_inv_vulnerabilities['vul_group']]++;
+        $product[$a_inv_vulnerabilities['inv_product']]++;
       }
     }
-    if ($a_vulnerabilities['sev_name'] == "High") {
-      if ($a_vulnerabilities['vul_exception']) {
+    if ($a_inv_vulnerabilities['sev_name'] == "High") {
+      if ($a_inv_vulnerabilities['vul_exception']) {
         $high_exception++;
         $total_exception++;
-        $group_exc[$a_vulnerabilities['vul_group']]++;
-        $product_dup[$a_vulnerabilities['inv_product']]++;
+        $group_exc[$a_inv_vulnerabilities['vul_group']]++;
+        $product_dup[$a_inv_vulnerabilities['inv_product']]++;
       } else {
         $high++;
         $total++;
-        $group[$a_vulnerabilities['vul_group']]++;
-        $product[$a_vulnerabilities['inv_product']]++;
+        $group[$a_inv_vulnerabilities['vul_group']]++;
+        $product[$a_inv_vulnerabilities['inv_product']]++;
       }
     }
-    if ($a_vulnerabilities['sev_name'] == "Medium") {
-      if ($a_vulnerabilities['vul_exception']) {
+    if ($a_inv_vulnerabilities['sev_name'] == "Medium") {
+      if ($a_inv_vulnerabilities['vul_exception']) {
         $medium_exception++;
         $total_exception++;
-        $group_exc[$a_vulnerabilities['vul_group']]++;
-        $product_dup[$a_vulnerabilities['inv_product']]++;
+        $group_exc[$a_inv_vulnerabilities['vul_group']]++;
+        $product_dup[$a_inv_vulnerabilities['inv_product']]++;
       } else {
         $medium++;
         $total++;
-        $group[$a_vulnerabilities['vul_group']]++;
-        $product[$a_vulnerabilities['inv_product']]++;
+        $group[$a_inv_vulnerabilities['vul_group']]++;
+        $product[$a_inv_vulnerabilities['inv_product']]++;
       }
     }
-    if ($a_vulnerabilities['sev_name'] == "Low") {
-      if ($a_vulnerabilities['vul_exception']) {
+    if ($a_inv_vulnerabilities['sev_name'] == "Low") {
+      if ($a_inv_vulnerabilities['vul_exception']) {
         $low_exception++;
         $total_exception++;
-        $group_exc[$a_vulnerabilities['vul_group']]++;
-        $product_dup[$a_vulnerabilities['inv_product']]++;
+        $group_exc[$a_inv_vulnerabilities['vul_group']]++;
+        $product_dup[$a_inv_vulnerabilities['inv_product']]++;
       } else {
         $low++;
         $total++;
-        $group[$a_vulnerabilities['vul_group']]++;
-        $product[$a_vulnerabilities['inv_product']]++;
+        $group[$a_inv_vulnerabilities['vul_group']]++;
+        $product[$a_inv_vulnerabilities['inv_product']]++;
       }
     }
-    if ($a_vulnerabilities['sev_name'] == "Info") {
-      if ($a_vulnerabilities['vul_exception']) {
+    if ($a_inv_vulnerabilities['sev_name'] == "Info") {
+      if ($a_inv_vulnerabilities['vul_exception']) {
         $info_exception++;
         $total_exception++;
-        $group_exc[$a_vulnerabilities['vul_group']]++;
-        $product_dup[$a_vulnerabilities['inv_product']]++;
+        $group_exc[$a_inv_vulnerabilities['vul_group']]++;
+        $product_dup[$a_inv_vulnerabilities['inv_product']]++;
       } else {
         $info++;
         $total++;
-        $group[$a_vulnerabilities['vul_group']]++;
-        $product[$a_vulnerabilities['inv_product']]++;
+        $group[$a_inv_vulnerabilities['vul_group']]++;
+        $product[$a_inv_vulnerabilities['inv_product']]++;
       }
     }
   }
@@ -200,10 +200,10 @@
   $q_inv_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inv_vulnowner = mysqli_fetch_array($q_inv_vulnowner)) {
     $q_string  = "select vuln_id ";
-    $q_string .= "from vulnerabilities ";
+    $q_string .= "from inv_vulnerabilities ";
     $q_string .= "where vuln_securityid = " . $a_inv_vulnowner['vul_security'] . " and vuln_interface = " . $a_inv_vulnowner['vul_interface'] . " ";
-    $q_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    if (mysqli_num_rows($q_vulnerabilities) == 0) {
+    $q_inv_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    if (mysqli_num_rows($q_inv_vulnerabilities) == 0) {
 
       $q_string  = "select sev_name ";
       $q_string .= "from inv_security ";

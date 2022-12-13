@@ -191,10 +191,10 @@ if needed.</p>
   $numinfo = 0;
 
   $q_string  = "select vuln_id,vuln_securityid,vuln_date,vuln_delete,vuln_deldate,sec_name,sev_name,prod_name,int_server,int_addr,inv_name,grp_name ";
-  $q_string .= "from vulnerabilities ";
-  $q_string .= "left join inv_security  on inv_security.sec_id   = vulnerabilities.vuln_securityid ";
+  $q_string .= "from inv_vulnerabilities ";
+  $q_string .= "left join inv_security  on inv_security.sec_id   = inv_vulnerabilities.vuln_securityid ";
   $q_string .= "left join inv_severity  on inv_severity.sev_id   = inv_security.sec_severity ";
-  $q_string .= "left join interface on interface.int_id  = vulnerabilities.vuln_interface ";
+  $q_string .= "left join interface on interface.int_id  = inv_vulnerabilities.vuln_interface ";
   $q_string .= "left join inventory on inventory.inv_id  = interface.int_companyid ";
   $q_string .= "left join inv_groups  on inv_groups.grp_id   = inventory.inv_manager ";
   $q_string .= "left join products  on products.prod_id  = inventory.inv_product ";
@@ -244,81 +244,81 @@ if needed.</p>
     $q_string .= "and inv_status = 0 ";
   }
   $q_string .= $orderby;
-  $q_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_vulnerabilities = mysqli_fetch_array($q_vulnerabilities)) {
+  $q_inv_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_vulnerabilities = mysqli_fetch_array($q_inv_vulnerabilities)) {
 
     $class = "ui-widget-content";
-    if ($a_vulnerabilities['sev_name'] == 'High') {
-      if ($a_vulnerabilities['vuln_deldate'] != '0000-00-00') {
+    if ($a_inv_vulnerabilities['sev_name'] == 'High') {
+      if ($a_inv_vulnerabilities['vuln_deldate'] != '0000-00-00') {
         $class = "ui-state-highlight";
       } else {
         $numhigh++;
       }
     }
-    if ($a_vulnerabilities['sev_name'] == 'Critical') {
-      if ($a_vulnerabilities['vuln_deldate'] != '0000-00-00') {
+    if ($a_inv_vulnerabilities['sev_name'] == 'Critical') {
+      if ($a_inv_vulnerabilities['vuln_deldate'] != '0000-00-00') {
         $class = "ui-state-highlight";
       } else {
         $numcritical++;
       }
     }
-    if ($a_vulnerabilities['sev_name'] == 'Medium') {
-      if ($a_vulnerabilities['vuln_deldate'] != '0000-00-00') {
+    if ($a_inv_vulnerabilities['sev_name'] == 'Medium') {
+      if ($a_inv_vulnerabilities['vuln_deldate'] != '0000-00-00') {
         $class = "ui-state-highlight";
       } else {
         $nummedium++;
       }
     }
-    if ($a_vulnerabilities['sev_name'] == 'Low') {
-      if ($a_vulnerabilities['vuln_deldate'] != '0000-00-00') {
+    if ($a_inv_vulnerabilities['sev_name'] == 'Low') {
+      if ($a_inv_vulnerabilities['vuln_deldate'] != '0000-00-00') {
         $class = "ui-state-highlight";
       } else {
         $numlow++;
       }
     }
-    if ($a_vulnerabilities['sev_name'] == 'Info') {
-      if ($a_vulnerabilities['vuln_deldate'] != '0000-00-00') {
+    if ($a_inv_vulnerabilities['sev_name'] == 'Info') {
+      if ($a_inv_vulnerabilities['vuln_deldate'] != '0000-00-00') {
         $class = "ui-state-highlight";
       } else {
         $numinfo++;
       }
     }
 
-    $vuln_name[$a_vulnerabilities['vuln_securityid']] = $a_vulnerabilities['sec_name'];
-    $vuln_severity[$a_vulnerabilities['vuln_securityid']] = $a_vulnerabilities['sev_name'];
+    $vuln_name[$a_inv_vulnerabilities['vuln_securityid']] = $a_inv_vulnerabilities['sec_name'];
+    $vuln_severity[$a_inv_vulnerabilities['vuln_securityid']] = $a_inv_vulnerabilities['sev_name'];
 
-    if ($a_vulnerabilities['vuln_securityid'] < 10000) {
-      $nessus = "<a href=\"https://www.tenable.com/plugins/nnm/" . $a_vulnerabilities['vuln_securityid'] . "\" target=\"_blank\">";
+    if ($a_inv_vulnerabilities['vuln_securityid'] < 10000) {
+      $nessus = "<a href=\"https://www.tenable.com/plugins/nnm/" . $a_inv_vulnerabilities['vuln_securityid'] . "\" target=\"_blank\">";
     } else {
-      $nessus = "<a href=\"https://www.tenable.com/plugins/nessus/" . $a_vulnerabilities['vuln_securityid'] . "\" target=\"_blank\">";
+      $nessus = "<a href=\"https://www.tenable.com/plugins/nessus/" . $a_inv_vulnerabilities['vuln_securityid'] . "\" target=\"_blank\">";
     }
     $linkend = "</a>";
 
     $output  = "<tr>\n";
-    $output .= "  <td class=\"" . $class . "\">" . $a_vulnerabilities['inv_name']     . "</td>\n";
-    $output .= "  <td class=\"" . $class . "\">" . $a_vulnerabilities['int_server']   . "</td>\n";
-    $output .= "  <td class=\"" . $class . "\">" . $a_vulnerabilities['int_addr']     . "</td>\n";
-    $output .= "  <td class=\"" . $class . "\">" . $nessus . $a_vulnerabilities['sec_name'] . $linkend . "</td>\n";
-    $output .= "  <td class=\"" . $class . "\">" . $a_vulnerabilities['vuln_date']    . "</td>\n";
-    $output .= "  <td class=\"" . $class . "\">" . $a_vulnerabilities['sev_name']     . "</td>\n";
-    $output .= "  <td class=\"" . $class . "\">" . $a_vulnerabilities['grp_name']     . "</td>\n";
-    $output .= "  <td class=\"" . $class . "\">" . $a_vulnerabilities['prod_name']    . "</td>\n";
-    $output .= "  <td class=\"" . $class . "\">" . $a_vulnerabilities['vuln_deldate'] . "</td>\n";
+    $output .= "  <td class=\"" . $class . "\">" . $a_inv_vulnerabilities['inv_name']     . "</td>\n";
+    $output .= "  <td class=\"" . $class . "\">" . $a_inv_vulnerabilities['int_server']   . "</td>\n";
+    $output .= "  <td class=\"" . $class . "\">" . $a_inv_vulnerabilities['int_addr']     . "</td>\n";
+    $output .= "  <td class=\"" . $class . "\">" . $nessus . $a_inv_vulnerabilities['sec_name'] . $linkend . "</td>\n";
+    $output .= "  <td class=\"" . $class . "\">" . $a_inv_vulnerabilities['vuln_date']    . "</td>\n";
+    $output .= "  <td class=\"" . $class . "\">" . $a_inv_vulnerabilities['sev_name']     . "</td>\n";
+    $output .= "  <td class=\"" . $class . "\">" . $a_inv_vulnerabilities['grp_name']     . "</td>\n";
+    $output .= "  <td class=\"" . $class . "\">" . $a_inv_vulnerabilities['prod_name']    . "</td>\n";
+    $output .= "  <td class=\"" . $class . "\">" . $a_inv_vulnerabilities['vuln_deldate'] . "</td>\n";
     $output .= "</tr>\n";
 
-    if ($a_vulnerabilities['sev_name'] == 'Critical') {
+    if ($a_inv_vulnerabilities['sev_name'] == 'Critical') {
       $critical .= $output;
     }
-    if ($a_vulnerabilities['sev_name'] == 'High') {
+    if ($a_inv_vulnerabilities['sev_name'] == 'High') {
       $high .= $output;
     }
-    if ($a_vulnerabilities['sev_name'] == 'Medium') {
+    if ($a_inv_vulnerabilities['sev_name'] == 'Medium') {
       $medium .= $output;
     }
-    if ($a_vulnerabilities['sev_name'] == 'Low') {
+    if ($a_inv_vulnerabilities['sev_name'] == 'Low') {
       $low .= $output;
     }
-    if ($a_vulnerabilities['sev_name'] == 'Info') {
+    if ($a_inv_vulnerabilities['sev_name'] == 'Info') {
       $info .= $output;
     }
   }
