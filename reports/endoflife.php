@@ -171,8 +171,8 @@
 
   $q_string  = "select inv_id,inv_name,sw_software,sw_eol,prod_name ";
   $q_string .= "from inventory ";
-  $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id ";
-  $q_string .= "left join software     on software.sw_id             = svr_software.svr_softwareid ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inventory.inv_id ";
+  $q_string .= "left join software     on software.sw_id             = inv_svr_software.svr_softwareid ";
   $q_string .= "left join products     on products.prod_id           = software.sw_product ";
   $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = software.sw_type ";
   $q_string .= "left join inv_locations    on inv_locations.loc_id           = inventory.inv_location ";

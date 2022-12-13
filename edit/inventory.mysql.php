@@ -170,7 +170,7 @@
             if ($a_inventory['inv_manager'] != $formVars['inv_manager']) {
 # let'also make sure all software owned by the group is owned by the new group
               $q_software  = "update ";
-              $q_software .= "svr_software ";
+              $q_software .= "inv_svr_software ";
               $q_software .= "set svr_group = " . $formVars['inv_manager'] . " ";
               $q_software .= "where svr_companyid = " . $formVars['id'] . " and svr_group = " . $a_inventory['inv_manager'] . " ";
               mysqli_query($db, $q_software) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -313,22 +313,22 @@
 #####
             if ($formVars['id'] > 0) {
               $q_string  = "select svr_softwareid,svr_groupid,svr_facing,svr_primary,svr_locked,svr_verified ";
-              $q_string .= "from svr_software ";
-              $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
+              $q_string .= "from inv_svr_software ";
+              $q_string .= "left join software on software.sw_id = inv_svr_software.svr_softwareid ";
               $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
               $q_string .= "where typ_name = 'OS' and svr_companyid = " . $formVars['id'];
-              $q_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-              while ($a_svr_software = mysqli_fetch_array($q_svr_software)) {
+              $q_inv_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              while ($a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software)) {
 
-                $q_string = "insert into svr_software set " . 
+                $q_string = "insert into inv_svr_software set " . 
                   "svr_id            =   " . "NULL"                             . "," . 
                   "svr_companyid     =   " . $newserver                         . "," .
-                  "svr_softwareid    =   " . $a_svr_software['svr_softwareid']  . "," .
-                  "svr_groupid       =   " . $a_svr_software['svr_groupid']     . "," .
-                  "svr_facing        =   " . $a_svr_software['svr_facing']      . "," .
-                  "svr_primary       =   " . $a_svr_software['svr_primary']     . "," .
-                  "svr_locked        =   " . $a_svr_software['svr_locked']      . "," .
-                  "svr_verified      =   " . $a_svr_software['svr_verified'];
+                  "svr_softwareid    =   " . $a_inv_svr_software['svr_softwareid']  . "," .
+                  "svr_groupid       =   " . $a_inv_svr_software['svr_groupid']     . "," .
+                  "svr_facing        =   " . $a_inv_svr_software['svr_facing']      . "," .
+                  "svr_primary       =   " . $a_inv_svr_software['svr_primary']     . "," .
+                  "svr_locked        =   " . $a_inv_svr_software['svr_locked']      . "," .
+                  "svr_verified      =   " . $a_inv_svr_software['svr_verified'];
 
                 $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               }

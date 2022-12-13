@@ -117,7 +117,7 @@
   $q_string  = "select sup_company,sup_phone,sup_email,sup_web,sup_contract,sup_wiki,sup_hwresponse,sup_swresponse ";
   $q_string .= "from support ";
   $q_string .= "left join software on software.sw_supportid = support.sup_id ";
-  $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
   $q_string .= "where svr_companyid = " . $formVars['id'];
   $q_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 

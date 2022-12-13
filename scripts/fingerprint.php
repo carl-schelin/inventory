@@ -87,13 +87,13 @@
 # need the svr_softwareid
 # it's a loop because there can be more than one tag associated with software
   $q_string  = "select svr_softwareid ";
-  $q_string .= "from svr_software ";
+  $q_string .= "from inv_svr_software ";
   $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " ";
-  $q_svr_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_svr_software = mysqli_fetch_array($q_svr_software)) {
+  $q_inv_svr_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software)) {
     $q_string  = "select tag_name ";
     $q_string .= "from inv_tags ";
-    $q_string .= "where tag_companyid = " . $a_svr_software['svr_softwareid'] . " and tag_type = 4 ";
+    $q_string .= "where tag_companyid = " . $a_inv_svr_software['svr_softwareid'] . " and tag_type = 4 ";
     $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
       $tags .= $comma . $a_inv_tags['tag_name'];
@@ -176,8 +176,8 @@
   $q_string .= "from hardware ";
   $q_string .= "left join inventory    on inventory.inv_id           = hardware.hw_companyid ";
   $q_string .= "left join inv_models       on inv_models.mod_id              = hardware.hw_vendorid ";
-  $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id  ";
-  $q_string .= "left join software     on software.sw_id             = svr_software.svr_softwareid  ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inventory.inv_id  ";
+  $q_string .= "left join software     on software.sw_id             = inv_svr_software.svr_softwareid  ";
   $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = software.sw_type  ";
   $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_deleted = 0 and hw_primary = 1 and typ_name = \"OS\" ";
   $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));

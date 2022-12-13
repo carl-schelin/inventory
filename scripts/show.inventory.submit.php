@@ -506,8 +506,8 @@
 
     $q_string  = "select inv_id,inv_name,inv_function,grp_name,inv_appadmin ";
     $q_string .= "from inventory ";
-    $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id ";
-    $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
+    $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inventory.inv_id ";
+    $q_string .= "left join software on software.sw_id = inv_svr_software.svr_softwareid ";
     $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
     $q_string .= "where inv_status = 0 and sw_product = " . $a_products['prod_id'] . " ";
     $q_string .= "group by inv_name";
@@ -736,7 +736,7 @@
 
     $q_string  = "select sw_software,ven_name ";
     $q_string .= "from software ";
-    $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
+    $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
     $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
     $q_string .= "left join inv_vendors on inv_vendors.ven_id = software.sw_vendor ";
     $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " and typ_name = 'OS' ";
@@ -941,7 +941,7 @@
 
       $q_string  = "select sw_product,ven_name,sw_software,typ_name,svr_groupid,svr_verified,svr_update ";
       $q_string .= "from software ";
-      $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
+      $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
       $q_string .= "left join inv_vendors on inv_vendors.ven_id = software.sw_vendor ";
       $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
       $q_string .= "where (typ_name != 'PKG' and typ_name != 'RPM') and svr_companyid = " . $a_inventory['inv_id'] . " ";

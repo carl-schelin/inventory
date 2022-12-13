@@ -266,15 +266,15 @@
 
           $flag = 0;
           $q_string  = "select svr_softwareid ";
-          $q_string .= "from svr_software ";
+          $q_string .= "from inv_svr_software ";
           $q_string .= "where svr_companyid = " . $formVars['tag_companyid'] . " ";
-          $q_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_svr_software) > 0) {
-            while ($a_svr_software = mysqli_fetch_array($q_svr_software)) {
+          $q_inv_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_svr_software) > 0) {
+            while ($a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software)) {
 
               $q_string  = "select tag_name ";
               $q_string .= "from inv_tags ";
-              $q_string .= "where tag_name = \"" . $a_inv_tags['tag_name'] . "\" and tag_companyid = " . $a_svr_software['svr_softwareid'] . " and tag_type = 4 ";
+              $q_string .= "where tag_name = \"" . $a_inv_tags['tag_name'] . "\" and tag_companyid = " . $a_inv_svr_software['svr_softwareid'] . " and tag_type = 4 ";
               $q_identity = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               if (mysqli_num_rows($q_identity) > 0) {
                 $flag = 1;

@@ -440,14 +440,14 @@
 
       $q_string  = "select inv_name,svr_companyid,sw_software,ven_name,typ_name,grp_name,inv_status ";
       $q_string .= "from inventory ";
-      $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id ";
-      $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
+      $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inventory.inv_id ";
+      $q_string .= "left join software on software.sw_id = inv_svr_software.svr_softwareid ";
       $q_string .= "left join inv_sw_types  on inv_sw_types.typ_id  = software.sw_type ";
       $q_string .= "left join inv_vendors   on inv_vendors.ven_id   = software.sw_vendor ";
       $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
       $q_string .= "left join inv_cities    on inv_cities.ct_id     = inv_locations.loc_city ";
       $q_string .= "left join inv_states    on inv_states.st_id     = inv_locations.loc_state ";
-      $q_string .= "left join inv_groups    on inv_groups.grp_id    = svr_software.svr_groupid ";
+      $q_string .= "left join inv_groups    on inv_groups.grp_id    = inv_svr_software.svr_groupid ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";
       } else {

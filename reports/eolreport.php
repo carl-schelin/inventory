@@ -385,8 +385,8 @@
 
         $q_string  = "select sw_software,ven_name,typ_name,sw_eol ";
         $q_string .= "from software ";
-        $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
-        $q_string .= "left join inventory on inventory.inv_id = svr_software.svr_companyid ";
+        $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
+        $q_string .= "left join inventory on inventory.inv_id = inv_svr_software.svr_companyid ";
         $q_string .= "left join inv_vendors on inv_vendors.ven_id = software.sw_vendor ";
         $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
         $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " ";
@@ -433,8 +433,8 @@
 
       $q_string  = "select sw_eol ";
       $q_string .= "from software ";
-      $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
-      $q_string .= "left join inventory on inventory.inv_id = svr_software.svr_companyid ";
+      $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
+      $q_string .= "left join inventory on inventory.inv_id = inv_svr_software.svr_companyid ";
       $q_string .= "where inv_product = " . $a_products['prod_id'] . " and inv_status = 0 ";
       if ($formVars['group'] > 0) {
         $q_string .= "and inv_manager = " . $formVars['group'] . " ";

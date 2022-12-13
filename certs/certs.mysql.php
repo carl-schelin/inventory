@@ -145,11 +145,11 @@
 
           $total = 0;
           $q_string  = "select svr_certid ";
-          $q_string .= "from svr_software ";
+          $q_string .= "from inv_svr_software ";
           $q_string .= "where svr_certid = " . $a_inv_certs['cert_id'] . " ";
-          $q_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_svr_software) > 0) {
-            while ($a_svr_software = mysqli_fetch_array($q_svr_software)) {
+          $q_inv_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_svr_software) > 0) {
+            while ($a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software)) {
               $total++;
             }
           }
@@ -216,11 +216,11 @@
 
               $total = 0;
               $q_string  = "select svr_certid ";
-              $q_string .= "from svr_software ";
+              $q_string .= "from inv_svr_software ";
               $q_string .= "where svr_certid = " . $a_child['cert_id'] . " ";
-              $q_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-              if (mysqli_num_rows($q_svr_software) > 0) {
-                while ($a_svr_software = mysqli_fetch_array($q_svr_software)) {
+              $q_inv_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              if (mysqli_num_rows($q_inv_svr_software) > 0) {
+                while ($a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software)) {
                   $total++;
                 }
               }
@@ -287,11 +287,11 @@
 
                   $total = 0;
                   $q_string  = "select svr_certid ";
-                  $q_string .= "from svr_software ";
+                  $q_string .= "from inv_svr_software ";
                   $q_string .= "where svr_certid = " . $a_grandchild['cert_id'] . " ";
-                  $q_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-                  if (mysqli_num_rows($q_svr_software) > 0) {
-                    while ($a_svr_software = mysqli_fetch_array($q_svr_software)) {
+                  $q_inv_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+                  if (mysqli_num_rows($q_inv_svr_software) > 0) {
+                    while ($a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software)) {
                       $total++;
                     }
                   }
@@ -358,11 +358,11 @@
 
                       $total = 0;
                       $q_string  = "select svr_certid ";
-                      $q_string .= "from svr_software ";
+                      $q_string .= "from inv_svr_software ";
                       $q_string .= "where svr_certid = " . $a_greatgrandchild['cert_id'] . " ";
-                      $q_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-                      if (mysqli_num_rows($q_svr_software) > 0) {
-                        while ($a_svr_software = mysqli_fetch_array($q_svr_software)) {
+                      $q_inv_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+                      if (mysqli_num_rows($q_inv_svr_software) > 0) {
+                        while ($a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software)) {
                           $total++;
                         }
                       }

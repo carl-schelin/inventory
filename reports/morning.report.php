@@ -260,8 +260,8 @@ reviewed and worked on.</li>
   $q_string .= "left join interface on inventory.inv_id      = interface.int_companyid ";
   $q_string .= "left join inv_timezones on inv_timezones.zone_id     = inventory.inv_zone ";
   $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
-  $q_string .= "left join svr_software  on svr_software.svr_companyid = inventory.inv_id ";
-  $q_string .= "left join software  on software.sw_id = svr_software.svr_softwareid ";
+  $q_string .= "left join inv_svr_software  on inv_svr_software.svr_companyid = inventory.inv_id ";
+  $q_string .= "left join software  on software.sw_id = inv_svr_software.svr_softwareid ";
   $q_string .= "left join inv_sw_types  on inv_sw_types.typ_id = software.sw_type ";
   $q_string .= $where . " and typ_name = 'OS' and int_management = 1 ";
   $q_string .= $orderby;

@@ -196,11 +196,11 @@
 
           $total = 0;
           $q_string  = "select svr_id ";
-          $q_string .= "from svr_software ";
+          $q_string .= "from inv_svr_software ";
           $q_string .= "where svr_softwareid = " . $a_software['sw_id'] . " ";
-          $q_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_svr_software) > 0) {
-            while ($a_svr_software = mysqli_fetch_array($q_svr_software)) {
+          $q_inv_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_svr_software) > 0) {
+            while ($a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software)) {
               $total++;
             }
           }

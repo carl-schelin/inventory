@@ -17,7 +17,7 @@
   $db = dbconn($DBserver, $DBname, $DBuser, $DBpassword);
 
 # Plan:
-# need to migrate the sw_group, sw_verified, sw_cert, sw_facing, sw_primary, sw_locked, sw_user, sw_update to svr_software
+# need to migrate the sw_group, sw_verified, sw_cert, sw_facing, sw_primary, sw_locked, sw_user, sw_update to inv_svr_software
 #
 #sw_software -> svr_softwareid
 #sw_group    -> svr_groupid
@@ -38,9 +38,9 @@
 #
 #List of servers results.
 #
-#Add an entry in the svr_software table.
+#Add an entry in the inv_svr_software table.
 #
-#insert into svr_software set svr_id = null,svr_softwareid = [sw_id], svr_groupid = [sw_group], svr_certid = [sw_cert], sw_facing = [sw_facing] ...
+#insert into inv_svr_software set svr_id = null,svr_softwareid = [sw_id], svr_groupid = [sw_group], svr_certid = [sw_cert], sw_facing = [sw_facing] ...
 #
 #finally, delete all others.
 #
@@ -75,7 +75,7 @@
             "svr_verified    =   " . $a_software['sw_verified']    . "," . 
             "svr_update      = \"" . $a_software['sw_update']      . "\"";
 
-          $q_string = "insert into svr_software set svr_id = null," . $q_string;
+          $q_string = "insert into inv_svr_software set svr_id = null," . $q_string;
           mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         }
       }

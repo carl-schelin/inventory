@@ -179,13 +179,13 @@
 
   $q_string  = "select sw_id,sw_software,ven_name,sw_product,typ_name,svr_verified,svr_update,inv_name,grp_name,prod_name ";
   $q_string .= "from software ";
-  $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
-  $q_string .= "left join inventory    on inventory.inv_id            = svr_software.svr_companyid ";
-  $q_string .= "left join inv_groups     on inv_groups.grp_id             = svr_software.svr_groupid ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
+  $q_string .= "left join inventory        on inventory.inv_id                = inv_svr_software.svr_companyid ";
+  $q_string .= "left join inv_groups       on inv_groups.grp_id               = inv_svr_software.svr_groupid ";
   $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = software.sw_type ";
-  $q_string .= "left join products     on products.prod_id            = software.sw_product ";
+  $q_string .= "left join products         on products.prod_id                = software.sw_product ";
   $q_string .= "left join inv_vendors      on inv_vendors.ven_id              = software.sw_vendor ";
-  $q_string .= "left join hardware     on hardware.hw_companyid       = inventory.inv_id ";
+  $q_string .= "left join hardware         on hardware.hw_companyid           = inventory.inv_id ";
   $q_string .= "left join inv_locations    on inv_locations.loc_id            = inventory.inv_location ";
   $q_string .= $where;
   $q_string .= $orderby;

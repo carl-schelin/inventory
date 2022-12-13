@@ -28,8 +28,8 @@
 
   $q_string  = "select inv_id,sw_software ";
   $q_string .= "from inventory ";
-  $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id ";
-  $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inventory.inv_id ";
+  $q_string .= "left join software on software.sw_id = inv_svr_software.svr_softwareid ";
   $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
   $q_string .= "where typ_id = 'OS' ";
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));

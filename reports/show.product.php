@@ -200,9 +200,9 @@ $(document).ready( function() {
 
   $q_string  = "select sw_id,svr_companyid,ven_name,typ_name,svr_groupid,sw_software,svr_verified,svr_update,inv_name,grp_name ";
   $q_string .= "from software ";
-  $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
-  $q_string .= "left join inventory    on inventory.inv_id            = svr_software.svr_companyid ";
-  $q_string .= "left join inv_groups     on svr_software.svr_groupid    = inv_groups.grp_id ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
+  $q_string .= "left join inventory    on inventory.inv_id            = inv_svr_software.svr_companyid ";
+  $q_string .= "left join inv_groups     on inv_svr_software.svr_groupid    = inv_groups.grp_id ";
   $q_string .= "left join inv_vendors      on inv_vendors.ven_id              = software.sw_vendor ";
   $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = software.sw_type ";
   $q_string .= "where sw_product = " . $formVars['id'] . " and inv_status = 0 ";

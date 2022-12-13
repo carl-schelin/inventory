@@ -166,8 +166,8 @@
   $q_string  = "select inv_id,inv_name,inv_function,prod_name,hw_group,ven_name,mod_name,mod_virtual,mod_eol,";
   $q_string .= "hw_serial,hw_purchased,grp_name,inv_appadmin,sup_company,sup_contract,hw_eolticket ";
   $q_string .= "from inventory ";
-  $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id ";
-  $q_string .= "left join software  on software.sw_id    = svr_software.svr_softwareid ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inventory.inv_id ";
+  $q_string .= "left join software  on software.sw_id    = inv_svr_software.svr_softwareid ";
   $q_string .= "left join inv_sw_types  on inv_sw_types.typ_id   = software.sw_type ";
   $q_string .= "left join hardware  on inventory.inv_id  = hardware.hw_companyid ";
   $q_string .= "left join inv_groups  on inv_groups.grp_id   = hardware.hw_group ";
@@ -224,12 +224,12 @@
     }
 
     $q_string  = "select sw_software,sw_eol ";
-    $q_string .= "from svr_software ";
-    $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
+    $q_string .= "from inv_svr_software ";
+    $q_string .= "left join software on software.sw_id = inv_svr_software.svr_softwareid ";
     $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
     $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " and typ_name = 'OS' ";
-    $q_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    $a_svr_software = mysqli_fetch_array($q_svr_software);
+    $q_inv_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software);
 
     $q_string  = "select grp_name ";
     $q_string .= "from inv_groups ";
@@ -251,7 +251,7 @@
       $newdate = $a_inventory['mod_eol'];
     }
     $current = time();
-    $moddate = $a_svr_software['sw_eol'];
+    $moddate = $a_inv_svr_software['sw_eol'];
 
     $hwstatus = " class=\"ui-widget-content\"";
     if ($current > $support) {
@@ -259,7 +259,7 @@
       $grandtotal++;
       $hwstatus = " class=\"ui-state-error\"";
     }
-    if ($a_svr_software['sw_eol'] > date('Y-m-d')) {
+    if ($a_inv_svr_software['sw_eol'] > date('Y-m-d')) {
       $swstatus = " class=\"ui-widget-content\"";
     } else {
       $software++;
@@ -271,7 +271,7 @@
       $newdate = '----------';
       $hwstatus = " class=\"ui-state-highlight\"";
     }
-    if ($a_svr_software['sw_eol'] == '' || $a_svr_software['sw_eol'] == '1971-01-01') {
+    if ($a_inv_svr_software['sw_eol'] == '' || $a_inv_svr_software['sw_eol'] == '1971-01-01') {
       $moddate = '----------';
       $swstatus = " class=\"ui-state-highlight\"";
     }
@@ -298,7 +298,7 @@
       print "\"" . $a_inventory['grp_name'] . "\",";
       print "\"" . $a_inv_groups['grp_name'] . "\",";
       print "\"" . $a_inventory['inv_function'] . "\",";
-      print "\"" . $a_svr_software['sw_software'] . "\",";
+      print "\"" . $a_inv_svr_software['sw_software'] . "\",";
       print "\"" . $moddate . "\",";
       print "\"" . $a_inventory['ven_name'] . " " . $a_inventory['mod_name'] . "\",";
       print "\"" . $newdate . "\",";
@@ -309,7 +309,7 @@
       print "  <td" . $nodate   . ">"              . $a_inventory['grp_name']                                    . "</td>\n";
       print "  <td" . $nodate   . ">"              . $a_inv_groups['grp_name']                                       . "</td>\n";
       print "  <td" . $nodate   . ">"              . $a_inventory['inv_function']                                . "</td>\n";
-      print "  <td" . $swstatus . ">"              . $a_svr_software['sw_software']                                  . "</td>\n";
+      print "  <td" . $swstatus . ">"              . $a_inv_svr_software['sw_software']                                  . "</td>\n";
       print "  <td" . $swstatus . ">"              . $moddate                                                    . "</td>\n";
       print "  <td" . $hwstatus . ">"              . $a_inventory['ven_name'] . " " . $a_inventory['mod_name'] . "</td>\n";
       print "  <td" . $hwstatus . ">"              . $newdate                                                    . "</td>\n";

@@ -199,8 +199,8 @@ $(document).ready( function() {
 
   $q_string  = "select inv_id,inv_name,inv_callpath,svc_name,sw_software,sw_eol ";
   $q_string .= "from inventory ";
-  $q_string .= "left join svr_software  on svr_software.svr_companyid = inventory.inv_id ";
-  $q_string .= "left join software      on software.sw_id = svr_software.svr_softwareid ";
+  $q_string .= "left join inv_svr_software  on inv_svr_software.svr_companyid = inventory.inv_id ";
+  $q_string .= "left join software      on software.sw_id = inv_svr_software.svr_softwareid ";
   $q_string .= "left join inv_sw_types      on inv_sw_types.typ_id  = software.sw_type ";
   $q_string .= "left join hardware      on inventory.inv_id = hardware.hw_companyid ";
   $q_string .= "left join inv_groups        on inv_groups.grp_id    = hardware.hw_group ";
@@ -291,8 +291,8 @@ $(document).ready( function() {
 
   $q_string  = "select inv_id,inv_name,inv_callpath,svc_name,hw_purchased,mod_eol,ven_name,mod_name ";
   $q_string .= "from inventory ";
-  $q_string .= "left join svr_software  on svr_software.svr_companyid = inventory.inv_id ";
-  $q_string .= "left join software      on software.sw_id             = svr_software.svr_softwareid ";
+  $q_string .= "left join inv_svr_software  on inv_svr_software.svr_companyid = inventory.inv_id ";
+  $q_string .= "left join software      on software.sw_id             = inv_svr_software.svr_softwareid ";
   $q_string .= "left join inv_sw_types      on inv_sw_types.typ_id            = software.sw_type ";
   $q_string .= "left join hardware      on inventory.inv_id           = hardware.hw_companyid ";
   $q_string .= "left join inv_groups      on inv_groups.grp_id            = hardware.hw_group ";

@@ -72,8 +72,8 @@
   $q_string .= "int_addr,int_gate,inv_ssh,inv_location,inv_product,";
   $q_string .= "int_ssh,int_ping,int_http,int_ftp,int_smtp,grp_name ";
   $q_string .= "from inventory ";
-  $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id ";
-  $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inventory.inv_id ";
+  $q_string .= "left join software on software.sw_id = inv_svr_software.svr_softwareid ";
   $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
   if ($hostname == 'inventory.internal.pri') {
     $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";

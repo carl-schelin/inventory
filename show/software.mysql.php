@@ -72,11 +72,11 @@
 
   $q_string  = "select prod_name,ven_name,sw_software,typ_name,grp_name,svr_verified,svr_update,svr_primary,svr_facing ";
   $q_string .= "from software ";
-  $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
   $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = software.sw_type ";
   $q_string .= "left join inv_vendors      on inv_vendors.ven_id              = software.sw_vendor ";
   $q_string .= "left join products     on products.prod_id            = software.sw_product ";
-  $q_string .= "left join inv_groups     on inv_groups.grp_id             = svr_software.svr_groupid ";
+  $q_string .= "left join inv_groups     on inv_groups.grp_id             = inv_svr_software.svr_groupid ";
   $q_string .= "where svr_companyid = " . $formVars['id'] . " and typ_name != \"Package\" ";
   $q_string .= "order by typ_name,sw_software";
   $q_software = mysqli_query($db, $q_string) or die(mysqli_error($db));

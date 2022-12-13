@@ -562,8 +562,8 @@ $(document).ready( function() {
 </tr>
 <?php
   $q_string  = "select sw_software,sw_supportid ";
-  $q_string .= "from svr_software ";
-  $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
+  $q_string .= "from inv_svr_software ";
+  $q_string .= "left join software on software.sw_id = inv_svr_software.svr_softwareid ";
   $q_string .= "where svr_companyid = " . $formVars['server'] . " ";
   $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_software) > 0) {

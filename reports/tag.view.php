@@ -277,8 +277,8 @@ $(document).ready( function () {
 # Get software operating system information
 #####
     $q_string  = "select sw_software ";
-    $q_string .= "from svr_software ";
-    $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
+    $q_string .= "from inv_svr_software ";
+    $q_string .= "left join software on software.sw_id = inv_svr_software.svr_softwareid ";
     $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
     $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " and typ_name = 'OS' ";
     $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

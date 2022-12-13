@@ -239,7 +239,7 @@
 
 # update the software listing; only software that's owned by the old group
           $q_string  = "update ";
-          $q_string .= "svr_software ";
+          $q_string .= "inv_svr_software ";
           $q_string .= "set ";
           $q_string .= "svr_group = " . $a_inv_groups['grp_id'] . " ";          
           $q_string .= "where srv_companyid = " . $formVars['id'] . " and srv_group = " . $formVars['select'] . " ";
@@ -327,7 +327,7 @@
 
 # update the software listing; only software that's owned by the old group
           $q_string  = "update ";
-          $q_string .= "svr_software ";
+          $q_string .= "inv_svr_software ";
           $q_string .= "set ";
           $q_string .= "svr_group = " . $a_inv_groups['grp_id'] . " ";          
           $q_string .= "where svr_companyid = " . $formVars['id'] . " and svr_group = " . $formVars['select'] . " ";

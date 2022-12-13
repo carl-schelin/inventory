@@ -368,7 +368,7 @@
 
       $q_string  = "select sw_product,ven_name,sw_software,typ_name,svr_groupid,svr_verified,svr_update ";
       $q_string .= "from software ";
-      $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
+      $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
       $q_string .= "left join inv_vendors on inv_vendors.ven_id = software.sw_vendor ";
       $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
       $q_string .= "where (typ_name != 'PKG' and typ_name != 'RPM') and svr_companyid = " . $a_inventory['inv_id'] . " ";
@@ -578,12 +578,12 @@
 
       $software = 0;
       $q_string  = "select svr_companyid ";
-      $q_string .= "from svr_software ";
+      $q_string .= "from inv_svr_software ";
       $q_string .= "where svr_companyid = " . $remove . " ";
-      $q_svr_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_svr_software) > 0) {
-        print "There are " . mysqli_num_rows($q_svr_software) . " software records for " . $a_inventory['inv_name'] . "\n";
-        $svr_software = mysqli_num_rows($q_svr_software);
+      $q_inv_svr_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_svr_software) > 0) {
+        print "There are " . mysqli_num_rows($q_inv_svr_software) . " software records for " . $a_inventory['inv_name'] . "\n";
+        $svr_software = mysqli_num_rows($q_inv_svr_software);
       }
 
       $groups = 0;
@@ -725,7 +725,7 @@
 
       if ($svr_software > 0) {
         print "Software ";
-        $q_string = "delete from svr_software   where svr_companyid    = " . $remove;
+        $q_string = "delete from inv_svr_software   where svr_companyid    = " . $remove;
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 

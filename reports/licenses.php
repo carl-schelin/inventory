@@ -169,8 +169,8 @@
   $q_string .= "from software ";
   $q_string .= "left join licenses  on licenses.lic_id       = software.sw_licenseid ";
   $q_string .= "left join products  on products.prod_id      = software.sw_product ";
-  $q_string .= "left join svr_software on svr_software.svr_softwareid      = software.sw_id ";
-  $q_string .= "left join inventory on inventory.inv_id      = svr_software.svr_companyid ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid      = software.sw_id ";
+  $q_string .= "left join inventory on inventory.inv_id      = inv_svr_software.svr_companyid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
   $q_string .= $where . " and sw_licenseid > 0 ";
   $q_string .= $orderby;

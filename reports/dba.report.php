@@ -137,8 +137,8 @@
 
   $q_string  = "select inv_id,inv_name,inv_function,sw_id,svr_companyid,sw_software,ven_name,sw_product,typ_name,svr_groupid,svr_verified ";
   $q_string .= "from inventory ";
-  $q_string .= "left join svr_software  on svr_software.svr_companyid = inventory.inv_id ";
-  $q_string .= "left join software      on software.sw_id             = svr_software.svr_softwareid ";
+  $q_string .= "left join inv_svr_software  on inv_svr_software.svr_companyid = inventory.inv_id ";
+  $q_string .= "left join software      on software.sw_id             = inv_svr_software.svr_softwareid ";
   $q_string .= "left join inv_sw_types      on inv_sw_types.typ_id            = software.sw_type ";
   $q_string .= "left join inv_vendors       on inv_vendors.ven_id             = software.sw_vendor ";
   $q_string .= "left join hardware      on hardware.hw_companyid      = inventory.inv_id ";
@@ -163,8 +163,8 @@
     }
 
     $q_string  = "select sw_software ";
-    $q_string .= "from svr_software ";
-    $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
+    $q_string .= "from inv_svr_software ";
+    $q_string .= "left join software on software.sw_id = inv_svr_software.svr_softwareid ";
     $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
     $q_string .= "where typ_name = 'OS' and svr_companyid = " . $a_inventory['svr_companyid'];
     $q_os = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -173,8 +173,8 @@
     $instances = "";
     $comma = "";
     $q_string  = "select sw_software ";
-    $q_string .= "from svr_software ";
-    $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
+    $q_string .= "from inv_svr_software ";
+    $q_string .= "left join software on software.sw_id = inv_svr_software.svr_softwareid ";
     $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
     $q_string .= "where typ_name = 'Instance' and svr_companyid = " . $a_inventory['svr_companyid'] . " ";
     $q_string .= "order by sw_software";

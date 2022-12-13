@@ -138,15 +138,15 @@
         while ($a_software = mysqli_fetch_array($q_software)) {
 
           $q_string  = "select int_server ";
-          $q_string .= "from svr_software ";
-          $q_string .= "left join interface on interface.int_companyid = svr_software.svr_companyid ";
-          $q_string .= "left join inventory on inventory.inv_id = svr_software.svr_companyid ";
+          $q_string .= "from inv_svr_software ";
+          $q_string .= "left join interface on interface.int_companyid = inv_svr_software.svr_companyid ";
+          $q_string .= "left join inventory on inventory.inv_id = inv_svr_software.svr_companyid ";
           $q_string .= "where svr_softwareid = " . $a_software['tag_companyid'] . " and inv_ssh = 1 and inv_ansible = 1 and int_management = 1 ";
-          $q_svr_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_svr_software) > 0) {
-            while ($a_svr_software = mysqli_fetch_array($q_svr_software)) {
+          $q_inv_svr_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_svr_software) > 0) {
+            while ($a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software)) {
 
-              print $a_svr_software['int_server'] . "\n";
+              print $a_inv_svr_software['int_server'] . "\n";
 
             }
           }

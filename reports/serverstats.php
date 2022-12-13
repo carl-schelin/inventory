@@ -352,7 +352,7 @@ to software and hardware section.</p>
 
   $q_string  = "select count(*) ";
   $q_string .= "from hardware ";
-  $q_string .= "left join svr_software on svr_software.svr_companyid = hardware.hw_companyid ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = hardware.hw_companyid ";
   $q_string .= "where hw_companyid != 0 " . $admin . " ";
   $q_string .= "and hw_built = '1971-01-01' ";
   $q_string .= "and hw_primary = 1";
@@ -437,8 +437,8 @@ to software and hardware section.</p>
 
   $q_string  = "select sw_software,count(sw_software) ";
   $q_string .= "from inventory ";
-  $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id ";
-  $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inventory.inv_id ";
+  $q_string .= "left join software on software.sw_id = inv_svr_software.svr_softwareid ";
   $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
   $q_string .= "where inv_status = 0 and typ_name = 'OS' " . $admin . " ";
   $q_string .= "group by sw_software";
