@@ -98,11 +98,11 @@
 
           $total = 0;
           $q_string  = "select ip_ipv4 ";
-          $q_string .= "from ipaddress ";
+          $q_string .= "from inv_ipaddress ";
           $q_string .= "where ip_network = " . $a_network['net_id'] . " ";
-          $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_ipaddress) > 0) {
-            while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
+          $q_inv_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_ipaddress) > 0) {
+            while ($a_inv_ipaddress = mysqli_fetch_array($q_inv_ipaddress)) {
               $total++;
             }
           }
@@ -168,11 +168,11 @@
 
           $total = 0;
           $q_string  = "select ip_ipv6 ";
-          $q_string .= "from ipaddress ";
+          $q_string .= "from inv_ipaddress ";
           $q_string .= "where ip_network = " . $a_network['net_id'] . " ";
-          $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_ipaddress) > 0) {
-            while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
+          $q_inv_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_ipaddress) > 0) {
+            while ($a_inv_ipaddress = mysqli_fetch_array($q_inv_ipaddress)) {
               $total++;
             }
           }

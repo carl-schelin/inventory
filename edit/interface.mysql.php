@@ -104,16 +104,16 @@
 
 # for now repopulate the info from the ipaddress table.
           $q_string  = "select ip_ipv4,ip_hostname,ip_domain,ip_network ";
-          $q_string .= "from ipaddress ";
+          $q_string .= "from inv_ipaddress ";
           $q_string .= "where ip_id = " . $formVars['int_ipaddressid'] . " ";
-          $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_ipaddress) > 0) {
-            $a_ipaddress = mysqli_fetch_array($q_ipaddress);
+          $q_inv_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_ipaddress) > 0) {
+            $a_inv_ipaddress = mysqli_fetch_array($q_inv_ipaddress);
 
 # now get the netmask and netvlan
             $q_string  = "select net_mask,net_vlan ";
             $q_string .= "from network ";
-            $q_string .= "where net_id = " . $a_ipaddress['ip_network'] . " ";
+            $q_string .= "where net_id = " . $a_inv_ipaddress['ip_network'] . " ";
             $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             if (mysqli_num_rows($q_network) > 0) {
               $a_network = mysqli_fetch_array($q_network);
@@ -123,9 +123,9 @@
             }
 
             $q_string  = "select ip_ipv4 ";
-            $q_string .= "from ipaddress ";
-            $q_string .= "left join ip_types on ip_types.ip_id = ipaddress.ip_type ";
-            $q_string .= "where ip_network = " . $a_ipaddress['ip_network'] . " and ip_name = \"Gateway\" ";
+            $q_string .= "from inv_ipaddress ";
+            $q_string .= "left join ip_types on ip_types.ip_id = inv_ipaddress.ip_type ";
+            $q_string .= "where ip_network = " . $a_inv_ipaddress['ip_network'] . " and ip_name = \"Gateway\" ";
             $q_string .= "limit 1 ";
             $q_addr = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             if (mysqli_num_rows($q_addr) > 0) {
@@ -135,19 +135,19 @@
             }
 
           } else {
-            $a_ipaddress['ip_ipv4'] = '';
-            $a_ipaddress['ip_hostname'] = '';
-            $a_ipaddress['ip_domain'] = '';
-            $a_ipaddress['ip_network'] = 0;
+            $a_inv_ipaddress['ip_ipv4'] = '';
+            $a_inv_ipaddress['ip_hostname'] = '';
+            $a_inv_ipaddress['ip_domain'] = '';
+            $a_inv_ipaddress['ip_network'] = 0;
           }
 
 # want to get vlan, gateway, subnetmask, etc at least until the info is fully rewritten.
 # something like get the network from above, then get the vlan from there and the gateway from the listing of IPs associated with the network.
 
           $q_string = 
-            "int_server       = \"" . $a_ipaddress['ip_hostname']   . "\"," .
-            "int_domain       = \"" . $a_ipaddress['ip_domain']     . "\"," .
-            "int_addr         = \"" . $a_ipaddress['ip_ipv4']       . "\"," .
+            "int_server       = \"" . $a_inv_ipaddress['ip_hostname']   . "\"," .
+            "int_domain       = \"" . $a_inv_ipaddress['ip_domain']     . "\"," .
+            "int_addr         = \"" . $a_inv_ipaddress['ip_ipv4']       . "\"," .
 
             "int_mask         =   " . $a_network['net_mask']        . "," .
             "int_vlan         = \"" . $a_network['net_vlan']        . "\"," .
@@ -227,7 +227,7 @@
       $q_string .= "itp_description,int_gate,int_update,usr_name,int_nagios,int_openview,int_ip6,ip_ipv4 ";
       $q_string .= "from interface ";
       $q_string .= "left join inv_int_types on inv_int_types.itp_id = interface.int_type ";
-      $q_string .= "left join ipaddress on ipaddress.ip_id = interface.int_ipaddressid ";
+      $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id = interface.int_ipaddressid ";
       $q_string .= "left join inv_users on inv_users.usr_id = interface.int_user ";
       $q_string .= "left join inv_int_redundancy on inv_int_redundancy.red_id = interface.int_redundancy ";
       $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = 0 ";

@@ -81,13 +81,13 @@
 
           $total = 0;
           $q_string  = "select ip_id,net_id ";
-          $q_string .= "from ipaddress ";
-          $q_string .= "left join network on network.net_id = ipaddress.ip_network ";
+          $q_string .= "from inv_ipaddress ";
+          $q_string .= "left join network on network.net_id = inv_ipaddress.ip_network ";
           $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
           $q_string .= "where ip_subzone = " . $a_inv_sub_zones['sub_id'] . " ";
-          $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_ipaddress) > 0) {
-            while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
+          $q_inv_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_ipaddress) > 0) {
+            while ($a_inv_ipaddress = mysqli_fetch_array($q_inv_ipaddress)) {
               $total++;
             }
           }
@@ -95,7 +95,7 @@
           $linkstart = "<a href=\"#\" onclick=\"show_file('subzones.fill.php?id="  . $a_inv_sub_zones['sub_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\"  onclick=\"delete_line('subzones.del.php?id=" . $a_inv_sub_zones['sub_id'] . "');\">";
           if ($total > 0) {
-            $ipstart   = "<a href=\"ipaddress.php?network=" . $a_ipaddress['net_id'] . "\" target=\"_blank\">";
+            $ipstart   = "<a href=\"ipaddress.php?network=" . $a_inv_ipaddress['net_id'] . "\" target=\"_blank\">";
           } else {
             $ipstart   = "";
           }
