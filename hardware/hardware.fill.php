@@ -29,7 +29,7 @@
       $a_inv_models = mysqli_fetch_array($q_inv_models);
       mysqli_free_result($q_inv_models);
 
-      $type = return_Index($db, $a_inv_models['mod_type'], "select part_id from parts order by part_name");
+      $type = return_Index($db, $a_inv_models['mod_type'], "select part_id from inv_parts order by part_name");
 
 
       print "document.hardware.mod_vendor.value = '" . mysqli_real_escape_string($db, $a_inv_models['mod_vendor']) . "';\n";

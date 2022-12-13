@@ -597,7 +597,7 @@ $(document).ready( function() {
 <?php
   $q_string  = "select part_name,hw_serial,hw_asset,mod_name ";
   $q_string .= "from hardware ";
-  $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
+  $q_string .= "left join inv_parts  on inv_parts.part_id = hardware.hw_type ";
   $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
   $q_string .= "where hw_primary = 1 and hw_companyid = " . $formVars['server'] . " ";
   $q_string .= "order by hw_type,hw_vendorid";

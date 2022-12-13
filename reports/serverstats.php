@@ -538,7 +538,7 @@ print $q_string;
   $q_string .= "from hardware ";
   $q_string .= "left join inv_models    on inv_models.mod_id    = hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors   on inv_vendors.ven_id   = inv_models.mod_vendor ";
-  $q_string .= "left join parts     on parts.part_id    = inv_models.mod_type ";
+  $q_string .= "left join inv_parts     on inv_parts.part_id    = inv_models.mod_type ";
   $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
   $q_string .= "where mod_primary = 1 and inv_status = 0 " . $admin . " ";
   $q_string .= "group by ven_name,mod_name ";

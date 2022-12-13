@@ -589,7 +589,7 @@
       $q_string .= "left join inv_groups    on inv_groups.grp_id    = hardware.hw_group ";
       $q_string .= "left join inv_models    on inv_models.mod_id    = hardware.hw_vendorid ";
       $q_string .= "left join inv_vendors   on inv_vendors.ven_id   = inv_models.mod_vendor ";
-      $q_string .= "left join parts     on parts.part_id    = inv_models.mod_type ";
+      $q_string .= "left join inv_parts     on inv_parts.part_id    = inv_models.mod_type ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";
       } else {

@@ -100,7 +100,7 @@
 # set the hw_primary value here
         $q_string  = "select part_type ";
         $q_string .= "from inv_models ";
-        $q_string .= "left join parts on parts.part_id = inv_models.mod_type ";
+        $q_string .= "left join inv_parts on inv_parts.part_id = inv_models.mod_type ";
         $q_string .= "where mod_id = " . $formVars['hw_vendorid'] . " ";
         $q_inv_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         if (mysqli_num_rows($q_inv_models) > 0) {
@@ -316,11 +316,11 @@
         $output .= "  <td class=\"ui-widget-content\" title=\"Hardware type\">Type <select name=\"hw_type\" onclick=\"javascript:attach_hardwaretype('hardware.options.php?hw_type=' + hw_type.value);\">\n";
 
         $q_string  = "select part_id,part_name ";
-        $q_string .= "from parts ";
+        $q_string .= "from inv_parts ";
         $q_string .= "order by part_name ";
-        $q_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_parts = mysqli_fetch_array($q_parts)) {
-          $output .= "<option value=\"" . $a_parts['part_id'] . "\">" . $a_parts['part_name'] . "</option>\n";
+        $q_inv_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inv_parts = mysqli_fetch_array($q_inv_parts)) {
+          $output .= "<option value=\"" . $a_inv_parts['part_id'] . "\">" . $a_inv_parts['part_name'] . "</option>\n";
         }
 
         $output .= "</select></td>\n";
@@ -512,7 +512,7 @@
       $q_string  = "select hw_id,hw_companyid,part_name,hw_serial,hw_asset,hw_product,hw_vendorid,mod_speed,mod_size,";
       $q_string .= "mod_name,hw_active,mod_eol,hw_group,hw_primary,hw_retired,hw_deleted,hw_note,hw_rma,hw_verified,hw_update ";
       $q_string .= "from hardware ";
-      $q_string .= "left join parts on hardware.hw_type = parts.part_id ";
+      $q_string .= "left join inv_parts on hardware.hw_type = inv_parts.part_id ";
       $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
       $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = 0 and hw_hd_id = 0 ";
       $q_string .= "order by hw_type,hw_vendorid,hw_serial,hw_asset ";
@@ -573,7 +573,7 @@
           $q_string  = "select hw_id,hw_companyid,part_name,hw_serial,hw_asset,hw_product,hw_vendorid,mod_speed,mod_size,";
           $q_string .= "mod_name,hw_active,mod_eol,hw_group,hw_primary,hw_retired,hw_deleted,hw_note,hw_rma,hw_verified,hw_update ";
           $q_string .= "from hardware ";
-          $q_string .= "left join parts on hardware.hw_type = parts.part_id ";
+          $q_string .= "left join inv_parts on hardware.hw_type = inv_parts.part_id ";
           $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
           $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " and hw_hd_id = 0 ";
           $q_string .= "order by hw_type,hw_vendorid,hw_serial,hw_asset ";
@@ -635,7 +635,7 @@
               $q_string  = "select hw_id,hw_companyid,part_name,hw_serial,hw_asset,hw_product,hw_vendorid,mod_speed,mod_size,";
               $q_string .= "mod_name,hw_active,mod_eol,hw_group,hw_primary,hw_retired,hw_deleted,hw_note,hw_rma,hw_verified,hw_update ";
               $q_string .= "from hardware ";
-              $q_string .= "left join parts on hardware.hw_type = parts.part_id ";
+              $q_string .= "left join inv_parts on hardware.hw_type = inv_parts.part_id ";
               $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
               $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " and hw_hd_id = " . $a_hwselect['hw_id'] . " ";
               $q_string .= "order by hw_type,hw_vendorid,hw_serial,hw_asset ";

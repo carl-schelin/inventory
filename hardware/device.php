@@ -280,11 +280,11 @@ delete a device as long as this value is greater than zero.</p>
   <td class="ui-widget-content">Device Type <select name="mod_type">
 <?php
   $q_string  = "select part_id,part_name ";
-  $q_string .= "from parts ";
+  $q_string .= "from inv_parts ";
   $q_string .= "order by part_name";
-  $q_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_parts = mysqli_fetch_array($q_parts)) {
-    print "<option value=\"" . $a_parts['part_id'] . "\">" . $a_parts['part_name'] . "</option>\n";
+  $q_inv_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_parts = mysqli_fetch_array($q_inv_parts)) {
+    print "<option value=\"" . $a_inv_parts['part_id'] . "\">" . $a_inv_parts['part_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -332,11 +332,11 @@ delete a device as long as this value is greater than zero.</p>
   <td class="ui-widget-content">Device Type <select name="mod_type">
 <?php
   $q_string  = "select part_id,part_name ";
-  $q_string .= "from parts ";
+  $q_string .= "from inv_parts ";
   $q_string .= "order by part_name";
-  $q_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_parts = mysqli_fetch_array($q_parts)) {
-    print "<option value=\"" . $a_parts['part_id'] . "\">" . $a_parts['part_name'] . "</option>\n";
+  $q_inv_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_parts = mysqli_fetch_array($q_inv_parts)) {
+    print "<option value=\"" . $a_inv_parts['part_id'] . "\">" . $a_inv_parts['part_name'] . "</option>\n";
   }
 ?>
 </select></td>

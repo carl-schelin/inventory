@@ -61,12 +61,12 @@
 
 # Set the primary field from the parts table
           $q_string  = "select part_type ";
-          $q_string .= "from parts ";
+          $q_string .= "from inv_parts ";
           $q_string .= "where part_id = " . $formVars['mod_type'];
-          $q_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          $a_parts = mysqli_fetch_array($q_parts);
+          $q_inv_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_inv_parts = mysqli_fetch_array($q_inv_parts);
 
-          $formVars['mod_primary'] = $a_parts['part_type'];
+          $formVars['mod_primary'] = $a_inv_parts['part_type'];
 
           $q_string =
             "mod_vendor     = \"" . $formVars['mod_vendor']   . "\"," .
@@ -197,7 +197,7 @@
 
       $q_string  = "select mod_id,mod_vendor,mod_name,mod_type,mod_size,mod_speed,volt_text,mod_start,mod_draw,mod_btu,part_type,part_name ";
       $q_string .= "from inv_models ";
-      $q_string .= "left join parts on parts.part_id = inv_models.mod_type ";
+      $q_string .= "left join inv_parts     on inv_parts.part_id     = inv_models.mod_type ";
       $q_string .= "left join inv_int_volts on inv_int_volts.volt_id = inv_models.mod_volts ";
       $q_string .= "order by mod_vendor,mod_name";
       $q_inv_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

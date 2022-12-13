@@ -272,7 +272,7 @@
 
       $q_string  = "select hw_id,hw_serial,hw_asset,hw_service,hw_vendorid,part_name,hw_verified,hw_update ";
       $q_string .= "from hardware ";
-      $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
+      $q_string .= "left join inv_parts on inv_parts.part_id = hardware.hw_type ";
       $q_string .= "where hw_deleted = 0 and hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = 0 and hw_hd_id = 0 ";
       $q_string .= "order by part_name";
       $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
@@ -299,7 +299,7 @@
 
         $q_string  = "select hw_id,hw_serial,hw_asset,hw_service,hw_vendorid,part_name,hw_verified,hw_update ";
         $q_string .= "from hardware ";
-        $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
+        $q_string .= "left join inv_parts on inv_parts.part_id = hardware.hw_type ";
         $q_string .= "where hw_deleted = 0 and hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " and hw_hd_id = 0 ";
         $q_string .= "order by part_name";
         $q_hwselect = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
@@ -326,7 +326,7 @@
 
           $q_string  = "select hw_id,hw_serial,hw_asset,hw_service,hw_vendorid,part_name,hw_verified,hw_update ";
           $q_string .= "from hardware ";
-          $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
+          $q_string .= "left join inv_parts on inv_parts.part_id = hardware.hw_type ";
           $q_string .= "where hw_deleted = 0 and hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " and hw_hd_id = " . $a_hwselect['hw_id'] . " ";
           $q_string .= "order by part_name";
           $q_hwdisk = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");

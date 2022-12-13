@@ -355,7 +355,7 @@
         $q_string .= "from hardware ";
         $q_string .= "left join inv_models  on inv_models.mod_id  = hardware.hw_vendorid ";
         $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
-        $q_string .= "left join parts   on parts.part_id  = hardware.hw_type ";
+        $q_string .= "left join inv_parts   on inv_parts.part_id  = hardware.hw_type ";
         $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = 0 ";
         $q_string .= "order by hw_primary desc,part_id,mod_size ";
         $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -396,7 +396,7 @@
           $q_string .= "from hardware ";
           $q_string .= "left join inv_models  on inv_models.mod_id  = hardware.hw_vendorid ";
           $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
-          $q_string .= "left join parts   on parts.part_id  = hardware.hw_type ";
+          $q_string .= "left join inv_parts   on inv_parts.part_id  = hardware.hw_type ";
           $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " ";
           $q_string .= "order by hw_primary desc,part_id,mod_size ";
           $q_hw_child = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
