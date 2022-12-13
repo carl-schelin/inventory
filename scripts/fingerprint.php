@@ -104,13 +104,13 @@
 #       5 | Hardware  |
 # it's a loop because there can be more than one tag associated with hardware
   $q_string  = "select svr_hardwareid ";
-  $q_string .= "from svr_hardware ";
+  $q_string .= "from inv_svr_hardware ";
   $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " ";
-  $q_svr_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_svr_hardware = mysqli_fetch_array($q_svr_hardware)) {
+  $q_inv_svr_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_svr_hardware = mysqli_fetch_array($q_inv_svr_hardware)) {
     $q_string  = "select tag_name ";
     $q_string .= "from inv_tags ";
-    $q_string .= "where tag_companyid = " . $a_svr_hardware['svr_hardwareid'] . " and tag_type = 5 ";
+    $q_string .= "where tag_companyid = " . $a_inv_svr_hardware['svr_hardwareid'] . " and tag_type = 5 ";
     $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
       $tags .= $comma . $a_inv_tags['tag_name'];
