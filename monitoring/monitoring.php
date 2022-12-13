@@ -209,11 +209,11 @@ $(document).ready( function() {
   <td class="ui-widget-content">Monitoring System: <select name="mon_system">
 <?php
   $q_string  = "select ms_id,ms_name ";
-  $q_string .= "from mon_system ";
+  $q_string .= "from inv_mon_system ";
   $q_string .= "order by ms_name ";
-  $q_mon_system = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_mon_system = mysqli_fetch_array($q_mon_system)) {
-    print "<option value=\"" . $a_mon_system['ms_id'] . "\">" . $a_mon_system['ms_name'] . "</option>\n";
+  $q_inv_mon_system = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_mon_system = mysqli_fetch_array($q_inv_mon_system)) {
+    print "<option value=\"" . $a_inv_mon_system['ms_id'] . "\">" . $a_inv_mon_system['ms_name'] . "</option>\n";
   }
 ?>
 </select></td>
