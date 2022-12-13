@@ -128,7 +128,7 @@
       $q_string .= "from inv_monitoring ";
       $q_string .= "left join interface on interface.int_id = inv_monitoring.mon_interfaceid ";
       $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
-      $q_string .= "left join mon_type on mon_type.mt_id = inv_monitoring.mon_type ";
+      $q_string .= "left join inv_mon_type on inv_mon_type.mt_id = inv_monitoring.mon_type ";
       $q_string .= "left join inv_groups on inv_groups.grp_id = inv_monitoring.mon_group ";
       $q_string .= "left join inv_users on inv_users.usr_id = inv_monitoring.mon_user ";
       $q_string .= "where inv_status = 0 ";

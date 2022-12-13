@@ -222,11 +222,11 @@ $(document).ready( function() {
   <td class="ui-widget-content">What to monitor: <select name="mon_type">
 <?php
   $q_string  = "select mt_id,mt_name ";
-  $q_string .= "from mon_type ";
+  $q_string .= "from inv_mon_type ";
   $q_string .= "order by mt_name ";
-  $q_mon_type = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_mon_type = mysqli_fetch_array($q_mon_type)) {
-    print "<option value=\"" . $a_mon_type['mt_id'] . "\">" . $a_mon_type['mt_name'] . "</option>\n";
+  $q_inv_mon_type = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_mon_type = mysqli_fetch_array($q_inv_mon_type)) {
+    print "<option value=\"" . $a_inv_mon_type['mt_id'] . "\">" . $a_inv_mon_type['mt_name'] . "</option>\n";
   }
 ?>
 </select> Activate check?: <input type="checkbox" name="mon_active"></td>
