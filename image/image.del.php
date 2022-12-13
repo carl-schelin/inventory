@@ -19,28 +19,28 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from images");
+      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from inv_images");
 
 # delete the image from the system
       $q_string  = "select img_file,img_facing ";
-      $q_string .= "from images ";
+      $q_string .= "from inv_images ";
       $q_string .= "where img_id = " . $formVars['id'];
-      $q_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      $a_images = mysqli_fetch_array($q_images);
+      $q_inv_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_inv_images = mysqli_fetch_array($q_inv_images);
 
       $q_string  = "select inv_id ";
       $q_string .= "from inventory ";
       $q_string .= "where inv_front = " . $formVars['id'] . " or inv_rear = " . $formVars['id'] . " ";
       $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_inventory) == 1) {
-        if (file_exists($Picturepath . "/" . $a_images['img_file'])) {
-          unlink($Picturepath . "/" . $a_images['img_file']);
+        if (file_exists($Picturepath . "/" . $a_inv_images['img_file'])) {
+          unlink($Picturepath . "/" . $a_inv_images['img_file']);
         }
       }
 
 # now delete it from the database
       $q_string  = "delete ";
-      $q_string .= "from images ";
+      $q_string .= "from inv_images ";
       $q_string .= "where img_id = " . $formVars['id'];
       $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
@@ -53,10 +53,10 @@
 # An 'unassigned' entry has no img_file value; blank.
 # don't need to query the database twice;
 
-      if ($a_images['img_facing']) {
+      if ($a_inv_images['img_facing']) {
 
         $q_string  = "select img_id ";
-        $q_string .= "from images ";
+        $q_string .= "from inv_images ";
         $q_string .= "where img_facing = 1 and img_file = '' ";
         $q_front = mysqli_query($db, $q_string) or die($q_string . ": " . $mysqli_error($db));
         if (mysqli_num_rows($q_front) > 0) {
@@ -82,7 +82,7 @@
       } else {
 
         $q_string  = "select img_id ";
-        $q_string .= "from images ";
+        $q_string .= "from inv_images ";
         $q_string .= "where img_facing = 0 and img_file = '' ";
         $q_rear = mysqli_query($db, $q_string) or die($q_string . ": " . $mysqli_error($db));
         if (mysqli_num_rows($q_rear) > 0) {

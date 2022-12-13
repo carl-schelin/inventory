@@ -51,8 +51,8 @@
  
         $invlocation   = return_Index($db, $a_inventory['inv_location'],   "select loc_id  from inv_locations left join inv_cities on inv_cities.ct_id = inv_locations.loc_city order by ct_city,loc_name");
         $invzone       = return_Index($db, $a_inventory['inv_zone'],       "select zone_id from inv_timezones order by zone_name");
-        $invfront      = return_Index($db, $a_inventory['inv_front'],      "select img_id  from images where img_facing = 1 order by img_title,img_file");
-        $invrear       = return_Index($db, $a_inventory['inv_rear'],       "select img_id  from images where img_facing = 0 order by img_title,img_file");
+        $invfront      = return_Index($db, $a_inventory['inv_front'],      "select img_id  from inv_images where img_facing = 1 order by img_title,img_file");
+        $invrear       = return_Index($db, $a_inventory['inv_rear'],       "select img_id  from inv_images where img_facing = 0 order by img_title,img_file");
         $invmanager    = return_Index($db, $a_inventory['inv_manager'],    "select grp_id  from inv_groups where grp_disabled = 0 order by grp_name");
         $invappadmin   = return_Index($db, $a_inventory['inv_appadmin'],   "select grp_id  from inv_groups where grp_disabled = 0 order by grp_name");
         $invclass      = return_Index($db, $a_inventory['inv_class'],      "select svc_id  from inv_service order by svc_id");

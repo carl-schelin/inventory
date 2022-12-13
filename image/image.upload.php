@@ -90,7 +90,7 @@
           "img_file    = \"" . $_FILES['upload']['name'] . "\"," . 
           "img_date    = \"" . date('Y-m-d') . "\"," . 
           "img_owner   =   " . $formVars['id'];
-        $query = "insert into images set img_id = NULL," . $q_string;
+        $query = "insert into inv_images set img_id = NULL," . $q_string;
         mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
         $lastid = last_insert_id($db);

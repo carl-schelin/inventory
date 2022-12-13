@@ -1445,12 +1445,12 @@ $(document).ready( function() {
   <td class="ui-widget-content" colspan="6">Front photo filename <select name="inv_front">
 <?php
   $q_string  = "select img_id,img_title,img_file ";
-  $q_string .= "from images ";
+  $q_string .= "from inv_images ";
   $q_string .= "where img_facing = 1 ";
   $q_string .= "order by img_title,img_file ";
-  $q_images = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_images = mysqli_fetch_array($q_images)) {
-    print "<option value=\"" . $a_images['img_id'] . "\">" . htmlspecialchars($a_images['img_title']) . " (" . htmlspecialchars($a_images['img_file']) . ")</option>\n";
+  $q_inv_images = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_images = mysqli_fetch_array($q_inv_images)) {
+    print "<option value=\"" . $a_inv_images['img_id'] . "\">" . htmlspecialchars($a_inv_images['img_title']) . " (" . htmlspecialchars($a_inv_images['img_file']) . ")</option>\n";
   }
 ?>
 </select></td>
@@ -1459,12 +1459,12 @@ $(document).ready( function() {
   <td class="ui-widget-content" colspan="6">Rear photo filename <select name="inv_rear">
 <?php
   $q_string  = "select img_id,img_title,img_file ";
-  $q_string .= "from images ";
+  $q_string .= "from inv_images ";
   $q_string .= "where img_facing = 0 ";
   $q_string .= "order by img_title,img_file ";
-  $q_images = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_images = mysqli_fetch_array($q_images)) {
-    print "<option value=\"" . $a_images['img_id'] . "\">" . htmlspecialchars($a_images['img_title']) . " (" . htmlspecialchars($a_images['img_file']) . ")</option>\n";
+  $q_inv_images = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_images = mysqli_fetch_array($q_inv_images)) {
+    print "<option value=\"" . $a_inv_images['img_id'] . "\">" . htmlspecialchars($a_inv_images['img_title']) . " (" . htmlspecialchars($a_inv_images['img_file']) . ")</option>\n";
   }
 ?>
 </select></td>

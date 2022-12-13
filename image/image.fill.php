@@ -19,36 +19,36 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from images");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_images");
 
       $q_string  = "select img_title,img_file,img_facing,img_owner,img_date ";
-      $q_string .= "from images ";
+      $q_string .= "from inv_images ";
       $q_string .= "where img_id = " . $formVars['id'];
-      $q_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      $a_images = mysqli_fetch_array($q_images);
-      mysqli_free_result($q_images);
+      $q_inv_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_inv_images = mysqli_fetch_array($q_inv_images);
+      mysqli_free_result($q_inv_images);
 
-      $users = return_Index($db, $a_images['img_owner'], "select usr_id from inv_users where usr_disabled = 0 order by usr_last,usr_first");
+      $users = return_Index($db, $a_inv_images['img_owner'], "select usr_id from inv_users where usr_disabled = 0 order by usr_last,usr_first");
 
-      print "document.formUpdate.img_title.value = '" . mysqli_real_escape_string($db, $a_images['img_title'])    . "';\n";
-      print "document.formUpdate.img_file.value = '"  . mysqli_real_escape_string($db, $a_images['img_file'])     . "';\n";
-      print "document.formUpdate.img_date.value = '"  . mysqli_real_escape_string($db, $a_images['img_date'])     . "';\n";
+      print "document.formUpdate.img_title.value = '" . mysqli_real_escape_string($db, $a_inv_images['img_title'])    . "';\n";
+      print "document.formUpdate.img_file.value = '"  . mysqli_real_escape_string($db, $a_inv_images['img_file'])     . "';\n";
+      print "document.formUpdate.img_date.value = '"  . mysqli_real_escape_string($db, $a_inv_images['img_date'])     . "';\n";
 
       if ($users > 0) {
         print "document.formUpdate.img_owner['"  . $users                  . "'].selected = true;\n";
       }
       if ($a_image['img_facing']) {
-        print "document.formUpdate.img_facing['" . $a_images['img_facing'] . "'].checked  = true;\n";
+        print "document.formUpdate.img_facing['" . $a_inv_images['img_facing'] . "'].checked  = true;\n";
       } else {
-        print "document.formUpdate.img_facing['" . $a_images['img_facing'] . "'].checked  = true;\n";
+        print "document.formUpdate.img_facing['" . $a_inv_images['img_facing'] . "'].checked  = true;\n";
       }
 
       print "var cell = document.getElementById('image_name');\n";
-      if ($a_images['img_file'] == '') {
+      if ($a_inv_images['img_file'] == '') {
         print "cell.innerHTML = 'No image found';\n";
       } else {
-        if ( file_exists($Picturepath . "/" . $a_images['img_file'])) {
-          print "cell.innerHTML = '<img src=\"" . $Pictureroot . "/" . $a_images['img_file'] . "\" width=\"500\">';\n";
+        if ( file_exists($Picturepath . "/" . $a_inv_images['img_file'])) {
+          print "cell.innerHTML = '<img src=\"" . $Pictureroot . "/" . $a_inv_images['img_file'] . "\" width=\"500\">';\n";
         } else {
           print "cell.innerHTML = 'Invalid Image Name';\n";
         }
