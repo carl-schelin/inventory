@@ -669,22 +669,22 @@
       $hwsupport = "No Support Selected";
     } else {
       $q_string  = "select slv_value ";
-      $q_string .= "from supportlevel ";
+      $q_string .= "from inv_supportlevel ";
       $q_string .= "where slv_id = " . $a_support['sup_hwresponse'];
-      $q_supportlevel = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
-      $a_supportlevel = mysqli_fetch_array($q_supportlevel);
-      $hwsupport = $a_supportlevel['slv_value'];
+      $q_inv_supportlevel = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+      $a_inv_supportlevel = mysqli_fetch_array($q_inv_supportlevel);
+      $hwsupport = $a_inv_supportlevel['slv_value'];
     }
     
     if ($a_support['sup_swresponse'] == 0 || $a_support['sup_swresponse'] == '') {
       $swsupport = "No Support Selected";
     } else {
       $q_string  = "select slv_value ";
-      $q_string .= "from supportlevel ";
+      $q_string .= "from inv_supportlevel ";
       $q_string .= "where slv_id = " . $a_support['sup_swresponse'];
-      $q_supportlevel = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
-      $a_supportlevel = mysqli_fetch_array($q_supportlevel);
-      $swsupport = $a_supportlevel['slv_value'];
+      $q_inv_supportlevel = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+      $a_inv_supportlevel = mysqli_fetch_array($q_inv_supportlevel);
+      $swsupport = $a_inv_supportlevel['slv_value'];
     }
 
     $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";

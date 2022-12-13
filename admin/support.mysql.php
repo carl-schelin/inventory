@@ -87,13 +87,13 @@
         while ($a_support = mysqli_fetch_array($q_support)) {
 
           $q_string  = "select slv_value ";
-          $q_string .= "from supportlevel ";
+          $q_string .= "from inv_supportlevel ";
           $q_string .= "where slv_id = " . $a_support['sup_hwresponse'];
           $q_hwsupport = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_hwsupport = mysqli_fetch_array($q_hwsupport);
 
           $q_string  = "select slv_value ";
-          $q_string .= "from supportlevel ";
+          $q_string .= "from inv_supportlevel ";
           $q_string .= "where slv_id = " . $a_support['sup_swresponse'];
           $q_swsupport = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_swsupport = mysqli_fetch_array($q_swsupport);

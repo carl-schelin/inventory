@@ -193,7 +193,7 @@
   $q_string .= "left join inv_parts          on inv_parts.part_id       = hardware.hw_type ";
   $q_string .= "left join products       on products.prod_id    = hardware.hw_product ";
   $q_string .= "left join support        on support.sup_id      = hardware.hw_supportid ";
-  $q_string .= "left join supportlevel   on supportlevel.slv_id = hardware.hw_response ";
+  $q_string .= "left join inv_supportlevel   on inv_supportlevel.slv_id = hardware.hw_response ";
   $q_string .= $where;
   $q_string .= $orderby;
   $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

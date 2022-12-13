@@ -28,8 +28,8 @@
       $a_support = mysqli_fetch_array($q_support);
       mysqli_free_result($q_support);
 
-      $hwresponse   = return_Index($db, $a_support['sup_hwresponse'],  "select slv_id from supportlevel order by slv_value");
-      $swresponse   = return_Index($db, $a_support['sup_swresponse'],  "select slv_id from supportlevel order by slv_value");
+      $hwresponse   = return_Index($db, $a_support['sup_hwresponse'],  "select slv_id from inv_supportlevel order by slv_value");
+      $swresponse   = return_Index($db, $a_support['sup_swresponse'],  "select slv_id from inv_supportlevel order by slv_value");
 
       print "document.formUpdate.sup_hwresponse['" . $hwresponse . "'].selected = true;\n";
       print "document.formUpdate.sup_swresponse['" . $swresponse . "'].selected = true;\n";

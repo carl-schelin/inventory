@@ -349,11 +349,11 @@
         $output .= "  <td class=\"ui-widget-content\">Response Level <select name=\"hw_response\">\n";
 
         $q_string  = "select slv_id,slv_value ";
-        $q_string .= "from supportlevel ";
+        $q_string .= "from inv_supportlevel ";
         $q_string .= "order by slv_value";
-        $q_supportlevel = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_supportlevel = mysqli_fetch_array($q_supportlevel)) {
-          $output .= "<option value=\"" . $a_supportlevel['slv_id'] . "\">" . $a_supportlevel['slv_value'] . "</option>\n";
+        $q_inv_supportlevel = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inv_supportlevel = mysqli_fetch_array($q_inv_supportlevel)) {
+          $output .= "<option value=\"" . $a_inv_supportlevel['slv_id'] . "\">" . $a_inv_supportlevel['slv_value'] . "</option>\n";
         }
 
         $output .= "</select></td>\n";

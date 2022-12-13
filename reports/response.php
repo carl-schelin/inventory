@@ -13,14 +13,14 @@
   logaccess($db, $formVars['uid'], $package, "Searching for Dell equipment.");
 
   $formVars['sort'] = 'inv_response';
-  $leftjoin = "left join supportlevel on supportlevel.slv_id = inventory.inv_response ";
+  $leftjoin = "left join inv_supportlevel on inv_supportlevel.slv_id = inventory.inv_response ";
 
   $orderby = " order by ";
   if (isset($_GET['sort'])) {
     $formVars['sort'] = clean($_GET['sort'], 30);
 
     if ($formVars['sort'] == 'inv_response') {
-      $leftjoin = "left join supportlevel on supportlevel.slv_id = inventory.inv_response ";
+      $leftjoin = "left join inv_supportlevel on inv_supportlevel.slv_id = inventory.inv_response ";
       $formVars['sort'] = 'slv_value';
       $orderby .= $formVars['sort'] . ",";
       $formVars['sort'] = 'inv_response';
@@ -28,7 +28,7 @@
 
 # if hw_response
     if ($formVars['sort'] == 'hw_response') {
-      $leftjoin = "left join supportlevel on supportlevel.slv_id = hardware.hw_response ";
+      $leftjoin = "left join inv_supportlevel on inv_supportlevel.slv_id = hardware.hw_response ";
       $formVars['sort'] = 'slv_value';
       $orderby .= $formVars['sort'] . ",";
       $formVars['sort'] = 'hw_response';
@@ -175,12 +175,12 @@
 
     if ($formVars['sort'] == 'hw_response') {
       $q_string  = "select slv_value ";
-      $q_string .= "from supportlevel ";
+      $q_string .= "from inv_supportlevel ";
       $q_string .= "where slv_id = " . $a_inventory['inv_response'];
-      $q_supportlevel = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_supportlevel) > 0) {
-        $a_supportlevel = mysqli_fetch_array($q_supportlevel);
-        $inv_response = $a_supportlevel['slv_value'];
+      $q_inv_supportlevel = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_supportlevel) > 0) {
+        $a_inv_supportlevel = mysqli_fetch_array($q_inv_supportlevel);
+        $inv_response = $a_inv_supportlevel['slv_value'];
         
       } else {
         $inv_response = "Unassigned";
@@ -190,12 +190,12 @@
 
     if ($formVars['sort'] == 'inv_response') {
       $q_string  = "select slv_value ";
-      $q_string .= "from supportlevel ";
+      $q_string .= "from inv_supportlevel ";
       $q_string .= "where slv_id = " . $a_inventory['hw_response'];
-      $q_supportlevel = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_supportlevel) > 0) {
-        $a_supportlevel = mysqli_fetch_array($q_supportlevel);
-        $hw_response = $a_supportlevel['slv_value'];
+      $q_inv_supportlevel = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_supportlevel) > 0) {
+        $a_inv_supportlevel = mysqli_fetch_array($q_inv_supportlevel);
+        $hw_response = $a_inv_supportlevel['slv_value'];
       } else {
         $hw_response = "Unassigned";
       }

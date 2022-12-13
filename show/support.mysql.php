@@ -18,10 +18,10 @@
 
   $slvval[0] = '';
   $q_string  = "select slv_id,slv_value ";
-  $q_string .= "from supportlevel";
-  $q_supportlevel = mysqli_query($db, $q_string);
-  while ($a_supportlevel = mysqli_fetch_array($q_supportlevel)) {
-    $slvval[$a_supportlevel['slv_id']] = $a_supportlevel['slv_value'];
+  $q_string .= "from inv_supportlevel";
+  $q_inv_supportlevel = mysqli_query($db, $q_string);
+  while ($a_inv_supportlevel = mysqli_fetch_array($q_inv_supportlevel)) {
+    $slvval[$a_inv_supportlevel['slv_id']] = $a_inv_supportlevel['slv_value'];
   }
 
   $hardware  = "<p></p>";

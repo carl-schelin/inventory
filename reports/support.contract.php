@@ -250,7 +250,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "left join inv_models       on inv_models.mod_id         = hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors      on inv_vendors.ven_id        = inv_models.mod_vendor ";
   $q_string .= "left join support      on support.sup_id        = hardware.hw_supportid ";
-  $q_string .= "left join supportlevel on supportlevel.slv_id   = hardware.hw_response ";
+  $q_string .= "left join inv_supportlevel on inv_supportlevel.slv_id   = hardware.hw_response ";
   $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join inv_cities       on inv_cities.ct_id          = inv_locations.loc_city ";
   $q_string .= "left join inv_states       on inv_states.st_id          = inv_locations.loc_state ";
@@ -273,10 +273,10 @@ needs to be set on the original equipment. If the system is confirmed as retired
     }
 
     $q_string  = "select slv_value ";
-    $q_string .= "from supportlevel ";
+    $q_string .= "from inv_supportlevel ";
     $q_string .= "where slv_id = " . $a_inventory['inv_response'] . " ";
-    $q_supportlevel = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    $a_supportlevel = mysqli_fetch_array($q_supportlevel);
+    $q_inv_supportlevel = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_inv_supportlevel = mysqli_fetch_array($q_inv_supportlevel);
 
     $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\">";
     $linkend   = "</a>";
@@ -290,7 +290,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
       print "\"" . $a_inventory['hw_serial'] . "\",";
       print "\"" . $a_inventory['sup_company'] . "\",";
       print "\"" . $a_inventory['slv_value'] . "\",";
-      print "\"" . $a_supportlevel['slv_value'] . "\",";
+      print "\"" . $a_inv_supportlevel['slv_value'] . "\",";
       print "\"" . $a_inventory['hw_supportstart'] . "\",";
       print "\"" . $a_inventory['hw_supportend'] . "\"\n";
     } else {
@@ -303,7 +303,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
       print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_serial']                                              . "</td>\n";
       print "  <td class=\"" . $class . "\">"              . $a_inventory['sup_company']                                            . "</td>\n";
       print "  <td class=\"" . $class . "\">"              . $a_inventory['slv_value']                                              . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_supportlevel['slv_value']                                           . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_supportlevel['slv_value']                                           . "</td>\n";
       print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_supportstart']                                        . "</td>\n";
       print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_supportend']                                          . "</td>\n";
       print "</tr>\n";
@@ -352,7 +352,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "left join inv_models       on inv_models.mod_id         = hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors      on inv_vendors.ven_id        = inv_models.mod_vendor ";
   $q_string .= "left join support      on support.sup_id        = hardware.hw_supportid ";
-  $q_string .= "left join supportlevel on supportlevel.slv_id   = inventory.inv_response ";
+  $q_string .= "left join inv_supportlevel on inv_supportlevel.slv_id   = inventory.inv_response ";
   $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join inv_cities       on inv_cities.ct_id          = inv_locations.loc_city ";
   $q_string .= "left join inv_states       on inv_states.st_id          = inv_locations.loc_state ";
@@ -441,7 +441,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "left join inv_models       on inv_models.mod_id         = hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors      on inv_vendors.ven_id        = inv_models.mod_vendor ";
   $q_string .= "left join support      on support.sup_id        = hardware.hw_supportid ";
-  $q_string .= "left join supportlevel on supportlevel.slv_id   = inventory.inv_response ";
+  $q_string .= "left join inv_supportlevel on inv_supportlevel.slv_id   = inventory.inv_response ";
   $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join inv_cities       on inv_cities.ct_id          = inv_locations.loc_city ";
   $q_string .= "left join inv_states       on inv_states.st_id          = inv_locations.loc_state ";
@@ -527,7 +527,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "left join inv_models       on inv_models.mod_id         = hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors      on inv_vendors.mod_id        = inv_models.mod_vendor ";
   $q_string .= "left join support      on support.sup_id        = hardware.hw_supportid ";
-  $q_string .= "left join supportlevel on supportlevel.slv_id   = hardware.hw_response ";
+  $q_string .= "left join inv_supportlevel on inv_supportlevel.slv_id   = hardware.hw_response ";
   $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join inv_cities       on inv_cities.ct_id          = inv_locations.loc_city ";
   $q_string .= "left join inv_states       on inv_states.st_id          = inv_locations.loc_state ";
@@ -609,7 +609,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "left join inv_models       on inv_models.mod_id         = hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors      on inv_vendors.ven_id        = inv_models.mod_vendor ";
   $q_string .= "left join support      on support.sup_id        = hardware.hw_supportid ";
-  $q_string .= "left join supportlevel on supportlevel.slv_id   = inventory.inv_response ";
+  $q_string .= "left join inv_supportlevel on inv_supportlevel.slv_id   = inventory.inv_response ";
   $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join inv_cities       on inv_cities.ct_id          = inv_locations.loc_city ";
   $q_string .= "left join inv_states       on inv_states.st_id          = inv_locations.loc_state ";
