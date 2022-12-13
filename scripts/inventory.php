@@ -568,12 +568,12 @@
 
       $routes = 0;
       $q_string  = "select route_companyid ";
-      $q_string .= "from routing ";
+      $q_string .= "from inv_routing ";
       $q_string .= "where route_companyid = " . $remove . " ";
-      $q_routing = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_routing) > 0) {
-        print "There are " . mysqli_num_rows($q_routing) . " routing records for " . $a_inventory['inv_name'] . "\n";
-        $routes = mysqli_num_rows($q_routing);
+      $q_inv_routing = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_routing) > 0) {
+        print "There are " . mysqli_num_rows($q_inv_routing) . " routing records for " . $a_inventory['inv_name'] . "\n";
+        $routes = mysqli_num_rows($q_inv_routing);
       }
 
       $software = 0;
@@ -719,7 +719,7 @@
 
       if ($routes > 0) {
         print "Route Tables ";
-        $q_string = "delete from routing    where route_companyid = " . $remove;
+        $q_string = "delete from inv_routing    where route_companyid = " . $remove;
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 

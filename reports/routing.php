@@ -179,8 +179,8 @@
 
   $q_string = "select inv_id,inv_name,route_id,route_address,route_gateway,route_mask,route_desc,int_face,itp_acronym "
             . "from inventory "
-            . "left join routing   on routing.route_companyid = inventory.inv_id "
-            . "left join interface on interface.int_id        = routing.route_interface "
+            . "left join inv_routing   on inv_routing.route_companyid = inventory.inv_id "
+            . "left join interface on interface.int_id        = inv_routing.route_interface "
             . "left join hardware  on hardware.hw_companyid   = inventory.inv_id "
             . "left join inv_locations on inv_locations.loc_id        = inventory.inv_location "
             . "left join inv_models    on inv_models.mod_id           = hardware.hw_vendorid "
@@ -196,14 +196,14 @@
 
     $dns = $a_inventory['route_address'];
 ## validate the IP before trying to ping or look it up (unnecessary delays)
-#    if (filter_var($a_routing['route_address'], FILTER_VALIDATE_IP) && ($a_interface['int_face'] != 'lo' || $a_interface['int_face'] != 'lo0')) {
+#    if (filter_var($a_inv_routing['route_address'], FILTER_VALIDATE_IP) && ($a_interface['int_face'] != 'lo' || $a_interface['int_face'] != 'lo0')) {
 ## ensure it's a -host based ip, no need to ping or look up -net ranges.
-#      if ($a_routing['route_mask'] == 32) {
+#      if ($a_inv_routing['route_mask'] == 32) {
 #        $ping = ' class="ui-state-error" ';
-#        if (ping($a_routing['route_address'])) {
+#        if (ping($a_inv_routing['route_address'])) {
 #          $ping = ' class="ui-state-highlight" ';
 #        }
-#        $dns = gethostbyaddr($a_routing['route_address']);
+#        $dns = gethostbyaddr($a_inv_routing['route_address']);
 #      }
 #    }
 
@@ -250,15 +250,15 @@
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
-    $q_string  = "select route_id from routing ";
+    $q_string  = "select route_id from inv_routing ";
     $q_string .= "where route_companyid = " . $a_inventory['inv_id'];
-    $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    $a_routing = mysqli_fetch_array($q_routing);
+    $q_inv_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_inv_routing = mysqli_fetch_array($q_inv_routing);
 
     $linkstart = "<a href=\"" . $Editroot . "/routing.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">";
     $linkend   = "</a>";
 
-    if ($a_routing['route_id'] == '') {
+    if ($a_inv_routing['route_id'] == '') {
       print "<tr>\n";
       print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inventory['inv_name'] . $linkend . "</td>\n";
       print "</tr>\n";

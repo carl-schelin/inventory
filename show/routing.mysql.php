@@ -78,42 +78,42 @@
 
   $interface = array();
   $q_string  = "select route_id,route_address,route_mask,route_gateway,int_face,route_desc,route_verified,route_user,route_update ";
-  $q_string .= "from routing ";
-  $q_string .= "left join interface on interface.int_id = routing.route_interface ";
+  $q_string .= "from inv_routing ";
+  $q_string .= "left join interface on interface.int_id = inv_routing.route_interface ";
   $q_string .= "where route_companyid = " . $formVars['id'] . " and route_ipv6 = 0 ";
   $q_string .= "order by route_address";
-  $q_routing = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_routing = mysqli_fetch_array($q_routing)) {
+  $q_inv_routing = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_routing = mysqli_fetch_array($q_inv_routing)) {
 
     $checkmark = "";
-    if ($a_routing['route_verified']) {
+    if ($a_inv_routing['route_verified']) {
       $checkmark = "&#x2713;";
     }
 
     $ping = ' class="ui-widget-content"';
     $dns = '';
 # validate the IP before trying to ping or look it up (unnecessary delays)
-    if (filter_var($a_routing['route_address'], FILTER_VALIDATE_IP) && ($a_routing['int_face'] != 'lo' || $a_routing['int_face'] != 'lo0')) {
+    if (filter_var($a_inv_routing['route_address'], FILTER_VALIDATE_IP) && ($a_inv_routing['int_face'] != 'lo' || $a_inv_routing['int_face'] != 'lo0')) {
 # ensure it's a -host based ip, no need to ping or look up -net ranges.
-      if ($a_routing['route_mask'] == 32) {
+      if ($a_inv_routing['route_mask'] == 32) {
         $ping = ' class="ui-state-error" ';
-        if (ping($a_routing['route_address'])) {
+        if (ping($a_inv_routing['route_address'])) {
           $ping = ' class="ui-state-highlight" ';
         }
-        $dns = gethostbyaddr($a_routing['route_address']);
+        $dns = gethostbyaddr($a_inv_routing['route_address']);
       }
     }
 
-    $title = "title=\"Last Update: " . $a_routing['route_update'] . "\"";
+    $title = "title=\"Last Update: " . $a_inv_routing['route_update'] . "\"";
 
     $output .= "<tr>";
-    $output .= "<td class=\"ui-widget-content\" " . $title . ">" . $a_routing['route_address']                            . "</td>";
+    $output .= "<td class=\"ui-widget-content\" " . $title . ">" . $a_inv_routing['route_address']                            . "</td>";
     $output .= "<td" . $ping . ">"                               . $dns                                                   . "</td>";
-    $output .= "<td class=\"ui-widget-content\">"                . $a_routing['route_gateway']                            . "</td>";
-    $output .= "<td class=\"ui-widget-content\">"                . createNetmaskAddr($a_routing['route_mask'])            . "</td>";
-    $output .= "<td class=\"ui-widget-content\">"                . $a_routing['int_face']                                 . "</td>";
-    $output .= "<td class=\"ui-widget-content\">"                . $a_routing['route_desc']                               . "</td>";
-    $output .= "<td class=\"ui-widget-content\">"                . $a_routing['route_update']                . $checkmark . "</td>";
+    $output .= "<td class=\"ui-widget-content\">"                . $a_inv_routing['route_gateway']                            . "</td>";
+    $output .= "<td class=\"ui-widget-content\">"                . createNetmaskAddr($a_inv_routing['route_mask'])            . "</td>";
+    $output .= "<td class=\"ui-widget-content\">"                . $a_inv_routing['int_face']                                 . "</td>";
+    $output .= "<td class=\"ui-widget-content\">"                . $a_inv_routing['route_desc']                               . "</td>";
+    $output .= "<td class=\"ui-widget-content\">"                . $a_inv_routing['route_update']                . $checkmark . "</td>";
     $output .= "</tr>";
 
   }
@@ -138,44 +138,44 @@
 
   $interface = array();
   $q_string  = "select route_id,route_address,route_mask,route_gateway,int_face,route_desc,route_verified,route_user,route_update ";
-  $q_string .= "from routing ";
-  $q_string .= "left join interface on interface.int_id = routing.route_interface ";
+  $q_string .= "from inv_routing ";
+  $q_string .= "left join interface on interface.int_id = inv_routing.route_interface ";
   $q_string .= "where route_companyid = " . $formVars['id'] . " and route_ipv6 = 1 ";
   $q_string .= "order by route_address";
-  $q_routing = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_routing = mysqli_fetch_array($q_routing)) {
+  $q_inv_routing = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_routing = mysqli_fetch_array($q_inv_routing)) {
 
     $ipv6 = 1;
 
     $checkmark = "";
-    if ($a_routing['route_verified']) {
+    if ($a_inv_routing['route_verified']) {
       $checkmark = "&#x2713;";
     }
 
     $ping = ' class="ui-widget-content"';
     $dns = '';
 # validate the IP before trying to ping or look it up (unnecessary delays)
-    if (filter_var($a_routing['route_address'], FILTER_VALIDATE_IP) && ($a_routing['int_face'] != 'lo' || $a_routing['int_face'] != 'lo0')) {
+    if (filter_var($a_inv_routing['route_address'], FILTER_VALIDATE_IP) && ($a_inv_routing['int_face'] != 'lo' || $a_inv_routing['int_face'] != 'lo0')) {
 # ensure it's a -host based ip, no need to ping or look up -net ranges.
-      if ($a_routing['route_mask'] == 32) {
+      if ($a_inv_routing['route_mask'] == 32) {
         $ping = ' class="ui-state-error" ';
-        if (ping($a_routing['route_address'])) {
+        if (ping($a_inv_routing['route_address'])) {
           $ping = ' class="ui-state-highlight" ';
         }
-        $dns = gethostbyaddr($a_routing['route_address']);
+        $dns = gethostbyaddr($a_inv_routing['route_address']);
       }
     }
 
-    $title = "title=\"Last Update: " . $a_routing['route_update'] . "\"";
+    $title = "title=\"Last Update: " . $a_inv_routing['route_update'] . "\"";
 
     $output .= "<tr>";
-    $output .= "<td class=\"ui-widget-content\" " . $title . ">" . $a_routing['route_address']                            . "</td>";
+    $output .= "<td class=\"ui-widget-content\" " . $title . ">" . $a_inv_routing['route_address']                            . "</td>";
     $output .= "<td" . $ping . ">"                               . $dns                                                   . "</td>";
-    $output .= "<td class=\"ui-widget-content\">"                . $a_routing['route_gateway']                            . "</td>";
-    $output .= "<td class=\"ui-widget-content\">"                . createNetmaskAddr($a_routing['route_mask'])            . "</td>";
-    $output .= "<td class=\"ui-widget-content\">"                . $a_routing['int_face']                                 . "</td>";
-    $output .= "<td class=\"ui-widget-content\">"                . $a_routing['route_desc']                               . "</td>";
-    $output .= "<td class=\"ui-widget-content\">"                . $a_routing['route_update']                . $checkmark . "</td>";
+    $output .= "<td class=\"ui-widget-content\">"                . $a_inv_routing['route_gateway']                            . "</td>";
+    $output .= "<td class=\"ui-widget-content\">"                . createNetmaskAddr($a_inv_routing['route_mask'])            . "</td>";
+    $output .= "<td class=\"ui-widget-content\">"                . $a_inv_routing['int_face']                                 . "</td>";
+    $output .= "<td class=\"ui-widget-content\">"                . $a_inv_routing['route_desc']                               . "</td>";
+    $output .= "<td class=\"ui-widget-content\">"                . $a_inv_routing['route_update']                . $checkmark . "</td>";
     $output .= "</tr>";
 
   }

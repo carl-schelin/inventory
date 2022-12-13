@@ -1226,25 +1226,25 @@
       $output .= "</tr>\n";
 
       $q_string  = "select route_address,route_gateway,route_mask,route_interface,route_desc,route_verified,int_face,route_update ";
-      $q_string .= "from routing ";
+      $q_string .= "from inv_routing ";
       $q_string .= "left join interface on interface.int_id = route_interface ";
       $q_string .= "where route_companyid = " . $a_inventory['inv_id'] . " ";
       $q_string .= "order by route_address";
-      $q_routing = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
-      while ($a_routing = mysqli_fetch_array($q_routing)) {
-        if ($a_routing['route_verified'] == 1) {
+      $q_inv_routing = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+      while ($a_inv_routing = mysqli_fetch_array($q_inv_routing)) {
+        if ($a_inv_routing['route_verified'] == 1) {
           $bgcolor = $color[1];
         } else {
           $bgcolor = $color[0];
         }
 
         $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
-        $output .= "  <td>" . $a_routing['route_address']                 . "</td>\n";
-        $output .= "  <td>" . $a_routing['route_gateway']                 . "</td>\n";
-        $output .= "  <td>" . createNetmaskAddr($a_routing['route_mask']) . "</td>\n";
-        $output .= "  <td>" . $a_routing['int_face']                      . "</td>\n";
-        $output .= "  <td>" . $a_routing['route_desc']                    . "</td>\n";
-        $output .= "  <td>" . $a_routing['route_update']                  . "</td>\n";
+        $output .= "  <td>" . $a_inv_routing['route_address']                 . "</td>\n";
+        $output .= "  <td>" . $a_inv_routing['route_gateway']                 . "</td>\n";
+        $output .= "  <td>" . createNetmaskAddr($a_inv_routing['route_mask']) . "</td>\n";
+        $output .= "  <td>" . $a_inv_routing['int_face']                      . "</td>\n";
+        $output .= "  <td>" . $a_inv_routing['route_desc']                    . "</td>\n";
+        $output .= "  <td>" . $a_inv_routing['route_update']                  . "</td>\n";
         $output .= "</tr>\n";
       }
       $output .= "</table>\n\n";
@@ -1266,24 +1266,26 @@
       $output .= "  <th>Description</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select route_address,route_gateway,route_mask,route_interface,route_desc,route_verified,int_face from routing ";
+      $q_string  = "select route_address,route_gateway,route_mask,route_interface,";
+      $q_string .= "route_desc,route_verified,int_face ";
+      $q_string .= "from inv_routing ";
       $q_string .= "left join interface on interface.int_id = route_interface ";
       $q_string .= "where route_companyid = " . $a_inventory['inv_id'] . " ";
       $q_string .= "order by route_address";
-      $q_routing = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
-      while ($a_routing = mysqli_fetch_array($q_routing)) {
-        if ($a_routing['route_verified'] == 1) {
+      $q_inv_routing = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+      while ($a_inv_routing = mysqli_fetch_array($q_inv_routing)) {
+        if ($a_inv_routing['route_verified'] == 1) {
           $bgcolor = $color[1];
         } else {
           $bgcolor = $color[0];
         }
 
         $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
-        $output .= "  <td>" . $a_routing['route_address'] . "</td>\n";
-        $output .= "  <td>" . $a_routing['route_gateway'] . "</td>\n";
-        $output .= "  <td>" . createNetmaskAddr($a_routing['route_mask']) . "</td>\n";
-        $output .= "  <td>" . $a_routing['int_face'] . "</td>\n";
-        $output .= "  <td>" . $a_routing['route_desc'] . "</td>\n";
+        $output .= "  <td>" . $a_inv_routing['route_address'] . "</td>\n";
+        $output .= "  <td>" . $a_inv_routing['route_gateway'] . "</td>\n";
+        $output .= "  <td>" . createNetmaskAddr($a_inv_routing['route_mask']) . "</td>\n";
+        $output .= "  <td>" . $a_inv_routing['int_face'] . "</td>\n";
+        $output .= "  <td>" . $a_inv_routing['route_desc'] . "</td>\n";
         $output .= "</tr>\n";
       }
       $output .= "</table>\n\n";

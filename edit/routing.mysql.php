@@ -67,12 +67,12 @@
             "route_update    = \"" . date('Y-m-d')                . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into routing set route_id = NULL," . $q_string;
+            $query = "insert into inv_routing set route_id = NULL," . $q_string;
             $message = "Route added.";
           }
 
           if ($formVars['update'] == 1) {
-            $query = "update routing set " . $q_string . " where route_id = " . $formVars['id'];
+            $query = "update inv_routing set " . $q_string . " where route_id = " . $formVars['id'];
             $message = "Route updated.";
           }
 
@@ -85,11 +85,11 @@
 # if repeat description is confirmed, load each route where route_address = route_address and update the interface.
           if ($formVars['route_propagate'] == 'yes') {
             $q_string  = "select route_id ";
-            $q_string .= "from routing ";
+            $q_string .= "from inv_routing ";
             $q_string .= "where route_address = '" . $formVars['route_address'] . "' ";
-            $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-            while ($a_routing = mysqli_fetch_array($q_routing)) {
-              $query = "update routing set route_desc = '" . $formVars['route_desc'] . "' where route_id = " . $a_routing['route_id'];
+            $q_inv_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            while ($a_inv_routing = mysqli_fetch_array($q_inv_routing)) {
+              $query = "update inv_routing set route_desc = '" . $formVars['route_desc'] . "' where route_id = " . $a_inv_routing['route_id'];
               mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
             }
           }
@@ -105,16 +105,16 @@
 
         if ($formVars['copyfrom'] > 0) {
           $q_string  = "select route_address,route_mask,route_gateway,route_source,route_interface,route_desc,route_static ";
-          $q_string .= "from routing ";
+          $q_string .= "from inv_routing ";
           $q_string .= "where route_companyid = " . $formVars['copyfrom'];
-          $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          while ($a_routing = mysqli_fetch_array($q_routing)) {
+          $q_inv_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_inv_routing = mysqli_fetch_array($q_inv_routing)) {
 
 # so try to match the copied server's interface name with the current server.
 # They should be close to the same, otherwise default to 0
             $q_string  = "select int_face ";
             $q_string .= "from interface ";
-            $q_string .= "where int_id = " . $a_routing['route_interface'];
+            $q_string .= "where int_id = " . $a_inv_routing['route_interface'];
             $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             $a_interface = mysqli_fetch_array($q_interface);
 
@@ -130,15 +130,15 @@
 
             $q_string = 
               "route_companyid =   " . $formVars['route_companyid']  . "," .
-              "route_address   = \"" . $a_routing['route_address']   . "\"," .
-              "route_mask      =   " . $a_routing['route_mask']      . "," .
-              "route_gateway   = \"" . $a_routing['route_gateway']   . "\"," .
-              "route_soruce    = \"" . $a_routing['route_source']    . "\"," .
+              "route_address   = \"" . $a_inv_routing['route_address']   . "\"," .
+              "route_mask      =   " . $a_inv_routing['route_mask']      . "," .
+              "route_gateway   = \"" . $a_inv_routing['route_gateway']   . "\"," .
+              "route_soruce    = \"" . $a_inv_routing['route_source']    . "\"," .
               "route_interface =   " . $a_interface2['int_id']       . "," .
-              "route_static    =   " . $a_routing['route_static']    . "," .
-              "route_desc      = \"" . $a_routing['route_desc']      . "\"";
+              "route_static    =   " . $a_inv_routing['route_static']    . "," .
+              "route_desc      = \"" . $a_inv_routing['route_desc']      . "\"";
 
-            $query = "insert into routing set route_id = NULL," . $q_string;
+            $query = "insert into inv_routing set route_id = NULL," . $q_string;
             mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
           }
         }
@@ -169,10 +169,10 @@
         $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_inventory = mysqli_fetch_array($q_inventory)) {
           $q_string  = "select route_id ";
-          $q_string .= "from routing ";
+          $q_string .= "from inv_routing ";
           $q_string .= "where route_companyid = " . $a_inventory['inv_id'] . " ";
-          $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          $route_total = mysqli_num_rows($q_routing);
+          $q_inv_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $route_total = mysqli_num_rows($q_inv_routing);
 
           if ($route_total > 0) {
             $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . " (" . $route_total . ")</option>\n";
@@ -284,75 +284,75 @@
       $interface = array();
       $sunroute = '';
       $q_string  = "select route_id,route_address,route_mask,route_source,route_gateway,route_interface,route_verified,route_desc,route_update,route_static,inv_manager ";
-      $q_string .= "from routing ";
-      $q_string .= "left join inventory on inventory.inv_id = routing.route_companyid ";
+      $q_string .= "from inv_routing ";
+      $q_string .= "left join inventory on inventory.inv_id = inv_routing.route_companyid ";
       $q_string .= "where route_companyid = " . $formVars['route_companyid'] . " ";
       $q_string .= "order by route_address";
-      $q_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_routing) > 0) {
-        while ($a_routing = mysqli_fetch_array($q_routing)) {
+      $q_inv_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_routing) > 0) {
+        while ($a_inv_routing = mysqli_fetch_array($q_inv_routing)) {
 
           $q_string  = "select int_face ";
           $q_string .= "from interface ";
-          $q_string .= "where int_id = " . $a_routing['route_interface'];
+          $q_string .= "where int_id = " . $a_inv_routing['route_interface'];
           $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_interface = mysqli_fetch_array($q_interface);
 
-          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('routing.fill.php?id=" . $a_routing['route_id'] . "');showDiv('routing-hide');\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_route('routing.del.php?id=" . $a_routing['route_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('routing.fill.php?id=" . $a_inv_routing['route_id'] . "');showDiv('routing-hide');\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_route('routing.del.php?id=" . $a_inv_routing['route_id'] . "');\">";
           $linkend   = "</a>";
 
           $ping = ' class="ui-widget-content"';
 #          $dns = '';
 # validate the IP before trying to ping or look it up (unnecessary delays)
-#          if (filter_var($a_routing['route_address'], FILTER_VALIDATE_IP) && ($a_interface['int_face'] != 'lo' || $a_interface['int_face'] != 'lo0')) {
+#          if (filter_var($a_inv_routing['route_address'], FILTER_VALIDATE_IP) && ($a_interface['int_face'] != 'lo' || $a_interface['int_face'] != 'lo0')) {
 # ensure it's a -host based ip, no need to ping or look up -net ranges.
-#            if ($a_routing['route_mask'] == 32) {
+#            if ($a_inv_routing['route_mask'] == 32) {
 #              $ping = ' class="ui-state-error" ';
-#              if (ping($a_routing['route_address'])) {
+#              if (ping($a_inv_routing['route_address'])) {
 #                $ping = ' class="ui-state-highlight" ';
 #              }
-#              $dns = gethostbyaddr($a_routing['route_address']);
+#              $dns = gethostbyaddr($a_inv_routing['route_address']);
 #            }
 #          }
 
           $static = 'No';
-          if ($a_routing['route_static']) {
+          if ($a_inv_routing['route_static']) {
             $static = 'Yes';
           }
           $checked = "";
-          if ($a_routing['route_verified']) {
+          if ($a_inv_routing['route_verified']) {
             $checked = "&#x2713;";
           }
 
           $output .= "<tr>\n";
           $output .=   "<td class=\"ui-widget-content delete\">" . $linkdel                                                                             . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $static                                                      . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_routing['route_address'] . "/" . $a_routing['route_mask'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_routing['route_address'] . "/" . $a_inv_routing['route_mask'] . $linkend . "</td>\n";
 #          $output .= "  <td" . $ping . ">"                       . $linkstart . $dns                                                         . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_routing['route_gateway']                                  . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_routing['route_gateway']                                  . $linkend . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_interface['int_face']                                     . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_routing['route_source']                                   . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_routing['route_desc']                                     . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_routing['route_update'] . $checked                        . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_routing['route_source']                                   . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_routing['route_desc']                                     . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_routing['route_update'] . $checked                        . $linkend . "</td>\n";
           $output .= "</tr>\n";
 
           if ($os == "Linux") {
-            if ($a_routing['route_address'] != '0.0.0.0' && $a_routing['route_gateway'] != '0.0.0.0' && $a_routing['route_static']) {
-              $interface[$a_interface['int_face']] .= "<br>" . $a_routing['route_address'] . "/" . $a_routing['route_mask'] . " via " . $a_routing['route_gateway'] . " dev " . $a_interface['int_face'];
-              if ($a_routing['route_source'] != '') {
-                $interface[$a_interface['int_face']] .= " src " . $a_routing['route_source'];
+            if ($a_inv_routing['route_address'] != '0.0.0.0' && $a_inv_routing['route_gateway'] != '0.0.0.0' && $a_inv_routing['route_static']) {
+              $interface[$a_interface['int_face']] .= "<br>" . $a_inv_routing['route_address'] . "/" . $a_inv_routing['route_mask'] . " via " . $a_inv_routing['route_gateway'] . " dev " . $a_interface['int_face'];
+              if ($a_inv_routing['route_source'] != '') {
+                $interface[$a_interface['int_face']] .= " src " . $a_inv_routing['route_source'];
               }
             }
           }
           if ($os == "SunOS") {
-            if ($a_routing['route_address'] != 'default' && substr($a_routing['route_address'], strlen($a_routing['route_address']) - 1) != '0' && $a_routing['route_address'] != '127.0.0.1') {
-              if ($a_routing['route_mask'] == 32) {
+            if ($a_inv_routing['route_address'] != 'default' && substr($a_inv_routing['route_address'], strlen($a_inv_routing['route_address']) - 1) != '0' && $a_inv_routing['route_address'] != '127.0.0.1') {
+              if ($a_inv_routing['route_mask'] == 32) {
                 $flag = "-host ";
               } else {
                 $flag = "-net ";
               }
-              $sunroute .= "<br>route add " . $flag . $a_routing['route_address'] . " " . $a_routing['route_gateway'];
+              $sunroute .= "<br>route add " . $flag . $a_inv_routing['route_address'] . " " . $a_inv_routing['route_gateway'];
             }
           }
         }
@@ -362,7 +362,7 @@
         $output .= "</tr>\n";
       }
 
-      mysqli_free_result($q_routing);
+      mysqli_free_result($q_inv_routing);
 
       $output .= "</table>\n";
 

@@ -95,7 +95,7 @@
 # and any manually managed routes (static) stick around, 
 # plus Kubernetes adds a ton of routes for the pods on the servers and they come and go.
         $q_string  = "delete ";
-        $q_string .= "from routing ";
+        $q_string .= "from inv_routing ";
         $q_string .= "where route_companyid = " . $a_inventory['inv_id'] . " and route_update < \"" . date('Y-m-d') . "\" and route_static = 0 ";
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
@@ -1528,10 +1528,10 @@ $value[11] = '';
 
 # see if the address exists
               $q_string  = "select route_id ";
-              $q_string .= "from routing ";
+              $q_string .= "from inv_routing ";
               $q_string .= "where route_address = '" . $value[4] . "' and route_companyid = " . $a_inventory['inv_id'];
-              $q_routing = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              $a_routing = mysqli_fetch_array($q_routing);
+              $q_inv_routing = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              $a_inv_routing = mysqli_fetch_array($q_inv_routing);
 
               $q_string  = "select int_id ";
               $q_string .= "from interface ";
@@ -1571,13 +1571,13 @@ $value[11] = '';
                 "route_static    =   " . $value[8]              . "," . 
                 "route_update    = \"" . $date                  . "\"";
 
-              if ($a_routing['route_id'] == '') {
-                $q_string = "insert into routing set route_id = null," . $query;
+              if ($a_inv_routing['route_id'] == '') {
+                $q_string = "insert into inv_routing set route_id = null," . $query;
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
               } else {
-                $q_string = "update routing set " . $query . " where route_id = " . $a_routing['route_id'];
+                $q_string = "update inv_routing set " . $query . " where route_id = " . $a_inv_routing['route_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
