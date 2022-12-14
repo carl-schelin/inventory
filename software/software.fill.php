@@ -32,7 +32,7 @@
       $sw_vendor     = return_Index($db, $a_software['sw_vendor'],     "select ven_id  from inv_vendors    order by ven_name");
       $sw_product    = return_Index($db, $a_software['sw_product'],    "select prod_id from products   order by prod_name");
       $sw_licenseid  = return_Index($db, $a_software['sw_licenseid'],  "select lic_id  from licenses   order by lic_product");
-      $sw_supportid  = return_Index($db, $a_software['sw_supportid'],  "select sup_id  from support    order by sup_company");
+      $sw_supportid  = return_Index($db, $a_software['sw_supportid'],  "select sup_id  from inv_support    order by sup_company");
       $sw_type       = return_Index($db, $a_software['sw_type'],       "select typ_id  from inv_sw_types   order by typ_name");
       $sw_department = return_Index($db, $a_software['sw_department'], "select dep_id  from inv_department order by dep_name");
 

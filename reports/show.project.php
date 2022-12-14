@@ -209,11 +209,11 @@ $(document).ready( function() {
   $q_string .= "from software ";
   $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
 
-./show/support.mysql.php:  $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
-  $q_string .= "left join inventory        on inv_svr_software.svr_companyid = inventory.inv_id ";
-  $q_string .= "left join inv_groups       on inv_svr_software.svr_groupid = inv_groups.grp_id ";
-  $q_string .= "left join inv_vendors      <F9><F5><F7><F8><F6>-on inv_vendors.ven_id = software.sw_vendor ";
-  $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
+  $q_string .= "left join inventory        on inv_svr_software.svr_companyid  = inventory.inv_id ";
+  $q_string .= "left join inv_groups       on inv_svr_software.svr_groupid    = inv_groups.grp_id ";
+  $q_string .= "left join inv_vendors      on inv_vendors.ven_id              = software.sw_vendor ";
+  $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = software.sw_type ";
   $q_string .= "where inv_project = " . $formVars['id'] . " and inv_status = 0 ";
   $q_string .= "order by inv_name,sw_software";
   $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

@@ -538,7 +538,7 @@ $(document).ready( function() {
 
   $q_string  = "select sup_company,sup_phone,sup_email,sup_web,sup_contract ";
   $q_string .= "from hardware ";
-  $q_string .= "left join support on hardware.hw_supportid = support.sup_id ";
+  $q_string .= "left join inv_support on hardware.hw_supportid = inv_support.sup_id ";
   $q_string .= "where hw_companyid = " . $formVars['server'] . " and hw_primary = 1";
   $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_hardware) > 0) {
@@ -570,17 +570,17 @@ $(document).ready( function() {
     while ($a_software = mysqli_fetch_array($q_software)) {
       if ($a_software['sw_supportid'] != 0) {
         $q_string  = "select sup_company,sup_phone,sup_email,sup_web,sup_contract ";
-        $q_string .= "from support ";
+        $q_string .= "from inv_support ";
         $q_string .= "where sup_id = " . $a_software['sw_supportid'];
-        $q_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_support = mysqli_fetch_array($q_support);
+        $q_inv_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_inv_support = mysqli_fetch_array($q_inv_support);
 
         print "<tr>\n";
         print "  <td class=\"ui-widget-content\"><strong>Software</strong>: " . $a_software['sw_software'] . "</td>\n";
-        print "  <td class=\"ui-widget-content\"><strong>Company</strong>: <a href=\"" . $a_support['sup_web'] . "\">" . $a_support['sup_company'] . "</a></td>\n";
-        print "  <td class=\"ui-widget-content\"><strong>Phone</strong>: "    . $a_support['sup_phone'] . "</td>\n";
-        print "  <td class=\"ui-widget-content\"><strong>E-Mail</strong>: "   . $a_support['sup_email'] . "</td>\n";
-        print "  <td class=\"ui-widget-content\"><strong>Contract</strong>: " . $a_support['sup_contract'] . "</td>\n";
+        print "  <td class=\"ui-widget-content\"><strong>Company</strong>: <a href=\"" . $a_inv_support['sup_web'] . "\">" . $a_inv_support['sup_company'] . "</a></td>\n";
+        print "  <td class=\"ui-widget-content\"><strong>Phone</strong>: "    . $a_inv_support['sup_phone'] . "</td>\n";
+        print "  <td class=\"ui-widget-content\"><strong>E-Mail</strong>: "   . $a_inv_support['sup_email'] . "</td>\n";
+        print "  <td class=\"ui-widget-content\"><strong>Contract</strong>: " . $a_inv_support['sup_contract'] . "</td>\n";
         print "</tr>\n";
       }
     }

@@ -249,7 +249,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join inv_models       on inv_models.mod_id         = hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors      on inv_vendors.ven_id        = inv_models.mod_vendor ";
-  $q_string .= "left join support      on support.sup_id        = hardware.hw_supportid ";
+  $q_string .= "left join inv_support      on inv_support.sup_id        = hardware.hw_supportid ";
   $q_string .= "left join inv_supportlevel on inv_supportlevel.slv_id   = hardware.hw_response ";
   $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join inv_cities       on inv_cities.ct_id          = inv_locations.loc_city ";
@@ -351,7 +351,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join inv_models       on inv_models.mod_id         = hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors      on inv_vendors.ven_id        = inv_models.mod_vendor ";
-  $q_string .= "left join support      on support.sup_id        = hardware.hw_supportid ";
+  $q_string .= "left join inv_support      on inv_support.sup_id        = hardware.hw_supportid ";
   $q_string .= "left join inv_supportlevel on inv_supportlevel.slv_id   = inventory.inv_response ";
   $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join inv_cities       on inv_cities.ct_id          = inv_locations.loc_city ";
@@ -440,7 +440,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join inv_models       on inv_models.mod_id         = hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors      on inv_vendors.ven_id        = inv_models.mod_vendor ";
-  $q_string .= "left join support      on support.sup_id        = hardware.hw_supportid ";
+  $q_string .= "left join inv_support      on inv_support.sup_id        = hardware.hw_supportid ";
   $q_string .= "left join inv_supportlevel on inv_supportlevel.slv_id   = inventory.inv_response ";
   $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join inv_cities       on inv_cities.ct_id          = inv_locations.loc_city ";
@@ -526,7 +526,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join inv_models       on inv_models.mod_id         = hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors      on inv_vendors.mod_id        = inv_models.mod_vendor ";
-  $q_string .= "left join support      on support.sup_id        = hardware.hw_supportid ";
+  $q_string .= "left join inv_support      on inv_support.sup_id        = hardware.hw_supportid ";
   $q_string .= "left join inv_supportlevel on inv_supportlevel.slv_id   = hardware.hw_response ";
   $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join inv_cities       on inv_cities.ct_id          = inv_locations.loc_city ";
@@ -608,7 +608,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
   $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join inv_models       on inv_models.mod_id         = hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors      on inv_vendors.ven_id        = inv_models.mod_vendor ";
-  $q_string .= "left join support      on support.sup_id        = hardware.hw_supportid ";
+  $q_string .= "left join inv_support      on inv_support.sup_id        = hardware.hw_supportid ";
   $q_string .= "left join inv_supportlevel on inv_supportlevel.slv_id   = inventory.inv_response ";
   $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join inv_cities       on inv_cities.ct_id          = inv_locations.loc_city ";

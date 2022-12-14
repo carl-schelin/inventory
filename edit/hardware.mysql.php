@@ -338,11 +338,11 @@
         $output .= "  <td class=\"ui-widget-content\" title=\"Support company and contract number\">Support Company <select name=\"hw_supportid\">\n";
 
         $q_string  = "select sup_id,sup_company,sup_contract ";
-        $q_string .= "from support ";
+        $q_string .= "from inv_support ";
         $q_string .= "order by sup_company,sup_contract ";
-        $q_support = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while  ($a_support = mysqli_fetch_array($q_support)) {
-          $output .= "<option value=\"" . $a_support['sup_id'] . "\">" . $a_support['sup_company'] . " (" . $a_support['sup_contract'] . ")</option>\n";
+        $q_inv_support = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while  ($a_inv_support = mysqli_fetch_array($q_inv_support)) {
+          $output .= "<option value=\"" . $a_inv_support['sup_id'] . "\">" . $a_inv_support['sup_company'] . " (" . $a_inv_support['sup_contract'] . ")</option>\n";
         }
 
         $output .= "</select></td>\n";
