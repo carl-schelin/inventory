@@ -29,7 +29,7 @@
       $a_inv_ipaddress = mysqli_fetch_array($q_inv_ipaddress);
 
       $ip_subzone = return_Index($db, $a_inv_ipaddress['ip_subzone'],  "select sub_id from inv_sub_zones where sub_zone = " . $a_inv_ipaddress['net_zone'] . " order by sub_name");
-      $ip_type    = return_Index($db, $a_inv_ipaddress['ip_type'],     "select ip_id from ip_types order by ip_name ");
+      $ip_type    = return_Index($db, $a_inv_ipaddress['ip_type'],     "select ip_id from inv_ip_types order by ip_name ");
 
       print "document.formUpdate.ip_ipv4.value = '"          . mysqli_real_escape_string($db, $a_inv_ipaddress['ip_ipv4'])          . "';\n";
       print "document.formUpdate.ip_ipv6.value = '"          . mysqli_real_escape_string($db, $a_inv_ipaddress['ip_ipv6'])          . "';\n";

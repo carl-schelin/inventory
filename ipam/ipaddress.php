@@ -345,11 +345,11 @@ can edit the current entry, or if there is a small difference, you can make chan
   <td class="ui-widget-content">IP Address Type: <select name="ip_type">
 <?php
   $q_string  = "select ip_id,ip_name ";
-  $q_string .= "from ip_types ";
+  $q_string .= "from inv_ip_types ";
   $q_string .= "order by ip_name ";
-  $q_ip_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_ip_types = mysqli_fetch_array($q_ip_types)) {
-    print "<option value=\"" . $a_ip_types['ip_id'] . "\">" . $a_ip_types['ip_name'] . "</option>\n";
+  $q_inv_ip_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_ip_types = mysqli_fetch_array($q_inv_ip_types)) {
+    print "<option value=\"" . $a_inv_ip_types['ip_id'] . "\">" . $a_inv_ip_types['ip_name'] . "</option>\n";
   }
 ?></select></td>
 </tr>
@@ -419,11 +419,11 @@ can edit the current entry, or if there is a small difference, you can make chan
   <td class="ui-widget-content">IP Address Type: <select name="ip_type">
 <?php
   $q_string  = "select ip_id,ip_name ";
-  $q_string .= "from ip_types ";
+  $q_string .= "from inv_ip_types ";
   $q_string .= "order by ip_name ";
-  $q_ip_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_ip_types = mysqli_fetch_array($q_ip_types)) {
-    print "<option value=\"" . $a_ip_types['ip_id'] . "\">" . $a_ip_types['ip_name'] . "</option>\n";
+  $q_inv_ip_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_ip_types = mysqli_fetch_array($q_inv_ip_types)) {
+    print "<option value=\"" . $a_inv_ip_types['ip_id'] . "\">" . $a_inv_ip_types['ip_name'] . "</option>\n";
   }
 ?></select></td>
 </tr>

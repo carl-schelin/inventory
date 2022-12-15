@@ -124,7 +124,7 @@
 
             $q_string  = "select ip_ipv4 ";
             $q_string .= "from inv_ipaddress ";
-            $q_string .= "left join ip_types on ip_types.ip_id = inv_ipaddress.ip_type ";
+            $q_string .= "left join inv_ip_types on inv_ip_types.ip_id = inv_ipaddress.ip_type ";
             $q_string .= "where ip_network = " . $a_inv_ipaddress['ip_network'] . " and ip_name = \"Gateway\" ";
             $q_string .= "limit 1 ";
             $q_addr = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

@@ -178,13 +178,13 @@
             $linkend   = "</a>";
 
             $q_string  = "select ip_name ";
-            $q_string .= "from ip_types ";
+            $q_string .= "from inv_ip_types ";
             $q_string .= "where ip_id = " . $a_inv_ipaddress['ip_type'] . " ";
-            $q_ip_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-            if (mysqli_num_rows($q_ip_types) > 0) {
-              $a_ip_types = mysqli_fetch_array($q_ip_types);
+            $q_inv_ip_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            if (mysqli_num_rows($q_inv_ip_types) > 0) {
+              $a_inv_ip_types = mysqli_fetch_array($q_inv_ip_types);
             } else {
-              $a_ip_types['ip_name'] = "Unassigned";
+              $a_inv_ip_types['ip_name'] = "Unassigned";
             }
 
             if (strlen($iprange) > 0) {
@@ -229,7 +229,7 @@
             $output .= "  <td class=\"" . $class . "\">" . $linkstart . $ipaddr                                            . $linkend . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['ip_hostname'] . "." . $a_inv_ipaddress['ip_domain'] . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['sub_name']                                      . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ip_types['ip_name']                                        . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ip_types['ip_name']                                        . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['ip_description']                                . "</td>\n";
             $output .= "  <td class=\"" . $class . "\" title=\"Notes: " . $a_inv_ipaddress['ip_notes'] . "\">" . $notes                   . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['usr_first'] . " " . $a_inv_ipaddress['usr_last']    . "</td>\n";
@@ -318,13 +318,13 @@
             $linkend   = "</a>";
 
             $q_string  = "select ip_name ";
-            $q_string .= "from ip_types ";
+            $q_string .= "from inv_ip_types ";
             $q_string .= "where ip_id = " . $a_inv_ipaddress['ip_type'] . " ";
-            $q_ip_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-            if (mysqli_num_rows($q_ip_types) > 0) {
-              $a_ip_types = mysqli_fetch_array($q_ip_types);
+            $q_inv_ip_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            if (mysqli_num_rows($q_inv_ip_types) > 0) {
+              $a_inv_ip_types = mysqli_fetch_array($q_inv_ip_types);
             } else {
-              $a_ip_types['ip_name'] = "Unassigned";
+              $a_inv_ip_types['ip_name'] = "Unassigned";
             }
 
             $class = 'ui-widget-content';
@@ -344,7 +344,7 @@
             $output .= "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_ipaddress['ip_ipv6'] . "/" . $a_inv_ipaddress['net_mask'] . $linkend . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['ip_hostname'] . "." . $a_inv_ipaddress['ip_domain']       . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['sub_name']                                            . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ip_types['ip_name']                                              . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ip_types['ip_name']                                              . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['ip_description']                                      . "</td>\n";
             $output .= "  <td class=\"" . $class . "\" title=\"Notes: " . $ip_address['ip_notes'] . "\">" . $notes                          . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['usr_first'] . " " . $a_inv_ipaddress['usr_last']          . "</td>\n";
