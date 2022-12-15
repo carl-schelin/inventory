@@ -282,11 +282,11 @@ selected to show up in the report filters. They show up at the top of the report
   <td class="ui-widget-content">Location Type: <select name="loc_type">
 <?php
   $q_string  = "select typ_id,typ_name ";
-  $q_string .= "from loc_types ";
+  $q_string .= "from inv_loc_types ";
   $q_string .= "order by typ_name ";
-  $q_loc_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_loc_types = mysqli_fetch_array($q_loc_types)) {
-    print "<option value=\"" . $a_loc_types['typ_id'] . "\">" . $a_loc_types['typ_name'] . "</option>\n";
+  $q_inv_loc_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_loc_types = mysqli_fetch_array($q_inv_loc_types)) {
+    print "<option value=\"" . $a_inv_loc_types['typ_id'] . "\">" . $a_inv_loc_types['typ_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -373,11 +373,11 @@ selected to show up in the report filters. They show up at the top of the report
   <td class="ui-widget-content">Location Type: <select name="loc_type">
 <?php
   $q_string  = "select typ_id,typ_name ";
-  $q_string .= "from loc_types ";
+  $q_string .= "from inv_loc_types ";
   $q_string .= "order by typ_name ";
-  $q_loc_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_loc_types = mysqli_fetch_array($q_loc_types)) {
-    print "<option value=\"" . $a_loc_types['typ_id'] . "\">" . $a_loc_types['typ_name'] . "</option>\n";
+  $q_inv_loc_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_loc_types = mysqli_fetch_array($q_inv_loc_types)) {
+    print "<option value=\"" . $a_inv_loc_types['typ_id'] . "\">" . $a_inv_loc_types['typ_name'] . "</option>\n";
   }
 ?>
 </select></td>

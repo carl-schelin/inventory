@@ -859,7 +859,7 @@
       $q_string .= "left join inv_cities    on inv_cities.ct_id     = inv_locations.loc_city ";
       $q_string .= "left join inv_states    on inv_states.st_id     = inv_locations.loc_state ";
       $q_string .= "left join inv_country   on inv_country.cn_id    = inv_locations.loc_country ";
-      $q_string .= "left join loc_types on loc_types.typ_id = inv_locations.loc_type ";
+      $q_string .= "left join inv_loc_types on inv_loc_types.typ_id = inv_locations.loc_type ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";
       } else {

@@ -37,7 +37,7 @@
       $q_string .= "order by ct_city,st_acronym,cn_acronym ";
 
       $city = return_Index($db, $a_inv_locations['loc_city'], $q_string);
-      $type = return_Index($db, $a_inv_locations['loc_type'], "select typ_id from loc_types order by typ_name");
+      $type = return_Index($db, $a_inv_locations['loc_type'], "select typ_id from inv_loc_types order by typ_name");
       $env  = return_Index($db, $a_inv_locations['loc_environment'], "select env_id from inv_environment order by env_name");
 
       print "document.formUpdate.loc_name.value = '"       . mysqli_real_escape_string($db, $a_inv_locations['loc_name'])       . "';\n";
