@@ -28,7 +28,7 @@
       $a_inv_sub_zones = mysqli_fetch_array($q_inv_sub_zones);
       mysqli_free_result($q_inv_sub_zones);
 
-      $subzone     = return_Index($db, $a_inv_sub_zones['sub_zone'],     "select zone_id from net_zones order by zone_zone");
+      $subzone     = return_Index($db, $a_inv_sub_zones['sub_zone'],     "select zone_id from inv_net_zones order by zone_zone");
 
       print "document.formUpdate.sub_name.value = '"        . mysqli_real_escape_string($db, $a_inv_sub_zones['sub_name'])        . "';\n";
       print "document.formUpdate.sub_description.value = '" . mysqli_real_escape_string($db, $a_inv_sub_zones['sub_description']) . "';\n";

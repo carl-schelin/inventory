@@ -77,7 +77,7 @@ which then lets you manage the IP Addresses that are assigned to this network.</
 <?php
   $q_string  = "select net_id,net_ipv4,net_mask,zone_zone,loc_name,net_vlan,net_description ";
   $q_string .= "from network ";
-  $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
+  $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = network.net_zone ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = network.net_location ";
   $q_string .= "where net_ipv4 != '' ";
   $q_string .= "order by net_ipv4 ";

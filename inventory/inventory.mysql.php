@@ -78,10 +78,10 @@
 
 # prepopulate the small tables to increase lookup time.
       $q_string  = "select zone_id,zone_zone ";
-      $q_string .= "from net_zones ";
-      $q_net_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_net_zones = mysqli_fetch_array($q_net_zones)) {
-        $net_zones[$a_net_zones['zone_id']] = $a_net_zones['zone_zone'];
+      $q_string .= "from inv_net_zones ";
+      $q_inv_net_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_net_zones = mysqli_fetch_array($q_inv_net_zones)) {
+        $net_zones[$a_inv_net_zones['zone_id']] = $a_inv_net_zones['zone_zone'];
       }
 
       $q_string  = "select med_id,med_text ";
@@ -522,9 +522,9 @@
         $q_string  = "select int_id,int_server,int_domain,int_openview,int_nagios,int_management,int_backup,int_face,int_login,";
         $q_string .= "int_sysport,int_addr,int_eth,int_mask,zone_zone,int_gate,int_switch,int_port,itp_acronym,int_virtual,med_text,int_vlan ";
         $q_string .= "from interface ";
-        $q_string .= "left join net_zones  on net_zones.zone_id = interface.int_zone ";
-        $q_string .= "left join inv_int_types   on inv_int_types.itp_id   = interface.int_type ";
-        $q_string .= "left join inv_int_media on inv_int_media.med_id = interface.int_media ";
+        $q_string .= "left join inv_net_zones  on inv_net_zones.zone_id = interface.int_zone ";
+        $q_string .= "left join inv_int_types  on inv_int_types.itp_id  = interface.int_type ";
+        $q_string .= "left join inv_int_media  on inv_int_media.med_id  = interface.int_media ";
         $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = 0 and (int_type = 1 or int_type = 2 or int_type = 12 or int_type = 16) ";
         $q_string .= "order by int_server,itp_acronym";
         $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -673,9 +673,9 @@
             $q_string  = "select int_id,int_server,int_domain,int_face,int_sysport,int_addr,int_eth,int_mask,zone_zone,int_gate,int_openview,int_login,";
             $q_string .= "int_switch,int_port,itp_acronym,int_virtual,med_text,int_vlan,int_management,int_backup,int_nagios ";
             $q_string .= "from interface ";
-            $q_string .= "left join net_zones  on net_zones.zone_id = interface.int_zone ";
-            $q_string .= "left join inv_int_types   on inv_int_types.itp_id   = interface.int_type ";
-            $q_string .= "left join inv_int_media on inv_int_media.med_id = interface.int_media ";
+            $q_string .= "left join inv_net_zones  on inv_net_zones.zone_id = interface.int_zone ";
+            $q_string .= "left join inv_int_types  on inv_int_types.itp_id  = interface.int_type ";
+            $q_string .= "left join inv_int_media  on inv_int_media.med_id  = interface.int_media ";
             $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_interface['int_id'] . " and (int_type = 1 or int_type = 2 or int_type = 12 or int_type = 16) ";
             $q_string .= "order by int_server,itp_acronym";
             $q_int_child = mysqli_query($db, $q_string);

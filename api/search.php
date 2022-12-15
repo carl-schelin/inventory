@@ -225,7 +225,7 @@
     $q_string .= "int_primary,int_switch,int_port,med_text,spd_text,dup_text,rol_text,int_management,int_backup,";
     $q_string .= "int_redundancy,int_groupname,int_virtual,zone_zone,zone_acronym,int_sysport ";
     $q_string .= "from interface ";
-    $q_string .= "left join net_zones  on net_zones.zone_id = interface.int_zone ";
+    $q_string .= "left join inv_net_zones  on inv_net_zones.zone_id = interface.int_zone ";
     $q_string .= "left join inv_int_types  on inv_int_types.itp_id  = interface.int_type ";
     $q_string .= "left join inv_int_duplex on inv_int_duplex.dup_id = interface.int_duplex ";
     $q_string .= "left join inv_int_media  on inv_int_media.med_id  = interface.int_media ";
@@ -318,7 +318,7 @@
         $q_string .= "int_primary,int_switch,int_port,med_text,spd_text,dup_text,rol_text,int_management,int_backup,";
         $q_string .= "int_redundancy,int_groupname,int_virtual,zone_zone,int_sysport ";
         $q_string .= "from interface ";
-        $q_string .= "left join net_zones  on net_zones.zone_id = interface.int_zone ";
+        $q_string .= "left join inv_net_zones  on inv_net_zones.zone_id = interface.int_zone ";
         $q_string .= "left join inv_int_types  on inv_int_types.itp_id  = interface.int_type ";
         $q_string .= "left join inv_int_duplex on inv_int_duplex.dup_id = interface.int_duplex ";
         $q_string .= "left join inv_int_media  on inv_int_media.med_id  = interface.int_media ";

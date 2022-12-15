@@ -33,7 +33,7 @@
   $ipv6 = 0;
   $q_string  = "select net_ipv4,net_ipv6,net_mask,zone_zone ";
   $q_string .= "from network ";
-  $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
+  $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = network.net_zone ";
   $q_string .= "where net_id = " . $formVars['net_id'] . " ";
   $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   if (mysqli_num_rows($q_network) > 0) {

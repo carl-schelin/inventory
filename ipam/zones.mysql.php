@@ -38,10 +38,10 @@
             "zone_user              =   " . $_SESSION['uid'];
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into net_zones set zone_id = NULL, " . $q_string;
+            $q_string = "insert into inv_net_zones set zone_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update net_zones set " . $q_string . " where zone_id = " . $formVars['id'];
+            $q_string = "update inv_net_zones set " . $q_string . " where zone_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['zone_zone']);
@@ -68,18 +68,18 @@
       $output .= "</tr>\n";
 
       $q_string  = "select zone_id,zone_zone,zone_acronym,usr_first,usr_last,zone_timestamp ";
-      $q_string .= "from net_zones ";
+      $q_string .= "from inv_net_zones ";
       $q_string .= "left join inv_users on inv_users.usr_id = zone_user ";
       $q_string .= "order by zone_zone "; 
-      $q_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_net_zones) > 0) {
-        while ($a_net_zones = mysqli_fetch_array($q_net_zones)) {
+      $q_inv_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_net_zones) > 0) {
+        while ($a_inv_net_zones = mysqli_fetch_array($q_inv_net_zones)) {
 
           $total = 0;
           $q_string  = "select ip_id,net_id ";
           $q_string .= "from inv_ipaddress ";
           $q_string .= "left join network on network.net_id = inv_ipaddress.ip_network ";
-          $q_string .= "where net_zone = " . $a_net_zones['zone_id'] . " ";
+          $q_string .= "where net_zone = " . $a_inv_net_zones['zone_id'] . " ";
           $q_inv_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_inv_ipaddress) > 0) {
             while ($a_inv_ipaddress = mysqli_fetch_array($q_inv_ipaddress)) {
@@ -87,8 +87,8 @@
             }
           }
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('zones.fill.php?id="  . $a_net_zones['zone_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\"  onclick=\"delete_line('zones.del.php?id=" . $a_net_zones['zone_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('zones.fill.php?id="  . $a_inv_net_zones['zone_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\"  onclick=\"delete_line('zones.del.php?id=" . $a_inv_net_zones['zone_id'] . "');\">";
           if ($total > 0) {
             $ipstart   = "<a href=\"ipaddress.php?network=" . $a_inv_ipaddress['net_id'] . "\" target=\"_blank\">";
           } else {
@@ -104,11 +104,11 @@
               $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>\n";
             }
           }
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_net_zones['zone_zone'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_net_zones['zone_zone'] . $linkend . "</td>\n";
           $output .= "  <td class=\"ui-widget-content delete\">"   . $ipstart   . $total                    . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content delete\">"          . $a_net_zones['zone_acronym']     . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"          . $a_net_zones['usr_first'] . " " . $a_net_zones['usr_last'] . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"          . $a_net_zones['zone_timestamp'] . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content delete\">"          . $a_inv_net_zones['zone_acronym']     . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"          . $a_inv_net_zones['usr_first'] . " " . $a_inv_net_zones['usr_last'] . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"          . $a_inv_net_zones['zone_timestamp'] . "</td>\n";
           $output .= "</tr>\n";
 
         }
@@ -120,7 +120,7 @@
 
       $output .= "</table>\n";
 
-      mysqli_free_result($q_net_zones);
+      mysqli_free_result($q_inv_net_zones);
 
       print "document.getElementById('table_mysql').innerHTML = '"   . mysqli_real_escape_string($db, $output) . "';\n\n";
 

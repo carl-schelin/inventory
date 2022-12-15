@@ -181,7 +181,7 @@
   $q_string .= "left join inventory on inventory.inv_id      = interface.int_companyid ";
   $q_string .= "left join products  on products.prod_id      = inventory.inv_product ";
   $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
-  $q_string .= "left join net_zones on net_zones.zone_id     = interface.int_zone ";
+  $q_string .= "left join inv_net_zones on inv_net_zones.zone_id     = interface.int_zone ";
   $q_string .= $where . " and int_ip6 = 0 and int_addr != '' and int_addr != '0.0.0.0' and int_addr != '127.0.0.1' and (int_type = 1 or int_type = 2 or int_type = 4 or int_type = 6) ";
   $q_string .= "order by prod_name,zone_zone ";
   $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

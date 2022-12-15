@@ -622,16 +622,16 @@
           print "selbox.options.length = 0;\n";
 
           $q_string  = "select zone_id,zone_zone ";
-          $q_string .= "from net_zones ";
+          $q_string .= "from inv_net_zones ";
           $q_string .= "order by zone_zone ";
-          $q_net_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_inv_net_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 // create the javascript bit for populating the user dropdown box.
-          while ($a_net_zones = mysqli_fetch_array($q_net_zones) ) {
-            print "if (celltext == \"" . $a_net_zones['zone_zone'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_net_zones['zone_zone']) . "\"," . $a_net_zones['zone_id'] . ",1,1);\n";
+          while ($a_inv_net_zones = mysqli_fetch_array($q_inv_net_zones) ) {
+            print "if (celltext == \"" . $a_inv_net_zones['zone_zone'] . "\") {\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_net_zones['zone_zone']) . "\"," . $a_inv_net_zones['zone_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_net_zones['zone_zone']) . "\"," . $a_net_zones['zone_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_net_zones['zone_zone']) . "\"," . $a_inv_net_zones['zone_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -648,22 +648,22 @@
           print "cell.setAttribute(\"onclick\", \"edit_Interface(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "select zone_id,zone_zone ";
-          $q_string .= "from net_zones ";
+          $q_string .= "from inv_net_zones ";
           $q_string .= "where zone_id = " . $formVars['select'] . " ";
-          $q_net_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_net_zones) > 0) {
-            $a_net_zones = mysqli_fetch_array($q_net_zones);
+          $q_inv_net_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_net_zones) > 0) {
+            $a_inv_net_zones = mysqli_fetch_array($q_inv_net_zones);
           } else {
-            $a_net_zones['zone_id']   = 0;
-            $a_net_zones['zone_zone'] = "Unassigned";
+            $a_inv_net_zones['zone_id']   = 0;
+            $a_inv_net_zones['zone_zone'] = "Unassigned";
           }
 
-          $display = $a_net_zones['zone_zone'];
+          $display = $a_inv_net_zones['zone_zone'];
 
           $q_string  = "update ";
           $q_string .= "interface ";
           $q_string .= "set ";
-          $q_string .= "int_zone = " . $a_net_zones['zone_id'] . " ";
+          $q_string .= "int_zone = " . $a_inv_net_zones['zone_id'] . " ";
           $q_string .= "where int_id = " . $formVars['id'] . " ";
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 

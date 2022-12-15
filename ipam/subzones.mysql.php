@@ -72,8 +72,8 @@
 
       $q_string  = "select sub_id,sub_name,zone_zone,usr_first,usr_last,sub_timestamp,sub_description ";
       $q_string .= "from inv_sub_zones ";
-      $q_string .= "left join inv_users on inv_users.usr_id = inv_sub_zones.sub_user ";
-      $q_string .= "left join net_zones on net_zones.zone_id = inv_sub_zones.sub_zone ";
+      $q_string .= "left join inv_users     on inv_users.usr_id      = inv_sub_zones.sub_user ";
+      $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = inv_sub_zones.sub_zone ";
       $q_string .= "order by zone_zone,sub_name "; 
       $q_inv_sub_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_inv_sub_zones) > 0) {
@@ -83,7 +83,7 @@
           $q_string  = "select ip_id,net_id ";
           $q_string .= "from inv_ipaddress ";
           $q_string .= "left join network on network.net_id = inv_ipaddress.ip_network ";
-          $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
+          $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = network.net_zone ";
           $q_string .= "where ip_subzone = " . $a_inv_sub_zones['sub_id'] . " ";
           $q_inv_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_inv_ipaddress) > 0) {
