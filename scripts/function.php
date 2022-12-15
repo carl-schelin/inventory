@@ -99,7 +99,7 @@ function changelog( $p_db, $p_serverid, $p_changed, $p_notes, $p_user, $p_table,
 
 # clear previous entries for the same task; so if a server was location changed, only record the last change
 # still testing
-  $cl_query = "update modified set " . 
+  $cl_query = "update inv_modified set " . 
     "mod_cleared = 1 " . 
     "where mod_notes  = \"" . $p_notes  . "\" " . 
       "and mod_table  = \"" . $p_table  . "\" " . 
@@ -117,7 +117,7 @@ function changelog( $p_db, $p_serverid, $p_changed, $p_notes, $p_user, $p_table,
     "mod_column       = \"" . $p_column       . "\"," .
     "mod_cleared      =   " . $p_cleared;
 
-  $query = "insert into modified set mod_id = null," . $cl_query;
+  $query = "insert into inv_modified set mod_id = null," . $cl_query;
 
   $result = mysqli_query($p_db, $query);
 
