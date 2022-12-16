@@ -893,7 +893,7 @@
         $q_string .= "from inventory ";
         $q_string .= "where inv_id = " . $formVars['id'] . " ";
         $q_invcp = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_invcp = mysqli_fetch_array($q_interface);
+        $a_invcp = mysqli_fetch_array($q_invcp);
 
         if ($a_invcp['inv_callpath']) {
           $a_invcp['inv_callpath'] = 0;
