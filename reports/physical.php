@@ -177,7 +177,7 @@
 
   $q_string  = "select inv_id,inv_name,int_eth,sw_software ";
   $q_string .= "from inventory ";
-  $q_string .= "left join interface        on interface.int_companyid        = inventory.inv_id ";
+  $q_string .= "left join inv_interface    on inv_interface.int_companyid    = inventory.inv_id ";
   $q_string .= "left join hardware         on hardware.hw_companyid          = inventory.inv_id ";
   $q_string .= "left join inv_models       on inv_models.mod_id              = hardware.hw_vendorid ";
   $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inventory.inv_id ";

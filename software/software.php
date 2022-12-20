@@ -284,11 +284,11 @@ is a small difference, you can make changes and add a new software entry.</p>
   <td class="ui-widget-content">Product: <select name="sw_product">
 <?php
   $q_string  = "select prod_id,prod_name ";
-  $q_string .= "from products ";
+  $q_string .= "from inv_products ";
   $q_string .= "order by prod_name";
-  $q_products = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_products = mysqli_fetch_array($q_products)) {
-    print "<option value=\"" . $a_products['prod_id'] . "\">" . $a_products['prod_name'] . "</option>\n";
+  $q_inv_products = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_products = mysqli_fetch_array($q_inv_products)) {
+    print "<option value=\"" . $a_inv_products['prod_id'] . "\">" . $a_inv_products['prod_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -297,12 +297,12 @@ is a small difference, you can make changes and add a new software entry.</p>
   <td class="ui-widget-content">License: <select name="sw_licenseid">
 <?php
   $q_string  = "select lic_id,lic_vendor,lic_product,prj_name ";
-  $q_string .= "from licenses ";
-  $q_string .= "left join projects on projects.prj_id = licenses.lic_project ";
+  $q_string .= "from inv_licenses ";
+  $q_string .= "left join projects on projects.prj_id = inv_licenses.lic_project ";
   $q_string .= "order by prj_name,lic_product,lic_vendor";
-  $q_licenses = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_licenses = mysqli_fetch_array($q_licenses)) {
-    print "<option value=\"" . $a_licenses['lic_id'] . "\">" . $a_licenses['prj_name'] . " (" . $a_licenses['lic_vendor'] . " " . $a_licenses['lic_product'] . ")</option>\n";
+  $q_inv_licenses = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_licenses = mysqli_fetch_array($q_inv_licenses)) {
+    print "<option value=\"" . $a_inv_licenses['lic_id'] . "\">" . $a_inv_licenses['prj_name'] . " (" . $a_inv_licenses['lic_vendor'] . " " . $a_inv_licenses['lic_product'] . ")</option>\n";
   }
 ?>
 </select></td>
@@ -388,11 +388,11 @@ is a small difference, you can make changes and add a new software entry.</p>
   <td class="ui-widget-content">Product: <select name="sw_product">
 <?php
   $q_string  = "select prod_id,prod_name ";
-  $q_string .= "from products ";
+  $q_string .= "from inv_products ";
   $q_string .= "order by prod_name";
-  $q_products = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_products = mysqli_fetch_array($q_products)) {
-    print "<option value=\"" . $a_products['prod_id'] . "\">" . $a_products['prod_name'] . "</option>\n";
+  $q_inv_products = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_products = mysqli_fetch_array($q_inv_products)) {
+    print "<option value=\"" . $a_inv_products['prod_id'] . "\">" . $a_inv_products['prod_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -401,12 +401,12 @@ is a small difference, you can make changes and add a new software entry.</p>
   <td class="ui-widget-content">License: <select name="sw_licenseid">
 <?php
   $q_string  = "select lic_id,lic_vendor,lic_product,prj_name ";
-  $q_string .= "from licenses ";
-  $q_string .= "left join projects on projects.prj_id = licenses.lic_project ";
+  $q_string .= "from inv_licenses ";
+  $q_string .= "left join projects on projects.prj_id = inv_licenses.lic_project ";
   $q_string .= "order by prj_name,lic_product,lic_vendor";
-  $q_licenses = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_licenses = mysqli_fetch_array($q_licenses)) {
-    print "<option value=\"" . $a_licenses['lic_id'] . "\">" . $a_licenses['prj_name'] . " (" . $a_licenses['lic_vendor'] . " " . $a_licenses['lic_product'] . ")</option>\n";
+  $q_inv_licenses = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_licenses = mysqli_fetch_array($q_inv_licenses)) {
+    print "<option value=\"" . $a_inv_licenses['lic_id'] . "\">" . $a_inv_licenses['prj_name'] . " (" . $a_inv_licenses['lic_vendor'] . " " . $a_inv_licenses['lic_product'] . ")</option>\n";
   }
 ?>
 </select></td>

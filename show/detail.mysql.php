@@ -21,7 +21,7 @@
   $q_string .= "loc_addr2,loc_suite,ct_city,st_acronym,loc_zipcode,cn_acronym,loc_details,prod_name,prj_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
-  $q_string .= "left join products      on products.prod_id     = inventory.inv_product ";
+  $q_string .= "left join inv_products  on inv_products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects      on projects.prj_id      = inventory.inv_project ";
   $q_string .= "left join inv_groups    on inv_groups.grp_id    = inventory.inv_manager ";
   $q_string .= "left join inv_cities    on inv_cities.ct_id     = inv_locations.loc_city ";
@@ -205,8 +205,8 @@
 
     $q_string  = "select inv_id,inv_name,inv_function,grp_name,inv_unit,inv_appadmin,prod_name ";
     $q_string .= "from inventory ";
-    $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
-    $q_string .= "left join products on products.prod_id = inventory.inv_product ";
+    $q_string .= "left join inv_groups   on inv_groups.grp_id    = inventory.inv_manager ";
+    $q_string .= "left join inv_products on inv_products.prod_id = inventory.inv_product ";
     $q_string .= "where inv_companyid = " . $formVars['id'] . " and inv_status = 0 ";
     $q_string .= "order by inv_unit ";
     $q_children = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));

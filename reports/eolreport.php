@@ -76,11 +76,11 @@
       $product = $and . " inv_product = " . $formVars['product'] . " ";
 
       $q_string  = "select prod_name ";
-      $q_string .= "from products ";
+      $q_string .= "from inv_products ";
       $q_string .= "where prod_id = " . $formVars['product'] . " ";
-      $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_products = mysqli_fetch_array($q_products);
-      $product_name = $a_products['prod_name'];
+      $q_inv_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_products = mysqli_fetch_array($q_inv_products);
+      $product_name = $a_inv_products['prod_name'];
 
       if ($formVars['project'] > 0) {
         $product .= " and inv_project = " . $formVars['project'];
@@ -290,8 +290,8 @@
   $today = date('Y-m-d');
 
   $q_string  = "select prod_id,prod_name,COUNT(inv_id) ";
-  $q_string .= "from products ";
-  $q_string .= "left join inventory on inventory.inv_product = products.prod_id ";
+  $q_string .= "from inv_products ";
+  $q_string .= "left join inventory on inventory.inv_product = inv_products.prod_id ";
   $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city ";
@@ -300,8 +300,8 @@
   $q_string .= "left join inv_groups    on inv_groups.grp_id         = inventory.inv_manager ";
   $q_string .= $group . $product . $inwork . $location . $type . " ";
   $q_string .= "group by prod_name ";
-  $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_products = mysqli_fetch_array($q_products)) {
+  $q_inv_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_products = mysqli_fetch_array($q_inv_products)) {
 
     $sweol = 0;
     $swuncounted = 0;
@@ -309,7 +309,7 @@
     $hwuncounted = 0;
     $hwtotal = 0;
     $hardware = 0;
-    $totalservers += $a_products['COUNT(inv_id)'];
+    $totalservers += $a_inv_products['COUNT(inv_id)'];
 
     if ($formVars['product'] > 0) {
       $q_string  = "select inv_id,inv_name,inv_virtual ";
@@ -435,7 +435,7 @@
       $q_string .= "from software ";
       $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
       $q_string .= "left join inventory on inventory.inv_id = inv_svr_software.svr_companyid ";
-      $q_string .= "where inv_product = " . $a_products['prod_id'] . " and inv_status = 0 ";
+      $q_string .= "where inv_product = " . $a_inv_products['prod_id'] . " and inv_status = 0 ";
       if ($formVars['group'] > 0) {
         $q_string .= "and inv_manager = " . $formVars['group'] . " ";
       }
@@ -456,7 +456,7 @@
       $q_string .= "left join inv_models  on inv_models.mod_id  = hardware.hw_vendorid ";
       $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
       $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
-      $q_string .= "where inv_product = " . $a_products['prod_id'] . " and inv_status = 0 and hw_primary = 1 and hw_deleted = 0 and mod_virtual = 0 ";
+      $q_string .= "where inv_product = " . $a_inv_products['prod_id'] . " and inv_status = 0 and hw_primary = 1 and hw_deleted = 0 and mod_virtual = 0 ";
       if ($formVars['group'] > 0) {
         $q_string .= "and inv_manager = " . $formVars['group'] . " ";
       }
@@ -490,7 +490,7 @@
         }
       }
 
-      $linkstart = "<a href=\"" . $Reportroot . "/eolreport.php" . $argument . $ampersand . "product=" . $a_products['prod_id'] . "\" target=\"_blank\">";
+      $linkstart = "<a href=\"" . $Reportroot . "/eolreport.php" . $argument . $ampersand . "product=" . $a_inv_products['prod_id'] . "\" target=\"_blank\">";
       $linkend = "</a>";
 
       $class = "ui-widget-content";
@@ -503,8 +503,8 @@
 
       if ($formVars['csv'] == 'false') {
         print "<tr>\n";
-        print "  <td class=\"" . $class . "\">"        . $linkstart . $a_products['prod_name'] . $linkend   . "</td>\n";
-        print "  <td class=\"" . $class . " delete\">"              . $a_products['COUNT(inv_id)']          . "</td>\n";
+        print "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_products['prod_name'] . $linkend   . "</td>\n";
+        print "  <td class=\"" . $class . " delete\">"              . $a_inv_products['COUNT(inv_id)']          . "</td>\n";
         print "  <td class=\"" . $class . " delete\">"              . $sweol                                . "</td>\n";
         print "  <td class=\"" . $class . " delete\">"              . $swuncounted                          . "</td>\n";
         print "  <td class=\"" . $class . " delete\">"              . $hwtotal                              . "</td>\n";
@@ -512,8 +512,8 @@
         print "  <td class=\"" . $class . " delete\">"              . $hwuncounted                          . "</td>\n";
         print "</tr>\n";
       } else {
-        print "\"" . $a_products['prod_name']       . "\",";
-        print "\"" . $a_products['COUNT(inv_id)']   . "\",";
+        print "\"" . $a_inv_products['prod_name']       . "\",";
+        print "\"" . $a_inv_products['COUNT(inv_id)']   . "\",";
         print "\"" . $sweol                         . "\",";
         print "\"" . $swuncounted                   . "\",";
         print "\"" . $hwtotal                       . "\",";

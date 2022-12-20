@@ -115,7 +115,7 @@
     $q_string .= "left join inv_service on inv_service.svc_id = inventory.inv_class ";
   }
   if ($formVars['product'] != 'no') {
-    $q_string .= "left join products on products.prod_id = inventory.inv_product ";
+    $q_string .= "left join inv_products on inv_products.prod_id = inventory.inv_product ";
   }
   if ($formVars['admin'] != 'no') {
     $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_appadmin ";
@@ -131,12 +131,12 @@
 
     if ($formVars['zone'] != '') {
       $q_string  = "select int_zone ";
-      $q_string .= "from interface ";
-      $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = interface.int_zone ";
+      $q_string .= "from inv_interface ";
+      $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = inv_interface.int_zone ";
       $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and zone_zone = \"" . $formVars['zone'] . "\" ";
-      $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-      if (mysqli_num_rows($q_interface) > 0) {
+      if (mysqli_num_rows($q_inv_interface) > 0) {
         $servers[$a_inventory['inv_name']] = new Server();
         $servers[$a_inventory['inv_name']]->servername = $a_inventory['inv_name'];
       }

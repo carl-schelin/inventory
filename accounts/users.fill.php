@@ -33,7 +33,7 @@
 
       $groups   = return_Index($db, $a_inv_users['usr_group'],    "select grp_id from inv_groups where grp_disabled = 0 order by grp_name");
       $disabled = $a_inv_users['usr_disabled'];
-      $levels   = return_Index($db, $a_inv_users['usr_level'],    "select lvl_id from levels where lvl_disabled = 0 order by lvl_id");
+      $levels   = return_Index($db, $a_inv_users['usr_level'],    "select lvl_id from inv_levels where lvl_disabled = 0 order by lvl_id");
       $theme    = return_Index($db, $a_inv_users['usr_theme'],    "select theme_id from inv_themes order by theme_title");
       $manager  = return_Index($db, $a_inv_users['usr_manager'],  "select usr_id from inv_users where usr_disabled = 0 order by usr_last,usr_first");
       $title    = return_Index($db, $a_inv_users['usr_title'],    "select tit_id from inv_titles order by tit_name");

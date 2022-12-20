@@ -29,7 +29,7 @@
   $q_string .= "from inventory ";
   $q_string .= "left join inv_timezones on inv_timezones.zone_id = inventory.inv_zone ";
   $q_string .= "left join inv_service   on inv_service.svc_id    = inventory.inv_class ";
-  $q_string .= "left join products  on products.prod_id  = inventory.inv_product ";
+  $q_string .= "left join inv_products  on inv_products.prod_id  = inventory.inv_product ";
   $q_string .= "left join projects  on projects.prj_id   = inventory.inv_project ";
   $q_string .= "left join inv_locations on inv_locations.loc_id  = inventory.inv_location ";
   $q_string .= "left join inv_groups    on inv_groups.grp_id     = inventory.inv_manager ";
@@ -131,16 +131,16 @@
   $interfaces = '';
   $zone = '';
   $q_string  = "select int_server,zone_zone ";
-  $q_string .= "from interface ";
-  $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = interface.int_zone ";
+  $q_string .= "from inv_interface ";
+  $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = inv_interface.int_zone ";
   $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_type = 1 || int_type = 2 || int_type = 6)";
-  $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_interface = mysqli_fetch_array($q_interface)) {
-    if ($a_interface['zone_zone'] != '') {
-      $zone = $a_interface['zone_zone'];
+  $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
+    if ($a_inv_interface['zone_zone'] != '') {
+      $zone = $a_inv_interface['zone_zone'];
     }
     
-    $interfaces .= "," . $a_interface['int_server'] . ",";
+    $interfaces .= "," . $a_inv_interface['int_server'] . ",";
   }
   if ($zone == '') {
     $zone = 'Unknown';

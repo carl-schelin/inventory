@@ -154,13 +154,13 @@
       }
 
       $q_string  = "select int_server,int_companyid,int_addr,int_eth,itp_name,grp_name,IFNULL(inv_appadmin,0) as inv_appadmin,inv_status,inv_function,inv_project,prj_name,inv_product,prod_name ";
-      $q_string .= "from interface ";
-      $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
+      $q_string .= "from inv_interface ";
+      $q_string .= "left join inventory on inventory.inv_id = inv_interface.int_companyid ";
       $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
       $q_string .= "left join inv_cities    on inv_cities.ct_id     = inv_locations.loc_city ";
       $q_string .= "left join inv_states    on inv_states.st_id     = inv_locations.loc_state ";
-      $q_string .= "left join inv_int_types   on inv_int_types.itp_id   = interface.int_type ";
-      $q_string .= "left join products  on products.prod_id = inventory.inv_product ";
+      $q_string .= "left join inv_int_types on inv_int_types.itp_id = inv_interface.int_type ";
+      $q_string .= "left join inv_products  on inv_products.prod_id = inventory.inv_product ";
       $q_string .= "left join projects  on projects.prj_id  = inventory.inv_project ";
       $q_string .= "left join inv_groups    on inv_groups.grp_id    = inventory.inv_manager ";
       if ($formVars['retired'] == 'true') {
@@ -169,41 +169,41 @@
         $q_string .= "where inv_status = 0 and " . $search_on . " ";
       }
       $q_string .= $orderby;
-      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_interface) > 0) {
-        while ($a_interface = mysqli_fetch_array($q_interface)) {
+      $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_interface) > 0) {
+        while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
 
           $q_string  = "select grp_name ";
           $q_string .= "from inv_groups ";
-          $q_string .= "where grp_id = " . $a_interface['inv_appadmin'] . " ";
+          $q_string .= "where grp_id = " . $a_inv_interface['inv_appadmin'] . " ";
           $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
-          $editstart     = "<a href=\"" . $Editroot   . "/inventory.php?server=" . $a_interface['int_companyid'] . "\" target=\"_blank\">" . $editpencil . "</a> ";
-          $linkstart     = "<a href=\"" . $Showroot   . "/inventory.php?server=" . $a_interface['int_companyid'] . "\" target=\"_blank\">";
-          $linkprjstart  = "<a href=\"" . $Reportroot . "/show.project.php?id="  . $a_interface['inv_project']   . "\" target=\"_blank\">";
-          $linkprodstart = "<a href=\"" . $Reportroot . "/show.product.php?id="  . $a_interface['inv_product']   . "\" target=\"_blank\">";
+          $editstart     = "<a href=\"" . $Editroot   . "/inventory.php?server=" . $a_inv_interface['int_companyid'] . "\" target=\"_blank\">" . $editpencil . "</a> ";
+          $linkstart     = "<a href=\"" . $Showroot   . "/inventory.php?server=" . $a_inv_interface['int_companyid'] . "\" target=\"_blank\">";
+          $linkprjstart  = "<a href=\"" . $Reportroot . "/show.project.php?id="  . $a_inv_interface['inv_project']   . "\" target=\"_blank\">";
+          $linkprodstart = "<a href=\"" . $Reportroot . "/show.product.php?id="  . $a_inv_interface['inv_product']   . "\" target=\"_blank\">";
           $linkend       = "</a>";
 
           $class = "ui-widget-content";
-          if ($a_interface['inv_status']) {
+          if ($a_inv_interface['inv_status']) {
             $class = "ui-state-error";
           }
 
           if ($formVars['csv']) {
-            $output .= "\"" . $a_interface['int_server']   . "\",";
-            $output .= "\"" . $a_interface['inv_function'] . "\",";
-            $output .= "\"" . $a_interface['prj_name']     . "\",";
-            $output .= "\"" . $a_interface['prod_name']    . "\",";
-            $output .= "\"" . $a_interface['grp_name']     . "\",";
+            $output .= "\"" . $a_inv_interface['int_server']   . "\",";
+            $output .= "\"" . $a_inv_interface['inv_function'] . "\",";
+            $output .= "\"" . $a_inv_interface['prj_name']     . "\",";
+            $output .= "\"" . $a_inv_interface['prod_name']    . "\",";
+            $output .= "\"" . $a_inv_interface['grp_name']     . "\",";
             $output .= "\"" . $a_inv_groups['grp_name']        . "\"<br>";
           } else {
             $output .= "<tr>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $editstart . $linkstart     . $a_interface['int_server']   . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"              . $linknwstart   . $a_interface['inv_function'] . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"              . $linkprjstart  . $a_interface['prj_name']     . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"              . $linkprodstart . $a_interface['prod_name']    . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"              . $linkstart     . $a_interface['grp_name']     . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $editstart . $linkstart     . $a_inv_interface['int_server']   . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $linknwstart   . $a_inv_interface['inv_function'] . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $linkprjstart  . $a_inv_interface['prj_name']     . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $linkprodstart . $a_inv_interface['prod_name']    . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $linkstart     . $a_inv_interface['grp_name']     . $linkend . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"              . $linkstart     . $a_inv_groups['grp_name']        . $linkend . "</td>\n";
             $output .= "</tr>\n";
           }
@@ -298,12 +298,12 @@
       }
 
       $q_string  = "select int_server,int_companyid,int_addr,int_eth,itp_name,grp_name,IFNULL(inv_appadmin, 0) as inv_appadmin,inv_status ";
-      $q_string .= "from interface ";
-      $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
+      $q_string .= "from inv_interface ";
+      $q_string .= "left join inventory on inventory.inv_id = inv_interface.int_companyid ";
       $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
       $q_string .= "left join inv_cities    on inv_cities.ct_id     = inv_locations.loc_city ";
       $q_string .= "left join inv_states    on inv_states.st_id     = inv_locations.loc_state ";
-      $q_string .= "left join inv_int_types on inv_int_types.itp_id = interface.int_type ";
+      $q_string .= "left join inv_int_types on inv_int_types.itp_id = inv_interface.int_type ";
       $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";
@@ -311,39 +311,39 @@
         $q_string .= "where inv_status = 0 and " . $search_on . " ";
       }
       $q_string .= $orderby;
-      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_interface) > 0) {
-        while ($a_interface = mysqli_fetch_array($q_interface)) {
+      $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_interface) > 0) {
+        while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
 
           $q_string  = "select grp_name ";
           $q_string .= "from inv_groups ";
-          $q_string .= "where grp_id = " . $a_interface['inv_appadmin'] . " ";
+          $q_string .= "where grp_id = " . $a_inv_interface['inv_appadmin'] . " ";
           $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
-          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_interface['int_companyid'] . "\" target=\"_blank\">";
-          $linknwstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_interface['int_companyid'] . "#network\" target=\"_blank\">";
+          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inv_interface['int_companyid'] . "\" target=\"_blank\">";
+          $linknwstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inv_interface['int_companyid'] . "#network\" target=\"_blank\">";
           $linkend   = "</a>";
 
           $class = "ui-widget-content";
-          if ($a_interface['inv_status']) {
+          if ($a_inv_interface['inv_status']) {
             $class = "ui-state-error";
           }
 
           if ($formVars['csv']) {
-            $output .= "\"" . $a_interface['int_addr']   . "\",";
-            $output .= "\"" . $a_interface['int_eth']    . "\",";
-            $output .= "\"" . $a_interface['itp_name']   . "\",";
-            $output .= "\"" . $a_interface['int_server'] . "\",";
-            $output .= "\"" . $a_interface['grp_name']   . "\",";
+            $output .= "\"" . $a_inv_interface['int_addr']   . "\",";
+            $output .= "\"" . $a_inv_interface['int_eth']    . "\",";
+            $output .= "\"" . $a_inv_interface['itp_name']   . "\",";
+            $output .= "\"" . $a_inv_interface['int_server'] . "\",";
+            $output .= "\"" . $a_inv_interface['grp_name']   . "\",";
             $output .= "\"" . $a_inv_groups['grp_name']      . "\"<br>";
           } else {
             $output .= "<tr>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $linknwstart . $a_interface['int_addr']   . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $linknwstart . $a_interface['int_eth']    . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $linknwstart . $a_interface['itp_name']   . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $linkstart   . $a_interface['int_server'] . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $linkstart   . $a_interface['grp_name']   . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $linknwstart . $a_inv_interface['int_addr']   . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $linknwstart . $a_inv_interface['int_eth']    . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $linknwstart . $a_inv_interface['itp_name']   . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $linkstart   . $a_inv_interface['int_server'] . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $linkstart   . $a_inv_interface['grp_name']   . $linkend . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">" . $linkstart   . $a_inv_groups['grp_name']      . $linkend . "</td>\n";
             $output .= "</tr>\n";
           }
@@ -1215,7 +1215,7 @@
       $q_string  = "select inv_name,pkg_inv_id,pkg_name,pkg_os,inv_status,prod_name,grp_name,IFNULL(inv_appadmin, 0) as inv_appadmin ";
       $q_string .= "from inv_packages ";
       $q_string .= "left join inventory on inventory.inv_id = inv_packages.pkg_inv_id ";
-      $q_string .= "left join products  on products.prod_id = inventory.inv_product ";
+      $q_string .= "left join inv_products  on inv_products.prod_id = inventory.inv_product ";
       $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
       $q_string .= "left join inv_cities    on inv_cities.ct_id     = inv_locations.loc_city ";
       $q_string .= "left join inv_states    on inv_states.st_id     = inv_locations.loc_state ";

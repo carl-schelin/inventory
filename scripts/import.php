@@ -62,17 +62,17 @@
 # check the interface table
         print "can't find it in the inventory, checking interface names... ";
         $q_string  = "select int_companyid ";
-        $q_string .= "from interface ";
-        $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
+        $q_string .= "from inv_interface ";
+        $q_string .= "left join inventory on inventory.inv_id = inv_interface.int_companyid ";
         $q_string .= "where inv_status = 0 and inv_ssh = 1 and int_server = '" . $value[0] . "' ";
         $q_string .= "group by int_companyid";
-        $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_interface = mysqli_fetch_array($q_interface);
+        $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_inv_interface = mysqli_fetch_array($q_inv_interface);
 
-        if ($a_interface['int_companyid'] != '') {
+        if ($a_inv_interface['int_companyid'] != '') {
           $q_string  = "select inv_name,inv_id,inv_manager,inv_appadmin,inv_product ";
           $q_string .= "from inventory ";
-          $q_string .= "where inv_id = " . $a_interface['int_companyid'];
+          $q_string .= "where inv_id = " . $a_inv_interface['int_companyid'];
           $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           $a_inventory = mysqli_fetch_array($q_inventory);
         }
@@ -184,7 +184,7 @@
             $skip = 'no';
 
 # clear all the old 'int_hostname' entries as it'll break things.
-            $q_string = "update interface set int_hostname = 0 where int_companyid = " . $a_inventory['inv_id'] . " ";
+            $q_string = "update inv_interface set int_hostname = 0 where int_companyid = " . $a_inventory['inv_id'] . " ";
             if ($debug == 'no') {
               $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
             }
@@ -193,7 +193,7 @@
             }
 
 # then no matter what, only the actual hostname will be marked as a hostname as there should be just one hostname entry in the file.
-            $q_string = "update interface set int_hostname = 1 where int_companyid = " . $a_inventory['inv_id'] . " and int_server = \"" . $value[3] . "\" ";
+            $q_string = "update inv_interface set int_hostname = 1 where int_companyid = " . $a_inventory['inv_id'] . " and int_server = \"" . $value[3] . "\" ";
             if ($debug == 'no') {
               $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
             }
@@ -213,7 +213,7 @@
 
 # update the table.
             if (isset($fqdn[1])) {
-              $q_string = "update interface set int_domain = \"" . $fqdn[1] . "\"  where int_companyid = " . $a_inventory['inv_id'] . " and int_server = \"" . $fqdn[0] . "\" ";
+              $q_string = "update inv_interface set int_domain = \"" . $fqdn[1] . "\"  where int_companyid = " . $a_inventory['inv_id'] . " and int_server = \"" . $fqdn[0] . "\" ";
               if ($debug == 'no') {
                 $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
               }
@@ -1396,14 +1396,14 @@
 $value[11] = '';
               if ($value[11] != '') {
                 $q_string  = "select int_id ";
-                $q_string .= "from interface ";
+                $q_string .= "from inv_interface ";
                 $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_face = '" . $value[11] . "' ";
-                $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-                if (mysqli_num_rows($q_interface) == 0) {
+                $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+                if (mysqli_num_rows($q_inv_interface) == 0) {
                   $value[11] = 0;
                 } else {
-                  $a_interface = mysqli_fetch_array($q_interface);
-                  $value[11] = $a_interface['int_id'];
+                  $a_inv_interface = mysqli_fetch_array($q_inv_interface);
+                  $value[11] = $a_inv_interface['int_id'];
 
                   $redundancy = 0;
                   if ($os == 'HP-UX') {
@@ -1417,7 +1417,7 @@ $value[11] = '';
                   }
 
                   $q_string  = "update ";
-                  $q_string .= "interface ";
+                  $q_string .= "inv_interface ";
                   $q_string .= "set ";
                   $q_string .= "int_virtual = 1,";
                   $q_string .= "int_redundancy = " . $redundancy . " ";
@@ -1431,13 +1431,13 @@ $value[11] = '';
 
 # see if the address exists
               $q_string  = "select int_id ";
-              $q_string .= "from interface ";
+              $q_string .= "from inv_interface ";
               $q_string .= "where (int_addr = '" . $value[4] . "' or int_eth = '" . $value[7] . "') ";
               $q_string .= "and int_face = '" . $value[3] . "' ";
               $q_string .= "and int_companyid = " . $a_inventory['inv_id'] . " ";
               $q_string .= "and int_ip6 = " . $value[5] . " ";
-              $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              $a_interface = mysqli_fetch_array($q_interface);
+              $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              $a_inv_interface = mysqli_fetch_array($q_inv_interface);
 
 # if it's an actual IP address, convert to digital CIDR value
               if (filter_var($value[6], FILTER_VALIDATE_IP)) {
@@ -1456,7 +1456,7 @@ $value[11] = '';
 # put in once validation is done
 #              "int_user      =   " . '1'                    . "," . 
               $query  = "int_companyid =   " . $a_inventory['inv_id'] . ",";
-              if ($a_interface['int_id'] == '') {
+              if ($a_inv_interface['int_id'] == '') {
                 if ($value[3] == 'lo' || $value[3] == 'lo0') {
                   $query .= "int_server    = \"" . "localhost"            . "\",";
                   $query .= "int_type      =   " . "7"                    . ",";
@@ -1493,12 +1493,12 @@ $value[11] = '';
 
               if ($a_interface['int_id'] == '') {
 # add a server name/interface name if the interface doesn't exist
-                $q_string = "insert into interface set int_id = null," . $query;
+                $q_string = "insert into inv_interface set int_id = null," . $query;
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
               } else {
-                $q_string = "update interface set " . $query . " where int_id = " . $a_interface['int_id'];
+                $q_string = "update inv_interface set " . $query . " where int_id = " . $a_inv_interface['int_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
@@ -1534,13 +1534,13 @@ $value[11] = '';
               $a_inv_routing = mysqli_fetch_array($q_inv_routing);
 
               $q_string  = "select int_id ";
-              $q_string .= "from interface ";
+              $q_string .= "from inv_interface ";
               $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_face = '" . $value[7] . "' and int_ip6 = " . $value[3] . " ";
-              $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              $a_interface = mysqli_fetch_array($q_interface);
+              $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              $a_inv_interface = mysqli_fetch_array($q_inv_interface);
 
-              if ($a_interface['int_id'] == '') {
-                $a_interface['int_id'] = 0;
+              if ($a_inv_interface['int_id'] == '') {
+                $a_inv_interface['int_id'] = 0;
               }
 
 # if it's an actual IP address, convert to digital CIDR value
@@ -1565,7 +1565,7 @@ $value[11] = '';
                 "route_gateway   = \"" . $value[5]              . "\"," . 
                 "route_mask      =   " . $mask                  . "," . 
                 "route_ipv6      =   " . $value[3]              . "," . 
-                "route_interface =   " . $a_interface['int_id'] . "," . 
+                "route_interface =   " . $a_inv_interface['int_id'] . "," . 
                 "route_verified  =   " . '1'                    . "," . 
                 "route_user      =   " . '1'                    . "," . 
                 "route_static    =   " . $value[8]              . "," . 

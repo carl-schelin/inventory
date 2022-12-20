@@ -255,63 +255,63 @@
   $q_string  = "select int_id,int_companyid,int_server,int_face,int_sysport,int_eth,int_addr,int_mask,";
   $q_string .= "sub_zone,int_gate,int_switch,int_port,itp_acronym,int_update,int_verified,int_primary,";
   $q_string .= "inv_manager,inv_status ";
-  $q_string .= "from interface ";
-  $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
-  $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_id ";
-  $q_string .= "left join inv_cities on inv_cities.ct_id = inv_locations.loc_city ";
-  $q_string .= "left join inv_states on inv_states.st_id = inv_locations.loc_state ";
-  $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join inv_sub_zones on inv_sub_zones.sub_id = interface.int_zone ";
-  $q_string .= "left join inv_int_types on inv_int_types.itp_id = interface.int_type ";
+  $q_string .= "from inv_interface ";
+  $q_string .= "left join inventory     on inventory.inv_id      = inv_interface.int_companyid ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id  = inventory.inv_id ";
+  $q_string .= "left join inv_cities    on inv_cities.ct_id      = inv_locations.loc_city ";
+  $q_string .= "left join inv_states    on inv_states.st_id      = inv_locations.loc_state ";
+  $q_string .= "left join hardware      on hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "left join inv_sub_zones on inv_sub_zones.sub_id  = inv_interface.int_zone ";
+  $q_string .= "left join inv_int_types on inv_int_types.itp_id  = inv_interface.int_type ";
   $q_string .= $where;
   $q_string .= $orderby;
-  $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_interface = mysqli_fetch_array($q_interface)) {
+  $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
 
-    if ($a_interface['int_primary']) {
+    if ($a_inv_interface['int_primary']) {
       $class = " class=\"ui-state-highlight\"";
     } else {
       $class = " class=\"ui-widget-content\"";
     }
 
-    if ($a_interface['int_verified']) {
+    if ($a_inv_interface['int_verified']) {
       $checked = "&#x2713;&nbsp;";
     } else {
       $checked = '';
     }
 
-    if ($a_interface['int_eth'] == '00:00:00:00:00:00') {
+    if ($a_inv_interface['int_eth'] == '00:00:00:00:00:00') {
       $showmac = '';
     } else {
-      $showmac = $a_interface['int_eth'];
+      $showmac = $a_inv_interface['int_eth'];
     }
 
     if ($formVars['csv'] == 'false') {
       print "<tr>\n";
-      print "  <td" . $class . ">" . $a_interface['int_server']                    . "</td>\n";
-      print "  <td" . $class . ">" . $a_interface['int_face']                      . "</td>\n";
-      print "  <td" . $class . ">" . $a_interface['int_sysport']                   . "</td>\n";
+      print "  <td" . $class . ">" . $a_inv_interface['int_server']                    . "</td>\n";
+      print "  <td" . $class . ">" . $a_inv_interface['int_face']                      . "</td>\n";
+      print "  <td" . $class . ">" . $a_inv_interface['int_sysport']                   . "</td>\n";
       print "  <td" . $class . ">" . $showmac                                      . "</td>\n";
-      print "  <td" . $class . ">" . $a_interface['int_addr'] . '/' . $a_interface['int_mask'] . "</td>\n";
-      print "  <td" . $class . ">" . $a_interface['sub_name']                     . "</td>\n";
-      print "  <td" . $class . ">" . $a_interface['int_gate']                      . "</td>\n";
-      print "  <td" . $class . ">" . $a_interface['int_switch']                    . "</td>\n";
-      print "  <td" . $class . ">" . $a_interface['int_port']                      . "</td>\n";
-      print "  <td" . $class . ">" . $a_interface['itp_acronym']                   . "</td>\n";
-      print "  <td" . $class . ">" . $a_interface['int_update']         . $checked . "</td>\n";
+      print "  <td" . $class . ">" . $a_inv_interface['int_addr'] . '/' . $a_inv_interface['int_mask'] . "</td>\n";
+      print "  <td" . $class . ">" . $a_inv_interface['sub_name']                     . "</td>\n";
+      print "  <td" . $class . ">" . $a_inv_interface['int_gate']                      . "</td>\n";
+      print "  <td" . $class . ">" . $a_inv_interface['int_switch']                    . "</td>\n";
+      print "  <td" . $class . ">" . $a_inv_interface['int_port']                      . "</td>\n";
+      print "  <td" . $class . ">" . $a_inv_interface['itp_acronym']                   . "</td>\n";
+      print "  <td" . $class . ">" . $a_inv_interface['int_update']         . $checked . "</td>\n";
       print "</tr>\n";
     } else {
-      print "\"" . $a_interface['int_server'] . "\",";
-      print "\"" . $a_interface['int_face'] . "\",";
-      print "\"" . $a_interface['int_sysport'] . "\",";
+      print "\"" . $a_inv_interface['int_server'] . "\",";
+      print "\"" . $a_inv_interface['int_face'] . "\",";
+      print "\"" . $a_inv_interface['int_sysport'] . "\",";
       print "\"" . $showmac . "\",";
-      print "\"" . $a_interface['int_addr'] . '/' . $a_interface['int_mask'] . "\",";
-      print "\"" . $a_interface['sub_name'] . "\",";
-      print "\"" . $a_interface['int_gate'] . "\",";
-      print "\"" . $a_interface['int_switch'] . "\",";
-      print "\"" . $a_interface['int_port'] . "\",";
-      print "\"" . $a_interface['itp_acronym'] . "\",";
-      print "\"" . $a_interface['int_update'] . "\"";
+      print "\"" . $a_inv_interface['int_addr'] . '/' . $a_inv_interface['int_mask'] . "\",";
+      print "\"" . $a_inv_interface['sub_name'] . "\",";
+      print "\"" . $a_inv_interface['int_gate'] . "\",";
+      print "\"" . $a_inv_interface['int_switch'] . "\",";
+      print "\"" . $a_inv_interface['int_port'] . "\",";
+      print "\"" . $a_inv_interface['itp_acronym'] . "\",";
+      print "\"" . $a_inv_interface['int_update'] . "\"";
       print "</br>\n";
     }
 

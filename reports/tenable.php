@@ -170,38 +170,38 @@
   print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=int_addr"    . $passthrough . "\">IP Addresses</a></th>\n";
   print "</tr>\n";
 
-#select int_addr from interface left join inventory on inv_id = int_companyid where inv_status = 0 and inv_manager = 1 and int_ip6 = 0 and int_type != 7 and inv_product = 134 order by int_addr;
+#select int_addr from inv_interface left join inventory on inv_id = int_companyid where inv_status = 0 and inv_manager = 1 and int_ip6 = 0 and int_type != 7 and inv_product = 134 order by int_addr;
 
   $product = '';
   $zone = '';
   $prodip = '';
 
   $q_string  = "select inv_id,int_addr,prod_name,zone_zone ";
-  $q_string .= "from interface ";
-  $q_string .= "left join inventory on inventory.inv_id      = interface.int_companyid ";
-  $q_string .= "left join products  on products.prod_id      = inventory.inv_product ";
+  $q_string .= "from inv_interface ";
+  $q_string .= "left join inventory on inventory.inv_id      = inv_interface.int_companyid ";
+  $q_string .= "left join inv_products  on inv_products.prod_id      = inventory.inv_product ";
   $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
-  $q_string .= "left join inv_net_zones on inv_net_zones.zone_id     = interface.int_zone ";
+  $q_string .= "left join inv_net_zones on inv_net_zones.zone_id     = inv_interface.int_zone ";
   $q_string .= $where . " and int_ip6 = 0 and int_addr != '' and int_addr != '0.0.0.0' and int_addr != '127.0.0.1' and (int_type = 1 or int_type = 2 or int_type = 4 or int_type = 6) ";
   $q_string .= "order by prod_name,zone_zone ";
-  $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_interface) > 0) {
-    while ($a_interface = mysqli_fetch_array($q_interface)) {
+  $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_interface) > 0) {
+    while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
 
       $class = "ui-widget-content";
 
       $linkstart = '';
       $linkend = '';
-      if ($a_interface['zone_zone'] == 'Unknown' || $a_interface['zone_zone'] == '') {
-        $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_interface['inv_id'] . "#network\" target=\"_blank\">";
+      if ($a_inv_interface['zone_zone'] == 'Unknown' || $a_inv_interface['zone_zone'] == '') {
+        $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inv_interface['inv_id'] . "#network\" target=\"_blank\">";
         $linkend = "</a>";
       }
 
-      if ($product != $a_interface['prod_name'] || $zone != $a_interface['zone_zone']) {
-        $product = $a_interface['prod_name'];
-        $zone    = $a_interface['zone_zone'];
+      if ($product != $a_inv_interface['prod_name'] || $zone != $a_inv_interface['zone_zone']) {
+        $product = $a_inv_interface['prod_name'];
+        $zone    = $a_inv_interface['zone_zone'];
 
-        if ($a_interface['zone_zone'] == 'Unknown' || $a_interface['zone_zone'] == '') {
+        if ($a_inv_interface['zone_zone'] == 'Unknown' || $a_inv_interface['zone_zone'] == '') {
           $class = 'ui-state-highlight';
         }
 
@@ -209,9 +209,9 @@
         print "</tr>\n";
         print "<tr>\n";
         print "  <td class=\"" . $class . "\">" . $product . " " . $zone . "</td>\n";
-        print "  <td class=\"" . $class . "\">" . $linkstart . $a_interface['int_addr'] . $linkend . ", ";
+        print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_interface['int_addr'] . $linkend . ", ";
       } else {
-        print $linkstart . $a_interface['int_addr'] . $linkend . ", ";
+        print $linkstart . $a_inv_interface['int_addr'] . $linkend . ", ";
       }
 
     }

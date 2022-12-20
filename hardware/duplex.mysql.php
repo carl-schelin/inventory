@@ -76,11 +76,11 @@
 
           $total = 0;
           $q_string  = "select int_id ";
-          $q_string .= "from interface ";
+          $q_string .= "from inv_interface ";
           $q_string .= "where inv_int_duplex = " . $a_inv_int_duplex['dup_id'] . " ";
-          $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_interface) > 0) {
-            while ($a_interface = mysqli_fetch_array($q_interface)) {
+          $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_interface) > 0) {
+            while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
               $total++;
             }
           }

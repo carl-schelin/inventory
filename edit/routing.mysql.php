@@ -113,19 +113,19 @@
 # so try to match the copied server's interface name with the current server.
 # They should be close to the same, otherwise default to 0
             $q_string  = "select int_face ";
-            $q_string .= "from interface ";
+            $q_string .= "from inv_interface ";
             $q_string .= "where int_id = " . $a_inv_routing['route_interface'];
-            $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-            $a_interface = mysqli_fetch_array($q_interface);
+            $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $a_inv_interface = mysqli_fetch_array($q_inv_interface);
 
             $q_string  = "select int_id ";
-            $q_string .= "from interface ";
-            $q_string .= "where int_companyid = " . $formVars['route_companyid'] . " and int_face = '" . $a_interface['int_face'] . "'";
-            $q_interface2 = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-            $a_interface2 = mysqli_fetch_array($q_interface2);
+            $q_string .= "from inv_interface ";
+            $q_string .= "where int_companyid = " . $formVars['route_companyid'] . " and int_face = '" . $a_inv_interface['int_face'] . "'";
+            $q_inv_interface2 = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $a_inv_interface2 = mysqli_fetch_array($q_inv_interface2);
 
-            if ($a_interface2['int_id'] == '') {
-              $a_interface2['int_id'] = 0;
+            if ($a_inv_interface2['int_id'] == '') {
+              $a_inv_interface2['int_id'] = 0;
             }
 
             $q_string = 
@@ -134,7 +134,7 @@
               "route_mask      =   " . $a_inv_routing['route_mask']      . "," .
               "route_gateway   = \"" . $a_inv_routing['route_gateway']   . "\"," .
               "route_soruce    = \"" . $a_inv_routing['route_source']    . "\"," .
-              "route_interface =   " . $a_interface2['int_id']       . "," .
+              "route_interface =   " . $a_inv_interface2['int_id']       . "," .
               "route_static    =   " . $a_inv_routing['route_static']    . "," .
               "route_desc      = \"" . $a_inv_routing['route_desc']      . "\"";
 
@@ -205,15 +205,15 @@
         $output .= "<option value=\"0\">Added</option>\n";
 
         $q_string  = "select int_id,int_face,int_ip6 ";
-        $q_string .= "from interface ";
+        $q_string .= "from inv_interface ";
         $q_string .= "where int_companyid = " . $formVars['route_companyid'] . " ";
         $q_string .= "order by int_face";
-        $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_interface = mysqli_fetch_array($q_interface)) {
-          if ($a_interface['int_ip6']) {
-            $output .= "<option value=\"" . $a_interface['int_id'] . "\">" . $a_interface['int_face'] . " (ip6)</option>\n";
+        $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
+          if ($a_inv_interface['int_ip6']) {
+            $output .= "<option value=\"" . $a_inv_interface['int_id'] . "\">" . $a_inv_interface['int_face'] . " (ip6)</option>\n";
           } else {
-            $output .= "<option value=\"" . $a_interface['int_id'] . "\">" . $a_interface['int_face'] . "</option>\n";
+            $output .= "<option value=\"" . $a_inv_interface['int_id'] . "\">" . $a_inv_interface['int_face'] . "</option>\n";
           }
         }
 
@@ -293,10 +293,10 @@
         while ($a_inv_routing = mysqli_fetch_array($q_inv_routing)) {
 
           $q_string  = "select int_face ";
-          $q_string .= "from interface ";
+          $q_string .= "from inv_interface ";
           $q_string .= "where int_id = " . $a_inv_routing['route_interface'];
-          $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          $a_interface = mysqli_fetch_array($q_interface);
+          $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_inv_interface = mysqli_fetch_array($q_inv_interface);
 
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('routing.fill.php?id=" . $a_inv_routing['route_id'] . "');showDiv('routing-hide');\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_route('routing.del.php?id=" . $a_inv_routing['route_id'] . "');\">";
@@ -305,7 +305,7 @@
           $ping = ' class="ui-widget-content"';
 #          $dns = '';
 # validate the IP before trying to ping or look it up (unnecessary delays)
-#          if (filter_var($a_inv_routing['route_address'], FILTER_VALIDATE_IP) && ($a_interface['int_face'] != 'lo' || $a_interface['int_face'] != 'lo0')) {
+#          if (filter_var($a_inv_routing['route_address'], FILTER_VALIDATE_IP) && ($a_inv_interface['int_face'] != 'lo' || $a_inv_interface['int_face'] != 'lo0')) {
 # ensure it's a -host based ip, no need to ping or look up -net ranges.
 #            if ($a_inv_routing['route_mask'] == 32) {
 #              $ping = ' class="ui-state-error" ';
@@ -339,9 +339,9 @@
 
           if ($os == "Linux") {
             if ($a_inv_routing['route_address'] != '0.0.0.0' && $a_inv_routing['route_gateway'] != '0.0.0.0' && $a_inv_routing['route_static']) {
-              $interface[$a_interface['int_face']] .= "<br>" . $a_inv_routing['route_address'] . "/" . $a_inv_routing['route_mask'] . " via " . $a_inv_routing['route_gateway'] . " dev " . $a_interface['int_face'];
+              $interface[$a_inv_interface['int_face']] .= "<br>" . $a_inv_routing['route_address'] . "/" . $a_inv_routing['route_mask'] . " via " . $a_inv_routing['route_gateway'] . " dev " . $a_inv_interface['int_face'];
               if ($a_inv_routing['route_source'] != '') {
-                $interface[$a_interface['int_face']] .= " src " . $a_inv_routing['route_source'];
+                $interface[$a_inv_interface['int_face']] .= " src " . $a_inv_routing['route_source'];
               }
             }
           }

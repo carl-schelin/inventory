@@ -14,10 +14,10 @@
     while ($a_inv_ipaddress = mysqli_fetch_array($q_inv_ipaddress)) {
 
       $q_string  = "select int_id ";
-      $q_string .= "from interface ";
+      $q_string .= "from inv_interface ";
       $q_string .= "where int_ipaddressid = " . $a_inv_ipaddress['ip_id'] . " ";
-      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_interface) == 0) {
+      $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_interface) == 0) {
         print "<option value=\"" . $a_inv_ipaddress['ip_id'] . "\">" . $a_inv_ipaddress['ip_hostname'] . " " . $a_inv_ipaddress['ip_ipv4'] . "</option>\n";
       } else {
         print "<option value=\"" . $a_inv_ipaddress['ip_id'] . "\">" . $a_inv_ipaddress['ip_hostname'] . " " . $a_inv_ipaddress['ip_ipv4'] . "*</option>\n";
@@ -214,10 +214,10 @@ Assignment <select name="int_int_id"></select></td>
     while ($a_inv_ipaddress = mysqli_fetch_array($q_inv_ipaddress)) {
 
       $q_string  = "select int_id ";
-      $q_string .= "from interface ";
+      $q_string .= "from inv_interface ";
       $q_string .= "where int_ipaddressid = " . $a_inv_ipaddress['ip_id'] . " ";
-      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_interface) == 0) {
+      $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_interface) == 0) {
         print "<option value=\"" . $a_inv_ipaddress['ip_id'] . "\">" . $a_inv_ipaddress['ip_hostname'] . " " . $a_inv_ipaddress['ip_ipv4'] . "</option>\n";
       } else {
         print "<option value=\"" . $a_inv_ipaddress['ip_id'] . "\">" . $a_inv_ipaddress['ip_hostname'] . " " . $a_inv_ipaddress['ip_ipv4'] . "*</option>\n";

@@ -39,13 +39,13 @@
   $a_inv_device = mysqli_fetch_array($q_inv_device);
 
   $q_string  = "select prod_code ";
-  $q_string .= "from products ";
+  $q_string .= "from inv_products ";
   $q_string .= "where prod_id = " . $formVars['service'] . " ";
-  $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_products = mysqli_fetch_array($q_products);
+  $q_inv_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_products = mysqli_fetch_array($q_inv_products);
 
   if ($a_inv_device['dev_infrastructure']) {
-    $a_products['prod_code'] = '';
+    $a_inv_products['prod_code'] = '';
     print "document.getElementById(\"service\").disabled = true;\n";
     print "document.getElementById('characters').innerHTML = 'six';\n";
     print "document.hostname.service[0].text = 'Infrastructure';\n";
@@ -64,7 +64,7 @@
     $a_inv_locations['loc_instance'] . 
     $zone[$formVars['zone']]     . 
     $a_inv_device['dev_type']        . 
-    $a_products['prod_code']     . 
+    $a_inv_products['prod_code']     . 
     strtoupper($formVars['freeform']);
 
   if (strlen($formVars['hostname']) > 0) {

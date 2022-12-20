@@ -20,26 +20,26 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from licenses");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_licenses");
 
       $q_string  = "select lic_id,lic_vendor,lic_product,lic_date,lic_vendorpo,lic_po,lic_project,lic_quantity,lic_key,lic_serial,lic_domain ";
-      $q_string .= "from licenses ";
+      $q_string .= "from inv_licenses ";
       $q_string .= "where lic_id = " . $formVars['id'];
-      $q_licenses = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      $a_licenses = mysqli_fetch_array($q_licenses);
-      mysqli_free_result($q_licenses);
+      $q_inv_licenses = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_inv_licenses = mysqli_fetch_array($q_inv_licenses);
+      mysqli_free_result($q_inv_licenses);
 
-      $licproject = return_Index($db, $a_licenses['lic_project'], "select prod_id from products order by prod_name");
-      $licvendor  = return_Index($db, $a_licenses['lic_vendor'], "select ven_id from inv_vendors order by ven_name");
+      $licproject = return_Index($db, $a_inv_licenses['lic_project'], "select prod_id from inv_products order by prod_name");
+      $licvendor  = return_Index($db, $a_inv_licenses['lic_vendor'], "select ven_id from inv_vendors order by ven_name");
 
-      print "document.formUpdate.lic_product.value = '"  . mysqli_real_escape_string($db, $a_licenses['lic_product'])  . "';\n";
-      print "document.formUpdate.lic_date.value = '"     . mysqli_real_escape_string($db, $a_licenses['lic_date'])     . "';\n";
-      print "document.formUpdate.lic_vendorpo.value = '" . mysqli_real_escape_string($db, $a_licenses['lic_vendorpo']) . "';\n";
-      print "document.formUpdate.lic_po.value = '"       . mysqli_real_escape_string($db, $a_licenses['lic_po'])       . "';\n";
-      print "document.formUpdate.lic_quantity.value = '" . mysqli_real_escape_string($db, $a_licenses['lic_quantity']) . "';\n";
-      print "document.formUpdate.lic_key.value = '"      . mysqli_real_escape_string($db, $a_licenses['lic_key'])      . "';\n";
-      print "document.formUpdate.lic_serial.value = '"   . mysqli_real_escape_string($db, $a_licenses['lic_serial'])   . "';\n";
-      print "document.formUpdate.lic_domain.value = '"   . mysqli_real_escape_string($db, $a_licenses['lic_domain'])   . "';\n";
+      print "document.formUpdate.lic_product.value = '"  . mysqli_real_escape_string($db, $a_inv_licenses['lic_product'])  . "';\n";
+      print "document.formUpdate.lic_date.value = '"     . mysqli_real_escape_string($db, $a_inv_licenses['lic_date'])     . "';\n";
+      print "document.formUpdate.lic_vendorpo.value = '" . mysqli_real_escape_string($db, $a_inv_licenses['lic_vendorpo']) . "';\n";
+      print "document.formUpdate.lic_po.value = '"       . mysqli_real_escape_string($db, $a_inv_licenses['lic_po'])       . "';\n";
+      print "document.formUpdate.lic_quantity.value = '" . mysqli_real_escape_string($db, $a_inv_licenses['lic_quantity']) . "';\n";
+      print "document.formUpdate.lic_key.value = '"      . mysqli_real_escape_string($db, $a_inv_licenses['lic_key'])      . "';\n";
+      print "document.formUpdate.lic_serial.value = '"   . mysqli_real_escape_string($db, $a_inv_licenses['lic_serial'])   . "';\n";
+      print "document.formUpdate.lic_domain.value = '"   . mysqli_real_escape_string($db, $a_inv_licenses['lic_domain'])   . "';\n";
 
       print "document.formUpdate.lic_vendor['"  . $licvendor  . "'].selected = true;\n";
       print "document.formUpdate.lic_project['" . $licproject . "'].selected = true;\n";

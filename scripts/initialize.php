@@ -54,14 +54,14 @@
     print "Checking the interface table to see if $server has been associated with an existing server.\n";
 
     $q_string  = "select int_id,inv_name ";
-    $q_string .= "from interface ";
-    $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
+    $q_string .= "from inv_interface ";
+    $q_string .= "left join inventory on inventory.inv_id = inv_interface.int_companyid ";
     $q_string .= "where inv_status = 0 and int_server = '" . $server . "'";
-    $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    if (mysqli_num_rows($q_interface) > 0) {
-      $a_interface = mysqli_fetch_array($q_interface);
+    $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_inv_interface) > 0) {
+      $a_inv_interface = mysqli_fetch_array($q_inv_interface);
 
-      echo "ERROR: $server is identified as being an interface for " . $a_interface['inv_name'] . ".\n";
+      echo "ERROR: $server is identified as being an interface for " . $a_inv_interface['inv_name'] . ".\n";
 
       exit(1);
     } else {
@@ -85,7 +85,7 @@
 
       echo "Adding a $server interface...\n";
 
-      $q_string = "insert into interface set int_id=null,int_server = \"" . $server . "\",int_companyid=" . $serverid;
+      $q_string = "insert into inv_interface set int_id=null,int_server = \"" . $server . "\",int_companyid=" . $serverid;
 
       if ($debug == 'yes') {
         print $q_string . "\n";

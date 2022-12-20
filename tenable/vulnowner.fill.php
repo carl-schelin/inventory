@@ -23,7 +23,7 @@
 
       $q_string  = "select int_id,int_addr,sec_id,sec_name ";
       $q_string .= "from inv_vulnowner ";
-      $q_string .= "left join interface on interface.int_id = inv_vulnowner.vul_interface ";
+      $q_string .= "left join inv_interface on inv_interface.int_id = inv_vulnowner.vul_interface ";
       $q_string .= "left join inv_security  on inv_security.sec_id  = inv_vulnowner.vul_security ";
       $q_string .= "where vul_id = " . $formVars['id'];
       $q_inv_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

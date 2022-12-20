@@ -128,8 +128,8 @@ if the expiration date is within 60 days and <span class="ui-state-error">highli
       $q_string .= "from inv_svr_software ";
       $q_string .= "left join software  on software.sw_id     = inv_svr_software.svr_softwareid ";
       $q_string .= "left join inventory on inventory.inv_id   = inv_svr_software.svr_companyid ";
-      $q_string .= "left join products  on products.prod_id   = software.sw_product ";
-      $q_string .= "left join inv_groups  on inv_groups.grp_id    = inv_svr_software.svr_groupid ";
+      $q_string .= "left join inv_products  on inv_products.prod_id   = software.sw_product ";
+      $q_string .= "left join inv_groups    on inv_groups.grp_id      = inv_svr_software.svr_groupid ";
       $q_string .= "where svr_certid = " . $a_inv_certs['cert_id'];
       $q_inv_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_inv_svr_software) > 0) {

@@ -26,7 +26,7 @@
 
   $q_string  = "select inv_id,inv_name,inv_kernel,prod_name ";
   $q_string .= "from inventory ";
-  $q_string .= "left join products on products.prod_id = inventory.inv_product ";
+  $q_string .= "left join inv_products on inv_products.prod_id = inventory.inv_product ";
   $q_string .= "where inv_status = 0 and inv_manager = " . $manager . " and inv_ssh = 1 ";
   $q_string .= "order by inv_name ";
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");

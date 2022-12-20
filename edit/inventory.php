@@ -1535,11 +1535,11 @@ $(document).ready( function() {
   <td class="ui-widget-content">Product <select name="inv_product" onchange="show_file('inventory.options.php?server=<?php print $formVars['server']; ?>&product=' + document.edit.inv_product.value);">
 <?php
   $q_string  = "select prod_id,prod_name ";
-  $q_string .= "from products ";
+  $q_string .= "from inv_products ";
   $q_string .= "order by prod_name";
-  $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_products = mysqli_fetch_array($q_products)) {
-    print "<option value=\"" . $a_products['prod_id'] . "\">" . htmlspecialchars($a_products['prod_name']) . "</option>\n";
+  $q_inv_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_products = mysqli_fetch_array($q_inv_products)) {
+    print "<option value=\"" . $a_inv_products['prod_id'] . "\">" . htmlspecialchars($a_inv_products['prod_name']) . "</option>\n";
   }
 ?>
 </select></td>

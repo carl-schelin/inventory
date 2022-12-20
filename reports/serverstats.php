@@ -389,7 +389,7 @@ to software and hardware section.</p>
 
   $q_string  = "select inv_product,prod_name,count(inv_product) ";
   $q_string .= "from inventory ";
-  $q_string .= "left join products on products.prod_id = inventory.inv_product  ";
+  $q_string .= "left join inv_products on inv_products.prod_id = inventory.inv_product  ";
   $q_string .= "where inv_status = 0 " . $admin . " ";
   $q_string .= "group by prod_name";
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

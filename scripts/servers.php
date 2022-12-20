@@ -79,16 +79,16 @@
 
     $interfaces = '';
     $q_string  = "select int_server,int_domain,int_management ";
-    $q_string .= "from interface ";
+    $q_string .= "from inv_interface ";
     $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_type = 1 || int_type = 2 || int_type = 6)";
-    $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    while ($a_interface = mysqli_fetch_array($q_interface)) {
-      $interfaces .= "," . $a_interface['int_server'] . ",";
+    $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
+      $interfaces .= "," . $a_inv_interface['int_server'] . ",";
 
 # if the management checkbox is checked, then use this interface and not the main interface.
-      if ($a_interface['int_management']) {
-        $a_inventory['inv_name'] = $a_interface['int_server'];
-        $a_inventory['inv_fqdn'] = $a_interface['int_domain'];
+      if ($a_inv_interface['int_management']) {
+        $a_inventory['inv_name'] = $a_inv_interface['int_server'];
+        $a_inventory['inv_fqdn'] = $a_inv_interface['int_domain'];
       }
 
     }

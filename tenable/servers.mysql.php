@@ -194,10 +194,10 @@ if needed.</p>
   $q_string .= "from inv_vulnerabilities ";
   $q_string .= "left join inv_security  on inv_security.sec_id   = inv_vulnerabilities.vuln_securityid ";
   $q_string .= "left join inv_severity  on inv_severity.sev_id   = inv_security.sec_severity ";
-  $q_string .= "left join interface on interface.int_id  = inv_vulnerabilities.vuln_interface ";
-  $q_string .= "left join inventory on inventory.inv_id  = interface.int_companyid ";
+  $q_string .= "left join inv_interface on inv_interface.int_id  = inv_vulnerabilities.vuln_interface ";
+  $q_string .= "left join inventory on inventory.inv_id  = inv_interface.int_companyid ";
   $q_string .= "left join inv_groups  on inv_groups.grp_id   = inventory.inv_manager ";
-  $q_string .= "left join products  on products.prod_id  = inventory.inv_product ";
+  $q_string .= "left join inv_products  on inv_products.prod_id  = inventory.inv_product ";
 # add in bits if asked
   if ($formVars['projects'] > 0) {
     $q_string .= "left join projects  on projects.prj_id = inventory.inv_project ";

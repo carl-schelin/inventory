@@ -201,7 +201,7 @@
 
       $q_string  = "select usr_id,lvl_name,usr_disabled,usr_name,usr_first,usr_last,usr_email,usr_reset,grp_name,usr_timestamp,theme_title ";
       $q_string .= "from inv_users ";
-      $q_string .= "left join levels on levels.lvl_id = inv_users.usr_level ";
+      $q_string .= "left join inv_levels on inv_levels.lvl_id = inv_users.usr_level ";
       $q_string .= "left join inv_groups on inv_groups.grp_id = inv_users.usr_group ";
       $q_string .= "left join inv_themes on inv_themes.theme_id = inv_users.usr_theme ";
       $q_string .= "where usr_disabled = 0 and usr_group = 0 and usr_level > 1 ";
@@ -315,7 +315,7 @@ function display_user( $p_title, $p_toggle, $p_query ) {
       $count = 0;
       $q_string  = "select usr_id,lvl_name,usr_disabled,usr_name,usr_first,usr_last,usr_email,usr_reset,usr_group,usr_timestamp,theme_title ";
       $q_string .= "from inv_users ";
-      $q_string .= "left join levels on levels.lvl_id = inv_users.usr_level ";
+      $q_string .= "left join inv_levels on inv_levels.lvl_id = inv_users.usr_level ";
       $q_string .= "left join inv_themes on inv_themes.theme_id = inv_users.usr_theme ";
       $q_string .= "where usr_group = " . $a_inv_groups['grp_id'] . " " . $p_query;
       $q_string .= "order by usr_last,usr_first";

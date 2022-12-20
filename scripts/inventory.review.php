@@ -81,7 +81,7 @@
   $q_string  = "select inv_name,hw_built,prod_name,prj_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join products on products.prod_id = inventory.inv_product ";
+  $q_string .= "left join inv_products on inv_products.prod_id = inventory.inv_product ";
   $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
   $q_string .= "where hw_active = '1971-01-01' and hw_primary = 1 and inv_status = 0 and inv_manager = " . $manager . " ";
   $q_string .= "order by inv_name ";

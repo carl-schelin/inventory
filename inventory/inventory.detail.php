@@ -369,15 +369,15 @@
           print "selbox.options.length = 0;\n";
 
           $q_string  = "select prod_id,prod_name ";
-          $q_string .= "from products ";
+          $q_string .= "from inv_products ";
           $q_string .= "order by prod_name ";
-          $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_inv_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-          while ($a_products = mysqli_fetch_array($q_products) ) {
-            print "if (celltext == \"" . $a_products['prod_name'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_products['prod_name']) . "\"," . $a_products['prod_id'] . ",1,1);\n";
+          while ($a_inv_products = mysqli_fetch_array($q_inv_products) ) {
+            print "if (celltext == \"" . $a_inv_products['prod_name'] . "\") {\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_products['prod_name']) . "\"," . $a_inv_products['prod_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_products['prod_name']) . "\"," . $a_products['prod_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_products['prod_name']) . "\"," . $a_inv_products['prod_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -415,22 +415,22 @@
           }
 
           $q_string  = "select prod_id,prod_name ";
-          $q_string .= "from products ";
+          $q_string .= "from inv_products ";
           $q_string .= "where prod_id = " . $formVars['select'] . " ";
-          $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_products) > 0) {
-            $a_products = mysqli_fetch_array($q_products);
+          $q_inv_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_products) > 0) {
+            $a_inv_products = mysqli_fetch_array($q_inv_products);
           } else {
-            $a_products['prod_id']   = 0;
-            $a_products['prod_name'] = "Unassigned";
+            $a_inv_products['prod_id']   = 0;
+            $a_inv_products['prod_name'] = "Unassigned";
           }
 
-          $display = $a_products['prod_name'];
+          $display = $a_inv_products['prod_name'];
 
           $q_string  = "update ";
           $q_string .= "inventory ";
           $q_string .= "set ";
-          $q_string .= "inv_product = " . $a_products['prod_id'] . " ";
+          $q_string .= "inv_product = " . $a_inv_products['prod_id'] . " ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 

@@ -89,10 +89,10 @@
   $info_exception = 0;
   $q_string  = "select vuln_id,vul_exception,vul_group,vuln_group,sev_name,inv_product ";
   $q_string .= "from inv_vulnerabilities ";
-  $q_string .= "left join inv_security on inv_security.sec_id = inv_vulnerabilities.vuln_securityid ";
-  $q_string .= "left join inv_severity on inv_severity.sev_id = inv_security.sec_severity ";
-  $q_string .= "left join interface on interface.int_id = inv_vulnerabilities.vuln_interface ";
-  $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
+  $q_string .= "left join inv_security  on inv_security.sec_id  = inv_vulnerabilities.vuln_securityid ";
+  $q_string .= "left join inv_severity  on inv_severity.sev_id  = inv_security.sec_severity ";
+  $q_string .= "left join inv_interface on inv_interface.int_id = inv_vulnerabilities.vuln_interface ";
+  $q_string .= "left join inventory on inventory.inv_id = inv_interface.int_companyid ";
   $q_string .= "left join inv_vulnowner on inv_vulnowner.vul_interface = inv_vulnerabilities.vuln_interface and inv_vulnowner.vul_security = inv_vulnerabilities.vuln_securityid ";
   $q_inv_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inv_vulnerabilities = mysqli_fetch_array($q_inv_vulnerabilities)) {
@@ -195,8 +195,8 @@
   $info_resolved = 0;
   $q_string  = "select vul_id,vul_interface,vul_security,vul_group,inv_product ";
   $q_string .= "from inv_vulnowner ";
-  $q_string .= "left join interface on interface.int_id = inv_vulnowner.vul_interface ";
-  $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
+  $q_string .= "left join inv_interface on inv_interface.int_id = inv_vulnowner.vul_interface ";
+  $q_string .= "left join inventory on inventory.inv_id = inv_interface.int_companyid ";
   $q_inv_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inv_vulnowner = mysqli_fetch_array($q_inv_vulnowner)) {
     $q_string  = "select vuln_id ";
@@ -366,31 +366,31 @@
   print "</tr>\n";
 
   $q_string  = "select prod_id,prod_name ";
-  $q_string .= "from products ";
+  $q_string .= "from inv_products ";
   $q_string .= "order by prod_name ";
-  $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_products = mysqli_fetch_array($q_products)) {
+  $q_inv_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_products = mysqli_fetch_array($q_inv_products)) {
     $productset = 0;
 
     $output  = "<tr>\n";
-    $output .= "<td class=\"ui-widget-content\">" . $a_products['prod_name'] . "</td>\n";
+    $output .= "<td class=\"ui-widget-content\">" . $a_inv_products['prod_name'] . "</td>\n";
 
-    if (isset($product[$a_products['prod_id']])) {
-      $output .= "<td class=\"ui-widget-content\">" . $product[$a_products['prod_id']] . "</td>\n";
+    if (isset($product[$a_inv_products['prod_id']])) {
+      $output .= "<td class=\"ui-widget-content\">" . $product[$a_inv_products['prod_id']] . "</td>\n";
       $productset++;
     } else {
       $output .= "<td class=\"ui-widget-content\">0</td>\n";
     }
 
-    if (isset($product_dup[$a_products['prod_id']])) {
-      $output .= "<td class=\"ui-widget-content\">" . $product_dup[$a_products['prod_id']] . "</td>\n";
+    if (isset($product_dup[$a_inv_products['prod_id']])) {
+      $output .= "<td class=\"ui-widget-content\">" . $product_dup[$a_inv_products['prod_id']] . "</td>\n";
       $productset++;
     } else {
       $output .= "<td class=\"ui-widget-content\">0</td>\n";
     }
 
-    if (isset($product_res[$a_products['prod_id']])) {
-      $output .= "<td class=\"ui-widget-content\">" . $product_res[$a_products['prod_id']] . "</td>\n";
+    if (isset($product_res[$a_inv_products['prod_id']])) {
+      $output .= "<td class=\"ui-widget-content\">" . $product_res[$a_inv_products['prod_id']] . "</td>\n";
       $productset++;
     } else {
       $output .= "<td class=\"ui-widget-content\">0</td>\n";

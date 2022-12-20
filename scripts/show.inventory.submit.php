@@ -153,18 +153,18 @@
 # make sure a wildcard hasn't been sent too, ignore the check if so.
     if (strpos($servername, '%') === false) {
       $q_string  = "select inv_name ";
-      $q_string .= "from interface ";
-      $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
+      $q_string .= "from inv_interface ";
+      $q_string .= "left join inventory on inventory.inv_id = inv_interface.int_companyid ";
       $q_string .= "where int_server like '" . $servername . "' ";
-      $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       if ($debug == 'yes') {
         print $q_string . "\n\n";
       }
-      if (mysqli_num_rows($q_interface) > 0) {
-        $a_interface = mysqli_fetch_array($q_interface);
+      if (mysqli_num_rows($q_inv_interface) > 0) {
+        $a_inv_interface = mysqli_fetch_array($q_inv_interface);
 # only replace it if it came from the interface table (keeps action from being replaced when you know what you're looking for).
-        if ($servername != $a_interface['inv_name']) {
-          $servername = $a_interface['inv_name'];
+        if ($servername != $a_inv_interface['inv_name']) {
+          $servername = $a_inv_interface['inv_name'];
           if (strlen($action) == 0 && $action != '*' && substr($action, 0, 1) != 'a') {
             $action = 'network';
           }
@@ -183,33 +183,33 @@
     }
     if (mysqli_num_rows($q_inventory) == 0) {
       $q_string  = "select prod_name ";
-      $q_string .= "from products ";
+      $q_string .= "from inv_products ";
       $q_string .= "where prod_name like '" . $productlist . "'";
-      $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+      $q_inv_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
 
       if ($debug == 'yes') {
         print $q_string . "\n\n";
       }
-      if (mysqli_num_rows($q_products) == 0) {
+      if (mysqli_num_rows($q_inv_products) == 0) {
         $q_string  = "select int_companyid,int_addr,int_face,int_eth ";
-        $q_string .= "from interface ";
+        $q_string .= "from inv_interface ";
         $q_string .= "where int_addr like '" . $serverip . "' ";
         $q_string .= "order by INET_ATON(int_addr) ";
-        $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+        $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
 
         if ($debug == 'yes') {
           print $q_string . "\n\n";
         }
-        if (mysqli_num_rows($q_interface) == 0) {
+        if (mysqli_num_rows($q_inv_interface) == 0) {
           $error = "<p><strong>Error</strong>: The requested server, product, or IP was not found in the Inventory database.</p>\n\n";
           $server = "help";
         } else {
-          if (mysqli_num_rows($q_interface) == 1) {
-            $a_interface = mysqli_fetch_array($q_interface);
+          if (mysqli_num_rows($q_inv_interface) == 1) {
+            $a_inv_interface = mysqli_fetch_array($q_inv_interface);
 
             $q_string  = "select inv_id,inv_name,inv_manager ";
             $q_string .= "from inventory ";
-            $q_string .= "where inv_id = " . $a_interface['int_companyid'];
+            $q_string .= "where inv_id = " . $a_inv_interface['int_companyid'];
             $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
 
             if ($debug == 'yes') {
@@ -235,11 +235,11 @@
             $output .= "  <th>Managed By</th>\n";
             $output .= "</tr>\n";
 
-            while ($a_interface = mysqli_fetch_array($q_interface)) {
+            while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
 
               $q_string  = "select inv_name,inv_manager,inv_status ";
               $q_string .= "from inventory ";
-              $q_string .= "where inv_id = " . $a_interface['int_companyid'];
+              $q_string .= "where inv_id = " . $a_inv_interface['int_companyid'];
               $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
               $a_inventory = mysqli_fetch_array($q_inventory);
 
@@ -258,9 +258,9 @@
               if ($a_inventory['inv_status'] == 0) {
                 $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
                 $output .= "  <td><a href=\"mailto:inventory@" . $hostname . "?subject=" . $a_inventory['inv_name'] . "\">" . $a_inventory['inv_name'] . "</a></td>\n";
-                $output .= "  <td>" . $a_interface['int_addr'] . "</td>\n";
-                $output .= "  <td>" . $a_interface['int_face'] . "</td>\n";
-                $output .= "  <td>" . $a_interface['int_eth'] . "</td>\n";
+                $output .= "  <td>" . $a_inv_interface['int_addr'] . "</td>\n";
+                $output .= "  <td>" . $a_inv_interface['int_face'] . "</td>\n";
+                $output .= "  <td>" . $a_inv_interface['int_eth'] . "</td>\n";
                 $output .= "  <td>" . $a_inv_groups['grp_name'] . "</td>\n";
                 $output .= "</tr>\n";
               }
@@ -285,8 +285,8 @@
 
         }
       } else {
-        $a_products = mysqli_fetch_array($q_products);
-        $product = $a_products['prod_name'];
+        $a_inv_products = mysqli_fetch_array($q_inv_products);
+        $product = $a_inv_products['prod_name'];
       }
     } else {
       if (mysqli_num_rows($q_inventory) == 1) {
@@ -458,13 +458,13 @@
     $output .= "</tr>\n";
 
     $q_string  = "select prod_name,prod_desc ";
-    $q_string .= "from products ";
+    $q_string .= "from inv_products ";
     $q_string .= "order by prod_name";
-    $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
-    while ($a_products = mysqli_fetch_array($q_products)) {
+    $q_inv_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+    while ($a_inv_products = mysqli_fetch_array($q_inv_products)) {
       $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
-      $output .= "  <td>" . $a_products['prod_name'] . "</td>\n";
-      $output .= "  <td>" . $a_products['prod_desc'] . "</td>\n";
+      $output .= "  <td>" . $a_inv_products['prod_name'] . "</td>\n";
+      $output .= "  <td>" . $a_inv_products['prod_desc'] . "</td>\n";
       $output .= "</tr>\n";
     }
     $output .= "</table>\n\n";
@@ -499,17 +499,17 @@
     $output .= "</tr>\n";
 
     $q_string  = "select prod_id ";
-    $q_string .= "from products ";
+    $q_string .= "from inv_products ";
     $q_string .= "where prod_name = '" . $product . "'";
-    $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
-    $a_products = mysqli_fetch_array($q_products);
+    $q_inv_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+    $a_inv_products = mysqli_fetch_array($q_inv_products);
 
     $q_string  = "select inv_id,inv_name,inv_function,grp_name,inv_appadmin ";
     $q_string .= "from inventory ";
     $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inventory.inv_id ";
     $q_string .= "left join software on software.sw_id = inv_svr_software.svr_softwareid ";
     $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
-    $q_string .= "where inv_status = 0 and sw_product = " . $a_products['prod_id'] . " ";
+    $q_string .= "where inv_status = 0 and sw_product = " . $a_inv_products['prod_id'] . " ";
     $q_string .= "group by inv_name";
     $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
     while ($a_inventory = mysqli_fetch_array($q_inventory)) {
@@ -539,7 +539,7 @@
     }
     $output .= "</table>\n\n";
 
-    $output .= "<p><a href=\"" . $Siteroot . "/show.products.php?id=" . $a_products['prod_id'] . "\">Product Listing for " . $product . ".</a></p>\n\n";
+    $output .= "<p><a href=\"" . $Siteroot . "/show.products.php?id=" . $a_inv_products['prod_id'] . "\">Product Listing for " . $product . ".</a></p>\n\n";
 
     $output .= "<br>This mail box is not monitored, please do not reply.</p>\n\n";
 
@@ -623,11 +623,11 @@
     } else {
 
       $q_string = "select prod_name,svc_name ";
-      $q_string .= "from products ";
-      $q_string .= "left join inv_service on inv_service.svc_id = products.prod_service ";
+      $q_string .= "from inv_products ";
+      $q_string .= "left join inv_service on inv_service.svc_id = inv_products.prod_service ";
       $q_string .= "where prod_id = " . $a_inventory['inv_product'] . " ";
-      $q_products = mysqli_query($db, $q_string) or die($q_string .= ": " . mysqli_error($db));
-      $a_products = mysqli_fetch_array($q_products);
+      $q_inv_products = mysqli_query($db, $q_string) or die($q_string .= ": " . mysqli_error($db));
+      $a_inv_products = mysqli_fetch_array($q_inv_products);
 
       if ($a_inventory['inv_callpath']) {
         $bgcolor = $color[3];
@@ -638,8 +638,8 @@
       }
 
       $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
-      $output .= "  <td><strong>Product</strong>: " . $a_products['prod_name'] . "</td>\n";
-      $output .= "  <td colspan=\"2\"><strong>Service Class</strong>: " . $a_products['svc_name'] . "</td>\n";
+      $output .= "  <td><strong>Product</strong>: " . $a_inv_products['prod_name'] . "</td>\n";
+      $output .= "  <td colspan=\"2\"><strong>Service Class</strong>: " . $a_inv_products['svc_name'] . "</td>\n";
       $output .= "  <td colspan=\"2\"><strong>Call Path</strong>: " . $service . "</td>\n";
       $output .= "</tr>\n";
     }
@@ -948,9 +948,9 @@
       $q_string .= "order by sw_software";
       $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
       while ($a_software = mysqli_fetch_array($q_software)) {
-        $q_string = "select prod_name from products where prod_id = " . $a_software['sw_product'];
-        $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
-        $a_products = mysqli_fetch_array($q_products);
+        $q_string = "select prod_name from inv_products where prod_id = " . $a_software['sw_product'];
+        $q_inv_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+        $a_inv_products = mysqli_fetch_array($q_inv_products);
 
         $q_string = "select grp_name from inv_groups where grp_id = " . $a_software['svr_groupid'];
         $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ":(5): " . mysqli_error($db) . "\n\n");
@@ -963,7 +963,7 @@
         }
 
         $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
-        $output .= "  <td>" . $a_products['prod_name']   . "</td>\n";
+        $output .= "  <td>" . $a_inv_products['prod_name']   . "</td>\n";
         $output .= "  <td>" . $a_software['ven_name']   . "</td>\n";
         $output .= "  <td>" . $a_software['sw_software'] . "</td>\n";
         $output .= "  <td>" . $a_software['sw_type']     . "</td>\n";
@@ -998,49 +998,49 @@
       $output .= "  <th>Last</th>\n";
       $output .= "</tr>\n";
     
-      $q_string = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,"
-                .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_domain "
-                . "from interface "
-                . "left join inv_net_zones on interface.int_zone = inv_net_zones.zone_id  "
-                . "left join inv_int_types on interface.int_type = inv_int_types.itp_id "
-                . "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = 0 and int_ip6 = 0 "
-                . "order by int_face,int_addr";
-      $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $q_string  = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,";
+      $q_string .= "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_domain ";
+      $q_string .= "from inv_interface ";
+      $q_string .= "left join inv_net_zones on inv_interface.int_zone = inv_net_zones.zone_id  ";
+      $q_string .= "left join inv_int_types on inv_interface.int_type = inv_int_types.itp_id ";
+      $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = 0 and int_ip6 = 0 ";
+      $q_string .= "order by int_face,int_addr ";
+      $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     
-      while ( $a_interface = mysqli_fetch_array($q_interface) ) {
+      while ( $a_inv_interface = mysqli_fetch_array($q_inv_interface) ) {
     
-        if ($a_interface['int_domain'] == '') {
-          $domain = $a_interface['int_server'];
+        if ($a_inv_interface['int_domain'] == '') {
+          $domain = $a_inv_interface['int_server'];
         } else {
-          $domain = $a_interface['int_server'] . "." . $a_interface['int_domain'];
+          $domain = $a_inv_interface['int_server'] . "." . $a_inv_interface['int_domain'];
         }
-        $intnote = " title=\"" . $a_interface['int_note'] . "\"";
-        if ($a_interface['int_verified'] == 1) {
+        $intnote = " title=\"" . $a_inv_interface['int_note'] . "\"";
+        if ($a_inv_interface['int_verified'] == 1) {
           $bgcolor = $color[1];
         } else {
           $bgcolor = $color[0];
         }
-        if ($a_interface['int_eth'] == '00:00:00:00:00:00' ) {
+        if ($a_inv_interface['int_eth'] == '00:00:00:00:00:00' ) {
           $showmac = '';
         } else {
-          $showmac = $a_interface['int_eth'];
+          $showmac = $a_inv_interface['int_eth'];
         }
-        if ($a_interface['int_addr'] == '' ) {
+        if ($a_inv_interface['int_addr'] == '' ) {
           $showmask = '';
         } else {
-          $showmask = '/' . $a_interface['int_mask'];
+          $showmask = '/' . $a_inv_interface['int_mask'];
         }
         $redundancy = '';
-        if ($a_interface['int_redundancy'] > 0 ) {
+        if ($a_inv_interface['int_redundancy'] > 0 ) {
           $redundancy = ' (r)';
         }
         $virtual = '';
-        if ($a_interface['int_virtual'] == 1 ) {
+        if ($a_inv_interface['int_virtual'] == 1 ) {
           $virtual = ' (v)';
         }
     
-        if ($a_interface['int_type'] == 4 || $a_interface['int_type'] == 6) {
-          $linkstart = "<a href=\"http://" . $a_interface['int_addr'] . "\" target=\"_blank\">";
+        if ($a_inv_interface['int_type'] == 4 || $a_inv_interface['int_type'] == 6) {
+          $linkstart = "<a href=\"http://" . $a_inv_interface['int_addr'] . "\" target=\"_blank\">";
           $linkend = "</a>";
         } else {
           $linkstart = "";
@@ -1049,30 +1049,30 @@
     
         $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
         $output .= "<td" . $intnote . ">"              . $domain . $redundancy            . "</td>\n";
-        $output .= "<td" . $intnote . ">"              . $a_interface['int_face'] . $virtual                 . "</td>\n";
+        $output .= "<td" . $intnote . ">"              . $a_inv_interface['int_face'] . $virtual                 . "</td>\n";
         if (return_Virtual($db, $a_inventory['inv_id']) == 0) {
-          $output .= "<td" . $intnote . ">"            . $a_interface['int_sysport']                         . "</td>\n";
+          $output .= "<td" . $intnote . ">"            . $a_inv_interface['int_sysport']                         . "</td>\n";
         }
         $output .= "<td" . $intnote . ">"              . $showmac                                            . "</td>\n";
-        $output .= "<td" . $intnote . ">" . $linkstart . $a_interface['int_addr']     . $showmask . $linkend . "</td>\n";
-        $output .= "<td" . $intnote . ">"              . $a_interface['zone_zone']                           . "</td>\n";
-        $output .= "<td" . $intnote . ">"              . $a_interface['int_gate']                            . "</td>\n";
+        $output .= "<td" . $intnote . ">" . $linkstart . $a_inv_interface['int_addr']     . $showmask . $linkend . "</td>\n";
+        $output .= "<td" . $intnote . ">"              . $a_inv_interface['zone_zone']                           . "</td>\n";
+        $output .= "<td" . $intnote . ">"              . $a_inv_interface['int_gate']                            . "</td>\n";
         if (return_Virtual($db, $a_inventory['inv_id']) == 0) {
-          $output .= "<td" . $intnote . ">"            . $a_interface['int_switch']                          . "</td>\n";
-          $output .= "<td" . $intnote . ">"            . $a_interface['int_port']                            . "</td>\n";
+          $output .= "<td" . $intnote . ">"            . $a_inv_interface['int_switch']                          . "</td>\n";
+          $output .= "<td" . $intnote . ">"            . $a_inv_interface['int_port']                            . "</td>\n";
         }
-        $output .= "<td" . $intnote . ">"              . $a_interface['itp_acronym']                         . "</td>\n";
-        $output .= "<td" . $intnote . ">"              . $a_interface['int_update']                          . "</td>\n";
+        $output .= "<td" . $intnote . ">"              . $a_inv_interface['itp_acronym']                         . "</td>\n";
+        $output .= "<td" . $intnote . ">"              . $a_inv_interface['int_update']                          . "</td>\n";
         $output .= "</tr>\n";
     
     
-        $q_string = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,int_domain,"
-                  .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_groupname "
-                  . "from interface "
-                  . "left join inv_net_zones on interface.int_zone = inv_net_zones.zone_id  "
-                  . "left join inv_int_types on interface.int_type = inv_int_types.itp_id "
-                  . "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_interface['int_id'] . " and int_ip6 = 0 "
-                  . "order by int_face,int_addr";
+        $q_string  = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,int_domain,";
+        $q_string .= "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_groupname ";
+        $q_string .= "from inv_interface ";
+        $q_string .= "left join inv_net_zones on inv_interface.int_zone = inv_net_zones.zone_id  ";
+        $q_string .= "left join inv_int_types on inv_interface.int_type = inv_int_types.itp_id ";
+        $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_inv_interface['int_id'] . " and int_ip6 = 0 ";
+        $q_string .= "order by int_face,int_addr ";
         $q_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     
         while ( $a_redundancy = mysqli_fetch_array($q_redundancy) ) {
@@ -1133,13 +1133,13 @@
           $output .= "<td" . $intnote . ">"              . $a_redundancy['int_update']                          . "</td>\n";
           $output .= "</tr>\n";
 
-          $q_string = "select int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,int_domain,"
-                    .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_groupname "
-                    . "from interface "
-                    . "left join inv_net_zones on interface.int_zone = inv_net_zones.zone_id  "
-                    . "left join inv_int_types on interface.int_type = inv_int_types.itp_id "
-                    . "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_redundancy['int_id'] . " and int_ip6 = 0 "
-                    . "order by int_face,int_addr";
+          $q_string  = "select int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,int_domain,";
+          $q_string .= "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_groupname ";
+          $q_string .= "from inv_interface ";
+          $q_string .= "left join inv_net_zones on inv_interface.int_zone = inv_net_zones.zone_id  ";
+          $q_string .= "left join inv_int_types on inv_interface.int_type = inv_int_types.itp_id ";
+          $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_redundancy['int_id'] . " and int_ip6 = 0 ";
+          $q_string .= "order by int_face,int_addr ";
           $q_secondary = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     
           while ( $a_secondary = mysqli_fetch_array($q_secondary) ) {
@@ -1227,7 +1227,7 @@
 
       $q_string  = "select route_address,route_gateway,route_mask,route_interface,route_desc,route_verified,int_face,route_update ";
       $q_string .= "from inv_routing ";
-      $q_string .= "left join interface on interface.int_id = route_interface ";
+      $q_string .= "left join inv_interface on inv_interface.int_id = route_interface ";
       $q_string .= "where route_companyid = " . $a_inventory['inv_id'] . " ";
       $q_string .= "order by route_address";
       $q_inv_routing = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
@@ -1269,7 +1269,7 @@
       $q_string  = "select route_address,route_gateway,route_mask,route_interface,";
       $q_string .= "route_desc,route_verified,int_face ";
       $q_string .= "from inv_routing ";
-      $q_string .= "left join interface on interface.int_id = route_interface ";
+      $q_string .= "left join inv_interface on inv_interface.int_id = route_interface ";
       $q_string .= "where route_companyid = " . $a_inventory['inv_id'] . " ";
       $q_string .= "order by route_address";
       $q_inv_routing = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");

@@ -130,10 +130,10 @@
         if ($a_excludes['ex_companyid'] > 0) {
 
           $q_string  = "select int_server ";
-          $q_string .= "from interface ";
+          $q_string .= "from inv_interface ";
           $q_string .= "where int_companyid = " . $a_excludes['ex_companyid'] . " and (int_type = 1 or int_type = 2) ";
-          $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          while ($a_interface = mysqli_fetch_array($q_interface)) {
+          $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
             if ($comment != '') {
               $output .= "#\n# " . $comment . "\n";
             }
@@ -144,7 +144,7 @@
               $output .= "<span class=\"ui-state-error\">";
             }
             $output .= $linkstart;
-            $output .= $a_interface['int_server'] . " ";
+            $output .= $a_inv_interface['int_server'] . " ";
             $output .= $a_excludes['ex_text'] . $linkend;
             if ($a_excludes['ex_expiration'] < date('Y-m-d')) {
               $output .= "</span>";

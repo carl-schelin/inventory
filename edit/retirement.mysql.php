@@ -185,12 +185,12 @@
       $output .= "Server Name: " . $a_inventory['inv_name'] . "<br>\n";
       $output .= "----------<br>\n";
       $q_string  = "select int_server,int_addr ";
-      $q_string .= "from interface ";
+      $q_string .= "from inv_interface ";
       $q_string .= "where int_companyid = " . $formVars['ret_companyid'] . " ";
-      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      while ($a_interface = mysqli_fetch_array($q_interface)) {
-        if ($a_interface['int_addr'] != '' && $a_interface['int_server'] != 'localhost') {
-          $output .= $a_interface['int_server'] . " - " . $a_interface['int_addr'] . "<br>\n";
+      $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
+        if ($a_inv_interface['int_addr'] != '' && $a_inv_interface['int_server'] != 'localhost') {
+          $output .= $a_inv_interface['int_server'] . " - " . $a_inv_interface['int_addr'] . "<br>\n";
         }
       }
       $output .= "</td>\n";
@@ -212,12 +212,12 @@
       $output .= "Server Name: " . $a_inventory['inv_name'] . "<br>\n";
       $output .= "----------<br>\n";
       $q_string  = "select int_server,int_addr ";
-      $q_string .= "from interface ";
+      $q_string .= "from inv_interface ";
       $q_string .= "where int_companyid = " . $formVars['ret_companyid'] . " ";
-      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      while ($a_interface = mysqli_fetch_array($q_interface)) {
-        if ($a_interface['int_addr'] != '' && $a_interface['int_server'] != 'localhost') {
-          $output .= $a_interface['int_server'] . " - " . $a_interface['int_addr'] . "<br>\n";
+      $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
+        if ($a_inv_interface['int_addr'] != '' && $a_inv_interface['int_server'] != 'localhost') {
+          $output .= $a_inv_interface['int_server'] . " - " . $a_inv_interface['int_addr'] . "<br>\n";
         }
       }
       $output .= "</td>\n";
@@ -232,12 +232,12 @@
       $output .= "<tr>\n";
       $output .= "  <td class=\"ui-widget-content\">The following servers are being retired. Please recover the following IPs and make them available for reuse:<br><br>";
       $q_string  = "select int_server,int_addr ";
-      $q_string .= "from interface ";
+      $q_string .= "from inv_interface ";
       $q_string .= "where int_companyid = " . $formVars['ret_companyid'] . " ";
-      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      while ($a_interface = mysqli_fetch_array($q_interface)) {
+      $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
         if ($a_interface['int_addr'] != '' && $a_interface['int_server'] != 'localhost') {
-          $output .= $a_interface['int_server'] . " - " . $a_interface['int_addr'] . "<br>\n";
+          $output .= $a_inv_interface['int_server'] . " - " . $a_inv_interface['int_addr'] . "<br>\n";
         }
       }
       $output .= "</td>\n";
@@ -252,12 +252,12 @@
       $output .= "<tr>\n";
       $output .= "  <td class=\"ui-widget-content\">The following servers are being retired. Please remove any and all of the following objects from your firewall rules:<br><br>";
       $q_string  = "select int_server,int_addr ";
-      $q_string .= "from interface ";
+      $q_string .= "from inv_interface ";
       $q_string .= "where int_companyid = " . $formVars['ret_companyid'] . " ";
-      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      while ($a_interface = mysqli_fetch_array($q_interface)) {
-        if ($a_interface['int_addr'] != '' && $a_interface['int_server'] != 'localhost') {
-          $output .= $a_interface['int_server'] . " - " . $a_interface['int_addr'] . "<br>\n";
+      $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
+        if ($a_inv_interface['int_addr'] != '' && $a_inv_interface['int_server'] != 'localhost') {
+          $output .= $a_inv_interface['int_server'] . " - " . $a_inv_interface['int_addr'] . "<br>\n";
         }
       }
       $output .= "</td>\n";
@@ -272,13 +272,13 @@
       $output .= "<tr>\n";
       $output .= "  <td class=\"ui-widget-content\">The following servers are being retired. Please clear the following hostnames and IPs, forward and reverse, from DNS:<br><br>";
       $q_string  = "select int_server,int_domain,int_addr ";
-      $q_string .= "from interface ";
-      $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
+      $q_string .= "from inv_interface ";
+      $q_string .= "left join inventory on inventory.inv_id = inv_interface.int_companyid ";
       $q_string .= "where int_companyid = " . $formVars['ret_companyid'] . " ";
-      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      while ($a_interface = mysqli_fetch_array($q_interface)) {
-        if ($a_interface['int_addr'] != '' && $a_interface['int_server'] != 'localhost') {
-          $output .= $a_interface['int_server'] . "." . $a_interface['int_domain'] . " - " . $a_interface['int_addr'] . "<br>\n";
+      $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
+        if ($a_inv_interface['int_addr'] != '' && $a_inv_interface['int_server'] != 'localhost') {
+          $output .= $a_inv_interface['int_server'] . "." . $a_inv_interface['int_domain'] . " - " . $a_inv_interface['int_addr'] . "<br>\n";
         }
       }
       $output .= "</td>\n";
@@ -293,13 +293,13 @@
       $output .= "<tr>\n";
       $output .= "  <td class=\"ui-widget-content\">The following servers are being retired. Please clear the following hostnames and IPs, forward and reverse, from DNS.<br><br>";
       $q_string  = "select int_server,int_domain,int_addr ";
-      $q_string .= "from interface ";
-      $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
+      $q_string .= "from inv_interface ";
+      $q_string .= "left join inventory on inventory.inv_id = inv_interface.int_companyid ";
       $q_string .= "where int_companyid = " . $formVars['ret_companyid'] . " ";
-      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      while ($a_interface = mysqli_fetch_array($q_interface)) {
-        if ($a_interface['int_addr'] != '' && $a_interface['int_server'] != 'localhost') {
-          $output .= $a_interface['int_server'] . "." . $a_interface['int_domain'] . " - " . $a_interface['int_addr'] . "<br>\n";
+      $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
+        if ($a_inv_interface['int_addr'] != '' && $a_inv_interface['int_server'] != 'localhost') {
+          $output .= $a_inv_interface['int_server'] . "." . $a_inv_interface['int_domain'] . " - " . $a_inv_interface['int_addr'] . "<br>\n";
         }
       }
       $output .= "</td>\n";

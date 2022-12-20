@@ -180,8 +180,8 @@
   $q_string  = "select inv_id,inv_name,inv_function,prod_name,fs_id,fs_device,fs_mount,fs_size,fs_used,fs_avail,fs_percent,fs_verified,fs_update ";
   $q_string .= "from inv_filesystem ";
   $q_string .= "left join inventory on inventory.inv_id      = inv_filesystem.fs_companyid ";
-  $q_string .= "left join products on products.prod_id       = inventory.inv_product ";
-  $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
+  $q_string .= "left join inv_products  on inv_products.prod_id       = inventory.inv_product ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id       = inventory.inv_location ";
   $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
   $q_string .= $where . " ";
   $q_string .= $orderby;

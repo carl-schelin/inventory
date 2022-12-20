@@ -219,15 +219,15 @@
   print "</tr>\n";
 
   $q_string = "select inv_id,inv_name,inv_function,grp_name,inv_location,ct_city,st_state,inv_product,prod_name,inv_callpath,inv_document,hw_active "
-            . "from inventory "
-            . "left join hardware  on hardware.hw_companyid = inventory.inv_id "
-            . "left join products  on products.prod_id      = inventory.inv_product "
-            . "left join inv_locations on inv_locations.loc_id      = inventory.inv_location "
-            . "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city "
-            . "left join inv_states    on inv_states.st_id          = inv_locations.loc_state "
-            . "left join inv_groups    on inv_groups.grp_id         = inventory.inv_manager "
-            . $where . " " 
-            . $orderby;
+  $q_string .= "from inventory "
+  $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id "
+  $q_string .= "left join inv_products  on inv_products.prod_id      = inventory.inv_product "
+  $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location "
+  $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city "
+  $q_string .= "left join inv_states    on inv_states.st_id          = inv_locations.loc_state "
+  $q_string .= "left join inv_groups    on inv_groups.grp_id         = inventory.inv_manager "
+  $q_string .= $where . " " 
+  $q_string .= $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   if (mysqli_num_rows($q_inventory) > 0) {
     while ($a_inventory = mysqli_fetch_array($q_inventory) ) {

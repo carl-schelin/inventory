@@ -177,17 +177,17 @@
   print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=route_desc"    . $passthrough . "\">Description</a></th>\n";
   print "</tr>\n";
 
-  $q_string = "select inv_id,inv_name,route_id,route_address,route_gateway,route_mask,route_desc,int_face,itp_acronym "
-            . "from inventory "
-            . "left join inv_routing   on inv_routing.route_companyid = inventory.inv_id "
-            . "left join interface on interface.int_id        = inv_routing.route_interface "
-            . "left join hardware  on hardware.hw_companyid   = inventory.inv_id "
-            . "left join inv_locations on inv_locations.loc_id        = inventory.inv_location "
-            . "left join inv_models    on inv_models.mod_id           = hardware.hw_vendorid "
-            . "left join inv_groups    on inv_groups.grp_id           = inventory.inv_manager "
-            . "left join inv_int_types on inv_int_types.itp_id        = interface.int_type "
-            . $where
-            . $orderby;
+  $q_string  = "select inv_id,inv_name,route_id,route_address,route_gateway,route_mask,route_desc,int_face,itp_acronym ";
+  $q_string .= "from inventory ";
+  $q_string .= "left join inv_routing   on inv_routing.route_companyid = inventory.inv_id ";
+  $q_string .= "left join inv_interface on inv_interface.int_id        = inv_routing.route_interface ";
+  $q_string .= "left join hardware  on hardware.hw_companyid   = inventory.inv_id ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id        = inventory.inv_location ";
+  $q_string .= "left join inv_models    on inv_models.mod_id           = hardware.hw_vendorid ";
+  $q_string .= "left join inv_groups    on inv_groups.grp_id           = inventory.inv_manager ";
+  $q_string .= "left join inv_int_types on inv_int_types.itp_id        = inv_interface.int_type ";
+  $q_string .= $where
+  $q_string .= $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
@@ -196,7 +196,7 @@
 
     $dns = $a_inventory['route_address'];
 ## validate the IP before trying to ping or look it up (unnecessary delays)
-#    if (filter_var($a_inv_routing['route_address'], FILTER_VALIDATE_IP) && ($a_interface['int_face'] != 'lo' || $a_interface['int_face'] != 'lo0')) {
+#    if (filter_var($a_inv_routing['route_address'], FILTER_VALIDATE_IP) && ($a_inv_interface['int_face'] != 'lo' || $a_inv_interface['int_face'] != 'lo0')) {
 ## ensure it's a -host based ip, no need to ping or look up -net ranges.
 #      if ($a_inv_routing['route_mask'] == 32) {
 #        $ping = ' class="ui-state-error" ';

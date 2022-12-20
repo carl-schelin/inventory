@@ -65,7 +65,7 @@
         $level = addslashes($_GET['level']); 
       } 
 
-      $c_levels = mysqli_num_rows(mysqli_query($db, "select * from levels where lvl_name='" . $level . "'"));
+      $c_levels = mysqli_num_rows(mysqli_query($db, "select * from inv_levels where lvl_name='" . $level . "'"));
 
       header('Content-Type: text/xml'); 
       header('Pragma: no-cache'); 

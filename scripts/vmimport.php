@@ -185,15 +185,15 @@
 # get the product id
       $inv_product = 0;
       $q_string  = "select prod_id ";
-      $q_string .= "from products ";
+      $q_string .= "from inv_products ";
       $q_string .= "where prod_name = \"" . $product . "\" ";
-      $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_products) == 0) {
+      $q_inv_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_products) == 0) {
          $error .= "Unable to locate product: " . $product . " ";
       } else {
-        $a_products = mysqli_fetch_array($q_products);
+        $a_inv_products = mysqli_fetch_array($q_inv_products);
 
-        $inv_product = $a_products['prod_id'];
+        $inv_product = $a_inv_products['prod_id'];
       }
 
 # get the project id
@@ -277,7 +277,7 @@
         } else {
           $a_inventory = mysqli_fetch_array($q_inventory);
 
-          $q_string  = "insert into interface set int_id = null,";
+          $q_string  = "insert into inv_interface set int_id = null,";
           $q_string .= "int_server      = \"" . $fqdn[0]               . "\",";
           $q_string .= "int_domain      = \"" . $fqdn[1]               . "\",";
           $q_string .= "int_companyid   =   " . $a_inventory['inv_id'] . ",";

@@ -77,9 +77,9 @@
   if ($hostname == 'inventory.internal.pri') {
     $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
   }
-  $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
-  $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
-  $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
+  $q_string .= "left join inv_interface on inv_interface.int_companyid = inventory.inv_id ";
+  $q_string .= "left join inv_groups    on inv_groups.grp_id           = inventory.inv_manager ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id        = inventory.inv_location ";
   $q_string .= "where int_nagios = 1 and inv_status = 0 and typ_name = 'OS' and int_ip6 = 0 and int_management = 1 and loc_instance > 0 and inv_manager = 1 ";
   if ($hostname == 'inventory.internal.pri') {
     $q_string .= "and hw_active != '1971-01-01' ";
@@ -281,18 +281,18 @@
   }
 
   $q_string  = "select prod_id,prod_name ";
-  $q_string .= "from products ";
+  $q_string .= "from inv_products ";
   $q_string .= "order by prod_name ";
-  $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_products = mysqli_fetch_array($q_products)) {
-    if (strlen($products[$a_products['prod_id']]) > 0) {
+  $q_inv_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_products = mysqli_fetch_array($q_inv_products)) {
+    if (strlen($products[$a_inv_products['prod_id']]) > 0) {
 
-      $hostgroup = str_replace(" ", "_", $a_products['prod_name']);
+      $hostgroup = str_replace(" ", "_", $a_inv_products['prod_name']);
 
       print "define hostgroup{\n";
       print "        hostgroup_name  prod_" . $hostgroup . " ; The name of the hostgroup\n";
-      print "        alias           " . $a_products['prod_name'] . " ; Long name of the group\n";
-      print "        members         " . $products[$a_products['prod_id']] . "\n";
+      print "        alias           " . $a_inv_products['prod_name'] . " ; Long name of the group\n";
+      print "        members         " . $products[$a_inv_products['prod_id']] . "\n";
       print "        }\n";
       print "\n";
 

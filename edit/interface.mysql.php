@@ -182,10 +182,10 @@
             "int_login        =   " . $formVars['int_login'];
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into interface set int_id = NULL, " . $q_string;
+            $q_string = "insert into inv_interface set int_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update interface set " . $q_string . " where int_id = " . $formVars['int_id'];
+            $q_string = "update inv_interface set " . $q_string . " where int_id = " . $formVars['int_id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['int_id']);
@@ -225,40 +225,40 @@
       $q_string .= "int_backup,int_face,int_addr,int_eth,int_mask,int_switch,int_vaddr,int_veth,int_vgate,";
       $q_string .= "int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,";
       $q_string .= "itp_description,int_gate,int_update,usr_name,int_nagios,int_openview,int_ip6,ip_ipv4 ";
-      $q_string .= "from interface ";
-      $q_string .= "left join inv_int_types on inv_int_types.itp_id = interface.int_type ";
-      $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id = interface.int_ipaddressid ";
-      $q_string .= "left join inv_users on inv_users.usr_id = interface.int_user ";
-      $q_string .= "left join inv_int_redundancy on inv_int_redundancy.red_id = interface.int_redundancy ";
+      $q_string .= "from inv_interface ";
+      $q_string .= "left join inv_int_types      on inv_int_types.itp_id      = inv_interface.int_type ";
+      $q_string .= "left join inv_ipaddress      on inv_ipaddress.ip_id       = inv_interface.int_ipaddressid ";
+      $q_string .= "left join inv_users          on inv_users.usr_id          = inv_interface.int_user ";
+      $q_string .= "left join inv_int_redundancy on inv_int_redundancy.red_id = inv_interface.int_redundancy ";
       $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = 0 ";
       $q_string .= "order by int_face,int_addr,int_server";
-      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_interface) > 0) {
-        while ($a_interface = mysqli_fetch_array($q_interface)) {
+      $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_interface) > 0) {
+        while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
 
           $default    = " class=\"ui-widget-content\"";
           $defaultdel = " class=\"ui-widget-content delete\"";
-          if ($a_interface['int_primary'] == 1) {
+          if ($a_inv_interface['int_primary'] == 1) {
             $default    = " class=\"ui-state-highlight\"";
             $defaultdel = " class=\"ui-state-highlight delete\"";
           }
-          $servername = $a_interface['int_server'];
+          $servername = $a_inv_interface['int_server'];
           $fqdn_flag = 0;
-          if ($a_interface['int_domain'] != '') {
-            $servername = $a_interface['int_server'] . "." . $a_interface['int_domain'];
+          if ($a_inv_interface['int_domain'] != '') {
+            $servername = $a_inv_interface['int_server'] . "." . $a_inv_interface['int_domain'];
             $fqdn_flag = 1;
           }
           $forward = "";
           $fwdtitle = "";
           $reverse = "";
           $revtitle = "";
-	  if ($a_interface['int_ip6'] == 0) {
+	  if ($a_inv_interface['int_ip6'] == 0) {
 # verify the interface has a valid IP first. No need to further check if not
-            if (filter_var($a_interface['int_addr'], FILTER_VALIDATE_IP)) {
-              $actualhost = gethostbyaddr($a_interface['int_addr']);
-              if ($actualhost == $a_interface['int_addr'] || $actualhost != $servername) {
-                if ($actualhost == $a_interface['int_addr']) {
-                  $revtitle = "IP Lookup Failed: " . $actualhost . ".\nShould have returned: " . $a_interface['int_addr'] . ".";
+            if (filter_var($a_inv_interface['int_addr'], FILTER_VALIDATE_IP)) {
+              $actualhost = gethostbyaddr($a_inv_interface['int_addr']);
+              if ($actualhost == $a_inv_interface['int_addr'] || $actualhost != $servername) {
+                if ($actualhost == $a_inv_interface['int_addr']) {
+                  $revtitle = "IP Lookup Failed: " . $actualhost . ".\nShould have returned: " . $a_inv_interface['int_addr'] . ".";
                 }
                 if ($actualhost != $servername) {
                   $revtitle = "Hostname Mismatch: " . $actualhost . ".\nShould have returned: " . $servername . ".";
@@ -270,15 +270,15 @@
                 $reverse = "&#x2713;";
               }
 # get the IP Address from the hostname but only if the hostname isn't an IP address and skip if the IP errors out
-              if ($a_interface['int_addr'] != $servername) {
+              if ($a_inv_interface['int_addr'] != $servername) {
                 if ($fqdn_flag) {
                   $actualip = gethostbyname($servername);
-                  if ($actualip == $servername || $actualip != $a_interface['int_addr']) {
+                  if ($actualip == $servername || $actualip != $a_inv_interface['int_addr']) {
                     if ($actualip == $servername) {
                       $fwdtitle = "Hostname Lookup Failed: " . $actualip . ".\nShould have returned: " . $servername . ".";
                     }
-                    if ($actualip != $a_interface['int_addr']) {
-                      $fwdtitle = "IP Mismatch: " . $actualip . ".\nShould have returned: " . $a_interface['int_addr'] . ".";
+                    if ($actualip != $a_inv_interface['int_addr']) {
+                      $fwdtitle = "IP Mismatch: " . $actualip . ".\nShould have returned: " . $a_inv_interface['int_addr'] . ".";
                     }
                     $forward = "";
                   } else {
@@ -293,74 +293,74 @@
               }
             }
           }
-          if ($a_interface['int_eth'] == '00:00:00:00:00:00') {
+          if ($a_inv_interface['int_eth'] == '00:00:00:00:00:00') {
             $showmac = '';
           } else {
-            $showmac = $a_interface['int_eth'];
+            $showmac = $a_inv_interface['int_eth'];
           }
-          if ($a_interface['int_addr'] == '') {
+          if ($a_inv_interface['int_addr'] == '') {
             $showmask = '';
           } else {
-            $showmask = "/" . $a_interface['int_mask'];
+            $showmask = "/" . $a_inv_interface['int_mask'];
           }
           $addrchecked = "";
-          if ($a_interface['int_vaddr']) {
+          if ($a_inv_interface['int_vaddr']) {
             $addrchecked = "&#x2713;";
           }
           $ethchecked = "";
-          if ($a_interface['int_veth']) {
+          if ($a_inv_interface['int_veth']) {
             $ethchecked = "&#x2713;";
           }
           $gatechecked = "";
-          if ($a_interface['int_vgate']) {
+          if ($a_inv_interface['int_vgate']) {
             $gatechecked = "&#x2713;";
           }
           $checked = "";
-          if ($a_interface['int_verified']) {
+          if ($a_inv_interface['int_verified']) {
             $checked = "&#x2713;";
           }
           $redundancy = '';
 # if not one of the default interfaces, then it's redundant
-          if ($a_interface['red_default'] == 0) {
+          if ($a_inv_interface['red_default'] == 0) {
             $redundancy = ' (r)';
 # new bridge interface
-            if ($a_interface['red_text'] == "LACP") {
+            if ($a_inv_interface['red_text'] == "LACP") {
               $redundancy = ' (b)';
             }
           }
           $virtual = '';
-          if ($a_interface['int_virtual'] > 0) {
+          if ($a_inv_interface['int_virtual'] > 0) {
             $virtual = ' (v)';
           }
           $login = '';
-          if ($a_interface['int_login'] > 0) {
+          if ($a_inv_interface['int_login'] > 0) {
             $login = ' (sh)';
           }
           $management = '';
-          if ($a_interface['int_management'] > 0) {
+          if ($a_inv_interface['int_management'] > 0) {
             $management = ' (M)';
             $mgtcount++;
           }
           $backups = '';
-          if ($a_interface['int_backup'] > 0) {
+          if ($a_inv_interface['int_backup'] > 0) {
             $backups = ' (B)';
           }
-          $title = " title=\"Updated by: " . $a_interface['usr_name'] . "\"";
+          $title = " title=\"Updated by: " . $a_inv_interface['usr_name'] . "\"";
 
           $monitor = '';
-          if ($a_interface['int_nagios'] || $a_interface['int_openview']) {
+          if ($a_inv_interface['int_nagios'] || $a_inv_interface['int_openview']) {
             $monitor = ' (';
-            if ($a_interface['int_nagios']) {
+            if ($a_inv_interface['int_nagios']) {
               $monitor .= "N";
             }
-            if ($a_interface['int_openview']) {
+            if ($a_inv_interface['int_openview']) {
               $monitor .= "O";
             }
             $monitor .= ')';
           }
 
-          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('interface.fill.php?id=" . $a_interface['int_id'] . "');jQuery('#dialogInterfaceUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_interface('interface.del.php?id="  . $a_interface['int_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('interface.fill.php?id=" . $a_inv_interface['int_id'] . "');jQuery('#dialogInterfaceUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_interface('interface.del.php?id="  . $a_inv_interface['int_id'] . "');\">";
           $linkend = "</a>";
 
           $output .= "<tr>\n";
@@ -368,19 +368,19 @@
           $output .= "  <td"          . $default    . ">" . $linkstart . $servername   . $redundancy   . $monitor . $management . $backups . $login . $linkend   . "</td>\n";
           $output .= "  <td"          . $defaultdel . " title=\"" . $fwdtitle . "\">" . $linkstart . $forward                 . $linkend   . "</td>\n";
           $output .= "  <td"          . $defaultdel . " title=\"" . $revtitle . "\">" . $linkstart . $reverse                . $linkend   . "</td>\n";
-          $output .= "  <td"          . $default    . ">" . $linkstart . $a_interface['int_face'] . $virtual                 . $linkend   . "</td>\n";
+          $output .= "  <td"          . $default    . ">" . $linkstart . $a_inv_interface['int_face'] . $virtual                 . $linkend   . "</td>\n";
           if (return_Virtual($db, $formVars['int_companyid']) == 0) {
-            $output .= "  <td"        . $default    . ">" . $linkstart . $a_interface['int_sysport']                         . $linkend   . "</td>\n";
+            $output .= "  <td"        . $default    . ">" . $linkstart . $a_inv_interface['int_sysport']                         . $linkend   . "</td>\n";
           }
           $output .= "  <td"          . $default    . ">" . $linkstart . $showmac                 . $ethchecked              . $linkend   . "</td>\n";
-          $output .= "  <td"          . $default    . ">" . $linkstart . $a_interface['int_addr'] . $showmask . $addrchecked . $linkend   . "</td>\n";
-          $output .= "  <td"          . $default    . ">" . $linkstart . $a_interface['int_gate'] . $gatechecked             . $linkend   . "</td>\n";
+          $output .= "  <td"          . $default    . ">" . $linkstart . $a_inv_interface['int_addr'] . $showmask . $addrchecked . $linkend   . "</td>\n";
+          $output .= "  <td"          . $default    . ">" . $linkstart . $a_inv_interface['int_gate'] . $gatechecked             . $linkend   . "</td>\n";
           if (return_Virtual($db, $formVars['int_companyid']) == 0) {
-            $output .= "  <td"        . $default    . ">" . $linkstart . $a_interface['int_switch']                          . $linkend   . "</td>\n";
-            $output .= "  <td"        . $default    . ">" . $linkstart . $a_interface['int_port']                            . $linkend   . "</td>\n";
+            $output .= "  <td"        . $default    . ">" . $linkstart . $a_inv_interface['int_switch']                          . $linkend   . "</td>\n";
+            $output .= "  <td"        . $default    . ">" . $linkstart . $a_inv_interface['int_port']                            . $linkend   . "</td>\n";
           }
-          $output .= "  <td"          . $default    . " title=\"" . $a_interface['itp_description'] . "\">" . $linkstart . $a_interface['itp_acronym']              . $linkend   . "</td>\n";
-          $output .= "  <td" . $title . $default    . ">" . $linkstart . $a_interface['int_update'] . $checked               . $linkend . "</td>\n";
+          $output .= "  <td"          . $default    . " title=\"" . $a_inv_interface['itp_description'] . "\">" . $linkstart . $a_inv_interface['itp_acronym']              . $linkend   . "</td>\n";
+          $output .= "  <td" . $title . $default    . ">" . $linkstart . $a_inv_interface['int_update'] . $checked               . $linkend . "</td>\n";
           $output .= "</tr>\n";
 
 
@@ -390,11 +390,11 @@
           $q_string .= "int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,";
           $q_string .= "itp_description,int_gate,int_update,usr_name,int_nagios,int_openview,";
           $q_string .= "red_text,red_default,int_management,int_backup,int_ip6,int_login ";
-          $q_string .= "from interface ";
-          $q_string .= "left join inv_int_types on inv_int_types.itp_id = interface.int_type ";
-          $q_string .= "left join inv_users on inv_users.usr_id = interface.int_user ";
-          $q_string .= "left join inv_int_redundancy on inv_int_redundancy.red_id = interface.int_redundancy ";
-          $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = " . $a_interface['int_id'] . " ";
+          $q_string .= "from inv_interface ";
+          $q_string .= "left join inv_int_types      on inv_int_types.itp_id      = inv_interface.int_type ";
+          $q_string .= "left join inv_users          on inv_users.usr_id          = inv_interface.int_user ";
+          $q_string .= "left join inv_int_redundancy on inv_int_redundancy.red_id = inv_interface.int_redundancy ";
+          $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = " . $a_inv_interface['int_id'] . " ";
           $q_string .= "order by int_face,int_addr,int_server";
           $q_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_redundancy) > 0) {
@@ -555,10 +555,10 @@
               $q_string  = "select int_id,int_server,int_domain,int_companyid,int_face,int_addr,int_eth,int_mask,int_switch,int_groupname,int_vaddr,int_veth,int_vgate,";
               $q_string .= "int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,itp_description,int_gate,int_update,usr_name,";
               $q_string .= "red_text,red_default,int_nagios,int_openview,int_management,int_backup,int_ip6,int_login ";
-              $q_string .= "from interface ";
-              $q_string .= "left join inv_int_types on inv_int_types.itp_id = interface.int_type ";
-              $q_string .= "left join inv_users on inv_users.usr_id = interface.int_user ";
-              $q_string .= "left join inv_int_redundancy on inv_int_redundancy.red_id = interface.int_redundancy ";
+              $q_string .= "from inv_interface ";
+              $q_string .= "left join inv_int_types      on inv_int_types.itp_id      = inv_interface.int_type ";
+              $q_string .= "left join inv_users          on inv_users.usr_id          = inv_interface.int_user ";
+              $q_string .= "left join inv_int_redundancy on inv_int_redundancy.red_id = inv_interface.int_redundancy ";
               $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = " . $a_redundancy['int_id'] . " ";
               $q_string .= "order by int_face,int_addr,int_server";
               $q_secondary = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -724,7 +724,7 @@
         $output .= "  <td class=\"ui-widget-content\" colspan=\"10\">No Network Interfaces added.</td>\n";
       }
 
-      mysqli_free_result($q_interface);
+      mysqli_free_result($q_inv_interface);
 
       $output .= "</table>\n";
 
@@ -738,20 +738,20 @@
       print "selboxUpdate.options.length = 0;\n";
 
       $q_string  = "select int_id,int_face,int_ip6 ";
-      $q_string .= "from interface ";
-      $q_string .= "left join inv_int_redundancy on inv_int_redundancy.red_id = interface.int_redundancy ";
+      $q_string .= "from inv_interface ";
+      $q_string .= "left join inv_int_redundancy on inv_int_redundancy.red_id = inv_interface.int_redundancy ";
       $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and red_default = 0 ";
       $q_string .= "order by int_ip6,int_face";
-      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_interface) > 0) {
-        while ($a_interface = mysqli_fetch_array($q_interface)) {
-          if ($a_interface['int_ip6'] == 1) {
+      $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_interface) > 0) {
+        while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
+          if ($a_inv_interface['int_ip6'] == 1) {
             $ip6 = " (ipv6)";
           } else {
             $ip6 = "";
           }
-          print "selboxCreate.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_interface['int_face'] . $ip6) . "\"," . $a_interface['int_id'] . ");\n";
-          print "selboxUpdate.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_interface['int_face'] . $ip6) . "\"," . $a_interface['int_id'] . ");\n";
+          print "selboxCreate.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_inv_interface['int_face'] . $ip6) . "\"," . $a_inv_interface['int_id'] . ");\n";
+          print "selboxUpdate.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_inv_interface['int_face'] . $ip6) . "\"," . $a_inv_interface['int_id'] . ");\n";
         }
       } else {
         print "selboxCreate.options[selbox.options.length] = new Option(\"No Redundant Interfaces identified\",0);\n";

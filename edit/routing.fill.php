@@ -29,7 +29,7 @@
       mysqli_free_result($q_inv_routing);
 
       $q_string  = "select int_id ";
-      $q_string .= "from interface ";
+      $q_string .= "from inv_interface ";
       $q_string .= "where int_companyid = " . $a_inv_routing['route_companyid'] . " ";
       $q_string .= "order by int_face";
       $interface = return_Index($db, $a_inv_routing['route_interface'], $q_string);

@@ -19,10 +19,10 @@
     }
 
     if (check_userlevel($db, $AL_Admin)) {
-      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from licenses");
+      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from inv_licenses");
 
       $q_string  = "delete ";
-      $q_string .= "from licenses ";
+      $q_string .= "from inv_licenses ";
       $q_string .= "where lic_id = " . $formVars['id'];
       $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 

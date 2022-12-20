@@ -337,26 +337,26 @@
 # Duplicate all the interfaces
 #####
               $q_string  = "select int_id,int_server,int_face,int_ip6,int_addr,int_eth,int_mask,int_gate,int_verified,int_switch,int_primary,int_type ";
-              $q_string .= "from interface ";
+              $q_string .= "from inv_interface ";
               $q_string .= "where int_companyid = " . $formVars['id'];
-              $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-              if (mysqli_num_rows($q_interface) > 0) {
-                while ($a_interface = mysqli_fetch_array($q_interface)) {
+              $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              if (mysqli_num_rows($q_inv_interface) > 0) {
+                while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
 
-                  $q_string = "insert into interface set " . 
+                  $q_string = "insert into inv_interface set " . 
                     "int_id        =   " . "NULL"                       . "," . 
-                    "int_server    = \"" . $a_interface['int_server']   . "\"," .
+                    "int_server    = \"" . $a_inv_interface['int_server']   . "\"," .
                     "int_companyid =   " . $newserver                   . "," .
-                    "int_face      = \"" . $a_interface['int_face']     . "\"," .
-                    "int_ip6       = \"" . $a_interface['int_ip6']      . "\"," .
-                    "int_addr      = \"" . $a_interface['int_addr']     . "\"," .
-                    "int_eth       = \"" . $a_interface['int_eth']      . "\"," .
-                    "int_mask      = \"" . $a_interface['int_mask']     . "\"," .
-                    "int_gate      = \"" . $a_interface['int_gate']     . "\"," .
-                    "int_verified  = \"" . $a_interface['int_verified'] . "\"," .
-                    "int_switch    = \"" . $a_interface['int_switch']   . "\"," .
-                    "int_primary   =   " . $a_interface['int_primary']  . "," .
-                    "int_type      =   " . $a_interface['int_type'];
+                    "int_face      = \"" . $a_inv_interface['int_face']     . "\"," .
+                    "int_ip6       = \"" . $a_inv_interface['int_ip6']      . "\"," .
+                    "int_addr      = \"" . $a_inv_interface['int_addr']     . "\"," .
+                    "int_eth       = \"" . $a_inv_interface['int_eth']      . "\"," .
+                    "int_mask      = \"" . $a_inv_interface['int_mask']     . "\"," .
+                    "int_gate      = \"" . $a_inv_interface['int_gate']     . "\"," .
+                    "int_verified  = \"" . $a_inv_interface['int_verified'] . "\"," .
+                    "int_switch    = \"" . $a_inv_interface['int_switch']   . "\"," .
+                    "int_primary   =   " . $a_inv_interface['int_primary']  . "," .
+                    "int_type      =   " . $a_inv_interface['int_type'];
 
                   $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
                 }

@@ -305,7 +305,7 @@ function return_ServerID( $p_db, $p_string ) {
   if (mysqli_num_rows($q_inventory) == 0) {
     $q_string  = "select inv_id ";
     $q_string .= "from inventory ";
-    $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
+    $q_string .= "left join inv_interface on inv_interface.int_companyid = inventory.inv_id ";
     $q_string .= "where inv_status = 0 and int_server = '" . $p_hostname[0] . "' ";
     $q_inventory = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
 
@@ -330,7 +330,7 @@ function return_ServerID( $p_db, $p_string ) {
     if (mysqli_num_rows($q_inventory) == 0) {
       $q_string  = "select inv_id ";
       $q_string .= "from inventory ";
-      $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
+      $q_string .= "left join inv_interface on inv_interface.int_companyid = inventory.inv_id ";
       $q_string .= "where int_server = '" . $p_hostname[0] . "' ";
       $q_inventory = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
 

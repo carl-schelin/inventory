@@ -158,12 +158,12 @@ $(document).ready( function() {
   <td class="ui-widget-content">Select the Product or Service: <select name="service" id="service" onclick="check_encode();" onblur="check_encode();">
 <?php
   $q_string  = "select prod_id,prod_name,prod_code ";
-  $q_string .= "from products ";
+  $q_string .= "from inv_products ";
   $q_string .= "where prod_code != '' ";
   $q_string .= "order by prod_code ";
-  $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_products = mysqli_fetch_array($q_products)) {
-    print "<option value=\"" . $a_products['prod_id'] . "\">" . $a_products['prod_code'] . " (" . $a_products['prod_name'] . ")</option>\n";
+  $q_inv_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_products = mysqli_fetch_array($q_inv_products)) {
+    print "<option value=\"" . $a_inv_products['prod_id'] . "\">" . $a_inv_products['prod_code'] . " (" . $a_inv_products['prod_name'] . ")</option>\n";
   }
 ?>
 </select></td>

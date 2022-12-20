@@ -79,7 +79,7 @@
   $interface = array();
   $q_string  = "select route_id,route_address,route_mask,route_gateway,int_face,route_desc,route_verified,route_user,route_update ";
   $q_string .= "from inv_routing ";
-  $q_string .= "left join interface on interface.int_id = inv_routing.route_interface ";
+  $q_string .= "left join inv_interface on inv_interface.int_id = inv_routing.route_interface ";
   $q_string .= "where route_companyid = " . $formVars['id'] . " and route_ipv6 = 0 ";
   $q_string .= "order by route_address";
   $q_inv_routing = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -139,7 +139,7 @@
   $interface = array();
   $q_string  = "select route_id,route_address,route_mask,route_gateway,int_face,route_desc,route_verified,route_user,route_update ";
   $q_string .= "from inv_routing ";
-  $q_string .= "left join interface on interface.int_id = inv_routing.route_interface ";
+  $q_string .= "left join inv_interface on inv_interface.int_id = inv_routing.route_interface ";
   $q_string .= "where route_companyid = " . $formVars['id'] . " and route_ipv6 = 1 ";
   $q_string .= "order by route_address";
   $q_inv_routing = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));

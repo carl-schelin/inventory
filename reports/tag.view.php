@@ -255,20 +255,20 @@ $(document).ready( function () {
     $interface = "";
     $console = "";
     $q_string  = "select int_face,ip_ipv4,int_type,itp_acronym,int_ip6 ";
-    $q_string .= "from interface ";
-    $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id  = interface.int_ipaddressid ";
-    $q_string .= "left join inv_int_types on inv_int_types.itp_id = interface.int_type ";
+    $q_string .= "from inv_interface ";
+    $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id  = inv_interface.int_ipaddressid ";
+    $q_string .= "left join inv_int_types on inv_int_types.itp_id = inv_interface.int_type ";
     $q_string .= "where int_companyid = \"" . $a_inventory['inv_id'] . "\" and int_type != 7 and int_ip6 = 0 ";
     $q_string .= "order by itp_acronym,int_face";;
-    $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    while ($a_interface = mysqli_fetch_array($q_interface)) {
+    $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
 
 # if a console or LOM interface type
-      if ($a_interface['int_type'] == 4 || $a_interface['int_type'] == 6) {
-        $console .= $a_interface['int_face'] . "=" . "<a href=\"http://" . $a_interface['ip_ipv4'] . "\" target=\"_blank\">" . $a_interface['ip_ipv4'] . "</a> ";
+      if ($a_inv_interface['int_type'] == 4 || $a_inv_interface['int_type'] == 6) {
+        $console .= $a_inv_interface['int_face'] . "=" . "<a href=\"http://" . $a_inv_interface['ip_ipv4'] . "\" target=\"_blank\">" . $a_inv_interface['ip_ipv4'] . "</a> ";
       } else {
-        if ($a_interface['int_type'] == 1 || $a_interface['int_type'] == 2 || $a_interface['int_type'] == 12 || $a_interface['int_type'] == 16) {
-          $interface .= $a_interface['itp_acronym'] . "=" . $a_interface['ip_ipv4'] . " ";
+        if ($a_inv_interface['int_type'] == 1 || $a_inv_interface['int_type'] == 2 || $a_inv_interface['int_type'] == 12 || $a_inv_interface['int_type'] == 16) {
+          $interface .= $a_inv_interface['itp_acronym'] . "=" . $a_inv_interface['ip_ipv4'] . " ";
         }
       }
     }

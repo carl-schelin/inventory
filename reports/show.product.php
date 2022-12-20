@@ -15,10 +15,10 @@
   $formVars['id'] = clean($_GET['id'],10);
 
   $q_string  = "select prod_name ";
-  $q_string .= "from products ";
+  $q_string .= "from inv_products ";
   $q_string .= "where prod_id = " . $formVars['id'];
-  $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_products = mysqli_fetch_array($q_products);
+  $q_inv_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_products = mysqli_fetch_array($q_inv_products);
 
 # if help has not been seen yet,
   if (show_Help($db, $Reportpath . "/" . $package)) {
@@ -32,7 +32,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>View <?php print $a_products['prod_name']; ?></title>
+<title>View <?php print $a_inv_products['prod_name']; ?></title>
 
 <style type="text/css" title="currentStyle" media="screen">
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -61,7 +61,7 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default"><?php print $a_products['prod_name']; ?></th>
+  <th class="ui-state-default"><?php print $a_inv_products['prod_name']; ?></th>
 </tr>
 </table>
 

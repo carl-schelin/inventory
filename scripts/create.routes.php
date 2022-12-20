@@ -38,13 +38,13 @@
 
 # get the hostname for the server set when the int_hostname flag == 1
       $q_string  = "select int_server ";
-      $q_string .= "from interface ";
+      $q_string .= "from inv_interface ";
       $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_hostname = 1 ";
       $q_string .= "limit 1 ";
-      $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      $a_interface = mysqli_fetch_array($q_interface);
+      $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_inv_interface = mysqli_fetch_array($q_inv_interface);
 
-      print $a_interface['int_server']  .":\n";
+      print $a_inv_interface['int_server']  .":\n";
 
       $q_string  = "select route_address,route_mask,route_gateway,route_interface,route_source ";
       $q_string .= "from inv_routing ";
@@ -53,16 +53,16 @@
       while ($a_inv_routing = mysqli_fetch_array($q_inv_routing)) {
 
         $q_string  = "select int_face ";
-        $q_string .= "from interface ";
+        $q_string .= "from inv_interface ";
         $q_string .= "where int_id = " . $a_inv_routing['route_interface'] . " ";
-        $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_interface = mysqli_fetch_array($q_interface);
+        $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_inv_interface = mysqli_fetch_array($q_inv_interface);
 
         print "  - { ";
         print "address: \"" . $a_inv_routing['route_address']   . "\", ";
         print "mask: \""    . $a_inv_routing['route_mask']      . "\", ";
         print "gateway: \"" . $a_inv_routing['route_gateway']   . "\", ";
-        print "device: \""  . $a_interface['int_face']          . "\", ";
+        print "device: \""  . $a_inv_interface['int_face']          . "\", ";
         print "source: \""  . $a_inv_routing['route_source']    . "\"";
         print "}\n";
 

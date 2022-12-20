@@ -147,7 +147,7 @@
   $q_string .= "from inventory ";
   $q_string .= "left join hardware on inventory.inv_id = hardware.hw_companyid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
-  $q_string .= "left join products on products.prod_id = inventory.inv_product ";
+  $q_string .= "left join inv_products  on inv_products.prod_id = inventory.inv_product ";
   $q_string .= $where;
   $q_string .= $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

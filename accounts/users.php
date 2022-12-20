@@ -502,12 +502,12 @@ a new certificate and the amount of time to get approval to apply the certificat
   <td class="ui-widget-content">Edit Level <select name="usr_level">
 <?php
   $q_string  = "select lvl_id,lvl_name ";
-  $q_string .= "from levels ";
+  $q_string .= "from inv_levels ";
   $q_string .= "where lvl_disabled = 0 ";
   $q_string .= "order by lvl_id";
-  $q_levels = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_levels = mysqli_fetch_array($q_levels)) {
-    print "<option value=\"" . $a_levels['lvl_id'] . "\">" . $a_levels['lvl_name'] . "</option>\n";
+  $q_inv_levels = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_levels = mysqli_fetch_array($q_inv_levels)) {
+    print "<option value=\"" . $a_inv_levels['lvl_id'] . "\">" . $a_inv_levels['lvl_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -622,12 +622,12 @@ a new certificate and the amount of time to get approval to apply the certificat
   <td class="ui-widget-content">Edit Level <select name="usr_level">
 <?php
   $q_string  = "select lvl_id,lvl_name ";
-  $q_string .= "from levels ";
+  $q_string .= "from inv_levels ";
   $q_string .= "where lvl_disabled = 0 ";
   $q_string .= "order by lvl_id";
-  $q_levels = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_levels = mysqli_fetch_array($q_levels)) {
-    print "<option value=\"" . $a_levels['lvl_id'] . "\">" . $a_levels['lvl_name'] . "</option>\n";
+  $q_inv_levels = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_levels = mysqli_fetch_array($q_inv_levels)) {
+    print "<option value=\"" . $a_inv_levels['lvl_id'] . "\">" . $a_inv_levels['lvl_name'] . "</option>\n";
   }
 ?>
 </select></td>

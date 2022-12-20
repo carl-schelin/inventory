@@ -82,7 +82,7 @@
         print "selbox.options[selbox.options.length] = new Option(\"" . $a_hwselect['hw_asset'] . $a_hwselect['hw_serial'] . " " . $a_hwselect['mod_name'] . "\"," . $a_hwselect['hw_id'] . ");\n";
       }
 
-      $product  = return_Index($db, $a_hardware['hw_product'],   "select prod_id from products order by prod_name");
+      $product  = return_Index($db, $a_hardware['hw_product'],   "select prod_id from inv_products order by prod_name");
       $model    = return_Index($db, $a_hardware['hw_vendorid'],  "select mod_id from inv_models left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor where mod_type = " . $a_hardware['hw_type'] . " order by ven_name,mod_name");
       $type     = return_Index($db, $a_hardware['hw_type'],      "select part_id from inv_parts order by part_name");
       $support  = return_Index($db, $a_hardware['hw_supportid'], "select sup_id from inv_support order by sup_company,sup_contract");

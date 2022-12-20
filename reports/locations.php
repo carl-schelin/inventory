@@ -416,28 +416,28 @@ $(document).ready( function () {
 
       $interface = "";
       $console = "";
-      $q_string = "select int_face,int_addr,int_type,itp_acronym,int_ip6,int_primary "
-                . "from interface "
-                . "left join inv_int_types on inv_int_types.itp_id = interface.int_type "
-                . "where int_companyid = \"" . $a_inventory['inv_id'] . "\" and int_type != 7 and int_addr != '' and int_ip6 = 0 "
-                . "order by int_face";
-      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      while ($a_interface = mysqli_fetch_array($q_interface)) {
+      $q_string  = "select int_face,int_addr,int_type,itp_acronym,int_ip6,int_primary ";
+      $q_string .= "from inv_interface ";
+      $q_string .= "left join inv_int_types on inv_int_types.itp_id = inv_interface.int_type ";
+      $q_string .= "where int_companyid = \"" . $a_inventory['inv_id'] . "\" and int_type != 7 and int_addr != '' and int_ip6 = 0 ";
+      $q_string .= "order by int_face ";
+      $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
 
 # if a console or LOM interface type
-        if ($a_interface['int_primary']) {
+        if ($a_inv_interface['int_primary']) {
           $primary = "*";
         } else {
           $primary = '';
         }
-        if ($a_interface['int_type'] == 4 || $a_interface['int_type'] == 6) {
+        if ($a_inv_interface['int_type'] == 4 || $a_inv_interface['int_type'] == 6) {
           if ($formVars['csv'] == 'false') {
-            $console .= $a_interface['int_face'] . "=" . "<a href=\"http://" . $a_interface['int_addr'] . "\" target=\"_blank\">" . $a_interface['int_addr'] . "</a>" . $primary . " ";
+            $console .= $a_inv_interface['int_face'] . "=" . "<a href=\"http://" . $a_inv_interface['int_addr'] . "\" target=\"_blank\">" . $a_inv_interface['int_addr'] . "</a>" . $primary . " ";
           } else {
-            $console .= $a_interface['int_face'] . "=" . $a_interface['int_addr'] . $primary . " ";
+            $console .= $a_inv_interface['int_face'] . "=" . $a_inv_interface['int_addr'] . $primary . " ";
           }
         } else {
-          $interface .= $a_interface['itp_acronym'] . "=" . $a_interface['int_addr'] . $primary . " ";
+          $interface .= $a_inv_interface['itp_acronym'] . "=" . $a_inv_interface['int_addr'] . $primary . " ";
         }
       }
 

@@ -19,21 +19,21 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from products");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_products");
 
       $q_string  = "select prod_name,prod_code,prod_desc,prod_unit,prod_service ";
-      $q_string .= "from products ";
+      $q_string .= "from inv_products ";
       $q_string .= "where prod_id = " . $formVars['id'];
-      $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_products = mysqli_fetch_array($q_products);
-      mysqli_free_result($q_products);
+      $q_inv_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_products = mysqli_fetch_array($q_inv_products);
+      mysqli_free_result($q_inv_products);
 
-      $unit    = return_Index($db, $a_products['prod_unit'],    "select bus_id from inv_business order by bus_name");
-      $service = return_Index($db, $a_products['prod_service'], "select svc_id from inv_service order by svc_id");
+      $unit    = return_Index($db, $a_inv_products['prod_unit'],    "select bus_id from inv_business order by bus_name");
+      $service = return_Index($db, $a_inv_products['prod_service'], "select svc_id from inv_service order by svc_id");
 
-      print "document.formUpdate.prod_name.value = '"    . mysqli_real_escape_string($db, $a_products['prod_name'])    . "';\n";
-      print "document.formUpdate.prod_code.value = '"    . mysqli_real_escape_string($db, $a_products['prod_code'])    . "';\n";
-      print "document.formUpdate.prod_desc.value = '"    . mysqli_real_escape_string($db, $a_products['prod_desc'])    . "';\n";
+      print "document.formUpdate.prod_name.value = '"    . mysqli_real_escape_string($db, $a_inv_products['prod_name'])    . "';\n";
+      print "document.formUpdate.prod_code.value = '"    . mysqli_real_escape_string($db, $a_inv_products['prod_code'])    . "';\n";
+      print "document.formUpdate.prod_desc.value = '"    . mysqli_real_escape_string($db, $a_inv_products['prod_desc'])    . "';\n";
 
       if ($unit > 0) {
         print "document.formUpdate.prod_unit['"    . $unit    . "'].selected = true;\n";

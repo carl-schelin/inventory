@@ -195,12 +195,12 @@ $(document).ready( function() {
 </select> What interface? <select name="mon_interface">
 <?php
   $q_string  = "select int_id,int_server ";
-  $q_string .= "from interface ";
+  $q_string .= "from inv_interface ";
   $q_string .= "where int_companyid = " . $inventory_id . " ";
   $q_string .= "order by int_server ";
-  $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_interface = mysqli_fetch_array($q_interface)) {
-    print "<option value=\"" . $a_interface['int_id'] . "\">" . $a_interface['int_server'] . "</option>\n";
+  $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
+    print "<option value=\"" . $a_inv_interface['int_id'] . "\">" . $a_inv_interface['int_server'] . "</option>\n";
   }
 ?>
 </select></td>

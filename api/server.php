@@ -149,7 +149,7 @@
   $q_string .= "left join inv_timezones   on inv_timezones.zone_id  = inventory.inv_zone ";
   $q_string .= "left join inv_maintenance on inv_maintenance.man_id = inventory.inv_maint ";
   $q_string .= "left join inv_groups      on inv_groups.grp_id      = inventory.inv_manager ";
-  $q_string .= "left join products    on products.prod_id       = inventory.inv_product ";
+  $q_string .= "left join inv_products    on inv_products.prod_id   = inventory.inv_product ";
   $q_string .= "left join projects    on projects.prj_id        = inventory.inv_project ";
   $q_string .= "where inv_status = 0 ";
   if ($formVars['server'] != '') {
@@ -261,33 +261,33 @@
     $q_string .= "int_openview,int_nagios,int_ping,int_ssh,int_http,int_ftp,int_smtp,int_cfg2html,int_notify,int_hours,";
     $q_string .= "int_primary,int_switch,int_port,med_text,spd_text,dup_text,rol_text,int_management,int_backup,";
     $q_string .= "int_redundancy,int_groupname,int_virtual,zone_zone,zone_acronym,int_sysport ";
-    $q_string .= "from interface ";
-    $q_string .= "left join inv_net_zones  on inv_net_zones.zone_id = interface.int_zone ";
-    $q_string .= "left join inv_int_types  on inv_int_types.itp_id  = interface.int_type ";
-    $q_string .= "left join inv_int_duplex on inv_int_duplex.dup_id = interface.int_duplex ";
-    $q_string .= "left join inv_int_media  on inv_int_media.med_id  = interface.int_media ";
-    $q_string .= "left join inv_int_speed  on inv_int_speed.spd_id  = interface.int_speed ";
-    $q_string .= "left join inv_int_role   on inv_int_role.rol_id   = interface.int_role ";
+    $q_string .= "from inv_interface ";
+    $q_string .= "left join inv_net_zones  on inv_net_zones.zone_id = inv_interface.int_zone ";
+    $q_string .= "left join inv_int_types  on inv_int_types.itp_id  = inv_interface.int_type ";
+    $q_string .= "left join inv_int_duplex on inv_int_duplex.dup_id = inv_interface.int_duplex ";
+    $q_string .= "left join inv_int_media  on inv_int_media.med_id  = inv_interface.int_media ";
+    $q_string .= "left join inv_int_speed  on inv_int_speed.spd_id  = inv_interface.int_speed ";
+    $q_string .= "left join inv_int_role   on inv_int_role.rol_id   = inv_interface.int_role ";
     $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = 0 ";
-    $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    while ($a_interface = mysqli_fetch_array($q_interface)) {
+    $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
 
       if ($formVars['interfaces'] == 'yes') {
 
-        if ($a_interface['int_virtual']) {
+        if ($a_inv_interface['int_virtual']) {
           $virtual = 'Yes';
         } else {
           $virtual = 'No';
         }
 
-        if ($a_interface['int_domain'] == '') {
-          $fqdn = $a_interface['int_server'];
+        if ($a_inv_interface['int_domain'] == '') {
+          $fqdn = $a_inv_interface['int_server'];
         } else {
-          $fqdn = $a_interface['int_server'] . "." . $a_interface['int_domain'];
+          $fqdn = $a_inv_interface['int_server'] . "." . $a_inv_interface['int_domain'];
         }
         $q_string  = "select red_text ";
         $q_string .= "from inv_int_redundancy ";
-        $q_string .= "where red_id = " . $a_interface['int_redundancy'] . " ";
+        $q_string .= "where red_id = " . $a_inv_interface['int_redundancy'] . " ";
         $q_inv_int_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_inv_int_redundancy = mysqli_fetch_array($q_inv_int_redundancy);
         if ($a_inv_int_redundancy['red_text'] == '') {
@@ -295,54 +295,54 @@
         }
 
         $notify = 'None';
-        if ($a_interface['int_notify'] == 1) {
+        if ($a_inv_interface['int_notify'] == 1) {
           $notify = 'Email';
         }
-        if ($a_interface['int_notify'] == 2) {
+        if ($a_inv_interface['int_notify'] == 2) {
           $notify = 'Page';
         }
 
         $hours = 'Business Hours';
-        if ($a_interface['int_hours'] == 1) {
+        if ($a_inv_interface['int_hours'] == 1) {
           $hours = '24x7';
         }
 
         $index = "interface_" . $count++;
 
         $servers[$a_inventory['inv_name']]->inventory_network[$index] = new IP_Address();
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_name         = $a_interface['int_server'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_name         = $a_inv_interface['int_server'];
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_fqdn         = $fqdn;
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_label        = $a_interface['int_face'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_address      = $a_interface['int_addr'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_ethernet     = $a_interface['int_eth'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_netmask      = $a_interface['int_mask'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_gateway      = $a_interface['int_gate'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_vlan         = $a_interface['int_vlan'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_type         = $a_interface['itp_name'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_default      = ($a_interface['int_primary'] ? "Default Route" : "");
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_role         = $a_interface['rol_text'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_label        = $a_inv_interface['int_face'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_address      = $a_inv_interface['int_addr'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_ethernet     = $a_inv_interface['int_eth'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_netmask      = $a_inv_interface['int_mask'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_gateway      = $a_inv_interface['int_gate'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_vlan         = $a_inv_interface['int_vlan'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_type         = $a_inv_interface['itp_name'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_default      = ($a_inv_interface['int_primary'] ? "Default Route" : "");
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_role         = $a_inv_interface['rol_text'];
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_redundant    = $a_inv_int_redundancy['red_text'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_groupname    = $a_interface['int_groupname'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_groupname    = $a_inv_interface['int_groupname'];
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_virtual      = $virtual;
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_netzone      = $a_interface['zone_zone'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_management   = ($a_interface['int_management'] ? "Yes" : "No");
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_backup       = ($a_interface['int_backup'] ? "Yes" : "No");
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_netzone      = $a_inv_interface['zone_zone'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_management   = ($a_inv_interface['int_management'] ? "Yes" : "No");
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->interface_backup       = ($a_inv_interface['int_backup'] ? "Yes" : "No");
 
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->physical_port        = $a_interface['int_sysport'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->physical_switch      = $a_interface['int_switch'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->physical_switch_port = $a_interface['int_port'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->physical_media       = $a_interface['med_text'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->physical_speed       = $a_interface['spd_text'];
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->physical_duplex      = $a_interface['dup_text'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->physical_port        = $a_inv_interface['int_sysport'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->physical_switch      = $a_inv_interface['int_switch'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->physical_switch_port = $a_inv_interface['int_port'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->physical_media       = $a_inv_interface['med_text'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->physical_speed       = $a_inv_interface['spd_text'];
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->physical_duplex      = $a_inv_interface['dup_text'];
 
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->monitor_openview  = ($a_interface['int_openview'] ? 'Monitored' : 'No');
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->monitor_nagios    = ($a_interface['int_nagios'] ? 'Monitored' : 'No');
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->monitor_ping      = ($a_interface['int_ping'] ? 'Monitored' : 'No');
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->monitor_ssh       = ($a_interface['int_ssh'] ? 'Monitored' : 'No');
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->monitor_http      = ($a_interface['int_http'] ? 'Monitored' : 'No');
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->monitor_ftp       = ($a_interface['int_ftp'] ? 'Monitored' : 'No');
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->monitor_smtp      = ($a_interface['int_smtp'] ? 'Monitored' : 'No');
-        $servers[$a_inventory['inv_name']]->inventory_network[$index]->monitor_cfg2html  = ($a_interface['int_cfg2html'] ? 'Ignored' : 'Monitored');
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->monitor_openview  = ($a_inv_interface['int_openview'] ? 'Monitored' : 'No');
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->monitor_nagios    = ($a_inv_interface['int_nagios'] ? 'Monitored' : 'No');
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->monitor_ping      = ($a_inv_interface['int_ping'] ? 'Monitored' : 'No');
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->monitor_ssh       = ($a_inv_interface['int_ssh'] ? 'Monitored' : 'No');
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->monitor_http      = ($a_inv_interface['int_http'] ? 'Monitored' : 'No');
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->monitor_ftp       = ($a_inv_interface['int_ftp'] ? 'Monitored' : 'No');
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->monitor_smtp      = ($a_inv_interface['int_smtp'] ? 'Monitored' : 'No');
+        $servers[$a_inventory['inv_name']]->inventory_network[$index]->monitor_cfg2html  = ($a_inv_interface['int_cfg2html'] ? 'Ignored' : 'Monitored');
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->monitor_notify    = $notify;
         $servers[$a_inventory['inv_name']]->inventory_network[$index]->monitor_hours     = $hours;
 
@@ -352,14 +352,14 @@
         $q_string .= "int_openview,int_nagios,int_ping,int_ssh,int_http,int_ftp,int_smtp,int_cfg2html,int_notify,int_hours,";
         $q_string .= "int_primary,int_switch,int_port,med_text,spd_text,dup_text,rol_text,int_management,int_backup,";
         $q_string .= "int_redundancy,int_groupname,int_virtual,zone_zone,int_sysport ";
-        $q_string .= "from interface ";
-        $q_string .= "left join inv_net_zones  on inv_net_zones.zone_id = interface.int_zone ";
-        $q_string .= "left join inv_int_types  on inv_int_types.itp_id  = interface.int_type ";
-        $q_string .= "left join inv_int_duplex on inv_int_duplex.dup_id = interface.int_duplex ";
-        $q_string .= "left join inv_int_media  on inv_int_media.med_id  = interface.int_media ";
-        $q_string .= "left join inv_int_speed  on inv_int_speed.spd_id  = interface.int_speed ";
-        $q_string .= "left join inv_int_role   on inv_int_role.rol_id   = interface.int_role ";
-        $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_interface['int_id'] . " ";
+        $q_string .= "from inv_interface ";
+        $q_string .= "left join inv_net_zones  on inv_net_zones.zone_id = inv_interface.int_zone ";
+        $q_string .= "left join inv_int_types  on inv_int_types.itp_id  = inv_interface.int_type ";
+        $q_string .= "left join inv_int_duplex on inv_int_duplex.dup_id = inv_interface.int_duplex ";
+        $q_string .= "left join inv_int_media  on inv_int_media.med_id  = inv_interface.int_media ";
+        $q_string .= "left join inv_int_speed  on inv_int_speed.spd_id  = inv_interface.int_speed ";
+        $q_string .= "left join inv_int_role   on inv_int_role.rol_id   = inv_interface.int_role ";
+        $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_inv_interface['int_id'] . " ";
         $q_internal = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         while ($a_internal = mysqli_fetch_array($q_internal)) {
 
@@ -437,14 +437,14 @@
           $servers[$a_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->monitor_hours     = $hours;
         }
       } else {
-        if ($a_interface['itp_name'] == 'Management') {
-          if ($a_interface['zone_acronym'] == 'C') {
+        if ($a_inv_interface['itp_name'] == 'Management') {
+          if ($a_inv_interface['zone_acronym'] == 'C') {
             $servers[$a_inventory['inv_name']]->inventory_network = "Corporate Zone";
           }
-          if ($a_interface['zone_acronym'] == 'D') {
+          if ($a_inv_interface['zone_acronym'] == 'D') {
             $servers[$a_inventory['inv_name']]->inventory_network = "DMZ";
           }
-          if ($a_interface['zone_acronym'] == 'E') {
+          if ($a_inv_interface['zone_acronym'] == 'E') {
             $servers[$a_inventory['inv_name']]->inventory_network = "E911 Zone";
           }
         }
@@ -461,7 +461,7 @@
     $q_string .= "left join inv_models   on inv_models.mod_id    = hardware.hw_vendorid ";
     $q_string .= "left join inv_vendors  on inv_vendors.ven_id   = inv_models.mod_vendor ";
     $q_string .= "left join projects on projects.prj_id  = hardware.hw_projectid ";
-    $q_string .= "left join products on products.prod_id = hardware.hw_product ";
+    $q_string .= "left join inv_products on inv_products.prod_id = hardware.hw_product ";
     $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = 0 and hw_deleted = 0 ";
     $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     while ($a_hardware = mysqli_fetch_array($q_hardware)) {
@@ -512,7 +512,7 @@
         $q_string .= "left join inv_models   on inv_models.mod_id    = hardware.hw_vendorid ";
         $q_string .= "left join inv_vendors  on inv_vendors.ven_id   = inv_models.mod_vendor ";
         $q_string .= "left join projects on projects.prj_id  = hardware.hw_projectid ";
-        $q_string .= "left join products on products.prod_id = hardware.hw_product ";
+        $q_string .= "left join inv_products on inv_products.prod_id = hardware.hw_product ";
         $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " ";
         $q_internal = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         while ($a_internal = mysqli_fetch_array($q_internal)) {

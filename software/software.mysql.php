@@ -163,8 +163,8 @@
       $q_string .= "dep_name,sw_eol,sw_eos ";
       $q_string .= "from software ";
       $q_string .= "left join inv_vendors    on inv_vendors.ven_id        = software.sw_vendor ";
-      $q_string .= "left join products   on products.prod_id      = software.sw_product ";
-      $q_string .= "left join licenses   on licenses.lic_id       = software.sw_licenseid ";
+      $q_string .= "left join inv_products   on inv_products.prod_id      = software.sw_product ";
+      $q_string .= "left join inv_licenses   on inv_licenses.lic_id       = software.sw_licenseid ";
       $q_string .= "left join inv_support    on inv_support.sup_id        = software.sw_supportid ";
       $q_string .= "left join inv_sw_types   on inv_sw_types.typ_id       = software.sw_type ";
       $q_string .= "left join inv_department on inv_department.dep_id     = software.sw_department ";

@@ -67,10 +67,10 @@
   $q_string .= "grp_name ";
   $q_string .= "from inventory ";
   $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inventory.inv_id ";
-  $q_string .= "left join software on software.sw_id = inv_svr_software.svr_softwareid ";
-  $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
-  $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
-  $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
+  $q_string .= "left join software         on software.sw_id                 = inv_svr_software.svr_softwareid ";
+  $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = software.sw_type ";
+  $q_string .= "left join inv_interface    on inv_interface.int_companyid    = inventory.inv_id ";
+  $q_string .= "left join inv_groups       on inv_groups.grp_id              = inventory.inv_manager ";
   $q_string .= "where int_nagios = 1 and inv_status = 0 and typ_name = 'OS' and int_ip6 = 0 and int_type = 1 and inv_manager = 12 ";
   $q_string .= "order by int_addr ";
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -252,18 +252,18 @@
   }
 
   $q_string  = "select prod_id,prod_name ";
-  $q_string .= "from products ";
+  $q_string .= "from inv_products ";
   $q_string .= "order by prod_name ";
-  $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_products = mysqli_fetch_array($q_products)) {
-    if (strlen($products[$a_products['prod_id']]) > 0) {
+  $q_inv_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_products = mysqli_fetch_array($q_inv_products)) {
+    if (strlen($products[$a_inv_products['prod_id']]) > 0) {
 
-      $hostgroup = str_replace(" ", "_", $a_products['prod_name']);
+      $hostgroup = str_replace(" ", "_", $a_inv_products['prod_name']);
 
       print "define hostgroup{\n";
       print "        hostgroup_name  switch_" . $hostgroup . " ; The name of the hostgroup\n";
-      print "        alias           " . $a_products['prod_name'] . " ; Long name of the group\n";
-      print "        members         " . $products[$a_products['prod_id']] . "\n";
+      print "        alias           " . $a_inv_products['prod_name'] . " ; Long name of the group\n";
+      print "        members         " . $products[$a_inv_products['prod_id']] . "\n";
       print "        }\n";
       print "\n";
 

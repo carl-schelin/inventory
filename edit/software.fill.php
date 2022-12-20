@@ -29,7 +29,7 @@
       $a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software);
       mysqli_free_result($q_inv_svr_software);
 
-      $softwareid      = return_Index($db, $a_inv_svr_software['svr_softwareid'], "select sw_id from software left join products on products.prod_id = software.sw_product order by sw_software,prod_name");
+      $softwareid      = return_Index($db, $a_inv_svr_software['svr_softwareid'], "select sw_id from software left join inv_products on inv_products.prod_id = software.sw_product order by sw_software,prod_name");
       $groupid         = return_Index($db, $a_inv_svr_software['svr_groupid'],    "select grp_id from inv_groups where grp_disabled = 0 order by grp_name");
       $certid          = return_Index($db, $a_inv_svr_software['svr_certid'],     "select cert_id from inv_certs order by cert_url");
 
