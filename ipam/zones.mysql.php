@@ -78,7 +78,7 @@
           $total = 0;
           $q_string  = "select ip_id,net_id ";
           $q_string .= "from inv_ipaddress ";
-          $q_string .= "left join network on network.net_id = inv_ipaddress.ip_network ";
+          $q_string .= "left join inv_network on inv_network.net_id = inv_ipaddress.ip_network ";
           $q_string .= "where net_zone = " . $a_inv_net_zones['zone_id'] . " ";
           $q_inv_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_inv_ipaddress) > 0) {

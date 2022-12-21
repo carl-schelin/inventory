@@ -23,7 +23,7 @@
 
       $q_string  = "select ip_ipv4,ip_ipv6,ip_hostname,ip_domain,ip_type,ip_subzone,ip_description,ip_notes,net_zone ";
       $q_string .= "from inv_ipaddress ";
-      $q_string .= "left join network on network.net_id = inv_ipaddress.ip_network ";
+      $q_string .= "left join inv_network on inv_network.net_id = inv_ipaddress.ip_network ";
       $q_string .= "where ip_id = " . $formVars['id'];
       $q_inv_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_inv_ipaddress = mysqli_fetch_array($q_inv_ipaddress);

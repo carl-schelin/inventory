@@ -29,18 +29,18 @@
       $ipv4 = 0;
       $ipv6 = 0;
       $q_string  = "select net_ipv4,net_ipv6,net_mask,zone_zone ";
-      $q_string .= "from network ";
-      $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = network.net_zone ";
+      $q_string .= "from inv_network ";
+      $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = inv_network.net_zone ";
       $q_string .= "where net_id = " . $formVars['network'] . " ";
-      $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_network) > 0) {
-        $a_network = mysqli_fetch_array($q_network);
+      $q_inv_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_network) > 0) {
+        $a_inv_network = mysqli_fetch_array($q_inv_network);
 
-        if (strlen($a_network['net_ipv4']) == 0) {
+        if (strlen($a_inv_network['net_ipv4']) == 0) {
           $ipv6 = 1;
         } else {
           $ipv4 = 1;
-          $range = ipRange($a_network['net_ipv4'] . "/" . $a_network['net_mask']);
+          $range = ipRange($a_inv_network['net_ipv4'] . "/" . $a_inv_network['net_mask']);
 
           $startip = ip2long($range[0]);
           $endip   = ip2long($range[1]);
@@ -166,8 +166,8 @@
           $q_string .= "from inv_ipaddress ";
           $q_string .= "left join inv_users     on inv_users.usr_id      = inv_ipaddress.ip_user ";
           $q_string .= "left join inv_sub_zones on inv_sub_zones.sub_id  = inv_ipaddress.ip_subzone ";
-          $q_string .= "left join network   on network.net_id        = inv_ipaddress.ip_network ";
-          $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = network.net_zone ";
+          $q_string .= "left join inv_network   on inv_network.net_id    = inv_ipaddress.ip_network ";
+          $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = inv_network.net_zone ";
           $q_string .= "where ip_ipv4 = \"" . $ipaddr . "\" ";
           $q_inv_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_inv_ipaddress) > 0) {
@@ -306,7 +306,7 @@
         $q_string .= "from inv_ipaddress ";
         $q_string .= "left join inv_users  on inv_users.usr_id = inv_ipaddress.ip_user ";
         $q_string .= "left join inv_sub_zones  on inv_sub_zones.sub_id = inv_ipaddress.ip_subzone ";
-        $q_string .= "left join network  on network.net_id = inv_ipaddress.ip_network ";
+        $q_string .= "left join inv_network    on inv_network.net_id   = inv_ipaddress.ip_network ";
         $q_string .= "where ip_ipv6 != '' " . $where;
         $q_string .= "order by " . $orderv6 . " ";
         $q_inv_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

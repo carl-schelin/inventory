@@ -48,10 +48,10 @@
             "net_description = \"" . $formVars['net_description'] . "\"";
   
           if ($formVars['update'] == 0) {
-            $q_string = "insert into network set net_id = NULL, " . $q_string;
+            $q_string = "insert into inv_network set net_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update network set " . $q_string . " where net_id = " . $formVars['id'];
+            $q_string = "update inv_network set " . $q_string . " where net_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['net_ipv6'] . "/" . $formVars['net_ipv6']);
@@ -81,25 +81,25 @@
       $output .= "</tr>\n";
 
       $q_string  = "select net_id,net_ipv4,net_mask,zone_zone,loc_name,net_vlan,net_description,usr_first,usr_last,net_timestamp ";
-      $q_string .= "from network ";
-      $q_string .= "left join inv_users     on inv_users.usr_id      = network.net_user ";
-      $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = network.net_zone ";
-      $q_string .= "left join inv_locations on inv_locations.loc_id  = network.net_location ";
+      $q_string .= "from inv_network ";
+      $q_string .= "left join inv_users     on inv_users.usr_id      = inv_network.net_user ";
+      $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = inv_network.net_zone ";
+      $q_string .= "left join inv_locations on inv_locations.loc_id  = inv_network.net_location ";
       $q_string .= "where net_ipv4 != '' ";
       $q_string .= "order by net_ipv4 ";
-      $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_network) > 0) {
-        while ($a_network = mysqli_fetch_array($q_network)) {
+      $q_inv_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_network) > 0) {
+        while ($a_inv_network = mysqli_fetch_array($q_inv_network)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('network.fill.php?id=" . $a_network['net_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('network.del.php?id=" . $a_network['net_id'] . "');\">";
-          $ipstart   = "<a href=\"ipaddress.php?network=" . $a_network['net_id'] . "\" target=\"_blank\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('network.fill.php?id=" . $a_inv_network['net_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('network.del.php?id=" . $a_inv_network['net_id'] . "');\">";
+          $ipstart   = "<a href=\"ipaddress.php?network=" . $a_inv_network['net_id'] . "\" target=\"_blank\">";
           $linkend   = "</a>";
 
           $total = 0;
           $q_string  = "select ip_ipv4 ";
           $q_string .= "from inv_ipaddress ";
-          $q_string .= "where ip_network = " . $a_network['net_id'] . " ";
+          $q_string .= "where ip_network = " . $a_inv_network['net_id'] . " ";
           $q_inv_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_inv_ipaddress) > 0) {
             while ($a_inv_ipaddress = mysqli_fetch_array($q_inv_ipaddress)) {
@@ -115,14 +115,14 @@
               $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>";
             }
           }
-          $output .= "  <td class=\"ui-widget-content\">" . $linkstart . $a_network['net_ipv4'] . "/" . $a_network['net_mask'] . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_network['net_ipv4'] . "/" . $a_inv_network['net_mask'] . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content delete\">" . $ipstart . $total . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">" . $a_network['zone_zone']       . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">" . $a_network['loc_name']        . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">" . $a_network['net_vlan']        . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">" . $a_network['net_description'] . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">" . $a_network['usr_first'] . " " . $a_network['usr_last'] . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">" . $a_network['net_timestamp'] . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">" . $a_inv_network['zone_zone']       . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">" . $a_inv_network['loc_name']        . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">" . $a_inv_network['net_vlan']        . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">" . $a_inv_network['net_description'] . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">" . $a_inv_network['usr_first'] . " " . $a_inv_network['usr_last'] . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">" . $a_inv_network['net_timestamp'] . "</td>";
           $output .= "</tr>";
         }
       } else {
@@ -133,7 +133,7 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_network);
+      mysqli_free_result($q_inv_network);
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
@@ -151,25 +151,25 @@
       $output .= "</tr>\n";
 
       $q_string  = "select net_id,net_ipv6,net_mask,zone_zone,loc_name,net_vlan,net_description,usr_first,usr_last,net_timestamp ";
-      $q_string .= "from network ";
-      $q_string .= "left join inv_users     on inv_users.usr_id      = network.net_user ";
-      $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = network.net_zone ";
-      $q_string .= "left join inv_locations on inv_locations.loc_id  = network.net_location ";
+      $q_string .= "from inv_network ";
+      $q_string .= "left join inv_users     on inv_users.usr_id      = inv_network.net_user ";
+      $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = inv_network.net_zone ";
+      $q_string .= "left join inv_locations on inv_locations.loc_id  = inv_network.net_location ";
       $q_string .= "where net_ipv6 != '' ";
       $q_string .= "order by net_ipv6 ";
-      $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_network) > 0) {
-        while ($a_network = mysqli_fetch_array($q_network)) {
+      $q_inv_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_network) > 0) {
+        while ($a_inv_network = mysqli_fetch_array($q_inv_network)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('network.fill.php?id=" . $a_network['net_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('network.del.php?id=" . $a_network['net_id'] . "');\">";
-          $ipstart   = "<a href=\"ipaddress.php?network=" . $a_network['net_id'] . "\" target=\"_blank\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('network.fill.php?id=" . $a_inv_network['net_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('network.del.php?id=" . $a_inv_network['net_id'] . "');\">";
+          $ipstart   = "<a href=\"ipaddress.php?network=" . $a_inv_network['net_id'] . "\" target=\"_blank\">";
           $linkend   = "</a>";
 
           $total = 0;
           $q_string  = "select ip_ipv6 ";
           $q_string .= "from inv_ipaddress ";
-          $q_string .= "where ip_network = " . $a_network['net_id'] . " ";
+          $q_string .= "where ip_network = " . $a_inv_network['net_id'] . " ";
           $q_inv_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_inv_ipaddress) > 0) {
             while ($a_inv_ipaddress = mysqli_fetch_array($q_inv_ipaddress)) {
@@ -185,14 +185,14 @@
               $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>";
             }
           }
-          $output .= "  <td class=\"ui-widget-content\">" . $linkstart . $a_network['net_ipv6'] . "/" . $a_network['net_mask'] . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_network['net_ipv6'] . "/" . $a_inv_network['net_mask'] . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content delete\">" . $ipstart . $total . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">" . $a_network['zone_zone']       . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">" . $a_network['loc_name']        . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">" . $a_network['net_vlan']        . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">" . $a_network['net_description'] . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">" . $a_network['usr_first'] . " " . $a_network['usr_last'] . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">" . $a_network['net_timestamp'] . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">" . $a_inv_network['zone_zone']       . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">" . $a_inv_network['loc_name']        . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">" . $a_inv_network['net_vlan']        . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">" . $a_inv_network['net_description'] . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">" . $a_inv_network['usr_first'] . " " . $a_inv_network['usr_last'] . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">" . $a_inv_network['net_timestamp'] . "</td>";
           $output .= "</tr>";
         }
       } else {
@@ -203,7 +203,7 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_network);
+      mysqli_free_result($q_inv_network);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 

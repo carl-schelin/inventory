@@ -112,14 +112,14 @@
 
 # now get the netmask and netvlan
             $q_string  = "select net_mask,net_vlan ";
-            $q_string .= "from network ";
+            $q_string .= "from inv_network ";
             $q_string .= "where net_id = " . $a_inv_ipaddress['ip_network'] . " ";
-            $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-            if (mysqli_num_rows($q_network) > 0) {
-              $a_network = mysqli_fetch_array($q_network);
+            $q_inv_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            if (mysqli_num_rows($q_inv_network) > 0) {
+              $a_inv_network = mysqli_fetch_array($q_inv_network);
             } else {
-              $a_network['net_mask'] = 0;
-              $a_network['net_vlan'] = "";
+              $a_inv_network['net_mask'] = 0;
+              $a_inv_network['net_vlan'] = "";
             }
 
             $q_string  = "select ip_ipv4 ";
@@ -149,8 +149,8 @@
             "int_domain       = \"" . $a_inv_ipaddress['ip_domain']     . "\"," .
             "int_addr         = \"" . $a_inv_ipaddress['ip_ipv4']       . "\"," .
 
-            "int_mask         =   " . $a_network['net_mask']        . "," .
-            "int_vlan         = \"" . $a_network['net_vlan']        . "\"," .
+            "int_mask         =   " . $a_inv_network['net_mask']        . "," .
+            "int_vlan         = \"" . $a_inv_network['net_vlan']        . "\"," .
 
             "int_gate         = \"" . $a_addr['ip_ipv4']            . "\"," .
 

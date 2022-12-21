@@ -32,19 +32,19 @@
   $ipv4 = 0;
   $ipv6 = 0;
   $q_string  = "select net_ipv4,net_ipv6,net_mask,zone_zone ";
-  $q_string .= "from network ";
-  $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = network.net_zone ";
+  $q_string .= "from inv_network ";
+  $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = inv_network.net_zone ";
   $q_string .= "where net_id = " . $formVars['net_id'] . " ";
-  $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_network) > 0) {
-    $a_network = mysqli_fetch_array($q_network);
+  $q_inv_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_network) > 0) {
+    $a_inv_network = mysqli_fetch_array($q_inv_network);
 
-    if (strlen($a_network['net_ipv4']) == 0) {
+    if (strlen($a_inv_network['net_ipv4']) == 0) {
       $ipv6 = 1;
-      $net_name = " for " . $a_network['net_ipv6'] . "/" . $a_network['net_mask'] . " " . $a_network['zone_zone'] . " Zone";
+      $net_name = " for " . $a_inv_network['net_ipv6'] . "/" . $a_inv_network['net_mask'] . " " . $a_inv_network['zone_zone'] . " Zone";
     } else {
       $ipv4 = 1;
-      $net_name = " for " . $a_network['net_ipv4'] . "/" . $a_network['net_mask'] . " " . $a_network['zone_zone'] . " Zone";
+      $net_name = " for " . $a_inv_network['net_ipv4'] . "/" . $a_inv_network['net_mask'] . " " . $a_inv_network['zone_zone'] . " Zone";
     }
   } else {
     $net_name = "";
@@ -324,14 +324,14 @@ can edit the current entry, or if there is a small difference, you can make chan
 <?php
 # need to know the zone the network is in in order to select the sub_zones
   $q_string  = "select net_zone ";
-  $q_string .= "from network ";
+  $q_string .= "from inv_network ";
   $q_string .= "where net_id = " . $formVars['net_id'] . " ";
-  $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_network = mysqli_fetch_array($q_network);
+  $q_inv_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_network = mysqli_fetch_array($q_inv_network);
 
   $q_string  = "select sub_id,sub_name ";
   $q_string .= "from inv_sub_zones ";
-  $q_string .= "where sub_zone = " . $a_network['net_zone'] . " ";
+  $q_string .= "where sub_zone = " . $a_inv_network['net_zone'] . " ";
   $q_string .= "order by sub_name ";
   $q_inv_sub_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inv_sub_zones = mysqli_fetch_array($q_inv_sub_zones)) {
@@ -400,14 +400,14 @@ can edit the current entry, or if there is a small difference, you can make chan
   <td class="ui-widget-content">IP Zone: <select name="ip_subzone">
 <?php
   $q_string  = "select net_zone ";
-  $q_string .= "from network ";
+  $q_string .= "from inv_network ";
   $q_string .= "where net_id = " . $formVars['net_id'] . " ";
-  $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_network = mysqli_fetch_array($q_network);
+  $q_inv_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_network = mysqli_fetch_array($q_inv_network);
 
   $q_string  = "select sub_id,sub_name ";
   $q_string .= "from inv_sub_zones ";
-  $q_string .= "where sub_zone = \"" . $a_network['net_zone'] . "\" ";
+  $q_string .= "where sub_zone = \"" . $a_inv_network['net_zone'] . "\" ";
   $q_string .= "order by sub_name ";
   $q_inv_sub_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inv_sub_zones = mysqli_fetch_array($q_inv_sub_zones)) {
