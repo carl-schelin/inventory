@@ -168,7 +168,7 @@
       $q_string .= "from inventory ";
       $q_string .= "left join inv_groups      on inv_groups.grp_id      = inventory.inv_manager ";
       $q_string .= "left join inv_products    on inv_products.prod_id   = inventory.inv_product ";
-      $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
+      $q_string .= "left join inv_projects    on inv_projects.prj_id    = inventory.inv_project ";
       $q_string .= "left join inv_service     on inv_service.svc_id     = inventory.inv_class ";
       $q_string .= "left join inv_maintenance on inv_maintenance.man_id = inventory.inv_maint ";
       $q_string .= "left join inv_locations   on inv_locations.loc_id   = inventory.inv_location ";
@@ -497,7 +497,7 @@
       $q_string .= "from inventory ";
       $q_string .= "left join inv_groups      on inv_groups.grp_id    = inventory.inv_manager ";
       $q_string .= "left join inv_products    on inv_products.prod_id = inventory.inv_product ";
-      $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
+      $q_string .= "left join inv_projects    on inv_projects.prj_id  = inventory.inv_project ";
       $q_string .= "left join inv_service     on inv_service.svc_id   = inventory.inv_class ";
       $q_string .= "left join inv_locations   on inv_locations.loc_id = inventory.inv_location ";
       $q_string .= "where inv_status = 0 and inv_manager = " . $formVars['group'] . " ";
@@ -865,7 +865,7 @@
       $q_string .= "from inventory ";
       $q_string .= "left join inv_groups     on inv_groups.grp_id     = inventory.inv_manager ";
       $q_string .= "left join inv_products   on inv_products.prod_id  = inventory.inv_product ";
-      $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
+      $q_string .= "left join inv_projects   on projects.prj_id       = inventory.inv_project ";
       $q_string .= "left join inv_service    on inv_service.svc_id    = inventory.inv_class ";
       $q_string .= "left join inv_locations  on inv_locations.loc_id  = inventory.inv_location ";
       $q_string .= "where inv_status = 0 and inv_manager = " . $formVars['group'] . " ";

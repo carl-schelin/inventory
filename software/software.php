@@ -298,7 +298,7 @@ is a small difference, you can make changes and add a new software entry.</p>
 <?php
   $q_string  = "select lic_id,lic_vendor,lic_product,prj_name ";
   $q_string .= "from inv_licenses ";
-  $q_string .= "left join projects on projects.prj_id = inv_licenses.lic_project ";
+  $q_string .= "left join inv_projects on inv_projects.prj_id = inv_licenses.lic_project ";
   $q_string .= "order by prj_name,lic_product,lic_vendor";
   $q_inv_licenses = mysqli_query($db, $q_string) or die(mysqli_error($db));
   while ($a_inv_licenses = mysqli_fetch_array($q_inv_licenses)) {
@@ -402,7 +402,7 @@ is a small difference, you can make changes and add a new software entry.</p>
 <?php
   $q_string  = "select lic_id,lic_vendor,lic_product,prj_name ";
   $q_string .= "from inv_licenses ";
-  $q_string .= "left join projects on projects.prj_id = inv_licenses.lic_project ";
+  $q_string .= "left join inv_projects on inv_projects.prj_id = inv_licenses.lic_project ";
   $q_string .= "order by prj_name,lic_product,lic_vendor";
   $q_inv_licenses = mysqli_query($db, $q_string) or die(mysqli_error($db));
   while ($a_inv_licenses = mysqli_fetch_array($q_inv_licenses)) {

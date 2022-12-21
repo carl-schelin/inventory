@@ -199,26 +199,26 @@
 # get the project id
       $inv_project = 0;
       $q_string  = "select prj_id ";
-      $q_string .= "from projects ";
+      $q_string .= "from inv_projects ";
       $q_string .= "where prj_name = \"" . $project . "\" and prj_product = " . $inv_product . " ";
-      $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_projects) == 0) {
+      $q_inv_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_projects) == 0) {
         $error .= "Unable to locate project: " . $project . " in product: " . $product . " ";
 
         $q_string  = "select prj_name ";
-        $q_string .= "from projects ";
+        $q_string .= "from inv_projects ";
         $q_string .= "where prj_product = " . $inv_product . " ";
-        $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        if (mysqli_num_rows($q_projects) > 0) {
+        $q_inv_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_inv_projects) > 0) {
           $error .= "\nAvailable Projects:";
-          while ($a_projects = mysqli_fetch_array($q_projects)) {
-            $error .= "\n" . $a_projects['prj_name'];
+          while ($a_inv_projects = mysqli_fetch_array($q_inv_projects)) {
+            $error .= "\n" . $a_inv_projects['prj_name'];
           }
         }
       } else {
-        $a_projects = mysqli_fetch_array($q_projects);
+        $a_inv_projects = mysqli_fetch_array($q_inv_projects);
 
-        $inv_project = $a_projects['prj_id'];
+        $inv_project = $a_inv_projects['prj_id'];
       }
 
       if ($error != "ERROR: ") {

@@ -88,11 +88,11 @@
         $ampersand = "&";
 
         $q_string  = "select prj_name ";
-        $q_string .= "from projects ";
+        $q_string .= "from inv_projects ";
         $q_string .= "where prj_id = " . $formVars['project'] . " ";
-        $q_projects = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        $a_projects = mysqli_fetch_array($q_projects);
-        $project_name = $a_projects['prj_name'];
+        $q_inv_projects = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_inv_projects = mysqli_fetch_array($q_inv_projects);
+        $project_name = $a_inv_projects['prj_name'];
 
       }
       $and = " and";

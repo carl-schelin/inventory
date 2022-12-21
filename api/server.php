@@ -150,7 +150,7 @@
   $q_string .= "left join inv_maintenance on inv_maintenance.man_id = inventory.inv_maint ";
   $q_string .= "left join inv_groups      on inv_groups.grp_id      = inventory.inv_manager ";
   $q_string .= "left join inv_products    on inv_products.prod_id   = inventory.inv_product ";
-  $q_string .= "left join projects    on projects.prj_id        = inventory.inv_project ";
+  $q_string .= "left join inv_projects    on inv_projects.prj_id    = inventory.inv_project ";
   $q_string .= "where inv_status = 0 ";
   if ($formVars['server'] != '') {
     $q_string .= "and inv_name = \"" . $formVars['server'] . "\" ";
@@ -460,7 +460,7 @@
     $q_string .= "left join inv_parts    on inv_parts.part_id    = hardware.hw_type ";
     $q_string .= "left join inv_models   on inv_models.mod_id    = hardware.hw_vendorid ";
     $q_string .= "left join inv_vendors  on inv_vendors.ven_id   = inv_models.mod_vendor ";
-    $q_string .= "left join projects on projects.prj_id  = hardware.hw_projectid ";
+    $q_string .= "left join inv_projects on inv_projects.prj_id  = hardware.hw_projectid ";
     $q_string .= "left join inv_products on inv_products.prod_id = hardware.hw_product ";
     $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = 0 and hw_deleted = 0 ";
     $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -511,7 +511,7 @@
         $q_string .= "left join inv_parts    on inv_parts.part_id    = hardware.hw_type ";
         $q_string .= "left join inv_models   on inv_models.mod_id    = hardware.hw_vendorid ";
         $q_string .= "left join inv_vendors  on inv_vendors.ven_id   = inv_models.mod_vendor ";
-        $q_string .= "left join projects on projects.prj_id  = hardware.hw_projectid ";
+        $q_string .= "left join inv_projects on inv_projects.prj_id  = hardware.hw_projectid ";
         $q_string .= "left join inv_products on inv_products.prod_id = hardware.hw_product ";
         $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " ";
         $q_internal = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));

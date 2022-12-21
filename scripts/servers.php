@@ -51,7 +51,7 @@
   $q_string .= "from inventory ";
   $q_string .= "left join inv_timezones on inv_timezones.zone_id = inventory.inv_zone ";
   $q_string .= "left join inv_products  on inv_products.prod_id  = inventory.inv_product ";
-  $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
+  $q_string .= "left join inv_projects  on inv_projects.prj_id   = inventory.inv_project ";
   $q_string .= "where inv_manager = " . $mygroup . " and inv_status = 0 ";
   $q_string .= "order by inv_name";
   $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));

@@ -1546,12 +1546,12 @@ $(document).ready( function() {
   <td class="ui-widget-content">Project <select name="inv_project">
 <?php
   $q_string  = "select prj_id,prj_name ";
-  $q_string .= "from projects ";
+  $q_string .= "from inv_projects ";
   $q_string .= "where prj_product = " . $a_inventory['inv_product'] . " ";
   $q_string .= "order by prj_name";
-  $q_projects = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_projects = mysqli_fetch_array($q_projects)) {
-    print "<option value=\"" . $a_projects['prj_id'] . "\">" . htmlspecialchars($a_projects['prj_name']) . "</option>\n";
+  $q_inv_projects = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_projects = mysqli_fetch_array($q_inv_projects)) {
+    print "<option value=\"" . $a_inv_projects['prj_id'] . "\">" . htmlspecialchars($a_inv_projects['prj_name']) . "</option>\n";
   }
 ?>
 </select></td>

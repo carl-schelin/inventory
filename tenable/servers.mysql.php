@@ -200,7 +200,7 @@ if needed.</p>
   $q_string .= "left join inv_products  on inv_products.prod_id  = inventory.inv_product ";
 # add in bits if asked
   if ($formVars['projects'] > 0) {
-    $q_string .= "left join projects  on projects.prj_id = inventory.inv_project ";
+    $q_string .= "left join inv_projects  on inv_projects.prj_id = inventory.inv_project ";
   }
   if (($formVars['locations'] + $formVars['country'] + $formVars['state'] + $formVars['city']) > 0) {
     $q_string .= "left join inv_locations  on inv_locations.loc_id = inventory.inv_location ";

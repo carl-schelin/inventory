@@ -30,7 +30,7 @@
   $q_string .= "left join inv_timezones on inv_timezones.zone_id = inventory.inv_zone ";
   $q_string .= "left join inv_service   on inv_service.svc_id    = inventory.inv_class ";
   $q_string .= "left join inv_products  on inv_products.prod_id  = inventory.inv_product ";
-  $q_string .= "left join projects  on projects.prj_id   = inventory.inv_project ";
+  $q_string .= "left join inv_projects  on inv_projects.prj_id   = inventory.inv_project ";
   $q_string .= "left join inv_locations on inv_locations.loc_id  = inventory.inv_location ";
   $q_string .= "left join inv_groups    on inv_groups.grp_id     = inventory.inv_manager ";
   $q_string .= "where inv_name = \"" . $server . "\" and inv_status = 0 and inv_ssh = 1 ";

@@ -194,7 +194,7 @@ if ($formVars['inwork'] == '') {
   $q_string .= "from inv_interface ";
   $q_string .= "left join inventory on inventory.inv_id      = inv_interface.int_companyid ";
   $q_string .= "left join inv_products  on inv_products.prod_id      = inventory.inv_product ";
-  $q_string .= "left join projects  on projects.prj_id       = inventory.inv_project ";
+  $q_string .= "left join inv_projects  on inv_projects.prj_id       = inventory.inv_project ";
   $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city ";
   $q_string .= "left join inv_states    on inv_states.st_id          = inv_locations.loc_state ";

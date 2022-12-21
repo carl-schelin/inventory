@@ -168,7 +168,7 @@
   $q_string .= "left join inv_maintenance on inv_maintenance.man_id = inventory.inv_maint ";
   $q_string .= "left join inv_groups      on inv_groups.grp_id      = inventory.inv_manager ";
   $q_string .= "left join inv_products    on inv_products.prod_id   = inventory.inv_product ";
-  $q_string .= "left join projects    on projects.prj_id    = inventory.inv_project ";
+  $q_string .= "left join inv_projects    on inv_projects.prj_id    = inventory.inv_project ";
   $q_string .= "where inv_status = 0 and inv_id = " . $formVars['inv_id'] . " ";
   $q_inventory = mysqli_query($db, $q_string) or die($q_string  . ": " . mysqli_error($db));
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {

@@ -161,7 +161,7 @@
       $q_string .= "left join inv_states    on inv_states.st_id     = inv_locations.loc_state ";
       $q_string .= "left join inv_int_types on inv_int_types.itp_id = inv_interface.int_type ";
       $q_string .= "left join inv_products  on inv_products.prod_id = inventory.inv_product ";
-      $q_string .= "left join projects  on projects.prj_id  = inventory.inv_project ";
+      $q_string .= "left join inv_projects  on inv_projects.prj_id  = inventory.inv_project ";
       $q_string .= "left join inv_groups    on inv_groups.grp_id    = inventory.inv_manager ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";

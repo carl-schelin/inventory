@@ -468,16 +468,16 @@
           $a_invcheck = mysqli_fetch_array($q_invcheck);
 
           $q_string  = "select prj_id,prj_name ";
-          $q_string .= "from projects ";
+          $q_string .= "from inv_projects ";
           $q_string .= "where prj_group = " . $a_invcheck['inv_manager'] . " and prj_product = " . $a_invcheck['inv_product'] . " ";
           $q_string .= "order by prj_name ";
-          $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_inv_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-          while ($a_projects = mysqli_fetch_array($q_projects) ) {
-            print "if (celltext == \"" . $a_projects['prj_name'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_projects['prj_name']) . "\"," . $a_projects['prj_id'] . ",1,1);\n";
+          while ($a_inv_projects = mysqli_fetch_array($q_inv_projects) ) {
+            print "if (celltext == \"" . $a_inv_projects['prj_name'] . "\") {\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_projects['prj_name']) . "\"," . $a_inv_projects['prj_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_projects['prj_name']) . "\"," . $a_projects['prj_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_projects['prj_name']) . "\"," . $a_inv_projects['prj_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -494,22 +494,22 @@
           print "cell.setAttribute(\"onclick\", \"edit_Detail(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "select prj_id,prj_name ";
-          $q_string .= "from projects ";
+          $q_string .= "from inv_projects ";
           $q_string .= "where prj_id = " . $formVars['select'] . " ";
-          $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_projects) > 0) {
-            $a_projects = mysqli_fetch_array($q_projects);
+          $q_inv_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_projects) > 0) {
+            $a_inv_projects = mysqli_fetch_array($q_inv_projects);
           } else {
-            $a_projects['prj_id']   = 0;
-            $a_projects['prj_name'] = "Unassigned";
+            $a_inv_projects['prj_id']   = 0;
+            $a_inv_projects['prj_name'] = "Unassigned";
           }
 
-          $display = $a_projects['prj_name'];
+          $display = $a_inv_projects['prj_name'];
 
           $q_string  = "update ";
           $q_string .= "inventory ";
           $q_string .= "set ";
-          $q_string .= "inv_project = " . $a_projects['prj_id'] . " ";
+          $q_string .= "inv_project = " . $a_inv_projects['prj_id'] . " ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
