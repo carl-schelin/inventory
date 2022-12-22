@@ -73,7 +73,7 @@
   $leftjoin = '';
   if ($formVars['server'] == 0) {
     if (strlen($formVars['tag']) > 0) {
-      $leftjoin = "left join inv_tags on inv_tags.tag_companyid = issue.iss_companyid ";
+      $leftjoin = "left join inv_tags on inv_tags.tag_companyid = inv_issue.iss_companyid ";
       $where = " and tag_name = '" . $formVars['tag'] . "' ";
     } else {
       $where = " and (inv_manager = " . $_SESSION['group'] . " or iss_user = " . $_SESSION['uid'] . ") ";
@@ -83,19 +83,19 @@
   }
 
   $q_string  = "select iss_id,iss_companyid,iss_discovered,iss_subject,iss_user,usr_name,usr_group,grp_id,inv_name ";
-  $q_string .= "from issue ";
-  $q_string .= "left join inventory on issue.iss_companyid = inventory.inv_id ";
-  $q_string .= "left join inv_users on inv_users.usr_id = issue.iss_user ";
+  $q_string .= "from inv_issue ";
+  $q_string .= "left join inventory on inv_issue.iss_companyid = inventory.inv_id ";
+  $q_string .= "left join inv_users on inv_users.usr_id        = inv_issue.iss_user ";
   $q_string .= "left join inv_groups on inv_groups.grp_id = inv_users.usr_group ";
   $q_string .= $leftjoin;
   $q_string .= "where iss_closed = '1971-01-01' " . $where . " ";
   $q_string .= "order by iss_discovered desc,inv_name";
-  $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_issue = mysqli_fetch_array($q_issue)) {
+  $q_inv_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_issue = mysqli_fetch_array($q_inv_issue)) {
 
     $q_string  = "select det_timestamp ";
     $q_string .= "from issue_detail ";
-    $q_string .= "where det_issue = " . $a_issue['iss_id'] . " ";
+    $q_string .= "where det_issue = " . $a_inv_issue['iss_id'] . " ";
     $q_string .= "order by det_timestamp ";
     $q_string .= "limit 1 ";
     $q_issue_detail = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -106,12 +106,12 @@
       $detail_time[0] = 'No Details';
     }
 
-    $linkstart = "<a href=\"" . $Issueroot . "/ticket.php?id="    . $a_issue['iss_id']        . "&server=" . $a_issue['iss_companyid'] . "#problem\">";
-    $linklist  = "<a href=\"" . $Issueroot . "/issue.php?server=" . $a_issue['iss_companyid'] . "#open\">";
+    $linkstart = "<a href=\"" . $Issueroot . "/ticket.php?id="    . $a_inv_issue['iss_id']        . "&server=" . $a_inv_issue['iss_companyid'] . "#problem\">";
+    $linklist  = "<a href=\"" . $Issueroot . "/issue.php?server=" . $a_inv_issue['iss_companyid'] . "#open\">";
     $linkend   = "</a>";
 
-    if ($a_issue['iss_user'] == $formVars['uid'] || $a_issue['grp_id'] == $formVars['group'] || check_userlevel($db, $AL_Admin)) {
-      $delstart = "<a href=\"#\" onclick=\"javascript:delete_issue('" . $Issueroot . "/issue.open.del.php?id=" . $a_issue['iss_id'] . "');\">";
+    if ($a_issue['iss_user'] == $formVars['uid'] || $a_inv_issue['grp_id'] == $formVars['group'] || check_userlevel($db, $AL_Admin)) {
+      $delstart = "<a href=\"#\" onclick=\"javascript:delete_issue('" . $Issueroot . "/issue.open.del.php?id=" . $a_inv_issue['iss_id'] . "');\">";
       $delend   = "</a>";
       $deltext  = 'x';
     } else {
@@ -122,11 +122,11 @@
 
     $output .= "<tr>";
     $output .= "  <td class=\"ui-widget-content delete\">" . $delstart  . $deltext                      . $delend  . "</td>";
-    $output .=   "<td class=\"ui-widget-content\">"        . $linklist  . $a_issue['inv_name']          . $linkend . "</td>";
-    $output .=   "<td class=\"ui-widget-content\">"                     . $a_issue['iss_discovered']               . "</td>";
+    $output .=   "<td class=\"ui-widget-content\">"        . $linklist  . $a_inv_issue['inv_name']          . $linkend . "</td>";
+    $output .=   "<td class=\"ui-widget-content\">"                     . $a_inv_issue['iss_discovered']               . "</td>";
     $output .=   "<td class=\"ui-widget-content\">"                     . $detail_time[0]                          . "</td>";
-    $output .=   "<td class=\"ui-widget-content\">"        . $linkstart . $a_issue['iss_subject']       . $linkend . "</td>";
-    $output .=   "<td class=\"ui-widget-content\">"                     . $a_issue['usr_name']                     . "</td>";
+    $output .=   "<td class=\"ui-widget-content\">"        . $linkstart . $a_inv_issue['iss_subject']       . $linkend . "</td>";
+    $output .=   "<td class=\"ui-widget-content\">"                     . $a_inv_issue['usr_name']                     . "</td>";
     $output .= "</tr>";
   }
 
@@ -136,7 +136,7 @@
     $output .= "<p><a href=\"" . $Issueroot . "/issue.php?server=" . $formVars['server'] . "\" target=\"_blank\">Link to Issue Tracker</a></p>";
   }
 
-  mysqli_free_result($q_issue);
+  mysqli_free_result($q_inv_issue);
 
   print "document.getElementById('open_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 

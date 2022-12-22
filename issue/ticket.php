@@ -37,14 +37,14 @@
     $a_inv_users = mysqli_fetch_array($q_inv_users);
   } else {
     $q_string  = "select iss_discovered,iss_closed,iss_subject,iss_user ";
-    $q_string .= "from issue ";
+    $q_string .= "from inv_issue ";
     $q_string .= "where iss_id = " . $formVars['id'];
-    $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_issue = mysqli_fetch_array($q_issue);
+    $q_inv_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inv_issue = mysqli_fetch_array($q_inv_issue);
 
     $q_string  = "select usr_last,usr_first,usr_phone,usr_email ";
     $q_string .= "from inv_users ";
-    $q_string .= "where usr_id = " . $a_issue['iss_user'];
+    $q_string .= "where usr_id = " . $a_inv_issue['iss_user'];
     $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     $a_inv_users = mysqli_fetch_array($q_inv_users);
   }
@@ -652,19 +652,19 @@ $(document).ready( function() {
 <?php
 
   $q_string  = "select iss_discovered,iss_closed,iss_subject ";
-  $q_string .= "from issue ";
+  $q_string .= "from inv_issue ";
   $q_string .= "where iss_id = " . $formVars['id'];
-  $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_issue = mysqli_fetch_array($q_issue);
+  $q_inv_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_issue = mysqli_fetch_array($q_inv_issue);
 
-  if ($a_issue['iss_closed'] == '1971-01-01') {
-    print "  <td class=\"ui-widget-content\"><strong>Discovered</strong>: <input type=\"text\" name=\"iss_discovered\" size=\"10\" value=\"" . $a_issue['iss_discovered'] . "\"></td>\n";
+  if ($a_inv_issue['iss_closed'] == '1971-01-01') {
+    print "  <td class=\"ui-widget-content\"><strong>Discovered</strong>: <input type=\"text\" name=\"iss_discovered\" size=\"10\" value=\"" . $a_inv_issue['iss_discovered'] . "\"></td>\n";
     print "  <td class=\"ui-widget-content\"><strong>Closed</strong>: <input type=\"text\" name=\"iss_closed\" size=\"15\" value=\"Current Date\"></td>\n";
-    print "  <td class=\"ui-widget-content\"><strong>Problem Description</strong>: <input type=\"text\" name=\"iss_subject\" size=\"50\" value=\"" . $a_issue['iss_subject'] . "\"></td>\n";
+    print "  <td class=\"ui-widget-content\"><strong>Problem Description</strong>: <input type=\"text\" name=\"iss_subject\" size=\"50\" value=\"" . $a_inv_issue['iss_subject'] . "\"></td>\n";
   } else {
-    print "  <td class=\"ui-widget-content\"><strong>Discovered</strong>: " . $a_issue['iss_discovered'] . "<input type=\"hidden\" name=\"iss_discovered\" value=\"" . $a_issue['iss_discovered'] . "\"</td>\n";
-    print "  <td class=\"ui-widget-content\"><strong>Closed</strong>: " . $a_issue['iss_closed']     . "<input type=\"hidden\" name=\"iss_closed\" value=\"" . $a_issue['iss_closed'] . "\"</td>\n";
-    print "  <td class=\"ui-widget-content\"><strong>Problem Description</strong>: " . $a_issue['iss_subject']    . "<input type=\"hidden\" name=\"iss_subject\" value=\"" . $a_issue['iss_subject'] . "\"</td>\n";
+    print "  <td class=\"ui-widget-content\"><strong>Discovered</strong>: " . $a_inv_issue['iss_discovered'] . "<input type=\"hidden\" name=\"iss_discovered\" value=\"" . $a_inv_issue['iss_discovered'] . "\"</td>\n";
+    print "  <td class=\"ui-widget-content\"><strong>Closed</strong>: " . $a_inv_issue['iss_closed']     . "<input type=\"hidden\" name=\"iss_closed\" value=\"" . $a_inv_issue['iss_closed'] . "\"</td>\n";
+    print "  <td class=\"ui-widget-content\"><strong>Problem Description</strong>: " . $a_inv_issue['iss_subject']    . "<input type=\"hidden\" name=\"iss_subject\" value=\"" . $a_inv_issue['iss_subject'] . "\"</td>\n";
   }
 
 ?>
@@ -728,7 +728,7 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <?php
-  if ($a_issue['iss_closed'] == '1971-01-01') {
+  if ($a_inv_issue['iss_closed'] == '1971-01-01') {
 ?>
 <tr>
   <td colspan="4" class="ui-widget-content button">
@@ -822,7 +822,7 @@ field shows you the limit of the number of characters. This limit is set by the 
 <div id="problem-hide" style="display: none">
 
 <?php
-  if ($a_issue['iss_closed'] == '1971-01-01') {
+  if ($a_inv_issue['iss_closed'] == '1971-01-01') {
 ?>
 <table class="ui-styled-table">
 <tr>

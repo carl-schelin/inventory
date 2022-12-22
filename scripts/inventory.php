@@ -518,40 +518,40 @@
 
       $issues = 0;
       $q_string  = "select iss_id,iss_companyid ";
-      $q_string .= "from issue ";
+      $q_string .= "from inv_issue ";
       $q_string .= "where iss_companyid = " . $remove . " ";
-      $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_issue) > 0) {
-        print "There are " . mysqli_num_rows($q_issue) . " issue tracker records for " . $a_inventory['inv_name'] . "\n";
-        $issues = mysqli_num_rows($q_issue);
-        while ($a_issue = mysqli_fetch_array($q_issue)) {
+      $q_inv_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_issue) > 0) {
+        print "There are " . mysqli_num_rows($q_inv_issue) . " issue tracker records for " . $a_inventory['inv_name'] . "\n";
+        $issues = mysqli_num_rows($q_inv_issue);
+        while ($a_inv_issue = mysqli_fetch_array($q_inv_issue)) {
           $q_string  = "select det_issue ";
           $q_string .= "from issue_detail ";
-          $q_string .= "where det_issue = " . $a_issue['iss_id'];
+          $q_string .= "where det_issue = " . $a_inv_issue['iss_id'];
           $q_issue_detail = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_issue_detail) > 0) {
-            print " -- There are " . mysqli_num_rows($q_issue_detail) . " detail records for issue " . $a_issue['iss_id'] . "\n";
+            print " -- There are " . mysqli_num_rows($q_issue_detail) . " detail records for issue " . $a_inv_issue['iss_id'] . "\n";
           }
           $q_string  = "select morn_issue ";
           $q_string .= "from issue_morning ";
-          $q_string .= "where morn_issue = " . $a_issue['iss_id'];
+          $q_string .= "where morn_issue = " . $a_inv_issue['iss_id'];
           $q_issue_morning = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_issue_morning) > 0) {
-            print " -- There are " . mysqli_num_rows($q_issue_morning) . " morning report records for issue " . $a_issue['iss_id'] . "\n";
+            print " -- There are " . mysqli_num_rows($q_issue_morning) . " morning report records for issue " . $a_inv_issue['iss_id'] . "\n";
           }
           $q_string  = "select sup_issue ";
           $q_string .= "from issue_support ";
-          $q_string .= "where sup_issue = " . $a_issue['iss_id'];
+          $q_string .= "where sup_issue = " . $a_inv_issue['iss_id'];
           $q_issue_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_issue_support) > 0) {
-            print " -- There are " . mysqli_num_rows($q_issue_support) . " support records for issue " . $a_issue['iss_id'] . "\n";
+            print " -- There are " . mysqli_num_rows($q_issue_support) . " support records for issue " . $a_inv_issue['iss_id'] . "\n";
           }
           $q_string  = "select rep_issue ";
           $q_string .= "from report ";
-          $q_string .= "where rep_issue = " . $a_issue['iss_id'];
+          $q_string .= "where rep_issue = " . $a_inv_issue['iss_id'];
           $q_report = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_report) > 0) {
-            print " -- There are " . mysqli_num_rows($q_report) . " morning report entries for issue " . $a_issue['iss_id'] . "\n";
+            print " -- There are " . mysqli_num_rows($q_report) . " morning report entries for issue " . $a_inv_issue['iss_id'] . "\n";
           }
         }
       }
@@ -688,25 +688,25 @@
         print "Issues ";
 # need to loop through the issues in order to clean out the sub-tables
         $q_string  = "select iss_id,iss_companyid ";
-        $q_string .= "from issue ";
+        $q_string .= "from inv_issue ";
         $q_string .= "where iss_companyid = " . $remove . " ";
-        $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        if (mysqli_num_rows($q_issue) > 0) {
-          while ($a_issue = mysqli_fetch_array($q_issue)) {
-            $q_string = "delete from issue_detail where det_issue = " . $a_issue['iss_id'];
+        $q_inv_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_inv_issue) > 0) {
+          while ($a_inv_issue = mysqli_fetch_array($q_inv_issue)) {
+            $q_string = "delete from issue_detail where det_issue = " . $a_inv_issue['iss_id'];
             $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-            $q_string = "delete from issue_morning where morn_issue = " . $a_issue['iss_id'];
+            $q_string = "delete from issue_morning where morn_issue = " . $a_inv_issue['iss_id'];
             $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-            $q_string = "delete from issue_support where sup_issue = " . $a_issue['iss_id'];
+            $q_string = "delete from issue_support where sup_issue = " . $a_inv_issue['iss_id'];
             $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-            $q_string = "delete from report where rep_issue = " . $a_issue['iss_id'];
+            $q_string = "delete from report where rep_issue = " . $a_inv_issue['iss_id'];
             $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           }
-          $q_string = "delete from issue      where iss_companyid   = " . $remove;
+          $q_string = "delete from inv_issue      where iss_companyid   = " . $remove;
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         }
       }

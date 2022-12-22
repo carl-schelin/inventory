@@ -82,10 +82,10 @@
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $q_string  = "select iss_closed ";
-      $q_string .= "from issue ";
+      $q_string .= "from inv_issue ";
       $q_string .= "where iss_id = " . $formVars['id'];
-      $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      $a_issue = mysqli_fetch_array($q_issue);
+      $q_inv_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_inv_issue = mysqli_fetch_array($q_inv_issue);
 
       $output  = "<p></p>";
       $output .= "<table class=\"ui-styled-table\">";
@@ -137,7 +137,7 @@
       if (mysqli_num_rows($q_issue_support) > 0) {
         while ($a_issue_support = mysqli_fetch_array($q_issue_support)) {
 
-          if ($a_issue['iss_closed'] == '1971-01-01') {
+          if ($a_inv_issue['iss_closed'] == '1971-01-01') {
             $linkstart = "<a href=\"#\" onclick=\"show_file('"     . $Issueroot . "/support.fill.php?id=" . $a_issue_support['sup_id'] . "');showDiv('support-hide');\">";
             $linkdel   = "<a href=\"#\" onclick=\"delete_ticket('" . $Issueroot . "/support.del.php?id="  . $a_issue_support['sup_id'] . "');\">";
             $linkend   = "</a>";
@@ -172,7 +172,7 @@
 
       print "document.getElementById('support_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
-      if ($a_issue['iss_closed'] == '1971-01-01') {
+      if ($a_inv_issue['iss_closed'] == '1971-01-01') {
         print "document.start.sup_company.value = '';";
         print "document.start.sup_case.value = '';";
         print "document.start.sup_rating[0].checked = true;";

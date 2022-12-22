@@ -66,10 +66,10 @@
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $q_string  = "select iss_closed ";
-      $q_string .= "from issue ";
+      $q_string .= "from inv_issue ";
       $q_string .= "where iss_id = " . $formVars['id'];
-      $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      $a_issue = mysqli_fetch_array($q_issue);
+      $q_inv_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_inv_issue = mysqli_fetch_array($q_inv_issue);
 
 
       $output  = "<p></p>\n";
@@ -122,7 +122,7 @@
 
         $updated = preg_replace("/\[:hash:\]/", "#", $a_issue_detail['det_text']);
 
-        if ($a_issue['iss_closed'] == '1971-01-01') {
+        if ($a_inv_issue['iss_closed'] == '1971-01-01') {
           $linkstart = "<a href=\"#\" onclick=\"show_file('"     . $Issueroot . "/comments.fill.php?id=" . $a_issue_detail['det_id'] . "');showDiv('problem-hide');\">";
           $linkdel   = "<a href=\"#\" onclick=\"delete_detail('" . $Issueroot . "/comments.del.php?id="  . $a_issue_detail['det_id'] . "');\">";
           $linkend   = "</a>";
@@ -148,7 +148,7 @@
 
       print "document.getElementById('detail_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
-      if ($a_issue['iss_closed'] == '1971-01-01') {
+      if ($a_inv_issue['iss_closed'] == '1971-01-01') {
         print "document.start.det_text.value = '';\n";
         print "document.start.det_timestamp.value = 'Current Time';\n";
         print "document.start.detupdate.disabled = true;\n";
