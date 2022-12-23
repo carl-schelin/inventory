@@ -60,11 +60,11 @@
             "sup_rating    =   " . $formVars['sup_rating'];
 
           if ($formVars['update'] == 0) {
-            $query = "insert into issue_support set sup_id = NULL, " . $q_string;
+            $query = "insert into inv_issue_support set sup_id = NULL, " . $q_string;
             $message = "Support ticket added.";
           }
           if ($formVars['update'] == 1) {
-            $query = "update issue_support set " . $q_string . " where sup_id = " . $formVars['sup_id'];
+            $query = "update inv_issue_support set " . $q_string . " where sup_id = " . $formVars['sup_id'];
             $message = "Support ticket updated.";
           }
 
@@ -130,16 +130,16 @@
       $output .= "</tr>";
 
       $q_string  = "select sup_id,sup_company,sup_case,sup_contact,sup_email,sup_phone,sup_govid,sup_timestamp ";
-      $q_string .= "from issue_support ";
+      $q_string .= "from inv_issue_support ";
       $q_string .= "where sup_issue = " . $formVars['id'] . " ";
       $q_string .= "order by sup_timestamp";
-      $q_issue_support = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_issue_support) > 0) {
-        while ($a_issue_support = mysqli_fetch_array($q_issue_support)) {
+      $q_inv_issue_support = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_issue_support) > 0) {
+        while ($a_inv_issue_support = mysqli_fetch_array($q_inv_issue_support)) {
 
           if ($a_inv_issue['iss_closed'] == '1971-01-01') {
-            $linkstart = "<a href=\"#\" onclick=\"show_file('"     . $Issueroot . "/support.fill.php?id=" . $a_issue_support['sup_id'] . "');showDiv('support-hide');\">";
-            $linkdel   = "<a href=\"#\" onclick=\"delete_ticket('" . $Issueroot . "/support.del.php?id="  . $a_issue_support['sup_id'] . "');\">";
+            $linkstart = "<a href=\"#\" onclick=\"show_file('"     . $Issueroot . "/support.fill.php?id=" . $a_inv_issue_support['sup_id'] . "');showDiv('support-hide');\">";
+            $linkdel   = "<a href=\"#\" onclick=\"delete_ticket('" . $Issueroot . "/support.del.php?id="  . $a_inv_issue_support['sup_id'] . "');\">";
             $linkend   = "</a>";
             $linktext  = "x";
           } else {
@@ -151,13 +151,13 @@
 
           $output .= "<tr>";
           $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . $linktext                         . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_issue_support['sup_company']   . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_issue_support['sup_case']      . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_issue_support['sup_contact']   . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_issue_support['sup_email']     . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_issue_support['sup_phone']     . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_issue_support['sup_govid']     . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_issue_support['sup_timestamp'] . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_issue_support['sup_company']   . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_issue_support['sup_case']      . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_issue_support['sup_contact']   . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_issue_support['sup_email']     . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_issue_support['sup_phone']     . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_issue_support['sup_govid']     . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_issue_support['sup_timestamp'] . $linkend . "</td>";
           $output .= "</tr>";
         }
       } else {
@@ -166,7 +166,7 @@
         $output .= "</tr>";
       }
 
-      mysqli_free_result($q_issue_support);
+      mysqli_free_result($q_inv_issue_support);
 
       $output .= "</table>";
 

@@ -34,15 +34,15 @@
       }
 
       $q_string  = "select sup_id ";
-      $q_string .= "from issue_support ";
+      $q_string .= "from inv_issue_support ";
       $q_string .= "where sup_issue = " . $formVars['id'];
-      $q_issue_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_issue_support = mysqli_fetch_array($q_issue_support)) {
-        logaccess($db, $_SESSION['uid'], $package, "Deleting " . $a_issue_support['sup_id'] . " from issue_support");
+      $q_inv_issue_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_issue_support = mysqli_fetch_array($q_inv_issue_support)) {
+        logaccess($db, $_SESSION['uid'], $package, "Deleting " . $a_inv_issue_support['sup_id'] . " from inv_issue_support");
 
         $q_string  = "delete ";
-        $q_string .= "from issue_support ";
-        $q_string .= "where sup_id = " . $a_issue_support['sup_id'];
+        $q_string .= "from inv_issue_support ";
+        $q_string .= "where sup_id = " . $a_inv_issue_support['sup_id'];
         $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 

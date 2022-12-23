@@ -20,23 +20,23 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from issue_support");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_issue_support");
 
       $q_string  = "select sup_company,sup_case,sup_contact,sup_email,sup_phone,sup_govid,sup_timestamp,sup_rating ";
-      $q_string .= "from issue_support ";
+      $q_string .= "from inv_issue_support ";
       $q_string .= "where sup_id = " . $formVars['id'];
-      $q_issue_support = mysqli_query($db, $q_string) or die (mysqli_error($db));
-      $a_issue_support = mysqli_fetch_array($q_issue_support);
+      $q_inv_issue_support = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      $a_inv_issue_support = mysqli_fetch_array($q_inv_issue_support);
 
-      print "document.start.sup_company.value = '"   . mysqli_real_escape_string($db, $a_issue_support['sup_company'])   . "';\n";
-      print "document.start.sup_case.value = '"      . mysqli_real_escape_string($db, $a_issue_support['sup_case'])      . "';\n";
-      print "document.start.sup_contact.value = '"   . mysqli_real_escape_string($db, $a_issue_support['sup_contact'])   . "';\n";
-      print "document.start.sup_email.value = '"     . mysqli_real_escape_string($db, $a_issue_support['sup_email'])     . "';\n";
-      print "document.start.sup_phone.value = '"     . mysqli_real_escape_string($db, $a_issue_support['sup_phone'])     . "';\n";
-      print "document.start.sup_govid.value = '"     . mysqli_real_escape_string($db, $a_issue_support['sup_govid'])     . "';\n";
-      print "document.start.sup_timestamp.value = '" . mysqli_real_escape_string($db, $a_issue_support['sup_timestamp']) . "';\n";
+      print "document.start.sup_company.value = '"   . mysqli_real_escape_string($db, $a_inv_issue_support['sup_company'])   . "';\n";
+      print "document.start.sup_case.value = '"      . mysqli_real_escape_string($db, $a_inv_issue_support['sup_case'])      . "';\n";
+      print "document.start.sup_contact.value = '"   . mysqli_real_escape_string($db, $a_inv_issue_support['sup_contact'])   . "';\n";
+      print "document.start.sup_email.value = '"     . mysqli_real_escape_string($db, $a_inv_issue_support['sup_email'])     . "';\n";
+      print "document.start.sup_phone.value = '"     . mysqli_real_escape_string($db, $a_inv_issue_support['sup_phone'])     . "';\n";
+      print "document.start.sup_govid.value = '"     . mysqli_real_escape_string($db, $a_inv_issue_support['sup_govid'])     . "';\n";
+      print "document.start.sup_timestamp.value = '" . mysqli_real_escape_string($db, $a_inv_issue_support['sup_timestamp']) . "';\n";
 
-      print "document.start.sup_rating['" . $a_issue_support['sup_rating'] . "'].checked = true;\n";
+      print "document.start.sup_rating['" . $a_inv_issue_support['sup_rating'] . "'].checked = true;\n";
 
       print "document.start.sup_id.value = " . $formVars['id'] . ";\n";
 
