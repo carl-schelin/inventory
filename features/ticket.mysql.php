@@ -107,7 +107,7 @@
               "feat_text    =\"" . "Issue closed by " . $_SESSION['username'] . ".\"," . 
               "feat_user    =  " . $_SESSION['uid'];
 
-            $query = "insert into features_detail set feat_id=null," . $q_string;
+            $query = "insert into inv_features_detail set feat_id=null," . $q_string;
 
             mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -132,7 +132,7 @@
               "feat_text    =\"" . "Issue reopened by " . $_SESSION['username'] . ".\"," . 
               "feat_user    =  " . $_SESSION['uid'];
 
-            $query = "insert into features_detail set feat_id=null," . $q_string;
+            $query = "insert into inv_features_detail set feat_id=null," . $q_string;
 
             mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
           }

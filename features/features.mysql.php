@@ -51,7 +51,7 @@
       "feat_text      = \"" . $formVars['feat_subject'] . "\"," . 
       "feat_user      =   " . $formVars['feat_openby'];
 
-    $query = "insert into features_detail set feat_id = NULL," . $q_string;
+    $query = "insert into inv_features_detail set feat_id = NULL," . $q_string;
 
     $result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 

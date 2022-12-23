@@ -85,14 +85,14 @@
     while ($a_inv_features = mysqli_fetch_array($q_inv_features)) {
 
       $q_string  = "select feat_timestamp ";
-      $q_string .= "from features_detail ";
+      $q_string .= "from inv_features_detail ";
       $q_string .= "where feat_feat_id = " . $a_inv_features['feat_id'] . " ";
       $q_string .= "order by feat_timestamp ";
       $q_string .= "limit 1 ";
-      $q_features_detail = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_features_detail) > 0) {
-        $a_features_detail = mysqli_fetch_array($q_features_detail);
-        $detail_time = explode(" ", $a_features_detail['feat_timestamp']);
+      $q_inv_features_detail = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_features_detail) > 0) {
+        $a_inv_features_detail = mysqli_fetch_array($q_inv_features_detail);
+        $detail_time = explode(" ", $a_inv_features_detail['feat_timestamp']);
       } else {
         $detail_time[0] = 'No Details';
       }
