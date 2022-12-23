@@ -33,10 +33,10 @@
         $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       }
 
-      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from features");
+      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from inv_features");
 
       $q_string  = "delete ";
-      $q_string .= "from features ";
+      $q_string .= "from inv_features ";
       $q_string .= "where feat_id = " . $formVars['id'];
       $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 

@@ -65,31 +65,31 @@
   $output .= "</tr>";
 
   $q_string  = "select feat_id,feat_module,feat_discovered,feat_closed,feat_closeby,feat_subject,mod_name,usr_name ";
-  $q_string .= "from features ";
-  $q_string .= "left join inv_modules on inv_modules.mod_id = features.feat_module ";
-  $q_string .= "left join inv_users   on inv_users.usr_id   = features.feat_openby ";
+  $q_string .= "from inv_features ";
+  $q_string .= "left join inv_modules on inv_modules.mod_id = inv_features.feat_module ";
+  $q_string .= "left join inv_users   on inv_users.usr_id   = inv_features.feat_openby ";
   $q_string .= "where feat_closed != '1971-01-01' " . $where;
   $q_string .= "order by mod_name,feat_discovered desc";
-  $q_features = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_features) > 0) {
-    while ($a_features = mysqli_fetch_array($q_features)) {
+  $q_inv_features = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_features) > 0) {
+    while ($a_inv_features = mysqli_fetch_array($q_inv_features)) {
 
       $q_string  = "select usr_name ";
       $q_string .= "from inv_users ";
-      $q_string .= "where usr_id = " . $a_features['feat_closeby'] . " ";
+      $q_string .= "where usr_id = " . $a_inv_features['feat_closeby'] . " ";
       $q_inv_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_inv_users = mysqli_fetch_array($q_inv_users);
 
-      $linkstart = "<a href=\"" . $Featureroot . "/ticket.php?id="   . $a_features['feat_id']     . "\">";
-      $linklist  = "<a href=\"" . $Featureroot . "/features.php?id=" . $a_features['feat_module'] . "#closed\">";
+      $linkstart = "<a href=\"" . $Featureroot . "/ticket.php?id="   . $a_inv_features['feat_id']     . "\">";
+      $linklist  = "<a href=\"" . $Featureroot . "/features.php?id=" . $a_inv_features['feat_module'] . "#closed\">";
       $linkend   = "</a>";
 
       $output .= "<tr>";
-      $output .=   "<td class=\"ui-widget-content\">" . $linklist  . $a_features['mod_name']          . $linkend . "</td>";
-      $output .=   "<td class=\"ui-widget-content\">"              . $a_features['feat_discovered']              . "</td>";
-      $output .=   "<td class=\"ui-widget-content\">"              . $a_features['feat_closed']                  . "</td>";
-      $output .=   "<td class=\"ui-widget-content\">" . $linkstart . $a_features['feat_subject']      . $linkend . "</td>";
-      $output .=   "<td class=\"ui-widget-content\">"              . $a_features['usr_name']                     . "</td>";
+      $output .=   "<td class=\"ui-widget-content\">" . $linklist  . $a_inv_features['mod_name']          . $linkend . "</td>";
+      $output .=   "<td class=\"ui-widget-content\">"              . $a_inv_features['feat_discovered']              . "</td>";
+      $output .=   "<td class=\"ui-widget-content\">"              . $a_inv_features['feat_closed']                  . "</td>";
+      $output .=   "<td class=\"ui-widget-content\">" . $linkstart . $a_inv_features['feat_subject']      . $linkend . "</td>";
+      $output .=   "<td class=\"ui-widget-content\">"              . $a_inv_features['usr_name']                     . "</td>";
       $output .=   "<td class=\"ui-widget-content\">"              . $a_inv_users['usr_name']                        . "</td>";
       $output .= "</tr>";
     }
@@ -101,7 +101,7 @@
 
   $output .= "</table>";
 
-  mysqli_free_result($q_features);
+  mysqli_free_result($q_inv_features);
 
   print "document.getElementById('closed_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 

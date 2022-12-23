@@ -75,18 +75,18 @@
   $priority[1] = 'Medium';
   $priority[2] = 'High';
   $q_string  = "select feat_id,feat_module,feat_severity,feat_priority,feat_discovered,feat_subject,mod_name,feat_openby,usr_name ";
-  $q_string .= "from features ";
-  $q_string .= "left join inv_users on inv_users.usr_id = features.feat_openby ";
-  $q_string .= "left join inv_modules on inv_modules.mod_id = features.feat_module ";
+  $q_string .= "from inv_features ";
+  $q_string .= "left join inv_users   on inv_users.usr_id   = inv_features.feat_openby ";
+  $q_string .= "left join inv_modules on inv_modules.mod_id = inv_features.feat_module ";
   $q_string .= "where feat_closed = '1971-01-01' " . $where;
   $q_string .= "order by feat_discovered desc,mod_name ";
-  $q_features = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_features) > 0) {
-    while ($a_features = mysqli_fetch_array($q_features)) {
+  $q_inv_features = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_features) > 0) {
+    while ($a_inv_features = mysqli_fetch_array($q_inv_features)) {
 
       $q_string  = "select feat_timestamp ";
       $q_string .= "from features_detail ";
-      $q_string .= "where feat_feat_id = " . $a_features['feat_id'] . " ";
+      $q_string .= "where feat_feat_id = " . $a_inv_features['feat_id'] . " ";
       $q_string .= "order by feat_timestamp ";
       $q_string .= "limit 1 ";
       $q_features_detail = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -97,11 +97,11 @@
         $detail_time[0] = 'No Details';
       }
 
-      $linkstart = "<a href=\"" . $Featureroot . "/ticket.php?id="   . $a_features['feat_id']     . "#problem\">";
-      $linklist  = "<a href=\"" . $Featureroot . "/features.php?id=" . $a_features['feat_module'] . "#open\">";
+      $linkstart = "<a href=\"" . $Featureroot . "/ticket.php?id="   . $a_inv_features['feat_id']     . "#problem\">";
+      $linklist  = "<a href=\"" . $Featureroot . "/features.php?id=" . $a_inv_features['feat_module'] . "#open\">";
       $linkend   = "</a>";
-      if ($a_features['feat_openby'] == $_SESSION['uid'] || check_userlevel($db, $AL_Admin)) {
-        $delstart = "<a href=\"#\" onclick=\"javascript:delete_feature('" . $Featureroot . "/features.open.del.php?id=" . $a_features['feat_id'] . "');\">";
+      if ($a_inv_features['feat_openby'] == $_SESSION['uid'] || check_userlevel($db, $AL_Admin)) {
+        $delstart = "<a href=\"#\" onclick=\"javascript:delete_feature('" . $Featureroot . "/features.open.del.php?id=" . $a_inv_features['feat_id'] . "');\">";
         $delend   = "</a>";
         $deltext  = 'x';
       } else {
@@ -111,29 +111,29 @@
       }
 
       $sevclass = "ui-widget-content";
-      if ($a_features['feat_severity'] == 2) {
+      if ($a_inv_features['feat_severity'] == 2) {
         $sevclass = "ui-state-highlight";
       }
-      if ($a_features['feat_severity'] == 3) {
+      if ($a_inv_features['feat_severity'] == 3) {
         $sevclass = "ui-state-error";
       }
       $prclass = "ui-widget-content";
-      if ($a_features['feat_priority'] == 1) {
+      if ($a_inv_features['feat_priority'] == 1) {
         $prclass = "ui-state-highlight";
       }
-      if ($a_features['feat_priority'] == 2) {
+      if ($a_inv_features['feat_priority'] == 2) {
         $prclass = "ui-state-error";
       }
 
       $output .= "<tr>";
       $output .= "  <td class=\"ui-widget-content delete\">" . $delstart  . $deltext                                . $delend  . "</td>";
-      $output .=   "<td class=\"ui-widget-content\">"        . $linklist  . $a_features['mod_name']                 . $linkend . "</td>";
-      $output .=   "<td class=\"" . $sevclass . "\">"                     . $severity[$a_features['feat_severity']]            . "</td>";
-      $output .=   "<td class=\"" . $prclass  . "\">"                     . $priority[$a_features['feat_priority']]            . "</td>";
-      $output .=   "<td class=\"ui-widget-content\">"                     . $a_features['feat_discovered']                     . "</td>";
+      $output .=   "<td class=\"ui-widget-content\">"        . $linklist  . $a_inv_features['mod_name']                 . $linkend . "</td>";
+      $output .=   "<td class=\"" . $sevclass . "\">"                     . $severity[$a_inv_features['feat_severity']]            . "</td>";
+      $output .=   "<td class=\"" . $prclass  . "\">"                     . $priority[$a_inv_features['feat_priority']]            . "</td>";
+      $output .=   "<td class=\"ui-widget-content\">"                     . $a_inv_features['feat_discovered']                     . "</td>";
       $output .=   "<td class=\"ui-widget-content\">"                     . $detail_time[0]                                    . "</td>";
-      $output .=   "<td class=\"ui-widget-content\">"        . $linkstart . $a_features['feat_subject']             . $linkend . "</td>";
-      $output .=   "<td class=\"ui-widget-content\">"                     . $a_features['usr_name']                            . "</td>";
+      $output .=   "<td class=\"ui-widget-content\">"        . $linkstart . $a_inv_features['feat_subject']             . $linkend . "</td>";
+      $output .=   "<td class=\"ui-widget-content\">"                     . $a_inv_features['usr_name']                            . "</td>";
       $output .= "</tr>";
     }
   } else {
@@ -144,7 +144,7 @@
 
   $output .= "</table>";
 
-  mysqli_free_result($q_features);
+  mysqli_free_result($q_inv_features);
 
   print "document.getElementById('open_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 

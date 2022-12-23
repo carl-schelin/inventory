@@ -66,10 +66,10 @@
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $q_string  = "select feat_closed ";
-      $q_string .= "from features ";
+      $q_string .= "from inv_features ";
       $q_string .= "where feat_id = " . $formVars['id'];
-      $q_features = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_features = mysqli_fetch_array($q_features);
+      $q_inv_features = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_features = mysqli_fetch_array($q_inv_features);
 
 
       $output  = "<p></p>\n";
@@ -120,7 +120,7 @@
       $q_features_detail = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_features_detail = mysqli_fetch_array($q_features_detail)) {
 
-        if ($a_features['feat_closed'] == '1971-01-01') {
+        if ($a_inv_features['feat_closed'] == '1971-01-01') {
           $linkstart = "<a href=\"#\" onclick=\"show_file('"     . $Featureroot . "/comments.fill.php?id=" . $a_features_detail['feat_id'] . "');showDiv('request-hide');\">";
           $linkdel   = "<a href=\"#\" onclick=\"delete_detail('" . $Featureroot . "/comments.del.php?id="  . $a_features_detail['feat_id'] . "');\">";
           $linkend   = "</a>";
@@ -146,7 +146,7 @@
 
       print "document.getElementById('detail_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
-      if ($a_features['feat_closed'] == '1971-01-01') {
+      if ($a_inv_features['feat_closed'] == '1971-01-01') {
         print "document.start.feat_text.value = '';\n";
         print "document.start.feat_timestamp.value = 'Current Time';\n";
         print "document.start.featupdate.disabled = true;\n";

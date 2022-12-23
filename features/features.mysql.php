@@ -27,7 +27,7 @@
 
   if (strlen($formVars['feat_subject']) > 0) {
 
-    $query = "insert into features set feat_id = NULL, " . 
+    $query = "insert into inv_features set feat_id = NULL, " . 
       "feat_module     =   " . $formVars['feat_module']     . "," . 
       "feat_severity   =   " . $formVars['feat_severity']   . "," . 
       "feat_priority   =   " . $formVars['feat_priority']   . "," . 

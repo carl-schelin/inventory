@@ -88,23 +88,23 @@
   $output .= "</tr>\n";
 
   $q_string  = "select mod_name,sev_name,feat_priority,feat_discovered,usr_first,usr_last,feat_subject ";
-  $q_string .= "from features ";
-  $q_string .= "left join inv_modules on inv_modules.mod_id   = features.feat_module ";
-  $q_string .= "left join inv_severity on inv_severity.sev_id = features.feat_severity ";
-  $q_string .= "left join inv_users on inv_users.usr_id       = features.feat_openby ";
+  $q_string .= "from inv_features ";
+  $q_string .= "left join inv_modules on inv_modules.mod_id   = inv_features.feat_module ";
+  $q_string .= "left join inv_severity on inv_severity.sev_id = inv_features.feat_severity ";
+  $q_string .= "left join inv_users on inv_users.usr_id       = inv_features.feat_openby ";
   $q_string .= "where feat_closeby = 0 ";
   $q_string .= "order by feat_severity,feat_priority,feat_discovered ";
-  $q_features = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_features) > 0) {
-    while ($a_features = mysqli_fetch_array($q_features)) {
+  $q_inv_features = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inv_features) > 0) {
+    while ($a_inv_features = mysqli_fetch_array($q_inv_features)) {
 
       $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
-      $output .= "  <td>" . $a_features['mod_name']                                   . "</td>\n";
-      $output .= "  <td>" . $a_features['sev_name']                                   . "</td>\n";
-      $output .= "  <td>" . $a_features['feat_priority']                              . "</td>\n";
-      $output .= "  <td>" . $a_features['feat_discovered']                            . "</td>\n";
-      $output .= "  <td>" . $a_features['usr_last'] . ", " . $a_features['usr_first'] . "</td>\n";
-      $output .= "  <td>" . $a_features['feat_subject']                               . "</td>\n";
+      $output .= "  <td>" . $a_inv_features['mod_name']                                   . "</td>\n";
+      $output .= "  <td>" . $a_inv_features['sev_name']                                   . "</td>\n";
+      $output .= "  <td>" . $a_inv_features['feat_priority']                              . "</td>\n";
+      $output .= "  <td>" . $a_inv_features['feat_discovered']                            . "</td>\n";
+      $output .= "  <td>" . $a_inv_features['usr_last'] . ", " . $a_inv_features['usr_first'] . "</td>\n";
+      $output .= "  <td>" . $a_inv_features['feat_subject']                               . "</td>\n";
       $output .= "</tr>\n";
     }
   } else {
