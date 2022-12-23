@@ -23,16 +23,16 @@
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from comments");
 
       $q_string  = "select det_text,det_timestamp,det_user ";
-      $q_string .= "from issue_detail ";
+      $q_string .= "from inv_issue_detail ";
       $q_string .= "where det_id = " . $formVars['id'];
-      $q_issue_detail = mysqli_query($db, $q_string) or die (mysqli_error($db));
-      $a_issue_detail = mysqli_fetch_array($q_issue_detail);
-      mysqli_free_result($q_issue_detail);
+      $q_inv_issue_detail = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      $a_inv_issue_detail = mysqli_fetch_array($q_inv_issue_detail);
+      mysqli_free_result($q_inv_issue_detail);
 
-      $selected = return_Index($db, $a_issue_detail['det_user'],       "select usr_id from inv_users where usr_disabled = 0 order by usr_last,usr_first");
+      $selected = return_Index($db, $a_inv_issue_detail['det_user'],       "select usr_id from inv_users where usr_disabled = 0 order by usr_last,usr_first");
 
-      print "document.start.det_text.value = '"      . mysqli_real_escape_string($db, $a_issue_detail['det_text'])      . "';\n";
-      print "document.start.det_timestamp.value = '" . mysqli_real_escape_string($db, $a_issue_detail['det_timestamp']) . "';\n";
+      print "document.start.det_text.value = '"      . mysqli_real_escape_string($db, $a_inv_issue_detail['det_text'])      . "';\n";
+      print "document.start.det_timestamp.value = '" . mysqli_real_escape_string($db, $a_inv_issue_detail['det_timestamp']) . "';\n";
 
       print "document.start.det_user['" . $selected . "'].selected = true;\n";
 

@@ -98,7 +98,7 @@
               "det_text  =\"" . "Issue closed by " . $_SESSION['username'] . ".\"," . 
               "det_user  =  " . $_SESSION['uid'];
 
-            $query = "insert into issue_detail set det_id=null," . $q_string;
+            $query = "insert into inv_issue_detail set det_id=null," . $q_string;
 
             mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -120,7 +120,7 @@
               "det_text  =\"" . "Issue reopened by " . $_SESSION['username'] . ".\"," . 
               "det_user  =  " . $_SESSION['uid'];
 
-            $query = "insert into issue_detail set det_id=null," . $q_string;
+            $query = "insert into inv_issue_detail set det_id=null," . $q_string;
 
             mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
           }

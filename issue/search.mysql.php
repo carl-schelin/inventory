@@ -83,14 +83,14 @@
           while ($a_inv_issue = mysqli_fetch_array($q_inv_issue)) {
 
             $q_string  = "select det_timestamp ";
-            $q_string .= "from issue_detail ";
+            $q_string .= "from inv_issue_detail ";
             $q_string .= "where det_issue = " . $a_inv_issue['iss_id'] . " ";
             $q_string .= "order by det_timestamp ";
             $q_string .= "limit 1 ";
-            $q_inv_issue_detail = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-            if (mysqli_num_rows($q_issue_detail) > 0) {
-              $a_issue_detail = mysqli_fetch_array($q_issue_detail);
-              $detail_time = explode(" ", $a_issue_detail['det_timestamp']);
+            $q_inv_inv_issue_detail = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            if (mysqli_num_rows($q_inv_issue_detail) > 0) {
+              $a_inv_issue_detail = mysqli_fetch_array($q_inv_issue_detail);
+              $detail_time = explode(" ", $a_inv_issue_detail['det_timestamp']);
             } else {
               $detail_time[0] = 'No Details';
             }

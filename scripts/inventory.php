@@ -526,11 +526,11 @@
         $issues = mysqli_num_rows($q_inv_issue);
         while ($a_inv_issue = mysqli_fetch_array($q_inv_issue)) {
           $q_string  = "select det_issue ";
-          $q_string .= "from issue_detail ";
+          $q_string .= "from inv_issue_detail ";
           $q_string .= "where det_issue = " . $a_inv_issue['iss_id'];
-          $q_issue_detail = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_issue_detail) > 0) {
-            print " -- There are " . mysqli_num_rows($q_issue_detail) . " detail records for issue " . $a_inv_issue['iss_id'] . "\n";
+          $q_inv_issue_detail = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_issue_detail) > 0) {
+            print " -- There are " . mysqli_num_rows($q_inv_issue_detail) . " detail records for issue " . $a_inv_issue['iss_id'] . "\n";
           }
           $q_string  = "select morn_issue ";
           $q_string .= "from issue_morning ";
@@ -693,7 +693,7 @@
         $q_inv_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         if (mysqli_num_rows($q_inv_issue) > 0) {
           while ($a_inv_issue = mysqli_fetch_array($q_inv_issue)) {
-            $q_string = "delete from issue_detail where det_issue = " . $a_inv_issue['iss_id'];
+            $q_string = "delete from inv_issue_detail where det_issue = " . $a_inv_issue['iss_id'];
             $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
             $q_string = "delete from issue_morning where morn_issue = " . $a_inv_issue['iss_id'];

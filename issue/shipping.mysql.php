@@ -41,7 +41,7 @@
             "det_user  =   " . $formVars['det_user'];
 
           if ($formVars['update'] == 0) {
-            $query = "insert into issue_detail set det_id = null," . $q_string;
+            $query = "insert into inv_issue_detail set det_id = null," . $q_string;
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['hw_rma']);
