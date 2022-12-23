@@ -626,12 +626,12 @@ function return_Pagination( $p_script, $p_current, $p_total, $p_count ) {
 function show_Help( $p_db, $p_script ) {
 
   $q_string  = "select help_id ";
-  $q_string .= "from help ";
+  $q_string .= "from inv_help ";
   $q_string .= "where help_user = " . $_SESSION['uid'] . " and help_screen = '" . $p_script . "' ";
-  $q_help = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
-  if (mysqli_num_rows($q_help) == 0) {
+  $q_inv_help = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
+  if (mysqli_num_rows($q_inv_help) == 0) {
     $q_string  = "insert ";
-    $q_string .= "into help ";
+    $q_string .= "into inv_help ";
     $q_string .= "set ";
     $q_string .= "help_user = " . $_SESSION['uid'] . ",";
     $q_string .= "help_screen = '" . $p_script . "' ";
