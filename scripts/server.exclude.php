@@ -50,18 +50,18 @@
 
   $comment = '';
   $q_string  = "select inv_name,ex_text,ex_comments ";
-  $q_string .= "from excludes ";
-  $q_string .= "left join inventory on inventory.inv_id = excludes.ex_companyid ";
+  $q_string .= "from inv_excludes ";
+  $q_string .= "left join inventory on inventory.inv_id = inv_excludes.ex_companyid ";
   $q_string .= "where ex_companyid > 0 and ex_deleted = 0 and ex_expiration >= \"" . date('Y-m-d') . "\" ";
   $q_string .= "order by ex_text ";
-  $q_excludes = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_excludes = mysqli_fetch_array($q_excludes)) {
+  $q_inv_excludes = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_excludes = mysqli_fetch_array($q_inv_excludes)) {
 
-    if ($comment != $a_excludes['ex_comments']) {
-      print "#\n# " . $a_excludes['ex_comments'] . "\n";
-      $comment = $a_excludes['ex_comments'];
+    if ($comment != $a_inv_excludes['ex_comments']) {
+      print "#\n# " . $a_inv_excludes['ex_comments'] . "\n";
+      $comment = $a_inv_excludes['ex_comments'];
     }
-    print $a_excludes['inv_name'] . ".*" . $a_excludes['ex_text'] . "\n";
+    print $a_inv_excludes['inv_name'] . ".*" . $a_inv_excludes['ex_text'] . "\n";
 
   }
 
