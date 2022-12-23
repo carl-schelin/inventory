@@ -18,7 +18,7 @@ function logaccess( $p_db, $p_user, $p_source, $p_detail ) {
   include('settings.php');
   $package = "function.php";
 
-  $query = "insert into log set " .
+  $query = "insert into inv_log set " .
     "log_id        = NULL, " .
     "log_user      = \"" . $p_user   . "\", " .
     "log_source    = \"" . $p_source . "\", " .
