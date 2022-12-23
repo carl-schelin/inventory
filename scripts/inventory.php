@@ -532,26 +532,12 @@
           if (mysqli_num_rows($q_inv_issue_detail) > 0) {
             print " -- There are " . mysqli_num_rows($q_inv_issue_detail) . " detail records for issue " . $a_inv_issue['iss_id'] . "\n";
           }
-          $q_string  = "select morn_issue ";
-          $q_string .= "from issue_morning ";
-          $q_string .= "where morn_issue = " . $a_inv_issue['iss_id'];
-          $q_issue_morning = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_issue_morning) > 0) {
-            print " -- There are " . mysqli_num_rows($q_issue_morning) . " morning report records for issue " . $a_inv_issue['iss_id'] . "\n";
-          }
           $q_string  = "select sup_issue ";
           $q_string .= "from inv_issue_support ";
           $q_string .= "where sup_issue = " . $a_inv_issue['iss_id'];
           $q_inv_issue_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_inv_issue_support) > 0) {
             print " -- There are " . mysqli_num_rows($q_inv_issue_support) . " support records for issue " . $a_inv_issue['iss_id'] . "\n";
-          }
-          $q_string  = "select rep_issue ";
-          $q_string .= "from report ";
-          $q_string .= "where rep_issue = " . $a_inv_issue['iss_id'];
-          $q_report = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_report) > 0) {
-            print " -- There are " . mysqli_num_rows($q_report) . " morning report entries for issue " . $a_inv_issue['iss_id'] . "\n";
           }
         }
       }
@@ -696,15 +682,8 @@
             $q_string = "delete from inv_issue_detail where det_issue = " . $a_inv_issue['iss_id'];
             $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-            $q_string = "delete from issue_morning where morn_issue = " . $a_inv_issue['iss_id'];
-            $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-
             $q_string = "delete from inv_issue_support where sup_issue = " . $a_inv_issue['iss_id'];
             $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-
-            $q_string = "delete from report where rep_issue = " . $a_inv_issue['iss_id'];
-            $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-
           }
           $q_string = "delete from inv_issue      where iss_companyid   = " . $remove;
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
