@@ -144,8 +144,8 @@
   $q_string .= "from inventory ";
   $q_string .= "left join inv_products  on inv_products.prod_id        = inventory.inv_product ";
   $q_string .= "left join inv_groups    on inv_groups.grp_id           = inventory.inv_manager ";
-  $q_string .= "left join hardware  on hardware.hw_companyid   = inventory.inv_id ";
-  $q_string .= "left join inv_models    on inv_models.mod_id           = hardware.hw_vendorid ";
+  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid   = inventory.inv_id ";
+  $q_string .= "left join inv_models    on inv_models.mod_id           = inv_hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors   on inv_vendors.ven_id          = inv_models.mod_vendor ";
   $q_string .= "left join inv_locations on inv_locations.loc_id        = inventory.inv_location ";
   $q_string .= "left join inv_cities    on inv_cities.ct_id            = inv_locations.loc_city ";
@@ -271,36 +271,36 @@
       }
 
       $q_string  = "select hw_id,hw_serial,hw_asset,hw_service,hw_vendorid,part_name,hw_verified,hw_update ";
-      $q_string .= "from hardware ";
-      $q_string .= "left join inv_parts on inv_parts.part_id = hardware.hw_type ";
+      $q_string .= "from inv_hardware ";
+      $q_string .= "left join inv_parts on inv_parts.part_id = inv_hardware.hw_type ";
       $q_string .= "where hw_deleted = 0 and hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = 0 and hw_hd_id = 0 ";
       $q_string .= "order by part_name";
-      $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
-      while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+      $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+      while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
         $q_string  = "select ven_name,mod_name,mod_size,mod_speed ";
         $q_string .= "from inv_models ";
         $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
-        $q_string .= "where mod_id = " . $a_hardware['hw_vendorid'] . " ";
+        $q_string .= "where mod_id = " . $a_inv_hardware['hw_vendorid'] . " ";
         $q_inv_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
         $a_inv_models = mysqli_fetch_array($q_inv_models);
 
         if ($csv == 'yes') {
-          print "\"" . $a_hardware['hw_serial']  . "\",";
-          print "\"" . $a_hardware['hw_asset']   . "\",";
-          print "\"" . $a_hardware['hw_service'] . "\",";
+          print "\"" . $a_inv_hardware['hw_serial']  . "\",";
+          print "\"" . $a_inv_hardware['hw_asset']   . "\",";
+          print "\"" . $a_inv_hardware['hw_service'] . "\",";
           print "\"" . $a_inv_models['ven_name']     . "\",";
           print "\"" . $a_inv_models['mod_name']     . "\",";
           print "\"" . $a_inv_models['mod_size']     . "\",";
           print "\"" . $a_inv_models['mod_speed']    . "\",";
-          print "\"" . $a_hardware['part_name']  . "\"\n";
+          print "\"" . $a_inv_hardware['part_name']  . "\"\n";
         } else {
-          printf("%20s %10s %8s %20s %30s %20s %15s %20s\n", $a_hardware['hw_serial'], $a_hardware['hw_asset'], $a_hardware['hw_service'], $a_inv_models['ven_name'], $a_inv_models['mod_name'], $a_inv_models['mod_size'], $a_inv_models['mod_speed'], $a_hardware['part_name']);
+          printf("%20s %10s %8s %20s %30s %20s %15s %20s\n", $a_inv_hardware['hw_serial'], $a_inv_hardware['hw_asset'], $a_inv_hardware['hw_service'], $a_inv_models['ven_name'], $a_inv_models['mod_name'], $a_inv_models['mod_size'], $a_inv_models['mod_speed'], $a_inv_hardware['part_name']);
         }
 
         $q_string  = "select hw_id,hw_serial,hw_asset,hw_service,hw_vendorid,part_name,hw_verified,hw_update ";
-        $q_string .= "from hardware ";
-        $q_string .= "left join inv_parts on inv_parts.part_id = hardware.hw_type ";
-        $q_string .= "where hw_deleted = 0 and hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " and hw_hd_id = 0 ";
+        $q_string .= "from inv_hardware ";
+        $q_string .= "left join inv_parts on inv_parts.part_id = inv_hardware.hw_type ";
+        $q_string .= "where hw_deleted = 0 and hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = " . $a_inv_hardware['hw_id'] . " and hw_hd_id = 0 ";
         $q_string .= "order by part_name";
         $q_hwselect = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
         while ($a_hwselect = mysqli_fetch_array($q_hwselect)) {
@@ -325,9 +325,9 @@
           }
 
           $q_string  = "select hw_id,hw_serial,hw_asset,hw_service,hw_vendorid,part_name,hw_verified,hw_update ";
-          $q_string .= "from hardware ";
-          $q_string .= "left join inv_parts on inv_parts.part_id = hardware.hw_type ";
-          $q_string .= "where hw_deleted = 0 and hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " and hw_hd_id = " . $a_hwselect['hw_id'] . " ";
+          $q_string .= "from inv_hardware ";
+          $q_string .= "left join inv_parts on inv_parts.part_id = inv_hardware.hw_type ";
+          $q_string .= "where hw_deleted = 0 and hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = " . $a_inv_hardware['hw_id'] . " and hw_hd_id = " . $a_hwselect['hw_id'] . " ";
           $q_string .= "order by part_name";
           $q_hwdisk = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
           while ($a_hwdisk = mysqli_fetch_array($q_hwdisk)) {
@@ -498,12 +498,12 @@
 
       $hardware = 0;
       $q_string  = "select hw_companyid ";
-      $q_string .= "from hardware ";
+      $q_string .= "from inv_hardware ";
       $q_string .= "where hw_companyid = " . $remove . " ";
-      $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_hardware) > 0) {
-        print "There are " . mysqli_num_rows($q_hardware) . " hardware records for " . $a_inventory['inv_name'] . "\n";
-        $hardware = mysqli_num_rows($q_hardware);
+      $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_hardware) > 0) {
+        print "There are " . mysqli_num_rows($q_inv_hardware) . " hardware records for " . $a_inventory['inv_name'] . "\n";
+        $hardware = mysqli_num_rows($q_inv_hardware);
       }
 
       $interface = 0;
@@ -654,7 +654,7 @@
 
       if ($hardware > 0) {
         print "Hardware ";
-        $q_string = "delete from hardware   where hw_companyid    = " . $remove;
+        $q_string = "delete from inv_hardware   where hw_companyid    = " . $remove;
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 

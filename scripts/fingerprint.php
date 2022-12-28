@@ -163,43 +163,43 @@
 
   $status = "Active";
   $q_string  = "select hw_active ";
-  $q_string .= "from hardware ";
+  $q_string .= "from inv_hardware ";
   $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_deleted = 0 and hw_primary = 1 and hw_active = '1971-01-01' ";
-  $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_hardware) > 0) {
+  $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inv_hardware) > 0) {
     $status = "Build";
   }
 
   $hardware = "Unset";
   $software = "Unset";
   $q_string  = "select mod_eol,sw_eol,hw_supportid ";
-  $q_string .= "from hardware ";
-  $q_string .= "left join inventory    on inventory.inv_id           = hardware.hw_companyid ";
-  $q_string .= "left join inv_models       on inv_models.mod_id              = hardware.hw_vendorid ";
+  $q_string .= "from inv_hardware ";
+  $q_string .= "left join inventory    on inventory.inv_id           = inv_hardware.hw_companyid ";
+  $q_string .= "left join inv_models       on inv_models.mod_id              = inv_hardware.hw_vendorid ";
   $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inventory.inv_id  ";
   $q_string .= "left join software     on software.sw_id             = inv_svr_software.svr_softwareid  ";
   $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = software.sw_type  ";
   $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_deleted = 0 and hw_primary = 1 and typ_name = \"OS\" ";
-  $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_hardware) > 0) {
-    $a_hardware = mysqli_fetch_array($q_hardware);
+  $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inv_hardware) > 0) {
+    $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
-    $hardware = $a_hardware['mod_eol'];
-    $software = $a_hardware['sw_eol'];
+    $hardware = $a_inv_hardware['mod_eol'];
+    $software = $a_inv_hardware['sw_eol'];
 
   }
 
 # since mod_virtual checks for not virtual, then all VMs should be N/A.
   $supported = "N/A";
   $q_string  = "select hw_supportid ";
-  $q_string .= "from hardware ";
-  $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
+  $q_string .= "from inv_hardware ";
+  $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
   $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_deleted = 0 and hw_primary = 1 and mod_virtual = 0 ";
-  $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_hardware) > 0) {
-    $a_hardware = mysqli_fetch_array($q_hardware);
+  $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inv_hardware) > 0) {
+    $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
-    if ($a_hardware['hw_supportid'] > 0) {
+    if ($a_inv_hardware['hw_supportid'] > 0) {
       $supported = "Yes";
     } else {
       $supported = "No";

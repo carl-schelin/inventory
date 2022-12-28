@@ -85,7 +85,7 @@
 # when a system is moved though, the cpu matches the ESX host cpu so needs to be refreshed.
 # since there's no way to know if it goes from 1 2 core to 2 1 core cpus, the best bet is to remove the old ones.
         $q_string  = "delete ";
-        $q_string .= "from hardware ";
+        $q_string .= "from inv_hardware ";
         $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_type = 8 and hw_update < \"" . date('Y-m-d') . "\" ";
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
@@ -125,18 +125,18 @@
             print "clearing cpu validate flags.\n";
 # remove verified from all cpu entries for this system
             $q_string  = "update ";
-            $q_string .= "hardware ";
+            $q_string .= "inv_hardware ";
             $q_string .= "set hw_verified = 0 ";
             $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_type = 8";
-            $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
             print "clearing hard disk validate flags.\n";
 # remove verified from all hard disk entries for this system
             $q_string  = "update ";
-            $q_string .= "hardware ";
+            $q_string .= "inv_hardware ";
             $q_string .= "set hw_verified = 0 ";
             $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_type = 2";
-            $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           }
 
           if ($value[2] == 'timezone') {
@@ -347,7 +347,7 @@
 # need to get the primary device for the data import in order to associate the hardware with the primary device.
 
           $q_string  = "select hw_id ";
-          $q_string .= "from hardware ";
+          $q_string .= "from inv_hardware ";
           $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1 ";
           $q_primary = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_primary) > 0) {
@@ -366,11 +366,11 @@
             if (strlen($value[3]) > 0) {
               $skip = 'no';
               $q_string  = "select hw_id ";
-              $q_string .= "from hardware ";
+              $q_string .= "from inv_hardware ";
               $q_string .= "where hw_type = 2 and hw_companyid = " . $a_inventory['inv_id'] . " and hw_verified = 0 ";
               $q_string .= "limit 1";
-              $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              $a_hardware = mysqli_fetch_array($q_hardware);
+              $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
             
               $query = 
                 "hw_companyid =  " . $a_inventory['inv_id']      . "," . 
@@ -380,13 +380,13 @@
                 "hw_user      =  " . '1'                         . "," . 
                 "hw_update    = '" . $date                       . "'";
 
-              if ($a_hardware['hw_id'] == '') {
-                $q_string = "insert into hardware set hw_id = null," . $query . ",hw_group = " . $a_inventory['inv_manager'];
+              if ($a_inv_hardware['hw_id'] == '') {
+                $q_string = "insert into inv_hardware set hw_id = null," . $query . ",hw_group = " . $a_inventory['inv_manager'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
               } else {
-                $q_string = "update hardware set " . $query . " where hw_id = " . $a_hardware['hw_id'];
+                $q_string = "update inv_hardware set " . $query . " where hw_id = " . $a_inv_hardware['hw_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
@@ -407,10 +407,10 @@
             if (strlen($value[3]) > 0) {
               $skip = 'no';
               $q_string  = "select hw_id ";
-              $q_string .= "from hardware ";
+              $q_string .= "from inv_hardware ";
               $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_type = 4 ";
-              $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              $a_hardware = mysqli_fetch_array($q_hardware);
+              $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
               $query = 
                 "hw_companyid =  " . $a_inventory['inv_id']      . "," . 
@@ -421,13 +421,13 @@
                 "hw_user      =  " . '1'                         . "," . 
                 "hw_update    = '" . $date                       . "'";
 
-              if ($a_hardware['hw_id'] == '') {
-                $q_string = "insert into hardware set hw_id = null," . $query . ",hw_group = " . $a_inventory['inv_manager'];
+              if ($a_inv_hardware['hw_id'] == '') {
+                $q_string = "insert into inv_hardware set hw_id = null," . $query . ",hw_group = " . $a_inventory['inv_manager'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
               } else {
-                $q_string = "update hardware set " . $query . " where hw_id = " . $a_hardware['hw_id'];
+                $q_string = "update inv_hardware set " . $query . " where hw_id = " . $a_inv_hardware['hw_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
@@ -448,24 +448,24 @@
             if (strlen($value[3]) > 0 && strlen($value[4]) > 0) {
               $skip = 'no';
               $q_string  = "select hw_id,mod_id,mod_speed ";
-              $q_string .= "from hardware ";
-              $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
+              $q_string .= "from inv_hardware ";
+              $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
               $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_type = 8 and mod_name = '" . trim($value[3]) . "' and mod_size = '" . $value[4] . "' and hw_verified = 0 ";
               $q_string .= "limit 1";
-              $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              if (mysqli_num_rows($q_hardware) > 0) {
-                $a_hardware = mysqli_fetch_array($q_hardware);
+              $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              if (mysqli_num_rows($q_inv_hardware) > 0) {
+                $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
                 $query = 
                   "hw_companyid =  " . $a_inventory['inv_id']      . "," . 
                   "hw_hw_id     =  " . $primary                    . "," . 
                   "hw_type      =  " . "8"                         . "," . 
-                  "hw_vendorid  =  " . $a_hardware['mod_id']       . "," . 
+                  "hw_vendorid  =  " . $a_inv_hardware['mod_id']       . "," . 
                   "hw_verified  =  " . '1'                         . "," . 
                   "hw_user      =  " . '1'                         . "," . 
                   "hw_update    = '" . $date                       . "'";
   
-                $q_string = "update hardware set " . $query . " where hw_id = " . $a_hardware['hw_id'];
+                $q_string = "update inv_hardware set " . $query . " where hw_id = " . $a_inv_hardware['hw_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
@@ -486,7 +486,7 @@
                     "hw_user      =  " . '1'                         . "," . 
                     "hw_update    = '" . $date                       . "'";
   
-                  $q_string = "insert into hardware set hw_id = null," . $query . ",hw_group = " . $a_inventory['inv_manager'];
+                  $q_string = "insert into inv_hardware set hw_id = null," . $query . ",hw_group = " . $a_inventory['inv_manager'];
                   if ($debug == 'no') {
                     $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                   }

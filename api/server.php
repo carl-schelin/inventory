@@ -456,26 +456,26 @@
     $hwcount = 0;
     $q_string  = "select hw_id,part_name,hw_serial,hw_asset,hw_service,ven_name,mod_name,mod_type,mod_size,mod_speed,prj_name,prod_name,hw_group,";
     $q_string .= "hw_purchased,hw_built,hw_active,mod_eol,hw_primary ";
-    $q_string .= "from hardware ";
-    $q_string .= "left join inv_parts    on inv_parts.part_id    = hardware.hw_type ";
-    $q_string .= "left join inv_models   on inv_models.mod_id    = hardware.hw_vendorid ";
+    $q_string .= "from inv_hardware ";
+    $q_string .= "left join inv_parts    on inv_parts.part_id    = inv_hardware.hw_type ";
+    $q_string .= "left join inv_models   on inv_models.mod_id    = inv_hardware.hw_vendorid ";
     $q_string .= "left join inv_vendors  on inv_vendors.ven_id   = inv_models.mod_vendor ";
-    $q_string .= "left join inv_projects on inv_projects.prj_id  = hardware.hw_projectid ";
-    $q_string .= "left join inv_products on inv_products.prod_id = hardware.hw_product ";
+    $q_string .= "left join inv_projects on inv_projects.prj_id  = inv_hardware.hw_projectid ";
+    $q_string .= "left join inv_products on inv_products.prod_id = inv_hardware.hw_product ";
     $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = 0 and hw_deleted = 0 ";
-    $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+    $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
       $q_string  = "select grp_name ";
       $q_string .= "from inv_groups ";
-      $q_string .= "where grp_id = " . $a_hardware['hw_group'] . " ";
+      $q_string .= "where grp_id = " . $a_inv_hardware['hw_group'] . " ";
       $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
-      if ($a_hardware['mod_type'] != '') {
+      if ($a_inv_hardware['mod_type'] != '') {
         $q_string  = "select part_name ";
         $q_string .= "from inv_parts ";
-        $q_string .= "where part_id = " . $a_hardware['mod_type'] . " ";
+        $q_string .= "where part_id = " . $a_inv_hardware['mod_type'] . " ";
         $q_inv_parts = mysqli_query($db, $q_string) or die($q_string . "p: " . mysqli_error($db));
         $a_inv_parts = mysqli_fetch_array($q_inv_parts);
       } else {
@@ -486,34 +486,34 @@
 
       if ($formVars['hardware'] == 'yes') {
         $servers[$a_inventory['inv_name']]->inventory_hardware[$index] = new Hardware();
-        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_type           = $a_hardware['part_name'];
-        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_serial_number  = $a_hardware['hw_serial'];
-        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_asset_tag      = $a_hardware['hw_asset'];
-        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_service        = $a_hardware['hw_service'];
-        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_vendor         = $a_hardware['ven_name'];
-        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_model          = $a_hardware['mod_name'];
+        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_type           = $a_inv_hardware['part_name'];
+        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_serial_number  = $a_inv_hardware['hw_serial'];
+        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_asset_tag      = $a_inv_hardware['hw_asset'];
+        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_service        = $a_inv_hardware['hw_service'];
+        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_vendor         = $a_inv_hardware['ven_name'];
+        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_model          = $a_inv_hardware['mod_name'];
         $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_model_type     = $a_inv_parts['part_name'];
-        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_size           = $a_hardware['mod_size'];
-        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_speed          = $a_hardware['mod_speed'];
-        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_project        = $a_hardware['prj_name'];
-        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_product        = $a_hardware['prod_name'];
+        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_size           = $a_inv_hardware['mod_size'];
+        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_speed          = $a_inv_hardware['mod_speed'];
+        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_project        = $a_inv_hardware['prj_name'];
+        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_product        = $a_inv_hardware['prod_name'];
         $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_admins         = $a_inv_groups['grp_name'];
-        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_purchased      = $a_hardware['hw_purchased'];
-        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_built          = $a_hardware['hw_built'];
-        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_active         = $a_hardware['hw_active'];
-        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_eol            = $a_hardware['mod_eol'];
+        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_purchased      = $a_inv_hardware['hw_purchased'];
+        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_built          = $a_inv_hardware['hw_built'];
+        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_active         = $a_inv_hardware['hw_active'];
+        $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->hardware_eol            = $a_inv_hardware['mod_eol'];
 
 
         $hwintcount = 0;
         $q_string  = "select hw_id,part_name,hw_serial,hw_asset,hw_service,ven_name,mod_name,mod_type,mod_size,mod_speed,prj_name,prod_name,hw_group,";
         $q_string .= "hw_purchased,hw_built,hw_active,mod_eol ";
-        $q_string .= "from hardware ";
-        $q_string .= "left join inv_parts    on inv_parts.part_id    = hardware.hw_type ";
-        $q_string .= "left join inv_models   on inv_models.mod_id    = hardware.hw_vendorid ";
+        $q_string .= "from inv_hardware ";
+        $q_string .= "left join inv_parts    on inv_parts.part_id    = inv_hardware.hw_type ";
+        $q_string .= "left join inv_models   on inv_models.mod_id    = inv_hardware.hw_vendorid ";
         $q_string .= "left join inv_vendors  on inv_vendors.ven_id   = inv_models.mod_vendor ";
-        $q_string .= "left join inv_projects on inv_projects.prj_id  = hardware.hw_projectid ";
-        $q_string .= "left join inv_products on inv_products.prod_id = hardware.hw_product ";
-        $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " ";
+        $q_string .= "left join inv_projects on inv_projects.prj_id  = inv_hardware.hw_projectid ";
+        $q_string .= "left join inv_products on inv_products.prod_id = inv_hardware.hw_product ";
+        $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = " . $a_inv_hardware['hw_id'] . " ";
         $q_internal = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         while ($a_internal = mysqli_fetch_array($q_internal)) {
 
@@ -554,8 +554,8 @@
           $servers[$a_inventory['inv_name']]->inventory_hardware[$index]->inventory_hardware[$cindex]->hardware_eol            = $a_internal['mod_eol'];
         }
       } else {
-        if ($a_hardware['hw_primary'] == 1) {
-          $servers[$a_inventory['inv_name']]->inventory_hardware = $a_hardware['mod_name'];
+        if ($a_inv_hardware['hw_primary'] == 1) {
+          $servers[$a_inventory['inv_name']]->inventory_hardware = $a_inv_hardware['mod_name'];
         }
       }
     }

@@ -55,7 +55,7 @@
 
   $q_string  = "select sup_company,sup_phone,sup_email,sup_web,sup_contract,sup_wiki,sup_hwresponse,sup_swresponse,hw_supid_verified,hw_supportend "
   $q_string .= "from inv_support "
-  $q_string .= "left join hardware on hardware.hw_supportid = inv_support.sup_id "
+  $q_string .= "left join inv_hardware on inv_hardware.hw_supportid = inv_support.sup_id "
   $q_string .= "where hw_companyid = " . $formVars['id'] . " and hw_primary = 1 ";
   $q_inv_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 

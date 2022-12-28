@@ -185,7 +185,7 @@
   $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = software.sw_type ";
   $q_string .= "left join inv_products     on inv_products.prod_id            = software.sw_product ";
   $q_string .= "left join inv_vendors      on inv_vendors.ven_id              = software.sw_vendor ";
-  $q_string .= "left join hardware         on hardware.hw_companyid           = inventory.inv_id ";
+  $q_string .= "left join inv_hardware     on inv_hardware.hw_companyid       = inventory.inv_id ";
   $q_string .= "left join inv_locations    on inv_locations.loc_id            = inventory.inv_location ";
   $q_string .= $where;
   $q_string .= $orderby;

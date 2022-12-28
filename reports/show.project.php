@@ -118,42 +118,42 @@ $(document).ready( function() {
 <?php
 
   $q_string  = "select hw_id,inv_id,inv_name,hw_asset,hw_serial,mod_name,grp_name,inv_ssh,inv_ansible,hw_verified,hw_update ";
-  $q_string .= "from hardware ";
-  $q_string .= "left join inventory on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join inv_groups on hardware.hw_group = inv_groups.grp_id ";
-  $q_string .= "left join inv_models on hardware.hw_vendorid = inv_models.mod_id ";
+  $q_string .= "from inv_hardware ";
+  $q_string .= "left join inventory  on inv_hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "left join inv_groups on inv_hardware.hw_group = inv_groups.grp_id ";
+  $q_string .= "left join inv_models on inv_hardware.hw_vendorid = inv_models.mod_id ";
   $q_string .= "where inv_project = " . $formVars['id'] . " and inv_status = 0 and hw_primary = 1 ";
   $q_string .= "order by inv_name";
-  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_hardware) > 0) {
-    while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+  $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_hardware) > 0) {
+    while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
       $ssh = "";
-      if ($a_hardware['inv_ssh']) {
+      if ($a_inv_hardware['inv_ssh']) {
         $ssh = "*";
       }
       $ansible = "";
-      if ($a_hardware['inv_ansible']) {
+      if ($a_inv_hardware['inv_ansible']) {
         $ansible = "@";
       }
 
       $checkmark = "";
-      if ($a_hardware['hw_verified']) {
+      if ($a_inv_hardware['hw_verified']) {
         $checkmark = "&#x2713;";
       }
 
       $editpencil = "<img class=\"ui-icon-edit\" src=\"" . $Imgsroot . "/pencil.gif\" height=\"10\">";
-      $editstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_hardware['inv_id'] . "\" target=\"_blank\">";
-      $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_hardware['inv_id'] . "\" target=\"_blank\">";
+      $editstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inv_hardware['inv_id'] . "\" target=\"_blank\">";
+      $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inv_hardware['inv_id'] . "\" target=\"_blank\">";
       $linkend   = "</a>";
 
       print "<tr>\n";
-      print "  <td class=\"ui-widget-content\">" . $editstart . $editpencil . $linkend . $linkstart . $a_hardware['inv_name']             . $linkend . $ssh . $ansible . "</td>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_hardware['hw_asset']             . $linkend                   . "</td>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_hardware['hw_serial']            . $linkend                   . "</td>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_hardware['mod_name']             . $linkend                   . "</td>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_hardware['grp_name']             . $linkend                   . "</td>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_hardware['hw_update']            . $linkend . $checkmark      . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $editstart . $editpencil . $linkend . $linkstart . $a_inv_hardware['inv_name']             . $linkend . $ssh . $ansible . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_hardware['hw_asset']             . $linkend                   . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_hardware['hw_serial']            . $linkend                   . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_hardware['mod_name']             . $linkend                   . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_hardware['grp_name']             . $linkend                   . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_hardware['hw_update']            . $linkend . $checkmark      . "</td>\n";
       print "</tr>\n";
 
     }

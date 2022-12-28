@@ -152,10 +152,10 @@
   $q_string  = "select inv_id,inv_name,inv_response,inv_callpath,mod_name,sup_company,hw_asset,";
   $q_string .= "hw_serial,hw_response,hw_supid_verified,prod_name,grp_name,svc_acronym,slv_value ";
   $q_string .= "from inventory ";
-  $q_string .= "left join hardware on inventory.inv_id = hardware.hw_companyid ";
-  $q_string .= "left join inv_groups   on inv_groups.grp_id    = hardware.hw_group ";
-  $q_string .= "left join inv_models   on inv_models.mod_id    = hardware.hw_vendorid ";
-  $q_string .= "left join inv_support  on inv_support.sup_id   = hardware.hw_supportid ";
+  $q_string .= "left join inv_hardware on inventory.inv_id = inv_hardware.hw_companyid ";
+  $q_string .= "left join inv_groups   on inv_groups.grp_id    = inv_hardware.hw_group ";
+  $q_string .= "left join inv_models   on inv_models.mod_id    = inv_hardware.hw_vendorid ";
+  $q_string .= "left join inv_support  on inv_support.sup_id   = inv_hardware.hw_supportid ";
   $q_string .= "left join inv_products on inv_products.prod_id = inventory.inv_product ";
   $q_string .= "left join inv_service  on inv_service.svc_id   = inventory.inv_class ";
   $q_string .= $leftjoin;

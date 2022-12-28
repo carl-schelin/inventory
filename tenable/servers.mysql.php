@@ -207,7 +207,7 @@ if needed.</p>
   }
 # want to add in cities, states, and country tables as well.
   if ($formVars['inwork'] == 'true') {
-    $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
+    $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inventory.inv_id ";
   }
 # per infosec, sev low and higher (1, 2, 3, and 4)
   $q_string .= "where sec_severity < 6 ";

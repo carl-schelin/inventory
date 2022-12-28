@@ -581,13 +581,13 @@
       }
 
       $q_string  = "select hw_companyid,inv_name,grp_name,ven_name,mod_name,part_name,mod_type,inv_status,hw_serial,hw_asset ";
-      $q_string .= "from hardware ";
-      $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
+      $q_string .= "from inv_hardware ";
+      $q_string .= "left join inventory on inventory.inv_id = inv_hardware.hw_companyid ";
       $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
       $q_string .= "left join inv_cities    on inv_cities.ct_id     = inv_locations.loc_city ";
       $q_string .= "left join inv_states    on inv_states.st_id     = inv_locations.loc_state ";
-      $q_string .= "left join inv_groups    on inv_groups.grp_id    = hardware.hw_group ";
-      $q_string .= "left join inv_models    on inv_models.mod_id    = hardware.hw_vendorid ";
+      $q_string .= "left join inv_groups    on inv_groups.grp_id    = inv_hardware.hw_group ";
+      $q_string .= "left join inv_models    on inv_models.mod_id    = inv_hardware.hw_vendorid ";
       $q_string .= "left join inv_vendors   on inv_vendors.ven_id   = inv_models.mod_vendor ";
       $q_string .= "left join inv_parts     on inv_parts.part_id    = inv_models.mod_type ";
       if ($formVars['retired'] == 'true') {
@@ -596,39 +596,39 @@
         $q_string .= "where inv_status = 0 and " . $search_on . " ";
       }
       $q_string .= $orderby;
-      $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_hardware) > 0) {
-        while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+      $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_hardware) > 0) {
+        while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
-          $linkhwstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_hardware['hw_companyid'] . "#hardware\" target=\"_blank\">";
-          $link_vendor = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=4&search_on=ven_name&search_for="   . $a_hardware['ven_name']   . "&retired=" . $formVars['retired'] . "');\">";
-          $link_name   = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=4&search_on=mod_name&search_for="   . $a_hardware['mod_name']   . "&retired=" . $formVars['retired'] . "');\">";
-          $link_type   = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=4&search_on=part_name&search_for="  . $a_hardware['part_name']  . "&retired=" . $formVars['retired'] . "');\">";
-          $linkstart   = "<a href=\"" . $Showroot . "/inventory.php?server="   . $a_hardware['hw_companyid'] . "\" target=\"_blank\">";
+          $linkhwstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inv_hardware['hw_companyid'] . "#hardware\" target=\"_blank\">";
+          $link_vendor = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=4&search_on=ven_name&search_for="   . $a_inv_hardware['ven_name']   . "&retired=" . $formVars['retired'] . "');\">";
+          $link_name   = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=4&search_on=mod_name&search_for="   . $a_inv_hardware['mod_name']   . "&retired=" . $formVars['retired'] . "');\">";
+          $link_type   = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=4&search_on=part_name&search_for="  . $a_inv_hardware['part_name']  . "&retired=" . $formVars['retired'] . "');\">";
+          $linkstart   = "<a href=\"" . $Showroot . "/inventory.php?server="   . $a_inv_hardware['hw_companyid'] . "\" target=\"_blank\">";
           $linkend     = "</a>";
 
           $class = "ui-widget-content";
-          if ($a_hardware['inv_status']) {
+          if ($a_inv_hardware['inv_status']) {
             $class = "ui-state-error";
           }
 
           if ($formVars['csv']) {
-            $output .= "\"" . $a_hardware['inv_name']   . "\",";
-            $output .= "\"" . $a_hardware['ven_name']   . "\",";
-            $output .= "\"" . $a_hardware['mod_name']   . "\",";
-            $output .= "\"" . $a_hardware['part_name']  . "\",";
-            $output .= "\"" . $a_hardware['hw_asset']   . "\",";
-            $output .= "\"" . $a_hardware['hw_serial']  . "\",";
-            $output .= "\"" . $a_hardware['grp_name']   . "\"<br>";
+            $output .= "\"" . $a_inv_hardware['inv_name']   . "\",";
+            $output .= "\"" . $a_inv_hardware['ven_name']   . "\",";
+            $output .= "\"" . $a_inv_hardware['mod_name']   . "\",";
+            $output .= "\"" . $a_inv_hardware['part_name']  . "\",";
+            $output .= "\"" . $a_inv_hardware['hw_asset']   . "\",";
+            $output .= "\"" . $a_inv_hardware['hw_serial']  . "\",";
+            $output .= "\"" . $a_inv_hardware['grp_name']   . "\"<br>";
           } else {
             $output .= "<tr>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $linkhwstart . $a_hardware['inv_name']   . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $link_vendor . $a_hardware['ven_name']   . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $link_name   . $a_hardware['mod_name']   . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $link_type   . $a_hardware['part_name']  . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"                . $a_hardware['hw_asset']              . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"                . $a_hardware['hw_serial']             . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"                . $a_hardware['grp_name']              . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $linkhwstart . $a_inv_hardware['inv_name']   . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $link_vendor . $a_inv_hardware['ven_name']   . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $link_name   . $a_inv_hardware['mod_name']   . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $link_type   . $a_inv_hardware['part_name']  . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"                . $a_inv_hardware['hw_asset']              . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"                . $a_inv_hardware['hw_serial']             . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"                . $a_inv_hardware['grp_name']              . "</td>\n";
             $output .= "</tr>\n";
           }
         }
@@ -721,40 +721,40 @@
       }
 
       $q_string  = "select hw_asset,hw_companyid,hw_serial,inv_name,loc_name,grp_name,inv_status ";
-      $q_string .= "from hardware ";
-      $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
+      $q_string .= "from inv_hardware ";
+      $q_string .= "left join inventory on inventory.inv_id = inv_hardware.hw_companyid ";
       $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
       $q_string .= "left join inv_cities    on inv_cities.ct_id     = inv_locations.loc_city ";
       $q_string .= "left join inv_states    on inv_states.st_id     = inv_locations.loc_state ";
       $q_string .= "left join inv_groups    on inv_groups.grp_id    = inventory.inv_manager ";
       $q_string .= "where " . $search_on . " ";
       $q_string .= $orderby;
-      $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_hardware) > 0) {
-        while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+      $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_hardware) > 0) {
+        while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
-          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_hardware['hw_companyid'] . "\" target=\"_blank\">";
-          $linkhwstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_hardware['hw_companyid'] . "#hardware\" target=\"_blank\">";
+          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inv_hardware['hw_companyid'] . "\" target=\"_blank\">";
+          $linkhwstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inv_hardware['hw_companyid'] . "#hardware\" target=\"_blank\">";
           $linkend   = "</a>";
 
           $class = "ui-widget-content";
-          if ($a_hardware['inv_status']) {
+          if ($a_inv_hardware['inv_status']) {
             $class = "ui-state-error";
           }
 
           if ($formVars['csv']) {
-            $output .= "\"" . $a_hardware['inv_name']   . "\",";
-            $output .= "\"" . $a_hardware['hw_asset']   . "\",";
-            $output .= "\"" . $a_hardware['hw_serial']  . "\",";
-            $output .= "\"" . $a_hardware['loc_name']   . "\",";
-            $output .= "\"" . $a_hardware['grp_name']   . "\"<br>";
+            $output .= "\"" . $a_inv_hardware['inv_name']   . "\",";
+            $output .= "\"" . $a_inv_hardware['hw_asset']   . "\",";
+            $output .= "\"" . $a_inv_hardware['hw_serial']  . "\",";
+            $output .= "\"" . $a_inv_hardware['loc_name']   . "\",";
+            $output .= "\"" . $a_inv_hardware['grp_name']   . "\"<br>";
           } else {
             $output .= "<tr>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $linkstart   . $a_hardware['inv_name']   . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $linkhwstart . $a_hardware['hw_asset']   . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $linkhwstart . $a_hardware['hw_serial']  . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $linkstart   . $a_hardware['loc_name']   . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"                . $a_hardware['grp_name']              . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $linkstart   . $a_inv_hardware['inv_name']   . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $linkhwstart . $a_inv_hardware['hw_asset']   . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $linkhwstart . $a_inv_hardware['hw_serial']  . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $linkstart   . $a_inv_hardware['loc_name']   . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"                . $a_inv_hardware['grp_name']              . "</td>\n";
             $output .= "</tr>\n";
           }
         }

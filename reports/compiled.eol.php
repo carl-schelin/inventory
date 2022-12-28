@@ -169,11 +169,11 @@
   $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inventory.inv_id ";
   $q_string .= "left join software  on software.sw_id    = inv_svr_software.svr_softwareid ";
   $q_string .= "left join inv_sw_types  on inv_sw_types.typ_id   = software.sw_type ";
-  $q_string .= "left join hardware  on inventory.inv_id  = hardware.hw_companyid ";
-  $q_string .= "left join inv_groups  on inv_groups.grp_id   = hardware.hw_group ";
-  $q_string .= "left join inv_models    on inv_models.mod_id     = hardware.hw_vendorid ";
+  $q_string .= "left join inv_hardware  on inventory.inv_id  = inv_hardware.hw_companyid ";
+  $q_string .= "left join inv_groups  on inv_groups.grp_id   = inv_hardware.hw_group ";
+  $q_string .= "left join inv_models    on inv_models.mod_id     = inv_hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors   on inv_vendors.ven_id    = inv_models.mod_vendor ";
-  $q_string .= "left join inv_support   on inv_support.sup_id    = hardware.hw_supportid ";
+  $q_string .= "left join inv_support   on inv_support.sup_id    = inv_hardware.hw_supportid ";
   $q_string .= "left join products  on products.prod_id  = inventory.inv_product ";
   $q_string .= $where . "and typ_name = 'OS' ";
   $q_string .= $orderby;

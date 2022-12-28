@@ -137,27 +137,27 @@
 
   if ($formVars['asset'] != '') {
     $q_string  = "select inv_id ";
-    $q_string .= "from hardware ";
-    $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
+    $q_string .= "from inv_hardware ";
+    $q_string .= "left join inventory on inventory.inv_id = inv_hardware.hw_companyid ";
     $q_string .= "where inv_status = 0 and hw_asset = \"" . $formVars['asset'] . "\" ";
-    $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_hardware = mysqli_fetch_array($q_hardware);
+    $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
-    if (mysqli_num_rows($q_hardware) > 0) {
-      $formVars['inv_id'] = $a_hardware['inv_id'];
+    if (mysqli_num_rows($q_inv_hardware) > 0) {
+      $formVars['inv_id'] = $a_inv_hardware['inv_id'];
     }
   }
 
   if ($formVars['serial'] != '') {
     $q_string  = "select inv_id ";
-    $q_string .= "from hardware ";
-    $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
+    $q_string .= "from inv_hardware ";
+    $q_string .= "left join inventory on inventory.inv_id = inv_hardware.hw_companyid ";
     $q_string .= "where inv_status = 0 and hw_serial = \"" . $formVars['serial'] . "\" ";
-    $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_hardware = mysqli_fetch_array($q_hardware);
+    $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
-    if (mysqli_num_rows($q_hardware) > 0) {
-      $formVars['inv_id'] = $a_hardware['inv_id'];
+    if (mysqli_num_rows($q_inv_hardware) > 0) {
+      $formVars['inv_id'] = $a_inv_hardware['inv_id'];
     }
   }
 
@@ -418,13 +418,13 @@
 
     $hwcount = 0;
     $q_string  = "select mod_name ";
-    $q_string .= "from hardware ";
-    $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
+    $q_string .= "from inv_hardware ";
+    $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
     $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = 0 and hw_deleted = 0 and hw_primary = 1 ";
-    $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_hardware = mysqli_fetch_array($q_hardware);
+    $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
-    $servers[$a_inventory['inv_name']]->inventory_hardware = $a_hardware['mod_name'];
+    $servers[$a_inventory['inv_name']]->inventory_hardware = $a_inv_hardware['mod_name'];
   }
 
   echo json_encode($servers);

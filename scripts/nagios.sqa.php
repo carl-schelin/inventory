@@ -76,7 +76,7 @@
   $q_string .= "left join software on software.sw_id = inv_svr_software.svr_softwareid ";
   $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
   if ($hostname == 'inventory.internal.pri') {
-    $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
+    $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inventory.inv_id ";
   }
   $q_string .= "left join inv_interface on inv_interface.int_companyid = inventory.inv_id ";
   $q_string .= "left join inv_groups    on inv_groups.grp_id           = inventory.inv_manager ";

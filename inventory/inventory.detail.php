@@ -231,7 +231,7 @@
 
 # update the hardware listing; all hardware for this server
           $q_string  = "update ";
-          $q_string .= "hardware ";
+          $q_string .= "inv_hardware ";
           $q_string .= "set ";
           $q_string .= "hw_group = " . $a_inv_groups['grp_id'] . " ";          
           $q_string .= "where hw_companyid = " . $formVars['id'] . " ";
@@ -862,7 +862,7 @@
       if ($formVars['function'] == 'ilv') {
         $q_string  = "select inv_status,hw_id,hw_active ";
         $q_string .= "from inventory ";
-        $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
+        $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inventory.inv_id ";
         $q_string .= "where inv_id = " . $formVars['id'] . " and hw_primary = 1 and hw_deleted = 0 ";
         $q_invlive = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_invlive = mysqli_fetch_array($q_invlive);
@@ -874,7 +874,7 @@
         }
 
         $q_string  = "update ";
-        $q_string .= "hardware ";
+        $q_string .= "inv_hardware ";
         $q_string .= "set ";
         $q_string .= "hw_active = '" . $a_invlive['hw_active'] . "' ";
         $q_string .= "where hw_id = " . $a_invlive['hw_id'] . " ";

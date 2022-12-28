@@ -182,7 +182,7 @@
   $q_string .= "left join inventory on inventory.inv_id      = inv_filesystem.fs_companyid ";
   $q_string .= "left join inv_products  on inv_products.prod_id       = inventory.inv_product ";
   $q_string .= "left join inv_locations on inv_locations.loc_id       = inventory.inv_location ";
-  $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid  = inventory.inv_id ";
   $q_string .= $where . " ";
   $q_string .= $orderby;
   $q_inv_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

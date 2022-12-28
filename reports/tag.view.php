@@ -236,8 +236,8 @@ $(document).ready( function () {
   $q_string  = "select inv_id,inv_name,inv_function,inv_document,inv_manager,grp_name,ct_city,";
   $q_string .= "ven_name,mod_name,zone_name,inv_ssh,hw_active,hw_retired,hw_reused ";
   $q_string .= "from inventory ";
-  $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join inv_models    on inv_models.mod_id         = hardware.hw_vendorid ";
+  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "left join inv_models    on inv_models.mod_id         = inv_hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors   on inv_vendors.ven_id        = inv_models.mod_vendor ";
   $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city ";

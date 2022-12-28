@@ -412,11 +412,11 @@
       $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
       $q_string  = "select hw_active ";
-      $q_string .= "from hardware ";
+      $q_string .= "from inv_hardware ";
       $q_string .= "where hw_primary = 1 and hw_companyid = " . $a_inventory['inv_id'];
-      $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
-      $a_hardware = mysqli_fetch_array($q_hardware);
-      if ($a_hardware['hw_active'] == '1971-01-01') {
+      $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+      $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
+      if ($a_inv_hardware['hw_active'] == '1971-01-01') {
         $bgcolor = $color[1];
       } else {
         $bgcolor = $color[0];
@@ -520,11 +520,11 @@
       $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
       $q_string  = "select hw_active ";
-      $q_string .= "from hardware ";
+      $q_string .= "from inv_hardware ";
       $q_string .= "where hw_primary = 1 and hw_companyid = " . $a_inventory['inv_id'];
-      $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
-      $a_hardware = mysqli_fetch_array($q_hardware);
-      if ($a_hardware['hw_active'] == '1971-01-01') {
+      $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+      $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
+      if ($a_inv_hardware['hw_active'] == '1971-01-01') {
         $bgcolor = $color[1];
       } else {
         $bgcolor = $color[0];
@@ -611,12 +611,12 @@
     $output .= "</tr>\n";
 
     $q_string  = "select hw_active ";
-    $q_string .= "from hardware ";
+    $q_string .= "from inv_hardware ";
     $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1";
-    $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
-    $a_hardware = mysqli_fetch_array($q_hardware);
+    $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+    $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
-    if ($a_hardware['hw_active'] == '1971-01-01') {
+    if ($a_inv_hardware['hw_active'] == '1971-01-01') {
       $output .= "<tr style=\"background-color: " . $color[3] . "; border: 1px solid #000000; font-size: 75%;\">\n";
       $output .= "  <td colspan=\"5\"><strong>Server is not in Production at this time.</strong></td>\n";
       $output .= "</tr>\n";
@@ -654,14 +654,14 @@
     $output .= "</tr>\n";
 
     $q_string  = "select hw_supportid,hw_active ";
-    $q_string .= "from hardware ";
+    $q_string .= "from inv_hardware ";
     $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1";
-    $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
-    $a_hardware = mysqli_fetch_array($q_hardware);
+    $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+    $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
     $q_string  = "select sup_company,sup_phone,sup_contract,sup_hwresponse,sup_swresponse ";
     $q_string .= "from inv_support ";
-    $q_string .= "where sup_id = " . $a_hardware['hw_supportid'];
+    $q_string .= "where sup_id = " . $a_inv_hardware['hw_supportid'];
     $q_inv_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
     $a_inv_support = mysqli_fetch_array($q_inv_support);
 
@@ -705,23 +705,23 @@
     $output .= "</tr>\n";
 
     $q_string  = "select hw_serial,hw_asset,hw_vendorid ";
-    $q_string .= "from hardware ";
+    $q_string .= "from inv_hardware ";
     $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1";
-    $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
-    $a_hardware = mysqli_fetch_array($q_hardware);
+    $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+    $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
     $q_string  = "select ven_name,mod_name ";
     $q_string .= "from inv_models ";
     $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
-    $q_string .= "where mod_id = " . $a_hardware['hw_vendorid'] . " ";
+    $q_string .= "where mod_id = " . $a_inv_hardware['hw_vendorid'] . " ";
     $q_inv_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
     $a_inv_models = mysqli_fetch_array($q_inv_models);
 
     $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
     $output .= "  <td><strong>Vendor</strong>: "           . $a_inv_models['ven_name']     . "</td>\n";
     $output .= "  <td><strong>Model</strong>: "            . $a_inv_models['mod_name']     . "</td>\n";
-    $output .= "  <td><strong>Serial Number</strong>: "    . $a_hardware['hw_serial']  . "</td>\n";
-    $output .= "  <td><strong>Asset Tag</strong>: "        . $a_hardware['hw_asset']   . "</td>\n";
+    $output .= "  <td><strong>Serial Number</strong>: "    . $a_inv_hardware['hw_serial']  . "</td>\n";
+    $output .= "  <td><strong>Asset Tag</strong>: "        . $a_inv_hardware['hw_asset']   . "</td>\n";
     $output .= "</tr>\n";
 
     $output .= "</table>\n\n";
@@ -851,34 +851,34 @@
       $output .= "</tr>\n";
 
       $q_string  = "select hw_serial,hw_asset,hw_vendorid,part_name,hw_verified,hw_update ";
-      $q_string .= "from hardware ";
-      $q_string .= "left join inv_parts on inv_parts.part_id = hardware.hw_type ";
+      $q_string .= "from inv_hardware ";
+      $q_string .= "left join inv_parts on inv_parts.part_id = inv_hardware.hw_type ";
       $q_string .= "where hw_deleted = 0 and hw_companyid = " . $a_inventory['inv_id'] . " ";
       $q_string .= "order by part_name";
-      $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
-      while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+      $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+      while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
         $q_string  = "select ven_name,mod_name,mod_size,mod_speed ";
         $q_string .= "from inv_models ";
         $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
-        $q_string .= "where mod_id = " . $a_hardware['hw_vendorid'] . " ";
+        $q_string .= "where mod_id = " . $a_inv_hardware['hw_vendorid'] . " ";
         $q_inv_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
         $a_inv_models = mysqli_fetch_array($q_inv_models);
 
-        if ($a_hardware['hw_verified'] == 1) {
+        if ($a_inv_hardware['hw_verified'] == 1) {
           $bgcolor = $color[1];
         } else {
           $bgcolor = $color[0];
         }
 
         $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
-        $output .= "  <td>" . $a_hardware['hw_serial']  . "</td>\n";
-        $output .= "  <td>" . $a_hardware['hw_asset']   . "</td>\n";
+        $output .= "  <td>" . $a_inv_hardware['hw_serial']  . "</td>\n";
+        $output .= "  <td>" . $a_inv_hardware['hw_asset']   . "</td>\n";
         $output .= "  <td>" . $a_inv_models['ven_name']     . "</td>\n";
         $output .= "  <td>" . $a_inv_models['mod_name']     . "</td>\n";
         $output .= "  <td>" . $a_inv_models['mod_size']     . "</td>\n";
         $output .= "  <td>" . $a_inv_models['mod_speed']    . "</td>\n";
-        $output .= "  <td>" . $a_hardware['part_name']  . "</td>\n";
-        $output .= "  <td>" . $a_hardware['hw_update']  . "</td>\n";
+        $output .= "  <td>" . $a_inv_hardware['part_name']  . "</td>\n";
+        $output .= "  <td>" . $a_inv_hardware['hw_update']  . "</td>\n";
         $output .= "</tr>\n";
       }
       $output .= "</table>\n\n";

@@ -162,10 +162,10 @@
       }
 
       $q_string  = "select hw_active ";
-      $q_string .= "from hardware ";
+      $q_string .= "from inv_hardware ";
       $q_string .= "where hw_companyid = " . $a_inv_interface['inv_id'] . " and hw_deleted = 0 and hw_primary = 1 ";
-      $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_hardware = mysqli_fetch_array($q_hardware);
+      $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
       $q_string  = "select vuln_id ";
       $q_string .= "from inv_vulnerabilities ";
@@ -174,7 +174,7 @@
       if (mysqli_num_rows($q_inv_vulnerabilities) == 0) {
 
         $class = "ui-widget-content";
-        if ($a_hardware['hw_active'] == '0000-00-00') {
+        if ($a_inv_hardware['hw_active'] == '0000-00-00') {
           $class = "ui-state-highlight";
         }
 

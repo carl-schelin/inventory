@@ -279,11 +279,11 @@
   $q_string  = "select prod_id,prod_name,COUNT(inv_id) ";
   $q_string .= "from inv_products ";
   $q_string .= "left join inventory on inventory.inv_product = inv_products.prod_id ";
-  $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city ";
   $q_string .= "left join inv_net_zones on inv_net_zones.zone_id     = inventory.inv_zone ";
-  $q_string .= "left join inv_models    on inv_models.mod_id         = hardware.hw_vendorid ";
+  $q_string .= "left join inv_models    on inv_models.mod_id         = inv_hardware.hw_vendorid ";
   $q_string .= "left join inv_groups    on inv_groups.grp_id         = inventory.inv_manager ";
   $q_string .= $group . $product . $inwork . $location . $type . " ";
   $q_string .= "group by prod_name ";

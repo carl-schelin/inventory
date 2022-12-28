@@ -27,21 +27,21 @@
 
         if ($formVars['copyfrom'] > 0) {
           $q_string  = "select hw_type,hw_vendorid,hw_supportid,hw_primary ";
-          $q_string .= "from hardware ";
+          $q_string .= "from inv_hardware ";
           $q_string .= "where hw_companyid = " . $formVars['copyfrom'];
-          $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+          $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
             $q_string =
               "hw_companyid =   " . $formVars['hw_companyid']   . "," . 
               "hw_group     =   " . $formVars['hw_group']       . "," . 
               "hw_product   =   " . $formVars['hw_product']     . "," . 
-              "hw_vendorid  =   " . $a_hardware['hw_vendorid']  . "," . 
-              "hw_type      =   " . $a_hardware['hw_type']      . "," . 
-              "hw_supportid =   " . $a_hardware['hw_supportid'] . "," .
-              "hw_primary   =   " . $a_hardware['hw_primary'];
+              "hw_vendorid  =   " . $a_inv_hardware['hw_vendorid']  . "," . 
+              "hw_type      =   " . $a_inv_hardware['hw_type']      . "," . 
+              "hw_supportid =   " . $a_inv_hardware['hw_supportid'] . "," .
+              "hw_primary   =   " . $a_inv_hardware['hw_primary'];
 
-            $query = "insert into hardware set hw_id = NULL, " . $q_string;
+            $query = "insert into inv_hardware set hw_id = NULL, " . $q_string;
             mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
           }
         }

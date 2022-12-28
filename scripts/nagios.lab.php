@@ -77,7 +77,7 @@
   $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inventory.inv_id ";
   $q_string .= "left join software on software.sw_id = inv_svr_software.svr_softwareid ";
   if ($hostname == 'inventory.internal.pri') {
-    $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
+    $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inventory.inv_id ";
   }
 # have a management flag now.
 # int_type != 6 and int_type != 4 and loc_type = 1 and 

@@ -91,7 +91,7 @@
 
 # update the inventory with the updated information
           $q_string  = "update ";
-          $q_string .= "hardware ";
+          $q_string .= "inv_hardware ";
           $q_string .= "set ";
           $q_string .= "hw_built = '" . $formVars['select'] . "' ";
           $q_string .= "where hw_id = " . $formVars['id'] . " ";
@@ -136,7 +136,7 @@
           print "cell.setAttribute(\"onclick\", \"edit_Hardware(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "update ";
-          $q_string .= "hardware ";
+          $q_string .= "inv_hardware ";
           $q_string .= "set ";
           $q_string .= "hw_active = '" . $formVars['select'] . "' ";
           $q_string .= "where hw_id = " . $formVars['id'] . " ";

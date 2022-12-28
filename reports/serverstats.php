@@ -156,20 +156,20 @@ to software and hardware section.</p>
   $total_decommissioned = 0;
 
   $q_string  = "select hw_built,hw_active,hw_retired,hw_reused,inv_status ";
-  $q_string .= "from hardware ";
-  $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
+  $q_string .= "from inv_hardware ";
+  $q_string .= "left join inventory on inventory.inv_id = inv_hardware.hw_companyid ";
   $q_string .= "where hw_primary = 1 " . $admin . " ";
-  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+  $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
-    if ($a_hardware['inv_status'] == 0) {
+    if ($a_inv_hardware['inv_status'] == 0) {
       $total_live++;
     } else {
       $total_decommissioned++;
     }
 
 # count all the servers for each year
-    $dbyear = explode("-", $a_hardware['hw_built']);
+    $dbyear = explode("-", $a_inv_hardware['hw_built']);
     if ($dbyear[0] != '0000') {
       if (isset($built[$dbyear[0]])) {
         $built[$dbyear[0]]++;
@@ -179,7 +179,7 @@ to software and hardware section.</p>
       $total_built++;
     }
 
-    $dbyear = explode("-", $a_hardware['hw_active']);
+    $dbyear = explode("-", $a_inv_hardware['hw_active']);
     if ($dbyear[0] != '0000') {
       if (isset($active[$dbyear[0]])) {
         $active[$dbyear[0]]++;
@@ -189,7 +189,7 @@ to software and hardware section.</p>
       $total_active++;
     }
 
-    $dbyear = explode("-", $a_hardware['hw_retired']);
+    $dbyear = explode("-", $a_inv_hardware['hw_retired']);
     if ($dbyear[0] != '0000') {
       if (isset($retired[$dbyear[0]])) {
         $retired[$dbyear[0]]++;
@@ -199,7 +199,7 @@ to software and hardware section.</p>
       $total_retired++;
     }
 
-    $dbyear = explode("-", $a_hardware['hw_reused']);
+    $dbyear = explode("-", $a_inv_hardware['hw_reused']);
     if ($dbyear[0] != '0000') {
       if (isset($reused[$dbyear[0]])) {
         $reused[$dbyear[0]]++;
@@ -315,13 +315,13 @@ to software and hardware section.</p>
   }
 
   $q_string  = "select hw_built ";
-  $q_string .= "from hardware ";
-  $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
+  $q_string .= "from inv_hardware ";
+  $q_string .= "left join inventory on inventory.inv_id = inv_hardware.hw_companyid ";
   $q_string .= "where hw_built != '1971-01-01' and hw_primary = 1 " . $admin . " ";
-  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+  $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
-    $dbyear = explode("-", $a_hardware['hw_built']);
+    $dbyear = explode("-", $a_inv_hardware['hw_built']);
     $dbyear[1] = $dbyear[1] + 0;
     $myear[$dbyear[0]][$dbyear[1]]++;
 
@@ -351,15 +351,15 @@ to software and hardware section.</p>
   print "</table>\n";
 
   $q_string  = "select count(*) ";
-  $q_string .= "from hardware ";
-  $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = hardware.hw_companyid ";
+  $q_string .= "from inv_hardware ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inv_hardware.hw_companyid ";
   $q_string .= "where hw_companyid != 0 " . $admin . " ";
   $q_string .= "and hw_built = '1971-01-01' ";
   $q_string .= "and hw_primary = 1";
-  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_hardware = mysqli_fetch_row($q_hardware);
+  $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_hardware = mysqli_fetch_row($q_inv_hardware);
 
-  print "<p>Note: There are " . $a_hardware[0] . " servers with 1971-01-01 build dates which weren't counted.</p>\n";
+  print "<p>Note: There are " . $a_inv_hardware[0] . " servers with 1971-01-01 build dates which weren't counted.</p>\n";
 
 ?>
 
@@ -535,28 +535,28 @@ print $q_string;
   $total = 0;
 
   $q_string  = "select part_name,ven_name,mod_name,mod_virtual,count(inv_name) ";
-  $q_string .= "from hardware ";
-  $q_string .= "left join inv_models    on inv_models.mod_id    = hardware.hw_vendorid ";
+  $q_string .= "from inv_hardware ";
+  $q_string .= "left join inv_models    on inv_models.mod_id    = inv_hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors   on inv_vendors.ven_id   = inv_models.mod_vendor ";
   $q_string .= "left join inv_parts     on inv_parts.part_id    = inv_models.mod_type ";
-  $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
+  $q_string .= "left join inventory on inventory.inv_id = inv_hardware.hw_companyid ";
   $q_string .= "where mod_primary = 1 and inv_status = 0 " . $admin . " ";
   $q_string .= "group by ven_name,mod_name ";
-  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+  $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
-    $linkvendor = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysqli_real_escape_string($db, $a_hardware['mod_vendor']) . "\">";
-    $linkname   = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysqli_real_escape_string($db, $a_hardware['mod_name'])   . "\">";
-    $linktype   = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysqli_real_escape_string($db, $a_hardware['part_name'])  . "\">";
+    $linkvendor = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysqli_real_escape_string($db, $a_inv_hardware['mod_vendor']) . "\">";
+    $linkname   = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysqli_real_escape_string($db, $a_inv_hardware['mod_name'])   . "\">";
+    $linktype   = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysqli_real_escape_string($db, $a_inv_hardware['part_name'])  . "\">";
     $linkend    = "</a>";
 
     print "<tr>\n";
-    print "  <td class=\"ui-widget-content\">" . $linktype   . $a_hardware['part_name']       . $linkend . "</td>\n";
-    print "  <td class=\"ui-widget-content\">" . $linkvendor . $a_hardware['ven_name']      . $linkend . "</td>\n";
-    print "  <td class=\"ui-widget-content\">" . $linkname   . $a_hardware['mod_name']        . $linkend . "</td>\n";
-    print "  <td class=\"ui-widget-content\">"               . $a_hardware['count(inv_name)']            . "</td>\n";
+    print "  <td class=\"ui-widget-content\">" . $linktype   . $a_inv_hardware['part_name']       . $linkend . "</td>\n";
+    print "  <td class=\"ui-widget-content\">" . $linkvendor . $a_inv_hardware['ven_name']      . $linkend . "</td>\n";
+    print "  <td class=\"ui-widget-content\">" . $linkname   . $a_inv_hardware['mod_name']        . $linkend . "</td>\n";
+    print "  <td class=\"ui-widget-content\">"               . $a_inv_hardware['count(inv_name)']            . "</td>\n";
     print "</tr>\n";
-    $total += $a_hardware['count(inv_name)'];
+    $total += $a_inv_hardware['count(inv_name)'];
 
   }
 ?>

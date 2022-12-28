@@ -53,7 +53,7 @@
 
   $q_string  = "select inv_name,hw_retired ";
   $q_string .= "from inventory ";
-  $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "where hw_retired > '" . $date . "' and inv_manager = " . $manager . " ";
   $q_string .= "order by hw_retired,inv_name ";
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -80,9 +80,9 @@
 
   $q_string  = "select inv_name,hw_built,prod_name,prj_name ";
   $q_string .= "from inventory ";
-  $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join inv_products on inv_products.prod_id = inventory.inv_product ";
-  $q_string .= "left join inv_projects on inv_projects.prj_id = inventory.inv_project ";
+  $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "left join inv_products on inv_products.prod_id      = inventory.inv_product ";
+  $q_string .= "left join inv_projects on inv_projects.prj_id       = inventory.inv_project ";
   $q_string .= "where hw_active = '1971-01-01' and hw_primary = 1 and inv_status = 0 and inv_manager = " . $manager . " ";
   $q_string .= "order by inv_name ";
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -113,8 +113,8 @@
 
   $q_string  = "select inv_name ";
   $q_string .= "from inventory ";
-  $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
+  $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "left join inv_models   on inv_models.mod_id         = inv_hardware.hw_vendorid ";
   $q_string .= "where inv_status = 0 and inv_ssh = 0 and inv_manager = " . $manager . " and (mod_id = 15 or mod_id = 45) ";
   $q_string .= "order by inv_name ";
   $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));

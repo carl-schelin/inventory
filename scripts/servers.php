@@ -105,10 +105,10 @@
 
     $status = "Active";
     $q_string  = "select hw_active ";
-    $q_string .= "from hardware ";
+    $q_string .= "from inv_hardware ";
     $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_deleted = 0 and hw_primary = 1 and hw_active = '1971-01-01' ";
-    $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    if (mysqli_num_rows($q_hardware) > 0) {
+    $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_inv_hardware) > 0) {
       $status = "Build";
     }
 

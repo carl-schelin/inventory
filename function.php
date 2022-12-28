@@ -356,13 +356,13 @@ function return_Virtual( $p_db, $p_string ) {
   $output = 0;
 
   $q_string  = "select hw_id,mod_virtual ";
-  $q_string .= "from hardware ";
-  $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
+  $q_string .= "from inv_hardware ";
+  $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
   $q_string .= "where hw_companyid = " . $p_string . " and mod_primary = 1 and mod_virtual = 1 ";
-  $q_hardware = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
+  $q_inv_hardware = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
 
 # if there are any rows, then the server is a virtual machine.
-  if (mysqli_num_rows($q_hardware) > 0) {
+  if (mysqli_num_rows($q_inv_hardware) > 0) {
     $output = 1;
   }
 

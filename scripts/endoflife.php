@@ -28,11 +28,11 @@
   $q_string  = "select inv_id,inv_name,inv_function,prod_name,hw_group,ven_name,mod_name,mod_virtual,mod_eol,";
   $q_string .= "hw_serial,hw_purchased,grp_name,inv_appadmin,sup_company,sup_contract,hw_eolticket ";
   $q_string .= "from inventory ";
-  $q_string .= "left join hardware on inventory.inv_id = hardware.hw_companyid ";
-  $q_string .= "left join inv_groups   on inv_groups.grp_id    = hardware.hw_group ";
-  $q_string .= "left join inv_models   on inv_models.mod_id    = hardware.hw_vendorid ";
+  $q_string .= "left join inv_hardware on inventory.inv_id = inv_hardware.hw_companyid ";
+  $q_string .= "left join inv_groups   on inv_groups.grp_id    = inv_hardware.hw_group ";
+  $q_string .= "left join inv_models   on inv_models.mod_id    = inv_hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors  on inv_vendors.ven_id   = inv_models.mod_vendor ";
-  $q_string .= "left join inv_support  on inv_support.sup_id   = hardware.hw_supportid ";
+  $q_string .= "left join inv_support  on inv_support.sup_id   = inv_hardware.hw_supportid ";
   $q_string .= "left join inv_products on inv_products.prod_id = inventory.inv_product ";
   $q_string .= "where hw_primary = 1 and inv_status = 0 " . $where;
   $q_string .= "order by prod_name,inv_name ";

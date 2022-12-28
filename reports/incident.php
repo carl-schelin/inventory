@@ -220,7 +220,7 @@
 
   $q_string = "select inv_id,inv_name,inv_function,grp_name,inv_location,ct_city,st_state,inv_product,prod_name,inv_callpath,inv_document,hw_active "
   $q_string .= "from inventory "
-  $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id "
+  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inventory.inv_id "
   $q_string .= "left join inv_products  on inv_products.prod_id      = inventory.inv_product "
   $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location "
   $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city "

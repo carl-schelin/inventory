@@ -95,7 +95,7 @@
 
       echo "Adding a virtual machine for $server...\n";
 
-      $q_string = "insert into hardware set hw_id=null,hw_type=45,hw_companyid=" . $serverid . ",hw_vendorid=45,hw_group=1,hw_built=\"" . $date . "\",hw_primary=1";
+      $q_string = "insert into inv_hardware set hw_id=null,hw_type=45,hw_companyid=" . $serverid . ",hw_vendorid=45,hw_group=1,hw_built=\"" . $date . "\",hw_primary=1";
 
       if ($debug == 'yes') {
         print $q_string . "\n";

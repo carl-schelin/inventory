@@ -178,15 +178,15 @@
 
 # making sure all the hardware is owned by the group and associated with the main product as there's no other way to change the owner or product
             $q_hwstring  = "select hw_id ";
-            $q_hwstring .= "from hardware ";
+            $q_hwstring .= "from inv_hardware ";
             $q_hwstring .= "where hw_companyid = " . $formVars['id'];
-            $q_hardware = mysqli_query($db, $q_hwstring) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-            while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+            $q_inv_hardware = mysqli_query($db, $q_hwstring) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
               $query = 
-                "update hardware set " .
+                "update inv_hardware set " .
                 "hw_group   = " . $formVars['inv_manager'] . "," . 
                 "hw_product = " . $formVars['inv_product'] . " " . 
-                "where hw_id = " . $a_hardware['hw_id'];
+                "where hw_id = " . $a_inv_hardware['hw_id'];
 
               $result = mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
             }
@@ -249,34 +249,34 @@
             if ($formVars['id'] > 0) {
               $q_string  = "select hw_id,hw_type,hw_serial,hw_asset,hw_vendorid,hw_projectid,hw_product,";
               $q_string .= "hw_group,hw_poid,hw_built,hw_poid,hw_built,hw_active,hw_retired,hw_reused,hw_supportid,hw_primary ";
-              $q_string .= "from hardware ";
+              $q_string .= "from inv_hardware ";
               $q_string .= "where hw_primary = 1 and hw_companyid = " . $formVars['id'];
-              $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-              if (mysqli_num_rows($q_hardware) > 0) {
-                while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+              $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              if (mysqli_num_rows($q_inv_hardware) > 0) {
+                while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
-                  $q_string = "insert into hardware set " . 
+                  $q_string = "insert into inv_hardware set " . 
                     "hw_id        =   " . "NULL"                      . "," . 
                     "hw_companyid =   " . $newserver                  . "," .
-                    "hw_type      =   " . $a_hardware['hw_type']      . "," .
-                    "hw_serial    = \"" . $a_hardware['hw_serial']    . "\"," .
-                    "hw_asset     = \"" . $a_hardware['hw_asset']     . "\"," .
-                    "hw_vendorid  =   " . $a_hardware['hw_vendorid']  . "," .
-                    "hw_projectid =   " . $a_hardware['hw_projectid'] . "," .
-                    "hw_product   =   " . $a_hardware['hw_product']   . "," .
-                    "hw_group     =   " . $a_hardware['hw_group']     . "," .
-                    "hw_poid      =   " . $a_hardware['hw_poid']      . "," .
+                    "hw_type      =   " . $a_inv_hardware['hw_type']      . "," .
+                    "hw_serial    = \"" . $a_inv_hardware['hw_serial']    . "\"," .
+                    "hw_asset     = \"" . $a_inv_hardware['hw_asset']     . "\"," .
+                    "hw_vendorid  =   " . $a_inv_hardware['hw_vendorid']  . "," .
+                    "hw_projectid =   " . $a_inv_hardware['hw_projectid'] . "," .
+                    "hw_product   =   " . $a_inv_hardware['hw_product']   . "," .
+                    "hw_group     =   " . $a_inv_hardware['hw_group']     . "," .
+                    "hw_poid      =   " . $a_inv_hardware['hw_poid']      . "," .
                     "hw_built     = \"" . $date                       . "\"," .
                     "hw_active    = \"" . '1971-01-01'                . "\"," .
                     "hw_retired   = \"" . '1971-01-01'                . "\"," .
                     "hw_reused    = \"" . '1971-01-01'                . "\"," .
-                    "hw_supportid =   " . $a_hardware['hw_supportid'] . "," .
-                    "hw_primary   =   " . $a_hardware['hw_primary'];
+                    "hw_supportid =   " . $a_inv_hardware['hw_supportid'] . "," .
+                    "hw_primary   =   " . $a_inv_hardware['hw_primary'];
   
                   $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
                 }
               } else {
-                $q_string = "insert into hardware set " . 
+                $q_string = "insert into inv_hardware set " . 
                   "hw_id        =   " . "NULL"                   . "," . 
                   "hw_companyid =   " . $newserver               . "," .
                   "hw_type      =   " . 15                       . "," .
@@ -292,7 +292,7 @@
                 $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               }
             } else {
-              $q_string = "insert into hardware set " . 
+              $q_string = "insert into inv_hardware set " . 
                 "hw_id        =   " . "NULL"                   . "," . 
                 "hw_companyid =   " . $newserver               . "," .
                 "hw_type      =   " . 15                       . "," .
@@ -447,13 +447,13 @@ print "alert('All Done!');\n";
         $a_inventory = mysqli_fetch_array($q_inventory);
 
         $q_string  = "select hw_id,hw_active,hw_retired,hw_reused ";
-        $q_string .= "from hardware ";
+        $q_string .= "from inv_hardware ";
         $q_string .= "where hw_companyid = " . $newserver . " and hw_primary = 1 and hw_deleted = 0 ";
-        $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        $a_hardware = mysqli_fetch_array($q_hardware);
+        $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
         if ($a_inventory['inv_status'] == 0) {
-          if ($a_hardware['hw_active'] == '1971-01-01') {
+          if ($a_inv_hardware['hw_active'] == '1971-01-01') {
             $current = "work";
           } else {
             $current = "production";
@@ -467,32 +467,32 @@ print "alert('All Done!');\n";
         $r_tags = '';
         if ($current == 'work') {
           if ($formVars['inv_status'] == 1) {
-            $r_hardware = "update hardware set hw_active = '" . date('Y-m-d') . "' where hw_id = " . $a_hardware['hw_id'] . " ";
+            $r_hardware = "update inv_hardware set hw_active = '" . date('Y-m-d') . "' where hw_id = " . $a_inv_hardware['hw_id'] . " ";
           }
           if ($formVars['inv_status'] == 2) {
-            $r_hardware = "update hardware set hw_retired = '" . date('Y-m-d') . "' where hw_id = " . $a_hardware['hw_id'] . " ";
+            $r_hardware = "update inv_hardware set hw_retired = '" . date('Y-m-d') . "' where hw_id = " . $a_inv_hardware['hw_id'] . " ";
             $r_inventory = "update inventory set inv_status = 1, inv_ssh = 0 where inv_id = " . $newserver . " ";
           }
         }
 
         if ($current == 'production') {
           if ($formVars['inv_status'] == 0) {
-            $r_hardware = "update hardware set hw_active = '1971-01-01' where hw_id = " . $a_hardware['hw_id'] . " ";
+            $r_hardware = "update inv_hardware set hw_active = '1971-01-01' where hw_id = " . $a_inv_hardware['hw_id'] . " ";
           }
           if ($formVars['inv_status'] == 2) {
-            $r_hardware = "update hardware set hw_retired = '" . date('Y-m-d') . "' where hw_id = " . $a_hardware['hw_id'] . " ";
+            $r_hardware = "update inv_hardware set hw_retired = '" . date('Y-m-d') . "' where hw_id = " . $a_inv_hardware['hw_id'] . " ";
             $r_inventory = "update inventory set inv_status = 1, inv_ssh = 0 where inv_id = " . $newserver . " ";
           }
         }
 
         if ($current == 'retired') {
           if ($formVars['inv_status'] == 0) {
-            $r_hardware = "update hardware set hw_retired = '1971-01-01' where hw_id = " . $a_hardware['hw_id'] . " ";
+            $r_hardware = "update inv_hardware set hw_retired = '1971-01-01' where hw_id = " . $a_inv_hardware['hw_id'] . " ";
             $r_inventory = "update inventory set inv_status = 0 where inv_id = " . $newserver . " ";
             $r_tags = "delete from inv_tags where tag_type = 1 and tag_companyid = " . $newserver . " ";
           }
           if ($formVars['inv_status'] == 1) {
-            $r_hardware = "update hardware set hw_active = '" . date('Y-m-d') . "', hw_retired = '1971-01-01' where hw_id = " . $a_hardware['hw_id'] . " ";
+            $r_hardware = "update inv_hardware set hw_active = '" . date('Y-m-d') . "', hw_retired = '1971-01-01' where hw_id = " . $a_inv_hardware['hw_id'] . " ";
             $r_inventory = "update inventory set inv_status = 0 where inv_id = " . $newserver . " ";
           }
         }

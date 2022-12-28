@@ -35,8 +35,8 @@
 
         $q_string  = "select inv_id,inv_name ";
         $q_string .= "from inventory ";
-        $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
-        $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
+        $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inventory.inv_id ";
+        $q_string .= "left join inv_models   on inv_models.mod_id         = inv_hardware.hw_vendorid ";
         $q_string .= "where mod_type = 13 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name ";
 
@@ -44,8 +44,8 @@
 
         $q_string  = "select inv_id,inv_name ";
         $q_string .= "from inventory ";
-        $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
-        $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
+        $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inventory.inv_id ";
+        $q_string .= "left join inv_models   on inv_models.mod_id         = inv_hardware.hw_vendorid ";
         $q_string .= "where mod_type = 48 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name ";
  

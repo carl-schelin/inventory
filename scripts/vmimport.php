@@ -293,7 +293,7 @@
  
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-          $q_string  = "insert into hardware set hw_id = null,";
+          $q_string  = "insert into inv_hardware set hw_id = null,";
           $q_string .= "hw_companyid = " . $a_inventory['inv_id'] . ",";
           $q_string .= "hw_type = " . "45" . ",";
           $q_string .= "hw_vendorid = " . "45" . ",";

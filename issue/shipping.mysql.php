@@ -51,7 +51,7 @@
           $q_string =
             "hw_rma      = \"" . $formVars['hw_rma'] . "\"";
 
-          $query = "update hardware set " . $q_string . " where hw_id = " . $formVars['hw_id'];
+          $query = "update inv_hardware set " . $q_string . " where hw_id = " . $formVars['hw_id'];
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -89,10 +89,10 @@
 
           $q_string  = "select inv_name,loc_name,ct_city,st_acronym,hw_asset,hw_serial ";
           $q_string .= "from inventory ";
-          $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
-          $q_string .= "left join inv_cities on inv_cities.ct_id = inv_locations.loc_city ";
-          $q_string .= "left join inv_states on inv_states.st_id = inv_locations.loc_state ";
-          $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
+          $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
+          $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city ";
+          $q_string .= "left join inv_states    on inv_states.st_id          = inv_locations.loc_state ";
+          $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inventory.inv_id ";
           $q_string .= "where inv_id = " . $formVars['hw_server'] . " and hw_primary = 1 and hw_deleted = 0 ";
           $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           $a_inventory = mysqli_fetch_array($q_inventory);
@@ -108,22 +108,22 @@
 
 
           $q_string  = "select part_name,hw_serial,hw_asset,ven_name,mod_name,hw_rma ";
-          $q_string .= "from hardware ";
-          $q_string .= "left join inv_models  on inv_models.mod_id  = hardware.hw_vendorid ";
+          $q_string .= "from inv_hardware ";
+          $q_string .= "left join inv_models  on inv_models.mod_id  = inv_hardware.hw_vendorid ";
           $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
-          $q_string .= "left join inv_parts   on inv_parts.part_id  = hardware.hw_type ";
+          $q_string .= "left join inv_parts   on inv_parts.part_id  = inv_hardware.hw_type ";
           $q_string .= "where hw_id = " . $formVars['hw_id'];
-          $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          $a_hardware = mysqli_fetch_array($q_hardware);
+          $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
           $body .= "  <li>Failed Hardware\n";
           $body .= "  <ul>\n";
-          $body .= "    <li>Vendor: "                  . $a_hardware['ven_name']   . "</li>\n";
-          $body .= "    <li>Model: "                   . $a_hardware['mod_name']   . "</li>\n";
-          $body .= "    <li>Type: "                    . $a_hardware['part_name']  . "</li>\n";
-          $body .= "    <li>RMA: "                     . $a_hardware['hw_rma']     . "</li>\n";
-          $body .= "    <li>Asset Tag Number: "        . $a_hardware['hw_asset']   . "</li>\n";
-          $body .= "    <li>Serial Number: "           . $a_hardware['hw_serial']  . "</li>\n";
+          $body .= "    <li>Vendor: "                  . $a_inv_hardware['ven_name']   . "</li>\n";
+          $body .= "    <li>Model: "                   . $a_inv_hardware['mod_name']   . "</li>\n";
+          $body .= "    <li>Type: "                    . $a_inv_hardware['part_name']  . "</li>\n";
+          $body .= "    <li>RMA: "                     . $a_inv_hardware['hw_rma']     . "</li>\n";
+          $body .= "    <li>Asset Tag Number: "        . $a_inv_hardware['hw_asset']   . "</li>\n";
+          $body .= "    <li>Serial Number: "           . $a_inv_hardware['hw_serial']  . "</li>\n";
           $body .= "  </ul></li>\n";
           $body .= "</ul>\n";
 
@@ -197,35 +197,35 @@
       $checked = "checked ";
       $count = 0;
       $q_string  = "select hw_id,part_name,hw_serial,hw_asset,mod_name,mod_speed,mod_size,hhw_primary,hw_rma ";
-      $q_string .= "from hardware ";
-      $q_string .= "left join inv_parts  on inv_parts.part_id = hardware.hw_type ";
-      $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
+      $q_string .= "from inv_hardware ";
+      $q_string .= "left join inv_parts  on inv_parts.part_id = inv_hardware.hw_type ";
+      $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
       $q_string .= "where hw_deleted = 0 and hw_companyid = " . $formVars['hw_server'] . " ";
       $q_string .= "order by hw_type,hw_vendorid";
-      $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+      $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
-        if ($a_hardware['hw_primary'] == 1) {
+        if ($a_inv_hardware['hw_primary'] == 1) {
           $class = "ui-state-highlight";
         } else {
           $class = "ui-widget-content";
         }
 
         $output .= "<tr>";
-        if ($a_hardware['hw_rma'] == '') {
-          $output .= "  <td class=\"" . $class . " delete\"><input type=\"radio\" " . $checked . "name=\"hw_radio\" value=\"" . $a_hardware['hw_id'] . "\"></td>";
+        if ($a_inv_hardware['hw_rma'] == '') {
+          $output .= "  <td class=\"" . $class . " delete\"><input type=\"radio\" " . $checked . "name=\"hw_radio\" value=\"" . $a_inv_hardware['hw_id'] . "\"></td>";
 # only count if an rma hasn't been allocated;
           $count++;
           $checked = '';
         } else {
-          $output .= "  <td class=\"" . $class . " delete\">" . $a_hardware['hw_rma'] . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">" . $a_inv_hardware['hw_rma'] . "</td>";
         }
-        $output .= "  <td class=\"" . $class . "\">" . $a_hardware['hw_asset']   . "</td>";
-        $output .= "  <td class=\"" . $class . "\">" . $a_hardware['hw_serial']  . "</td>";
-        $output .= "  <td class=\"" . $class . "\">" . $a_hardware['mod_name']   . "</td>";
-        $output .= "  <td class=\"" . $class . "\">" . $a_hardware['mod_speed']  . "</td>";
-        $output .= "  <td class=\"" . $class . "\">" . $a_hardware['mod_size']   . "</td>";
-        $output .= "  <td class=\"" . $class . "\">" . $a_hardware['part_name']  . "</td>";
+        $output .= "  <td class=\"" . $class . "\">" . $a_inv_hardware['hw_asset']   . "</td>";
+        $output .= "  <td class=\"" . $class . "\">" . $a_inv_hardware['hw_serial']  . "</td>";
+        $output .= "  <td class=\"" . $class . "\">" . $a_inv_hardware['mod_name']   . "</td>";
+        $output .= "  <td class=\"" . $class . "\">" . $a_inv_hardware['mod_speed']  . "</td>";
+        $output .= "  <td class=\"" . $class . "\">" . $a_inv_hardware['mod_size']   . "</td>";
+        $output .= "  <td class=\"" . $class . "\">" . $a_inv_hardware['part_name']  . "</td>";
         $output .= "</tr>";
       }
 

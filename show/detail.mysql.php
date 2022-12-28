@@ -311,14 +311,14 @@
   }
 
   $q_string  = "select hw_purchased,hw_built,hw_active,mod_eol,hw_retired,hw_reused ";
-  $q_string .= "from hardware ";
-  $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
+  $q_string .= "from inv_hardware ";
+  $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
   $q_string .= "where hw_companyid = " . $formVars['id'] . " ";
   $q_string .= "and hw_primary = 1";
-  $q_hardware = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  $a_hardware = mysqli_fetch_array($q_hardware);
+  $q_inv_hardware = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
-  if ($a_hardware['hw_active'] == '1971-01-01') {
+  if ($a_inv_hardware['hw_active'] == '1971-01-01') {
     $class = "ui-state-error";
   } else {
     $class = "ui-widget-content";
@@ -329,12 +329,12 @@
   $output .= "<th class=\"ui-state-default\" colspan=\"6\">System Timeline</th>";
   $output .= "</tr>";
   $output .= "<tr>";
-  $output .= "<td class=\"ui-widget-content\"><strong>Purchased</strong>: "   . $a_hardware['hw_purchased'] . "</td>";
-  $output .= "<td class=\"ui-widget-content\"><strong>Built</strong>: "       . $a_hardware['hw_built']     . "</td>";
-  $output .= "<td class=\"" . $class    . "\"><strong>Go Live</strong>: "     . $a_hardware['hw_active']    . "</td>";
-  $output .= "<td class=\"ui-widget-content\"><strong>End of Life</strong>: " . $a_hardware['mod_eol']       . "</td>";
-  $output .= "<td class=\"ui-widget-content\"><strong>Retired</strong>: "     . $a_hardware['hw_retired']   . "</td>";
-  $output .= "<td class=\"ui-widget-content\"><strong>Reallocated</strong>: " . $a_hardware['hw_reused']    . "</td>";
+  $output .= "<td class=\"ui-widget-content\"><strong>Purchased</strong>: "   . $a_inv_hardware['hw_purchased'] . "</td>";
+  $output .= "<td class=\"ui-widget-content\"><strong>Built</strong>: "       . $a_inv_hardware['hw_built']     . "</td>";
+  $output .= "<td class=\"" . $class    . "\"><strong>Go Live</strong>: "     . $a_inv_hardware['hw_active']    . "</td>";
+  $output .= "<td class=\"ui-widget-content\"><strong>End of Life</strong>: " . $a_inv_hardware['mod_eol']       . "</td>";
+  $output .= "<td class=\"ui-widget-content\"><strong>Retired</strong>: "     . $a_inv_hardware['hw_retired']   . "</td>";
+  $output .= "<td class=\"ui-widget-content\"><strong>Reallocated</strong>: " . $a_inv_hardware['hw_reused']    . "</td>";
   $output .= "</tr>";
   $output .= "</table>";
 

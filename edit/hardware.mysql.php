@@ -84,13 +84,13 @@
 # force associating with Primary Machine if associating drive with RAID
         if ($formVars['hw_hd_id'] > 0 && $formVars['hw_hw_id'] == 0) {
           $q_string  = "select hw_id ";
-          $q_string .= "from hardware ";
+          $q_string .= "from inv_hardware ";
           $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_primary = 1 ";
-          $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_hardware) > 0) {
-            $a_hardware = mysqli_fetch_array($q_hardware);
+          $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_hardware) > 0) {
+            $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
-            $formVars['hw_hw_id'] = $a_hardware['hw_id'];
+            $formVars['hw_hw_id'] = $a_inv_hardware['hw_id'];
           } else {
             $formVars['hw_hw_id'] = 0;
             $formVars['hw_hd_id'] = 0;
@@ -149,7 +149,7 @@
               changelog($db, $formVars['hw_companyid'], $formVars['hw_vendorid'], "New Primary Hardware", $_SESSION['uid'], "hardware", "hw_vendorid", 0);
             }
 
-            $query = "insert into hardware set hw_id = NULL, " . $q_string;
+            $query = "insert into inv_hardware set hw_id = NULL, " . $q_string;
             $message = "Hardware added.";
           }
 
@@ -158,23 +158,23 @@
 # only check for changes on primary hardware
             if ($formVars['hw_primary']) {
               $q_hwtable  = "select hw_serial,hw_vendorid ";
-              $q_hwtable .= "from hardware ";
+              $q_hwtable .= "from inv_hardware ";
               $q_hwtable .= "where hw_id = " . $formVars['id'];
-              $q_hardware = mysqli_query($db, $q_hwtable) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-              $a_hardware = mysqli_fetch_array($q_hardware);
+              $q_inv_hardware = mysqli_query($db, $q_hwtable) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
 # for changelog requirements, compare old hw_serial with new hw_serial. If changed, save the old data before it changes
-              if ($a_hardware['hw_serial'] != $formVars['hw_serial']) {
-                changelog($db, $formVars['hw_companyid'], $a_hardware['hw_serial'], "Serial Number Change", $_SESSION['uid'], "hardware", "hw_serial", 0);
+              if ($a_inv_hardware['hw_serial'] != $formVars['hw_serial']) {
+                changelog($db, $formVars['hw_companyid'], $a_inv_hardware['hw_serial'], "Serial Number Change", $_SESSION['uid'], "hardware", "hw_serial", 0);
               }
 
 # for changelog requirements, compare old hw_vendorid with new hw_vendorid. If changed, save the old data before it changes
-              if ($a_hardware['hw_vendorid'] != $formVars['hw_vendorid']) {
-                changelog($db, $formVars['hw_companyid'], $a_hardware['hw_vendorid'], "Vendor Change", $_SESSION['uid'], "hardware", "hw_vendorid", 0);
+              if ($a_inv_hardware['hw_vendorid'] != $formVars['hw_vendorid']) {
+                changelog($db, $formVars['hw_companyid'], $a_inv_hardware['hw_vendorid'], "Vendor Change", $_SESSION['uid'], "hardware", "hw_vendorid", 0);
               }
             }
 
-            $query = "update hardware set " . $q_string . " where hw_id = " . $formVars['id'];
+            $query = "update inv_hardware set " . $q_string . " where hw_id = " . $formVars['id'];
             $message = "Hardware updated.";
           }
 
@@ -209,15 +209,15 @@
 
 # check to see if the server live, retired, or reused dates have changed and notify equipment management
 #    if ($formVars['id'] > 0 && $formVars['hw_primary'] == 1) {
-#      $q_string  = "select hw_built,hw_active,hw_retired,hw_reused,hw_vendorid from hardware ";
+#      $q_string  = "select hw_built,hw_active,hw_retired,hw_reused,hw_vendorid from inv_hardware ";
 #      $q_string .= "where hw_id = " . $formVars['id'];
-#      $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-#      $a_hardware = mysqli_fetch_array($q_hardware);
+#      $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+#      $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
 # get model info as well to make sure she's not notified of virtual machine activity.
 #      $q_string = "select mod";
 #
-#      if ($a_hardware['hw_active'] == '1971-01-01' && $formVars['hw_active'] != '1971-01-01') {
+#      if ($a_inv_hardware['hw_active'] == '1971-01-01' && $formVars['hw_active'] != '1971-01-01') {
 #
 #        $q_string = "select inv_name from inventory where inv_id = " . $formVars['hw_companyid'];
 #        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -252,21 +252,21 @@
 
         if ($formVars['copyfrom'] > 0) {
           $q_string  = "select hw_type,hw_vendorid,hw_supportid,hw_primary ";
-          $q_string .= "from hardware ";
+          $q_string .= "from inv_hardware ";
           $q_string .= "where hw_companyid = " . $formVars['copyfrom'];
-          $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+          $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
             $q_string =
               "hw_companyid =   " . $formVars['hw_companyid']   . "," . 
               "hw_group     =   " . $formVars['hw_group']       . "," . 
               "hw_product   =   " . $formVars['hw_product']     . "," . 
-              "hw_vendorid  =   " . $a_hardware['hw_vendorid']  . "," . 
-              "hw_type      =   " . $a_hardware['hw_type']      . "," . 
-              "hw_supportid =   " . $a_hardware['hw_supportid'] . "," .
-              "hw_primary   =   " . $a_hardware['hw_primary'];
+              "hw_vendorid  =   " . $a_inv_hardware['hw_vendorid']  . "," . 
+              "hw_type      =   " . $a_inv_hardware['hw_type']      . "," . 
+              "hw_supportid =   " . $a_inv_hardware['hw_supportid'] . "," .
+              "hw_primary   =   " . $a_inv_hardware['hw_primary'];
 
-            $query = "insert into hardware set hw_id = NULL, " . $q_string;
+            $query = "insert into inv_hardware set hw_id = NULL, " . $q_string;
             mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
           }
         }
@@ -370,8 +370,8 @@
         $output .= "  <td class=\"ui-widget-content\">Main Hardware Container <select name=\"hw_hw_id\">\n";
 
         $q_string  = "select hw_id,ven_name,mod_name ";
-        $q_string .= "from hardware ";
-        $q_string .= "left join inv_models  on inv_models.mod_id  = hardware.hw_vendorid ";
+        $q_string .= "from inv_hardware ";
+        $q_string .= "left join inv_models  on inv_models.mod_id  = inv_hardware.hw_vendorid ";
         $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
         $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = 0 ";
         $q_hwselect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -383,8 +383,8 @@
         $output .= "  <td class=\"ui-widget-content\">Hard Disk Redundancy <select name=\"hw_hd_id\">\n";
 
         $q_string  = "select hw_id,hw_serial,hw_asset,mod_name ";
-        $q_string .= "from hardware ";
-        $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
+        $q_string .= "from inv_hardware ";
+        $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
         $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and mod_name like \"RAID%\" ";
         $q_hwselect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_hwselect = mysqli_fetch_array($q_hwselect)) {
@@ -432,8 +432,8 @@
 
 # retrieve hardware list
       $q_string  = "select hw_id,ven_name,mod_name ";
-      $q_string .= "from hardware ";
-      $q_string .= "left join inv_models  on inv_models.mod_id  = hardware.hw_vendorid ";
+      $q_string .= "from inv_hardware ";
+      $q_string .= "left join inv_models  on inv_models.mod_id  = inv_hardware.hw_vendorid ";
       $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
       $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = 0 ";
       $q_hwselect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -450,8 +450,8 @@
 
 # retrieve hardware list
       $q_string  = "select hw_id,hw_serial,hw_asset,mod_name ";
-      $q_string .= "from hardware ";
-      $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
+      $q_string .= "from inv_hardware ";
+      $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
       $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and mod_name like \"RAID%\" ";
       $q_hwselect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
@@ -511,71 +511,71 @@
       $primary = 0;
       $q_string  = "select hw_id,hw_companyid,part_name,hw_serial,hw_asset,hw_product,hw_vendorid,mod_speed,mod_size,";
       $q_string .= "mod_name,hw_active,mod_eol,hw_group,hw_primary,hw_retired,hw_deleted,hw_note,hw_rma,hw_verified,hw_update ";
-      $q_string .= "from hardware ";
-      $q_string .= "left join inv_parts on hardware.hw_type = inv_parts.part_id ";
-      $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
+      $q_string .= "from inv_hardware ";
+      $q_string .= "left join inv_parts on inv_hardware.hw_type = inv_parts.part_id ";
+      $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
       $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = 0 and hw_hd_id = 0 ";
       $q_string .= "order by hw_type,hw_vendorid,hw_serial,hw_asset ";
-      $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_hardware) > 0) {
-        while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+      $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_hardware) > 0) {
+        while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
-          if ($a_hardware['hw_rma'] == '') {
+          if ($a_inv_hardware['hw_rma'] == '') {
             $rma = '';
             $rmanote = '';
           } else {
             $rma = '-';
-            $rmanote = " RMA: " . $a_hardware['hw_rma'];
+            $rmanote = " RMA: " . $a_inv_hardware['hw_rma'];
           }
 
-          if ($a_hardware['hw_primary'] == 1) {
+          if ($a_inv_hardware['hw_primary'] == 1) {
             $primary++;
             $class = "class=\"ui-state-highlight";
           } else {
             $class = "class=\"ui-widget-content";
           }
 
-          $hwnote = " title=\"" . $a_hardware['hw_note'] . $rmanote . "\"";
-          if ($a_hardware['hw_deleted'] == 1) {
+          $hwnote = " title=\"" . $a_inv_hardware['hw_note'] . $rmanote . "\"";
+          if ($a_inv_hardware['hw_deleted'] == 1) {
             $class = "class=\"ui-state-error";
-            $title = "title=\"Device removed: " . $a_hardware['hw_retired'] . "\"";
+            $title = "title=\"Device removed: " . $a_inv_hardware['hw_retired'] . "\"";
             $deltitle = "title = \"Remove association\"";
-            $linkdel = "<input type=\"button\" value=\"Delete\" onClick=\"javascript:delete_hardware('hardware.del.php?id=" . $a_hardware['hw_id'] . "');\">";
+            $linkdel = "<input type=\"button\" value=\"Delete\" onClick=\"javascript:delete_hardware('hardware.del.php?id=" . $a_inv_hardware['hw_id'] . "');\">";
           } else {
             $title = "title=\"Edit Hardware\"";
             $deltitle = "title = \"Identify as Deleted\"";
-            $linkdel = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:remove_hardware('hardware.remove.php?id=" . $a_hardware['hw_id'] . "&retired=" . $a_hardware['hw_retired'] . "');\">";
+            $linkdel = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:remove_hardware('hardware.remove.php?id=" . $a_inv_hardware['hw_id'] . "&retired=" . $a_inv_hardware['hw_retired'] . "');\">";
           }
 
           $checkmark = "";
-          if ($a_hardware['hw_verified']) {
+          if ($a_inv_hardware['hw_verified']) {
             $checkmark = "&#x2713;";
           }
 
-          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('hardware.fill.php?id=" . $a_hardware['hw_id'] . "');showDiv('hardware-hide');\">";
+          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('hardware.fill.php?id=" . $a_inv_hardware['hw_id'] . "');showDiv('hardware-hide');\">";
           $linkend = "</a>";
   
           $output .= "<tr>\n";
           $output .= "<td " . $class . " delete\" " . $deltitle . ">" . $linkdel                                                           . "</td>\n";
           if (return_Virtual($db, $formVars['hw_companyid']) == 0) {
-            $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hardware['hw_asset']             . $linkend . "</td>\n";
-            $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hardware['hw_serial']            . $linkend . "</td>\n";
+            $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_inv_hardware['hw_asset']             . $linkend . "</td>\n";
+            $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_inv_hardware['hw_serial']            . $linkend . "</td>\n";
           }
-          $output .= "<td " . $class .        "\" " . $hwnote   . ">" . $linkstart . $rma . $a_hardware['mod_name']             . $linkend . "</td>\n";
-          $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hardware['part_name']            . $linkend . "</td>\n";
-          $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hardware['mod_size']             . $linkend . "</td>\n";
-          $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hardware['mod_speed']            . $linkend . "</td>\n";
-          $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hardware['hw_update']            . $checkmark . $linkend . "</td>\n";
+          $output .= "<td " . $class .        "\" " . $hwnote   . ">" . $linkstart . $rma . $a_inv_hardware['mod_name']             . $linkend . "</td>\n";
+          $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_inv_hardware['part_name']            . $linkend . "</td>\n";
+          $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_inv_hardware['mod_size']             . $linkend . "</td>\n";
+          $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_inv_hardware['mod_speed']            . $linkend . "</td>\n";
+          $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_inv_hardware['hw_update']            . $checkmark . $linkend . "</td>\n";
           $output .= "</tr>\n";
 
 
 # any associated equipment
           $q_string  = "select hw_id,hw_companyid,part_name,hw_serial,hw_asset,hw_product,hw_vendorid,mod_speed,mod_size,";
           $q_string .= "mod_name,hw_active,mod_eol,hw_group,hw_primary,hw_retired,hw_deleted,hw_note,hw_rma,hw_verified,hw_update ";
-          $q_string .= "from hardware ";
-          $q_string .= "left join inv_parts on hardware.hw_type = inv_parts.part_id ";
-          $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
-          $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " and hw_hd_id = 0 ";
+          $q_string .= "from inv_hardware ";
+          $q_string .= "left join inv_parts  on inv_hardware.hw_type = inv_parts.part_id ";
+          $q_string .= "left join inv_models on inv_models.mod_id    = inv_hardware.hw_vendorid ";
+          $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = " . $a_inv_hardware['hw_id'] . " and hw_hd_id = 0 ";
           $q_string .= "order by hw_type,hw_vendorid,hw_serial,hw_asset ";
           $q_hwselect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_hwselect) > 0) {
@@ -634,10 +634,10 @@
 # any associated hard disks
               $q_string  = "select hw_id,hw_companyid,part_name,hw_serial,hw_asset,hw_product,hw_vendorid,mod_speed,mod_size,";
               $q_string .= "mod_name,hw_active,mod_eol,hw_group,hw_primary,hw_retired,hw_deleted,hw_note,hw_rma,hw_verified,hw_update ";
-              $q_string .= "from hardware ";
-              $q_string .= "left join inv_parts on hardware.hw_type = inv_parts.part_id ";
-              $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
-              $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " and hw_hd_id = " . $a_hwselect['hw_id'] . " ";
+              $q_string .= "from inv_hardware ";
+              $q_string .= "left join inv_parts  on inv_hardware.hw_type = inv_parts.part_id ";
+              $q_string .= "left join inv_models on inv_models.mod_id    = inv_hardware.hw_vendorid ";
+              $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = " . $a_inv_hardware['hw_id'] . " and hw_hd_id = " . $a_hwselect['hw_id'] . " ";
               $q_string .= "order by hw_type,hw_vendorid,hw_serial,hw_asset ";
               $q_hwdisk = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               if (mysqli_num_rows($q_hwdisk) > 0) {
@@ -704,7 +704,7 @@
         $output .= "</tr>\n";
       }
 
-      mysqli_free_result($q_hardware);
+      mysqli_free_result($q_inv_hardware);
 
       $output .= "</table>\n";
 

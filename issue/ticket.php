@@ -537,18 +537,18 @@ $(document).ready( function() {
 <?php
 
   $q_string  = "select sup_company,sup_phone,sup_email,sup_web,sup_contract ";
-  $q_string .= "from hardware ";
-  $q_string .= "left join inv_support on hardware.hw_supportid = inv_support.sup_id ";
+  $q_string .= "from inv_hardware ";
+  $q_string .= "left join inv_support on inv_hardware.hw_supportid = inv_support.sup_id ";
   $q_string .= "where hw_companyid = " . $formVars['server'] . " and hw_primary = 1";
-  $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_hardware) > 0) {
-    while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+  $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inv_hardware) > 0) {
+    while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
       print "<tr>\n";
-      print "  <td class=\"ui-widget-content\" colspan=\"2\"><strong>Company</strong>: <a href=\"" . $a_hardware['sup_web'] . "\">" . $a_hardware['sup_company'] . "</a></td>\n";
-      print "  <td class=\"ui-widget-content\"><strong>Phone</strong>: "    . $a_hardware['sup_phone'] . "</td>\n";
-      print "  <td class=\"ui-widget-content\"><strong>E-Mail</strong>: "   . $a_hardware['sup_email'] . "</td>\n";
-      print "  <td class=\"ui-widget-content\"><strong>Contract</strong>: " . $a_hardware['sup_contract'] . "</td>\n";
+      print "  <td class=\"ui-widget-content\" colspan=\"2\"><strong>Company</strong>: <a href=\"" . $a_inv_hardware['sup_web'] . "\">" . $a_inv_hardware['sup_company'] . "</a></td>\n";
+      print "  <td class=\"ui-widget-content\"><strong>Phone</strong>: "    . $a_inv_hardware['sup_phone'] . "</td>\n";
+      print "  <td class=\"ui-widget-content\"><strong>E-Mail</strong>: "   . $a_inv_hardware['sup_email'] . "</td>\n";
+      print "  <td class=\"ui-widget-content\"><strong>Contract</strong>: " . $a_inv_hardware['sup_contract'] . "</td>\n";
       print "</tr>\n";
     }
   } else {
@@ -596,19 +596,19 @@ $(document).ready( function() {
 </tr>
 <?php
   $q_string  = "select part_name,hw_serial,hw_asset,mod_name ";
-  $q_string .= "from hardware ";
-  $q_string .= "left join inv_parts  on inv_parts.part_id = hardware.hw_type ";
-  $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
+  $q_string .= "from inv_hardware ";
+  $q_string .= "left join inv_parts  on inv_parts.part_id = inv_hardware.hw_type ";
+  $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
   $q_string .= "where hw_primary = 1 and hw_companyid = " . $formVars['server'] . " ";
   $q_string .= "order by hw_type,hw_vendorid";
-  $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_hardware = mysqli_fetch_array($q_hardware);
+  $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
   print "<tr>\n";
-  print "  <td class=\"ui-widget-content\"><strong>Type</strong>: "    . $a_hardware['part_name']  . "</td>\n";
-  print "  <td class=\"ui-widget-content\"><strong>Serial</strong>: "  . $a_hardware['hw_serial']  . "</td>\n";
-  print "  <td class=\"ui-widget-content\"><strong>Asset</strong>: "   . $a_hardware['hw_asset']   . "</td>\n";
-  print "  <td class=\"ui-widget-content\"><strong>Model</strong>: "   . $a_hardware['mod_name']   . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>Type</strong>: "    . $a_inv_hardware['part_name']  . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>Serial</strong>: "  . $a_inv_hardware['hw_serial']  . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>Asset</strong>: "   . $a_inv_hardware['hw_asset']   . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>Model</strong>: "   . $a_inv_hardware['mod_name']   . "</td>\n";
   print "</tr>\n";
 ?>
 </table>

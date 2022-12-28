@@ -207,14 +207,14 @@
         $a_appadmin = mysqli_fetch_array($q_appadmin);
 
         $q_string  = "select hw_active ";
-        $q_string .= "from hardware ";
+        $q_string .= "from inv_hardware ";
         $q_string .= "where hw_primary = 1 and hw_deleted = 0 and hw_companyid = " . $a_inventory['inv_id'] . " ";
-        $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_hardware = mysqli_fetch_array($q_hardware);
+        $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
         if ($formVars['csv'] == 'true') {
           $is_live = 'No';
-          if ($a_hardware['hw_active'] != '1971-01-01') {
+          if ($a_inv_hardware['hw_active'] != '1971-01-01') {
             $is_live = 'Yes';
           }
           $is_callpath = 'No';
@@ -250,7 +250,7 @@
 
         } else {
           $is_live = '';
-          if ($a_hardware['hw_active'] != '1971-01-01') {
+          if ($a_inv_hardware['hw_active'] != '1971-01-01') {
             $is_live = 'checked';
           }
           $is_callpath = '';
@@ -352,40 +352,40 @@
         $servername = $a_inventory['inv_name'];
 
         $q_string  = "select hw_id,hw_built,hw_active,hw_update,hw_verified,hw_asset,hw_serial,hw_vendorid,part_name,ven_name,mod_name,mod_size,mod_speed ";
-        $q_string .= "from hardware ";
-        $q_string .= "left join inv_models  on inv_models.mod_id  = hardware.hw_vendorid ";
+        $q_string .= "from inv_hardware ";
+        $q_string .= "left join inv_models  on inv_models.mod_id  = inv_hardware.hw_vendorid ";
         $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
-        $q_string .= "left join inv_parts   on inv_parts.part_id  = hardware.hw_type ";
+        $q_string .= "left join inv_parts   on inv_parts.part_id  = inv_hardware.hw_type ";
         $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = 0 ";
         $q_string .= "order by hw_primary desc,part_id,mod_size ";
-        $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+        $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
           if ($formVars['csv'] == 'true') {
             $hardware .= "\"" . $servername               . "\",";
-            $hardware .= "\"" . $a_hardware['part_name']  . "\",";
-            $hardware .= "\"" . $a_hardware['hw_built']   . "\",";
-            $hardware .= "\"" . $a_hardware['hw_active']  . "\",";
-            $hardware .= "\"" . $a_hardware['hw_update']  . "\",";
-            $hardware .= "\"" . $a_hardware['ven_name']   . "\",";
-            $hardware .= "\"" . $a_hardware['mod_name']   . "\",";
-            $hardware .= "\"" . $a_hardware['mod_size']   . "\",";
-            $hardware .= "\"" . $a_hardware['mod_speed']  . "\",";
-            $hardware .= "\"" . $a_hardware['hw_asset']   . "\",";
-            $hardware .= "\"" . $a_hardware['hw_serial']  . "\"\n</br>";
+            $hardware .= "\"" . $a_inv_hardware['part_name']  . "\",";
+            $hardware .= "\"" . $a_inv_hardware['hw_built']   . "\",";
+            $hardware .= "\"" . $a_inv_hardware['hw_active']  . "\",";
+            $hardware .= "\"" . $a_inv_hardware['hw_update']  . "\",";
+            $hardware .= "\"" . $a_inv_hardware['ven_name']   . "\",";
+            $hardware .= "\"" . $a_inv_hardware['mod_name']   . "\",";
+            $hardware .= "\"" . $a_inv_hardware['mod_size']   . "\",";
+            $hardware .= "\"" . $a_inv_hardware['mod_speed']  . "\",";
+            $hardware .= "\"" . $a_inv_hardware['hw_asset']   . "\",";
+            $hardware .= "\"" . $a_inv_hardware['hw_serial']  . "\"\n</br>";
           } else {
             $hardware .= "<tr>\n";
             $hardware .= "  <td class=\"ui-widget-content\">" . $linkstart . $servername . $linkend . "</td>\n";
-            $hardware .= "  <td class=\"ui-widget-content\" id=\"hpn" . $a_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hardware['hw_id'] . ",'hpn');\">" . $a_hardware['part_name']  . "</td>\n";
-            $hardware .= "  <td class=\"ui-widget-content\" id=\"hpb" . $a_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hardware['hw_id'] . ",'hpb');\"><u>" . $a_hardware['hw_built']   . "</u></td>\n";
-            $hardware .= "  <td class=\"ui-widget-content\" id=\"hpa" . $a_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hardware['hw_id'] . ",'hpa');\"><u>" . $a_hardware['hw_active']  . "</u></td>\n";
-            $hardware .= "  <td class=\"ui-widget-content\">" . $a_hardware['hw_update']  . "</td>\n";
-            $hardware .= "  <td class=\"ui-widget-content\" id=\"hmv" . $a_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hardware['hw_id'] . ",'hmv');\">" . $a_hardware['ven_name']   . "</td>\n";
-            $hardware .= "  <td class=\"ui-widget-content\" id=\"hmn" . $a_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hardware['hw_id'] . ",'hmn');\">" . $a_hardware['mod_name']   . "</td>\n";
-            $hardware .= "  <td class=\"ui-widget-content\" id=\"hsz" . $a_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hardware['hw_id'] . ",'hsz');\">" . $a_hardware['mod_size']   . "</td>\n";
-            $hardware .= "  <td class=\"ui-widget-content\" id=\"hsp" . $a_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hardware['hw_id'] . ",'hsp');\">" . $a_hardware['mod_speed']  . "</td>\n";
-            $hardware .= "  <td class=\"ui-widget-content\" id=\"has" . $a_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hardware['hw_id'] . ",'has');\">" . $a_hardware['hw_asset']   . "</td>\n";
-            $hardware .= "  <td class=\"ui-widget-content\" id=\"hsn" . $a_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_hardware['hw_id'] . ",'hsn');\">" . $a_hardware['hw_serial']  . "</td>\n";
+            $hardware .= "  <td class=\"ui-widget-content\" id=\"hpn" . $a_inv_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_inv_hardware['hw_id'] . ",'hpn');\">" . $a_inv_hardware['part_name']  . "</td>\n";
+            $hardware .= "  <td class=\"ui-widget-content\" id=\"hpb" . $a_inv_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_inv_hardware['hw_id'] . ",'hpb');\"><u>" . $a_inv_hardware['hw_built']   . "</u></td>\n";
+            $hardware .= "  <td class=\"ui-widget-content\" id=\"hpa" . $a_inv_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_inv_hardware['hw_id'] . ",'hpa');\"><u>" . $a_inv_hardware['hw_active']  . "</u></td>\n";
+            $hardware .= "  <td class=\"ui-widget-content\">" . $a_inv_hardware['hw_update']  . "</td>\n";
+            $hardware .= "  <td class=\"ui-widget-content\" id=\"hmv" . $a_inv_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_inv_hardware['hw_id'] . ",'hmv');\">" . $a_inv_hardware['ven_name']   . "</td>\n";
+            $hardware .= "  <td class=\"ui-widget-content\" id=\"hmn" . $a_inv_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_inv_hardware['hw_id'] . ",'hmn');\">" . $a_inv_hardware['mod_name']   . "</td>\n";
+            $hardware .= "  <td class=\"ui-widget-content\" id=\"hsz" . $a_inv_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_inv_hardware['hw_id'] . ",'hsz');\">" . $a_inv_hardware['mod_size']   . "</td>\n";
+            $hardware .= "  <td class=\"ui-widget-content\" id=\"hsp" . $a_inv_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_inv_hardware['hw_id'] . ",'hsp');\">" . $a_inv_hardware['mod_speed']  . "</td>\n";
+            $hardware .= "  <td class=\"ui-widget-content\" id=\"has" . $a_inv_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_inv_hardware['hw_id'] . ",'has');\">" . $a_inv_hardware['hw_asset']   . "</td>\n";
+            $hardware .= "  <td class=\"ui-widget-content\" id=\"hsn" . $a_inv_hardware['hw_id'] . "\" onclick=\"edit_Hardware(" . $a_inv_hardware['hw_id'] . ",'hsn');\">" . $a_inv_hardware['hw_serial']  . "</td>\n";
             $hardware .= "</tr>\n";
 
             $servername = '';
@@ -393,11 +393,11 @@
 
 
           $q_string  = "select hw_id,hw_built,hw_active,hw_update,hw_verified,hw_asset,hw_serial,hw_vendorid,part_name,ven_name,mod_name,mod_size,mod_speed ";
-          $q_string .= "from hardware ";
-          $q_string .= "left join inv_models  on inv_models.mod_id  = hardware.hw_vendorid ";
+          $q_string .= "from inv_hardware ";
+          $q_string .= "left join inv_models  on inv_models.mod_id  = inv_hardware.hw_vendorid ";
           $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
-          $q_string .= "left join inv_parts   on inv_parts.part_id  = hardware.hw_type ";
-          $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " ";
+          $q_string .= "left join inv_parts   on inv_parts.part_id  = inv_hardware.hw_type ";
+          $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = " . $a_inv_hardware['hw_id'] . " ";
           $q_string .= "order by hw_primary desc,part_id,mod_size ";
           $q_hw_child = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           while ($a_hw_child = mysqli_fetch_array($q_hw_child)) {

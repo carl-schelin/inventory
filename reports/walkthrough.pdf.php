@@ -77,9 +77,9 @@
   $locheader = '';
   $q_string  = "select inv_id,inv_name,inv_rack,inv_row,inv_unit,loc_name,loc_city,loc_state,hw_asset,hw_serial ";
   $q_string .= "from inventory ";
-  $q_string .= "left join inv_locations on inventory.inv_location = inv_locations.loc_id ";
-  $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
+  $q_string .= "left join inv_locations on inventory.inv_location    = inv_locations.loc_id ";
+  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "left join inv_models    on inv_models.mod_id         = inv_hardware.hw_vendorid ";
   $q_string .= "where inv_companyid = 0 and hw_primary = 1 and hw_deleted = 0 and mod_virtual = 0 and inv_status = 0 " . $group . $location . " ";
   $q_string .= $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -108,9 +108,9 @@
 
     $q_string  = "select inv_id,inv_name,inv_rack,inv_row,inv_unit,loc_name,loc_city,loc_state,hw_asset,hw_serial ";
     $q_string .= "from inventory ";
-    $q_string .= "left join inv_locations on inventory.inv_location = inv_locations.loc_id ";
-    $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
-    $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
+    $q_string .= "left join inv_locations on inventory.inv_location    = inv_locations.loc_id ";
+    $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inventory.inv_id ";
+    $q_string .= "left join inv_models    on inv_models.mod_id         = inv_hardware.hw_vendorid ";
     $q_string .= "where inv_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1 and hw_deleted = 0 and mod_virtual = 0 and inv_status = 0 " . $group . $location . " ";
     $q_string .= $orderby;
     $q_child = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

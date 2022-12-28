@@ -53,17 +53,17 @@
   $total = 0;
 
   $q_string  = "select hw_built,hw_retired,hw_reused,inv_status ";
-  $q_string .= "from hardware ";
-  $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
+  $q_string .= "from inv_hardware ";
+  $q_string .= "left join inventory on inventory.inv_id = inv_hardware.hw_companyid ";
   $q_string .= "where hw_primary = 1 " . $admin . " ";
-  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+  $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
-    $dbyear = explode("-", $a_hardware['hw_built']);
+    $dbyear = explode("-", $a_inv_hardware['hw_built']);
     $yrmn = $dbyear[0] . "-" . $dbyear[1];
-    $rtyear = explode("-", $a_hardware['hw_retired']);
-    $ruyear = explode("-", $a_hardware['hw_reused']);
-    if ($a_hardware['inv_status'] == 0) {
+    $rtyear = explode("-", $a_inv_hardware['hw_retired']);
+    $ruyear = explode("-", $a_inv_hardware['hw_reused']);
+    if ($a_inv_hardware['inv_status'] == 0) {
       if (isset($year[$dbyear[0]])) {
         $year[$dbyear[0]]++;
       } else {

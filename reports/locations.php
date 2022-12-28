@@ -128,11 +128,11 @@
 # this builds the index of inventory items that will be displayed;
 # activate the entry for this item
   $q_string  = "select hw_companyid ";
-  $q_string .= "from hardware ";
+  $q_string .= "from inv_hardware ";
   $q_string .= "where hw_deleted = 0 and hw_primary = 1 " . $hwgroup . $hwproduct;
-  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_hardware = mysqli_fetch_array($q_hardware)) {
-    $invindex[$a_hardware['hw_companyid']] = true;
+  $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
+    $invindex[$a_inv_hardware['hw_companyid']] = true;
   }
 
   $q_string  = "select svr_companyid ";
@@ -391,13 +391,13 @@ $(document).ready( function () {
   $q_string .= "ct_city,zone_name,inv_ssh,hw_active,hw_retired,hw_reused,ven_name,mod_name,inv_status,st_acronym,cn_acronym,";
   $q_string .= "loc_type,loc_name,loc_addr1,loc_addr2,loc_suite,loc_city,loc_state,loc_zipcode,loc_country,loc_identity ";
   $q_string .= "from inventory ";
-  $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inventory.inv_id ";
   $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
   $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city ";
   $q_string .= "left join inv_states    on inv_states.st_id          = inv_cities.ct_state ";
   $q_string .= "left join inv_country   on inv_country.cn_id         = inv_states.st_country ";
   $q_string .= "left join inv_timezones on inv_timezones.zone_id     = inventory.inv_zone ";
-  $q_string .= "left join inv_models    on inv_models.mod_id         = hardware.hw_vendorid ";
+  $q_string .= "left join inv_models    on inv_models.mod_id         = inv_hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors   on inv_vendors.ven_id        = inv_models.mod_vendor ";
   $q_string .= "left join inv_groups  on inv_groups.grp_id       = inventory.inv_manager ";
   $q_string .= $product . $inwork . $location . $type . " ";

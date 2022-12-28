@@ -141,7 +141,7 @@
   $q_string .= "left join software      on software.sw_id             = inv_svr_software.svr_softwareid ";
   $q_string .= "left join inv_sw_types      on inv_sw_types.typ_id            = software.sw_type ";
   $q_string .= "left join inv_vendors       on inv_vendors.ven_id             = software.sw_vendor ";
-  $q_string .= "left join hardware      on hardware.hw_companyid      = inventory.inv_id ";
+  $q_string .= "left join inv_hardware      on inv_hardware.hw_companyid      = inventory.inv_id ";
   $q_string .= "left join inv_locations     on inv_locations.loc_id           = inventory.inv_location ";
   $q_string .= $where;
   $q_string .= "order by inv_name";
@@ -185,15 +185,15 @@
     }
 
     $q_string  = "select hw_vendorid ";
-    $q_string .= "from hardware ";
+    $q_string .= "from inv_hardware ";
     $q_string .= "where hw_companyid = " . $a_inventory['svr_companyid'] . " and hw_type = 15 ";
-    $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    $a_hardware = mysqli_fetch_array($q_hardware);
+    $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
-    if ($a_hardware['hw_vendorid'] != '') {
+    if ($a_inv_hardware['hw_vendorid'] != '') {
       $q_string  = "select mod_name ";
       $q_string .= "from inv_models ";
-      $q_string .= "where mod_id = " . $a_hardware['hw_vendorid'];
+      $q_string .= "where mod_id = " . $a_inv_hardware['hw_vendorid'];
       $q_inv_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_inv_models = mysqli_fetch_array($q_inv_models);
     }

@@ -39,8 +39,8 @@
   if (isset($formVars['server'])) {
     $q_string  = "select inv_id,inv_name,inv_manager,inv_product,inv_project,inv_status,hw_active ";
     $q_string .= "from inventory ";
-    $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
-    $q_string .= "left join inv_parts on inv_parts.part_id = hardware.hw_type ";
+    $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inventory.inv_id ";
+    $q_string .= "left join inv_parts    on inv_parts.part_id         = inv_hardware.hw_type ";
     $q_string .= "where inv_id = " . $formVars['server'] . " and part_type = 1 ";
     $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_inventory = mysqli_fetch_array($q_inventory);
@@ -1382,8 +1382,8 @@ $(document).ready( function() {
 <?php
   $q_string  = "select inv_id,inv_name ";
   $q_string .= "from inventory ";
-  $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join inv_models on inv_models.mod_id = hardware.hw_vendorid ";
+  $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "left join inv_models   on inv_models.mod_id         = inv_hardware.hw_vendorid ";
   $q_string .= "where mod_type = 13 and inv_manager = " . $_SESSION['group'] . " ";
   $q_string .= "order by inv_name ";
   $q_chassis = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
