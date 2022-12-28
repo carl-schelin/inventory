@@ -61,21 +61,21 @@
       $output .= "</tr>";
 
       $q_string  = "select com_id,com_text,com_timestamp,usr_first,usr_last ";
-      $q_string .= "from comments ";
-      $q_string .= "left join inv_users on inv_users.usr_id = comments.com_user ";
+      $q_string .= "from inv_comments ";
+      $q_string .= "left join inv_users on inv_users.usr_id = inv_comments.com_user ";
       $q_string .= "where com_companyid = " . $formVars['id'] . " ";
       $q_string .= "order by com_timestamp desc ";
-      $q_comments = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
-      while ($a_comments = mysqli_fetch_array($q_comments)) {
+      $q_inv_comments = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+      while ($a_inv_comments = mysqli_fetch_array($q_inv_comments)) {
 
         $output .= "<tr>";
-        $output .= "  <td class=\"ui-widget-content\">" . $a_comments['com_timestamp']                             . "</td>";
-        $output .= "  <td class=\"ui-widget-content\">" . $a_comments['usr_first'] . " " . $a_comments['usr_last'] . "</td>";
-        $output .= "  <td class=\"ui-widget-content\">" . $a_comments['com_text']                                  . "</td>";
+        $output .= "  <td class=\"ui-widget-content\">" . $a_inv_comments['com_timestamp']                             . "</td>";
+        $output .= "  <td class=\"ui-widget-content\">" . $a_inv_comments['usr_first'] . " " . $a_inv_comments['usr_last'] . "</td>";
+        $output .= "  <td class=\"ui-widget-content\">" . $a_inv_comments['com_text']                                  . "</td>";
         $output .= "</tr>";
       }
 
-      mysqli_free_result($q_comments);
+      mysqli_free_result($q_inv_comments);
 
       $output .= "</table>";
 
