@@ -278,11 +278,11 @@ $(document).ready( function () {
 #####
     $q_string  = "select sw_software ";
     $q_string .= "from inv_svr_software ";
-    $q_string .= "left join software on software.sw_id = inv_svr_software.svr_softwareid ";
-    $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
+    $q_string .= "left join inv_software on inv_software.sw_id  = inv_svr_software.svr_softwareid ";
+    $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = inv_software.sw_type ";
     $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " and typ_name = 'OS' ";
-    $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    $a_software = mysqli_fetch_array($q_software);
+    $q_inv_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software);
     
 #####
 # Set visuals
@@ -343,8 +343,8 @@ $(document).ready( function () {
     print "  <td title=\"" . $title . "\"" . $class . ">" . $editmain     . $showstart    . $a_inventory['inv_name']                            . $sshaccess . $showend . "</td>\n";
     print "  <td " . $class . ">"                                         . $showdoc      . $a_inventory['inv_function']                                     . $showend . "</td>\n";
     print "  <td " . $class . ">"                                                         . $a_inventory['grp_name']                                                    . "</td>\n";
-    print "  <td " . $class . ">"                         . $edithwstart  . $showhwstart  . $a_inventory['ven_name'] . " " . $a_inventory['mod_name']      . $showend . "</td>\n";
-    print "  <td " . $class . ">"                         . $editswstart  . $showswstart  . $a_software['sw_software']                                       . $showend . "</td>\n";
+    print "  <td " . $class . ">"                         . $edithwstart  . $showhwstart  . $a_inventory['ven_name'] . " " . $a_inventory['mod_name']        . $showend . "</td>\n";
+    print "  <td " . $class . ">"                         . $editswstart  . $showswstart  . $a_inv_svr_software['sw_software']                               . $showend . "</td>\n";
     print "  <td " . $class . ">"                                         . $showlocstart . $a_inventory['ct_city'] . " (" . $a_inventory['zone_name'] . ")" . $showend . "</td>\n";
     print "  <td " . $class . ">"                         . $editintstart . $shownetstart . $interface . $showend . "<br>"                        . $console            . "</td>\n";
     print "</tr>\n";

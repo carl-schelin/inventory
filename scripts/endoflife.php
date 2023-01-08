@@ -58,12 +58,12 @@
     }
 
     $q_string  = "select sw_software,sw_eol ";
-    $q_string .= "from software ";
-    $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
-    $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
+    $q_string .= "from inv_software ";
+    $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = inv_software.sw_id ";
+    $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = inv_software.sw_type ";
     $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " and typ_name = 'OS' ";
-    $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_software = mysqli_fetch_array($q_software);
+    $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inv_software = mysqli_fetch_array($q_inv_software);
 
     $q_string  = "select grp_name ";
     $q_string .= "from inv_groups ";
@@ -85,13 +85,13 @@
       $newdate = $a_inventory['mod_eol'];
     }
     $current = time();
-    $moddate = $a_software['sw_eol'];
+    $moddate = $a_inv_software['sw_eol'];
 
     $hwstatus = " class=\"ui-widget-content\"";
     if ($current > $support) {
       $hwstatus = " class=\"ui-state-error\"";
     }
-    if ($a_software['sw_eol'] > date('Y-m-d')) {
+    if ($a_inv_software['sw_eol'] > date('Y-m-d')) {
       $swstatus = " class=\"ui-widget-content\"";
     } else {
       $swstatus = " class=\"ui-state-error\"";
@@ -100,7 +100,7 @@
     if ($newdate == '' || $newdate == '1971-01-01') {
       $newdate = '----------';
     }
-    if ($a_software['sw_eol'] == '' || $a_software['sw_eol'] == '1971-01-01') {
+    if ($a_inv_software['sw_eol'] == '' || $a_inv_software['sw_eol'] == '1971-01-01') {
       $moddate = '----------';
     }
 
@@ -108,7 +108,7 @@
     print "\"" . $a_inventory['grp_name'] . "\",";
     print "\"" . $a_inv_groups['grp_name'] . "\",";
     print "\"" . $a_inventory['inv_function'] . "\",";
-    print "\"" . $a_software['sw_software'] . "\",";
+    print "\"" . $a_inv_software['sw_software'] . "\",";
     print "\"" . $moddate . "\",";
     print "\"" . $a_inventory['ven_name'] . " " . $a_inventory['mod_name'] . "\",";
     print "\"" . $newdate . "\",";

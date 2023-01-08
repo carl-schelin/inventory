@@ -367,32 +367,32 @@
       }
 
       $q_string  = "select sw_product,ven_name,sw_software,typ_name,svr_groupid,svr_verified,svr_update ";
-      $q_string .= "from software ";
-      $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
-      $q_string .= "left join inv_vendors on inv_vendors.ven_id = software.sw_vendor ";
-      $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
+      $q_string .= "from inv_software ";
+      $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = inv_software.sw_id ";
+      $q_string .= "left join inv_vendors      on inv_vendors.ven_id              = inv_software.sw_vendor ";
+      $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = inv_software.sw_type ";
       $q_string .= "where (typ_name != 'PKG' and typ_name != 'RPM') and svr_companyid = " . $a_inventory['inv_id'] . " ";
       $q_string .= "order by sw_software";
-      $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
-      while ($a_software = mysqli_fetch_array($q_software)) {
-        $q_string = "select prod_name from inv_products where prod_id = " . $a_software['sw_product'];
+      $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
+      while ($a_inv_software = mysqli_fetch_array($q_inv_software)) {
+        $q_string = "select prod_name from inv_products where prod_id = " . $a_inv_software['sw_product'];
         $q_inv_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
         $a_inv_products = mysqli_fetch_array($q_inv_products);
 
         $q_string  = "select grp_name ";
         $q_string .= "from inv_groups ";
-        $q_string .= "where grp_id = " . $a_software['svr_groupid'];
+        $q_string .= "where grp_id = " . $a_inv_software['svr_groupid'];
         $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ":(5): " . mysqli_error($db) . "\n\n");
         $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
         if ($csv == 'yes') {
           print "\"" . $a_inv_products['prod_name']   . "\",";
-          print "\"" . $a_software['ven_name']   . "\",";
-          print "\"" . $a_software['sw_software'] . "\",";
-          print "\"" . $a_software['typ_name']     . "\",";
+          print "\"" . $a_inv_software['ven_name']   . "\",";
+          print "\"" . $a_inv_software['sw_software'] . "\",";
+          print "\"" . $a_inv_software['typ_name']     . "\",";
           print "\"" . $a_inv_groups['grp_name']      . "\"\n";
         } else {
-          printf("%20s %20s %100s %15s %30s\n", $a_inv_products['prod_name'], $a_software['ven_name'], $a_software['sw_software'], $a_software['typ_name'], $a_inv_groups['grp_name']);
+          printf("%20s %20s %100s %15s %30s\n", $a_inv_products['prod_name'], $a_inv_software['ven_name'], $a_inv_software['sw_software'], $a_inv_software['typ_name'], $a_inv_groups['grp_name']);
         }
         
       }

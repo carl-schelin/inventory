@@ -172,12 +172,12 @@
   }
 
   $q_string  = "select svr_companyid ";
-  $q_string .= "from software ";
-  $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
+  $q_string .= "from inv_software ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = inv_software.sw_id ";
   $q_string .= $swproduct . $swgroup;
-  $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_software = mysqli_fetch_array($q_software)) {
-    $invindex[$a_software['svr_companyid']] = true;
+  $q_inv_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_software = mysqli_fetch_array($q_inv_software)) {
+    $invindex[$a_inv_software['svr_companyid']] = true;
   }
 
 # if help has not been seen yet,
@@ -483,12 +483,12 @@ $(document).ready( function () {
       }
 
       $q_string  = "select sw_software ";
-      $q_string .= "from software ";
-      $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
-      $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
+      $q_string .= "from inv_software ";
+      $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = inv_software.sw_id ";
+      $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = inv_software.sw_type ";
       $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " and typ_name = 'OS' ";
-      $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_software = mysqli_fetch_array($q_software);
+      $q_inv_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_software = mysqli_fetch_array($q_inv_software);
     
       $title="This system is live.";
       $class = " class=\"ui-widget-content\"";
@@ -545,7 +545,7 @@ $(document).ready( function () {
         }
         print "  <td " . $class . "><nobr>" . $edaastart . $shswstart . $a_inv_groups['grp_name']                                               . $showend                     . "</nobr></td>\n";
         print "  <td " . $class . "><nobr>" . $edhwstart . $shhwstart . $a_inventory['ven_name'] . " " . $a_inventory['mod_name']         . $showend                     . "</nobr></td>\n";
-        print "  <td " . $class . "><nobr>" . $edswstart . $shswstart . return_ShortOS($a_software['sw_software'])                          . $showend                     . "</nobr></td>\n";
+        print "  <td " . $class . "><nobr>" . $edswstart . $shswstart . return_ShortOS($a_inv_software['sw_software'])                          . $showend                     . "</nobr></td>\n";
         print "  <td " . $class . "><nobr>"              . $showstart . $a_inventory['ct_city']    . " (" . $a_inventory['zone_name'] . ")" . $showend                     . "</nobr></td>\n";
         print "  <td " . $class . "><nobr>"              . $showstart . $a_inventory['loc_identity']                                        . $showend                     . "</nobr></td>\n";
         print "  <td " . $class . ">" . $edipstart . $shipstart . $interface                                                          . $showend . "<br>" . $console . "</td>\n";
@@ -558,7 +558,7 @@ $(document).ready( function () {
         }
         print "\"" . $a_inv_groups['grp_name'] . "\",";
         print "\"" . $a_inventory['ven_name'] . " " . $a_inventory['mod_name'] . "\",";
-        print "\"" . $a_software['sw_software'] . "\",";
+        print "\"" . $a_inv_software['sw_software'] . "\",";
         print "\"" . $a_inventory['ct_city']    . " (" . $a_inventory['zone_name'] . ")\",";
         print "\"" . $a_inventory['loc_identity'] . "\",";
         print "\"" . $interface . " " . $console . "\"";

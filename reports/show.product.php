@@ -199,33 +199,33 @@ $(document).ready( function() {
 <?php
 
   $q_string  = "select sw_id,svr_companyid,ven_name,typ_name,svr_groupid,sw_software,svr_verified,svr_update,inv_name,grp_name ";
-  $q_string .= "from software ";
-  $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
+  $q_string .= "from inv_software ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = inv_software.sw_id ";
   $q_string .= "left join inventory    on inventory.inv_id            = inv_svr_software.svr_companyid ";
   $q_string .= "left join inv_groups     on inv_svr_software.svr_groupid    = inv_groups.grp_id ";
-  $q_string .= "left join inv_vendors      on inv_vendors.ven_id              = software.sw_vendor ";
-  $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = software.sw_type ";
+  $q_string .= "left join inv_vendors      on inv_vendors.ven_id              = inv_software.sw_vendor ";
+  $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = inv_software.sw_type ";
   $q_string .= "where sw_product = " . $formVars['id'] . " and inv_status = 0 ";
   $q_string .= "order by inv_name,sw_software";
-  $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_software) > 0) {
-    while ($a_software = mysqli_fetch_array($q_software)) {
+  $q_inv_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_software) > 0) {
+    while ($a_inv_software = mysqli_fetch_array($q_inv_software)) {
 
-      $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_software['svr_companyid'] . "\" target=\"_blank\">";
+      $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inv_software['svr_companyid'] . "\" target=\"_blank\">";
       $linkend   = "</a>";
 
       $checkmark = "";
-      if ($a_software['svr_verified']) {
+      if ($a_inv_software['svr_verified']) {
         $checkmark = "&#x2713;";
       }
 
       print "<tr>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_software['inv_name']                  . $linkend . "</td>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_software['ven_name']                  . $linkend . "</td>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_software['sw_software']               . $linkend . "</td>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_software['typ_name']                  . $linkend . "</td>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_software['grp_name']                  . $linkend . "</td>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_software['svr_update']   . $checkmark . $linkend . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_software['inv_name']                  . $linkend . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_software['ven_name']                  . $linkend . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_software['sw_software']               . $linkend . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_software['typ_name']                  . $linkend . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_software['grp_name']                  . $linkend . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_software['svr_update']   . $checkmark . $linkend . "</td>\n";
       print "</tr>\n";
 
     }
@@ -235,7 +235,7 @@ $(document).ready( function() {
     print "</tr>\n";
   }
 
-  mysqli_free_result($q_software);
+  mysqli_free_result($q_inv_software);
 
 ?>
 </table>

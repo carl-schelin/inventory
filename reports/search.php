@@ -441,48 +441,48 @@
       $q_string  = "select inv_name,svr_companyid,sw_software,ven_name,typ_name,grp_name,inv_status ";
       $q_string .= "from inventory ";
       $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inventory.inv_id ";
-      $q_string .= "left join software on software.sw_id = inv_svr_software.svr_softwareid ";
-      $q_string .= "left join inv_sw_types  on inv_sw_types.typ_id  = software.sw_type ";
-      $q_string .= "left join inv_vendors   on inv_vendors.ven_id   = software.sw_vendor ";
-      $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
-      $q_string .= "left join inv_cities    on inv_cities.ct_id     = inv_locations.loc_city ";
-      $q_string .= "left join inv_states    on inv_states.st_id     = inv_locations.loc_state ";
-      $q_string .= "left join inv_groups    on inv_groups.grp_id    = inv_svr_software.svr_groupid ";
+      $q_string .= "left join inv_software     on inv_software.sw_id             = inv_svr_software.svr_softwareid ";
+      $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = inv_software.sw_type ";
+      $q_string .= "left join inv_vendors      on inv_vendors.ven_id             = inv_software.sw_vendor ";
+      $q_string .= "left join inv_locations    on inv_locations.loc_id           = inventory.inv_location ";
+      $q_string .= "left join inv_cities       on inv_cities.ct_id               = inv_locations.loc_city ";
+      $q_string .= "left join inv_states       on inv_states.st_id               = inv_locations.loc_state ";
+      $q_string .= "left join inv_groups       on inv_groups.grp_id              = inv_svr_software.svr_groupid ";
       if ($formVars['retired'] == 'true') {
         $q_string .= "where " . $search_on . " ";
       } else {
         $q_string .= "where inv_status = 0 and " . $search_on . " ";
       }
       $q_string .= $orderby;
-      $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_software) > 0) {
-        while ($a_software = mysqli_fetch_array($q_software)) {
+      $q_inv_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_software) > 0) {
+        while ($a_inv_software = mysqli_fetch_array($q_inv_software)) {
 
-          $linkswstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_software['svr_companyid'] . "#software\" target=\"_blank\">";
-          $link_vendor = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=3&search_on=ven_name&search_for="   . $a_software['ven_name']   . "&retired=" . $formVars['retired'] . "');\">";
-          $link_name   = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=3&search_on=sw_software&search_for=" . $a_software['sw_software'] . "&retired=" . $formVars['retired'] . "');\">";
-          $link_type   = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=3&search_on=typ_name&search_for="     . $a_software['typ_name']     . "&retired=" . $formVars['retired'] . "');\">";
-          $linkstart   = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_software['svr_companyid'] . "\" target=\"_blank\">";
+          $linkswstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inv_software['svr_companyid'] . "#software\" target=\"_blank\">";
+          $link_vendor = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=3&search_on=ven_name&search_for="   . $a_inv_software['ven_name']   . "&retired=" . $formVars['retired'] . "');\">";
+          $link_name   = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=3&search_on=sw_software&search_for=" . $a_inv_software['sw_software'] . "&retired=" . $formVars['retired'] . "');\">";
+          $link_type   = "<a href=\"#\" onClick=\"javascript:show_file('" . $Reportroot . "/search.php?search_by=3&search_on=typ_name&search_for="     . $a_inv_software['typ_name']     . "&retired=" . $formVars['retired'] . "');\">";
+          $linkstart   = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inv_software['svr_companyid'] . "\" target=\"_blank\">";
           $linkend     = "</a>";
 
           $class = "ui-widget-content";
-          if ($a_software['inv_status']) {
+          if ($a_inv_software['inv_status']) {
             $class = "ui-state-error";
           }
 
           if ($formVars['csv']) {
-            $output .= "\"" . $a_software['inv_name']    . "\",";
-            $output .= "\"" . $a_software['ven_name']   . "\",";
-            $output .= "\"" . $a_software['sw_software'] . "\",";
-            $output .= "\"" . $a_software['typ_id']     . "\",";
-            $output .= "\"" . $a_software['grp_name']    . "\"<br>";
+            $output .= "\"" . $a_inv_software['inv_name']    . "\",";
+            $output .= "\"" . $a_inv_software['ven_name']   . "\",";
+            $output .= "\"" . $a_inv_software['sw_software'] . "\",";
+            $output .= "\"" . $a_inv_software['typ_id']     . "\",";
+            $output .= "\"" . $a_inv_software['grp_name']    . "\"<br>";
           } else {
             $output .= "<tr>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $linkswstart . $a_software['inv_name']    . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $link_vendor . $a_software['ven_name']   . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $link_name   . $a_software['sw_software'] . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">" . $link_type   . $a_software['typ_name']     . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"                . $a_software['grp_name']               . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $linkswstart . $a_inv_software['inv_name']    . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $link_vendor . $a_inv_software['ven_name']   . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $link_name   . $a_inv_software['sw_software'] . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $link_type   . $a_inv_software['typ_name']     . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"                . $a_inv_software['grp_name']               . "</td>\n";
             $output .= "</tr>\n";
           }
         }

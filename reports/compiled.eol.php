@@ -167,13 +167,13 @@
   $q_string .= "hw_serial,hw_purchased,grp_name,inv_appadmin,sup_company,sup_contract,hw_eolticket ";
   $q_string .= "from inventory ";
   $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inventory.inv_id ";
-  $q_string .= "left join software  on software.sw_id    = inv_svr_software.svr_softwareid ";
-  $q_string .= "left join inv_sw_types  on inv_sw_types.typ_id   = software.sw_type ";
-  $q_string .= "left join inv_hardware  on inventory.inv_id  = inv_hardware.hw_companyid ";
-  $q_string .= "left join inv_groups  on inv_groups.grp_id   = inv_hardware.hw_group ";
-  $q_string .= "left join inv_models    on inv_models.mod_id     = inv_hardware.hw_vendorid ";
-  $q_string .= "left join inv_vendors   on inv_vendors.ven_id    = inv_models.mod_vendor ";
-  $q_string .= "left join inv_support   on inv_support.sup_id    = inv_hardware.hw_supportid ";
+  $q_string .= "left join inv_software  on inv_software.sw_id                = inv_svr_software.svr_softwareid ";
+  $q_string .= "left join inv_sw_types  on inv_sw_types.typ_id               = inv_software.sw_type ";
+  $q_string .= "left join inv_hardware  on inventory.inv_id                  = inv_hardware.hw_companyid ";
+  $q_string .= "left join inv_groups    on inv_groups.grp_id                 = inv_hardware.hw_group ";
+  $q_string .= "left join inv_models    on inv_models.mod_id                 = inv_hardware.hw_vendorid ";
+  $q_string .= "left join inv_vendors   on inv_vendors.ven_id                = inv_models.mod_vendor ";
+  $q_string .= "left join inv_support   on inv_support.sup_id                = inv_hardware.hw_supportid ";
   $q_string .= "left join products  on products.prod_id  = inventory.inv_product ";
   $q_string .= $where . "and typ_name = 'OS' ";
   $q_string .= $orderby;
@@ -225,8 +225,8 @@
 
     $q_string  = "select sw_software,sw_eol ";
     $q_string .= "from inv_svr_software ";
-    $q_string .= "left join software on software.sw_id = inv_svr_software.svr_softwareid ";
-    $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
+    $q_string .= "left join inv_software on inv_software.sw_id  = inv_svr_software.svr_softwareid ";
+    $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = inv_software.sw_type ";
     $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " and typ_name = 'OS' ";
     $q_inv_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software);

@@ -137,9 +137,9 @@
 
   $q_string  = "select svr_companyid ";
   $q_string .= "from inv_svr_software" . $swproduct . $swgroup;
-  $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_software = mysqli_fetch_array($q_software)) {
-    $invindex[$a_software['svr_companyid']] = true;
+  $q_inv_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software)) {
+    $invindex[$a_inv_svr_software['svr_companyid']] = true;
   }
 
 # if help has not been seen yet,
@@ -443,11 +443,11 @@ $(document).ready( function () {
 
       $q_string  = "select sw_software ";
       $q_string .= "from inv_svr_software ";
-      $q_string .= "left join software on software.sw_id = inv_svr_software.svr_softwareid ";
-      $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
+      $q_string .= "left join inv_software on inv_software.sw_id  = inv_svr_software.svr_softwareid ";
+      $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = inv_software.sw_type ";
       $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " and typ_name = 'OS' ";
-      $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_software = mysqli_fetch_array($q_software);
+      $q_inv_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software);
     
       $title="This system is live.";
       $class = " class=\"ui-widget-content\"";

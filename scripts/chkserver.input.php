@@ -234,18 +234,18 @@
 # check software first for ability to run cron
 
   $q_string  = "select inv_id,inv_name,sw_software ";
-  $q_string .= "from software ";
-  $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
-  $q_string .= "left join inventory on inventory.inv_id = inv_svr_software.svr_companyid ";
+  $q_string .= "from inv_software ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = inv_software.sw_id ";
+  $q_string .= "left join inventory        on inventory.inv_id                = inv_svr_software.svr_companyid ";
   $q_string .= "where inv_status = 0 and inv_ssh = 1 and sw_software like '%Oracle%' and svr_groupid = " . $GRP_DBAdmins . " ";
-  $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_software) > 0) {
-    while ($a_software = mysqli_fetch_array($q_software)) {
+  $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inv_software) > 0) {
+    while ($a_inv_software = mysqli_fetch_array($q_inv_software)) {
 
-      $hostname = $servername = $a_software['inv_name'];
+      $hostname = $servername = $a_inv_software['inv_name'];
       $q_string  = "select int_server ";
       $q_string .= "from inv_interface ";
-      $q_string .= "where int_companyid = " . $a_software['inv_id'] . " and int_type = 2 ";
+      $q_string .= "where int_companyid = " . $a_inv_software['inv_id'] . " and int_type = 2 ";
       $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_inv_interface) > 0) {
         $a_inv_interface = mysqli_fetch_array($q_inv_interface);
@@ -253,7 +253,7 @@
       } else {
         $q_string  = "select int_server ";
         $q_string .= "from inv_interface ";
-        $q_string .= "where int_companyid = " . $a_software['inv_id'] . " and int_type = 1 ";
+        $q_string .= "where int_companyid = " . $a_inv_software['inv_id'] . " and int_type = 1 ";
         $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         if (mysqli_num_rows($q_inv_interface) > 0) {
           $a_inv_interface = mysqli_fetch_array($q_inv_interface);

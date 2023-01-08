@@ -26,12 +26,12 @@
   <td class="ui-widget-content">Software: <select name="svr_softwareid">
 <?php
   $q_string  = "select sw_id,sw_software,prod_name ";
-  $q_string .= "from software ";
-  $q_string .= "left join inv_products on inv_products.prod_id = software.sw_product ";
+  $q_string .= "from inv_software ";
+  $q_string .= "left join inv_products on inv_products.prod_id = inv_software.sw_product ";
   $q_string .= "order by sw_software,prod_name";
-  $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_software = mysqli_fetch_array($q_software)) {
-    print "<option value=\"" . $a_software['sw_id'] . "\">" . $a_software['sw_software'] . " (" . $a_software['prod_name'] . ")</option>\n";
+  $q_inv_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_software = mysqli_fetch_array($q_inv_software)) {
+    print "<option value=\"" . $a_inv_software['sw_id'] . "\">" . $a_inv_software['sw_software'] . " (" . $a_inv_software['prod_name'] . ")</option>\n";
   }
 ?>
 </select></td>
@@ -94,12 +94,12 @@
   <td class="ui-widget-content">Software: <select name="svr_softwareid">
 <?php
   $q_string  = "select sw_id,sw_software,prod_name ";
-  $q_string .= "from software ";
-  $q_string .= "left join inv_products on inv_products.prod_id = software.sw_product ";
+  $q_string .= "from inv_software ";
+  $q_string .= "left join inv_products on inv_products.prod_id = inv_software.sw_product ";
   $q_string .= "order by sw_software,prod_name";
-  $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_software = mysqli_fetch_array($q_software)) {
-    print "<option value=\"" . $a_software['sw_id'] . "\">" . $a_software['sw_software'] . " (" . $a_software['prod_name'] . ")</option>\n";
+  $q_inv_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_software = mysqli_fetch_array($q_inv_software)) {
+    print "<option value=\"" . $a_inv_software['sw_id'] . "\">" . $a_inv_software['sw_software'] . " (" . $a_inv_software['prod_name'] . ")</option>\n";
   }
 ?>
 </select></td>

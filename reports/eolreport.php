@@ -384,31 +384,31 @@
         }
 
         $q_string  = "select sw_software,ven_name,typ_name,sw_eol ";
-        $q_string .= "from software ";
-        $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
-        $q_string .= "left join inventory on inventory.inv_id = inv_svr_software.svr_companyid ";
-        $q_string .= "left join inv_vendors on inv_vendors.ven_id = software.sw_vendor ";
-        $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
+        $q_string .= "from inv_software ";
+        $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = inv_software.sw_id ";
+        $q_string .= "left join inventory        on inventory.inv_id                = inv_svr_software.svr_companyid ";
+        $q_string .= "left join inv_vendors      on inv_vendors.ven_id              = inv_software.sw_vendor ";
+        $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = inv_software.sw_type ";
         $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " ";
         $q_string .= "order by sw_software ";
-        $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_software = mysqli_fetch_array($q_software)) {
+        $q_inv_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inv_software = mysqli_fetch_array($q_inv_software)) {
 
           $inv_name = '';
 
           $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inventory['inv_id'] . "#sofware\" target=\"_blank\">";
           $linkend = "</a>";
 
-          if ($a_software['sw_eol'] == '1971-01-01') {
+          if ($a_inv_software['sw_eol'] == '1971-01-01') {
             $swuncounted++;
           } else {
-            if ($a_software['sw_eol'] < $today) {
+            if ($a_inv_software['sw_eol'] < $today) {
               $sweol++;
             }
           }
 
           $class = "ui-widget-content";
-          if ($a_software['sw_eol'] < $today && $a_software['sw_eol'] != '1971-01-01') {
+          if ($a_inv_software['sw_eol'] < $today && $a_inv_software['sw_eol'] != '1971-01-01') {
             $class = "ui-state-error";
           }
 
@@ -416,36 +416,36 @@
             print "<tr>\n";
             print "  <td class=\"" . $class . "\">"        . $linkstart . $inv_name . $linkend . "</td>\n";
             print "  <td class=\"" . $class . " delete\">" . "Software"                        . "</td>\n";
-            print "  <td class=\"" . $class . "\">"        . $a_software['sw_vendor']          . "</td>\n";
-            print "  <td class=\"" . $class . "\">"        . $a_software['sw_software']        . "</td>\n";
-            print "  <td class=\"" . $class . " delete\">" . $a_software['sw_eol']             . "</td>\n";
+            print "  <td class=\"" . $class . "\">"        . $a_inv_software['sw_vendor']          . "</td>\n";
+            print "  <td class=\"" . $class . "\">"        . $a_inv_software['sw_software']        . "</td>\n";
+            print "  <td class=\"" . $class . " delete\">" . $a_inv_software['sw_eol']             . "</td>\n";
             print "</tr>\n";
           } else {
             print "\"" . $a_inventory['inv_name']     . "\",";
             print "\"" . "Software"                   . "\",";
-            print "\"" . $a_software['sw_vendor']     . "\",";
-            print "\"" . $a_software['sw_software']   . "\",";
-            print "\"" . $a_software['sw_eol']        . "\"\n";
+            print "\"" . $a_inv_software['sw_vendor']     . "\",";
+            print "\"" . $a_inv_software['sw_software']   . "\",";
+            print "\"" . $a_inv_software['sw_eol']        . "\"\n";
           }
         }
       }
     } else {
 
       $q_string  = "select sw_eol ";
-      $q_string .= "from software ";
-      $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
-      $q_string .= "left join inventory on inventory.inv_id = inv_svr_software.svr_companyid ";
+      $q_string .= "from inv_software ";
+      $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = inv_software.sw_id ";
+      $q_string .= "left join inventory        on inventory.inv_id                = inv_svr_software.svr_companyid ";
       $q_string .= "where inv_product = " . $a_inv_products['prod_id'] . " and inv_status = 0 ";
       if ($formVars['group'] > 0) {
         $q_string .= "and inv_manager = " . $formVars['group'] . " ";
       }
-      $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      while ($a_software = mysqli_fetch_array($q_software)) {
-        if ($a_software['sw_eol'] == '1971-01-01') {
+      $q_inv_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_inv_software = mysqli_fetch_array($q_inv_software)) {
+        if ($a_inv_software['sw_eol'] == '1971-01-01') {
           $swuncounted++;
           $totalswuncounted++;
         } else {
-          if ($a_software['sw_eol'] < $today) {
+          if ($a_inv_software['sw_eol'] < $today) {
             $sweol++;
             $totalsweol++;
           }

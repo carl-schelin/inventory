@@ -438,8 +438,8 @@ to software and hardware section.</p>
   $q_string  = "select sw_software,count(sw_software) ";
   $q_string .= "from inventory ";
   $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inventory.inv_id ";
-  $q_string .= "left join software on software.sw_id = inv_svr_software.svr_softwareid ";
-  $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
+  $q_string .= "left join inv_software     on inv_software.sw_id             = inv_svr_software.svr_softwareid ";
+  $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = inv_software.sw_type ";
   $q_string .= "where inv_status = 0 and typ_name = 'OS' " . $admin . " ";
   $q_string .= "group by sw_software";
 print $q_string;

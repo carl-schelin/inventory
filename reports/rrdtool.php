@@ -154,17 +154,17 @@
   while ($a_inventory = mysqli_fetch_array($q_inventory)) {
 
     $q_string  = "select sw_software ";
-    $q_string .= "from software ";
-    $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
-    $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = software.sw_type ";
+    $q_string .= "from inv_software ";
+    $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = inv_software.sw_id ";
+    $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = inv_software.sw_type ";
     $q_string .= "where typ_name = 'OS' and svr_companyid = " . $a_inventory['inv_id'];
-    $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    $a_software = mysqli_fetch_array($q_software);
+    $q_inv_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_inv_software = mysqli_fetch_array($q_inv_software);
 
-    $os = explode(" ", $a_software['sw_software']);
+    $os = explode(" ", $a_inv_software['sw_software']);
 
     print "<tr>\n";
-    print "  <th class=\"ui-state-default\" style=\"text-align: left;\" colspan=\"4\"><a href=\"/rrdtool/" . $a_inventory['inv_name'] . "\" target=\"_blank\">" . $a_inventory['inv_name'] . " (" . $a_software['sw_software'] . ")</a></th>\n";
+    print "  <th class=\"ui-state-default\" style=\"text-align: left;\" colspan=\"4\"><a href=\"/rrdtool/" . $a_inventory['inv_name'] . "\" target=\"_blank\">" . $a_inventory['inv_name'] . " (" . $a_inv_software['sw_software'] . ")</a></th>\n";
     print "</tr>\n";
 
     if (file_exists($Sitedir . "/rrdtool/" . $a_inventory['inv_name'] . "/load-day-thumb.png")) {

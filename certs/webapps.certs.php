@@ -119,16 +119,16 @@ if the expiration date is within 60 days and <span class="ui-state-error">highli
 
       print "<tr>";
       print "  <td" . $class . " title=\"" . $a_inv_certs['cert_url'] . "\">" . $a_inv_certs['cert_desc']      . "</td>";
-      print "  <td" . $class . ">"                                        . $a_inv_certs['cert_expire']    . "</td>";
-      print "  <td" . $class . ">"                                        . $a_inv_certs['cert_authority'] . "</td>";
-      print "  <td" . $class . " colspan=\"2\">"                                        . $a_inv_certs['grp_name']       . "</td>";
+      print "  <td" . $class . ">"                                            . $a_inv_certs['cert_expire']    . "</td>";
+      print "  <td" . $class . ">"                                            . $a_inv_certs['cert_authority'] . "</td>";
+      print "  <td" . $class . " colspan=\"2\">"                              . $a_inv_certs['grp_name']       . "</td>";
       print "</tr>";
 
       $q_string  = "select svr_id,inv_name,sw_software,prod_name,grp_name ";
       $q_string .= "from inv_svr_software ";
-      $q_string .= "left join software  on software.sw_id     = inv_svr_software.svr_softwareid ";
-      $q_string .= "left join inventory on inventory.inv_id   = inv_svr_software.svr_companyid ";
-      $q_string .= "left join inv_products  on inv_products.prod_id   = software.sw_product ";
+      $q_string .= "left join inv_software  on inv_software.sw_id     = inv_svr_software.svr_softwareid ";
+      $q_string .= "left join inv_inventory on inv_inventory.inv_id   = inv_svr_software.svr_companyid ";
+      $q_string .= "left join inv_products  on inv_products.prod_id   = inv_software.sw_product ";
       $q_string .= "left join inv_groups    on inv_groups.grp_id      = inv_svr_software.svr_groupid ";
       $q_string .= "where svr_certid = " . $a_inv_certs['cert_id'];
       $q_inv_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -136,9 +136,9 @@ if the expiration date is within 60 days and <span class="ui-state-error">highli
         while ($a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software)) {
 
           print "<tr>\n";
-          print "  <td class=\"ui-widget-content\">--" . $a_inv_svr_software['inv_name']    . "</td>\n";
-          print "  <td class=\"ui-widget-content\">"   . $a_inv_svr_software['sw_software'] . "</td>\n";
-          print "  <td class=\"ui-widget-content\">"   . $a_inv_svr_software['prod_name']   . "</td>\n";
+          print "  <td class=\"ui-widget-content\">--"               . $a_inv_svr_software['inv_name']    . "</td>\n";
+          print "  <td class=\"ui-widget-content\">"                 . $a_inv_svr_software['sw_software'] . "</td>\n";
+          print "  <td class=\"ui-widget-content\">"                 . $a_inv_svr_software['prod_name']   . "</td>\n";
           print "  <td class=\"ui-widget-content\" colspan=\"2\">"   . $a_inv_svr_software['grp_name']    . "</td>\n";
           print "</tr>\n";
 

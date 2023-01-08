@@ -256,13 +256,13 @@ reviewed and worked on.</li>
 
   $q_string  = "select inv_id,inv_zone,IF(INSTR(inv_name,'/'),LEFT(inv_name,LOCATE('/',inv_name)-1),inv_name) as inv_name,int_server,zone_name,sw_software ";
   $q_string .= "from inventory ";
-  $q_string .= "left join inv_hardware  on inventory.inv_id      = inv_hardware.hw_companyid ";
-  $q_string .= "left join inv_interface on inventory.inv_id      = inv_interface.int_companyid ";
-  $q_string .= "left join inv_timezones on inv_timezones.zone_id     = inventory.inv_zone ";
-  $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
+  $q_string .= "left join inv_hardware      on inventory.inv_id               = inv_hardware.hw_companyid ";
+  $q_string .= "left join inv_interface     on inventory.inv_id               = inv_interface.int_companyid ";
+  $q_string .= "left join inv_timezones     on inv_timezones.zone_id          = inventory.inv_zone ";
+  $q_string .= "left join inv_locations     on inv_locations.loc_id           = inventory.inv_location ";
   $q_string .= "left join inv_svr_software  on inv_svr_software.svr_companyid = inventory.inv_id ";
-  $q_string .= "left join software  on software.sw_id = inv_svr_software.svr_softwareid ";
-  $q_string .= "left join inv_sw_types  on inv_sw_types.typ_id = software.sw_type ";
+  $q_string .= "left join inv_software      on inv_software.sw_id             = inv_svr_software.svr_softwareid ";
+  $q_string .= "left join inv_sw_types      on inv_sw_types.typ_id            = inv_software.sw_type ";
   $q_string .= $where . " and typ_name = 'OS' and int_management = 1 ";
   $q_string .= $orderby;
   $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

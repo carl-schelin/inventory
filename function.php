@@ -508,63 +508,63 @@ function return_System( $p_db, $p_string ) {
 
   $output = '';
   $q_string  = "select sw_software ";
-  $q_string .= "from software ";
-  $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = software.sw_type ";
-  $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = software.sw_id ";
+  $q_string .= "from inv_software ";
+  $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = inv_software.sw_type ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = inv_software.sw_id ";
   $q_string .= "where typ_name = 'OS' and svr_companyid = " . $p_string;
-  $q_software = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
-  $a_software = mysqli_fetch_array($q_software);
+  $q_inv_software = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
+  $a_inv_software = mysqli_fetch_array($q_inv_software);
 
-  $output = $a_software['sw_software'];
-  if (stripos($a_software['sw_software'], "linux") !== false) {
+  $output = $a_inv_software['sw_software'];
+  if (stripos($a_inv_software['sw_software'], "linux") !== false) {
     $output = 'Linux';
   }
-  if (stripos($a_software['sw_software'], "red hat") !== false) {
+  if (stripos($a_inv_software['sw_software'], "red hat") !== false) {
     $output = 'Linux';
   }
-  if (stripos($a_software['sw_software'], "debian") !== false) {
+  if (stripos($a_inv_software['sw_software'], "debian") !== false) {
     $output = 'Linux';
   }
-  if (stripos($a_software['sw_software'], "ubuntu") !== false) {
+  if (stripos($a_inv_software['sw_software'], "ubuntu") !== false) {
     $output = 'Linux';
   }
-  if (stripos($a_software['sw_software'], "centos") !== false) {
+  if (stripos($a_inv_software['sw_software'], "centos") !== false) {
     $output = 'Linux';
   }
-  if (stripos($a_software['sw_software'], "suse") !== false) {
+  if (stripos($a_inv_software['sw_software'], "suse") !== false) {
     $output = 'Linux';
   }
-  if (stripos($a_software['sw_software'], "fedora") !== false) {
+  if (stripos($a_inv_software['sw_software'], "fedora") !== false) {
     $output = 'Linux';
   }
-  if (stripos($a_software['sw_software'], "solaris") !== false) {
+  if (stripos($a_inv_software['sw_software'], "solaris") !== false) {
     $output = 'SunOS';
   }
-  if (stripos($a_software['sw_software'], "hp-ux") !== false) {
+  if (stripos($a_inv_software['sw_software'], "hp-ux") !== false) {
     $output = 'HP-UX';
   }
-  if (stripos($a_software['sw_software'], "tru64") !== false) {
+  if (stripos($a_inv_software['sw_software'], "tru64") !== false) {
     $output = 'OSF1';
   }
-  if (stripos($a_software['sw_software'], "osf1") !== false) {
+  if (stripos($a_inv_software['sw_software'], "osf1") !== false) {
     $output = 'OSF1';
   }
-  if (stripos($a_software['sw_software'], "freebsd") !== false) {
+  if (stripos($a_inv_software['sw_software'], "freebsd") !== false) {
     $output = 'FreeBSD';
   }
-  if (stripos($a_software['sw_software'], "windows") !== false) {
+  if (stripos($a_inv_software['sw_software'], "windows") !== false) {
     $output = 'Windows';
   }
-  if (stripos($a_software['sw_software'], "esx") !== false) {
+  if (stripos($a_inv_software['sw_software'], "esx") !== false) {
     $output = 'VMWare';
   }
-  if (stripos($a_software['sw_software'], "vmware") !== false) {
+  if (stripos($a_inv_software['sw_software'], "vmware") !== false) {
     $output = 'VMware';
   }
-  if (stripos($a_software['sw_software'], "cisco ios") !== false) {
+  if (stripos($a_inv_software['sw_software'], "cisco ios") !== false) {
     $output = 'Cisco';
   }
-  if (stripos($a_software['sw_software'], "appliance") !== false) {
+  if (stripos($a_inv_software['sw_software'], "appliance") !== false) {
     $output = 'Appliance';
   }
 

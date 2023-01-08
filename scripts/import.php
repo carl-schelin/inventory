@@ -593,10 +593,10 @@
               }
 
               $q_string  = "select sw_id ";
-              $q_string .= "from software ";
+              $q_string .= "from inv_software ";
               $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'OS'";
-              $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              $a_software = mysqli_fetch_array($q_software);
+              $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              $a_inv_software = mysqli_fetch_array($q_inv_software);
 
               $query = 
                 "sw_companyid =   " . $a_inventory['inv_id']      . "," . 
@@ -608,13 +608,13 @@
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
-              if ($a_software['sw_id'] == '') {
-                $q_string = "insert into software set sw_id = null," . $query . ",sw_group = " . $a_inventory['inv_manager'];
+              if ($a_inv_software['sw_id'] == '') {
+                $q_string = "insert into inv_software set sw_id = null," . $query . ",sw_group = " . $a_inventory['inv_manager'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
               } else {
-                $q_string = "update software set " . $query . " where sw_id = " . $a_software['sw_id'];
+                $q_string = "update inv_software set " . $query . " where sw_id = " . $a_inv_software['sw_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
@@ -634,10 +634,10 @@
             if (strlen($value[3]) > 0) {
               $skip = 'no';
               $q_string  = "select sw_id ";
-              $q_string .= "from software ";
+              $q_string .= "from inv_software ";
               $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Backups'";
-              $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              $a_software = mysqli_fetch_array($q_software);
+              $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              $a_inv_software = mysqli_fetch_array($q_inv_software);
 
               $query = 
                 "sw_companyid =   " . $a_inventory['inv_id']      . "," . 
@@ -649,13 +649,13 @@
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
-              if ($a_software['sw_id'] == '') {
-                $q_string = "insert into software set sw_id = null," . $query . ",sw_group = 9";
+              if ($a_inv_software['sw_id'] == '') {
+                $q_string = "insert into inv_software set sw_id = null," . $query . ",sw_group = 9";
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
               } else {
-                $q_string = "update software set " . $query . " where sw_id = " . $a_software['sw_id'];
+                $q_string = "update inv_software set " . $query . " where sw_id = " . $a_inv_software['sw_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
@@ -675,10 +675,10 @@
             if (strlen($value[3]) > 0) {
               $skip = 'no';
               $q_string  = "select sw_id ";
-              $q_string .= "from software ";
+              $q_string .= "from inv_software ";
               $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Monitoring'";
-              $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              $a_software = mysqli_fetch_array($q_software);
+              $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              $a_inv_software = mysqli_fetch_array($q_inv_software);
 
               $query = 
                 "sw_companyid =   " . $a_inventory['inv_id']      . "," . 
@@ -690,13 +690,13 @@
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
-              if ($a_software['sw_id'] == '') {
-                $q_string = "insert into software set sw_id = null," . $query . ",sw_group = 10";
+              if ($a_inv_software['sw_id'] == '') {
+                $q_string = "insert into inv_software set sw_id = null," . $query . ",sw_group = 10";
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
               } else {
-                $q_string = "update software set " . $query . " where sw_id = " . $a_software['sw_id'];
+                $q_string = "update inv_software set " . $query . " where sw_id = " . $a_inv_software['sw_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
@@ -730,17 +730,17 @@
 
 # is it already in the inventory?
               $q_string  = "select sw_id ";
-              $q_string .= "from software ";
+              $q_string .= "from inv_software ";
               $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Instance' and sw_software = '" . trim($value[3]) . "'";
-              $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              if (mysqli_num_rows($q_software) == 0) {
-                $q_string = "insert into software set sw_id = null," . $query . ",sw_group = 8";
+              $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              if (mysqli_num_rows($q_inv_software) == 0) {
+                $q_string = "insert into inv_software set sw_id = null," . $query . ",sw_group = 8";
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
               } else {
-                $a_software = mysqli_fetch_array($q_software);
-                $q_string = "update software set " . $query . " where sw_id = " . $a_software['sw_id'];
+                $a_inv_software = mysqli_fetch_array($q_inv_software);
+                $q_string = "update inv_software set " . $query . " where sw_id = " . $a_inv_software['sw_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
@@ -774,17 +774,17 @@
 
 # is it already in the inventory?
               $q_string  = "select sw_id ";
-              $q_string .= "from software ";
+              $q_string .= "from inv_software ";
               $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Commercial' and sw_software like '%mysqld%'";
-              $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              if (mysqli_num_rows($q_software) == 0) {
-                $q_string = "insert into software set sw_id = null," . $query . ",sw_group = 8";
+              $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              if (mysqli_num_rows($q_inv_software) == 0) {
+                $q_string = "insert into inv_software set sw_id = null," . $query . ",sw_group = 8";
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
               } else {
-                $a_software = mysqli_fetch_array($q_software);
-                $q_string = "update software set " . $query . " where sw_id = " . $a_software['sw_id'];
+                $a_inv_software = mysqli_fetch_array($q_inv_software);
+                $q_string = "update inv_software set " . $query . " where sw_id = " . $a_inv_software['sw_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
@@ -818,17 +818,17 @@
 
 # is it already in the inventory?
               $q_string  = "select sw_id ";
-              $q_string .= "from software ";
+              $q_string .= "from inv_software ";
               $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Open Source' and sw_software like '%INFORMIXSERVER%'";
-              $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              if (mysqli_num_rows($q_software) == 0) {
-                $q_string = "insert into software set sw_id = null," . $query . ",sw_group = 8";
+              $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              if (mysqli_num_rows($q_inv_software) == 0) {
+                $q_string = "insert into inv_software set sw_id = null," . $query . ",sw_group = 8";
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
               } else {
-                $a_software = mysqli_fetch_array($q_software);
-                $q_string = "update software set " . $query . " where sw_id = " . $a_software['sw_id'];
+                $a_inv_software = mysqli_fetch_array($q_inv_software);
+                $q_string = "update inv_software set " . $query . " where sw_id = " . $a_inv_software['sw_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
@@ -862,17 +862,17 @@
 
 # is it already in the inventory?
               $q_string  = "select sw_id ";
-              $q_string .= "from software ";
+              $q_string .= "from inv_software ";
               $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Open Source' and sw_software like '%psql%'";
-              $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              if (mysqli_num_rows($q_software) == 0) {
-                $q_string = "insert into software set sw_id = null," . $query . ",sw_group = 8";
+              $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              if (mysqli_num_rows($q_inv_software) == 0) {
+                $q_string = "insert into inv_software set sw_id = null," . $query . ",sw_group = 8";
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
               } else {
-                $a_software = mysqli_fetch_array($q_software);
-                $q_string = "update software set " . $query . " where sw_id = " . $a_software['sw_id'];
+                $a_inv_software = mysqli_fetch_array($q_inv_software);
+                $q_string = "update inv_software set " . $query . " where sw_id = " . $a_inv_software['sw_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
@@ -907,21 +907,21 @@
 
 # is it already in the inventory?
               $q_string  = "select sw_id ";
-              $q_string .= "from software ";
+              $q_string .= "from inv_software ";
               $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Commercial' and sw_software = 'OpNet' ";
-              $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
               if ($debug == 'yes') {
                 print $q_string . "\n";
               }
-              if (mysqli_num_rows($q_software) == 0) {
+              if (mysqli_num_rows($q_inv_software) == 0) {
 # Don't change it if it's an update but default owned by Monitoring
-                $q_string = "insert into software set sw_id = null," . $query . ",sw_group = 10 ";
+                $q_string = "insert into inv_software set sw_id = null," . $query . ",sw_group = 10 ";
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
               } else {
-                $a_software = mysqli_fetch_array($q_software);
-                $q_string = "update software set " . $query . " where sw_id = " . $a_software['sw_id'];
+                $a_inv_software = mysqli_fetch_array($q_inv_software);
+                $q_string = "update inv_software set " . $query . " where sw_id = " . $a_inv_software['sw_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
@@ -956,21 +956,21 @@
 
 # is it already in the inventory?
               $q_string  = "select sw_id ";
-              $q_string .= "from software ";
+              $q_string .= "from inv_software ";
               $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Commercial' and sw_software = 'DataPalette' ";
-              $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
               if ($debug == 'yes') {
                 print $q_string . "\n";
               }
-              if (mysqli_num_rows($q_software) == 0) {
+              if (mysqli_num_rows($q_inv_software) == 0) {
 # by default datapalette is used to update oracle tables. Don't change it if it's an update though
-                $q_string = "insert into software set sw_id = null," . $query . ",sw_group = 8";
+                $q_string = "insert into inv_software set sw_id = null," . $query . ",sw_group = 8";
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
               } else {
-                $a_software = mysqli_fetch_array($q_software);
-                $q_string = "update software set " . $query . " where sw_id = " . $a_software['sw_id'];
+                $a_inv_software = mysqli_fetch_array($q_inv_software);
+                $q_string = "update inv_software set " . $query . " where sw_id = " . $a_inv_software['sw_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
@@ -1005,21 +1005,21 @@
 
 # is it already in the inventory?
               $q_string  = "select sw_id ";
-              $q_string .= "from software ";
+              $q_string .= "from inv_software ";
               $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Commercial' and sw_software = 'Oracle' ";
-              $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
               if ($debug == 'yes') {
                 print $q_string . "\n";
               }
-              if (mysqli_num_rows($q_software) == 0) {
+              if (mysqli_num_rows($q_inv_software) == 0) {
 # by default Oracle is owned by the dbas but don't change it if it's an update
-                $q_string = "insert into software set sw_id = null," . $query . ",sw_group = 8";
+                $q_string = "insert into inv_software set sw_id = null," . $query . ",sw_group = 8";
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
               } else {
-                $a_software = mysqli_fetch_array($q_software);
-                $q_string = "update software set " . $query . " where sw_id = " . $a_software['sw_id'];
+                $a_inv_software = mysqli_fetch_array($q_inv_software);
+                $q_string = "update inv_software set " . $query . " where sw_id = " . $a_inv_software['sw_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
@@ -1053,17 +1053,17 @@
 
 # is it already in the inventory?
               $q_string  = "select sw_id ";
-              $q_string .= "from software ";
+              $q_string .= "from inv_software ";
               $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Open Source' and sw_software like '%sudo%'";
-              $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              if (mysqli_num_rows($q_software) == 0) {
-                $q_string = "insert into software set sw_id = null," . $query . ",sw_group = " . $a_inventory['inv_manager'];
+              $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              if (mysqli_num_rows($q_inv_software) == 0) {
+                $q_string = "insert into inv_software set sw_id = null," . $query . ",sw_group = " . $a_inventory['inv_manager'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
               } else {
-                $a_software = mysqli_fetch_array($q_software);
-                $q_string = "update software set " . $query . " where sw_id = " . $a_software['sw_id'];
+                $a_inv_software = mysqli_fetch_array($q_inv_software);
+                $q_string = "update inv_software set " . $query . " where sw_id = " . $a_inv_software['sw_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
@@ -1097,17 +1097,17 @@
 
 # is it already in the inventory?
               $q_string  = "select sw_id ";
-              $q_string .= "from software ";
+              $q_string .= "from inv_software ";
               $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Open Source' and (sw_software like '%apache%' or sw_software like '%lighttp%') ";
-              $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              if (mysqli_num_rows($q_software) == 0) {
-                $q_string = "insert into software set sw_id = null," . $query . ",sw_group = " . $a_inventory['inv_manager'];
+              $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              if (mysqli_num_rows($q_inv_software) == 0) {
+                $q_string = "insert into inv_software set sw_id = null," . $query . ",sw_group = " . $a_inventory['inv_manager'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
               } else {
-                $a_software = mysqli_fetch_array($q_software);
-                $q_string = "update software set " . $query . " where sw_id = " . $a_software['sw_id'];
+                $a_inv_software = mysqli_fetch_array($q_inv_software);
+                $q_string = "update inv_software set " . $query . " where sw_id = " . $a_inv_software['sw_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
@@ -1141,17 +1141,17 @@
 
 # is it already in the inventory?
               $q_string  = "select sw_id ";
-              $q_string .= "from software ";
+              $q_string .= "from inv_software ";
               $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Open Source' and sw_software like '%Wildfly%'";
-              $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              if (mysqli_num_rows($q_software) == 0) {
-                $q_string = "insert into software set sw_id = null," . $query . ",sw_group = " . $a_inventory['inv_appadmin'];
+              $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              if (mysqli_num_rows($q_inv_software) == 0) {
+                $q_string = "insert into inv_software set sw_id = null," . $query . ",sw_group = " . $a_inventory['inv_appadmin'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
               } else {
-                $a_software = mysqli_fetch_array($q_software);
-                $q_string = "update software set " . $query . " where sw_id = " . $a_software['sw_id'];
+                $a_inv_software = mysqli_fetch_array($q_inv_software);
+                $q_string = "update inv_software set " . $query . " where sw_id = " . $a_inv_software['sw_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
@@ -1185,17 +1185,17 @@
 
 # is it already in the inventory?
               $q_string  = "select sw_id ";
-              $q_string .= "from software ";
+              $q_string .= "from inv_software ";
               $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Commercial' and sw_software like '%VMware Tools daemon%'";
-              $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              if (mysqli_num_rows($q_software) == 0) {
-                $q_string = "insert into software set sw_id = null," . $query . ",sw_group = " . $a_inventory['inv_manager'];
+              $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              if (mysqli_num_rows($q_inv_software) == 0) {
+                $q_string = "insert into inv_software set sw_id = null," . $query . ",sw_group = " . $a_inventory['inv_manager'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
               } else {
-                $a_software = mysqli_fetch_array($q_software);
-                $q_string = "update software set " . $query . " where sw_id = " . $a_software['sw_id'];
+                $a_inv_software = mysqli_fetch_array($q_inv_software);
+                $q_string = "update inv_software set " . $query . " where sw_id = " . $a_inv_software['sw_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
@@ -1230,17 +1230,17 @@
 
 # is it already in the inventory?
               $q_string  = "select sw_id ";
-              $q_string .= "from software ";
+              $q_string .= "from inv_software ";
               $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Commercial' and sw_software like '%newrelic%'";
-              $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              if (mysqli_num_rows($q_software) == 0) {
-                $q_string = "insert into software set sw_id = null," . $query . ",sw_group = " . $a_inventory['inv_appadmin'];
+              $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              if (mysqli_num_rows($q_inv_software) == 0) {
+                $q_string = "insert into inv_software set sw_id = null," . $query . ",sw_group = " . $a_inventory['inv_appadmin'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
               } else {
-                $a_software = mysqli_fetch_array($q_software);
-                $q_string = "update software set " . $query . " where sw_id = " . $a_software['sw_id'];
+                $a_inv_software = mysqli_fetch_array($q_inv_software);
+                $q_string = "update inv_software set " . $query . " where sw_id = " . $a_inv_software['sw_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
@@ -1275,17 +1275,17 @@
 
 # is it already in the inventory?
               $q_string  = "select sw_id ";
-              $q_string .= "from software ";
+              $q_string .= "from inv_software ";
               $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Commercial' and sw_software like '%java%'";
-              $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              if (mysqli_num_rows($q_software) == 0) {
-                $q_string = "insert into software set sw_id = null," . $query . ",sw_group = " . $a_inventory['inv_appadmin'];
+              $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              if (mysqli_num_rows($q_inv_software) == 0) {
+                $q_string = "insert into inv_software set sw_id = null," . $query . ",sw_group = " . $a_inventory['inv_appadmin'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
               } else {
-                $a_software = mysqli_fetch_array($q_software);
-                $q_string = "update software set " . $query . " where sw_id = " . $a_software['sw_id'];
+                $a_inv_software = mysqli_fetch_array($q_inv_software);
+                $q_string = "update inv_software set " . $query . " where sw_id = " . $a_inv_software['sw_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
@@ -1320,17 +1320,17 @@
 
 # is it already in the inventory?
               $q_string  = "select sw_id ";
-              $q_string .= "from software ";
+              $q_string .= "from inv_software ";
               $q_string .= "where sw_companyid = " . $a_inventory['inv_id'] . " and sw_type = 'Commercial' and sw_software like '%openjdk%'";
-              $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              if (mysqli_num_rows($q_software) == 0) {
-                $q_string = "insert into software set sw_id = null," . $query . ",sw_group = " . $a_inventory['inv_appadmin'];
+              $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              if (mysqli_num_rows($q_inv_software) == 0) {
+                $q_string = "insert into inv_software set sw_id = null," . $query . ",sw_group = " . $a_inventory['inv_appadmin'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
               } else {
-                $a_software = mysqli_fetch_array($q_software);
-                $q_string = "update software set " . $query . " where sw_id = " . $a_software['sw_id'];
+                $a_inv_software = mysqli_fetch_array($q_inv_software);
+                $q_string = "update inv_software set " . $query . " where sw_id = " . $a_inv_software['sw_id'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
                 }
