@@ -24,7 +24,7 @@
 
   $q_string  = "select int_id,int_openview,inv_manager,int_nagios,int_ping,int_ssh,int_http,int_ftp,int_smtp,int_snmp,int_load,int_uptime,int_cpu,int_swap,int_memory,int_notify,int_hours ";
   $q_string .= "from inv_interface ";
-  $q_string .= "left join inventory on inventory.inv_id = inv_interface.int_companyid ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_interface.int_companyid ";
   $q_string .= "where int_openview = 1 or int_nagios = 1 ";
   $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {

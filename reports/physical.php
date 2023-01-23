@@ -176,32 +176,32 @@
 # get a physical server with linux installed
 
   $q_string  = "select inv_id,inv_name,int_eth,sw_software ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_interface    on inv_interface.int_companyid    = inventory.inv_id ";
-  $q_string .= "left join inv_hardware     on inv_hardware.hw_companyid      = inventory.inv_id ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_interface    on inv_interface.int_companyid    = inv_inventory.inv_id ";
+  $q_string .= "left join inv_hardware     on inv_hardware.hw_companyid      = inv_inventory.inv_id ";
   $q_string .= "left join inv_models       on inv_models.mod_id              = inv_hardware.hw_vendorid ";
-  $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inventory.inv_id ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inv_inventory.inv_id ";
   $q_string .= "left join inv_software     on inv_software.sw_id             = inv_svr_software.svr_softwareid ";
   $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = inv_software.sw_type ";
 #  $q_string .= $where . " and int_eth not like \"00:50:56%\" and int_eth != '' and typ_name = 'OS' and sw_software like \"Red Hat%\" and (int_type = 1 or int_type = 2) ";
 #  $q_string .= $where . " and mod_virtual = 0 and typ_name = 'OS' and sw_software like \"Red Hat%\" ";
   $q_string .= $where . " and mod_virtual = 0 ";
   $q_string .= $orderby;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
-    $linkstart = "<a href=\"" . $Siteroot . "/show/inventory.php?server=" . $a_inventory['inv_id'] . "\">";
+    $linkstart = "<a href=\"" . $Siteroot . "/show/inventory.php?server=" . $a_inv_inventory['inv_id'] . "\">";
     $linkend = "</a>";
 
     print "<tr>\n";
-    print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inventory['inv_name'] .$linkend . "</a></td>\n";
-    print "  <td class=\"ui-widget-content\">" . $a_inventory['int_eth']                 . "</a></td>\n";
-    print "  <td class=\"ui-widget-content\">" . $a_inventory['sw_software']               . "</a></td>\n";
+    print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_inventory['inv_name'] .$linkend . "</a></td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['int_eth']                 . "</a></td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['sw_software']               . "</a></td>\n";
     print "</tr>";
 
   }
 
-  mysqli_free_result($q_inventory);
+  mysqli_free_result($q_inv_inventory);
 
 ?>
 </table>

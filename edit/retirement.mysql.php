@@ -55,7 +55,7 @@
             "inv_contracts     = \"" . $formVars['inv_contracts']     . "\"";
 
           if ($formVars['update'] == 1) {
-            $query = "update inventory set " . $q_string . " where inv_id = " . $formVars['id'];
+            $query = "update inv_inventory set " . $q_string . " where inv_id = " . $formVars['id'];
             $message = "Tickets updated.";
           }
 
@@ -117,12 +117,12 @@
         $output .= "<option value=\"0\">None</option>\n";
 
         $q_string  = "select inv_id,inv_name ";
-        $q_string .= "from inventory ";
+        $q_string .= "from inv_inventory ";
         $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name";
-        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_inventory = mysqli_fetch_array($q_inventory)) {
-          $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . htmlspecialchars($a_inventory['inv_name']) . "</option>\n";
+        $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
+          $output .= "<option value=\"" . $a_inv_inventory['inv_id'] . "\">" . htmlspecialchars($a_inv_inventory['inv_name']) . "</option>\n";
         }
 
         $output .= "</select></td>\n";
@@ -178,11 +178,11 @@
       $output .= "<tr>\n";
       $output .= "  <td class=\"ui-widget-content\">The following servers are being retired. Please remove all monitoring from the listed servers. The list following each server are all the names and IPs associated with the servers to ensure all monitoring is stopped:<br><br>";
       $q_string  = "select inv_name ";
-      $q_string .= "from inventory ";
+      $q_string .= "from inv_inventory ";
       $q_string .= "where inv_id = " . $formVars['ret_companyid'] . " ";
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_inventory = mysqli_fetch_array($q_inventory);
-      $output .= "Server Name: " . $a_inventory['inv_name'] . "<br>\n";
+      $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
+      $output .= "Server Name: " . $a_inv_inventory['inv_name'] . "<br>\n";
       $output .= "----------<br>\n";
       $q_string  = "select int_server,int_addr ";
       $q_string .= "from inv_interface ";
@@ -205,11 +205,11 @@
       $output .= "<tr>\n";
       $output .= "  <td class=\"ui-widget-content\">The following servers are being retired. Please disable any backups for the following systems:<br><br>";
       $q_string  = "select inv_name ";
-      $q_string .= "from inventory ";
+      $q_string .= "from inv_inventory ";
       $q_string .= "where inv_id = " . $formVars['ret_companyid'] . " ";
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_inventory = mysqli_fetch_array($q_inventory);
-      $output .= "Server Name: " . $a_inventory['inv_name'] . "<br>\n";
+      $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
+      $output .= "Server Name: " . $a_inv_inventory['inv_name'] . "<br>\n";
       $output .= "----------<br>\n";
       $q_string  = "select int_server,int_addr ";
       $q_string .= "from inv_interface ";
@@ -273,7 +273,7 @@
       $output .= "  <td class=\"ui-widget-content\">The following servers are being retired. Please clear the following hostnames and IPs, forward and reverse, from DNS:<br><br>";
       $q_string  = "select int_server,int_domain,int_addr ";
       $q_string .= "from inv_interface ";
-      $q_string .= "left join inventory on inventory.inv_id = inv_interface.int_companyid ";
+      $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_interface.int_companyid ";
       $q_string .= "where int_companyid = " . $formVars['ret_companyid'] . " ";
       $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
@@ -294,7 +294,7 @@
       $output .= "  <td class=\"ui-widget-content\">The following servers are being retired. Please clear the following hostnames and IPs, forward and reverse, from DNS.<br><br>";
       $q_string  = "select int_server,int_domain,int_addr ";
       $q_string .= "from inv_interface ";
-      $q_string .= "left join inventory on inventory.inv_id = inv_interface.int_companyid ";
+      $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_interface.int_companyid ";
       $q_string .= "where int_companyid = " . $formVars['ret_companyid'] . " ";
       $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
@@ -315,18 +315,18 @@
       $output .= "  <td class=\"ui-widget-content\">The following servers are being retired. Please uncable and remove the following systems and deliver them to my desk at 1K3005 for disposal:<br><br>";
 
       $q_string  = "select inv_name,hw_asset,hw_serial,inv_rack,inv_row,inv_unit,ven_name,mod_name,loc_identity ";
-      $q_string .= "from inventory ";
-      $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid    = inventory.inv_id ";
+      $q_string .= "from inv_inventory ";
+      $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid    = inv_inventory.inv_id ";
       $q_string .= "left join inv_models    on inv_models.mod_id            = inv_hardware.hw_vendorid ";
       $q_string .= "left join inv_vendors   on inv_vendors.ven_id           = inv_models.mod_vendor ";
-      $q_string .= "left join inv_locations on inv_locations.loc_id         = inventory.inv_location ";
+      $q_string .= "left join inv_locations on inv_locations.loc_id         = inv_inventory.inv_location ";
       $q_string .= "where inv_id = " . $formVars['ret_companyid'] . " ";
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_inventory = mysqli_fetch_array($q_inventory);
+      $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
 
 
-      $output .= "Label: " . $a_inventory['inv_name'] . ", Vendor: " . $a_inventory['ven_name'] . ", Model: " . $a_inventory['mod_name'] . ", Asset Tag: " . $a_inventory['hw_asset'] . ", Serial/Service: " . $a_inventory['hw_serial'] . ", Location: " . $a_inventory['loc_identity'] . " " . $a_inventory['inv_row'] . "-" . $a_inventory['inv_rack'] . " U" . $a_inventory['inv_unit'] . "</td>\n";
+      $output .= "Label: " . $a_inv_inventory['inv_name'] . ", Vendor: " . $a_inv_inventory['ven_name'] . ", Model: " . $a_inv_inventory['mod_name'] . ", Asset Tag: " . $a_inv_inventory['hw_asset'] . ", Serial/Service: " . $a_inv_inventory['hw_serial'] . ", Location: " . $a_inv_inventory['loc_identity'] . " " . $a_inv_inventory['inv_row'] . "-" . $a_inv_inventory['inv_rack'] . " U" . $a_inv_inventory['inv_unit'] . "</td>\n";
       $output .= "</tr>\n";
       $output .= "</table>\n";
 
@@ -338,11 +338,11 @@
       $output .= "<tr>\n";
       $output .= "  <td class=\"ui-widget-content\">The following servers are being retired. The systems have been powered off. Please delete the following Virtual Machines:<br><br>";
       $q_string  = "select inv_name ";
-      $q_string .= "from inventory ";
+      $q_string .= "from inv_inventory ";
       $q_string .= "where inv_id = " . $formVars['ret_companyid'] . " ";
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_inventory = mysqli_fetch_array($q_inventory);
-      $output .= $a_inventory['inv_name'] . "<br>\n";
+      $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
+      $output .= $a_inv_inventory['inv_name'] . "<br>\n";
       $output .= "</td>\n";
       $output .= "</tr>\n";
       $output .= "</table>\n";
@@ -355,11 +355,11 @@
       $output .= "<tr>\n";
       $output .= "  <td class=\"ui-widget-content\">The following systerms are being retired. Please recover any SAN storage:<br><br>";
       $q_string  = "select inv_name ";
-      $q_string .= "from inventory ";
+      $q_string .= "from inv_inventory ";
       $q_string .= "where inv_id = " . $formVars['ret_companyid'] . " ";
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_inventory = mysqli_fetch_array($q_inventory);
-      $output .= $a_inventory['inv_name'] . "<br>\n";
+      $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
+      $output .= $a_inv_inventory['inv_name'] . "<br>\n";
       $output .= "</tr>\n";
       $output .= "</table>\n";
 

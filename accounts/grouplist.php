@@ -320,7 +320,7 @@ Disabled in the system and should be removed from the group.</li>
   <td class="ui-widget-content">To group <select name="gpl_group">
 <?php
   $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from a_inv_groups ";
+  $q_string .= "from inv_groups ";
   $q_string .= "left join inv_grouplist on inv_grouplist.gpl_group = a_inv_groups.grp_id ";
   if (check_userlevel($db, $AL_Admin) == 0) {
     $q_string .= "where gpl_user = " . $_SESSION['uid'] . " ";

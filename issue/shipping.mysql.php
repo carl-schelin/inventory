@@ -88,22 +88,22 @@
 
 
           $q_string  = "select inv_name,loc_name,ct_city,st_acronym,hw_asset,hw_serial ";
-          $q_string .= "from inventory ";
-          $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
+          $q_string .= "from inv_inventory ";
+          $q_string .= "left join inv_locations on inv_locations.loc_id      = inv_inventory.inv_location ";
           $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city ";
           $q_string .= "left join inv_states    on inv_states.st_id          = inv_locations.loc_state ";
-          $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inventory.inv_id ";
+          $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inv_inventory.inv_id ";
           $q_string .= "where inv_id = " . $formVars['hw_server'] . " and hw_primary = 1 and hw_deleted = 0 ";
-          $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          $a_inventory = mysqli_fetch_array($q_inventory);
+          $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
           $body .= "<ul>\n";
           $body .= "  <li>Affected System\n";
           $body .= "  <ul>\n";
-          $body .= "    <li>Name: "                    . $a_inventory['inv_name']   . "</li>\n";
-          $body .= "    <li>Location: "                . $a_inventory['loc_name']   . " (" . $a_inventory['ct_city'] . " " . $a_inventory['st_acronym'] . ")</li>\n";
-          $body .= "    <li>Asset Tag Number: "        . $a_inventory['hw_asset']   . "</li>\n";
-          $body .= "    <li>Serial Number: "           . $a_inventory['hw_serial']  . "</li>\n";
+          $body .= "    <li>Name: "                    . $a_inv_inventory['inv_name']   . "</li>\n";
+          $body .= "    <li>Location: "                . $a_inv_inventory['loc_name']   . " (" . $a_inv_inventory['ct_city'] . " " . $a_inv_inventory['st_acronym'] . ")</li>\n";
+          $body .= "    <li>Asset Tag Number: "        . $a_inv_inventory['hw_asset']   . "</li>\n";
+          $body .= "    <li>Serial Number: "           . $a_inv_inventory['hw_serial']  . "</li>\n";
           $body .= "  </ul></li>\n";
 
 

@@ -29,10 +29,10 @@
       $a_inv_images = mysqli_fetch_array($q_inv_images);
 
       $q_string  = "select inv_id ";
-      $q_string .= "from inventory ";
+      $q_string .= "from inv_inventory ";
       $q_string .= "where inv_front = " . $formVars['id'] . " or inv_rear = " . $formVars['id'] . " ";
-      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_inventory) == 1) {
+      $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_inventory) == 1) {
         if (file_exists($Picturepath . "/" . $a_inv_images['img_file'])) {
           unlink($Picturepath . "/" . $a_inv_images['img_file']);
         }
@@ -66,15 +66,15 @@
         }
 
         $q_string  = "select inv_id ";
-        $q_string .= "from inventory ";
+        $q_string .= "from inv_inventory ";
         $q_string .= "where inv_front = " . $a_front['img_id'] . " ";
-        $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . $mysqli_error($db));
-        if (mysqli_num_rows($q_inventory) > 0) {
-          while ($a_inventory = mysql_fetch_array($q_inventory)) {
+        $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . $mysqli_error($db));
+        if (mysqli_num_rows($q_inv_inventory) > 0) {
+          while ($a_inv_inventory = mysql_fetch_array($q_inv_inventory)) {
             $q_string  = "update ";
-            $q_string .= "inventory ";
+            $q_string .= "inv_inventory ";
             $q_string .= "set inv_front = " . $a_front['img_id'] . " ";
-            $q_string .= "where inv_id = " . $a_inventory['inv_id'] . " ";
+            $q_string .= "where inv_id = " . $a_inv_inventory['inv_id'] . " ";
             $q_result = mysqli_query($db, $q_string) or die($q_string . ": " . $mysqli_error($db));
           }
         }
@@ -92,15 +92,15 @@
         }
 
         $q_string  = "select inv_id ";
-        $q_string .= "from inventory ";
+        $q_string .= "from inv_inventory ";
         $q_string .= "where inv_rear = " . $a_rear['img_id'] . " ";
-        $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . $mysqli_error($db));
-        if (mysqli_num_rows($q_inventory) > 0) {
-          while ($a_inventory = mysql_fetch_array($q_inventory)) {
+        $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . $mysqli_error($db));
+        if (mysqli_num_rows($q_inv_inventory) > 0) {
+          while ($a_inv_inventory = mysql_fetch_array($q_inv_inventory)) {
             $q_string  = "update ";
-            $q_string .= "inventory ";
+            $q_string .= "inv_inventory ";
             $q_string .= "set inv_rear = " . $a_rear['img_id'] . " ";
-            $q_string .= "where inv_id = " . $a_inventory['inv_id'] . " ";
+            $q_string .= "where inv_id = " . $a_inv_inventory['inv_id'] . " ";
             $q_result = mysqli_query($db, $q_string) or die($q_string . ": " . $mysqli_error($db));
           }
         }

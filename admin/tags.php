@@ -324,15 +324,15 @@ $(document).ready( function() {
 <option value="0">All Servers</option>
 <?php
   $q_string  = "select inv_id,inv_name ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_status = 0 ";
   if ($_SESSION['p_group'] > 0) {
     $q_string .= "and inv_manager = " . $_SESSION['p_group'] . " ";
   }
   $q_string .= "order by inv_name ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
-    print "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . "</option>\n";
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
+    print "<option value=\"" . $a_inv_inventory['inv_id'] . "\">" . $a_inv_inventory['inv_name'] . "</option>\n";
   }
 ?>
 </select> Select All Servers to create a Master Tag.</td>
@@ -391,15 +391,15 @@ $(document).ready( function() {
   <td class="ui-widget-content">Server: <select name="tag_companyid">
 <?php
   $q_string  = "select inv_id,inv_name ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_status = 0 ";
   if ($_SESSION['p_group'] > 0) {
     $q_string .= "and inv_manager = " . $_SESSION['p_group'] . " ";
   }
   $q_string .= "order by inv_name ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
-    print "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . "</option>\n";
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
+    print "<option value=\"" . $a_inv_inventory['inv_id'] . "\">" . $a_inv_inventory['inv_name'] . "</option>\n";
   }
 ?>
 </select> Select All Servers to create a Master Tag.</td>

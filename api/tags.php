@@ -106,43 +106,43 @@
   }
 
   $q_string  = "select inv_id,inv_name ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_tags on inv_tags.tag_companyid = inventory.inv_id ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_tags on inv_tags.tag_companyid = inv_inventory.inv_id ";
   if ($formVars['locations'] != 'no') {
-    $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
+    $q_string .= "left join inv_locations on inv_locations.loc_id = inv_inventory.inv_location ";
   }
   if ($formVars['service'] != 'no') {
-    $q_string .= "left join inv_service on inv_service.svc_id = inventory.inv_class ";
+    $q_string .= "left join inv_service on inv_service.svc_id = inv_inventory.inv_class ";
   }
   if ($formVars['product'] != 'no') {
-    $q_string .= "left join inv_products on inv_products.prod_id = inventory.inv_product ";
+    $q_string .= "left join inv_products on inv_products.prod_id = inv_inventory.inv_product ";
   }
   if ($formVars['admin'] != 'no') {
-    $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_appadmin ";
+    $q_string .= "left join inv_groups on inv_groups.grp_id = inv_inventory.inv_appadmin ";
   } else {
     if ($formVars['manager'] != 'no') {
-      $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
+      $q_string .= "left join inv_groups on inv_groups.grp_id = inv_inventory.inv_manager ";
     }
   }
   $q_string .= $where;
   $q_string .= "order by inv_name ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string  . ": " . mysqli_error($db));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string  . ": " . mysqli_error($db));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
     if ($formVars['zone'] != '') {
       $q_string  = "select int_zone ";
       $q_string .= "from inv_interface ";
       $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = inv_interface.int_zone ";
-      $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and zone_zone = \"" . $formVars['zone'] . "\" ";
+      $q_string .= "where int_companyid = " . $a_inv_inventory['inv_id'] . " and zone_zone = \"" . $formVars['zone'] . "\" ";
       $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
       if (mysqli_num_rows($q_inv_interface) > 0) {
-        $servers[$a_inventory['inv_name']] = new Server();
-        $servers[$a_inventory['inv_name']]->servername = $a_inventory['inv_name'];
+        $servers[$a_inv_inventory['inv_name']] = new Server();
+        $servers[$a_inv_inventory['inv_name']]->servername = $a_inv_inventory['inv_name'];
       }
     } else {
-      $servers[$a_inventory['inv_name']] = new Server();
-      $servers[$a_inventory['inv_name']]->servername = $a_inventory['inv_name'];
+      $servers[$a_inv_inventory['inv_name']] = new Server();
+      $servers[$a_inv_inventory['inv_name']]->servername = $a_inv_inventory['inv_name'];
     }
   }
 

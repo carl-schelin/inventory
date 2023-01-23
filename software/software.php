@@ -311,7 +311,7 @@ is a small difference, you can make changes and add a new software entry.</p>
   <td class="ui-widget-content">Support: <select name="sw_supportid">
 <?php
   $q_string  = "select sup_id,sup_company ";
-  $q_string .= "from support ";
+  $q_string .= "from inv_support ";
   $q_string .= "order by sup_company";
   $q_support = mysqli_query($db, $q_string) or die(mysqli_error($db));
   while ($a_support = mysqli_fetch_array($q_support)) {
@@ -415,7 +415,7 @@ is a small difference, you can make changes and add a new software entry.</p>
   <td class="ui-widget-content">Support: <select name="sw_supportid">
 <?php
   $q_string  = "select sup_id,sup_company ";
-  $q_string .= "from support ";
+  $q_string .= "from inv_support ";
   $q_string .= "order by sup_company";
   $q_support = mysqli_query($db, $q_string) or die(mysqli_error($db));
   while ($a_support = mysqli_fetch_array($q_support)) {

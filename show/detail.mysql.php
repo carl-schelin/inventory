@@ -19,31 +19,31 @@
   $q_string  = "select inv_name,inv_companyid,inv_function,inv_class,inv_manager,inv_appadmin,";
   $q_string .= "grp_name,inv_callpath,inv_rack,inv_row,inv_unit,inv_front,inv_rear,loc_name,loc_addr1,";
   $q_string .= "loc_addr2,loc_suite,ct_city,st_acronym,loc_zipcode,cn_acronym,loc_details,prod_name,prj_name ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
-  $q_string .= "left join inv_products  on inv_products.prod_id = inventory.inv_product ";
-  $q_string .= "left join inv_projects  on inv_projects.prj_id  = inventory.inv_project ";
-  $q_string .= "left join inv_groups    on inv_groups.grp_id    = inventory.inv_manager ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id = inv_inventory.inv_location ";
+  $q_string .= "left join inv_products  on inv_products.prod_id = inv_inventory.inv_product ";
+  $q_string .= "left join inv_projects  on inv_projects.prj_id  = inv_inventory.inv_project ";
+  $q_string .= "left join inv_groups    on inv_groups.grp_id    = inv_inventory.inv_manager ";
   $q_string .= "left join inv_cities    on inv_cities.ct_id     = inv_locations.loc_city ";
   $q_string .= "left join inv_states    on inv_states.st_id     = inv_locations.loc_state ";
   $q_string .= "left join inv_country   on inv_country.cn_id    = inv_locations.loc_country ";
   $q_string .= "where inv_id = " . $formVars['id'] . " ";
-  $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  $a_inventory = mysqli_fetch_array($q_inventory);
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
-  if ($a_inventory['inv_companyid'] > 0) {
+  if ($a_inv_inventory['inv_companyid'] > 0) {
     $q_string  = "select inv_name ";
-    $q_string .= "from inventory ";
-    $q_string .= "where inv_id = " . $a_inventory['inv_companyid'];
+    $q_string .= "from inv_inventory ";
+    $q_string .= "where inv_id = " . $a_inv_inventory['inv_companyid'];
     $q_chassis = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     $a_chassis = mysqli_fetch_array($q_chassis);
   } else {
     $a_chassis['inv_name'] = '';
   }
 
-  $cfg2html = '/cfg2html/' . date('Ym') . '/' . $a_inventory['inv_name'] . '.html';
+  $cfg2html = '/cfg2html/' . date('Ym') . '/' . $a_inv_inventory['inv_name'] . '.html';
 
-  if ($a_inventory['inv_callpath'] == 1) {
+  if ($a_inv_inventory['inv_callpath'] == 1) {
     $class_header="ui-state-error";
     $class_detail="ui-state-highlight";
     $e911_detail = "Server is in the 911 call path.";
@@ -57,13 +57,13 @@
   $output .= "<tr>";
   $output .= "  <th class=\"" . $class_header . "\">";
   if (check_userlevel($db, $AL_Edit)) {
-    if (check_grouplevel($db, $a_inventory['inv_manager'])) {
+    if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
       $output .= "<a href=\"" . $Editroot . "/inventory.php?server=" . $formVars['id'] . "\" target=\"_blank\"><img src=\"" . $Imgsroot . "/pencil.gif\">";
     }
   }
   $output .= "System Information";
   if (check_userlevel($db, $AL_Edit)) {
-    if (check_grouplevel($db, $a_inventory['inv_manager'])) {
+    if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
       $output .= "</a>";
     }
   }
@@ -120,17 +120,17 @@
   $output .= "<td class=\"" . $class_header . "\" style=\"text-align: center;\" colspan=\"8\"><strong>" . $e911_detail . "</strong></td>";
   $output .= "</tr>";
   $output .= "<tr>";
-  $output .= "<td class=\"" . $class_detail . "\" colspan=\"3\"><strong>Server</strong>: " . $a_inventory['inv_name'] . "</td>";
-  $output .= "<td class=\"" . $class_detail . "\" colspan=\"3\"><strong>Function</strong>: " . $a_inventory['inv_function'] . "</td>";
-  $output .= "<td class=\"" . $class_detail . "\"><strong>Product</strong>: " . $a_inventory['prod_name'] . "</td>";
-  $output .= "<td class=\"" . $class_detail . "\"><strong>Project</strong>: " . $a_inventory['prj_name'] . "</td>";
+  $output .= "<td class=\"" . $class_detail . "\" colspan=\"3\"><strong>Server</strong>: " . $a_inv_inventory['inv_name'] . "</td>";
+  $output .= "<td class=\"" . $class_detail . "\" colspan=\"3\"><strong>Function</strong>: " . $a_inv_inventory['inv_function'] . "</td>";
+  $output .= "<td class=\"" . $class_detail . "\"><strong>Product</strong>: " . $a_inv_inventory['prod_name'] . "</td>";
+  $output .= "<td class=\"" . $class_detail . "\"><strong>Project</strong>: " . $a_inv_inventory['prj_name'] . "</td>";
   $output .= "</tr>";
   $output .= "<tr>";
-  $output .= "<td class=\"" . $class_detail . "\" colspan=\"3\"><strong>Platform Managed By</strong>: " . $a_inventory['grp_name'] . "</td>";
+  $output .= "<td class=\"" . $class_detail . "\" colspan=\"3\"><strong>Platform Managed By</strong>: " . $a_inv_inventory['grp_name'] . "</td>";
 
   $q_string  = "select grp_name ";
   $q_string .= "from inv_groups ";
-  $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
+  $q_string .= "where grp_id = " . $a_inv_inventory['inv_appadmin'] . " ";
   $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
@@ -139,7 +139,7 @@
 
   $q_string  = "select svc_name,svc_availability,svc_downtime,svc_mtbf,svc_geographic,svc_mttr,svc_resource,svc_restore ";
   $q_string .= "from inv_service ";
-  $q_string .= "where svc_id = " . $a_inventory['inv_class'];
+  $q_string .= "where svc_id = " . $a_inv_inventory['inv_class'];
   $q_inv_service = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_inv_service = mysqli_fetch_array($q_inv_service);
 
@@ -170,43 +170,43 @@
     $output .= "<th class=\"ui-state-default\" colspan=\"7\">Location Information</th>";
     $output .= "</tr>";
     $output .= "<tr>";
-    $output .= "<td class=\"ui-widget-content\">" . $a_inventory['loc_name'] . "</td>";
-    $output .= "<td class=\"ui-widget-content\">" . $a_inventory['loc_addr1'] . "</td>";
-    if (strlen($a_inventory['loc_addr2']) > 0) {
-      $output .= "<td class=\"ui-widget-content\">" . $a_inventory['loc_addr2'] . "</td>";
+    $output .= "<td class=\"ui-widget-content\">" . $a_inv_inventory['loc_name'] . "</td>";
+    $output .= "<td class=\"ui-widget-content\">" . $a_inv_inventory['loc_addr1'] . "</td>";
+    if (strlen($a_inv_inventory['loc_addr2']) > 0) {
+      $output .= "<td class=\"ui-widget-content\">" . $a_inv_inventory['loc_addr2'] . "</td>";
     }
-    if (strlen($a_inventory['loc_suite']) > 0) {
-      $output .= "<td class=\"ui-widget-content\">" . $a_inventory['loc_suite'] . "</td>";
+    if (strlen($a_inv_inventory['loc_suite']) > 0) {
+      $output .= "<td class=\"ui-widget-content\">" . $a_inv_inventory['loc_suite'] . "</td>";
     }
-    $output .= "<td class=\"ui-widget-content\">" . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym'] . " " .  $a_inventory['loc_zipcode'] . " " .  $a_inventory['cn_acronym'] . "</td>";
+    $output .= "<td class=\"ui-widget-content\">" . $a_inv_inventory['ct_city'] . ", " . $a_inv_inventory['st_acronym'] . " " .  $a_inv_inventory['loc_zipcode'] . " " .  $a_inv_inventory['cn_acronym'] . "</td>";
 #
 # show the blade chassis with a link to it and slot
 #
-    if ($a_inventory['inv_companyid'] > 0) {
+    if ($a_inv_inventory['inv_companyid'] > 0) {
       $output .= "<td class=\"ui-widget-content\">";
       $output .= "<strong>Blade Chassis</strong>: ";
-      $output .= "<a href=\"inventory.php?server=" . $a_inventory['inv_companyid'] . "\" target=\"_blank\">";
+      $output .= "<a href=\"inventory.php?server=" . $a_inv_inventory['inv_companyid'] . "\" target=\"_blank\">";
       $output .= $a_chassis['inv_name'] . "</a> ";
-      $output .= "<strong>Slot</strong>: " . $a_inventory['inv_unit'] . "</td>\n";
+      $output .= "<strong>Slot</strong>: " . $a_inv_inventory['inv_unit'] . "</td>\n";
     } else {
-      if ($a_inventory['inv_row'] == '') {
+      if ($a_inv_inventory['inv_row'] == '') {
         $output .= "<td class=\"ui-widget-content\"><strong>Rack:</strong> Unknown</td>";
       } else {
-        $output .= "<td class=\"ui-widget-content\"><strong>Rack:</strong> " . $a_inventory['inv_row'] . $a_inventory['inv_rack'] . "/U" . $a_inventory['inv_unit'] . "</td>";
+        $output .= "<td class=\"ui-widget-content\"><strong>Rack:</strong> " . $a_inv_inventory['inv_row'] . $a_inv_inventory['inv_rack'] . "/U" . $a_inv_inventory['inv_unit'] . "</td>";
       }
     }
-    if ($a_inventory['loc_details'] == '') {
+    if ($a_inv_inventory['loc_details'] == '') {
       $output .= "<td class=\"ui-widget-content\" align=center>&nbsp;</td>";
     } else {
-      $output .= "<td class=\"ui-widget-content\" align=center><a href=\"" . $a_inventory['loc_details'] . "\" target=\"_blank\">Data Center Access details</a></td>";
+      $output .= "<td class=\"ui-widget-content\" align=center><a href=\"" . $a_inv_inventory['loc_details'] . "\" target=\"_blank\">Data Center Access details</a></td>";
     }
     $output .= "</tr>";
     $output .= "</table>";
 
     $q_string  = "select inv_id,inv_name,inv_function,grp_name,inv_unit,inv_appadmin,prod_name ";
-    $q_string .= "from inventory ";
-    $q_string .= "left join inv_groups   on inv_groups.grp_id    = inventory.inv_manager ";
-    $q_string .= "left join inv_products on inv_products.prod_id = inventory.inv_product ";
+    $q_string .= "from inv_inventory ";
+    $q_string .= "left join inv_groups   on inv_groups.grp_id    = inv_inventory.inv_manager ";
+    $q_string .= "left join inv_products on inv_products.prod_id = inv_inventory.inv_product ";
     $q_string .= "where inv_companyid = " . $formVars['id'] . " and inv_status = 0 ";
     $q_string .= "order by inv_unit ";
     $q_children = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -249,14 +249,14 @@
     $output .= "<tr>";
     $output .= "<th class=\"ui-state-default\">Pictures</th>";
     $output .= "</tr>";
-    if ($a_inventory['inv_front'] > 0) {
+    if ($a_inv_inventory['inv_front'] > 0) {
       $output .= "<tr>";
       $output .= "<td class=\"ui-widget-content\">Front Picture:</td>";
       $output .= "</tr>";
       $output .= "<tr>";
       $q_string  = "select img_file ";
       $q_string .= "from inv_images ";
-      $q_string .= "where img_id = " . $a_inventory['inv_front'];
+      $q_string .= "where img_id = " . $a_inv_inventory['inv_front'];
       $q_inv_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       $a_inv_images = mysqli_fetch_array($q_inv_images);
 
@@ -267,14 +267,14 @@
       $output .= "</td>";
       $output .= "</tr>";
     }
-    if ($a_inventory['inv_rear'] > 0) {
+    if ($a_inv_inventory['inv_rear'] > 0) {
       $output .= "<tr>";
       $output .= "<td class=\"ui-widget-content\">Rear Picture:</td>";
       $output .= "</tr>";
       $output .= "<tr>";
       $q_string  = "select img_file ";
       $q_string .= "from inv_images ";
-      $q_string .= "where img_id = " . $a_inventory['inv_rear'];
+      $q_string .= "where img_id = " . $a_inv_inventory['inv_rear'];
       $q_inv_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       $a_inv_images = mysqli_fetch_array($q_inv_images);
 
@@ -292,19 +292,19 @@
     $output .= "<th class=\"ui-state-default\" colspan=\"7\">Location Information</th>";
     $output .= "</tr>";
     $output .= "<tr>";
-    $output .= "<td class=\"ui-widget-content\">" . $a_inventory['loc_name'] . "</td>";
-    $output .= "<td class=\"ui-widget-content\">" . $a_inventory['loc_addr1'] . "</td>";
-    if (strlen($a_inventory['loc_addr2']) > 0) {
-      $output .= "<td class=\"ui-widget-content\">" . $a_inventory['loc_addr2'] . "</td>";
+    $output .= "<td class=\"ui-widget-content\">" . $a_inv_inventory['loc_name'] . "</td>";
+    $output .= "<td class=\"ui-widget-content\">" . $a_inv_inventory['loc_addr1'] . "</td>";
+    if (strlen($a_inv_inventory['loc_addr2']) > 0) {
+      $output .= "<td class=\"ui-widget-content\">" . $a_inv_inventory['loc_addr2'] . "</td>";
     }
-    if (strlen($a_inventory['loc_suite']) > 0) {
-      $output .= "<td class=\"ui-widget-content\">" . $a_inventory['loc_suite'] . "</td>";
+    if (strlen($a_inv_inventory['loc_suite']) > 0) {
+      $output .= "<td class=\"ui-widget-content\">" . $a_inv_inventory['loc_suite'] . "</td>";
     }
-    $output .= "<td class=\"ui-widget-content\">" . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym'] . " " .  $a_inventory['loc_zipcode'] . " " .  $a_inventory['cn_acronym'] . "</td>";
-    if ($a_inventory['inv_companyid'] > 0) {
+    $output .= "<td class=\"ui-widget-content\">" . $a_inv_inventory['ct_city'] . ", " . $a_inv_inventory['st_acronym'] . " " .  $a_inv_inventory['loc_zipcode'] . " " .  $a_inv_inventory['cn_acronym'] . "</td>";
+    if ($a_inv_inventory['inv_companyid'] > 0) {
       $output .= "<td class=\"ui-widget-content\">";
       $output .= "<strong>Guest Of</strong>: ";
-      $output .= "<a href=\"inventory.php?server=" . $a_inventory['inv_companyid'] . "\" target=\"_blank\">";
+      $output .= "<a href=\"inventory.php?server=" . $a_inv_inventory['inv_companyid'] . "\" target=\"_blank\">";
       $output .= $a_chassis['inv_name'] . "</a></td>\n";
     }
     $output .= "</table>";
@@ -339,11 +339,11 @@
   $output .= "</table>";
 
 
-  $q_string = "select inv_name,inv_ssh,inv_document,inv_notes "
-            . "from inventory "
-            . "where inv_id = " . $formVars['id'];
-  $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  $a_inventory = mysqli_fetch_array($q_inventory);
+  $q_string  = "select inv_name,inv_ssh,inv_document,inv_notes ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "where inv_id = " . $formVars['id'] . " ";
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
   $output .= "<table class=\"ui-styled-table\">";
   $output .= "<tr>";
@@ -351,13 +351,13 @@
   $output .= "</tr>";
   $output .= "<tr>";
   $output .= "<td class=\"ui-widget-content\">This server is ";
-  if ($a_inventory['inv_ssh'] == 0) {
+  if ($a_inv_inventory['inv_ssh'] == 0) {
     $output .= "not ";
   }
   $output .= "accessible via SSH.</td>";
   $output .= "</tr>";
   $output .= "<tr>";
-  $output .= "<td class=\"ui-widget-content\" colspan=\"4\"><strong>Notes</strong>: " . $a_inventory['inv_notes'] . "</td>";
+  $output .= "<td class=\"ui-widget-content\" colspan=\"4\"><strong>Notes</strong>: " . $a_inv_inventory['inv_notes'] . "</td>";
   $output .= "</tr>";
   $output .= "</table>";
 
@@ -365,9 +365,9 @@
   $output .= "<tr>";
   $output .= "<th class=\"ui-state-default\">External Links</th>";
   $output .= "</tr>";
-  if (strlen($a_inventory['inv_document']) > 0) {
+  if (strlen($a_inv_inventory['inv_document']) > 0) {
     $output .= "<tr>";
-    $output .= "<td class=\"ui-widget-content\"><a href=\"" . $a_inventory['inv_document'] . "\" target=\"_blank\">Link to Project Documentation</a></td>";
+    $output .= "<td class=\"ui-widget-content\"><a href=\"" . $a_inv_inventory['inv_document'] . "\" target=\"_blank\">Link to Project Documentation</a></td>";
     $output .= "</tr>";
   }
   if (file_exists($Sitedir . $cfg2html)) {
@@ -375,9 +375,9 @@
     $output .= "<td class=\"ui-widget-content\"><a href=\"" . $Siteurl . $cfg2html . "\" target=\"_blank\">Link to Configuration Documentation (cfg2html)</a></td>";
     $output .= "</tr>";
   }
-  if (file_exists($Sitedir . "/servers/" . $a_inventory['inv_name'])) {
+  if (file_exists($Sitedir . "/servers/" . $a_inv_inventory['inv_name'])) {
     $output .= "<tr>";
-    $output .= "<td class=\"ui-widget-content\"><a href=\"" . $Siteurl . "/servers/" . $a_inventory['inv_name'] . "\" target=\"_blank\">Link to raw server data (messages for 30 days, config files, output information, etc)</a></td>";
+    $output .= "<td class=\"ui-widget-content\"><a href=\"" . $Siteurl . "/servers/" . $a_inv_inventory['inv_name'] . "\" target=\"_blank\">Link to raw server data (messages for 30 days, config files, output information, etc)</a></td>";
     $output .= "</tr>";
   }
   $output .= "</table>";

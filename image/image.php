@@ -30,7 +30,7 @@
     $formVars['id'] = clean($_GET['id'], 10);
 
     $q_string  = "select img_title,img_file,img_date,img_owner ";
-    $q_string .= "from images ";
+    $q_string .= "from inv_images ";
     $q_string .= "where img_id = " . $formVars['id'];
     $q_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     $a_images = mysqli_fetch_array($q_images);

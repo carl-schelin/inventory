@@ -139,9 +139,9 @@
   $scount = 0;
   $q_string  = "select int_id,int_server,int_addr,inv_id,inv_name,inv_function,prod_name,prj_name,itp_name ";
   $q_string .= "from inv_interface ";
-  $q_string .= "left join inventory on inventory.inv_id = inv_interface.int_companyid ";
-  $q_string .= "left join inv_products  on inv_products.prod_id = inventory.inv_product ";
-  $q_string .= "left join inv_projects  on inv_projects.prj_id  = inventory.inv_project ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_interface.int_companyid ";
+  $q_string .= "left join inv_products  on inv_products.prod_id = inv_inventory.inv_product ";
+  $q_string .= "left join inv_projects  on inv_projects.prj_id  = inv_inventory.inv_project ";
   $q_string .= "left join inv_int_types on inv_int_types.itp_id = inv_interface.int_type ";
   $q_string .= "where inv_manager = " . $formVars['group'] . " and int_addr != '' and int_ip6 = 0 and int_addr != '127.0.0.1' and inv_status = 0 and (int_type = 1 or int_type = 2 or int_type = 6) ";
   $q_string .= $formVars['product'];

@@ -30,7 +30,7 @@
 
       $tag_owner       = return_Index($db, $a_inv_tags['tag_owner'],     "select usr_id from inv_users where usr_disabled = 0 order by usr_last,usr_first");
       $q_string  = "select inv_id ";
-      $q_string .= "from inventory ";
+      $q_string .= "from inv_inventory ";
       $q_string .= "where inv_status = 0 ";
       if ($_SESSION['p_group'] > 0) {
         $q_string .= "and inv_manager = " . $_SESSION['p_group'] . " ";

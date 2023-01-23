@@ -157,7 +157,7 @@ to software and hardware section.</p>
 
   $q_string  = "select hw_built,hw_active,hw_retired,hw_reused,inv_status ";
   $q_string .= "from inv_hardware ";
-  $q_string .= "left join inventory on inventory.inv_id = inv_hardware.hw_companyid ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_hardware.hw_companyid ";
   $q_string .= "where hw_primary = 1 " . $admin . " ";
   $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
@@ -316,7 +316,7 @@ to software and hardware section.</p>
 
   $q_string  = "select hw_built ";
   $q_string .= "from inv_hardware ";
-  $q_string .= "left join inventory on inventory.inv_id = inv_hardware.hw_companyid ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_hardware.hw_companyid ";
   $q_string .= "where hw_built != '1971-01-01' and hw_primary = 1 " . $admin . " ";
   $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
@@ -388,21 +388,21 @@ to software and hardware section.</p>
   $total = 0;
 
   $q_string  = "select inv_product,prod_name,count(inv_product) ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_products on inv_products.prod_id = inventory.inv_product  ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_products on inv_products.prod_id = inv_inventory.inv_product  ";
   $q_string .= "where inv_status = 0 " . $admin . " ";
   $q_string .= "group by prod_name";
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
-    $linkstart = "<a href=\"" . $Siteroot . "/reports/show.product.php?id=" . $a_inventory['inv_product']  . "\">";
+    $linkstart = "<a href=\"" . $Siteroot . "/reports/show.product.php?id=" . $a_inv_inventory['inv_product']  . "\">";
     $linkend   = "</a>";
 
     print "<tr>\n";
-    print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inventory['prod_name']          . $linkend . "</td>\n";
-    print "  <td class=\"ui-widget-content\">"              . $a_inventory['count(inv_product)']            . "</td>\n";
+    print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_inventory['prod_name']          . $linkend . "</td>\n";
+    print "  <td class=\"ui-widget-content\">"              . $a_inv_inventory['count(inv_product)']            . "</td>\n";
     print "</tr>\n";
-    $total += $a_inventory['count(inv_product)'];
+    $total += $a_inv_inventory['count(inv_product)'];
   }
 ?>
 <tr>
@@ -436,24 +436,24 @@ to software and hardware section.</p>
   $total = 0;
 
   $q_string  = "select sw_software,count(sw_software) ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inventory.inv_id ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inv_inventory.inv_id ";
   $q_string .= "left join inv_software     on inv_software.sw_id             = inv_svr_software.svr_softwareid ";
   $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = inv_software.sw_type ";
   $q_string .= "where inv_status = 0 and typ_name = 'OS' " . $admin . " ";
   $q_string .= "group by sw_software";
 print $q_string;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
-    $linkstart = "<a href=\"" . $Siteroot . "/reports/search.software.php?search_for=" . mysqli_real_escape_string($db, $a_inventory['sw_software']) . "\">";
+    $linkstart = "<a href=\"" . $Siteroot . "/reports/search.software.php?search_for=" . mysqli_real_escape_string($db, $a_inv_inventory['sw_software']) . "\">";
     $linkend   = "</a>";
 
     print "<tr>\n";
-    print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inventory['sw_software']        . $linkend . "</td>\n";
-    print "  <td class=\"ui-widget-content\">"              . $a_inventory['count(sw_software)']            . "</td>\n";
+    print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_inventory['sw_software']        . $linkend . "</td>\n";
+    print "  <td class=\"ui-widget-content\">"              . $a_inv_inventory['count(sw_software)']            . "</td>\n";
     print "</tr>\n";
-    $total += $a_inventory['count(sw_software)'];
+    $total += $a_inv_inventory['count(sw_software)'];
   }
 ?>
 <tr>
@@ -469,11 +469,11 @@ print $q_string;
 <?php
 
   $q_string  = "select inv_id ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_status = 0 " . $admin . " ";
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
-    $os = return_System($db, $a_inventory['inv_id']);
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
+    $os = return_System($db, $a_inv_inventory['inv_id']);
     if (strlen($os) == 0) {
       $os = "Unknown OS";
     }
@@ -539,7 +539,7 @@ print $q_string;
   $q_string .= "left join inv_models    on inv_models.mod_id    = inv_hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors   on inv_vendors.ven_id   = inv_models.mod_vendor ";
   $q_string .= "left join inv_parts     on inv_parts.part_id    = inv_models.mod_type ";
-  $q_string .= "left join inventory on inventory.inv_id = inv_hardware.hw_companyid ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_hardware.hw_companyid ";
   $q_string .= "where mod_primary = 1 and inv_status = 0 " . $admin . " ";
   $q_string .= "group by ven_name,mod_name ";
   $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -610,33 +610,33 @@ print $q_string;
   $lab = 0;
 
   $q_string  = "select inv_class,inv_callpath ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_status = 0 " . $admin . " ";
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
-    if ($a_inventory['inv_class'] == 0) {
+    if ($a_inv_inventory['inv_class'] == 0) {
       $undefined++;
     }
-    if ($a_inventory['inv_class'] == 1) {
+    if ($a_inv_inventory['inv_class'] == 1) {
       $lmcs++;
     }
-    if ($a_inventory['inv_callpath'] == 1) {
+    if ($a_inv_inventory['inv_callpath'] == 1) {
       $callpath++;
     }
-    if ($a_inventory['inv_class'] == 2) {
+    if ($a_inv_inventory['inv_class'] == 2) {
       $bcs++;
     }
-    if ($a_inventory['inv_class'] == 3) {
+    if ($a_inv_inventory['inv_class'] == 3) {
       $bes++;
     }
-    if ($a_inventory['inv_class'] == 4) {
+    if ($a_inv_inventory['inv_class'] == 4) {
       $bss++;
     }
-    if ($a_inventory['inv_class'] == 5) {
+    if ($a_inv_inventory['inv_class'] == 5) {
       $ubs++;
     }
-    if ($a_inventory['inv_class'] == 6) {
+    if ($a_inv_inventory['inv_class'] == 6) {
       $lab++;
     }
 

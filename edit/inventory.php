@@ -38,38 +38,38 @@
 
   if (isset($formVars['server'])) {
     $q_string  = "select inv_id,inv_name,inv_manager,inv_product,inv_project,inv_status,hw_active ";
-    $q_string .= "from inventory ";
-    $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inventory.inv_id ";
+    $q_string .= "from inv_inventory ";
+    $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inv_inventory.inv_id ";
     $q_string .= "left join inv_parts    on inv_parts.part_id         = inv_hardware.hw_type ";
     $q_string .= "where inv_id = " . $formVars['server'] . " and part_type = 1 ";
-    $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    $a_inventory = mysqli_fetch_array($q_inventory);
+    $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
-    if (mysqli_num_rows($q_inventory) == 0) {
-      $a_inventory['inv_id'] = $formVars['server'];
-      $a_inventory['inv_name'] = 'Blank';
-      $a_inventory['inv_manager'] = $_SESSION['group'];
-      $a_inventory['inv_product'] = 0;
-      $a_inventory['inv_project'] = 0;
-      $a_inventory['inv_status'] = 0;
+    if (mysqli_num_rows($q_inv_inventory) == 0) {
+      $a_inv_inventory['inv_id'] = $formVars['server'];
+      $a_inv_inventory['inv_name'] = 'Blank';
+      $a_inv_inventory['inv_manager'] = $_SESSION['group'];
+      $a_inv_inventory['inv_product'] = 0;
+      $a_inv_inventory['inv_project'] = 0;
+      $a_inv_inventory['inv_status'] = 0;
     }
 
   } else {
     $formVars['server'] = 0;
-    $a_inventory['inv_id'] = $formVars['server'];
-    $a_inventory['inv_name'] = 'Blank';
-    $a_inventory['inv_manager'] = $_SESSION['group'];
-    $a_inventory['inv_product'] = 0;
-    $a_inventory['inv_project'] = 0;
-    $a_inventory['inv_status'] = 0;
+    $a_inv_inventory['inv_id'] = $formVars['server'];
+    $a_inv_inventory['inv_name'] = 'Blank';
+    $a_inv_inventory['inv_manager'] = $_SESSION['group'];
+    $a_inv_inventory['inv_product'] = 0;
+    $a_inv_inventory['inv_project'] = 0;
+    $a_inv_inventory['inv_status'] = 0;
   }
 
   $status1 = '';
   $status2 = '';
   $status3 = '';
 # if in work/live status is 0
-  if ($a_inventory['inv_status'] == 0) {
-    if ($a_inventory['hw_active'] == '1971-01-01') {
+  if ($a_inv_inventory['inv_status'] == 0) {
+    if ($a_inv_inventory['hw_active'] == '1971-01-01') {
       $status1 = 'checked';
     } else {
       $status2 = 'checked';
@@ -78,14 +78,14 @@
     $status3 = 'checked';
   }
 
-  logaccess($db, $_SESSION['uid'], $package, "Editing server: " . $a_inventory['inv_name'] . " (" . $formVars['server'] . ").");
+  logaccess($db, $_SESSION['uid'], $package, "Editing server: " . $a_inv_inventory['inv_name'] . " (" . $formVars['server'] . ").");
 
 ?>
 <!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Editing <?php print $a_inventory['inv_name'];?></title>
+<title>Editing <?php print $a_inv_inventory['inv_name'];?></title>
 
 <style type='text/css' title='currentStyle' media='screen'>
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -110,7 +110,7 @@ function delete_software( p_script_url ) {
 }
 
 <?php
-  if (check_grouplevel($db, $a_inventory['inv_manager'])) {
+  if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
 ?>
 
 function delete_comment( p_script_url ) {
@@ -245,7 +245,7 @@ function update_software( p_script_url, update ) {
 }
 
 <?php
-  if (check_grouplevel($db, $a_inventory['inv_manager'])) {
+  if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
 ?>
 
 function attach_comment( p_script_url, update ) {
@@ -353,8 +353,8 @@ function attach_hardware( p_script_url, update ) {
   ah_url += "&hw_hd_id="      + ah_form.hw_hd_id.value;
   ah_url += "&hw_serial="     + encode_URI(ah_form.hw_serial.value);
   ah_url += "&hw_asset="      + encode_URI(ah_form.hw_asset.value);
-  ah_url += "&hw_group="      + <?php print $a_inventory['inv_manager']; ?>;
-  ah_url += "&hw_product="    + <?php print $a_inventory['inv_product']; ?>;
+  ah_url += "&hw_group="      + <?php print $a_inv_inventory['inv_manager']; ?>;
+  ah_url += "&hw_product="    + <?php print $a_inv_inventory['inv_product']; ?>;
   ah_url += "&hw_vendorid="   + ah_form.hw_vendorid.value;
   ah_url += "&hw_type="       + ah_form.hw_type.value;
   ah_url += "&hw_purchased="  + encode_URI(ah_form.hw_purchased.value);
@@ -889,12 +889,12 @@ function clear_fields() {
   show_file('inventory.fill.php'    + '?id=<?php print $formVars['server']; ?>');
 <?php
 # if a blank server, don't populate the tabs
-  if ($a_inventory['inv_name'] != 'Blank') {
+  if ($a_inv_inventory['inv_name'] != 'Blank') {
 ?>
   show_file('tags.mysql.php'        + '?update=-3' + '&tag_companyid=<?php print $formVars['server']; ?>');
   show_file('software.mysql.php'    + '?update=-3' + '&svr_companyid=<?php print $formVars['server']; ?>');
 <?php
-  if (check_grouplevel($db, $a_inventory['inv_manager'])) {
+  if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
 ?>
   show_file('maintenance.mysql.php' + '?update=-3' + '&id=<?php              print $formVars['server']; ?>');
   show_file('hardware.mysql.php'    + '?update=-3' + '&hw_companyid=<?php    print $formVars['server']; ?>');
@@ -1207,19 +1207,19 @@ $(document).ready( function() {
 
 <ul>
 <?php
-  if (check_grouplevel($db, $a_inventory['inv_manager'])) {
+  if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
 ?>
-  <li><a href="#detail"><?php print $a_inventory['inv_name']; ?> Detail</a></li>
+  <li><a href="#detail"><?php print $a_inv_inventory['inv_name']; ?> Detail</a></li>
   <li><a href="#tags">Tags</a></li>
 <?php
   } else {
 ?>
-  <li><a href="#tags"><?php print $a_inventory['inv_name']; ?> Tags</a></li>
+  <li><a href="#tags"><?php print $a_inv_inventory['inv_name']; ?> Tags</a></li>
 <?php
   }
 ?>
 <?php
-  if (check_grouplevel($db, $a_inventory['inv_manager'])) {
+  if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
 ?>
   <li><a href="#maintenance">Maintenance</a></li>
   <li><a href="#hardware">Hardware</a></li>
@@ -1229,7 +1229,7 @@ $(document).ready( function() {
 ?>
   <li><a href="#software">Software</a></li>
 <?php
-  if (check_grouplevel($db, $a_inventory['inv_manager'])) {
+  if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
 ?>
   <li><a href="#interface">Interfaces</a></li>
   <li><a href="#users">Users</a></li>
@@ -1243,7 +1243,7 @@ $(document).ready( function() {
 </ul>
 
 <?php
-  if (check_grouplevel($db, $a_inventory['inv_manager'])) {
+  if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
 ?>
 <div id="detail">
 
@@ -1344,7 +1344,7 @@ $(document).ready( function() {
 <option value="0">None</option>
 <?php
   $q_string  = "select inv_id,inv_name ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
   $q_string .= "order by inv_name";
   $q_c2inv = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -1381,8 +1381,8 @@ $(document).ready( function() {
   <td class="ui-widget-content"  colspan="3">Parent Device: <select name="inv_companyid">
 <?php
   $q_string  = "select inv_id,inv_name ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inv_inventory.inv_id ";
   $q_string .= "left join inv_models   on inv_models.mod_id         = inv_hardware.hw_vendorid ";
   $q_string .= "where mod_type = 13 and inv_manager = " . $_SESSION['group'] . " ";
   $q_string .= "order by inv_name ";
@@ -1547,7 +1547,7 @@ $(document).ready( function() {
 <?php
   $q_string  = "select prj_id,prj_name ";
   $q_string .= "from inv_projects ";
-  $q_string .= "where prj_product = " . $a_inventory['inv_product'] . " ";
+  $q_string .= "where prj_product = " . $a_inv_inventory['inv_product'] . " ";
   $q_string .= "order by prj_name";
   $q_inv_projects = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inv_projects = mysqli_fetch_array($q_inv_projects)) {
@@ -1702,7 +1702,7 @@ a tag that already exists, it does check for that and will simply toggle it vs a
 
 
 <?php
-  if (check_grouplevel($db, $a_inventory['inv_manager'])) {
+  if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
 ?>
 <div id="maintenance">
 
@@ -2033,7 +2033,7 @@ a tag that already exists, it does check for that and will simply toggle it vs a
 
 
 <?php
-  if (check_grouplevel($db, $a_inventory['inv_manager'])) {
+  if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
 ?>
 <div id="interface">
 
@@ -2332,17 +2332,17 @@ to modify it and then click the Add User button to begin managing the account.</
 <option value="0">None</option>
 <?php
   $q_string  = "select inv_id,inv_name ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
   $q_string .= "order by inv_name";
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
     $q_string  = "select bu_id ";
     $q_string .= "from inv_backups ";
-    $q_string .= "where bu_companyid = " . $a_inventory['inv_id'];
+    $q_string .= "where bu_companyid = " . $a_inv_inventory['inv_id'];
     $q_inv_backups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     if (mysqli_num_rows($q_inv_backups) > 0) {
-      print "<option value=\"" . $a_inventory['inv_id'] . "\">" . htmlspecialchars($a_inventory['inv_name']) . "</option>\n";
+      print "<option value=\"" . $a_inv_inventory['inv_id'] . "\">" . htmlspecialchars($a_inv_inventory['inv_name']) . "</option>\n";
     }
   }
 ?>

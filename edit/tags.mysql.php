@@ -143,13 +143,13 @@
       $output .= "<p>\n";
 
       $q_string  = "select inv_location ";
-      $q_string .= "from inventory ";
+      $q_string .= "from inv_inventory ";
       $q_string .= "where inv_id = " . $formVars['tag_companyid'] . " ";
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_inventory) > 0) {
-        $a_inventory = mysqli_fetch_array($q_inventory);
+      $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_inventory) > 0) {
+        $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
       } else {
-        $a_inventory['inv_location'] = 0;
+        $a_inv_inventory['inv_location'] = 0;
       }
 
       if (new_Mysql($db)) {
@@ -167,7 +167,7 @@
 
           $q_string  = "select tag_name ";
           $q_string .= "from inv_tags ";
-          $q_string .= "where tag_name = \"" . $a_inv_tags['tag_name'] . "\" and tag_companyid = " . $a_inventory['inv_location'] . " and tag_type = 2 ";
+          $q_string .= "where tag_name = \"" . $a_inv_tags['tag_name'] . "\" and tag_companyid = " . $a_inv_inventory['inv_location'] . " and tag_type = 2 ";
           $q_identity = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_identity) > 0) {
             $output .= "<strong>";
@@ -194,13 +194,13 @@
       $output .= "<p>\n";
 
       $q_string  = "select inv_product ";
-      $q_string .= "from inventory ";
+      $q_string .= "from inv_inventory ";
       $q_string .= "where inv_id = " . $formVars['tag_companyid'] . " ";
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_inventory) > 0) {
-        $a_inventory = mysqli_fetch_array($q_inventory);
+      $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_inventory) > 0) {
+        $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
       } else {
-        $a_inventory['inv_product'] = 0;
+        $a_inv_inventory['inv_product'] = 0;
       }
 
       if (new_Mysql($db)) {
@@ -218,7 +218,7 @@
 
           $q_string  = "select tag_name ";
           $q_string .= "from inv_tags ";
-          $q_string .= "where tag_name = \"" . $a_inv_tags['tag_name'] . "\" and tag_companyid = " . $a_inventory['inv_product'] . " and tag_type = 3 ";
+          $q_string .= "where tag_name = \"" . $a_inv_tags['tag_name'] . "\" and tag_companyid = " . $a_inv_inventory['inv_product'] . " and tag_type = 3 ";
           $q_identity = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_identity) > 0) {
             $output .= "<strong>";

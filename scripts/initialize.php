@@ -41,10 +41,10 @@
   print "Checking inventory to see if $server exists.\n";
 
   $q_string  = "select inv_id,inv_manager,inv_product ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_status = 0 and inv_name = '" . $server . "'";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_inventory) > 0) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inv_inventory) > 0) {
 
     echo "ERROR: $server already exists in the inventory.\n";
 
@@ -55,7 +55,7 @@
 
     $q_string  = "select int_id,inv_name ";
     $q_string .= "from inv_interface ";
-    $q_string .= "left join inventory on inventory.inv_id = inv_interface.int_companyid ";
+    $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_interface.int_companyid ";
     $q_string .= "where inv_status = 0 and int_server = '" . $server . "'";
     $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     if (mysqli_num_rows($q_inv_interface) > 0) {
@@ -68,7 +68,7 @@
 
       echo "Adding $server to the inventory...\n";
 
-      $q_string = "insert into inventory set inv_id = null,inv_name = \"" . $server . "\",inv_manager=1,inv_status=0,inv_function=\"Server Initialized\",inv_ssh=1";
+      $q_string = "insert into inv_inventory set inv_id = null,inv_name = \"" . $server . "\",inv_manager=1,inv_status=0,inv_function=\"Server Initialized\",inv_ssh=1";
 
       if ($debug == 'yes') {
         print $q_string . "\n";

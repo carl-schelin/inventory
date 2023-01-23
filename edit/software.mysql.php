@@ -109,12 +109,12 @@
 
       $q_string  = "select svr_id,sw_software,ven_name,prod_name,typ_name,svr_verified,svr_update,inv_manager,svr_facing,svr_primary,svr_locked ";
       $q_string .= "from inv_svr_software ";
-      $q_string .= "left join inventory    on inventory.inv_id        = inv_svr_software.svr_companyid ";
-      $q_string .= "left join inv_software on inv_software.sw_id      = inv_svr_software.svr_softwareid ";
-      $q_string .= "left join inv_vendors  on inv_vendors.ven_id      = inv_software.sw_vendor ";
-      $q_string .= "left join inv_sw_types on inv_sw_types.typ_id     = inv_software.sw_type ";
-      $q_string .= "left join inv_groups   on inv_groups.grp_id       = inv_svr_software.svr_groupid ";
-      $q_string .= "left join inv_products on inv_products.prod_id    = inv_software.sw_product ";
+      $q_string .= "left join inv_inventory on inv_inventory.inv_id    = inv_svr_software.svr_companyid ";
+      $q_string .= "left join inv_software  on inv_software.sw_id      = inv_svr_software.svr_softwareid ";
+      $q_string .= "left join inv_vendors   on inv_vendors.ven_id      = inv_software.sw_vendor ";
+      $q_string .= "left join inv_sw_types  on inv_sw_types.typ_id     = inv_software.sw_type ";
+      $q_string .= "left join inv_groups    on inv_groups.grp_id       = inv_svr_software.svr_groupid ";
+      $q_string .= "left join inv_products  on inv_products.prod_id    = inv_software.sw_product ";
       $q_string .= "where svr_companyid = " . $formVars['svr_companyid'] . " ";
       $q_string .= "order by sw_software ";
       $q_inv_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

@@ -28,7 +28,7 @@
       $a_inv_cluster = mysqli_fetch_array($q_inv_cluster);
       mysqli_free_result($q_inv_cluster);
 
-      $association = return_Index($db, $a_inv_cluster['clu_association'], "select inv_id from inventory where inv_status = 0 order by inv_name");
+      $association = return_Index($db, $a_inv_cluster['clu_association'], "select inv_id from inv_inventory where inv_status = 0 order by inv_name");
 
       print "document.edit.clu_association['" . $association . "'].selected = true;\n";
 

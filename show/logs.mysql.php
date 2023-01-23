@@ -17,10 +17,10 @@
   $formVars['id'] = clean($_GET['id'], 10);
 
   $q_string  = "select inv_id,inv_name ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_id = " . $formVars['id'] . " ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_inventory = mysqli_fetch_array($q_inventory);
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
   if (isset($_GET["sort"])) {
     $orderby = "order by " . $formVars['sort'] . $_SESSION['sort'];
@@ -62,8 +62,8 @@
     }
   }
 
-  $where  = "where (log_detail like '%" . $a_inventory['inv_name'] . "%' or log_detail like '%" . $a_inventory['inv_id'] . "%') ";
-  $where  = "where (log_detail like '%" . $a_inventory['inv_name'] . "%') ";
+  $where  = "where (log_detail like '%" . $a_inv_inventory['inv_name'] . "%' or log_detail like '%" . $a_inv_inventory['inv_id'] . "%') ";
+  $where  = "where (log_detail like '%" . $a_inv_inventory['inv_name'] . "%') ";
   $where .= "and log_date >= '" . $formVars['startdate'] . "' and log_date <= '" . $formVars['enddate'] . "' ";
 
   if ($formVars['user'] != 0) {

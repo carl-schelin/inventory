@@ -51,7 +51,7 @@
   $comment = '';
   $q_string  = "select inv_name,ex_text,ex_comments ";
   $q_string .= "from inv_excludes ";
-  $q_string .= "left join inventory on inventory.inv_id = inv_excludes.ex_companyid ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_excludes.ex_companyid ";
   $q_string .= "where ex_companyid > 0 and ex_deleted = 0 and ex_expiration >= \"" . date('Y-m-d') . "\" ";
   $q_string .= "order by ex_text ";
   $q_inv_excludes = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));

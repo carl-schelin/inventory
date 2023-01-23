@@ -235,19 +235,19 @@ $(document).ready( function () {
 
   $q_string  = "select inv_id,inv_name,inv_function,inv_document,inv_manager,grp_name,ct_city,";
   $q_string .= "ven_name,mod_name,zone_name,inv_ssh,hw_active,hw_retired,hw_reused ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inv_inventory.inv_id ";
   $q_string .= "left join inv_models    on inv_models.mod_id         = inv_hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors   on inv_vendors.ven_id        = inv_models.mod_vendor ";
-  $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id      = inv_inventory.inv_location ";
   $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city ";
-  $q_string .= "left join inv_groups    on inv_groups.grp_id         = inventory.inv_manager ";
-  $q_string .= "left join inv_timezones on inv_timezones.zone_id     = inventory.inv_zone ";
-  $q_string .= "left join inv_tags      on inv_tags.tag_companyid    = inventory.inv_id ";
+  $q_string .= "left join inv_groups    on inv_groups.grp_id         = inv_inventory.inv_manager ";
+  $q_string .= "left join inv_timezones on inv_timezones.zone_id     = inv_inventory.inv_zone ";
+  $q_string .= "left join inv_tags      on inv_tags.tag_companyid    = inv_inventory.inv_id ";
   $q_string .= $where . " ";
   $q_string .= "order by inv_name ";;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
 #####
 # Get interface information
@@ -258,7 +258,7 @@ $(document).ready( function () {
     $q_string .= "from inv_interface ";
     $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id  = inv_interface.int_ipaddressid ";
     $q_string .= "left join inv_int_types on inv_int_types.itp_id = inv_interface.int_type ";
-    $q_string .= "where int_companyid = \"" . $a_inventory['inv_id'] . "\" and int_type != 7 and int_ip6 = 0 ";
+    $q_string .= "where int_companyid = \"" . $a_inv_inventory['inv_id'] . "\" and int_type != 7 and int_ip6 = 0 ";
     $q_string .= "order by itp_acronym,int_face";;
     $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
@@ -280,7 +280,7 @@ $(document).ready( function () {
     $q_string .= "from inv_svr_software ";
     $q_string .= "left join inv_software on inv_software.sw_id  = inv_svr_software.svr_softwareid ";
     $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = inv_software.sw_type ";
-    $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " and typ_name = 'OS' ";
+    $q_string .= "where svr_companyid = " . $a_inv_inventory['inv_id'] . " and typ_name = 'OS' ";
     $q_inv_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software);
     
@@ -289,20 +289,20 @@ $(document).ready( function () {
 #####
     $title="This system is live.";
     $class = " class=\"ui-widget-content\"";
-    if ($a_inventory['hw_active'] == '1971-01-01') {
+    if ($a_inv_inventory['hw_active'] == '1971-01-01') {
       $title="This system is not live yet.";
       $class = " class=\"ui-state-highlight\"";
     }
-    if ($a_inventory['hw_retired'] != '1971-01-01') {
+    if ($a_inv_inventory['hw_retired'] != '1971-01-01') {
       $title="This system is retired.";
       $class = " class=\"ui-state-error\"";
     }
-    if ($a_inventory['hw_reused'] != '1971-01-01') {
+    if ($a_inv_inventory['hw_reused'] != '1971-01-01') {
       $title="This system has been reused.";
       $class = " class=\"ui-state-error\"";
     }
 
-    if ($a_inventory['inv_ssh'] == 1) {
+    if ($a_inv_inventory['inv_ssh'] == 1) {
       $sshaccess = "*";
     } else {
       $sshaccess = "";
@@ -313,25 +313,25 @@ $(document).ready( function () {
 #####
     if (check_userlevel($db, $AL_Edit)) {
       $editpencil = "<img class=\"ui-icon-edit\" src=\"" . $Imgsroot . "/pencil.gif\"></a>";
-      if (check_grouplevel($db, $a_inventory['inv_manager'])) {
-        $editmain     = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">" . $editpencil;
-        $edithwstart  = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "#hardware\" target=\"_blank\">" . $editpencil;
-        $editintstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "#network\" target=\"_blank\">" . $editpencil;
+      if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
+        $editmain     = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inv_inventory['inv_id'] . "\" target=\"_blank\">" . $editpencil;
+        $edithwstart  = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inv_inventory['inv_id'] . "#hardware\" target=\"_blank\">" . $editpencil;
+        $editintstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inv_inventory['inv_id'] . "#network\" target=\"_blank\">" . $editpencil;
       }
 # all groups can edit the software; that way they can identify systems to be associated with their group.
-      $editswstart  = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "#software\" target=\"_blank\">" . $editpencil;
+      $editswstart  = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inv_inventory['inv_id'] . "#software\" target=\"_blank\">" . $editpencil;
 # used only for the server to view the inventory data;
       $editend = "</a>";
-      $showstart    = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inventory['inv_id'] . "\" target=\"_blank\">";
-      $showhwstart  = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inventory['inv_id'] . "#hardware\" target=\"_blank\">";
-      $showswstart  = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inventory['inv_id'] . "#\" target=\"_blank\">";
-      $showlocstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inventory['inv_id'] . "\" target=\"_blank\">";
-      $shownetstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inventory['inv_id'] . "#network\" target=\"_blank\">";
+      $showstart    = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inv_inventory['inv_id'] . "\" target=\"_blank\">";
+      $showhwstart  = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inv_inventory['inv_id'] . "#hardware\" target=\"_blank\">";
+      $showswstart  = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inv_inventory['inv_id'] . "#\" target=\"_blank\">";
+      $showlocstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inv_inventory['inv_id'] . "\" target=\"_blank\">";
+      $shownetstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inv_inventory['inv_id'] . "#network\" target=\"_blank\">";
       $showend = "</a>";
     }
 
-    if (strlen($a_inventory['inv_document']) > 0) {
-      $showdoc = "<a href=\"" . $a_inventory['inv_document'] . "\" target=\"_blank\">";
+    if (strlen($a_inv_inventory['inv_document']) > 0) {
+      $showdoc = "<a href=\"" . $a_inv_inventory['inv_document'] . "\" target=\"_blank\">";
     } else {
       $showdoc = '';
     }
@@ -340,12 +340,12 @@ $(document).ready( function () {
 # Print the table
 #####
     print "<tr>\n";
-    print "  <td title=\"" . $title . "\"" . $class . ">" . $editmain     . $showstart    . $a_inventory['inv_name']                            . $sshaccess . $showend . "</td>\n";
-    print "  <td " . $class . ">"                                         . $showdoc      . $a_inventory['inv_function']                                     . $showend . "</td>\n";
-    print "  <td " . $class . ">"                                                         . $a_inventory['grp_name']                                                    . "</td>\n";
-    print "  <td " . $class . ">"                         . $edithwstart  . $showhwstart  . $a_inventory['ven_name'] . " " . $a_inventory['mod_name']        . $showend . "</td>\n";
+    print "  <td title=\"" . $title . "\"" . $class . ">" . $editmain     . $showstart    . $a_inv_inventory['inv_name']                            . $sshaccess . $showend . "</td>\n";
+    print "  <td " . $class . ">"                                         . $showdoc      . $a_inv_inventory['inv_function']                                     . $showend . "</td>\n";
+    print "  <td " . $class . ">"                                                         . $a_inv_inventory['grp_name']                                                    . "</td>\n";
+    print "  <td " . $class . ">"                         . $edithwstart  . $showhwstart  . $a_inv_inventory['ven_name'] . " " . $a_inv_inventory['mod_name']        . $showend . "</td>\n";
     print "  <td " . $class . ">"                         . $editswstart  . $showswstart  . $a_inv_svr_software['sw_software']                               . $showend . "</td>\n";
-    print "  <td " . $class . ">"                                         . $showlocstart . $a_inventory['ct_city'] . " (" . $a_inventory['zone_name'] . ")" . $showend . "</td>\n";
+    print "  <td " . $class . ">"                                         . $showlocstart . $a_inv_inventory['ct_city'] . " (" . $a_inv_inventory['zone_name'] . ")" . $showend . "</td>\n";
     print "  <td " . $class . ">"                         . $editintstart . $shownetstart . $interface . $showend . "<br>"                        . $console            . "</td>\n";
     print "</tr>\n";
   }

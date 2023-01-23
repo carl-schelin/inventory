@@ -192,7 +192,7 @@
               $invstatus = 1;
               $invssh = ',inv_ssh = 0 ';
             }
-            $q_string  = "update inventory ";
+            $q_string  = "update inv_inventory ";
             $q_string .= "set inv_status = " . $invstatus . $invssh . " ";
             $q_string .= "where inv_id = " . $formVars['hw_companyid'];
             mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -219,9 +219,9 @@
 #
 #      if ($a_inv_hardware['hw_active'] == '1971-01-01' && $formVars['hw_active'] != '1971-01-01') {
 #
-#        $q_string = "select inv_name from inventory where inv_id = " . $formVars['hw_companyid'];
-#        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-#        $a_inventory = mysqli_fetch_array($q_inventory);
+#        $q_string = "select inv_name from inv_inventory where inv_id = " . $formVars['hw_companyid'];
+#        $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+#        $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 #
 #        $headers  = "From: Inventory DB <root@" . $Sitehttp . ">\r\n";
 #        $headers .= "MIME-Version: 1.0\r\n";
@@ -230,7 +230,7 @@
 #        $body  = "<p>A physical piece of equipment has become a live, production system.</p>";
 #
 #        $body .= "<ul>";
-#        $body .= "  <li>System Name: " . $a_inventory['inv_name'] . "</li>";
+#        $body .= "  <li>System Name: " . $a_inv_inventory['inv_name'] . "</li>";
 #        $body .= "  <li>Asset Tag: " . $formVars['hw_asset'] . "</li>";
 #        $body .= "  <li>Serial Number: " . $formVars['hw_serial'] . "</li>";
 #        $body .= "</ul>";
@@ -291,12 +291,12 @@
         $output .= "<option value=\"0\">None</option>\n";
 
         $q_string  = "select inv_id,inv_name ";
-        $q_string .= "from inventory ";
+        $q_string .= "from inv_inventory ";
         $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name";
-        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_inventory = mysqli_fetch_array($q_inventory)) {
-          $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . "</option>\n";
+        $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
+          $output .= "<option value=\"" . $a_inv_inventory['inv_id'] . "\">" . $a_inv_inventory['inv_name'] . "</option>\n";
         }
 
         $output .= "</select></td>\n";

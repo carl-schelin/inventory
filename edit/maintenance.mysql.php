@@ -66,12 +66,12 @@
         $output .= "<option value=\"0\">None</option>\n";
 
         $q_string  = "select inv_id,inv_name ";
-        $q_string .= "from inventory ";
+        $q_string .= "from inv_inventory ";
         $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name";
-        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_inventory = mysqli_fetch_array($q_inventory)) {
-          $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . "</option>\n";
+        $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
+          $output .= "<option value=\"" . $a_inv_inventory['inv_id'] . "\">" . $a_inv_inventory['inv_name'] . "</option>\n";
         }
 
         $output .= "</select></td>\n";
@@ -161,14 +161,14 @@
         $output .= "  <td class=\"ui-widget-content\">Select a Patching Increment: <select name=\"inv_patchid\">\n";
 
         $q_string  = "select inv_manager ";
-        $q_string .= "from inventory ";
+        $q_string .= "from inv_inventory ";
         $q_string .= "where inv_id = " . $formVars['id'] . " ";
-        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        $a_inventory = mysqli_fetch_array($q_inventory);
+        $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
         $q_string  = "select patch_id,patch_name ";
         $q_string .= "from inv_patching ";
-        $q_string .= "where patch_group = " . $a_inventory['inv_manager'] . " ";
+        $q_string .= "where patch_group = " . $a_inv_inventory['inv_manager'] . " ";
         $q_string .= "order by patch_name ";
         $q_inv_patching = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while($a_inv_patching = mysqli_fetch_array($q_inv_patching)) {

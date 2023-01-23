@@ -97,22 +97,22 @@
           if ($a_inv_images['img_facing'] == 1) {
             $facing = "Front";
             $q_string  = "select inv_id ";
-            $q_string .= "from inventory ";
+            $q_string .= "from inv_inventory ";
             $q_string .= "where inv_front = " . $a_inv_images['img_id'] . " ";
-            $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-            if (mysqli_num_rows($q_inventory) > 0) {
-              while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+            $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            if (mysqli_num_rows($q_inv_inventory) > 0) {
+              while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
                 $total++;
               }
             }
           } else {
             $facing = "Rear";
             $q_string  = "select inv_id ";
-            $q_string .= "from inventory ";
+            $q_string .= "from inv_inventory ";
             $q_string .= "where inv_rear = " . $a_inv_images['img_id'] . " ";
-            $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-            if (mysqli_num_rows($q_inventory) > 0) {
-              while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+            $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            if (mysqli_num_rows($q_inv_inventory) > 0) {
+              while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
                 $total++;
               }
             }

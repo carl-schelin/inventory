@@ -29,21 +29,21 @@
   }
 
   $q_string  = "select inv_id,inv_name ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_manager = 1 and inv_status = 0 and inv_ssh = 1 ";
   $q_string .= "order by inv_name ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
-    print $a_inventory['inv_name'] . ": ";
+    print $a_inv_inventory['inv_name'] . ": ";
 
 # In order to automatically close errors, set import to 1. As errors are checked, update the flag
     $q_string  = "update inv_chkserver ";
     $q_string .= "set chk_import = 1 ";
-    $q_string .= "where chk_companyid = " . $a_inventory['inv_id'] . " ";
+    $q_string .= "where chk_companyid = " . $a_inv_inventory['inv_id'] . " ";
     $results = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-    $servername = '/usr/local/admin/servers/' . $a_inventory['inv_name'] . "/chkserver.output";
+    $servername = '/usr/local/admin/servers/' . $a_inv_inventory['inv_name'] . "/chkserver.output";
 
     if (file_exists($servername)) {
       $file = fopen($servername, "r");
@@ -135,7 +135,7 @@
 # add a record only when the server was found with the same error but has been closed
             $q_string  = "select chk_id ";
             $q_string .= "from inv_chkserver ";
-            $q_string .= "where chk_companyid = " . $a_inventory['inv_id'] . " and chk_errorid = " . $a_inv_chkerrors['ce_id'] . " and chk_closed = '1971-01-01 00:00:00' ";
+            $q_string .= "where chk_companyid = " . $a_inv_inventory['inv_id'] . " and chk_errorid = " . $a_inv_chkerrors['ce_id'] . " and chk_closed = '1971-01-01 00:00:00' ";
             $q_inv_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
             if (mysqli_num_rows($q_inv_chkserver) == 0) {
 # add the message flag
@@ -143,7 +143,7 @@
               $q_string .= "into inv_chkserver ";
               $q_string .= "set ";
               $q_string .= "chk_id = null,";
-              $q_string .= "chk_companyid  =   " . $a_inventory['inv_id']  . ",";
+              $q_string .= "chk_companyid  =   " . $a_inv_inventory['inv_id']  . ",";
               $q_string .= "chk_errorid    =   " . $a_inv_chkerrors['ce_id'];
   
               print "s";
@@ -168,7 +168,7 @@
     $q_string  = "update inv_chkserver ";
     $q_string .= "set ";
     $q_string .= "chk_closed = '" . date('Y-m-d H:i:s') . "' ";
-    $q_string .= "where chk_import = 1 and chk_companyid = " . $a_inventory['inv_id'] . " and chk_closed = '1971-01-01 00:00:00' ";
+    $q_string .= "where chk_import = 1 and chk_companyid = " . $a_inv_inventory['inv_id'] . " and chk_closed = '1971-01-01 00:00:00' ";
 
     print "c";
     $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");

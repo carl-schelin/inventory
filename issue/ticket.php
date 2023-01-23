@@ -50,17 +50,17 @@
   }
 
   $q_string  = "select inv_name ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_id = " . $formVars['server'];
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_inventory = mysqli_fetch_array($q_inventory);
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
 ?>
 <!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title><?php print $a_inventory['inv_name']; ?> Issue</title>
+<title><?php print $a_inv_inventory['inv_name']; ?> Issue</title>
 
 <style type="text/css" title="currentStyle" media="screen">
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -448,7 +448,7 @@ $(document).ready( function() {
 <div id="tabs">
 
 <ul>
-  <li><a href="#information"><?php print $a_inventory['inv_name']; ?> Information</a></li>
+  <li><a href="#information"><?php print $a_inv_inventory['inv_name']; ?> Information</a></li>
   <li><a href="#support">Support Form</a></li>
   <li><a href="#problem">Problem Form</a></li>
   <li><a href="#hardware">Hardware Form</a></li>
@@ -619,26 +619,26 @@ $(document).ready( function() {
 </tr>
 <?php
   $q_string  = "select loc_name,loc_addr1,loc_addr2,ct_city,st_acronym,loc_zipcode,cn_acronym,inv_row,inv_rack,inv_unit ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_locations on inventory.inv_location = inv_locations.loc_id ";
-  $q_string .= "left join inv_cities    on inv_cities.ct_id       = inv_locations.loc_city ";
-  $q_string .= "left join inv_states    on inv_states.st_id       = inv_locations.loc_state ";
-  $q_string .= "left join inv_country   on inv_country.cn_id      = inv_locations.loc_country ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_locations on inv_inventory.inv_location = inv_locations.loc_id ";
+  $q_string .= "left join inv_cities    on inv_cities.ct_id           = inv_locations.loc_city ";
+  $q_string .= "left join inv_states    on inv_states.st_id           = inv_locations.loc_state ";
+  $q_string .= "left join inv_country   on inv_country.cn_id          = inv_locations.loc_country ";
   $q_string .= "where inv_id = " . $formVars['server'];
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_inventory = mysqli_fetch_array($q_inventory);
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
   print "<tr>\n";
-  print "  <td class=\"ui-widget-content\">" . $a_inventory['loc_name'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\">" . $a_inventory['loc_addr1'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\">" . $a_inventory['loc_addr2'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\">" . $a_inventory['ct_city'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\">" . $a_inventory['st_acronym'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\">" . $a_inventory['loc_zipcode'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\">" . $a_inventory['cn_acronym'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\">" . $a_inventory['inv_row'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\">" . $a_inventory['inv_rack'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\">" . $a_inventory['inv_unit'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['loc_name'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['loc_addr1'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['loc_addr2'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['ct_city'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['st_acronym'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['loc_zipcode'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['cn_acronym'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['inv_row'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['inv_rack'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['inv_unit'] . "</td>\n";
   print "</tr>\n";
 ?>
 </table>

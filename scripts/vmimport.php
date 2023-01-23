@@ -107,10 +107,10 @@
 
   if ($fqdn[0] != '') {
     $q_string  = "select inv_id ";
-    $q_string .= "from inventory ";
+    $q_string .= "from inv_inventory ";
     $q_string .= "where inv_name = \"" . $fqdn[0] . "\" ";
-    $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    if (mysqli_num_rows($q_inventory) > 0) {
+    $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_inv_inventory) > 0) {
       print "Error: Server already exists in the Inventory\n";
     } else {
 # get the appadmin group id
@@ -250,7 +250,7 @@
 
         print "Adding Server...\n";
 
-        $q_string  = "insert into inventory set inv_id = null,inv_manager = 1,";
+        $q_string  = "insert into inv_inventory set inv_id = null,inv_manager = 1,";
         $q_string .= "inv_name           = \"" . $fqdn[0]          . "\",";
         $q_string .= "inv_function       = \"" . $function         . "\",";
         $q_string .= "inv_product        =   " . $inv_product      . ",";
@@ -269,18 +269,18 @@
         }
 
         $q_string  = "select inv_id ";
-        $q_string .= "from inventory ";
+        $q_string .= "from inv_inventory ";
         $q_string .= "where inv_name = \"" . $fqdn[0] . "\" ";
-        $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        if (mysqli_num_rows($q_inventory) == 0) {
+        $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_inv_inventory) == 0) {
           print "Error adding server " . $fqdn[0] . "\n";
         } else {
-          $a_inventory = mysqli_fetch_array($q_inventory);
+          $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
           $q_string  = "insert into inv_interface set int_id = null,";
           $q_string .= "int_server      = \"" . $fqdn[0]               . "\",";
           $q_string .= "int_domain      = \"" . $fqdn[1]               . "\",";
-          $q_string .= "int_companyid   =   " . $a_inventory['inv_id'] . ",";
+          $q_string .= "int_companyid   =   " . $a_inv_inventory['inv_id'] . ",";
           $q_string .= "int_face        = \"" . "ens192"               . "\",";
           $q_string .= "int_addr        = \"" . $ipaddr                . "\",";
           $q_string .= "int_mask        =   " . $mask                  . ",";
@@ -294,7 +294,7 @@
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
           $q_string  = "insert into inv_hardware set hw_id = null,";
-          $q_string .= "hw_companyid = " . $a_inventory['inv_id'] . ",";
+          $q_string .= "hw_companyid = " . $a_inv_inventory['inv_id'] . ",";
           $q_string .= "hw_type = " . "45" . ",";
           $q_string .= "hw_vendorid = " . "45" . ",";
           $q_string .= "hw_primary = " . "1" . ",";

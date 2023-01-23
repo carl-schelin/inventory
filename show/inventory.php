@@ -28,10 +28,10 @@
   }
 
   $q_string  = "select inv_id,inv_name,inv_function,inv_document,inv_class,inv_callpath,inv_manager,inv_appadmin,inv_product ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_id = " . $formVars['id'];
-  $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  $a_inventory = mysqli_fetch_array($q_inventory);
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
   if (isset($_GET['start'])) {
     $formVars['start'] = clean($_GET['start'], 15);
@@ -44,14 +44,14 @@
     $formVars['end'] = date('Y-m-d');
   }
 
-  logaccess($db, $_SESSION['uid'], $package, "Viewing server: " . $a_inventory['inv_name'] . " (" . $formVars['id'] . ").");
+  logaccess($db, $_SESSION['uid'], $package, "Viewing server: " . $a_inv_inventory['inv_name'] . " (" . $formVars['id'] . ").");
 
 ?>
 <!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title><?php print $a_inventory['inv_name'];?> Detail Record</title>
+<title><?php print $a_inv_inventory['inv_name'];?> Detail Record</title>
 
 <style type='text/css' title='currentStyle' media='screen'>
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -121,7 +121,7 @@ $(document).ready( function() {
 <div id="tabs">
 
 <ul>
-  <li><a href="#detail"><?php print $a_inventory['inv_name']; ?> Detail</a></li>
+  <li><a href="#detail"><?php print $a_inv_inventory['inv_name']; ?> Detail</a></li>
   <li><a href="#tags">Tags</a></li>
   <li><a href="#hardware">Hardware</a></li>
   <li><a href="#software">Software</a></li>

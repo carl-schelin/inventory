@@ -81,7 +81,7 @@
 
           $total = 0;
           $q_string  = "select ip_id ";
-          $q_string .= "from ipaddress ";
+          $q_string .= "from inv_ipaddress ";
           $q_string .= "where ip_type = " . $a_inv_ip_types ['ip_id'] . " ";
           $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_ipaddress) > 0) {

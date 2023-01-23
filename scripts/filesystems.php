@@ -25,7 +25,7 @@
 # use the group name. The email will identify the correct list of users
   $q_string  = "select inv_name,fs_mount,fs_group,grp_name ";
   $q_string .= "from inv_filesystem ";
-  $q_string .= "left join inventory     on inventory.inv_id     = inv_filesystem.fs_companyid ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_filesystem.fs_companyid ";
   $q_string .= "left join inv_groups    on inv_groups.grp_id    = inv_filesystem.fs_group ";
   $q_string .= "where inv_manager = " . $GRP_Unix . " and inv_status = 0 and fs_mount != '' and fs_group != " . $GRP_Unix . " and fs_group != 0 ";
   $q_string .= "order by inv_name,fs_mount ";

@@ -104,19 +104,19 @@
         $output .= "<option value=\"0\">None</option>\n";
 
         $q_string  = "select inv_id,inv_name ";
-        $q_string .= "from inventory ";
+        $q_string .= "from inv_inventory ";
         $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name";
-        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+        $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
           $q_string  = "select clu_id ";
           $q_string .= "from inv_cluster ";
-          $q_string .= "where clu_companyid = " . $a_inventory['inv_id'] . " ";
+          $q_string .= "where clu_companyid = " . $a_inv_inventory['inv_id'] . " ";
           $q_inv_cluster = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $clu_total = mysqli_num_rows($q_inv_cluster);
 
           if ($clu_total > 0) {
-            $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . " (" . $clu_total . ")</option>\n";
+            $output .= "<option value=\"" . $a_inv_inventory['inv_id'] . "\">" . $a_inv_inventory['inv_name'] . " (" . $clu_total . ")</option>\n";
           }
         }
 
@@ -133,12 +133,12 @@
         $output .= "<option value=\"0\">None</option>\n";
 
         $q_string  = "select inv_id,inv_name ";
-        $q_string .= "from inventory ";
+        $q_string .= "from inv_inventory ";
         $q_string .= "where inv_status = 0 ";
         $q_string .= "order by inv_name ";
-        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_inventory = mysqli_fetch_array($q_inventory)) {
-          $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . "</option>\n";
+        $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
+          $output .= "<option value=\"" . $a_inv_inventory['inv_id'] . "\">" . $a_inv_inventory['inv_name'] . "</option>\n";
         }
 
         $output .= "</select></td>\n";
@@ -197,8 +197,8 @@
 
       $q_string  = "select clu_id,clu_association,clu_notes,grp_name,inv_name ";
       $q_string .= "from inv_cluster ";
-      $q_string .= "left join inventory on inventory.inv_id = inv_cluster.clu_companyid ";
-      $q_string .= "left join inv_groups on inv_groups.grp_id = inventory.inv_manager ";
+      $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_cluster.clu_companyid ";
+      $q_string .= "left join inv_groups    on inv_groups.grp_id    = inv_inventory.inv_manager ";
       $q_string .= "where clu_companyid = " . $formVars['clu_companyid'] . " ";
       $q_string .= "order by inv_name,clu_association,clu_port";
       $q_inv_cluster = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

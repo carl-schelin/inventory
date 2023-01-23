@@ -24,15 +24,15 @@
   $q_inv_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_inv_products = mysqli_fetch_array($q_inv_products)) {
 
-    $q_string  = "update inventory ";
+    $q_string  = "update inv_inventory ";
     $q_string .= "set ";
     $q_string .= "inv_class = " . $a_inv_products['prod_service'] . " ";
     $q_string .= "where inv_manager = 1 and inv_product = " . $a_inv_products['prod_id'] . " ";
     $results = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 # labs
-    $q_string  = "update inventory ";
-    $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
+    $q_string  = "update inv_inventory ";
+    $q_string .= "left join inv_locations on inv_locations.loc_id = inv_inventory.inv_location ";
     $q_string .= "set ";
     $q_string .= "inv_class = 6 ";
     $q_string .= "where inv_manager = 1 and loc_instance = 0 and inv_product = " . $a_inv_products['prod_id'] . " ";

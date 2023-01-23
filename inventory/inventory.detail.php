@@ -22,13 +22,13 @@
 
 # check to see if the person editing is a member of a group that can edit this information; if not, blank out 'function' so no changes can be made.
       $q_string  = "select inv_manager ";
-      $q_string .= "from inventory ";
+      $q_string .= "from inv_inventory ";
       $q_string .= "where inv_id = " . $formVars['id'] . " ";
-      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      $a_inventory = mysqli_fetch_array($q_inventory);
+      $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
 # if not a member of the group that can edit this server, default to zero which bypasses all the edit functions.
-      if (check_grouplevel($db, $a_inventory['inv_manager']) == 0) {
+      if (check_grouplevel($db, $a_inv_inventory['inv_manager']) == 0) {
         $formVars['function'] = '';
       }
 
@@ -66,7 +66,7 @@
           print "selbox.options.length = 0;\n";
 
           $q_string  = "select inv_id,inv_name ";
-          $q_string .= "from inventory ";
+          $q_string .= "from inv_inventory ";
           $q_string .= "where inv_status = 0 and inv_virtual = 0 ";
           $q_string .= "order by inv_name ";
           $q_parent = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -91,7 +91,7 @@
           print "cell.setAttribute(\"onclick\", \"edit_Detail(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "select inv_id,inv_name ";
-          $q_string .= "from inventory ";
+          $q_string .= "from inv_inventory ";
           $q_string .= "where inv_id = " . $formVars['select'] . " ";
           $q_parent = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_parent) > 0) {
@@ -104,7 +104,7 @@
           $display = $a_parent['inv_name'];
 
           $q_string  = "update ";
-          $q_string .= "inventory ";
+          $q_string .= "inv_inventory ";
           $q_string .= "set ";
           $q_string .= "inv_companyid = " . $a_parent['inv_id'] . " ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
@@ -149,7 +149,7 @@
           print "cell.setAttribute(\"onclick\", \"edit_Detail(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "update ";
-          $q_string .= "inventory ";
+          $q_string .= "inv_inventory ";
           $q_string .= "set ";
           $q_string .= "inv_function = '" . $formVars['select'] . "' ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
@@ -223,7 +223,7 @@
 
 # Update the main listing
           $q_string  = "update ";
-          $q_string .= "inventory ";
+          $q_string .= "inv_inventory ";
           $q_string .= "set ";
           $q_string .= "inv_manager = " . $a_inv_groups['grp_id'] . " ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
@@ -319,7 +319,7 @@
           $display = $a_inv_groups['grp_name'];
 
           $q_string  = "update ";
-          $q_string .= "inventory ";
+          $q_string .= "inv_inventory ";
           $q_string .= "set ";
           $q_string .= "inv_appadmin = " . $a_inv_groups['grp_id'] . " ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
@@ -397,14 +397,14 @@
 # if different, set inv_project = 0 and set the project field to 'Unassigned'.
 
           $q_string  = "select inv_product ";
-          $q_string .= "from inventory ";
+          $q_string .= "from inv_inventory ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
           $q_invcheck = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           $a_invcheck = mysqli_fetch_array($q_invcheck);
 
           if ($a_invcheck['inv_product'] != $formVars['select']) {
             $q_string  = "update ";
-            $q_string .= "inventory ";
+            $q_string .= "inv_inventory ";
             $q_string .= "set ";
             $q_string .= "inv_project = 0 ";
             $q_string .= "where inv_id = " . $formVars['id'] . " ";
@@ -428,7 +428,7 @@
           $display = $a_inv_products['prod_name'];
 
           $q_string  = "update ";
-          $q_string .= "inventory ";
+          $q_string .= "inv_inventory ";
           $q_string .= "set ";
           $q_string .= "inv_product = " . $a_inv_products['prod_id'] . " ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
@@ -462,7 +462,7 @@
           print "selbox.options.length = 0;\n";
 
           $q_string  = "select inv_manager,inv_product ";
-          $q_string .= "from inventory ";
+          $q_string .= "from inv_inventory ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
           $q_invcheck = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           $a_invcheck = mysqli_fetch_array($q_invcheck);
@@ -507,7 +507,7 @@
           $display = $a_inv_projects['prj_name'];
 
           $q_string  = "update ";
-          $q_string .= "inventory ";
+          $q_string .= "inv_inventory ";
           $q_string .= "set ";
           $q_string .= "inv_project = " . $a_inv_projects['prj_id'] . " ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
@@ -577,7 +577,7 @@
           $display = $a_inv_service['svc_name'];
 
           $q_string  = "update ";
-          $q_string .= "inventory ";
+          $q_string .= "inv_inventory ";
           $q_string .= "set ";
           $q_string .= "inv_class = " . $a_inv_service['svc_id'] . " ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
@@ -642,7 +642,7 @@
           $display = $a_inv_maintenance['man_text'];
 
           $q_string  = "update ";
-          $q_string .= "inventory ";
+          $q_string .= "inv_inventory ";
           $q_string .= "set ";
           $q_string .= "inv_maint = " . $a_inv_maintenance['man_id'] . " ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
@@ -714,7 +714,7 @@
           $display = $a_inv_locations['loc_name'];
 
           $q_string  = "update ";
-          $q_string .= "inventory ";
+          $q_string .= "inv_inventory ";
           $q_string .= "set ";
           $q_string .= "inv_location = " . $a_inv_locations['loc_id'] . " ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
@@ -758,7 +758,7 @@
           print "cell.setAttribute(\"onclick\", \"edit_Detail(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "update ";
-          $q_string .= "inventory ";
+          $q_string .= "inv_inventory ";
           $q_string .= "set ";
           $q_string .= "inv_fqdn = '" . $formVars['select'] . "' ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
@@ -802,7 +802,7 @@
           print "cell.setAttribute(\"onclick\", \"edit_Detail(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "update ";
-          $q_string .= "inventory ";
+          $q_string .= "inv_inventory ";
           $q_string .= "set ";
           $q_string .= "inv_fqdn = '" . $formVars['select'] . "' ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
@@ -846,7 +846,7 @@
           print "cell.setAttribute(\"onclick\", \"edit_Detail(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "update ";
-          $q_string .= "inventory ";
+          $q_string .= "inv_inventory ";
           $q_string .= "set ";
           $q_string .= "inv_fqdn = '" . $formVars['select'] . "' ";
           $q_string .= "where inv_id = " . $formVars['id'] . " ";
@@ -861,8 +861,8 @@
 # to start, get the inv_status
       if ($formVars['function'] == 'ilv') {
         $q_string  = "select inv_status,hw_id,hw_active ";
-        $q_string .= "from inventory ";
-        $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inventory.inv_id ";
+        $q_string .= "from inv_inventory ";
+        $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inv_inventory.inv_id ";
         $q_string .= "where inv_id = " . $formVars['id'] . " and hw_primary = 1 and hw_deleted = 0 ";
         $q_invlive = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_invlive = mysqli_fetch_array($q_invlive);
@@ -890,7 +890,7 @@
 # checkboxes. change call path
       if ($formVars['function'] == 'icp') {
         $q_string  = "select inv_callpath ";
-        $q_string .= "from inventory ";
+        $q_string .= "from inv_inventory ";
         $q_string .= "where inv_id = " . $formVars['id'] . " ";
         $q_invcp = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_invcp = mysqli_fetch_array($q_invcp);
@@ -902,7 +902,7 @@
         }
 
         $q_string  = "update ";
-        $q_string .= "inventory ";
+        $q_string .= "inv_inventory ";
         $q_string .= "set ";
         $q_string .= "inv_callpath = " . $a_invcp['inv_callpath'] . " ";
         $q_string .= "where inv_id = " . $formVars['id'] . " ";
@@ -918,7 +918,7 @@
 # checkboxes. change ansible
       if ($formVars['function'] == 'ian') {
         $q_string  = "select inv_ansible ";
-        $q_string .= "from inventory ";
+        $q_string .= "from inv_inventory ";
         $q_string .= "where inv_id = " . $formVars['id'] . " ";
         $q_invans = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_invans = mysqli_fetch_array($q_invans);
@@ -930,7 +930,7 @@
         }
 
         $q_string  = "update ";
-        $q_string .= "inventory ";
+        $q_string .= "inv_inventory ";
         $q_string .= "set ";
         $q_string .= "inv_ansible = " . $a_invans['inv_ansible'] . " ";
         $q_string .= "where inv_id = " . $formVars['id'] . " ";
@@ -946,7 +946,7 @@
 # checkboxes. change unixsvc/ssh
       if ($formVars['function'] == 'ius') {
         $q_string  = "select inv_ssh ";
-        $q_string .= "from inventory ";
+        $q_string .= "from inv_inventory ";
         $q_string .= "where inv_id = " . $formVars['id'] . " ";
         $q_invssh = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_invssh = mysqli_fetch_array($q_invssh);
@@ -958,7 +958,7 @@
         }
 
         $q_string  = "update ";
-        $q_string .= "inventory ";
+        $q_string .= "inv_inventory ";
         $q_string .= "set ";
         $q_string .= "inv_ssh = " . $a_invssh['inv_ssh'] . " ";
         $q_string .= "where inv_id = " . $formVars['id'] . " ";

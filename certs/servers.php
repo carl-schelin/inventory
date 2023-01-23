@@ -116,7 +116,7 @@ impacted, and which group needs to be contacted to get the certificate updated.<
 
       print "<tr>\n";
       print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_inventory['inv_name']    . $linkend . "</td>";
-      print "  <td class=\"ui-widget-content\">"              . $a_inv_inventory['ven_name'] . " " . $a_inventory['sw_software']            . "</td>";
+      print "  <td class=\"ui-widget-content\">"              . $a_inv_inventory['ven_name'] . " " . $a_inv_inventory['sw_software']            . "</td>";
       print "  <td class=\"ui-widget-content\">"              . $a_inv_inventory['typ_name']               . "</td>";
       print "  <td class=\"ui-widget-content\">"              . $a_inv_inventory['prod_name']              . "</td>";
       print "  <td class=\"ui-widget-content\">"              . $a_inv_inventory['dep_name']               . "</td>";

@@ -170,8 +170,8 @@
   $q_string .= "left join inv_licenses     on inv_licenses.lic_id              = inv_software.sw_licenseid ";
   $q_string .= "left join inv_products     on inv_products.prod_id             = inv_software.sw_product ";
   $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid  = inv_software.sw_id ";
-  $q_string .= "left join inventory        on inventory.inv_id                 = inv_svr_software.svr_companyid ";
-  $q_string .= "left join inv_locations    on inv_locations.loc_id             = inventory.inv_location ";
+  $q_string .= "left join inv_inventory    on inv_inventory.inv_id             = inv_svr_software.svr_companyid ";
+  $q_string .= "left join inv_locations    on inv_locations.loc_id             = inv_inventory.inv_location ";
   $q_string .= $where . " and sw_licenseid > 0 ";
   $q_string .= $orderby;
   $q_inv_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

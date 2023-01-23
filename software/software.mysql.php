@@ -99,7 +99,7 @@
 # software that are updates. New software will have all new tags.
           if ($formVars['update'] == 0 || $formVars['update'] == 1) {
             $q_string  = "delete ";
-            $q_string .= "from tags ";
+            $q_string .= "from inv_tags ";
             $q_string .= "where tag_type = 4 and tag_companyid = " . $formVars['id'] . " ";
             mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 

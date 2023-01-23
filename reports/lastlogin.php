@@ -85,14 +85,14 @@ tabs displaying all the hardware associated with the product and the software.</
 
     $logs = 0;
     $q_string  = "select log_id ";
-    $q_string .= "from log ";
+    $q_string .= "from inv_log ";
     $q_string .= "where log_user = '" . $a_inv_users['usr_id'] . "' ";
     $q_log = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $logs = mysqli_num_rows($q_log);
 
     $logins = 0;
     $q_string  = "select log_id ";
-    $q_string .= "from log ";
+    $q_string .= "from inv_log ";
     $q_string .= "where log_detail like '%has logged in.' and log_user = '" . $a_inv_users['usr_id'] . "' ";
     $q_log = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $logins = mysqli_num_rows($q_log);

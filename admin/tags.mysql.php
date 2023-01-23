@@ -136,12 +136,12 @@
 
       $q_string  = "select tag_id,tag_name,inv_name,usr_first,usr_last,grp_name ";
       $q_string .= "from inv_tags ";
-      $q_string .= "left join inventory    on inventory.inv_id      = inv_tags.tag_companyid ";
+      $q_string .= "left join inv_inventory    on inv_inventory.inv_id      = inv_tags.tag_companyid ";
       $q_string .= "left join inv_users        on inv_users.usr_id          = inv_tags.tag_owner ";
       $q_string .= "left join inv_groups       on inv_groups.grp_id         = inv_tags.tag_group ";
-      $q_string .= "left join inv_hardware     on inv_hardware.hw_companyid = inventory.inv_id ";
+      $q_string .= "left join inv_hardware     on inv_hardware.hw_companyid = inv_inventory.inv_id ";
       $q_string .= "left join inv_models       on inv_models.mod_id         = inv_hardware.hw_vendorid ";
-      $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";
+      $q_string .= "left join inv_locations    on inv_locations.loc_id      = inv_inventory.inv_location ";
       $q_string .= "left join inv_cities       on inv_cities.ct_id          = inv_locations.loc_city ";
       $q_string .= "left join inv_states       on inv_states.st_id          = inv_locations.loc_state ";
       $q_string .= $where . "and tag_type = 1 ";

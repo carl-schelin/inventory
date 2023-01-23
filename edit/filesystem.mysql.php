@@ -128,8 +128,8 @@
 
       $q_string  = "select fs_id,fs_backup,fs_wwid,fs_volume,fs_device,fs_size,fs_mount,fs_verified,fs_update,grp_name,fs_used,fs_avail,fs_percent ";
       $q_string .= "from inv_filesystem ";
-      $q_string .= "left join inventory on inventory.inv_id = inv_filesystem.fs_companyid ";
-      $q_string .= "left join inv_groups on inv_groups.grp_id = inv_filesystem.fs_group ";
+      $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_filesystem.fs_companyid ";
+      $q_string .= "left join inv_groups    on inv_groups.grp_id    = inv_filesystem.fs_group ";
       $q_string .= "where fs_companyid = " . $formVars['fs_companyid'] . " ";
       $q_string .= "order by fs_device";
       $q_inv_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

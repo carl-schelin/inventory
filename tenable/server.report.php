@@ -192,10 +192,10 @@ if ($formVars['inwork'] == '') {
   $total = 0;
   $q_string  = "select inv_id,int_id,int_server,int_addr,prod_name,prj_name ";
   $q_string .= "from inv_interface ";
-  $q_string .= "left join inventory on inventory.inv_id      = inv_interface.int_companyid ";
-  $q_string .= "left join inv_products  on inv_products.prod_id      = inventory.inv_product ";
-  $q_string .= "left join inv_projects  on inv_projects.prj_id       = inventory.inv_project ";
-  $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id      = inv_interface.int_companyid ";
+  $q_string .= "left join inv_products  on inv_products.prod_id      = inv_inventory.inv_product ";
+  $q_string .= "left join inv_projects  on inv_projects.prj_id       = inv_inventory.inv_project ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id      = inv_inventory.inv_location ";
   $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city ";
   $q_string .= "left join inv_states    on inv_states.st_id          = inv_locations.loc_state ";
   $q_string .= $where . " and int_ip6 = 0 and int_type != 7 and inv_status = 0 ";

@@ -37,17 +37,17 @@
     while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
 
       $q_string  = "select int_server ";
-      $q_string .= "from inventory ";
-      $q_string .= "left join inv_tags      on inv_tags.tag_companyid      = inventory.inv_id ";
-      $q_string .= "left join inv_interface on inv_interface.int_companyid = inventory.inv_id ";
+      $q_string .= "from inv_inventory ";
+      $q_string .= "left join inv_tags      on inv_tags.tag_companyid      = inv_inventory.inv_id ";
+      $q_string .= "left join inv_interface on inv_interface.int_companyid = inv_inventory.inv_id ";
       $q_string .= "where inv_status = 0 and inv_ssh = 1 and tag_name = \"" . $a_inv_tags['tag_name'] . "\" and inv_ansible = 1 and int_management = 1 ";
       $q_string .= "order by inv_name ";
-      $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
-      if (mysqli_num_rows($q_inventory) > 0) {
+      $q_inv_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
+      if (mysqli_num_rows($q_inv_inventory) > 0) {
         print "[" . str_replace(" ", "_", str_replace("/", "_", $a_inv_tags['tag_name'])) . "]\n";
 
-        while ($a_inventory = mysqli_fetch_array($q_inventory)) {
-          print $a_inventory['int_server'] . "\n";
+        while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
+          print $a_inv_inventory['int_server'] . "\n";
         }
         print "\n";
       }
@@ -68,15 +68,15 @@
     while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
 
       $q_string  = "select int_server ";
-      $q_string .= "from inventory ";
-      $q_string .= "left join inv_interface on inv_interface.int_companyid = inventory.inv_id ";
+      $q_string .= "from inv_inventory ";
+      $q_string .= "left join inv_interface on inv_interface.int_companyid = inv_inventory.inv_id ";
       $q_string .= "where inv_status = 0 and inv_ssh = 1 and inv_location = " . $a_inv_tags['tag_companyid'] . " and inv_ansible = 1 and int_management = 1 ";
       $q_string .= "order by inv_name ";
-      $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
-      if (mysqli_num_rows($q_inventory) > 0) {
+      $q_inv_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
+      if (mysqli_num_rows($q_inv_inventory) > 0) {
         print "[" . str_replace(" ", "_", str_replace("/", "_", $a_inv_tags['tag_name'])) . "]\n";
-        while ($a_inventory = mysqli_fetch_array($q_inventory)) {
-          print $a_inventory['int_server'] . "\n";
+        while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
+          print $a_inv_inventory['int_server'] . "\n";
         }
         print "\n";
       }
@@ -97,15 +97,15 @@
     while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
 
       $q_string  = "select int_server ";
-      $q_string .= "from inventory ";
-      $q_string .= "left join inv_interface on inv_interface.int_companyid = inventory.inv_id ";
+      $q_string .= "from inv_inventory ";
+      $q_string .= "left join inv_interface on inv_interface.int_companyid = inv_inventory.inv_id ";
       $q_string .= "where inv_status = 0 and inv_ssh = 1 and inv_product = " . $a_inv_tags['tag_companyid'] . " and inv_ansible = 1 and int_management = 1 ";
       $q_string .= "order by inv_name ";
-      $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
-      if (mysqli_num_rows($q_inventory) > 0) {
+      $q_inv_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
+      if (mysqli_num_rows($q_inv_inventory) > 0) {
         print "[" . str_replace(" ", "_", str_replace("/", "_", $a_inv_tags['tag_name'])) . "]\n";
-        while ($a_inventory = mysqli_fetch_array($q_inventory)) {
-          print $a_inventory['int_server'] . "\n";
+        while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
+          print $a_inv_inventory['int_server'] . "\n";
         }
         print "\n";
       }
@@ -140,7 +140,7 @@
           $q_string  = "select int_server ";
           $q_string .= "from inv_svr_software ";
           $q_string .= "left join inv_interface on inv_interface.int_companyid = inv_svr_software.svr_companyid ";
-          $q_string .= "left join inventory on inventory.inv_id = inv_svr_software.svr_companyid ";
+          $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_svr_software.svr_companyid ";
           $q_string .= "where svr_softwareid = " . $a_software['tag_companyid'] . " and inv_ssh = 1 and inv_ansible = 1 and int_management = 1 ";
           $q_inv_svr_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           if (mysqli_num_rows($q_inv_svr_software) > 0) {

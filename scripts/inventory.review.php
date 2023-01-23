@@ -52,22 +52,22 @@
   $hw_retired = "<p>The following servers have been decommissioned since " . $date . ". Please review the listing.</p>\n";
 
   $q_string  = "select inv_name,hw_retired ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inv_inventory.inv_id ";
   $q_string .= "where hw_retired > '" . $date . "' and inv_manager = " . $manager . " ";
   $q_string .= "order by hw_retired,inv_name ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_inventory) > 0) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inv_inventory) > 0) {
     $retired = "<table border=\"1\">\n";
     $retired .= "<tr>\n";
     $retired .= "  <th>Server</th>\n";
     $retired .= "  <th>Retired</th>\n";
     $retired .= "</tr>\n";
-    while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+    while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
       $retired .= "<tr>\n";
-      $retired .= "  <td>" . $a_inventory['inv_name'] . "</td>\n";
-      $retired .= "  <td>" . $a_inventory['hw_retired'] . "</td>\n";
+      $retired .= "  <td>" . $a_inv_inventory['inv_name'] . "</td>\n";
+      $retired .= "  <td>" . $a_inv_inventory['hw_retired'] . "</td>\n";
       $retired .= "</tr>\n";
     }
     $retired .= "</table>\n";
@@ -79,14 +79,14 @@
   $hw_built .= "<p>Please review the listing.</p>\n";
 
   $q_string  = "select inv_name,hw_built,prod_name,prj_name ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join inv_products on inv_products.prod_id      = inventory.inv_product ";
-  $q_string .= "left join inv_projects on inv_projects.prj_id       = inventory.inv_project ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inv_inventory.inv_id ";
+  $q_string .= "left join inv_products on inv_products.prod_id      = inv_inventory.inv_product ";
+  $q_string .= "left join inv_projects on inv_projects.prj_id       = inv_inventory.inv_project ";
   $q_string .= "where hw_active = '1971-01-01' and hw_primary = 1 and inv_status = 0 and inv_manager = " . $manager . " ";
   $q_string .= "order by inv_name ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_inventory) > 0) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inv_inventory) > 0) {
     $built = "<table border=\"1\">\n";
     $built .= "<tr>\n";
     $built .= "  <th>Server</th>\n";
@@ -94,13 +94,13 @@
     $built .= "  <th>Product</th>\n";
     $built .= "  <th>Project</th>\n";
     $built .= "</tr>\n";
-    while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+    while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
       $built .= "<tr>\n";
-      $built .= "  <td>" . $a_inventory['inv_name'] . "</td>\n";
-      $built .= "  <td>" . $a_inventory['hw_built'] . "</td>\n";
-      $built .= "  <td>" . $a_inventory['prod_name'] . "</td>\n";
-      $built .= "  <td>" . $a_inventory['prj_name'] . "</td>\n";
+      $built .= "  <td>" . $a_inv_inventory['inv_name'] . "</td>\n";
+      $built .= "  <td>" . $a_inv_inventory['hw_built'] . "</td>\n";
+      $built .= "  <td>" . $a_inv_inventory['prod_name'] . "</td>\n";
+      $built .= "  <td>" . $a_inv_inventory['prj_name'] . "</td>\n";
       $built .= "</tr>\n";
     }
     $built .= "</table>\n";
@@ -112,21 +112,21 @@
   $hw_ssh .= "<p>Please review the listing.</p>\n";
 
   $q_string  = "select inv_name ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inv_inventory.inv_id ";
   $q_string .= "left join inv_models   on inv_models.mod_id         = inv_hardware.hw_vendorid ";
   $q_string .= "where inv_status = 0 and inv_ssh = 0 and inv_manager = " . $manager . " and (mod_id = 15 or mod_id = 45) ";
   $q_string .= "order by inv_name ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_inventory) > 0) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inv_inventory) > 0) {
     $ssh = "<table border=\"1\">\n";
     $ssh .= "<tr>\n";
     $ssh .= "  <th>Server</th>\n";
     $ssh .= "</tr>\n";
-    while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+    while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
       $ssh .= "<tr>\n";
-      $ssh .= "  <td>" . $a_inventory['inv_name'] . "</td>\n";
+      $ssh .= "  <td>" . $a_inv_inventory['inv_name'] . "</td>\n";
       $ssh .= "</tr>\n";
     }
     $ssh .= "</table>\n";

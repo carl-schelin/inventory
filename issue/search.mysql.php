@@ -75,8 +75,8 @@
 
           $q_string  = "select iss_id,iss_companyid,iss_discovered,iss_subject,usr_name,usr_group,inv_name ";
           $q_string .= "from inv_issue ";
-          $q_string .= "left join inventory on inv_issue.iss_companyid = inventory.inv_id ";
-          $q_string .= "left join inv_users on inv_users.usr_id        = inv_issue.iss_user ";
+          $q_string .= "left join inv_inventory on inv_issue.iss_companyid = inv_inventory.inv_id ";
+          $q_string .= "left join inv_users     on inv_users.usr_id        = inv_issue.iss_user ";
           $q_string .= "where iss_closed = '1971-01-01' and inv_name like '%" . $formVars['search_for'] . "%' ";
           $q_string .= "order by iss_discovered desc,inv_name";
           $q_inv_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -158,7 +158,7 @@
 
           $q_string  = "select iss_id,iss_companyid,iss_discovered,iss_closed,iss_subject,usr_name,inv_name ";
           $q_string .= "from inv_issue ";
-          $q_string .= "left join inventory on inv_issue.iss_companyid = inventory.inv_id ";
+          $q_string .= "left join inv_inventory on inv_issue.iss_companyid = inv_inventory.inv_id ";
           $q_string .= "left join inv_users on inv_users.usr_id        = inv_issue.iss_user ";
           $q_string .= "where iss_closed != '1971-01-01' and inv_name like '%" . $formVars['search_for'] . "%' ";
           $q_string .= "order by inv_name,iss_discovered desc";

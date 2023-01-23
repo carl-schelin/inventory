@@ -24,22 +24,22 @@
   }
 
   $q_string  = "select inv_manager ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_id = " . $formVars['id'] . " ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_inventory = mysqli_fetch_array($q_inventory);
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
   $output  = "<table class=\"ui-styled-table\">";
   $output .= "<tr>";
   $output .= "  <th class=\"ui-state-default\">";
   if (check_userlevel($db, $AL_Edit)) {
-    if (check_grouplevel($db, $a_inventory['inv_manager'])) {
+    if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
       $output .= "<a href=\"" . $Editroot . "/inventory.php?server=" . $formVars['id'] . "#network\" target=\"_blank\"><img src=\"" . $Imgsroot . "/pencil.gif\">";
     }
   }
   $output .= "Interface Information";
   if (check_userlevel($db, $AL_Edit)) {
-    if (check_grouplevel($db, $a_inventory['inv_manager'])) {
+    if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
       $output .= "</a>";
     }
   }

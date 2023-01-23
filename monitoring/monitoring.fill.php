@@ -19,7 +19,7 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from organization");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_monitoring");
 
 #+-----------------+---------+------+-----+---------+----------------+
 #| Field           | Type    | Null | Key | Default | Extra          |

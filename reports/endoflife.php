@@ -170,34 +170,34 @@
   print "</tr>\n";
 
   $q_string  = "select inv_id,inv_name,sw_software,sw_eol,prod_name ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inventory.inv_id ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inv_inventory.inv_id ";
   $q_string .= "left join inv_software     on inv_software.sw_id             = inv_svr_software.svr_softwareid ";
   $q_string .= "left join inv_products     on inv_products.prod_id           = inv_software.sw_product ";
   $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = inv_software.sw_type ";
-  $q_string .= "left join inv_locations    on inv_locations.loc_id           = inventory.inv_location ";
+  $q_string .= "left join inv_locations    on inv_locations.loc_id           = inv_inventory.inv_location ";
   $q_string .= $where . " and typ_name = 'OS' ";
   $q_string .= $orderby;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_inventory) > 0) {
-    while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_inventory) > 0) {
+    while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
-      $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\">";
+      $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inv_inventory['inv_id'] . "\">";
       $linkend   = "</a>";
 
       $class = "ui-widget-content";
-      if ($a_inventory['sw_eol'] < date('Y-m-d')) {
+      if ($a_inv_inventory['sw_eol'] < date('Y-m-d')) {
         $class = "ui-state-error";
       }
-      if ($a_inventory['sw_eol'] == '1971-01-01') {
+      if ($a_inv_inventory['sw_eol'] == '1971-01-01') {
         $class = "ui-state-highlight";
       }
 
       print "<tr>\n";
-      print "  <td class=\"" . $class . "\">" . $linkstart . $a_inventory['inv_name']    . $linkend . "</td>\n";
-      print "  <td class=\"" . $class . "\">" . $linkstart . $a_inventory['prod_name']   . $linkend . "</td>\n";
-      print "  <td class=\"" . $class . "\">" . $linkstart . $a_inventory['sw_software'] . $linkend . "</td>\n";
-      print "  <td class=\"" . $class . "\">" . $linkstart . $a_inventory['sw_eol']      . $linkend . "</td>\n";
+      print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_inventory['inv_name']    . $linkend . "</td>\n";
+      print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_inventory['prod_name']   . $linkend . "</td>\n";
+      print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_inventory['sw_software'] . $linkend . "</td>\n";
+      print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_inventory['sw_eol']      . $linkend . "</td>\n";
       print "</tr>\n";
 
     }

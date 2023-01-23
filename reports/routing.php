@@ -178,23 +178,23 @@
   print "</tr>\n";
 
   $q_string  = "select inv_id,inv_name,route_id,route_address,route_gateway,route_mask,route_desc,int_face,itp_acronym ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_routing   on inv_routing.route_companyid = inventory.inv_id ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_routing   on inv_routing.route_companyid = inv_inventory.inv_id ";
   $q_string .= "left join inv_interface on inv_interface.int_id        = inv_routing.route_interface ";
-  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid   = inventory.inv_id ";
-  $q_string .= "left join inv_locations on inv_locations.loc_id        = inventory.inv_location ";
+  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid   = inv_inventory.inv_id ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id        = inv_inventory.inv_location ";
   $q_string .= "left join inv_models    on inv_models.mod_id           = inv_hardware.hw_vendorid ";
-  $q_string .= "left join inv_groups    on inv_groups.grp_id           = inventory.inv_manager ";
+  $q_string .= "left join inv_groups    on inv_groups.grp_id           = inv_inventory.inv_manager ";
   $q_string .= "left join inv_int_types on inv_int_types.itp_id        = inv_interface.int_type ";
   $q_string .= $where
   $q_string .= $orderby;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
-    $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "#routing\" target=\"_blank\">";
+    $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inv_inventory['inv_id'] . "#routing\" target=\"_blank\">";
     $linkend = "</a>";
 
-    $dns = $a_inventory['route_address'];
+    $dns = $a_inv_inventory['route_address'];
 ## validate the IP before trying to ping or look it up (unnecessary delays)
 #    if (filter_var($a_inv_routing['route_address'], FILTER_VALIDATE_IP) && ($a_inv_interface['int_face'] != 'lo' || $a_inv_interface['int_face'] != 'lo0')) {
 ## ensure it's a -host based ip, no need to ping or look up -net ranges.
@@ -207,21 +207,21 @@
 #      }
 #    }
 
-    if ($a_inventory['route_address'] == '0.0.0.0' || $a_inventory['route_address'] == 'default') {
+    if ($a_inv_inventory['route_address'] == '0.0.0.0' || $a_inv_inventory['route_address'] == 'default') {
       $class = "ui-state-highlight";
     } else {
       $class = "ui-widget-content";
     }
 
     print "<tr>\n";
-    print "  <td class=\"" . $class . "\">" . $linkstart . $a_inventory['inv_name']                      . $linkend . "</td>\n";
-    print "  <td class=\"" . $class . "\">" . $linkstart . $a_inventory['route_address']                 . $linkend . "</td>\n";
-    print "  <td class=\"" . $class . "\">" . $linkstart . $a_inventory['route_address']                 . $linkend . "</td>\n";
-    print "  <td class=\"" . $class . "\">" . $linkstart . createNetmaskAddr($a_inventory['route_mask']) . $linkend . "</td>\n";
-    print "  <td class=\"" . $class . "\">" . $linkstart . $a_inventory['route_gateway']                 . $linkend . "</td>\n";
-    print "  <td class=\"" . $class . "\">" . $linkstart . $a_inventory['int_face']                      . $linkend . "</td>\n";
-    print "  <td class=\"" . $class . "\">" . $linkstart . $a_inventory['itp_acronym']                   . $linkend . "</td>\n";
-    print "  <td class=\"" . $class . "\">" . $linkstart . $a_inventory['route_desc']                    . $linkend . "</td>\n";
+    print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_inventory['inv_name']                      . $linkend . "</td>\n";
+    print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_inventory['route_address']                 . $linkend . "</td>\n";
+    print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_inventory['route_address']                 . $linkend . "</td>\n";
+    print "  <td class=\"" . $class . "\">" . $linkstart . createNetmaskAddr($a_inv_inventory['route_mask']) . $linkend . "</td>\n";
+    print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_inventory['route_gateway']                 . $linkend . "</td>\n";
+    print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_inventory['int_face']                      . $linkend . "</td>\n";
+    print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_inventory['itp_acronym']                   . $linkend . "</td>\n";
+    print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_inventory['route_desc']                    . $linkend . "</td>\n";
     print "</tr>\n";
   }
 
@@ -241,26 +241,26 @@
 #            . "where inv_status = 0 and inv_ssh = 1 and inv_manager = 1 ";
 
   $q_string  = "select inv_id,inv_name ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid   = inventory.inv_id ";
-  $q_string .= "left join inv_locations on inv_locations.loc_id        = inventory.inv_location ";
-  $q_string .= "left join inv_groups    on inv_groups.grp_id           = inventory.inv_manager ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid   = inv_inventory.inv_id ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id        = inv_inventory.inv_location ";
+  $q_string .= "left join inv_groups    on inv_groups.grp_id           = inv_inventory.inv_manager ";
   $q_string .= $where;
   $q_string .= "order by inv_name ";
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
     $q_string  = "select route_id from inv_routing ";
-    $q_string .= "where route_companyid = " . $a_inventory['inv_id'];
+    $q_string .= "where route_companyid = " . $a_inv_inventory['inv_id'];
     $q_inv_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_inv_routing = mysqli_fetch_array($q_inv_routing);
 
-    $linkstart = "<a href=\"" . $Editroot . "/routing.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">";
+    $linkstart = "<a href=\"" . $Editroot . "/routing.php?server=" . $a_inv_inventory['inv_id'] . "\" target=\"_blank\">";
     $linkend   = "</a>";
 
     if ($a_inv_routing['route_id'] == '') {
       print "<tr>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inventory['inv_name'] . $linkend . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_inventory['inv_name'] . $linkend . "</td>\n";
       print "</tr>\n";
     }
   }

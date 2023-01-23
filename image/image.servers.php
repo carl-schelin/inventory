@@ -33,14 +33,14 @@
       $output = '';
       if ($a_inv_images['img_facing']) {
         $q_string  = "select inv_name ";
-        $q_string .= "from inventory ";
+        $q_string .= "from inv_inventory ";
         $q_string .= "where inv_front = " . $formVars['id'] . " ";
         $q_string .= "order by inv_name ";
-        $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        if (mysqli_num_rows($q_inventory) > 0) {
+        $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_inv_inventory) > 0) {
           $comma = '';
-          while ($a_inventory = mysqli_fetch_array($q_inventory)) {
-            $output .= $comma . $a_inventory['inv_name'];
+          while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
+            $output .= $comma . $a_inv_inventory['inv_name'];
             $comma = ' ';
           }
         } else {
@@ -48,14 +48,14 @@
         }
       } else {
         $q_string  = "select inv_name ";
-        $q_string .= "from inventory ";
+        $q_string .= "from inv_inventory ";
         $q_string .= "where inv_rear = " . $formVars['id'] . " ";
         $q_string .= "order by inv_name ";
-        $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        if (mysqli_num_rows($q_inventory) > 0) {
+        $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_inv_inventory) > 0) {
           $comma = '';
-          while ($a_inventory = mysqli_fetch_array($q_inventory)) {
-            $output .= $comma . $a_inventory['inv_name'];
+          while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
+            $output .= $comma . $a_inv_inventory['inv_name'];
             $comma = ' ';
           }
         } else {

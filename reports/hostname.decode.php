@@ -44,13 +44,13 @@
   if (strlen($formVars['server']) > 0) {
 
     $q_string  = "select inv_id,inv_function ";
-    $q_string .= "from inventory ";
+    $q_string .= "from inv_inventory ";
     $q_string .= "where inv_name = '" . $formVars['server'] . "' ";
-    $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    if (mysqli_num_rows($q_inventory) == 0) {
+    $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    if (mysqli_num_rows($q_inv_inventory) == 0) {
       $q_string  = "select inv_id,inv_name,inv_function ";
       $q_string .= "from inv_interface "; 
-      $q_string .= "left join inventory on inventory.inv_id = inv_interface.int_companyid ";
+      $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_interface.int_companyid ";
       $q_string .= "where int_server = '" . $formVars['server'] . "' ";
       $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_inv_interface) > 0) {
@@ -60,8 +60,8 @@
         print "document.getElementById('gohere').innerHTML = '';\n";
       }
     } else {
-      $a_inventory = mysqli_fetch_array($q_inventory);
-      print "document.getElementById('gohere').innerHTML = ' Server found! <a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">" . $formVars['server'] . "</a> Function: " . $a_inventory['inv_function'] . "';\n";
+      $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
+      print "document.getElementById('gohere').innerHTML = ' Server found! <a href=\"" . $Showroot . "/inventory.php?server=" . $a_inv_inventory['inv_id'] . "\" target=\"_blank\">" . $formVars['server'] . "</a> Function: " . $a_inv_inventory['inv_function'] . "';\n";
     }
 
     $os_location = strtolower(substr($formVars['server'],  0, 4));
@@ -199,14 +199,14 @@
           }
 
           $q_string  = "select prod_name ";
-          $q_string .= "from inventory ";
-          $q_string .= "left join inv_products on inv_products.prod_id = inventory.inv_product ";
+          $q_string .= "from inv_inventory ";
+          $q_string .= "left join inv_products on inv_products.prod_id = inv_inventory.inv_product ";
           $q_string .= "where inv_name like '" . $os_location . $os_state . $os_site . $os_service . "%' ";
           $q_string .= "limit 1 ";
-          $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          $a_inventory = mysqli_fetch_array($q_inventory);
+          $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
-          $formVars['08device']    = $a_inventory['prod_name'];
+          $formVars['08device']    = $a_inv_inventory['prod_name'];
 
 
           $formVars['08instance']  = $os_instance;

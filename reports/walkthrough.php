@@ -195,58 +195,58 @@
   $locheader = '';
   $q_string  = "select inv_id,inv_name,inv_rack,inv_row,inv_unit,inv_manager,loc_name,";
   $q_string .= "ct_city,st_acronym,hw_asset,hw_serial ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_locations on inventory.inv_location    = inv_locations.loc_id ";
-  $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city ";
-  $q_string .= "left join inv_states    on inv_states.st_id          = inv_locations.loc_state ";
-  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join inv_models    on inv_models.mod_id         = inv_hardware.hw_vendorid ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_locations on inv_inventory.inv_location    = inv_locations.loc_id ";
+  $q_string .= "left join inv_cities    on inv_cities.ct_id              = inv_locations.loc_city ";
+  $q_string .= "left join inv_states    on inv_states.st_id              = inv_locations.loc_state ";
+  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid     = inv_inventory.inv_id ";
+  $q_string .= "left join inv_models    on inv_models.mod_id             = inv_hardware.hw_vendorid ";
   $q_string .= $where . $parent;
   $q_string .= $orderby;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
-    if ($a_inventory['inv_unit'] == 0) {
+    if ($a_inv_inventory['inv_unit'] == 0) {
       $unit = '';
     } else {
-      $unit = "U" . $a_inventory['inv_unit'];
+      $unit = "U" . $a_inv_inventory['inv_unit'];
     }
 
     $linkedit = '';
     if (check_userlevel($db, $AL_Edit)) {
-      if ($a_inventory['inv_manager'] == $_SESSION['group']) {
-        $linkedit = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\"><img src=\"" . $Imgsroot . "/pencil.gif\" height=10></a>";
+      if ($a_inv_inventory['inv_manager'] == $_SESSION['group']) {
+        $linkedit = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inv_inventory['inv_id'] . "\" target=\"_blank\"><img src=\"" . $Imgsroot . "/pencil.gif\" height=10></a>";
       }
     }
 
-    if ($location == '' && $locheader != $a_inventory['loc_name']) {
+    if ($location == '' && $locheader != $a_inv_inventory['loc_name']) {
       print "<tr>\n";
-      print "  <th class=\"ui-state-default\" colspan=\"7\">" . $a_inventory['loc_name'] . " (" . $a_inventory['ct_city'] . " " . $a_inventory['st_acronym'] . ")</th>\n";
+      print "  <th class=\"ui-state-default\" colspan=\"7\">" . $a_inv_inventory['loc_name'] . " (" . $a_inv_inventory['ct_city'] . " " . $a_inv_inventory['st_acronym'] . ")</th>\n";
       print "</tr>\n";
-      $locheader = $a_inventory['loc_name'];
+      $locheader = $a_inv_inventory['loc_name'];
     }
 
     print "<tr>\n";
-    print "  <td class=\"ui-widget-content\">" . $linkedit . $a_inventory['inv_name'] . "</td>\n";
-    print "  <td class=\"ui-widget-content\">" . $a_inventory['inv_row'] . " - " . $a_inventory['inv_rack'] . "</td>\n";
+    print "  <td class=\"ui-widget-content\">" . $linkedit . $a_inv_inventory['inv_name'] . "</td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['inv_row'] . " - " . $a_inv_inventory['inv_rack'] . "</td>\n";
     print "  <td class=\"ui-widget-content\">" . $unit . "</td>\n";
     if ($formVars['location'] == 0) {
-      print "  <td class=\"ui-widget-content\">" . $a_inventory['loc_name'] . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['loc_name'] . "</td>\n";
     }
-    print "  <td class=\"ui-widget-content\">" . $a_inventory['hw_asset'] . "</td>\n";
-    print "  <td class=\"ui-widget-content\">" . $a_inventory['hw_serial'] . "</td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['hw_asset'] . "</td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['hw_serial'] . "</td>\n";
     print "</tr>\n";
 
 
     $q_string  = "select inv_id,inv_name,inv_rack,inv_row,inv_unit,inv_manager,loc_name,";
     $q_string .= "ct_city,st_acronym,hw_asset,hw_serial ";
-    $q_string .= "from inventory ";
-    $q_string .= "left join inv_locations on inventory.inv_location    = inv_locations.loc_id ";
-    $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city ";
-    $q_string .= "left join inv_states    on inv_states.st_id          = inv_locations.loc_state ";
-    $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inventory.inv_id ";
-    $q_string .= "left join inv_models    on inv_models.mod_id         = inv_hardware.hw_vendorid ";
-    $q_string .= $where . $and . " inv_companyid = " . $a_inventory['inv_id'] . " ";
+    $q_string .= "from inv_inventory ";
+    $q_string .= "left join inv_locations on inv_inventory.inv_location    = inv_locations.loc_id ";
+    $q_string .= "left join inv_cities    on inv_cities.ct_id              = inv_locations.loc_city ";
+    $q_string .= "left join inv_states    on inv_states.st_id              = inv_locations.loc_state ";
+    $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid     = inv_inventory.inv_id ";
+    $q_string .= "left join inv_models    on inv_models.mod_id             = inv_hardware.hw_vendorid ";
+    $q_string .= $where . $and . " inv_companyid = " . $a_inv_inventory['inv_id'] . " ";
     $q_string .= "order by inv_unit ";
     $q_child = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     while ($a_child = mysqli_fetch_array($q_child)) {

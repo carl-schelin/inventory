@@ -76,42 +76,42 @@
 
   $locheader = '';
   $q_string  = "select inv_id,inv_name,inv_rack,inv_row,inv_unit,loc_name,loc_city,loc_state,hw_asset,hw_serial ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_locations on inventory.inv_location    = inv_locations.loc_id ";
-  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join inv_models    on inv_models.mod_id         = inv_hardware.hw_vendorid ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_locations on inv_inventory.inv_location    = inv_locations.loc_id ";
+  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid     = inv_inventory.inv_id ";
+  $q_string .= "left join inv_models    on inv_models.mod_id             = inv_hardware.hw_vendorid ";
   $q_string .= "where inv_companyid = 0 and hw_primary = 1 and hw_deleted = 0 and mod_virtual = 0 and inv_status = 0 " . $group . $location . " ";
   $q_string .= $orderby;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
-    if ($a_inventory['inv_unit'] == 0) {
+    if ($a_inv_inventory['inv_unit'] == 0) {
       $unit = '';
     } else {
-      $unit = "U" . $a_inventory['inv_unit'];
+      $unit = "U" . $a_inv_inventory['inv_unit'];
     }
 
-    if ($location == '' && $locheader != $a_inventory['loc_name']) {
+    if ($location == '' && $locheader != $a_inv_inventory['loc_name']) {
       $output .= "<tr>\n";
-      $output .= "  <th colspan=6>" . $a_inventory['loc_name'] . " (" . $a_inventory['loc_city'] . " " . $a_inventory['loc_state'] . ")</th>\n";
+      $output .= "  <th colspan=6>" . $a_inv_inventory['loc_name'] . " (" . $a_inv_inventory['loc_city'] . " " . $a_inv_inventory['loc_state'] . ")</th>\n";
       $output .= "</tr>\n";
-      $locheader = $a_inventory['loc_name'];
+      $locheader = $a_inv_inventory['loc_name'];
     }
 
     $output .= "<tr>\n";
-    $output .= "  <td>" . $a_inventory['inv_name']   . "</td>\n";
-    $output .= "  <td>" . $a_inventory['inv_row']    . " - " . $a_inventory['inv_rack'] . "</td>\n";
+    $output .= "  <td>" . $a_inv_inventory['inv_name']   . "</td>\n";
+    $output .= "  <td>" . $a_inv_inventory['inv_row']    . " - " . $a_inv_inventory['inv_rack'] . "</td>\n";
     $output .= "  <td>" . $unit                      . "</td>\n";
-    $output .= "  <td>" . $a_inventory['hw_asset']   . "</td>\n";
-    $output .= "  <td>" . $a_inventory['hw_serial']  . "</td>\n";
+    $output .= "  <td>" . $a_inv_inventory['hw_asset']   . "</td>\n";
+    $output .= "  <td>" . $a_inv_inventory['hw_serial']  . "</td>\n";
     $output .= "</tr>\n";
 
     $q_string  = "select inv_id,inv_name,inv_rack,inv_row,inv_unit,loc_name,loc_city,loc_state,hw_asset,hw_serial ";
-    $q_string .= "from inventory ";
-    $q_string .= "left join inv_locations on inventory.inv_location    = inv_locations.loc_id ";
-    $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inventory.inv_id ";
-    $q_string .= "left join inv_models    on inv_models.mod_id         = inv_hardware.hw_vendorid ";
-    $q_string .= "where inv_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1 and hw_deleted = 0 and mod_virtual = 0 and inv_status = 0 " . $group . $location . " ";
+    $q_string .= "from inv_inventory ";
+    $q_string .= "left join inv_locations on inv_inventory.inv_location    = inv_locations.loc_id ";
+    $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid     = inv_inventory.inv_id ";
+    $q_string .= "left join inv_models    on inv_models.mod_id             = inv_hardware.hw_vendorid ";
+    $q_string .= "where inv_companyid = " . $a_inv_inventory['inv_id'] . " and hw_primary = 1 and hw_deleted = 0 and mod_virtual = 0 and inv_status = 0 " . $group . $location . " ";
     $q_string .= $orderby;
     $q_child = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     while ($a_child = mysqli_fetch_array($q_child)) {

@@ -96,23 +96,23 @@ $(document).ready( function() {
 <?php
 
   $q_string  = "select inv_id,inv_name,inv_function,prod_name,dep_name ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_products     on inv_products.prod_id           = inventory.inv_product ";
-  $q_string .= "left join inv_department   on inv_department.dep_id          = inventory.inv_department ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_products     on inv_products.prod_id           = inv_inventory.inv_product ";
+  $q_string .= "left join inv_department   on inv_department.dep_id          = inv_inventory.inv_department ";
   $q_string .= "where inv_product = " . $formVars['id'] . " ";
   $q_string .= "order by inv_name ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_inventory) > 0) {
-    while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inv_inventory) > 0) {
+    while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
-      $linkstart  = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">";
+      $linkstart  = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inv_inventory['inv_id'] . "\" target=\"_blank\">";
       $linkstart .= "<img class=\"ui-icon-edit\" src=\"" . $Imgsroot . "/pencil.gif\" height=\"10\">";
 
       print "<tr>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inventory['inv_name']    . $linkend . "</td>";
-      print "  <td class=\"ui-widget-content\">"              . $a_inventory['inv_function']           . "</td>";
-      print "  <td class=\"ui-widget-content\">"              . $a_inventory['prod_name']              . "</td>";
-      print "  <td class=\"ui-widget-content\">"              . $a_inventory['dep_name']               . "</td>";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_inventory['inv_name']    . $linkend . "</td>";
+      print "  <td class=\"ui-widget-content\">"              . $a_inv_inventory['inv_function']           . "</td>";
+      print "  <td class=\"ui-widget-content\">"              . $a_inv_inventory['prod_name']              . "</td>";
+      print "  <td class=\"ui-widget-content\">"              . $a_inv_inventory['dep_name']               . "</td>";
       print "</tr>\n";
     }
   } else {

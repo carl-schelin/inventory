@@ -161,18 +161,18 @@
 # get the current owner of the system for comparison
 # add the inv_name for the changelog function
             $q_group  = "select inv_name,inv_manager,inv_location,inv_status ";
-            $q_group .= "from inventory ";
+            $q_group .= "from inv_inventory ";
             $q_group .= "where inv_id = " . $formVars['id'] . " ";
-            $q_inventory = mysqli_query($db, $q_group) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-            $a_inventory = mysqli_fetch_array($q_inventory);
+            $q_inv_inventory = mysqli_query($db, $q_group) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
 # make changes if the software platform owner changes. No need to do extra work if the same
-            if ($a_inventory['inv_manager'] != $formVars['inv_manager']) {
+            if ($a_inv_inventory['inv_manager'] != $formVars['inv_manager']) {
 # let'also make sure all software owned by the group is owned by the new group
               $q_software  = "update ";
               $q_software .= "inv_svr_software ";
               $q_software .= "set svr_group = " . $formVars['inv_manager'] . " ";
-              $q_software .= "where svr_companyid = " . $formVars['id'] . " and svr_group = " . $a_inventory['inv_manager'] . " ";
+              $q_software .= "where svr_companyid = " . $formVars['id'] . " and svr_group = " . $a_inv_inventory['inv_manager'] . " ";
               mysqli_query($db, $q_software) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             }
 
@@ -196,17 +196,17 @@
             $query .= "inv_filesystem ";
             $query .= "set ";
             $query .= "fs_group = " . $formVars['inv_manager'] . " ";
-            $query .= "where fs_companyid = " . $formVars['id'] . " and fs_group = " . $a_inventory['inv_manager'] . " ";
+            $query .= "where fs_companyid = " . $formVars['id'] . " and fs_group = " . $a_inv_inventory['inv_manager'] . " ";
             $result = mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
 # for changelog requirements, compare old inv_name with new inv_name. If changed, save the old name before changing it
-            if ($a_inventory['inv_name'] != $formVars['inv_name']) {
-              changelog($db, $formVars['id'], $a_inventory['inv_name'], "Asset Name Change", $_SESSION['uid'], "inventory", "inv_name", 0);
+            if ($a_inv_inventory['inv_name'] != $formVars['inv_name']) {
+              changelog($db, $formVars['id'], $a_inv_inventory['inv_name'], "Asset Name Change", $_SESSION['uid'], "inventory", "inv_name", 0);
             }
 
 # for changelog requirements, compare old inv_location with new inv_location. If changed, save the old location before changing it
-            if ($a_inventory['inv_location'] != $formVars['inv_location']) {
-              changelog($db, $formVars['id'], $a_inventory['inv_location'], "Location Change", $_SESSION['uid'], "inventory", "inv_location", 0);
+            if ($a_inv_inventory['inv_location'] != $formVars['inv_location']) {
+              changelog($db, $formVars['id'], $a_inv_inventory['inv_location'], "Location Change", $_SESSION['uid'], "inventory", "inv_location", 0);
             }
 
 # for changelog requirements, see if the status has changed
@@ -216,13 +216,13 @@
             if ($formVars['inv_status'] == 0 || $formVars['inv_status'] == 1) {
               $status_check = 0;
             }
-            if ($a_inventory['inv_status'] != $status_check) {
-              changelog($db, $formVars['id'], $a_inventory['inv_status'], "Status Change", $_SESSION['uid'], "inventory", "inv_status", 0);
+            if ($a_inv_inventory['inv_status'] != $status_check) {
+              changelog($db, $formVars['id'], $a_inv_inventory['inv_status'], "Status Change", $_SESSION['uid'], "inventory", "inv_status", 0);
             }
 
 # now save any updated information
             logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['inv_name']);
-            $query = "update inventory set " . $q_string . " where inv_id = " . $formVars['id'];
+            $query = "update inv_inventory set " . $q_string . " where inv_id = " . $formVars['id'];
             mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
             print "alert('System updated');\n";
@@ -234,7 +234,7 @@
             print "document.edit.addnew.disabled = true;\n";
             logaccess($db, $_SESSION['uid'], $package, "Adding: " . $formVars['inv_name']);
 
-            $query = "insert into inventory set inv_id = NULL, " . $q_string;
+            $query = "insert into inv_inventory set inv_id = NULL, " . $q_string;
             $result = mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
 
 # get the new inv_id
@@ -441,10 +441,10 @@ print "alert('All Done!');\n";
 # current status is $formVars['inv_status'] = 0 - in work, 1 = in production, 2 = retired.
 
         $q_string  = "select inv_status ";
-        $q_string .= "from inventory ";
+        $q_string .= "from inv_inventory ";
         $q_string .= "where inv_id = " . $newserver;
-        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        $a_inventory = mysqli_fetch_array($q_inventory);
+        $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
         $q_string  = "select hw_id,hw_active,hw_retired,hw_reused ";
         $q_string .= "from inv_hardware ";
@@ -452,7 +452,7 @@ print "alert('All Done!');\n";
         $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
-        if ($a_inventory['inv_status'] == 0) {
+        if ($a_inv_inventory['inv_status'] == 0) {
           if ($a_inv_hardware['hw_active'] == '1971-01-01') {
             $current = "work";
           } else {
@@ -471,7 +471,7 @@ print "alert('All Done!');\n";
           }
           if ($formVars['inv_status'] == 2) {
             $r_hardware = "update inv_hardware set hw_retired = '" . date('Y-m-d') . "' where hw_id = " . $a_inv_hardware['hw_id'] . " ";
-            $r_inventory = "update inventory set inv_status = 1, inv_ssh = 0 where inv_id = " . $newserver . " ";
+            $r_inventory = "update inv_inventory set inv_status = 1, inv_ssh = 0 where inv_id = " . $newserver . " ";
           }
         }
 
@@ -481,19 +481,19 @@ print "alert('All Done!');\n";
           }
           if ($formVars['inv_status'] == 2) {
             $r_hardware = "update inv_hardware set hw_retired = '" . date('Y-m-d') . "' where hw_id = " . $a_inv_hardware['hw_id'] . " ";
-            $r_inventory = "update inventory set inv_status = 1, inv_ssh = 0 where inv_id = " . $newserver . " ";
+            $r_inventory = "update inv_inventory set inv_status = 1, inv_ssh = 0 where inv_id = " . $newserver . " ";
           }
         }
 
         if ($current == 'retired') {
           if ($formVars['inv_status'] == 0) {
             $r_hardware = "update inv_hardware set hw_retired = '1971-01-01' where hw_id = " . $a_inv_hardware['hw_id'] . " ";
-            $r_inventory = "update inventory set inv_status = 0 where inv_id = " . $newserver . " ";
+            $r_inventory = "update inv_inventory set inv_status = 0 where inv_id = " . $newserver . " ";
             $r_tags = "delete from inv_tags where tag_type = 1 and tag_companyid = " . $newserver . " ";
           }
           if ($formVars['inv_status'] == 1) {
             $r_hardware = "update inv_hardware set hw_active = '" . date('Y-m-d') . "', hw_retired = '1971-01-01' where hw_id = " . $a_inv_hardware['hw_id'] . " ";
-            $r_inventory = "update inventory set inv_status = 0 where inv_id = " . $newserver . " ";
+            $r_inventory = "update inv_inventory set inv_status = 0 where inv_id = " . $newserver . " ";
           }
         }
 
@@ -522,40 +522,40 @@ print "alert('All Done!');\n";
           $q_string  = "select inv_function,inv_callpath,inv_document,inv_ssh,inv_location,";
           $q_string .= "inv_rack,inv_row,inv_unit,inv_zone,inv_front,inv_rear,inv_manager,inv_appadmin,inv_class,inv_response,inv_mstart,";
           $q_string .= "inv_mend,inv_mdow,inv_minterval,inv_product,inv_project,inv_department,inv_ansible,inv_notes ";
-          $q_string .= "from inventory ";
+          $q_string .= "from inv_inventory ";
           $q_string .= "where inv_id = " . $formVars['copyfrom'];
-          $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+          $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
             $q_string =
-              "inv_function       = \"" . $a_inventory['inv_function']       . "\"," .
-              "inv_callpath       = \"" . $a_inventory['inv_callpath']       . "\"," .
-              "inv_document       = \"" . $a_inventory['inv_document']       . "\"," .
-              "inv_ssh            = \"" . $a_inventory['inv_ssh']            . "\"," .
-              "inv_location       = \"" . $a_inventory['inv_location']       . "\"," .
-              "inv_rack           = \"" . $a_inventory['inv_rack']           . "\"," .
-              "inv_row            = \"" . $a_inventory['inv_row']            . "\"," .
-              "inv_unit           = \"" . $a_inventory['inv_unit']           . "\"," .
-              "inv_zone           = \"" . $a_inventory['inv_zone']           . "\"," .
-              "inv_front          = \"" . $a_inventory['inv_front']          . "\"," .
-              "inv_rear           = \"" . $a_inventory['inv_rear']           . "\"," .
-              "inv_manager        = \"" . $a_inventory['inv_manager']        . "\"," .
-              "inv_appadmin       = \"" . $a_inventory['inv_appadmin']       . "\"," .
-              "inv_class          = \"" . $a_inventory['inv_class']          . "\"," .
-              "inv_response       = \"" . $a_inventory['inv_response']       . "\"," .
-              "inv_mstart         = \"" . $a_inventory['inv_mstart']         . "\"," .
-              "inv_mend           = \"" . $a_inventory['inv_mend']           . "\"," .
-              "inv_mdow           = \"" . $a_inventory['inv_mdow']           . "\"," .
-              "inv_minterval      = \"" . $a_inventory['inv_minterval']      . "\"," .
-              "inv_product        = \"" . $a_inventory['inv_product']        . "\"," .
-              "inv_project        = \"" . $a_inventory['inv_project']        . "\"," .
-              "inv_department     = \"" . $a_inventory['inv_department']     . "\"," .
-              "inv_ansible        = \"" . $a_inventory['inv_ansible']        . "\"," .
-              "inv_env            = \"" . $a_inventory['inv_env']            . "\"," .
-              "inv_appliance      = \"" . $a_inventory['inv_appliance']      . "\"," .
-              "inv_notes          = \"" . $a_inventory['inv_notes']          . "\"";
+              "inv_function       = \"" . $a_inv_inventory['inv_function']       . "\"," .
+              "inv_callpath       = \"" . $a_inv_inventory['inv_callpath']       . "\"," .
+              "inv_document       = \"" . $a_inv_inventory['inv_document']       . "\"," .
+              "inv_ssh            = \"" . $a_inv_inventory['inv_ssh']            . "\"," .
+              "inv_location       = \"" . $a_inv_inventory['inv_location']       . "\"," .
+              "inv_rack           = \"" . $a_inv_inventory['inv_rack']           . "\"," .
+              "inv_row            = \"" . $a_inv_inventory['inv_row']            . "\"," .
+              "inv_unit           = \"" . $a_inv_inventory['inv_unit']           . "\"," .
+              "inv_zone           = \"" . $a_inv_inventory['inv_zone']           . "\"," .
+              "inv_front          = \"" . $a_inv_inventory['inv_front']          . "\"," .
+              "inv_rear           = \"" . $a_inv_inventory['inv_rear']           . "\"," .
+              "inv_manager        = \"" . $a_inv_inventory['inv_manager']        . "\"," .
+              "inv_appadmin       = \"" . $a_inv_inventory['inv_appadmin']       . "\"," .
+              "inv_class          = \"" . $a_inv_inventory['inv_class']          . "\"," .
+              "inv_response       = \"" . $a_inv_inventory['inv_response']       . "\"," .
+              "inv_mstart         = \"" . $a_inv_inventory['inv_mstart']         . "\"," .
+              "inv_mend           = \"" . $a_inv_inventory['inv_mend']           . "\"," .
+              "inv_mdow           = \"" . $a_inv_inventory['inv_mdow']           . "\"," .
+              "inv_minterval      = \"" . $a_inv_inventory['inv_minterval']      . "\"," .
+              "inv_product        = \"" . $a_inv_inventory['inv_product']        . "\"," .
+              "inv_project        = \"" . $a_inv_inventory['inv_project']        . "\"," .
+              "inv_department     = \"" . $a_inv_inventory['inv_department']     . "\"," .
+              "inv_ansible        = \"" . $a_inv_inventory['inv_ansible']        . "\"," .
+              "inv_env            = \"" . $a_inv_inventory['inv_env']            . "\"," .
+              "inv_appliance      = \"" . $a_inv_inventory['inv_appliance']      . "\"," .
+              "inv_notes          = \"" . $a_inv_inventory['inv_notes']          . "\"";
 
-            $query = "update inventory set " . $q_string . " where inv_id = " . $formVars['id'];;
+            $query = "update inv_inventory set " . $q_string . " where inv_id = " . $formVars['id'];;
             mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
           }
 

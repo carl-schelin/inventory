@@ -16,12 +16,14 @@
 
   $serverid = clean($_GET['id'], 10);
 
-  $q_string = "select inv_location,inv_rack,inv_row,inv_unit,inv_front,inv_rear from inventory where inv_id = $serverid";
-  $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  $a_inventory = mysqli_fetch_array($q_inventory);
+  $q_string  = "select inv_location,inv_rack,inv_row,inv_unit,inv_front,inv_rear ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "where inv_id = " . $serverid . " ";
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
   $q_string  = "select loc_name,loc_addr1,loc_addr2,loc_suite,loc_city,loc_state,";
-  $q_string .= "loc_zipcode,loc_country,loc_details from inv_locations where loc_id = " . $a_inventory['inv_location'];
+  $q_string .= "loc_zipcode,loc_country,loc_details from inv_locations where loc_id = " . $a_inv_inventory['inv_location'];
   $q_inv_locations = mysqli_query($db, $q_string) or die(mysqli_error($db));
   $a_inv_locations = mysqli_fetch_array($q_inv_locations);
 
@@ -34,7 +36,7 @@
   $output  = "<table class=\"ui-styled-table\">";
   $output .= "<tr>";
   $output .= "<td class=\"ui-widget-content\"><strong>Name:</strong> " . $a_inv_locations['loc_name'] . "</td>";
-  $output .= "<td class=\"ui-widget-content\"><strong>Rack:</strong> " . $a_inventory['inv_row'] . $a_inventory['inv_rack'] . "/U" . $a_inventory['inv_unit'] . "</td>";
+  $output .= "<td class=\"ui-widget-content\"><strong>Rack:</strong> " . $a_inv_inventory['inv_row'] . $a_inv_inventory['inv_rack'] . "/U" . $a_inv_inventory['inv_unit'] . "</td>";
   $output .= "</tr>";
   $output .= "<tr>";
   $output .= "<td class=\"ui-widget-content\"><strong>Street:</strong> " . $a_inv_locations['loc_addr1'] . "</td>";
@@ -56,28 +58,28 @@
   $output .= "<td class=\"ui-widget-content\">&nbsp;</td>";
   $output .= "</tr>";
 
-  if ($a_inventory['inv_front'] > 0) {
+  if ($a_inv_inventory['inv_front'] > 0) {
     $output .= "<tr>";
     $output .= "<td class=\"ui-widget-content\">Front Picture:</td>";
     $output .= "</tr>";
     $output .= "<tr>";
     $q_string  = "select img_file ";
     $q_string .= "from inv_images ";
-    $q_string .= "where img_id = " . $a_inventory['inv_front'];
+    $q_string .= "where img_id = " . $a_inv_inventory['inv_front'];
     $q inv_images = mysqli_query($db, $q_string . ": " . mysqli_error($db));
     $a inv_images = mysqli_fetch_array($q inv_images);
 
     $output .= "<td class=\"ui-widget-content\" colspan=3><a href=\"" . $Siteroot . "/pictures/" . $a inv_images['img_file'] . "\"><img src=\"" . $Siteroot . "/pictures/" . $a inv_images['img_file'] . "\" width=800></a></td>";
     $output .= "</tr>";
   }
-  if ($a_inventory['inv_rear'] > 0) {
+  if ($a_inv_inventory['inv_rear'] > 0) {
     $output .= "<tr>";
     $output .= "<td class=\"ui-widget-content\">Rear Picture:</td>";
     $output .= "</tr>";
     $output .= "<tr>";
     $q_string  = "select img_file ";
     $q_string .= "from inv_images ";
-    $q_string .= "where img_id = " . $a_inventory['inv_rear'];
+    $q_string .= "where img_id = " . $a_inv_inventory['inv_rear'];
     $q inv_images = mysqli_query($db, $q_string . ": " . mysqli_error($db));
     $a inv_images = mysqli_fetch_array($q inv_images);
 

@@ -54,7 +54,7 @@
 
   $q_string  = "select hw_built,hw_retired,hw_reused,inv_status ";
   $q_string .= "from inv_hardware ";
-  $q_string .= "left join inventory on inventory.inv_id = inv_hardware.hw_companyid ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_hardware.hw_companyid ";
   $q_string .= "where hw_primary = 1 " . $admin . " ";
   $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {

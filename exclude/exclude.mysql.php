@@ -103,8 +103,8 @@
       $comment_test = '';
       $q_string  = "select ex_id,ex_companyid,inv_name,ex_text,ex_comments,ex_expiration,usr_name,ex_deleted ";
       $q_string .= "from inv_excludes ";
-      $q_string .= "left join inventory on inventory.inv_id = inv_excludes.ex_companyid ";
-      $q_string .= "left join inv_users on inv_users.usr_id = inv_excludes.ex_userid ";
+      $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_excludes.ex_companyid ";
+      $q_string .= "left join inv_users     on inv_users.usr_id     = inv_excludes.ex_userid ";
       $q_string .= "order by ex_comments,inv_name,ex_text ";
       $q_inv_excludes = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       while ($a_inv_excludes = mysqli_fetch_array($q_inv_excludes)) {

@@ -163,19 +163,19 @@
         $output .= "<option value=\"0\">None</option>\n";
 
         $q_string  = "select inv_id,inv_name ";
-        $q_string .= "from inventory ";
+        $q_string .= "from inv_inventory ";
         $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name";
-        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+        $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
           $q_string  = "select route_id ";
           $q_string .= "from inv_routing ";
-          $q_string .= "where route_companyid = " . $a_inventory['inv_id'] . " ";
+          $q_string .= "where route_companyid = " . $a_inv_inventory['inv_id'] . " ";
           $q_inv_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $route_total = mysqli_num_rows($q_inv_routing);
 
           if ($route_total > 0) {
-            $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . " (" . $route_total . ")</option>\n";
+            $output .= "<option value=\"" . $a_inv_inventory['inv_id'] . "\">" . $a_inv_inventory['inv_name'] . " (" . $route_total . ")</option>\n";
           }
         }
 
@@ -285,7 +285,7 @@
       $sunroute = '';
       $q_string  = "select route_id,route_address,route_mask,route_source,route_gateway,route_interface,route_verified,route_desc,route_update,route_static,inv_manager ";
       $q_string .= "from inv_routing ";
-      $q_string .= "left join inventory on inventory.inv_id = inv_routing.route_companyid ";
+      $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_routing.route_companyid ";
       $q_string .= "where route_companyid = " . $formVars['route_companyid'] . " ";
       $q_string .= "order by route_address";
       $q_inv_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

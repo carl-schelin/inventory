@@ -18,7 +18,7 @@
 
   $q_string  = "select int_server,inv_manager ";
   $q_string .= "from inv_interface ";
-  $q_string .= "left join inventory on inventory.inv_id = inv_interface.int_companyid ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_interface.int_companyid ";
   $q_string .= "where inv_id = " . $formVars['id'] . " and int_management = 1 ";
   $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_inv_interface = mysqli_fetch_array($q_inv_interface);

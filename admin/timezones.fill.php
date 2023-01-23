@@ -19,7 +19,7 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from zones");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_timezones");
 
       $q_string  = "select zone_name,zone_description,zone_offset ";
       $q_string .= "from inv_timezones ";

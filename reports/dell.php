@@ -177,22 +177,22 @@
   }
 
   $q_string  = "select inv_id,inv_name,inv_function,prod_name,hw_group,hw_serial,hw_purchased,grp_name,sup_company,sup_contract,hw_supid_verified ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_hardware on inventory.inv_id  = inv_hardware.hw_companyid ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_hardware on inv_inventory.inv_id  = inv_hardware.hw_companyid ";
   $q_string .= "left join inv_groups   on inv_groups.grp_id     = inv_hardware.hw_group ";
   $q_string .= "left join inv_models   on inv_models.mod_id     = inv_hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors  on inv_vendors.ven_id    = inv_models.mod_vendor ";
   $q_string .= "left join inv_support  on inv_support.sup_id    = inv_hardware.hw_supportid ";
-  $q_string .= "left join inv_products on inv_products.prod_id  = inventory.inv_product ";
+  $q_string .= "left join inv_products on inv_products.prod_id  = inv_inventory.inv_product ";
   $q_string .= $where;
   $q_string .= $orderby;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
-    if ($a_inventory['hw_serial'] != "" && $a_inventory['hw_serial'] != "N/A" && $a_inventory['hw_serial'] != "None" && $a_inventory['hw_serial'] != "VM") {
+    if ($a_inv_inventory['hw_serial'] != "" && $a_inv_inventory['hw_serial'] != "N/A" && $a_inv_inventory['hw_serial'] != "None" && $a_inv_inventory['hw_serial'] != "VM") {
 
       # For Dell, the end of support is 5 years after the purchase date
-      $date = explode("-", $a_inventory['hw_purchased']);
+      $date = explode("-", $a_inv_inventory['hw_purchased']);
       $support = mktime(0,0,0,$date[1],$date[2],$date[0] + 5);
       $newdate = date("Y-m-d",$support);
       $current = time();
@@ -202,46 +202,46 @@
       } else {
         $status = "ui-widget-content";
       }
-      if ($a_inventory['hw_purchased'] == '1971-01-01') {
+      if ($a_inv_inventory['hw_purchased'] == '1971-01-01') {
         $nodate = "ui-state-highlight";
       } else {
         $nodate = "ui-widget-content";
       }
 
-      $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"blank_\">";
+      $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inv_inventory['inv_id'] . "\" target=\"blank_\">";
       $linkend   = "</a>";
 
       if ($formVars['csv'] == 'true') {
-        print "\"" . $a_inventory['inv_name'] . "\",";
+        print "\"" . $a_inv_inventory['inv_name'] . "\",";
         if ($formVars['group'] == -1) {
-          print "\"" . $a_inventory['grp_name'] . "\",";
+          print "\"" . $a_inv_inventory['grp_name'] . "\",";
         } else {
-          print "\"" . $a_inventory['inv_function'] . "\",";
+          print "\"" . $a_inv_inventory['inv_function'] . "\",";
         }
-        print "\"" . $a_inventory['prod_name'] . "\",";
-        print "\"" . $a_inventory['hw_serial'] . "\",";
-        print "\"" . $a_inventory['hw_purchased'] . "\",";
+        print "\"" . $a_inv_inventory['prod_name'] . "\",";
+        print "\"" . $a_inv_inventory['hw_serial'] . "\",";
+        print "\"" . $a_inv_inventory['hw_purchased'] . "\",";
         print "\"" . $newdate;
-        print "\"" . $a_inventory['sup_company']  . " - " . $a_inventory['sup_contract'] . "\",";
-        if ($a_inventory['hw_supid_verified']) {
+        print "\"" . $a_inv_inventory['sup_company']  . " - " . $a_inv_inventory['sup_contract'] . "\",";
+        if ($a_inv_inventory['hw_supid_verified']) {
           print "\"Yes\"</br>\n";
         } else {
           print "\"No\"</br>\n";
         }
       } else {
         print "<tr>\n";
-        print "  <td class=\"" . $nodate . "\">" . $linkstart . $a_inventory['inv_name']     . $linkend . "</td>\n";
+        print "  <td class=\"" . $nodate . "\">" . $linkstart . $a_inv_inventory['inv_name']     . $linkend . "</td>\n";
         if ($formVars['group'] == -1) {
-          print "  <td class=\"" . $nodate . "\">"            . $a_inventory['grp_name']     . "</td>\n";
+          print "  <td class=\"" . $nodate . "\">"            . $a_inv_inventory['grp_name']     . "</td>\n";
         } else {
-          print "  <td class=\"" . $nodate . "\">"            . $a_inventory['inv_function'] . "</td>\n";
+          print "  <td class=\"" . $nodate . "\">"            . $a_inv_inventory['inv_function'] . "</td>\n";
         }
-        print "  <td class=\"" . $nodate . "\">"              . $a_inventory['prod_name']    . "</td>\n";
-        print "  <td class=\"" . $nodate . "\">"              . $a_inventory['hw_serial']   . "</td>\n";
-        print "  <td class=\"" . $nodate . "\">"              . $a_inventory['hw_purchased'] . "</td>\n";
+        print "  <td class=\"" . $nodate . "\">"              . $a_inv_inventory['prod_name']    . "</td>\n";
+        print "  <td class=\"" . $nodate . "\">"              . $a_inv_inventory['hw_serial']   . "</td>\n";
+        print "  <td class=\"" . $nodate . "\">"              . $a_inv_inventory['hw_purchased'] . "</td>\n";
         print "  <td class=\"" . $status . "\">"              . $newdate                     . "</td>\n";
-        print "  <td class=\"" . $nodate . "\">"              . $a_inventory['sup_company']  . " - " . $a_inventory['sup_contract']            . "</td>\n";
-        if ($a_inventory['hw_supid_verified']) {
+        print "  <td class=\"" . $nodate . "\">"              . $a_inv_inventory['sup_company']  . " - " . $a_inv_inventory['sup_contract']            . "</td>\n";
+        if ($a_inv_inventory['hw_supid_verified']) {
           print "  <td class=\"" . $nodate . " delete\">"              . "<input type=\"checkbox\" checked>"  . "</td>\n";
         } else {
           print "  <td class=\"" . $nodate . " delete\">"              . "<input type=\"checkbox\">"  . "</td>\n";

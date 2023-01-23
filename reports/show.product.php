@@ -113,9 +113,9 @@ $(document).ready( function() {
 
   $q_string  = "select hw_id,inv_id,inv_name,hw_asset,hw_serial,mod_name,grp_name,inv_ansible,inv_ssh,hw_verified,hw_update ";
   $q_string .= "from inv_hardware ";
-  $q_string .= "left join inventory  on inv_hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join inv_groups on inv_hardware.hw_group = inv_groups.grp_id ";
-  $q_string .= "left join inv_models on inv_hardware.hw_vendorid = inv_models.mod_id ";
+  $q_string .= "left join inv_inventory  on inv_hardware.hw_companyid = inv_inventory.inv_id ";
+  $q_string .= "left join inv_groups     on inv_hardware.hw_group     = inv_groups.grp_id ";
+  $q_string .= "left join inv_models     on inv_hardware.hw_vendorid  = inv_models.mod_id ";
   $q_string .= "where hw_product = " . $formVars['id'] . " and inv_status = 0 and hw_primary = 1 ";
   $q_string .= "order by inv_name";
   $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -201,8 +201,8 @@ $(document).ready( function() {
   $q_string  = "select sw_id,svr_companyid,ven_name,typ_name,svr_groupid,sw_software,svr_verified,svr_update,inv_name,grp_name ";
   $q_string .= "from inv_software ";
   $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = inv_software.sw_id ";
-  $q_string .= "left join inventory    on inventory.inv_id            = inv_svr_software.svr_companyid ";
-  $q_string .= "left join inv_groups     on inv_svr_software.svr_groupid    = inv_groups.grp_id ";
+  $q_string .= "left join inv_inventory    on inv_inventory.inv_id            = inv_svr_software.svr_companyid ";
+  $q_string .= "left join inv_groups       on inv_svr_software.svr_groupid    = inv_groups.grp_id ";
   $q_string .= "left join inv_vendors      on inv_vendors.ven_id              = inv_software.sw_vendor ";
   $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = inv_software.sw_type ";
   $q_string .= "where sw_product = " . $formVars['id'] . " and inv_status = 0 ";

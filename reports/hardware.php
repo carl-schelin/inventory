@@ -187,8 +187,8 @@
   $q_string  = "select hw_id,inv_name,part_name,hw_serial,hw_asset,mod_speed,inv_status,hw_deleted,sup_company,slv_value, ";
   $q_string .= "mod_size,mod_name,prod_name,hw_active,hw_retired,hw_group,hw_supportid,hw_primary,hw_verified,hw_update ";
   $q_string .= "from inv_hardware ";
-  $q_string .= "left join inventory      on inventory.inv_id    = inv_hardware.hw_companyid ";
-  $q_string .= "left join inv_locations      on inv_locations.loc_id    = inventory.inv_location ";
+  $q_string .= "left join inv_inventory      on inv_inventory.inv_id    = inv_hardware.hw_companyid ";
+  $q_string .= "left join inv_locations      on inv_locations.loc_id    = inv_inventory.inv_location ";
   $q_string .= "left join inv_models         on inv_models.mod_id       = inv_hardware.hw_vendorid ";
   $q_string .= "left join inv_parts          on inv_parts.part_id       = inv_hardware.hw_type ";
   $q_string .= "left join inv_products       on inv_products.prod_id    = inv_hardware.hw_product ";

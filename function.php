@@ -298,50 +298,50 @@ function return_ServerID( $p_db, $p_string ) {
 
 # first check production systems.
   $q_string  = "select inv_id ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_status = 0 and inv_name = '" . $p_hostname[0] . "' ";
-  $q_inventory = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
+  $q_inv_inventory = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
 
-  if (mysqli_num_rows($q_inventory) == 0) {
+  if (mysqli_num_rows($q_inv_inventory) == 0) {
     $q_string  = "select inv_id ";
-    $q_string .= "from inventory ";
-    $q_string .= "left join inv_interface on inv_interface.int_companyid = inventory.inv_id ";
+    $q_string .= "from inv_inventory ";
+    $q_string .= "left join inv_interface on inv_interface.int_companyid = inv_inventory.inv_id ";
     $q_string .= "where inv_status = 0 and int_server = '" . $p_hostname[0] . "' ";
-    $q_inventory = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
+    $q_inv_inventory = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
 
-    if (mysqli_num_rows($q_inventory) > 0) {
-      $a_inventory = mysqli_fetch_array($q_inventory);
-      $output = $a_inventory['inv_id'];
+    if (mysqli_num_rows($q_inv_inventory) > 0) {
+      $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
+      $output = $a_inv_inventory['inv_id'];
     }
   } else {
-    if (mysqli_num_rows($q_inventory) == 1) {
-      $a_inventory = mysqli_fetch_array($q_inventory);
-      $output = $a_inventory['inv_id'];
+    if (mysqli_num_rows($q_inv_inventory) == 1) {
+      $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
+      $output = $a_inv_inventory['inv_id'];
     }
   }
 
 # can't find it in production, check retired servers.
   if ($output == 1109) {
     $q_string  = "select inv_id ";
-    $q_string .= "from inventory ";
+    $q_string .= "from inv_inventory ";
     $q_string .= "where inv_name = '" . $p_hostname[0] . "' ";
-    $q_inventory = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
+    $q_inv_inventory = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
 
-    if (mysqli_num_rows($q_inventory) == 0) {
+    if (mysqli_num_rows($q_inv_inventory) == 0) {
       $q_string  = "select inv_id ";
-      $q_string .= "from inventory ";
-      $q_string .= "left join inv_interface on inv_interface.int_companyid = inventory.inv_id ";
+      $q_string .= "from inv_inventory ";
+      $q_string .= "left join inv_interface on inv_interface.int_companyid = inv_inventory.inv_id ";
       $q_string .= "where int_server = '" . $p_hostname[0] . "' ";
-      $q_inventory = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
+      $q_inv_inventory = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
 
-      if (mysqli_num_rows($q_inventory) > 0) {
-        $a_inventory = mysqli_fetch_array($q_inventory);
-        $output = $a_inventory['inv_id'];
+      if (mysqli_num_rows($q_inv_inventory) > 0) {
+        $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
+        $output = $a_inv_inventory['inv_id'];
       }
     } else {
-      if (mysqli_num_rows($q_inventory) == 1) {
-        $a_inventory = mysqli_fetch_array($q_inventory);
-        $output = $a_inventory['inv_id'];
+      if (mysqli_num_rows($q_inv_inventory) == 1) {
+        $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
+        $output = $a_inv_inventory['inv_id'];
       }
     }
   }

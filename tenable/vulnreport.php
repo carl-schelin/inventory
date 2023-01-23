@@ -278,13 +278,13 @@
 
   $q_string  = "select prod_id,prod_name,COUNT(inv_id) ";
   $q_string .= "from inv_products ";
-  $q_string .= "left join inventory on inventory.inv_product = inv_products.prod_id ";
-  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join inv_locations on inv_locations.loc_id      = inventory.inv_location ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_product = inv_products.prod_id ";
+  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inv_inventory.inv_id ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id      = inv_inventory.inv_location ";
   $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city ";
-  $q_string .= "left join inv_net_zones on inv_net_zones.zone_id     = inventory.inv_zone ";
+  $q_string .= "left join inv_net_zones on inv_net_zones.zone_id     = inv_inventory.inv_zone ";
   $q_string .= "left join inv_models    on inv_models.mod_id         = inv_hardware.hw_vendorid ";
-  $q_string .= "left join inv_groups    on inv_groups.grp_id         = inventory.inv_manager ";
+  $q_string .= "left join inv_groups    on inv_groups.grp_id         = inv_inventory.inv_manager ";
   $q_string .= $group . $product . $inwork . $location . $type . " ";
   $q_string .= "group by prod_name ";
   $q_inv_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -304,7 +304,7 @@
 
     if ($formVars['product'] > 0) {
       $q_string  = "select inv_id,inv_name ";
-      $q_string .= "from inventory ";
+      $q_string .= "from inv_inventory ";
       $q_string .= "where inv_status = 0 and inv_product = " . $formVars['product'] . " ";
       if ($formVars['project'] > 0) {
         $q_string .= "and inv_project = " . $formVars['project'] . " ";
@@ -313,8 +313,8 @@
         $q_string .= "and inv_manager = " . $formVars['group'] . " ";
       }
       $q_string .= "order by inv_name ";
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+      $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
         $critical = 0;
         $high = 0;
@@ -332,7 +332,7 @@
         $q_string .= "left join inv_vulnerabilities on inv_vulnerabilities.vuln_interface = inv_interface.int_id ";
         $q_string .= "left join inv_security        on inv_security.sec_id                = inv_vulnerabilities.vuln_securityid ";
         $q_string .= "left join inv_severity        on inv_severity.sev_id                = inv_security.sec_severity ";
-        $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " ";
+        $q_string .= "where int_companyid = " . $a_inv_inventory['inv_id'] . " ";
         $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
           if ($a_inv_interface['sev_name'] == 'Critical') {
@@ -377,7 +377,7 @@
           }
         }
 
-        $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inventory['inv_id'] . "#vulnerabilities\" target=\"_blank\">";
+        $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inv_inventory['inv_id'] . "#vulnerabilities\" target=\"_blank\">";
         $linkend = "</a>";
 
         $class = "ui-widget-content";
@@ -390,7 +390,7 @@
 
         if ($formVars['csv'] == 'false') {
           print "<tr>\n";
-          print "  <td class=\"" . $class . "\">"        . $linkstart . $a_inventory['inv_name'] . $linkend . "</td>\n";
+          print "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_inventory['inv_name'] . $linkend . "</td>\n";
           print "  <td class=\"" . $class . " delete\">" . $critical    . " (" . $crithist . ")" . "</td>\n";
           print "  <td class=\"" . $class . " delete\">" . $high        . " (" . $highhist . ")" . "</td>\n";
           print "  <td class=\"" . $class . " delete\">" . $medium      . " (" . $medhist . ")"  . "</td>\n";
@@ -398,7 +398,7 @@
           print "  <td class=\"" . $class . " delete\">" . $information . " (" . $infohist . ")" . "</td>\n";
           print "</tr>\n";
         } else {
-          print "\"" . $a_inventory['inv_name'] . "\",";
+          print "\"" . $a_inv_inventory['inv_name'] . "\",";
           print "\"" . $critical                . "\",";
           print "\"" . $high                    . "\",";
           print "\"" . $medium                  . "\",";
@@ -410,7 +410,7 @@
 
       $q_string  = "select sev_name,vuln_delete ";
       $q_string .= "from inv_interface ";
-      $q_string .= "left join inventory       on inventory.inv_id               = inv_interface.int_companyid ";
+      $q_string .= "left join inv_inventory       on inv_inventory.inv_id               = inv_interface.int_companyid ";
       $q_string .= "left join inv_vulnerabilities on inv_vulnerabilities.vuln_interface = inv_interface.int_id ";
       $q_string .= "left join inv_security        on inv_security.sec_id                = inv_vulnerabilities.vuln_securityid ";
       $q_string .= "left join inv_severity        on inv_severity.sev_id                = inv_security.sec_severity ";

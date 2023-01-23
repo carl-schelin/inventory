@@ -90,7 +90,7 @@
           }
 
           $q_string  = "select mod_id ";
-          $q_string .= "from models ";
+          $q_string .= "from inv_models ";
           $q_string .= "where mod_type = " . $a_inv_parts['part_id'] . " ";
           $q_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $total = mysqli_num_rows($q_models);

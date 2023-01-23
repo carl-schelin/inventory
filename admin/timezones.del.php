@@ -19,7 +19,7 @@
     }
 
     if (check_userlevel($db, $AL_Admin)) {
-      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from zones");
+      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from inv_timezones");
 
       $q_string  = "delete ";
       $q_string .= "from inv_timezones ";

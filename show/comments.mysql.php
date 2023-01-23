@@ -28,13 +28,13 @@
       $output .= "<tr>";
       $output .= "  <th class=\"ui-state-default\">";
       if (check_userlevel($db, $AL_Edit)) {
-        if (check_grouplevel($db, $a_inventory['inv_manager'])) {
+        if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
           $output .= "<a href=\"" . $Editroot . "/inventory.php?server=" . $formVars['id'] . "#comments\" target=\"_blank\"><img src=\"" . $Imgsroot . "/pencil.gif\">";
         }
       }
       $output .= "System Comments";
       if (check_userlevel($db, $AL_Edit)) {
-        if (check_grouplevel($db, $a_inventory['inv_manager'])) {
+        if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
           $output .= "</a>";
         }
       }

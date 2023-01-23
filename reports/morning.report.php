@@ -255,44 +255,44 @@ reviewed and worked on.</li>
   $title_swap   = "title=\"Swap Usage: Generally red is 50% but can go higher. 100% will start Disk Performance alerts.\"";
 
   $q_string  = "select inv_id,inv_zone,IF(INSTR(inv_name,'/'),LEFT(inv_name,LOCATE('/',inv_name)-1),inv_name) as inv_name,int_server,zone_name,sw_software ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_hardware      on inventory.inv_id               = inv_hardware.hw_companyid ";
-  $q_string .= "left join inv_interface     on inventory.inv_id               = inv_interface.int_companyid ";
-  $q_string .= "left join inv_timezones     on inv_timezones.zone_id          = inventory.inv_zone ";
-  $q_string .= "left join inv_locations     on inv_locations.loc_id           = inventory.inv_location ";
-  $q_string .= "left join inv_svr_software  on inv_svr_software.svr_companyid = inventory.inv_id ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_hardware      on inv_inventory.inv_id           = inv_hardware.hw_companyid ";
+  $q_string .= "left join inv_interface     on inv_inventory.inv_id           = inv_interface.int_companyid ";
+  $q_string .= "left join inv_timezones     on inv_timezones.zone_id          = inv_inventory.inv_zone ";
+  $q_string .= "left join inv_locations     on inv_locations.loc_id           = inv_inventory.inv_location ";
+  $q_string .= "left join inv_svr_software  on inv_svr_software.svr_companyid = inv_inventory.inv_id ";
   $q_string .= "left join inv_software      on inv_software.sw_id             = inv_svr_software.svr_softwareid ";
   $q_string .= "left join inv_sw_types      on inv_sw_types.typ_id            = inv_software.sw_type ";
   $q_string .= $where . " and typ_name = 'OS' and int_management = 1 ";
   $q_string .= $orderby;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
-    $os = return_System($db, $a_inventory['inv_id']);
+    $os = return_System($db, $a_inv_inventory['inv_id']);
 
 #####
 # This is the main server line with links if there is data to be displayed
 #####
     print "<table class=\"ui-styled-table\">\n";
     print "<tr>\n";
-    print "  <th class=\"ui-state-default\" style=\"text-align: left;\" title=\"" . $a_inventory['sw_software'] . "/" . $a_inventory['zone_name'] . "\">" . $a_inventory['int_server'] . "</th>\n";
-    if (file_exists($Sitedir . "/rrdtool/" . $a_inventory['int_server'] . "/load-day-thumb.png")) {
-      print "  <th class=\"ui-state-default\" width=\"20%\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('" . $a_inventory['int_server'] . "_rrdtool');\">Performance Review</a></th>\n";
+    print "  <th class=\"ui-state-default\" style=\"text-align: left;\" title=\"" . $a_inv_inventory['sw_software'] . "/" . $a_inv_inventory['zone_name'] . "\">" . $a_inv_inventory['int_server'] . "</th>\n";
+    if (file_exists($Sitedir . "/rrdtool/" . $a_inv_inventory['int_server'] . "/load-day-thumb.png")) {
+      print "  <th class=\"ui-state-default\" width=\"20%\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('" . $a_inv_inventory['int_server'] . "_rrdtool');\">Performance Review</a></th>\n";
     } else {
       print "  <th class=\"ui-state-default\" width=\"20%\">&nbsp;</th>\n";
     }
-    if (file_exists("/usr/local/admin/servers/" . $a_inventory['int_server'] . "/morning.report")) {
-      print "  <th class=\"ui-state-default\" width=\"20%\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('" . $a_inventory['int_server'] . "_messages');\">Message Log Review</a></th>\n";
+    if (file_exists("/usr/local/admin/servers/" . $a_inv_inventory['int_server'] . "/morning.report")) {
+      print "  <th class=\"ui-state-default\" width=\"20%\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('" . $a_inv_inventory['int_server'] . "_messages');\">Message Log Review</a></th>\n";
     } else {
       print "  <th class=\"ui-state-default\" width=\"20%\">&nbsp;</th>\n";
     }
-    if (file_exists("/usr/local/admin/servers/" . $a_inventory['int_server'] . "/morning.status")) {
-      print "  <th class=\"ui-state-default\" width=\"20%\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('" . $a_inventory['int_server'] . "_morning');\">Server Audit</a></th>\n";
+    if (file_exists("/usr/local/admin/servers/" . $a_inv_inventory['int_server'] . "/morning.status")) {
+      print "  <th class=\"ui-state-default\" width=\"20%\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('" . $a_inv_inventory['int_server'] . "_morning');\">Server Audit</a></th>\n";
     } else {
       print "  <th class=\"ui-state-default\" width=\"20%\">&nbsp;</th>\n";
     }
-    if (file_exists("/usr/local/admin/servers/" . $a_inventory['int_server'] . "/sudoers.status")) {
-      print "  <th class=\"ui-state-default\" width=\"20%\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('" . $a_inventory['int_server'] . "_sudoers');\">User/Sudoers Audit</a></th>\n";
+    if (file_exists("/usr/local/admin/servers/" . $a_inv_inventory['int_server'] . "/sudoers.status")) {
+      print "  <th class=\"ui-state-default\" width=\"20%\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('" . $a_inv_inventory['int_server'] . "_sudoers');\">User/Sudoers Audit</a></th>\n";
     } else {
       print "  <th class=\"ui-state-default\" width=\"20%\">&nbsp;</th>\n";
     }
@@ -303,36 +303,36 @@ reviewed and worked on.</li>
 # This is the set of links for the rrdtool set of info
 # Data is hidden from here to the bottom
 #####
-    print "<div id=\"" . $a_inventory['int_server'] . "_rrdtool\" style=\"" . $display . "\">\n";
+    print "<div id=\"" . $a_inv_inventory['int_server'] . "_rrdtool\" style=\"" . $display . "\">\n";
 
-    if (file_exists($Sitedir . "/rrdtool/" . $a_inventory['int_server'] . "/load-day-thumb.png")) {
+    if (file_exists($Sitedir . "/rrdtool/" . $a_inv_inventory['int_server'] . "/load-day-thumb.png")) {
       print "<table class=\"ui-styled-table\">\n";
       print "<tr>\n";
-      print "  <th class=\"ui-state-default\" colspan=\"5\"><a href=\"" . $Siteurl . "/rrdtool/" . $a_inventory['int_server'] . "\" target=\"_blank\">Click for more detail</a></th>\n";
+      print "  <th class=\"ui-state-default\" colspan=\"5\"><a href=\"" . $Siteurl . "/rrdtool/" . $a_inv_inventory['int_server'] . "\" target=\"_blank\">Click for more detail</a></th>\n";
       print "</tr>\n";
       print "<tr>\n";
-      if (file_exists($Sitedir . "/rrdtool/" . $a_inventory['int_server'] . "/load-day-thumb.png")) {
-        print "  <td class=\"ui-widget-content\" " . $title_load   . " style=\"text-align: center\" width=\"20%\"><img height=\"95\" src=\"" . $Siteurl . "/rrdtool/" . $a_inventory['int_server'] . "/load-day-thumb.png\" width=\"200\"></td>\n";
+      if (file_exists($Sitedir . "/rrdtool/" . $a_inv_inventory['int_server'] . "/load-day-thumb.png")) {
+        print "  <td class=\"ui-widget-content\" " . $title_load   . " style=\"text-align: center\" width=\"20%\"><img height=\"95\" src=\"" . $Siteurl . "/rrdtool/" . $a_inv_inventory['int_server'] . "/load-day-thumb.png\" width=\"200\"></td>\n";
       } else {
         print "  <td class=\"ui-widget-content\" style=\"text-align: center\" width=\"20%\">Image not found</td>\n";
       }
-      if (file_exists($Sitedir . "/rrdtool/" . $a_inventory['int_server'] . "/mem-day-thumb.png")) {
-        print "  <td class=\"ui-widget-content\" " . $title_queue  . " style=\"text-align: center\" width=\"20%\"><img height=\"95\" src=\"" . $Siteurl . "/rrdtool/" . $a_inventory['int_server'] . "/mem-day-thumb.png\"  width=\"200\"></td>\n";
+      if (file_exists($Sitedir . "/rrdtool/" . $a_inv_inventory['int_server'] . "/mem-day-thumb.png")) {
+        print "  <td class=\"ui-widget-content\" " . $title_queue  . " style=\"text-align: center\" width=\"20%\"><img height=\"95\" src=\"" . $Siteurl . "/rrdtool/" . $a_inv_inventory['int_server'] . "/mem-day-thumb.png\"  width=\"200\"></td>\n";
       } else {
         print "  <td class=\"ui-widget-content\" style=\"text-align: center\" width=\"20%\">Image not found</td>\n";
       }
-      if (file_exists($Sitedir . "/rrdtool/" . $a_inventory['int_server'] . "/cpu-day-thumb.png")) {
-        print "  <td class=\"ui-widget-content\" " . $title_cpu    . " style=\"text-align: center\" width=\"20%\"><img height=\"95\" src=\"" . $Siteurl . "/rrdtool/" . $a_inventory['int_server'] . "/cpu-day-thumb.png\"  width=\"200\"></td>\n";
+      if (file_exists($Sitedir . "/rrdtool/" . $a_inv_inventory['int_server'] . "/cpu-day-thumb.png")) {
+        print "  <td class=\"ui-widget-content\" " . $title_cpu    . " style=\"text-align: center\" width=\"20%\"><img height=\"95\" src=\"" . $Siteurl . "/rrdtool/" . $a_inv_inventory['int_server'] . "/cpu-day-thumb.png\"  width=\"200\"></td>\n";
       } else {
         print "  <td class=\"ui-widget-content\" style=\"text-align: center\" width=\"20%\">Image not found</td>\n";
       }
-      if (file_exists($Sitedir . "/rrdtool/" . $a_inventory['int_server'] . "/ram-day-thumb.png")) {
-        print "  <td class=\"ui-widget-content\" " . $title_memory . " style=\"text-align: center\" width=\"20%\"><img height=\"95\" src=\"" . $Siteurl . "/rrdtool/" . $a_inventory['int_server'] . "/ram-day-thumb.png\"  width=\"200\"></td>\n";
+      if (file_exists($Sitedir . "/rrdtool/" . $a_inv_inventory['int_server'] . "/ram-day-thumb.png")) {
+        print "  <td class=\"ui-widget-content\" " . $title_memory . " style=\"text-align: center\" width=\"20%\"><img height=\"95\" src=\"" . $Siteurl . "/rrdtool/" . $a_inv_inventory['int_server'] . "/ram-day-thumb.png\"  width=\"200\"></td>\n";
       } else {
         print "  <td class=\"ui-widget-content\" style=\"text-align: center\" width=\"20%\">Image not found</td>\n";
       }
-      if (file_exists($Sitedir . "/rrdtool/" . $a_inventory['int_server'] . "/swap-day-thumb.png")) {
-        print "  <td class=\"ui-widget-content\" " . $title_swap  . " style=\"text-align: center\" width=\"20%\"><img height=\"95\" src=\"" . $Siteurl . "/rrdtool/" . $a_inventory['int_server'] . "/swap-day-thumb.png\" width=\"200\"></td>\n";
+      if (file_exists($Sitedir . "/rrdtool/" . $a_inv_inventory['int_server'] . "/swap-day-thumb.png")) {
+        print "  <td class=\"ui-widget-content\" " . $title_swap  . " style=\"text-align: center\" width=\"20%\"><img height=\"95\" src=\"" . $Siteurl . "/rrdtool/" . $a_inv_inventory['int_server'] . "/swap-day-thumb.png\" width=\"200\"></td>\n";
       } else {
         print "  <td class=\"ui-widget-content\" style=\"text-align: center\" width=\"20%\">Image not found</td>\n";
       }
@@ -345,13 +345,13 @@ reviewed and worked on.</li>
 #####
 # This is the set of links for the message log review
 #####
-    print "<div id=\"" . $a_inventory['int_server'] . "_messages\" style=\"" . $display . "\">\n";
+    print "<div id=\"" . $a_inv_inventory['int_server'] . "_messages\" style=\"" . $display . "\">\n";
 
-    if (file_exists("/usr/local/admin/servers/" . $a_inventory['int_server'] . "/morning.report")) {
-      $output = file_get_contents("/usr/local/admin/servers/" . $a_inventory['int_server'] . "/morning.report");
+    if (file_exists("/usr/local/admin/servers/" . $a_inv_inventory['int_server'] . "/morning.report")) {
+      $output = file_get_contents("/usr/local/admin/servers/" . $a_inv_inventory['int_server'] . "/morning.report");
       print "<table class=\"ui-styled-table\">\n";
       print "<tr>\n";
-      print "  <th class=\"ui-state-default\"><a href=\"/servers/" . $a_inventory['int_server'] . "/messages." . $date . "\" target=\"_blank\">Click to view the raw message log file</a></th>\n";
+      print "  <th class=\"ui-state-default\"><a href=\"/servers/" . $a_inv_inventory['int_server'] . "/messages." . $date . "\" target=\"_blank\">Click to view the raw message log file</a></th>\n";
       print "</tr>\n";
       print "<tr>\n";
       print "  <td class=\"ui-widget-content\"><pre>" . $output . "</pre></td>\n";
@@ -364,13 +364,13 @@ reviewed and worked on.</li>
 #####
 # This is the set of links for the server audit review
 #####
-    print "<div id=\"" . $a_inventory['int_server'] . "_morning\" style=\"" . $display . "\">\n";
+    print "<div id=\"" . $a_inv_inventory['int_server'] . "_morning\" style=\"" . $display . "\">\n";
 
-    if (file_exists("/usr/local/admin/servers/" . $a_inventory['int_server'] . "/morning.status")) {
-      $output = file_get_contents("/usr/local/admin/servers/" . $a_inventory['int_server'] . "/morning.status");
+    if (file_exists("/usr/local/admin/servers/" . $a_inv_inventory['int_server'] . "/morning.status")) {
+      $output = file_get_contents("/usr/local/admin/servers/" . $a_inv_inventory['int_server'] . "/morning.status");
       print "<table class=\"ui-styled-table\">\n";
       print "<tr>\n";
-      print "  <th class=\"ui-state-default\">" . $a_inventory['int_server'] . "</th>\n";
+      print "  <th class=\"ui-state-default\">" . $a_inv_inventory['int_server'] . "</th>\n";
       print "</tr>\n";
       print "<tr>\n";
       print "  <td class=\"ui-widget-content\"><pre>" . $output . "</pre></td>\n";
@@ -383,13 +383,13 @@ reviewed and worked on.</li>
 #####
 # This is the set of links for the user audit review
 #####
-    print "<div id=\"" . $a_inventory['int_server'] . "_sudoers\" style=\"" . $display . "\">\n";
+    print "<div id=\"" . $a_inv_inventory['int_server'] . "_sudoers\" style=\"" . $display . "\">\n";
 
-     if (file_exists("/usr/local/admin/servers/" . $a_inventory['int_server'] . "/sudoers.status")) {
-       $output = file_get_contents("/usr/local/admin/servers/" . $a_inventory['int_server'] . "/sudoers.status");
+     if (file_exists("/usr/local/admin/servers/" . $a_inv_inventory['int_server'] . "/sudoers.status")) {
+       $output = file_get_contents("/usr/local/admin/servers/" . $a_inv_inventory['int_server'] . "/sudoers.status");
        print "<table class=\"ui-styled-table\">\n";
        print "<tr>\n";
-       print "  <th class=\"ui-state-default\">" . $a_inventory['int_server'] . "</th>\n";
+       print "  <th class=\"ui-state-default\">" . $a_inv_inventory['int_server'] . "</th>\n";
        print "</tr>\n";
        print "<tr>\n";
        print "  <td class=\"ui-widget-content\"><pre>" . $output . "</pre></td>\n";

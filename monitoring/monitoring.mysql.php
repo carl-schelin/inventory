@@ -127,10 +127,10 @@
       $q_string  = "select inv_name,int_server,mon_id,mon_system,mt_name,mon_active,mon_group,grp_name,mon_user,usr_last,usr_first,mon_notify,mon_hours ";
       $q_string .= "from inv_monitoring ";
       $q_string .= "left join inv_interface on inv_interface.int_id = inv_monitoring.mon_interfaceid ";
-      $q_string .= "left join inventory on inventory.inv_id = inv_interface.int_companyid ";
-      $q_string .= "left join inv_mon_type on inv_mon_type.mt_id = inv_monitoring.mon_type ";
-      $q_string .= "left join inv_groups on inv_groups.grp_id = inv_monitoring.mon_group ";
-      $q_string .= "left join inv_users on inv_users.usr_id = inv_monitoring.mon_user ";
+      $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_interface.int_companyid ";
+      $q_string .= "left join inv_mon_type  on inv_mon_type.mt_id   = inv_monitoring.mon_type ";
+      $q_string .= "left join inv_groups    on inv_groups.grp_id    = inv_monitoring.mon_group ";
+      $q_string .= "left join inv_users     on inv_users.usr_id     = inv_monitoring.mon_user ";
       $q_string .= "where inv_status = 0 ";
       $q_string .= "order by inv_name,int_server ";
       $q_inv_monitoring = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

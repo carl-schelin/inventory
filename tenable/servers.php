@@ -195,19 +195,19 @@ if needed.</p>
   $q_string .= "left join inv_security  on inv_security.sec_id   = inv_vulnerabilities.vuln_securityid ";
   $q_string .= "left join inv_severity  on inv_severity.sev_id   = inv_security.sec_severity ";
   $q_string .= "left join inv_interface on inv_interface.int_id  = inv_vulnerabilities.vuln_interface ";
-  $q_string .= "left join inventory on inventory.inv_id  = inv_interface.int_companyid ";
-  $q_string .= "left join inv_groups  on inv_groups.grp_id   = inventory.inv_manager ";
-  $q_string .= "left join inv_products  on inv_products.prod_id  = inventory.inv_product ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id  = inv_interface.int_companyid ";
+  $q_string .= "left join inv_groups    on inv_groups.grp_id     = inv_inventory.inv_manager ";
+  $q_string .= "left join inv_products  on inv_products.prod_id  = inv_inventory.inv_product ";
 # add in bits if asked
   if ($formVars['projects'] > 0) {
-    $q_string .= "left join inv_projects  on inv_projects.prj_id = inventory.inv_project ";
+    $q_string .= "left join inv_projects  on inv_projects.prj_id = inv_inventory.inv_project ";
   }
   if (($formVars['locations'] + $formVars['country'] + $formVars['state'] + $formVars['city']) > 0) {
-    $q_string .= "left join inv_locations  on inv_locations.loc_id = inventory.inv_location ";
+    $q_string .= "left join inv_locations  on inv_locations.loc_id = inv_inventory.inv_location ";
   }
 # want to add in cities, states, and country tables as well.
   if ($formVars['inwork'] == 'true') {
-    $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
+    $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inv_inventory.inv_id ";
   }
 # per infosec, sev low and higher (1, 2, 3, and 4)
   $q_string .= "where sec_severity < 6 ";

@@ -64,9 +64,9 @@
 
   $q_string  = "select inv_name,mod_name,ct_city,st_state,hw_asset,hw_serial ";
   $q_string .= "from inv_hardware ";
-  $q_string .= "left join inventory on inventory.inv_id = inv_hardware.hw_companyid ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_hardware.hw_companyid ";
   $q_string .= "left join inv_models    on inv_models.mod_id    = inv_hardware.hw_vendorid ";
-  $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id = inv_inventory.inv_location ";
   $q_string .= "left join inv_cities    on inv_cities.ct_id     = inv_locations.loc_city ";
   $q_string .= "left join inv_states    on inv_states.st_id     = inv_locations.loc_state ";
   $q_string .= "where inv_status = 0 and mod_virtual = 0 and hw_primary = 1 and hw_supid_verified = 0 and inv_manager = " . $manager . " ";
@@ -119,9 +119,9 @@
 # need to get systems that are physical but don't have the flag set
   $q_string  = "select inv_name,mod_name,ct_city,st_state,hw_asset,hw_serial,hw_retired,hw_supportstart,hw_supportend ";
   $q_string .= "from inv_hardware ";
-  $q_string .= "left join inventory on inventory.inv_id = inv_hardware.hw_companyid ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_hardware.hw_companyid ";
   $q_string .= "left join inv_models    on inv_models.mod_id    = inv_hardware.hw_vendorid ";
-  $q_string .= "left join inv_locations on inv_locations.loc_id = inventory.inv_location ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id = inv_inventory.inv_location ";
   $q_string .= "left join inv_cities    on inv_cities.ct_id     = inv_locations.loc_city ";
   $q_string .= "left join inv_states    on inv_states.st_id     = inv_locations.loc_state ";
   $q_string .= "where inv_status = 1 and mod_virtual = 0 and hw_primary = 1 and hw_supid_verified = 1 and hw_reused = '1971-01-01' and inv_manager = " . $manager . " ";
@@ -131,8 +131,8 @@
     while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
       $q_string  = "select inv_name ";
-      $q_string .= "from inventory ";
-      $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inventory.inv_id ";
+      $q_string .= "from inv_inventory ";
+      $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inv_inventory.inv_id ";
       $q_string .= "where ";
       $or = '(';
       if ($a_inv_hardware['hw_serial'] != '') {
@@ -140,18 +140,18 @@
         $or = ' or ';
       }
       $q_string .= ") and inv_status = 0 ";
-      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_inventory) > 0) {
-        $a_inventory = mysqli_fetch_array($q_inventory);
+      $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_inventory) > 0) {
+        $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
         $bgcolor = $color[0];
       } else {
-        $a_inventory['inv_name'] = '';
+        $a_inv_inventory['inv_name'] = '';
         $bgcolor = $color[1];
       }
 
       $output .= "<tr style=\"background-color: " . $bgcolor . "; border: 1px solid #000000; font-size: 75%;\">\n";
       $output .= "  <td>" . $a_inv_hardware['inv_name']                                  . "</td>\n";
-      $output .= "  <td>" . $a_inventory['inv_name']                                 . "</td>\n";
+      $output .= "  <td>" . $a_inv_inventory['inv_name']                                 . "</td>\n";
       $output .= "  <td>" . $a_inv_hardware['hw_retired']                                . "</td>\n";
       $output .= "  <td>" . $a_inv_hardware['mod_name']                                  . "</td>\n";
       $output .= "  <td>" . $a_inv_hardware['ct_city'] . ", " . $a_inv_hardware['st_state']  . "</td>\n";

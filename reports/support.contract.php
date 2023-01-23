@@ -245,67 +245,67 @@ needs to be set on the original equipment. If the system is confirmed as retired
 
   $q_string  = "select inv_id,inv_name,inv_status,ven_name,mod_name,ct_city,st_acronym,slv_value,sup_company,inv_response,";
   $q_string .= "hw_serial,hw_asset,hw_built,hw_active,hw_retired,hw_reused,hw_supid_verified,hw_supportstart,hw_supportend ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_hardware     on inv_hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_hardware     on inv_hardware.hw_companyid = inv_inventory.inv_id ";
   $q_string .= "left join inv_models       on inv_models.mod_id         = inv_hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors      on inv_vendors.ven_id        = inv_models.mod_vendor ";
   $q_string .= "left join inv_support      on inv_support.sup_id        = inv_hardware.hw_supportid ";
   $q_string .= "left join inv_supportlevel on inv_supportlevel.slv_id   = inv_hardware.hw_response ";
-  $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";
+  $q_string .= "left join inv_locations    on inv_locations.loc_id      = inv_inventory.inv_location ";
   $q_string .= "left join inv_cities       on inv_cities.ct_id          = inv_locations.loc_city ";
   $q_string .= "left join inv_states       on inv_states.st_id          = inv_locations.loc_state ";
   $q_string .= $where . " and inv_status = 0 and hw_supportend > '" . date('Y-m-d') . "' and hw_supportend != '1971-01-01' ";
 #and hw_supid_verified = 1 ";
   $q_string .= $orderby;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
-  while ( $a_inventory = mysqli_fetch_array($q_inventory) ) {
+  while ( $a_inv_inventory = mysqli_fetch_array($q_inv_inventory) ) {
     $class = "ui-widget-content";
-    if ($a_inventory['hw_supid_verified'] == 0) {
+    if ($a_inv_inventory['hw_supid_verified'] == 0) {
       $class = "ui-state-highlight";
     }
-    if ($a_inventory['hw_serial'] == '') {
+    if ($a_inv_inventory['hw_serial'] == '') {
       $class = "ui-state-error";
     }
 
-    if ($a_inventory['hw_supportend'] < date('Y-m-d')) {
+    if ($a_inv_inventory['hw_supportend'] < date('Y-m-d')) {
       $class = "ui-state-error";
     }
 
     $q_string  = "select slv_value ";
     $q_string .= "from inv_supportlevel ";
-    $q_string .= "where slv_id = " . $a_inventory['inv_response'] . " ";
+    $q_string .= "where slv_id = " . $a_inv_inventory['inv_response'] . " ";
     $q_inv_supportlevel = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_inv_supportlevel = mysqli_fetch_array($q_inv_supportlevel);
 
-    $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\">";
+    $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inv_inventory['inv_id'] . "\">";
     $linkend   = "</a>";
 
     if ($formVars['csv'] == 'true') {
-      print "\"" . $a_inventory['inv_name'] . "\",";
-      print "\"" . $a_inventory['ven_name'] . "\",";
-      print "\"" . $a_inventory['mod_name'] . "\",";
-      print "\"" . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym'] . "\",";
-      print "\"" . $a_inventory['hw_asset'] . "\",";
-      print "\"" . $a_inventory['hw_serial'] . "\",";
-      print "\"" . $a_inventory['sup_company'] . "\",";
-      print "\"" . $a_inventory['slv_value'] . "\",";
+      print "\"" . $a_inv_inventory['inv_name'] . "\",";
+      print "\"" . $a_inv_inventory['ven_name'] . "\",";
+      print "\"" . $a_inv_inventory['mod_name'] . "\",";
+      print "\"" . $a_inv_inventory['ct_city'] . ", " . $a_inv_inventory['st_acronym'] . "\",";
+      print "\"" . $a_inv_inventory['hw_asset'] . "\",";
+      print "\"" . $a_inv_inventory['hw_serial'] . "\",";
+      print "\"" . $a_inv_inventory['sup_company'] . "\",";
+      print "\"" . $a_inv_inventory['slv_value'] . "\",";
       print "\"" . $a_inv_supportlevel['slv_value'] . "\",";
-      print "\"" . $a_inventory['hw_supportstart'] . "\",";
-      print "\"" . $a_inventory['hw_supportend'] . "\"\n";
+      print "\"" . $a_inv_inventory['hw_supportstart'] . "\",";
+      print "\"" . $a_inv_inventory['hw_supportend'] . "\"\n";
     } else {
       print "<tr>\n";
-      print "  <td class=\"" . $class . "\">" . $linkstart . $a_inventory['inv_name']                                    . $linkend . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['ven_name']                                               . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['mod_name']                                               . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym']            . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_asset']                                               . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_serial']                                              . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['sup_company']                                            . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['slv_value']                                              . "</td>\n";
+      print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_inventory['inv_name']                                    . $linkend . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['ven_name']                                               . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['mod_name']                                               . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['ct_city'] . ", " . $a_inv_inventory['st_acronym']            . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['hw_asset']                                               . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['hw_serial']                                              . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['sup_company']                                            . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['slv_value']                                              . "</td>\n";
       print "  <td class=\"" . $class . "\">"              . $a_inv_supportlevel['slv_value']                                           . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_supportstart']                                        . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_supportend']                                          . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['hw_supportstart']                                        . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['hw_supportend']                                          . "</td>\n";
       print "</tr>\n";
     }
   }
@@ -315,7 +315,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
     print "</p>\n";
   } else {
     print "</table>\n";
-    print "<p class=\"ui-widget-content\">Total: " . mysqli_num_rows($q_inventory) . "</td>\n";
+    print "<p class=\"ui-widget-content\">Total: " . mysqli_num_rows($q_inv_inventory) . "</td>\n";
   }
 
   print "</div>\n";
@@ -347,54 +347,54 @@ needs to be set on the original equipment. If the system is confirmed as retired
 
   $q_string  = "select inv_id,inv_name,inv_status,ven_name,mod_name,ct_city,st_acronym,slv_value,sup_company,";
   $q_string .= "hw_serial,hw_asset,hw_built,hw_active,hw_retired,hw_reused,hw_supid_verified,hw_supportstart,hw_supportend ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_hardware     on inv_hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_hardware     on inv_hardware.hw_companyid = inv_inventory.inv_id ";
   $q_string .= "left join inv_models       on inv_models.mod_id         = inv_hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors      on inv_vendors.ven_id        = inv_models.mod_vendor ";
   $q_string .= "left join inv_support      on inv_support.sup_id        = inv_hardware.hw_supportid ";
-  $q_string .= "left join inv_supportlevel on inv_supportlevel.slv_id   = inventory.inv_response ";
-  $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";
+  $q_string .= "left join inv_supportlevel on inv_supportlevel.slv_id   = inv_inventory.inv_response ";
+  $q_string .= "left join inv_locations    on inv_locations.loc_id      = inv_inventory.inv_location ";
   $q_string .= "left join inv_cities       on inv_cities.ct_id          = inv_locations.loc_city ";
   $q_string .= "left join inv_states       on inv_states.st_id          = inv_locations.loc_state ";
   $q_string .= $where . " and inv_status = 0 and hw_supportend < '" . date('Y-m-d') . "' and hw_active != \"1971-01-01\" ";
   $q_string .= $orderby;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
-  while ( $a_inventory = mysqli_fetch_array($q_inventory) ) {
+  while ( $a_inv_inventory = mysqli_fetch_array($q_inv_inventory) ) {
     $class = "ui-widget-content";
-    if ($a_inventory['hw_supid_verified'] == 0) {
+    if ($a_inv_inventory['hw_supid_verified'] == 0) {
       $class = "ui-state-highlight";
     }
-    if ($a_inventory['hw_serial'] == '') {
+    if ($a_inv_inventory['hw_serial'] == '') {
       $class = "ui-state-error";
     } else {
 
-      $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\">";
+      $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inv_inventory['inv_id'] . "\">";
       $linkend   = "</a>";
 
       if ($formVars['csv'] == 'true') {
-        print "\"" . $a_inventory['inv_name'] . "\",";
-        print "\"" . $a_inventory['ven_name'] . "\",";
-        print "\"" . $a_inventory['mod_name'] . "\",";
-        print "\"" . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym'] . "\",";
-        print "\"" . $a_inventory['hw_asset'] . "\",";
-        print "\"" . $a_inventory['hw_serial'] . "\",";
-        print "\"" . $a_inventory['sup_company'] . "\",";
-        print "\"" . $a_inventory['slv_value'] . "\",";
-        print "\"" . $a_inventory['hw_supportstart'] . "\",";
-        print "\"" . $a_inventory['hw_supportend'] . "\"\n";
+        print "\"" . $a_inv_inventory['inv_name'] . "\",";
+        print "\"" . $a_inv_inventory['ven_name'] . "\",";
+        print "\"" . $a_inv_inventory['mod_name'] . "\",";
+        print "\"" . $a_inv_inventory['ct_city'] . ", " . $a_inv_inventory['st_acronym'] . "\",";
+        print "\"" . $a_inv_inventory['hw_asset'] . "\",";
+        print "\"" . $a_inv_inventory['hw_serial'] . "\",";
+        print "\"" . $a_inv_inventory['sup_company'] . "\",";
+        print "\"" . $a_inv_inventory['slv_value'] . "\",";
+        print "\"" . $a_inv_inventory['hw_supportstart'] . "\",";
+        print "\"" . $a_inv_inventory['hw_supportend'] . "\"\n";
       } else {
         print "<tr>\n";
-        print "  <td class=\"" . $class . "\">" . $linkstart . $a_inventory['inv_name']                                    . $linkend . "</td>\n";
-        print "  <td class=\"" . $class . "\">"              . $a_inventory['ven_name']                                               . "</td>\n";
-        print "  <td class=\"" . $class . "\">"              . $a_inventory['mod_name']                                               . "</td>\n";
-        print "  <td class=\"" . $class . "\">"              . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym']            . "</td>\n";
-        print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_asset']                                               . "</td>\n";
-        print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_serial']                                              . "</td>\n";
-        print "  <td class=\"" . $class . "\">"              . $a_inventory['sup_company']                                            . "</td>\n";
-        print "  <td class=\"" . $class . "\">"              . $a_inventory['slv_value']                                              . "</td>\n";
-        print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_supportstart']                                        . "</td>\n";
-        print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_supportend']                                          . "</td>\n";
+        print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_inventory['inv_name']                                    . $linkend . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['ven_name']                                               . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['mod_name']                                               . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['ct_city'] . ", " . $a_inv_inventory['st_acronym']            . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['hw_asset']                                               . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['hw_serial']                                              . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['sup_company']                                            . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['slv_value']                                              . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['hw_supportstart']                                        . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['hw_supportend']                                          . "</td>\n";
         print "</tr>\n";
       }
     }
@@ -405,7 +405,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
     print "</p>\n";
   } else {
     print "</table>\n";
-    print "<p class=\"ui-widget-content\">Total: " . mysqli_num_rows($q_inventory) . "</td>\n";
+    print "<p class=\"ui-widget-content\">Total: " . mysqli_num_rows($q_inv_inventory) . "</td>\n";
   }
 
   print "</div>\n";
@@ -436,54 +436,54 @@ needs to be set on the original equipment. If the system is confirmed as retired
 
   $q_string  = "select inv_id,inv_name,inv_status,ven_name,mod_name,ct_city,st_acronym,slv_value,sup_company,";
   $q_string .= "hw_serial,hw_asset,hw_built,hw_active,hw_retired,hw_reused,hw_supid_verified,hw_supportstart,hw_supportend ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_hardware     on inv_hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_hardware     on inv_hardware.hw_companyid = inv_inventory.inv_id ";
   $q_string .= "left join inv_models       on inv_models.mod_id         = inv_hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors      on inv_vendors.ven_id        = inv_models.mod_vendor ";
   $q_string .= "left join inv_support      on inv_support.sup_id        = inv_hardware.hw_supportid ";
-  $q_string .= "left join inv_supportlevel on inv_supportlevel.slv_id   = inventory.inv_response ";
-  $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";
+  $q_string .= "left join inv_supportlevel on inv_supportlevel.slv_id   = inv_inventory.inv_response ";
+  $q_string .= "left join inv_locations    on inv_locations.loc_id      = inv_inventory.inv_location ";
   $q_string .= "left join inv_cities       on inv_cities.ct_id          = inv_locations.loc_city ";
   $q_string .= "left join inv_states       on inv_states.st_id          = inv_locations.loc_state ";
   $q_string .= $where . " and inv_status = 0 and hw_supportend < '" . date('Y-m-d') . "' and hw_active = \"1971-01-01\" ";
   $q_string .= $orderby;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
-  while ( $a_inventory = mysqli_fetch_array($q_inventory) ) {
+  while ( $a_inv_inventory = mysqli_fetch_array($q_inv_inventory) ) {
     $class = "ui-widget-content";
-    if ($a_inventory['hw_supid_verified'] == 0) {
+    if ($a_inv_inventory['hw_supid_verified'] == 0) {
       $class = "ui-state-highlight";
     }
-    if ($a_inventory['hw_serial'] == '') {
+    if ($a_inv_inventory['hw_serial'] == '') {
       $class = "ui-state-error";
     } else {
 
-      $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\">";
+      $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inv_inventory['inv_id'] . "\">";
       $linkend   = "</a>";
 
       if ($formVars['csv'] == 'true') {
-        print "\"" . $a_inventory['inv_name'] . "\",";
-        print "\"" . $a_inventory['ven_name'] . "\",";
-        print "\"" . $a_inventory['mod_name'] . "\",";
-        print "\"" . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym'] . "\",";
-        print "\"" . $a_inventory['hw_asset'] . "\",";
-        print "\"" . $a_inventory['hw_serial'] . "\",";
-        print "\"" . $a_inventory['sup_company'] . "\",";
-        print "\"" . $a_inventory['slv_value'] . "\",";
-        print "\"" . $a_inventory['hw_supportstart'] . "\",";
-        print "\"" . $a_inventory['hw_supportend'] . "\"\n";
+        print "\"" . $a_inv_inventory['inv_name'] . "\",";
+        print "\"" . $a_inv_inventory['ven_name'] . "\",";
+        print "\"" . $a_inv_inventory['mod_name'] . "\",";
+        print "\"" . $a_inv_inventory['ct_city'] . ", " . $a_inv_inventory['st_acronym'] . "\",";
+        print "\"" . $a_inv_inventory['hw_asset'] . "\",";
+        print "\"" . $a_inv_inventory['hw_serial'] . "\",";
+        print "\"" . $a_inv_inventory['sup_company'] . "\",";
+        print "\"" . $a_inv_inventory['slv_value'] . "\",";
+        print "\"" . $a_inv_inventory['hw_supportstart'] . "\",";
+        print "\"" . $a_inv_inventory['hw_supportend'] . "\"\n";
       } else {
         print "<tr>\n";
-        print "  <td class=\"" . $class . "\">" . $linkstart . $a_inventory['inv_name']                                    . $linkend . "</td>\n";
-        print "  <td class=\"" . $class . "\">"              . $a_inventory['ven_name']                                               . "</td>\n";
-        print "  <td class=\"" . $class . "\">"              . $a_inventory['mod_name']                                               . "</td>\n";
-        print "  <td class=\"" . $class . "\">"              . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym']            . "</td>\n";
-        print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_asset']                                               . "</td>\n";
-        print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_serial']                                              . "</td>\n";
-        print "  <td class=\"" . $class . "\">"              . $a_inventory['sup_company']                                            . "</td>\n";
-        print "  <td class=\"" . $class . "\">"              . $a_inventory['slv_value']                                              . "</td>\n";
-        print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_supportstart']                                        . "</td>\n";
-        print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_supportend']                                          . "</td>\n";
+        print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_inventory['inv_name']                                    . $linkend . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['ven_name']                                               . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['mod_name']                                               . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['ct_city'] . ", " . $a_inv_inventory['st_acronym']            . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['hw_asset']                                               . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['hw_serial']                                              . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['sup_company']                                            . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['slv_value']                                              . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['hw_supportstart']                                        . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['hw_supportend']                                          . "</td>\n";
         print "</tr>\n";
       }
     }
@@ -494,7 +494,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
     print "</p>\n";
   } else {
     print "</table>\n";
-    print "<p class=\"ui-widget-content\">Total: " . mysqli_num_rows($q_inventory) . "</td>\n";
+    print "<p class=\"ui-widget-content\">Total: " . mysqli_num_rows($q_inv_inventory) . "</td>\n";
   }
 
   print "</div>\n";
@@ -522,46 +522,46 @@ needs to be set on the original equipment. If the system is confirmed as retired
 
   $q_string  = "select inv_id,inv_name,inv_status,ven_name,mod_name,ct_city,st_acronym,slv_value,sup_company,";
   $q_string .= "hw_serial,hw_asset,hw_built,hw_active,hw_retired,hw_reused,hw_supid_verified ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_hardware     on inv_hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_hardware     on inv_hardware.hw_companyid = inv_inventory.inv_id ";
   $q_string .= "left join inv_models       on inv_models.mod_id         = inv_hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors      on inv_vendors.mod_id        = inv_models.mod_vendor ";
   $q_string .= "left join inv_support      on inv_support.sup_id        = inv_hardware.hw_supportid ";
   $q_string .= "left join inv_supportlevel on inv_supportlevel.slv_id   = inv_hardware.hw_response ";
-  $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";
+  $q_string .= "left join inv_locations    on inv_locations.loc_id      = inv_inventory.inv_location ";
   $q_string .= "left join inv_cities       on inv_cities.ct_id          = inv_locations.loc_city ";
   $q_string .= "left join inv_states       on inv_states.st_id          = inv_locations.loc_state ";
   $q_string .= $where . " and inv_status = 0 and hw_supid_verified = 0 and hw_serial = '' ";
   $q_string .= $orderby;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
-  while ( $a_inventory = mysqli_fetch_array($q_inventory) ) {
+  while ( $a_inv_inventory = mysqli_fetch_array($q_inv_inventory) ) {
     $class = "ui-widget-content";
-    if ($a_inventory['hw_supid_verified'] == 0) {
+    if ($a_inv_inventory['hw_supid_verified'] == 0) {
       $class = "ui-state-highlight";
     }
-    if ($a_inventory['hw_serial'] == '') {
+    if ($a_inv_inventory['hw_serial'] == '') {
       $class = "ui-state-error";
     }
 
-    $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\">";
+    $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inv_inventory['inv_id'] . "\">";
     $linkend   = "</a>";
 
     if ($formVars['csv'] == 'true') {
-      print "\"" . $a_inventory['inv_name'] . "\",";
-      print "\"" . $a_inventory['ven_name'] . "\",";
-      print "\"" . $a_inventory['mod_name'] . "\",";
-      print "\"" . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym'] . "\",";
-      print "\"" . $a_inventory['hw_asset'] . "\",";
-      print "\"" . $a_inventory['hw_serial'] . "\"\n";
+      print "\"" . $a_inv_inventory['inv_name'] . "\",";
+      print "\"" . $a_inv_inventory['ven_name'] . "\",";
+      print "\"" . $a_inv_inventory['mod_name'] . "\",";
+      print "\"" . $a_inv_inventory['ct_city'] . ", " . $a_inv_inventory['st_acronym'] . "\",";
+      print "\"" . $a_inv_inventory['hw_asset'] . "\",";
+      print "\"" . $a_inv_inventory['hw_serial'] . "\"\n";
     } else {
       print "<tr>\n";
-      print "  <td class=\"" . $class . "\">" . $linkstart . $a_inventory['inv_name']                                    . $linkend . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['ven_name']                                               . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['mod_name']                                               . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym']            . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_asset']                                               . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_serial']                                              . "</td>\n";
+      print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_inventory['inv_name']                                    . $linkend . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['ven_name']                                               . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['mod_name']                                               . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['ct_city'] . ", " . $a_inv_inventory['st_acronym']            . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['hw_asset']                                               . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['hw_serial']                                              . "</td>\n";
       print "</tr>\n";
     }
   }
@@ -570,7 +570,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
     print "</p>\n";
   } else {
     print "</table>\n";
-    print "<p class=\"ui-widget-content\">Total: " . mysqli_num_rows($q_inventory) . "</td>\n";
+    print "<p class=\"ui-widget-content\">Total: " . mysqli_num_rows($q_inv_inventory) . "</td>\n";
   }
 
   print "</div>\n";
@@ -604,35 +604,35 @@ needs to be set on the original equipment. If the system is confirmed as retired
 
   $q_string  = "select inv_id,inv_name,inv_status,ven_name,mod_name,ct_city,st_acronym,slv_value,sup_company,hw_retired,";
   $q_string .= "hw_serial,hw_asset,hw_built,hw_active,hw_retired,hw_reused,hw_supid_verified,hw_supportstart,hw_supportend ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join inv_hardware     on inv_hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_hardware     on inv_hardware.hw_companyid = inv_inventory.inv_id ";
   $q_string .= "left join inv_models       on inv_models.mod_id         = inv_hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors      on inv_vendors.ven_id        = inv_models.mod_vendor ";
   $q_string .= "left join inv_support      on inv_support.sup_id        = inv_hardware.hw_supportid ";
-  $q_string .= "left join inv_supportlevel on inv_supportlevel.slv_id   = inventory.inv_response ";
-  $q_string .= "left join inv_locations    on inv_locations.loc_id      = inventory.inv_location ";
+  $q_string .= "left join inv_supportlevel on inv_supportlevel.slv_id   = inv_inventory.inv_response ";
+  $q_string .= "left join inv_locations    on inv_locations.loc_id      = inv_inventory.inv_location ";
   $q_string .= "left join inv_cities       on inv_cities.ct_id          = inv_locations.loc_city ";
   $q_string .= "left join inv_states       on inv_states.st_id          = inv_locations.loc_state ";
   $q_string .= $where . " and inv_status = 1 and hw_supid_verified = 1 and hw_reused = '1971-01-01' ";
   $q_string .= $orderby;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ( $a_inventory = mysqli_fetch_array($q_inventory) ) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ( $a_inv_inventory = mysqli_fetch_array($q_inv_inventory) ) {
 
     $a_inv['inv_name'] = '';
     $class = "ui-widget-content";
-    if ($a_inventory['hw_serial'] == '') {
+    if ($a_inv_inventory['hw_serial'] == '') {
       $a_inv['inv_name'] = '';
       $class = "ui-state-error";
     } else {
       $q_string  = "select inv_name ";
-      $q_string .= "from inventory ";
-      $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inventory.inv_id ";
+      $q_string .= "from inv_inventory ";
+      $q_string .= "left join inv_hardware on inv_hardware.hw_companyid = inv_inventory.inv_id ";
       $q_string .= "where ";
       $or = '(';
       $tail = '';
       $and = '';
-      if ($a_inventory['hw_serial'] != '') {
-        $q_string .= "(hw_serial = '" . $a_inventory['hw_serial'] . "'";
+      if ($a_inv_inventory['hw_serial'] != '') {
+        $q_string .= "(hw_serial = '" . $a_inv_inventory['hw_serial'] . "'";
         $or = ' or ';
         $tail = ') ';
         $and = 'and ';
@@ -645,36 +645,36 @@ needs to be set on the original equipment. If the system is confirmed as retired
       }
     }
 
-    $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\">";
+    $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inv_inventory['inv_id'] . "\">";
     $linkend   = "</a>";
 
     if ($formVars['csv'] == 'true') {
-      print "\"" . $a_inventory['inv_name'] . "\",";
+      print "\"" . $a_inv_inventory['inv_name'] . "\",";
       print "\"" . $a_inv['inv_name'] . "\",";
-      print "\"" . $a_inventory['hw_retired'] . "\",";
-      print "\"" . $a_inventory['ven_name'] . "\",";
-      print "\"" . $a_inventory['mod_name'] . "\",";
-      print "\"" . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym'] . "\",";
-      print "\"" . $a_inventory['hw_asset'] . "\",";
-      print "\"" . $a_inventory['hw_serial'] . "\",";
-      print "\"" . $a_inventory['sup_company'] . "\",";
-      print "\"" . $a_inventory['slv_value'] . "\",";
-      print "\"" . $a_inventory['hw_supportstart'] . "\",";
-      print "\"" . $a_inventory['hw_supportend'] . "\"\n";
+      print "\"" . $a_inv_inventory['hw_retired'] . "\",";
+      print "\"" . $a_inv_inventory['ven_name'] . "\",";
+      print "\"" . $a_inv_inventory['mod_name'] . "\",";
+      print "\"" . $a_inv_inventory['ct_city'] . ", " . $a_inv_inventory['st_acronym'] . "\",";
+      print "\"" . $a_inv_inventory['hw_asset'] . "\",";
+      print "\"" . $a_inv_inventory['hw_serial'] . "\",";
+      print "\"" . $a_inv_inventory['sup_company'] . "\",";
+      print "\"" . $a_inv_inventory['slv_value'] . "\",";
+      print "\"" . $a_inv_inventory['hw_supportstart'] . "\",";
+      print "\"" . $a_inv_inventory['hw_supportend'] . "\"\n";
     } else {
       print "<tr>\n";
-      print "  <td class=\"" . $class . "\">" . $linkstart . $a_inventory['inv_name']                                    . $linkend . "</td>\n";
+      print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_inventory['inv_name']                                    . $linkend . "</td>\n";
       print "  <td class=\"" . $class . "\">"              . $a_inv['inv_name']                                                     . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_retired']                                             . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['ven_name']                                               . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['mod_name']                                               . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['ct_city'] . ", " . $a_inventory['st_acronym']            . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_asset']                                               . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_serial']                                              . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['sup_company']                                            . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['slv_value']                                              . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_supportstart']                                        . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inventory['hw_supportend']                                          . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['hw_retired']                                             . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['ven_name']                                               . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['mod_name']                                               . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['ct_city'] . ", " . $a_inv_inventory['st_acronym']            . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['hw_asset']                                               . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['hw_serial']                                              . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['sup_company']                                            . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['slv_value']                                              . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['hw_supportstart']                                        . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_inventory['hw_supportend']                                          . "</td>\n";
       print "</tr>\n";
     }
   }
@@ -683,7 +683,7 @@ needs to be set on the original equipment. If the system is confirmed as retired
     print "</p>\n";
   } else {
     print "</table>\n";
-    print "<p class=\"ui-widget-content\">Total: " . mysqli_num_rows($q_inventory) . "</td>\n";
+    print "<p class=\"ui-widget-content\">Total: " . mysqli_num_rows($q_inv_inventory) . "</td>\n";
   }
 
 ?>

@@ -20,7 +20,7 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from comments");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_issue_detail");
 
       $q_string  = "select det_text,det_timestamp,det_user ";
       $q_string .= "from inv_issue_detail ";

@@ -92,7 +92,7 @@
   $q_string .= "left join inv_security  on inv_security.sec_id  = inv_vulnerabilities.vuln_securityid ";
   $q_string .= "left join inv_severity  on inv_severity.sev_id  = inv_security.sec_severity ";
   $q_string .= "left join inv_interface on inv_interface.int_id = inv_vulnerabilities.vuln_interface ";
-  $q_string .= "left join inventory on inventory.inv_id = inv_interface.int_companyid ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_interface.int_companyid ";
   $q_string .= "left join inv_vulnowner on inv_vulnowner.vul_interface = inv_vulnerabilities.vuln_interface and inv_vulnowner.vul_security = inv_vulnerabilities.vuln_securityid ";
   $q_inv_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inv_vulnerabilities = mysqli_fetch_array($q_inv_vulnerabilities)) {
@@ -196,7 +196,7 @@
   $q_string  = "select vul_id,vul_interface,vul_security,vul_group,inv_product ";
   $q_string .= "from inv_vulnowner ";
   $q_string .= "left join inv_interface on inv_interface.int_id = inv_vulnowner.vul_interface ";
-  $q_string .= "left join inventory on inventory.inv_id = inv_interface.int_companyid ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_interface.int_companyid ";
   $q_inv_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inv_vulnowner = mysqli_fetch_array($q_inv_vulnowner)) {
     $q_string  = "select vuln_id ";

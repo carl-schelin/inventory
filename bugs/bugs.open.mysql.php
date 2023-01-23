@@ -77,7 +77,7 @@
   $q_string  = "select bug_id,bug_module,bug_severity,bug_priority,bug_discovered,bug_subject,mod_name,bug_openby,usr_name ";
   $q_string .= "from inv_bugs ";
   $q_string .= "left join inv_users   on inv_users.usr_id   = inv_bugs.bug_openby ";
-  $q_string .= "left join modules on modules.mod_id = inv_bugs.bug_module ";
+  $q_string .= "left join inv_modules on inv_modules.mod_id = inv_bugs.bug_module ";
   $q_string .= "where bug_closed = '1971-01-01' " . $where;
   $q_string .= "order by bug_discovered desc,mod_name ";
   $q_inv_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));

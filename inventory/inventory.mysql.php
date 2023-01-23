@@ -165,13 +165,13 @@
       }
 
       $q_string  = "select inv_id,inv_companyid,inv_name,inv_function,inv_appadmin,grp_name,prod_name,prj_name,svc_name,loc_name,inv_row,inv_rack,inv_unit,inv_callpath,inv_ansible,inv_ssh,man_text ";
-      $q_string .= "from inventory ";
-      $q_string .= "left join inv_groups      on inv_groups.grp_id      = inventory.inv_manager ";
-      $q_string .= "left join inv_products    on inv_products.prod_id   = inventory.inv_product ";
-      $q_string .= "left join inv_projects    on inv_projects.prj_id    = inventory.inv_project ";
-      $q_string .= "left join inv_service     on inv_service.svc_id     = inventory.inv_class ";
-      $q_string .= "left join inv_maintenance on inv_maintenance.man_id = inventory.inv_maint ";
-      $q_string .= "left join inv_locations   on inv_locations.loc_id   = inventory.inv_location ";
+      $q_string .= "from inv_inventory ";
+      $q_string .= "left join inv_groups      on inv_groups.grp_id      = inv_inventory.inv_manager ";
+      $q_string .= "left join inv_products    on inv_products.prod_id   = inv_inventory.inv_product ";
+      $q_string .= "left join inv_projects    on inv_projects.prj_id    = inv_inventory.inv_project ";
+      $q_string .= "left join inv_service     on inv_service.svc_id     = inv_inventory.inv_class ";
+      $q_string .= "left join inv_maintenance on inv_maintenance.man_id = inv_inventory.inv_maint ";
+      $q_string .= "left join inv_locations   on inv_locations.loc_id   = inv_inventory.inv_location ";
       $q_string .= "where inv_status = 0 and inv_manager = " . $formVars['group'] . " ";
       if ($formVars['location'] > 0) {
         $q_string .= "and inv_location = " . $formVars['location'] . " ";
@@ -184,15 +184,15 @@
       }
       $q_string .= $filter;
       $q_string .= "order by inv_name ";
-      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+      $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
-        $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">";
+        $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inv_inventory['inv_id'] . "\" target=\"_blank\">";
         $linkend   = "</a>";
 
         $q_string  = "select inv_name ";
-	$q_string .= "from inventory ";
-	$q_string .= "where inv_id = " . $a_inventory['inv_companyid'] . " ";
+	$q_string .= "from inv_inventory ";
+	$q_string .= "where inv_id = " . $a_inv_inventory['inv_companyid'] . " ";
         $q_parent = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 	if (mysqli_num_rows($q_parent) > 0) {
           $a_parent = mysqli_fetch_array($q_parent);
@@ -202,13 +202,13 @@
 
         $q_string  = "select grp_name ";
         $q_string .= "from inv_groups ";
-        $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'];
+        $q_string .= "where grp_id = " . $a_inv_inventory['inv_appadmin'];
         $q_appadmin = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_appadmin = mysqli_fetch_array($q_appadmin);
 
         $q_string  = "select hw_active ";
         $q_string .= "from inv_hardware ";
-        $q_string .= "where hw_primary = 1 and hw_deleted = 0 and hw_companyid = " . $a_inventory['inv_id'] . " ";
+        $q_string .= "where hw_primary = 1 and hw_deleted = 0 and hw_companyid = " . $a_inv_inventory['inv_id'] . " ";
         $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
@@ -218,31 +218,31 @@
             $is_live = 'Yes';
           }
           $is_callpath = 'No';
-          if ($a_inventory['inv_callpath']) {
+          if ($a_inv_inventory['inv_callpath']) {
             $is_callpath = 'Yes';
           }
           $is_ansible = 'No';
-          if ($a_inventory['inv_ansible']) {
+          if ($a_inv_inventory['inv_ansible']) {
             $is_ansible = 'Yes';
           }
           $is_ssh = 'No';
-          if ($a_inventory['inv_ssh']) {
+          if ($a_inv_inventory['inv_ssh']) {
             $is_unixsvc = 'Yes';
           }
 
-          $detail .= "\"" . $a_inventory['inv_name']     . "\",";
+          $detail .= "\"" . $a_inv_inventory['inv_name']     . "\",";
           $detail .= "\"" . $a_parent['inv_name']        . "\",";
-          $detail .= "\"" . $a_inventory['inv_function'] . "\",";
-          $detail .= "\"" . $a_inventory['grp_name']     . "\",";
+          $detail .= "\"" . $a_inv_inventory['inv_function'] . "\",";
+          $detail .= "\"" . $a_inv_inventory['grp_name']     . "\",";
           $detail .= "\"" . $a_appadmin['grp_name']      . "\",";
-          $detail .= "\"" . $a_inventory['prod_name']    . "\",";
-          $detail .= "\"" . $a_inventory['prj_name']     . "\",";
-          $detail .= "\"" . $a_inventory['svc_name']     . "\",";
-          $detail .= "\"" . $a_inventory['man_text']     . "\",";
-          $detail .= "\"" . $a_inventory['loc_name']     . "\",";
-          $detail .= "\"" . $a_inventory['inv_row']      . "\",";
-          $detail .= "\"" . $a_inventory['inv_rack']     . "\",";
-          $detail .= "\"" . $a_inventory['inv_unit']     . "\",";
+          $detail .= "\"" . $a_inv_inventory['prod_name']    . "\",";
+          $detail .= "\"" . $a_inv_inventory['prj_name']     . "\",";
+          $detail .= "\"" . $a_inv_inventory['svc_name']     . "\",";
+          $detail .= "\"" . $a_inv_inventory['man_text']     . "\",";
+          $detail .= "\"" . $a_inv_inventory['loc_name']     . "\",";
+          $detail .= "\"" . $a_inv_inventory['inv_row']      . "\",";
+          $detail .= "\"" . $a_inv_inventory['inv_rack']     . "\",";
+          $detail .= "\"" . $a_inv_inventory['inv_unit']     . "\",";
           $detail .= "\"" . $is_live                     . "\",";
           $detail .= "\"" . $is_callpath                 . "\",";
           $detail .= "\"" . $is_ansible                  . "\",";
@@ -254,36 +254,36 @@
             $is_live = 'checked';
           }
           $is_callpath = '';
-          if ($a_inventory['inv_callpath']) {
+          if ($a_inv_inventory['inv_callpath']) {
             $is_callpath = 'checked';
           }
           $is_ansible = '';
-          if ($a_inventory['inv_ansible']) {
+          if ($a_inv_inventory['inv_ansible']) {
             $is_ansible = 'checked';
           }
           $is_unixsvc = '';
-          if ($a_inventory['inv_ssh']) {
+          if ($a_inv_inventory['inv_ssh']) {
             $is_unixsvc = 'checked';
           }
 
           $detail .= "<tr>\n";
-          $detail .= "<td class=\"ui-widget-content\">" . $linkstart . $a_inventory['inv_name'] . $linkend . "</td>\n";
-          $detail .= "<td class=\"ui-widget-content\" id=\"ipt" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'ipt');\"><u>" . $a_parent['inv_name']        . "</u></td>\n";
-          $detail .= "<td class=\"ui-widget-content\" id=\"ifn" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'ifn');\"><u>" . $a_inventory['inv_function'] . "</u></td>\n";
-          $detail .= "<td class=\"ui-widget-content\" id=\"isa" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'isa');\"><u>" . $a_inventory['grp_name']     . "</u></td>\n";
-          $detail .= "<td class=\"ui-widget-content\" id=\"iaa" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'iaa');\"><u>" . $a_appadmin['grp_name']      . "</u></td>\n";
-          $detail .= "<td class=\"ui-widget-content\" id=\"ipr" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'ipr');\"><u>" . $a_inventory['prod_name']    . "</u></td>\n";
-          $detail .= "<td class=\"ui-widget-content\" id=\"ipj" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'ipj');\"><u>" . $a_inventory['prj_name']     . "</u></td>\n";
-          $detail .= "<td class=\"ui-widget-content\" id=\"isc" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'isc');\"><u>" . $a_inventory['svc_name']     . "</u></td>\n";
-          $detail .= "<td class=\"ui-widget-content\" id=\"imw" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'imw');\"><u>" . $a_inventory['man_text']     . "</u></td>\n";
-          $detail .= "<td class=\"ui-widget-content\" id=\"ilc" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'ilc');\"><u>" . $a_inventory['loc_name']     . "</u></td>\n";
-          $detail .= "<td class=\"ui-widget-content\" id=\"irw" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'irw');\"><u>" . $a_inventory['inv_row']      . "</u></td>\n";
-          $detail .= "<td class=\"ui-widget-content\" id=\"irk" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'irk');\"><u>" . $a_inventory['inv_rack']     . "</u></td>\n";
-          $detail .= "<td class=\"ui-widget-content\" id=\"iun" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'iun');\"><u>" . $a_inventory['inv_unit']     . "</u></td>\n";
-          $detail .= "<td class=\"ui-widget-content delete\"><input type=\"checkbox\"" . $is_live     . " id=\"ilv" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'ilv');\"></td>\n";
-          $detail .= "<td class=\"ui-widget-content delete\"><input type=\"checkbox\"" . $is_callpath . " id=\"icp" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'icp');\"></td>\n";
-          $detail .= "<td class=\"ui-widget-content delete\"><input type=\"checkbox\"" . $is_ansible  . " id=\"ian" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'ian');\"></td>\n";
-          $detail .= "<td class=\"ui-widget-content delete\"><input type=\"checkbox\"" . $is_unixsvc  . " id=\"ius" . $a_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inventory['inv_id'] . ", 'ius');\"></td>\n";
+          $detail .= "<td class=\"ui-widget-content\">" . $linkstart . $a_inv_inventory['inv_name'] . $linkend . "</td>\n";
+          $detail .= "<td class=\"ui-widget-content\" id=\"ipt" . $a_inv_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inv_inventory['inv_id'] . ", 'ipt');\"><u>" . $a_parent['inv_name']        . "</u></td>\n";
+          $detail .= "<td class=\"ui-widget-content\" id=\"ifn" . $a_inv_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inv_inventory['inv_id'] . ", 'ifn');\"><u>" . $a_inv_inventory['inv_function'] . "</u></td>\n";
+          $detail .= "<td class=\"ui-widget-content\" id=\"isa" . $a_inv_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inv_inventory['inv_id'] . ", 'isa');\"><u>" . $a_inv_inventory['grp_name']     . "</u></td>\n";
+          $detail .= "<td class=\"ui-widget-content\" id=\"iaa" . $a_inv_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inv_inventory['inv_id'] . ", 'iaa');\"><u>" . $a_appadmin['grp_name']      . "</u></td>\n";
+          $detail .= "<td class=\"ui-widget-content\" id=\"ipr" . $a_inv_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inv_inventory['inv_id'] . ", 'ipr');\"><u>" . $a_inv_inventory['prod_name']    . "</u></td>\n";
+          $detail .= "<td class=\"ui-widget-content\" id=\"ipj" . $a_inv_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inv_inventory['inv_id'] . ", 'ipj');\"><u>" . $a_inv_inventory['prj_name']     . "</u></td>\n";
+          $detail .= "<td class=\"ui-widget-content\" id=\"isc" . $a_inv_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inv_inventory['inv_id'] . ", 'isc');\"><u>" . $a_inv_inventory['svc_name']     . "</u></td>\n";
+          $detail .= "<td class=\"ui-widget-content\" id=\"imw" . $a_inv_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inv_inventory['inv_id'] . ", 'imw');\"><u>" . $a_inv_inventory['man_text']     . "</u></td>\n";
+          $detail .= "<td class=\"ui-widget-content\" id=\"ilc" . $a_inv_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inv_inventory['inv_id'] . ", 'ilc');\"><u>" . $a_inv_inventory['loc_name']     . "</u></td>\n";
+          $detail .= "<td class=\"ui-widget-content\" id=\"irw" . $a_inv_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inv_inventory['inv_id'] . ", 'irw');\"><u>" . $a_inv_inventory['inv_row']      . "</u></td>\n";
+          $detail .= "<td class=\"ui-widget-content\" id=\"irk" . $a_inv_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inv_inventory['inv_id'] . ", 'irk');\"><u>" . $a_inv_inventory['inv_rack']     . "</u></td>\n";
+          $detail .= "<td class=\"ui-widget-content\" id=\"iun" . $a_inv_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inv_inventory['inv_id'] . ", 'iun');\"><u>" . $a_inv_inventory['inv_unit']     . "</u></td>\n";
+          $detail .= "<td class=\"ui-widget-content delete\"><input type=\"checkbox\"" . $is_live     . " id=\"ilv" . $a_inv_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inv_inventory['inv_id'] . ", 'ilv');\"></td>\n";
+          $detail .= "<td class=\"ui-widget-content delete\"><input type=\"checkbox\"" . $is_callpath . " id=\"icp" . $a_inv_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inv_inventory['inv_id'] . ", 'icp');\"></td>\n";
+          $detail .= "<td class=\"ui-widget-content delete\"><input type=\"checkbox\"" . $is_ansible  . " id=\"ian" . $a_inv_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inv_inventory['inv_id'] . ", 'ian');\"></td>\n";
+          $detail .= "<td class=\"ui-widget-content delete\"><input type=\"checkbox\"" . $is_unixsvc  . " id=\"ius" . $a_inv_inventory['inv_id'] . "\" onclick=\"edit_Detail(" . $a_inv_inventory['inv_id'] . ", 'ius');\"></td>\n";
           $detail .= "</tr>\n";
         }
       }
@@ -330,7 +330,7 @@
       }
 
       $q_string  = "select inv_id,inv_name ";
-      $q_string .= "from inventory ";
+      $q_string .= "from inv_inventory ";
       $q_string .= "where inv_status = 0 and inv_manager = " . $formVars['group'] . " ";
       if ($formVars['location'] > 0) {
         $q_string .= "and inv_location = " . $formVars['location'] . " ";
@@ -343,20 +343,20 @@
       }
       $q_string .= $filter;
       $q_string .= "order by inv_name ";
-      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+      $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
-        $linkstart       = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">";
+        $linkstart       = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inv_inventory['inv_id'] . "\" target=\"_blank\">";
         $linkend         = "</a>";
 
-        $servername = $a_inventory['inv_name'];
+        $servername = $a_inv_inventory['inv_name'];
 
         $q_string  = "select hw_id,hw_built,hw_active,hw_update,hw_verified,hw_asset,hw_serial,hw_vendorid,part_name,ven_name,mod_name,mod_size,mod_speed ";
         $q_string .= "from inv_hardware ";
         $q_string .= "left join inv_models  on inv_models.mod_id  = inv_hardware.hw_vendorid ";
         $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
         $q_string .= "left join inv_parts   on inv_parts.part_id  = inv_hardware.hw_type ";
-        $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = 0 ";
+        $q_string .= "where hw_companyid = " . $a_inv_inventory['inv_id'] . " and hw_hw_id = 0 ";
         $q_string .= "order by hw_primary desc,part_id,mod_size ";
         $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
@@ -397,7 +397,7 @@
           $q_string .= "left join inv_models  on inv_models.mod_id  = inv_hardware.hw_vendorid ";
           $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
           $q_string .= "left join inv_parts   on inv_parts.part_id  = inv_hardware.hw_type ";
-          $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_hw_id = " . $a_inv_hardware['hw_id'] . " ";
+          $q_string .= "where hw_companyid = " . $a_inv_inventory['inv_id'] . " and hw_hw_id = " . $a_inv_hardware['hw_id'] . " ";
           $q_string .= "order by hw_primary desc,part_id,mod_size ";
           $q_hw_child = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           while ($a_hw_child = mysqli_fetch_array($q_hw_child)) {
@@ -494,12 +494,12 @@
 
       $servername = '&nbsp;';
       $q_string  = "select inv_id,inv_name,inv_function,inv_appadmin,inv_ssh,grp_name,prod_name,prj_name,svc_name,loc_name,inv_row,inv_rack,inv_unit,inv_callpath,inv_ansible,inv_ssh ";
-      $q_string .= "from inventory ";
-      $q_string .= "left join inv_groups      on inv_groups.grp_id    = inventory.inv_manager ";
-      $q_string .= "left join inv_products    on inv_products.prod_id = inventory.inv_product ";
-      $q_string .= "left join inv_projects    on inv_projects.prj_id  = inventory.inv_project ";
-      $q_string .= "left join inv_service     on inv_service.svc_id   = inventory.inv_class ";
-      $q_string .= "left join inv_locations   on inv_locations.loc_id = inventory.inv_location ";
+      $q_string .= "from inv_inventory ";
+      $q_string .= "left join inv_groups      on inv_groups.grp_id    = inv_inventory.inv_manager ";
+      $q_string .= "left join inv_products    on inv_products.prod_id = inv_inventory.inv_product ";
+      $q_string .= "left join inv_projects    on inv_projects.prj_id  = inv_inventory.inv_project ";
+      $q_string .= "left join inv_service     on inv_service.svc_id   = inv_inventory.inv_class ";
+      $q_string .= "left join inv_locations   on inv_locations.loc_id = inv_inventory.inv_location ";
       $q_string .= "where inv_status = 0 and inv_manager = " . $formVars['group'] . " ";
       if ($formVars['location'] > 0) {
         $q_string .= "and inv_location = " . $formVars['location'] . " ";
@@ -512,12 +512,12 @@
       }
       $q_string .= $filter;
       $q_string .= "order by inv_name ";
-      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+      $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
-        $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">";
+        $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inv_inventory['inv_id'] . "\" target=\"_blank\">";
         $linkend   = "</a>";
-        $servername = $a_inventory['inv_name'];
+        $servername = $a_inv_inventory['inv_name'];
 
         $q_string  = "select int_id,int_server,int_domain,int_openview,int_nagios,int_management,int_backup,int_face,int_login,";
         $q_string .= "int_sysport,int_addr,int_eth,int_mask,zone_zone,int_gate,int_switch,int_port,itp_acronym,int_virtual,med_text,int_vlan ";
@@ -525,7 +525,7 @@
         $q_string .= "left join inv_net_zones  on inv_net_zones.zone_id = inv_interface.int_zone ";
         $q_string .= "left join inv_int_types  on inv_int_types.itp_id  = inv_interface.int_type ";
         $q_string .= "left join inv_int_media  on inv_int_media.med_id  = inv_interface.int_media ";
-        $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = 0 and (int_type = 1 or int_type = 2 or int_type = 12 or int_type = 16) ";
+        $q_string .= "where int_companyid = " . $a_inv_inventory['inv_id'] . " and int_int_id = 0 and (int_type = 1 or int_type = 2 or int_type = 12 or int_type = 16) ";
         $q_string .= "order by int_server,itp_acronym";
         $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         if (mysqli_num_rows($q_inv_interface) > 0) {
@@ -659,7 +659,7 @@
               $interface .= "  <td class=\"" . $class . "\" id=\"fzn" . $a_inv_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_inv_interface['int_id'] . ",'fzn');\"><u>" . $a_inv_interface['zone_zone']        . "</u></td>\n";
               $interface .= "  <td class=\"" . $class . "\" id=\"fgw" . $a_inv_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_inv_interface['int_id'] . ",'fgw');\"><u>" . $a_inv_interface['int_gate']         . "</u></td>\n";
               $interface .= "  <td class=\"" . $class . "\" id=\"fvl" . $a_inv_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_inv_interface['int_id'] . ",'fvl');\"><u>" . $a_inv_interface['int_vlan']         . "</u></td>\n";
-              if (return_Virtual($db, $a_inventory['inv_id']) == 0) {
+              if (return_Virtual($db, $a_inv_inventory['inv_id']) == 0) {
                 $interface .= "  <td class=\"" . $class . "\" id=\"fsp" . $a_inv_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_inv_interface['int_id'] . ",'fsp');\"><u>" . $a_inv_interface['int_sysport']    . "</u></td>\n";
                 $interface .= "  <td class=\"" . $class . "\" id=\"fmt" . $a_inv_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_inv_interface['int_id'] . ",'fmt');\"><u>" . $a_inv_interface['med_text']       . "</u></td>\n";
                 $interface .= "  <td class=\"" . $class . "\" id=\"fsw" . $a_inv_interface['int_id'] . "\" onclick=\"edit_Interface(" . $a_inv_interface['int_id'] . ",'fsw');\"><u>" . $a_inv_interface['int_switch']     . "</u></td>\n";
@@ -676,7 +676,7 @@
             $q_string .= "left join inv_net_zones  on inv_net_zones.zone_id = inv_interface.int_zone ";
             $q_string .= "left join inv_int_types  on inv_int_types.itp_id  = inv_interface.int_type ";
             $q_string .= "left join inv_int_media  on inv_int_media.med_id  = inv_interface.int_media ";
-            $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_int_id = " . $a_inv_interface['int_id'] . " and (int_type = 1 or int_type = 2 or int_type = 12 or int_type = 16) ";
+            $q_string .= "where int_companyid = " . $a_inv_inventory['inv_id'] . " and int_int_id = " . $a_inv_interface['int_id'] . " and (int_type = 1 or int_type = 2 or int_type = 12 or int_type = 16) ";
             $q_string .= "order by int_server,itp_acronym";
             $q_int_child = mysqli_query($db, $q_string);
             if (mysqli_num_rows($q_int_child) > 0) {
@@ -810,7 +810,7 @@
                   $interface .= "  <td class=\"" . $class . "\" id=\"fzn" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fzn');\"><u>"      . $a_int_child['zone_zone']               . "</u></td>\n";
                   $interface .= "  <td class=\"" . $class . "\" id=\"fgw" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fgw');\"><u>"      . $a_int_child['int_gate']                 . "</u></td>\n";
                   $interface .= "  <td class=\"" . $class . "\" id=\"fvl" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fvl');\"><u>"      . $a_int_child['int_vlan']                 . "</u></td>\n";
-                  if (return_Virtual($db, $a_inventory['inv_id']) == 0) {
+                  if (return_Virtual($db, $a_inv_inventory['inv_id']) == 0) {
                     $interface .= "  <td class=\"" . $class . "\" id=\"fsp" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fsp');\"><u>"      . $a_int_child['int_sysport']              . "</u></td>\n";
                     $interface .= "  <td class=\"" . $class . "\" id=\"fmt" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fmt');\"><u>"      . $a_int_child['med_text']                . "</u></td>\n";
                     $interface .= "  <td class=\"" . $class . "\" id=\"fsw" . $a_int_child['int_id'] . "\" onclick=\"edit_Interface(" . $a_int_child['int_id'] . ",'fsw');\"><u>"      . $a_int_child['int_switch']               . "</u></td>\n";
@@ -844,7 +844,7 @@
 # then list the other servers under each of the physical boxes.
 
       $q_string  = "select inv_companyid ";
-      $q_string .= "from inventory ";
+      $q_string .= "from inv_inventory ";
       $q_string .= "where inv_manager = " . $formVars['group'] . " ";
 
       print "document.getElementById('tree_mysql').innerHTML = '" . mysqli_real_escape_string($db, "testing") . "';\n";
@@ -862,12 +862,12 @@
       $tags .= "</tr>\n";
 
       $q_string  = "select inv_id,inv_name,inv_location,inv_product ";
-      $q_string .= "from inventory ";
-      $q_string .= "left join inv_groups     on inv_groups.grp_id     = inventory.inv_manager ";
-      $q_string .= "left join inv_products   on inv_products.prod_id  = inventory.inv_product ";
-      $q_string .= "left join inv_projects   on projects.prj_id       = inventory.inv_project ";
-      $q_string .= "left join inv_service    on inv_service.svc_id    = inventory.inv_class ";
-      $q_string .= "left join inv_locations  on inv_locations.loc_id  = inventory.inv_location ";
+      $q_string .= "from inv_inventory ";
+      $q_string .= "left join inv_groups     on inv_groups.grp_id     = inv_inventory.inv_manager ";
+      $q_string .= "left join inv_products   on inv_products.prod_id  = inv_inventory.inv_product ";
+      $q_string .= "left join inv_projects   on projects.prj_id       = inv_inventory.inv_project ";
+      $q_string .= "left join inv_service    on inv_service.svc_id    = inv_inventory.inv_class ";
+      $q_string .= "left join inv_locations  on inv_locations.loc_id  = inv_inventory.inv_location ";
       $q_string .= "where inv_status = 0 and inv_manager = " . $formVars['group'] . " ";
       if ($formVars['location'] > 0) {
         $q_string .= "and inv_location = " . $formVars['location'] . " ";
@@ -880,19 +880,19 @@
       }
       $q_string .= $filter;
       $q_string .= "order by inv_name ";
-      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+      $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
-        $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">";
+        $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inv_inventory['inv_id'] . "\" target=\"_blank\">";
         $linkend   = "</a>";
 
         $tags .= "<tr>\n";
-        $tags .= "<td class=\"ui-widget-content\">" . $linkstart . $a_inventory['inv_name'] . $linkend . "</td>\n";
+        $tags .= "<td class=\"ui-widget-content\">" . $linkstart . $a_inv_inventory['inv_name'] . $linkend . "</td>\n";
 
         $tmp_tags = '';
         $q_string  = "select tag_id,tag_name ";
         $q_string .= "from inv_tags ";
-        $q_string .= "where tag_companyid = " . $a_inventory['inv_id'] . " and tag_type = 1 ";
+        $q_string .= "where tag_companyid = " . $a_inv_inventory['inv_id'] . " and tag_type = 1 ";
         $q_string .= "order by tag_name ";
         $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         if (mysqli_num_rows($q_inv_tags) > 0) {
@@ -904,14 +904,14 @@
         } else {
           $tmp_tags = "<u>No Tags</u>";
         }
-        $tags .= "  <td class=\"ui-widget-content\" id=\"tagu" . $a_inventory['inv_id'] . "\" onclick=\"edit_Tags(" . $a_inventory['inv_id'] . ",'tagu');\">" . $tmp_tags . "</td>\n";
+        $tags .= "  <td class=\"ui-widget-content\" id=\"tagu" . $a_inv_inventory['inv_id'] . "\" onclick=\"edit_Tags(" . $a_inv_inventory['inv_id'] . ",'tagu');\">" . $tmp_tags . "</td>\n";
 
 
         $location = '';
         $comma = '';
         $q_string  = "select tag_name ";
         $q_string .= "from inv_tags ";
-        $q_string .= "where tag_type = 2 and tag_companyid = " . $a_inventory['inv_location'] . " ";
+        $q_string .= "where tag_type = 2 and tag_companyid = " . $a_inv_inventory['inv_location'] . " ";
         $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
           $location .= $comma . $a_inv_tags['tag_name'];
@@ -925,7 +925,7 @@
         $comma = '';
         $q_string  = "select tag_name ";
         $q_string .= "from inv_tags ";
-        $q_string .= "where tag_type = 3 and tag_companyid = " . $a_inventory['inv_product'] . " ";
+        $q_string .= "where tag_type = 3 and tag_companyid = " . $a_inv_inventory['inv_product'] . " ";
         $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
           $product .= $comma . $a_inv_tags['tag_name'];
@@ -952,7 +952,7 @@
 
             $q_string  = "select svr_softwareid,svr_primary,svr_facing ";
             $q_string .= "from inv_svr_software ";
-            $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " ";
+            $q_string .= "where svr_companyid = " . $a_inv_inventory['inv_id'] . " ";
             $q_inv_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             if (mysqli_num_rows($q_inv_svr_software) > 0) {
               while ($a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software)) {

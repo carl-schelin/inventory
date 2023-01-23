@@ -30,13 +30,13 @@
     }
 
     $q_string  = "select inv_id,inv_name,inv_manager ";
-    $q_string .= "from inventory ";
+    $q_string .= "from inv_inventory ";
     $q_string .= "where inv_id = " . $formVars['server'];
-    $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_inventory = mysqli_fetch_array($q_inventory);
+    $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
-    $issue = "Issue: " . $a_inventory['inv_name'];
-    $server = $a_inventory['inv_name'];
+    $issue = "Issue: " . $a_inv_inventory['inv_name'];
+    $server = $a_inv_inventory['inv_name'];
   }
 
 ?>

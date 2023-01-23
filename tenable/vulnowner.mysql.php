@@ -227,7 +227,7 @@
         $q_string .= "from inv_vulnowner ";
         $q_string .= "left join inv_groups     on inv_groups.grp_id     = inv_vulnowner.vul_group ";
         $q_string .= "left join inv_interface  on inv_interface.int_id  = inv_vulnowner.vul_interface ";
-        $q_string .= "left join inventory      on inventory.inv_id      = inv_interface.int_companyid ";
+        $q_string .= "left join inv_inventory  on inv_inventory.inv_id  = inv_interface.int_companyid ";
         $q_string .= "left join inv_security   on inv_security.sec_id   = inv_vulnowner.vul_security ";
         $q_string .= "left join inv_severity   on inv_severity.sev_id   = inv_security.sec_severity ";
 #        $q_string .= $where;
