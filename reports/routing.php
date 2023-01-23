@@ -186,8 +186,8 @@
   $q_string .= "left join inv_models    on inv_models.mod_id           = inv_hardware.hw_vendorid ";
   $q_string .= "left join inv_groups    on inv_groups.grp_id           = inv_inventory.inv_manager ";
   $q_string .= "left join inv_int_types on inv_int_types.itp_id        = inv_interface.int_type ";
-  $q_string .= $where
-  $q_string .= $orderby;
+  $q_string .= $where;
+  $q_string .= $orderby . " ";
   $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
