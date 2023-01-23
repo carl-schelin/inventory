@@ -19,28 +19,28 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from images");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_images");
 
       $q_string  = "select img_title,img_file,img_facing,img_owner,img_date ";
-      $q_string .= "from images ";
+      $q_string .= "from inv_images ";
       $q_string .= "where img_id = " . $formVars['id'];
-      $q_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      $a_images = mysqli_fetch_array($q_images);
-      mysqli_free_result($q_images);
+      $q_inv_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_inv_images = mysqli_fetch_array($q_inv_images);
+      mysqli_free_result($q_inv_images);
 
 # get a list of all servers that have this image associated with it.
 
       $output = '';
-      if ($a_images['img_facing']) {
+      if ($a_inv_images['img_facing']) {
         $q_string  = "select inv_name ";
-        $q_string .= "from inventory ";
+        $q_string .= "from inv_inventory ";
         $q_string .= "where inv_front = " . $formVars['id'] . " ";
         $q_string .= "order by inv_name ";
-        $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        if (mysqli_num_rows($q_inventory) > 0) {
+        $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_inv_inventory) > 0) {
           $comma = '';
-          while ($a_inventory = mysqli_fetch_array($q_inventory)) {
-            $output .= $comma . $a_inventory['inv_name'];
+          while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
+            $output .= $comma . $a_inv_inventory['inv_name'];
             $comma = ' ';
           }
         } else {
@@ -48,14 +48,14 @@
         }
       } else {
         $q_string  = "select inv_name ";
-        $q_string .= "from inventory ";
+        $q_string .= "from inv_inventory ";
         $q_string .= "where inv_rear = " . $formVars['id'] . " ";
         $q_string .= "order by inv_name ";
-        $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        if (mysqli_num_rows($q_inventory) > 0) {
+        $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_inv_inventory) > 0) {
           $comma = '';
-          while ($a_inventory = mysqli_fetch_array($q_inventory)) {
-            $output .= $comma . $a_inventory['inv_name'];
+          while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
+            $output .= $comma . $a_inv_inventory['inv_name'];
             $comma = ' ';
           }
         } else {

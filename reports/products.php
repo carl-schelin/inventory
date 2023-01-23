@@ -81,25 +81,25 @@ tabs displaying all the hardware associated with the product and software.</p>
   }
 
   $q_string  = "select prod_id,prod_name,prod_desc ";
-  $q_string .= "from products ";
+  $q_string .= "from inv_products ";
   $q_string .= "order by prod_name";
-  $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_products = mysqli_fetch_array($q_products)) {
+  $q_inv_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_products = mysqli_fetch_array($q_inv_products)) {
 
     if ($formVars['csv'] == 'false') {
       print "<tr>\n";
-      print "  <td class=\"ui-widget-content\"><a href=\"show.product.php?id=" . $a_products['prod_id'] . "\">" . $a_products['prod_name'] . "</a></td>\n";
-      print "  <td class=\"ui-widget-content\">" . $a_products['prod_desc'] . "</td>\n";
+      print "  <td class=\"ui-widget-content\"><a href=\"show.product.php?id=" . $a_inv_products['prod_id'] . "\">" . $a_inv_products['prod_name'] . "</a></td>\n";
+      print "  <td class=\"ui-widget-content\">" . $a_inv_products['prod_desc'] . "</td>\n";
       print "</tr>\n";
     } else {
-      print "\"" . $a_products['prod_name'] . "\",";
-      print "\"" . $a_products['prod_desc'] . "\"";
+      print "\"" . $a_inv_products['prod_name'] . "\",";
+      print "\"" . $a_inv_products['prod_desc'] . "\"";
       print "</br>\n";
     }
 
   }
 
-  mysqli_free_result($q_products);
+  mysqli_free_result($q_inv_products);
 
 ?>
 </table>

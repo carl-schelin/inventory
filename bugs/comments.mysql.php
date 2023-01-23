@@ -44,10 +44,10 @@
             "bug_user      =   " . $formVars['bug_user'];
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into bugs_detail set bug_id = NULL, " . $q_string;
+            $q_string = "insert into inv_bugs_detail set bug_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update bugs_detail set " . $q_string . " where bug_id = " . $formVars['bug_id'];
+            $q_string = "update inv_bugs_detail set " . $q_string . " where bug_id = " . $formVars['bug_id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['bug_id']);
@@ -62,10 +62,10 @@
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $q_string  = "select bug_closed ";
-      $q_string .= "from bugs ";
+      $q_string .= "from inv_bugs ";
       $q_string .= "where bug_id = " . $formVars['id'];
-      $q_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      $a_bugs = mysqli_fetch_array($q_bugs);
+      $q_inv_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_inv_bugs = mysqli_fetch_array($q_inv_bugs);
 
 
       $output .= "<table class=\"ui-styled-table\">";
@@ -77,17 +77,17 @@
       $output .= "</tr>";
 
       $q_string  = "select bug_id,bug_text,bug_timestamp,usr_first,usr_last ";
-      $q_string .= "from bugs_detail ";
-      $q_string .= "left join users on users.usr_id = bugs_detail.bug_user ";
+      $q_string .= "from inv_bugs_detail ";
+      $q_string .= "left join inv_users on inv_users.usr_id = inv_bugs_detail.bug_user ";
       $q_string .= "where bug_bug_id = " . $formVars['id'] . " ";
       $q_string .= "order by bug_timestamp desc ";
-      $q_bugs_detail = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_bugs_detail) > 0) {
-        while ($a_bugs_detail = mysqli_fetch_array($q_bugs_detail)) {
+      $q_inv_bugs_detail = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_bugs_detail) > 0) {
+        while ($a_inv_bugs_detail = mysqli_fetch_array($q_inv_bugs_detail)) {
 
-          if ($a_bugs['bug_closed'] == '1971-01-01') {
-            $linkstart = "<a href=\"#comments\" onclick=\"show_file('"     . $Bugroot . "/comments.fill.php?id=" . $a_bugs_detail['bug_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-            $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_detail('comments.del.php?id=" . $a_bugs_detail['bug_id'] . "');\">";
+          if ($a_inv_bugs['bug_closed'] == '1971-01-01') {
+            $linkstart = "<a href=\"#comments\" onclick=\"show_file('"     . $Bugroot . "/comments.fill.php?id=" . $a_inv_bugs_detail['bug_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+            $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_detail('comments.del.php?id=" . $a_inv_bugs_detail['bug_id'] . "');\">";
             $linkend   = "</a>";
           } else {
             $linkstart = '';
@@ -97,9 +97,9 @@
 
           $output .= "<tr>";
           $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_bugs_detail['bug_timestamp']                                . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_bugs_detail['usr_first'] . " " . $a_bugs_detail['usr_last'] . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"                     . $a_bugs_detail['bug_text']                                                . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_bugs_detail['bug_timestamp']                                . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_bugs_detail['usr_first'] . " " . $a_inv_bugs_detail['usr_last'] . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $a_inv_bugs_detail['bug_text']                                                . "</td>";
           $output .= "</tr>";
         }
       } else {
@@ -108,7 +108,7 @@
         $output .= "</tr>";
       }
 
-      mysqli_free_result($q_bugs_detail);
+      mysqli_free_result($q_inv_bugs_detail);
 
       $output .= "</table>";
 

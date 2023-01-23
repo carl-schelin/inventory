@@ -19,18 +19,18 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from int_speed");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_int_speed");
 
       $q_string  = "select spd_text,spd_default ";
-      $q_string .= "from int_speed ";
+      $q_string .= "from inv_int_speed ";
       $q_string .= "where spd_id = " . $formVars['id'];
-      $q_int_speed = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_int_speed = mysqli_fetch_array($q_int_speed);
-      mysqli_free_result($q_int_speed);
+      $q_inv_int_speed = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_int_speed = mysqli_fetch_array($q_inv_int_speed);
+      mysqli_free_result($q_inv_int_speed);
 
-      print "document.formUpdate.spd_text.value = '" . mysqli_real_escape_string($db, $a_int_speed['spd_text']) . "';\n";
+      print "document.formUpdate.spd_text.value = '" . mysqli_real_escape_string($db, $a_inv_int_speed['spd_text']) . "';\n";
 
-      if ($a_int_speed['spd_default']) {
+      if ($a_inv_int_speed['spd_default']) {
         print "document.formUpdate.spd_default.checked = true;\n";
       } else {
         print "document.formUpdate.spd_default.checked = false;\n";

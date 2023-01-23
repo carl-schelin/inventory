@@ -19,23 +19,23 @@
 # if products.prod_service > 0, then set inventory.inv_class == class.
 
   $q_string  = "select prod_id,prod_service ";
-  $q_string .= "from products ";
+  $q_string .= "from inv_products ";
   $q_string .= "where prod_service > 0 ";
-  $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_products = mysqli_fetch_array($q_products)) {
+  $q_inv_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_products = mysqli_fetch_array($q_inv_products)) {
 
-    $q_string  = "update inventory ";
+    $q_string  = "update inv_inventory ";
     $q_string .= "set ";
-    $q_string .= "inv_class = " . $a_products['prod_service'] . " ";
-    $q_string .= "where inv_manager = 1 and inv_product = " . $a_products['prod_id'] . " ";
+    $q_string .= "inv_class = " . $a_inv_products['prod_service'] . " ";
+    $q_string .= "where inv_manager = 1 and inv_product = " . $a_inv_products['prod_id'] . " ";
     $results = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 # labs
-    $q_string  = "update inventory ";
-    $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
+    $q_string  = "update inv_inventory ";
+    $q_string .= "left join inv_locations on inv_locations.loc_id = inv_inventory.inv_location ";
     $q_string .= "set ";
     $q_string .= "inv_class = 6 ";
-    $q_string .= "where inv_manager = 1 and loc_instance = 0 and inv_product = " . $a_products['prod_id'] . " ";
+    $q_string .= "where inv_manager = 1 and loc_instance = 0 and inv_product = " . $a_inv_products['prod_id'] . " ";
     $results = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
   }

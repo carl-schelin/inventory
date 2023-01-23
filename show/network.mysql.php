@@ -24,22 +24,22 @@
   }
 
   $q_string  = "select inv_manager ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_id = " . $formVars['id'] . " ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_inventory = mysqli_fetch_array($q_inventory);
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
   $output  = "<table class=\"ui-styled-table\">";
   $output .= "<tr>";
   $output .= "  <th class=\"ui-state-default\">";
   if (check_userlevel($db, $AL_Edit)) {
-    if (check_grouplevel($db, $a_inventory['inv_manager'])) {
+    if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
       $output .= "<a href=\"" . $Editroot . "/inventory.php?server=" . $formVars['id'] . "#network\" target=\"_blank\"><img src=\"" . $Imgsroot . "/pencil.gif\">";
     }
   }
   $output .= "Interface Information";
   if (check_userlevel($db, $AL_Edit)) {
-    if (check_grouplevel($db, $a_inventory['inv_manager'])) {
+    if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
       $output .= "</a>";
     }
   }
@@ -107,73 +107,73 @@
   $q_string  = "select int_id,int_server,int_domain,int_face,int_addr,int_vaddr,int_eth,int_veth,int_mask,int_verified,";
   $q_string .= "int_sysport,int_redundancy,int_virtual,int_switch,int_port,int_primary,itp_acronym,int_gate,";
   $q_string .= "int_vgate,int_note,int_update,int_type,zone_zone,int_nagios,int_openview,int_backup,int_management,int_login ";
-  $q_string .= "from interface ";
-  $q_string .= "left join net_zones on interface.int_zone = net_zones.zone_id  ";
-  $q_string .= "left join int_types  on interface.int_type = int_types.itp_id ";
+  $q_string .= "from inv_interface ";
+  $q_string .= "left join inv_net_zones  on inv_interface.int_zone = inv_net_zones.zone_id  ";
+  $q_string .= "left join inv_int_types  on inv_interface.int_type = inv_int_types.itp_id ";
   $q_string .= "where int_companyid = " . $formVars['id'] . " and int_int_id = 0 and int_ip6 = 0 ";
   $q_string .= "order by int_face,int_addr";
-  $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-  while ( $a_interface = mysqli_fetch_array($q_interface) ) {
+  while ( $a_inv_interface = mysqli_fetch_array($q_inv_interface) ) {
 
-    $intnote = " title=\"" . $a_interface['int_note'] . "\"";
+    $intnote = " title=\"" . $a_inv_interface['int_note'] . "\"";
     $checkmark = "";
-    if ($a_interface['int_verified']) {
+    if ($a_inv_interface['int_verified']) {
       $checkmark = "&#x2713;";
     }
     $gatecheckmark = "";
-    if ($a_interface['int_vgate']) {
+    if ($a_inv_interface['int_vgate']) {
       $gatecheckmark = "&#x2713;";
     }
     $addrcheckmark = "";
-    if ($a_interface['int_vaddr']) {
+    if ($a_inv_interface['int_vaddr']) {
       $addrcheckmark = "&#x2713;";
     }
     $ethcheckmark = "";
-    if ($a_interface['int_veth']) {
+    if ($a_inv_interface['int_veth']) {
       $ethcheckmark = "&#x2713;";
     }
-    $servername = $a_interface['int_server'];
-    if ($a_interface['int_domain'] != '') {
-      $servername = $a_interface['int_server'] . "." . $a_interface['int_domain'];
+    $servername = $a_inv_interface['int_server'];
+    if ($a_inv_interface['int_domain'] != '') {
+      $servername = $a_inv_interface['int_server'] . "." . $a_inv_interface['int_domain'];
     }
     $pristart = " class=\"ui-widget-content\"";
-    if ($a_interface['int_primary'] == 1) {
+    if ($a_inv_interface['int_primary'] == 1) {
       $pristart = " class=\"ui-state-highlight\"";
     }
-    if ($a_interface['int_eth'] == '00:00:00:00:00:00' ) {
+    if ($a_inv_interface['int_eth'] == '00:00:00:00:00:00' ) {
       $showmac = '';
     } else {
-      $showmac = $a_interface['int_eth'];
+      $showmac = $a_inv_interface['int_eth'];
     }
-    if ($a_interface['int_addr'] == '' ) {
+    if ($a_inv_interface['int_addr'] == '' ) {
       $showmask = '';
     } else {
-      $showmask = '/' . $a_interface['int_mask'];
+      $showmask = '/' . $a_inv_interface['int_mask'];
     }
     $redundancy = '';
-    if ($a_interface['int_redundancy'] > 0 ) {
+    if ($a_inv_interface['int_redundancy'] > 0 ) {
       $redundancy = ' (r)';
     }
     $virtual = '';
-    if ($a_interface['int_virtual'] == 1 ) {
+    if ($a_inv_interface['int_virtual'] == 1 ) {
       $virtual = ' (v)';
     }
     $management = '';
-    if ($a_interface['int_management'] == 1 ) {
+    if ($a_inv_interface['int_management'] == 1 ) {
       $management = ' (M)';
     }
     $backup = '';
-    if ($a_interface['int_backup'] == 1 ) {
+    if ($a_inv_interface['int_backup'] == 1 ) {
       $backup = ' (B)';
     }
     $login = '';
-    if ($a_interface['int_login'] == 1 ) {
+    if ($a_inv_interface['int_login'] == 1 ) {
       $login = ' (sh)';
     }
 
-    if ($a_interface['int_type'] == 4 || $a_interface['int_type'] == 6) {
-      $linkstart = "<a href=\"http://" . $a_interface['int_addr'] . "\" target=\"_blank\">";
+    if ($a_inv_interface['int_type'] == 4 || $a_inv_interface['int_type'] == 6) {
+      $linkstart = "<a href=\"http://" . $a_inv_interface['int_addr'] . "\" target=\"_blank\">";
       $linkend = "</a>";
     } else {
       $linkstart = "";
@@ -181,12 +181,12 @@
     }
 
     $monitor = '';
-    if ($a_interface['int_nagios'] || $a_interface['int_openview']) {
+    if ($a_inv_interface['int_nagios'] || $a_inv_interface['int_openview']) {
       $monitor = ' (';
-      if ($a_interface['int_nagios']) {
+      if ($a_inv_interface['int_nagios']) {
         $monitor .= "N";
       }
-      if ($a_interface['int_openview']) {
+      if ($a_inv_interface['int_openview']) {
         $monitor .= "O";
       }
       $monitor .= ")";
@@ -194,20 +194,20 @@
 
     $output .= "<tr>";
     $output .= "<td" . $pristart . $intnote . ">"              . $servername . $redundancy . $monitor . $management . $backup . $login . "</td>";
-    $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['int_face'] . $virtual                 . "</td>";
+    $output .= "<td" . $pristart . $intnote . ">"              . $a_inv_interface['int_face'] . $virtual                 . "</td>";
     if (return_Virtual($db, $formVars['id']) == 0) {
-      $output .= "<td" . $pristart . $intnote . ">"            . $a_interface['int_sysport']                         . "</td>";
+      $output .= "<td" . $pristart . $intnote . ">"            . $a_inv_interface['int_sysport']                         . "</td>";
     }
     $output .= "<td" . $pristart . $intnote . ">"              . $showmac . $ethcheckmark                            . "</td>";
-    $output .= "<td" . $pristart . $intnote . ">" . $linkstart . $a_interface['int_addr']     . $showmask . $addrcheckmark . $linkend . "</td>";
-    $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['zone_zone']                           . "</td>";
-    $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['int_gate'] . $gatecheckmark           . "</td>";
+    $output .= "<td" . $pristart . $intnote . ">" . $linkstart . $a_inv_interface['int_addr']     . $showmask . $addrcheckmark . $linkend . "</td>";
+    $output .= "<td" . $pristart . $intnote . ">"              . $a_inv_interface['zone_zone']                           . "</td>";
+    $output .= "<td" . $pristart . $intnote . ">"              . $a_inv_interface['int_gate'] . $gatecheckmark           . "</td>";
     if (return_Virtual($db, $formVars['id']) == 0) {
-      $output .= "<td" . $pristart . $intnote . ">"            . $a_interface['int_switch']                          . "</td>";
-      $output .= "<td" . $pristart . $intnote . ">"            . $a_interface['int_port']                            . "</td>";
+      $output .= "<td" . $pristart . $intnote . ">"            . $a_inv_interface['int_switch']                          . "</td>";
+      $output .= "<td" . $pristart . $intnote . ">"            . $a_inv_interface['int_port']                            . "</td>";
     }
-    $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['itp_acronym']                         . "</td>";
-    $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['int_update']  . $checkmark            . "</td>";
+    $output .= "<td" . $pristart . $intnote . ">"              . $a_inv_interface['itp_acronym']                         . "</td>";
+    $output .= "<td" . $pristart . $intnote . ">"              . $a_inv_interface['int_update']  . $checkmark            . "</td>";
     $output .= "</tr>";
 
 
@@ -215,10 +215,10 @@
     $q_string  = "select int_id,int_server,int_domain,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,";
     $q_string .= "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_groupname,";
     $q_string .= "int_vaddr,int_veth,int_vgate,int_nagios,int_openview,int_management,int_backup,int_login ";
-    $q_string .= "from interface ";
-    $q_string .= "left join net_zones on interface.int_zone = net_zones.zone_id  ";
-    $q_string .= "left join int_types on interface.int_type = int_types.itp_id ";
-    $q_string .= "where int_companyid = " . $formVars['id'] . " and int_int_id = " . $a_interface['int_id'] . " and int_ip6 = 0 ";
+    $q_string .= "from inv_interface ";
+    $q_string .= "left join inv_net_zones on inv_interface.int_zone = inv_net_zones.zone_id  ";
+    $q_string .= "left join inv_int_types on inv_interface.int_type = inv_int_types.itp_id ";
+    $q_string .= "where int_companyid = " . $formVars['id'] . " and int_int_id = " . $a_inv_interface['int_id'] . " and int_ip6 = 0 ";
     $q_string .= "order by int_face,int_addr";
     $q_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
@@ -323,9 +323,9 @@
       $q_string  = "select int_id,int_server,int_domain,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,";
       $q_string .= "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_groupname,";
       $q_string .= "int_vaddr,int_veth,int_vgate,int_nagios,int_openview,int_management,int_backup,int_login ";
-      $q_string .= "from interface ";
-      $q_string .= "left join net_zones on interface.int_zone = net_zones.zone_id  ";
-      $q_string .= "left join int_types on interface.int_type = int_types.itp_id ";
+      $q_string .= "from inv_interface ";
+      $q_string .= "left join inv_net_zones on inv_interface.int_zone = inv_net_zones.zone_id  ";
+      $q_string .= "left join inv_int_types on inv_interface.int_type = inv_int_types.itp_id ";
       $q_string .= "where int_companyid = " . $formVars['id'] . " and int_int_id = " . $a_redundancy['int_id'] . " and int_ip6 = 0 ";
       $q_string .= "order by int_face,int_addr";
       $q_secondary = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -456,61 +456,61 @@
   $output .= "<th class=\"ui-state-default\">Updated</th>";
   $output .= "</tr>";
 
-  $q_string = "select int_id,int_server,int_domain,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,"
-            .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_veth,int_vaddr,int_vgate "
-            . "from interface "
-            . "left join net_zones on interface.int_zone = net_zones.zone_id  "
-            . "left join int_types on interface.int_type = int_types.itp_id "
-            . "where int_companyid = " . $formVars['id'] . " and int_int_id = 0 and int_ip6 = 1 "
-            . "order by int_face,int_addr";
-  $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string  = "select int_id,int_server,int_domain,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,";
+  $q_string .= "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_veth,int_vaddr,int_vgate ";
+  $q_string .= "from inv_interface ";
+  $q_string .= "left join inv_net_zones on inv_interface.int_zone = inv_net_zones.zone_id  ";
+  $q_string .= "left join inv_int_types on inv_interface.int_type = inv_int_types.itp_id ";
+  $q_string .= "where int_companyid = " . $formVars['id'] . " and int_int_id = 0 and int_ip6 = 1 ";
+  $q_string .= "order by int_face,int_addr";
+  $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-  while ( $a_interface = mysqli_fetch_array($q_interface) ) {
+  while ( $a_inv_interface = mysqli_fetch_array($q_inv_interface) ) {
 
     $ipv6 = 1;
 
-    $intnote = " title=\"" . $a_interface['int_note'] . "\"";
+    $intnote = " title=\"" . $a_inv_interface['int_note'] . "\"";
     $checkmark = "";
-    if ($a_interface['int_verified']) {
+    if ($a_inv_interface['int_verified']) {
       $checkmark = "&#x2713;";
     }
     $addrcheckmark = "";
-    if ($a_interface['int_vaddr']) {
+    if ($a_inv_interface['int_vaddr']) {
       $addrcheckmark = "&#x2713;";
     }
     $ethcheckmark = "";
-    if ($a_interface['int_veth']) {
+    if ($a_inv_interface['int_veth']) {
       $ethcheckmark = "&#x2713;";
     }
     $gatecheckmark = "";
-    if ($a_interface['int_vgate']) {
+    if ($a_inv_interface['int_vgate']) {
       $gatecheckmark = "&#x2713;";
     }
     $pristart = " class=\"ui-widget-content\"";
-    if ($a_interface['int_primary'] == 1) {
+    if ($a_inv_interface['int_primary'] == 1) {
       $pristart = " class=\"ui-state-highlight\"";
     }
-    if ($a_interface['int_eth'] == '00:00:00:00:00:00' ) {
+    if ($a_inv_interface['int_eth'] == '00:00:00:00:00:00' ) {
       $showmac = '';
     } else {
-      $showmac = $a_interface['int_eth'];
+      $showmac = $a_inv_interface['int_eth'];
     }
-    if ($a_interface['int_addr'] == '' ) {
+    if ($a_inv_interface['int_addr'] == '' ) {
       $showmask = '';
     } else {
-      $showmask = '/' . $a_interface['int_mask'];
+      $showmask = '/' . $a_inv_interface['int_mask'];
     }
     $redundancy = '';
-    if ($a_interface['int_redundancy'] > 0 ) {
+    if ($a_inv_interface['int_redundancy'] > 0 ) {
       $redundancy = ' (r)';
     }
     $virtual = '';
-    if ($a_interface['int_virtual'] == 1 ) {
+    if ($a_inv_interface['int_virtual'] == 1 ) {
       $virtual = ' (v)';
     }
 
-    if ($a_interface['int_type'] == 4 || $a_interface['int_type'] == 6) {
-      $linkstart = "<a href=\"http://" . $a_interface['int_addr'] . "\" target=\"_blank\">";
+    if ($a_inv_interface['int_type'] == 4 || $a_inv_interface['int_type'] == 6) {
+      $linkstart = "<a href=\"http://" . $a_inv_interface['int_addr'] . "\" target=\"_blank\">";
       $linkend = "</a>";
     } else {
       $linkstart = "";
@@ -518,32 +518,32 @@
     }
 
     $output .= "<tr>";
-    $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['int_server'] . $redundancy            . "</td>";
-    $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['int_face'] . $virtual                 . "</td>";
+    $output .= "<td" . $pristart . $intnote . ">"              . $a_inv_interface['int_server'] . $redundancy            . "</td>";
+    $output .= "<td" . $pristart . $intnote . ">"              . $a_inv_interface['int_face'] . $virtual                 . "</td>";
     if (return_Virtual($db, $formVars['id']) == 0) {
-      $output .= "<td" . $pristart . $intnote . ">"            . $a_interface['int_sysport']                         . "</td>";
+      $output .= "<td" . $pristart . $intnote . ">"            . $a_inv_interface['int_sysport']                         . "</td>";
     }
     $output .= "<td" . $pristart . $intnote . ">"              . $showmac . $ethcheckmark                            . "</td>";
-    $output .= "<td" . $pristart . $intnote . ">" . $linkstart . $a_interface['int_addr']     . $showmask . $addrcheckmark . $linkend . "</td>";
-    $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['zone_zone']                           . "</td>";
-    $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['int_gate'] . $gatecheckmark           . "</td>";
+    $output .= "<td" . $pristart . $intnote . ">" . $linkstart . $a_inv_interface['int_addr']     . $showmask . $addrcheckmark . $linkend . "</td>";
+    $output .= "<td" . $pristart . $intnote . ">"              . $a_inv_interface['zone_zone']                           . "</td>";
+    $output .= "<td" . $pristart . $intnote . ">"              . $a_inv_interface['int_gate'] . $gatecheckmark           . "</td>";
     if (return_Virtual($db, $formVars['id']) == 0) {
-      $output .= "<td" . $pristart . $intnote . ">"            . $a_interface['int_switch']                          . "</td>";
-      $output .= "<td" . $pristart . $intnote . ">"            . $a_interface['int_port']                            . "</td>";
+      $output .= "<td" . $pristart . $intnote . ">"            . $a_inv_interface['int_switch']                          . "</td>";
+      $output .= "<td" . $pristart . $intnote . ">"            . $a_inv_interface['int_port']                            . "</td>";
     }
-    $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['itp_acronym']                         . "</td>";
-    $output .= "<td" . $pristart . $intnote . ">"              . $a_interface['int_update']  . $checkmark            . "</td>";
+    $output .= "<td" . $pristart . $intnote . ">"              . $a_inv_interface['itp_acronym']                         . "</td>";
+    $output .= "<td" . $pristart . $intnote . ">"              . $a_inv_interface['int_update']  . $checkmark            . "</td>";
     $output .= "</tr>";
 
 
 # redundant interfaces
-    $q_string = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,"
-              .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_groupname,int_vaddr,int_veth,int_vgate "
-              . "from interface "
-              . "left join net_zones on interface.int_zone = net_zones.zone_id  "
-              . "left join int_types on interface.int_type = int_types.itp_id "
-              . "where int_companyid = " . $formVars['id'] . " and int_int_id = " . $a_interface['int_id'] . " and int_ip6 = 1 "
-              . "order by int_face,int_addr";
+    $q_string  = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,";
+    $q_string .= "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_groupname,int_vaddr,int_veth,int_vgate ";
+    $q_string .= "from inv_interface ";
+    $q_string .= "left join inv_net_zones on inv_interface.int_zone = inv_net_zones.zone_id  ";
+    $q_string .= "left join inv_int_types on inv_interface.int_type = inv_int_types.itp_id ";
+    $q_string .= "where int_companyid = " . $formVars['id'] . " and int_int_id = " . $a_inv_interface['int_id'] . " and int_ip6 = 1 ";
+    $q_string .= "order by int_face,int_addr";
     $q_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
     while ( $a_redundancy = mysqli_fetch_array($q_redundancy) ) {
@@ -615,13 +615,13 @@
       $output .= "</tr>";
 
 # secondary redundant interfaces
-      $q_string = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,"
-                .        "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_groupname,int_vaddr,int_veth,int_vgate "
-                . "from interface "
-                . "left join net_zones on interface.int_zone = net_zones.zone_id  "
-                . "left join int_types on interface.int_type = int_types.itp_id "
-                . "where int_companyid = " . $formVars['id'] . " and int_int_id = " . $a_redundancy['int_id'] . " and int_ip6 = 1 "
-                . "order by int_face,int_addr";
+      $q_string  = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,";
+      $q_string .= "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_groupname,int_vaddr,int_veth,int_vgate ";
+      $q_string .= "from inv_interface ";
+      $q_string .= "left join inv_net_zones on inv_interface.int_zone = inv_net_zones.zone_id  ";
+      $q_string .= "left join inv_int_types on inv_interface.int_type = inv_int_types.itp_id ";
+      $q_string .= "where int_companyid = " . $formVars['id'] . " and int_int_id = " . $a_redundancy['int_id'] . " and int_ip6 = 1 ";
+      $q_string .= "order by int_face,int_addr";
       $q_secondary = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
       while ( $a_secondary = mysqli_fetch_array($q_secondary) ) {

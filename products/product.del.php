@@ -19,15 +19,15 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from products");
+      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from inv_products");
 
       $q_string  = "delete ";
-      $q_string .= "from products ";
+      $q_string .= "from inv_products ";
       $q_string .= "where prod_id = " . $formVars['id'];
       $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
       $q_string  = "delete ";
-      $q_string .= "from tags ";
+      $q_string .= "from inv_tags ";
       $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_type = 3 ";
       $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 

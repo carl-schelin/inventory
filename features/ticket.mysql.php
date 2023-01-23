@@ -54,11 +54,11 @@
               "feat_user      =   " . $_SESSION['uid']    . "," . 
               "feat_timestamp = \"" . date("Y-m-d H:i:s") . "\"";
 
-            $query = "insert into features set feat_id = NULL, " . $q_string;
+            $query = "insert into inv_features set feat_id = NULL, " . $q_string;
             $message = "Feature added.";
           }
           if ($formVars['update'] == 1) {
-            $query = "update features set " . $q_string . " where feat_id = " . $formVars['id'];
+            $query = "update inv_features set " . $q_string . " where feat_id = " . $formVars['id'];
             $message = "Feature updated.";
           }
 
@@ -98,7 +98,7 @@
               "feat_closed     = \"" . $formVars['feat_closed']     . "\"," .
               "feat_closeby    =   " . $_SESSION['uid'];
 
-            $query = "update features set " . $q_string . " where feat_id = " . $formVars['id'];
+            $query = "update inv_features set " . $q_string . " where feat_id = " . $formVars['id'];
 
             mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -107,7 +107,7 @@
               "feat_text    =\"" . "Issue closed by " . $_SESSION['username'] . ".\"," . 
               "feat_user    =  " . $_SESSION['uid'];
 
-            $query = "insert into features_detail set feat_id=null," . $q_string;
+            $query = "insert into inv_features_detail set feat_id=null," . $q_string;
 
             mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -123,7 +123,7 @@
               "feat_closed     = \"" . $formVars['feat_closed']     . "\"," .
               "feat_closeby    =   " . "0";
 
-            $query = "update features set " . $q_string . " where feat_id = " . $formVars['id'];
+            $query = "update inv_features set " . $q_string . " where feat_id = " . $formVars['id'];
 
             mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -132,7 +132,7 @@
               "feat_text    =\"" . "Issue reopened by " . $_SESSION['username'] . ".\"," . 
               "feat_user    =  " . $_SESSION['uid'];
 
-            $query = "insert into features_detail set feat_id=null," . $q_string;
+            $query = "insert into inv_features_detail set feat_id=null," . $q_string;
 
             mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
           }

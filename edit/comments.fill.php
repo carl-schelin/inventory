@@ -20,19 +20,19 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from comments");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_comments");
 
       $q_string  = "select com_text,com_timestamp,com_user ";
-      $q_string .= "from comments ";
+      $q_string .= "from inv_comments ";
       $q_string .= "where com_id = " . $formVars['id'];
-      $q_comments = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_comments = mysqli_fetch_array($q_comments);
-      mysqli_free_result($q_comments);
+      $q_inv_comments = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_comments = mysqli_fetch_array($q_inv_comments);
+      mysqli_free_result($q_inv_comments);
 
-      $selected = return_Index($db, $a_comments['com_user'],       "select usr_id from users where usr_disabled = 0 order by usr_last,usr_first");
+      $selected = return_Index($db, $a_inv_comments['com_user'],       "select usr_id from inv_users where usr_disabled = 0 order by usr_last,usr_first");
 
-      print "document.edit.com_text.value = '"      . mysqli_real_escape_string($db, $a_comments['com_text'])      . "';\n";
-      print "document.edit.com_timestamp.value = '" . mysqli_real_escape_string($db, $a_comments['com_timestamp']) . "';\n";
+      print "document.edit.com_text.value = '"      . mysqli_real_escape_string($db, $a_inv_comments['com_text'])      . "';\n";
+      print "document.edit.com_timestamp.value = '" . mysqli_real_escape_string($db, $a_inv_comments['com_timestamp']) . "';\n";
 
       print "document.edit.com_user['" . $selected . "'].selected = true;\n";
 

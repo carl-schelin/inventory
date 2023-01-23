@@ -48,11 +48,11 @@
             "com_user      =   " . $formVars['com_user'];
 
           if ($formVars['update'] == 0) {
-            $query = "insert into comments set com_id = NULL, " . $q_string;
+            $query = "insert into inv_comments set com_id = NULL, " . $q_string;
             $message = "Comment added.";
           }
           if ($formVars['update'] == 1) {
-            $query = "update comments set " . $q_string . " where com_id = " . $formVars['id'];
+            $query = "update inv_comments set " . $q_string . " where com_id = " . $formVars['id'];
             $message = "Comment updated.";
           }
 
@@ -110,26 +110,26 @@
       $output .= "</tr>";
 
       $q_string  = "select com_id,com_text,com_timestamp,usr_first,usr_last ";
-      $q_string .= "from comments ";
-      $q_string .= "left join users on users.usr_id = comments.com_user ";
+      $q_string .= "from inv_comments ";
+      $q_string .= "left join inv_users on inv_users.usr_id = inv_comments.com_user ";
       $q_string .= "where com_companyid = " . $formVars['com_companyid'] . " ";
       $q_string .= "order by com_timestamp desc ";
-      $q_comments = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
-      while ($a_comments = mysqli_fetch_array($q_comments)) {
+      $q_inv_comments = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+      while ($a_inv_comments = mysqli_fetch_array($q_inv_comments)) {
 
-        $linkstart = "<a href=\"#comments\" onclick=\"show_file('comments.fill.php?id=" . $a_comments['com_id'] . "');showDiv('comments-hide');\">";
-        $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_comment('comments.del.php?id="  . $a_comments['com_id'] . "');\">";
+        $linkstart = "<a href=\"#comments\" onclick=\"show_file('comments.fill.php?id=" . $a_inv_comments['com_id'] . "');showDiv('comments-hide');\">";
+        $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_comment('comments.del.php?id="  . $a_inv_comments['com_id'] . "');\">";
         $linkend   = "</a>";
 
         $output .= "<tr>";
         $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel                                                                         . "</td>";
-        $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_comments['com_timestamp']                             . $linkend . "</td>";
-        $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_comments['usr_first'] . " " . $a_comments['usr_last'] . $linkend . "</td>";
-        $output .= "  <td class=\"ui-widget-content\">"                     . $a_comments['com_text']                                             . "</td>";
+        $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_comments['com_timestamp']                             . $linkend . "</td>";
+        $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_comments['usr_first'] . " " . $a_inv_comments['usr_last'] . $linkend . "</td>";
+        $output .= "  <td class=\"ui-widget-content\">"                     . $a_inv_comments['com_text']                                             . "</td>";
         $output .= "</tr>";
       }
 
-      mysqli_free_result($q_comments);
+      mysqli_free_result($q_inv_comments);
 
       $output .= "</table>";
 

@@ -21,13 +21,13 @@
   }
 
   if ($formVars['group'] == -1) {
-    $a_groups['grp_name'] = "All";
+    $a_inv_groups['grp_name'] = "All";
   } else {
     $q_string  = "select grp_name ";
-    $q_string .= "from a_groups ";
+    $q_string .= "from inv_groups ";
     $q_string .= "where grp_id = " . $formVars['group'];
-    $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    $a_groups = mysqli_fetch_array($q_groups);
+    $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_inv_groups = mysqli_fetch_array($q_inv_groups);
   }
 
 # if help has not been seen yet,
@@ -42,7 +42,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title><?php print $a_groups['grp_name']; ?> Server Growth Data</title>
+<title><?php print $a_inv_groups['grp_name']; ?> Server Growth Data</title>
 
 <style type="text/css" title="currentStyle" media="screen">
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -71,7 +71,7 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default"><?php print $a_groups['grp_name']; ?> Servers</th>
+  <th class="ui-state-default"><?php print $a_inv_groups['grp_name']; ?> Servers</th>
   <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('help');">Help</a></th>
 </tr>
 </table>
@@ -156,20 +156,20 @@ to software and hardware section.</p>
   $total_decommissioned = 0;
 
   $q_string  = "select hw_built,hw_active,hw_retired,hw_reused,inv_status ";
-  $q_string .= "from hardware ";
-  $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
+  $q_string .= "from inv_hardware ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_hardware.hw_companyid ";
   $q_string .= "where hw_primary = 1 " . $admin . " ";
-  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+  $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
-    if ($a_hardware['inv_status'] == 0) {
+    if ($a_inv_hardware['inv_status'] == 0) {
       $total_live++;
     } else {
       $total_decommissioned++;
     }
 
 # count all the servers for each year
-    $dbyear = explode("-", $a_hardware['hw_built']);
+    $dbyear = explode("-", $a_inv_hardware['hw_built']);
     if ($dbyear[0] != '0000') {
       if (isset($built[$dbyear[0]])) {
         $built[$dbyear[0]]++;
@@ -179,7 +179,7 @@ to software and hardware section.</p>
       $total_built++;
     }
 
-    $dbyear = explode("-", $a_hardware['hw_active']);
+    $dbyear = explode("-", $a_inv_hardware['hw_active']);
     if ($dbyear[0] != '0000') {
       if (isset($active[$dbyear[0]])) {
         $active[$dbyear[0]]++;
@@ -189,7 +189,7 @@ to software and hardware section.</p>
       $total_active++;
     }
 
-    $dbyear = explode("-", $a_hardware['hw_retired']);
+    $dbyear = explode("-", $a_inv_hardware['hw_retired']);
     if ($dbyear[0] != '0000') {
       if (isset($retired[$dbyear[0]])) {
         $retired[$dbyear[0]]++;
@@ -199,7 +199,7 @@ to software and hardware section.</p>
       $total_retired++;
     }
 
-    $dbyear = explode("-", $a_hardware['hw_reused']);
+    $dbyear = explode("-", $a_inv_hardware['hw_reused']);
     if ($dbyear[0] != '0000') {
       if (isset($reused[$dbyear[0]])) {
         $reused[$dbyear[0]]++;
@@ -315,13 +315,13 @@ to software and hardware section.</p>
   }
 
   $q_string  = "select hw_built ";
-  $q_string .= "from hardware ";
-  $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
+  $q_string .= "from inv_hardware ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_hardware.hw_companyid ";
   $q_string .= "where hw_built != '1971-01-01' and hw_primary = 1 " . $admin . " ";
-  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+  $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
-    $dbyear = explode("-", $a_hardware['hw_built']);
+    $dbyear = explode("-", $a_inv_hardware['hw_built']);
     $dbyear[1] = $dbyear[1] + 0;
     $myear[$dbyear[0]][$dbyear[1]]++;
 
@@ -351,15 +351,15 @@ to software and hardware section.</p>
   print "</table>\n";
 
   $q_string  = "select count(*) ";
-  $q_string .= "from hardware ";
-  $q_string .= "left join svr_software on svr_software.svr_companyid = hardware.hw_companyid ";
+  $q_string .= "from inv_hardware ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inv_hardware.hw_companyid ";
   $q_string .= "where hw_companyid != 0 " . $admin . " ";
   $q_string .= "and hw_built = '1971-01-01' ";
   $q_string .= "and hw_primary = 1";
-  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_hardware = mysqli_fetch_row($q_hardware);
+  $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_hardware = mysqli_fetch_row($q_inv_hardware);
 
-  print "<p>Note: There are " . $a_hardware[0] . " servers with 1971-01-01 build dates which weren't counted.</p>\n";
+  print "<p>Note: There are " . $a_inv_hardware[0] . " servers with 1971-01-01 build dates which weren't counted.</p>\n";
 
 ?>
 
@@ -388,21 +388,21 @@ to software and hardware section.</p>
   $total = 0;
 
   $q_string  = "select inv_product,prod_name,count(inv_product) ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join products on products.prod_id = inventory.inv_product  ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_products on inv_products.prod_id = inv_inventory.inv_product  ";
   $q_string .= "where inv_status = 0 " . $admin . " ";
   $q_string .= "group by prod_name";
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
-    $linkstart = "<a href=\"" . $Siteroot . "/reports/show.product.php?id=" . $a_inventory['inv_product']  . "\">";
+    $linkstart = "<a href=\"" . $Siteroot . "/reports/show.product.php?id=" . $a_inv_inventory['inv_product']  . "\">";
     $linkend   = "</a>";
 
     print "<tr>\n";
-    print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inventory['prod_name']          . $linkend . "</td>\n";
-    print "  <td class=\"ui-widget-content\">"              . $a_inventory['count(inv_product)']            . "</td>\n";
+    print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_inventory['prod_name']          . $linkend . "</td>\n";
+    print "  <td class=\"ui-widget-content\">"              . $a_inv_inventory['count(inv_product)']            . "</td>\n";
     print "</tr>\n";
-    $total += $a_inventory['count(inv_product)'];
+    $total += $a_inv_inventory['count(inv_product)'];
   }
 ?>
 <tr>
@@ -436,24 +436,24 @@ to software and hardware section.</p>
   $total = 0;
 
   $q_string  = "select sw_software,count(sw_software) ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id ";
-  $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
-  $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inv_inventory.inv_id ";
+  $q_string .= "left join inv_software     on inv_software.sw_id             = inv_svr_software.svr_softwareid ";
+  $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = inv_software.sw_type ";
   $q_string .= "where inv_status = 0 and typ_name = 'OS' " . $admin . " ";
   $q_string .= "group by sw_software";
 print $q_string;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
-    $linkstart = "<a href=\"" . $Siteroot . "/reports/search.software.php?search_for=" . mysqli_real_escape_string($db, $a_inventory['sw_software']) . "\">";
+    $linkstart = "<a href=\"" . $Siteroot . "/reports/search.software.php?search_for=" . mysqli_real_escape_string($db, $a_inv_inventory['sw_software']) . "\">";
     $linkend   = "</a>";
 
     print "<tr>\n";
-    print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inventory['sw_software']        . $linkend . "</td>\n";
-    print "  <td class=\"ui-widget-content\">"              . $a_inventory['count(sw_software)']            . "</td>\n";
+    print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_inventory['sw_software']        . $linkend . "</td>\n";
+    print "  <td class=\"ui-widget-content\">"              . $a_inv_inventory['count(sw_software)']            . "</td>\n";
     print "</tr>\n";
-    $total += $a_inventory['count(sw_software)'];
+    $total += $a_inv_inventory['count(sw_software)'];
   }
 ?>
 <tr>
@@ -469,11 +469,11 @@ print $q_string;
 <?php
 
   $q_string  = "select inv_id ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_status = 0 " . $admin . " ";
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
-    $os = return_System($db, $a_inventory['inv_id']);
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
+    $os = return_System($db, $a_inv_inventory['inv_id']);
     if (strlen($os) == 0) {
       $os = "Unknown OS";
     }
@@ -535,28 +535,28 @@ print $q_string;
   $total = 0;
 
   $q_string  = "select part_name,ven_name,mod_name,mod_virtual,count(inv_name) ";
-  $q_string .= "from hardware ";
-  $q_string .= "left join models    on models.mod_id    = hardware.hw_vendorid ";
-  $q_string .= "left join vendors   on vendors.ven_id   = models.mod_vendor ";
-  $q_string .= "left join parts     on parts.part_id    = models.mod_type ";
-  $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
+  $q_string .= "from inv_hardware ";
+  $q_string .= "left join inv_models    on inv_models.mod_id    = inv_hardware.hw_vendorid ";
+  $q_string .= "left join inv_vendors   on inv_vendors.ven_id   = inv_models.mod_vendor ";
+  $q_string .= "left join inv_parts     on inv_parts.part_id    = inv_models.mod_type ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_hardware.hw_companyid ";
   $q_string .= "where mod_primary = 1 and inv_status = 0 " . $admin . " ";
   $q_string .= "group by ven_name,mod_name ";
-  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+  $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
-    $linkvendor = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysqli_real_escape_string($db, $a_hardware['mod_vendor']) . "\">";
-    $linkname   = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysqli_real_escape_string($db, $a_hardware['mod_name'])   . "\">";
-    $linktype   = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysqli_real_escape_string($db, $a_hardware['part_name'])  . "\">";
+    $linkvendor = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysqli_real_escape_string($db, $a_inv_hardware['mod_vendor']) . "\">";
+    $linkname   = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysqli_real_escape_string($db, $a_inv_hardware['mod_name'])   . "\">";
+    $linktype   = "<a href=\"" . $Siteroot . "/reports/search.hardware.php?search_for=" . mysqli_real_escape_string($db, $a_inv_hardware['part_name'])  . "\">";
     $linkend    = "</a>";
 
     print "<tr>\n";
-    print "  <td class=\"ui-widget-content\">" . $linktype   . $a_hardware['part_name']       . $linkend . "</td>\n";
-    print "  <td class=\"ui-widget-content\">" . $linkvendor . $a_hardware['ven_name']      . $linkend . "</td>\n";
-    print "  <td class=\"ui-widget-content\">" . $linkname   . $a_hardware['mod_name']        . $linkend . "</td>\n";
-    print "  <td class=\"ui-widget-content\">"               . $a_hardware['count(inv_name)']            . "</td>\n";
+    print "  <td class=\"ui-widget-content\">" . $linktype   . $a_inv_hardware['part_name']       . $linkend . "</td>\n";
+    print "  <td class=\"ui-widget-content\">" . $linkvendor . $a_inv_hardware['ven_name']      . $linkend . "</td>\n";
+    print "  <td class=\"ui-widget-content\">" . $linkname   . $a_inv_hardware['mod_name']        . $linkend . "</td>\n";
+    print "  <td class=\"ui-widget-content\">"               . $a_inv_hardware['count(inv_name)']            . "</td>\n";
     print "</tr>\n";
-    $total += $a_hardware['count(inv_name)'];
+    $total += $a_inv_hardware['count(inv_name)'];
 
   }
 ?>
@@ -610,81 +610,81 @@ print $q_string;
   $lab = 0;
 
   $q_string  = "select inv_class,inv_callpath ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_status = 0 " . $admin . " ";
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
-    if ($a_inventory['inv_class'] == 0) {
+    if ($a_inv_inventory['inv_class'] == 0) {
       $undefined++;
     }
-    if ($a_inventory['inv_class'] == 1) {
+    if ($a_inv_inventory['inv_class'] == 1) {
       $lmcs++;
     }
-    if ($a_inventory['inv_callpath'] == 1) {
+    if ($a_inv_inventory['inv_callpath'] == 1) {
       $callpath++;
     }
-    if ($a_inventory['inv_class'] == 2) {
+    if ($a_inv_inventory['inv_class'] == 2) {
       $bcs++;
     }
-    if ($a_inventory['inv_class'] == 3) {
+    if ($a_inv_inventory['inv_class'] == 3) {
       $bes++;
     }
-    if ($a_inventory['inv_class'] == 4) {
+    if ($a_inv_inventory['inv_class'] == 4) {
       $bss++;
     }
-    if ($a_inventory['inv_class'] == 5) {
+    if ($a_inv_inventory['inv_class'] == 5) {
       $ubs++;
     }
-    if ($a_inventory['inv_class'] == 6) {
+    if ($a_inv_inventory['inv_class'] == 6) {
       $lab++;
     }
 
   }
 
   $q_string  = "select svc_id,svc_name,svc_acronym,svc_availability,svc_downtime,svc_mtbf,svc_geographic,svc_mttr,svc_resource,svc_restore ";
-  $q_string .= "from service ";
+  $q_string .= "from inv_service ";
   $q_string .= "order by svc_id ";
-  $q_service = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_service = mysqli_fetch_array($q_service)) {
+  $q_inv_service = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_service = mysqli_fetch_array($q_inv_service)) {
   
     $geographic = 'No';
-    if ($a_service['svc_geographic'] == 1) {
+    if ($a_inv_service['svc_geographic'] == 1) {
       $geographic = 'Yes';
     }
     $resource = 'No';
-    if ($a_service['svc_resource'] == 1) {
+    if ($a_inv_service['svc_resource'] == 1) {
       $resource = 'Yes';
     }
 
     print "<tr>\n";
-    print "  <td class=\"ui-widget-content\">" . $a_service['svc_name'] . "</td>\n";
-    print "  <td class=\"ui-widget-content delete\">" . $a_service['svc_acronym'] . "</td>\n";
-    print "  <td class=\"ui-widget-content delete\">" . $a_service['svc_availability'] . "</td>\n";
-    print "  <td class=\"ui-widget-content delete\">" . $a_service['svc_downtime'] . "</td>\n";
-    print "  <td class=\"ui-widget-content delete\">" . $a_service['svc_mtbf'] . "</td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_service['svc_name'] . "</td>\n";
+    print "  <td class=\"ui-widget-content delete\">" . $a_inv_service['svc_acronym'] . "</td>\n";
+    print "  <td class=\"ui-widget-content delete\">" . $a_inv_service['svc_availability'] . "</td>\n";
+    print "  <td class=\"ui-widget-content delete\">" . $a_inv_service['svc_downtime'] . "</td>\n";
+    print "  <td class=\"ui-widget-content delete\">" . $a_inv_service['svc_mtbf'] . "</td>\n";
     print "  <td class=\"ui-widget-content delete\">" . $geographic . "</td>\n";
-    print "  <td class=\"ui-widget-content delete\">" . $a_service['svc_mttr'] . "</td>\n";
+    print "  <td class=\"ui-widget-content delete\">" . $a_inv_service['svc_mttr'] . "</td>\n";
     print "  <td class=\"ui-widget-content delete\">" . $resource . "</td>\n";
-    print "  <td class=\"ui-widget-content delete\">" . $a_service['svc_restore'] . "</td>\n";
+    print "  <td class=\"ui-widget-content delete\">" . $a_inv_service['svc_restore'] . "</td>\n";
 
 
-    if ($a_service['svc_id'] == 1) {
+    if ($a_inv_service['svc_id'] == 1) {
       print "  <td class=\"ui-widget-content delete\">" . $lmcs . "/" . $callpath . "</td>\n";
     }
-    if ($a_service['svc_id'] == 2) {
+    if ($a_inv_service['svc_id'] == 2) {
       print "  <td class=\"ui-widget-content delete\">" . $bcs . "</td>\n";
     }
-    if ($a_service['svc_id'] == 3) {
+    if ($a_inv_service['svc_id'] == 3) {
       print "  <td class=\"ui-widget-content delete\">" . $bes . "</td>\n";
     }
-    if ($a_service['svc_id'] == 4) {
+    if ($a_inv_service['svc_id'] == 4) {
       print "  <td class=\"ui-widget-content delete\">" . $bss . "</td>\n";
     }
-    if ($a_service['svc_id'] == 5) {
+    if ($a_inv_service['svc_id'] == 5) {
       print "  <td class=\"ui-widget-content delete\">" . $ubs . "</td>\n";
     }
-    if ($a_service['svc_id'] == 6) {
+    if ($a_inv_service['svc_id'] == 6) {
       print "  <td class=\"ui-widget-content delete\">" . $lab . "</td>\n";
     }
 

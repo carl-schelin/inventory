@@ -54,11 +54,11 @@
               "bug_user      =   " . $_SESSION['uid']    . "," . 
               "bug_timestamp = \"" . date("Y-m-d H:i:s") . "\"";
 
-            $query = "insert into bugs set bug_id = NULL, " . $q_string;
+            $query = "insert into inv_bugs set bug_id = NULL, " . $q_string;
             $message = "Bug added.";
           }
           if ($formVars['update'] == 1) {
-            $query = "update bugs set " . $q_string . " where bug_id = " . $formVars['id'];
+            $query = "update inv_bugs set " . $q_string . " where bug_id = " . $formVars['id'];
             $message = "Bug updated.";
           }
 
@@ -98,7 +98,7 @@
               "bug_closed     = \"" . $formVars['bug_closed']     . "\"," .
               "bug_closeby    =   " . $_SESSION['uid'];
 
-            $query = "update bugs set " . $q_string . " where bug_id = " . $formVars['id'];
+            $query = "update inv_bugs set " . $q_string . " where bug_id = " . $formVars['id'];
 
             mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -107,7 +107,7 @@
               "bug_text   =\"" . "Issue closed by " . $_SESSION['username'] . ".\"," . 
               "bug_user   =  " . $_SESSION['uid'];
 
-            $query = "insert into bugs_detail set bug_id=null," . $q_string;
+            $query = "insert into inv_bugs_detail set bug_id=null," . $q_string;
 
             mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -123,7 +123,7 @@
               "bug_closed     = \"" . $formVars['bug_closed']     . "\"," .
               "bug_closeby    =   " . "0";
 
-            $query = "update bugs set " . $q_string . " where bug_id = " . $formVars['id'];
+            $query = "update inv_bugs set " . $q_string . " where bug_id = " . $formVars['id'];
 
             mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -132,7 +132,7 @@
               "bug_text   =\"" . "Issue reopened by " . $_SESSION['username'] . ".\"," . 
               "bug_user   =  " . $_SESSION['uid'];
 
-            $query = "insert into bugs_detail set bug_id=null," . $q_string;
+            $query = "insert into inv_bugs_detail set bug_id=null," . $q_string;
 
             mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
           }

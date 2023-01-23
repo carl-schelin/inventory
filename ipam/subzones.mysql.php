@@ -40,10 +40,10 @@
             "sub_description       = \"" . $formVars['sub_description'] . "\"";
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into sub_zones set sub_id = NULL, " . $q_string;
+            $q_string = "insert into inv_sub_zones set sub_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update sub_zones set " . $q_string . " where sub_id = " . $formVars['id'];
+            $q_string = "update inv_sub_zones set " . $q_string . " where sub_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['sub_name']);
@@ -71,31 +71,31 @@
       $output .= "</tr>\n";
 
       $q_string  = "select sub_id,sub_name,zone_zone,usr_first,usr_last,sub_timestamp,sub_description ";
-      $q_string .= "from sub_zones ";
-      $q_string .= "left join users on users.usr_id = sub_zones.sub_user ";
-      $q_string .= "left join net_zones on net_zones.zone_id = sub_zones.sub_zone ";
+      $q_string .= "from inv_sub_zones ";
+      $q_string .= "left join inv_users     on inv_users.usr_id      = inv_sub_zones.sub_user ";
+      $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = inv_sub_zones.sub_zone ";
       $q_string .= "order by zone_zone,sub_name "; 
-      $q_sub_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_sub_zones) > 0) {
-        while ($a_sub_zones = mysqli_fetch_array($q_sub_zones)) {
+      $q_inv_sub_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_sub_zones) > 0) {
+        while ($a_inv_sub_zones = mysqli_fetch_array($q_inv_sub_zones)) {
 
           $total = 0;
           $q_string  = "select ip_id,net_id ";
-          $q_string .= "from ipaddress ";
-          $q_string .= "left join network on network.net_id = ipaddress.ip_network ";
-          $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
-          $q_string .= "where ip_subzone = " . $a_sub_zones['sub_id'] . " ";
-          $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_ipaddress) > 0) {
-            while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
+          $q_string .= "from inv_ipaddress ";
+          $q_string .= "left join inv_network   on inv_network.net_id    = inv_ipaddress.ip_network ";
+          $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = inv_network.net_zone ";
+          $q_string .= "where ip_subzone = " . $a_inv_sub_zones['sub_id'] . " ";
+          $q_inv_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_ipaddress) > 0) {
+            while ($a_inv_ipaddress = mysqli_fetch_array($q_inv_ipaddress)) {
               $total++;
             }
           }
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('subzones.fill.php?id="  . $a_sub_zones['sub_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\"  onclick=\"delete_line('subzones.del.php?id=" . $a_sub_zones['sub_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('subzones.fill.php?id="  . $a_inv_sub_zones['sub_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\"  onclick=\"delete_line('subzones.del.php?id=" . $a_inv_sub_zones['sub_id'] . "');\">";
           if ($total > 0) {
-            $ipstart   = "<a href=\"ipaddress.php?network=" . $a_ipaddress['net_id'] . "\" target=\"_blank\">";
+            $ipstart   = "<a href=\"ipaddress.php?network=" . $a_inv_ipaddress['net_id'] . "\" target=\"_blank\">";
           } else {
             $ipstart   = "";
           }
@@ -109,12 +109,12 @@
               $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>\n";
             }
           }
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_sub_zones['zone_zone'] . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"                     . $a_sub_zones['sub_name']             . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_sub_zones['zone_zone'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $a_inv_sub_zones['sub_name']             . "</td>\n";
           $output .= "  <td class=\"ui-widget-content delete\">"              . $ipstart   . $total                  . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"                     . $a_sub_zones['sub_description']      . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"                     . $a_sub_zones['usr_first'] . " " . $a_sub_zones['usr_last'] . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"                     . $a_sub_zones['sub_timestamp']         . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $a_inv_sub_zones['sub_description']      . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $a_inv_sub_zones['usr_first'] . " " . $a_inv_sub_zones['usr_last'] . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $a_inv_sub_zones['sub_timestamp']         . "</td>\n";
           $output .= "</tr>\n";
 
         }
@@ -126,7 +126,7 @@
 
       $output .= "</table>\n";
 
-      mysqli_free_result($q_sub_zones);
+      mysqli_free_result($q_inv_sub_zones);
 
       print "document.getElementById('table_mysql').innerHTML = '"   . mysqli_real_escape_string($db, $output) . "';\n\n";
 

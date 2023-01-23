@@ -7,20 +7,20 @@
   <td class="ui-widget-content">IP Address* <select name="int_ipaddressid">
 <?php
   $q_string  = "select ip_id,ip_ipv4,ip_hostname ";
-  $q_string .= "from ipaddress ";
+  $q_string .= "from inv_ipaddress ";
   $q_string .= "order by ip_hostname,ip_ipv4 ";
-  $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_ipaddress) > 0) {
-    while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
+  $q_inv_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_ipaddress) > 0) {
+    while ($a_inv_ipaddress = mysqli_fetch_array($q_inv_ipaddress)) {
 
       $q_string  = "select int_id ";
-      $q_string .= "from interface ";
-      $q_string .= "where int_ipaddressid = " . $a_ipaddress['ip_id'] . " ";
-      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_interface) == 0) {
-        print "<option value=\"" . $a_ipaddress['ip_id'] . "\">" . $a_ipaddress['ip_hostname'] . " " . $a_ipaddress['ip_ipv4'] . "</option>\n";
+      $q_string .= "from inv_interface ";
+      $q_string .= "where int_ipaddressid = " . $a_inv_ipaddress['ip_id'] . " ";
+      $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_interface) == 0) {
+        print "<option value=\"" . $a_inv_ipaddress['ip_id'] . "\">" . $a_inv_ipaddress['ip_hostname'] . " " . $a_inv_ipaddress['ip_ipv4'] . "</option>\n";
       } else {
-        print "<option value=\"" . $a_ipaddress['ip_id'] . "\">" . $a_ipaddress['ip_hostname'] . " " . $a_ipaddress['ip_ipv4'] . "*</option>\n";
+        print "<option value=\"" . $a_inv_ipaddress['ip_id'] . "\">" . $a_inv_ipaddress['ip_hostname'] . " " . $a_inv_ipaddress['ip_ipv4'] . "*</option>\n";
       }
     }
   } else {
@@ -42,12 +42,12 @@
   <td class="ui-widget-content">Interface Type: <select name="int_type">
 <?php
   $q_string  = "select itp_id,itp_name ";
-  $q_string .= "from int_types ";
+  $q_string .= "from inv_int_types ";
   $q_string .= "order by itp_id";
-  $q_int_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_int_types) > 0) {
-    while ($a_int_types = mysqli_fetch_array($q_int_types)) {
-      print "<option value=\"" . $a_int_types['itp_id'] . "\">" . $a_int_types['itp_name'] . "</option>\n";
+  $q_inv_int_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_int_types) > 0) {
+    while ($a_inv_int_types = mysqli_fetch_array($q_inv_int_types)) {
+      print "<option value=\"" . $a_inv_int_types['itp_id'] . "\">" . $a_inv_int_types['itp_name'] . "</option>\n";
     }
   } else {
     print "<option value=\"0\">No Interface Types defined</option>\n";
@@ -63,15 +63,15 @@
   <td class="ui-widget-content">Redundancy: <select name="int_redundancy">
 <?php
   $q_string  = "select red_id,red_default,red_text ";
-  $q_string .= "from int_redundancy ";
+  $q_string .= "from inv_int_redundancy ";
   $q_string .= "order by red_default desc,red_text";
-  $q_int_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_int_redundancy) > 0) {
-    while ($a_int_redundancy = mysqli_fetch_array($q_int_redundancy)) {
-      if ($a_int_redundancy['red_default']) {
-        print "<option selected=\"true\" value=\"" . $a_int_redundancy['red_id'] . "\">" . $a_int_redundancy['red_text'] . "</option>\n";
+  $q_inv_int_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_int_redundancy) > 0) {
+    while ($a_inv_int_redundancy = mysqli_fetch_array($q_inv_int_redundancy)) {
+      if ($a_inv_int_redundancy['red_default']) {
+        print "<option selected=\"true\" value=\"" . $a_inv_int_redundancy['red_id'] . "\">" . $a_inv_int_redundancy['red_text'] . "</option>\n";
       } else {
-        print "<option value=\"" . $a_int_redundancy['red_id'] . "\">" . $a_int_redundancy['red_text'] . "</option>\n";
+        print "<option value=\"" . $a_inv_int_redundancy['red_id'] . "\">" . $a_inv_int_redundancy['red_text'] . "</option>\n";
       }
     }
   } else {
@@ -122,15 +122,15 @@ Assignment <select name="int_int_id"></select></td>
   <td class="ui-widget-content">Media: <select name="int_media">
 <?php
   $q_string  = "select med_id,med_default,med_text ";
-  $q_string .= "from int_media ";
+  $q_string .= "from inv_int_media ";
   $q_string .= "order by med_default desc,med_text";
-  $q_int_media = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_int_media) > 0) {
-    while ($a_int_media = mysqli_fetch_array($q_int_media)) {
-      if ($a_int_media['med_default']) {
-        print "<option selected value=\"" . $a_int_media['med_id'] . "\">" . $a_int_media['med_text'] . "</option>\n";
+  $q_inv_int_media = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_int_media) > 0) {
+    while ($a_inv_int_media = mysqli_fetch_array($q_inv_int_media)) {
+      if ($a_inv_int_media['med_default']) {
+        print "<option selected value=\"" . $a_inv_int_media['med_id'] . "\">" . $a_inv_int_media['med_text'] . "</option>\n";
       } else {
-        print "<option value=\"" . $a_int_media['med_id'] . "\">" . $a_int_media['med_text'] . "</option>\n";
+        print "<option value=\"" . $a_inv_int_media['med_id'] . "\">" . $a_inv_int_media['med_text'] . "</option>\n";
       }
     }
   } else {
@@ -143,15 +143,15 @@ Assignment <select name="int_int_id"></select></td>
   <td class="ui-widget-content">Speed*: <select name="int_speed">
 <?php
   $q_string  = "select spd_id,spd_default,spd_text ";
-  $q_string .= "from int_speed ";
+  $q_string .= "from inv_int_speed ";
   $q_string .= "order by spd_default desc,spd_text";
-  $q_int_speed = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_int_speed) > 0) {
-    while ($a_int_speed = mysqli_fetch_array($q_int_speed)) {
-      if ($a_int_speed['spd_default']) {
-        print "<option selected value=\"" . $a_int_speed['spd_id'] . "\">" . $a_int_speed['spd_text'] . "</option>\n";
+  $q_inv_int_speed = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_int_speed) > 0) {
+    while ($a_inv_int_speed = mysqli_fetch_array($q_inv_int_speed)) {
+      if ($a_inv_int_speed['spd_default']) {
+        print "<option selected value=\"" . $a_inv_int_speed['spd_id'] . "\">" . $a_inv_int_speed['spd_text'] . "</option>\n";
       } else {
-        print "<option value=\"" . $a_int_speed['spd_id'] . "\">" . $a_int_speed['spd_text'] . "</option>\n";
+        print "<option value=\"" . $a_inv_int_speed['spd_id'] . "\">" . $a_inv_int_speed['spd_text'] . "</option>\n";
       }
     }
   } else {
@@ -164,15 +164,15 @@ Assignment <select name="int_int_id"></select></td>
   <td class="ui-widget-content">Duplex*: <select name="int_duplex">
 <?php
   $q_string  = "select dup_id,dup_default,dup_text ";
-  $q_string .= "from int_duplex ";
+  $q_string .= "from inv_int_duplex ";
   $q_string .= "order by dup_default desc,dup_text";
-  $q_int_duplex = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_int_duplex) > 0) {
-    while ($a_int_duplex = mysqli_fetch_array($q_int_duplex)) {
-      if ($a_int_duplex['dup_default']) {
-        print "<option selected value=\"" . $a_int_duplex['dup_id'] . "\">" . $a_int_duplex['dup_text'] . "</option>\n";
+  $q_inv_int_duplex = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_int_duplex) > 0) {
+    while ($a_inv_int_duplex = mysqli_fetch_array($q_inv_int_duplex)) {
+      if ($a_inv_int_duplex['dup_default']) {
+        print "<option selected value=\"" . $a_inv_int_duplex['dup_id'] . "\">" . $a_inv_int_duplex['dup_text'] . "</option>\n";
       } else {
-        print "<option value=\"" . $a_int_duplex['dup_id'] . "\">" . $a_int_duplex['dup_text'] . "</option>\n";
+        print "<option value=\"" . $a_inv_int_duplex['dup_id'] . "\">" . $a_inv_int_duplex['dup_text'] . "</option>\n";
       }
     }
   } else {
@@ -207,20 +207,20 @@ Assignment <select name="int_int_id"></select></td>
   <td class="ui-widget-content">IP Address* <select name="int_ipaddressid">
 <?php
   $q_string  = "select ip_id,ip_ipv4,ip_hostname ";
-  $q_string .= "from ipaddress ";
+  $q_string .= "from inv_ipaddress ";
   $q_string .= "order by ip_hostname,ip_ipv4 ";
-  $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_ipaddress) > 0) {
-    while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
+  $q_inv_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_ipaddress) > 0) {
+    while ($a_inv_ipaddress = mysqli_fetch_array($q_inv_ipaddress)) {
 
       $q_string  = "select int_id ";
-      $q_string .= "from interface ";
-      $q_string .= "where int_ipaddressid = " . $a_ipaddress['ip_id'] . " ";
-      $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_interface) == 0) {
-        print "<option value=\"" . $a_ipaddress['ip_id'] . "\">" . $a_ipaddress['ip_hostname'] . " " . $a_ipaddress['ip_ipv4'] . "</option>\n";
+      $q_string .= "from inv_interface ";
+      $q_string .= "where int_ipaddressid = " . $a_inv_ipaddress['ip_id'] . " ";
+      $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_interface) == 0) {
+        print "<option value=\"" . $a_inv_ipaddress['ip_id'] . "\">" . $a_inv_ipaddress['ip_hostname'] . " " . $a_inv_ipaddress['ip_ipv4'] . "</option>\n";
       } else {
-        print "<option value=\"" . $a_ipaddress['ip_id'] . "\">" . $a_ipaddress['ip_hostname'] . " " . $a_ipaddress['ip_ipv4'] . "*</option>\n";
+        print "<option value=\"" . $a_inv_ipaddress['ip_id'] . "\">" . $a_inv_ipaddress['ip_hostname'] . " " . $a_inv_ipaddress['ip_ipv4'] . "*</option>\n";
       }
     }
   }
@@ -240,11 +240,11 @@ Assignment <select name="int_int_id"></select></td>
   <td class="ui-widget-content">Interface Type: <select name="int_type">
 <?php
   $q_string  = "select itp_id,itp_name ";
-  $q_string .= "from int_types ";
+  $q_string .= "from inv_int_types ";
   $q_string .= "order by itp_id";
-  $q_int_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_int_types = mysqli_fetch_array($q_int_types)) {
-    print "<option value=\"" . $a_int_types['itp_id'] . "\">" . $a_int_types['itp_name'] . "</option>\n";
+  $q_inv_int_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_int_types = mysqli_fetch_array($q_inv_int_types)) {
+    print "<option value=\"" . $a_inv_int_types['itp_id'] . "\">" . $a_inv_int_types['itp_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -257,11 +257,11 @@ Assignment <select name="int_int_id"></select></td>
   <td class="ui-widget-content">Redundancy: <select name="int_redundancy">
 <?php
   $q_string  = "select red_id,red_text ";
-  $q_string .= "from int_redundancy ";
+  $q_string .= "from inv_int_redundancy ";
   $q_string .= "order by red_default desc,red_text";
-  $q_int_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_int_redundancy = mysqli_fetch_array($q_int_redundancy)) {
-    print "<option value=\"" . $a_int_redundancy['red_id'] . "\">" . $a_int_redundancy['red_text'] . "</option>\n";
+  $q_inv_int_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_int_redundancy = mysqli_fetch_array($q_inv_int_redundancy)) {
+    print "<option value=\"" . $a_inv_int_redundancy['red_id'] . "\">" . $a_inv_int_redundancy['red_text'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -308,11 +308,11 @@ Assignment <select name="int_int_id"></select></td>
   <td class="ui-widget-content">Media: <select name="int_media">
 <?php
         $q_string  = "select med_id,med_text ";
-        $q_string .= "from int_media ";
+        $q_string .= "from inv_int_media ";
         $q_string .= "order by med_default desc,med_text";
-        $q_int_media = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_int_media = mysqli_fetch_array($q_int_media)) {
-          print "<option value=\"" . $a_int_media['med_id'] . "\">" . $a_int_media['med_text'] . "</option>\n";
+        $q_inv_int_media = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inv_int_media = mysqli_fetch_array($q_inv_int_media)) {
+          print "<option value=\"" . $a_inv_int_media['med_id'] . "\">" . $a_inv_int_media['med_text'] . "</option>\n";
         }
 ?>
 </select></td>
@@ -321,11 +321,11 @@ Assignment <select name="int_int_id"></select></td>
   <td class="ui-widget-content">Speed*: <select name="int_speed">
 <?php
         $q_string  = "select spd_id,spd_text ";
-        $q_string .= "from int_speed ";
+        $q_string .= "from inv_int_speed ";
         $q_string .= "order by spd_default desc,spd_text";
-        $q_int_speed = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_int_speed = mysqli_fetch_array($q_int_speed)) {
-          print "<option value=\"" . $a_int_speed['spd_id'] . "\">" . $a_int_speed['spd_text'] . "</option>\n";
+        $q_inv_int_speed = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inv_int_speed = mysqli_fetch_array($q_inv_int_speed)) {
+          print "<option value=\"" . $a_inv_int_speed['spd_id'] . "\">" . $a_inv_int_speed['spd_text'] . "</option>\n";
         }
 ?>
 </select></td>
@@ -334,11 +334,11 @@ Assignment <select name="int_int_id"></select></td>
   <td class="ui-widget-content">Duplex*: <select name="int_duplex">
 <?php
         $q_string  = "select dup_id,dup_text ";
-        $q_string .= "from int_duplex ";
+        $q_string .= "from inv_int_duplex ";
         $q_string .= "order by dup_default desc,dup_text";
-        $q_int_duplex = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_int_duplex = mysqli_fetch_array($q_int_duplex)) {
-          print "<option value=\"" . $a_int_duplex['dup_id'] . "\">" . $a_int_duplex['dup_text'] . "</option>\n";
+        $q_inv_int_duplex = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inv_int_duplex = mysqli_fetch_array($q_inv_int_duplex)) {
+          print "<option value=\"" . $a_inv_int_duplex['dup_id'] . "\">" . $a_inv_int_duplex['dup_text'] . "</option>\n";
         }
 ?>
 </select></td>

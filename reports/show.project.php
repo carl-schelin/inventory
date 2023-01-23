@@ -15,14 +15,14 @@
   $formVars['id'] = clean($_GET['id'],10);
 
   $q_string  = "select prj_name,prj_product ";
-  $q_string .= "from projects ";
+  $q_string .= "from inv_projects ";
   $q_string .= "where prj_id = " . $formVars['id'] . " ";
-  $q_projects = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_projects = mysqli_fetch_array($q_projects);
+  $q_inv_projects = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_projects = mysqli_fetch_array($q_inv_projects);
 
   $q_string  = "select prod_name ";
-  $q_string .= "from products ";
-  $q_string .= "where prod_id = " . $a_projects['prj_product'] . " ";
+  $q_string .= "from inv_products ";
+  $q_string .= "where prod_id = " . $a_inv_projects['prj_product'] . " ";
   $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   $a_products = mysqli_fetch_array($q_products);
 
@@ -38,7 +38,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>View Projects: <?php print $a_projects['prj_name']; ?></title>
+<title>View Projects: <?php print $a_inv_projects['prj_name']; ?></title>
 
 <style type="text/css" title="currentStyle" media="screen">
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -67,7 +67,7 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default"><?php print $a_products['prod_name'] . ": " . $a_projects['prj_name']; ?></th>
+  <th class="ui-state-default"><?php print $a_products['prod_name'] . ": " . $a_inv_projects['prj_name']; ?></th>
 </tr>
 </table>
 
@@ -118,42 +118,42 @@ $(document).ready( function() {
 <?php
 
   $q_string  = "select hw_id,inv_id,inv_name,hw_asset,hw_serial,mod_name,grp_name,inv_ssh,inv_ansible,hw_verified,hw_update ";
-  $q_string .= "from hardware ";
-  $q_string .= "left join inventory on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join a_groups on hardware.hw_group = a_groups.grp_id ";
-  $q_string .= "left join models on hardware.hw_vendorid = models.mod_id ";
+  $q_string .= "from inv_hardware ";
+  $q_string .= "left join inv_inventory  on inv_hardware.hw_companyid = inv_inventory.inv_id ";
+  $q_string .= "left join inv_groups on inv_hardware.hw_group = inv_groups.grp_id ";
+  $q_string .= "left join inv_models on inv_hardware.hw_vendorid = inv_models.mod_id ";
   $q_string .= "where inv_project = " . $formVars['id'] . " and inv_status = 0 and hw_primary = 1 ";
   $q_string .= "order by inv_name";
-  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_hardware) > 0) {
-    while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+  $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_hardware) > 0) {
+    while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
       $ssh = "";
-      if ($a_hardware['inv_ssh']) {
+      if ($a_inv_hardware['inv_ssh']) {
         $ssh = "*";
       }
       $ansible = "";
-      if ($a_hardware['inv_ansible']) {
+      if ($a_inv_hardware['inv_ansible']) {
         $ansible = "@";
       }
 
       $checkmark = "";
-      if ($a_hardware['hw_verified']) {
+      if ($a_inv_hardware['hw_verified']) {
         $checkmark = "&#x2713;";
       }
 
       $editpencil = "<img class=\"ui-icon-edit\" src=\"" . $Imgsroot . "/pencil.gif\" height=\"10\">";
-      $editstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_hardware['inv_id'] . "\" target=\"_blank\">";
-      $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_hardware['inv_id'] . "\" target=\"_blank\">";
+      $editstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inv_hardware['inv_id'] . "\" target=\"_blank\">";
+      $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inv_hardware['inv_id'] . "\" target=\"_blank\">";
       $linkend   = "</a>";
 
       print "<tr>\n";
-      print "  <td class=\"ui-widget-content\">" . $editstart . $editpencil . $linkend . $linkstart . $a_hardware['inv_name']             . $linkend . $ssh . $ansible . "</td>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_hardware['hw_asset']             . $linkend                   . "</td>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_hardware['hw_serial']            . $linkend                   . "</td>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_hardware['mod_name']             . $linkend                   . "</td>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_hardware['grp_name']             . $linkend                   . "</td>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_hardware['hw_update']            . $linkend . $checkmark      . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $editstart . $editpencil . $linkend . $linkstart . $a_inv_hardware['inv_name']             . $linkend . $ssh . $ansible . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_hardware['hw_asset']             . $linkend                   . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_hardware['hw_serial']            . $linkend                   . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_hardware['mod_name']             . $linkend                   . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_hardware['grp_name']             . $linkend                   . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_hardware['hw_update']            . $linkend . $checkmark      . "</td>\n";
       print "</tr>\n";
 
     }
@@ -206,33 +206,33 @@ $(document).ready( function() {
 <?php
 
   $q_string  = "select sw_id,svr_companyid,ven_name,typ_name,svr_groupid,sw_software,svr_verified,svr_update,inv_name,grp_name ";
-  $q_string .= "from software ";
-  $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
-  $q_string .= "left join inventory on srv_software.srv_companyid = inventory.inv_id ";
-  $q_string .= "left join a_groups on svr_software.svr_groupid = a_groups.grp_id ";
-  $q_string .= "left join vendors on vendors.ven_id = software.sw_vendor ";
-  $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
+  $q_string .= "from inv_software ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = inv_software.sw_id ";
+  $q_string .= "left join inv_inventory    on inv_svr_software.svr_companyid  = inv_inventory.inv_id ";
+  $q_string .= "left join inv_groups       on inv_svr_software.svr_groupid    = inv_groups.grp_id ";
+  $q_string .= "left join inv_vendors      on inv_vendors.ven_id              = inv_software.sw_vendor ";
+  $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = inv_software.sw_type ";
   $q_string .= "where inv_project = " . $formVars['id'] . " and inv_status = 0 ";
   $q_string .= "order by inv_name,sw_software";
-  $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_software) > 0) {
-    while ($a_software = mysqli_fetch_array($q_software)) {
+  $q_inv_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_software) > 0) {
+    while ($a_inv_software = mysqli_fetch_array($q_inv_software)) {
 
-      $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_software['svr_companyid'] . "\" target=\"_blank\">";
+      $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inv_software['svr_companyid'] . "\" target=\"_blank\">";
       $linkend   = "</a>";
 
       $checkmark = "";
-      if ($a_software['svr_verified']) {
+      if ($a_inv_software['svr_verified']) {
         $checkmark = "&#x2713;";
       }
 
       print "<tr>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_software['inv_name']                  . $linkend . "</td>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_software['ven_name']                  . $linkend . "</td>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_software['sw_software']               . $linkend . "</td>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_software['typ_name']                  . $linkend . "</td>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_software['grp_name']                  . $linkend . "</td>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_software['svr_update']   . $checkmark . $linkend . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_software['inv_name']                  . $linkend . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_software['ven_name']                  . $linkend . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_software['sw_software']               . $linkend . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_software['typ_name']                  . $linkend . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_software['grp_name']                  . $linkend . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_software['svr_update']   . $checkmark . $linkend . "</td>\n";
       print "</tr>\n";
 
     }
@@ -242,7 +242,7 @@ $(document).ready( function() {
     print "</tr>\n";
   }
 
-  mysqli_free_result($q_software);
+  mysqli_free_result($q_inv_software);
 
 ?>
 </table>

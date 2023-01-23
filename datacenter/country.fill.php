@@ -19,17 +19,17 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from country");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_country");
 
       $q_string  = "select cn_acronym,cn_country ";
-      $q_string .= "from country ";
+      $q_string .= "from inv_country ";
       $q_string .= "where cn_id = " . $formVars['id'];
-      $q_country = mysqli_query($db, $q_string) or die (mysqli_error($db));
-      $a_country = mysqli_fetch_array($q_country);
-      mysqli_free_result($q_country);
+      $q_inv_country = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      $a_inv_country = mysqli_fetch_array($q_inv_country);
+      mysqli_free_result($q_inv_country);
 
-      print "document.formUpdate.cn_acronym.value = '" . mysqli_real_escape_string($db, $a_country['cn_acronym']) . "';\n";
-      print "document.formUpdate.cn_country.value = '" . mysqli_real_escape_string($db, $a_country['cn_country']) . "';\n";
+      print "document.formUpdate.cn_acronym.value = '" . mysqli_real_escape_string($db, $a_inv_country['cn_acronym']) . "';\n";
+      print "document.formUpdate.cn_country.value = '" . mysqli_real_escape_string($db, $a_inv_country['cn_country']) . "';\n";
 
       print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 

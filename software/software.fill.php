@@ -20,25 +20,25 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from software");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_software");
 
       $q_string  = "select sw_software,sw_vendor,sw_product,sw_licenseid,sw_supportid,sw_type,sw_eol,sw_eos,sw_department ";
-      $q_string .= "from software ";
+      $q_string .= "from inv_software ";
       $q_string .= "where sw_id = " . $formVars['id'];
-      $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      $a_software = mysqli_fetch_array($q_software);
-      mysqli_free_result($q_software);
+      $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_inv_software = mysqli_fetch_array($q_inv_software);
+      mysqli_free_result($q_inv_software);
 
-      $sw_vendor     = return_Index($db, $a_software['sw_vendor'],     "select ven_id  from vendors    order by ven_name");
-      $sw_product    = return_Index($db, $a_software['sw_product'],    "select prod_id from products   order by prod_name");
-      $sw_licenseid  = return_Index($db, $a_software['sw_licenseid'],  "select lic_id  from licenses   order by lic_product");
-      $sw_supportid  = return_Index($db, $a_software['sw_supportid'],  "select sup_id  from support    order by sup_company");
-      $sw_type       = return_Index($db, $a_software['sw_type'],       "select typ_id  from sw_types   order by typ_name");
-      $sw_department = return_Index($db, $a_software['sw_department'], "select dep_id  from department order by dep_name");
+      $sw_vendor     = return_Index($db, $a_inv_software['sw_vendor'],     "select ven_id  from inv_vendors    order by ven_name");
+      $sw_product    = return_Index($db, $a_inv_software['sw_product'],    "select prod_id from inv_products   order by prod_name");
+      $sw_licenseid  = return_Index($db, $a_inv_software['sw_licenseid'],  "select lic_id  from inv_licenses   order by lic_product");
+      $sw_supportid  = return_Index($db, $a_inv_software['sw_supportid'],  "select sup_id  from inv_support    order by sup_company");
+      $sw_type       = return_Index($db, $a_inv_software['sw_type'],       "select typ_id  from inv_sw_types   order by typ_name");
+      $sw_department = return_Index($db, $a_inv_software['sw_department'], "select dep_id  from inv_department order by dep_name");
 
-      print "document.formUpdate.sw_software.value = '"   . mysqli_real_escape_string($db, $a_software['sw_software'])   . "';\n";
-      print "document.formUpdate.sw_eol.value = '"        . mysqli_real_escape_string($db, $a_software['sw_eol'])        . "';\n";
-      print "document.formUpdate.sw_eos.value = '"        . mysqli_real_escape_string($db, $a_software['sw_eos'])        . "';\n";
+      print "document.formUpdate.sw_software.value = '"   . mysqli_real_escape_string($db, $a_inv_software['sw_software'])   . "';\n";
+      print "document.formUpdate.sw_eol.value = '"        . mysqli_real_escape_string($db, $a_inv_software['sw_eol'])        . "';\n";
+      print "document.formUpdate.sw_eos.value = '"        . mysqli_real_escape_string($db, $a_inv_software['sw_eos'])        . "';\n";
 
       if ($sw_vendor > 0) {
         print "document.formUpdate.sw_vendor['"     . $sw_vendor     . "'].selected = true;\n";
@@ -62,12 +62,12 @@
       $sw_tags = '';
       $space = '';
       $q_string  = "select tag_name ";
-      $q_string .= "from tags ";
+      $q_string .= "from inv_tags ";
       $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_type = 4 ";
-      $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_tags) > 0) {
-        while ($a_tags = mysqli_fetch_array($q_tags)) {
-          $sw_tags .= $space . $a_tags['tag_name'];
+      $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_tags) > 0) {
+        while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
+          $sw_tags .= $space . $a_inv_tags['tag_name'];
           $space = " ";
         }
       }

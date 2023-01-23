@@ -219,51 +219,51 @@
   print "</tr>\n";
 
   $q_string = "select inv_id,inv_name,inv_function,grp_name,inv_location,ct_city,st_state,inv_product,prod_name,inv_callpath,inv_document,hw_active "
-            . "from inventory "
-            . "left join hardware  on hardware.hw_companyid = inventory.inv_id "
-            . "left join products  on products.prod_id      = inventory.inv_product "
-            . "left join locations on locations.loc_id      = inventory.inv_location "
-            . "left join cities    on cities.ct_id          = locations.loc_city "
-            . "left join states    on states.st_id          = locations.loc_state "
-            . "left join a_groups    on a_groups.grp_id         = inventory.inv_manager "
-            . $where . " " 
-            . $orderby;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_inventory) > 0) {
-    while ($a_inventory = mysqli_fetch_array($q_inventory) ) {
+  $q_string .= "from inv_inventory "
+  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inv_inventory.inv_id "
+  $q_string .= "left join inv_products  on inv_products.prod_id      = inv_inventory.inv_product "
+  $q_string .= "left join inv_locations on inv_locations.loc_id      = inv_inventory.inv_location "
+  $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city "
+  $q_string .= "left join inv_states    on inv_states.st_id          = inv_locations.loc_state "
+  $q_string .= "left join inv_groups    on inv_groups.grp_id         = inv_inventory.inv_manager "
+  $q_string .= $where . " " 
+  $q_string .= $orderby;
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_inventory) > 0) {
+    while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory) ) {
 
-      $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inventory['inv_id']      . "\" target=\"_blank\">";
-      $prodstart = "<a href=\"" . $Reportroot . "/show.product.php?id="       . $a_inventory['inv_product'] . "\" target=\"_blank\">";
+      $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inv_inventory['inv_id']      . "\" target=\"_blank\">";
+      $prodstart = "<a href=\"" . $Reportroot . "/show.product.php?id="       . $a_inv_inventory['inv_product'] . "\" target=\"_blank\">";
       $linkend   = "</a>";
 
       $class = " class=\"ui-widget-content\"";
-      if ($a_inventory['hw_active'] == '1971-01-01') {
+      if ($a_inv_inventory['hw_active'] == '1971-01-01') {
         $class = " class=\"ui-state-highlight\"";
       }
-      if ($a_inventory['inv_callpath'] == 1) {
+      if ($a_inv_inventory['inv_callpath'] == 1) {
         $class = " class=\"ui-state-error\"";
       }
 
-      if ($a_inventory['inv_location'] == 31) {
+      if ($a_inv_inventory['inv_location'] == 31) {
         $lab = " (Lab)";
       } else {
         $lab = "";
       }
 
-      print "<tr id=\"" . $a_inventory['inv_id'] . "\">\n";
-      print "  <td" . $class . ">" . $linkstart . $a_inventory['inv_name'] . $linkend . "</td>\n";
-      print "  <td" . $class . ">" . $prodstart . $a_inventory['prod_name'] . $linkend . "</td>\n";
-      print "  <td" . $class . ">" . $linkstart . $a_inventory['inv_function'] . $linkend . "</td>\n";
+      print "<tr id=\"" . $a_inv_inventory['inv_id'] . "\">\n";
+      print "  <td" . $class . ">" . $linkstart . $a_inv_inventory['inv_name'] . $linkend . "</td>\n";
+      print "  <td" . $class . ">" . $prodstart . $a_inv_inventory['prod_name'] . $linkend . "</td>\n";
+      print "  <td" . $class . ">" . $linkstart . $a_inv_inventory['inv_function'] . $linkend . "</td>\n";
 
-      if (strlen($a_inventory['inv_document']) > 0) {
-        print "  <td" . $class . "><a href=\"" . $a_inventory['inv_document'] . "\">Documentation</a></td>\n";
+      if (strlen($a_inv_inventory['inv_document']) > 0) {
+        print "  <td" . $class . "><a href=\"" . $a_inv_inventory['inv_document'] . "\">Documentation</a></td>\n";
       } else {
         print "  <td" . $class . ">&nbsp;</td>\n";
       }
 
-      print "  <td" . $class . "><a href=\"" . $Siteroot . "/issue/issue.php?server=" . $a_inventory['inv_id'] . "\">Issues</a></td>\n";
-      print "  <td" . $class . ">" . $linkstart . $a_inventory['ct_city'] . ", " . $a_inventory['st_state'] . $lab . $linkend . "</td>\n";
-      print "  <td" . $class . ">" . $a_inventory['grp_name'] . "</td>\n";
+      print "  <td" . $class . "><a href=\"" . $Siteroot . "/issue/issue.php?server=" . $a_inv_inventory['inv_id'] . "\">Issues</a></td>\n";
+      print "  <td" . $class . ">" . $linkstart . $a_inv_inventory['ct_city'] . ", " . $a_inv_inventory['st_state'] . $lab . $linkend . "</td>\n";
+      print "  <td" . $class . ">" . $a_inv_inventory['grp_name'] . "</td>\n";
       print "</tr>\n";
 
     }

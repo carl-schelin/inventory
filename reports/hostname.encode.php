@@ -26,26 +26,26 @@
   $zone[5] = "M";
 
   $q_string  = "select loc_instance,ct_clli ";
-  $q_string .= "from locations ";
-  $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
+  $q_string .= "from inv_locations ";
+  $q_string .= "left join inv_cities on inv_cities.ct_id = inv_locations.loc_city ";
   $q_string .= "where loc_id = " . $formVars['location'] . " ";
-  $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_locations = mysqli_fetch_array($q_locations);
+  $q_inv_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_locations = mysqli_fetch_array($q_inv_locations);
 
   $q_string  = "select dev_type,dev_infrastructure ";
-  $q_string .= "from device ";
+  $q_string .= "from inv_device ";
   $q_string .= "where dev_id = " . $formVars['device'] . " ";
-  $q_device = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_device = mysqli_fetch_array($q_device);
+  $q_inv_device = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_device = mysqli_fetch_array($q_inv_device);
 
   $q_string  = "select prod_code ";
-  $q_string .= "from products ";
+  $q_string .= "from inv_products ";
   $q_string .= "where prod_id = " . $formVars['service'] . " ";
-  $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_products = mysqli_fetch_array($q_products);
+  $q_inv_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_products = mysqli_fetch_array($q_inv_products);
 
-  if ($a_device['dev_infrastructure']) {
-    $a_products['prod_code'] = '';
+  if ($a_inv_device['dev_infrastructure']) {
+    $a_inv_products['prod_code'] = '';
     print "document.getElementById(\"service\").disabled = true;\n";
     print "document.getElementById('characters').innerHTML = 'six';\n";
     print "document.hostname.service[0].text = 'Infrastructure';\n";
@@ -60,21 +60,21 @@
 
 # now build the hostname
   $formVars['hostname'] = 
-    $a_locations['ct_clli']      . 
-    $a_locations['loc_instance'] . 
+    $a_inv_locations['ct_clli']      . 
+    $a_inv_locations['loc_instance'] . 
     $zone[$formVars['zone']]     . 
-    $a_device['dev_type']        . 
-    $a_products['prod_code']     . 
+    $a_inv_device['dev_type']        . 
+    $a_inv_products['prod_code']     . 
     strtoupper($formVars['freeform']);
 
   if (strlen($formVars['hostname']) > 0) {
     $q_string  = "select inv_function ";
-    $q_string .= "from inventory ";
+    $q_string .= "from inv_inventory ";
     $q_string .= "where inv_name = '" . $formVars['hostname'] . "' and inv_status = 0 ";
-    $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    if (mysqli_num_rows($q_inventory) > 0) {
-      $a_inventory = mysqli_fetch_array($q_inventory);
-      $formVars['hostname'] .= " (System is in the Inventory: Function: " . $a_inventory['inv_function'] . ")";
+    $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    if (mysqli_num_rows($q_inv_inventory) > 0) {
+      $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
+      $formVars['hostname'] .= " (System is in the Inventory: Function: " . $a_inv_inventory['inv_function'] . ")";
     }
   }
 

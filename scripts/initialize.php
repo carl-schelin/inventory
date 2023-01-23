@@ -41,10 +41,10 @@
   print "Checking inventory to see if $server exists.\n";
 
   $q_string  = "select inv_id,inv_manager,inv_product ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_status = 0 and inv_name = '" . $server . "'";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_inventory) > 0) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inv_inventory) > 0) {
 
     echo "ERROR: $server already exists in the inventory.\n";
 
@@ -54,21 +54,21 @@
     print "Checking the interface table to see if $server has been associated with an existing server.\n";
 
     $q_string  = "select int_id,inv_name ";
-    $q_string .= "from interface ";
-    $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
+    $q_string .= "from inv_interface ";
+    $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_interface.int_companyid ";
     $q_string .= "where inv_status = 0 and int_server = '" . $server . "'";
-    $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    if (mysqli_num_rows($q_interface) > 0) {
-      $a_interface = mysqli_fetch_array($q_interface);
+    $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_inv_interface) > 0) {
+      $a_inv_interface = mysqli_fetch_array($q_inv_interface);
 
-      echo "ERROR: $server is identified as being an interface for " . $a_interface['inv_name'] . ".\n";
+      echo "ERROR: $server is identified as being an interface for " . $a_inv_interface['inv_name'] . ".\n";
 
       exit(1);
     } else {
 
       echo "Adding $server to the inventory...\n";
 
-      $q_string = "insert into inventory set inv_id = null,inv_name = \"" . $server . "\",inv_manager=1,inv_status=0,inv_function=\"Server Initialized\",inv_ssh=1";
+      $q_string = "insert into inv_inventory set inv_id = null,inv_name = \"" . $server . "\",inv_manager=1,inv_status=0,inv_function=\"Server Initialized\",inv_ssh=1";
 
       if ($debug == 'yes') {
         print $q_string . "\n";
@@ -85,7 +85,7 @@
 
       echo "Adding a $server interface...\n";
 
-      $q_string = "insert into interface set int_id=null,int_server = \"" . $server . "\",int_companyid=" . $serverid;
+      $q_string = "insert into inv_interface set int_id=null,int_server = \"" . $server . "\",int_companyid=" . $serverid;
 
       if ($debug == 'yes') {
         print $q_string . "\n";
@@ -95,7 +95,7 @@
 
       echo "Adding a virtual machine for $server...\n";
 
-      $q_string = "insert into hardware set hw_id=null,hw_type=45,hw_companyid=" . $serverid . ",hw_vendorid=45,hw_group=1,hw_built=\"" . $date . "\",hw_primary=1";
+      $q_string = "insert into inv_hardware set hw_id=null,hw_type=45,hw_companyid=" . $serverid . ",hw_vendorid=45,hw_group=1,hw_built=\"" . $date . "\",hw_primary=1";
 
       if ($debug == 'yes') {
         print $q_string . "\n";

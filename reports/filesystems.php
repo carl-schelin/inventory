@@ -178,44 +178,44 @@
   print "</tr>\n";
 
   $q_string  = "select inv_id,inv_name,inv_function,prod_name,fs_id,fs_device,fs_mount,fs_size,fs_used,fs_avail,fs_percent,fs_verified,fs_update ";
-  $q_string .= "from filesystem ";
-  $q_string .= "left join inventory on inventory.inv_id      = filesystem.fs_companyid ";
-  $q_string .= "left join products on products.prod_id       = inventory.inv_product ";
-  $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
-  $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
+  $q_string .= "from inv_filesystem ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id       = inv_filesystem.fs_companyid ";
+  $q_string .= "left join inv_products  on inv_products.prod_id       = inv_inventory.inv_product ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id       = inv_inventory.inv_location ";
+  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid  = inv_inventory.inv_id ";
   $q_string .= $where . " ";
   $q_string .= $orderby;
-  $q_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_filesystem) > 0) {
-    while ($a_filesystem = mysqli_fetch_array($q_filesystem)) {
+  $q_inv_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_filesystem) > 0) {
+    while ($a_inv_filesystem = mysqli_fetch_array($q_inv_filesystem)) {
 
-      $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_filesystem['inv_id'] . "#filesystem\">";
+      $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server=" . $a_inv_filesystem['inv_id'] . "#filesystem\">";
       $linkend   = "</a>";
 
       $class = "ui-widget-content";
-      if ($a_filesystem['fs_percent'] >= 85) {
+      if ($a_inv_filesystem['fs_percent'] >= 85) {
         $class = "ui-state-highlight";
       }
-      if ($a_filesystem['fs_percent'] >= 95) {
+      if ($a_inv_filesystem['fs_percent'] >= 95) {
         $class = "ui-state-error";
       }
 
       $checked = "";
-      if ($a_filesystem['fs_verified']) {
+      if ($a_inv_filesystem['fs_verified']) {
         $checked = "&#x2713;";
       }
 
       print "<tr>\n";
-      print "  <td class=\"" . $class . "\">" . $linkstart . $a_filesystem['inv_name']  . $linkend . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_filesystem['inv_function']         . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_filesystem['prod_name']            . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_filesystem['fs_device']            . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_filesystem['fs_mount']             . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_filesystem['fs_size']              . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_filesystem['fs_used']              . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_filesystem['fs_avail']             . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_filesystem['fs_percent']           . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_filesystem['fs_update'] . $checked . "</td>\n";
+      print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_filesystem['inv_name']  . $linkend . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['inv_function']         . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['prod_name']            . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['fs_device']            . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['fs_mount']             . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['fs_size']              . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['fs_used']              . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['fs_avail']             . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['fs_percent']           . "</td>\n";
+      print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['fs_update'] . $checked . "</td>\n";
       print "</tr>\n";
     }
   } else {

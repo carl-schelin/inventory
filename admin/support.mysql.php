@@ -49,10 +49,10 @@
             "sup_swresponse =   " . $formVars['sup_swresponse'];
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into support set sup_id = NULL, " . $q_string;
+            $q_string = "insert into inv_support set sup_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update support set " . $q_string . " where sup_id = " . $formVars['id'];
+            $q_string = "update inv_support set " . $q_string . " where sup_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['sup_company']);
@@ -80,36 +80,36 @@
       $output .= "</tr>\n";
 
       $q_string  = "select sup_id,sup_company,sup_phone,sup_email,sup_web,sup_contract,sup_wiki,sup_hwresponse,sup_swresponse ";
-      $q_string .= "from support ";
+      $q_string .= "from inv_support ";
       $q_string .= "order by sup_company ";
-      $q_support = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_support) > 0) {
-        while ($a_support = mysqli_fetch_array($q_support)) {
+      $q_inv_support = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_support) > 0) {
+        while ($a_inv_support = mysqli_fetch_array($q_inv_support)) {
 
           $q_string  = "select slv_value ";
-          $q_string .= "from supportlevel ";
-          $q_string .= "where slv_id = " . $a_support['sup_hwresponse'];
+          $q_string .= "from inv_supportlevel ";
+          $q_string .= "where slv_id = " . $a_inv_support['sup_hwresponse'];
           $q_hwsupport = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_hwsupport = mysqli_fetch_array($q_hwsupport);
 
           $q_string  = "select slv_value ";
-          $q_string .= "from supportlevel ";
-          $q_string .= "where slv_id = " . $a_support['sup_swresponse'];
+          $q_string .= "from inv_supportlevel ";
+          $q_string .= "where slv_id = " . $a_inv_support['sup_swresponse'];
           $q_swsupport = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $a_swsupport = mysqli_fetch_array($q_swsupport);
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('support.fill.php?id="  . $a_support['sup_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('support.del.php?id=" . $a_support['sup_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('support.fill.php?id="  . $a_inv_support['sup_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('support.del.php?id=" . $a_inv_support['sup_id'] . "');\">";
           $linkend   = "</a>";
 
           $output .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>";
           }
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_support['sup_company']  . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_support['sup_contract'] . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_support['sup_phone']    . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_support['sup_email']    . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_support['sup_company']  . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_support['sup_contract'] . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_support['sup_phone']    . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_support['sup_email']    . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_hwsupport['slv_value']  . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_swsupport['slv_value']  . $linkend . "</td>";
           $output .= "</tr>";
@@ -122,7 +122,7 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_support);
+      mysqli_free_result($q_inv_support);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 

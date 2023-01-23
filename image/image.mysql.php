@@ -42,10 +42,10 @@
             "img_date   = \"" . $formVars['img_date']   . "\"";
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into images set img_id = NULL, " . $q_string;
+            $q_string = "insert into inv_images set img_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update images set " . $q_string . " where img_id = " . $formVars['id'];
+            $q_string = "update inv_images set " . $q_string . " where img_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['img_file']);
@@ -71,48 +71,48 @@
       $output .= "</tr>\n";
 
       $q_string  = "select img_id,img_title,img_file,img_owner,usr_first,usr_last,img_facing,img_date ";
-      $q_string .= "from images ";
-      $q_string .= "left join users on users.usr_id = images.img_owner ";
+      $q_string .= "from inv_images ";
+      $q_string .= "left join inv_users on inv_users.usr_id = inv_images.img_owner ";
       $q_string .= "order by img_title,img_file";
-      $q_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_images) > 0) {
-        while ($a_images = mysqli_fetch_array($q_images)) {
+      $q_inv_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_images) > 0) {
+        while ($a_inv_images = mysqli_fetch_array($q_inv_images)) {
 
-          $linkstart  = "<a href=\"#\" onclick=\"show_file('image.fill.php?id="  . $a_images['img_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $totalstart = "<a href=\"#\" onclick=\"show_file('image.servers.php?id="  . $a_images['img_id'] . "');jQuery('#dialogServers').dialog('open');return false;\">";
-          $linkdel    = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('image.del.php?id=" . $a_images['img_id'] . "');\">";
+          $linkstart  = "<a href=\"#\" onclick=\"show_file('image.fill.php?id="  . $a_inv_images['img_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $totalstart = "<a href=\"#\" onclick=\"show_file('image.servers.php?id="  . $a_inv_images['img_id'] . "');jQuery('#dialogServers').dialog('open');return false;\">";
+          $linkdel    = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('image.del.php?id=" . $a_inv_images['img_id'] . "');\">";
           $linkend    = "</a>";
 
           $class = "ui-state-highlight";
-          if (file_exists($Picturepath . "/" . $a_images['img_file'])) {
+          if (file_exists($Picturepath . "/" . $a_inv_images['img_file'])) {
             $class = "ui-widget-content";
           }
 
-          $title = $a_images['img_title'];
-          if ($a_images['img_title'] == '') {
+          $title = $a_inv_images['img_title'];
+          if ($a_inv_images['img_title'] == '') {
             $title = "Edit Description";
           }
 
           $total = 0;
-          if ($a_images['img_facing'] == 1) {
+          if ($a_inv_images['img_facing'] == 1) {
             $facing = "Front";
             $q_string  = "select inv_id ";
-            $q_string .= "from inventory ";
-            $q_string .= "where inv_front = " . $a_images['img_id'] . " ";
-            $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-            if (mysqli_num_rows($q_inventory) > 0) {
-              while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+            $q_string .= "from inv_inventory ";
+            $q_string .= "where inv_front = " . $a_inv_images['img_id'] . " ";
+            $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            if (mysqli_num_rows($q_inv_inventory) > 0) {
+              while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
                 $total++;
               }
             }
           } else {
             $facing = "Rear";
             $q_string  = "select inv_id ";
-            $q_string .= "from inventory ";
-            $q_string .= "where inv_rear = " . $a_images['img_id'] . " ";
-            $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-            if (mysqli_num_rows($q_inventory) > 0) {
-              while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+            $q_string .= "from inv_inventory ";
+            $q_string .= "where inv_rear = " . $a_inv_images['img_id'] . " ";
+            $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            if (mysqli_num_rows($q_inv_inventory) > 0) {
+              while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
                 $total++;
               }
             }
@@ -129,11 +129,11 @@
             $output .= "  <td class=\"" . $class . " delete\">" . '--'     . "</td>";
           }
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart  . $title                                    . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"                      . $a_images['img_file']                                . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"                      . $a_inv_images['img_file']                                . "</td>\n";
           $output .= "  <td class=\"" . $class . " delete\">"               . $facing                                              . "</td>\n";
           $output .= "  <td class=\"" . $class . " delete\">" . $totalstart . $total                                    . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . " delete\">"               . $a_images['img_date']                                . "</td>\n";
-          $output .= "  <td class=\"" . $class . " delete\">"               . $a_images['usr_first'] . " " . $a_images['usr_last'] . "</td>\n";
+          $output .= "  <td class=\"" . $class . " delete\">"               . $a_inv_images['img_date']                                . "</td>\n";
+          $output .= "  <td class=\"" . $class . " delete\">"               . $a_inv_images['usr_first'] . " " . $a_inv_images['usr_last'] . "</td>\n";
           $output .= "</tr>";
         }
       } else {
@@ -144,7 +144,7 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_images);
+      mysqli_free_result($q_inv_images);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 

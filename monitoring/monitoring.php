@@ -181,26 +181,26 @@ $(document).ready( function() {
 <?php
   $inventory_id = 0;
   $q_string  = "select inv_id,inv_name ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_status = 0 and inv_manager = 1 ";
   $q_string .= "order by inv_name ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
     if ($inventory_id == 0) {
-      $inventory_id = $a_inventory['inv_id'];
+      $inventory_id = $a_inv_inventory['inv_id'];
     }
-    print "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . "</option>\n";
+    print "<option value=\"" . $a_inv_inventory['inv_id'] . "\">" . $a_inv_inventory['inv_name'] . "</option>\n";
   }
 ?>
 </select> What interface? <select name="mon_interface">
 <?php
   $q_string  = "select int_id,int_server ";
-  $q_string .= "from interface ";
+  $q_string .= "from inv_interface ";
   $q_string .= "where int_companyid = " . $inventory_id . " ";
   $q_string .= "order by int_server ";
-  $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_interface = mysqli_fetch_array($q_interface)) {
-    print "<option value=\"" . $a_interface['int_id'] . "\">" . $a_interface['int_server'] . "</option>\n";
+  $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
+    print "<option value=\"" . $a_inv_interface['int_id'] . "\">" . $a_inv_interface['int_server'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -209,11 +209,11 @@ $(document).ready( function() {
   <td class="ui-widget-content">Monitoring System: <select name="mon_system">
 <?php
   $q_string  = "select ms_id,ms_name ";
-  $q_string .= "from mon_system ";
+  $q_string .= "from inv_mon_system ";
   $q_string .= "order by ms_name ";
-  $q_mon_system = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_mon_system = mysqli_fetch_array($q_mon_system)) {
-    print "<option value=\"" . $a_mon_system['ms_id'] . "\">" . $a_mon_system['ms_name'] . "</option>\n";
+  $q_inv_mon_system = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_mon_system = mysqli_fetch_array($q_inv_mon_system)) {
+    print "<option value=\"" . $a_inv_mon_system['ms_id'] . "\">" . $a_inv_mon_system['ms_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -222,11 +222,11 @@ $(document).ready( function() {
   <td class="ui-widget-content">What to monitor: <select name="mon_type">
 <?php
   $q_string  = "select mt_id,mt_name ";
-  $q_string .= "from mon_type ";
+  $q_string .= "from inv_mon_type ";
   $q_string .= "order by mt_name ";
-  $q_mon_type = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_mon_type = mysqli_fetch_array($q_mon_type)) {
-    print "<option value=\"" . $a_mon_type['mt_id'] . "\">" . $a_mon_type['mt_name'] . "</option>\n";
+  $q_inv_mon_type = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_mon_type = mysqli_fetch_array($q_inv_mon_type)) {
+    print "<option value=\"" . $a_inv_mon_type['mt_id'] . "\">" . $a_inv_mon_type['mt_name'] . "</option>\n";
   }
 ?>
 </select> Activate check?: <input type="checkbox" name="mon_active"></td>
@@ -235,29 +235,29 @@ $(document).ready( function() {
   <td class="ui-widget-content"><input type="radio" checked name="notification"> Group to be notified: <select name="mon_group">
 <?php
   $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from a_groups ";
+  $q_string .= "from inv_groups ";
   $q_string .= "where grp_page != \"\" and grp_disabled = 0 ";
   $q_string .= "order by grp_name ";
-  $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_groups = mysqli_fetch_array($q_groups)) {
-    if ($a_groups['grp_id '] == $_SESSION['group']) {
-      print "<option selected value=\"" . $a_groups['grp_id'] . "\">" . $a_groups['grp_name'] . "</option>\n";
+  $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_groups = mysqli_fetch_array($q_inv_groups)) {
+    if ($a_inv_groups['grp_id '] == $_SESSION['group']) {
+      print "<option selected value=\"" . $a_inv_groups['grp_id'] . "\">" . $a_inv_groups['grp_name'] . "</option>\n";
     } else {
-      print "<option value=\"" . $a_groups['grp_id'] . "\">" . $a_groups['grp_name'] . "</option>\n";
+      print "<option value=\"" . $a_inv_groups['grp_id'] . "\">" . $a_inv_groups['grp_name'] . "</option>\n";
     }
   }
 ?>
 </select>
 <?php
   $q_string  = "select usr_id,usr_last,usr_first ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_disabled = 0 and usr_group = " . $_SESSION['group'] . " ";
   $q_string .= "order by usr_last,usr_first ";
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_users) > 0) {
+  $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inv_users) > 0) {
     print "<strong>or</strong> <input type=\"radio\" name=\"notification\"> Who to notifiy: <select name=\"mon_user\">\n";
-    while ($a_users = mysqli_fetch_array($q_users)) {
-      print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
+    while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
+      print "<option value=\"" . $a_inv_users['usr_id'] . "\">" . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "</option>\n";
     }
     print "</select>";
   } else {

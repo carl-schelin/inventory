@@ -251,11 +251,11 @@ add the necessary information and then save the new State.</p>
   <td class="ui-widget-content">Country: <select name="st_country">
 <?php
   $q_string  = "select cn_id,cn_country ";
-  $q_string .= "from country ";
+  $q_string .= "from inv_country ";
   $q_string .= "order by cn_country ";
-  $q_country = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_country = mysqli_fetch_array($q_country)) {
-    print "<option value=\"" . $a_country['cn_id'] . "\">" . $a_country['cn_country'] . "</option>\n";
+  $q_inv_country = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_country = mysqli_fetch_array($q_inv_country)) {
+    print "<option value=\"" . $a_inv_country['cn_id'] . "\">" . $a_inv_country['cn_country'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -284,11 +284,11 @@ add the necessary information and then save the new State.</p>
   <td class="ui-widget-content">Country: <select name="st_country">
 <?php
   $q_string  = "select cn_id,cn_country ";
-  $q_string .= "from country ";
+  $q_string .= "from inv_country ";
   $q_string .= "order by cn_country ";
-  $q_country = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_country = mysqli_fetch_array($q_country)) {
-    print "<option value=\"" . $a_country['cn_id'] . "\">" . $a_country['cn_country'] . "</option>\n";
+  $q_inv_country = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_country = mysqli_fetch_array($q_inv_country)) {
+    print "<option value=\"" . $a_inv_country['cn_id'] . "\">" . $a_inv_country['cn_country'] . "</option>\n";
   }
 ?>
 </select></td>

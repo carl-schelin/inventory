@@ -78,31 +78,31 @@
   print "</tr>";
 
   $q_string  = "select inv_id,inv_name ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_manager = 4 ";
   $q_string .= "group by inv_name ";
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
     $q_string  = "select count(inv_id) ";
-    $q_string .= "from inventory ";
-    $q_string .= "where inv_companyid = " . $a_inventory['inv_id'] . " ";
+    $q_string .= "from inv_inventory ";
+    $q_string .= "where inv_companyid = " . $a_inv_inventory['inv_id'] . " ";
     $q_count = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_count = mysqli_fetch_array($q_count);
 
-    $linkstart = "<a href=\"" . $Siteroot . "/show/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"blank_\">";
+    $linkstart = "<a href=\"" . $Siteroot . "/show/inventory.php?server=" . $a_inv_inventory['inv_id'] . "\" target=\"blank_\">";
     $linkend = "</a>";
 
     if ($a_count['count(inv_id)'] > 0) {
       print "<tr>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inventory['inv_name'] .$linkend . "</td>\n";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_inventory['inv_name'] .$linkend . "</td>\n";
       print "  <td class=\"ui-widget-content\">" . $a_count['count(inv_id)']                       . "</td>\n";
       print "</tr>";
     }
 
   }
 
-  mysqli_free_result($q_inventory);
+  mysqli_free_result($q_inv_inventory);
 
 ?>
 </table>

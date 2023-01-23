@@ -44,11 +44,11 @@
             "det_user      =   " . $formVars['det_user'];
 
           if ($formVars['update'] == 0) {
-            $query = "insert into issue_detail set det_id = NULL, " . $q_string;
+            $query = "insert into inv_issue_detail set det_id = NULL, " . $q_string;
             $message = "Comment added.";
           }
           if ($formVars['update'] == 1) {
-            $query = "update issue_detail set " . $q_string . " where det_id = " . $formVars['det_id'];
+            $query = "update inv_issue_detail set " . $q_string . " where det_id = " . $formVars['det_id'];
             $message = "Comment updated.";
           }
 
@@ -66,10 +66,10 @@
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
       $q_string  = "select iss_closed ";
-      $q_string .= "from issue ";
+      $q_string .= "from inv_issue ";
       $q_string .= "where iss_id = " . $formVars['id'];
-      $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      $a_issue = mysqli_fetch_array($q_issue);
+      $q_inv_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_inv_issue = mysqli_fetch_array($q_inv_issue);
 
 
       $output  = "<p></p>\n";
@@ -113,18 +113,18 @@
       $output .= "</tr>";
 
       $q_string  = "select det_id,det_text,det_timestamp,usr_name ";
-      $q_string .= "from issue_detail ";
-      $q_string .= "left join users on users.usr_id = issue_detail.det_user ";
+      $q_string .= "from inv_issue_detail ";
+      $q_string .= "left join inv_users on inv_users.usr_id = inv_issue_detail.det_user ";
       $q_string .= "where det_issue = " . $formVars['id'] . " ";
       $q_string .= "order by det_timestamp desc ";
-      $q_issue_detail = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
-      while ($a_issue_detail = mysqli_fetch_array($q_issue_detail)) {
+      $q_inv_issue_detail = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+      while ($a_inv_issue_detail = mysqli_fetch_array($q_inv_issue_detail)) {
 
-        $updated = preg_replace("/\[:hash:\]/", "#", $a_issue_detail['det_text']);
+        $updated = preg_replace("/\[:hash:\]/", "#", $a_inv_issue_detail['det_text']);
 
-        if ($a_issue['iss_closed'] == '1971-01-01') {
-          $linkstart = "<a href=\"#\" onclick=\"show_file('"     . $Issueroot . "/comments.fill.php?id=" . $a_issue_detail['det_id'] . "');showDiv('problem-hide');\">";
-          $linkdel   = "<a href=\"#\" onclick=\"delete_detail('" . $Issueroot . "/comments.del.php?id="  . $a_issue_detail['det_id'] . "');\">";
+        if ($a_inv_issue['iss_closed'] == '1971-01-01') {
+          $linkstart = "<a href=\"#\" onclick=\"show_file('"     . $Issueroot . "/comments.fill.php?id=" . $a_inv_issue_detail['det_id'] . "');showDiv('problem-hide');\">";
+          $linkdel   = "<a href=\"#\" onclick=\"delete_detail('" . $Issueroot . "/comments.del.php?id="  . $a_inv_issue_detail['det_id'] . "');\">";
           $linkend   = "</a>";
           $linktext  = "x";
         } else {
@@ -136,19 +136,19 @@
 
         $output .= "<tr>";
         $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . $linktext                         . $linkend . "</td>";
-        $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_issue_detail['det_timestamp']  . $linkend . "</td>";
-        $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_issue_detail['usr_name']       . $linkend . "</td>";
+        $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_issue_detail['det_timestamp']  . $linkend . "</td>";
+        $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_issue_detail['usr_name']       . $linkend . "</td>";
         $output .= "  <td class=\"ui-widget-content\">"        . $updated                                                  . "</td>";
         $output .= "</tr>";
       }
 
-      mysqli_free_result($q_issue_detail);
+      mysqli_free_result($q_inv_issue_detail);
 
       $output .= "</table>";
 
       print "document.getElementById('detail_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 
-      if ($a_issue['iss_closed'] == '1971-01-01') {
+      if ($a_inv_issue['iss_closed'] == '1971-01-01') {
         print "document.start.det_text.value = '';\n";
         print "document.start.det_timestamp.value = 'Current Time';\n";
         print "document.start.detupdate.disabled = true;\n";

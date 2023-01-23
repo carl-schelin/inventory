@@ -19,19 +19,19 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from states");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_states");
 
       $q_string  = "select st_state,st_acronym,st_country ";
-      $q_string .= "from states ";
+      $q_string .= "from inv_states ";
       $q_string .= "where st_id = " . $formVars['id'];
-      $q_states = mysqli_query($db, $q_string) or die (mysqli_error($db));
-      $a_states = mysqli_fetch_array($q_states);
-      mysqli_free_result($q_states);
+      $q_inv_states = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      $a_inv_states = mysqli_fetch_array($q_inv_states);
+      mysqli_free_result($q_inv_states);
 
-      $country = return_Index($db, $a_states['st_country'], "select cn_id from country order by cn_country");
+      $country = return_Index($db, $a_inv_states['st_country'], "select cn_id from inv_country order by cn_country");
 
-      print "document.formUpdate.st_acronym.value = '"  . mysqli_real_escape_string($db, $a_states['st_acronym'])   . "';\n";
-      print "document.formUpdate.st_state.value = '"    . mysqli_real_escape_string($db, $a_states['st_state'])    . "';\n";
+      print "document.formUpdate.st_acronym.value = '"  . mysqli_real_escape_string($db, $a_inv_states['st_acronym'])   . "';\n";
+      print "document.formUpdate.st_state.value = '"    . mysqli_real_escape_string($db, $a_inv_states['st_state'])    . "';\n";
 
       if ($country > 0) {
         print "document.formUpdate.st_country['" . $country . "'].selected = true;\n";

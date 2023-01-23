@@ -292,11 +292,11 @@ the network for that IP address.</p>
   <td class="ui-widget-content">Network Zone: <select name="net_zone">
 <?php
   $q_string  = "select zone_id,zone_zone ";
-  $q_string .= "from net_zones ";
+  $q_string .= "from inv_net_zones ";
   $q_string .= "order by zone_zone ";
-  $q_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_net_zones = mysqli_fetch_array($q_net_zones)) {
-    print "<option value=\"" . $a_net_zones['zone_id'] . "\">" . $a_net_zones['zone_zone'] . "</option>\n";
+  $q_inv_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_net_zones = mysqli_fetch_array($q_inv_net_zones)) {
+    print "<option value=\"" . $a_inv_net_zones['zone_id'] . "\">" . $a_inv_net_zones['zone_zone'] . "</option>\n";
   }
 ?></select></td>
 </tr>
@@ -304,11 +304,11 @@ the network for that IP address.</p>
   <td class="ui-widget-content">Location: <select name="net_location">
 <?php
   $q_string  = "select loc_id,loc_name ";
-  $q_string .= "from locations ";
+  $q_string .= "from inv_locations ";
   $q_string .= "order by loc_name ";
-  $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_locations = mysqli_fetch_array($q_locations)) {
-    print "<option value=\"" . $a_locations['loc_id'] . "\">" . $a_locations['loc_name'] . "</option>\n";
+  $q_inv_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_locations = mysqli_fetch_array($q_inv_locations)) {
+    print "<option value=\"" . $a_inv_locations['loc_id'] . "\">" . $a_inv_locations['loc_name'] . "</option>\n";
   }
 
 ?></select></td>
@@ -360,11 +360,11 @@ the network for that IP address.</p>
   <td class="ui-widget-content">Network Zone: <select name="net_zone">
 <?php
   $q_string  = "select zone_id,zone_zone ";
-  $q_string .= "from net_zones ";
+  $q_string .= "from inv_net_zones ";
   $q_string .= "order by zone_zone ";
-  $q_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_net_zones = mysqli_fetch_array($q_net_zones)) {
-    print "<option value=\"" . $a_net_zones['zone_id'] . "\">" . $a_net_zones['zone_zone'] . "</option>\n";
+  $q_inv_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_net_zones = mysqli_fetch_array($q_inv_net_zones)) {
+    print "<option value=\"" . $a_inv_net_zones['zone_id'] . "\">" . $a_inv_net_zones['zone_zone'] . "</option>\n";
   }
 ?></select></td>
 </tr>
@@ -372,11 +372,11 @@ the network for that IP address.</p>
   <td class="ui-widget-content">Location: <select name="net_location">
 <?php
   $q_string  = "select loc_id,loc_name ";
-  $q_string .= "from locations ";
+  $q_string .= "from inv_locations ";
   $q_string .= "order by loc_name ";
-  $q_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_locations = mysqli_fetch_array($q_locations)) {
-    print "<option value=\"" . $a_locations['loc_id'] . "\">" . $a_locations['loc_name'] . "</option>\n";
+  $q_inv_locations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_locations = mysqli_fetch_array($q_inv_locations)) {
+    print "<option value=\"" . $a_inv_locations['loc_id'] . "\">" . $a_inv_locations['loc_name'] . "</option>\n";
   }
 
 ?></select></td>

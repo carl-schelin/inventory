@@ -28,28 +28,28 @@
 # set the project list to the currently selected one if the user selects the original product
 
       $q_string  = "select inv_product,inv_project ";
-      $q_string .= "from inventory ";
+      $q_string .= "from inv_inventory ";
       $q_string .= "where inv_id = " . $formVars['server'] . " ";
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_inventory = mysqli_fetch_array($q_inventory);
+      $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
       print "var selbox = document.edit.inv_project;\n\n";
       print "selbox.options.length = 0;\n";
 
 // retrieve type list
       $q_string  = "select prj_id,prj_name ";
-      $q_string .= "from projects ";
+      $q_string .= "from inv_projects ";
       $q_string .= "where prj_product = " . $formVars['product'] . " ";
       $q_string .= "order by prj_name ";
-      $q_projects = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_inv_projects = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 // create the javascript bit for populating the model dropdown box.
-      while ($a_projects = mysqli_fetch_array($q_projects) ) {
+      while ($a_inv_projects = mysqli_fetch_array($q_inv_projects) ) {
         if ($formVars['product'] > 0) {
-          if ($formVars['product'] == $a_inventory['inv_product'] && $a_projects['prj_id'] == $a_inventory['inv_project']) {
-            print "selbox.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_projects['prj_name']) . "\"," . $a_projects['prj_id'] . ", 1);\n";
+          if ($formVars['product'] == $a_inv_inventory['inv_product'] && $a_inv_projects['prj_id'] == $a_inv_inventory['inv_project']) {
+            print "selbox.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_inv_projects['prj_name']) . "\"," . $a_inv_projects['prj_id'] . ", 1);\n";
           } else {
-            print "selbox.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_projects['prj_name']) . "\"," . $a_projects['prj_id'] . ", 0);\n";
+            print "selbox.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_inv_projects['prj_name']) . "\"," . $a_inv_projects['prj_id'] . ", 0);\n";
           }
         }
       }

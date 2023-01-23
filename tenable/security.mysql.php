@@ -39,10 +39,10 @@
             "sec_severity    =   " . $formVars['sec_severity'];
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into security set sec_id = NULL, " . $q_string;
+            $q_string = "insert into inv_security set sec_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update security set " . $q_string . " where sec_id = " . $formVars['id'];
+            $q_string = "update inv_security set " . $q_string . " where sec_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['sec_name']);
@@ -97,26 +97,26 @@
       $output .= "</tr>\n";
 
       $q_string  = "select sec_id,sec_name,fam_name,sev_name ";
-      $q_string .= "from security ";
-      $q_string .= "left join family on family.fam_id = security.sec_family ";
-      $q_string .= "left join severity on severity.sev_id = security.sec_severity ";
+      $q_string .= "from inv_security ";
+      $q_string .= "left join inv_family   on inv_family.fam_id   = inv_security.sec_family ";
+      $q_string .= "left join inv_severity on inv_severity.sev_id = inv_security.sec_severity ";
       $q_string .= "order by sec_name";
-      $q_security = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_security) > 0) {
-        while ($a_security = mysqli_fetch_array($q_security)) {
+      $q_inv_security = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_security) > 0) {
+        while ($a_inv_security = mysqli_fetch_array($q_inv_security)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('security.fill.php?id="  . $a_security['sec_id'] . "');showDiv('security-hide');\">";
-          $linkdel   = "<a href=\"#\" onclick=\"delete_line('security.del.php?id=" . $a_security['sec_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('security.fill.php?id="  . $a_inv_security['sec_id'] . "');showDiv('security-hide');\">";
+          $linkdel   = "<a href=\"#\" onclick=\"delete_line('security.del.php?id=" . $a_inv_security['sec_id'] . "');\">";
           $linkend   = "</a>";
 
           $output   .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . 'x'                     . $linkend . "</td>";
           }
-          $output   .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . $a_security['sec_id']   . $linkend . "</td>";
-          $output   .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_security['sec_name'] . $linkend . "</td>";
-          $output   .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_security['fam_name'] . $linkend . "</td>";
-          $output   .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_security['sev_name'] . $linkend . "</td>";
+          $output   .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . $a_inv_security['sec_id']   . $linkend . "</td>";
+          $output   .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_security['sec_name'] . $linkend . "</td>";
+          $output   .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_security['fam_name'] . $linkend . "</td>";
+          $output   .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_security['sev_name'] . $linkend . "</td>";
           $output   .= "</tr>";
         }
       } else {
@@ -127,7 +127,7 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_security);
+      mysqli_free_result($q_inv_security);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 

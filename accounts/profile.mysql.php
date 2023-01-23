@@ -69,7 +69,7 @@
           }
 
           if ($formVars['update'] == 1) {
-            $q_string = "update users set " . $q_string . " where usr_id = " . $formVars['id'];
+            $q_string = "update inv_users set " . $q_string . " where usr_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['usr_last']);

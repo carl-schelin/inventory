@@ -44,10 +44,10 @@
             "lvl_changedby =   " . $formVars['lvl_changedby'];
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into levels set lvl_id = NULL," . $q_string;
+            $q_string = "insert into inv_levels set lvl_id = NULL," . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update levels set " . $q_string . " where lvl_id = " . $formVars['id'];
+            $q_string = "update inv_levels set " . $q_string . " where lvl_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['lvl_name']);
@@ -72,30 +72,30 @@
       $output .= "</tr>";
 
       $q_string  = "select lvl_id,lvl_name,lvl_level,lvl_disabled ";
-      $q_string .= "from levels ";
+      $q_string .= "from inv_levels ";
       $q_string .= "order by lvl_level,lvl_name";
-      $q_levels = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_levels) > 0) {
-        while ($a_levels = mysqli_fetch_array($q_levels)) {
+      $q_inv_levels = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_levels) > 0) {
+        while ($a_inv_levels = mysqli_fetch_array($q_inv_levels)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('levels.fill.php?id=" . $a_levels['lvl_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_level('levels.del.php?id=" . $a_levels['lvl_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('levels.fill.php?id=" . $a_inv_levels['lvl_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_level('levels.del.php?id=" . $a_inv_levels['lvl_id'] . "');\">";
           $linkend = "</a>";
 
           $class = "ui-widget-content";
-          if ($a_levels['lvl_disabled']) {
+          if ($a_inv_levels['lvl_disabled']) {
             $class = "ui-state-error";
           }
 
           $total = 0;
           $disabled = 0;
           $q_string  = "select usr_id,usr_disabled ";
-          $q_string .= "from users ";
-          $q_string .= "where usr_level = " . $a_levels['lvl_id'] . " ";
-          $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_users) > 0) {
-            while ($a_users = mysqli_fetch_array($q_users)) {
-              if ($a_users['usr_disabled'] == 0) {
+          $q_string .= "from inv_users ";
+          $q_string .= "where usr_level = " . $a_inv_levels['lvl_id'] . " ";
+          $q_inv_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_users) > 0) {
+            while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
+              if ($a_inv_users['usr_disabled'] == 0) {
                 $total++;
               } else {
                 $disabled++;
@@ -111,8 +111,8 @@
               $output .= "  <td class=\"" . $class . " delete\">Members &gt; 0</td>";
             }
           }
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_levels['lvl_level']     . $linkend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_levels['lvl_name']      . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_levels['lvl_level']     . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_levels['lvl_name']      . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . "\">" . $total . " (" . $disabled . ")</td>";
           $output .= "</tr>";
         }
@@ -124,7 +124,7 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_levels);
+      mysqli_free_result($q_inv_levels);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
     } else {

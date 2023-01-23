@@ -37,10 +37,10 @@
             "dup_default  =   " . $formVars['dup_default'];
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into int_duplex set dup_id = NULL, " . $q_string;
+            $q_string = "insert into inv_int_duplex set dup_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update int_duplex set " . $q_string . " where dup_id = " . $formVars['id'];
+            $q_string = "update inv_int_duplex set " . $q_string . " where dup_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['dup_text']);
@@ -64,29 +64,29 @@
       $output .= "</tr>\n";
 
       $q_string  = "select dup_id,dup_text,dup_default ";
-      $q_string .= "from int_duplex ";
+      $q_string .= "from inv_int_duplex ";
       $q_string .= "order by dup_text";
-      $q_int_duplex = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_int_duplex) > 0) {
-        while ($a_int_duplex = mysqli_fetch_array($q_int_duplex)) {
+      $q_inv_int_duplex = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_int_duplex) > 0) {
+        while ($a_inv_int_duplex = mysqli_fetch_array($q_inv_int_duplex)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('duplex.fill.php?id=" . $a_int_duplex['dup_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('duplex.del.php?id=" . $a_int_duplex['dup_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('duplex.fill.php?id=" . $a_inv_int_duplex['dup_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('duplex.del.php?id=" . $a_inv_int_duplex['dup_id'] . "');\">";
           $linkend   = "</a>";
 
           $total = 0;
           $q_string  = "select int_id ";
-          $q_string .= "from interface ";
-          $q_string .= "where int_duplex = " . $a_int_duplex['dup_id'] . " ";
-          $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_interface) > 0) {
-            while ($a_interface = mysqli_fetch_array($q_interface)) {
+          $q_string .= "from inv_interface ";
+          $q_string .= "where inv_int_duplex = " . $a_inv_int_duplex['dup_id'] . " ";
+          $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_interface) > 0) {
+            while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
               $total++;
             }
           }
 
           $class = "ui-widget-content";
-          if ($a_int_duplex['dup_default']) {
+          if ($a_inv_int_duplex['dup_default']) {
             $class = "ui-state-highlight";
           }
 
@@ -98,7 +98,7 @@
               $output .= "  <td class=\"" . $class . " delete\">Members &gt; 0</td>";
             }
           }
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_int_duplex['dup_text'] . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_int_duplex['dup_text'] . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"              . $total                              . "</td>";
           $output .= "</tr>";
         }
@@ -110,7 +110,7 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_int_duplex);
+      mysqli_free_result($q_inv_int_duplex);
 
       print "document.getElementById('mysql_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 

@@ -25,19 +25,19 @@
   }
 
   $q_string  = "select mod_name,feat_discovered,feat_closed,feat_subject,feat_openby ";
-  $q_string .= "from features ";
-  $q_string .= "left join modules on modules.mod_id = features.feat_module ";
+  $q_string .= "from inv_features ";
+  $q_string .= "left join inv_modules on inv_modules.mod_id = inv_features.feat_module ";
   $q_string .= "where feat_id = " . $formVars['id'];
-  $q_features = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_features = mysqli_fetch_array($q_features);
+  $q_inv_features = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_features = mysqli_fetch_array($q_inv_features);
 
-  $features = $a_features['mod_name'] . ' Feature: ' . $formVars['id'];
+  $features = $a_inv_features['mod_name'] . ' Feature: ' . $formVars['id'];
 
   $q_string  = "select usr_last,usr_first,usr_phone,usr_email ";
-  $q_string .= "from users ";
-  $q_string .= "where usr_id = " . $a_features['feat_openby'];
-  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_users = mysqli_fetch_array($q_users);
+  $q_string .= "from inv_users ";
+  $q_string .= "where usr_id = " . $a_inv_features['feat_openby'];
+  $q_inv_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_users = mysqli_fetch_array($q_inv_users);
 
 ?>
 <!DOCTYPE HTML>
@@ -347,7 +347,7 @@ $(document).ready( function() {
 <div id="tabs">
 
 <ul>
-  <li><a href="#feature"><?php print $a_features['mod_name']; ?> Feature</a></li>
+  <li><a href="#feature"><?php print $a_inv_features['mod_name']; ?> Feature</a></li>
   <li><a href="#problem">Problem Form</a></li>
 </ul>
 
@@ -397,7 +397,7 @@ $(document).ready( function() {
     $newissue = "disabled";
     $updateissue = "";
   }
-  if ($a_features['feat_closed'] == '1971-01-01') {
+  if ($a_inv_features['feat_closed'] == '1971-01-01') {
     print "  <input type=\"button\" " . $updateissue . " name=\"close\"     value=\"Close Ticket\"  onClick=\"javascript:attach_file('ticket.mysql.php', 2);\">\n";
     print "  <input type=\"button\" " . $updateissue . " name=\"save\"      value=\"Save Changes\"  onClick=\"javascript:attach_file('ticket.mysql.php', 1);\">\n";
   } else {
@@ -416,9 +416,9 @@ $(document).ready( function() {
 </tr>
 <?php
   print "<tr>\n";
-  print "  <td class=\"ui-widget-content\"><strong>User</strong>: " . $a_users['usr_first'] . " " . $a_users['usr_last'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\"><strong>Phone</strong>: " . $a_users['usr_phone'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\"><strong>E-Mail</strong>: " . $a_users['usr_email'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>User</strong>: " . $a_inv_users['usr_first'] . " " . $a_inv_users['usr_last'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>Phone</strong>: " . $a_inv_users['usr_phone'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>E-Mail</strong>: " . $a_inv_users['usr_email'] . "</td>\n";
   print "</tr>\n";
 ?>
 </table>
@@ -441,24 +441,24 @@ $(document).ready( function() {
   $priority[2] = 'High';
 
   $q_string  = "select feat_module,mod_name,feat_severity,feat_priority,feat_discovered,feat_closed,feat_subject ";
-  $q_string .= "from features ";
-  $q_string .= "left join modules on modules.mod_id = features.feat_module ";
+  $q_string .= "from inv_features ";
+  $q_string .= "left join inv_modules on inv_modules.mod_id = inv_features.feat_module ";
   $q_string .= "where feat_id = " . $formVars['id'];
-  $q_features = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_features = mysqli_fetch_array($q_features);
+  $q_inv_features = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_features = mysqli_fetch_array($q_inv_features);
 
-  if ($a_features['feat_closed'] == '1971-01-01') {
+  if ($a_inv_features['feat_closed'] == '1971-01-01') {
     print "  <td class=\"ui-widget-content\"><strong>Module</strong>: <select name=\"feat_module\">\n";
 
     $q_string  = "select mod_id,mod_name ";
-    $q_string .= "from modules ";
+    $q_string .= "from inv_modules ";
     $q_string .= "order by mod_name ";
-    $q_modules = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    while ($a_modules = mysqli_fetch_array($q_modules)) {
-      if ($a_features['feat_module'] == $a_modules['mod_id']) {
-        print "<option selected value=\"" . $a_modules['mod_id'] . "\">" . $a_modules['mod_name'] . "</option>\n";
+    $q_inv_modules = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    while ($a_inv_modules = mysqli_fetch_array($q_inv_modules)) {
+      if ($a_inv_features['feat_module'] == $a_inv_modules['mod_id']) {
+        print "<option selected value=\"" . $a_inv_modules['mod_id'] . "\">" . $a_inv_modules['mod_name'] . "</option>\n";
       } else {
-        print "<option value=\"" . $a_modules['mod_id'] . "\">" . $a_modules['mod_name'] . "</option>\n";
+        print "<option value=\"" . $a_inv_modules['mod_id'] . "\">" . $a_inv_modules['mod_name'] . "</option>\n";
       }
     }
 ?>
@@ -466,7 +466,7 @@ $(document).ready( function() {
   <td class="ui-widget-content"><strong>Severity</strong>: <select name="feat_severity">
 <?php
   for ($i = 0; $i < 4; $i++) {
-    if ($i == $a_features['feat_severity']) {
+    if ($i == $a_inv_features['feat_severity']) {
       print "<option selected value=\"" . $i . "\">" . $severity[$i] . "</option>\n";
     } else {
       print "<option value=\"" . $i . "\">" . $severity[$i] . "</option>\n";
@@ -477,7 +477,7 @@ $(document).ready( function() {
   <td class="ui-widget-content"><strong>Priority</strong>: <select name="feat_priority">
 <?php
   for ($i = 0; $i < 3; $i++) {
-    if ($i == $a_features['feat_priority']) {
+    if ($i == $a_inv_features['feat_priority']) {
       print "<option selected value=\"" . $i . "\">" . $priority[$i] . "</option>\n";
     } else {
       print "<option value=\"" . $i . "\">" . $priority[$i] . "</option>\n";
@@ -485,22 +485,22 @@ $(document).ready( function() {
   }
 ?>
 </select></td>
-  <td class="ui-widget-content"><strong>Requested</strong>: <input type="text" name="feat_discovered" size="10" value="<?php print $a_features['feat_discovered']; ?>"></td>
+  <td class="ui-widget-content"><strong>Requested</strong>: <input type="text" name="feat_discovered" size="10" value="<?php print $a_inv_features['feat_discovered']; ?>"></td>
   <td class="ui-widget-content"><strong>Closed</strong>:    <input type="text" name="feat_closed"     size="15" value="Current Date"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content" colspan="6"><strong>Problem Description</strong>: <input type="text" name="feat_subject"    size="100" value="<?php print $a_features['feat_subject']; ?>"></td>
+  <td class="ui-widget-content" colspan="6"><strong>Problem Description</strong>: <input type="text" name="feat_subject"    size="100" value="<?php print $a_inv_features['feat_subject']; ?>"></td>
 <?php
   } else {
 ?>
-  <td class="ui-widget-content"><strong>Module</strong>:   <?php print $a_features['mod_name']; ?>       <input type="hidden" name="feat_module"     value="<?php print $a_features['feat_module']; ?>"</td>
-  <td class="ui-widget-content"><strong>Severity</strong>: <?php print $severity[$a_features['feat_severity']]; ?>   <input type="hidden" name="feat_severity"   value="<?php print $a_features['feat_severity']; ?>"</td>
-  <td class="ui-widget-content"><strong>Priority</strong>: <?php print $priority[$a_features['feat_priority']]; ?>   <input type="hidden" name="feat_priority"   value="<?php print $a_features['feat_priority']; ?>"</td>
-  <td class="ui-widget-content"><strong>Reqested</strong>: <?php print $a_features['feat_discovered']; ?> <input type="hidden" name="feat_discovered" value="<?php print $a_features['feat_discovered']; ?>"</td>
-  <td class="ui-widget-content"><strong>Closed</strong>:   <?php print $a_features['feat_closed']; ?>     <input type="hidden" name="feat_closed"     value="<?php print $a_features['feat_closed']; ?>"</td>
+  <td class="ui-widget-content"><strong>Module</strong>:   <?php print $a_inv_features['mod_name']; ?>       <input type="hidden" name="feat_module"     value="<?php print $a_inv_features['feat_module']; ?>"</td>
+  <td class="ui-widget-content"><strong>Severity</strong>: <?php print $severity[$a_inv_features['feat_severity']]; ?>   <input type="hidden" name="feat_severity"   value="<?php print $a_inv_features['feat_severity']; ?>"</td>
+  <td class="ui-widget-content"><strong>Priority</strong>: <?php print $priority[$a_inv_features['feat_priority']]; ?>   <input type="hidden" name="feat_priority"   value="<?php print $a_inv_features['feat_priority']; ?>"</td>
+  <td class="ui-widget-content"><strong>Reqested</strong>: <?php print $a_inv_features['feat_discovered']; ?> <input type="hidden" name="feat_discovered" value="<?php print $a_inv_features['feat_discovered']; ?>"</td>
+  <td class="ui-widget-content"><strong>Closed</strong>:   <?php print $a_inv_features['feat_closed']; ?>     <input type="hidden" name="feat_closed"     value="<?php print $a_inv_features['feat_closed']; ?>"</td>
 </tr>
 <tr>
-  <td class="ui-widget-content" colspan="6"><strong>Feature Description</strong>: <?php print $a_features['feat_subject']; ?>    <input type="hidden" name="feat_subject"    value="<?php print $a_features['feat_subject']; ?>"</td>
+  <td class="ui-widget-content" colspan="6"><strong>Feature Description</strong>: <?php print $a_inv_features['feat_subject']; ?>    <input type="hidden" name="feat_subject"    value="<?php print $a_inv_features['feat_subject']; ?>"</td>
 <?php
   }
 ?>
@@ -557,7 +557,7 @@ The <strong>character count</strong> field shows you the limit of the number of 
 <div id="request-hide" style="display: none">
 
 <?php
-  if ($a_features['feat_closed'] == '1971-01-01') {
+  if ($a_inv_features['feat_closed'] == '1971-01-01') {
 ?>
 <table class="ui-styled-table">
 <tr>
@@ -607,20 +607,20 @@ The <strong>character count</strong> field shows you the limit of the number of 
   <td class="ui-widget-content">Comment by: <select name="feat_user">
 <?php
   $q_string  = "select usr_first,usr_last ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_id = " . $_SESSION['uid'];
-  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_users = mysqli_fetch_array($q_users);
+  $q_inv_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_users = mysqli_fetch_array($q_inv_users);
 
-  print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_users['usr_first'] . " " . $a_users['usr_last'] . "</option>\n";
+  print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_inv_users['usr_first'] . " " . $a_inv_users['usr_last'] . "</option>\n";
 
   $q_string  = "select usr_id,usr_first,usr_last ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first";
-  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_users = mysqli_fetch_array($q_users)) {
-    print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_first'] . " " . $a_users['usr_last'] . "</option>\n";
+  $q_inv_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
+    print "<option value=\"" . $a_inv_users['usr_id'] . "\">" . $a_inv_users['usr_first'] . " " . $a_inv_users['usr_last'] . "</option>\n";
   }
 ?>
 </select></td>

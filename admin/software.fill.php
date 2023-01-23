@@ -19,18 +19,18 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from sw_support");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_sw_support");
 
       $q_string  = "select sw_software,sw_eol,sw_eos ";
-      $q_string .= "from sw_support ";
+      $q_string .= "from inv_sw_support ";
       $q_string .= "where sw_id = " . $formVars['id'];
-      $q_sw_support = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_sw_support = mysqli_fetch_array($q_sw_support);
-      mysqli_free_result($q_sw_support);
+      $q_inv_sw_support = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_sw_support = mysqli_fetch_array($q_inv_sw_support);
+      mysqli_free_result($q_inv_sw_support);
 
-      print "document.formUpdate.sw_software.value = '"  . mysqli_real_escape_string($db, $a_sw_support['sw_software'])  . "';\n";
-      print "document.formUpdate.sw_eol.value = '"       . mysqli_real_escape_string($db, $a_sw_support['sw_eol'])       . "';\n";
-      print "document.formUpdate.sw_eos.value = '"       . mysqli_real_escape_string($db, $a_sw_support['sw_eos'])       . "';\n";
+      print "document.formUpdate.sw_software.value = '"  . mysqli_real_escape_string($db, $a_inv_sw_support['sw_software'])  . "';\n";
+      print "document.formUpdate.sw_eol.value = '"       . mysqli_real_escape_string($db, $a_inv_sw_support['sw_eol'])       . "';\n";
+      print "document.formUpdate.sw_eos.value = '"       . mysqli_real_escape_string($db, $a_inv_sw_support['sw_eos'])       . "';\n";
 
       print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 

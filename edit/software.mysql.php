@@ -77,10 +77,10 @@
               "svr_locked       =   " . $formVars['svr_locked'];
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into svr_software set svr_id = NULL, " . $q_string;
+            $q_string = "insert into inv_svr_software set svr_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update svr_software set " . $q_string . " where svr_id = " . $formVars['id'];
+            $q_string = "update inv_svr_software set " . $q_string . " where svr_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['svr_companyid']);
@@ -108,22 +108,22 @@
       $output .= "</tr>\n";
 
       $q_string  = "select svr_id,sw_software,ven_name,prod_name,typ_name,svr_verified,svr_update,inv_manager,svr_facing,svr_primary,svr_locked ";
-      $q_string .= "from svr_software ";
-      $q_string .= "left join inventory on inventory.inv_id = svr_software.svr_companyid ";
-      $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
-      $q_string .= "left join vendors on vendors.ven_id = software.sw_vendor ";
-      $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
-      $q_string .= "left join a_groups on a_groups.grp_id = svr_software.svr_groupid ";
-      $q_string .= "left join products on products.prod_id = software.sw_product ";
+      $q_string .= "from inv_svr_software ";
+      $q_string .= "left join inv_inventory on inv_inventory.inv_id    = inv_svr_software.svr_companyid ";
+      $q_string .= "left join inv_software  on inv_software.sw_id      = inv_svr_software.svr_softwareid ";
+      $q_string .= "left join inv_vendors   on inv_vendors.ven_id      = inv_software.sw_vendor ";
+      $q_string .= "left join inv_sw_types  on inv_sw_types.typ_id     = inv_software.sw_type ";
+      $q_string .= "left join inv_groups    on inv_groups.grp_id       = inv_svr_software.svr_groupid ";
+      $q_string .= "left join inv_products  on inv_products.prod_id    = inv_software.sw_product ";
       $q_string .= "where svr_companyid = " . $formVars['svr_companyid'] . " ";
       $q_string .= "order by sw_software ";
-      $q_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_svr_software) > 0) {
-        while ($a_svr_software = mysqli_fetch_array($q_svr_software)) {
+      $q_inv_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_svr_software) > 0) {
+        while ($a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software)) {
 
-          if (check_grouplevel($db, $a_svr_software['inv_manager']) || check_grouplevel($db, $a_svr_software['svr_groupid'])) {
-            $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('software.fill.php?id=" . $a_svr_software['svr_id'] . "');jQuery('#dialogSoftwareUpdate').dialog('open');return false;\">";
-            $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_software('software.del.php?id=" . $a_svr_software['svr_id'] . "');\">";
+          if (check_grouplevel($db, $a_inv_svr_software['inv_manager']) || check_grouplevel($db, $a_inv_svr_software['svr_groupid'])) {
+            $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('software.fill.php?id=" . $a_inv_svr_software['svr_id'] . "');jQuery('#dialogSoftwareUpdate').dialog('open');return false;\">";
+            $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_software('software.del.php?id=" . $a_inv_svr_software['svr_id'] . "');\">";
             $linkend   = "</a>";
           } else {
             $linkstart = "";
@@ -132,32 +132,32 @@
           }
 
           $class = "ui-widget-content";
-          if ($a_svr_software['svr_primary']) {
+          if ($a_inv_svr_software['svr_primary']) {
             $class = "ui-state-highlight";
           }
-          if ($a_svr_software['svr_facing']) {
+          if ($a_inv_svr_software['svr_facing']) {
             $class = "ui-state-error";
           }
 
           $checked = "";
-          if ($a_svr_software['svr_verified']) {
+          if ($a_inv_svr_software['svr_verified']) {
             $checked = "&#x2713;";
           }
 
           $locked = "No";
-          if ($a_svr_software['svr_locked']) {
+          if ($a_inv_svr_software['svr_locked']) {
             $locked = "Yes";
           }
 
           $output .= "<tr>";
           $output .= "  <td class=\"" . $class . " delete\">"           . $linkdel                                                                       . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"        . $strong . $linkstart . $a_svr_software['prod_name']   . $linkend            . $strongend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"        . $strong . $linkstart . $a_svr_software['ven_name']    . $linkend            . $strongend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"        . $strong . $linkstart . $a_svr_software['sw_software'] . $linkend            . $strongend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"        . $strong . $linkstart . $a_inv_svr_software['prod_name']   . $linkend            . $strongend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"        . $strong . $linkstart . $a_inv_svr_software['ven_name']    . $linkend            . $strongend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"        . $strong . $linkstart . $a_inv_svr_software['sw_software'] . $linkend            . $strongend . "</td>";
           $output .= "  <td class=\"" . $class . "\">"        . $strong . $linkstart . $locked                        . $linkend            . $strongend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"        . $strong . $linkstart . $a_svr_software['typ_name']    . $linkend            . $strongend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"        . $strong . $linkstart . $a_svr_software['grp_name']    . $linkend            . $strongend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"        . $strong . $linkstart . $a_svr_software['svr_update']  . $linkend . $checked . $strongend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"        . $strong . $linkstart . $a_inv_svr_software['typ_name']    . $linkend            . $strongend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"        . $strong . $linkstart . $a_inv_svr_software['grp_name']    . $linkend            . $strongend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"        . $strong . $linkstart . $a_inv_svr_software['svr_update']  . $linkend . $checked . $strongend . "</td>";
           $output .= "</tr>";
 
         }

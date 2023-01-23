@@ -19,19 +19,19 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from software");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_svr_software");
 
       $q_string  = "select svr_id,svr_companyid,svr_softwareid,svr_groupid,svr_certid,";
       $q_string .= "svr_facing,svr_primary,svr_locked ";
-      $q_string .= "from svr_software ";
+      $q_string .= "from inv_svr_software ";
       $q_string .= "where svr_id = " . $formVars['id'];
-      $q_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_svr_software = mysqli_fetch_array($q_svr_software);
-      mysqli_free_result($q_svr_software);
+      $q_inv_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software);
+      mysqli_free_result($q_inv_svr_software);
 
-      $softwareid      = return_Index($db, $a_svr_software['svr_softwareid'], "select sw_id from software left join products on products.prod_id = software.sw_product order by sw_software,prod_name");
-      $groupid         = return_Index($db, $a_svr_software['svr_groupid'],    "select grp_id from a_groups where grp_disabled = 0 order by grp_name");
-      $certid          = return_Index($db, $a_svr_software['svr_certid'],     "select cert_id from certs order by cert_url");
+      $softwareid      = return_Index($db, $a_inv_svr_software['svr_softwareid'], "select sw_id from inv_software left join inv_products on inv_products.prod_id = inv_software.sw_product order by sw_software,prod_name");
+      $groupid         = return_Index($db, $a_inv_svr_software['svr_groupid'],    "select grp_id from inv_groups where grp_disabled = 0 order by grp_name");
+      $certid          = return_Index($db, $a_inv_svr_software['svr_certid'],     "select cert_id from inv_certs order by cert_url");
 
       if ($softwareid > 0) {
         print "document.formSoftwareUpdate.svr_softwareid['"   . $softwareid . "'].selected = true;\n";
@@ -43,17 +43,17 @@
         print "document.formSoftwareUpdate.svr_certid['"       . $certid     . "'].selected = true;\n";
       }
 
-      if ($a_svr_software['svr_facing']) {
+      if ($a_inv_svr_software['svr_facing']) {
         print "document.formSoftwareUpdate.svr_facing.checked = true;\n";
       } else {
         print "document.formSoftwareUpdate.svr_facing.checked = false;\n";
       }
-      if ($a_svr_software['svr_primary']) {
+      if ($a_inv_svr_software['svr_primary']) {
         print "document.formSoftwareUpdate.svr_primary.checked = true;\n";
       } else {
         print "document.formSoftwareUpdate.svr_primary.checked = false;\n";
       }
-      if ($a_svr_software['svr_locked']) {
+      if ($a_inv_svr_software['svr_locked']) {
         print "document.formSoftwareUpdate.svr_locked.checked = true;\n";
       } else {
         print "document.formSoftwareUpdate.svr_locked.checked = false;\n";

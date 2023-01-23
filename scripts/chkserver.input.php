@@ -157,14 +157,14 @@
 
 # just get a list of all the servers
   $q_string  = "select inv_id,inv_name,loc_identity ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id = inv_inventory.inv_location ";
   $q_string .= "where inv_status = 0 and inv_ssh = 1 and inv_manager = " . $GRP_Unix . " ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
 # default in case there are no management interfaces
-    $hostname = $servername = $a_inventory['inv_name'];
+    $hostname = $servername = $a_inv_inventory['inv_name'];
     $monitoringip = '';
     $monitoringface = '';
     $backupip = '';
@@ -174,36 +174,36 @@
 
 # interface information
     $q_string  = "select int_addr,int_face,int_management,int_backup,int_openview,zone_zone ";
-    $q_string .= "from interface ";
-    $q_string .= "left join net_zones on net_zones.zone_id = interface.int_zone ";
-    $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_management = 1 or int_backup = 1 or int_openview = 1) ";
-    $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    if (mysqli_num_rows($q_interface) > 0) {
-      while ($a_interface = mysqli_fetch_array($q_interface)) {
+    $q_string .= "from inv_interface ";
+    $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = inv_interface.int_zone ";
+    $q_string .= "where int_companyid = " . $a_inv_inventory['inv_id'] . " and int_ip6 = 0 and (int_management = 1 or int_backup = 1 or int_openview = 1) ";
+    $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_inv_interface) > 0) {
+      while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
 
-        if ($a_interface['int_management']) {
-          $managementip = $a_interface['int_addr'];
-          $managementface = $a_interface['int_face'];
+        if ($a_inv_interface['int_management']) {
+          $managementip = $a_inv_interface['int_addr'];
+          $managementface = $a_inv_interface['int_face'];
         }
 
-        if ($a_interface['int_openview']) {
-          $monitoringip = $a_interface['int_addr'];
-          $monitoringface = $a_interface['int_face'];
+        if ($a_inv_interface['int_openview']) {
+          $monitoringip = $a_inv_interface['int_addr'];
+          $monitoringface = $a_inv_interface['int_face'];
         }
 
-        if ($a_interface['int_backup']) {
-          $backupip = $a_interface['int_addr'];
-          $backupface = $a_interface['int_face'];
+        if ($a_inv_interface['int_backup']) {
+          $backupip = $a_inv_interface['int_addr'];
+          $backupface = $a_inv_interface['int_face'];
         }
 
-        $networkzone = $a_interface['zone_zone'];
+        $networkzone = $a_inv_interface['zone_zone'];
       }
     }
 
 # need the actual hostname in order for the host to parse the file. 2 is Application interface, desc shows it first. If no App interface, then type 1 aka Management is selected.
     $q_string  = "select int_server ";
-    $q_string .= "from interface ";
-    $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_type = 1 or int_type = 2) ";
+    $q_string .= "from inv_interface ";
+    $q_string .= "where int_companyid = " . $a_inv_inventory['inv_id'] . " and int_ip6 = 0 and (int_type = 1 or int_type = 2) ";
     $q_string .= "order by int_type desc ";
     $q_intapp = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     if (mysqli_num_rows($q_intapp) > 0) {
@@ -228,36 +228,36 @@
 
 # adding in network zone for the interface and location, not necessarily needed for the monitoring, etc interface descriptions.
     $configuration .= $hostname . ":NetworkZone:" . $networkzone . "\n";
-    $configuration .= $hostname . ":Location:" . $a_inventory['loc_identity'] . "\n";
+    $configuration .= $hostname . ":Location:" . $a_inv_inventory['loc_identity'] . "\n";
   }
 
 # check software first for ability to run cron
 
   $q_string  = "select inv_id,inv_name,sw_software ";
-  $q_string .= "from software ";
-  $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
-  $q_string .= "left join inventory on inventory.inv_id = svr_software.svr_companyid ";
+  $q_string .= "from inv_software ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = inv_software.sw_id ";
+  $q_string .= "left join inv_inventory        on inv_inventory.inv_id                = inv_svr_software.svr_companyid ";
   $q_string .= "where inv_status = 0 and inv_ssh = 1 and sw_software like '%Oracle%' and svr_groupid = " . $GRP_DBAdmins . " ";
-  $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_software) > 0) {
-    while ($a_software = mysqli_fetch_array($q_software)) {
+  $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inv_software) > 0) {
+    while ($a_inv_software = mysqli_fetch_array($q_inv_software)) {
 
-      $hostname = $servername = $a_software['inv_name'];
+      $hostname = $servername = $a_inv_software['inv_name'];
       $q_string  = "select int_server ";
-      $q_string .= "from interface ";
-      $q_string .= "where int_companyid = " . $a_software['inv_id'] . " and int_type = 2 ";
-      $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_interface) > 0) {
-        $a_interface = mysqli_fetch_array($q_interface);
-        $servername = $a_interface['int_server'];
+      $q_string .= "from inv_interface ";
+      $q_string .= "where int_companyid = " . $a_inv_software['inv_id'] . " and int_type = 2 ";
+      $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_interface) > 0) {
+        $a_inv_interface = mysqli_fetch_array($q_inv_interface);
+        $servername = $a_inv_interface['int_server'];
       } else {
         $q_string  = "select int_server ";
-        $q_string .= "from interface ";
-        $q_string .= "where int_companyid = " . $a_software['inv_id'] . " and int_type = 1 ";
-        $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        if (mysqli_num_rows($q_interface) > 0) {
-          $a_interface = mysqli_fetch_array($q_interface);
-          $servername = $a_interface['int_server'];
+        $q_string .= "from inv_interface ";
+        $q_string .= "where int_companyid = " . $a_inv_software['inv_id'] . " and int_type = 1 ";
+        $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_inv_interface) > 0) {
+          $a_inv_interface = mysqli_fetch_array($q_inv_interface);
+          $servername = $a_inv_interface['int_server'];
         }
       }
 

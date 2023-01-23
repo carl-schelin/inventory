@@ -43,14 +43,14 @@
 
 # first, get the ip address from the table
     $q_string  = "select ip_ipv4,ip_ipv6 ";
-    $q_string .= "from ipaddress ";
+    $q_string .= "from inv_ipaddress ";
     if (strlen($value[0]) > 0) {
       $q_string .= "where ip_ipv4 = \"" . $value[0] . "\" ";
     } else {
       $q_string .= "where ip_ipv6 = \"" . $value[1] . "\" ";
     }
-    $q_ipaddress = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
-    if (mysqli_num_rows($q_ipaddress) == 0) {
+    $q_inv_ipaddress = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
+    if (mysqli_num_rows($q_inv_ipaddress) == 0) {
 
       $q_string = 
         "ip_ipv4            = \"" . $value[0] . "\"," . 
@@ -63,7 +63,7 @@
         "ip_user            =   " . $value[7] . "," . 
         "ip_description     = \"" . $value[8] . "\"";
 
-      $q_string = "insert into ipaddress set ip_id = null," . $q_string;
+      $q_string = "insert into inv_ipaddress set ip_id = null," . $q_string;
 
       if ($debug == 'yes') {
         print $q_string . "\n";

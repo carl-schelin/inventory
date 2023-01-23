@@ -30,7 +30,7 @@
     $formVars['id'] = clean($_GET['id'], 10);
 
     $q_string  = "select img_title,img_file,img_date,img_owner ";
-    $q_string .= "from images ";
+    $q_string .= "from inv_images ";
     $q_string .= "where img_id = " . $formVars['id'];
     $q_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     $a_images = mysqli_fetch_array($q_images);
@@ -370,15 +370,15 @@ on the server. It can of course be uploaded after the fact.</p>
   <td class="ui-widget-content">Image Owner: <select name="img_owner">
 <?php
   $q_string  = "select usr_id,usr_first,usr_last ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first ";
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_users = mysqli_fetch_array($q_users)) {
-    if ($a_users['usr_id'] == $formVars['img_owner']) {
-      print "<option selected value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
+  $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
+    if ($a_inv_users['usr_id'] == $formVars['img_owner']) {
+      print "<option selected value=\"" . $a_inv_users['usr_id'] . "\">" . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "</option>\n";
     } else {
-      print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
+      print "<option value=\"" . $a_inv_users['usr_id'] . "\">" . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "</option>\n";
     }
   }
 
@@ -414,15 +414,15 @@ on the server. It can of course be uploaded after the fact.</p>
   <td class="ui-widget-content">Image Owner: <select name="img_owner">
 <?php
   $q_string  = "select usr_id,usr_first,usr_last ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first ";
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_users = mysqli_fetch_array($q_users)) {
-    if ($a_users['usr_id'] == $formVars['img_owner']) {
-      print "<option selected value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
+  $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
+    if ($a_inv_users['usr_id'] == $formVars['img_owner']) {
+      print "<option selected value=\"" . $a_inv_users['usr_id'] . "\">" . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "</option>\n";
     } else {
-      print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
+      print "<option value=\"" . $a_inv_users['usr_id'] . "\">" . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "</option>\n";
     }
   }
 

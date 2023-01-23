@@ -13,14 +13,14 @@
   logaccess($db, $formVars['uid'], $package, "Searching for Dell equipment.");
 
   $formVars['sort'] = 'inv_response';
-  $leftjoin = "left join supportlevel on supportlevel.slv_id = inventory.inv_response ";
+  $leftjoin = "left join inv_supportlevel on inv_supportlevel.slv_id = inv_inventory.inv_response ";
 
   $orderby = " order by ";
   if (isset($_GET['sort'])) {
     $formVars['sort'] = clean($_GET['sort'], 30);
 
     if ($formVars['sort'] == 'inv_response') {
-      $leftjoin = "left join supportlevel on supportlevel.slv_id = inventory.inv_response ";
+      $leftjoin = "left join inv_supportlevel on inv_supportlevel.slv_id = inv_inventory.inv_response ";
       $formVars['sort'] = 'slv_value';
       $orderby .= $formVars['sort'] . ",";
       $formVars['sort'] = 'inv_response';
@@ -28,7 +28,7 @@
 
 # if hw_response
     if ($formVars['sort'] == 'hw_response') {
-      $leftjoin = "left join supportlevel on supportlevel.slv_id = hardware.hw_response ";
+      $leftjoin = "left join inv_supportlevel on inv_supportlevel.slv_id = hardware.hw_response ";
       $formVars['sort'] = 'slv_value';
       $orderby .= $formVars['sort'] . ",";
       $formVars['sort'] = 'hw_response';
@@ -151,23 +151,23 @@
 
   $q_string  = "select inv_id,inv_name,inv_response,inv_callpath,mod_name,sup_company,hw_asset,";
   $q_string .= "hw_serial,hw_response,hw_supid_verified,prod_name,grp_name,svc_acronym,slv_value ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join hardware on inventory.inv_id = hardware.hw_companyid ";
-  $q_string .= "left join a_groups   on a_groups.grp_id    = hardware.hw_group ";
-  $q_string .= "left join models   on models.mod_id    = hardware.hw_vendorid ";
-  $q_string .= "left join support  on support.sup_id   = hardware.hw_supportid ";
-  $q_string .= "left join products on products.prod_id = inventory.inv_product ";
-  $q_string .= "left join service  on service.svc_id   = inventory.inv_class ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_hardware on inv_inventory.inv_id = inv_hardware.hw_companyid ";
+  $q_string .= "left join inv_groups   on inv_groups.grp_id    = inv_hardware.hw_group ";
+  $q_string .= "left join inv_models   on inv_models.mod_id    = inv_hardware.hw_vendorid ";
+  $q_string .= "left join inv_support  on inv_support.sup_id   = inv_hardware.hw_supportid ";
+  $q_string .= "left join inv_products on inv_products.prod_id = inv_inventory.inv_product ";
+  $q_string .= "left join inv_service  on inv_service.svc_id   = inv_inventory.inv_class ";
   $q_string .= $leftjoin;
   $q_string .= $where;
   $q_string .= $orderby;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
-    $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"_blank\">";
+    $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inv_inventory['inv_id'] . "\" target=\"_blank\">";
     $linkend   = "</a>";
 
-    if ($a_inventory['inv_callpath']) {
+    if ($a_inv_inventory['inv_callpath']) {
       $callpath = '*';
     } else {
       $callpath = '';
@@ -175,34 +175,34 @@
 
     if ($formVars['sort'] == 'hw_response') {
       $q_string  = "select slv_value ";
-      $q_string .= "from supportlevel ";
-      $q_string .= "where slv_id = " . $a_inventory['inv_response'];
-      $q_supportlevel = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_supportlevel) > 0) {
-        $a_supportlevel = mysqli_fetch_array($q_supportlevel);
-        $inv_response = $a_supportlevel['slv_value'];
+      $q_string .= "from inv_supportlevel ";
+      $q_string .= "where slv_id = " . $a_inv_inventory['inv_response'];
+      $q_inv_supportlevel = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_supportlevel) > 0) {
+        $a_inv_supportlevel = mysqli_fetch_array($q_inv_supportlevel);
+        $inv_response = $a_inv_supportlevel['slv_value'];
         
       } else {
         $inv_response = "Unassigned";
       }
-      $hw_response = $a_inventory['slv_value'];
+      $hw_response = $a_inv_inventory['slv_value'];
     }
 
     if ($formVars['sort'] == 'inv_response') {
       $q_string  = "select slv_value ";
-      $q_string .= "from supportlevel ";
-      $q_string .= "where slv_id = " . $a_inventory['hw_response'];
-      $q_supportlevel = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_supportlevel) > 0) {
-        $a_supportlevel = mysqli_fetch_array($q_supportlevel);
-        $hw_response = $a_supportlevel['slv_value'];
+      $q_string .= "from inv_supportlevel ";
+      $q_string .= "where slv_id = " . $a_inv_inventory['hw_response'];
+      $q_inv_supportlevel = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_supportlevel) > 0) {
+        $a_inv_supportlevel = mysqli_fetch_array($q_inv_supportlevel);
+        $hw_response = $a_inv_supportlevel['slv_value'];
       } else {
         $hw_response = "Unassigned";
       }
-      $inv_response = $a_inventory['slv_value'];
+      $inv_response = $a_inv_inventory['slv_value'];
     }
 
-    if ($a_inventory['hw_supid_verified']) {
+    if ($a_inv_inventory['hw_supid_verified']) {
       if ($hw_response == $inv_response) {
         $class = " class=\"ui-widget-content\"";
       } else {
@@ -213,15 +213,15 @@
     }
 
     print "<tr>\n";
-    print "  <td" . $class . ">" . $linkstart . $a_inventory['inv_name']     . $linkend . "</td>\n";
-    print "  <td" . $class . ">"              . $a_inventory['svc_acronym'] . $callpath . "</td>\n";
-    print "  <td" . $class . ">"              . $a_inventory['grp_name']                . "</td>\n";
-    print "  <td" . $class . ">"              . $a_inventory['mod_name']                . "</td>\n";
-    print "  <td" . $class . ">"              . $a_inventory['prod_name']               . "</td>\n";
-    print "  <td" . $class . ">"              . $a_inventory['hw_asset']                . "</td>\n";
-    print "  <td" . $class . ">"              . $a_inventory['hw_serial']               . "</td>\n";
+    print "  <td" . $class . ">" . $linkstart . $a_inv_inventory['inv_name']     . $linkend . "</td>\n";
+    print "  <td" . $class . ">"              . $a_inv_inventory['svc_acronym'] . $callpath . "</td>\n";
+    print "  <td" . $class . ">"              . $a_inv_inventory['grp_name']                . "</td>\n";
+    print "  <td" . $class . ">"              . $a_inv_inventory['mod_name']                . "</td>\n";
+    print "  <td" . $class . ">"              . $a_inv_inventory['prod_name']               . "</td>\n";
+    print "  <td" . $class . ">"              . $a_inv_inventory['hw_asset']                . "</td>\n";
+    print "  <td" . $class . ">"              . $a_inv_inventory['hw_serial']               . "</td>\n";
     print "  <td" . $class . ">"              . $inv_response                           . "</td>\n";
-    print "  <td" . $class . ">"              . $a_inventory['sup_company']             . "</td>\n";
+    print "  <td" . $class . ">"              . $a_inv_inventory['sup_company']             . "</td>\n";
     print "  <td" . $class . ">"              . $hw_response                            . "</td>\n";
     print "</tr>\n";
   }

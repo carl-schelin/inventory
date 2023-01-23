@@ -131,23 +131,23 @@ The Reminder Increment lists how often you want to be reminded of the certificat
   <td class="ui-widget-content">Select Your Title: <select name="usr_title">
 <?php
   $q_string  = "select tit_id,tit_name ";
-  $q_string .= "from titles ";
+  $q_string .= "from inv_titles ";
   $q_string .= "order by tit_name ";
-  $q_titles = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_titles = mysqli_fetch_array($q_titles)) {
-    print "<option value=\"" . $a_titles['tit_id'] . "\">" . $a_titles['tit_name'] . "</option>\n";
+  $q_inv_titles = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_titles = mysqli_fetch_array($q_inv_titles)) {
+    print "<option value=\"" . $a_inv_titles['tit_id'] . "\">" . $a_inv_titles['tit_name'] . "</option>\n";
   }
 ?>
 </select></td>
   <td class="ui-widget-content">Select Your Manager: <select name="usr_manager">
 <?php
   $q_string  = "select usr_id,usr_last,usr_first ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first ";
-  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_users = mysqli_fetch_array($q_users)) {
-    print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
+  $q_inv_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
+    print "<option value=\"" . $a_inv_users['usr_id'] . "\">" . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -157,11 +157,11 @@ The Reminder Increment lists how often you want to be reminded of the certificat
   <td class="ui-widget-content" colspan="2">Inventory Theme <select name="usr_theme">
 <?php
   $q_string  = "select theme_id,theme_title ";
-  $q_string .= "from themes ";
+  $q_string .= "from inv_themes ";
   $q_string .= "order by theme_title";
-  $q_themes = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_themes = mysqli_fetch_array($q_themes)) {
-    print "<option value=\"" . $a_themes['theme_id'] . "\">" . $a_themes['theme_title'] . "</option>\n";
+  $q_inv_themes = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_themes = mysqli_fetch_array($q_inv_themes)) {
+    print "<option value=\"" . $a_inv_themes['theme_id'] . "\">" . $a_inv_themes['theme_title'] . "</option>\n";
   }
 ?>
 </select></td>

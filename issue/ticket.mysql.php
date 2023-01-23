@@ -50,11 +50,11 @@
               "iss_user      =   " . $_SESSION['uid']    . "," . 
               "iss_timestamp = \"" . date("Y-m-d H:i:s") . "\"";
 
-            $query = "insert into issue set iss_id = NULL, " . $q_string;
+            $query = "insert into inv_issue set iss_id = NULL, " . $q_string;
             $message = "Issue added.";
           }
           if ($formVars['update'] == 1) {
-            $query = "update issue set " . $q_string . " where iss_id = " . $formVars['id'];
+            $query = "update inv_issue set " . $q_string . " where iss_id = " . $formVars['id'];
             $message = "Issue updated.";
           }
 
@@ -89,7 +89,7 @@
               "iss_subject    = \"" . $formVars['iss_subject']    . "\",".
               "iss_closed     = \"" . $formVars['iss_closed']     . "\"";
 
-            $query = "update issue set " . $q_string . " where iss_id = " . $formVars['id'];
+            $query = "update inv_issue set " . $q_string . " where iss_id = " . $formVars['id'];
 
             mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -98,7 +98,7 @@
               "det_text  =\"" . "Issue closed by " . $_SESSION['username'] . ".\"," . 
               "det_user  =  " . $_SESSION['uid'];
 
-            $query = "insert into issue_detail set det_id=null," . $q_string;
+            $query = "insert into inv_issue_detail set det_id=null," . $q_string;
 
             mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -111,7 +111,7 @@
               "iss_subject    = \"" . $formVars['iss_subject']    . "\",".
               "iss_closed     = \"" . $formVars['iss_closed']     . "\"";
 
-            $query = "update issue set " . $q_string . " where iss_id = " . $formVars['id'];
+            $query = "update inv_issue set " . $q_string . " where iss_id = " . $formVars['id'];
 
             mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -120,7 +120,7 @@
               "det_text  =\"" . "Issue reopened by " . $_SESSION['username'] . ".\"," . 
               "det_user  =  " . $_SESSION['uid'];
 
-            $query = "insert into issue_detail set det_id=null," . $q_string;
+            $query = "insert into inv_issue_detail set det_id=null," . $q_string;
 
             mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
           }

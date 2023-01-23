@@ -146,11 +146,11 @@ $(document).ready( function() {
 <option value="0">Unassigned</option>
 <?php
   $q_string  = "select fam_id,fam_name ";
-  $q_string .= "from family ";
+  $q_string .= "from inv_family ";
   $q_string .= "order by fam_name ";
-  $q_family = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_family = mysqli_fetch_array($q_family)) {
-    print "<option value=\"" . $a_family['fam_id'] . "\">" . $a_family['fam_name'] . "</option>\n";
+  $q_inv_family = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_family = mysqli_fetch_array($q_inv_family)) {
+    print "<option value=\"" . $a_inv_family['fam_id'] . "\">" . $a_inv_family['fam_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -158,11 +158,11 @@ $(document).ready( function() {
 <option value="0">Unassigned</option>
 <?php
   $q_string  = "select sev_id,sev_name ";
-  $q_string .= "from severity ";
+  $q_string .= "from inv_severity ";
   $q_string .= "order by sev_name ";
-  $q_severity = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_severity = mysqli_fetch_array($q_severity)) {
-    print "<option value=\"" . $a_severity['sev_id'] . "\">" . $a_severity['sev_name'] . "</option>\n";
+  $q_inv_severity = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_severity = mysqli_fetch_array($q_inv_severity)) {
+    print "<option value=\"" . $a_inv_severity['sev_id'] . "\">" . $a_inv_severity['sev_name'] . "</option>\n";
   }
 ?>
 </select></td>

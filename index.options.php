@@ -27,15 +27,15 @@
 
 // retrieve type list
       $q_string  = "select prj_id,prj_name ";
-      $q_string .= "from projects ";
+      $q_string .= "from inv_projects ";
       $q_string .= "where prj_product = " . $formVars['product'] . " ";
       $q_string .= "order by prj_name ";
-      $q_projects = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $q_inv_projects = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 // create the javascript bit for populating the model dropdown box.
-      while ($a_projects = mysqli_fetch_array($q_projects) ) {
+      while ($a_inv_projects = mysqli_fetch_array($q_inv_projects) ) {
         if ($formVars['product'] > 0) {
-          print "selbox.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_projects['prj_name']) . "\"," . $a_projects['prj_id'] . ");\n";
+          print "selbox.options[selbox.options.length] = new Option(\"" . htmlspecialchars($a_inv_projects['prj_name']) . "\"," . $a_inv_projects['prj_id'] . ");\n";
         }
       }
     } else {

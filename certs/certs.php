@@ -19,13 +19,13 @@
   logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
   $q_string  = "select usr_notify ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_id = " . $_SESSION['uid'];
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . $mysqli_error($db));
-  $a_users = mysqli_fetch_array($q_users);
+  $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . $mysqli_error($db));
+  $a_inv_users = mysqli_fetch_array($q_inv_users);
 
-  if ($a_users['usr_notify'] == 0) {
-    $a_users['usr_notify'] = 90;
+  if ($a_inv_users['usr_notify'] == 0) {
+    $a_inv_users['usr_notify'] = 90;
   }
 
   $formVars['top'] = 0;
@@ -309,12 +309,12 @@ servers that are using this certificate.</p>
 <option value="0">Select Certificate Authority</option>
 <?php
   $q_string  = "select cert_id,cert_desc ";
-  $q_string .= "from certs ";
+  $q_string .= "from inv_certs ";
   $q_string .= "where cert_isca = 1 ";
   $q_string .= "order by cert_desc";
-  $q_certs = mysqli_query($db, $q_string) or die(q_string . ": " . mysqli_error($db));
-  while ($a_certs = mysqli_fetch_array($q_certs)) {
-    print "<option value=\"" . $a_certs['cert_id'] . "\">" . htmlspecialchars($a_certs['cert_desc']) . "</option>\n";
+  $q_inv_certs = mysqli_query($db, $q_string) or die(q_string . ": " . mysqli_error($db));
+  while ($a_inv_certs = mysqli_fetch_array($q_inv_certs)) {
+    print "<option value=\"" . $a_inv_certs['cert_id'] . "\">" . htmlspecialchars($a_inv_certs['cert_desc']) . "</option>\n";
   }
 ?>
 </select></td>
@@ -338,12 +338,12 @@ servers that are using this certificate.</p>
   <td class="ui-widget-content">Managed By: <select name="cert_group">
 <?php
   $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from a_groups ";
+  $q_string .= "from inv_groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name";
-  $q_groups = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_groups = mysqli_fetch_array($q_groups)) {
-    print "<option value=\"" . $a_groups['grp_id'] . "\">" . htmlspecialchars($a_groups['grp_name']) . "</option>\n";
+  $q_inv_groups = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_groups = mysqli_fetch_array($q_inv_groups)) {
+    print "<option value=\"" . $a_inv_groups['grp_id'] . "\">" . htmlspecialchars($a_inv_groups['grp_name']) . "</option>\n";
   }
 ?>
 </select></td>
@@ -379,12 +379,12 @@ servers that are using this certificate.</p>
 <option value="0">Select Certificate Authority</option>
 <?php
   $q_string  = "select cert_id,cert_desc ";
-  $q_string .= "from certs ";
+  $q_string .= "from inv_certs ";
   $q_string .= "where cert_isca = 1 ";
   $q_string .= "order by cert_desc";
-  $q_certs = mysqli_query($db, $q_string) or die(q_string . ": " . mysqli_error($db));
-  while ($a_certs = mysqli_fetch_array($q_certs)) {
-    print "<option value=\"" . $a_certs['cert_id'] . "\">" . htmlspecialchars($a_certs['cert_desc']) . "</option>\n";
+  $q_inv_certs = mysqli_query($db, $q_string) or die(q_string . ": " . mysqli_error($db));
+  while ($a_inv_certs = mysqli_fetch_array($q_inv_certs)) {
+    print "<option value=\"" . $a_inv_certs['cert_id'] . "\">" . htmlspecialchars($a_inv_certs['cert_desc']) . "</option>\n";
   }
 ?>
 </select></td>
@@ -408,12 +408,12 @@ servers that are using this certificate.</p>
   <td class="ui-widget-content">Managed By: <select name="cert_group">
 <?php
   $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from a_groups ";
+  $q_string .= "from inv_groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name";
-  $q_groups = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_groups = mysqli_fetch_array($q_groups)) {
-    print "<option value=\"" . $a_groups['grp_id'] . "\">" . htmlspecialchars($a_groups['grp_name']) . "</option>\n";
+  $q_inv_groups = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_groups = mysqli_fetch_array($q_inv_groups)) {
+    print "<option value=\"" . $a_inv_groups['grp_id'] . "\">" . htmlspecialchars($a_inv_groups['grp_name']) . "</option>\n";
   }
 ?>
 </select></td>

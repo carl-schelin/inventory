@@ -62,11 +62,11 @@
           "mon_hours      =   " . $formVars['mon_hours'] ;
 
         if ($formVars['update'] == 0) {
-          $query = "insert into monitoring set org_id = null," . $q_string;
+          $query = "insert into inv_monitoring set org_id = null," . $q_string;
           $message = "Monitoring added.";
         }
         if ($formVars['update'] == 1) {
-          $query = "update monitoring set " . $q_string . " where mon_id = " . $formVars['id'];
+          $query = "update inv_monitoring set " . $q_string . " where mon_id = " . $formVars['id'];
           $message = "Monitoring updated.";
         }
 
@@ -125,60 +125,60 @@
       $output .= "</tr>\n";
 
       $q_string  = "select inv_name,int_server,mon_id,mon_system,mt_name,mon_active,mon_group,grp_name,mon_user,usr_last,usr_first,mon_notify,mon_hours ";
-      $q_string .= "from monitoring ";
-      $q_string .= "left join interface on interface.int_id = monitoring.mon_interfaceid ";
-      $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
-      $q_string .= "left join mon_type on mon_type.mt_id = monitoring.mon_type ";
-      $q_string .= "left join a_groups on a_groups.grp_id = monitoring.mon_group ";
-      $q_string .= "left join users on users.usr_id = monitoring.mon_user ";
+      $q_string .= "from inv_monitoring ";
+      $q_string .= "left join inv_interface on inv_interface.int_id = inv_monitoring.mon_interfaceid ";
+      $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_interface.int_companyid ";
+      $q_string .= "left join inv_mon_type  on inv_mon_type.mt_id   = inv_monitoring.mon_type ";
+      $q_string .= "left join inv_groups    on inv_groups.grp_id    = inv_monitoring.mon_group ";
+      $q_string .= "left join inv_users     on inv_users.usr_id     = inv_monitoring.mon_user ";
       $q_string .= "where inv_status = 0 ";
       $q_string .= "order by inv_name,int_server ";
-      $q_monitoring = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_monitoring) > 0) {
-        while ($a_monitoring = mysqli_fetch_array($q_monitoring)) {
+      $q_inv_monitoring = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_monitoring) > 0) {
+        while ($a_inv_monitoring = mysqli_fetch_array($q_inv_monitoring)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('monitoring.fill.php?id=" . $a_monitoring['mon_id'] . "');jQuery('#dialogMonitoring').dialog('open');\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('monitoring.del.php?id=" . $a_monitoring['mon_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('monitoring.fill.php?id=" . $a_inv_monitoring['mon_id'] . "');jQuery('#dialogMonitoring').dialog('open');\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('monitoring.del.php?id=" . $a_inv_monitoring['mon_id'] . "');\">";
           $linkend   = "</a>";
 
           $system = "Openview";
-          if ($a_monitoring['mon_system']) {
+          if ($a_inv_monitoring['mon_system']) {
             $system = "Nagios";
           }
           $active = "No";
-          if ($a_monitoring['mon_active']) {
+          if ($a_inv_monitoring['mon_active']) {
             $active = "Yes";
           }
           $notify = "None";
-          if ($a_monitoring['mon_notify'] == 1) {
+          if ($a_inv_monitoring['mon_notify'] == 1) {
             $notify = "Email";
           }
-          if ($a_monitoring['mon_notify'] == 2) {
+          if ($a_inv_monitoring['mon_notify'] == 2) {
             $notify = "Page";
           }
           $hours = "Business Day";
-          if ($a_monitoring['mon_hours']) {
+          if ($a_inv_monitoring['mon_hours']) {
             $hours = "24x7";
           }
 
           $group = "None";
-          if ($a_monitoring['mon_group'] > 0) {
-            $group = $a_monitoring['grp_name'];
+          if ($a_inv_monitoring['mon_group'] > 0) {
+            $group = $a_inv_monitoring['grp_name'];
           }
           $user = "None";
-          if ($a_monitoring['mon_user'] > 0) {
-            $user = $a_monitoring['usr_last'] . ", " . $a_monitoring['usr_first'];
+          if ($a_inv_monitoring['mon_user'] > 0) {
+            $user = $a_inv_monitoring['usr_last'] . ", " . $a_inv_monitoring['usr_first'];
           }
 
           $output .= "<tr>\n";
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\" width=\"60\">" . $linkdel   . "</td>\n";
           }
-          $output .= "  <td class=\"ui-widget-content delete\">" . $linkstart . $a_monitoring['mon_id']   . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_monitoring['inv_name'] . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_monitoring['int_server'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content delete\">" . $linkstart . $a_inv_monitoring['mon_id']   . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_monitoring['inv_name'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_monitoring['int_server'] . $linkend . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $system . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_monitoring['mt_name'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_monitoring['mt_name'] . $linkend . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $active . $linkend . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $group . $linkend . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $user . $linkend . "</td>\n";
@@ -194,7 +194,7 @@
 
       $output .= "</table>\n";
 
-      mysqli_free_result($q_monitoring);
+      mysqli_free_result($q_inv_monitoring);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 

@@ -73,32 +73,32 @@
   print "</tr>";
 
   $q_string  = "select usr_name,usr_first,usr_last,tit_name,usr_manager,grp_name ";
-  $q_string .= "from users ";
-  $q_string .= "left join a_groups on a_groups.grp_id = users.usr_group ";
-  $q_string .= "left join titles on titles.tit_id = users.usr_title ";
+  $q_string .= "from inv_users ";
+  $q_string .= "left join inv_groups on inv_groups.grp_id = inv_users.usr_group ";
+  $q_string .= "left join inv_titles on inv_titles.tit_id = inv_users.usr_title ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_manager,usr_group,usr_last,usr_first ";
-  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_users = mysqli_fetch_array($q_users)) {
+  $q_inv_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
 
     $q_string  = "select usr_first,usr_last ";
-    $q_string .= "from users ";
-    $q_string .= "where usr_id = " . $a_users['usr_manager'] . " ";
+    $q_string .= "from inv_users ";
+    $q_string .= "where usr_id = " . $a_inv_users['usr_manager'] . " ";
     $q_managers = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_managers = mysqli_fetch_array($q_managers);
 
     print "<tr>\n";
-    print "  <td class=\"ui-widget-content\">" . $a_users['usr_name']  . "</a></td>\n";
-    print "  <td class=\"ui-widget-content\">" . $a_users['usr_first']  . "</a></td>\n";
-    print "  <td class=\"ui-widget-content\">" . $a_users['usr_last']  . "</a></td>\n";
-    print "  <td class=\"ui-widget-content\">" . $a_users['grp_name']  . "</a></td>\n";
-    print "  <td class=\"ui-widget-content\">" . $a_users['tit_name']  . "</a></td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_users['usr_name']  . "</a></td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_users['usr_first']  . "</a></td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_users['usr_last']  . "</a></td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_users['grp_name']  . "</a></td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_users['tit_name']  . "</a></td>\n";
     print "  <td class=\"ui-widget-content\">" . $a_managers['usr_first'] . " " . $a_managers['usr_last'] . "</a></td>\n";
     print "</tr>";
 
   }
 
-  mysqli_free_result($q_users);
+  mysqli_free_result($q_inv_users);
 
 ?>
 </table>

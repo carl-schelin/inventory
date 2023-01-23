@@ -76,11 +76,11 @@
       $product = $and . " inv_product = " . $formVars['product'] . " ";
 
       $q_string  = "select prod_name ";
-      $q_string .= "from products ";
+      $q_string .= "from inv_products ";
       $q_string .= "where prod_id = " . $formVars['product'] . " ";
-      $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_products = mysqli_fetch_array($q_products);
-      $product_name = $a_products['prod_name'];
+      $q_inv_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_products = mysqli_fetch_array($q_inv_products);
+      $product_name = $a_inv_products['prod_name'];
 
       if ($formVars['project'] > 0) {
         $product .= " and inv_project = " . $formVars['project'];
@@ -88,11 +88,11 @@
         $ampersand = "&";
 
         $q_string  = "select prj_name ";
-        $q_string .= "from projects ";
+        $q_string .= "from inv_projects ";
         $q_string .= "where prj_id = " . $formVars['project'] . " ";
-        $q_projects = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        $a_projects = mysqli_fetch_array($q_projects);
-        $project_name = $a_projects['prj_name'];
+        $q_inv_projects = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_inv_projects = mysqli_fetch_array($q_inv_projects);
+        $project_name = $a_inv_projects['prj_name'];
 
       }
       $and = " and";
@@ -290,18 +290,18 @@
   $today = date('Y-m-d');
 
   $q_string  = "select prod_id,prod_name,COUNT(inv_id) ";
-  $q_string .= "from products ";
-  $q_string .= "left join inventory on inventory.inv_product = products.prod_id ";
-  $q_string .= "left join hardware  on hardware.hw_companyid = inventory.inv_id ";
-  $q_string .= "left join locations on locations.loc_id      = inventory.inv_location ";
-  $q_string .= "left join cities    on cities.ct_id          = locations.loc_city ";
-  $q_string .= "left join timezones on timezones.zone_id     = inventory.inv_zone ";
-  $q_string .= "left join models    on models.mod_id         = hardware.hw_vendorid ";
-  $q_string .= "left join a_groups    on a_groups.grp_id         = inventory.inv_manager ";
+  $q_string .= "from inv_products ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_product = inv_products.prod_id ";
+  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inv_inventory.inv_id ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id      = inv_inventory.inv_location ";
+  $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city ";
+  $q_string .= "left join inv_timezones on inv_timezones.zone_id     = inv_inventory.inv_zone ";
+  $q_string .= "left join inv_models    on inv_models.mod_id         = inv_hardware.hw_vendorid ";
+  $q_string .= "left join inv_groups    on inv_groups.grp_id         = inv_inventory.inv_manager ";
   $q_string .= $group . $product . $inwork . $location . $type . " ";
   $q_string .= "group by prod_name ";
-  $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_products = mysqli_fetch_array($q_products)) {
+  $q_inv_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_products = mysqli_fetch_array($q_inv_products)) {
 
     $sweol = 0;
     $swuncounted = 0;
@@ -309,11 +309,11 @@
     $hwuncounted = 0;
     $hwtotal = 0;
     $hardware = 0;
-    $totalservers += $a_products['COUNT(inv_id)'];
+    $totalservers += $a_inv_products['COUNT(inv_id)'];
 
     if ($formVars['product'] > 0) {
       $q_string  = "select inv_id,inv_name,inv_virtual ";
-      $q_string .= "from inventory ";
+      $q_string .= "from inv_inventory ";
       $q_string .= "where inv_status = 0 and inv_product = " . $formVars['product'] . " ";
       if ($formVars['project'] > 0) {
         $q_string .= "and inv_project = " . $formVars['project'] . " ";
@@ -322,32 +322,32 @@
         $q_string .= "and inv_manager = " . $formVars['group'] . " ";
       }
       $q_string .= "order by inv_name ";
-      $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+      $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
         $q_string  = "select ven_name,mod_name,mod_eol,mod_virtual,hw_purchased ";
-        $q_string .= "from models ";
-        $q_string .= "left join hardware on hardware.hw_vendorid = models.mod_id ";
-        $q_string .= "left join vendors  on vendors.ven_id       = models.mod_vendor ";
-        $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_primary = 1 and hw_deleted = 0 ";
-        $q_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_models = mysqli_fetch_array($q_models)) {
-          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inventory['inv_id'] . "#hardware\" target=\"_blank\">";
+        $q_string .= "from inv_models ";
+        $q_string .= "left join inv_hardware on inv_hardware.hw_vendorid = inv_models.mod_id ";
+        $q_string .= "left join inv_vendors  on inv_vendors.ven_id       = inv_models.mod_vendor ";
+        $q_string .= "where hw_companyid = " . $a_inv_inventory['inv_id'] . " and hw_primary = 1 and hw_deleted = 0 ";
+        $q_inv_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inv_models = mysqli_fetch_array($q_inv_models)) {
+          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inv_inventory['inv_id'] . "#hardware\" target=\"_blank\">";
           $linkend = "</a>";
 
           $newdate = '1971-01-01';
-          if ($a_models['mod_virtual'] == 0) {
-            if ($a_models['ven_name'] == 'Dell') {
+          if ($a_inv_models['mod_virtual'] == 0) {
+            if ($a_inv_models['ven_name'] == 'Dell') {
 # For Dell, the end of support is 5 years after the purchase date
-              $date = explode("-", $a_models['hw_purchased']);
+              $date = explode("-", $a_inv_models['hw_purchased']);
               $support = mktime(0,0,0,$date[1],$date[2],$date[0] + 5);
               $newdate = date("Y-m-d",$support);
             } else {
-              if ($a_models['mod_eol'] == '') {
-                $a_models['mod_eol'] = '1971-01-01';
+              if ($a_inv_models['mod_eol'] == '') {
+                $a_inv_models['mod_eol'] = '1971-01-01';
               }
 # just commonalizing the newdate value for the check
-              $newdate = $a_models['mod_eol'];
+              $newdate = $a_inv_models['mod_eol'];
             }
 
             if ($newdate == '1971-01-01') {
@@ -367,48 +367,48 @@
 
           if ($formVars['csv'] == 'false') {
             print "<tr>\n";
-            print "  <td class=\"" . $class . "\">"        . $linkstart . $a_inventory['inv_name'] . $linkend . "</td>\n";
+            print "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_inventory['inv_name'] . $linkend . "</td>\n";
             print "  <td class=\"" . $class . " delete\">" . "Hardware"                                       . "</td>\n";
-            print "  <td class=\"" . $class . "\">"        . $a_models['ven_name']                            . "</td>\n";
-            print "  <td class=\"" . $class . "\">"        . $a_models['mod_name']                            . "</td>\n";
+            print "  <td class=\"" . $class . "\">"        . $a_inv_models['ven_name']                            . "</td>\n";
+            print "  <td class=\"" . $class . "\">"        . $a_inv_models['mod_name']                            . "</td>\n";
             print "  <td class=\"" . $class . " delete\">" . $newdate                                         . "</td>\n";
             print "</tr>\n";
           } else {
-            print "\"" . $a_inventory['inv_name'] . "\",";
+            print "\"" . $a_inv_inventory['inv_name'] . "\",";
             print "\"" . "Hardware"               . "\",";
-            print "\"" . $a_models['ven_name']    . "\",";
-            print "\"" . $a_models['mod_name']    . "\",";
+            print "\"" . $a_inv_models['ven_name']    . "\",";
+            print "\"" . $a_inv_models['mod_name']    . "\",";
             print "\"" . $newdate                 . "\"\n";
           }
 
         }
 
         $q_string  = "select sw_software,ven_name,typ_name,sw_eol ";
-        $q_string .= "from software ";
-        $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
-        $q_string .= "left join inventory on inventory.inv_id = svr_software.svr_companyid ";
-        $q_string .= "left join vendors on vendors.ven_id = software.sw_vendor ";
-        $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
-        $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " ";
+        $q_string .= "from inv_software ";
+        $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = inv_software.sw_id ";
+        $q_string .= "left join inv_inventory    on inv_inventory.inv_id            = inv_svr_software.svr_companyid ";
+        $q_string .= "left join inv_vendors      on inv_vendors.ven_id              = inv_software.sw_vendor ";
+        $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = inv_software.sw_type ";
+        $q_string .= "where svr_companyid = " . $a_inv_inventory['inv_id'] . " ";
         $q_string .= "order by sw_software ";
-        $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_software = mysqli_fetch_array($q_software)) {
+        $q_inv_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inv_software = mysqli_fetch_array($q_inv_software)) {
 
           $inv_name = '';
 
-          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inventory['inv_id'] . "#sofware\" target=\"_blank\">";
+          $linkstart = "<a href=\"" . $Showroot . "/inventory.php?server="  . $a_inv_inventory['inv_id'] . "#sofware\" target=\"_blank\">";
           $linkend = "</a>";
 
-          if ($a_software['sw_eol'] == '1971-01-01') {
+          if ($a_inv_software['sw_eol'] == '1971-01-01') {
             $swuncounted++;
           } else {
-            if ($a_software['sw_eol'] < $today) {
+            if ($a_inv_software['sw_eol'] < $today) {
               $sweol++;
             }
           }
 
           $class = "ui-widget-content";
-          if ($a_software['sw_eol'] < $today && $a_software['sw_eol'] != '1971-01-01') {
+          if ($a_inv_software['sw_eol'] < $today && $a_inv_software['sw_eol'] != '1971-01-01') {
             $class = "ui-state-error";
           }
 
@@ -416,67 +416,67 @@
             print "<tr>\n";
             print "  <td class=\"" . $class . "\">"        . $linkstart . $inv_name . $linkend . "</td>\n";
             print "  <td class=\"" . $class . " delete\">" . "Software"                        . "</td>\n";
-            print "  <td class=\"" . $class . "\">"        . $a_software['sw_vendor']          . "</td>\n";
-            print "  <td class=\"" . $class . "\">"        . $a_software['sw_software']        . "</td>\n";
-            print "  <td class=\"" . $class . " delete\">" . $a_software['sw_eol']             . "</td>\n";
+            print "  <td class=\"" . $class . "\">"        . $a_inv_software['sw_vendor']          . "</td>\n";
+            print "  <td class=\"" . $class . "\">"        . $a_inv_software['sw_software']        . "</td>\n";
+            print "  <td class=\"" . $class . " delete\">" . $a_inv_software['sw_eol']             . "</td>\n";
             print "</tr>\n";
           } else {
-            print "\"" . $a_inventory['inv_name']     . "\",";
+            print "\"" . $a_inv_inventory['inv_name']     . "\",";
             print "\"" . "Software"                   . "\",";
-            print "\"" . $a_software['sw_vendor']     . "\",";
-            print "\"" . $a_software['sw_software']   . "\",";
-            print "\"" . $a_software['sw_eol']        . "\"\n";
+            print "\"" . $a_inv_software['sw_vendor']     . "\",";
+            print "\"" . $a_inv_software['sw_software']   . "\",";
+            print "\"" . $a_inv_software['sw_eol']        . "\"\n";
           }
         }
       }
     } else {
 
       $q_string  = "select sw_eol ";
-      $q_string .= "from software ";
-      $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
-      $q_string .= "left join inventory on inventory.inv_id = svr_software.svr_companyid ";
-      $q_string .= "where inv_product = " . $a_products['prod_id'] . " and inv_status = 0 ";
+      $q_string .= "from inv_software ";
+      $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = inv_software.sw_id ";
+      $q_string .= "left join inv_inventory    on inv_inventory.inv_id            = inv_svr_software.svr_companyid ";
+      $q_string .= "where inv_product = " . $a_inv_products['prod_id'] . " and inv_status = 0 ";
       if ($formVars['group'] > 0) {
         $q_string .= "and inv_manager = " . $formVars['group'] . " ";
       }
-      $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      while ($a_software = mysqli_fetch_array($q_software)) {
-        if ($a_software['sw_eol'] == '1971-01-01') {
+      $q_inv_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_inv_software = mysqli_fetch_array($q_inv_software)) {
+        if ($a_inv_software['sw_eol'] == '1971-01-01') {
           $swuncounted++;
           $totalswuncounted++;
         } else {
-          if ($a_software['sw_eol'] < $today) {
+          if ($a_inv_software['sw_eol'] < $today) {
             $sweol++;
             $totalsweol++;
           }
         }
       }
       $q_string  = "select ven_name,hw_purchased,mod_eol ";
-      $q_string .= "from hardware ";
-      $q_string .= "left join models  on models.mod_id  = hardware.hw_vendorid ";
-      $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
-      $q_string .= "left join inventory on inventory.inv_id = hardware.hw_companyid ";
-      $q_string .= "where inv_product = " . $a_products['prod_id'] . " and inv_status = 0 and hw_primary = 1 and hw_deleted = 0 and mod_virtual = 0 ";
+      $q_string .= "from inv_hardware ";
+      $q_string .= "left join inv_models    on inv_models.mod_id    = inv_hardware.hw_vendorid ";
+      $q_string .= "left join inv_vendors   on inv_vendors.ven_id   = inv_models.mod_vendor ";
+      $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_hardware.hw_companyid ";
+      $q_string .= "where inv_product = " . $a_inv_products['prod_id'] . " and inv_status = 0 and hw_primary = 1 and hw_deleted = 0 and mod_virtual = 0 ";
       if ($formVars['group'] > 0) {
         $q_string .= "and inv_manager = " . $formVars['group'] . " ";
       }
-      $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+      $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
         $hwtotal++;
         $totalhardware++;
 
-        if ($a_hardware['ven_name'] == 'Dell') {
+        if ($a_inv_hardware['ven_name'] == 'Dell') {
 # For Dell, the end of support is 5 years after the purchase date
-          $date = explode("-", $a_hardware['hw_purchased']);
+          $date = explode("-", $a_inv_hardware['hw_purchased']);
           $support = mktime(0,0,0,$date[1],$date[2],$date[0] + 5);
           $newdate = date("Y-m-d",$support);
         } else {
-          if ($a_hardware['mod_eol'] == '') {
-            $a_hardware['mod_eol'] = '1971-01-01';
+          if ($a_inv_hardware['mod_eol'] == '') {
+            $a_inv_hardware['mod_eol'] = '1971-01-01';
           }
 # just commonalizing the newdate value for the check
-          $newdate = $a_hardware['mod_eol'];
+          $newdate = $a_inv_hardware['mod_eol'];
         }
 
         if ($newdate == '1971-01-01') {
@@ -490,7 +490,7 @@
         }
       }
 
-      $linkstart = "<a href=\"" . $Reportroot . "/eolreport.php" . $argument . $ampersand . "product=" . $a_products['prod_id'] . "\" target=\"_blank\">";
+      $linkstart = "<a href=\"" . $Reportroot . "/eolreport.php" . $argument . $ampersand . "product=" . $a_inv_products['prod_id'] . "\" target=\"_blank\">";
       $linkend = "</a>";
 
       $class = "ui-widget-content";
@@ -503,8 +503,8 @@
 
       if ($formVars['csv'] == 'false') {
         print "<tr>\n";
-        print "  <td class=\"" . $class . "\">"        . $linkstart . $a_products['prod_name'] . $linkend   . "</td>\n";
-        print "  <td class=\"" . $class . " delete\">"              . $a_products['COUNT(inv_id)']          . "</td>\n";
+        print "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_products['prod_name'] . $linkend   . "</td>\n";
+        print "  <td class=\"" . $class . " delete\">"              . $a_inv_products['COUNT(inv_id)']          . "</td>\n";
         print "  <td class=\"" . $class . " delete\">"              . $sweol                                . "</td>\n";
         print "  <td class=\"" . $class . " delete\">"              . $swuncounted                          . "</td>\n";
         print "  <td class=\"" . $class . " delete\">"              . $hwtotal                              . "</td>\n";
@@ -512,8 +512,8 @@
         print "  <td class=\"" . $class . " delete\">"              . $hwuncounted                          . "</td>\n";
         print "</tr>\n";
       } else {
-        print "\"" . $a_products['prod_name']       . "\",";
-        print "\"" . $a_products['COUNT(inv_id)']   . "\",";
+        print "\"" . $a_inv_products['prod_name']       . "\",";
+        print "\"" . $a_inv_products['COUNT(inv_id)']   . "\",";
         print "\"" . $sweol                         . "\",";
         print "\"" . $swuncounted                   . "\",";
         print "\"" . $hwtotal                       . "\",";

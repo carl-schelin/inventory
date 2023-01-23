@@ -4,7 +4,7 @@
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
 # This script reads in a colon delimited passwd and group file from each live server
-# which are parsed by this script and then imported into the syspwd and sysgrp tables.
+# which are parsed by this script and then imported into the inv_syspwd and sysgrp tables.
 
   include('settings.php');
   include($Sitepath . '/function.php');
@@ -102,12 +102,12 @@
   $date = date('Y-m-d');
 
   $q_string  = "select inv_name ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_id = " . $serverid;
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_inventory = mysqli_fetch_array($q_inventory);
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
-  print "\n" . $filetype . $a_inventory['inv_name'] . "!";
+  print "\n" . $filetype . $a_inv_inventory['inv_name'] . "!";
 
   $file = fopen($filename, "r") or die;
   while(!feof($file)) {
@@ -135,10 +135,10 @@
 # need to see if the user exists
       if ($value[0] != '') {
         $q_string  = "select pwd_id ";
-        $q_string .= "from syspwd ";
+        $q_string .= "from inv_syspwd ";
         $q_string .= "where pwd_companyid = " . $serverid . " and pwd_user = \"" . $value[0] . "\" ";
-        $q_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_syspwd = mysqli_fetch_array($q_syspwd);
+        $q_inv_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_inv_syspwd = mysqli_fetch_array($q_inv_syspwd);
 
         $q_string = 
           "pwd_companyid =   " . $serverid . "," . 
@@ -150,11 +150,11 @@
           "pwd_shell     = \"" . $value[6] . "\"," . 
           "pwd_update    = \"" . $date     . "\"";
 
-        if (mysqli_num_rows($q_syspwd) == 0) {
-          $query = "insert into syspwd set pwd_id = null," . $q_string;
+        if (mysqli_num_rows($q_inv_syspwd) == 0) {
+          $query = "insert into inv_syspwd set pwd_id = null," . $q_string;
           $status = 'i';
         } else {
-          $query = "update syspwd set " . $q_string . " where pwd_id = " . $a_syspwd['pwd_id'];
+          $query = "update inv_syspwd set " . $q_string . " where pwd_id = " . $a_inv_syspwd['pwd_id'];
           $status = 'u';
         }
 
@@ -175,37 +175,37 @@
       if (isset($value[3]) && $value[3] != '') {
 # get the pwd_id of the user
         $q_string  = "select pwd_id ";
-        $q_string .= "from syspwd ";
+        $q_string .= "from inv_syspwd ";
         $q_string .= "where pwd_companyid = " . $serverid . " and pwd_user = \"" . $value[0] . "\" ";
-        $q_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_syspwd = mysqli_fetch_array($q_syspwd);
+        $q_inv_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_inv_syspwd = mysqli_fetch_array($q_inv_syspwd);
 
 # get the grp_id of the group
         $q_string  = "select grp_id ";
-        $q_string .= "from sysgrp ";
+        $q_string .= "from inv_sysgrp ";
         $q_string .= "where grp_companyid = " . $serverid . " and grp_gid = \"" . $value[3] . "\" ";
-        $q_sysgrp = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_sysgrp = mysqli_fetch_array($q_sysgrp);
+        $q_inv_sysgrp = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_inv_sysgrp = mysqli_fetch_array($q_inv_sysgrp);
 
-        if (mysqli_num_rows($q_syspwd) > 0 && mysqli_num_rows($q_sysgrp) > 0) {
+        if (mysqli_num_rows($q_inv_syspwd) > 0 && mysqli_num_rows($q_inv_sysgrp) > 0) {
 # now see if they're in the members table
           $q_string  = "select mem_id ";
-          $q_string .= "from sysgrp_members ";
-          $q_string .= "where mem_uid = " . $a_syspwd['pwd_id'] . " and mem_gid = " . $a_sysgrp['grp_id'] . " ";
-          $q_sysgrp_members = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          $a_sysgrp_members = mysqli_fetch_array($q_sysgrp_members);
+          $q_string .= "from inv_sysgrp_members ";
+          $q_string .= "where mem_uid = " . $a_inv_syspwd['pwd_id'] . " and mem_gid = " . $a_inv_sysgrp['grp_id'] . " ";
+          $q_inv_sysgrp_members = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_inv_sysgrp_members = mysqli_fetch_array($q_inv_sysgrp_members);
 
 # set up the string
           $q_string = 
-            "mem_uid    =   " . $a_syspwd['pwd_id'] . "," . 
-            "mem_gid    =   " . $a_sysgrp['grp_id'] . "," . 
+            "mem_uid    =   " . $a_inv_syspwd['pwd_id'] . "," . 
+            "mem_gid    =   " . $a_inv_sysgrp['grp_id'] . "," . 
             "mem_update = \"" . $date . "\"";
 
-          if (mysqli_num_rows($q_sysgrp_members) == 0) {
-            $query = "insert into sysgrp_members set mem_id = null," . $q_string;
+          if (mysqli_num_rows($q_inv_sysgrp_members) == 0) {
+            $query = "insert into inv_sysgrp_members set mem_id = null," . $q_string;
             $status = "M";
           } else {
-            $query = "update sysgrp_members set " . $q_string . " where mem_id = " . $a_sysgrp_members['mem_id'];
+            $query = "update inv_sysgrp_members set " . $q_string . " where mem_id = " . $a_inv_sysgrp_members['mem_id'];
             $status = "m";
           }
 
@@ -233,10 +233,10 @@
 # need to see if the group exists
       if ($value[0] != '' && $value[2] != '') {
         $q_string  = "select grp_id ";
-        $q_string .= "from sysgrp ";
+        $q_string .= "from inv_sysgrp ";
         $q_string .= "where grp_companyid = " . $serverid . " and grp_name = \"" . $value[0] . "\" ";
-        $q_sysgrp = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_sysgrp = mysqli_fetch_array($q_sysgrp);
+        $q_inv_sysgrp = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_inv_sysgrp = mysqli_fetch_array($q_inv_sysgrp);
 
         $q_string = 
           "grp_companyid =   " . $serverid . "," . 
@@ -244,11 +244,11 @@
           "grp_gid       =   " . $value[2] . "," . 
           "grp_update    = \"" . $date     . "\"";
 
-        if (mysqli_num_rows($q_sysgrp) == 0) {
-          $query = "insert into sysgrp set grp_id = null," . $q_string;
+        if (mysqli_num_rows($q_inv_sysgrp) == 0) {
+          $query = "insert into inv_sysgrp set grp_id = null," . $q_string;
           $status = 'I';
         } else {
-          $query = "update sysgrp set " . $q_string . " where grp_id = " . $a_sysgrp['grp_id'];
+          $query = "update inv_sysgrp set " . $q_string . " where grp_id = " . $a_inv_sysgrp['grp_id'];
           $status = 'U';
         }
 
@@ -270,37 +270,37 @@
           foreach ($users as &$username) {
 # get the pwd_id of the user
             $q_string  = "select pwd_id ";
-            $q_string .= "from syspwd ";
+            $q_string .= "from inv_syspwd ";
             $q_string .= "where pwd_companyid = " . $serverid . " and pwd_user = \"" . $username . "\" ";
-            $q_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-            $a_syspwd = mysqli_fetch_array($q_syspwd);
+            $q_inv_syspwd = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $a_inv_syspwd = mysqli_fetch_array($q_inv_syspwd);
 
 # get the grp_id of the group
             $q_string  = "select grp_id ";
-            $q_string .= "from sysgrp ";
+            $q_string .= "from inv_sysgrp ";
             $q_string .= "where grp_companyid = " . $serverid . " and grp_name = \"" . $value[0] . "\" ";
-            $q_sysgrp = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-            $a_sysgrp = mysqli_fetch_array($q_sysgrp);
+            $q_inv_sysgrp = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            $a_inv_sysgrp = mysqli_fetch_array($q_inv_sysgrp);
 
-            if (mysqli_num_rows($q_syspwd) > 0 && mysqli_num_rows($q_sysgrp) > 0) {
+            if (mysqli_num_rows($q_inv_syspwd) > 0 && mysqli_num_rows($q_inv_sysgrp) > 0) {
 # now see if they're in the members table
               $q_string  = "select mem_id ";
-              $q_string .= "from sysgrp_members ";
-              $q_string .= "where mem_uid = " . $a_syspwd['pwd_id'] . " and mem_gid = " . $a_sysgrp['grp_id'] . " ";
-              $q_sysgrp_members = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              $a_sysgrp_members = mysqli_fetch_array($q_sysgrp_members);
+              $q_string .= "from inv_sysgrp_members ";
+              $q_string .= "where mem_uid = " . $a_inv_syspwd['pwd_id'] . " and mem_gid = " . $a_inv_sysgrp['grp_id'] . " ";
+              $q_inv_sysgrp_members = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              $a_inv_sysgrp_members = mysqli_fetch_array($q_inv_sysgrp_members);
 
 # set up the string
               $q_string = 
-                "mem_uid    =   " . $a_syspwd['pwd_id'] . "," . 
-                "mem_gid    =   " . $a_sysgrp['grp_id'] . "," . 
+                "mem_uid    =   " . $a_inv_syspwd['pwd_id'] . "," . 
+                "mem_gid    =   " . $a_inv_sysgrp['grp_id'] . "," . 
                 "mem_update = \"" . $date               . "\"";
 
-              if (mysqli_num_rows($q_sysgrp_members) == 0) {
-                $query = "insert into sysgrp_members set mem_id = null," . $q_string;
+              if (mysqli_num_rows($q_inv_sysgrp_members) == 0) {
+                $query = "insert into inv_sysgrp_members set mem_id = null," . $q_string;
                 $status = "M";
               } else {
-                $query = "update sysgrp_members set " . $q_string . " where mem_id = " . $a_sysgrp_members['mem_id'];
+                $query = "update inv_sysgrp_members set " . $q_string . " where mem_id = " . $a_inv_sysgrp_members['mem_id'];
                 $status = "m";
               }
 

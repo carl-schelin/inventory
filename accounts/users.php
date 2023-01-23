@@ -502,12 +502,12 @@ a new certificate and the amount of time to get approval to apply the certificat
   <td class="ui-widget-content">Edit Level <select name="usr_level">
 <?php
   $q_string  = "select lvl_id,lvl_name ";
-  $q_string .= "from levels ";
+  $q_string .= "from inv_levels ";
   $q_string .= "where lvl_disabled = 0 ";
   $q_string .= "order by lvl_id";
-  $q_levels = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_levels = mysqli_fetch_array($q_levels)) {
-    print "<option value=\"" . $a_levels['lvl_id'] . "\">" . $a_levels['lvl_name'] . "</option>\n";
+  $q_inv_levels = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_levels = mysqli_fetch_array($q_inv_levels)) {
+    print "<option value=\"" . $a_inv_levels['lvl_id'] . "\">" . $a_inv_levels['lvl_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -531,11 +531,11 @@ a new certificate and the amount of time to get approval to apply the certificat
   <td class="ui-widget-content" colspan="2">Title: <select name="usr_title">
 <?php
   $q_string  = "select tit_id,tit_name ";
-  $q_string .= "from titles ";
+  $q_string .= "from inv_titles ";
   $q_string .= "order by tit_name ";
-  $q_titles = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_titles = mysqli_fetch_array($q_titles)) {
-    print "<option value=\"" . $a_titles['tit_id'] . "\">" . $a_titles['tit_name'] . "</option>\n";
+  $q_inv_titles = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_titles = mysqli_fetch_array($q_inv_titles)) {
+    print "<option value=\"" . $a_inv_titles['tit_id'] . "\">" . $a_inv_titles['tit_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -544,12 +544,12 @@ a new certificate and the amount of time to get approval to apply the certificat
   <td class="ui-widget-content">Group <select name="usr_group">
 <?php
   $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from a_groups ";
+  $q_string .= "from inv_groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name";
-  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_groups = mysqli_fetch_array($q_groups)) {
-    print "<option value=\"" . $a_groups['grp_id'] . "\">" . $a_groups['grp_name'] . "</option>\n";
+  $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_groups = mysqli_fetch_array($q_inv_groups)) {
+    print "<option value=\"" . $a_inv_groups['grp_id'] . "\">" . $a_inv_groups['grp_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -558,12 +558,12 @@ a new certificate and the amount of time to get approval to apply the certificat
   <td class="ui-widget-content" colspan="2">Manager: <select name="usr_manager">
 <?php
   $q_string  = "select usr_id,usr_last,usr_first ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first ";
-  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_users = mysqli_fetch_array($q_users)) {
-    print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
+  $q_inv_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
+    print "<option value=\"" . $a_inv_users['usr_id'] . "\">" . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -572,11 +572,11 @@ a new certificate and the amount of time to get approval to apply the certificat
   <td class="ui-widget-content">Inventory Theme <select name="usr_theme">
 <?php
   $q_string  = "select theme_id,theme_title ";
-  $q_string .= "from themes ";
+  $q_string .= "from inv_themes ";
   $q_string .= "order by theme_title";
-  $q_themes = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_themes = mysqli_fetch_array($q_themes)) {
-    print "<option value=\"" . $a_themes['theme_id'] . "\">" . $a_themes['theme_title'] . "</option>\n";
+  $q_inv_themes = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_themes = mysqli_fetch_array($q_inv_themes)) {
+    print "<option value=\"" . $a_inv_themes['theme_id'] . "\">" . $a_inv_themes['theme_title'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -622,12 +622,12 @@ a new certificate and the amount of time to get approval to apply the certificat
   <td class="ui-widget-content">Edit Level <select name="usr_level">
 <?php
   $q_string  = "select lvl_id,lvl_name ";
-  $q_string .= "from levels ";
+  $q_string .= "from inv_levels ";
   $q_string .= "where lvl_disabled = 0 ";
   $q_string .= "order by lvl_id";
-  $q_levels = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_levels = mysqli_fetch_array($q_levels)) {
-    print "<option value=\"" . $a_levels['lvl_id'] . "\">" . $a_levels['lvl_name'] . "</option>\n";
+  $q_inv_levels = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_levels = mysqli_fetch_array($q_inv_levels)) {
+    print "<option value=\"" . $a_inv_levels['lvl_id'] . "\">" . $a_inv_levels['lvl_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -651,11 +651,11 @@ a new certificate and the amount of time to get approval to apply the certificat
   <td class="ui-widget-content" colspan="2">Title: <select name="usr_title">
 <?php
   $q_string  = "select tit_id,tit_name ";
-  $q_string .= "from titles ";
+  $q_string .= "from inv_titles ";
   $q_string .= "order by tit_name ";
-  $q_titles = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_titles = mysqli_fetch_array($q_titles)) {
-    print "<option value=\"" . $a_titles['tit_id'] . "\">" . $a_titles['tit_name'] . "</option>\n";
+  $q_inv_titles = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_titles = mysqli_fetch_array($q_inv_titles)) {
+    print "<option value=\"" . $a_inv_titles['tit_id'] . "\">" . $a_inv_titles['tit_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -664,12 +664,12 @@ a new certificate and the amount of time to get approval to apply the certificat
   <td class="ui-widget-content">Group <select name="usr_group">
 <?php
   $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from a_groups ";
+  $q_string .= "from inv_groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name";
-  $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_groups = mysqli_fetch_array($q_groups)) {
-    print "<option value=\"" . $a_groups['grp_id'] . "\">" . $a_groups['grp_name'] . "</option>\n";
+  $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_groups = mysqli_fetch_array($q_inv_groups)) {
+    print "<option value=\"" . $a_inv_groups['grp_id'] . "\">" . $a_inv_groups['grp_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -678,12 +678,12 @@ a new certificate and the amount of time to get approval to apply the certificat
   <td class="ui-widget-content" colspan="2">Manager: <select name="usr_manager">
 <?php
   $q_string  = "select usr_id,usr_last,usr_first ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first ";
-  $q_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_users = mysqli_fetch_array($q_users)) {
-    print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
+  $q_inv_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
+    print "<option value=\"" . $a_inv_users['usr_id'] . "\">" . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -692,11 +692,11 @@ a new certificate and the amount of time to get approval to apply the certificat
   <td class="ui-widget-content">Inventory Theme <select name="usr_theme">
 <?php
   $q_string  = "select theme_id,theme_title ";
-  $q_string .= "from themes ";
+  $q_string .= "from inv_themes ";
   $q_string .= "order by theme_title";
-  $q_themes = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_themes = mysqli_fetch_array($q_themes)) {
-    print "<option value=\"" . $a_themes['theme_id'] . "\">" . $a_themes['theme_title'] . "</option>\n";
+  $q_inv_themes = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_themes = mysqli_fetch_array($q_inv_themes)) {
+    print "<option value=\"" . $a_inv_themes['theme_id'] . "\">" . $a_inv_themes['theme_title'] . "</option>\n";
   }
 ?>
 </select></td>

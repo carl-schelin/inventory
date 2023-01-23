@@ -19,22 +19,22 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from models");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_models");
 
       $q_string  = "select mod_vendor,mod_name,mod_size,mod_eopur,mod_eoship,mod_eol ";
-      $q_string .= "from models ";
+      $q_string .= "from inv_models ";
       $q_string .= "where mod_id = " . $formVars['id'];
-      $q_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_models = mysqli_fetch_array($q_models);
-      mysqli_free_result($q_models);
+      $q_inv_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_models = mysqli_fetch_array($q_inv_models);
+      mysqli_free_result($q_inv_models);
 
-      $modvendor = return_Index($db, $a_models['mod_vendor'], "select ven_id from vendors order by ven_name");
+      $modvendor = return_Index($db, $a_inv_models['mod_vendor'], "select ven_id from inv_vendors order by ven_name");
 
-      print "document.formUpdate.mod_name.value = '"   . mysqli_real_escape_string($db, $a_models['mod_name'])   . "';\n";
-      print "document.formUpdate.mod_size.value = '"   . mysqli_real_escape_string($db, $a_models['mod_size'])   . "';\n";
-      print "document.formUpdate.mod_eopur.value = '"  . mysqli_real_escape_string($db, $a_models['mod_eopur'])  . "';\n";
-      print "document.formUpdate.mod_eoship.value = '" . mysqli_real_escape_string($db, $a_models['mod_eoship']) . "';\n";
-      print "document.formUpdate.mod_eol.value = '"    . mysqli_real_escape_string($db, $a_models['mod_eol'])    . "';\n";
+      print "document.formUpdate.mod_name.value = '"   . mysqli_real_escape_string($db, $a_inv_models['mod_name'])   . "';\n";
+      print "document.formUpdate.mod_size.value = '"   . mysqli_real_escape_string($db, $a_inv_models['mod_size'])   . "';\n";
+      print "document.formUpdate.mod_eopur.value = '"  . mysqli_real_escape_string($db, $a_inv_models['mod_eopur'])  . "';\n";
+      print "document.formUpdate.mod_eoship.value = '" . mysqli_real_escape_string($db, $a_inv_models['mod_eoship']) . "';\n";
+      print "document.formUpdate.mod_eol.value = '"    . mysqli_real_escape_string($db, $a_inv_models['mod_eol'])    . "';\n";
 
       print "document.formUpdate.mod_vendor['" . $modvendor . "'].selected = true;\n";
 

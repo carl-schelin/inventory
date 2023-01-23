@@ -37,10 +37,10 @@
             "org_manager   =   " . $formVars['org_name'];
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into organizations set org_id = null," . $q_string;
+            $q_string = "insert into inv_organizations set org_id = null," . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update organizations set " . $q_string . " where org_id = " . $formVars['id'];
+            $q_string = "update inv_organizations set " . $q_string . " where org_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['org_name']);
@@ -67,30 +67,30 @@
       $output .= "</tr>\n";
 
       $q_string  = "select org_id,org_name,usr_last,usr_first ";
-      $q_string .= "from organizations ";
-      $q_string .= "left join users on users.usr_id = organizations.org_manager ";
+      $q_string .= "from inv_organizations ";
+      $q_string .= "left join inv_users on inv_users.usr_id = inv_organizations.org_manager ";
       $q_string .= "order by org_name ";
-      $q_organizations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_organizations) > 0) {
-        while ($a_organizations = mysqli_fetch_array($q_organizations)) {
+      $q_inv_organizations = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_organizations) > 0) {
+        while ($a_inv_organizations = mysqli_fetch_array($q_inv_organizations)) {
 
           $total = 0;
           $q_string  = "select bus_id ";
-          $q_string .= "from business ";
-          $q_string .= "where bus_organization = " . $a_organizations['org_id'] . " ";
-          $q_business = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_business) > 0) {
-            while ($a_business = mysqli_fetch_array($q_business)) {
+          $q_string .= "from inv_business ";
+          $q_string .= "where bus_organization = " . $a_inv_organizations['org_id'] . " ";
+          $q_inv_business = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_business) > 0) {
+            while ($a_inv_business = mysqli_fetch_array($q_inv_business)) {
               $total++;
             }
           }
 
           if (check_userlevel($db, $AL_Admin)) {
-            $linkstart = "<a href=\"#\" onclick=\"show_file('organization.fill.php?id=" . $a_organizations['org_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+            $linkstart = "<a href=\"#\" onclick=\"show_file('organization.fill.php?id=" . $a_inv_organizations['org_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
             if ($total > 0) {
               $linkdel = 'Members &gt; 0';
             } else {
-              $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('organization.del.php?id=" . $a_organizations['org_id'] . "');\">";
+              $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('organization.del.php?id=" . $a_inv_organizations['org_id'] . "');\">";
             }
             $linkend   = "</a>";
           } else {
@@ -101,8 +101,8 @@
 
           $output .= "<tr>\n";
           $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_organizations['org_name'] . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"                     . $a_organizations['usr_last'] . ", " . $a_organizations['usr_first'] . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_organizations['org_name'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $a_inv_organizations['usr_last'] . ", " . $a_inv_organizations['usr_first'] . "</td>\n";
           $output .= "  <td class=\"ui-widget-content delete\">"              . $total . "</td>\n";
           $output .= "</tr>\n";
         }
@@ -114,7 +114,7 @@
 
       $output .= "</table>\n";
 
-      mysqli_free_result($q_organizations);
+      mysqli_free_result($q_inv_organizations);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 

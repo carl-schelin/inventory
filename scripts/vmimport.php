@@ -107,46 +107,46 @@
 
   if ($fqdn[0] != '') {
     $q_string  = "select inv_id ";
-    $q_string .= "from inventory ";
+    $q_string .= "from inv_inventory ";
     $q_string .= "where inv_name = \"" . $fqdn[0] . "\" ";
-    $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    if (mysqli_num_rows($q_inventory) > 0) {
+    $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_inv_inventory) > 0) {
       print "Error: Server already exists in the Inventory\n";
     } else {
 # get the appadmin group id
       $inv_appadmin = 0;
       $q_string  = "select grp_id ";
-      $q_string .= "from a_groups ";
+      $q_string .= "from inv_groups ";
       $q_string .= "where grp_name = \"" . $appadmin . "\" and grp_disabled = 0 ";
-      $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_groups) == 0) {
+      $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_groups) == 0) {
         $grp_test = explode(" ", $appadmin);
         if ($debug == 'yes') {
            print "Unable to locate this group: " . $appadmin . ", trying " . $grp_test[0] . "\n";
         }
 
         $q_string  = "select grp_id,grp_name ";
-        $q_string .= "from a_groups ";
+        $q_string .= "from inv_groups ";
         $q_string .= "where grp_name like \"%" . $grp_test[0] . "%\" and grp_disabled = 0 ";
-        $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        if (mysqli_num_rows($q_groups) == 0) {
+        $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_inv_groups) == 0) {
           $error .= "Unable to locate AppSupport group: " . $appadmin . " ";
         } else {
-          if (mysqli_num_rows($q_groups) == 1) {
-            $a_groups = mysqli_fetch_array($q_groups);
-            $inv_appadmin = $a_groups['grp_id'];
-            $appadmin = $a_groups['grp_name'];
+          if (mysqli_num_rows($q_inv_groups) == 1) {
+            $a_inv_groups = mysqli_fetch_array($q_inv_groups);
+            $inv_appadmin = $a_inv_groups['grp_id'];
+            $appadmin = $a_inv_groups['grp_name'];
           } else {
             $error .= "Unable to locate AppSupport group " . $appadmin . " but found these possibilities:";
-            while ($a_groups = mysqli_fetch_array($q_groups)) {
-              $error .= " " . $a_groups['grp_name'];
+            while ($a_inv_groups = mysqli_fetch_array($q_inv_groups)) {
+              $error .= " " . $a_inv_groups['grp_name'];
             }
             $error .= " ";
           }
         }
       } else {
-        $a_groups = mysqli_fetch_array($q_groups);
-        $inv_appadmin = $a_groups['grp_id'];
+        $a_inv_groups = mysqli_fetch_array($q_inv_groups);
+        $inv_appadmin = $a_inv_groups['grp_id'];
         if ($debug == 'yes') {
            print "Found this group: " . $appadmin . ", ID " . $inv_appadmin . "\n";
         }
@@ -155,70 +155,70 @@
 # get the environment. need to get this before we get the location
       $inv_env = 0;
       $q_string  = "select env_id ";
-      $q_string .= "from environment ";
+      $q_string .= "from inv_environment ";
       $q_string .= "where env_name = \"" . $environment . "\" ";
-      $q_environment = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_environment) == 0) {
+      $q_inv_environment = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_environment) == 0) {
         $error .= "Unable to locate environment: " . $environment . " ";
       } else {
-        $a_environment = mysqli_fetch_array($q_environment);
+        $a_inv_environment = mysqli_fetch_array($q_inv_environment);
 
-        $inv_env = $a_environment['env_id'];
+        $inv_env = $a_inv_environment['env_id'];
       }
 
 # get the location. need to compare to the environment and just get the first instance since most earlier servers were L&S data center.
       $inv_location = 0;
       $q_string  = "select loc_id ";
-      $q_string .= "from locations ";
+      $q_string .= "from inv_locations ";
       $q_string .= "where loc_identity = \"" . $location . "\" and loc_environment = " . $inv_env . " and loc_type = 1 ";
       $q_string .= "order by loc_id ";
       $q_string .= "limit 1 ";
-      $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_locations) == 0) {
+      $q_inv_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_locations) == 0) {
         $error .= "Unable to identify location: " . $location . " ";
       } else {
-        $a_locations = mysqli_fetch_array($q_locations);
+        $a_inv_locations = mysqli_fetch_array($q_inv_locations);
 
-        $inv_location = $a_locations['loc_id'];
+        $inv_location = $a_inv_locations['loc_id'];
       }
 
 # get the product id
       $inv_product = 0;
       $q_string  = "select prod_id ";
-      $q_string .= "from products ";
+      $q_string .= "from inv_products ";
       $q_string .= "where prod_name = \"" . $product . "\" ";
-      $q_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_products) == 0) {
+      $q_inv_products = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_products) == 0) {
          $error .= "Unable to locate product: " . $product . " ";
       } else {
-        $a_products = mysqli_fetch_array($q_products);
+        $a_inv_products = mysqli_fetch_array($q_inv_products);
 
-        $inv_product = $a_products['prod_id'];
+        $inv_product = $a_inv_products['prod_id'];
       }
 
 # get the project id
       $inv_project = 0;
       $q_string  = "select prj_id ";
-      $q_string .= "from projects ";
+      $q_string .= "from inv_projects ";
       $q_string .= "where prj_name = \"" . $project . "\" and prj_product = " . $inv_product . " ";
-      $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_projects) == 0) {
+      $q_inv_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_projects) == 0) {
         $error .= "Unable to locate project: " . $project . " in product: " . $product . " ";
 
         $q_string  = "select prj_name ";
-        $q_string .= "from projects ";
+        $q_string .= "from inv_projects ";
         $q_string .= "where prj_product = " . $inv_product . " ";
-        $q_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        if (mysqli_num_rows($q_projects) > 0) {
+        $q_inv_projects = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_inv_projects) > 0) {
           $error .= "\nAvailable Projects:";
-          while ($a_projects = mysqli_fetch_array($q_projects)) {
-            $error .= "\n" . $a_projects['prj_name'];
+          while ($a_inv_projects = mysqli_fetch_array($q_inv_projects)) {
+            $error .= "\n" . $a_inv_projects['prj_name'];
           }
         }
       } else {
-        $a_projects = mysqli_fetch_array($q_projects);
+        $a_inv_projects = mysqli_fetch_array($q_inv_projects);
 
-        $inv_project = $a_projects['prj_id'];
+        $inv_project = $a_inv_projects['prj_id'];
       }
 
       if ($error != "ERROR: ") {
@@ -250,7 +250,7 @@
 
         print "Adding Server...\n";
 
-        $q_string  = "insert into inventory set inv_id = null,inv_manager = 1,";
+        $q_string  = "insert into inv_inventory set inv_id = null,inv_manager = 1,";
         $q_string .= "inv_name           = \"" . $fqdn[0]          . "\",";
         $q_string .= "inv_function       = \"" . $function         . "\",";
         $q_string .= "inv_product        =   " . $inv_product      . ",";
@@ -269,18 +269,18 @@
         }
 
         $q_string  = "select inv_id ";
-        $q_string .= "from inventory ";
+        $q_string .= "from inv_inventory ";
         $q_string .= "where inv_name = \"" . $fqdn[0] . "\" ";
-        $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        if (mysqli_num_rows($q_inventory) == 0) {
+        $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_inv_inventory) == 0) {
           print "Error adding server " . $fqdn[0] . "\n";
         } else {
-          $a_inventory = mysqli_fetch_array($q_inventory);
+          $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
-          $q_string  = "insert into interface set int_id = null,";
+          $q_string  = "insert into inv_interface set int_id = null,";
           $q_string .= "int_server      = \"" . $fqdn[0]               . "\",";
           $q_string .= "int_domain      = \"" . $fqdn[1]               . "\",";
-          $q_string .= "int_companyid   =   " . $a_inventory['inv_id'] . ",";
+          $q_string .= "int_companyid   =   " . $a_inv_inventory['inv_id'] . ",";
           $q_string .= "int_face        = \"" . "ens192"               . "\",";
           $q_string .= "int_addr        = \"" . $ipaddr                . "\",";
           $q_string .= "int_mask        =   " . $mask                  . ",";
@@ -293,8 +293,8 @@
  
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-          $q_string  = "insert into hardware set hw_id = null,";
-          $q_string .= "hw_companyid = " . $a_inventory['inv_id'] . ",";
+          $q_string  = "insert into inv_hardware set hw_id = null,";
+          $q_string .= "hw_companyid = " . $a_inv_inventory['inv_id'] . ",";
           $q_string .= "hw_type = " . "45" . ",";
           $q_string .= "hw_vendorid = " . "45" . ",";
           $q_string .= "hw_primary = " . "1" . ",";

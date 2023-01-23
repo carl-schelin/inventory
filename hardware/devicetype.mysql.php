@@ -51,10 +51,10 @@
             "dev_userid          =   " . $formVars['dev_userid'];
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into device set dev_id = NULL, " . $q_string;
+            $q_string = "insert into inv_device set dev_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update device set " . $q_string . " where dev_id = " . $formVars['id'];
+            $q_string = "update inv_device set " . $q_string . " where dev_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['dev_type']);
@@ -80,31 +80,31 @@
       $output .= "</tr>";
 
       $q_string  = "select dev_id,dev_type,dev_description,dev_infrastructure,dev_notes,dev_update,usr_last,usr_first ";
-      $q_string .= "from device ";
-      $q_string .= "left join users on users.usr_id = device.dev_userid ";
+      $q_string .= "from inv_device ";
+      $q_string .= "left join inv_users on inv_users.usr_id = inv_device.dev_userid ";
       $q_string .= "order by dev_type";
-      $q_device = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_device) > 0) {
-        while ($a_device = mysqli_fetch_array($q_device)) {
+      $q_inv_device = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_device) > 0) {
+        while ($a_inv_device = mysqli_fetch_array($q_inv_device)) {
 
-          if ($a_device['dev_infrastructure']) {
+          if ($a_inv_device['dev_infrastructure']) {
             $infrastructure = 'Yes';
           } else {
             $infrastructure = 'No';
           }
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('devicetype.fill.php?id="  . $a_device['dev_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_device('devicetype.del.php?id=" . $a_device['dev_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('devicetype.fill.php?id="  . $a_inv_device['dev_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_device('devicetype.del.php?id=" . $a_inv_device['dev_id'] . "');\">";
           $linkend = "</a>";
 
           $output .= "<tr>";
           $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>";
-          $output .= "  <td class=\"ui-widget-content delete\">" . $linkstart . $a_device['dev_type']                                 . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_device['dev_description']                          . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content delete\">" . $linkstart . $infrastructure                                       . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_device['dev_notes']                                . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_device['usr_last'] . ", " . $a_device['usr_first'] . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content delete\">" . $linkstart . $a_device['dev_update']                               . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content delete\">" . $linkstart . $a_inv_device['dev_type']                                     . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_device['dev_description']                              . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content delete\">" . $linkstart . $infrastructure                                               . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_device['dev_notes']                                    . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_device['usr_last'] . ", " . $a_inv_device['usr_first'] . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content delete\">" . $linkstart . $a_inv_device['dev_update']                                   . $linkend . "</td>";
           $output .= "</tr>";
 
         }
@@ -115,7 +115,7 @@
         $output .= "</tr>";
       }
 
-      mysqli_free_result($q_device);
+      mysqli_free_result($q_inv_device);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 

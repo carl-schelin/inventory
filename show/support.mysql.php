@@ -18,10 +18,10 @@
 
   $slvval[0] = '';
   $q_string  = "select slv_id,slv_value ";
-  $q_string .= "from supportlevel";
-  $q_supportlevel = mysqli_query($db, $q_string);
-  while ($a_supportlevel = mysqli_fetch_array($q_supportlevel)) {
-    $slvval[$a_supportlevel['slv_id']] = $a_supportlevel['slv_value'];
+  $q_string .= "from inv_supportlevel";
+  $q_inv_supportlevel = mysqli_query($db, $q_string);
+  while ($a_inv_supportlevel = mysqli_fetch_array($q_inv_supportlevel)) {
+    $slvval[$a_inv_supportlevel['slv_id']] = $a_inv_supportlevel['slv_value'];
   }
 
   $hardware  = "<p></p>";
@@ -53,29 +53,29 @@
   $hardware .= "<th class=\"ui-state-default\">Software</th>";
   $hardware .= "</tr>";
 
-  $q_string = "select sup_company,sup_phone,sup_email,sup_web,sup_contract,sup_wiki,sup_hwresponse,sup_swresponse,hw_supid_verified,hw_supportend "
-            . "from support "
-            . "left join hardware on hardware.hw_supportid = support.sup_id "
-            . "where hw_companyid = " . $formVars['id'] . " and hw_primary = 1 ";
-  $q_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_string  = "select sup_company,sup_phone,sup_email,sup_web,sup_contract,sup_wiki,sup_hwresponse,sup_swresponse,hw_supid_verified,hw_supportend "
+  $q_string .= "from inv_support "
+  $q_string .= "left join inv_hardware on inv_hardware.hw_supportid = inv_support.sup_id "
+  $q_string .= "where hw_companyid = " . $formVars['id'] . " and hw_primary = 1 ";
+  $q_inv_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-  if (mysqli_num_rows($q_support) > 0) {
-    while ($a_support = mysqli_fetch_array($q_support)) {
+  if (mysqli_num_rows($q_inv_support) > 0) {
+    while ($a_inv_support = mysqli_fetch_array($q_inv_support)) {
 
-      if ($a_support['hw_supid_verified']) {
+      if ($a_inv_support['hw_supid_verified']) {
         $class = "ui-state-highlight";
       } else {
         $class = "ui-widget-content";
       }
 
       $hardware .= "<tr>";
-      $hardware .= "<td class=\"" . $class . "\" title=\"Link to Company website\"><a href=\"" . $a_support['sup_web'] . "\">" . $a_support['sup_company'] . "</a></td>";
-      $hardware .= "<td class=\"" . $class . "\">" . $a_support['sup_phone'] . "</td>";
-      $hardware .= "<td class=\"" . $class . "\">" . $a_support['sup_email'] . "</td>";
-      $hardware .= "<td class=\"" . $class . "\" title=\"Link to hardware support page\"><a href=\"" . $a_support['sup_wiki'] . "\">" . $a_support['sup_contract'] . "</a></td>";
-      $hardware .= "<td class=\"" . $class . "\">" . $slvval[$a_support['sup_hwresponse']] . "</td>";
-      $hardware .= "<td class=\"" . $class . "\">" . $a_support['hw_supportend'] . "</td>";
-      $hardware .= "<td class=\"" . $class . "\">" . $slvval[$a_support['sup_swresponse']] . "</td>";
+      $hardware .= "<td class=\"" . $class . "\" title=\"Link to Company website\"><a href=\"" . $a_inv_support['sup_web'] . "\">" . $a_inv_support['sup_company'] . "</a></td>";
+      $hardware .= "<td class=\"" . $class . "\">" . $a_inv_support['sup_phone'] . "</td>";
+      $hardware .= "<td class=\"" . $class . "\">" . $a_inv_support['sup_email'] . "</td>";
+      $hardware .= "<td class=\"" . $class . "\" title=\"Link to hardware support page\"><a href=\"" . $a_inv_support['sup_wiki'] . "\">" . $a_inv_support['sup_contract'] . "</a></td>";
+      $hardware .= "<td class=\"" . $class . "\">" . $slvval[$a_inv_support['sup_hwresponse']] . "</td>";
+      $hardware .= "<td class=\"" . $class . "\">" . $a_inv_support['hw_supportend'] . "</td>";
+      $hardware .= "<td class=\"" . $class . "\">" . $slvval[$a_inv_support['sup_swresponse']] . "</td>";
       $hardware .= "</tr>";
     }
   } else {
@@ -115,22 +115,22 @@
   $software .= "</tr>";
 
   $q_string  = "select sup_company,sup_phone,sup_email,sup_web,sup_contract,sup_wiki,sup_hwresponse,sup_swresponse ";
-  $q_string .= "from support ";
-  $q_string .= "left join software on software.sw_supportid = support.sup_id ";
-  $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
+  $q_string .= "from inv_support ";
+  $q_string .= "left join inv_software     on inv_software.sw_supportid       = inv_support.sup_id ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = inv_software.sw_id ";
   $q_string .= "where svr_companyid = " . $formVars['id'];
-  $q_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $q_inv_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-  if (mysqli_num_rows($q_support) > 0) {
-    while ($a_support = mysqli_fetch_array($q_support)) {
+  if (mysqli_num_rows($q_inv_support) > 0) {
+    while ($a_inv_support = mysqli_fetch_array($q_inv_support)) {
 
       $software .= "<tr>";
-      $software .= "<td class=\"ui-widget-content\" title=\"Link to Company website\"><a href=\"" . $a_support['sup_web'] . "\">" . $a_support['sup_company'] . "</a></td>";
-      $software .= "<td class=\"ui-widget-content\">" . $a_support['sup_phone'] . "</td>";
-      $software .= "<td class=\"ui-widget-content\">" . $a_support['sup_email'] . "</td>";
-      $software .= "<td class=\"ui-widget-content\" title=\"Link to Software support page\"><a href=\"" . $a_support['sup_wiki'] . "\">" . $a_support['sup_contract'] . "</a></td>";
-      $software .= "<td class=\"ui-widget-content\">" . $slvval[$a_support['sup_hwresponse']] . "</td>";
-      $software .= "<td class=\"ui-widget-content\">" . $slvval[$a_support['sup_swresponse']] . "</td>";
+      $software .= "<td class=\"ui-widget-content\" title=\"Link to Company website\"><a href=\"" . $a_inv_support['sup_web'] . "\">" . $a_inv_support['sup_company'] . "</a></td>";
+      $software .= "<td class=\"ui-widget-content\">" . $a_inv_support['sup_phone'] . "</td>";
+      $software .= "<td class=\"ui-widget-content\">" . $a_inv_support['sup_email'] . "</td>";
+      $software .= "<td class=\"ui-widget-content\" title=\"Link to Software support page\"><a href=\"" . $a_inv_support['sup_wiki'] . "\">" . $a_inv_support['sup_contract'] . "</a></td>";
+      $software .= "<td class=\"ui-widget-content\">" . $slvval[$a_inv_support['sup_hwresponse']] . "</td>";
+      $software .= "<td class=\"ui-widget-content\">" . $slvval[$a_inv_support['sup_swresponse']] . "</td>";
       $software .= "</tr>";
     }
   } else {

@@ -83,25 +83,25 @@
   print "</tr>\n";
 
   $q_string  = "select tag_id,inv_name,tag_name,usr_name,grp_name ";
-  $q_string .= "from tags ";
-  $q_string .= "left join inventory on inventory.inv_id = tags.tag_companyid ";
-  $q_string .= "left join users     on users.usr_id     = tags.tag_owner ";
-  $q_string .= "left join a_groups    on a_groups.grp_id    = tags.tag_group ";
+  $q_string .= "from inv_tags ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_tags.tag_companyid ";
+  $q_string .= "left join inv_users     on inv_users.usr_id     = inv_tags.tag_owner ";
+  $q_string .= "left join inv_groups    on inv_groups.grp_id    = inv_tags.tag_group ";
   $q_string .= "where inv_status = 0 and tag_type = 1 ";
   $q_string .= $orderby;
-  $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_tags = mysqli_fetch_array($q_tags)) {
+  $q_inv_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
 
     print "<tr>";
-    print "  <td class=\"ui-widget-content\">" . $a_tags['inv_name'] . "</td>";
-    print "  <td class=\"ui-widget-content\">" . $a_tags['tag_name'] . "</td>";
-    print "  <td class=\"ui-widget-content\">" . $a_tags['usr_name'] . "</td>";
-    print "  <td class=\"ui-widget-content\">" . $a_tags['grp_name'] . "</td>";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_tags['inv_name'] . "</td>";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_tags['tag_name'] . "</td>";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_tags['usr_name'] . "</td>";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_tags['grp_name'] . "</td>";
     print "</tr>";
 
   }
 
-  mysqli_free_result($q_tags);
+  mysqli_free_result($q_inv_tags);
 ?>
 </table>
 </div>

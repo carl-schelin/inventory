@@ -27,92 +27,92 @@
 
 # add a header with settings and email target
   $q_string  = "select grp_email,grp_status,grp_server,grp_import ";
-  $q_string .= "from a_groups ";
+  $q_string .= "from inv_groups ";
   $q_string .= "where grp_id = " . $mygroup . " ";
-  $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_groups = mysqli_fetch_array($q_groups);
+  $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
   $chkstatus = 'No';
-  if ($a_groups['grp_status']) {
+  if ($a_inv_groups['grp_status']) {
     $chkstatus = 'Yes';
   }
   $chkserver = 'No';
-  if ($a_groups['grp_server']) {
+  if ($a_inv_groups['grp_server']) {
     $chkserver = 'Yes';
   }
   $import = 'No';
-  if ($a_groups['grp_import']) {
+  if ($a_inv_groups['grp_import']) {
     $import = 'Yes';
   }
 
-  print "#email: " . $a_groups['grp_email'] . " chkstatus: " . $chkstatus . " chkserver: " . $chkserver . " import: " . $import . "\n";
+  print "#email: " . $a_inv_groups['grp_email'] . " chkstatus: " . $chkstatus . " chkserver: " . $chkserver . " import: " . $import . "\n";
 
   $q_string  = "select inv_id,inv_name,inv_fqdn,inv_ssh,zone_name,prod_name,prj_name ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join timezones on timezones.zone_id = inventory.inv_zone ";
-  $q_string .= "left join products on products.prod_id = inventory.inv_product ";
-  $q_string .= "left join projects on projects.prj_id = inventory.inv_project ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_timezones on inv_timezones.zone_id = inv_inventory.inv_zone ";
+  $q_string .= "left join inv_products  on inv_products.prod_id  = inv_inventory.inv_product ";
+  $q_string .= "left join inv_projects  on inv_projects.prj_id   = inv_inventory.inv_project ";
   $q_string .= "where inv_manager = " . $mygroup . " and inv_status = 0 ";
   $q_string .= "order by inv_name";
-  $q_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
     $os = "";
     $pre = "";
     $tags = "";
 
 # add a comment character to the server list for live servers but not ssh'able.
-    if ($a_inventory['inv_ssh'] == 0) {
+    if ($a_inv_inventory['inv_ssh'] == 0) {
       $pre = '#';
     }
 
-    $os = return_System($db, $a_inventory['inv_id']);
+    $os = return_System($db, $a_inv_inventory['inv_id']);
 
     $tags = '';
     $q_string  = "select tag_name ";
-    $q_string .= "from tags ";
-    $q_string .= "where tag_companyid = " . $a_inventory['inv_id'];
-    $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    while ($a_tags = mysqli_fetch_array($q_tags)) {
-      $tags .= "," . $a_tags['tag_name'] . ",";
+    $q_string .= "from inv_tags ";
+    $q_string .= "where tag_companyid = " . $a_inv_inventory['inv_id'];
+    $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
+      $tags .= "," . $a_inv_tags['tag_name'] . ",";
     }
 
     $interfaces = '';
     $q_string  = "select int_server,int_domain,int_management ";
-    $q_string .= "from interface ";
-    $q_string .= "where int_companyid = " . $a_inventory['inv_id'] . " and int_ip6 = 0 and (int_type = 1 || int_type = 2 || int_type = 6)";
-    $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    while ($a_interface = mysqli_fetch_array($q_interface)) {
-      $interfaces .= "," . $a_interface['int_server'] . ",";
+    $q_string .= "from inv_interface ";
+    $q_string .= "where int_companyid = " . $a_inv_inventory['inv_id'] . " and int_ip6 = 0 and (int_type = 1 || int_type = 2 || int_type = 6)";
+    $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
+      $interfaces .= "," . $a_inv_interface['int_server'] . ",";
 
 # if the management checkbox is checked, then use this interface and not the main interface.
-      if ($a_interface['int_management']) {
-        $a_inventory['inv_name'] = $a_interface['int_server'];
-        $a_inventory['inv_fqdn'] = $a_interface['int_domain'];
+      if ($a_inv_interface['int_management']) {
+        $a_inv_inventory['inv_name'] = $a_inv_interface['int_server'];
+        $a_inv_inventory['inv_fqdn'] = $a_inv_interface['int_domain'];
       }
 
     }
 
-    $product = str_replace(" ", "_", $a_inventory['prod_name']);
+    $product = str_replace(" ", "_", $a_inv_inventory['prod_name']);
     if ($product == '') {
       $product = "Unassigned";
     }
 
-    $project = str_replace(" ", "_", $a_inventory['prj_name']);
+    $project = str_replace(" ", "_", $a_inv_inventory['prj_name']);
     if ($project == '') {
       $project = "Unassigned";
     }
 
     $status = "Active";
     $q_string  = "select hw_active ";
-    $q_string .= "from hardware ";
-    $q_string .= "where hw_companyid = " . $a_inventory['inv_id'] . " and hw_deleted = 0 and hw_primary = 1 and hw_active = '1971-01-01' ";
-    $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    if (mysqli_num_rows($q_hardware) > 0) {
+    $q_string .= "from inv_hardware ";
+    $q_string .= "where hw_companyid = " . $a_inv_inventory['inv_id'] . " and hw_deleted = 0 and hw_primary = 1 and hw_active = '1971-01-01' ";
+    $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_inv_hardware) > 0) {
       $status = "Build";
     }
 
-    print "$pre" . $a_inventory['inv_name'] . ":" . $a_inventory['inv_fqdn'] . ":$os:" . $a_inventory['zone_name'] . ":$tags:$interfaces:" . $a_inventory['inv_id'] . ":" . $product . ":" . $project . ":" . $status . "\n";
+    print "$pre" . $a_inv_inventory['inv_name'] . ":" . $a_inv_inventory['inv_fqdn'] . ":$os:" . $a_inv_inventory['zone_name'] . ":$tags:$interfaces:" . $a_inv_inventory['inv_id'] . ":" . $product . ":" . $project . ":" . $status . "\n";
 
   }
 
