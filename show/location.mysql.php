@@ -65,11 +65,11 @@
     $output .= "<tr>";
     $q_string  = "select img_file ";
     $q_string .= "from inv_images ";
-    $q_string .= "where img_id = " . $a_inv_inventory['inv_front'];
-    $q inv_images = mysqli_query($db, $q_string . ": " . mysqli_error($db));
-    $a inv_images = mysqli_fetch_array($q inv_images);
+    $q_string .= "where img_id = " . $a_inv_inventory['inv_front'] . " ";
+    $q_inv_images = mysqli_query($db, $q_string . ": " . mysqli_error($db));
+    $a_inv_images = mysqli_fetch_array($q_inv_images);
 
-    $output .= "<td class=\"ui-widget-content\" colspan=3><a href=\"" . $Siteroot . "/pictures/" . $a inv_images['img_file'] . "\"><img src=\"" . $Siteroot . "/pictures/" . $a inv_images['img_file'] . "\" width=800></a></td>";
+    $output .= "<td class=\"ui-widget-content\" colspan=3><a href=\"" . $Siteroot . "/pictures/" . $a_inv_images['img_file'] . "\"><img src=\"" . $Siteroot . "/pictures/" . $a_inv_images['img_file'] . "\" width=800></a></td>";
     $output .= "</tr>";
   }
   if ($a_inv_inventory['inv_rear'] > 0) {
@@ -79,11 +79,11 @@
     $output .= "<tr>";
     $q_string  = "select img_file ";
     $q_string .= "from inv_images ";
-    $q_string .= "where img_id = " . $a_inv_inventory['inv_rear'];
-    $q inv_images = mysqli_query($db, $q_string . ": " . mysqli_error($db));
-    $a inv_images = mysqli_fetch_array($q inv_images);
+    $q_string .= "where img_id = " . $a_inv_inventory['inv_rear'] . " ";
+    $q_inv_images = mysqli_query($db, $q_string . ": " . mysqli_error($db));
+    $a_inv_images = mysqli_fetch_array($q_inv_images);
 
-    $output .= "<td class=\"ui-widget-content\" colspan=3><a href=\"" . $Siteroot . "/pictures/" . $a inv_images['img_file']  . "\"><img src=\"" . $Siteroot . "/pictures/" . $a inv_images['img_file']  . "\" width=800></a></td>";
+    $output .= "<td class=\"ui-widget-content\" colspan=3><a href=\"" . $Siteroot . "/pictures/" . $a_inv_images['img_file']  . "\"><img src=\"" . $Siteroot . "/pictures/" . $a_inv_images['img_file']  . "\" width=800></a></td>";
     $output .= "</tr>";
   }
 
