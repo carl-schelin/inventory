@@ -53,11 +53,11 @@
 # get the totals for each problem to properly display tabs
   $q_string  = "select count(chk_id) ";
   $q_string .= "from inv_chkserver ";
-  $q_string .= "left join inv_chkerrors on inv_chkerrors.ce_id = inv_chkserver.chk_errorid ";
+  $q_string .= "left join inv_chkerrors on inv_chkerrors.ce_id  = inv_chkserver.chk_errorid ";
   $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_chkserver.chk_companyid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id = inv_inventory.inv_location ";
   $q_string .= "left join inv_products  on inv_products.prod_id = inv_inventory.inv_product ";
-  $q_string .= "left join inv_projects  on projects.prj_id      = inv_inventory.inv_project ";
+  $q_string .= "left join inv_projects  on inv_projects.prj_id  = inv_inventory.inv_project ";
   $q_string .= "where ce_priority = 1 and chk_status = 0 and chk_closed = '1971-01-01 00:00:00' " . $where;
   $q_inv_chkserver = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_inv_chkserver = mysqli_fetch_array($q_inv_chkserver);

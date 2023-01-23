@@ -865,7 +865,7 @@
       $q_string .= "from inv_inventory ";
       $q_string .= "left join inv_groups     on inv_groups.grp_id     = inv_inventory.inv_manager ";
       $q_string .= "left join inv_products   on inv_products.prod_id  = inv_inventory.inv_product ";
-      $q_string .= "left join inv_projects   on projects.prj_id       = inv_inventory.inv_project ";
+      $q_string .= "left join inv_projects   on inv_projects.prj_id   = inv_inventory.inv_project ";
       $q_string .= "left join inv_service    on inv_service.svc_id    = inv_inventory.inv_class ";
       $q_string .= "left join inv_locations  on inv_locations.loc_id  = inv_inventory.inv_location ";
       $q_string .= "where inv_status = 0 and inv_manager = " . $formVars['group'] . " ";
