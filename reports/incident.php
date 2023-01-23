@@ -218,16 +218,16 @@
   print "  <th class=\"ui-state-default\">Group Responsible</th>\n";
   print "</tr>\n";
 
-  $q_string = "select inv_id,inv_name,inv_function,grp_name,inv_location,ct_city,st_state,inv_product,prod_name,inv_callpath,inv_document,hw_active "
-  $q_string .= "from inv_inventory "
-  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inv_inventory.inv_id "
-  $q_string .= "left join inv_products  on inv_products.prod_id      = inv_inventory.inv_product "
-  $q_string .= "left join inv_locations on inv_locations.loc_id      = inv_inventory.inv_location "
-  $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city "
-  $q_string .= "left join inv_states    on inv_states.st_id          = inv_locations.loc_state "
-  $q_string .= "left join inv_groups    on inv_groups.grp_id         = inv_inventory.inv_manager "
-  $q_string .= $where . " " 
-  $q_string .= $orderby;
+  $q_string = "select inv_id,inv_name,inv_function,grp_name,inv_location,ct_city,st_state,inv_product,prod_name,inv_callpath,inv_document,hw_active ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inv_inventory.inv_id ";
+  $q_string .= "left join inv_products  on inv_products.prod_id      = inv_inventory.inv_product ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id      = inv_inventory.inv_location ";
+  $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city ";
+  $q_string .= "left join inv_states    on inv_states.st_id          = inv_locations.loc_state ";
+  $q_string .= "left join inv_groups    on inv_groups.grp_id         = inv_inventory.inv_manager ";
+  $q_string .= $where . " " ;
+  $q_string .= $orderby . " ";
   $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   if (mysqli_num_rows($q_inv_inventory) > 0) {
     while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory) ) {
