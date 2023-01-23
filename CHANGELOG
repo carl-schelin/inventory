@@ -1,6 +1,6 @@
 ### NOTE
 
-Before applying any of these changes, make sure you review the entire file first. I've removed things and then added 
+Before applying any of these changes, make sure you review the entire file first. I've removed things and then added
 them back in again later.
 
 This is also mainly related to the mysql updates. There are general update descriptions but nothing detailed.
@@ -11,7 +11,39 @@ Also updates are dated.
 ### Updates
 
 Removed any company specific information.
+
+
 Changed mysql functions to mysqli functions in support of php 7.
+Some functions require a connection string, some don't.
+
+Needed to add a connection string ($db) in order for mysqli to work:
+
+Changed mysql_real_escape_string() to mysqli_real_escape_string($db);
+Changed mysql_query() to mysqli_query($db);
+Changed mysql_error() to mysqli_error($db);
+
+Don't need connection string:
+
+Changed mysql_num_rows() to mysqli_num_rows();
+Changed mysql_fetch_array() to mysqli_fetch_array();
+Changed mysql_fetch_row() to mysqli_fetch_row();
+Changed mysql_free_result() to mysqli_free_result();
+
+For the connection string:
+
+Changed: mysql_connect($server,$user,$pass); to $r_db = mysqli_connect($p_server, $p_user, $p_pass, $p_database);
+Changed: mysql_select_db($database,$db); to mysqli_select_db($r_db, $p_database);
+
+For the pages, reports, and such, we have to add a connection at the top:
+
+# connect to the database
+  $db = db_connect($DBserver, $DBname, $DBuser, $DBpassword);
+
+  check_login($db, $AL_Edit);
+
+
+
+
 Renamed any calls to the groups table to a_groups due to the table change.
 Renamed any calls to the window table to maint_window due to the table change.
 
@@ -24,7 +56,7 @@ When the changes are applied to the running systems, I'll drop another timestamp
 
 ### Maintain Tables
 
-We'll be keeping the following tables. After tables will be a list of modifications. Mostly changing the default date from 0000-00-00 00:00:00 to 
+We'll be keeping the following tables. After tables will be a list of modifications. Mostly changing the default date from 0000-00-00 00:00:00 to
 1971-01-01 00:00:00 where needed. The new MySQL/MariaDB doesn't like defaults of 0000. The code's already been changed.
 
 Note that this is for existing installations. New installations can ignore this file and the delete.md file.
@@ -78,7 +110,7 @@ x manageusers
 x models - hardware table define model information
 x modified - notes who changed what. need to review this
 x modules - system modules; bug tracker, feature tracker.
-x mon_system - list of monitoring systems - 
+x mon_system - list of monitoring systems -
 x mon_type - list of things to monitor.
 x monitoring - new monitoring system. should be empty.
 x net_zones - list of network zones - probably should be empty
@@ -409,7 +441,7 @@ delete from cluster;
 
 log:
 
-delete from log; 
+delete from log;
 
 system info;
 
@@ -496,14 +528,14 @@ create table backupdays (
 );
 
 
-### New Section 
+### New Section
 
 This should be a chain; org, bu, group, user so adding the next level up.
 
 alter table business_unit add column bus_org int(10) not null default 0 after bus_id;
 
 
-### Timestamp 2021-09-29 
+### Timestamp 2021-09-29
 
 alter table tags change tag_name tag_name char(255) not null default '';
 
@@ -1068,7 +1100,7 @@ Note that lnmt1cuomtool11 and bldr0cuomdev1 are already updated.
 
 ### Timestamp 2022-04-14
 
-Now the rest of the interface information. 
+Now the rest of the interface information.
 
 alter table int_media add column med_default int(10) not null default 0;
 alter table int_speed add column spd_default int(10) not null default 0 ;
@@ -1220,7 +1252,7 @@ Updated the certs table
 
 alter table certs add column cert_top int(10) not null default 0;
 
-Remote table updated 
+Remote table updated
 
 All tables updated
 
@@ -1230,5 +1262,219 @@ All tables updated
 Updated the certs table
 
 alter table certs add column cert_filename char(80) not null default '' after cert_url;
+
+
+### Timestamp 2022-10-27
+
+Rename the following tables to begin with inv_
+
+x a_groups
+x assets
+x backups
+x bugs
+x bugs_detail
+x business
+x certs
+x checklist - note not found in any scripts
+x chkerrors
+x chkserver
+x cities
+x cluster
+x comments
+x country
+x department
+x device
+x email
+x environment
+x excludes
+x family
+x features
+x features_detail
+x filesystem
+x grouplist
+x hardware
+x help
+x images
+x int_duplex
+x int_media
+x int_plugtype
+x int_redundancy
+x int_role
+x int_speed
+x int_types
+x int_volts
+x interface
+x intvuln - note only in one commented out area
+x inventory
+x ip_types
+x ipaddress
+x issue
+x issue_detail
+x issue_support
+x levels
+x licenses
+x loc_types
+x locations
+x log
+x maint_window
+x manageusers
+x models
+x modified
+x modules
+x mon_system
+x mon_type
+x monitoring
+x net_zones
+x network
+x operatingsystem
+x organizations
+x packages
+x parts
+x patching
+x products
+x projects
+x roles
+x routing
+x security
+x service
+x severity
+x software
+x states
+x sub_zones
+x support
+x supportlevel
+x svr_hardware
+x svr_software
+x sw_support
+x sw_types
+x sysgrp
+x sysgrp_members
+x syspwd
+x tag_types
+x tags
+x themes
+x timezones
+x titles
+x users
+x vendors
+x vlans - note not found in any scripts
+x vulnerabilities
+x vulnowner
+
+
+rename table vulnowner to inv_vulnowner;
+rename table operatingsystem to inv_operatingsystem;
+rename table a_groups to inv_groups;
+rename table tag_types to inv_tag_types;
+rename table titles to inv_titles;
+rename table assets to inv_assets;
+rename table themes to inv_themes;
+rename table grouplist to inv_grouplist;
+rename table organizations to inv_organizations;
+rename table timezones to inv_timezones;
+rename table syspwd to inv_syspwd;
+rename table sysgrp_members to inv_sysgrp_members;
+rename table security to inv_security;
+rename table users to inv_users;
+rename table severity to inv_severity;
+rename table packages to inv_packages;
+
+alter table maint_window change win_id    man_id    int(10)   not null auto_increment;
+alter table maint_window change win_text  man_text  char(100) not null default '';
+alter table maint_window change win_day   man_day   int(10)   not null default 0;
+alter table maint_window change win_start man_start int(10)   not null default 0;
+alter table maint_window change win_end   man_end   int(10)   not null default 0;
+
+rename table maint_window to inv_maintenance;
+rename table manageusers to inv_manageusers;
+rename table sw_types to inv_sw_types;
+rename table monitoring to inv_monitoring;
+rename table sub_zones to inv_sub_zones;
+rename table patching to inv_patching;
+rename table service to inv_service;
+rename table states to inv_states;
+rename table locations to inv_locations;
+rename table sysgrp to inv_sysgrp;
+rename table cities to inv_cities;
+rename table int_duplex to inv_int_duplex;
+rename table models to inv_models;
+rename table int_media to inv_int_media;
+rename table int_plugtype to inv_int_plugtype;
+rename table bugs to inv_bugs;
+rename table bugs_detail to inv_bugs_detail;
+rename table modules to inv_modules;
+rename table int_redundancy to inv_int_redundancy;
+rename table int_role to inv_int_role;
+rename table int_volts to inv_int_volts;
+rename table int_speed to inv_int_speed;
+rename table int_types to inv_int_types;
+rename table cluster to inv_cluster;
+rename table certs to inv_certs;
+rename table backups to inv_backups;
+rename table family to inv_family;
+rename table vlans to inv_vlans;
+rename table vendors to inv_vendors;
+rename table tags to inv_tags;
+rename table roles to inv_roles;
+rename table business to inv_business;
+rename table checklist to inv_checklist;
+rename table chkserver to inv_chkserver;
+rename table chkerrors to inv_chkerrors;
+rename table department to inv_department;
+rename table email to inv_email;
+rename table environment to inv_environment;
+rename table country to inv_country;
+rename table device to inv_device;
+rename table filesystem to inv_filesystem;
+rename table intvuln to inv_intvuln;
+rename table images to inv_images;
+rename table routing to inv_routing;
+rename table svr_hardware to inv_svr_hardware;
+rename table svr_software to inv_svr_software;
+rename table ipaddress to inv_ipaddress;
+rename table parts to inv_parts;
+rename table mon_system to inv_mon_system;
+rename table mon_type to inv_mon_type;
+rename table vulnerabilities to inv_vulnerabilities;
+rename table supportlevel to inv_supportlevel;
+rename table support to inv_support;
+rename table sw_support to inv_sw_support;
+rename table modified to inv_modified;
+rename table net_zones to inv_net_zones;
+rename table loc_types to inv_loc_types;
+rename table ip_types to inv_ip_types;
+rename table interface to inv_interface;
+rename table levels to inv_levels;
+rename table licenses to inv_licenses;
+rename table products to inv_products;
+rename table projects to inv_projects;
+rename table network to inv_network;
+rename table issue to inv_issue;
+rename table issue_detail to inv_issue_detail;
+rename table issue_support to inv_issue_support;
+rename table log to inv_log;
+rename table help to inv_help;
+rename table excludes to inv_excludes;
+rename table features to inv_features;
+rename table features_detail to inv_features_detail;
+rename table hardware to inv_hardware;
+rename table comments to inv_comments;
+rename table software to inv_software;
+rename table inventory to inv_inventory;
+
+
+./searchall vulnowner | sed -e "s/inv_vulnowner//g" -e "s/vulnowner.del.php//g" -e "s/vulnowner.fill.php//g" -e "s/vulnowner.mysql.php//g" -e "s/vulnowner.php//g" | grep vulnowner
+
+int_plugtype - verified
+operatingsystem - verified
+routing - verified
+vulnowner - verified
+
+
+Followed with a search for all 'from !inv_' checks looking for any string that didn't have "from inv_".
+
+Also followed up with any 'left join' lines where 'inv_' was missing from a table name.
+
+While there might still be errors, it's unlikely to be with a table rename. But see me after all the testing :) 
 
 
