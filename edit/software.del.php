@@ -23,7 +23,7 @@
 
       $q_string  = "delete ";
       $q_string .= "from inv_svr_software ";
-      $q_string .= "where sw_id = " . $formVars['id'];
+      $q_string .= "where svr_id = " . $formVars['id'];
       $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Access denied");
