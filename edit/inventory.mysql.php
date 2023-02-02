@@ -171,8 +171,8 @@
 # let'also make sure all software owned by the group is owned by the new group
               $q_software  = "update ";
               $q_software .= "inv_svr_software ";
-              $q_software .= "set svr_group = " . $formVars['inv_manager'] . " ";
-              $q_software .= "where svr_companyid = " . $formVars['id'] . " and svr_group = " . $a_inv_inventory['inv_manager'] . " ";
+              $q_software .= "set svr_groupid = " . $formVars['inv_manager'] . " ";
+              $q_software .= "where svr_companyid = " . $formVars['id'] . " and svr_groupid = " . $a_inv_inventory['inv_manager'] . " ";
               mysqli_query($db, $q_software) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             }
 
