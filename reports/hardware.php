@@ -186,23 +186,23 @@
 
   $q_string  = "select hw_id,inv_name,part_name,hw_serial,hw_asset,mod_speed,inv_status,hw_deleted,sup_company,slv_value, ";
   $q_string .= "mod_size,mod_name,prod_name,hw_active,hw_retired,hw_group,hw_supportid,hw_primary,hw_verified,hw_update ";
-  $q_string .= "from hardware ";
-  $q_string .= "left join inventory      on inventory.inv_id    = hardware.hw_companyid ";
-  $q_string .= "left join locations      on locations.loc_id    = inventory.inv_location ";
-  $q_string .= "left join models         on models.mod_id       = hardware.hw_vendorid ";
-  $q_string .= "left join parts          on parts.part_id       = hardware.hw_type ";
-  $q_string .= "left join products       on products.prod_id    = hardware.hw_product ";
-  $q_string .= "left join support        on support.sup_id      = hardware.hw_supportid ";
-  $q_string .= "left join supportlevel   on supportlevel.slv_id = hardware.hw_response ";
+  $q_string .= "from inv_hardware ";
+  $q_string .= "left join inv_inventory      on inv_inventory.inv_id    = inv_hardware.hw_companyid ";
+  $q_string .= "left join inv_locations      on inv_locations.loc_id    = inv_inventory.inv_location ";
+  $q_string .= "left join inv_models         on inv_models.mod_id       = inv_hardware.hw_vendorid ";
+  $q_string .= "left join inv_parts          on inv_parts.part_id       = inv_hardware.hw_type ";
+  $q_string .= "left join inv_products       on inv_products.prod_id    = inv_hardware.hw_product ";
+  $q_string .= "left join inv_support        on inv_support.sup_id      = inv_hardware.hw_supportid ";
+  $q_string .= "left join inv_supportlevel   on inv_supportlevel.slv_id = inv_hardware.hw_response ";
   $q_string .= $where;
   $q_string .= $orderby;
-  $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+  $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
-    if ($a_hardware['hw_deleted'] == 1) {
+    if ($a_inv_hardware['hw_deleted'] == 1) {
       $class = " class=\"ui-state-highlight\"";
     } else {
-      if ($a_hardware['inv_status'] == 1) {
+      if ($a_inv_hardware['inv_status'] == 1) {
         $class = " class=\"ui-state-error\"";
       } else {
         $class = " class=\"ui-widget-content\"";
@@ -210,27 +210,27 @@
     }
 
     $checkmark = '';
-    if ($a_hardware['hw_verified']) {
+    if ($a_inv_hardware['hw_verified']) {
       $checkmark = "&#x2713;&nbsp;";
     }
 
     print "<tr>";
-    print "  <td" . $class . ">" . $a_hardware['inv_name']                . "</td>";
-    print "  <td" . $class . ">" . $a_hardware['hw_serial']               . "</td>";
-    print "  <td" . $class . ">" . $a_hardware['hw_asset']                . "</td>";
-    print "  <td" . $class . ">" . $a_hardware['prod_name']               . "</td>";
-    print "  <td" . $class . ">" . $a_hardware['mod_name']                . "</td>";
-    print "  <td" . $class . ">" . $a_hardware['mod_size']                 . "</td>";
-    print "  <td" . $class . ">" . $a_hardware['mod_speed']                . "</td>";
-    print "  <td" . $class . ">" . $a_hardware['part_name']               . "</td>";
-    print "  <td" . $class . ">" . $a_hardware['sup_company']               . "</td>";
-    print "  <td" . $class . ">" . $a_hardware['slv_value']               . "</td>";
-    print "  <td" . $class . ">" . $a_hardware['hw_update']  . $checkmark . "</td>";
+    print "  <td" . $class . ">" . $a_inv_hardware['inv_name']                . "</td>";
+    print "  <td" . $class . ">" . $a_inv_hardware['hw_serial']               . "</td>";
+    print "  <td" . $class . ">" . $a_inv_hardware['hw_asset']                . "</td>";
+    print "  <td" . $class . ">" . $a_inv_hardware['prod_name']               . "</td>";
+    print "  <td" . $class . ">" . $a_inv_hardware['mod_name']                . "</td>";
+    print "  <td" . $class . ">" . $a_inv_hardware['mod_size']                 . "</td>";
+    print "  <td" . $class . ">" . $a_inv_hardware['mod_speed']                . "</td>";
+    print "  <td" . $class . ">" . $a_inv_hardware['part_name']               . "</td>";
+    print "  <td" . $class . ">" . $a_inv_hardware['sup_company']               . "</td>";
+    print "  <td" . $class . ">" . $a_inv_hardware['slv_value']               . "</td>";
+    print "  <td" . $class . ">" . $a_inv_hardware['hw_update']  . $checkmark . "</td>";
     print "</tr>";
 
   }
 
-  mysqli_free_result($q_hardware);
+  mysqli_free_result($q_inv_hardware);
 ?>
 </table>
 </div>

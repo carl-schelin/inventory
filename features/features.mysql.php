@@ -27,7 +27,7 @@
 
   if (strlen($formVars['feat_subject']) > 0) {
 
-    $query = "insert into features set feat_id = NULL, " . 
+    $query = "insert into inv_features set feat_id = NULL, " . 
       "feat_module     =   " . $formVars['feat_module']     . "," . 
       "feat_severity   =   " . $formVars['feat_severity']   . "," . 
       "feat_priority   =   " . $formVars['feat_priority']   . "," . 
@@ -51,7 +51,7 @@
       "feat_text      = \"" . $formVars['feat_subject'] . "\"," . 
       "feat_user      =   " . $formVars['feat_openby'];
 
-    $query = "insert into features_detail set feat_id = NULL," . $q_string;
+    $query = "insert into inv_features_detail set feat_id = NULL," . $q_string;
 
     $result = mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 

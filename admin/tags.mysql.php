@@ -39,10 +39,10 @@
             "tag_group   =   " . $formVars['tag_group'];
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into tags set tag_id = NULL, " . $q_string;
+            $q_string = "insert into inv_tags set tag_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update tags set " . $q_string . " where tag_id = " . $formVars['id'];
+            $q_string = "update inv_tags set " . $q_string . " where tag_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['tag_name']);
@@ -135,28 +135,28 @@
       $output .= "</tr>\n";
 
       $q_string  = "select tag_id,tag_name,inv_name,usr_first,usr_last,grp_name ";
-      $q_string .= "from tags ";
-      $q_string .= "left join inventory    on inventory.inv_id      = tags.tag_companyid ";
-      $q_string .= "left join users        on users.usr_id          = tags.tag_owner ";
-      $q_string .= "left join a_groups       on a_groups.grp_id         = tags.tag_group ";
-      $q_string .= "left join hardware     on hardware.hw_companyid = inventory.inv_id ";
-      $q_string .= "left join models       on models.mod_id         = hardware.hw_vendorid ";
-      $q_string .= "left join locations    on locations.loc_id      = inventory.inv_location ";
-      $q_string .= "left join cities       on cities.ct_id          = locations.loc_city ";
-      $q_string .= "left join states       on states.st_id          = locations.loc_state ";
+      $q_string .= "from inv_tags ";
+      $q_string .= "left join inv_inventory    on inv_inventory.inv_id      = inv_tags.tag_companyid ";
+      $q_string .= "left join inv_users        on inv_users.usr_id          = inv_tags.tag_owner ";
+      $q_string .= "left join inv_groups       on inv_groups.grp_id         = inv_tags.tag_group ";
+      $q_string .= "left join inv_hardware     on inv_hardware.hw_companyid = inv_inventory.inv_id ";
+      $q_string .= "left join inv_models       on inv_models.mod_id         = inv_hardware.hw_vendorid ";
+      $q_string .= "left join inv_locations    on inv_locations.loc_id      = inv_inventory.inv_location ";
+      $q_string .= "left join inv_cities       on inv_cities.ct_id          = inv_locations.loc_city ";
+      $q_string .= "left join inv_states       on inv_states.st_id          = inv_locations.loc_state ";
       $q_string .= $where . "and tag_type = 1 ";
       $q_string .= "order by tag_name,inv_name,grp_name,usr_last,usr_first ";
-      $q_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_tags) > 0) {
-        while ($a_tags = mysqli_fetch_array($q_tags)) {
+      $q_inv_tags = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_tags) > 0) {
+        while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('tags.fill.php?id="  . $a_tags['tag_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('tags.del.php?id=" . $a_tags['tag_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('tags.fill.php?id="  . $a_inv_tags['tag_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('tags.del.php?id=" . $a_inv_tags['tag_id'] . "');\">";
           $linkend   = "</a>";
 
           $inv_name = "All Servers";
-          if ($a_tags['inv_name'] != '') {
-            $inv_name = $a_tags['inv_name'];
+          if ($a_inv_tags['inv_name'] != '') {
+            $inv_name = $a_inv_tags['inv_name'];
           }
 
           $output .= "<tr>";
@@ -164,9 +164,9 @@
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>";
           }
           $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $inv_name                                        . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_tags['tag_name']                              . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_tags['usr_first'] . " " . $a_tags['usr_last'] . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_tags['grp_name']                              . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_tags['tag_name']                              . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_tags['usr_first'] . " " . $a_inv_tags['usr_last'] . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_tags['grp_name']                              . $linkend . "</td>";
           $output .= "</tr>";
         }
       } else {
@@ -177,7 +177,7 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_tags);
+      mysqli_free_result($q_inv_tags);
 
       print "document.getElementById('public_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 

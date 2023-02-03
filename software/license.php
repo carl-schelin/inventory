@@ -260,11 +260,11 @@ software license, or if there is a small difference, you can make changes and ad
   <td class="ui-widget-content">Vendor: <select name="lic_vendor">
 <?php
   $q_string  = "select ven_id,ven_name ";
-  $q_string .= "from vendors ";
+  $q_string .= "from inv_vendors ";
   $q_string .= "order by ven_name ";
-  $q_vendors = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_vendors = mysqli_fetch_array($q_vendors)) {
-    print "<option value=\"" . $a_vendors['ven_id'] . "\">" . $a_vendors['ven_name'] . "</option>\n";
+  $q_inv_vendors = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_vendors = mysqli_fetch_array($q_inv_vendors)) {
+    print "<option value=\"" . $a_inv_vendors['ven_id'] . "\">" . $a_inv_vendors['ven_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -288,11 +288,11 @@ software license, or if there is a small difference, you can make changes and ad
   <td class="ui-widget-content">Project: <select name="lic_project">
 <?php
   $q_string  = "select prod_id,prod_name ";
-  $q_string .= "from products ";
+  $q_string .= "from inv_products ";
   $q_string .= "order by prod_name";
-  $q_products = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_products = mysqli_fetch_array($q_products)) {
-    print "<option value=\"" . $a_products['prod_id'] . "\">" . $a_products['prod_name'] . "</option>\n";
+  $q_inv_products = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_products = mysqli_fetch_array($q_inv_products)) {
+    print "<option value=\"" . $a_inv_products['prod_id'] . "\">" . $a_inv_products['prod_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -323,11 +323,11 @@ software license, or if there is a small difference, you can make changes and ad
   <td class="ui-widget-content">Vendor: <select name="lic_vendor">
 <?php
   $q_string  = "select ven_id,ven_name ";
-  $q_string .= "from vendors ";
+  $q_string .= "from inv_vendors ";
   $q_string .= "order by ven_name ";
-  $q_vendors = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_vendors = mysqli_fetch_array($q_vendors)) {
-    print "<option value=\"" . $a_vendors['ven_id'] . "\">" . $a_vendors['ven_name'] . "</option>\n";
+  $q_inv_vendors = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_vendors = mysqli_fetch_array($q_inv_vendors)) {
+    print "<option value=\"" . $a_inv_vendors['ven_id'] . "\">" . $a_inv_vendors['ven_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -351,11 +351,11 @@ software license, or if there is a small difference, you can make changes and ad
   <td class="ui-widget-content">Project: <select name="lic_project">
 <?php
   $q_string  = "select prod_id,prod_name ";
-  $q_string .= "from products ";
+  $q_string .= "from inv_products ";
   $q_string .= "order by prod_name";
-  $q_products = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_products = mysqli_fetch_array($q_products)) {
-    print "<option value=\"" . $a_products['prod_id'] . "\">" . $a_products['prod_name'] . "</option>\n";
+  $q_inv_products = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_products = mysqli_fetch_array($q_inv_products)) {
+    print "<option value=\"" . $a_inv_products['prod_id'] . "\">" . $a_inv_products['prod_name'] . "</option>\n";
   }
 ?>
 </select></td>

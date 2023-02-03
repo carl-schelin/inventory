@@ -18,7 +18,7 @@ function logaccess( $p_db, $p_user, $p_source, $p_detail ) {
   include('settings.php');
   $package = "function.php";
 
-  $query = "insert into log set " .
+  $query = "insert into inv_log set " .
     "log_id        = NULL, " .
     "log_user      = \"" . $p_user   . "\", " .
     "log_source    = \"" . $p_source . "\", " .
@@ -33,7 +33,7 @@ function check_userlevel( $p_db, $p_level ) {
   if (isset($_SESSION['username'])) {
     include('settings.php');
     $q_string  = "select usr_level ";
-    $q_string .= "from users ";
+    $q_string .= "from inv_users ";
     $q_string .= "where usr_id = " . $_SESSION['uid'];
     $q_user_level = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
     $a_user_level = mysqli_fetch_array($q_user_level);
@@ -99,7 +99,7 @@ function changelog( $p_db, $p_serverid, $p_changed, $p_notes, $p_user, $p_table,
 
 # clear previous entries for the same task; so if a server was location changed, only record the last change
 # still testing
-  $cl_query = "update modified set " . 
+  $cl_query = "update inv_modified set " . 
     "mod_cleared = 1 " . 
     "where mod_notes  = \"" . $p_notes  . "\" " . 
       "and mod_table  = \"" . $p_table  . "\" " . 
@@ -117,7 +117,7 @@ function changelog( $p_db, $p_serverid, $p_changed, $p_notes, $p_user, $p_table,
     "mod_column       = \"" . $p_column       . "\"," .
     "mod_cleared      =   " . $p_cleared;
 
-  $query = "insert into modified set mod_id = null," . $cl_query;
+  $query = "insert into inv_modified set mod_id = null," . $cl_query;
 
   $result = mysqli_query($p_db, $query);
 
@@ -139,21 +139,21 @@ function check_grouplevel( $p_db, $p_group ) {
 
 # if primary group, just return
     $q_string  = "select usr_level,usr_group ";
-    $q_string .= "from users ";
+    $q_string .= "from inv_users ";
     $q_string .= "where usr_id = " . $_SESSION['uid'];
-    $q_users = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
-    $a_users = mysqli_fetch_array($q_users);
+    $q_inv_users = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
+    $a_inv_users = mysqli_fetch_array($q_inv_users);
 
-    if ($p_group == $a_users['usr_group'] || $a_users['usr_level'] == $AL_Admin) {
+    if ($p_group == $a_inv_users['usr_group'] || $a_inv_users['usr_level'] == $AL_Admin) {
       return(1);
     }
 
 # check extended groups next...
     $q_string  = "select gpl_id ";
-    $q_string .= "from grouplist ";
+    $q_string .= "from inv_grouplist ";
     $q_string .= "where gpl_user = " . $_SESSION['uid'] . " and gpl_group = " . $p_group . " ";
-    $q_grouplist = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=function.php&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
-    if (mysqli_num_rows($q_grouplist) > 0) {
+    $q_inv_grouplist = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=function.php&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
+    if (mysqli_num_rows($q_inv_grouplist) > 0) {
       return(1);
     }
   }
@@ -298,50 +298,50 @@ function return_ServerID( $p_db, $p_string ) {
 
 # first check production systems.
   $q_string  = "select inv_id ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_status = 0 and inv_name = '" . $p_hostname[0] . "' ";
-  $q_inventory = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
+  $q_inv_inventory = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
 
-  if (mysqli_num_rows($q_inventory) == 0) {
+  if (mysqli_num_rows($q_inv_inventory) == 0) {
     $q_string  = "select inv_id ";
-    $q_string .= "from inventory ";
-    $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
+    $q_string .= "from inv_inventory ";
+    $q_string .= "left join inv_interface on inv_interface.int_companyid = inv_inventory.inv_id ";
     $q_string .= "where inv_status = 0 and int_server = '" . $p_hostname[0] . "' ";
-    $q_inventory = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
+    $q_inv_inventory = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
 
-    if (mysqli_num_rows($q_inventory) > 0) {
-      $a_inventory = mysqli_fetch_array($q_inventory);
-      $output = $a_inventory['inv_id'];
+    if (mysqli_num_rows($q_inv_inventory) > 0) {
+      $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
+      $output = $a_inv_inventory['inv_id'];
     }
   } else {
-    if (mysqli_num_rows($q_inventory) == 1) {
-      $a_inventory = mysqli_fetch_array($q_inventory);
-      $output = $a_inventory['inv_id'];
+    if (mysqli_num_rows($q_inv_inventory) == 1) {
+      $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
+      $output = $a_inv_inventory['inv_id'];
     }
   }
 
 # can't find it in production, check retired servers.
   if ($output == 1109) {
     $q_string  = "select inv_id ";
-    $q_string .= "from inventory ";
+    $q_string .= "from inv_inventory ";
     $q_string .= "where inv_name = '" . $p_hostname[0] . "' ";
-    $q_inventory = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
+    $q_inv_inventory = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
 
-    if (mysqli_num_rows($q_inventory) == 0) {
+    if (mysqli_num_rows($q_inv_inventory) == 0) {
       $q_string  = "select inv_id ";
-      $q_string .= "from inventory ";
-      $q_string .= "left join interface on interface.int_companyid = inventory.inv_id ";
+      $q_string .= "from inv_inventory ";
+      $q_string .= "left join inv_interface on inv_interface.int_companyid = inv_inventory.inv_id ";
       $q_string .= "where int_server = '" . $p_hostname[0] . "' ";
-      $q_inventory = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
+      $q_inv_inventory = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
 
-      if (mysqli_num_rows($q_inventory) > 0) {
-        $a_inventory = mysqli_fetch_array($q_inventory);
-        $output = $a_inventory['inv_id'];
+      if (mysqli_num_rows($q_inv_inventory) > 0) {
+        $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
+        $output = $a_inv_inventory['inv_id'];
       }
     } else {
-      if (mysqli_num_rows($q_inventory) == 1) {
-        $a_inventory = mysqli_fetch_array($q_inventory);
-        $output = $a_inventory['inv_id'];
+      if (mysqli_num_rows($q_inv_inventory) == 1) {
+        $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
+        $output = $a_inv_inventory['inv_id'];
       }
     }
   }
@@ -356,13 +356,13 @@ function return_Virtual( $p_db, $p_string ) {
   $output = 0;
 
   $q_string  = "select hw_id,mod_virtual ";
-  $q_string .= "from hardware ";
-  $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+  $q_string .= "from inv_hardware ";
+  $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
   $q_string .= "where hw_companyid = " . $p_string . " and mod_primary = 1 and mod_virtual = 1 ";
-  $q_hardware = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
+  $q_inv_hardware = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
 
 # if there are any rows, then the server is a virtual machine.
-  if (mysqli_num_rows($q_hardware) > 0) {
+  if (mysqli_num_rows($q_inv_hardware) > 0) {
     $output = 1;
   }
 
@@ -508,63 +508,63 @@ function return_System( $p_db, $p_string ) {
 
   $output = '';
   $q_string  = "select sw_software ";
-  $q_string .= "from software ";
-  $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
-  $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
+  $q_string .= "from inv_software ";
+  $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = inv_software.sw_type ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = inv_software.sw_id ";
   $q_string .= "where typ_name = 'OS' and svr_companyid = " . $p_string;
-  $q_software = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
-  $a_software = mysqli_fetch_array($q_software);
+  $q_inv_software = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
+  $a_inv_software = mysqli_fetch_array($q_inv_software);
 
-  $output = $a_software['sw_software'];
-  if (stripos($a_software['sw_software'], "linux") !== false) {
+  $output = $a_inv_software['sw_software'];
+  if (stripos($a_inv_software['sw_software'], "linux") !== false) {
     $output = 'Linux';
   }
-  if (stripos($a_software['sw_software'], "red hat") !== false) {
+  if (stripos($a_inv_software['sw_software'], "red hat") !== false) {
     $output = 'Linux';
   }
-  if (stripos($a_software['sw_software'], "debian") !== false) {
+  if (stripos($a_inv_software['sw_software'], "debian") !== false) {
     $output = 'Linux';
   }
-  if (stripos($a_software['sw_software'], "ubuntu") !== false) {
+  if (stripos($a_inv_software['sw_software'], "ubuntu") !== false) {
     $output = 'Linux';
   }
-  if (stripos($a_software['sw_software'], "centos") !== false) {
+  if (stripos($a_inv_software['sw_software'], "centos") !== false) {
     $output = 'Linux';
   }
-  if (stripos($a_software['sw_software'], "suse") !== false) {
+  if (stripos($a_inv_software['sw_software'], "suse") !== false) {
     $output = 'Linux';
   }
-  if (stripos($a_software['sw_software'], "fedora") !== false) {
+  if (stripos($a_inv_software['sw_software'], "fedora") !== false) {
     $output = 'Linux';
   }
-  if (stripos($a_software['sw_software'], "solaris") !== false) {
+  if (stripos($a_inv_software['sw_software'], "solaris") !== false) {
     $output = 'SunOS';
   }
-  if (stripos($a_software['sw_software'], "hp-ux") !== false) {
+  if (stripos($a_inv_software['sw_software'], "hp-ux") !== false) {
     $output = 'HP-UX';
   }
-  if (stripos($a_software['sw_software'], "tru64") !== false) {
+  if (stripos($a_inv_software['sw_software'], "tru64") !== false) {
     $output = 'OSF1';
   }
-  if (stripos($a_software['sw_software'], "osf1") !== false) {
+  if (stripos($a_inv_software['sw_software'], "osf1") !== false) {
     $output = 'OSF1';
   }
-  if (stripos($a_software['sw_software'], "freebsd") !== false) {
+  if (stripos($a_inv_software['sw_software'], "freebsd") !== false) {
     $output = 'FreeBSD';
   }
-  if (stripos($a_software['sw_software'], "windows") !== false) {
+  if (stripos($a_inv_software['sw_software'], "windows") !== false) {
     $output = 'Windows';
   }
-  if (stripos($a_software['sw_software'], "esx") !== false) {
+  if (stripos($a_inv_software['sw_software'], "esx") !== false) {
     $output = 'VMWare';
   }
-  if (stripos($a_software['sw_software'], "vmware") !== false) {
+  if (stripos($a_inv_software['sw_software'], "vmware") !== false) {
     $output = 'VMware';
   }
-  if (stripos($a_software['sw_software'], "cisco ios") !== false) {
+  if (stripos($a_inv_software['sw_software'], "cisco ios") !== false) {
     $output = 'Cisco';
   }
-  if (stripos($a_software['sw_software'], "appliance") !== false) {
+  if (stripos($a_inv_software['sw_software'], "appliance") !== false) {
     $output = 'Appliance';
   }
 
@@ -626,12 +626,12 @@ function return_Pagination( $p_script, $p_current, $p_total, $p_count ) {
 function show_Help( $p_db, $p_script ) {
 
   $q_string  = "select help_id ";
-  $q_string .= "from help ";
+  $q_string .= "from inv_help ";
   $q_string .= "where help_user = " . $_SESSION['uid'] . " and help_screen = '" . $p_script . "' ";
-  $q_help = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
-  if (mysqli_num_rows($q_help) == 0) {
+  $q_inv_help = mysqli_query($p_db, $q_string) or die($q_string . ": " . mysqli_error($p_db));
+  if (mysqli_num_rows($q_inv_help) == 0) {
     $q_string  = "insert ";
-    $q_string .= "into help ";
+    $q_string .= "into inv_help ";
     $q_string .= "set ";
     $q_string .= "help_user = " . $_SESSION['uid'] . ",";
     $q_string .= "help_screen = '" . $p_script . "' ";

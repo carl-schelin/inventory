@@ -41,7 +41,7 @@
             "det_user  =   " . $formVars['det_user'];
 
           if ($formVars['update'] == 0) {
-            $query = "insert into issue_detail set det_id = null," . $q_string;
+            $query = "insert into inv_issue_detail set det_id = null," . $q_string;
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['hw_rma']);
@@ -51,7 +51,7 @@
           $q_string =
             "hw_rma      = \"" . $formVars['hw_rma'] . "\"";
 
-          $query = "update hardware set " . $q_string . " where hw_id = " . $formVars['hw_id'];
+          $query = "update inv_hardware set " . $q_string . " where hw_id = " . $formVars['hw_id'];
 
           mysqli_query($db, $query) or die($query . ": " . mysqli_error($db));
 
@@ -61,69 +61,69 @@
 
 // get the e-mail address of shipping and receiving.
           $q_string  = "select grp_email ";
-          $q_string .= "from a_groups ";
+          $q_string .= "from inv_groups ";
           $q_string .= "where grp_id = " . $GRP_Shipping . " ";
-          $q_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          $a_groups = mysqli_fetch_array($q_groups);
+          $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
 // get the e-mail address of the user
           $q_string  = "select usr_first,usr_last,usr_email ";
-          $q_string .= "from users ";
+          $q_string .= "from inv_users ";
           $q_string .= "where usr_id = " . $_SESSION['uid'];
-          $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          $a_users = mysqli_fetch_array($q_users);
+          $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_inv_users = mysqli_fetch_array($q_inv_users);
 
 // set the subject line
           $subject = "Notice: Hardware replacement in progress.";
 
 // set the headers
           $headers  = "From: Inventory <root@" . $Sitehttp . ">\r\n";
-          $headers .= "CC: " . $a_users['usr_email'] . "," . $Siteadmins . "\r\n";
+          $headers .= "CC: " . $a_inv_users['usr_email'] . "," . $Siteadmins . "\r\n";
           $headers .= "MIME-Version: 1.0\r\n";
           $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
 // build the message
-          $body  = "<p>" . $a_users['usr_first'] . " " . $a_users['usr_last'] . " is notifying your group that the hardware ";
+          $body  = "<p>" . $a_inv_users['usr_first'] . " " . $a_inv_users['usr_last'] . " is notifying your group that the hardware ";
           $body .= "identified below has failed and a replacement is being shipped to the company.</p>\n";
 
 
           $q_string  = "select inv_name,loc_name,ct_city,st_acronym,hw_asset,hw_serial ";
-          $q_string .= "from inventory ";
-          $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
-          $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
-          $q_string .= "left join states on states.st_id = locations.loc_state ";
-          $q_string .= "left join hardware on hardware.hw_companyid = inventory.inv_id ";
+          $q_string .= "from inv_inventory ";
+          $q_string .= "left join inv_locations on inv_locations.loc_id      = inv_inventory.inv_location ";
+          $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city ";
+          $q_string .= "left join inv_states    on inv_states.st_id          = inv_locations.loc_state ";
+          $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inv_inventory.inv_id ";
           $q_string .= "where inv_id = " . $formVars['hw_server'] . " and hw_primary = 1 and hw_deleted = 0 ";
-          $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          $a_inventory = mysqli_fetch_array($q_inventory);
+          $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
           $body .= "<ul>\n";
           $body .= "  <li>Affected System\n";
           $body .= "  <ul>\n";
-          $body .= "    <li>Name: "                    . $a_inventory['inv_name']   . "</li>\n";
-          $body .= "    <li>Location: "                . $a_inventory['loc_name']   . " (" . $a_inventory['ct_city'] . " " . $a_inventory['st_acronym'] . ")</li>\n";
-          $body .= "    <li>Asset Tag Number: "        . $a_inventory['hw_asset']   . "</li>\n";
-          $body .= "    <li>Serial Number: "           . $a_inventory['hw_serial']  . "</li>\n";
+          $body .= "    <li>Name: "                    . $a_inv_inventory['inv_name']   . "</li>\n";
+          $body .= "    <li>Location: "                . $a_inv_inventory['loc_name']   . " (" . $a_inv_inventory['ct_city'] . " " . $a_inv_inventory['st_acronym'] . ")</li>\n";
+          $body .= "    <li>Asset Tag Number: "        . $a_inv_inventory['hw_asset']   . "</li>\n";
+          $body .= "    <li>Serial Number: "           . $a_inv_inventory['hw_serial']  . "</li>\n";
           $body .= "  </ul></li>\n";
 
 
           $q_string  = "select part_name,hw_serial,hw_asset,ven_name,mod_name,hw_rma ";
-          $q_string .= "from hardware ";
-          $q_string .= "left join models  on models.mod_id  = hardware.hw_vendorid ";
-          $q_string .= "left join vendors on vendors.ven_id = models.mod_vendor ";
-          $q_string .= "left join parts   on parts.part_id  = hardware.hw_type ";
+          $q_string .= "from inv_hardware ";
+          $q_string .= "left join inv_models  on inv_models.mod_id  = inv_hardware.hw_vendorid ";
+          $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
+          $q_string .= "left join inv_parts   on inv_parts.part_id  = inv_hardware.hw_type ";
           $q_string .= "where hw_id = " . $formVars['hw_id'];
-          $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          $a_hardware = mysqli_fetch_array($q_hardware);
+          $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
           $body .= "  <li>Failed Hardware\n";
           $body .= "  <ul>\n";
-          $body .= "    <li>Vendor: "                  . $a_hardware['ven_name']   . "</li>\n";
-          $body .= "    <li>Model: "                   . $a_hardware['mod_name']   . "</li>\n";
-          $body .= "    <li>Type: "                    . $a_hardware['part_name']  . "</li>\n";
-          $body .= "    <li>RMA: "                     . $a_hardware['hw_rma']     . "</li>\n";
-          $body .= "    <li>Asset Tag Number: "        . $a_hardware['hw_asset']   . "</li>\n";
-          $body .= "    <li>Serial Number: "           . $a_hardware['hw_serial']  . "</li>\n";
+          $body .= "    <li>Vendor: "                  . $a_inv_hardware['ven_name']   . "</li>\n";
+          $body .= "    <li>Model: "                   . $a_inv_hardware['mod_name']   . "</li>\n";
+          $body .= "    <li>Type: "                    . $a_inv_hardware['part_name']  . "</li>\n";
+          $body .= "    <li>RMA: "                     . $a_inv_hardware['hw_rma']     . "</li>\n";
+          $body .= "    <li>Asset Tag Number: "        . $a_inv_hardware['hw_asset']   . "</li>\n";
+          $body .= "    <li>Serial Number: "           . $a_inv_hardware['hw_serial']  . "</li>\n";
           $body .= "  </ul></li>\n";
           $body .= "</ul>\n";
 
@@ -133,7 +133,7 @@
           $body .= "<br>This mail box is not monitored, replies will be ignored.</p>\n\n";
 
           if ($Siteenv == 'PROD') {
-            $mailto = $a_groups['grp_email'];
+            $mailto = $a_inv_groups['grp_email'];
           } else {
             if (strlen($_SESSION['email']) > 0 && $_SESSION['email'] != $Sitedev) {
               $mailto = $Sitedev . "," . $_SESSION['email'];
@@ -197,35 +197,35 @@
       $checked = "checked ";
       $count = 0;
       $q_string  = "select hw_id,part_name,hw_serial,hw_asset,mod_name,mod_speed,mod_size,hhw_primary,hw_rma ";
-      $q_string .= "from hardware ";
-      $q_string .= "left join parts  on parts.part_id = hardware.hw_type ";
-      $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+      $q_string .= "from inv_hardware ";
+      $q_string .= "left join inv_parts  on inv_parts.part_id = inv_hardware.hw_type ";
+      $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
       $q_string .= "where hw_deleted = 0 and hw_companyid = " . $formVars['hw_server'] . " ";
       $q_string .= "order by hw_type,hw_vendorid";
-      $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+      $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
-        if ($a_hardware['hw_primary'] == 1) {
+        if ($a_inv_hardware['hw_primary'] == 1) {
           $class = "ui-state-highlight";
         } else {
           $class = "ui-widget-content";
         }
 
         $output .= "<tr>";
-        if ($a_hardware['hw_rma'] == '') {
-          $output .= "  <td class=\"" . $class . " delete\"><input type=\"radio\" " . $checked . "name=\"hw_radio\" value=\"" . $a_hardware['hw_id'] . "\"></td>";
+        if ($a_inv_hardware['hw_rma'] == '') {
+          $output .= "  <td class=\"" . $class . " delete\"><input type=\"radio\" " . $checked . "name=\"hw_radio\" value=\"" . $a_inv_hardware['hw_id'] . "\"></td>";
 # only count if an rma hasn't been allocated;
           $count++;
           $checked = '';
         } else {
-          $output .= "  <td class=\"" . $class . " delete\">" . $a_hardware['hw_rma'] . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">" . $a_inv_hardware['hw_rma'] . "</td>";
         }
-        $output .= "  <td class=\"" . $class . "\">" . $a_hardware['hw_asset']   . "</td>";
-        $output .= "  <td class=\"" . $class . "\">" . $a_hardware['hw_serial']  . "</td>";
-        $output .= "  <td class=\"" . $class . "\">" . $a_hardware['mod_name']   . "</td>";
-        $output .= "  <td class=\"" . $class . "\">" . $a_hardware['mod_speed']  . "</td>";
-        $output .= "  <td class=\"" . $class . "\">" . $a_hardware['mod_size']   . "</td>";
-        $output .= "  <td class=\"" . $class . "\">" . $a_hardware['part_name']  . "</td>";
+        $output .= "  <td class=\"" . $class . "\">" . $a_inv_hardware['hw_asset']   . "</td>";
+        $output .= "  <td class=\"" . $class . "\">" . $a_inv_hardware['hw_serial']  . "</td>";
+        $output .= "  <td class=\"" . $class . "\">" . $a_inv_hardware['mod_name']   . "</td>";
+        $output .= "  <td class=\"" . $class . "\">" . $a_inv_hardware['mod_speed']  . "</td>";
+        $output .= "  <td class=\"" . $class . "\">" . $a_inv_hardware['mod_size']   . "</td>";
+        $output .= "  <td class=\"" . $class . "\">" . $a_inv_hardware['part_name']  . "</td>";
         $output .= "</tr>";
       }
 

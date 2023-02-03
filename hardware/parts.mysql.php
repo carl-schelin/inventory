@@ -44,10 +44,10 @@
             "part_acronym = \"" . $formVars['part_acronym'] . "\"";
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into parts set part_id = NULL, " . $q_string;
+            $q_string = "insert into inv_parts set part_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update parts set " . $q_string . " where part_id = " . $formVars['id'];
+            $q_string = "update inv_parts set " . $q_string . " where part_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['part_name']);
@@ -73,25 +73,25 @@
       $output .= "</tr>";
 
       $q_string  = "select part_id,part_name,part_type,part_acronym ";
-      $q_string .= "from parts ";
+      $q_string .= "from inv_parts ";
       $q_string .= "order by part_name";
-      $q_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_parts) > 0) {
-        while ($a_parts = mysqli_fetch_array($q_parts)) {
+      $q_inv_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_parts) > 0) {
+        while ($a_inv_parts = mysqli_fetch_array($q_inv_parts)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('parts.fill.php?id="     . $a_parts['part_id']   . "');jQuery('#dialogUpdate').dialog('open');\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('parts.del.php?id=" . $a_parts['part_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('parts.fill.php?id="     . $a_inv_parts['part_id']   . "');jQuery('#dialogUpdate').dialog('open');\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('parts.del.php?id=" . $a_inv_parts['part_id'] . "');\">";
           $linkend   = "</a>";
 
-          if ($a_parts['part_type'] == 1) {
+          if ($a_inv_parts['part_type'] == 1) {
             $parttype = "Primary";
           } else {
             $parttype = "";
           }
 
           $q_string  = "select mod_id ";
-          $q_string .= "from models ";
-          $q_string .= "where mod_type = " . $a_parts['part_id'] . " ";
+          $q_string .= "from inv_models ";
+          $q_string .= "where mod_type = " . $a_inv_parts['part_id'] . " ";
           $q_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $total = mysqli_num_rows($q_models);
 
@@ -103,8 +103,8 @@
               $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>";
             }
           }
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_parts['part_name']    . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"                     . $a_parts['part_acronym']            . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_parts['part_name']    . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $a_inv_parts['part_acronym']            . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"                     . $parttype                           . "</td>";
           $output .= "  <td class=\"ui-widget-content delete\">"              . $total                              . "</td>";
           $output .= "</tr>";
@@ -117,7 +117,7 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_parts);
+      mysqli_free_result($q_inv_parts);
 
       print "document.getElementById('mysql_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 

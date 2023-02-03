@@ -28,10 +28,10 @@
         exit;
       }
 
-      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from users");
+      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from inv_users");
 
       $q_string  = "delete ";
-      $q_string .= "from users ";
+      $q_string .= "from inv_users ";
       $q_string .= "where usr_id = " . $formVars['id'];
       $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 

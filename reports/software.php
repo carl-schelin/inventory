@@ -178,38 +178,38 @@
   print "</tr>";
 
   $q_string  = "select sw_id,sw_software,ven_name,sw_product,typ_name,svr_verified,svr_update,inv_name,grp_name,prod_name ";
-  $q_string .= "from software ";
-  $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
-  $q_string .= "left join inventory    on inventory.inv_id            = svr_software.svr_companyid ";
-  $q_string .= "left join a_groups     on a_groups.grp_id             = svr_software.svr_groupid ";
-  $q_string .= "left join sw_types     on sw_types.typ_id             = software.sw_type ";
-  $q_string .= "left join products     on products.prod_id            = software.sw_product ";
-  $q_string .= "left join vendors      on vendors.ven_id              = software.sw_vendor ";
-  $q_string .= "left join hardware     on hardware.hw_companyid       = inventory.inv_id ";
-  $q_string .= "left join locations    on locations.loc_id            = inventory.inv_location ";
+  $q_string .= "from inv_software ";
+  $q_string .= "left join inv_svr_software     on inv_svr_software.svr_softwareid     = inv_software.sw_id ";
+  $q_string .= "left join inv_inventory        on inv_inventory.inv_id                = inv_svr_software.svr_companyid ";
+  $q_string .= "left join inv_groups           on inv_groups.grp_id                   = inv_svr_software.svr_groupid ";
+  $q_string .= "left join inv_sw_types         on inv_sw_types.typ_id                 = inv_software.sw_type ";
+  $q_string .= "left join inv_products         on inv_products.prod_id                = inv_software.sw_product ";
+  $q_string .= "left join inv_vendors          on inv_vendors.ven_id                  = inv_software.sw_vendor ";
+  $q_string .= "left join inv_hardware         on inv_hardware.hw_companyid           = inv_inventory.inv_id ";
+  $q_string .= "left join inv_locations        on inv_locations.loc_id                = inv_inventory.inv_location ";
   $q_string .= $where;
   $q_string .= $orderby;
-  $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_software = mysqli_fetch_array($q_software)) {
+  $q_inv_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_software = mysqli_fetch_array($q_inv_software)) {
 
     $checkmark = '';
-    if ($a_software['svr_verified']) {
+    if ($a_inv_software['svr_verified']) {
       $checkmark = "&#x2713;&nbsp;";
     }
 
     print "<tr>\n";
-    print "  <td class=\"ui-widget-content\">" . $a_software['inv_name']                  . "</a></td>\n";
-    print "  <td class=\"ui-widget-content\">" . $a_software['prod_name']                 . "</a></td>\n";
-    print "  <td class=\"ui-widget-content\">" . $a_software['ven_name']                 . "</a></td>\n";
-    print "  <td class=\"ui-widget-content\">" . $a_software['sw_software']               . "</a></td>\n";
-    print "  <td class=\"ui-widget-content\">" . $a_software['typ_name']                   . "</a></td>\n";
-    print "  <td class=\"ui-widget-content\">" . $a_software['grp_name']                  . "</a></td>\n";
-    print "  <td class=\"ui-widget-content\">" . $a_software['svr_update']    . $checkmark . "</a></td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_software['inv_name']                  . "</a></td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_software['prod_name']                 . "</a></td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_software['ven_name']                 . "</a></td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_software['sw_software']               . "</a></td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_software['typ_name']                   . "</a></td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_software['grp_name']                  . "</a></td>\n";
+    print "  <td class=\"ui-widget-content\">" . $a_inv_software['svr_update']    . $checkmark . "</a></td>\n";
     print "</tr>";
 
   }
 
-  mysqli_free_result($q_software);
+  mysqli_free_result($q_inv_software);
 
 ?>
 </table>

@@ -22,26 +22,26 @@
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']               = clean($_GET['id'],               10);
-        $formVars['win_text']         = clean($_GET['win_text'],        100);
+        $formVars['man_text']         = clean($_GET['man_text'],        100);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
         }
 
-        if (strlen($formVars['win_text']) > 0) {
+        if (strlen($formVars['man_text']) > 0) {
           logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
-            "win_text        = \"" . $formVars['win_text'] . "\"";
+            "man_text        = \"" . $formVars['man_text'] . "\"";
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into maint_window set win_id = NULL, " . $q_string;
+            $q_string = "insert into inv_maintenance set man_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update maint_window set " . $q_string . " where win_id = " . $formVars['id'];
+            $q_string = "update inv_maintenance set " . $q_string . " where man_id = " . $formVars['id'];
           }
 
-          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['win_text']);
+          logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['man_text']);
 
           mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         } else {
@@ -60,22 +60,22 @@
       $output .= "  <th class=\"ui-state-default\">Maintenance Window</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select win_id,win_text ";
-      $q_string .= "from maint_window ";
-      $q_string .= "order by win_text ";
-      $q_window = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_window) > 0) {
-        while ($a_window = mysqli_fetch_array($q_window)) {
+      $q_string  = "select man_id,man_text ";
+      $q_string .= "from inv_maintenance ";
+      $q_string .= "order by man_text ";
+      $q_inv_maintenance = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_maintenance) > 0) {
+        while ($a_inv_maintenance = mysqli_fetch_array($q_inv_maintenance)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('maintenance.windows.fill.php?id=" . $a_window['win_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('maintenance.windows.del.php?id="  . $a_window['win_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('maintenance.windows.fill.php?id=" . $a_inv_maintenance['man_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('maintenance.windows.del.php?id="  . $a_inv_maintenance['man_id'] . "');\">";
           $linkend   = "</a>";
 
           $output .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>";
           }
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_window['win_text']        . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_maintenance['man_text']        . $linkend . "</td>";
           $output .= "</tr>";
         }
       } else {
@@ -86,9 +86,9 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_window);
+      mysqli_free_result($q_inv_maintenance);
 
-      print "document.getElementById('window_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
+      print "document.getElementById('maintenance_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

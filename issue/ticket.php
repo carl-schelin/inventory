@@ -31,36 +31,36 @@
 
   if ($formVars['id'] == 0) {
     $q_string  = "select usr_last,usr_first,usr_phone,usr_email ";
-    $q_string .= "from users ";
+    $q_string .= "from inv_users ";
     $q_string .= "where usr_id = " . $_SESSION['uid'];
-    $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_users = mysqli_fetch_array($q_users);
+    $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inv_users = mysqli_fetch_array($q_inv_users);
   } else {
     $q_string  = "select iss_discovered,iss_closed,iss_subject,iss_user ";
-    $q_string .= "from issue ";
+    $q_string .= "from inv_issue ";
     $q_string .= "where iss_id = " . $formVars['id'];
-    $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_issue = mysqli_fetch_array($q_issue);
+    $q_inv_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inv_issue = mysqli_fetch_array($q_inv_issue);
 
     $q_string  = "select usr_last,usr_first,usr_phone,usr_email ";
-    $q_string .= "from users ";
-    $q_string .= "where usr_id = " . $a_issue['iss_user'];
-    $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_users = mysqli_fetch_array($q_users);
+    $q_string .= "from inv_users ";
+    $q_string .= "where usr_id = " . $a_inv_issue['iss_user'];
+    $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inv_users = mysqli_fetch_array($q_inv_users);
   }
 
   $q_string  = "select inv_name ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_id = " . $formVars['server'];
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_inventory = mysqli_fetch_array($q_inventory);
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
 ?>
 <!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title><?php print $a_inventory['inv_name']; ?> Issue</title>
+<title><?php print $a_inv_inventory['inv_name']; ?> Issue</title>
 
 <style type="text/css" title="currentStyle" media="screen">
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -448,7 +448,7 @@ $(document).ready( function() {
 <div id="tabs">
 
 <ul>
-  <li><a href="#information"><?php print $a_inventory['inv_name']; ?> Information</a></li>
+  <li><a href="#information"><?php print $a_inv_inventory['inv_name']; ?> Information</a></li>
   <li><a href="#support">Support Form</a></li>
   <li><a href="#problem">Problem Form</a></li>
   <li><a href="#hardware">Hardware Form</a></li>
@@ -520,9 +520,9 @@ $(document).ready( function() {
 </tr>
 <?php
   print "<tr>\n";
-  print "  <td class=\"ui-widget-content\"><strong>User</strong>: "   . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\"><strong>Phone</strong>: "  . $a_users['usr_phone'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\"><strong>E-Mail</strong>: " . $a_users['usr_email'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>User</strong>: "   . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>Phone</strong>: "  . $a_inv_users['usr_phone'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>E-Mail</strong>: " . $a_inv_users['usr_email'] . "</td>\n";
   print "</tr>\n";
 ?>
 </table>
@@ -537,18 +537,18 @@ $(document).ready( function() {
 <?php
 
   $q_string  = "select sup_company,sup_phone,sup_email,sup_web,sup_contract ";
-  $q_string .= "from hardware ";
-  $q_string .= "left join support on hardware.hw_supportid = support.sup_id ";
+  $q_string .= "from inv_hardware ";
+  $q_string .= "left join inv_support on inv_hardware.hw_supportid = inv_support.sup_id ";
   $q_string .= "where hw_companyid = " . $formVars['server'] . " and hw_primary = 1";
-  $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_hardware) > 0) {
-    while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+  $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inv_hardware) > 0) {
+    while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
       print "<tr>\n";
-      print "  <td class=\"ui-widget-content\" colspan=\"2\"><strong>Company</strong>: <a href=\"" . $a_hardware['sup_web'] . "\">" . $a_hardware['sup_company'] . "</a></td>\n";
-      print "  <td class=\"ui-widget-content\"><strong>Phone</strong>: "    . $a_hardware['sup_phone'] . "</td>\n";
-      print "  <td class=\"ui-widget-content\"><strong>E-Mail</strong>: "   . $a_hardware['sup_email'] . "</td>\n";
-      print "  <td class=\"ui-widget-content\"><strong>Contract</strong>: " . $a_hardware['sup_contract'] . "</td>\n";
+      print "  <td class=\"ui-widget-content\" colspan=\"2\"><strong>Company</strong>: <a href=\"" . $a_inv_hardware['sup_web'] . "\">" . $a_inv_hardware['sup_company'] . "</a></td>\n";
+      print "  <td class=\"ui-widget-content\"><strong>Phone</strong>: "    . $a_inv_hardware['sup_phone'] . "</td>\n";
+      print "  <td class=\"ui-widget-content\"><strong>E-Mail</strong>: "   . $a_inv_hardware['sup_email'] . "</td>\n";
+      print "  <td class=\"ui-widget-content\"><strong>Contract</strong>: " . $a_inv_hardware['sup_contract'] . "</td>\n";
       print "</tr>\n";
     }
   } else {
@@ -562,25 +562,25 @@ $(document).ready( function() {
 </tr>
 <?php
   $q_string  = "select sw_software,sw_supportid ";
-  $q_string .= "from svr_software ";
-  $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
+  $q_string .= "from inv_svr_software ";
+  $q_string .= "left join inv_software on inv_software.sw_id = inv_svr_software.svr_softwareid ";
   $q_string .= "where svr_companyid = " . $formVars['server'] . " ";
-  $q_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_software) > 0) {
-    while ($a_software = mysqli_fetch_array($q_software)) {
-      if ($a_software['sw_supportid'] != 0) {
+  $q_inv_svr_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inv_svr_software) > 0) {
+    while ($a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software)) {
+      if ($a_inv_svr_software['sw_supportid'] != 0) {
         $q_string  = "select sup_company,sup_phone,sup_email,sup_web,sup_contract ";
-        $q_string .= "from support ";
-        $q_string .= "where sup_id = " . $a_software['sw_supportid'];
-        $q_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_support = mysqli_fetch_array($q_support);
+        $q_string .= "from inv_support ";
+        $q_string .= "where sup_id = " . $a_inv_svr_software['sw_supportid'];
+        $q_inv_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_inv_support = mysqli_fetch_array($q_inv_support);
 
         print "<tr>\n";
-        print "  <td class=\"ui-widget-content\"><strong>Software</strong>: " . $a_software['sw_software'] . "</td>\n";
-        print "  <td class=\"ui-widget-content\"><strong>Company</strong>: <a href=\"" . $a_support['sup_web'] . "\">" . $a_support['sup_company'] . "</a></td>\n";
-        print "  <td class=\"ui-widget-content\"><strong>Phone</strong>: "    . $a_support['sup_phone'] . "</td>\n";
-        print "  <td class=\"ui-widget-content\"><strong>E-Mail</strong>: "   . $a_support['sup_email'] . "</td>\n";
-        print "  <td class=\"ui-widget-content\"><strong>Contract</strong>: " . $a_support['sup_contract'] . "</td>\n";
+        print "  <td class=\"ui-widget-content\"><strong>Software</strong>: " . $a_inv_svr_software['sw_software'] . "</td>\n";
+        print "  <td class=\"ui-widget-content\"><strong>Company</strong>: <a href=\"" . $a_inv_support['sup_web'] . "\">" . $a_inv_support['sup_company'] . "</a></td>\n";
+        print "  <td class=\"ui-widget-content\"><strong>Phone</strong>: "    . $a_inv_support['sup_phone'] . "</td>\n";
+        print "  <td class=\"ui-widget-content\"><strong>E-Mail</strong>: "   . $a_inv_support['sup_email'] . "</td>\n";
+        print "  <td class=\"ui-widget-content\"><strong>Contract</strong>: " . $a_inv_support['sup_contract'] . "</td>\n";
         print "</tr>\n";
       }
     }
@@ -596,19 +596,19 @@ $(document).ready( function() {
 </tr>
 <?php
   $q_string  = "select part_name,hw_serial,hw_asset,mod_name ";
-  $q_string .= "from hardware ";
-  $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
-  $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
+  $q_string .= "from inv_hardware ";
+  $q_string .= "left join inv_parts  on inv_parts.part_id = inv_hardware.hw_type ";
+  $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
   $q_string .= "where hw_primary = 1 and hw_companyid = " . $formVars['server'] . " ";
   $q_string .= "order by hw_type,hw_vendorid";
-  $q_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_hardware = mysqli_fetch_array($q_hardware);
+  $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
   print "<tr>\n";
-  print "  <td class=\"ui-widget-content\"><strong>Type</strong>: "    . $a_hardware['part_name']  . "</td>\n";
-  print "  <td class=\"ui-widget-content\"><strong>Serial</strong>: "  . $a_hardware['hw_serial']  . "</td>\n";
-  print "  <td class=\"ui-widget-content\"><strong>Asset</strong>: "   . $a_hardware['hw_asset']   . "</td>\n";
-  print "  <td class=\"ui-widget-content\"><strong>Model</strong>: "   . $a_hardware['mod_name']   . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>Type</strong>: "    . $a_inv_hardware['part_name']  . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>Serial</strong>: "  . $a_inv_hardware['hw_serial']  . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>Asset</strong>: "   . $a_inv_hardware['hw_asset']   . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>Model</strong>: "   . $a_inv_hardware['mod_name']   . "</td>\n";
   print "</tr>\n";
 ?>
 </table>
@@ -619,26 +619,26 @@ $(document).ready( function() {
 </tr>
 <?php
   $q_string  = "select loc_name,loc_addr1,loc_addr2,ct_city,st_acronym,loc_zipcode,cn_acronym,inv_row,inv_rack,inv_unit ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join locations on inventory.inv_location = locations.loc_id ";
-  $q_string .= "left join cities on cities.ct_id = locations.loc_city ";
-  $q_string .= "left join states on states.st_id = locations.loc_state ";
-  $q_string .= "left join country on country.cn_id = locations.loc_country ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_locations on inv_inventory.inv_location = inv_locations.loc_id ";
+  $q_string .= "left join inv_cities    on inv_cities.ct_id           = inv_locations.loc_city ";
+  $q_string .= "left join inv_states    on inv_states.st_id           = inv_locations.loc_state ";
+  $q_string .= "left join inv_country   on inv_country.cn_id          = inv_locations.loc_country ";
   $q_string .= "where inv_id = " . $formVars['server'];
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_inventory = mysqli_fetch_array($q_inventory);
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
   print "<tr>\n";
-  print "  <td class=\"ui-widget-content\">" . $a_inventory['loc_name'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\">" . $a_inventory['loc_addr1'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\">" . $a_inventory['loc_addr2'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\">" . $a_inventory['ct_city'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\">" . $a_inventory['st_acronym'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\">" . $a_inventory['loc_zipcode'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\">" . $a_inventory['cn_acronym'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\">" . $a_inventory['inv_row'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\">" . $a_inventory['inv_rack'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\">" . $a_inventory['inv_unit'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['loc_name'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['loc_addr1'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['loc_addr2'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['ct_city'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['st_acronym'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['loc_zipcode'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['cn_acronym'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['inv_row'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['inv_rack'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\">" . $a_inv_inventory['inv_unit'] . "</td>\n";
   print "</tr>\n";
 ?>
 </table>
@@ -652,19 +652,19 @@ $(document).ready( function() {
 <?php
 
   $q_string  = "select iss_discovered,iss_closed,iss_subject ";
-  $q_string .= "from issue ";
+  $q_string .= "from inv_issue ";
   $q_string .= "where iss_id = " . $formVars['id'];
-  $q_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_issue = mysqli_fetch_array($q_issue);
+  $q_inv_issue = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_issue = mysqli_fetch_array($q_inv_issue);
 
-  if ($a_issue['iss_closed'] == '1971-01-01') {
-    print "  <td class=\"ui-widget-content\"><strong>Discovered</strong>: <input type=\"text\" name=\"iss_discovered\" size=\"10\" value=\"" . $a_issue['iss_discovered'] . "\"></td>\n";
+  if ($a_inv_issue['iss_closed'] == '1971-01-01') {
+    print "  <td class=\"ui-widget-content\"><strong>Discovered</strong>: <input type=\"text\" name=\"iss_discovered\" size=\"10\" value=\"" . $a_inv_issue['iss_discovered'] . "\"></td>\n";
     print "  <td class=\"ui-widget-content\"><strong>Closed</strong>: <input type=\"text\" name=\"iss_closed\" size=\"15\" value=\"Current Date\"></td>\n";
-    print "  <td class=\"ui-widget-content\"><strong>Problem Description</strong>: <input type=\"text\" name=\"iss_subject\" size=\"50\" value=\"" . $a_issue['iss_subject'] . "\"></td>\n";
+    print "  <td class=\"ui-widget-content\"><strong>Problem Description</strong>: <input type=\"text\" name=\"iss_subject\" size=\"50\" value=\"" . $a_inv_issue['iss_subject'] . "\"></td>\n";
   } else {
-    print "  <td class=\"ui-widget-content\"><strong>Discovered</strong>: " . $a_issue['iss_discovered'] . "<input type=\"hidden\" name=\"iss_discovered\" value=\"" . $a_issue['iss_discovered'] . "\"</td>\n";
-    print "  <td class=\"ui-widget-content\"><strong>Closed</strong>: " . $a_issue['iss_closed']     . "<input type=\"hidden\" name=\"iss_closed\" value=\"" . $a_issue['iss_closed'] . "\"</td>\n";
-    print "  <td class=\"ui-widget-content\"><strong>Problem Description</strong>: " . $a_issue['iss_subject']    . "<input type=\"hidden\" name=\"iss_subject\" value=\"" . $a_issue['iss_subject'] . "\"</td>\n";
+    print "  <td class=\"ui-widget-content\"><strong>Discovered</strong>: " . $a_inv_issue['iss_discovered'] . "<input type=\"hidden\" name=\"iss_discovered\" value=\"" . $a_inv_issue['iss_discovered'] . "\"</td>\n";
+    print "  <td class=\"ui-widget-content\"><strong>Closed</strong>: " . $a_inv_issue['iss_closed']     . "<input type=\"hidden\" name=\"iss_closed\" value=\"" . $a_inv_issue['iss_closed'] . "\"</td>\n";
+    print "  <td class=\"ui-widget-content\"><strong>Problem Description</strong>: " . $a_inv_issue['iss_subject']    . "<input type=\"hidden\" name=\"iss_subject\" value=\"" . $a_inv_issue['iss_subject'] . "\"</td>\n";
   }
 
 ?>
@@ -728,7 +728,7 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <?php
-  if ($a_issue['iss_closed'] == '1971-01-01') {
+  if ($a_inv_issue['iss_closed'] == '1971-01-01') {
 ?>
 <tr>
   <td colspan="4" class="ui-widget-content button">
@@ -822,7 +822,7 @@ field shows you the limit of the number of characters. This limit is set by the 
 <div id="problem-hide" style="display: none">
 
 <?php
-  if ($a_issue['iss_closed'] == '1971-01-01') {
+  if ($a_inv_issue['iss_closed'] == '1971-01-01') {
 ?>
 <table class="ui-styled-table">
 <tr>
@@ -872,20 +872,20 @@ field shows you the limit of the number of characters. This limit is set by the 
   <td class="ui-widget-content">Support Tech: <select name="det_user">
 <?php
   $q_string  = "select usr_first,usr_last ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_id = " . $_SESSION['uid'];
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_users = mysqli_fetch_array($q_users);
+  $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_users = mysqli_fetch_array($q_inv_users);
 
-  print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
+  print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "</option>\n";
 
   $q_string  = "select usr_id,usr_first,usr_last ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first";
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_users = mysqli_fetch_array($q_users)) {
-    print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
+  $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
+    print "<option value=\"" . $a_inv_users['usr_id'] . "\">" . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "</option>\n";
   }
 ?>
 </select></td>

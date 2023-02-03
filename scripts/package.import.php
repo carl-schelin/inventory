@@ -30,17 +30,17 @@
   $debug = 'yes';
   $debug = 'no';
 
-# so first, get the server id from the inventory table
+# so first, get the server id from the inv_inventory table
   $q_string  = "select inv_id,sw_software ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id ";
-  $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
-  $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inv_inventory.inv_id ";
+  $q_string .= "left join inv_software     on inv_software.sw_id             = inv_svr_software.svr_softwareid ";
+  $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = inv_software.sw_type ";
   $q_string .= "where inv_name = \"" . $server . "\" and inv_status = 0 and typ_name = 'OS' ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
-    $inv_id = $a_inventory['inv_id'];
-    $sw_software = $a_inventory['sw_software'];
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
+    $inv_id = $a_inv_inventory['inv_id'];
+    $sw_software = $a_inv_inventory['sw_software'];
   }
 
 # return the basic system type; Linux, SunOS, HP-UX, etc
@@ -77,12 +77,12 @@
 
 # locate the package. If it exists, update the date only. If it doesn't exist, create a new entry
         $q_string  = "select pkg_id ";
-        $q_string .= "from packages ";
+        $q_string .= "from inv_packages ";
         $q_string .= "where pkg_inv_id = " . $inv_id . " and pkg_name = \"" . $package . "\" ";
-        $q_packages = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        if (mysqli_num_rows($q_packages) == 0) {
+        $q_inv_packages = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_inv_packages) == 0) {
 
-          $q_string  = "insert into packages set ";
+          $q_string  = "insert into inv_packages set ";
           $q_string .= "pkg_inv_id   =   " . $inv_id       . ",";
           $q_string .= "pkg_name     = \"" . $package      . "\",";
           $q_string .= "pkg_update   = \"" . $date         . "\",";
@@ -92,11 +92,11 @@
 
           $status = "i";
         } else {
-          $a_packages = mysqli_fetch_array($q_packages);
+          $a_inv_packages = mysqli_fetch_array($q_inv_packages);
 
-          $q_string  = "update packages set ";
+          $q_string  = "update inv_packages set ";
           $q_string .= "pkg_update = \"" . $date . "\" ";
-          $q_string .= "where pkg_id = " . $a_packages['pkg_id'] . " ";
+          $q_string .= "where pkg_id = " . $a_inv_packages['pkg_id'] . " ";
 
           $status = "u";
         }
@@ -117,11 +117,11 @@
         $process = trim(fgets($file));
 
         $q_string  = "select pkg_id ";
-        $q_string .= "from packages ";
+        $q_string .= "from inv_packages ";
         $q_string .= "where pkg_inv_id = " . $inv_id . " and pkg_name = \"" . $process . "\" ";
-        $q_packages = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        if (mysqli_num_rows($q_packages) == 0) {
-          $q_string  = "insert into packages set ";
+        $q_inv_packages = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        if (mysqli_num_rows($q_inv_packages) == 0) {
+          $q_string  = "insert into inv_packages set ";
           $q_string .= "pkg_inv_id   =   " . $inv_id       . ",";
           $q_string .= "pkg_name     = \"" . $process      . "\",";
           $q_string .= "pkg_update   = \"" . $date         . "\",";
@@ -131,11 +131,11 @@
 
           $status = "i";
         } else {
-          $a_packages = mysqli_fetch_array($q_packages);
+          $a_inv_packages = mysqli_fetch_array($q_inv_packages);
 
-          $q_string  = "update packages set ";
+          $q_string  = "update inv_packages set ";
           $q_string .= "pkg_update = \"" . $date . "\" ";
-          $q_string .= "where pkg_id = " . $a_packages['pkg_id'] . " ";
+          $q_string .= "where pkg_id = " . $a_inv_packages['pkg_id'] . " ";
 
           $status = "u";
         }

@@ -165,35 +165,35 @@
   $product = '';
   $q_string  = "select inv_id,inv_name,inv_function,prod_name,hw_group,ven_name,mod_name,mod_virtual,mod_eol,";
   $q_string .= "hw_serial,hw_purchased,grp_name,inv_appadmin,sup_company,sup_contract,hw_eolticket ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id ";
-  $q_string .= "left join software  on software.sw_id    = svr_software.svr_softwareid ";
-  $q_string .= "left join sw_types  on sw_types.typ_id   = software.sw_type ";
-  $q_string .= "left join hardware  on inventory.inv_id  = hardware.hw_companyid ";
-  $q_string .= "left join a_groups  on a_groups.grp_id   = hardware.hw_group ";
-  $q_string .= "left join models    on models.mod_id     = hardware.hw_vendorid ";
-  $q_string .= "left join vendors   on vendors.ven_id    = models.mod_vendor ";
-  $q_string .= "left join support   on support.sup_id    = hardware.hw_supportid ";
-  $q_string .= "left join products  on products.prod_id  = inventory.inv_product ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inv_inventory.inv_id ";
+  $q_string .= "left join inv_software  on inv_software.sw_id                = inv_svr_software.svr_softwareid ";
+  $q_string .= "left join inv_sw_types  on inv_sw_types.typ_id               = inv_software.sw_type ";
+  $q_string .= "left join inv_hardware  on inv_inventory.inv_id              = inv_hardware.hw_companyid ";
+  $q_string .= "left join inv_groups    on inv_groups.grp_id                 = inv_hardware.hw_group ";
+  $q_string .= "left join inv_models    on inv_models.mod_id                 = inv_hardware.hw_vendorid ";
+  $q_string .= "left join inv_vendors   on inv_vendors.ven_id                = inv_models.mod_vendor ";
+  $q_string .= "left join inv_support   on inv_support.sup_id                = inv_hardware.hw_supportid ";
+  $q_string .= "left join inv_products  on inv_products.prod_id              = inv_inventory.inv_product ";
   $q_string .= $where . "and typ_name = 'OS' ";
   $q_string .= $orderby;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
     $total++;
 # vm's are subtracted below
     $totalhardware++;
 
-    if ($a_inventory['prod_name'] == '') {
-      $a_inventory['prod_name'] = 'Unassigned';
+    if ($a_inv_inventory['prod_name'] == '') {
+      $a_inv_inventory['prod_name'] = 'Unassigned';
     }
-    if ($product != $a_inventory['prod_name']) {
+    if ($product != $a_inv_inventory['prod_name']) {
       if ($product != '') {
         print "</table>\n";
       }
 
       if ($formVars['csv']) {
-        print "\"" . $a_inventory['prod_name'] . "\"</br>\n";
+        print "\"" . $a_inv_inventory['prod_name'] . "\"</br>\n";
         print "\"System Name\",";
         print "\"Platform Owner\",";
         print "\"Application Owner\",";
@@ -206,7 +206,7 @@
       } else {
         print "<table class=\"ui-styled-table\">\n";
         print "<tr>\n";
-        print "  <th class=\"ui-state-default\" colspan=\"10\">" . $a_inventory['prod_name'] . "</th>\n";
+        print "  <th class=\"ui-state-default\" colspan=\"10\">" . $a_inv_inventory['prod_name'] . "</th>\n";
         print "</tr>\n";
         print "<tr>\n";
         print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=inv_name"     . $passthrough . "\">System Name</a></th>\n";
@@ -220,38 +220,38 @@
         print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=hw_eolticket" . $passthrough . "\">Ticket</a></th>\n";
         print "</tr>\n";
       }
-      $product = $a_inventory['prod_name'];
+      $product = $a_inv_inventory['prod_name'];
     }
 
     $q_string  = "select sw_software,sw_eol ";
-    $q_string .= "from svr_software ";
-    $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
-    $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
-    $q_string .= "where svr_companyid = " . $a_inventory['inv_id'] . " and typ_name = 'OS' ";
-    $q_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    $a_svr_software = mysqli_fetch_array($q_svr_software);
+    $q_string .= "from inv_svr_software ";
+    $q_string .= "left join inv_software on inv_software.sw_id  = inv_svr_software.svr_softwareid ";
+    $q_string .= "left join inv_sw_types on inv_sw_types.typ_id = inv_software.sw_type ";
+    $q_string .= "where svr_companyid = " . $a_inv_inventory['inv_id'] . " and typ_name = 'OS' ";
+    $q_inv_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software);
 
     $q_string  = "select grp_name ";
-    $q_string .= "from a_groups ";
-    $q_string .= "where grp_id = " . $a_inventory['inv_appadmin'] . " ";
-    $q_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    $a_groups = mysqli_fetch_array($q_groups);
+    $q_string .= "from inv_groups ";
+    $q_string .= "where grp_id = " . $a_inv_inventory['inv_appadmin'] . " ";
+    $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
-    if ($a_inventory['ven_name'] == 'Dell') {
+    if ($a_inv_inventory['ven_name'] == 'Dell') {
       # For Dell, the end of support is 5 years after the purchase date
-      $date = explode("-", $a_inventory['hw_purchased']);
+      $date = explode("-", $a_inv_inventory['hw_purchased']);
       $support = mktime(0,0,0,$date[1],$date[2],$date[0] + 5);
       $newdate = date("Y-m-d",$support);
     } else {
-      if ($a_inventory['mod_eol'] == '') {
-        $a_inventory['mod_eol'] = '1971-01-01';
+      if ($a_inv_inventory['mod_eol'] == '') {
+        $a_inv_inventory['mod_eol'] = '1971-01-01';
       }
-      $date = explode("-", $a_inventory['mod_eol']);
+      $date = explode("-", $a_inv_inventory['mod_eol']);
       $support = mktime(0,0,0,$date[1],$date[2],$date[0]);
-      $newdate = $a_inventory['mod_eol'];
+      $newdate = $a_inv_inventory['mod_eol'];
     }
     $current = time();
-    $moddate = $a_svr_software['sw_eol'];
+    $moddate = $a_inv_svr_software['sw_eol'];
 
     $hwstatus = " class=\"ui-widget-content\"";
     if ($current > $support) {
@@ -259,7 +259,7 @@
       $grandtotal++;
       $hwstatus = " class=\"ui-state-error\"";
     }
-    if ($a_svr_software['sw_eol'] > date('Y-m-d')) {
+    if ($a_inv_svr_software['sw_eol'] > date('Y-m-d')) {
       $swstatus = " class=\"ui-widget-content\"";
     } else {
       $software++;
@@ -271,16 +271,16 @@
       $newdate = '----------';
       $hwstatus = " class=\"ui-state-highlight\"";
     }
-    if ($a_svr_software['sw_eol'] == '' || $a_svr_software['sw_eol'] == '1971-01-01') {
+    if ($a_inv_svr_software['sw_eol'] == '' || $a_inv_svr_software['sw_eol'] == '1971-01-01') {
       $moddate = '----------';
       $swstatus = " class=\"ui-state-highlight\"";
     }
 
-    if ($a_inventory['hw_purchased'] == '1971-01-01' && $a_inventory['mod_eol'] == '1971-01-01') {
+    if ($a_inv_inventory['hw_purchased'] == '1971-01-01' && $a_inv_inventory['mod_eol'] == '1971-01-01') {
       $hwstatus = " class=\"ui-widget-content\"";
       $newdate = "Purchase Date Unset";
     }
-    if ($a_inventory['mod_virtual'] == 1) {
+    if ($a_inv_inventory['mod_virtual'] == 1) {
       $totalhardware--;
       $hardware--;
       $grandtotal--;
@@ -290,30 +290,30 @@
 
     $nodate = " class=\"ui-widget-content\"";
 
-    $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inventory['inv_id'] . "\" target=\"blank_\">";
+    $linkstart = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inv_inventory['inv_id'] . "\" target=\"blank_\">";
     $linkend   = "</a>";
 
     if ($formVars['csv']) {
-      print "\"" . $a_inventory['inv_name'] . "\",";
-      print "\"" . $a_inventory['grp_name'] . "\",";
-      print "\"" . $a_groups['grp_name'] . "\",";
-      print "\"" . $a_inventory['inv_function'] . "\",";
-      print "\"" . $a_svr_software['sw_software'] . "\",";
+      print "\"" . $a_inv_inventory['inv_name'] . "\",";
+      print "\"" . $a_inv_inventory['grp_name'] . "\",";
+      print "\"" . $a_inv_groups['grp_name'] . "\",";
+      print "\"" . $a_inv_inventory['inv_function'] . "\",";
+      print "\"" . $a_inv_svr_software['sw_software'] . "\",";
       print "\"" . $moddate . "\",";
-      print "\"" . $a_inventory['ven_name'] . " " . $a_inventory['mod_name'] . "\",";
+      print "\"" . $a_inv_inventory['ven_name'] . " " . $a_inv_inventory['mod_name'] . "\",";
       print "\"" . $newdate . "\",";
-      print "\"" . $a_inventory['hw_eolticket'] . "\"</br>\n";
+      print "\"" . $a_inv_inventory['hw_eolticket'] . "\"</br>\n";
     } else {
       print "<tr>\n";
-      print "  <td" . $nodate   . ">" . $linkstart . $a_inventory['inv_name']                         . $linkend . "</td>\n";
-      print "  <td" . $nodate   . ">"              . $a_inventory['grp_name']                                    . "</td>\n";
-      print "  <td" . $nodate   . ">"              . $a_groups['grp_name']                                       . "</td>\n";
-      print "  <td" . $nodate   . ">"              . $a_inventory['inv_function']                                . "</td>\n";
-      print "  <td" . $swstatus . ">"              . $a_svr_software['sw_software']                                  . "</td>\n";
+      print "  <td" . $nodate   . ">" . $linkstart . $a_inv_inventory['inv_name']                         . $linkend . "</td>\n";
+      print "  <td" . $nodate   . ">"              . $a_inv_inventory['grp_name']                                    . "</td>\n";
+      print "  <td" . $nodate   . ">"              . $a_inv_groups['grp_name']                                       . "</td>\n";
+      print "  <td" . $nodate   . ">"              . $a_inv_inventory['inv_function']                                . "</td>\n";
+      print "  <td" . $swstatus . ">"              . $a_inv_svr_software['sw_software']                                  . "</td>\n";
       print "  <td" . $swstatus . ">"              . $moddate                                                    . "</td>\n";
-      print "  <td" . $hwstatus . ">"              . $a_inventory['ven_name'] . " " . $a_inventory['mod_name'] . "</td>\n";
+      print "  <td" . $hwstatus . ">"              . $a_inv_inventory['ven_name'] . " " . $a_inv_inventory['mod_name'] . "</td>\n";
       print "  <td" . $hwstatus . ">"              . $newdate                                                    . "</td>\n";
-      print "  <td" . $hwstatus . ">"              . $a_inventory['hw_eolticket']                                . "</td>\n";
+      print "  <td" . $hwstatus . ">"              . $a_inv_inventory['hw_eolticket']                                . "</td>\n";
       print "</tr>\n";
     }
   }

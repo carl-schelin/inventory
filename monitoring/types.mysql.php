@@ -35,11 +35,11 @@
             "mt_name = \"" . $formVars['mt_name'] . "\"";
 
           if ($formVars['update'] == 0) {
-            $query = "insert into mon_type set mt_id = null," . $q_string;
+            $query = "insert into inv_mon_type set mt_id = null," . $q_string;
             $message = "Monitoring Types added.";
           }
           if ($formVars['update'] == 1) {
-            $query = "update mon_type set " . $q_string . " where mt_id = " . $formVars['id'];
+            $query = "update inv_mon_type set " . $q_string . " where mt_id = " . $formVars['id'];
             $message = "Monitoring Types updated.";
           }
 
@@ -91,22 +91,22 @@
       $output .= "</tr>\n";
 
       $q_string  = "select mt_id,mt_name ";
-      $q_string .= "from mon_type ";
+      $q_string .= "from inv_mon_type ";
       $q_string .= "order by mt_name ";
-      $q_mon_type = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_mon_type) > 0) {
-        while ($a_mon_type = mysqli_fetch_array($q_mon_type)) {
+      $q_inv_mon_type = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_mon_type) > 0) {
+        while ($a_inv_mon_type = mysqli_fetch_array($q_inv_mon_type)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('types.fill.php?id=" . $a_mon_type['mt_id'] . "');jQuery('#dialogTypes').dialog('open');\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('types.del.php?id=" . $a_mon_type['mt_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('types.fill.php?id=" . $a_inv_mon_type['mt_id'] . "');jQuery('#dialogTypes').dialog('open');\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('types.del.php?id=" . $a_inv_mon_type['mt_id'] . "');\">";
           $linkend   = "</a>";
 
           $output .= "<tr>\n";
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\" width=\"60\">" . $linkdel   . "</td>\n";
           }
-          $output .= "  <td class=\"ui-widget-content delete\">" . $linkstart . $a_mon_type['mt_id']   . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_mon_type['mt_name'] . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content delete\">" . $linkstart . $a_inv_mon_type['mt_id']   . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_mon_type['mt_name'] . $linkend . "</td>\n";
           $output .= "</tr>\n";
         }
       } else {
@@ -117,7 +117,7 @@
 
       $output .= "</table>\n";
 
-      mysqli_free_result($q_mon_type);
+      mysqli_free_result($q_inv_mon_type);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n";
 

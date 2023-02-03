@@ -25,19 +25,26 @@
   }
 
   $q_string  = "select mod_name,bug_discovered,bug_closed,bug_subject,bug_openby ";
-  $q_string .= "from bugs ";
-  $q_string .= "left join modules on modules.mod_id = bugs.bug_module ";
+  $q_string .= "from inv_bugs ";
+  $q_string .= "left join inv_modules on inv_modules.mod_id = inv_bugs.bug_module ";
   $q_string .= "where bug_id = " . $formVars['id'];
-  $q_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_bugs = mysqli_fetch_array($q_bugs);
+  $q_inv_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_bugs = mysqli_fetch_array($q_inv_bugs);
 
-  $bugs = $a_bugs['mod_name'] . ' Bug: ' . $formVars['id'];
+  $bugs = $a_inv_bugs['mod_name'] . ' Bug: ' . $formVars['id'];
 
   $q_string  = "select usr_last,usr_first,usr_phone,usr_email ";
-  $q_string .= "from users ";
-  $q_string .= "where usr_id = " . $a_bugs['bug_openby'];
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_users = mysqli_fetch_array($q_users);
+  $q_string .= "from inv_users ";
+  $q_string .= "where usr_id = " . $a_inv_bugs['bug_openby'];
+  $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_users = mysqli_fetch_array($q_inv_users);
+
+# if help has not been seen yet,
+  if (show_Help($db, $Sitepath . "/" . $package)) {
+    $display = "display: block";
+  } else {
+    $display = "display: none";
+  }
 
 ?>
 <!DOCTYPE HTML>
@@ -412,7 +419,7 @@ $(document).ready( function() {
 <div id="tabs">
 
 <ul>
-  <li><a href="#bug"><?php print $a_bugs['mod_name']; ?> Bug</a></li>
+  <li><a href="#bug"><strong><?php print $a_inv_bugs['mod_name']; ?></strong> Bug</a></li>
   <li><a href="#comments">Problem Form</a></li>
 </ul>
 
@@ -429,27 +436,25 @@ $(document).ready( function() {
 </tr>
 </table>
 
-<div id="bug-help" style="display: none">
+<div id="bug-help" style="<?php print $display; ?>">
 
 <div class="main-help ui-widget-content">
 
-<ul>
-  <li><strong>Buttons</strong>
-  <ul>
-    <li><strong>Close Bug</strong> - Sets the Closed field to today's date which closed the bug.</li>
-    <li><strong>Save Bug Changes</strong> - If you update the Bug Form, click here to save changes.</li>
-    <li><strong>Reopen Bug</strong> - Reopen a closed bug. Resets the Closed field to '1971-01-01'.</li>
-  </ul></li>
-</ul>
+<p><strong>Bug Reporting</strong></p>
 
-<ul>
-  <li><strong>Bug Form</strong>
-  <ul>
-    <li><strong>Discovered</strong> - The date the problem was discovered.</li>
-    <li><strong>Closed</strong> - Enter the date to close the Bug. 'Current Date' is replaced by today's date.</li>
-    <li><strong>Problem Description</strong> - Enter a short description of the problem here.</li>
-  </ul></li>
-</ul>
+<p>This form comes in two states. Either an open or new ticket or a closed ticket. The two states have different options.</p>
+
+<p><strong>Open/New Ticket</strong></p>
+
+<p>In this state, the Requestor information is already filled in. You need to identify the Module that's affected and then the severity 
+and priority of the bug. Then a brief description of the problem. Under the Problem Form, you can provide additional details about the 
+issue.</p>
+
+<p><strong>Closed Ticket</strong></p>
+
+<p>In this state, you are able to view the ticket details and all the comments that have been made about the problem. Unless you reopen 
+the ticket, no new comments can be added.</p>
+
 
 </div>
 
@@ -466,7 +471,7 @@ $(document).ready( function() {
     $newissue = "disabled";
     $updateissue = "";
   }
-  if ($a_bugs['bug_closed'] == '1971-01-01') {
+  if ($a_inv_bugs['bug_closed'] == '1971-01-01') {
     print "  <input type=\"button\" " . $updateissue . " name=\"close\"     value=\"Close Ticket\"  onClick=\"javascript:attach_file('ticket.mysql.php', 2);\">\n";
     print "  <input type=\"button\" " . $updateissue . " name=\"save\"      value=\"Save Changes\"  onClick=\"javascript:attach_file('ticket.mysql.php', 1);\">\n";
   } else {
@@ -485,9 +490,9 @@ $(document).ready( function() {
 </tr>
 <?php
   print "<tr>\n";
-  print "  <td class=\"ui-widget-content\"><strong>User</strong>: " . $a_users['usr_first'] . " " . $a_users['usr_last'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\"><strong>Phone</strong>: " . $a_users['usr_phone'] . "</td>\n";
-  print "  <td class=\"ui-widget-content\"><strong>E-Mail</strong>: " . $a_users['usr_email'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>User</strong>: " . $a_inv_users['usr_first'] . " " . $a_inv_users['usr_last'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>Phone</strong>: " . $a_inv_users['usr_phone'] . "</td>\n";
+  print "  <td class=\"ui-widget-content\"><strong>E-Mail</strong>: " . $a_inv_users['usr_email'] . "</td>\n";
   print "</tr>\n";
 ?>
 </table>
@@ -510,24 +515,24 @@ $(document).ready( function() {
   $priority[2] = 'High';
 
   $q_string  = "select bug_module,mod_name,bug_severity,bug_priority,bug_discovered,bug_closed,bug_subject ";
-  $q_string .= "from bugs ";
-  $q_string .= "left join modules on modules.mod_id = bugs.bug_module ";
+  $q_string .= "from inv_bugs ";
+  $q_string .= "left join inv_modules on inv_modules.mod_id = inv_bugs.bug_module ";
   $q_string .= "where bug_id = " . $formVars['id'];
-  $q_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_bugs = mysqli_fetch_array($q_bugs);
+  $q_inv_bugs = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_bugs = mysqli_fetch_array($q_inv_bugs);
 
-  if ($a_bugs['bug_closed'] == '1971-01-01') {
+  if ($a_inv_bugs['bug_closed'] == '1971-01-01') {
     print "  <td class=\"ui-widget-content\"><strong>Module</strong>: <select name=\"bug_module\">\n";
 
     $q_string  = "select mod_id,mod_name ";
-    $q_string .= "from modules ";
+    $q_string .= "from inv_modules ";
     $q_string .= "order by mod_name ";
-    $q_modules = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    while ($a_modules = mysqli_fetch_array($q_modules)) {
-      if ($a_bugs['bug_module'] == $a_modules['mod_id']) {
-        print "<option selected value=\"" . $a_modules['mod_id'] . "\">" . $a_modules['mod_name'] . "</option>\n";
+    $q_inv_modules = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    while ($a_inv_modules = mysqli_fetch_array($q_inv_modules)) {
+      if ($a_inv_bugs['bug_module'] == $a_inv_modules['mod_id']) {
+        print "<option selected value=\"" . $a_inv_modules['mod_id'] . "\">" . $a_inv_modules['mod_name'] . "</option>\n";
       } else {
-        print "<option value=\"" . $a_modules['mod_id'] . "\">" . $a_modules['mod_name'] . "</option>\n";
+        print "<option value=\"" . $a_inv_modules['mod_id'] . "\">" . $a_inv_modules['mod_name'] . "</option>\n";
       }
     }
 ?>
@@ -535,7 +540,7 @@ $(document).ready( function() {
   <td class="ui-widget-content"><strong>Severity</strong>: <select name="bug_severity">
 <?php
   for ($i = 0; $i < 4; $i++) {
-    if ($i == $a_bugs['bug_severity']) {
+    if ($i == $a_inv_bugs['bug_severity']) {
       print "<option selected value=\"" . $i . "\">" . $severity[$i] . "</option>\n";
     } else {
       print "<option value=\"" . $i . "\">" . $severity[$i] . "</option>\n";
@@ -546,7 +551,7 @@ $(document).ready( function() {
   <td class="ui-widget-content"><strong>Priority</strong>: <select name="bug_priority">
 <?php
   for ($i = 0; $i < 3; $i++) {
-    if ($i == $a_bugs['bug_priority']) {
+    if ($i == $a_inv_bugs['bug_priority']) {
       print "<option selected value=\"" . $i . "\">" . $priority[$i] . "</option>\n";
     } else {
       print "<option value=\"" . $i . "\">" . $priority[$i] . "</option>\n";
@@ -554,22 +559,22 @@ $(document).ready( function() {
   }
 ?>
 </select></td>
-  <td class="ui-widget-content"><strong>Discovered</strong>:          <input type="text" name="bug_discovered" size="10" value="<?php print $a_bugs['bug_discovered']; ?>"></td>
+  <td class="ui-widget-content"><strong>Discovered</strong>:          <input type="text" name="bug_discovered" size="10" value="<?php print $a_inv_bugs['bug_discovered']; ?>"></td>
   <td class="ui-widget-content"><strong>Closed</strong>:              <input type="text" name="bug_closed"     size="15" value="Current Date"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content" colspan="6"><strong>Problem Description</strong>: <input type="text" name="bug_subject"    size="100" value="<?php print $a_bugs['bug_subject']; ?>"></td>
+  <td class="ui-widget-content" colspan="6"><strong>Brief Description</strong>: <input type="text" name="bug_subject"    size="100" value="<?php print $a_inv_bugs['bug_subject']; ?>"></td>
 <?php
   } else {
 ?>
-  <td class="ui-widget-content"><strong>Module</strong>:              <?php print $a_bugs['mod_name']; ?>       <input type="hidden" name="bug_module"     value="<?php print $a_bugs['bug_module']; ?>"</td>
-  <td class="ui-widget-content"><strong>Severity</strong>:            <?php print $severity[$a_bugs['bug_severity']]; ?>   <input type="hidden" name="bug_severity"   value="<?php print $a_bugs['bug_severity']; ?>"</td>
-  <td class="ui-widget-content"><strong>Priority</strong>:            <?php print $priority[$a_bugs['bug_priority']]; ?>   <input type="hidden" name="bug_priority"   value="<?php print $a_bugs['bug_priority']; ?>"</td>
-  <td class="ui-widget-content"><strong>Discovered</strong>:          <?php print $a_bugs['bug_discovered']; ?> <input type="hidden" name="bug_discovered" value="<?php print $a_bugs['bug_discovered']; ?>"</td>
-  <td class="ui-widget-content"><strong>Closed</strong>:              <?php print $a_bugs['bug_closed']; ?>     <input type="hidden" name="bug_closed"     value="<?php print $a_bugs['bug_closed']; ?>"</td>
+  <td class="ui-widget-content"><strong>Module</strong>:              <?php print $a_inv_bugs['mod_name']; ?>       <input type="hidden" name="bug_module"     value="<?php print $a_inv_bugs['bug_module']; ?>"</td>
+  <td class="ui-widget-content"><strong>Severity</strong>:            <?php print $severity[$a_inv_bugs['bug_severity']]; ?>   <input type="hidden" name="bug_severity"   value="<?php print $a_inv_bugs['bug_severity']; ?>"</td>
+  <td class="ui-widget-content"><strong>Priority</strong>:            <?php print $priority[$a_inv_bugs['bug_priority']]; ?>   <input type="hidden" name="bug_priority"   value="<?php print $a_inv_bugs['bug_priority']; ?>"</td>
+  <td class="ui-widget-content"><strong>Discovered</strong>:          <?php print $a_inv_bugs['bug_discovered']; ?> <input type="hidden" name="bug_discovered" value="<?php print $a_inv_bugs['bug_discovered']; ?>"</td>
+  <td class="ui-widget-content"><strong>Closed</strong>:              <?php print $a_inv_bugs['bug_closed']; ?>     <input type="hidden" name="bug_closed"     value="<?php print $a_inv_bugs['bug_closed']; ?>"</td>
 </tr>
 <tr>
-  <td class="ui-widget-content" colspan="6"><strong>Problem Description</strong>: <?php print $a_bugs['bug_subject']; ?>    <input type="hidden" name="bug_subject"    value="<?php print $a_bugs['bug_subject']; ?>"</td>
+  <td class="ui-widget-content" colspan="6"><strong>Brief Description</strong>: <?php print $a_inv_bugs['bug_subject']; ?>    <input type="hidden" name="bug_subject"    value="<?php print $a_inv_bugs['bug_subject']; ?>"</td>
 <?php
   }
 ?>
@@ -595,34 +600,61 @@ $(document).ready( function() {
 </tr>
 </table>
 
-<div id="problem-help" style="display: none">
+<div id="problem-help" style="<?php print $display;?>">
 
 <div class="main-help ui-widget-content">
 
+<p><strong>Comments</strong></p>
 
+<p>This tab lets you add comments about the reported bug either more details or comments on how the problem was solved.</p>
 
+<p>When the reported bug has been solved and the ticket closed, you are able to view all the comments however you cannot 
+manage the comments without reopening the ticket.</p>
 
 </div>
 
 </div>
-
 
 <?php
-# basically the ability to add a comment only exists if the bug is open
-# so check to see if it's set to the default date, and assume it's open if so.
-  if ($a_bugs['bug_closed'] == '1971-01-01') {
+  if ($a_inv_bugs['bug_closed'] == '1971-01-01') {
 ?>
 <table class="ui-styled-table">
 <tr>
   <td colspan="7" class="ui-widget-content button"><input type="button" id="clickCreate" value="Add Comment"></td>
 </tr>
 </table>
+<?php
+  }
+?>
 
 <p></p>
 
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">Problem Listing</th>
+  <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('problem-listing-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="problem-listing-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+<p><strong>Problem Listing</strong></p>
+
+<p>This page lists all comments related to this bug.</p>
+
+<p>To add a new Comment, click the Add Comment button. This will bring up a dialog box which you can then use to add a comment.</p>
+
+<p>To edit an existing Comment, click on the entry in the listing. A dialog box will be displayed where you can edit the current 
+entry, or if there is a small difference, you can make changes and add a new comment.</p>
+
+
+</div>
+
+</div>
+
 <span id="detail_mysql"></span>
-
-
 
 
 
@@ -673,20 +705,20 @@ $(document).ready( function() {
   <td class="ui-widget-content">Comment by: <select name="bug_user">
 <?php
   $q_string  = "select usr_first,usr_last ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_id = " . $_SESSION['uid'];
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_users = mysqli_fetch_array($q_users);
+  $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_users = mysqli_fetch_array($q_inv_users);
 
-  print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_users['usr_first'] . " " . $a_users['usr_last'] . "</option>\n";
+  print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_inv_users['usr_first'] . " " . $a_inv_users['usr_last'] . "</option>\n";
 
   $q_string  = "select usr_id,usr_first,usr_last ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first";
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_users = mysqli_fetch_array($q_users)) {
-    print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_first'] . " " . $a_users['usr_last'] . "</option>\n";
+  $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
+    print "<option value=\"" . $a_inv_users['usr_id'] . "\">" . $a_inv_users['usr_first'] . " " . $a_inv_users['usr_last'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -747,20 +779,20 @@ $(document).ready( function() {
   <td class="ui-widget-content">Comment by: <select name="bug_user">
 <?php
   $q_string  = "select usr_first,usr_last ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_id = " . $_SESSION['uid'];
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_users = mysqli_fetch_array($q_users);
+  $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_users = mysqli_fetch_array($q_inv_users);
 
-  print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_users['usr_first'] . " " . $a_users['usr_last'] . "</option>\n";
+  print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_inv_users['usr_first'] . " " . $a_inv_users['usr_last'] . "</option>\n";
 
   $q_string  = "select usr_id,usr_first,usr_last ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first";
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_users = mysqli_fetch_array($q_users)) {
-    print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_first'] . " " . $a_users['usr_last'] . "</option>\n";
+  $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
+    print "<option value=\"" . $a_inv_users['usr_id'] . "\">" . $a_inv_users['usr_first'] . " " . $a_inv_users['usr_last'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -771,11 +803,6 @@ $(document).ready( function() {
 </form>
 
 </div>
-
-
-<?php
-  }
-?>
 
 
 

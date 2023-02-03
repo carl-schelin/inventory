@@ -77,10 +77,10 @@
             "sw_eos          = \"" . $formVars['sw_eos']            . "\"";
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into software set sw_id = NULL, " . $q_string;
+            $q_string = "insert into inv_software set sw_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update software set " . $q_string . " where sw_id = " . $formVars['id'];
+            $q_string = "update inv_software set " . $q_string . " where sw_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['sw_software']);
@@ -99,7 +99,7 @@
 # software that are updates. New software will have all new tags.
           if ($formVars['update'] == 0 || $formVars['update'] == 1) {
             $q_string  = "delete ";
-            $q_string .= "from tags ";
+            $q_string .= "from inv_tags ";
             $q_string .= "where tag_type = 4 and tag_companyid = " . $formVars['id'] . " ";
             mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
@@ -161,46 +161,46 @@
 
       $q_string  = "select sw_id,sw_software,ven_name,prod_name,lic_product,sup_company,typ_name,";
       $q_string .= "dep_name,sw_eol,sw_eos ";
-      $q_string .= "from software ";
-      $q_string .= "left join vendors on vendors.ven_id = software.sw_vendor ";
-      $q_string .= "left join products on products.prod_id = software.sw_product ";
-      $q_string .= "left join licenses on licenses.lic_id = software.sw_licenseid ";
-      $q_string .= "left join support on support.sup_id = software.sw_supportid ";
-      $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
-      $q_string .= "left join department on department.dep_id = software.sw_department ";
+      $q_string .= "from inv_software ";
+      $q_string .= "left join inv_vendors    on inv_vendors.ven_id        = inv_software.sw_vendor ";
+      $q_string .= "left join inv_products   on inv_products.prod_id      = inv_software.sw_product ";
+      $q_string .= "left join inv_licenses   on inv_licenses.lic_id       = inv_software.sw_licenseid ";
+      $q_string .= "left join inv_support    on inv_support.sup_id        = inv_software.sw_supportid ";
+      $q_string .= "left join inv_sw_types   on inv_sw_types.typ_id       = inv_software.sw_type ";
+      $q_string .= "left join inv_department on inv_department.dep_id     = inv_software.sw_department ";
       if ($formVars['type'] != '') {
         $q_string .= "where typ_name = \"" . $formVars['type'] . "\" ";
       }
       $q_string .= $orderby;
-      $q_software = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_software) > 0) {
-        while ($a_software = mysqli_fetch_array($q_software)) {
+      $q_inv_software = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_software) > 0) {
+        while ($a_inv_software = mysqli_fetch_array($q_inv_software)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('software.fill.php?id="  . $a_software['sw_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('software.del.php?id=" . $a_software['sw_id'] . "');\">";
-          $svrstart  = "<a href=\"servers.php?id=" . $a_software['sw_id'] . "\" target=\"_blank\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('software.fill.php?id="  . $a_inv_software['sw_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('software.del.php?id=" . $a_inv_software['sw_id'] . "');\">";
+          $svrstart  = "<a href=\"servers.php?id=" . $a_inv_software['sw_id'] . "\" target=\"_blank\">";
           $linkend   = "</a>";
 
-          $linktype = "<a href=\"software.php?type="  . $a_software['typ_name'] . "\">";
+          $linktype = "<a href=\"software.php?type="  . $a_inv_software['typ_name'] . "\">";
 
           $sw_tags = '';
           $q_string  = "select tag_name ";
-          $q_string .= "from tags ";
-          $q_string .= "where tag_companyid = " . $a_software['sw_id'] . " and tag_type = 4 ";
-          $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_tags) > 0) {
-            while ($a_tags = mysqli_fetch_array($q_tags)) {
-              $sw_tags .= $a_tags['tag_name'] . " ";
+          $q_string .= "from inv_tags ";
+          $q_string .= "where tag_companyid = " . $a_inv_software['sw_id'] . " and tag_type = 4 ";
+          $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_tags) > 0) {
+            while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
+              $sw_tags .= $a_inv_tags['tag_name'] . " ";
             }
           }
 
           $total = 0;
           $q_string  = "select svr_id ";
-          $q_string .= "from svr_software ";
-          $q_string .= "where svr_softwareid = " . $a_software['sw_id'] . " ";
-          $q_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_svr_software) > 0) {
-            while ($a_svr_software = mysqli_fetch_array($q_svr_software)) {
+          $q_string .= "from inv_svr_software ";
+          $q_string .= "where svr_softwareid = " . $a_inv_software['sw_id'] . " ";
+          $q_inv_svr_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_svr_software) > 0) {
+            while ($a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software)) {
               $total++;
             }
           }
@@ -213,17 +213,17 @@
               $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>";
             }
           }
-          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_software['sw_software']   . $linkend . "</td>\n";
-          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_software['ven_name']      . $linkend . "</td>\n";
+          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_inv_software['sw_software']   . $linkend . "</td>\n";
+          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_inv_software['ven_name']      . $linkend . "</td>\n";
           $output .= "<td class=\"ui-widget-content delete\">" . $svrstart  . $total                       . $linkend . "</td>\n";
-          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_software['prod_name']     . $linkend . "</td>\n";
-          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_software['lic_product']   . $linkend . "</td>\n";
-          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_software['sup_company']   . $linkend . "</td>\n";
-          $output .= "<td class=\"ui-widget-content\">"        . $linktype  . $a_software['typ_name']      . $linkend . "</td>\n";
-          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_software['dep_name']      . $linkend . "</td>\n";
+          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_inv_software['prod_name']     . $linkend . "</td>\n";
+          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_inv_software['lic_product']   . $linkend . "</td>\n";
+          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_inv_software['sup_company']   . $linkend . "</td>\n";
+          $output .= "<td class=\"ui-widget-content\">"        . $linktype  . $a_inv_software['typ_name']      . $linkend . "</td>\n";
+          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_inv_software['dep_name']      . $linkend . "</td>\n";
           $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $sw_tags                     . $linkend . "</td>\n";
-          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_software['sw_eol']        . $linkend . "</td>\n";
-          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_software['sw_eos']        . $linkend . "</td>\n";
+          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_inv_software['sw_eol']        . $linkend . "</td>\n";
+          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_inv_software['sw_eos']        . $linkend . "</td>\n";
           $output .= "</tr>\n";
         }
       } else {
@@ -234,7 +234,7 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_software);
+      mysqli_free_result($q_inv_software);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 

@@ -35,10 +35,10 @@
             "sev_name     = \"" . $formVars['sev_name']   . "\"";
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into severity set sev_id = NULL, " . $q_string;
+            $q_string = "insert into inv_severity set sev_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update severity set " . $q_string . " where sev_id = " . $formVars['id'];
+            $q_string = "update inv_severity set " . $q_string . " where sev_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['sev_name']);
@@ -91,22 +91,22 @@
       $output .= "</tr>\n";
 
       $q_string  = "select sev_id,sev_name ";
-      $q_string .= "from severity ";
+      $q_string .= "from inv_severity ";
       $q_string .= "order by sev_name";
-      $q_severity = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_severity) > 0) {
-        while ($a_severity = mysqli_fetch_array($q_severity)) {
+      $q_inv_severity = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_severity) > 0) {
+        while ($a_inv_severity = mysqli_fetch_array($q_inv_severity)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('severity.fill.php?id="  . $a_severity['sev_id'] . "');showDiv('severity-hide');\">";
-          $linkdel   = "<a href=\"#\" onclick=\"delete_line('severity.del.php?id=" . $a_severity['sev_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('severity.fill.php?id="  . $a_inv_severity['sev_id'] . "');showDiv('severity-hide');\">";
+          $linkdel   = "<a href=\"#\" onclick=\"delete_line('severity.del.php?id=" . $a_inv_severity['sev_id'] . "');\">";
           $linkend   = "</a>";
 
           $output   .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . 'x'                     . $linkend . "</td>";
           }
-          $output   .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . $a_severity['sev_id']   . $linkend . "</td>";
-          $output   .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_severity['sev_name'] . $linkend . "</td>";
+          $output   .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . $a_inv_severity['sev_id']   . $linkend . "</td>";
+          $output   .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_severity['sev_name'] . $linkend . "</td>";
           $output   .= "</tr>";
         }
       } else {
@@ -117,7 +117,7 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_severity);
+      mysqli_free_result($q_inv_severity);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 

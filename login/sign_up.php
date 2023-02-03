@@ -83,14 +83,14 @@ if (isset($_POST['new_user'])) {
     $error = '<div class="error_message">Attention! Your password must be at least 5 characters.</div>';
   }
 
-  $count = mysqli_num_rows(mysqli_query($db, "select * from users where usr_name='".$username."'"));
+  $count = mysqli_num_rows(mysqli_query($db, "select * from inv_users where usr_name='".$username."'"));
 
   if ($count > 0) {
     $error = '<div class="error_message">Sorry, username already taken.</div>';
   }
 
   if ($error == '') {
-    $q_string = "insert into users set " . 
+    $q_string = "insert into inv_users set " . 
       "usr_level    =  " . '4'              . "," . 
       "usr_first    = '" . $fname           . "'," . 
       "usr_last     = '" . $lname           . "'," . 
@@ -98,7 +98,7 @@ if (isset($_POST['new_user'])) {
       "usr_name     = '" . $username        . "'," . 
       "usr_passwd   = '" . MD5($password)   . "'";
       
-    $q_users = mysqli_query($db, $q_string) or die("Fatal error: " . mysqli_error($db));
+    $q_inv_users = mysqli_query($db, $q_string) or die("Fatal error: " . mysqli_error($db));
 
     echo "<h2>Success!</h2>";	
     echo "<div class='success_message'>Thank you for registering! Go to the <a href='" . $Siteroot . "'>Inventory Management</a> application and log in.</div>";
@@ -117,19 +117,19 @@ if (isset($_POST['new_user'])) {
 
 // Notify the admin that a new member has arrived.
     $q_string  = "select grp_name ";
-    $q_string .= "from a_groups ";
+    $q_string .= "from inv_groups ";
     $q_string .= "where grp_id = " . $group;
-    $q_groups = mysqli_query($db, $q_string) or die(mysqli_error($db));
-    $a_groups = mysqli_fetch_array($q_groups);
+    $q_inv_groups = mysqli_query($db, $q_string) or die(mysqli_error($db));
+    $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
     $q_string  = "select usr_email ";
-    $q_string .= "from users ";
+    $q_string .= "from inv_users ";
     $q_string .= "where usr_level < 2";
-    $q_users = mysqli_query($db, $q_string) or die("Fatal error: ".mysqli_error($db));
-    while ($a_users = mysqli_fetch_array($q_users)) {
-      $usermail = $a_users['usr_email'];
+    $q_inv_users = mysqli_query($db, $q_string) or die("Fatal error: ".mysqli_error($db));
+    while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
+      $usermail = $a_inv_users['usr_email'];
       $subject = "New member in Inventory Management";
-      $body = "$fname $lname has created an account and requested access to the " . $a_groups['grp_name'] . " group and is currently waiting for confirmation.";
+      $body = "$fname $lname has created an account and requested access to the " . $a_inv_groups['grp_name'] . " group and is currently waiting for confirmation.";
       mail($usermail, $subject, $body);
     }
   }
@@ -196,12 +196,12 @@ function populate_email() {
 <select style="width: 49%;" name="group">
 <?php 
   $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from a_groups ";
+  $q_string .= "from inv_groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name";
-  $q_groups = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_groups = mysqli_fetch_array($q_groups)) {
-    print "  <option value=\"" . $a_groups['grp_id'] . "\">" . $a_groups['grp_name'] . "</option>\n";
+  $q_inv_groups = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_groups = mysqli_fetch_array($q_inv_groups)) {
+    print "  <option value=\"" . $a_inv_groups['grp_id'] . "\">" . $a_inv_groups['grp_name'] . "</option>\n";
   }
 ?>
 </select><br /> 

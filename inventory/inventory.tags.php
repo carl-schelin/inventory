@@ -22,15 +22,15 @@
 
 # check to see if the person editing is a member of a group that can edit this information; if not, zero out 'type' so no changes can be made.
       $q_string  = "select inv_manager ";
-      $q_string .= "from inventory ";
+      $q_string .= "from inv_inventory ";
       $q_string .= "where inv_id = " . $formVars['id'] . " ";
-      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      $a_inventory = mysqli_fetch_array($q_inventory);
+      $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
-      $formVars['group'] = $a_inventory['inv_manager'];
+      $formVars['group'] = $a_inv_inventory['inv_manager'];
 
 # if not a member of the group that can edit this server, default to zero which bypasses all the edit functions.
-      if (check_grouplevel($db, $a_inventory['inv_manager']) == 0) {
+      if (check_grouplevel($db, $a_inv_inventory['inv_manager']) == 0) {
         $formVars['function'] = '';
       }
 
@@ -111,7 +111,7 @@
 # that might be the easiest method.
 
           $q_string  = "delete ";
-          $q_string .= "from tags ";
+          $q_string .= "from inv_tags ";
           $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_type = 1 ";
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
@@ -125,7 +125,7 @@
           foreach ($list as $index) {
 
             $q_string  = "insert ";
-            $q_string .= "into tags ";
+            $q_string .= "into inv_tags ";
             $q_string .= "set ";
             $q_string .= "tag_id          =   " . "null"             . ",";
             $q_string .= "tag_companyid   =   " . $formVars['id']    . ",";
@@ -141,13 +141,13 @@
           $str_output = "";
           $comma = "";
           $q_string  = "select tag_name ";
-          $q_string .= "from tags ";
+          $q_string .= "from inv_tags ";
           $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_type = 1 ";
           $q_string .= "order by tag_name ";
-          $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_tags) > 0) {
-            while ($a_tags = mysqli_fetch_array($q_tags)) {
-              $str_output .= $comma . $a_tags['tag_name'];
+          $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_tags) > 0) {
+            while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
+              $str_output .= $comma . $a_inv_tags['tag_name'];
               $comma = ", ";
             }
           }

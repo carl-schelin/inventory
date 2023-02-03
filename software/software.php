@@ -271,11 +271,11 @@ is a small difference, you can make changes and add a new software entry.</p>
   <td class="ui-widget-content">Vendor: <select name="sw_vendor">
 <?php
   $q_string  = "select ven_id,ven_name ";
-  $q_string .= "from vendors ";
+  $q_string .= "from inv_vendors ";
   $q_string .= "order by ven_name";
-  $q_vendors = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_vendors = mysqli_fetch_array($q_vendors)) {
-    print "<option value=\"" . $a_vendors['ven_id'] . "\">" . $a_vendors['ven_name'] . "</option>\n";
+  $q_inv_vendors = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_vendors = mysqli_fetch_array($q_inv_vendors)) {
+    print "<option value=\"" . $a_inv_vendors['ven_id'] . "\">" . $a_inv_vendors['ven_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -284,11 +284,11 @@ is a small difference, you can make changes and add a new software entry.</p>
   <td class="ui-widget-content">Product: <select name="sw_product">
 <?php
   $q_string  = "select prod_id,prod_name ";
-  $q_string .= "from products ";
+  $q_string .= "from inv_products ";
   $q_string .= "order by prod_name";
-  $q_products = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_products = mysqli_fetch_array($q_products)) {
-    print "<option value=\"" . $a_products['prod_id'] . "\">" . $a_products['prod_name'] . "</option>\n";
+  $q_inv_products = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_products = mysqli_fetch_array($q_inv_products)) {
+    print "<option value=\"" . $a_inv_products['prod_id'] . "\">" . $a_inv_products['prod_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -297,12 +297,12 @@ is a small difference, you can make changes and add a new software entry.</p>
   <td class="ui-widget-content">License: <select name="sw_licenseid">
 <?php
   $q_string  = "select lic_id,lic_vendor,lic_product,prj_name ";
-  $q_string .= "from licenses ";
-  $q_string .= "left join projects on projects.prj_id = licenses.lic_project ";
+  $q_string .= "from inv_licenses ";
+  $q_string .= "left join inv_projects on inv_projects.prj_id = inv_licenses.lic_project ";
   $q_string .= "order by prj_name,lic_product,lic_vendor";
-  $q_licenses = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_licenses = mysqli_fetch_array($q_licenses)) {
-    print "<option value=\"" . $a_licenses['lic_id'] . "\">" . $a_licenses['prj_name'] . " (" . $a_licenses['lic_vendor'] . " " . $a_licenses['lic_product'] . ")</option>\n";
+  $q_inv_licenses = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_licenses = mysqli_fetch_array($q_inv_licenses)) {
+    print "<option value=\"" . $a_inv_licenses['lic_id'] . "\">" . $a_inv_licenses['prj_name'] . " (" . $a_inv_licenses['lic_vendor'] . " " . $a_inv_licenses['lic_product'] . ")</option>\n";
   }
 ?>
 </select></td>
@@ -311,7 +311,7 @@ is a small difference, you can make changes and add a new software entry.</p>
   <td class="ui-widget-content">Support: <select name="sw_supportid">
 <?php
   $q_string  = "select sup_id,sup_company ";
-  $q_string .= "from support ";
+  $q_string .= "from inv_support ";
   $q_string .= "order by sup_company";
   $q_support = mysqli_query($db, $q_string) or die(mysqli_error($db));
   while ($a_support = mysqli_fetch_array($q_support)) {
@@ -324,11 +324,11 @@ is a small difference, you can make changes and add a new software entry.</p>
   <td class="ui-widget-content">Software Type: <select name="sw_type">
 <?php
   $q_string  = "select typ_id,typ_name ";
-  $q_string .= "from sw_types ";
+  $q_string .= "from inv_sw_types ";
   $q_string .= "order by typ_name";
-  $q_sw_types = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_sw_types = mysqli_fetch_array($q_sw_types)) {
-    print "<option value=\"" . $a_sw_types['typ_id'] . "\">" . $a_sw_types['typ_name'] . "</option>\n";
+  $q_inv_sw_types = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_sw_types = mysqli_fetch_array($q_inv_sw_types)) {
+    print "<option value=\"" . $a_inv_sw_types['typ_id'] . "\">" . $a_inv_sw_types['typ_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -337,11 +337,11 @@ is a small difference, you can make changes and add a new software entry.</p>
   <td class="ui-widget-content">Department: <select name="sw_department">
 <?php
   $q_string  = "select dep_id,dep_name ";
-  $q_string .= "from department ";
+  $q_string .= "from inv_department ";
   $q_string .= "order by dep_name";
-  $q_department = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_department = mysqli_fetch_array($q_department)) {
-    print "<option value=\"" . $a_department['dep_id'] . "\">" . $a_department['dep_name'] . "</option>\n";
+  $q_inv_department = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_department = mysqli_fetch_array($q_inv_department)) {
+    print "<option value=\"" . $a_inv_department['dep_id'] . "\">" . $a_inv_department['dep_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -375,11 +375,11 @@ is a small difference, you can make changes and add a new software entry.</p>
   <td class="ui-widget-content">Vendor: <select name="sw_vendor">
 <?php
   $q_string  = "select ven_id,ven_name ";
-  $q_string .= "from vendors ";
+  $q_string .= "from inv_vendors ";
   $q_string .= "order by ven_name";
-  $q_vendors = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_vendors = mysqli_fetch_array($q_vendors)) {
-    print "<option value=\"" . $a_vendors['ven_id'] . "\">" . $a_vendors['ven_name'] . "</option>\n";
+  $q_inv_vendors = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_vendors = mysqli_fetch_array($q_inv_vendors)) {
+    print "<option value=\"" . $a_inv_vendors['ven_id'] . "\">" . $a_inv_vendors['ven_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -388,11 +388,11 @@ is a small difference, you can make changes and add a new software entry.</p>
   <td class="ui-widget-content">Product: <select name="sw_product">
 <?php
   $q_string  = "select prod_id,prod_name ";
-  $q_string .= "from products ";
+  $q_string .= "from inv_products ";
   $q_string .= "order by prod_name";
-  $q_products = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_products = mysqli_fetch_array($q_products)) {
-    print "<option value=\"" . $a_products['prod_id'] . "\">" . $a_products['prod_name'] . "</option>\n";
+  $q_inv_products = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_products = mysqli_fetch_array($q_inv_products)) {
+    print "<option value=\"" . $a_inv_products['prod_id'] . "\">" . $a_inv_products['prod_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -401,12 +401,12 @@ is a small difference, you can make changes and add a new software entry.</p>
   <td class="ui-widget-content">License: <select name="sw_licenseid">
 <?php
   $q_string  = "select lic_id,lic_vendor,lic_product,prj_name ";
-  $q_string .= "from licenses ";
-  $q_string .= "left join projects on projects.prj_id = licenses.lic_project ";
+  $q_string .= "from inv_licenses ";
+  $q_string .= "left join inv_projects on inv_projects.prj_id = inv_licenses.lic_project ";
   $q_string .= "order by prj_name,lic_product,lic_vendor";
-  $q_licenses = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_licenses = mysqli_fetch_array($q_licenses)) {
-    print "<option value=\"" . $a_licenses['lic_id'] . "\">" . $a_licenses['prj_name'] . " (" . $a_licenses['lic_vendor'] . " " . $a_licenses['lic_product'] . ")</option>\n";
+  $q_inv_licenses = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_licenses = mysqli_fetch_array($q_inv_licenses)) {
+    print "<option value=\"" . $a_inv_licenses['lic_id'] . "\">" . $a_inv_licenses['prj_name'] . " (" . $a_inv_licenses['lic_vendor'] . " " . $a_inv_licenses['lic_product'] . ")</option>\n";
   }
 ?>
 </select></td>
@@ -415,7 +415,7 @@ is a small difference, you can make changes and add a new software entry.</p>
   <td class="ui-widget-content">Support: <select name="sw_supportid">
 <?php
   $q_string  = "select sup_id,sup_company ";
-  $q_string .= "from support ";
+  $q_string .= "from inv_support ";
   $q_string .= "order by sup_company";
   $q_support = mysqli_query($db, $q_string) or die(mysqli_error($db));
   while ($a_support = mysqli_fetch_array($q_support)) {
@@ -428,11 +428,11 @@ is a small difference, you can make changes and add a new software entry.</p>
   <td class="ui-widget-content">Software Type: <select name="sw_type">
 <?php
   $q_string  = "select typ_id,typ_name ";
-  $q_string .= "from sw_types ";
+  $q_string .= "from inv_sw_types ";
   $q_string .= "order by typ_name";
-  $q_sw_types = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_sw_types = mysqli_fetch_array($q_sw_types)) {
-    print "<option value=\"" . $a_sw_types['typ_id'] . "\">" . $a_sw_types['typ_name'] . "</option>\n";
+  $q_inv_sw_types = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_sw_types = mysqli_fetch_array($q_inv_sw_types)) {
+    print "<option value=\"" . $a_inv_sw_types['typ_id'] . "\">" . $a_inv_sw_types['typ_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -441,11 +441,11 @@ is a small difference, you can make changes and add a new software entry.</p>
   <td class="ui-widget-content">Department: <select name="sw_department">
 <?php
   $q_string  = "select dep_id,dep_name ";
-  $q_string .= "from department ";
+  $q_string .= "from inv_department ";
   $q_string .= "order by dep_name";
-  $q_department = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_department = mysqli_fetch_array($q_department)) {
-    print "<option value=\"" . $a_department['dep_id'] . "\">" . $a_department['dep_name'] . "</option>\n";
+  $q_inv_department = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_department = mysqli_fetch_array($q_inv_department)) {
+    print "<option value=\"" . $a_inv_department['dep_id'] . "\">" . $a_inv_department['dep_name'] . "</option>\n";
   }
 ?>
 </select></td>

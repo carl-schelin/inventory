@@ -19,17 +19,17 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from net_zones");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_net_zones");
 
       $q_string  = "select zone_zone,zone_acronym ";
-      $q_string .= "from net_zones ";
+      $q_string .= "from inv_net_zones ";
       $q_string .= "where zone_id = " . $formVars['id'];
-      $q_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_net_zones = mysqli_fetch_array($q_net_zones);
-      mysqli_free_result($q_net_zones);
+      $q_inv_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_net_zones = mysqli_fetch_array($q_inv_net_zones);
+      mysqli_free_result($q_inv_net_zones);
 
-      print "document.formUpdate.zone_zone.value = '"        . mysqli_real_escape_string($db, $a_net_zones['zone_zone'])        . "';\n";
-      print "document.formUpdate.zone_acronym.value = '"     . mysqli_real_escape_string($db, $a_net_zones['zone_acronym'])     . "';\n";
+      print "document.formUpdate.zone_zone.value = '"        . mysqli_real_escape_string($db, $a_inv_net_zones['zone_zone'])        . "';\n";
+      print "document.formUpdate.zone_acronym.value = '"     . mysqli_real_escape_string($db, $a_inv_net_zones['zone_acronym'])     . "';\n";
 
       print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 

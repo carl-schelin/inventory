@@ -14,12 +14,12 @@
   $formVars['server'] = clean($_GET['server'], 60);
 
   $q_string  = "select inv_id,inv_name ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_name = \"" . $formVars['server'] . "\" and inv_status = 0";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_inventory = mysqli_fetch_array($q_inventory);
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
-  if ($a_inventory['inv_name'] == $formVars['server'] && $formVars['server'] != '') {
+  if ($a_inv_inventory['inv_name'] == $formVars['server'] && $formVars['server'] != '') {
 ?>
     document.newissue.clone.disabled = false;
     if (navigator.appName == "Microsoft Internet Explorer") {
@@ -27,7 +27,7 @@
     } else {
       document.getElementById('system').setAttribute("class","ui-widget-content");
     }
-    document.newissue.id.value = '<?php print $a_inventory['inv_id']; ?>';
+    document.newissue.id.value = '<?php print $a_inv_inventory['inv_id']; ?>';
 <?php
   } else {
 ?>

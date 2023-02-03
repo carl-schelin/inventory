@@ -58,33 +58,33 @@
 # add them to the location in order to do the reverse selection on the main page
 # select country, select state, select city/county, select data center.
           $q_string  = "select ct_state ";
-          $q_string .= "from cities ";
+          $q_string .= "from inv_cities ";
           $q_string .= "where ct_id = " . $formVars['loc_city'];
-          $q_cities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_cities) > 0) {
-            $a_cities = mysqli_fetch_array($q_cities);
+          $q_inv_cities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_cities) > 0) {
+            $a_inv_cities = mysqli_fetch_array($q_inv_cities);
           } else {
-            $a_cities['ct_state'] = 0;
+            $a_inv_cities['ct_state'] = 0;
           }
           $q_string  = "select st_country ";
-          $q_string .= "from states ";
-          $q_string .= "where st_id = " . $a_cities['ct_state'];
-          $q_states = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_states) > 0) {
-            $a_states = mysqli_fetch_array($q_states);
+          $q_string .= "from inv_states ";
+          $q_string .= "where st_id = " . $a_inv_cities['ct_state'];
+          $q_inv_states = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_states) > 0) {
+            $a_inv_states = mysqli_fetch_array($q_inv_states);
           } else {
-            $a_states['st_country'] = 0;
+            $a_inv_states['st_country'] = 0;
           }
 
           $q_string =
             "loc_name        = \"" . $formVars['loc_name']        . "\"," .
             "loc_type        =   " . $formVars['loc_type']        . "," .
             "loc_suite       = \"" . $formVars['loc_suite']       . "\"," .
-            "loc_country     =   " . $a_states['st_country']      . "," .
+            "loc_country     =   " . $a_inv_states['st_country']      . "," .
             "loc_addr1       = \"" . $formVars['loc_addr1']       . "\"," .
             "loc_addr2       = \"" . $formVars['loc_addr2']       . "\"," .
             "loc_city        =   " . $formVars['loc_city']        . "," .
-            "loc_state       =   " . $a_cities['ct_state']        . "," .
+            "loc_state       =   " . $a_inv_cities['ct_state']        . "," .
             "loc_zipcode     = \"" . $formVars['loc_zipcode']     . "\"," .
             "loc_contact1    = \"" . $formVars['loc_contact1']    . "\"," .
             "loc_contact2    = \"" . $formVars['loc_contact2']    . "\"," .
@@ -95,10 +95,10 @@
             "loc_environment =   " . $formVars['loc_environment'];
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into locations set loc_id = NULL, " . $q_string;
+            $q_string = "insert into inv_locations set loc_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update locations set " . $q_string . " where loc_id = " . $formVars['id'];
+            $q_string = "update inv_locations set " . $q_string . " where loc_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['loc_name']);
@@ -117,7 +117,7 @@
 # locations that are updates. New locations will have all new tags.
           if ($formVars['update'] == 0 || $formVars['update'] == 1) {
             $q_string  = "delete ";
-            $q_string .= "from tags ";
+            $q_string .= "from inv_tags ";
             $q_string .= "where tag_type = 2 and tag_companyid = " . $formVars['id'] . " ";
             mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
@@ -140,7 +140,7 @@
                   "tag_owner        =   " . $_SESSION['uid'] . "," . 
                   "tag_group        =   " . $_SESSION['group'];
 
-                $q_string = "insert into tags set tag_id = NULL, " . $q_string;
+                $q_string = "insert into inv_tags set tag_id = NULL, " . $q_string;
                 mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
               }
             }
@@ -170,21 +170,21 @@
       $q_string  = "select loc_id,loc_name,loc_addr1,loc_addr2,loc_suite,ct_city,loc_type,loc_identity,";
       $q_string .= "st_acronym,loc_zipcode,cn_acronym,loc_details,loc_default,ct_clli,loc_instance,";
       $q_string .= "env_abb ";
-      $q_string .= "from locations ";
-      $q_string .= "left join cities  on cities.ct_id  = locations.loc_city ";
-      $q_string .= "left join states  on states.st_id  = cities.ct_state ";
-      $q_string .= "left join country on country.cn_id = states.st_country ";
-      $q_string .= "left join environment on environment.env_id = locations.loc_environment ";
+      $q_string .= "from inv_locations ";
+      $q_string .= "left join inv_cities      on inv_cities.ct_id       = inv_locations.loc_city ";
+      $q_string .= "left join inv_states      on inv_states.st_id       = inv_cities.ct_state ";
+      $q_string .= "left join inv_country     on inv_country.cn_id      = inv_states.st_country ";
+      $q_string .= "left join inv_environment on inv_environment.env_id = inv_locations.loc_environment ";
       $q_string .= "order by loc_default desc,loc_name,ct_city,st_state ";
-      $q_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_locations) > 0) {
-        while ($a_locations = mysqli_fetch_array($q_locations)) {
+      $q_inv_locations = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_locations) > 0) {
+        while ($a_inv_locations = mysqli_fetch_array($q_inv_locations)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('datacenter.fill.php?id="  . $a_locations['loc_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('datacenter.del.php?id=" . $a_locations['loc_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('datacenter.fill.php?id="  . $a_inv_locations['loc_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('datacenter.del.php?id=" . $a_inv_locations['loc_id'] . "');\">";
           $linkend   = "</a>";
 
-          if ($a_locations['loc_default']) {
+          if ($a_inv_locations['loc_default']) {
             $class = "ui-state-highlight";
           } else {
             $class = "ui-widget-content";
@@ -192,12 +192,12 @@
 
           $loc_tags = '';
           $q_string  = "select tag_name ";
-          $q_string .= "from tags ";
-          $q_string .= "where tag_companyid = " . $a_locations['loc_id'] . " and tag_type = 2 ";
-          $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_tags) > 0) {
-            while ($a_tags = mysqli_fetch_array($q_tags)) {
-              $loc_tags .= $a_tags['tag_name'] . " ";
+          $q_string .= "from inv_tags ";
+          $q_string .= "where tag_companyid = " . $a_inv_locations['loc_id'] . " and tag_type = 2 ";
+          $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_tags) > 0) {
+            while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
+              $loc_tags .= $a_inv_tags['tag_name'] . " ";
             }
           }
 
@@ -205,22 +205,22 @@
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"" . $class . " delete\">" . $linkdel                                            . "</td>";
           }
-          $output .= "  <td class=\"" . $class . "\">" . $linkstart . $a_locations['loc_name'] . $linkend . ", ";
-          if (strlen($a_locations['loc_addr1']) > 0) {
-            $output .= $a_locations['loc_addr1'] . ", ";
+          $output .= "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_locations['loc_name'] . $linkend . ", ";
+          if (strlen($a_inv_locations['loc_addr1']) > 0) {
+            $output .= $a_inv_locations['loc_addr1'] . ", ";
           }
-          if (strlen($a_locations['loc_addr2']) > 0) {
-            $output .= $a_locations['loc_addr2'] . ", ";
+          if (strlen($a_inv_locations['loc_addr2']) > 0) {
+            $output .= $a_inv_locations['loc_addr2'] . ", ";
           }
-          if (strlen($a_locations['loc_suite']) > 0) {
-            $output .= "Suite: " . $a_locations['loc_suite'] . ", ";
+          if (strlen($a_inv_locations['loc_suite']) > 0) {
+            $output .= "Suite: " . $a_inv_locations['loc_suite'] . ", ";
           }
-          $output .= $a_locations['ct_city'] . ", " . $a_locations['st_acronym'] . " " . $a_locations['loc_zipcode'] . ", " . $a_locations['cn_acronym'] . "</td>";
+          $output .= $a_inv_locations['ct_city'] . ", " . $a_inv_locations['st_acronym'] . " " . $a_inv_locations['loc_zipcode'] . ", " . $a_inv_locations['cn_acronym'] . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"                       . $loc_tags                                 . "</td>";
-          $output .= "  <td class=\"" . $class . " delete\">"                       . $a_locations['ct_clli']                   . "</td>";
-          $output .= "  <td class=\"" . $class . " delete\">"                       . $a_locations['loc_identity']              . "</td>";
-          $output .= "  <td class=\"" . $class . " delete\">"                       . $a_locations['loc_instance']              . "</td>";
-          $output .= "  <td class=\"" . $class . " delete\">"                       . $a_locations['env_abb']                   . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"                       . $a_inv_locations['ct_clli']                   . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"                       . $a_inv_locations['loc_identity']              . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"                       . $a_inv_locations['loc_instance']              . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"                       . $a_inv_locations['env_abb']                   . "</td>";
           $output .= "</tr>";
 
         }
@@ -232,7 +232,7 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_locations);
+      mysqli_free_result($q_inv_locations);
 
       print "document.getElementById('mysql_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
     } else {

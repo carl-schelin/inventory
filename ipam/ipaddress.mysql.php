@@ -29,18 +29,18 @@
       $ipv4 = 0;
       $ipv6 = 0;
       $q_string  = "select net_ipv4,net_ipv6,net_mask,zone_zone ";
-      $q_string .= "from network ";
-      $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
+      $q_string .= "from inv_network ";
+      $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = inv_network.net_zone ";
       $q_string .= "where net_id = " . $formVars['network'] . " ";
-      $q_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_network) > 0) {
-        $a_network = mysqli_fetch_array($q_network);
+      $q_inv_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_network) > 0) {
+        $a_inv_network = mysqli_fetch_array($q_inv_network);
 
-        if (strlen($a_network['net_ipv4']) == 0) {
+        if (strlen($a_inv_network['net_ipv4']) == 0) {
           $ipv6 = 1;
         } else {
           $ipv4 = 1;
-          $range = ipRange($a_network['net_ipv4'] . "/" . $a_network['net_mask']);
+          $range = ipRange($a_inv_network['net_ipv4'] . "/" . $a_inv_network['net_mask']);
 
           $startip = ip2long($range[0]);
           $endip   = ip2long($range[1]);
@@ -76,22 +76,22 @@
         $assigned = 'No';
         if ($formVars['update'] == 0) {
           $q_string  = "select ip_ipv4,ip_hostname ";
-          $q_string .= "from ipaddress ";
+          $q_string .= "from inv_ipaddress ";
           $q_string .= "where ip_ipv4 != \"\" and ip_ipv4 = \"" . $formVars['ip_ipv4'] . "\" ";
-          $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_ipaddress) > 0) {
-            $a_ipaddress = mysqli_fetch_array($q_ipaddress);
-            print "alert('IPv4 " . $formVars['ip_ipv4'] . " has already been assigned to " . $a_ipaddress['ip_hostname'] . ".');";
+          $q_inv_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_ipaddress) > 0) {
+            $a_inv_ipaddress = mysqli_fetch_array($q_inv_ipaddress);
+            print "alert('IPv4 " . $formVars['ip_ipv4'] . " has already been assigned to " . $a_inv_ipaddress['ip_hostname'] . ".');";
             $assigned = 'Yes';
           }
  
           $q_string  = "select ip_ipv6,ip_hostname ";
-          $q_string .= "from ipaddress ";
+          $q_string .= "from inv_ipaddress ";
           $q_string .= "where ip_ipv6 != \"\" and ip_ipv6 = \"" . $formVars['ip_ipv6'] . "\" ";
-          $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_ipaddress) > 0) {
-            $a_ipaddress = mysqli_fetch_array($q_ipaddress);
-            print "alert('IPv6 " . $formVars['ip_ipv6'] . " has already been assigned to " . $a_ipaddress['ip_hostname'] . ".');";
+          $q_inv_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_ipaddress) > 0) {
+            $a_inv_ipaddress = mysqli_fetch_array($q_inv_ipaddress);
+            print "alert('IPv6 " . $formVars['ip_ipv6'] . " has already been assigned to " . $a_inv_ipaddress['ip_hostname'] . ".');";
             $assigned = 'Yes';
           }
         }
@@ -113,10 +113,10 @@
               "ip_notes         = \"" . $formVars['ip_notes']          . "\"";
   
             if ($formVars['update'] == 0) {
-              $q_string = "insert into ipaddress set ip_id = NULL, " . $q_string;
+              $q_string = "insert into inv_ipaddress set ip_id = NULL, " . $q_string;
             }
             if ($formVars['update'] == 1) {
-              $q_string = "update ipaddress set " . $q_string . " where ip_id = " . $formVars['id'];
+              $q_string = "update inv_ipaddress set " . $q_string . " where ip_id = " . $formVars['id'];
             }
 
             logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['ip_ipv4'] . "/" . $formVars['ip_ipv6']);
@@ -163,28 +163,28 @@
           $ipaddr = long2ip($i);
 
           $q_string  = "select ip_id,ip_ipv4,ip_hostname,ip_domain,net_mask,ip_type,usr_first,usr_last,ip_timestamp,ip_description,ip_notes,sub_name ";
-          $q_string .= "from ipaddress ";
-          $q_string .= "left join users on users.usr_id = ipaddress.ip_user ";
-          $q_string .= "left join sub_zones on sub_zones.sub_id = ipaddress.ip_subzone ";
-          $q_string .= "left join network  on network.net_id = ipaddress.ip_network ";
-          $q_string .= "left join net_zones on net_zones.zone_id = network.net_zone ";
+          $q_string .= "from inv_ipaddress ";
+          $q_string .= "left join inv_users     on inv_users.usr_id      = inv_ipaddress.ip_user ";
+          $q_string .= "left join inv_sub_zones on inv_sub_zones.sub_id  = inv_ipaddress.ip_subzone ";
+          $q_string .= "left join inv_network   on inv_network.net_id    = inv_ipaddress.ip_network ";
+          $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = inv_network.net_zone ";
           $q_string .= "where ip_ipv4 = \"" . $ipaddr . "\" ";
-          $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_ipaddress) > 0) {
-            $a_ipaddress = mysqli_fetch_array($q_ipaddress);
+          $q_inv_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_ipaddress) > 0) {
+            $a_inv_ipaddress = mysqli_fetch_array($q_inv_ipaddress);
 
-            $linkstart = "<a href=\"#\" onclick=\"show_file('ipaddress.fill.php?id="  . $a_ipaddress['ip_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-            $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('ipaddress.del.php?id=" . $a_ipaddress['ip_id'] . "');\">";
+            $linkstart = "<a href=\"#\" onclick=\"show_file('ipaddress.fill.php?id="  . $a_inv_ipaddress['ip_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+            $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('ipaddress.del.php?id=" . $a_inv_ipaddress['ip_id'] . "');\">";
             $linkend   = "</a>";
 
             $q_string  = "select ip_name ";
-            $q_string .= "from ip_types ";
-            $q_string .= "where ip_id = " . $a_ipaddress['ip_type'] . " ";
-            $q_ip_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-            if (mysqli_num_rows($q_ip_types) > 0) {
-              $a_ip_types = mysqli_fetch_array($q_ip_types);
+            $q_string .= "from inv_ip_types ";
+            $q_string .= "where ip_id = " . $a_inv_ipaddress['ip_type'] . " ";
+            $q_inv_ip_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            if (mysqli_num_rows($q_inv_ip_types) > 0) {
+              $a_inv_ip_types = mysqli_fetch_array($q_inv_ip_types);
             } else {
-              $a_ip_types['ip_name'] = "Unassigned";
+              $a_inv_ip_types['ip_name'] = "Unassigned";
             }
 
             if (strlen($iprange) > 0) {
@@ -213,12 +213,12 @@
             }
 
             $class = 'ui-widget-content';
-            if ($assigned == 'Yes' && $a_ipaddress['ip_ipv4'] == $formVars['ip_ipv4']) {
+            if ($assigned == 'Yes' && $a_inv_ipaddress['ip_ipv4'] == $formVars['ip_ipv4']) {
               $class = 'ui-state-error';
             }
 
             $notes = 'No';
-            if (strlen($a_ipaddress['ip_notes']) > 0) {
+            if (strlen($a_inv_ipaddress['ip_notes']) > 0) {
               $notes = 'Yes';
             }
 
@@ -227,13 +227,13 @@
               $output .= "  <td class=\"" . $class . " delete\">" . $linkdel . "</td>";
             }
             $output .= "  <td class=\"" . $class . "\">" . $linkstart . $ipaddr                                            . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_hostname'] . "." . $a_ipaddress['ip_domain'] . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['sub_name']                                      . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ip_types['ip_name']                                        . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_description']                                . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\" title=\"Notes: " . $a_ipaddress['ip_notes'] . "\">" . $notes                   . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['usr_first'] . " " . $a_ipaddress['usr_last']    . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_timestamp']                                  . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['ip_hostname'] . "." . $a_inv_ipaddress['ip_domain'] . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['sub_name']                                      . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ip_types['ip_name']                                        . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['ip_description']                                . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\" title=\"Notes: " . $a_inv_ipaddress['ip_notes'] . "\">" . $notes                   . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['usr_first'] . " " . $a_inv_ipaddress['usr_last']    . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['ip_timestamp']                                  . "</td>\n";
             $output .= "</tr>";
 
           } else {
@@ -272,7 +272,7 @@
 
         $output .= "</table>";
 
-        mysqli_free_result($q_ipaddress);
+        mysqli_free_result($q_inv_ipaddress);
 
         print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
       }
@@ -303,37 +303,37 @@
         $output .= "</tr>\n";
 
         $q_string  = "select ip_id,ip_ipv6,ip_hostname,ip_domain,net_mask,ip_type,usr_first,usr_last,ip_timestamp,ip_description,ip_notes,sub_name ";
-        $q_string .= "from ipaddress ";
-        $q_string .= "left join users  on users.usr_id = ipaddress.ip_user ";
-        $q_string .= "left join sub_zones  on sub_zones.sub_id = ipaddress.ip_subzone ";
-        $q_string .= "left join network  on network.net_id = ipaddress.ip_network ";
+        $q_string .= "from inv_ipaddress ";
+        $q_string .= "left join inv_users  on inv_users.usr_id = inv_ipaddress.ip_user ";
+        $q_string .= "left join inv_sub_zones  on inv_sub_zones.sub_id = inv_ipaddress.ip_subzone ";
+        $q_string .= "left join inv_network    on inv_network.net_id   = inv_ipaddress.ip_network ";
         $q_string .= "where ip_ipv6 != '' " . $where;
         $q_string .= "order by " . $orderv6 . " ";
-        $q_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        if (mysqli_num_rows($q_ipaddress) > 0) {
-          while ($a_ipaddress = mysqli_fetch_array($q_ipaddress)) {
+        $q_inv_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        if (mysqli_num_rows($q_inv_ipaddress) > 0) {
+          while ($a_inv_ipaddress = mysqli_fetch_array($q_inv_ipaddress)) {
 
-            $linkstart = "<a href=\"#\" onclick=\"show_file('ipaddress.fill.php?id="  . $a_ipaddress['ip_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-            $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('ipaddress.del.php?id=" . $a_ipaddress['ip_id'] . "');\">";
+            $linkstart = "<a href=\"#\" onclick=\"show_file('ipaddress.fill.php?id="  . $a_inv_ipaddress['ip_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+            $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('ipaddress.del.php?id=" . $a_inv_ipaddress['ip_id'] . "');\">";
             $linkend   = "</a>";
 
             $q_string  = "select ip_name ";
-            $q_string .= "from ip_types ";
-            $q_string .= "where ip_id = " . $a_ipaddress['ip_type'] . " ";
-            $q_ip_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-            if (mysqli_num_rows($q_ip_types) > 0) {
-              $a_ip_types = mysqli_fetch_array($q_ip_types);
+            $q_string .= "from inv_ip_types ";
+            $q_string .= "where ip_id = " . $a_inv_ipaddress['ip_type'] . " ";
+            $q_inv_ip_types = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            if (mysqli_num_rows($q_inv_ip_types) > 0) {
+              $a_inv_ip_types = mysqli_fetch_array($q_inv_ip_types);
             } else {
-              $a_ip_types['ip_name'] = "Unassigned";
+              $a_inv_ip_types['ip_name'] = "Unassigned";
             }
 
             $class = 'ui-widget-content';
-            if ($assigned == 'Yes' && $a_ipaddress['ip_ipv6'] == $formVars['ip_ipv6']) {
+            if ($assigned == 'Yes' && $a_inv_ipaddress['ip_ipv6'] == $formVars['ip_ipv6']) {
               $class = 'ui-state-error';
             }
 
             $notes = 'No';
-            if (strlen($a_ipaddress['ip_notes']) > 0) {
+            if (strlen($a_inv_ipaddress['ip_notes']) > 0) {
               $notes = 'Yes';
             }
 
@@ -341,14 +341,14 @@
             if (check_userlevel($db, $AL_Admin)) {
               $output .= "  <td class=\"" . $class . " delete\">" . $linkdel . "</td>";
             }
-            $output .= "  <td class=\"" . $class . "\">" . $linkstart . $a_ipaddress['ip_ipv6'] . "/" . $a_ipaddress['net_mask'] . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_hostname'] . "." . $a_ipaddress['ip_domain']       . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['sub_name']                                            . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ip_types['ip_name']                                              . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_description']                                      . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_ipaddress['ip_ipv6'] . "/" . $a_inv_ipaddress['net_mask'] . $linkend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['ip_hostname'] . "." . $a_inv_ipaddress['ip_domain']       . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['sub_name']                                            . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ip_types['ip_name']                                              . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['ip_description']                                      . "</td>\n";
             $output .= "  <td class=\"" . $class . "\" title=\"Notes: " . $ip_address['ip_notes'] . "\">" . $notes                          . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['usr_first'] . " " . $a_ipaddress['usr_last']          . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_ipaddress['ip_timestamp']                                        . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['usr_first'] . " " . $a_inv_ipaddress['usr_last']          . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['ip_timestamp']                                        . "</td>\n";
             $output .= "</tr>";
           }
         } else {
@@ -359,7 +359,7 @@
 
         $output .= "</table>";
 
-        mysqli_free_result($q_ipaddress);
+        mysqli_free_result($q_inv_ipaddress);
 
         print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
       }

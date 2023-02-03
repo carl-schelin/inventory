@@ -17,10 +17,10 @@
   $formVars['id'] = clean($_GET['id'], 10);
 
   $q_string  = "select inv_id,inv_name ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_id = " . $formVars['id'] . " ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_inventory = mysqli_fetch_array($q_inventory);
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
   if (isset($_GET["sort"])) {
     $orderby = "order by " . $formVars['sort'] . $_SESSION['sort'];
@@ -62,8 +62,8 @@
     }
   }
 
-  $where  = "where (log_detail like '%" . $a_inventory['inv_name'] . "%' or log_detail like '%" . $a_inventory['inv_id'] . "%') ";
-  $where  = "where (log_detail like '%" . $a_inventory['inv_name'] . "%') ";
+  $where  = "where (log_detail like '%" . $a_inv_inventory['inv_name'] . "%' or log_detail like '%" . $a_inv_inventory['inv_id'] . "%') ";
+  $where  = "where (log_detail like '%" . $a_inv_inventory['inv_name'] . "%') ";
   $where .= "and log_date >= '" . $formVars['startdate'] . "' and log_date <= '" . $formVars['enddate'] . "' ";
 
   if ($formVars['user'] != 0) {
@@ -122,24 +122,24 @@
   $output .= "</tr>\n";
 
   $q_string  = "select log_id,log_user,log_source,log_date,log_detail,usr_name ";
-  $q_string .= "from log ";
-  $q_string .= "left join users on users.usr_id = log.log_user ";
+  $q_string .= "from inv_log ";
+  $q_string .= "left join inv_users on inv_users.usr_id = inv_log.log_user ";
   $q_string .= $where;
   $q_string .= $orderby;
-  $q_log = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_log = mysqli_fetch_array($q_log)) {
+  $q_inv_log = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_log = mysqli_fetch_array($q_inv_log)) {
 
     $output .= "<tr>\n";
-    $output .= "  <td class=\"ui-widget-content\">" . $a_log['log_id']     . "</td>\n";
-    $output .= "  <td class=\"ui-widget-content\">" . $a_log['usr_name']   . "</td>\n";
-    $output .= "  <td class=\"ui-widget-content\">" . $a_log['log_date']   . "</td>\n";
-    $output .= "  <td class=\"ui-widget-content\">" . $a_log['log_source'] . "</td>\n";
-    $output .= "  <td class=\"ui-widget-content\">" . $a_log['log_detail'] . "</td>\n";
+    $output .= "  <td class=\"ui-widget-content\">" . $a_inv_log['log_id']     . "</td>\n";
+    $output .= "  <td class=\"ui-widget-content\">" . $a_inv_log['usr_name']   . "</td>\n";
+    $output .= "  <td class=\"ui-widget-content\">" . $a_inv_log['log_date']   . "</td>\n";
+    $output .= "  <td class=\"ui-widget-content\">" . $a_inv_log['log_source'] . "</td>\n";
+    $output .= "  <td class=\"ui-widget-content\">" . $a_inv_log['log_detail'] . "</td>\n";
     $output .= "</tr>\n";
 
   }
 
-  mysqli_free_result($q_log);
+  mysqli_free_result($q_inv_log);
 
   print "document.getElementById('logs_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 

@@ -102,32 +102,32 @@ if (isset($_POST['login'])) {
       $pass = md5($_POST['password']); 
 
       $q_string  = "select usr_id,usr_first,usr_last,usr_group,usr_email ";
-      $q_string .= "from users ";
+      $q_string .= "from inv_users ";
       $q_string .= "where usr_name='$user' and usr_passwd='$pass'"; 
-      $q_users = mysqli_query($db, $q_string);
+      $q_inv_users = mysqli_query($db, $q_string);
 
 // Check that at least one row was returned 
-      $c_users = mysqli_num_rows($q_users); 
+      $c_inv_users = mysqli_num_rows($q_inv_users); 
 
-      if ($c_users > 0) { 
-        while ($a_users = mysqli_fetch_array($q_users)) { 
+      if ($c_inv_users > 0) { 
+        while ($a_inv_users = mysqli_fetch_array($q_inv_users)) { 
 
-          $q_string  = "update users ";
+          $q_string  = "update inv_users ";
           $q_string .= "set ";
           $q_string .= "usr_checkin = '" . $checkin . "',";
           $q_string .= "usr_ipaddr = '" . $ipaddr . "' ";
-          $q_string .= "where usr_id = " . $a_users['usr_id'] . " ";
+          $q_string .= "where usr_id = " . $a_inv_users['usr_id'] . " ";
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 // Start the session and register a variable 
           session_start(); 
 
 //session_register('username'); // session_register() has been depreciated in PHP5
-          $_SESSION["uid"]         = $a_users['usr_id'];
-          $_SESSION["name"]        = $a_users['usr_first'] . " " . $a_users['usr_last'];
+          $_SESSION["uid"]         = $a_inv_users['usr_id'];
+          $_SESSION["name"]        = $a_inv_users['usr_first'] . " " . $a_inv_users['usr_last'];
           $_SESSION["username"]    = $user;
-          $_SESSION['group']       = $a_users['usr_group'];
-          $_SESSION['email']       = $a_users['usr_email'];
+          $_SESSION['group']       = $a_inv_users['usr_group'];
+          $_SESSION['email']       = $a_inv_users['usr_email'];
           $_SESSION['rand']        = rand(5,1000);
           logaccess($db, $_SESSION['uid'], "login.inc.php", $_SESSION['name'] . " has logged in.");
 

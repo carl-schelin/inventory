@@ -19,16 +19,16 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from severity");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_severity");
 
       $q_string  = "select sev_name ";
-      $q_string .= "from severity ";
+      $q_string .= "from inv_severity ";
       $q_string .= "where sev_id = " . $formVars['id'];
-      $q_severity = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_severity = mysqli_fetch_array($q_severity);
-      mysqli_free_result($q_severity);
+      $q_inv_severity = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_severity = mysqli_fetch_array($q_inv_severity);
+      mysqli_free_result($q_inv_severity);
 
-      print "document.severity.sev_name.value = '"   . mysqli_real_escape_string($db, $a_severity['sev_name'])   . "';\n";
+      print "document.severity.sev_name.value = '"   . mysqli_real_escape_string($db, $a_inv_severity['sev_name'])   . "';\n";
 
       print "document.severity.id.value = " . $formVars['id'] . ";\n";
 

@@ -22,13 +22,13 @@
 
 # check to see if the person editing is a member of a group that can edit this information; if not, blank out 'function' so no changes can be made.
       $q_string  = "select inv_manager ";
-      $q_string .= "from inventory ";
+      $q_string .= "from inv_inventory ";
       $q_string .= "where inv_id = " . $formVars['id'] . " ";
-      $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      $a_inventory = mysqli_fetch_array($q_inventory);
+      $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
 # if not a member of the group that can edit this server, default to zero which bypasses all the edit functions.
-      if (check_grouplevel($db, $a_inventory['inv_manager']) == 0) {
+      if (check_grouplevel($db, $a_inv_inventory['inv_manager']) == 0) {
         $formVars['function'] = '';
       }
 
@@ -80,7 +80,7 @@
 
 # need to determine if it's a child to see if I need to add the "< " back in to the output.
           $q_string  = "select int_int_id,int_virtual ";
-          $q_string .= "from interface ";
+          $q_string .= "from inv_interface ";
           $q_string .= "where int_id = " . $formVars['id'] . " ";
           $q_intcheck = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           $a_intcheck = mysqli_fetch_array($q_intcheck);
@@ -96,7 +96,7 @@
           }
 
           $q_string  = "update ";
-          $q_string .= "interface ";
+          $q_string .= "inv_interface ";
           $q_string .= "set ";
           $q_string .= "int_domain = '" . $formVars['select'] . "' ";
           $q_string .= "where int_id = " . $formVars['id'] . " ";
@@ -147,7 +147,7 @@
 
 # need to determine if it's a child to see if I need to add the "< " back in to the output.
           $q_string  = "select int_int_id,int_virtual ";
-          $q_string .= "from interface ";
+          $q_string .= "from inv_interface ";
           $q_string .= "where int_id = " . $formVars['id'] . " ";
           $q_intcheck = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
           $a_intcheck = mysqli_fetch_array($q_intcheck);
@@ -163,7 +163,7 @@
           }
 
           $q_string  = "update ";
-          $q_string .= "interface ";
+          $q_string .= "inv_interface ";
           $q_string .= "set ";
           $q_string .= "int_domain = '" . $formVars['select'] . "' ";
           $q_string .= "where int_id = " . $formVars['id'] . " ";
@@ -180,25 +180,25 @@
 # check or uncheck the management checkbox
       if ($formVars['function'] == 'fmg') {
         $q_string  = "select int_management ";
-        $q_string .= "from interface ";
+        $q_string .= "from inv_interface ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
-        $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_interface = mysqli_fetch_array($q_interface);
+        $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_inv_interface = mysqli_fetch_array($q_inv_interface);
 
-        if ($a_interface['int_management']) {
-          $a_interface['int_management'] = 0;
+        if ($a_inv_interface['int_management']) {
+          $a_inv_interface['int_management'] = 0;
         } else {
-          $a_interface['int_management'] = 1;
+          $a_inv_interface['int_management'] = 1;
         }
 
         $q_string  = "update ";
-        $q_string .= "interface ";
+        $q_string .= "inv_interface ";
         $q_string .= "set ";
-        $q_string .= "int_management = " . $a_interface['int_management'] . " ";
+        $q_string .= "int_management = " . $a_inv_interface['int_management'] . " ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-        if ($a_interface['int_management']) {
+        if ($a_inv_interface['int_management']) {
           print "document.getElementById('" . $cellid . "').checked = true;\n";
         } else {
           print "document.getElementById('" . $cellid . "').checked = false;\n";
@@ -208,25 +208,25 @@
 # check or uncheck the ssh checkbox
       if ($formVars['function'] == 'fsh') {
         $q_string  = "select int_login ";
-        $q_string .= "from interface ";
+        $q_string .= "from inv_interface ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
-        $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_interface = mysqli_fetch_array($q_interface);
+        $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_inv_interface = mysqli_fetch_array($q_inv_interface);
 
-        if ($a_interface['int_login']) {
-          $a_interface['int_login'] = 0;
+        if ($a_inv_interface['int_login']) {
+          $a_inv_interface['int_login'] = 0;
         } else {
-          $a_interface['int_login'] = 1;
+          $a_inv_interface['int_login'] = 1;
         }
 
         $q_string  = "update ";
-        $q_string .= "interface ";
+        $q_string .= "inv_interface ";
         $q_string .= "set ";
-        $q_string .= "int_login = " . $a_interface['int_login'] . " ";
+        $q_string .= "int_login = " . $a_inv_interface['int_login'] . " ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-        if ($a_interface['int_login']) {
+        if ($a_inv_interface['int_login']) {
           print "document.getElementById('" . $cellid . "').checked = true;\n";
         } else {
           print "document.getElementById('" . $cellid . "').checked = false;\n";
@@ -236,25 +236,25 @@
 # check or uncheck the backup checkbox
       if ($formVars['function'] == 'fbu') {
         $q_string  = "select int_backup ";
-        $q_string .= "from interface ";
+        $q_string .= "from inv_interface ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
-        $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_interface = mysqli_fetch_array($q_interface);
+        $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_inv_interface = mysqli_fetch_array($q_inv_interface);
 
-        if ($a_interface['int_backup']) {
-          $a_interface['int_backup'] = 0;
+        if ($a_inv_interface['int_backup']) {
+          $a_inv_interface['int_backup'] = 0;
         } else {
-          $a_interface['int_backup'] = 1;
+          $a_inv_interface['int_backup'] = 1;
         }
 
         $q_string  = "update ";
-        $q_string .= "interface ";
+        $q_string .= "inv_interface ";
         $q_string .= "set ";
-        $q_string .= "int_backup = " . $a_interface['int_backup'] . " ";
+        $q_string .= "int_backup = " . $a_inv_interface['int_backup'] . " ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-        if ($a_interface['int_backup']) {
+        if ($a_inv_interface['int_backup']) {
           print "document.getElementById('" . $cellid . "').checked = true;\n";
         } else {
           print "document.getElementById('" . $cellid . "').checked = false;\n";
@@ -264,25 +264,25 @@
 # check or uncheck the openview checkbox
       if ($formVars['function'] == 'fov') {
         $q_string  = "select int_openview ";
-        $q_string .= "from interface ";
+        $q_string .= "from inv_interface ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
-        $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_interface = mysqli_fetch_array($q_interface);
+        $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_inv_interface = mysqli_fetch_array($q_inv_interface);
 
-        if ($a_interface['int_openview']) {
-          $a_interface['int_openview'] = 0;
+        if ($a_inv_interface['int_openview']) {
+          $a_inv_interface['int_openview'] = 0;
         } else {
-          $a_interface['int_openview'] = 1;
+          $a_inv_interface['int_openview'] = 1;
         }
 
         $q_string  = "update ";
-        $q_string .= "interface ";
+        $q_string .= "inv_interface ";
         $q_string .= "set ";
-        $q_string .= "int_openview = " . $a_interface['int_openview'] . " ";
+        $q_string .= "int_openview = " . $a_inv_interface['int_openview'] . " ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-        if ($a_interface['int_openview']) {
+        if ($a_inv_interface['int_openview']) {
           print "document.getElementById('" . $cellid . "').checked = true;\n";
         } else {
           print "document.getElementById('" . $cellid . "').checked = false;\n";
@@ -292,25 +292,25 @@
 # check or uncheck the nagios checkbox
       if ($formVars['function'] == 'fng') {
         $q_string  = "select int_nagios ";
-        $q_string .= "from interface ";
+        $q_string .= "from inv_interface ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
-        $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_interface = mysqli_fetch_array($q_interface);
+        $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_inv_interface = mysqli_fetch_array($q_inv_interface);
 
-        if ($a_interface['int_nagios']) {
-          $a_interface['int_nagios'] = 0;
+        if ($a_inv_interface['int_nagios']) {
+          $a_inv_interface['int_nagios'] = 0;
         } else {
-          $a_interface['int_nagios'] = 1;
+          $a_inv_interface['int_nagios'] = 1;
         }
 
         $q_string  = "update ";
-        $q_string .= "interface ";
+        $q_string .= "inv_interface ";
         $q_string .= "set ";
-        $q_string .= "int_nagios = " . $a_interface['int_nagios'] . " ";
+        $q_string .= "int_nagios = " . $a_inv_interface['int_nagios'] . " ";
         $q_string .= "where int_id = " . $formVars['id'] . " ";
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
-        if ($a_interface['int_nagios']) {
+        if ($a_inv_interface['int_nagios']) {
           print "document.getElementById('" . $cellid . "').checked = true;\n";
         } else {
           print "document.getElementById('" . $cellid . "').checked = false;\n";
@@ -339,16 +339,16 @@
           print "selbox.options.length = 0;\n";
 
           $q_string  = "select itp_id,itp_name,itp_acronym ";
-          $q_string .= "from int_types ";
+          $q_string .= "from inv_int_types ";
           $q_string .= "order by itp_name ";
-          $q_int_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_inv_int_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 // create the javascript bit for populating the user dropdown box.
-          while ($a_int_types = mysqli_fetch_array($q_int_types) ) {
-            print "if (celltext == \"" . $a_int_types['itp_acronym'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_int_types['itp_name']) . "\"," . $a_int_types['itp_id'] . ",1,1);\n";
+          while ($a_inv_int_types = mysqli_fetch_array($q_inv_int_types) ) {
+            print "if (celltext == \"" . $a_inv_int_types['itp_acronym'] . "\") {\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_int_types['itp_name']) . "\"," . $a_inv_int_types['itp_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_int_types['itp_name']) . "\"," . $a_int_types['itp_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_int_types['itp_name']) . "\"," . $a_inv_int_types['itp_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -365,22 +365,22 @@
           print "cell.setAttribute(\"onclick\", \"edit_Interface(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "select itp_id,itp_acronym ";
-          $q_string .= "from int_types ";
+          $q_string .= "from inv_int_types ";
           $q_string .= "where itp_id = " . $formVars['select'] . " ";
-          $q_int_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_int_types) > 0) {
-            $a_int_types = mysqli_fetch_array($q_int_types);
+          $q_inv_int_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_int_types) > 0) {
+            $a_inv_int_types = mysqli_fetch_array($q_inv_int_types);
           } else {
-            $a_int_types['itp_id']   = 0;
-            $a_int_types['itp_acronym'] = "Unassigned";
+            $a_inv_int_types['itp_id']   = 0;
+            $a_inv_int_types['itp_acronym'] = "Unassigned";
           }
 
-          $display = $a_int_types['itp_acronym'];
+          $display = $a_inv_int_types['itp_acronym'];
 
           $q_string  = "update ";
-          $q_string .= "interface ";
+          $q_string .= "inv_interface ";
           $q_string .= "set ";
-          $q_string .= "int_type = " . $a_int_types['itp_id'] . " ";
+          $q_string .= "int_type = " . $a_inv_int_types['itp_id'] . " ";
           $q_string .= "where int_id = " . $formVars['id'] . " ";
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
@@ -422,7 +422,7 @@
           print "cell.setAttribute(\"onclick\", \"edit_Interface(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "update ";
-          $q_string .= "interface ";
+          $q_string .= "inv_interface ";
           $q_string .= "set ";
           $q_string .= "int_face = '" . $formVars['select'] . "' ";
           $q_string .= "where int_id = " . $formVars['id'] . " ";
@@ -470,7 +470,7 @@
           print "cell.setAttribute(\"onclick\", \"edit_Interface(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "update ";
-          $q_string .= "interface ";
+          $q_string .= "inv_interface ";
           $q_string .= "set ";
           $q_string .= "int_eth = '" . $formVars['select'] . "' ";
           $q_string .= "where int_id = " . $formVars['id'] . " ";
@@ -518,7 +518,7 @@
           print "cell.setAttribute(\"onclick\", \"edit_Interface(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "update ";
-          $q_string .= "interface ";
+          $q_string .= "inv_interface ";
           $q_string .= "set ";
           $q_string .= "int_addr = '" . $formVars['select'] . "' ";
           $q_string .= "where int_id = " . $formVars['id'] . " ";
@@ -589,7 +589,7 @@
           $display = $formVars['select'];
 
           $q_string  = "update ";
-          $q_string .= "interface ";
+          $q_string .= "inv_interface ";
           $q_string .= "set ";
           $q_string .= "int_mask = " . $formVars['select'] . " ";
           $q_string .= "where int_id = " . $formVars['id'] . " ";
@@ -622,16 +622,16 @@
           print "selbox.options.length = 0;\n";
 
           $q_string  = "select zone_id,zone_zone ";
-          $q_string .= "from net_zones ";
+          $q_string .= "from inv_net_zones ";
           $q_string .= "order by zone_zone ";
-          $q_net_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_inv_net_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 // create the javascript bit for populating the user dropdown box.
-          while ($a_net_zones = mysqli_fetch_array($q_net_zones) ) {
-            print "if (celltext == \"" . $a_net_zones['zone_zone'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_net_zones['zone_zone']) . "\"," . $a_net_zones['zone_id'] . ",1,1);\n";
+          while ($a_inv_net_zones = mysqli_fetch_array($q_inv_net_zones) ) {
+            print "if (celltext == \"" . $a_inv_net_zones['zone_zone'] . "\") {\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_net_zones['zone_zone']) . "\"," . $a_inv_net_zones['zone_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_net_zones['zone_zone']) . "\"," . $a_net_zones['zone_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_net_zones['zone_zone']) . "\"," . $a_inv_net_zones['zone_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -648,22 +648,22 @@
           print "cell.setAttribute(\"onclick\", \"edit_Interface(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "select zone_id,zone_zone ";
-          $q_string .= "from net_zones ";
+          $q_string .= "from inv_net_zones ";
           $q_string .= "where zone_id = " . $formVars['select'] . " ";
-          $q_net_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_net_zones) > 0) {
-            $a_net_zones = mysqli_fetch_array($q_net_zones);
+          $q_inv_net_zones = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_net_zones) > 0) {
+            $a_inv_net_zones = mysqli_fetch_array($q_inv_net_zones);
           } else {
-            $a_net_zones['zone_id']   = 0;
-            $a_net_zones['zone_zone'] = "Unassigned";
+            $a_inv_net_zones['zone_id']   = 0;
+            $a_inv_net_zones['zone_zone'] = "Unassigned";
           }
 
-          $display = $a_net_zones['zone_zone'];
+          $display = $a_inv_net_zones['zone_zone'];
 
           $q_string  = "update ";
-          $q_string .= "interface ";
+          $q_string .= "inv_interface ";
           $q_string .= "set ";
-          $q_string .= "int_zone = " . $a_net_zones['zone_id'] . " ";
+          $q_string .= "int_zone = " . $a_inv_net_zones['zone_id'] . " ";
           $q_string .= "where int_id = " . $formVars['id'] . " ";
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
@@ -705,7 +705,7 @@
           print "cell.setAttribute(\"onclick\", \"edit_Interface(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "update ";
-          $q_string .= "interface ";
+          $q_string .= "inv_interface ";
           $q_string .= "set ";
           $q_string .= "int_gate = '" . $formVars['select'] . "' ";
           $q_string .= "where int_id = " . $formVars['id'] . " ";
@@ -753,7 +753,7 @@
           print "cell.setAttribute(\"onclick\", \"edit_Interface(" . $formVars['id'] . "'," . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "update ";
-          $q_string .= "interface ";
+          $q_string .= "inv_interface ";
           $q_string .= "set ";
           $q_string .= "int_vlan = '" . $formVars['select'] . "' ";
           $q_string .= "where int_id = " . $formVars['id'] . " ";
@@ -802,7 +802,7 @@
           print "cell.setAttribute(\"onclick\", \"edit_Interface(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "update ";
-          $q_string .= "interface ";
+          $q_string .= "inv_interface ";
           $q_string .= "set ";
           $q_string .= "int_sysport = '" . $formVars['select'] . "' ";
           $q_string .= "where int_id = " . $formVars['id'] . " ";
@@ -838,16 +838,16 @@
           print "selbox.options.length = 0;\n";
 
           $q_string  = "select med_id,med_text ";
-          $q_string .= "from int_media ";
+          $q_string .= "from inv_int_media ";
           $q_string .= "order by med_text ";
-          $q_int_media = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          $q_inv_int_media = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
 // create the javascript bit for populating the user dropdown box.
-          while ($a_int_media = mysqli_fetch_array($q_int_media) ) {
-            print "if (celltext == \"" . $a_int_media['med_text'] . "\") {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_int_media['med_text']) . "\"," . $a_int_media['med_id'] . ",1,1);\n";
+          while ($a_inv_int_media = mysqli_fetch_array($q_inv_int_media) ) {
+            print "if (celltext == \"" . $a_inv_int_media['med_text'] . "\") {\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_int_media['med_text']) . "\"," . $a_inv_int_media['med_id'] . ",1,1);\n";
             print "} else {\n";
-            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_int_media['med_text']) . "\"," . $a_int_media['med_id'] . ",0,0);\n";
+            print "  selbox.options[selbox.options.length] = new Option(\"" . mysqli_real_escape_string($db, $a_inv_int_media['med_text']) . "\"," . $a_inv_int_media['med_id'] . ",0,0);\n";
             print "}\n";
           }
 
@@ -864,22 +864,22 @@
           print "cell.setAttribute(\"onclick\", \"edit_Interface(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "select med_id,med_text ";
-          $q_string .= "from int_media ";
+          $q_string .= "from inv_int_media ";
           $q_string .= "where med_id = " . $formVars['select'] . " ";
-          $q_int_media = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_int_media) > 0) {
-            $a_int_media = mysqli_fetch_array($q_int_media);
+          $q_inv_int_media = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_int_media) > 0) {
+            $a_inv_int_media = mysqli_fetch_array($q_inv_int_media);
           } else {
-            $a_int_media['med_id']   = 0;
-            $a_int_media['med_text'] = "Unassigned";
+            $a_inv_int_media['med_id']   = 0;
+            $a_inv_int_media['med_text'] = "Unassigned";
           }
 
-          $display = $a_int_media['med_text'];
+          $display = $a_inv_int_media['med_text'];
 
           $q_string  = "update ";
-          $q_string .= "interface ";
+          $q_string .= "inv_interface ";
           $q_string .= "set ";
-          $q_string .= "int_media = " . $a_int_media['med_id'] . " ";
+          $q_string .= "inv_int_media = " . $a_inv_int_media['med_id'] . " ";
           $q_string .= "where int_id = " . $formVars['id'] . " ";
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
@@ -921,7 +921,7 @@
           print "cell.setAttribute(\"onclick\", \"edit_Interface(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "update ";
-          $q_string .= "interface ";
+          $q_string .= "inv_interface ";
           $q_string .= "set ";
           $q_string .= "int_switch = '" . $formVars['select'] . "' ";
           $q_string .= "where int_id = " . $formVars['id'] . " ";
@@ -969,7 +969,7 @@
           print "cell.setAttribute(\"onclick\", \"edit_Interface(" . $formVars['id'] . ",'" . $formVars['function'] . "');" . "\");\n";
 
           $q_string  = "update ";
-          $q_string .= "interface ";
+          $q_string .= "inv_interface ";
           $q_string .= "set ";
           $q_string .= "int_port = '" . $formVars['select'] . "' ";
           $q_string .= "where int_id = " . $formVars['id'] . " ";

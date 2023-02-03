@@ -62,10 +62,10 @@
             "svc_restore      = \"" . $formVars['svc_restore']      . "\"";
 
           if ($formVars['update'] == 0) {
-            $q_string = "insert into service set svc_id = NULL, " . $q_string;
+            $q_string = "insert into inv_service set svc_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update service set " . $q_string . " where svc_id = " . $formVars['id'];
+            $q_string = "update inv_service set " . $q_string . " where svc_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['svc_name']);
@@ -97,22 +97,22 @@
 
       $q_string  = "select svc_id,svc_name,svc_acronym,svc_availability,svc_downtime,";
       $q_string .= "svc_mtbf,svc_geographic,svc_mttr,svc_resource,svc_restore ";
-      $q_string .= "from service ";
+      $q_string .= "from inv_service ";
       $q_string .= "order by svc_id ";
-      $q_service = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_service) > 0) {
-        while ($a_service = mysqli_fetch_array($q_service)) {
+      $q_inv_service = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_service) > 0) {
+        while ($a_inv_service = mysqli_fetch_array($q_inv_service)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('service.fill.php?id=" . $a_service['svc_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('service.del.php?id="  . $a_service['svc_id'] . "');\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('service.fill.php?id=" . $a_inv_service['svc_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('service.del.php?id="  . $a_inv_service['svc_id'] . "');\">";
           $linkend   = "</a>";
 
           $geographic = "No";
-          if ($a_service['svc_geographic']) {
+          if ($a_inv_service['svc_geographic']) {
             $geographic = "Yes";
           }
           $resource = "No";
-          if ($a_service['svc_resource']) {
+          if ($a_inv_service['svc_resource']) {
             $resource = "Yes";
           }
 
@@ -120,15 +120,15 @@
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>";
           }
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_service['svc_name']          . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_service['svc_acronym']       . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_service['svc_availability']  . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_service['svc_downtime']      . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_service['svc_mtbf']          . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $geographic                     . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_service['svc_mttr']          . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $resource                       . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_service['svc_restore']       . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_service['svc_name']          . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_service['svc_acronym']       . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_service['svc_availability']  . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_service['svc_downtime']      . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_service['svc_mtbf']          . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $geographic                         . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_service['svc_mttr']          . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $resource                           . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_service['svc_restore']       . $linkend . "</td>";
           $output .= "</tr>";
         }
       } else {
@@ -139,7 +139,7 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_service);
+      mysqli_free_result($q_inv_service);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 

@@ -19,37 +19,37 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from locations");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_locations");
 
       $q_string  = "select loc_name,loc_addr1,loc_addr2,loc_suite,loc_city,loc_default,loc_type,";
       $q_string .= "loc_zipcode,loc_details,loc_instance,";
       $q_string .= "loc_contact1,loc_contact2,loc_identity,loc_environment ";
-      $q_string .= "from locations ";
+      $q_string .= "from inv_locations ";
       $q_string .= "where loc_id = " . $formVars['id'];
-      $q_locations = mysqli_query($db, $q_string) or die (mysqli_error($db));
-      $a_locations = mysqli_fetch_array($q_locations);
-      mysqli_free_result($q_locations);
+      $q_inv_locations = mysqli_query($db, $q_string) or die (mysqli_error($db));
+      $a_inv_locations = mysqli_fetch_array($q_inv_locations);
+      mysqli_free_result($q_inv_locations);
 
       $q_string  = "select ct_id,ct_city,st_acronym,cn_acronym ";
-      $q_string .= "from cities ";
-      $q_string .= "left join states on states.st_id = cities.ct_state ";
-      $q_string .= "left join country on country.cn_id = states.st_country ";
+      $q_string .= "from inv_cities ";
+      $q_string .= "left join inv_states  on inv_states.st_id  = inv_cities.ct_state ";
+      $q_string .= "left join inv_country on inv_country.cn_id = inv_states.st_country ";
       $q_string .= "order by ct_city,st_acronym,cn_acronym ";
 
-      $city = return_Index($db, $a_locations['loc_city'], $q_string);
-      $type = return_Index($db, $a_locations['loc_type'], "select typ_id from loc_types order by typ_name");
-      $env  = return_Index($db, $a_locations['loc_environment'], "select env_id from environment order by env_name");
+      $city = return_Index($db, $a_inv_locations['loc_city'], $q_string);
+      $type = return_Index($db, $a_inv_locations['loc_type'], "select typ_id from inv_loc_types order by typ_name");
+      $env  = return_Index($db, $a_inv_locations['loc_environment'], "select env_id from inv_environment order by env_name");
 
-      print "document.formUpdate.loc_name.value = '"       . mysqli_real_escape_string($db, $a_locations['loc_name'])       . "';\n";
-      print "document.formUpdate.loc_addr1.value = '"      . mysqli_real_escape_string($db, $a_locations['loc_addr1'])      . "';\n";
-      print "document.formUpdate.loc_addr2.value = '"      . mysqli_real_escape_string($db, $a_locations['loc_addr2'])      . "';\n";
-      print "document.formUpdate.loc_suite.value = '"      . mysqli_real_escape_string($db, $a_locations['loc_suite'])      . "';\n";
-      print "document.formUpdate.loc_zipcode.value = '"    . mysqli_real_escape_string($db, $a_locations['loc_zipcode'])    . "';\n";
-      print "document.formUpdate.loc_contact1.value = '"   . mysqli_real_escape_string($db, $a_locations['loc_contact1'])   . "';\n";
-      print "document.formUpdate.loc_contact2.value = '"   . mysqli_real_escape_string($db, $a_locations['loc_contact2'])   . "';\n";
-      print "document.formUpdate.loc_details.value = '"    . mysqli_real_escape_string($db, $a_locations['loc_details'])    . "';\n";
-      print "document.formUpdate.loc_instance.value = '"   . mysqli_real_escape_string($db, $a_locations['loc_instance'])   . "';\n";
-      print "document.formUpdate.loc_identity.value = '"   . mysqli_real_escape_string($db, $a_locations['loc_identity'])   . "';\n";
+      print "document.formUpdate.loc_name.value = '"       . mysqli_real_escape_string($db, $a_inv_locations['loc_name'])       . "';\n";
+      print "document.formUpdate.loc_addr1.value = '"      . mysqli_real_escape_string($db, $a_inv_locations['loc_addr1'])      . "';\n";
+      print "document.formUpdate.loc_addr2.value = '"      . mysqli_real_escape_string($db, $a_inv_locations['loc_addr2'])      . "';\n";
+      print "document.formUpdate.loc_suite.value = '"      . mysqli_real_escape_string($db, $a_inv_locations['loc_suite'])      . "';\n";
+      print "document.formUpdate.loc_zipcode.value = '"    . mysqli_real_escape_string($db, $a_inv_locations['loc_zipcode'])    . "';\n";
+      print "document.formUpdate.loc_contact1.value = '"   . mysqli_real_escape_string($db, $a_inv_locations['loc_contact1'])   . "';\n";
+      print "document.formUpdate.loc_contact2.value = '"   . mysqli_real_escape_string($db, $a_inv_locations['loc_contact2'])   . "';\n";
+      print "document.formUpdate.loc_details.value = '"    . mysqli_real_escape_string($db, $a_inv_locations['loc_details'])    . "';\n";
+      print "document.formUpdate.loc_instance.value = '"   . mysqli_real_escape_string($db, $a_inv_locations['loc_instance'])   . "';\n";
+      print "document.formUpdate.loc_identity.value = '"   . mysqli_real_escape_string($db, $a_inv_locations['loc_identity'])   . "';\n";
 
       if ($city > 0) {
         print "document.formUpdate.loc_city['"        . $city . "'].selected = true;\n";
@@ -61,7 +61,7 @@
         print "document.formUpdate.loc_environment['" . $env  . "'].selected = true;\n";
       }
 
-      if ($a_locations['loc_default']) {
+      if ($a_inv_locations['loc_default']) {
         print "document.formUpdate.loc_default.checked = true;\n";
       } else {
         print "document.formUpdate.loc_default.checked = false;\n";
@@ -70,12 +70,12 @@
       $loc_tags = '';
       $space = '';
       $q_string  = "select tag_name ";
-      $q_string .= "from tags ";
+      $q_string .= "from inv_tags ";
       $q_string .= "where tag_companyid = " . $formVars['id'] . " and tag_type = 2 ";
-      $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      if (mysqli_num_rows($q_tags) > 0) {
-        while ($a_tags = mysqli_fetch_array($q_tags)) {
-          $loc_tags .= $space . $a_tags['tag_name'];
+      $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_tags) > 0) {
+        while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
+          $loc_tags .= $space . $a_inv_tags['tag_name'];
           $space = " ";
         }
       }

@@ -25,7 +25,7 @@
 
   if (strlen($formVars['iss_subject']) > 0) {
 
-    $query = "insert into issue set iss_id = NULL, " . 
+    $query = "insert into inv_issue set iss_id = NULL, " . 
       "iss_companyid  =   " . $formVars['iss_companyid']  . "," . 
       "iss_discovered = \"" . $formVars['iss_discovered'] . "\"," . 
       "iss_user       =   " . $formVars['iss_user']       . "," . 

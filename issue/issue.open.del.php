@@ -20,36 +20,36 @@
 
     if (check_userlevel($db, $AL_Edit)) {
       $q_string  = "select det_id ";
-      $q_string .= "from issue_detail ";
+      $q_string .= "from inv_issue_detail ";
       $q_string .= "where det_issue = " . $formVars['id'];
-      $q_issue_detail = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_issue_detail = mysqli_fetch_array($q_issue_detail)) {
+      $q_inv_issue_detail = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_issue_detail = mysqli_fetch_array($q_inv_issue_detail)) {
 
-        logaccess($db, $_SESSION['uid'], $package, "Deleting " . $a_issue_detail['det_id'] . " from issue_detail");
+        logaccess($db, $_SESSION['uid'], $package, "Deleting " . $a_inv_issue_detail['det_id'] . " from inv_issue_detail");
 
         $q_string  = "delete ";
-        $q_string .= "from issue_detail ";
-        $q_string .= "where det_id = " . $a_issue_detail['det_id'];
+        $q_string .= "from inv_issue_detail ";
+        $q_string .= "where det_id = " . $a_inv_issue_detail['det_id'];
         $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 
       $q_string  = "select sup_id ";
-      $q_string .= "from issue_support ";
+      $q_string .= "from inv_issue_support ";
       $q_string .= "where sup_issue = " . $formVars['id'];
-      $q_issue_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      while ($a_issue_support = mysqli_fetch_array($q_issue_support)) {
-        logaccess($db, $_SESSION['uid'], $package, "Deleting " . $a_issue_support['sup_id'] . " from sup_issue");
+      $q_inv_issue_support = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      while ($a_inv_issue_support = mysqli_fetch_array($q_inv_issue_support)) {
+        logaccess($db, $_SESSION['uid'], $package, "Deleting " . $a_inv_issue_support['sup_id'] . " from inv_issue_support");
 
         $q_string  = "delete ";
-        $q_string .= "from issue_support ";
-        $q_string .= "where sup_id = " . $a_issue_support['sup_id'];
+        $q_string .= "from inv_issue_support ";
+        $q_string .= "where sup_id = " . $a_inv_issue_support['sup_id'];
         $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       }
 
-      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from issue");
+      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from inv_issue");
 
       $q_string  = "delete ";
-      $q_string .= "from issue ";
+      $q_string .= "from inv_issue ";
       $q_string .= "where iss_id = " . $formVars['id'];
       $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 

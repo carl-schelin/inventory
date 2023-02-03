@@ -19,16 +19,16 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from family");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_family");
 
       $q_string  = "select fam_name ";
-      $q_string .= "from family ";
+      $q_string .= "from inv_family ";
       $q_string .= "where fam_id = " . $formVars['id'];
-      $q_family = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_family = mysqli_fetch_array($q_family);
-      mysqli_free_result($q_family);
+      $q_inv_family = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_family = mysqli_fetch_array($q_inv_family);
+      mysqli_free_result($q_inv_family);
 
-      print "document.family.fam_name.value = '"   . mysqli_real_escape_string($db, $a_family['fam_name'])   . "';\n";
+      print "document.family.fam_name.value = '"   . mysqli_real_escape_string($db, $a_inv_family['fam_name'])   . "';\n";
 
       print "document.family.id.value = " . $formVars['id'] . ";\n";
 

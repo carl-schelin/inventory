@@ -282,11 +282,11 @@ selected to show up in the report filters. They show up at the top of the report
   <td class="ui-widget-content">Location Type: <select name="loc_type">
 <?php
   $q_string  = "select typ_id,typ_name ";
-  $q_string .= "from loc_types ";
+  $q_string .= "from inv_loc_types ";
   $q_string .= "order by typ_name ";
-  $q_loc_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_loc_types = mysqli_fetch_array($q_loc_types)) {
-    print "<option value=\"" . $a_loc_types['typ_id'] . "\">" . $a_loc_types['typ_name'] . "</option>\n";
+  $q_inv_loc_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_loc_types = mysqli_fetch_array($q_inv_loc_types)) {
+    print "<option value=\"" . $a_inv_loc_types['typ_id'] . "\">" . $a_inv_loc_types['typ_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -295,11 +295,11 @@ selected to show up in the report filters. They show up at the top of the report
 <td class="ui-widget-content">Environment: <select name="loc_environment">
 <?php
   $q_string  = "select env_id,env_name ";
-  $q_string .= "from environment ";
+  $q_string .= "from inv_environment ";
   $q_string .= "order by env_name ";
-  $q_environment = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_environment = mysqli_fetch_array($q_environment)) {
-    print "<option value=\"" . $a_environment['env_id'] . "\">" . $a_environment['env_name'] . "</option>\n";
+  $q_inv_environment = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_environment = mysqli_fetch_array($q_inv_environment)) {
+    print "<option value=\"" . $a_inv_environment['env_id'] . "\">" . $a_inv_environment['env_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -320,13 +320,13 @@ selected to show up in the report filters. They show up at the top of the report
   <td class="ui-widget-content">Select a City/State/Country: <select name="loc_city">
 <?php
   $q_string  = "select ct_id,ct_city,st_acronym,cn_acronym ";
-  $q_string .= "from cities ";
-  $q_string .= "left join states on states.st_id = cities.ct_state ";
-  $q_string .= "left join country on country.cn_id = states.st_country ";
+  $q_string .= "from inv_cities ";
+  $q_string .= "left join inv_states  on inv_states.st_id  = inv_cities.ct_state ";
+  $q_string .= "left join inv_country on inv_country.cn_id = inv_states.st_country ";
   $q_string .= "order by ct_city,st_acronym,cn_acronym ";
-  $q_cities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_cities = mysqli_fetch_array($q_cities)) {
-    print "<option value=\"" . $a_cities['ct_id'] . "\">" . $a_cities['ct_city'] . ", " . $a_cities['st_acronym'] . ", " . $a_cities['cn_acronym'] . "</option>";
+  $q_inv_cities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_cities = mysqli_fetch_array($q_inv_cities)) {
+    print "<option value=\"" . $a_inv_cities['ct_id'] . "\">" . $a_inv_cities['ct_city'] . ", " . $a_inv_cities['st_acronym'] . ", " . $a_inv_cities['cn_acronym'] . "</option>";
   }
 ?>
 </select></td>
@@ -373,11 +373,11 @@ selected to show up in the report filters. They show up at the top of the report
   <td class="ui-widget-content">Location Type: <select name="loc_type">
 <?php
   $q_string  = "select typ_id,typ_name ";
-  $q_string .= "from loc_types ";
+  $q_string .= "from inv_loc_types ";
   $q_string .= "order by typ_name ";
-  $q_loc_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_loc_types = mysqli_fetch_array($q_loc_types)) {
-    print "<option value=\"" . $a_loc_types['typ_id'] . "\">" . $a_loc_types['typ_name'] . "</option>\n";
+  $q_inv_loc_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_loc_types = mysqli_fetch_array($q_inv_loc_types)) {
+    print "<option value=\"" . $a_inv_loc_types['typ_id'] . "\">" . $a_inv_loc_types['typ_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -386,11 +386,11 @@ selected to show up in the report filters. They show up at the top of the report
 <td class="ui-widget-content">Environment: <select name="loc_environment">
 <?php
   $q_string  = "select env_id,env_name ";
-  $q_string .= "from environment ";
+  $q_string .= "from inv_environment ";
   $q_string .= "order by env_name ";
-  $q_environment = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_environment = mysqli_fetch_array($q_environment)) {
-    print "<option value=\"" . $a_environment['env_id'] . "\">" . $a_environment['env_name'] . "</option>\n";
+  $q_inv_environment = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_environment = mysqli_fetch_array($q_inv_environment)) {
+    print "<option value=\"" . $a_inv_environment['env_id'] . "\">" . $a_inv_environment['env_name'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -411,13 +411,13 @@ selected to show up in the report filters. They show up at the top of the report
   <td class="ui-widget-content">Select a City/State/Country: <select name="loc_city">
 <?php
   $q_string  = "select ct_id,ct_city,st_acronym,cn_acronym ";
-  $q_string .= "from cities ";
-  $q_string .= "left join states on states.st_id = cities.ct_state ";
-  $q_string .= "left join country on country.cn_id = states.st_country ";
+  $q_string .= "from inv_cities ";
+  $q_string .= "left join inv_states  on inv_states.st_id  = inv_cities.ct_state ";
+  $q_string .= "left join inv_country on inv_country.cn_id = inv_states.st_country ";
   $q_string .= "order by ct_city,st_acronym,cn_acronym ";
-  $q_cities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_cities = mysqli_fetch_array($q_cities)) {
-    print "<option value=\"" . $a_cities['ct_id'] . "\">" . $a_cities['ct_city'] . ", " . $a_cities['st_acronym'] . ", " . $a_cities['cn_acronym'] . "</option>";
+  $q_inv_cities = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_cities = mysqli_fetch_array($q_inv_cities)) {
+    print "<option value=\"" . $a_inv_cities['ct_id'] . "\">" . $a_inv_cities['ct_city'] . ", " . $a_inv_cities['st_acronym'] . ", " . $a_inv_cities['cn_acronym'] . "</option>";
   }
 ?>
 </select></td>

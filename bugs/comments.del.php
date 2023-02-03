@@ -19,10 +19,10 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from bugs_detail");
+      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from inv_bugs_detail");
 
       $q_string  = "delete ";
-      $q_string .= "from bugs_detail ";
+      $q_string .= "from inv_bugs_detail ";
       $q_string .= "where bug_id = " . $formVars['id'];
       $insert = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 

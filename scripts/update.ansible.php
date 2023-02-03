@@ -23,28 +23,28 @@
 
 # update inv_ansible on all systems where OS == Red Hat and version is 6 or 7
 # future to enable ansible if system == 5
-#        stripos($a_inventory['sw_software'], " 5.") !== false || 
+#        stripos($a_inv_inventory['sw_software'], " 5.") !== false || 
 # turns out even if we add the rpm, rh5 isn't working everywhere. Make it a manual update if someone wants to add it in.
 
   $q_string  = "select inv_id,sw_software ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join svr_software on svr_software.svr_companyid = inventory.inv_id ";
-  $q_string .= "left join software on software.sw_id = svr_software.svr_softwareid ";
-  $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inv_inventory.inv_id ";
+  $q_string .= "left join inv_software     on inv_software.sw_id             = inv_svr_software.svr_softwareid ";
+  $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = inv_software.sw_type ";
   $q_string .= "where typ_id = 'OS' ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
-    if (stripos($a_inventory['sw_software'], "red hat") !== false || stripos($a_inventory['sw_software'], "centos") !== false ) {
+    if (stripos($a_inv_inventory['sw_software'], "red hat") !== false || stripos($a_inv_inventory['sw_software'], "centos") !== false ) {
       if (
-        stripos($a_inventory['sw_software'], " 6.") !== false || 
-        stripos($a_inventory['sw_software'], " 7.") !== false
+        stripos($a_inv_inventory['sw_software'], " 6.") !== false || 
+        stripos($a_inv_inventory['sw_software'], " 7.") !== false
       ) {
 
-        $q_string  = "update inventory ";
+        $q_string  = "update inv_inventory ";
         $q_string .= "set ";
         $q_string .= "inv_ansible = 1 ";
-        $q_string .= "where inv_id = " . $a_inventory['inv_id'] . " ";
+        $q_string .= "where inv_id = " . $a_inv_inventory['inv_id'] . " ";
 
         if ($debug == 'yes') {
           print $q_string . "\n";

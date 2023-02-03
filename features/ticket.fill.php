@@ -19,25 +19,25 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from features");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_features");
 
       $q_string  = "select feat_discovered,feat_closed,feat_subject ";
-      $q_string .= "from features ";
+      $q_string .= "from inv_features ";
       $q_string .= "where feat_id = " . $formVars['id'];
-      $q_features = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_features = mysqli_fetch_array($q_features);
+      $q_inv_features = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_features = mysqli_fetch_array($q_inv_features);
 
-      print "document.start.feat_discovered.value = '" . mysqli_real_escape_string($db, $a_features['feat_discovered']) . "';\n";
-      print "document.start.feat_subject.value = '"    . mysqli_real_escape_string($db, $a_features['feat_subject'])    . "';\n";
+      print "document.start.feat_discovered.value = '" . mysqli_real_escape_string($db, $a_inv_features['feat_discovered']) . "';\n";
+      print "document.start.feat_subject.value = '"    . mysqli_real_escape_string($db, $a_inv_features['feat_subject'])    . "';\n";
 
-      if ($a_features['feat_closed'] == '1971-01-01') {
+      if ($a_inv_features['feat_closed'] == '1971-01-01') {
         print "document.start.feat_closed.value = 'Current Date';\n";
 
-        print "document.getElementById('feat_discovered').innerHTML = '" . mysqli_real_escape_string($db, $a_features['feat_discovered']) . "';\n";
-        print "document.getElementById('feat_closed').innerHTML = '"     . mysqli_real_escape_string($db, $a_features['feat_closed'])     . "';\n";
-        print "document.getElementById('feat_subject').innerHTML = '"    . mysqli_real_escape_string($db, $a_features['feat_subject'])    . "';\n";
+        print "document.getElementById('feat_discovered').innerHTML = '" . mysqli_real_escape_string($db, $a_inv_features['feat_discovered']) . "';\n";
+        print "document.getElementById('feat_closed').innerHTML = '"     . mysqli_real_escape_string($db, $a_inv_features['feat_closed'])     . "';\n";
+        print "document.getElementById('feat_subject').innerHTML = '"    . mysqli_real_escape_string($db, $a_inv_features['feat_subject'])    . "';\n";
       } else {
-        print "document.start.feat_closed.value = '" . mysqli_real_escape_string($db, $a_features['feat_closed']) . "';\n";
+        print "document.start.feat_closed.value = '" . mysqli_real_escape_string($db, $a_inv_features['feat_closed']) . "';\n";
       }
 
       print "document.start.feat_id.value = " . $formVars['id'] . ";\n";

@@ -53,11 +53,11 @@
             "ex_deleted     =   " . $formVars['ex_deleted'];
 
           if ($formVars['update'] == 0) {
-            $query = "insert into excludes set ex_id = NULL, " . $q_string;
+            $query = "insert into inv_excludes set ex_id = NULL, " . $q_string;
             $message = "Exclude Message added.";
           }
           if ($formVars['update'] == 1) {
-            $query = "update excludes set " . $q_string . " where ex_id = " . $formVars['id'];
+            $query = "update inv_excludes set " . $q_string . " where ex_id = " . $formVars['id'];
             $message = "Exclude Message updated.";
           }
 
@@ -102,84 +102,84 @@
       $comment = '';
       $comment_test = '';
       $q_string  = "select ex_id,ex_companyid,inv_name,ex_text,ex_comments,ex_expiration,usr_name,ex_deleted ";
-      $q_string .= "from excludes ";
-      $q_string .= "left join inventory on inventory.inv_id = excludes.ex_companyid ";
-      $q_string .= "left join users on users.usr_id = excludes.ex_userid ";
+      $q_string .= "from inv_excludes ";
+      $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_excludes.ex_companyid ";
+      $q_string .= "left join inv_users     on inv_users.usr_id     = inv_excludes.ex_userid ";
       $q_string .= "order by ex_comments,inv_name,ex_text ";
-      $q_excludes = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      while ($a_excludes = mysqli_fetch_array($q_excludes)) {
+      $q_inv_excludes = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      while ($a_inv_excludes = mysqli_fetch_array($q_inv_excludes)) {
 
-        $linkstart = "<a href=\"#\" onclick=\"show_file('exclude.fill.php?id=" . $a_excludes['ex_id'] . "');jQuery('#dialogExclude').dialog('open');return false;\">";
-        $linkdel = "<input type=\"button\" value=\"Mark As Deleted\" onClick=\"javascript:delete_line('exclude.del.php?id=" . $a_excludes['ex_id'] . "');\">";
-        $linkremove = "<input type=\"button\" value=\"Remove Rule\" onClick=\"javascript:delete_line('exclude.del.php?id=" . $a_excludes['ex_id'] . "');\">";
+        $linkstart = "<a href=\"#\" onclick=\"show_file('exclude.fill.php?id=" . $a_inv_excludes['ex_id'] . "');jQuery('#dialogExclude').dialog('open');return false;\">";
+        $linkdel = "<input type=\"button\" value=\"Mark As Deleted\" onClick=\"javascript:delete_line('exclude.del.php?id=" . $a_inv_excludes['ex_id'] . "');\">";
+        $linkremove = "<input type=\"button\" value=\"Remove Rule\" onClick=\"javascript:delete_line('exclude.del.php?id=" . $a_inv_excludes['ex_id'] . "');\">";
         $linkend = "</a>";
 
         $q_string  = "select usr_name ";
-        $q_string .= "from users ";
-        $q_string .= "where usr_id = " . $a_excludes['ex_deleted'] . " ";
-        $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_users = mysqli_fetch_array($q_users);
+        $q_string .= "from inv_users ";
+        $q_string .= "where usr_id = " . $a_inv_excludes['ex_deleted'] . " ";
+        $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+        $a_inv_users = mysqli_fetch_array($q_inv_users);
 
-        if ($a_excludes['ex_comments'] != $comment_test) {
-          $comment = $a_excludes['ex_comments'];
+        if ($a_inv_excludes['ex_comments'] != $comment_test) {
+          $comment = $a_inv_excludes['ex_comments'];
           $comment_test = $comment;
         } else {
           $comment = '';
         }
 
-        if ($a_excludes['ex_companyid'] > 0) {
+        if ($a_inv_excludes['ex_companyid'] > 0) {
 
           $q_string  = "select int_server ";
-          $q_string .= "from interface ";
-          $q_string .= "where int_companyid = " . $a_excludes['ex_companyid'] . " and (int_type = 1 or int_type = 2) ";
-          $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          while ($a_interface = mysqli_fetch_array($q_interface)) {
+          $q_string .= "from inv_interface ";
+          $q_string .= "where int_companyid = " . $a_inv_excludes['ex_companyid'] . " and (int_type = 1 or int_type = 2) ";
+          $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
             if ($comment != '') {
               $output .= "#\n# " . $comment . "\n";
             }
-            if ($a_excludes['ex_expiration'] == date('Y-m-d')) {
+            if ($a_inv_excludes['ex_expiration'] == date('Y-m-d')) {
               $output .= "<span class=\"ui-state-highlight\">";
             }
-            if ($a_excludes['ex_expiration'] < date('Y-m-d')) {
+            if ($a_inv_excludes['ex_expiration'] < date('Y-m-d')) {
               $output .= "<span class=\"ui-state-error\">";
             }
             $output .= $linkstart;
-            $output .= $a_interface['int_server'] . " ";
-            $output .= $a_excludes['ex_text'] . $linkend;
-            if ($a_excludes['ex_expiration'] < date('Y-m-d')) {
+            $output .= $a_inv_interface['int_server'] . " ";
+            $output .= $a_inv_excludes['ex_text'] . $linkend;
+            if ($a_inv_excludes['ex_expiration'] < date('Y-m-d')) {
               $output .= "</span>";
             }
-            if ($a_excludes['ex_expiration'] == '2038-01-01') {
+            if ($a_inv_excludes['ex_expiration'] == '2038-01-01') {
               $output .= " (Never Expires)";
             } else {
-              $output .= " (Expires: " . $a_excludes['ex_expiration'] . ")";
+              $output .= " (Expires: " . $a_inv_excludes['ex_expiration'] . ")";
             }
-            $output .= " (Entered by: " . $a_excludes['usr_name'] . ")";
+            $output .= " (Entered by: " . $a_inv_excludes['usr_name'] . ")";
             $output .= " (" . $linkdel . ")\n";
           }
         } else {
           if ($comment != '') {
             $output .= "#\n# " . $comment . "\n";
           }
-          if ($a_excludes['ex_expiration'] == date('Y-m-d')) {
+          if ($a_inv_excludes['ex_expiration'] == date('Y-m-d')) {
             $output .= "<span class=\"ui-state-highlight\">";
           }
-          if ($a_excludes['ex_expiration'] < date('Y-m-d')) {
+          if ($a_inv_excludes['ex_expiration'] < date('Y-m-d')) {
             $output .= "<span class=\"ui-state-error\">";
           }
           $output .= $linkstart;
-          $output .= $a_excludes['ex_text'] . $linkend;
-          if ($a_excludes['ex_expiration'] < date('Y-m-d')) {
+          $output .= $a_inv_excludes['ex_text'] . $linkend;
+          if ($a_inv_excludes['ex_expiration'] < date('Y-m-d')) {
             $output .= "</span>";
           }
-          if ($a_excludes['ex_expiration'] == '2038-01-01') {
+          if ($a_inv_excludes['ex_expiration'] == '2038-01-01') {
             $output .= " (Never Expires)";
           } else {
-            $output .= " (Expires: " . $a_excludes['ex_expiration'] . ")";
+            $output .= " (Expires: " . $a_inv_excludes['ex_expiration'] . ")";
           }
-          $output .= " (Entered by: " . $a_excludes['usr_name'] . ")";
-          if ($a_excludes['ex_deleted'] > 0) {
-            $output .= " (Deleted by: " . $a_users['usr_name'] . " " . $linkremove . ")\n";
+          $output .= " (Entered by: " . $a_inv_excludes['usr_name'] . ")";
+          if ($a_inv_excludes['ex_deleted'] > 0) {
+            $output .= " (Deleted by: " . $a_inv_users['usr_name'] . " " . $linkremove . ")\n";
           } else {
             $output .= " (" . $linkdel . ")\n";
           }

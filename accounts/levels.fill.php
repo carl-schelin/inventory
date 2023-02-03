@@ -19,19 +19,19 @@
     }
 
     if (check_userlevel($db, $AL_Admin)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from levels");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_levels");
 
       $q_string  = "select lvl_name,lvl_level,lvl_disabled ";
-      $q_string .= "from levels ";
+      $q_string .= "from inv_levels ";
       $q_string .= "where lvl_id = " . $formVars['id'];
-      $q_levels = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_levels = mysqli_fetch_array($q_levels);
-      mysqli_free_result($q_levels);
+      $q_inv_levels = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_levels = mysqli_fetch_array($q_inv_levels);
+      mysqli_free_result($q_inv_levels);
 
-      print "document.formUpdate.lvl_name.value = '"  . mysqli_real_escape_string($db, $a_levels['lvl_name'])  . "';\n";
-      print "document.formUpdate.lvl_level.value = '" . mysqli_real_escape_string($db, $a_levels['lvl_level']) . "';\n";
+      print "document.formUpdate.lvl_name.value = '"  . mysqli_real_escape_string($db, $a_inv_levels['lvl_name'])  . "';\n";
+      print "document.formUpdate.lvl_level.value = '" . mysqli_real_escape_string($db, $a_inv_levels['lvl_level']) . "';\n";
 
-      print "document.formUpdate.lvl_disabled['" . $a_levels['lvl_disabled'] . "'].selected = 'true';\n";
+      print "document.formUpdate.lvl_disabled['" . $a_inv_levels['lvl_disabled'] . "'].selected = 'true';\n";
 
       print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";
 

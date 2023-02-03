@@ -16,11 +16,11 @@
 
   $formVars['id'] = clean($_GET['id'], 10);
 
-  $q_string = "select inv_manager "
-            . "from inventory "
-            . "where inv_id = " . $formVars['id'] . " ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_inventory = mysqli_fetch_array($q_inventory);
+  $q_string  = "select inv_manager ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "where inv_id = " . $formVars['id'] . " ";
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
 # get the misc hardware info
 
@@ -28,13 +28,13 @@
   $output .= "<tr>";
   $output .= "  <th class=\"ui-state-default\">";
   if (check_userlevel($db, $AL_Edit)) {
-    if (check_grouplevel($db, $a_inventory['inv_manager'])) {
+    if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
       $output .= "<a href=\"" . $Editroot . "/inventory.php?server=" . $formVars['id'] . "#hardware\" target=\"_blank\"><img src=\"" . $Imgsroot . "/pencil.gif\">";
     }
   }
   $output .= "Hardware Information";
   if (check_userlevel($db, $AL_Edit)) {
-    if (check_grouplevel($db, $a_inventory['inv_manager'])) {
+    if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
       $output .= "</a>";
     }
   }
@@ -82,45 +82,45 @@
 
   $support = 0;
   $q_string  = "select hw_id,part_name,hw_serial,hw_asset,mod_name,mod_speed,mod_size,hw_supportid,hw_primary,hw_verified,hw_note,hw_update ";
-  $q_string .= "from hardware ";
-  $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
-  $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
+  $q_string .= "from inv_hardware ";
+  $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
+  $q_string .= "left join inv_parts  on inv_parts.part_id = inv_hardware.hw_type ";
   $q_string .= "where hw_deleted = 0 and hw_companyid = " . $formVars['id'] . " and hw_hw_id = 0 and hw_hd_id = 0 ";
   $q_string .= "order by hw_type,hw_serial";
-  $q_hardware = mysqli_query($db, $q_string) or die("Hardware:" . mysqli_error($db));
-  while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+  $q_inv_hardware = mysqli_query($db, $q_string) or die("Hardware:" . mysqli_error($db));
+  while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
-    $link_name   = "<a href=\"" . $Reportroot . "/search.hardware.php?search_by=4&search_for=" . $a_hardware['mod_name']  . "\" target=\"_blank\">";
-    $link_type   = "<a href=\"" . $Reportroot . "/search.hardware.php?search_by=4&search_for=" . $a_hardware['part_name'] . "\" target=\"_blank\">";
+    $link_name   = "<a href=\"" . $Reportroot . "/search.hardware.php?search_by=4&search_for=" . $a_inv_hardware['mod_name']  . "\" target=\"_blank\">";
+    $link_type   = "<a href=\"" . $Reportroot . "/search.hardware.php?search_by=4&search_for=" . $a_inv_hardware['part_name'] . "\" target=\"_blank\">";
     $linkend     = "</a>";
 
     $checkmark = "";
-    if ($a_hardware['hw_verified']) {
+    if ($a_inv_hardware['hw_verified']) {
       $checkmark = "&#x2713;";
     }
 
-    if ($a_hardware['hw_primary']) {
-      $support = $a_hardware['hw_supportid'];
+    if ($a_inv_hardware['hw_primary']) {
+      $support = $a_inv_hardware['hw_supportid'];
       $class = " class=\"ui-state-highlight\"";
     } else {
       $class = " class=\"ui-widget-content\"";
     }
 
     $output .= "<tr>";
-    $output .= "<td" . $class . ">"                                                       . $a_hardware['hw_asset']                           . "</td>";
-    $output .= "<td" . $class . ">"                                                       . $a_hardware['hw_serial']                          . "</td>";
-    $output .= "<td" . $class . " title=\"" . $a_hardware['hw_note'] . "\">" . $link_name . $a_hardware['mod_name']                . $linkend . "</td>";
-    $output .= "<td" . $class . ">"                                          . $link_type . $a_hardware['part_name']               . $linkend . "</td>";
-    $output .= "<td" . $class . ">"                                                       . $a_hardware['mod_size']                            . "</td>";
-    $output .= "<td" . $class . ">"                                                       . $a_hardware['mod_speed']                           . "</td>";
-    $output .= "<td" . $class . ">"                                                       . $a_hardware['hw_update'] . $checkmark             . "</td>";
+    $output .= "<td" . $class . ">"                                                       . $a_inv_hardware['hw_asset']                           . "</td>";
+    $output .= "<td" . $class . ">"                                                       . $a_inv_hardware['hw_serial']                          . "</td>";
+    $output .= "<td" . $class . " title=\"" . $a_inv_hardware['hw_note'] . "\">" . $link_name . $a_inv_hardware['mod_name']                . $linkend . "</td>";
+    $output .= "<td" . $class . ">"                                          . $link_type . $a_inv_hardware['part_name']               . $linkend . "</td>";
+    $output .= "<td" . $class . ">"                                                       . $a_inv_hardware['mod_size']                            . "</td>";
+    $output .= "<td" . $class . ">"                                                       . $a_inv_hardware['mod_speed']                           . "</td>";
+    $output .= "<td" . $class . ">"                                                       . $a_inv_hardware['hw_update'] . $checkmark             . "</td>";
     $output .= "</tr>";
 
     $q_string  = "select hw_id,part_name,hw_serial,hw_asset,mod_name,mod_speed,mod_size,hw_supportid,hw_primary,hw_verified,hw_note,hw_update ";
-    $q_string .= "from hardware ";
-    $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
-    $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
-    $q_string .= "where hw_deleted = 0 and hw_companyid = " . $formVars['id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " and hw_hd_id = 0 ";
+    $q_string .= "from inv_hardware ";
+    $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
+    $q_string .= "left join inv_parts  on inv_parts.part_id = inv_hardware.hw_type ";
+    $q_string .= "where hw_deleted = 0 and hw_companyid = " . $formVars['id'] . " and hw_hw_id = " . $a_inv_hardware['hw_id'] . " and hw_hd_id = 0 ";
     $q_string .= "order by hw_type,hw_serial";
     $q_hwselect = mysqli_query($db, $q_string) or die("Hardware:" . mysqli_error($db));
     while ($a_hwselect = mysqli_fetch_array($q_hwselect)) {
@@ -144,7 +144,7 @@
       $output .= "<tr>";
       $output .= "<td" . $class . ">"                                                            . $a_hwselect['hw_asset']                           . "</td>";
       $output .= "<td" . $class . ">"                                                            . $a_hwselect['hw_serial']                          . "</td>";
-      $output .= "<td" . $class . " title=\"" . $a_hardware['hw_note'] . "\"> &gt;" . $link_name . $a_hwselect['mod_name']                . $linkend . "</td>";
+      $output .= "<td" . $class . " title=\"" . $a_inv_hardware['hw_note'] . "\"> &gt;" . $link_name . $a_hwselect['mod_name']                . $linkend . "</td>";
       $output .= "<td" . $class . ">"                                               . $link_type . $a_hwselect['part_name']               . $linkend . "</td>";
       $output .= "<td" . $class . ">"                                                            . $a_hwselect['mod_size']                            . "</td>";
       $output .= "<td" . $class . ">"                                                            . $a_hwselect['mod_speed']                           . "</td>";
@@ -152,10 +152,10 @@
       $output .= "</tr>";
 
       $q_string  = "select part_name,hw_serial,hw_asset,mod_name,mod_speed,mod_size,hw_supportid,hw_primary,hw_verified,hw_note,hw_update ";
-      $q_string .= "from hardware ";
-      $q_string .= "left join models on models.mod_id = hardware.hw_vendorid ";
-      $q_string .= "left join parts on parts.part_id = hardware.hw_type ";
-      $q_string .= "where hw_companyid = " . $formVars['id'] . " and hw_hw_id = " . $a_hardware['hw_id'] . " and hw_hd_id = " . $a_hwselect['hw_id'] . " ";
+      $q_string .= "from inv_hardware ";
+      $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
+      $q_string .= "left join inv_parts  on inv_parts.part_id = inv_hardware.hw_type ";
+      $q_string .= "where hw_companyid = " . $formVars['id'] . " and hw_hw_id = " . $a_inv_hardware['hw_id'] . " and hw_hd_id = " . $a_hwselect['hw_id'] . " ";
       $q_string .= "order by hw_type,hw_serial";
       $q_hwdisk = mysqli_query($db, $q_string) or die("Hardware:" . mysqli_error($db));
       while ($a_hwdisk = mysqli_fetch_array($q_hwdisk)) {
@@ -179,7 +179,7 @@
         $output .= "<tr>";
         $output .= "<td" . $class . ">"                                                                . $a_hwdisk['hw_asset']                           . "</td>";
         $output .= "<td" . $class . ">"                                                                . $a_hwdisk['hw_serial']                          . "</td>";
-        $output .= "<td" . $class . " title=\"" . $a_hardware['hw_note'] . "\"> &gt;&gt;" . $link_name . $a_hwdisk['mod_name']                . $linkend . "</td>";
+        $output .= "<td" . $class . " title=\"" . $a_inv_hardware['hw_note'] . "\"> &gt;&gt;" . $link_name . $a_hwdisk['mod_name']                . $linkend . "</td>";
         $output .= "<td" . $class . ">"                                                   . $link_type . $a_hwdisk['part_name']               . $linkend . "</td>";
         $output .= "<td" . $class . ">"                                                                . $a_hwdisk['mod_size']                            . "</td>";
         $output .= "<td" . $class . ">"                                                                . $a_hwdisk['mod_speed']                           . "</td>";

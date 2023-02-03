@@ -37,11 +37,11 @@
         }
 
         $q_string  = "select prod_code ";
-        $q_string .= "from products ";
+        $q_string .= "from inv_products ";
         $q_string .= "where prod_code = \"" . $formVars['prod_code'] . "\" ";
-        $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $q_inv_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
-        if (mysqli_num_rows($q_products) > 0 && $formVars['prod_code'] != '' && $formVars['update'] == 0) {
+        if (mysqli_num_rows($q_inv_products) > 0 && $formVars['prod_code'] != '' && $formVars['update'] == 0) {
           print "alert(\"Product Code must be unique!\");\n";
         } else {
           if (strlen($formVars['prod_name']) > 0) {
@@ -55,10 +55,10 @@
               "prod_service   =   " . $formVars['prod_service'];
 
             if ($formVars['update'] == 0) {
-              $q_string = "insert into products set prod_id = NULL, " . $q_string;
+              $q_string = "insert into inv_products set prod_id = NULL, " . $q_string;
             }
             if ($formVars['update'] == 1) {
-              $q_string = "update products set " . $q_string . " where prod_id = " . $formVars['id'];
+              $q_string = "update inv_products set " . $q_string . " where prod_id = " . $formVars['id'];
             }
 
             logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['prod_name']);
@@ -77,7 +77,7 @@
 # products that are updates. New products will have all new tags.
             if ($formVars['updatre'] == 0 || $formVars['update'] == 1) {
               $q_string  = "delete ";
-              $q_string .= "from tags ";
+              $q_string .= "from inv_tags ";
               $q_string .= "where tag_type = 3 and tag_companyid = " . $formVars['id'] . " ";
               mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
@@ -100,7 +100,7 @@
                     "tag_owner        =   " . $_SESSION['uid'] . "," .
                     "tag_group        =   " . $_SESSION['group'];
 
-                  $q_string = "insert into tags set tag_id = NULL, " . $q_string;
+                  $q_string = "insert into inv_tags set tag_id = NULL, " . $q_string;
                   mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
                 }
               }
@@ -130,27 +130,27 @@
       $output .= "</tr>";
 
       $q_string  = "select prod_id,prod_name,prod_code,prod_desc,bus_name,svc_acronym ";
-      $q_string .= "from products ";
-      $q_string .= "left join business on business.bus_id = products.prod_unit ";
-      $q_string .= "left join service on service.svc_id = products.prod_service ";
+      $q_string .= "from inv_products ";
+      $q_string .= "left join inv_business on inv_business.bus_id = inv_products.prod_unit ";
+      $q_string .= "left join inv_service on inv_service.svc_id = inv_products.prod_service ";
       $q_string .= "order by prod_name ";
-      $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_products) > 0) {
-        while ($a_products = mysqli_fetch_array($q_products)) {
+      $q_inv_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_products) > 0) {
+        while ($a_inv_products = mysqli_fetch_array($q_inv_products)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"show_file('product.fill.php?id="  . $a_products['prod_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('product.del.php?id=" . $a_products['prod_id'] . "');\">";
-          $prodstart = "<a href=\"servers.php?id=" . $a_products['prod_id'] . "\" target=\"_blank\">";
+          $linkstart = "<a href=\"#\" onclick=\"show_file('product.fill.php?id="  . $a_inv_products['prod_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
+          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('product.del.php?id=" . $a_inv_products['prod_id'] . "');\">";
+          $prodstart = "<a href=\"servers.php?id=" . $a_inv_products['prod_id'] . "\" target=\"_blank\">";
           $linkend = "</a>";
 
           $prod_tags = '';
           $q_string  = "select tag_name ";
-          $q_string .= "from tags ";
-          $q_string .= "where tag_companyid = " . $a_products['prod_id'] . " and tag_type = 3 ";
-          $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-          if (mysqli_num_rows($q_tags) > 0) {
-            while ($a_tags = mysqli_fetch_array($q_tags)) {
-              $prod_tags .= $a_tags['tag_name'] . " ";
+          $q_string .= "from inv_tags ";
+          $q_string .= "where tag_companyid = " . $a_inv_products['prod_id'] . " and tag_type = 3 ";
+          $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_tags) > 0) {
+            while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
+              $prod_tags .= $a_inv_tags['tag_name'] . " ";
             }
           }
 
@@ -158,11 +158,11 @@
 
           $total = 0;
           $q_string  = "select inv_id ";
-          $q_string .= "from inventory ";
-          $q_string .= "where inv_product = " . $a_products['prod_id'] . " ";
-          $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          if (mysqli_num_rows($q_inventory) > 0) {
-            while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+          $q_string .= "from inv_inventory ";
+          $q_string .= "where inv_product = " . $a_inv_products['prod_id'] . " ";
+          $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_inventory) > 0) {
+            while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
               $total++;
             }
           }
@@ -175,13 +175,13 @@
               $output .= "  <td class=\"ui-widget-content delete\">Members &gt; 0</td>";
             }
           }
-          $output .= "  <td class=\"" . $class . "\">"                     . $a_products['prod_code']                 . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_products['prod_name']      . $linkend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"                     . $a_products['prod_desc']                 . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_products['prod_code']                 . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_products['prod_name']      . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_products['prod_desc']                 . "</td>";
           $output .= "  <td class=\"" . $class . "\">"                     . $prod_tags                               . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">" . $prodstart . $total                        . $linkend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"                     . $a_products['bus_name']                  . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"                     . $a_products['svc_acronym']               . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_products['bus_name']                  . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_products['svc_acronym']               . "</td>";
           $output .= "</tr>";
         }
       } else {
@@ -192,7 +192,7 @@
 
       $output .= "</table>";
 
-      mysqli_free_result($q_products);
+      mysqli_free_result($q_inv_products);
 
       print "document.getElementById('table_mysql').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 

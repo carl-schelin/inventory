@@ -19,26 +19,26 @@
     }
 
     if (check_userlevel($db, $AL_Admin)) {
-      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from grouplist");
+      logaccess($db, $_SESSION['uid'], $package, "Deleting " . $formVars['id'] . " from inv_grouplist");
 
 # get the guy you're trying to delete's group id
       $q_string  = "select gpl_group ";
-      $q_string .= "from grouplist ";
+      $q_string .= "from inv_grouplist ";
       $q_string .= "where gpl_id = " . $formVars['id'] . " ";
-      $q_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_grouplist = mysqli_fetch_array($q_grouplist);
+      $q_inv_grouplist = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_grouplist = mysqli_fetch_array($q_inv_grouplist);
       
 # now check to see if the deleter is in the same group as the deletee
       $q_string  = "select gpl_id ";
-      $q_string .= "from grouplist ";
+      $q_string .= "from inv_grouplist ";
       if (check_userlevel($db, $AL_Admin) == 0) {
-        $q_string .= "where gpl_user = " . $_SESSION['uid'] . " and gpl_group = " . $a_grouplist['gpl_group'] . " ";
+        $q_string .= "where gpl_user = " . $_SESSION['uid'] . " and gpl_group = " . $a_inv_grouplist['gpl_group'] . " ";
       }
       $q_gltest = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 # you are in fact a member of the same group (or an admin)
       if (mysqli_num_rows($q_gltest) > 0) {
         $q_string  = "delete ";
-        $q_string .= "from grouplist ";
+        $q_string .= "from inv_grouplist ";
         $q_string .= "where gpl_id = " . $formVars['id'];
         $insert = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       } else {

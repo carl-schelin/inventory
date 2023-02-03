@@ -138,66 +138,66 @@
   $count = 0;
   $scount = 0;
   $q_string  = "select int_id,int_server,int_addr,inv_id,inv_name,inv_function,prod_name,prj_name,itp_name ";
-  $q_string .= "from interface ";
-  $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
-  $q_string .= "left join products  on products.prod_id = inventory.inv_product ";
-  $q_string .= "left join projects  on projects.prj_id  = inventory.inv_project ";
-  $q_string .= "left join int_types on int_types.itp_id = interface.int_type ";
+  $q_string .= "from inv_interface ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_interface.int_companyid ";
+  $q_string .= "left join inv_products  on inv_products.prod_id = inv_inventory.inv_product ";
+  $q_string .= "left join inv_projects  on inv_projects.prj_id  = inv_inventory.inv_project ";
+  $q_string .= "left join inv_int_types on inv_int_types.itp_id = inv_interface.int_type ";
   $q_string .= "where inv_manager = " . $formVars['group'] . " and int_addr != '' and int_ip6 = 0 and int_addr != '127.0.0.1' and inv_status = 0 and (int_type = 1 or int_type = 2 or int_type = 6) ";
   $q_string .= $formVars['product'];
   $q_string .= $formVars['project'];
   $q_string .= "order by inv_name ";
-  $q_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  if (mysqli_num_rows($q_interface) > 0) {
-    while ($a_interface = mysqli_fetch_array($q_interface)) {
+  $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_interface) > 0) {
+    while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
 
-      if ($inventory != $a_interface['inv_name']) {
+      if ($inventory != $a_inv_interface['inv_name']) {
         if ($vulnflag == 0) {
           print $output;
           $scount++;
         }
-        $inventory = $a_interface['inv_name'];
+        $inventory = $a_inv_interface['inv_name'];
         $output = '';
         $vulnflag = 0;
       }
 
       $q_string  = "select hw_active ";
-      $q_string .= "from hardware ";
-      $q_string .= "where hw_companyid = " . $a_interface['inv_id'] . " and hw_deleted = 0 and hw_primary = 1 ";
-      $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_hardware = mysqli_fetch_array($q_hardware);
+      $q_string .= "from inv_hardware ";
+      $q_string .= "where hw_companyid = " . $a_inv_interface['inv_id'] . " and hw_deleted = 0 and hw_primary = 1 ";
+      $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
       $q_string  = "select vuln_id ";
-      $q_string .= "from vulnerabilities ";
-      $q_string .= "where vuln_interface = " . $a_interface['int_id'] . " ";
-      $q_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      if (mysqli_num_rows($q_vulnerabilities) == 0) {
+      $q_string .= "from inv_vulnerabilities ";
+      $q_string .= "where vuln_interface = " . $a_inv_interface['int_id'] . " ";
+      $q_inv_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_vulnerabilities) == 0) {
 
         $class = "ui-widget-content";
-        if ($a_hardware['hw_active'] == '0000-00-00') {
+        if ($a_inv_hardware['hw_active'] == '0000-00-00') {
           $class = "ui-state-highlight";
         }
 
         if ($formVars['csv']) {
-          $output .= "\"" . $a_interface['inv_name']     . "\",";
-          $output .= "\"" . $a_interface['inv_function'] . "\",";
-          $output .= "\"" . $a_interface['prod_name']    . "\",";
-          $output .= "\"" . $a_interface['prj_name']     . "\",";
-          $output .= "\"" . $a_interface['int_addr']     . "\",";
-          $output .= "\"" . $a_interface['itp_name']     . "\"\n";
+          $output .= "\"" . $a_inv_interface['inv_name']     . "\",";
+          $output .= "\"" . $a_inv_interface['inv_function'] . "\",";
+          $output .= "\"" . $a_inv_interface['prod_name']    . "\",";
+          $output .= "\"" . $a_inv_interface['prj_name']     . "\",";
+          $output .= "\"" . $a_inv_interface['int_addr']     . "\",";
+          $output .= "\"" . $a_inv_interface['itp_name']     . "\"\n";
         } else {
           $output .= "<tr>\n";
-          if ($invname != $a_interface['inv_name']) {
-            $output .= "  <td class=\"" . $class . "\">" . $a_interface['inv_name']   . "</td>\n";
-            $invname = $a_interface['inv_name'];
+          if ($invname != $a_inv_interface['inv_name']) {
+            $output .= "  <td class=\"" . $class . "\">" . $a_inv_interface['inv_name']   . "</td>\n";
+            $invname = $a_inv_interface['inv_name'];
           } else {
             $output .= "  <td class=\"" . $class . "\">&nbsp;</td>\n";
           }
-          $output .= "  <td class=\"" . $class . "\">" . $a_interface['inv_function']  . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">" . $a_interface['prod_name']     . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">" . $a_interface['prj_name']      . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">" . $a_interface['int_addr']      . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">" . $a_interface['itp_name']      . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">" . $a_inv_interface['inv_function']  . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">" . $a_inv_interface['prod_name']     . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">" . $a_inv_interface['prj_name']      . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">" . $a_inv_interface['int_addr']      . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">" . $a_inv_interface['itp_name']      . "</td>\n";
           $output .= "</tr>\n";
           $count++;
         }

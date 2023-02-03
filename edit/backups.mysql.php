@@ -84,10 +84,10 @@
           "bu_changedby =   " . $formVars['bu_changedby'];
 
         if ($formVars['id'] == 0) {
-          $query = "insert into backups set bu_id = NULL," . $q_string;
+          $query = "insert into inv_backups set bu_id = NULL," . $q_string;
         }
         if ($formVars['id'] > 0) {
-          $query = "update backups set " . $q_string . " where bu_id = " . $formVars['id'];
+          $query = "update inv_backups set " . $q_string . " where bu_id = " . $formVars['id'];
         }
 
         logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['id']);
@@ -102,33 +102,33 @@
         $q_string .= "bu_sunday,bu_monday,bu_tuesday,bu_wednesday,bu_thursday,bu_friday,bu_saturday,";
         $q_string .= "bu_suntime,bu_montime,bu_tuetime,bu_wedtime,bu_thutime,bu_fritime,bu_sattime,";
         $q_string .= "bu_notes ";
-        $q_string .= "from backups ";
+        $q_string .= "from inv_backups ";
         $q_string .= "where bu_companyid = " . $formVars['copyfrom'];
-        $q_backups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_backups = mysqli_fetch_array($q_backups)) {
+        $q_inv_backups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inv_backups = mysqli_fetch_array($q_inv_backups)) {
 
           $q_string =
             "bu_companyid =   " . $formVars['bu_companyid']  . "," .
-            "bu_start     = \"" . $a_backups['bu_start']     . "\"," .
-            "bu_include   =   " . $a_backups['bu_include']   . "," .
-            "bu_retention =   " . $a_backups['bu_retention'] . "," .
-            "bu_sunday    =   " . $a_backups['bu_sunday']    . "," .
-            "bu_monday    =   " . $a_backups['bu_monday']    . "," .
-            "bu_tuesday   =   " . $a_backups['bu_tuesday']   . "," .
-            "bu_wednesday =   " . $a_backups['bu_wednesday'] . "," .
-            "bu_thursday  =   " . $a_backups['bu_thursday']  . "," .
-            "bu_friday    =   " . $a_backups['bu_friday']    . "," .
-            "bu_saturday  =   " . $a_backups['bu_saturday']  . "," .
-            "bu_suntime   = \"" . $a_backups['bu_suntime']   . "\"," .
-            "bu_montime   = \"" . $a_backups['bu_montime']   . "\"," .
-            "bu_tuetime   = \"" . $a_backups['bu_tuetime']   . "\"," .
-            "bu_wedtime   = \"" . $a_backups['bu_wedtime']   . "\"," .
-            "bu_thutime   = \"" . $a_backups['bu_thutime']   . "\"," .
-            "bu_fritime   = \"" . $a_backups['bu_fritime']   . "\"," .
-            "bu_sattime   = \"" . $a_backups['bu_sattime']   . "\"," .
-            "bu_notes     = \"" . $a_backups['bu_notes']     . "\"";
+            "bu_start     = \"" . $a_inv_backups['bu_start']     . "\"," .
+            "bu_include   =   " . $a_inv_backups['bu_include']   . "," .
+            "bu_retention =   " . $a_inv_backups['bu_retention'] . "," .
+            "bu_sunday    =   " . $a_inv_backups['bu_sunday']    . "," .
+            "bu_monday    =   " . $a_inv_backups['bu_monday']    . "," .
+            "bu_tuesday   =   " . $a_inv_backups['bu_tuesday']   . "," .
+            "bu_wednesday =   " . $a_inv_backups['bu_wednesday'] . "," .
+            "bu_thursday  =   " . $a_inv_backups['bu_thursday']  . "," .
+            "bu_friday    =   " . $a_inv_backups['bu_friday']    . "," .
+            "bu_saturday  =   " . $a_inv_backups['bu_saturday']  . "," .
+            "bu_suntime   = \"" . $a_inv_backups['bu_suntime']   . "\"," .
+            "bu_montime   = \"" . $a_inv_backups['bu_montime']   . "\"," .
+            "bu_tuetime   = \"" . $a_inv_backups['bu_tuetime']   . "\"," .
+            "bu_wedtime   = \"" . $a_inv_backups['bu_wedtime']   . "\"," .
+            "bu_thutime   = \"" . $a_inv_backups['bu_thutime']   . "\"," .
+            "bu_fritime   = \"" . $a_inv_backups['bu_fritime']   . "\"," .
+            "bu_sattime   = \"" . $a_inv_backups['bu_sattime']   . "\"," .
+            "bu_notes     = \"" . $a_inv_backups['bu_notes']     . "\"";
 
-          $query = "insert into backups set bu_id = NULL, " . $q_string;
+          $query = "insert into inv_backups set bu_id = NULL, " . $q_string;
           mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
         }
       }

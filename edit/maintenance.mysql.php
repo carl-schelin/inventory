@@ -27,21 +27,21 @@
 
         if ($formVars['copyfrom'] > 0) {
           $q_string  = "select hw_type,hw_vendorid,hw_supportid,hw_primary ";
-          $q_string .= "from hardware ";
+          $q_string .= "from inv_hardware ";
           $q_string .= "where hw_companyid = " . $formVars['copyfrom'];
-          $q_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          while ($a_hardware = mysqli_fetch_array($q_hardware)) {
+          $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
 
             $q_string =
               "hw_companyid =   " . $formVars['hw_companyid']   . "," . 
               "hw_group     =   " . $formVars['hw_group']       . "," . 
               "hw_product   =   " . $formVars['hw_product']     . "," . 
-              "hw_vendorid  =   " . $a_hardware['hw_vendorid']  . "," . 
-              "hw_type      =   " . $a_hardware['hw_type']      . "," . 
-              "hw_supportid =   " . $a_hardware['hw_supportid'] . "," .
-              "hw_primary   =   " . $a_hardware['hw_primary'];
+              "hw_vendorid  =   " . $a_inv_hardware['hw_vendorid']  . "," . 
+              "hw_type      =   " . $a_inv_hardware['hw_type']      . "," . 
+              "hw_supportid =   " . $a_inv_hardware['hw_supportid'] . "," .
+              "hw_primary   =   " . $a_inv_hardware['hw_primary'];
 
-            $query = "insert into hardware set hw_id = NULL, " . $q_string;
+            $query = "insert into inv_hardware set hw_id = NULL, " . $q_string;
             mysqli_query($db, $query) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $query . "&mysql=" . mysqli_error($db)));
           }
         }
@@ -66,12 +66,12 @@
         $output .= "<option value=\"0\">None</option>\n";
 
         $q_string  = "select inv_id,inv_name ";
-        $q_string .= "from inventory ";
+        $q_string .= "from inv_inventory ";
         $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
         $q_string .= "order by inv_name";
-        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_inventory = mysqli_fetch_array($q_inventory)) {
-          $output .= "<option value=\"" . $a_inventory['inv_id'] . "\">" . $a_inventory['inv_name'] . "</option>\n";
+        $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
+          $output .= "<option value=\"" . $a_inv_inventory['inv_id'] . "\">" . $a_inv_inventory['inv_name'] . "</option>\n";
         }
 
         $output .= "</select></td>\n";
@@ -161,18 +161,18 @@
         $output .= "  <td class=\"ui-widget-content\">Select a Patching Increment: <select name=\"inv_patchid\">\n";
 
         $q_string  = "select inv_manager ";
-        $q_string .= "from inventory ";
+        $q_string .= "from inv_inventory ";
         $q_string .= "where inv_id = " . $formVars['id'] . " ";
-        $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        $a_inventory = mysqli_fetch_array($q_inventory);
+        $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
         $q_string  = "select patch_id,patch_name ";
-        $q_string .= "from patching ";
-        $q_string .= "where patch_group = " . $a_inventory['inv_manager'] . " ";
+        $q_string .= "from inv_patching ";
+        $q_string .= "where patch_group = " . $a_inv_inventory['inv_manager'] . " ";
         $q_string .= "order by patch_name ";
-        $q_patching = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while($a_patching = mysqli_fetch_array($q_patching)) {
-          print "<option value=\"" . $a_patching['patch_id'] . "\">" . $a_patching['patch_name'] . "</option>\n";
+        $q_inv_patching = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        while($a_inv_patching = mysqli_fetch_array($q_inv_patching)) {
+          print "<option value=\"" . $a_inv_patching['patch_id'] . "\">" . $a_inv_patching['patch_name'] . "</option>\n";
         }
 
         $output .= "</select></td>\n";

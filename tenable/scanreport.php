@@ -88,99 +88,99 @@
   $info = 0;
   $info_exception = 0;
   $q_string  = "select vuln_id,vul_exception,vul_group,vuln_group,sev_name,inv_product ";
-  $q_string .= "from vulnerabilities ";
-  $q_string .= "left join security on security.sec_id = vulnerabilities.vuln_securityid ";
-  $q_string .= "left join severity on severity.sev_id = security.sec_severity ";
-  $q_string .= "left join interface on interface.int_id = vulnerabilities.vuln_interface ";
-  $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
-  $q_string .= "left join vulnowner on vulnowner.vul_interface = vulnerabilities.vuln_interface and vulnowner.vul_security = vulnerabilities.vuln_securityid ";
-  $q_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_vulnerabilities = mysqli_fetch_array($q_vulnerabilities)) {
-    if (!isset($group[$a_vulnerabilities['vul_group']])) {
-      $group[$a_vulnerabilities['vul_group']] = 0;
+  $q_string .= "from inv_vulnerabilities ";
+  $q_string .= "left join inv_security  on inv_security.sec_id  = inv_vulnerabilities.vuln_securityid ";
+  $q_string .= "left join inv_severity  on inv_severity.sev_id  = inv_security.sec_severity ";
+  $q_string .= "left join inv_interface on inv_interface.int_id = inv_vulnerabilities.vuln_interface ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_interface.int_companyid ";
+  $q_string .= "left join inv_vulnowner on inv_vulnowner.vul_interface = inv_vulnerabilities.vuln_interface and inv_vulnowner.vul_security = inv_vulnerabilities.vuln_securityid ";
+  $q_inv_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_vulnerabilities = mysqli_fetch_array($q_inv_vulnerabilities)) {
+    if (!isset($group[$a_inv_vulnerabilities['vul_group']])) {
+      $group[$a_inv_vulnerabilities['vul_group']] = 0;
     }
-    if (!isset($group_exc[$a_vulnerabilities['vul_group']])) {
-      $group_exc[$a_vulnerabilities['vul_group']] = 0;
-    }
-
-    if (!isset($product[$a_vulnerabilities['inv_product']])) {
-      $product[$a_vulnerabilities['inv_product']] = 0;
-    }
-    if (!isset($product_dup[$a_vulnerabilities['inv_product']])) {
-      $product_dup[$a_vulnerabilities['inv_product']] = 0;
+    if (!isset($group_exc[$a_inv_vulnerabilities['vul_group']])) {
+      $group_exc[$a_inv_vulnerabilities['vul_group']] = 0;
     }
 
-    if ($a_vulnerabilities['sev_name'] == "Critical") {
-      if ($a_vulnerabilities['vul_exception']) {
+    if (!isset($product[$a_inv_vulnerabilities['inv_product']])) {
+      $product[$a_inv_vulnerabilities['inv_product']] = 0;
+    }
+    if (!isset($product_dup[$a_inv_vulnerabilities['inv_product']])) {
+      $product_dup[$a_inv_vulnerabilities['inv_product']] = 0;
+    }
+
+    if ($a_inv_vulnerabilities['sev_name'] == "Critical") {
+      if ($a_inv_vulnerabilities['vul_exception']) {
         $critical_exception++;
         $total_exception++;
-        $group_exc[$a_vulnerabilities['vul_group']]++;
-        $product_dup[$a_vulnerabilities['inv_product']]++;
+        $group_exc[$a_inv_vulnerabilities['vul_group']]++;
+        $product_dup[$a_inv_vulnerabilities['inv_product']]++;
       } else {
         $critical++;
         $total++;
-        $group[$a_vulnerabilities['vul_group']]++;
-        $product[$a_vulnerabilities['inv_product']]++;
+        $group[$a_inv_vulnerabilities['vul_group']]++;
+        $product[$a_inv_vulnerabilities['inv_product']]++;
       }
     }
-    if ($a_vulnerabilities['sev_name'] == "High") {
-      if ($a_vulnerabilities['vul_exception']) {
+    if ($a_inv_vulnerabilities['sev_name'] == "High") {
+      if ($a_inv_vulnerabilities['vul_exception']) {
         $high_exception++;
         $total_exception++;
-        $group_exc[$a_vulnerabilities['vul_group']]++;
-        $product_dup[$a_vulnerabilities['inv_product']]++;
+        $group_exc[$a_inv_vulnerabilities['vul_group']]++;
+        $product_dup[$a_inv_vulnerabilities['inv_product']]++;
       } else {
         $high++;
         $total++;
-        $group[$a_vulnerabilities['vul_group']]++;
-        $product[$a_vulnerabilities['inv_product']]++;
+        $group[$a_inv_vulnerabilities['vul_group']]++;
+        $product[$a_inv_vulnerabilities['inv_product']]++;
       }
     }
-    if ($a_vulnerabilities['sev_name'] == "Medium") {
-      if ($a_vulnerabilities['vul_exception']) {
+    if ($a_inv_vulnerabilities['sev_name'] == "Medium") {
+      if ($a_inv_vulnerabilities['vul_exception']) {
         $medium_exception++;
         $total_exception++;
-        $group_exc[$a_vulnerabilities['vul_group']]++;
-        $product_dup[$a_vulnerabilities['inv_product']]++;
+        $group_exc[$a_inv_vulnerabilities['vul_group']]++;
+        $product_dup[$a_inv_vulnerabilities['inv_product']]++;
       } else {
         $medium++;
         $total++;
-        $group[$a_vulnerabilities['vul_group']]++;
-        $product[$a_vulnerabilities['inv_product']]++;
+        $group[$a_inv_vulnerabilities['vul_group']]++;
+        $product[$a_inv_vulnerabilities['inv_product']]++;
       }
     }
-    if ($a_vulnerabilities['sev_name'] == "Low") {
-      if ($a_vulnerabilities['vul_exception']) {
+    if ($a_inv_vulnerabilities['sev_name'] == "Low") {
+      if ($a_inv_vulnerabilities['vul_exception']) {
         $low_exception++;
         $total_exception++;
-        $group_exc[$a_vulnerabilities['vul_group']]++;
-        $product_dup[$a_vulnerabilities['inv_product']]++;
+        $group_exc[$a_inv_vulnerabilities['vul_group']]++;
+        $product_dup[$a_inv_vulnerabilities['inv_product']]++;
       } else {
         $low++;
         $total++;
-        $group[$a_vulnerabilities['vul_group']]++;
-        $product[$a_vulnerabilities['inv_product']]++;
+        $group[$a_inv_vulnerabilities['vul_group']]++;
+        $product[$a_inv_vulnerabilities['inv_product']]++;
       }
     }
-    if ($a_vulnerabilities['sev_name'] == "Info") {
-      if ($a_vulnerabilities['vul_exception']) {
+    if ($a_inv_vulnerabilities['sev_name'] == "Info") {
+      if ($a_inv_vulnerabilities['vul_exception']) {
         $info_exception++;
         $total_exception++;
-        $group_exc[$a_vulnerabilities['vul_group']]++;
-        $product_dup[$a_vulnerabilities['inv_product']]++;
+        $group_exc[$a_inv_vulnerabilities['vul_group']]++;
+        $product_dup[$a_inv_vulnerabilities['inv_product']]++;
       } else {
         $info++;
         $total++;
-        $group[$a_vulnerabilities['vul_group']]++;
-        $product[$a_vulnerabilities['inv_product']]++;
+        $group[$a_inv_vulnerabilities['vul_group']]++;
+        $product[$a_inv_vulnerabilities['inv_product']]++;
       }
     }
   }
 
 # identify resolved vulnerabilities.
 # when a vulnerability has been resolved, it drops off of the csv file. As long as 
-# a vulnerability has an owner though, it stays in the vulnowner table. to identify 
-# resolved scans, just identify the ones in the vulnowner table that have no 
+# a vulnerability has an owner though, it stays in the inv_vulnowner table. to identify 
+# resolved scans, just identify the ones in the inv_vulnowner table that have no 
 # associated entries in the vulnerability table.
 # to get this right, I'll need to import them from the first report. This makes 
 # sure all vulnerabilities have owners
@@ -194,52 +194,52 @@
   $low_resolved = 0;
   $info_resolved = 0;
   $q_string  = "select vul_id,vul_interface,vul_security,vul_group,inv_product ";
-  $q_string .= "from vulnowner ";
-  $q_string .= "left join interface on interface.int_id = vulnowner.vul_interface ";
-  $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
-  $q_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_vulnowner = mysqli_fetch_array($q_vulnowner)) {
+  $q_string .= "from inv_vulnowner ";
+  $q_string .= "left join inv_interface on inv_interface.int_id = inv_vulnowner.vul_interface ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_interface.int_companyid ";
+  $q_inv_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_vulnowner = mysqli_fetch_array($q_inv_vulnowner)) {
     $q_string  = "select vuln_id ";
-    $q_string .= "from vulnerabilities ";
-    $q_string .= "where vuln_securityid = " . $a_vulnowner['vul_security'] . " and vuln_interface = " . $a_vulnowner['vul_interface'] . " ";
-    $q_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    if (mysqli_num_rows($q_vulnerabilities) == 0) {
+    $q_string .= "from inv_vulnerabilities ";
+    $q_string .= "where vuln_securityid = " . $a_inv_vulnowner['vul_security'] . " and vuln_interface = " . $a_inv_vulnowner['vul_interface'] . " ";
+    $q_inv_vulnerabilities = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    if (mysqli_num_rows($q_inv_vulnerabilities) == 0) {
 
       $q_string  = "select sev_name ";
-      $q_string .= "from security ";
-      $q_string .= "left join severity on severity.sev_id = security.sec_severity ";
-      $q_string .= "where sec_id = " . $a_vulnowner['vul_security'] . " ";
-      $q_security = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_security = mysqli_fetch_array($q_security);
+      $q_string .= "from inv_security ";
+      $q_string .= "left join inv_severity on inv_severity.sev_id = inv_security.sec_severity ";
+      $q_string .= "where sec_id = " . $a_inv_vulnowner['vul_security'] . " ";
+      $q_inv_security = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_security = mysqli_fetch_array($q_inv_security);
 
-      if (isset($group_res[$a_vulnowner['vul_group']])) {
-        $group_res[$a_vulnowner['vul_group']]++;
+      if (isset($group_res[$a_inv_vulnowner['vul_group']])) {
+        $group_res[$a_inv_vulnowner['vul_group']]++;
       } else {
-        $group_res[$a_vulnowner['vul_group']] = 1;
+        $group_res[$a_inv_vulnowner['vul_group']] = 1;
       }
-      if (isset($product_res[$a_vulnowner['inv_product']])) {
-        $product_res[$a_vulnowner['inv_product']]++;
+      if (isset($product_res[$a_inv_vulnowner['inv_product']])) {
+        $product_res[$a_inv_vulnowner['inv_product']]++;
       } else {
-        $product_res[$a_vulnowner['inv_product']] = 1;
+        $product_res[$a_inv_vulnowner['inv_product']] = 1;
       }
 
-      if ($a_security['sev_name'] == 'Critical') {
+      if ($a_inv_security['sev_name'] == 'Critical') {
         $critical_resolved++;
         $total_resolved++;
       }
-      if ($a_security['sev_name'] == 'High') {
+      if ($a_inv_security['sev_name'] == 'High') {
         $high_resolved++;
         $total_resolved++;
       }
-      if ($a_security['sev_name'] == 'Medium') {
+      if ($a_inv_security['sev_name'] == 'Medium') {
         $medium_resolved++;
         $total_resolved++;
       }
-      if ($a_security['sev_name'] == 'Low') {
+      if ($a_inv_security['sev_name'] == 'Low') {
         $low_resolved++;
         $total_resolved++;
       }
-      if ($a_security['sev_name'] == 'Info') {
+      if ($a_inv_security['sev_name'] == 'Info') {
         $info_resolved++;
         $total_resolved++;
       }
@@ -314,32 +314,32 @@
   print "</tr>\n";
 
   $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from a_groups ";
+  $q_string .= "from inv_groups ";
   $q_string .= "where grp_disabled = 0 ";
   $q_string .= "order by grp_name ";
-  $q_a_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_groups = mysqli_fetch_array($q_a_groups)) {
+  $q_inv_groups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_groups = mysqli_fetch_array($q_inv_groups)) {
     $groupset = 0;
 
     $output  = "<tr>\n";
-    $output .= "<td class=\"ui-widget-content\">" . $a_groups['grp_name'] . "</td>\n";
+    $output .= "<td class=\"ui-widget-content\">" . $a_inv_groups['grp_name'] . "</td>\n";
 
-    if (isset($group[$a_groups['grp_id']])) {
-      $output .= "<td class=\"ui-widget-content\">" . $group[$a_groups['grp_id']] . "</td>\n";
+    if (isset($group[$a_inv_groups['grp_id']])) {
+      $output .= "<td class=\"ui-widget-content\">" . $group[$a_inv_groups['grp_id']] . "</td>\n";
       $groupset++;
     } else {
       $output .= "<td class=\"ui-widget-content\">0</td>\n";
     }
 
-    if (isset($group_exc[$a_groups['grp_id']])) {
-      $output .= "<td class=\"ui-widget-content\">" . $group_exc[$a_groups['grp_id']] . "</td>\n";
+    if (isset($group_exc[$a_inv_groups['grp_id']])) {
+      $output .= "<td class=\"ui-widget-content\">" . $group_exc[$a_inv_groups['grp_id']] . "</td>\n";
       $groupset++;
     } else {
       $output .= "<td class=\"ui-widget-content\">0</td>\n";
     }
 
-    if (isset($group_res[$a_groups['grp_id']])) {
-      $output .= "<td class=\"ui-widget-content\">" . $group_res[$a_groups['grp_id']] . "</td>\n";
+    if (isset($group_res[$a_inv_groups['grp_id']])) {
+      $output .= "<td class=\"ui-widget-content\">" . $group_res[$a_inv_groups['grp_id']] . "</td>\n";
       $groupset++;
     } else {
       $output .= "<td class=\"ui-widget-content\">0</td>\n";
@@ -366,31 +366,31 @@
   print "</tr>\n";
 
   $q_string  = "select prod_id,prod_name ";
-  $q_string .= "from products ";
+  $q_string .= "from inv_products ";
   $q_string .= "order by prod_name ";
-  $q_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_products = mysqli_fetch_array($q_products)) {
+  $q_inv_products = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_products = mysqli_fetch_array($q_inv_products)) {
     $productset = 0;
 
     $output  = "<tr>\n";
-    $output .= "<td class=\"ui-widget-content\">" . $a_products['prod_name'] . "</td>\n";
+    $output .= "<td class=\"ui-widget-content\">" . $a_inv_products['prod_name'] . "</td>\n";
 
-    if (isset($product[$a_products['prod_id']])) {
-      $output .= "<td class=\"ui-widget-content\">" . $product[$a_products['prod_id']] . "</td>\n";
+    if (isset($product[$a_inv_products['prod_id']])) {
+      $output .= "<td class=\"ui-widget-content\">" . $product[$a_inv_products['prod_id']] . "</td>\n";
       $productset++;
     } else {
       $output .= "<td class=\"ui-widget-content\">0</td>\n";
     }
 
-    if (isset($product_dup[$a_products['prod_id']])) {
-      $output .= "<td class=\"ui-widget-content\">" . $product_dup[$a_products['prod_id']] . "</td>\n";
+    if (isset($product_dup[$a_inv_products['prod_id']])) {
+      $output .= "<td class=\"ui-widget-content\">" . $product_dup[$a_inv_products['prod_id']] . "</td>\n";
       $productset++;
     } else {
       $output .= "<td class=\"ui-widget-content\">0</td>\n";
     }
 
-    if (isset($product_res[$a_products['prod_id']])) {
-      $output .= "<td class=\"ui-widget-content\">" . $product_res[$a_products['prod_id']] . "</td>\n";
+    if (isset($product_res[$a_inv_products['prod_id']])) {
+      $output .= "<td class=\"ui-widget-content\">" . $product_res[$a_inv_products['prod_id']] . "</td>\n";
       $productset++;
     } else {
       $output .= "<td class=\"ui-widget-content\">0</td>\n";
@@ -409,27 +409,27 @@
 # let's get a ticket count now. anything in vulowner which has number of entries, number of entries with tickets, and number of unique tickets.
 
   $q_string  = "select count(vul_id) ";
-  $q_string .= "from vulnowner ";
-  $q_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_vulnowner = mysqli_fetch_row($q_vulnowner);
+  $q_string .= "from inv_vulnowner ";
+  $q_inv_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_vulnowner = mysqli_fetch_row($q_inv_vulnowner);
 
-  $total_entries = $a_vulnowner[0];
+  $total_entries = $a_inv_vulnowner[0];
 
   $q_string  = "select count(vul_id) ";
-  $q_string .= "from vulnowner ";
+  $q_string .= "from inv_vulnowner ";
   $q_string .= "where vul_ticket != '' ";
-  $q_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  $a_vulnowner = mysqli_fetch_row($q_vulnowner);
+  $q_inv_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  $a_inv_vulnowner = mysqli_fetch_row($q_inv_vulnowner);
 
-  $total_tickets = $a_vulnowner[0];
+  $total_tickets = $a_inv_vulnowner[0];
 
   $total_unique = 0;
   $q_string  = "select vul_id ";
-  $q_string .= "from vulnowner ";
+  $q_string .= "from inv_vulnowner ";
   $q_string .= "where vul_ticket != '' ";
   $q_string .= "group by vul_ticket ";
-  $q_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_vulnowner = mysqli_fetch_row($q_vulnowner)) {
+  $q_inv_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_vulnowner = mysqli_fetch_row($q_inv_vulnowner)) {
     $total_unique++;
   }
 

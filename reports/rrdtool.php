@@ -144,61 +144,61 @@
   print "<table class=\"ui-styled-table\">\n";
 
   $q_string  = "select inv_id,IF(INSTR(inv_name,'/'),LEFT(inv_name,LOCATE('/',inv_name)-1),inv_name) as inv_name ";
-  $q_string .= "from inventory ";
-  $q_string .= "left join hardware on inventory.inv_id = hardware.hw_companyid ";
-  $q_string .= "left join locations on locations.loc_id = inventory.inv_location ";
-  $q_string .= "left join products on products.prod_id = inventory.inv_product ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_hardware  on inv_inventory.inv_id     = inv_hardware.hw_companyid ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id     = inv_inventory.inv_location ";
+  $q_string .= "left join inv_products  on inv_products.prod_id     = inv_inventory.inv_product ";
   $q_string .= $where;
   $q_string .= $orderby;
-  $q_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inventory = mysqli_fetch_array($q_inventory)) {
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
     $q_string  = "select sw_software ";
-    $q_string .= "from software ";
-    $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
-    $q_string .= "left join sw_types on sw_types.typ_id = software.sw_type ";
-    $q_string .= "where typ_name = 'OS' and svr_companyid = " . $a_inventory['inv_id'];
-    $q_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    $a_software = mysqli_fetch_array($q_software);
+    $q_string .= "from inv_software ";
+    $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = inv_software.sw_id ";
+    $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = inv_software.sw_type ";
+    $q_string .= "where typ_name = 'OS' and svr_companyid = " . $a_inv_inventory['inv_id'];
+    $q_inv_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    $a_inv_software = mysqli_fetch_array($q_inv_software);
 
-    $os = explode(" ", $a_software['sw_software']);
+    $os = explode(" ", $a_inv_software['sw_software']);
 
     print "<tr>\n";
-    print "  <th class=\"ui-state-default\" style=\"text-align: left;\" colspan=\"4\"><a href=\"/rrdtool/" . $a_inventory['inv_name'] . "\" target=\"_blank\">" . $a_inventory['inv_name'] . " (" . $a_software['sw_software'] . ")</a></th>\n";
+    print "  <th class=\"ui-state-default\" style=\"text-align: left;\" colspan=\"4\"><a href=\"/rrdtool/" . $a_inv_inventory['inv_name'] . "\" target=\"_blank\">" . $a_inv_inventory['inv_name'] . " (" . $a_inv_software['sw_software'] . ")</a></th>\n";
     print "</tr>\n";
 
-    if (file_exists($Sitedir . "/rrdtool/" . $a_inventory['inv_name'] . "/load-day-thumb.png")) {
+    if (file_exists($Sitedir . "/rrdtool/" . $a_inv_inventory['inv_name'] . "/load-day-thumb.png")) {
       $load   = "title=\"Load Average: Should be under 1. Shows how busy the system is. Spikes here should be reflected with spikes in CPU and Memory\"";
       $queue  = "title=\"Run Queues: Should be under 2. Red shows disk I/O blocking. Blue shows CPU blocking.\"";
       $cpu    = "title=\"CPU Usage: All cpus are shown so multiple colors are possible. The more colors, the more cpus are in use.\"";
       $memory = "title=\"Memory Usage: Red=Program usage, Orange=Cached usage, Yellow=Buffers\"";
       $swap   = "title=\"Swap Usage: Generally red is 50% but can go higher. 100% will start Disk Performance alerts.\"";
       print "<tr>\n";
-      if (file_exists($Sitedir . "/rrdtool/" . $a_inventory['inv_name'] . "/load-day-thumb.png")) {
-        print "  <td class=\"ui-widget-content\" style=\"text-align: center;\" " . $load   . "><img height=\"95\" src=\"/rrdtool/" . $a_inventory['inv_name'] . "/load-day-thumb.png\" width=\"200\"></td>\n";
+      if (file_exists($Sitedir . "/rrdtool/" . $a_inv_inventory['inv_name'] . "/load-day-thumb.png")) {
+        print "  <td class=\"ui-widget-content\" style=\"text-align: center;\" " . $load   . "><img height=\"95\" src=\"/rrdtool/" . $a_inv_inventory['inv_name'] . "/load-day-thumb.png\" width=\"200\"></td>\n";
       } else {
         print "  <td class=\"ui-widget-content\" style=\"text-align: center;\">Image not found</td>\n";
       }
-      if (file_exists($Sitedir . "/rrdtool/" . $a_inventory['inv_name'] . "/mem-day-thumb.png")) {
-        print "  <td class=\"ui-widget-content\" style=\"text-align: center;\" " . $queue  . "><img height=\"95\" src=\"/rrdtool/" . $a_inventory['inv_name'] . "/mem-day-thumb.png\"  width=\"200\"></td>\n";
+      if (file_exists($Sitedir . "/rrdtool/" . $a_inv_inventory['inv_name'] . "/mem-day-thumb.png")) {
+        print "  <td class=\"ui-widget-content\" style=\"text-align: center;\" " . $queue  . "><img height=\"95\" src=\"/rrdtool/" . $a_inv_inventory['inv_name'] . "/mem-day-thumb.png\"  width=\"200\"></td>\n";
       } else {
         print "  <td class=\"ui-widget-content\" style=\"text-align: center;\">Image not found</td>\n";
       }
-      if (file_exists($Sitedir . "/rrdtool/" . $a_inventory['inv_name'] . "/cpu-day-thumb.png")) {
-        print "  <td class=\"ui-widget-content\" style=\"text-align: center;\" " . $cpu    . "><img height=\"95\" src=\"/rrdtool/" . $a_inventory['inv_name'] . "/cpu-day-thumb.png\"  width=\"200\"></td>\n";
+      if (file_exists($Sitedir . "/rrdtool/" . $a_inv_inventory['inv_name'] . "/cpu-day-thumb.png")) {
+        print "  <td class=\"ui-widget-content\" style=\"text-align: center;\" " . $cpu    . "><img height=\"95\" src=\"/rrdtool/" . $a_inv_inventory['inv_name'] . "/cpu-day-thumb.png\"  width=\"200\"></td>\n";
       } else {
         print "  <td class=\"ui-widget-content\" style=\"text-align: center;\">Image not found</td>\n";
       }
       if ($os[0] == "Red" || $os[0] == "Oracle") {
-        if (file_exists($Sitedir . "/rrdtool/" . $a_inventory['inv_name'] . "/ram-day-thumb.png")) {
-          print "  <td class=\"ui-widget-content\" style=\"text-align: center;\" " . $memory . "><img height=\"95\" src=\"/rrdtool/" . $a_inventory['inv_name'] . "/ram-day-thumb.png\"  width=\"200\"></td>\n";
+        if (file_exists($Sitedir . "/rrdtool/" . $a_inv_inventory['inv_name'] . "/ram-day-thumb.png")) {
+          print "  <td class=\"ui-widget-content\" style=\"text-align: center;\" " . $memory . "><img height=\"95\" src=\"/rrdtool/" . $a_inv_inventory['inv_name'] . "/ram-day-thumb.png\"  width=\"200\"></td>\n";
         } else {
           print "  <td class=\"ui-widget-content\" style=\"text-align: center;\">Image not found</td>\n";
         }
       }
       if ($os[0] == "SunOS") {
-        if (file_exists($Sitedir . "/rrdtool/" . $a_inventory['inv_name'] . "/swap-day-thumb.png")) {
-          print "  <td class=\"ui-widget-content\" style=\"text-align: center;\" " . $swap  . "><img height=\"95\" src=\"/rrdtool/" . $a_inventory['inv_name'] . "/swap-day-thumb.png\" width=\"200\"></td>\n";
+        if (file_exists($Sitedir . "/rrdtool/" . $a_inv_inventory['inv_name'] . "/swap-day-thumb.png")) {
+          print "  <td class=\"ui-widget-content\" style=\"text-align: center;\" " . $swap  . "><img height=\"95\" src=\"/rrdtool/" . $a_inv_inventory['inv_name'] . "/swap-day-thumb.png\" width=\"200\"></td>\n";
         } else {
           print "  <td class=\"ui-widget-content\" style=\"text-align: center;\">Image not found</td>\n";
         }

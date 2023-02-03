@@ -30,13 +30,13 @@
     }
 
     $q_string  = "select inv_id,inv_name,inv_manager ";
-    $q_string .= "from inventory ";
+    $q_string .= "from inv_inventory ";
     $q_string .= "where inv_id = " . $formVars['server'];
-    $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_inventory = mysqli_fetch_array($q_inventory);
+    $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
-    $issue = "Issue: " . $a_inventory['inv_name'];
-    $server = $a_inventory['inv_name'];
+    $issue = "Issue: " . $a_inv_inventory['inv_name'];
+    $server = $a_inv_inventory['inv_name'];
   }
 
 ?>
@@ -190,20 +190,20 @@ $(document).ready( function() {
   <td class="ui-widget-content">Tech Resource: <select name="iss_user">
 <?php
   $q_string  = "select usr_first,usr_last ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_id = " . $_SESSION['uid'];
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_users = mysqli_fetch_array($q_users);
+  $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_users = mysqli_fetch_array($q_inv_users);
 
-  print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
+  print "<option value=\"" . $_SESSION['uid'] . "\">" . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "</option>\n";
 
   $q_string  = "select usr_id,usr_first,usr_last ";
-  $q_string .= "from users ";
+  $q_string .= "from inv_users ";
   $q_string .= "where usr_disabled = 0 ";
   $q_string .= "order by usr_last,usr_first";
-  $q_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_users = mysqli_fetch_array($q_users)) {
-    print "<option value=\"" . $a_users['usr_id'] . "\">" . $a_users['usr_last'] . ", " . $a_users['usr_first'] . "</option>\n";
+  $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
+    print "<option value=\"" . $a_inv_users['usr_id'] . "\">" . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "</option>\n";
   }
 ?>
 </select></td>
@@ -271,15 +271,15 @@ $(document).ready( function() {
 <ul id="cloud">
 <?php
   $q_string  = "select tag_name,count(tag_name) ";
-  $q_string .= "from tags ";
+  $q_string .= "from inv_tags ";
   $q_string .= "where tag_type = 1 ";
   $q_string .= "group by tag_name ";
-  $q_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_tags = mysqli_fetch_array($q_tags)) {
-    $linkstart = "<a href=\"" . $Issueroot . "/tag.view.php?tag=" . $a_tags['tag_name'] . "&type=2\">";
+  $q_inv_tags = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_tags = mysqli_fetch_array($q_inv_tags)) {
+    $linkstart = "<a href=\"" . $Issueroot . "/tag.view.php?tag=" . $a_inv_tags['tag_name'] . "&type=2\">";
     $linkend   = "</a>";
 
-    print "  <li>" . $linkstart . $a_tags['tag_name'] . " (" . $a_tags['count(tag_name)'] . ")" . $linkend . "</li>\n";
+    print "  <li>" . $linkstart . $a_inv_tags['tag_name'] . " (" . $a_inv_tags['count(tag_name)'] . ")" . $linkend . "</li>\n";
   }
 ?>
 </ul>

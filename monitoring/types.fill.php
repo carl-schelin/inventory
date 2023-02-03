@@ -19,16 +19,16 @@
     }
 
     if (check_userlevel($db, $AL_Edit)) {
-      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from mon_type");
+      logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_mon_type");
 
       $q_string  = "select mt_name ";
-      $q_string .= "from mon_type ";
+      $q_string .= "from inv_mon_type ";
       $q_string .= "where mt_id = " . $formVars['id'];
-      $q_mon_type = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_mon_type = mysqli_fetch_array($q_mon_type);
-      mysqli_free_result($q_mon_type);
+      $q_inv_mon_type = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_inv_mon_type = mysqli_fetch_array($q_inv_mon_type);
+      mysqli_free_result($q_inv_mon_type);
 
-      print "document.types.mt_name.value = '" . mysqli_real_escape_string($db, $a_mon_type['mt_name']) . "';\n";
+      print "document.types.mt_name.value = '" . mysqli_real_escape_string($db, $a_inv_mon_type['mt_name']) . "';\n";
 
       print "document.types.id.value = " . $formVars['id'] . ";\n";
 

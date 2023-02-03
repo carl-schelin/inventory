@@ -259,11 +259,11 @@ editing screen where you can delete or change the IP Address Zone for that IP ad
   <td class="ui-widget-content">Network Zone: <select name="sub_zone">
 <?php
   $q_string  = "select zone_id,zone_zone ";
-  $q_string .= "from net_zones ";
+  $q_string .= "from inv_net_zones ";
   $q_string .= "order by zone_zone ";
-  $q_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_net_zones = mysqli_fetch_array($q_net_zones)) {
-    print "<option value=\"" . $a_net_zones['zone_id'] . "\">" . $a_net_zones['zone_zone'] . "</option>\n";
+  $q_inv_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_net_zones = mysqli_fetch_array($q_inv_net_zones)) {
+    print "<option value=\"" . $a_inv_net_zones['zone_id'] . "\">" . $a_inv_net_zones['zone_zone'] . "</option>\n";
   }
 ?></select></td>
 </tr>
@@ -290,11 +290,11 @@ editing screen where you can delete or change the IP Address Zone for that IP ad
   <td class="ui-widget-content">Network Zone: <select name="sub_zone">
 <?php
   $q_string  = "select zone_id,zone_zone ";
-  $q_string .= "from net_zones ";
+  $q_string .= "from inv_net_zones ";
   $q_string .= "order by zone_zone ";
-  $q_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_net_zones = mysqli_fetch_array($q_net_zones)) {
-    print "<option value=\"" . $a_net_zones['zone_id'] . "\">" . $a_net_zones['zone_zone'] . "</option>\n";
+  $q_inv_net_zones = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_net_zones = mysqli_fetch_array($q_inv_net_zones)) {
+    print "<option value=\"" . $a_inv_net_zones['zone_id'] . "\">" . $a_inv_net_zones['zone_zone'] . "</option>\n";
   }
 ?></select></td>
 </tr>

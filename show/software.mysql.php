@@ -17,10 +17,10 @@
   $formVars['id'] = clean($_GET['id'], 10);
 
   $q_string  = "select inv_manager ";
-  $q_string .= "from inventory ";
+  $q_string .= "from inv_inventory ";
   $q_string .= "where inv_id = " . $formVars['id'] . " ";
-  $q_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_inventory = mysqli_fetch_array($q_inventory);
+  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
   $output  = "<table class=\"ui-styled-table\">";
   $output .= "<tr>";
@@ -30,7 +30,7 @@
   }
   $output .= "Software Information";
   if (check_userlevel($db, $AL_Edit)) {
-    if (check_grouplevel($db, $a_inventory['inv_manager'])) {
+    if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
       $output .= "</a>";
     }
   }
@@ -71,42 +71,42 @@
   $output .= "</tr>";
 
   $q_string  = "select prod_name,ven_name,sw_software,typ_name,grp_name,svr_verified,svr_update,svr_primary,svr_facing ";
-  $q_string .= "from software ";
-  $q_string .= "left join svr_software on svr_software.svr_softwareid = software.sw_id ";
-  $q_string .= "left join sw_types     on sw_types.typ_id             = software.sw_type ";
-  $q_string .= "left join vendors      on vendors.ven_id              = software.sw_vendor ";
-  $q_string .= "left join products     on products.prod_id            = software.sw_product ";
-  $q_string .= "left join a_groups     on a_groups.grp_id             = svr_software.svr_groupid ";
+  $q_string .= "from inv_software ";
+  $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = inv_software.sw_id ";
+  $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = inv_software.sw_type ";
+  $q_string .= "left join inv_vendors      on inv_vendors.ven_id              = inv_software.sw_vendor ";
+  $q_string .= "left join inv_products     on inv_products.prod_id            = inv_software.sw_product ";
+  $q_string .= "left join inv_groups       on inv_groups.grp_id               = inv_svr_software.svr_groupid ";
   $q_string .= "where svr_companyid = " . $formVars['id'] . " and typ_name != \"Package\" ";
   $q_string .= "order by typ_name,sw_software";
-  $q_software = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_software = mysqli_fetch_array($q_software)) {
+  $q_inv_software = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_software = mysqli_fetch_array($q_inv_software)) {
 
-    $link_vendor = "<a href=\"" . $Reportroot . "/search.software.php?search_by=3&search_for=" . $a_software['ven_name']    . "\" target=\"_blank\">";
-    $link_name   = "<a href=\"" . $Reportroot . "/search.software.php?search_by=3&search_for=" . $a_software['sw_software'] . "\" target=\"_blank\">";
-    $link_type   = "<a href=\"" . $Reportroot . "/search.software.php?search_by=3&search_for=" . $a_software['typ_name']    . "\" target=\"_blank\">";
+    $link_vendor = "<a href=\"" . $Reportroot . "/search.software.php?search_by=3&search_for=" . $a_inv_software['ven_name']    . "\" target=\"_blank\">";
+    $link_name   = "<a href=\"" . $Reportroot . "/search.software.php?search_by=3&search_for=" . $a_inv_software['sw_software'] . "\" target=\"_blank\">";
+    $link_type   = "<a href=\"" . $Reportroot . "/search.software.php?search_by=3&search_for=" . $a_inv_software['typ_name']    . "\" target=\"_blank\">";
     $linkend     = "</a>";
 
     $checkmark = "";
-    if ($a_software['svr_verified']) {
+    if ($a_inv_software['svr_verified']) {
       $checkmark = "&#x2713;";
     }
 
     $class = "ui-widget-content";
-    if ($a_software['svr_primary']) {
+    if ($a_inv_software['svr_primary']) {
       $class = "ui-state-highlight";
     }
-    if ($a_software['svr_facing']) {
+    if ($a_inv_software['svr_facing']) {
       $class = "ui-state-error";
     }
 
     $output .= "<tr>";
-    $output .= "<td class=\"" . $class . "\">"                . $a_software['prod_name']                           . "</td>";
-    $output .= "<td class=\"" . $class . "\">" . $link_vendor . $a_software['ven_name']                 . $linkend . "</td>";
-    $output .= "<td class=\"" . $class . "\">" . $link_name   . $a_software['sw_software']              . $linkend . "</td>";
-    $output .= "<td class=\"" . $class . "\">" . $link_type   . $a_software['typ_name']                 . $linkend . "</td>";
-    $output .= "<td class=\"" . $class . "\">"                . $a_software['grp_name']                            . "</td>";
-    $output .= "<td class=\"" . $class . "\">"                . $a_software['svr_update']  . $checkmark            . "</td>";
+    $output .= "<td class=\"" . $class . "\">"                . $a_inv_software['prod_name']                           . "</td>";
+    $output .= "<td class=\"" . $class . "\">" . $link_vendor . $a_inv_software['ven_name']                 . $linkend . "</td>";
+    $output .= "<td class=\"" . $class . "\">" . $link_name   . $a_inv_software['sw_software']              . $linkend . "</td>";
+    $output .= "<td class=\"" . $class . "\">" . $link_type   . $a_inv_software['typ_name']                 . $linkend . "</td>";
+    $output .= "<td class=\"" . $class . "\">"                . $a_inv_software['grp_name']                            . "</td>";
+    $output .= "<td class=\"" . $class . "\">"                . $a_inv_software['svr_update']  . $checkmark            . "</td>";
     $output .= "</tr>";
 
   }
@@ -146,22 +146,22 @@
   $package .= "</tr>";
 
   $q_string  = "select pkg_name,pkg_update,pkg_os,grp_name ";
-  $q_string .= "from packages ";
-  $q_string .= "left join a_groups on a_groups.grp_id = packages.pkg_grp_id ";
+  $q_string .= "from inv_packages ";
+  $q_string .= "left join inv_groups on inv_groups.grp_id = inv_packages.pkg_grp_id ";
   $q_string .= "where pkg_inv_id = " . $formVars['id'] . " ";
   $q_string .= "order by pkg_name,pkg_update ";
-  $q_packages = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_packages = mysqli_fetch_array($q_packages)) {
+  $q_inv_packages = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  while ($a_inv_packages = mysqli_fetch_array($q_inv_packages)) {
 
     $checkmark = "";
-    if ($a_software['svr_verified']) {
+    if ($a_inv_software['svr_verified']) {
       $checkmark = "&#x2713;";
     }
     $package .= "<tr>";
-    $package .= "<td class=\"ui-widget-content\">" . $a_packages['pkg_name'] . "</td>";
-    $package .= "<td class=\"ui-widget-content\">" . $a_packages['pkg_update'] . "</td>";
-    $package .= "<td class=\"ui-widget-content\">" . $a_packages['grp_name'] . "</td>";
-    $package .= "<td class=\"ui-widget-content\">" . $a_packages['pkg_os'] . "</td>";
+    $package .= "<td class=\"ui-widget-content\">" . $a_inv_packages['pkg_name'] . "</td>";
+    $package .= "<td class=\"ui-widget-content\">" . $a_inv_packages['pkg_update'] . "</td>";
+    $package .= "<td class=\"ui-widget-content\">" . $a_inv_packages['grp_name'] . "</td>";
+    $package .= "<td class=\"ui-widget-content\">" . $a_inv_packages['pkg_os'] . "</td>";
     $package .= "</tr>";
 
   }

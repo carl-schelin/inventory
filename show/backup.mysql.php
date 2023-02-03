@@ -17,11 +17,11 @@
   $formVars['id'] = clean($_GET['id'], 10);
 
   $q_string  = "select int_server,inv_manager ";
-  $q_string .= "from interface ";
-  $q_string .= "left join inventory on inventory.inv_id = interface.int_companyid ";
+  $q_string .= "from inv_interface ";
+  $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_interface.int_companyid ";
   $q_string .= "where inv_id = " . $formVars['id'] . " and int_management = 1 ";
-  $q_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  $a_interface = mysqli_fetch_array($q_interface);
+  $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  $a_inv_interface = mysqli_fetch_array($q_inv_interface);
 
   $retention[0] = "None";
   $retention[1] = "Less than 6 Months (Details Required)";
@@ -37,13 +37,13 @@
   $output .= "<tr>";
   $output .= "  <th class=\"ui-state-default\">";
   if (check_userlevel($db, $AL_Edit)) {
-    if (check_grouplevel($db, $a_interface['inv_manager'])) {
+    if (check_grouplevel($db, $a_inv_interface['inv_manager'])) {
       $output .= "<a href=\"" . $Editroot . "/inventory.php?server=" . $formVars['id'] . "#backups\" target=\"_blank\"><img src=\"" . $Imgsroot . "/pencil.gif\">";
     }
   }
   $output .= "Backup Information";
   if (check_userlevel($db, $AL_Edit)) {
-    if (check_grouplevel($db, $a_interface['inv_manager'])) {
+    if (check_grouplevel($db, $a_inv_interface['inv_manager'])) {
       $output .= "</a>";
     }
   }
@@ -72,21 +72,21 @@
   $q_string  = "select bu_start,bu_include,bu_retention,bu_sunday,bu_monday,bu_tuesday,bu_wednesday,";
   $q_string .= "bu_thursday,bu_friday,bu_saturday,bu_suntime,bu_montime,bu_tuetime,bu_wedtime,";
   $q_string .= "bu_thutime,bu_fritime,bu_sattime,bu_notes ";
-  $q_string .= "from backups ";
+  $q_string .= "from inv_backups ";
   $q_string .= "where bu_companyid = " . $formVars['id'] . " ";
-  $q_backups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  if (mysqli_num_rows($q_backups) > 0) {
-    $a_backups = mysqli_fetch_array($q_backups);
+  $q_inv_backups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+  if (mysqli_num_rows($q_inv_backups) > 0) {
+    $a_inv_backups = mysqli_fetch_array($q_inv_backups);
 
     $output .= "<table class=\"ui-styled-table\">";
     $output .= "<tr>";
     $output .= "  <th class=\"ui-state-default\" colspan=\"7\">Backup Details</th>";
     $output .= "</tr>";
     $output .= "<tr>";
-    $output .= "  <td class=\"ui-widget-content\">Start: " . $a_backups['bu_start'] . "</td>";
-    $output .= "  <td class=\"ui-widget-content\">Include: " . $a_backups['bu_include'] . "</td>";
-    $output .= "  <td class=\"ui-widget-content\">Retention: " . $retention[$a_backups['bu_retention']] . "</td>";
-    $output .= "  <td class=\"ui-widget-content\">Notes: " . $a_backups['bu_notes'] . "</td>";
+    $output .= "  <td class=\"ui-widget-content\">Start: "     . $a_inv_backups['bu_start']                 . "</td>";
+    $output .= "  <td class=\"ui-widget-content\">Include: "   . $a_inv_backups['bu_include']               . "</td>";
+    $output .= "  <td class=\"ui-widget-content\">Retention: " . $retention[$a_inv_backups['bu_retention']] . "</td>";
+    $output .= "  <td class=\"ui-widget-content\">Notes: "     . $a_inv_backups['bu_notes']                 . "</td>";
     $output .= "</tr>";
     $output .= "</table>\n";
 
@@ -96,48 +96,48 @@
     $output .= "</tr>";
 
     $output .= "<tr>";
-    if ($a_backups['bu_sunday']) {
+    if ($a_inv_backups['bu_sunday']) {
       $type = 'Incremental';
     } else {
       $type = 'Full';
     }
-    $output .= "<td class=\"ui-widget-content\">Sunday: "    . $type . " at " . $a_backups['bu_suntime'] . "</td>\n";
-    if ($a_backups['bu_monday']) {
+    $output .= "<td class=\"ui-widget-content\">Sunday: "    . $type . " at " . $a_inv_backups['bu_suntime'] . "</td>\n";
+    if ($a_inv_backups['bu_monday']) {
       $type = 'Incremental';
     } else {
       $type = 'Full';
     }
-    $output .= "<td class=\"ui-widget-content\">Monday: "    . $type . " at " . $a_backups['bu_montime'] . "</td>\n";
-    if ($a_backups['bu_tuesday']) {
+    $output .= "<td class=\"ui-widget-content\">Monday: "    . $type . " at " . $a_inv_backups['bu_montime'] . "</td>\n";
+    if ($a_inv_backups['bu_tuesday']) {
       $type = 'Incremental';
     } else {
       $type = 'Full';
     }
-    $output .= "<td class=\"ui-widget-content\">Tuesday: "   . $type . " at " . $a_backups['bu_tuetime'] . "</td>\n";
-    if ($a_backups['bu_wednesday']) {
+    $output .= "<td class=\"ui-widget-content\">Tuesday: "   . $type . " at " . $a_inv_backups['bu_tuetime'] . "</td>\n";
+    if ($a_inv_backups['bu_wednesday']) {
       $type = 'Incremental';
     } else {
       $type = 'Full';
     }
-    $output .= "<td class=\"ui-widget-content\">Wednesday: " . $type . " at " . $a_backups['bu_wedtime'] . "</td>\n";
-    if ($a_backups['bu_thursday']) {
+    $output .= "<td class=\"ui-widget-content\">Wednesday: " . $type . " at " . $a_inv_backups['bu_wedtime'] . "</td>\n";
+    if ($a_inv_backups['bu_thursday']) {
       $type = 'Incremental';
     } else {
       $type = 'Full';
     }
-    $output .= "<td class=\"ui-widget-content\">Thursday: "  . $type . " at " . $a_backups['bu_thutime'] . "</td>\n";
-    if ($a_backups['bu_friday']) {
+    $output .= "<td class=\"ui-widget-content\">Thursday: "  . $type . " at " . $a_inv_backups['bu_thutime'] . "</td>\n";
+    if ($a_inv_backups['bu_friday']) {
       $type = 'Incremental';
     } else {
       $type = 'Full';
     }
-    $output .= "<td class=\"ui-widget-content\">Friday: "    . $type . " at " . $a_backups['bu_fritime'] . "</td>\n";
-    if ($a_backups['bu_saturday']) {
+    $output .= "<td class=\"ui-widget-content\">Friday: "    . $type . " at " . $a_inv_backups['bu_fritime'] . "</td>\n";
+    if ($a_inv_backups['bu_saturday']) {
       $type = 'Incremental';
     } else {
       $type = 'Full';
     }
-    $output .= "<td class=\"ui-widget-content\">Saturday: "  . $type . " at " . $a_backups['bu_sattime'] . "</td>\n";
+    $output .= "<td class=\"ui-widget-content\">Saturday: "  . $type . " at " . $a_inv_backups['bu_sattime'] . "</td>\n";
     $output .= "</tr>";
 
     $output .= "</table>";
@@ -169,13 +169,13 @@ document.getElementById('backup_mysql').innerHTML = '<?php print mysqli_real_esc
   $output .= "<tr>";
   $output .= "  <th class=\"ui-state-default\">";
   if (check_userlevel($db, $AL_Edit)) {
-    if (check_grouplevel($db, $a_interface['inv_manager'])) {
+    if (check_grouplevel($db, $a_inv_interface['inv_manager'])) {
       $output .= "<a href=\"" . $Editroot . "/inventory.php?server=" . $formVars['id'] . "#backup\" target=\"_blank\"><img src=\"" . $Imgsroot . "/pencil.gif\">";
     }
   }
   $output .= "Backup Log Information";
   if (check_userlevel($db, $AL_Edit)) {
-    if (check_grouplevel($db, $a_interface['inv_manager'])) {
+    if (check_grouplevel($db, $a_inv_interface['inv_manager'])) {
       $output .= "</a>";
     }
   }
@@ -203,9 +203,9 @@ document.getElementById('backup_mysql').innerHTML = '<?php print mysqli_real_esc
 
   $output .= "<div class=\"main-help ui-widget-content\">\n";
 
-  if (file_exists($Sitedir . "/servers/" . $a_interface['int_server'] . "/backups.output")) {
+  if (file_exists($Sitedir . "/servers/" . $a_inv_interface['int_server'] . "/backups.output")) {
     $row = 1;
-    if (($handle = fopen($Sitedir . "/servers/" . $a_interface['int_server'] . "/backups.output", "r")) !== FALSE) {
+    if (($handle = fopen($Sitedir . "/servers/" . $a_inv_interface['int_server'] . "/backups.output", "r")) !== FALSE) {
       $output .= "<pre>";
       while (($data = fgets($handle, 1000)) !== FALSE) {
 
@@ -217,7 +217,7 @@ document.getElementById('backup_mysql').innerHTML = '<?php print mysqli_real_esc
       $output .= "</pre>";
     }
   } else {
-    $output .= "<p>FILE NOT FOUND (" . $Sitedir . "/servers/" . $a_interface['int_server'] . "/backups.output" . "): Unable to open backup output file.</p>\n";
+    $output .= "<p>FILE NOT FOUND (" . $Sitedir . "/servers/" . $a_inv_interface['int_server'] . "/backups.output" . "): Unable to open backup output file.</p>\n";
   }
 
   $output .= "</div>";
