@@ -1266,6 +1266,19 @@ alter table certs add column cert_filename char(80) not null default '' after ce
 
 ### Timestamp 2022-10-27
 
+If Missing, add the following table:
+
+create table checklist (
+  chk_id int(10) not null auto_increment,
+  chk_task int(10) not null default 0,
+  chk_group int(10) not null default 0,
+  chk_index int(10) not null default 0,
+  chk_text char(255) not null default '',
+  chk_link char(255) not null default '',
+  primary key (chk_id)
+);
+
+
 Rename the following tables to begin with inv_
 
 x a_groups
@@ -1476,5 +1489,9 @@ Followed with a search for all 'from !inv_' checks looking for any string that d
 Also followed up with any 'left join' lines where 'inv_' was missing from a table name.
 
 While there might still be errors, it's unlikely to be with a table rename. But see me after all the testing :) 
+
+
+### Timestamp: 2023-01-24
+
 
 
