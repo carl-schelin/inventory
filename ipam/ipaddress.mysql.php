@@ -150,6 +150,7 @@
         }
         $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=ip_ipv4"            . $passthrough . "\">IPv4 Address/Mask</a></th>\n";
         $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=ip_hostname"        . $passthrough . "\">Hostname</a></th>\n";
+        $output .= "  <th class=\"ui-state-default\">MAC</th>\n";
         $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=sub_name"           . $passthrough . "\">IP Zone</a></th>\n";
         $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=ip_type"            . $passthrough . "\">Type</a></th>\n";
         $output .= "  <th class=\"ui-state-default\"><a href=\"ipaddress.php?sort=ip_description"     . $passthrough . "\">Description</a></th>\n";
@@ -174,7 +175,6 @@
             $a_inv_ipaddress = mysqli_fetch_array($q_inv_ipaddress);
 
             $linkstart = "<a href=\"#\" onclick=\"show_file('ipaddress.fill.php?id="  . $a_inv_ipaddress['ip_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-            $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('ipaddress.del.php?id=" . $a_inv_ipaddress['ip_id'] . "');\">";
             $linkend   = "</a>";
 
             $q_string  = "select ip_name ";
@@ -202,6 +202,7 @@
               $output .= "  <td class=\"" . $class . "\">" . "&nbsp;"     . "</td>\n";
               $output .= "  <td class=\"" . $class . "\">" . "&nbsp;"     . "</td>\n";
               $output .= "  <td class=\"" . $class . "\">" . "&nbsp;"     . "</td>\n";
+              $output .= "  <td class=\"" . $class . "\">" . "&nbsp;"     . "</td>\n";
               $output .= "  <td class=\"" . $class . "\">" . "Unassigned" . "</td>\n";
               $output .= "  <td class=\"" . $class . "\">" . "&nbsp;"     . "</td>\n";
               $output .= "  <td class=\"" . $class . "\">" . "&nbsp;"     . "</td>\n";
@@ -217,6 +218,27 @@
               $class = 'ui-state-error';
             }
 
+            $q_string  = "select int_eth,int_companyid ";
+            $q_string .= "from inv_interface ";
+            $q_string .= "where int_ipaddressid = " . $a_inv_ipaddress['ip_id'] . " ";
+            $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+            if (mysqli_num_rows($q_inv_interface) > 0) {
+              $a_inv_interface = mysqli_fetch_array($q_inv_interface);
+              $macaddress = $a_inv_interface['int_eth'];
+
+              $editpencil = "<img class=\"ui-icon-edit\" src=\"" . $Imgsroot . "/pencil.gif\" height=\"10\">";
+              $editaddr = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inv_interface['int_companyid'] . "#interface\" target=\"_blank\">" . $editpencil;
+              $editend = "</a>";
+
+              $linkdel   = "IP In Use";
+            } else {
+              $macaddress = "Not Found";
+              $editaddr = "";
+              $editend = "";
+
+              $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('ipaddress.del.php?id=" . $a_inv_ipaddress['ip_id'] . "');\">";
+            }
+
             $notes = 'No';
             if (strlen($a_inv_ipaddress['ip_notes']) > 0) {
               $notes = 'Yes';
@@ -227,7 +249,8 @@
               $output .= "  <td class=\"" . $class . " delete\">" . $linkdel . "</td>";
             }
             $output .= "  <td class=\"" . $class . "\">" . $linkstart . $ipaddr                                            . $linkend . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['ip_hostname'] . "." . $a_inv_ipaddress['ip_domain'] . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">" . $editaddr  . $a_inv_ipaddress['ip_hostname'] . "." . $a_inv_ipaddress['ip_domain'] . $editend . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\">"              . $macaddress                                                       . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['sub_name']                                      . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ip_types['ip_name']                                        . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['ip_description']                                . "</td>\n";
@@ -258,6 +281,7 @@
             $output .= "  <td class=\"" . $class . " delete\">--</td>\n";
           }
           $output .= "  <td class=\"" . $class . "\">" . $iprange     . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">" . "&nbsp;"     . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">" . "&nbsp;"     . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">" . "&nbsp;"     . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">" . "&nbsp;"     . "</td>\n";
