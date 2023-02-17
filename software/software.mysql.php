@@ -128,7 +128,7 @@
                   "tag_owner        =   " . $_SESSION['uid'] . "," .
                   "tag_group        =   " . $_SESSION['group'];
 
-                $q_string = "insert into tags set tag_id = NULL, " . $q_string;
+                $q_string = "insert into inv_tags set tag_id = NULL, " . $q_string;
                 mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
               }
             }
