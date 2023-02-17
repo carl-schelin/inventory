@@ -506,12 +506,26 @@
 
         }
 
+
+
+
+
+
+
+
         if ($value[1] == 'software') {
           print "software found:\n";
 # table: software; rows: sw_verified, sw_user, sw_update;
 #sqatxt-vmapp01,software,os,Red Hat Enterprise Linux Server release 6.2 (Santiago)
 # check: sw_type = OS; just update it with the text
 # current software listing: os, backup, monitor, centrify, instance, mysqld, informix, postgres, opnet, datapal, oracle, sudo, httpd, wildfly, vmtoolsd, newrelic
+
+
+
+
+
+
+
 
 # Operating System
           if ($value[2] == 'os') {
@@ -557,15 +571,13 @@
               }
 
 
-#see if the OS in $value[3] is in the software table.
-#if not, get the type id for OS
-#and get the vendor id for vendor
-#and create the software entry
-#then get the id
-#and create the svr_software record.
 
+# like the interface table, but a bit simpler, search for the string in the inv_software table
+# slightly different in that we want to add the software if it doesn't exist
+# then just go through the identified server's list of sw_softwareid entries and if the 
+# id is found, continue, if not, add the id to the server.
 
-
+# first off, see if the software type 'OS' is in the table. If not, add it.
               $q_string  = "select typ_id ";
               $q_string .= "from inv_sw_types ";
               $q_string .= "where typ_name = \"OS\" ";
@@ -573,9 +585,19 @@
               if (mysqli_num_rows($q_inv_sw_types) > 0) {
                 $a_inv_sw_types = mysqli_fetch_array($q_inv_sw_types);
               } else {
-                $a_inv_sw_types['typ_id'] = 0;
+# this really shouldn't happen but just in case.
+		print "Software Type: OS not found. Adding\n";
+                $q_string  = "insert ";
+                $q_string .= "into inv_sw_types ";
+                $q_string .= "set ";
+                $q_string .= "typ_id   = \"" . "null"  . "\",";
+                $q_string .= "typ_name = \"OS\" ";
+                $q_inv_sw_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+
+                $a_inv_sw_types['typ_id'] = last_insert_id($db);
               }
 
+# next see if the vendor is in the table. If not, add the vendor
               $q_string  = "select ven_id ";
               $q_string .= "from inv_vendors ";
               $q_string .= "where ven_name = \"" . $vendor . "\" ";
@@ -583,41 +605,74 @@
               if (mysqli_num_rows($q_inv_vendors) > 0) {
                 $a_inv_vendors = mysqli_fetch_array($q_inv_vendors);
               } else {
+		print "Software Vendor: " . $vendor . " not found. Adding\n";
                 $q_string  = "insert ";
                 $q_string .= "into inv_vendors ";
                 $q_string .= "set ";
                 $q_string .= "ven_id   = \"" . "null"  . "\",";
                 $q_string .= "ven_name = \"" . $vendor . "\" ";
                 $q_inv_vendors = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+
                 $a_inv_vendors['ven_id'] = last_insert_id($db);
               }
 
+# if the entry doesn't exist, add it. Then we'll do it again
               $q_string  = "select sw_id ";
               $q_string .= "from inv_software ";
-              $q_string .= "where sw_companyid = " . $a_inv_inventory['inv_id'] . " and sw_type = 'OS'";
+              $q_string .= "where sw_software = \"" . $value[3] . "\" and sw_product = " . $a_inv_inventory['inv_product'] . " ";
               $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              $a_inv_software = mysqli_fetch_array($q_inv_software);
-
-              $query = 
-                "sw_companyid =   " . $a_inv_inventory['inv_id']      . "," . 
-                "sw_product   =   " . $a_inv_inventory['inv_product'] . "," . 
-                "sw_software  = \"" . trim($value[3])             . "\"," . 
-                "sw_vendor    = \"" . $a_inv_vendors['ven_id']        . "\"," . 
-                "sw_type      =   " . $a_inv_sw_types['typ_id']       . "," . 
-                "sw_verified  =   " . '1'                         . "," . 
-                "sw_user      =   " . '1'                         . "," . 
-                "sw_update    = \"" . $date                       . "\"";
-
-              if ($a_inv_software['sw_id'] == '') {
-                $q_string = "insert into inv_software set sw_id = null," . $query . ",sw_group = " . $a_inv_inventory['inv_manager'];
-                if ($debug == 'no') {
-                  $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
-                }
+              if (mysqli_num_rows($q_inv_software) > 0) {
+                $a_inv_software = mysqli_fetch_array($q_inv_software);
               } else {
-                $q_string = "update inv_software set " . $query . " where sw_id = " . $a_inv_software['sw_id'];
-                if ($debug == 'no') {
-                  $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
-                }
+		print "Software: " . $value[3] . " not found. Adding.\n";
+                $q_string  = 
+                  "sw_product     =   " . $a_inv_inventory['inv_product'] . "," .
+                  "sw_software    = \"" . trim($value[3])                 . "\"," .
+                  "sw_vendor      =   " . $a_inv_vendors['ven_id']        . "," .
+                  "sw_type        =   " . $a_inv_sw_types['typ_id']       . "," .
+                  "sw_verified    =   " . "1"                             . "," .
+                  "sw_user        =   " . "1"                             . "," .
+                  "sw_update      = \"" . $date                           . "\"";
+
+                $q_string = "insert into inv_software set sw_id = null," . $q_string . ",sw_group = " . $a_inv_inventory['inv_manager'];
+                $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
+
+                $a_inv_software['sw_id'] = last_insert_id($db);
+              }
+
+# okay, now we have the sw_id from the software manager. Now check to see if the server has the software associated with it.
+# if not, assign it and be done with it.
+
+
+              $q_string  = "select svr_id ";
+              $q_string .= "from inv_svr_software ";
+              $q_string .= "where svr_softwareid = " . $a_inv_software['sw_id'] . " and svr_companyid = " . $a_inv_inventory['inv_id'] . " ";
+              $q_inv_svr_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              if (mysqli_num_rows($q_inv_svr_software) > 0) {
+# the server has it. Update the date found and verified setting
+                $a_inv_svr_software = mysqli_fetch_array($q_inv_svr_software);
+
+                $q_string = 
+                  "svr_userid      =   " . "1"   . "," . 
+                  "svr_verified    =   " . "1"   . "," . 
+                  "svr_update      = \"" . $date . "\"";
+
+                $q_string = "update inv_svr_software set " . $q_string . " where svr_id = " . $a_inv_svr_software['svr_id'];
+                $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
+
+              } else {
+# And the software isn't associated with the server yet. Add it.
+		print "Assigned Software: " . trim($value[3]) . " not found. Adding\n";
+                $q_string = 
+                  "svr_companyid   =   " . $a_inv_inventory['inv_id']      . "," . 
+                  "svr_softwareid  =   " . $a_inv_software['sw_id']        . "," . 
+                  "svr_groupid     =   " . $a_inv_inventory['inv_manager'] . "," . 
+                  "svr_userid      =   " . "1"                             . "," . 
+                  "svr_verified    =   " . "1"                             . "," . 
+                  "svr_update      = \"" . $date                           . "\"";
+
+                $q_string = "insert into inv_svr_software set svr_id = null," . $q_string;
+                $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
               }
               if ($debug == 'yes') {
                 print $q_string . "\n";
@@ -628,6 +683,13 @@
               }
             }
           }
+
+
+
+
+
+
+
 
 #[server],software,backup,NetBackup-Solaris_x86_10_64 7.1.0.4
           if ($value[2] == 'backup') {
@@ -1357,6 +1419,11 @@
         }
 
 
+##################################################
+#####           Network Management           #####
+#####          Interface Management          #####
+##################################################
+
         if ($value[1] == 'network') {
           if ($value[2] == 'interface') {
             print "interface found:\n";
@@ -1429,89 +1496,170 @@ $value[11] = '';
                 $value[11] = 0;
               }
 
-# see if the address exists
-              $q_string  = "select int_id ";
-              $q_string .= "from inv_interface ";
-              $q_string .= "where (int_addr = '" . $value[4] . "' or int_eth = '" . $value[7] . "') ";
-              $q_string .= "and int_face = '" . $value[3] . "' ";
-              $q_string .= "and int_companyid = " . $a_inv_inventory['inv_id'] . " ";
-              $q_string .= "and int_ip6 = " . $value[5] . " ";
-              $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              $a_inv_interface = mysqli_fetch_array($q_inv_interface);
+
+
+
+
+
+# The process here is to identify which entry for the inv_inventory server should this IP be added to.
+# We do want the IPs to be in IPAM and then just associate the configuration with the physical or virtual interface
+
+# First off, see if the IP is in the IPAM. Exit without doing anything if not. Todo: Determine the network 
+# and such and create the necessary entries to make the IP available.
+
+# Second, if the IP exists, check the server to see if it's been assigned.
+#  if not, check the actual ip address field to see if it was manually assigned but not associated with the ipam entry
+#    if found, update the int_ipaddressid with a pointer to the IPAM entry
+#    if not, check the mac
+              $q_string  = "select ip_id ";
+              $q_string .= "from inv_ipaddress ";
+              $q_string .= "where ip_ipv4 = \"" . $value[4] . "\" ";
+              $q_inv_ipaddress = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+              if (mysqli_num_rows($q_inv_ipaddress) > 0) {
+# found an entry in ipam
+                $a_inv_ipaddress = mysqli_fetch_array($q_inv_ipaddress);
+
+# now that I found the entry in the IPAM, search the interfaces created for the identified server
+# see if the found ipam id has been assigned.
+# check int_ipaddressid for the ipam id
+# else check int_addr for the passed ip address; if found, update int_ipaddressid - set 
+# else check int_mac for the passed mac address; if found, update int_ipaddressid
+
+
+
+# now search the inv_interface table for this address
+                $q_string  = "select int_id ";
+                $q_string .= "from inv_interface ";
+                $q_string .= "where int_ipaddressid = " . $a_inv_ipaddress['ip_id'] . " and int_companyid = " . $a_inv_inventory['inv_id'] . " ";
+                $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+                if (mysqli_num_rows($q_inv_interface) > 0) {
+                  $a_inv_interface = mysqli_fetch_array($q_inv_interface);
+# found the appropriate ID
+                } else {
+# but if we didn't find the id, look for the ip address in the inv_interface table
+                  $q_string  = "select int_id ";
+                  $q_string .= "from inv_interface ";
+                  $q_string .= "where int_addr = \"" . $value[4] . "\" and int_companyid = " . $a_inv_inventory['inv_id'] . " ";
+                  $q_getip = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+                  if (mysqli_num_rows($q_getip) > 0) {
+                    $a_getip = mysqli_fetch_array($q_getip);
+
+# found the ip address, set the int_ipaddressid variable to the IPAM id.
+                    $q_string  = "update inv_interface ";
+                    $q_string .= "set int_ipaddressid = " . $a_inv_ipaddress['ip_id'] . " ";
+                    $q_string .= "where int_id = " . $a_getip['int_id'] . " ";
+                    $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+
+# set the main variable to the found id.
+                    $a_inv_interface['int_id'] = $a_getip['int_id'];
+
+                  } else {
+                    $q_string  = "select int_id ";
+                    $q_string .= "from inv_interface ";
+                    $q_string .= "where int_eth = \"" . $value[7] . "\" ";
+                    $q_getmac = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+                    if (mysqli_num_rows($q_getmac) > 0) {
+                      $a_getmac = mysqli_fetch_array($q_getmac);
+
+# found the mac address, set the int_ipaddressid variable to the IPAM id.
+                      $q_string  = "update inv_interface ";
+                      $q_string .= "set int_ipaddressid = " . $a_inv_ipaddress['ip_id'] . " ";
+                      $q_string .= "where int_id = " . $a_getmac['int_id'] . " ";
+                      $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+
+# set the main variable to the found id.
+                      $a_inv_interface['int_id'] = $a_getmac['int_id'];
+                    } else {
+# can't find the interface so set to zero so a new entry is created.
+                      $a_inv_interface['int_id'] = 0;
+                    }
+                  }
+                }
+# now that we either found the interface or are creating a new interface, set up the string
 
 # if it's an actual IP address, convert to digital CIDR value
-              if (filter_var($value[6], FILTER_VALIDATE_IP)) {
+                if (filter_var($value[6], FILTER_VALIDATE_IP)) {
 # returns INF so if > 32, return 0
-                $mask = mask2cidr($value[6]);
-                if ($mask > 32) {
+                  $mask = mask2cidr($value[6]);
+                  if ($mask > 32) {
+                    $mask = 0;
+                  }
+                } else {
+                  $mask = $value[6];
+                }
+                if ($mask == '') {
                   $mask = 0;
                 }
-              } else {
-                $mask = $value[6];
-              }
-              if ($mask == '') {
-                $mask = 0;
-              }
 
-# put in once validation is done
-#              "int_user      =   " . '1'                    . "," . 
-              $query  = "int_companyid =   " . $a_inv_inventory['inv_id'] . ",";
-              if ($a_inv_interface['int_id'] == '') {
-                if ($value[3] == 'lo' || $value[3] == 'lo0') {
-                  $query .= "int_server    = \"" . "localhost"            . "\",";
-                  $query .= "int_type      =   " . "7"                    . ",";
+#                "int_user      =   " . '1'                    . "," . 
+                $query  = "int_companyid =   " . $a_inv_inventory['inv_id'] . ",";
+                if ($a_inv_interface['int_id'] == 0) {
+                  if ($value[3] == 'lo' || $value[3] == 'lo0') {
+                    $query .= "int_server    = \"" . "localhost"            . "\",";
+                    $query .= "int_type      =   " . "7"                    . ",";
+                  } else {
+                    $query .= "int_server    = \"" . $value[0] . "\",";
+                  }
                 } else {
-                  $query .= "int_server    = \"" . $value[0] . "\",";
-                }
-              } else {
 # hard set name and type for loopback interfaces
-                if ($value[3] == 'lo' || $value[3] == 'lo0') {
-                  $query .= "int_server    = \"" . "localhost"            . "\",";
-                  $query .= "int_type      =   " . "7"                    . ",";
+                  if ($value[3] == 'lo' || $value[3] == 'lo0') {
+                    $query .= "int_server    = \"" . "localhost"            . "\",";
+                    $query .= "int_type      =   " . "7"                    . ",";
+                  }
                 }
-              }
-#              $query .= "int_int_id    =   " . $value[11]             . ",";
-              $query .= "int_face      = \"" . $value[3]              . "\",";
-              $query .= "int_ip6       =   " . $value[5]              . ",";
-              $query .= "int_addr      = \"" . $value[4]              . "\",";
-              $query .= "int_vaddr     =   " . "1"                    . ",";
-              $query .= "int_eth       = \"" . $value[7]              . "\",";
-              $query .= "int_veth      =   " . "1"                    . ",";
+#                $query .= "int_int_id    =   " . $value[11]             . ",";
+                $query .= "int_face      = \"" . $value[3]              . "\",";
+                $query .= "int_ip6       =   " . $value[5]              . ",";
+                $query .= "int_addr      = \"" . $value[4]              . "\",";
+                $query .= "int_vaddr     =   " . "1"                    . ",";
+                $query .= "int_eth       = \"" . $value[7]              . "\",";
+                $query .= "int_veth      =   " . "1"                    . ",";
 # don't want to blank manually entered gateways during figuring out what the gateway is.
-              if (strlen($value[9]) > 0) {
-                $query .= "int_gate      = \"" . $value[9]              . "\",";
-                $query .= "int_vgate     =   " . "1"                    . ",";
-              }
+                if (strlen($value[9]) > 0) {
+                  $query .= "int_gate      = \"" . $value[9]              . "\",";
+                  $query .= "int_vgate     =   " . "1"                    . ",";
+                }
 # don't want to blank manually entered primary/default routes during figuring out what the actual default route is.
-              if (strlen($value[10]) > 0) {
-                $query .= "int_primary   = \"" . $value[10]              . "\",";
-              }
-              $query .= "int_mask      =   " . $mask                  . ",";
-              $query .= "int_groupname = \"" . $value[8]              . "\",";
-              $query .= "int_verified  =   " . '1'                    . ",";
-              $query .= "int_update    = \"" . $date                  . "\"";
+                if (strlen($value[10]) > 0) {
+                  $query .= "int_primary   = \"" . $value[10]              . "\",";
+                }
+                $query .= "int_mask      =   " . $mask                  . ",";
+                $query .= "int_groupname = \"" . $value[8]              . "\",";
+                $query .= "int_verified  =   " . '1'                    . ",";
+                $query .= "int_update    = \"" . $date                  . "\"";
 
-              if ($a_interface['int_id'] == '') {
+                if ($a_inv_interface['int_id'] == 0) {
 # add a server name/interface name if the interface doesn't exist
-                $q_string = "insert into inv_interface set int_id = null," . $query;
-                if ($debug == 'no') {
-                  $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
+                  $q_string = "insert into inv_interface set int_id = null," . $query;
+                  if ($debug == 'no') {
+                    $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
+                  }
+                } else {
+                  $q_string = "update inv_interface set " . $query . " where int_id = " . $a_inv_interface['int_id'];
+                  if ($debug == 'no') {
+                    $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
+                  }
+                }
+                if ($debug == 'yes') {
+                  print $q_string . "\n";
                 }
               } else {
-                $q_string = "update inv_interface set " . $query . " where int_id = " . $a_inv_interface['int_id'];
-                if ($debug == 'no') {
-                  $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
-                }
+                print "IP Address: " . $value[4] . " not found in IPAM\n";
               }
-              if ($debug == 'yes') {
-                print $q_string . "\n";
-              }
+
             } else {
               if ($debug == 'yes') {
                 print "Missing either an IP or MAC from this line:\n" . $value[0] . "," . $value[1] . "," . $value[2] . "," . $value[3] . "," . $value[4] . "," . $value[5] . "," . $value[6] . "," . $value[7] . "\n";
               }
             }
           }
+
+
+##################################################
+#####           Network Management           #####
+#####        Routing Table Management        #####
+##################################################
+
           if ($value[2] == 'routing') {
             print "routing found:\n";
 # table: routing; rows: route_verified, route_user, route_update;
