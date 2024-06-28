@@ -7,6 +7,7 @@
 # Then we need to see if the file exists over on the website and is > 0 bytes
 
 ADMIN=/usr/local/admin
+INVENTORY=${ADMIN}/git/inventory/
 SERVERS=/var/www/html/inventory
 TEMP=/var/tmp
 HOSTNAME=`hostname|cut -f1 -d.`
@@ -29,30 +30,45 @@ then
   OWNER="webservd:sysadmin"
 fi
 
+# create the inventory directory for awx
+if [[ ! -d ${INVENTORY} ]]
+then
+  mkdir -p ${INVENTORY}
+fi
+
+# build the inventory files for ansible tower (awx)
+for i in dev:development qa:qa stage:stage prod:production home:home
+do
+  CALLED=$(echo $i | cut -f1 -d:)
+  OUTPUT=$(echo $i | cut -f2 -d:)
+
+  /usr/local/bin/php ${SVRRUN}/ansible.yaml.php ${CALLED} > ${INVENTORY}/${OUTPUT}
+done
+
 # ensure file exists regardless; write to a temporary area to ensure the servers file continues to exist.
-/usr/local/bin/php $SVRRUN/servers.php | sort | uniq > $TEMP/servers
+/usr/local/bin/php ${SVRRUN}/servers.php | sort | uniq > ${TEMP}/servers
 
 # now copy it over the existing file.
-cp $TEMP/servers $SERVERS/servers
+cp ${TEMP}/servers ${SERVERS}/servers
 
 # and remove the generated file
-rm $TEMP/servers
+rm ${TEMP}/servers
 
 # chown so the web site can write to it
-chown $OWNER $SERVERS/servers
+chown ${OWNER} ${SERVERS}/servers
 
-if [[ -f $ADMIN/etc/servers ]]
+if [[ -f ${ADMIN}/etc/servers ]]
 then
-  OUTPUT=`/usr/bin/file -h $SERVERS/servers | grep symbolic`
+  OUTPUT=`/usr/bin/file -h ${SERVERS}/servers | grep symbolic`
 
 # if the file is NOT a symbolic link then the link has been broken
 # clear it and set it back up
-  if [[ -z $OUTPUT ]]
+  if [[ -z ${OUTPUT} ]]
   then
-    rm $ADMIN/etc/servers
-    ln -s $SERVERS/servers $ADMIN/etc/servers
+    rm ${ADMIN}/etc/servers
+    ln -s ${SERVERS}/servers ${ADMIN}/etc/servers
   fi
 else
-  ln -s $SERVERS/servers $ADMIN/etc/servers
+  ln -s ${SERVERS}/servers ${ADMIN}/etc/servers
 fi
 

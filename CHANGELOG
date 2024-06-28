@@ -1493,5 +1493,11 @@ While there might still be errors, it's unlikely to be with a table rename. But 
 
 ### Timestamp: 2023-01-24
 
+Changed the inv_filesystem table to use bigint vs int due to drive sizes.
+
+alter table inv_filesystem change fs_size fs_size bigint not null default 0;
+alter table inv_filesystem change fs_used fs_used bigint not null default 0;
+alter table inv_filesystem change fs_avail fs_avail bigint not null default 0;
+
 
 
