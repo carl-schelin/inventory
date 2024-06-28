@@ -40,7 +40,7 @@
       if ($a_image['img_facing']) {
         print "document.formUpdate.img_facing['" . $a_inv_images['img_facing'] . "'].checked  = true;\n";
       } else {
-        print "document.formUpdate.img_facing['" . $a_inv_images['img_facing'] . "'].checked  = true;\n";
+        print "document.formUpdate.img_facing['" . $a_inv_images['img_facing'] . "'].checked  = false;\n";
       }
 
       print "var cell = document.getElementById('image_name');\n";
