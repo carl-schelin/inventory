@@ -1,73 +1,75 @@
 <?php
-# Script: tags.php
-# Owner: Carl Schelin
-# Coding Standard 3.0 Applied
-# Description:
+/**
+ * Script: tags.php
+ * Owner: Carl Schelin
+ * Coding Standard 3.0 Applied
+ * Description:
+ */
 
-  include('settings.php');
-  $called = 'no';
-  include($Loginpath . '/check.php');
-  include($Sitepath . '/function.php');
+require 'settings.php';
+$called = 'no';
+require $Loginpath . '/check.php';
+require $Sitepath . '/function.php';
 
-# connect to the database
-  $db = db_connect($DBserver, $DBname, $DBuser, $DBpassword);
+// connect to the database
+$db = db_connect($DBserver, $DBname, $DBuser, $DBpassword);
 
-  check_login($db, $AL_Edit);
+check_login($db, $AL_Edit);
 
-  $package = "tags.php";
+$package = "tags.php";
 
-  logaccess($db, $_SESSION['uid'], $package, "Accessing script");
+logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
-  $_SESSION['p_product']   = clean($_GET['product'],  10);
-  $_SESSION['p_project']   = clean($_GET['project'],  10);
-  $_SESSION['p_group']     = clean($_GET['group'],    10);
-  $_SESSION['p_inwork']    = clean($_GET['inwork'],   10);
-  $_SESSION['p_country']   = clean($_GET['country'],  10);
-  $_SESSION['p_state']     = clean($_GET['state'],    10);
-  $_SESSION['p_city']      = clean($_GET['city'],     10);
-  $_SESSION['p_location']  = clean($_GET['location'], 10);
-  $_SESSION['p_csv']       = clean($_GET['csv'],      10);
+$_SESSION['p_product']   = clean($_GET['product'],  10);
+$_SESSION['p_project']   = clean($_GET['project'],  10);
+$_SESSION['p_group']     = clean($_GET['group'],    10);
+$_SESSION['p_inwork']    = clean($_GET['inwork'],   10);
+$_SESSION['p_country']   = clean($_GET['country'],  10);
+$_SESSION['p_state']     = clean($_GET['state'],    10);
+$_SESSION['p_city']      = clean($_GET['city'],     10);
+$_SESSION['p_location']  = clean($_GET['location'], 10);
+$_SESSION['p_csv']       = clean($_GET['csv'],      10);
 
-  if (isset($_GET['type'])) {
+if (isset($_GET['type'])) {
     $_SESSION['p_type'] = clean($_GET['type'], 10);
-  } else {
+} else {
     $_SESSION['p_type'] = '';
-  }
+}
 
-  if ($_SESSION['p_product'] == '') {
+if ($_SESSION['p_product'] == '') {
     $_SESSION['p_product'] = 0;
-  }
-  if ($_SESSION['p_project'] == '') {
+}
+if ($_SESSION['p_project'] == '') {
     $_SESSION['p_project'] = 0;
-  }
-  if ($_SESSION['p_group'] == '') {
+}
+if ($_SESSION['p_group'] == '') {
     $_SESSION['p_group'] = 1;
-  }
-  if ($_SESSION['p_inwork'] == '') {
+}
+if ($_SESSION['p_inwork'] == '') {
     $_SESSION['p_inwork'] = 'false';
-  }
-  if ($_SESSION['p_country'] == '') {
+}
+if ($_SESSION['p_country'] == '') {
     $_SESSION['p_country'] = 0;
-  }
-  if ($_SESSION['p_state'] == '') {
+}
+if ($_SESSION['p_state'] == '') {
     $_SESSION['p_state'] = 0;
-  }
-  if ($_SESSION['p_city'] == '') {
+}
+if ($_SESSION['p_city'] == '') {
     $_SESSION['p_city'] = 0;
-  }
-  if ($_SESSION['p_location'] == '') {
+}
+if ($_SESSION['p_location'] == '') {
     $_SESSION['p_location'] = 0;
-  }
-  if ($_SESSION['p_csv'] == '') {
+}
+if ($_SESSION['p_csv'] == '') {
     $_SESSION['p_csv'] = 'false';
-  }
+}
 
-# if help has not been seen yet,
-  if (show_Help($db, $Sitepath . "/" . $package)) {
+// if help has not been seen yet,
+if (show_Help($db, $Sitepath . "/" . $package)) {
     $display = "display: block";
-  } else {
+} else {
     $display = "display: none";
-  }
+}
 
 ?>
 <!DOCTYPE HTML>
@@ -77,7 +79,7 @@
 <title>Edit Tags</title>
 
 <style type='text/css' title='currentStyle' media='screen'>
-<?php include($Sitepath . "/mobile.php"); ?>
+<?php require $Sitepath . "/mobile.php"; ?>
 </style>
 
 <script type="text/javascript" language="javascript" src="<?php print $Siteroot; ?>/css/jquery.js"></script>
@@ -88,8 +90,8 @@
 <script type="text/javascript">
 
 <?php
-  if (check_userlevel($db, $AL_Admin)) {
-?>
+if (check_userlevel($db, $AL_Admin)) {
+    ?>
 function delete_line( p_script_url ) {
   var answer = confirm("Delete this Tag?")
 
@@ -99,8 +101,8 @@ function delete_line( p_script_url ) {
     document.getElementsByTagName('head')[0].appendChild(script);
   }
 }
-<?php
-  }
+    <?php
+}
 ?>
 
 function attach_file( p_script_url, update ) {
@@ -237,8 +239,8 @@ $(document).ready( function() {
 </head>
 <body onLoad="clear_fields();" class="ui-widget-content">
 
-<?php include($Sitepath . '/topmenu.start.php'); ?>
-<?php include($Sitepath . '/topmenu.end.php'); ?>
+<?php require $Sitepath . '/topmenu.start.php'; ?>
+<?php require $Sitepath . '/topmenu.end.php'; ?>
 
 <div id="main">
 
@@ -255,9 +257,12 @@ $(document).ready( function() {
 
 <p>Tag Management</p>
 
-<p>This page is intended to provide a view into a list of servers based on the selection via filters both to show all the tags and to let you verify that all servers for the selection have received the necessary tags.</p>
+<p>This page is intended to provide a view into a list of servers based on the selection via filters 
+both to show all the tags and to let you verify that all servers for the selection have received the 
+necessary tags.</p>
 
-<p>In the Tag View page, you can select a tag and it will show you all the servers that have that tag assigned to it but unless you know all the servers that should be </p>
+<p>In the Tag View page, you can select a tag and it will show you all the servers that have that 
+tag assigned to it but unless you know all the servers that should be </p>
 
 
 <ul>
@@ -323,17 +328,17 @@ $(document).ready( function() {
   <td class="ui-widget-content">Server: <select name="tag_companyid">
 <option value="0">All Servers</option>
 <?php
-  $q_string  = "select inv_id,inv_name ";
-  $q_string .= "from inv_inventory ";
-  $q_string .= "where inv_status = 0 ";
-  if ($_SESSION['p_group'] > 0) {
+$q_string  = "select inv_id,inv_name ";
+$q_string .= "from inv_inventory ";
+$q_string .= "where inv_status = 0 ";
+if ($_SESSION['p_group'] > 0) {
     $q_string .= "and inv_manager = " . $_SESSION['p_group'] . " ";
-  }
-  $q_string .= "order by inv_name ";
-  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
+}
+$q_string .= "order by inv_name ";
+$q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
     print "<option value=\"" . $a_inv_inventory['inv_id'] . "\">" . $a_inv_inventory['inv_name'] . "</option>\n";
-  }
+}
 ?>
 </select> Select All Servers to create a Master Tag.</td>
 </tr>
@@ -341,14 +346,14 @@ $(document).ready( function() {
   <td class="ui-widget-content">Owner: <select name="tag_owner">
 <option value="0">None</option>
 <?php
-  $q_string  = "select usr_id,usr_last,usr_first ";
-  $q_string .= "from inv_users ";
-  $q_string .= "where usr_disabled = 0 ";
-  $q_string .= "order by usr_last,usr_first ";
-  $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
+$q_string  = "select usr_id,usr_last,usr_first ";
+$q_string .= "from inv_users ";
+$q_string .= "where usr_disabled = 0 ";
+$q_string .= "order by usr_last,usr_first ";
+$q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
     print "<option value=\"" . $a_inv_users['usr_id'] . "\">" . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "</option>\n";
-  }
+}
 ?>
 </select></td>
 </tr>
@@ -356,14 +361,14 @@ $(document).ready( function() {
   <td class="ui-widget-content">Group: <select name="tag_group">
 <option value="0">None</option>
 <?php
-  $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from inv_groups ";
-  $q_string .= "where grp_disabled = 0 ";
-  $q_string .= "order by grp_name ";
-  $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_inv_groups = mysqli_fetch_array($q_inv_groups)) {
+$q_string  = "select grp_id,grp_name ";
+$q_string .= "from inv_groups ";
+$q_string .= "where grp_disabled = 0 ";
+$q_string .= "order by grp_name ";
+$q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+while ($a_inv_groups = mysqli_fetch_array($q_inv_groups)) {
     print "<option value=\"" . $a_inv_groups['grp_id'] . "\">" . $a_inv_groups['grp_name'] . "</option>\n";
-  }
+}
 ?>
 </select></td>
 </tr>
@@ -390,45 +395,45 @@ $(document).ready( function() {
 <tr>
   <td class="ui-widget-content">Server: <select name="tag_companyid">
 <?php
-  $q_string  = "select inv_id,inv_name ";
-  $q_string .= "from inv_inventory ";
-  $q_string .= "where inv_status = 0 ";
-  if ($_SESSION['p_group'] > 0) {
+$q_string  = "select inv_id,inv_name ";
+$q_string .= "from inv_inventory ";
+$q_string .= "where inv_status = 0 ";
+if ($_SESSION['p_group'] > 0) {
     $q_string .= "and inv_manager = " . $_SESSION['p_group'] . " ";
-  }
-  $q_string .= "order by inv_name ";
-  $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
+}
+$q_string .= "order by inv_name ";
+$q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
     print "<option value=\"" . $a_inv_inventory['inv_id'] . "\">" . $a_inv_inventory['inv_name'] . "</option>\n";
-  }
+}
 ?>
 </select> Select All Servers to create a Master Tag.</td>
 </tr>
 <tr>
   <td class="ui-widget-content">Owner: <select name="tag_owner">
 <?php
-  $q_string  = "select usr_id,usr_last,usr_first ";
-  $q_string .= "from inv_users ";
-  $q_string .= "where usr_disabled = 0 ";
-  $q_string .= "order by usr_last,usr_first ";
-  $q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
+$q_string  = "select usr_id,usr_last,usr_first ";
+$q_string .= "from inv_users ";
+$q_string .= "where usr_disabled = 0 ";
+$q_string .= "order by usr_last,usr_first ";
+$q_inv_users = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
     print "<option value=\"" . $a_inv_users['usr_id'] . "\">" . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "</option>\n";
-  }
+}
 ?>
 </select></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Group: <select name="tag_group">
 <?php
-  $q_string  = "select grp_id,grp_name ";
-  $q_string .= "from inv_groups ";
-  $q_string .= "where grp_disabled = 0 ";
-  $q_string .= "order by grp_name ";
-  $q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-  while ($a_inv_groups = mysqli_fetch_array($q_inv_groups)) {
+$q_string  = "select grp_id,grp_name ";
+$q_string .= "from inv_groups ";
+$q_string .= "where grp_disabled = 0 ";
+$q_string .= "order by grp_name ";
+$q_inv_groups = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+while ($a_inv_groups = mysqli_fetch_array($q_inv_groups)) {
     print "<option value=\"" . $a_inv_groups['grp_id'] . "\">" . $a_inv_groups['grp_name'] . "</option>\n";
-  }
+}
 ?>
 </select></td>
 </tr>
@@ -443,7 +448,7 @@ $(document).ready( function() {
 
 
 
-<?php include($Sitepath . '/footer.php'); ?>
+<?php require $Sitepath . '/footer.php'; ?>
 
 </body>
 </html>
