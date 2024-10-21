@@ -112,6 +112,18 @@
           $q_inv_assets = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $total = mysqli_num_rows($q_inv_assets);
 
+          $q_string  = "select hw_id ";
+          $q_string .= "from inv_hardware ";
+          $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_hardware.hw_companyid ";
+          $q_string .= "where hw_vendorid = " . $a_inv_models['mod_id'] . " and hw_type = " . $formVars['mod_type'] . " and inv_status = 0 ";
+          $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $total = mysqli_num_rows($q_inv_hardware);
+
+          $totallink = '';
+          if ($total > 0) {
+            $totallink = "<a href=\"memory.members.php?type=" . $formVars['mod_type'] . "&model=" . $a_inv_models['mod_id'] . "\" target=\"_blank\">";
+          }
+
           $output .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
             if ($total == 0) {
@@ -123,7 +135,7 @@
           $output .= "  <td class=\"" . $class . " delete\">"              . $a_inv_models['ven_name']            . "</td>";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_models['mod_name'] . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"              . $a_inv_models['mod_size']            . "</td>";
-          $output .= "  <td class=\"" . $class . " delete\">"              . $total                           . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">" . $totallink . $total                    . $linkend . "</td>";
           $output .= "</tr>";
         }
 
