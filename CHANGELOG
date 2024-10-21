@@ -1499,5 +1499,13 @@ alter table inv_filesystem change fs_size fs_size bigint not null default 0;
 alter table inv_filesystem change fs_used fs_used bigint not null default 0;
 alter table inv_filesystem change fs_avail fs_avail bigint not null default 0;
 
+### Timestamp: 2024-10-20
+
+Added cpu.members.php and memory.members.php to the hardware directory to show which servers have the linked cpu/memory
+Updated cpu.mysql.php and memory.mysql.php to add a correct (while I work on asset updates) totals list plus a link to the associated memory php script.
+Updated the import.php script to convert memory to the ceil() value and append text so it'll match the models table. Then called the models table to get the right id for the servers.
+
+
+
 
 
