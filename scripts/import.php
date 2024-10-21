@@ -412,8 +412,8 @@
               $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
               $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
-              $memory = preg_split('/\s+/', $value[3]) / 1048576;
-              $ram = ceil($memory[0]) . " GB Ram";
+              $memory = preg_split('/\s+/', $value[3]);
+              $ram = ceil($memory[0] / 1048576) . " GB Ram";
 
               $q_string  = "select mod_id ";
               $q_string .= "from inv_models ";
