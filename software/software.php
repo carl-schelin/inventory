@@ -71,6 +71,7 @@ function attach_file( p_script_url, update ) {
 
   af_url += "&type="           + "<?php print $formVars['type']; ?>";
   af_url += "&sw_software="    + encode_URI(af_form.sw_software.value);
+  af_url += "&sw_image="       + af_form.sw_image.value;
   af_url += "&sw_vendor="      + af_form.sw_vendor.value;
   af_url += "&sw_product="     + af_form.sw_product.value;
   af_url += "&sw_licenseid="   + af_form.sw_licenseid.value;
@@ -95,6 +96,7 @@ function update_file( p_script_url, update ) {
 
   uf_url += "&type="           + "<?php print $formVars['type']; ?>";
   uf_url += "&sw_software="    + encode_URI(uf_form.sw_software.value);
+  uf_url += "&sw_image="       + uf_form.sw_image.value;
   uf_url += "&sw_vendor="      + uf_form.sw_vendor.value;
   uf_url += "&sw_product="     + uf_form.sw_product.value;
   uf_url += "&sw_licenseid="   + uf_form.sw_licenseid.value;
@@ -122,7 +124,7 @@ $(document).ready( function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 375,
+    height: 400,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -152,7 +154,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 375,
+    height: 400,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -268,6 +270,20 @@ is a small difference, you can make changes and add a new software entry.</p>
   <td class="ui-widget-content">Software: <input type="text" name="sw_software" size="60"></td>
 </tr>
 <tr>
+  <td class="ui-widget-content">Server Image: <select name="sw_image">
+  <option value="0">None</option>
+<?php
+  $q_string  = "select img_id,img_name ";
+  $q_string .= "from inv_image ";
+  $q_string .= "order by img_name";
+  $q_inv_image = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_image = mysqli_fetch_array($q_inv_image)) {
+    print "<option value=\"" . $a_inv_image['img_id'] . "\">" . $a_inv_image['img_name'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+<tr>
   <td class="ui-widget-content">Vendor: <select name="sw_vendor">
 <?php
   $q_string  = "select ven_id,ven_name ";
@@ -370,6 +386,20 @@ is a small difference, you can make changes and add a new software entry.</p>
 <table class="ui-styled-table">
 <tr>
   <td class="ui-widget-content">Software: <input type="text" name="sw_software" size="60"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Server Image: <select name="sw_image">
+  <option value="0">None</option>
+<?php
+  $q_string  = "select img_id,img_name ";
+  $q_string .= "from inv_image ";
+  $q_string .= "order by img_name";
+  $q_inv_image = mysqli_query($db, $q_string) or die(mysqli_error($db));
+  while ($a_inv_image = mysqli_fetch_array($q_inv_image)) {
+    print "<option value=\"" . $a_inv_image['img_id'] . "\">" . $a_inv_image['img_name'] . "</option>\n";
+  }
+?>
+</select></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Vendor: <select name="sw_vendor">
