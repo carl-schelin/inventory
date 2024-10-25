@@ -30,6 +30,7 @@
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']              = clean($_GET['id'],              10);
         $formVars['sw_software']     = clean($_GET['sw_software'],    255);
+        $formVars['sw_image']        = clean($_GET['sw_image'],        10);
         $formVars['sw_vendor']       = clean($_GET['sw_vendor'],       10);
         $formVars['sw_product']      = clean($_GET['sw_product'],      10);
         $formVars['sw_licenseid']    = clean($_GET['sw_licenseid'],    10);
@@ -73,6 +74,7 @@
 
           $q_string =
             "sw_software     = \"" . $formVars['sw_software']       . "\"," . 
+            "sw_image        =   " . $formVars['sw_image']          . "," . 
             "sw_vendor       =   " . $formVars['sw_vendor']         . "," . 
             "sw_product      =   " . $formVars['sw_product']        . "," . 
             "sw_licenseid    =   " . $formVars['sw_licenseid']      . "," . 
@@ -153,6 +155,7 @@
         $output .= "<th class=\"ui-state-default\" width=\"160\">Delete Software</th>\n";
       }
       $output .= "<th class=\"ui-state-default\">" . $linksort . "&sort=sw_software');\">Software</a></th>\n";
+      $output .= "<th class=\"ui-state-default\">"                                 . "Image</th>\n";
       $output .= "<th class=\"ui-state-default\">" . $linksort . "&sort=ven_name');\">Vendor</a></th>\n";
       $output .= "<th class=\"ui-state-default\">"                                 . "Members</th>\n";
       $output .= "<th class=\"ui-state-default\">" . $linksort . "&sort=prod_name');\">Product</a></th>\n";
@@ -166,8 +169,9 @@
       $output .= "</tr>\n";
 
       $q_string  = "select sw_id,sw_software,ven_name,prod_name,lic_product,sup_company,typ_name,";
-      $q_string .= "dep_name,sw_eol,sw_eos ";
+      $q_string .= "dep_name,sw_eol,sw_eos,img_name ";
       $q_string .= "from inv_software ";
+      $q_string .= "left join inv_image      on inv_image.img_id          = inv_software.sw_image ";
       $q_string .= "left join inv_vendors    on inv_vendors.ven_id        = inv_software.sw_vendor ";
       $q_string .= "left join inv_products   on inv_products.prod_id      = inv_software.sw_product ";
       $q_string .= "left join inv_licenses   on inv_licenses.lic_id       = inv_software.sw_licenseid ";
@@ -220,6 +224,7 @@
             }
           }
           $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_inv_software['sw_software']   . $linkend . "</td>\n";
+          $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_inv_software['img_name']      . $linkend . "</td>\n";
           $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_inv_software['ven_name']      . $linkend . "</td>\n";
           $output .= "<td class=\"ui-widget-content delete\">" . $svrstart  . $total                       . $linkend . "</td>\n";
           $output .= "<td class=\"ui-widget-content\">"        . $linkstart . $a_inv_software['prod_name']     . $linkend . "</td>\n";

@@ -70,6 +70,8 @@
       <li><a href="<?php print $Softwareroot; ?>/software.php">Software Manager</a></li>
       <li><a href="<?php print $Softwareroot; ?>/license.php">License Manager</a></li>
       <li><a href="<?php print $Softwareroot; ?>/support.php">Software Support Manager</a></li>
+      <li><a href="<?php print $Softwareroot; ?>/image.php">Server Image Manager</a></li>
+      <li><a href="<?php print $Softwareroot; ?>/hypervisor.php">Hypervisor Manager</a></li>
     </ul>
   </li>
 

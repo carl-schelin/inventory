@@ -1499,6 +1499,7 @@ alter table inv_filesystem change fs_size fs_size bigint not null default 0;
 alter table inv_filesystem change fs_used fs_used bigint not null default 0;
 alter table inv_filesystem change fs_avail fs_avail bigint not null default 0;
 
+
 ### Timestamp: 2024-10-20
 
 Added cpu.members.php and memory.members.php to the hardware directory to show which servers have the linked cpu/memory
@@ -1506,6 +1507,24 @@ Updated cpu.mysql.php and memory.mysql.php to add a correct (while I work on ass
 Updated the import.php script to convert memory to the ceil() value and append text so it'll match the models table. Then called the models table to get the right id for the servers.
 
 
+### Timestamp: 2024-10-24
 
+Adding the ability to select a gold image for use when building a server.
+Need to create a table of images and a table of hosts such as kvm, vmware, aws, etc. 
+then the terraform.php script knows where to save the terraform data.
 
+alter table inv_software add column sw_image int(10) not null default 0 after sw_software;
+
+create table inv_image (
+  img_id int(10) not null auto_increment,
+  img_name char(255) not null default '',
+  img_hypervisor int(10) not null default 0,
+  primary key (img_id)
+);
+
+create table inv_hypervisor (
+  hv_id int(10) not null auto_increment,
+  hv_name char(255) not null default '',
+  primary key (hv_id)
+);
 
