@@ -1,5 +1,5 @@
 <?php
-# Script: servers.php
+# Script: product.members.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
 # Description: 
@@ -14,7 +14,7 @@
 
   check_login($db, $AL_Edit);
 
-  $package = "servers.php";
+  $package = "product.members.php";
 
   logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
