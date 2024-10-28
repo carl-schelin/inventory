@@ -21,13 +21,14 @@
 
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
-        $formVars['id']           = clean($_GET['id'],          10);
-        $formVars['prod_name']    = clean($_GET['prod_name'],  100);
-        $formVars['prod_code']    = strtoupper(clean($_GET['prod_code'],   2));
-        $formVars['prod_desc']    = clean($_GET['prod_desc'],  100);
-        $formVars['prod_tags']    = clean($_GET['prod_tags'],  255);
-        $formVars['prod_unit']    = clean($_GET['prod_unit'],   10);
-        $formVars['prod_service'] = clean($_GET['prod_service'],10);
+        $formVars['id']             = clean($_GET['id'],                    10);
+        $formVars['prod_name']      = clean($_GET['prod_name'],            100);
+        $formVars['prod_code']      = strtoupper(clean($_GET['prod_code'],  2));
+        $formVars['prod_desc']      = clean($_GET['prod_desc'],            100);
+        $formVars['prod_directory'] = clean($_GET['prod_directory'],       100);
+        $formVars['prod_tags']      = clean($_GET['prod_tags'],            255);
+        $formVars['prod_unit']      = clean($_GET['prod_unit'],             10);
+        $formVars['prod_service']   = clean($_GET['prod_service'],          10);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
@@ -48,11 +49,12 @@
             logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
             $q_string =
-              "prod_name      = \"" . $formVars['prod_name']      . "\"," .
-              "prod_code      = \"" . $formVars['prod_code']      . "\"," .
-              "prod_desc      = \"" . $formVars['prod_desc']      . "\"," .
-              "prod_unit      =   " . $formVars['prod_unit']      . "," .
-              "prod_service   =   " . $formVars['prod_service'];
+              "prod_name       = \"" . $formVars['prod_name']      . "\"," .
+              "prod_code       = \"" . $formVars['prod_code']      . "\"," .
+              "prod_desc       = \"" . $formVars['prod_desc']      . "\"," .
+              "prod_directory  = \"" . $formVars['prod_directory'] . "\"," .
+              "prod_unit       =   " . $formVars['prod_unit']      . "," .
+              "prod_service    =   " . $formVars['prod_service'];
 
             if ($formVars['update'] == 0) {
               $q_string = "insert into inv_products set prod_id = NULL, " . $q_string;
@@ -123,13 +125,14 @@
       $output .= "  <th class=\"ui-state-default\">Product Code</th>";
       $output .= "  <th class=\"ui-state-default\">Product Name</th>";
       $output .= "  <th class=\"ui-state-default\">Product Description</th>";
+      $output .= "  <th class=\"ui-state-default\">Terraform</th>";
       $output .= "  <th class=\"ui-state-default\">Product Tags</th>";
       $output .= "  <th class=\"ui-state-default\">Members</th>";
       $output .= "  <th class=\"ui-state-default\">Business</th>";
       $output .= "  <th class=\"ui-state-default\">Svc Class</th>";
       $output .= "</tr>";
 
-      $q_string  = "select prod_id,prod_name,prod_code,prod_desc,bus_name,svc_acronym ";
+      $q_string  = "select prod_id,prod_name,prod_code,prod_desc,prod_directory,bus_name,svc_acronym ";
       $q_string .= "from inv_products ";
       $q_string .= "left join inv_business on inv_business.bus_id = inv_products.prod_unit ";
       $q_string .= "left join inv_service on inv_service.svc_id = inv_products.prod_service ";
@@ -140,7 +143,7 @@
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('product.fill.php?id="  . $a_inv_products['prod_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('product.del.php?id=" . $a_inv_products['prod_id'] . "');\">";
-          $prodstart = "<a href=\"servers.php?id=" . $a_inv_products['prod_id'] . "\" target=\"_blank\">";
+          $prodstart = "<a href=\"product.members.php?id=" . $a_inv_products['prod_id'] . "\" target=\"_blank\">";
           $linkend = "</a>";
 
           $prod_tags = '';
@@ -178,15 +181,16 @@
           $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_products['prod_code']                 . "</td>";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_products['prod_name']      . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_products['prod_desc']                 . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"                     . $prod_tags                               . "</td>";
-          $output .= "  <td class=\"" . $class . " delete\">" . $prodstart . $total                        . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_products['prod_directory']            . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"                     . $prod_tags                                   . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">" . $prodstart . $total                            . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_products['bus_name']                  . "</td>";
           $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_products['svc_acronym']               . "</td>";
           $output .= "</tr>";
         }
       } else {
         $output .= "<tr>";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"6\">No POroducts Found</td>";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"9\">No POroducts Found</td>";
         $output .= "</tr>";
       }
 
