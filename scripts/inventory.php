@@ -431,7 +431,7 @@
           print "\"" . $a_inv_int_types['itp_acronym']  . "\"\n";
           print "\"" . $a_inv_interface['zone_zone']  . "\"\n";
         } else {
-          printf("%30s %10s %20s %20s %20s %5s %10s\n", $a_inv_interface['int_server'], $a_inv_interface['int_face'], $a_inv_interface['int_addr'] . "/" . $a_inv_interface['int_mask'], $a_inv_interface['int_eth'], $a_inv_interface['int_gate'], $a_int_types['itp_acronym'], $a_inv_interface['zone_zone']);
+          printf("%30s %10s %20s %20s %20s %5s %10s\n", $a_inv_interface['int_server'], $a_inv_interface['int_face'], $a_inv_interface['int_addr'] . "/" . $a_inv_interface['int_mask'], $a_inv_interface['int_eth'], $a_inv_interface['int_gate'], $a_inv_int_types['itp_acronym'], $a_inv_interface['zone_zone']);
         }
       }
     }
@@ -562,7 +562,7 @@
         $routes = mysqli_num_rows($q_inv_routing);
       }
 
-      $software = 0;
+      $svr_software = 0;
       $q_string  = "select svr_companyid ";
       $q_string .= "from inv_svr_software ";
       $q_string .= "where svr_companyid = " . $remove . " ";
