@@ -166,7 +166,7 @@
       $output .= "</tr>\n";
 
       $q_string  = "select sw_id,sw_software,ven_name,prod_name,lic_product,sup_company,typ_name,";
-      $q_string .= "dep_name,sw_eol,sw_eos,img_name ";
+      $q_string .= "dep_name,sw_eol,sw_eos ";
       $q_string .= "from inv_software ";
       $q_string .= "left join inv_vendors    on inv_vendors.ven_id        = inv_software.sw_vendor ";
       $q_string .= "left join inv_products   on inv_products.prod_id      = inv_software.sw_product ";
