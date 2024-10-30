@@ -1514,11 +1514,6 @@ Need to create a table of images and a table of hosts such as kvm, vmware, aws, 
 then the terraform.php script knows where to save the terraform data.
 
 alter table inv_inventory add column inv_image int(10) not null default 0 after inv_project;
-<<<<<<< HEAD
-=======
-alter table inv_projects add column prj_directory char(100) not null default '' after prj_desc;
-alter table inv_products add column prod_directory char(100) not null default '' after prod_desc;
->>>>>>> 9991c93932046adc45c0f2b02c938b98debfbef7
 
 create table inv_image (
   img_id int(10) not null auto_increment,
@@ -1538,5 +1533,6 @@ create table inv_hypervisor (
 
 Added missing project management scripts. Renamed the servers.php to product.members.php to be consistent with the rest of the inventory
 
-
+alter table inv_projects add column prj_directory char(100) not null default '' after prj_desc;
+alter table inv_products add column prod_directory char(100) not null default '' after prod_desc;
 
