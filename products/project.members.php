@@ -1,5 +1,5 @@
 <?php
-# Script: servers.php
+# Script: project.members.php
 # Owner: Carl Schelin
 # Coding Standard 3.0 Applied
 # Description: 
@@ -14,7 +14,7 @@
 
   check_login($db, $AL_Edit);
 
-  $package = "servers.php";
+  $package = "project.members.php";
 
   logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
@@ -91,15 +91,17 @@ $(document).ready( function() {
   <th class="ui-state-default">Server</th>
   <th class="ui-state-default">Function</th>
   <th class="ui-state-default">Product</th>
-  <th class="ui-state-default">Department</th>
+  <th class="ui-state-default">Project</th>
+  <th class="ui-state-default">Group</th>
 </tr>
 <?php
 
-  $q_string  = "select inv_id,inv_name,inv_function,prod_name,dep_name ";
+  $q_string  = "select inv_id,inv_name,inv_function,prj_name,prod_name,grp_name ";
   $q_string .= "from inv_inventory ";
   $q_string .= "left join inv_products     on inv_products.prod_id           = inv_inventory.inv_product ";
-  $q_string .= "left join inv_department   on inv_department.dep_id          = inv_inventory.inv_department ";
-  $q_string .= "where inv_product = " . $formVars['id'] . " ";
+  $q_string .= "left join inv_projects     on inv_projects.prj_id            = inv_inventory.inv_project ";
+  $q_string .= "left join inv_groups       on inv_groups.grp_id              = inv_inventory.inv_manager ";
+  $q_string .= "where inv_project = " . $formVars['id'] . " ";
   $q_string .= "order by inv_name ";
   $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_inv_inventory) > 0) {
@@ -112,12 +114,13 @@ $(document).ready( function() {
       print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_inventory['inv_name']    . $linkend . "</td>";
       print "  <td class=\"ui-widget-content\">"              . $a_inv_inventory['inv_function']           . "</td>";
       print "  <td class=\"ui-widget-content\">"              . $a_inv_inventory['prod_name']              . "</td>";
-      print "  <td class=\"ui-widget-content\">"              . $a_inv_inventory['dep_name']               . "</td>";
+      print "  <td class=\"ui-widget-content\">"              . $a_inv_inventory['prj_name']               . "</td>";
+      print "  <td class=\"ui-widget-content\">"              . $a_inv_inventory['grp_name']               . "</td>";
       print "</tr>\n";
     }
   } else {
     print "<tr>\n";
-    print "  <td class=\"ui-widget-content\" colspan=\"4\">No servers are associated with this product.</td>";
+    print "  <td class=\"ui-widget-content\" colspan=\"5\">No servers are associated with this project.</td>";
     print "</tr>\n";
   }
 ?>

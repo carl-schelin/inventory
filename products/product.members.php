@@ -95,7 +95,7 @@ $(document).ready( function() {
 </tr>
 <?php
 
-  $q_string  = "select inv_id,inv_name,inv_function,inv_status,prod_name,dep_name ";
+  $q_string  = "select inv_id,inv_name,inv_function,prod_name,dep_name ";
   $q_string .= "from inv_inventory ";
   $q_string .= "left join inv_products     on inv_products.prod_id           = inv_inventory.inv_product ";
   $q_string .= "left join inv_department   on inv_department.dep_id          = inv_inventory.inv_department ";
@@ -108,13 +108,8 @@ $(document).ready( function() {
       $linkstart  = "<a href=\"" . $Editroot . "/inventory.php?server=" . $a_inv_inventory['inv_id'] . "\" target=\"_blank\">";
       $linkstart .= "<img class=\"ui-icon-edit\" src=\"" . $Imgsroot . "/pencil.gif\" height=\"10\">";
 
-      $status = '*';
-      if ($a_inv_inventory['inv_status']) {
-        $status = '';
-      }
-
       print "<tr>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_inventory['inv_name']    . $status . $linkend . "</td>";
+      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_inventory['inv_name']    . $linkend . "</td>";
       print "  <td class=\"ui-widget-content\">"              . $a_inv_inventory['inv_function']           . "</td>";
       print "  <td class=\"ui-widget-content\">"              . $a_inv_inventory['prod_name']              . "</td>";
       print "  <td class=\"ui-widget-content\">"              . $a_inv_inventory['dep_name']               . "</td>";

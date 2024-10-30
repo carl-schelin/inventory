@@ -65,12 +65,13 @@ function attach_file( p_script_url, update ) {
 
   af_url  = '?update='   + update;
 
-  af_url += "&prod_code="     + encode_URI(af_form.prod_code.value);
-  af_url += "&prod_name="     + encode_URI(af_form.prod_name.value);
-  af_url += "&prod_desc="     + encode_URI(af_form.prod_desc.value);
-  af_url += "&prod_tags="     + encode_URI(af_form.prod_tags.value);
-  af_url += "&prod_unit="     + af_form.prod_unit.value;
-  af_url += "&prod_service="  + af_form.prod_service.value;
+  af_url += "&prod_code="      + encode_URI(af_form.prod_code.value);
+  af_url += "&prod_name="      + encode_URI(af_form.prod_name.value);
+  af_url += "&prod_desc="      + encode_URI(af_form.prod_desc.value);
+  af_url += "&prod_directory=" + encode_URI(af_form.prod_directory.value);
+  af_url += "&prod_tags="      + encode_URI(af_form.prod_tags.value);
+  af_url += "&prod_unit="      + af_form.prod_unit.value;
+  af_url += "&prod_service="   + af_form.prod_service.value;
 
   if (af_form.prod_code.value.length != 2) {
     alert("Product code must be unique and 2 characters.");
@@ -88,12 +89,13 @@ function update_file( p_script_url, update ) {
   uf_url  = '?update='   + update;
   uf_url += '&id='       + uf_form.id.value;
 
-  uf_url += "&prod_code="     + encode_URI(uf_form.prod_code.value);
-  uf_url += "&prod_name="     + encode_URI(uf_form.prod_name.value);
-  uf_url += "&prod_desc="     + encode_URI(uf_form.prod_desc.value);
-  uf_url += "&prod_tags="     + encode_URI(uf_form.prod_tags.value);
-  uf_url += "&prod_unit="     + uf_form.prod_unit.value;
-  uf_url += "&prod_service="  + uf_form.prod_service.value;
+  uf_url += "&prod_code="      + encode_URI(uf_form.prod_code.value);
+  uf_url += "&prod_name="      + encode_URI(uf_form.prod_name.value);
+  uf_url += "&prod_desc="      + encode_URI(uf_form.prod_desc.value);
+  uf_url += "&prod_directory=" + encode_URI(uf_form.prod_directory.value);
+  uf_url += "&prod_tags="      + encode_URI(uf_form.prod_tags.value);
+  uf_url += "&prod_unit="      + uf_form.prod_unit.value;
+  uf_url += "&prod_service="   + uf_form.prod_service.value;
 
   if (uf_form.prod_code.value.length != 2) {
     alert("Product code must be unique and 2 characters.");
@@ -116,7 +118,7 @@ $(document).ready( function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 275,
+    height: 300,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -146,7 +148,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 275,
+    height: 300,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -270,6 +272,9 @@ to a server listing where you can edit the servers and remove them from the prod
   <td class="ui-widget-content">Description: <input type="text" name="prod_desc" size="40"></td>
 </tr>
 <tr>
+  <td class="ui-widget-content">Terraform: <input type="text" name="prod_directory" size="40"></td>
+</tr>
+<tr>
   <td class="ui-widget-content">Business Unit Ownership <select name="prod_unit">
 <?php
   $q_string  = "select bus_id,bus_name ";
@@ -320,6 +325,9 @@ to a server listing where you can edit the servers and remove them from the prod
 </tr>
 <tr>
   <td class="ui-widget-content">Description: <input type="text" name="prod_desc" size="40"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Terraform: <input type="text" name="prod_directory" size="40"></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Business Unit Ownership <select name="prod_unit">
