@@ -1513,7 +1513,7 @@ Adding the ability to select a gold image for use when building a server.
 Need to create a table of images and a table of hosts such as kvm, vmware, aws, etc. 
 then the terraform.php script knows where to save the terraform data.
 
-alter table inv_software add column sw_image int(10) not null default 0 after sw_software;
+alter table inv_inventory add column inv_image int(10) not null default 0 after inv_project;
 
 create table inv_image (
   img_id int(10) not null auto_increment,

@@ -29,7 +29,6 @@
       $a_inv_software = mysqli_fetch_array($q_inv_software);
       mysqli_free_result($q_inv_software);
 
-      $sw_image      = return_Index($db, $a_inv_software['sw_image'],      "select img_id  from inv_image      order by img_name");
       $sw_vendor     = return_Index($db, $a_inv_software['sw_vendor'],     "select ven_id  from inv_vendors    order by ven_name");
       $sw_product    = return_Index($db, $a_inv_software['sw_product'],    "select prod_id from inv_products   order by prod_name");
       $sw_licenseid  = return_Index($db, $a_inv_software['sw_licenseid'],  "select lic_id  from inv_licenses   order by lic_product");
@@ -41,9 +40,6 @@
       print "document.formUpdate.sw_eol.value = '"        . mysqli_real_escape_string($db, $a_inv_software['sw_eol'])        . "';\n";
       print "document.formUpdate.sw_eos.value = '"        . mysqli_real_escape_string($db, $a_inv_software['sw_eos'])        . "';\n";
 
-      if ($sw_image > 0) {
-        print "document.formUpdate.sw_image['"      . $sw_image      . "'].selected = true;\n";
-      }
       if ($sw_vendor > 0) {
         print "document.formUpdate.sw_vendor['"     . $sw_vendor     . "'].selected = true;\n";
       }
