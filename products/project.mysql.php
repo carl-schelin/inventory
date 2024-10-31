@@ -37,7 +37,7 @@
           $formVars['prj_group'] = 0;
         }
 
-        if (strlen($formVars['prod_name']) > 0) {
+        if (strlen($formVars['prj_name']) > 0) {
           logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
