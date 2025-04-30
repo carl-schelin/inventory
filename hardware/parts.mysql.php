@@ -61,7 +61,7 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-      $output .= "<table class=\"ui-styled-table\">";
+      $output  = "<table class=\"ui-styled-table\">";
       $output .= "<tr>";
       if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Part</th>";
