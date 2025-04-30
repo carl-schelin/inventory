@@ -26,7 +26,7 @@ CREATE TABLE `inv_business` (
   `bus_organization` int(10) NOT NULL DEFAULT '0',
   `bus_manager` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`bus_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=123 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

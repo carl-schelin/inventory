@@ -33,7 +33,7 @@ CREATE TABLE `inv_syspwd` (
   `pwd_update` date NOT NULL DEFAULT '1971-01-01',
   PRIMARY KEY (`pwd_id`),
   KEY `pwd_companyid_idx` (`pwd_companyid`)
-) ENGINE=MyISAM AUTO_INCREMENT=116308 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

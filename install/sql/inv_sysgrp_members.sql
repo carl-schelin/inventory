@@ -26,7 +26,7 @@ CREATE TABLE `inv_sysgrp_members` (
   `mem_gid` int(10) NOT NULL DEFAULT '0',
   `mem_update` date NOT NULL DEFAULT '1971-01-01',
   PRIMARY KEY (`mem_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=169428 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

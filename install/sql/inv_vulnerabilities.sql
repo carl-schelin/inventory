@@ -31,7 +31,7 @@ CREATE TABLE `inv_vulnerabilities` (
   `vuln_deldate` date NOT NULL DEFAULT '0000-00-00',
   PRIMARY KEY (`vuln_id`),
   KEY `vuln_interface_idx` (`vuln_interface`)
-) ENGINE=InnoDB AUTO_INCREMENT=418020 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

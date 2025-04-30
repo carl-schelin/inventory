@@ -25,7 +25,7 @@ CREATE TABLE `inv_organizations` (
   `org_name` char(60) NOT NULL DEFAULT '',
   `org_manager` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`org_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

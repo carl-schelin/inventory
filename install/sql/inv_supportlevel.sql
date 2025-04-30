@@ -25,7 +25,7 @@ CREATE TABLE `inv_supportlevel` (
   `slv_value` char(100) NOT NULL DEFAULT '',
   `slv_translate` char(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`slv_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

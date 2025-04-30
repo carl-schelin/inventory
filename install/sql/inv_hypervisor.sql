@@ -24,7 +24,7 @@ CREATE TABLE `inv_hypervisor` (
   `hv_id` int(10) NOT NULL AUTO_INCREMENT,
   `hv_name` char(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`hv_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

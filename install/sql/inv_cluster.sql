@@ -29,7 +29,7 @@ CREATE TABLE `inv_cluster` (
   `clu_protocol` char(10) NOT NULL DEFAULT '0',
   `clu_notes` char(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`clu_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=556 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

@@ -60,7 +60,7 @@ CREATE TABLE `inv_hardware` (
   `hw_customer` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`hw_id`),
   KEY `hw_companyid_idx` (`hw_companyid`)
-) ENGINE=MyISAM AUTO_INCREMENT=308058 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

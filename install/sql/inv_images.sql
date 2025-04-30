@@ -28,7 +28,7 @@ CREATE TABLE `inv_images` (
   `img_facing` int(8) NOT NULL DEFAULT '0',
   `img_date` date NOT NULL DEFAULT '1971-01-01',
   PRIMARY KEY (`img_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=324 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

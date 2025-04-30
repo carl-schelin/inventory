@@ -26,7 +26,7 @@ CREATE TABLE `inv_cities` (
   `ct_state` int(10) NOT NULL DEFAULT '0',
   `ct_clli` char(5) NOT NULL DEFAULT '',
   PRIMARY KEY (`ct_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=15031 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

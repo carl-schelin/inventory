@@ -27,7 +27,7 @@ CREATE TABLE `inv_sysgrp` (
   `grp_gid` double NOT NULL DEFAULT '0',
   `grp_update` date NOT NULL DEFAULT '1971-01-01',
   PRIMARY KEY (`grp_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=128247 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

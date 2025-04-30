@@ -45,7 +45,7 @@ CREATE TABLE `inv_backups` (
   `bu_todate` timestamp NOT NULL DEFAULT '1971-01-01 07:00:00',
   `bu_notes` text NOT NULL,
   PRIMARY KEY (`bu_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2521 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

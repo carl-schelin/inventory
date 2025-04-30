@@ -26,7 +26,7 @@ CREATE TABLE `inv_int_types` (
   `itp_acronym` char(10) NOT NULL DEFAULT '',
   `itp_description` char(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`itp_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

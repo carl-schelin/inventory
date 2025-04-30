@@ -32,7 +32,7 @@ CREATE TABLE `inv_network` (
   `net_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `net_description` char(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`net_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

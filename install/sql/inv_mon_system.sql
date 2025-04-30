@@ -24,7 +24,7 @@ CREATE TABLE `inv_mon_system` (
   `ms_id` int(10) NOT NULL AUTO_INCREMENT,
   `ms_name` char(40) NOT NULL DEFAULT '',
   PRIMARY KEY (`ms_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

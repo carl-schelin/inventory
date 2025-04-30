@@ -25,7 +25,7 @@ CREATE TABLE `inv_image` (
   `img_name` char(255) NOT NULL DEFAULT '',
   `img_hypervisor` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`img_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

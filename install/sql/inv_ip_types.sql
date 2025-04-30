@@ -27,7 +27,7 @@ CREATE TABLE `inv_ip_types` (
   `ip_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ip_description` char(50) NOT NULL DEFAULT '',
   PRIMARY KEY (`ip_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

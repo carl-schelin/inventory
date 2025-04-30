@@ -29,7 +29,7 @@ CREATE TABLE `inv_packages` (
   `pkg_grp_id` int(10) NOT NULL DEFAULT '0',
   `pkg_os` char(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`pkg_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=98052162 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

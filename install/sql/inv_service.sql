@@ -32,7 +32,7 @@ CREATE TABLE `inv_service` (
   `svc_resource` char(1) NOT NULL DEFAULT '',
   `svc_restore` char(12) NOT NULL DEFAULT '',
   PRIMARY KEY (`svc_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

@@ -79,7 +79,7 @@ CREATE TABLE `inv_interface` (
   PRIMARY KEY (`int_id`),
   KEY `int_companyid_idx` (`int_companyid`),
   KEY `int_addr_idx` (`int_addr`)
-) ENGINE=MyISAM AUTO_INCREMENT=28720 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

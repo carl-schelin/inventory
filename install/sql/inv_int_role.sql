@@ -24,7 +24,7 @@ CREATE TABLE `inv_int_role` (
   `rol_id` int(10) NOT NULL AUTO_INCREMENT,
   `rol_text` char(30) NOT NULL DEFAULT '',
   PRIMARY KEY (`rol_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

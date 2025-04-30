@@ -28,7 +28,7 @@ CREATE TABLE `inv_checklist` (
   `chk_text` char(255) NOT NULL DEFAULT '',
   `chk_link` char(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`chk_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=91 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

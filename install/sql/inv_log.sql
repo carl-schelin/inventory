@@ -27,7 +27,7 @@ CREATE TABLE `inv_log` (
   `log_source` char(60) NOT NULL DEFAULT '',
   `log_detail` char(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`log_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1850300 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

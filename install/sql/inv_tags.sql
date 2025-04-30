@@ -29,7 +29,7 @@ CREATE TABLE `inv_tags` (
   `tag_group` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`tag_id`),
   KEY `tag_companyid_idx` (`tag_companyid`)
-) ENGINE=MyISAM AUTO_INCREMENT=3452 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

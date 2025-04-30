@@ -27,7 +27,7 @@ CREATE TABLE `inv_bugs_detail` (
   `bug_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `bug_user` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`bug_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=118 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

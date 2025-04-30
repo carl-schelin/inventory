@@ -25,7 +25,7 @@ CREATE TABLE `inv_int_media` (
   `med_text` char(30) NOT NULL DEFAULT '',
   `med_default` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`med_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

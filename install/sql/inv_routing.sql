@@ -35,7 +35,7 @@ CREATE TABLE `inv_routing` (
   `route_update` date NOT NULL DEFAULT '1971-01-01',
   `route_static` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`route_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1399549 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
