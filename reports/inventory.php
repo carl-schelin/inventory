@@ -545,7 +545,7 @@ $(document).ready( function () {
         }
         print "  <td " . $class . "><nobr>" . $edaastart . $shswstart . $a_inv_groups['grp_name']                                               . $showend                     . "</nobr></td>\n";
         print "  <td " . $class . "><nobr>" . $edhwstart . $shhwstart . $a_inv_inventory['ven_name'] . " " . $a_inv_inventory['mod_name']         . $showend                     . "</nobr></td>\n";
-        print "  <td " . $class . "><nobr>" . $edswstart . $shswstart . return_ShortOS($a_inv_software['sw_software'])                          . $showend                     . "</nobr></td>\n";
+        print "  <td " . $class . "><nobr>" . $edswstart . $shswstart . return_ShortOS($db, $a_inv_software['sw_software'])                          . $showend                     . "</nobr></td>\n";
         print "  <td " . $class . "><nobr>"              . $showstart . $a_inv_inventory['ct_city']    . " (" . $a_inv_inventory['zone_name'] . ")" . $showend                     . "</nobr></td>\n";
         print "  <td " . $class . "><nobr>"              . $showstart . $a_inv_inventory['loc_identity']                                        . $showend                     . "</nobr></td>\n";
         print "  <td " . $class . ">" . $edipstart . $shipstart . $interface                                                          . $showend . "<br>" . $console . "</td>\n";
