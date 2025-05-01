@@ -107,7 +107,7 @@
       $output .=   "<th class=\"ui-state-default\">Updated</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select svr_id,sw_software,ven_name,prod_name,typ_name,svr_verified,svr_update,inv_manager,svr_facing,svr_primary,svr_locked ";
+      $q_string  = "select svr_id,sw_software,ven_name,prod_name,typ_name,grp_name,svr_verified,svr_update,inv_manager,svr_facing,svr_primary,svr_locked ";
       $q_string .= "from inv_svr_software ";
       $q_string .= "left join inv_inventory on inv_inventory.inv_id    = inv_svr_software.svr_companyid ";
       $q_string .= "left join inv_software  on inv_software.sw_id      = inv_svr_software.svr_softwareid ";
@@ -149,6 +149,8 @@
             $locked = "Yes";
           }
 
+	  $strong = "<b>";
+	  $strongend = "</b>";
           $output .= "<tr>";
           $output .= "  <td class=\"" . $class . " delete\">"           . $linkdel                                                                       . "</td>";
           $output .= "  <td class=\"" . $class . "\">"        . $strong . $linkstart . $a_inv_svr_software['prod_name']   . $linkend            . $strongend . "</td>";
@@ -168,7 +170,7 @@
       }
       $output .= "</table>";
 
-      mysqli_free_result($q_software);
+      mysqli_free_result($q_inv_svr_software);
 
       print "document.getElementById('software_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
     } else {
