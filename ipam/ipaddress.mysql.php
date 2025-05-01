@@ -49,6 +49,7 @@
       }
     }
 
+    $assigned = 'No';
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']              = clean($_GET['id'],             10);
@@ -73,7 +74,6 @@
         }
 
 # see if the IP is already taken and report an error if so
-        $assigned = 'No';
         if ($formVars['update'] == 0) {
           $q_string  = "select ip_ipv4,ip_hostname ";
           $q_string .= "from inv_ipaddress ";
@@ -162,6 +162,8 @@
         for ($i = $startip + 1; $i < $endip; $i++) {
 
           $ipaddr = long2ip($i);
+	  $iprange = '';
+	  $ipendrange = '';
 
           $q_string  = "select ip_id,ip_ipv4,ip_hostname,ip_domain,net_mask,ip_type,usr_first,usr_last,ip_timestamp,ip_description,ip_notes,sub_name ";
           $q_string .= "from inv_ipaddress ";
