@@ -24,6 +24,7 @@ CREATE TABLE `inv_operatingsystem` (
   `os_id` int(10) NOT NULL AUTO_INCREMENT,
   `os_vendor` char(100) NOT NULL DEFAULT '',
   `os_software` char(100) NOT NULL DEFAULT '',
+  `os_short` char(100) NOT NULL DEFAULT '',
   `os_delete` int(10) NOT NULL DEFAULT '0',
   `os_user` int(10) NOT NULL DEFAULT '0',
   `os_exception` int(10) NOT NULL DEFAULT '0',
