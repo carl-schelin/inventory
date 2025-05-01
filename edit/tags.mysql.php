@@ -15,9 +15,6 @@
     $package = "tags.mysql.php";
     $formVars['update']         = clean($_GET['update'],            10);
     $formVars['tag_companyid']  = clean($_GET['tag_companyid'],     10);
-    $formVars['tag_name']       = str_replace(' ', '_', clean($_GET['tag_name'], 255));
-    $formVars['tag_owner']      = clean($_SESSION['uid'],           10);
-    $formVars['tag_group']      = clean($_SESSION['group'],         10);
 
     if ($formVars['update'] == '') {
       $formVars['update'] = -1;
@@ -28,7 +25,10 @@
 
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0) {
-        $formVars['id']             = clean($_GET['id'],            10);
+        $formVars['tag_name']       = str_replace(' ', '_', clean($_GET['tag_name'], 255));
+        $formVars['tag_owner']      = clean($_SESSION['uid'],           10);
+        $formVars['tag_group']      = clean($_SESSION['group'],         10);
+        $formVars['id']             = clean($_GET['id'],                10);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
