@@ -279,8 +279,8 @@
                 $q_string = "insert into inv_hardware set " . 
                   "hw_id        =   " . "NULL"                   . "," . 
                   "hw_companyid =   " . $newserver               . "," .
-                  "hw_type      =   " . 15                       . "," .
-                  "hw_vendorid  =   " . 45                       . "," .
+                  "hw_type      =   " . 44                       . "," .
+                  "hw_vendorid  =   " . 1                        . "," .
                   "hw_product   =   " . $formVars['inv_product'] . "," .
                   "hw_group     =   " . $formVars['inv_manager'] . "," .
                   "hw_built     = \"" . $date                    . "\"," .
@@ -295,8 +295,8 @@
               $q_string = "insert into inv_hardware set " . 
                 "hw_id        =   " . "NULL"                   . "," . 
                 "hw_companyid =   " . $newserver               . "," .
-                "hw_type      =   " . 15                       . "," .
-                "hw_vendorid  =   " . 45                       . "," .
+                "hw_type      =   " . 44                       . "," .
+                "hw_vendorid  =   " . 1                        . "," .
                 "hw_product   =   " . $formVars['inv_product'] . "," .
                 "hw_group     =   " . $formVars['inv_manager'] . "," .
                 "hw_built     = \"" . $date                    . "\"," .
