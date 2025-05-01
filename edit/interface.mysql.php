@@ -721,7 +721,7 @@
           }
         }
       } else {
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"10\">No Network Interfaces added.</td>\n";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"13\">No Network Interfaces added.</td>\n";
       }
 
       mysqli_free_result($q_inv_interface);
