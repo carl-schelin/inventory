@@ -358,7 +358,7 @@
         }
       } else {
         $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"7\">No Routes defined.</td>\n";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"8\">No Routes defined.</td>\n";
         $output .= "</tr>\n";
       }
 
