@@ -16,7 +16,7 @@
 
   $package = "image.php";
 
-  logaccess($db, $formVars['uid'], $package, "Managing Image files");
+  logaccess($db, $_SESSION['uid'], $package, "Managing Image files");
 
   $formVars['id'] = 0;
   $formVars['img_title'] = '';
@@ -342,7 +342,7 @@ on the server. It can of course be uploaded after the fact.</p>
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content">Select a file to upload: <input type="hidden" name="MAX_FILE_SIZE" value="100000"> <input type="file" name="upload"></td>
+  <td class="ui-widget-content">Select a file to upload: <input type="hidden" name="MAX_FILE_SIZE" value="10000000"> <input type="file" name="upload"></td>
 </tr>
 </table>
 

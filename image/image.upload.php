@@ -35,7 +35,7 @@
             break;
       }
 
-      if ($_FILES['upload']['size'] > 100000) {
+      if ($_FILES['upload']['size'] > 10000000) {
           $errorString .= "Exceeded filesize limit.";
       }
 
