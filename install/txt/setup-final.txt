@@ -1,0 +1,389 @@
+insert into inv_hypervisor set hv_id = null,hv_name = "Vmware";
+insert into inv_int_plugtype set plug_id = null,plug_text = "5-15 (US standard 110v)";
+insert into inv_int_plugtype set plug_id = null,plug_text = "C13";
+insert into inv_int_plugtype set plug_id = null,plug_text = "C19";
+insert into inv_int_plugtype set plug_id = null,plug_text = "L6-20P (220V 20 AMP, twist lock - male)";
+insert into inv_int_plugtype set plug_id = null,plug_text = "L6-20R (220V 20 AMP, twist lock - female)";
+insert into inv_int_plugtype set plug_id = null,plug_text = "L6-30P (220V 30 AMP, twist lock - male)";
+insert into inv_int_plugtype set plug_id = null,plug_text = "L6-30P (220V 30 AMP, twist lock - female)";
+insert into inv_int_plugtype set plug_id = null,plug_text = "Other";
+insert into inv_ip_types set ip_id = null,ip_name = "Broadcast",ip_user = 1,ip_timestamp = "2021-06-06 23:05:25",ip_description = "Broadcast IP Address Type";
+insert into inv_ip_types set ip_id = null,ip_name = "Gateway",ip_user = 1,ip_timestamp = "2021-06-06 23:05:39",ip_description = "Gateway IP Address Type";
+insert into inv_ip_types set ip_id = null,ip_name = "Server",ip_user = 1,ip_timestamp = "2021-06-06 23:05:48",ip_description = "Server IP Address Type";
+insert into inv_ip_types set ip_id = null,ip_name = "Reserved",ip_user = 1,ip_timestamp = "2022-05-25 01:15:01",ip_description = "Special IP addresses";
+insert into inv_mon_type set mt_id = null,mt_name = "CPU";
+insert into inv_mon_type set mt_id = null,mt_name = "FTP";
+insert into inv_mon_type set mt_id = null,mt_name = "HTTP";
+insert into inv_mon_type set mt_id = null,mt_name = "Load";
+insert into inv_mon_type set mt_id = null,mt_name = "Memory";
+insert into inv_mon_type set mt_id = null,mt_name = "Ping";
+insert into inv_mon_type set mt_id = null,mt_name = "SMTP";
+insert into inv_mon_type set mt_id = null,mt_name = "SNMP";
+insert into inv_mon_type set mt_id = null,mt_name = "SSH";
+insert into inv_mon_type set mt_id = null,mt_name = "Swap";
+insert into inv_mon_type set mt_id = null,mt_name = "Uptime";
+insert into inv_parts set part_id = null,part_name = "Access Point",part_type = 1,part_acronym = "AP";
+insert into inv_parts set part_id = null,part_name = "Array Controller",part_type = 0,part_acronym = "";
+insert into inv_parts set part_id = null,part_name = "Battery",part_type = 0,part_acronym = "";
+insert into inv_parts set part_id = null,part_name = "Blade Chassis",part_type = 1,part_acronym = "";
+insert into inv_parts set part_id = null,part_name = "Bypass",part_type = 0,part_acronym = "BP";
+insert into inv_parts set part_id = null,part_name = "CD/DVD Drive",part_type = 0,part_acronym = "";
+insert into inv_parts set part_id = null,part_name = "Cluster",part_type = 1,part_acronym = "";
+insert into inv_parts set part_id = null,part_name = "CPU",part_type = 0,part_acronym = "";
+insert into inv_parts set part_id = null,part_name = "DNX / Mux",part_type = 1,part_acronym = "DX";
+insert into inv_parts set part_id = null,part_name = "Fan",part_type = 0,part_acronym = "";
+insert into inv_parts set part_id = null,part_name = "Fibercard",part_type = 0,part_acronym = "";
+insert into inv_parts set part_id = null,part_name = "Fibre Channel",part_type = 0,part_acronym = "FC";
+insert into inv_parts set part_id = null,part_name = "Fibre Switch",part_type = 1,part_acronym = "";
+insert into inv_parts set part_id = null,part_name = "Firewall",part_type = 1,part_acronym = "FW";
+insert into inv_parts set part_id = null,part_name = "Firmware",part_type = 0,part_acronym = "";
+insert into inv_parts set part_id = null,part_name = "Global Load Balancer",part_type = 0,part_acronym = "GB";
+insert into inv_parts set part_id = null,part_name = "Hard Disk",part_type = 0,part_acronym = "";
+insert into inv_parts set part_id = null,part_name = "Infinistream",part_type = 1,part_acronym = "IS";
+insert into inv_parts set part_id = null,part_name = "KVM Switch",part_type = 0,part_acronym = "KV";
+insert into inv_parts set part_id = null,part_name = "Local Load Balancer",part_type = 1,part_acronym = "LB";
+insert into inv_parts set part_id = null,part_name = "Memory",part_type = 0,part_acronym = "";
+insert into inv_parts set part_id = null,part_name = "Modem",part_type = 0,part_acronym = "MD";
+insert into inv_parts set part_id = null,part_name = "Motherboard",part_type = 0,part_acronym = "";
+insert into inv_parts set part_id = null,part_name = "Network Card",part_type = 0,part_acronym = "";
+insert into inv_parts set part_id = null,part_name = "Network Time Server",part_type = 0,part_acronym = "NT";
+insert into inv_parts set part_id = null,part_name = "PAD (PSAP Abandonment Device)",part_type = 0,part_acronym = "PA";
+insert into inv_parts set part_id = null,part_name = "PGM",part_type = 1,part_acronym = "PM";
+insert into inv_parts set part_id = null,part_name = "Power Rectifier",part_type = 0,part_acronym = "PR";
+insert into inv_parts set part_id = null,part_name = "Power Supply",part_type = 0,part_acronym = "";
+insert into inv_parts set part_id = null,part_name = "Printer",part_type = 0,part_acronym = "";
+insert into inv_parts set part_id = null,part_name = "Router",part_type = 1,part_acronym = "RT";
+insert into inv_parts set part_id = null,part_name = "SCSI Controller",part_type = 0,part_acronym = "";
+insert into inv_parts set part_id = null,part_name = "Server",part_type = 1,part_acronym = "SV";
+insert into inv_parts set part_id = null,part_name = "Service Light",part_type = 0,part_acronym = "";
+insert into inv_parts set part_id = null,part_name = "Storage Array",part_type = 1,part_acronym = "";
+insert into inv_parts set part_id = null,part_name = "Switch",part_type = 1,part_acronym = "SW";
+insert into inv_parts set part_id = null,part_name = "Switch Port",part_type = 0,part_acronym = "";
+insert into inv_parts set part_id = null,part_name = "Tape Library",part_type = 1,part_acronym = "TLB";
+insert into inv_parts set part_id = null,part_name = "Tap",part_type = 1,part_acronym = "TP";
+insert into inv_parts set part_id = null,part_name = "Telephone Adapter (ATA)",part_type = 0,part_acronym = "TA";
+insert into inv_parts set part_id = null,part_name = "Terminal Server",part_type = 1,part_acronym = "TS";
+insert into inv_parts set part_id = null,part_name = "Trunk Gateway",part_type = 1,part_acronym = "TG";
+insert into inv_parts set part_id = null,part_name = "UPS",part_type = 0,part_acronym = "UP";
+insert into inv_parts set part_id = null,part_name = "Virtual Machine",part_type = 1,part_acronym = "VM";
+insert into inv_parts set part_id = null,part_name = "VPN Gateway",part_type = 0,part_acronym = "VG";
+insert into inv_parts set part_id = null,part_name = "WAN Optimizer",part_type = 0,part_acronym = "WO";
+insert into inv_parts set part_id = null,part_name = "Wireless Controller",part_type = 0,part_acronym = "WC";
+insert into inv_service set svc_id = null,svc_name = "Life or Mission Critical Services",svc_acronym = "LMCS",svc_availability = "99.999%",
+svc_downtime = "5 min/year",svc_mtbf = ">5 years",svc_geographic = "1",svc_mttr = "<2 min",svc_resource = "0",svc_restore = "1 hour";
+insert into inv_service set svc_id = null,svc_name = "Business Critical Services",svc_acronym = "BCS",svc_availability = "99.9%",
+svc_downtime = "8.76 hrs/year",svc_mtbf = ">1 year",svc_geographic = "1",svc_mttr = "<4 hours",svc_resource = "0",svc_restore = "3 days";
+insert into inv_service set svc_id = null,svc_name = "Business Essential Services",svc_acronym = "BES",svc_availability = "99%",
+svc_downtime = "87.6 hrs/year",svc_mtbf = ">3 months",svc_geographic = "0",svc_mttr = "<40 hours",svc_resource = "1",svc_restore = "10 days";
+insert into inv_service set svc_id = null,svc_name = "Business Support Services",svc_acronym = "BSS",svc_availability = "98%",
+svc_downtime = "7.3 days/year",svc_mtbf = ">1 month",svc_geographic = "0",svc_mttr = "<3 days",svc_resource = "1",svc_restore = "30 days";
+insert into inv_service set svc_id = null,svc_name = "Unsupported Business Services",svc_acronym = "UBS",svc_availability = "Unspecified",
+svc_downtime = "Unspecified",svc_mtbf = "Unspecified",svc_geographic = "0",svc_mttr = "Unspecified",svc_resource = "0",svc_restore = "Unspecified";
+insert into inv_service set svc_id = null,svc_name = "Lab Services",svc_acronym = "LAB",svc_availability = "9-5/M-F",
+svc_downtime = "Unspecified",svc_mtbf = "Unspecified",svc_geographic = "0",svc_mttr = "Unspecified",svc_resource = "0",svc_restore = "None";
+insert into inv_sw_types set typ_id = null,typ_name = "Application";
+insert into inv_sw_types set typ_id = null,typ_name = "Application Server";
+insert into inv_sw_types set typ_id = null,typ_name = "Authentication";
+insert into inv_sw_types set typ_id = null,typ_name = "Backups";
+insert into inv_sw_types set typ_id = null,typ_name = "Cell Broadcast";
+insert into inv_sw_types set typ_id = null,typ_name = "Centrify";
+insert into inv_sw_types set typ_id = null,typ_name = "Cluster";
+insert into inv_sw_types set typ_id = null,typ_name = "Commercial";
+insert into inv_sw_types set typ_id = null,typ_name = "Custom";
+insert into inv_sw_types set typ_id = null,typ_name = "Database";
+insert into inv_sw_types set typ_id = null,typ_name = "Database Client";
+insert into inv_sw_types set typ_id = null,typ_name = "Database Manager/Interpreter";
+insert into inv_sw_types set typ_id = null,typ_name = "ESXi";
+insert into inv_sw_types set typ_id = null,typ_name = "Firmware";
+insert into inv_sw_types set typ_id = null,typ_name = "Hypervisor";
+insert into inv_sw_types set typ_id = null,typ_name = "Instance";
+insert into inv_sw_types set typ_id = null,typ_name = "Management";
+insert into inv_sw_types set typ_id = null,typ_name = "Middleware";
+insert into inv_sw_types set typ_id = null,typ_name = "Monitoring";
+insert into inv_sw_types set typ_id = null,typ_name = "National";
+insert into inv_sw_types set typ_id = null,typ_name = "Open Source";
+insert into inv_sw_types set typ_id = null,typ_name = "Operating System";
+insert into inv_sw_types set typ_id = null,typ_name = "Perl Library";
+insert into inv_sw_types set typ_id = null,typ_name = "Position Determination";
+insert into inv_sw_types set typ_id = null,typ_name = "Python Library";
+insert into inv_sw_types set typ_id = null,typ_name = "RDB";
+insert into inv_sw_types set typ_id = null,typ_name = "Schema";
+insert into inv_sw_types set typ_id = null,typ_name = "Script";
+insert into inv_sw_types set typ_id = null,typ_name = "SS7 Stack";
+insert into inv_sw_types set typ_id = null,typ_name = "Storage Array";
+insert into inv_sw_types set typ_id = null,typ_name = "TCP/IP Commercial UP PDE";
+insert into inv_sw_types set typ_id = null,typ_name = "Vendor";
+insert into inv_sw_types set typ_id = null,typ_name = "Web Server";
+insert into inv_sw_types set typ_id = null,typ_name = "Wiki";
+insert into inv_tag_types set type_id = null,type_name = "Server";
+insert into inv_tag_types set type_id = null,type_name = "Location";
+insert into inv_tag_types set type_id = null,type_name = "Product";
+insert into inv_tag_types set type_id = null,type_name = "Software";
+insert into inv_tag_types set type_id = null,type_name = "Hardware";
+insert into inv_maintenance set man_id = null,man_text = "Unassigned",man_day = 0,man_start = 2300,man_end = 500;
+insert into inv_device set dev_id = null,dev_type = "AAG",dev_description = "Appliance Application Gateway",dev_infrastructure = 1,
+dev_notes = "Application Gateways that are received as appliances from Vendor (i.e.  Axway)",dev_update = "2016-05-12",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "AAS",dev_description = "Appliance Application Server",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "ABU",dev_description = "Appliance Backup Server",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "ADB",dev_description = "Appliance Database",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "ARD",dev_description = "reserved / non-allocatable",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "ART",dev_description = "Access Router",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "ASW",dev_description = "Access Switch",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "AVG",dev_description = "Access VPN Gateway",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "BYP",dev_description = "Bypass",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "CRT",dev_description = "Core Router",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "CSW",dev_description = "Core Switch",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "DNX",dev_description = "DNX / MUX",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "ELL",dev_description = "reserved / non-allocatable",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "ERT",dev_description = "Edge Router",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "ESW",dev_description = "Edge Switch",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "ESX",dev_description = "ESX Host",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "EVG",dev_description = "Edge VPN Gateway",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "FSW",dev_description = "Fibre Channel Switch",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "FWL",dev_description = "Firewall",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "GLB",dev_description = "Global Load Balancer",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "GSX",dev_description = "Voice TDM Trunk Aggregator",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "HIT",dev_description = "reserved / non-allocatable",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "ICK",dev_description = "reserved / non-allocatable",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "IDS",dev_description = "Intrustion Detection System",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "IKE",dev_description = "reserved / non-allocatable",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "IMA",dev_description = "infrastructure Management Appliance",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-09-27",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "IPS",dev_description = "Intrustion Prevention System",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "ISS",dev_description = "reserved / non-allocatable",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "ITS",dev_description = "reserved / non-allocatable",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "IZZ",dev_description = "reserved / non-allocatable",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "KVM",dev_description = "Keyboard / Video / Mouse",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "LIT",dev_description = "reserved / non-allocatable",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "LLB",dev_description = "Local Load Balancer",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "LSW",dev_description = "Closet Switch",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "LUT",dev_description = "reserved / non-allocatable",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "NMD",dev_description = "Network Modem",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "NTS",dev_description = "Network Time Server",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "NUS",dev_description = "reserved / non-allocatable",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "OCK",dev_description = "reserved / non-allocatable",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "OMO",dev_description = "reserved / non-allocatable",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "OOK",dev_description = "reserved / non-allocatable",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "OON",dev_description = "reserved / non-allocatable",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "PAG",dev_description = "Packet Aggregator / Sniffer",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "PBX",dev_description = "Private Branch Exchange",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "PDP",dev_description = "Power Distribution Panel",dev_infrastructure = 1,
+dev_notes = "Requested by DC",dev_update = "2016-06-29",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "PDU",dev_description = "Power Distribution Unit",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "PGW",dev_description = "PSAP Gateway",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "PIC",dev_description = "reserved / non-allocatable",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "PPL",dev_description = "Patch Panel",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-11-10",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "PSX",dev_description = "Voice Routing Engine",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "RRT",dev_description = "Route Reflector Router",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "SBC",dev_description = "Session Border Controller",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "SRT",dev_description = "Shadow Responder Router",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "STA",dev_description = "Storage Array",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "TAG",dev_description = "Tap/Span Aggregator",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "TAP",dev_description = "Network Tap",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "TGW",dev_description = "Trunk Gateway",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "TLB",dev_description = "Tape Library",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "TSV",dev_description = "Terminal Server",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "UAM",dev_description = "Unix Application Management Server",dev_infrastructure = 0,
+dev_notes = "middleware environment for supporting applications",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "UAS",dev_description = "Unix Application Server",dev_infrastructure = 0,
+dev_notes = "where application logic is executed, may include web interface",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "UBU",dev_description = "Unix Backup Server",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "UCK",dev_description = "reserved / non-allocatable",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "UDB",dev_description = "Unix Database",dev_infrastructure = 0,
+dev_notes = "dedicated database server",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "UDC",dev_description = "Unix Database Cluster",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "UFF",dev_description = "reserved / non-allocatable",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "UFS",dev_description = "Unix File Server",dev_infrastructure = 0,
+dev_notes = "file storage for production systems (NFS, SMB, FTP)",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "UGW",dev_description = "Universal Media Gateway",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-03-25",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "ULR",dev_description = "Unix LDAP Repository",dev_infrastructure = 1,
+dev_notes = "centrify / ldap / etc",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "UNT",dev_description = "reserved / non-allocatable",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "UOM",dev_description = "Unix Operations Management Servers",dev_infrastructure = 1,
+dev_notes = "used for non product or service specific infrastructure servers",dev_update = "2016-08-04",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "UPS",dev_description = "Uninterrupted Power Supply",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "UWG",dev_description = "Unix Web Gateway",dev_infrastructure = 0,
+dev_notes = "handles authentication / acts as intermediary for http/s traffic",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "UWS",dev_description = "Unix Web Server",dev_infrastructure = 0,
+dev_notes = "dedicated web interface (no application logic or data)",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "VCB",dev_description = "Voice Conference Bridge",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "WAM",dev_description = "Windows Application Management Server",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "WAP",dev_description = "Wireless Access Point",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "WAS",dev_description = "Windows Application Server",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "WAT",dev_description = "reserved / non-allocatable",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "WBU",dev_description = "Windows Backup Server",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "WDB",dev_description = "Windows Database",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "WDC",dev_description = "Windows Domain Controller",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "WFS",dev_description = "Windows File Server",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "WIS",dev_description = "Windows Information Security",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "WLC",dev_description = "Wireless Controller",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "WOM",dev_description = "Windows Ops/Admin/Mgmt (OAM) Server",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "WOP",dev_description = "WAN Optimizer",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "WPS",dev_description = "Windows Print Server",dev_infrastructure = 1,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "WWG",dev_description = "Windows Web Gateway",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "WWS",dev_description = "Windows Web Server",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_device set dev_id = null,dev_type = "YKE",dev_description = "reserved / non-allocatable",dev_infrastructure = 0,
+dev_notes = "",dev_update = "2016-02-05",dev_userid = 1;
+insert into inv_vendors set ven_id = null,ven_name = "Generic";
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Sun Microsystems',os_software = "Solaris 9 9/04 s9s_u7wos_09 SPARC",
+os_short = "Solaris 9 9/04",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Sun Microsystems',os_software = "Solaris 10 6/06 s10s_u2wos_09a SPARC",
+os_short = "Solaris 10 6/06",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Sun Microsystems',os_software = "Solaris 10 11/06 s10s_u3wos_10 SPARC",
+os_short = "Solaris 10 11/06",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Sun Microsystems',os_software = "Solaris 10 5/08 s10x_u5wos_10 X86",
+os_short = "Solaris 10 5/08",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Sun Microsystems',os_software = "Solaris 10 10/08 s10s_u6wos_07b SPARC",
+os_short = "Solaris 10 10/08",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Sun Microsystems',os_software = "Solaris 10 10/08 s10x_u6wos_07b X86",
+os_short = "Solaris 10 10/08",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Oracle',os_software = "Oracle Solaris 10 9/10 s10x_u9wos_14a X86",
+os_short = "Solaris 10 9/10",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Oracle',os_software = "Oracle Solaris 10 8/11 s10s_u10wos_17b SPARC",
+os_short = "Solaris 10 8/11",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Oracle',os_software = "Oracle Enterprise Linux Enterprise Linux AS release 4 (October Update 7)",
+os_short = "Oracle EL AS 4.7",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux ES release 4 (Nahant Update 4)",
+os_short = "RHEL ES 4.4",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux AS release 4 (Nahant Update 8)",
+os_short = "RHEL AS 4.8",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 5.1 (Tikanga)",
+os_short = "RHEL5.1",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 5.2 (Tikanga)",
+os_short = "RHEL5.2",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 5.3 (Tikanga)",
+os_short = "RHEL5.3",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 5.4 (Tikanga)",
+os_short = "RHEL5.4",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 5.11 (Tikanga)",
+os_short = "RHEL5.11",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 6.1 (Santiago)",
+os_short = "RHEL6.1",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 6.2 (Santiago)",
+os_short = "RHEL6.2",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 6.3 (Santiago)",
+os_short = "RHEL6.3",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 6.4 (Santiago)",
+os_short = "RHEL6.4",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 6.5 (Santiago)",
+os_short = "RHEL6.5",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 6.6 (Santiago)",
+os_short = "RHEL6.6",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 6.7 (Santiago)",
+os_short = "RHEL6.7",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 6.8 (Santiago)",
+os_short = "RHEL6.8",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "CentOS release 6.8 (Final)",os_short = "COS6.8",
+os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 6.9 (Santiago)",
+os_short = "RHEL6.9",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 6.10 (Santiago)",
+os_short = "RHEL6.10",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 7.0 (Maipo)",
+os_short = "RHEL7.0",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 7.1 (Maipo)",
+os_short = "RHEL7.1",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 7.2 (Maipo)",
+os_short = "RHEL7.2",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 7.3 (Maipo)",
+os_short = "RHEL7.3",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 7.4 (Maipo)",
+os_short = "RHEL7.4",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 7.5 (Maipo)",
+os_short = "RHEL7.5",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 7.6 (Maipo)",
+os_short = "RHEL7.6",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 7.7 (Maipo)",
+os_short = "RHEL7.7",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 7.8 (Maipo)",
+os_short = "RHEL7.8",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 7.9 (Maipo)",
+os_short = "RHEL7.9",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 8.0 (Ootpa)",
+os_short = "RHEL8.0",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 8.0 (Ootpa)",
+os_short = "RHEL8.1",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 8.1 (Ootpa)",
+os_short = "RHEL8.2",os_delete = 0,os_user = 1;
+insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 8.3 (Ootpa)",
+os_short = "RHEL8.3",os_delete = 0,os_user = 1;
+insert into inv_models set mod_id = null,mod_vendor = 1, mod_name = "Virtual Machine", mod_type = 44, mod_primary = 1,mod_virtual = 1;

@@ -1,0 +1,80 @@
+insert into inv_int_duplex set dup_id = null,dup_text = "Half",dup_default = 0;
+insert into inv_int_duplex set dup_id = null,dup_text = "Full",dup_default = 0;
+insert into inv_int_duplex set dup_id = null,dup_text = "Auto Negotiate",dup_default = 0;
+insert into inv_int_duplex set dup_id = null,dup_text = "Other",dup_default = 0;
+insert into inv_int_duplex set dup_id = null,dup_text = "Unassigned",dup_default = 1;
+insert into inv_int_media set med_id = null,med_text = "10G Copper",med_default = 0;
+insert into inv_int_media set med_id = null,med_text = "Coax",med_default = 0;
+insert into inv_int_media set med_id = null,med_text = "Copper RJ11",med_default = 0;
+insert into inv_int_media set med_id = null,med_text = "Copper RJ45",med_default = 0;
+insert into inv_int_media set med_id = null,med_text = "Copper T1",med_default = 0;
+insert into inv_int_media set med_id = null,med_text = "Fiber LC",med_default = 0;
+insert into inv_int_media set med_id = null,med_text = "Fiber NC",med_default = 0;
+insert into inv_int_media set med_id = null,med_text = "Other",med_default = 0;
+insert into inv_int_media set med_id = null,med_text = "10G Fiber",med_default = 0;
+insert into inv_int_media set med_id = null,med_text = "Unassigned",med_default = 1;
+insert into inv_int_role set rol_id = null,rol_text = "Clustering";
+insert into inv_int_role set rol_id = null,rol_text = "Data";
+insert into inv_int_role set rol_id = null,rol_text = "FW";
+insert into inv_int_role set rol_id = null,rol_text = "Management";
+insert into inv_int_role set rol_id = null,rol_text = "Monitor";
+insert into inv_int_role set rol_id = null,rol_text = "SAN";
+insert into inv_int_role set rol_id = null,rol_text = "Other";
+insert into inv_int_speed set spd_id = null,spd_text = "10 Mbps",spd_default=0;
+insert into inv_int_speed set spd_id = null,spd_text = "100 Mbps",spd_default=0;
+insert into inv_int_speed set spd_id = null,spd_text = "1 Gbps",spd_default=0;
+insert into inv_int_speed set spd_id = null,spd_text = "2 Gbps",spd_default=0;
+insert into inv_int_speed set spd_id = null,spd_text = "4 Gbps",spd_default=0;
+insert into inv_int_speed set spd_id = null,spd_text = "10 Gbps",spd_default=0;
+insert into inv_int_speed set spd_id = null,spd_text = "Auto Negotiate",spd_default=0;
+insert into inv_int_speed set spd_id = null,spd_text = "Other",spd_default=0;
+insert into inv_int_speed set spd_id = null,spd_text = "Unassigned",spd_default=1;
+insert into inv_int_types set itp_id = null,itp_name = "Management",itp_acronym = "Mgt",
+itp_description = "Used for management traffic such as admin access, monitoring, and backups.";
+insert into inv_int_types set itp_id = null,itp_name = "Application",itp_acronym = "App",
+itp_description = "Used for application only traffic.";
+insert into inv_int_types set itp_id = null,itp_name = "Signaling",itp_acronym = "Sig",
+itp_description = "";
+insert into inv_int_types set itp_id = null,itp_name = "Console",itp_acronym = "Con",
+itp_description = "";
+insert into inv_int_types set itp_id = null,itp_name = "Serial",itp_acronym = "Ser",
+itp_description = "";
+insert into inv_int_types set itp_id = null,itp_name = "LOM",itp_acronym = "LOM",
+itp_description = "Interface for accessing the various Lights Out Management interfaces.";
+insert into inv_int_types set itp_id = null,itp_name = "Loopback",itp_acronym = "Loop",
+itp_description = "";
+insert into inv_int_types set itp_id = null,itp_name = "Interconnect",itp_acronym = "Int",
+itp_description = "";
+insert into inv_int_types set itp_id = null,itp_name = "SCAN",itp_acronym = "SCAN",
+itp_description = "";
+insert into inv_int_types set itp_id = null,itp_name = "SAN",itp_acronym = "SAN",
+itp_description = "";
+insert into inv_int_types set itp_id = null,itp_name = "X.25",itp_acronym = "X25",
+itp_description = "";
+insert into inv_int_types set itp_id = null,itp_name = "External IP",itp_acronym = "EVIP",
+itp_description = "Virtual IPs or other IPs that aren't configured on the system itself but associated with the system.";
+insert into inv_int_types set itp_id = null,itp_name = "Point to Point",itp_acronym = "P2P",
+itp_description = "";
+insert into inv_int_types set itp_id = null,itp_name = "SAP",itp_acronym = "SAP",
+itp_description = "";
+insert into inv_int_types set itp_id = null,itp_name = "Link Local",itp_acronym = "Link",
+itp_description = "DHCP configured interface that can't find a DHCP server. Last two octets are pseudo random.";
+insert into inv_int_types set itp_id = null,itp_name = "Backup",itp_acronym = "Bkp",
+itp_description = "Dedicated Backup Network";
+insert into inv_int_volts set volt_id = null,volt_text = "AC 110V";
+insert into inv_int_volts set volt_id = null,volt_text = "AC 220V";
+insert into inv_int_volts set volt_id = null,volt_text = "AC 208V";
+insert into inv_int_volts set volt_id = null,volt_text = "DC-48V";
+insert into inv_int_volts set volt_id = null,volt_text = "Other";
+insert into inv_int_redundancy set red_id = null,red_text = "ALB/SLB XenVM",red_default = 0;
+insert into inv_int_redundancy set red_id = null,red_text = "APA (HP-UX)",red_default = 0;
+insert into inv_int_redundancy set red_id = null,red_text = "Bond (Linux)",red_default = 0;
+insert into inv_int_redundancy set red_id = null,red_text = "Etherchannel (Cisco)",red_default = 0;
+insert into inv_int_redundancy set red_id = null,red_text = "IPMP (Solaris)",red_default = 0;
+insert into inv_int_redundancy set red_id = null,red_text = "LACP",red_default = 0;
+insert into inv_int_redundancy set red_id = null,red_text = "MLT (Nortel/Avaya)",red_default = 0;
+insert into inv_int_redundancy set red_id = null,red_text = "Other",red_default = 0;
+insert into inv_int_redundancy set red_id = null,red_text = "SFT (Novell)",red_default = 0;
+insert into inv_int_redundancy set red_id = null,red_text = "Teaming (Windows/Intel)",red_default = 0;
+insert into inv_int_redundancy set red_id = null,red_text = "Teaming (Windows/nVidia)",red_default = 0;
+insert into inv_int_redundancy set red_id = null,red_text = "Unassigned",red_default = 1;
