@@ -172,7 +172,7 @@
         }
       } else {
           $output .= "<tr>\n";
-          $output .= "  <td class=\"ui-widget-content\" colspan=\"8\">No Filesystems defined.</td>\n";
+          $output .= "  <td class=\"ui-widget-content\" colspan=\"11\">No Filesystems defined.</td>\n";
           $output .= "</tr>\n";
       }
 
