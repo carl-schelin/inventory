@@ -66,6 +66,8 @@ The settings.php file contains server information, mysql connection details, pat
 
 Once done, copy the settings.php file and fixsettings script into the invroot directory and run the script. It will link the settings.php file into each directory.
 
+Note that you can change the debugging option in the settings.php file. If you make it write errors to the screen, some aspects of the inventory won't work quite as expected as the version of PHP might generate Warning messages that I haven't identified yet.
+
 ### Cascading Style Sheets
 
 In the css directory, I have jquery.js 3.6.0, jquery-ui 1.13.1 in a jquery-ui directory, and jQuery-ui-themes in a jquery-ui-themes directory installed.
