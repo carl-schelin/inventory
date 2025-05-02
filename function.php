@@ -255,11 +255,11 @@ function return_Index( $p_db, $p_check, $p_string ) {
   return $r_index;
 }
 
-function wait_Process( $p_string ) {
+function wait_Process( $p_string, $p_start = 0, $p_end = 1 ) {
 # includeing in order to use path information
   include('settings.php');
 
-  $randgif = rand(0,1);
+  $randgif = rand( $p_start, $p_end );
 
   $output  = "<center>";
   switch ($randgif) {
