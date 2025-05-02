@@ -46,6 +46,15 @@ In the txt directory are multiple files used to prepopulate the inventory databa
 
 For now, you'll need to log into mysql and use the database, then just copy and paste in the information in the files.
 
+#### Settings File
+
+The settings.php file contains server information, mysql connection details, path variables and a few other settings. You mainly have to update the server information and connection details such as username and password to the database.
+
+Once done, copy the settings.php file and fixsettings script into the invroot directory and run the script. It will link the settings.php file into each directory.
+
+### Finished
+
+With these tasks done, you should be able to log in to the new install with the admin:admin credentials and start adding devices.
 
 
 
