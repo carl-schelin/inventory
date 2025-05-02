@@ -10,6 +10,15 @@ Install the following packages:
 * mysql-server
 * php
 
+### Getting Started
+
+```
+systemctl enable mysqld
+systemctl enable httpd
+systemctl start mysqld
+systemctl start httpd
+```
+
 #### MariaDB
 
 If you've installed Mariadb vs 8.0, this system using mysqli so you'll need to install php_mysqlnd
