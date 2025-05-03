@@ -14,7 +14,6 @@
   if (isset($_SESSION['username'])) {
     $package = "datacenter.mysql.php";
     $formVars['update'] = clean($_GET['update'], 10);
-    $formVars['id']               = clean($_GET['id'],              10);
 
     if ($formVars['update'] == '') {
       $formVars['update'] = -1;
@@ -25,6 +24,7 @@
 
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
+        $formVars['id']               = clean($_GET['id'],              10);
         $formVars['loc_name']         = clean($_GET['loc_name'],        60);
         $formVars['loc_type']         = clean($_GET['loc_type'],        10);
         $formVars['loc_suite']        = clean($_GET['loc_suite'],       60);
