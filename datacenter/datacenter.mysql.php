@@ -18,9 +18,6 @@
     if ($formVars['update'] == '') {
       $formVars['update'] = -1;
     }
-    if ($formVars['id'] == '') {
-      $formVars['id'] = 0;
-    }
 
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
@@ -41,6 +38,9 @@
         $formVars['loc_tags']         = clean($_GET['loc_tags'],       255);
         $formVars['loc_environment']  = clean($_GET['loc_environment'], 10);
 
+        if ($formVars['id'] == '') {
+          $formVars['id'] = 0;
+        }
         if ($formVars['loc_default'] == 'true') {
           $formVars['loc_default'] = 1;
         } else {
