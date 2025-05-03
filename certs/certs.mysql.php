@@ -83,6 +83,16 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
+      $q_string  = "select usr_notify ";
+      $q_string .= "from inv_users ";
+      $q_string .= "where usr_id = " . $_SESSION['uid'] . " ";
+      $q_inv_users = mysqli_query($db, $q_string) or die ($q_string . ": " . mysqli_error($db));
+      if (mysqli_num_rows($q_inv_users) > 0) {
+        $a_inv_users = mysqli_fetch_array($q_inv_users);
+      } else {
+        $a_inv_users['usr_notify'] = 0;
+      }
+
       $date = time();
 #      $date = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
       $warningdate = mktime(0, 0, 0, date('m'), date('d') + $a_inv_users['usr_notify'], date('Y'));
