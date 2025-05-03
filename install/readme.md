@@ -94,6 +94,18 @@ In the imgs directory, I have several image files used in the system. All are ne
 
 You should be able to locate a tar file in http://schelin.org/inventory/imgs.tar
 
+### Login Type
+
+There are two login possibilities. Either that access to all parts of the inventory requires a login account or that guests can access the inventory without authentication. 
+
+Every script loads up the guest.php file which isn't part of the installation. In order to move forward, you'll need to link either the nologin.php script for guest access to guest.php
+
+    ln nologin.php guest.php
+
+If authentication is required, you'll need to link the login.php script to guest.php
+
+    ln login.php guest.php
+
 ### Finished
 
 With these tasks done, you should be able to log in to the new install with the admin:admin credentials and start adding devices.
