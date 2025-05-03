@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# Fix the settings.php symbolic links.
+
+# back off settings.php first just to be sure
+if [[ -f settings.php ]]
+then
+  echo "Backing up settings.php"
+  cp settings.php settings.backup.php
+else
+  echo "settings.php file not found!"
+  exit 1
+fi
+
+echo "Updating inventory settings.php"
+### Don't forget to delete "./settings.php" from the listing or bad things will happen
+SETTINGS=""
+SETTINGS="$SETTINGS ./accounts/settings.php "
+SETTINGS="$SETTINGS ./admin/settings.php "
+SETTINGS="$SETTINGS ./api/settings.php "
+SETTINGS="$SETTINGS ./api/v1/settings.php "
+SETTINGS="$SETTINGS ./articles/settings.php "
+SETTINGS="$SETTINGS ./assetmgr/settings.php "
+SETTINGS="$SETTINGS ./bugs/settings.php "
+SETTINGS="$SETTINGS ./certs/settings.php "
+SETTINGS="$SETTINGS ./css/settings.php "
+SETTINGS="$SETTINGS ./datacenter/settings.php "
+SETTINGS="$SETTINGS ./edit/settings.php "
+SETTINGS="$SETTINGS ./exclude/settings.php "
+SETTINGS="$SETTINGS ./faq/settings.php "
+SETTINGS="$SETTINGS ./features/settings.php "
+SETTINGS="$SETTINGS ./functions/settings.php "
+SETTINGS="$SETTINGS ./hardware/settings.php "
+SETTINGS="$SETTINGS ./image/settings.php "
+SETTINGS="$SETTINGS ./inventory/settings.php "
+SETTINGS="$SETTINGS ./ipam/settings.php "
+SETTINGS="$SETTINGS ./issue/settings.php "
+SETTINGS="$SETTINGS ./software/settings.php "
+SETTINGS="$SETTINGS ./login/functions/settings.php "
+SETTINGS="$SETTINGS ./login/settings.php "
+SETTINGS="$SETTINGS ./manage/settings.php "
+SETTINGS="$SETTINGS ./monitoring/settings.php "
+SETTINGS="$SETTINGS ./reports/settings.php "
+SETTINGS="$SETTINGS ./research/settings.php "
+SETTINGS="$SETTINGS ./scripts/settings.php "
+SETTINGS="$SETTINGS ./show/settings.php "
+SETTINGS="$SETTINGS ./tenable/settings.php "
+### Don't forget to delete "./settings.php" from the listing or bad things will happen
+
+# now remove the existing standalone settings file and create symbolic links
+for i in $SETTINGS
+do
+  if [[ -f $i ]]
+  then
+    rm $i
+  fi
+  ln settings.php $i
+done
+
+echo "Done..."
+

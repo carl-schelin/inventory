@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# search all files for a variable
+
+SEARCH=$1
+IGNORE=""
+if [[ $SEARCH = '-u' ]]
+then
+  IGNORE="-u"
+  SEARCH=$2
+fi
+
+if [[ $IGNORE = '-u' ]]
+then
+  SEARCH=$(echo $SEARCH | sed -e "s/_/ /g")
+fi
+
+# search for a directory listing, ignoring some directories
+for i in `find . -type d -print | sort | egrep -v "(images|imgs|./css|.csv$|.git)"`
+do
+  echo "Searching: $i"
+# search files ignoring some files
+  for j in `ls -la $i | egrep -v "(settings.php|settings.backup.php|^total|^d|^l|*.md)" | awk '{print $NF}'`
+  do
+    grep -i -H "$SEARCH" $i/$j
+  done
+done
+
