@@ -407,6 +407,9 @@ function create_filesystem( p_script_url, update ) {
   cf_url += "&fs_mount="     + encode_URI(cf_form.fs_mount.value);
   cf_url += "&fs_group="     + cf_form.fs_group.value;
   cf_url += "&fs_size="      + encode_URI(cf_form.fs_size.value);
+  cf_url += "&fs_used="      + encode_URI(cf_form.fs_used.value);
+  cf_url += "&fs_avail="     + encode_URI(cf_form.fs_avail.value);
+  cf_url += "&fs_percent="   + cf_form.fs_percent.value;
   cf_url += "&fs_wwid="      + encode_URI(cf_form.fs_wwid.value);
   cf_url += "&fs_subsystem=" + encode_URI(cf_form.fs_subsystem.value);
   cf_url += "&fs_volume="    + encode_URI(cf_form.fs_volume.value);
@@ -435,6 +438,9 @@ function update_filesystem( p_script_url, update ) {
   uf_url += "&fs_mount="     + encode_URI(uf_form.fs_mount.value);
   uf_url += "&fs_group="     + uf_form.fs_group.value;
   uf_url += "&fs_size="      + encode_URI(uf_form.fs_size.value);
+  uf_url += "&fs_used="      + encode_URI(uf_form.fs_used.value);
+  uf_url += "&fs_avail="     + encode_URI(uf_form.fs_avail.value);
+  uf_url += "&fs_percent="   + uf_form.fs_percent.value;
   uf_url += "&fs_wwid="      + encode_URI(uf_form.fs_wwid.value);
   uf_url += "&fs_subsystem=" + encode_URI(uf_form.fs_subsystem.value);
   uf_url += "&fs_volume="    + encode_URI(uf_form.fs_volume.value);
@@ -964,7 +970,7 @@ $(document).ready( function() {
   $( "#dialogFilesystemCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 475,
+    height: 550,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -994,7 +1000,7 @@ $(document).ready( function() {
   $( "#dialogFilesystemUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 475,
+    height: 550,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -1887,10 +1893,7 @@ a tag that already exists, it does check for that and will simply toggle it vs a
 <ul>
   <li><strong>Buttons</strong>
   <ul>
-    <li><strong>Refresh Filesystem Listing</strong> - Reloads the Filesystem Listing table. At times, especially when removing several items, the table fails to refresh.</li>
-    <li><strong>Update Filesystem</strong> - After selecting a filesystem to edit, click here to save changes.</li>
     <li><strong>Add Filesystem</strong> - Add a new filesystem. You can also select an existing piece, make changes if needed, and click this button to add a second item.</li>
-    <li><strong>Copy Filesystem Table From:</strong> - Select a server from the listing to duplicate a filesystem list.</li>
   </ul></li>
 </ul>
 
@@ -1899,8 +1902,11 @@ a tag that already exists, it does check for that and will simply toggle it vs a
   <ul>
     <li><strong>Back up?</strong> - Check this box if this file system is backed up.</li>
     <li><strong>Device</strong> - Enter the filesystem device.</li>
+    <li><strong>Size</strong> - Enter the total space of the filesystem.</li>
+    <li><strong>Used</strong> - Enter the space used of the filesystem.</li>
+    <li><strong>Available</strong> - Enter the remaining space of the filesystem.</li>
+    <li><strong>Use%</strong> - Enter the percentage used of the filesystem.</li>
     <li><strong>Mount Point</strong> - Enter the expected mount point for this filesystem.</li>
-    <li><strong>Size</strong> - Enter the size of the filesystem.</li>
   </ul></li>
   <li><strong>SAN Form</strong>
   <ul>
@@ -1920,7 +1926,7 @@ a tag that already exists, it does check for that and will simply toggle it vs a
   <li><strong>Notes</strong>
   <ul>
     <li>Fields marked with an asterisk (*) are automatically captured where possible.</li>
-    <li>Click the <strong>Filesystem Management</strong> title bar to toggle the <strong>Filesystem Form</strong>.</li>
+    <li>Lines <span class="ui-state-error">highlighted</span> indicate a filesystem that is not backed up.</li>
   </ul></li>
 </ul>
 
