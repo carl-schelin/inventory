@@ -21,7 +21,7 @@
     if (check_userlevel($db, $AL_Edit)) {
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_filesystem");
 
-      $q_string  = "select fs_backup,fs_device,fs_mount,fs_group,fs_size,fs_wwid,fs_subsystem,fs_lun,fs_volume,fs_volid,fs_path ";
+      $q_string  = "select fs_backup,fs_device,fs_mount,fs_group,fs_size,fs_used,fs_avail,fs_percent,fs_wwid,fs_subsystem,fs_lun,fs_volume,fs_volid,fs_path ";
       $q_string .= "from inv_filesystem ";
       $q_string .= "where fs_id = " . $formVars['id'];
       $q_inv_filesystem = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -33,6 +33,9 @@
       print "document.formFilesystemUpdate.fs_device.value = '"    . mysqli_real_escape_string($db, $a_inv_filesystem['fs_device'])    . "';\n";
       print "document.formFilesystemUpdate.fs_mount.value = '"     . mysqli_real_escape_string($db, $a_inv_filesystem['fs_mount'])     . "';\n";
       print "document.formFilesystemUpdate.fs_size.value = '"      . mysqli_real_escape_string($db, $a_inv_filesystem['fs_size'])      . "';\n";
+      print "document.formFilesystemUpdate.fs_used.value = '"      . mysqli_real_escape_string($db, $a_inv_filesystem['fs_used'])      . "';\n";
+      print "document.formFilesystemUpdate.fs_avail.value = '"     . mysqli_real_escape_string($db, $a_inv_filesystem['fs_avail'])     . "';\n";
+      print "document.formFilesystemUpdate.fs_percent.value = '"   . mysqli_real_escape_string($db, $a_inv_filesystem['fs_percent'])   . "';\n";
       print "document.formFilesystemUpdate.fs_wwid.value = '"      . mysqli_real_escape_string($db, $a_inv_filesystem['fs_wwid'])      . "';\n";
       print "document.formFilesystemUpdate.fs_subsystem.value = '" . mysqli_real_escape_string($db, $a_inv_filesystem['fs_subsystem']) . "';\n";
       print "document.formFilesystemUpdate.fs_volume.value = '"    . mysqli_real_escape_string($db, $a_inv_filesystem['fs_volume'])    . "';\n";
