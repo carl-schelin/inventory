@@ -17,6 +17,15 @@
   <td class="ui-widget-content">Size:* <input type="text" name="fs_size" size="10"></td>
 </tr>
 <tr>
+  <td class="ui-widget-content">Used:* <input type="text" name="fs_used" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Available:* <input type="text" name="fs_avail" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Use%:* <input type="text" name="fs_percent" size="10"></td>
+</tr>
+<tr>
   <td class="ui-widget-content">Managed by: <select name="fs_group">
 <?php
   $q_string  = "select grp_id,grp_name ";
@@ -81,6 +90,15 @@
 </tr>
 <tr>
   <td class="ui-widget-content">Size:* <input type="text" name="fs_size" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Used:* <input type="text" name="fs_used" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Available:* <input type="text" name="fs_avail" size="10"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Use%:* <input type="text" name="fs_percent" size="10"></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Managed by: <select name="fs_group">
