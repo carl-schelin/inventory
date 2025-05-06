@@ -31,6 +31,9 @@
         $formVars['fs_mount']     = clean($_GET['fs_mount'],     60);
         $formVars['fs_group']     = clean($_GET['fs_group'],     10);
         $formVars['fs_size']      = clean($_GET['fs_size'],      10);
+        $formVars['fs_used']      = clean($_GET['fs_used'],      10);
+        $formVars['fs_avail']     = clean($_GET['fs_avail'],     10);
+        $formVars['fs_percent']   = clean($_GET['fs_percent'],   10);
         $formVars['fs_wwid']      = clean($_GET['fs_wwid'],     100);
         $formVars['fs_subsystem'] = clean($_GET['fs_subsystem'], 30);
         $formVars['fs_volume']    = clean($_GET['fs_volume'],   100);
@@ -52,6 +55,15 @@
         if ($formVars['fs_size'] == '') {
           $formVars['fs_size'] = 0;
         }
+        if ($formVars['fs_used'] == '') {
+          $formVars['fs_used'] = 0;
+        }
+        if ($formVars['fs_avail'] == '') {
+          $formVars['fs_avail'] = 0;
+	}
+	if ($formVars['fs_percent'] == 0) {
+	  $formVars['fs_percent'] = 0;
+	}
         if ($formVars['fs_lun'] == '') {
           $formVars['fs_lun'] = 0;
         }
@@ -69,6 +81,9 @@
             "fs_mount     = \"" . $formVars['fs_mount']     . "\"," .
             "fs_group     =   " . $formVars['fs_group']     . "," .
             "fs_size      =   " . $formVars['fs_size']      . "," .
+            "fs_used      =   " . $formVars['fs_used']      . "," .
+            "fs_avail     =   " . $formVars['fs_avail']     . "," .
+            "fs_percent   =   " . $formVars['fs_percent']   . "," .
             "fs_wwid      = \"" . $formVars['fs_wwid']      . "\"," .
             "fs_subsystem = \"" . $formVars['fs_subsystem'] . "\"," .
             "fs_volume    = \"" . $formVars['fs_volume']    . "\"," .
@@ -103,13 +118,13 @@
       $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       $output .=   "<th class=\"ui-state-default\" width=\"160\">Delete Filesystem</th>\n";
-      $output .=   "<th class=\"ui-state-default\">Device</th>\n";
-      $output .=   "<th class=\"ui-state-default\">Mount</th>\n";
       $output .=   "<th class=\"ui-state-default\">Managed By</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Device</th>\n";
       $output .=   "<th class=\"ui-state-default\">Size</th>\n";
       $output .=   "<th class=\"ui-state-default\">Used</th>\n";
       $output .=   "<th class=\"ui-state-default\">Available</th>\n";
       $output .=   "<th class=\"ui-state-default\">% Used</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Mount</th>\n";
       $output .=   "<th class=\"ui-state-default\">Volume Name</th>\n";
       $output .=   "<th class=\"ui-state-default\">WWNN</th>\n";
       $output .=   "<th class=\"ui-state-default\">Updated</th>\n";
@@ -157,13 +172,13 @@
 
           $output .= "<tr>\n";
           $output .= "  <td class=\"" . $class . " delete\">" . $linkdel                                                      . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_device']            . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_mount']             . $linkend . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['grp_name']             . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_device']            . $linkend . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_size']              . $linkend . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_used']              . $linkend . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_avail']             . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_percent']           . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_percent'] . "%"     . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_mount']             . $linkend . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_volume']            . $linkend . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_wwid']              . $linkend . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_update'] . $checked . $linkend . "</td>\n";
