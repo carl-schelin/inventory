@@ -1,0 +1,22 @@
+#!/bin/bash
+
+echo "Importing the inventory mysql files"
+
+echo "Importing the SQL files"
+cd /var/www/html/inventory/install/sql
+for i in `ls *.sql`
+do
+  echo $i
+  mysql --user=root --password='[Password]' inventory < $i
+done
+
+#echo "Importing the data"
+#for i in `ls *.txt`
+#do
+#  mysqlimport --local --user=root --password='[Password]' inventory `pwd`/$i
+#done
+
+cd /var/www/html/inventory/install
+
+echo "Done"
+
