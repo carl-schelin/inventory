@@ -1536,3 +1536,10 @@ Added missing project management scripts. Renamed the servers.php to product.mem
 alter table inv_projects add column prj_directory char(100) not null default '' after prj_desc;
 alter table inv_products add column prod_directory char(100) not null default '' after prod_desc;
 
+### Timestamp: 2025-05-05
+
+Several changes as I worked to install this on a fresh system.
+
+Lots of updates in the install directory
+
+
