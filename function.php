@@ -404,7 +404,7 @@ function return_System( $p_db, $p_string ) {
   $q_string .= "from inv_software ";
   $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = inv_software.sw_type ";
   $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = inv_software.sw_id ";
-  $q_string .= "where typ_name = 'OS' and svr_companyid = " . $p_string;
+  $q_string .= "where typ_name = 'Operating System' and svr_companyid = " . $p_string;
   $q_inv_software = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
   if (mysqli_num_rows($q_inv_software) > 0) {
     $a_inv_software = mysqli_fetch_array($q_inv_software);

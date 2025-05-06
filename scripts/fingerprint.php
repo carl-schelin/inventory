@@ -179,7 +179,7 @@
   $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inv_inventory.inv_id  ";
   $q_string .= "left join inv_software     on inv_software.sw_id             = inv_svr_software.svr_softwareid  ";
   $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = inv_software.sw_type  ";
-  $q_string .= "where hw_companyid = " . $a_inv_inventory['inv_id'] . " and hw_deleted = 0 and hw_primary = 1 and typ_name = \"OS\" ";
+  $q_string .= "where hw_companyid = " . $a_inv_inventory['inv_id'] . " and hw_deleted = 0 and hw_primary = 1 and typ_name = \"Operating System\" ";
   $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   if (mysqli_num_rows($q_inv_hardware) > 0) {
     $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);

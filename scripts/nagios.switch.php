@@ -71,7 +71,7 @@
   $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = inv_software.sw_type ";
   $q_string .= "left join inv_interface    on inv_interface.int_companyid    = inv_inventory.inv_id ";
   $q_string .= "left join inv_groups       on inv_groups.grp_id              = inv_inventory.inv_manager ";
-  $q_string .= "where int_nagios = 1 and inv_status = 0 and typ_name = 'OS' and int_ip6 = 0 and int_type = 1 and inv_manager = 12 ";
+  $q_string .= "where int_nagios = 1 and inv_status = 0 and typ_name = 'Operating System' and int_ip6 = 0 and int_type = 1 and inv_manager = 12 ";
   $q_string .= "order by int_addr ";
   $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {

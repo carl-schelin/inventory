@@ -80,7 +80,7 @@
   }
   $q_string .= "left join inv_interface on inv_interface.int_companyid = inv_inventory.inv_id ";
   $q_string .= "left join inv_groups    on inv_groups.grp_id           = inv_inventory.inv_manager ";
-  $q_string .= "where int_nagios = 1 and inv_status = 0 and typ_name = 'OS' and int_ip6 = 0 and int_management = 1 and inv_location = 39 and inv_manager != 12 ";
+  $q_string .= "where int_nagios = 1 and inv_status = 0 and typ_name = 'Operating System' and int_ip6 = 0 and int_management = 1 and inv_location = 39 and inv_manager != 12 ";
   if ($hostname == 'inventory.internal.pri') {
     $q_string .= "and hw_active != '1971-01-01' ";
   }

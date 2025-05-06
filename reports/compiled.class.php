@@ -208,7 +208,7 @@ $(document).ready( function() {
   $q_string .= "left join inv_support       on inv_support.sup_id             = inv_hardware.hw_supportid ";
   $q_string .= "left join inv_products      on inv_products.prod_id           = inv_inventory.inv_product ";
   $q_string .= "left join inv_service       on inv_service.svc_id             = inv_inventory.inv_class ";
-  $q_string .= $where . " and typ_name = 'OS' ";
+  $q_string .= $where . " and typ_name = 'Operating System' ";
   $q_string .= $orderby;
   $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   if (mysqli_num_rows($q_inv_inventory) > 0) {
@@ -301,7 +301,7 @@ $(document).ready( function() {
   $q_string .= "left join inv_support       on inv_support.sup_id             = inv_hardware.hw_supportid ";
   $q_string .= "left join inv_products      on inv_products.prod_id           = inv_inventory.inv_product ";
   $q_string .= "left join inv_service       on inv_service.svc_id             = inv_inventory.inv_class ";
-  $q_string .= $where . " and hw_primary = 1 and hw_deleted = 0 and typ_name = 'OS' ";
+  $q_string .= $where . " and hw_primary = 1 and hw_deleted = 0 and typ_name = 'Operating System' ";
   $q_string .= $orderby;
   $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   if (mysqli_num_rows($q_inv_inventory) > 0) {

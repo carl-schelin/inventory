@@ -589,7 +589,7 @@
 # first off, see if the software type 'OS' is in the table. If not, add it.
               $q_string  = "select typ_id ";
               $q_string .= "from inv_sw_types ";
-              $q_string .= "where typ_name = \"OS\" ";
+              $q_string .= "where typ_name = \"Operating System\" ";
               $q_inv_sw_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
               if (mysqli_num_rows($q_inv_sw_types) > 0) {
                 $a_inv_sw_types = mysqli_fetch_array($q_inv_sw_types);
@@ -600,7 +600,7 @@
                 $q_string .= "into inv_sw_types ";
                 $q_string .= "set ";
                 $q_string .= "typ_id   = \"" . "null"  . "\",";
-                $q_string .= "typ_name = \"OS\" ";
+                $q_string .= "typ_name = \"Operating System\" ";
                 $q_inv_sw_types = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
 
                 $a_inv_sw_types['typ_id'] = last_insert_id($db);

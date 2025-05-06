@@ -440,7 +440,7 @@ to software and hardware section.</p>
   $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inv_inventory.inv_id ";
   $q_string .= "left join inv_software     on inv_software.sw_id             = inv_svr_software.svr_softwareid ";
   $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = inv_software.sw_type ";
-  $q_string .= "where inv_status = 0 and typ_name = 'OS' " . $admin . " ";
+  $q_string .= "where inv_status = 0 and typ_name = 'Operating System' " . $admin . " ";
   $q_string .= "group by sw_software";
 print $q_string;
   $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));

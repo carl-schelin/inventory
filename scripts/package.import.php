@@ -36,7 +36,7 @@
   $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inv_inventory.inv_id ";
   $q_string .= "left join inv_software     on inv_software.sw_id             = inv_svr_software.svr_softwareid ";
   $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = inv_software.sw_type ";
-  $q_string .= "where inv_name = \"" . $server . "\" and inv_status = 0 and typ_name = 'OS' ";
+  $q_string .= "where inv_name = \"" . $server . "\" and inv_status = 0 and typ_name = 'Operating System' ";
   $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n");
   while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
     $inv_id = $a_inv_inventory['inv_id'];

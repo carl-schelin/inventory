@@ -263,7 +263,7 @@ reviewed and worked on.</li>
   $q_string .= "left join inv_svr_software  on inv_svr_software.svr_companyid = inv_inventory.inv_id ";
   $q_string .= "left join inv_software      on inv_software.sw_id             = inv_svr_software.svr_softwareid ";
   $q_string .= "left join inv_sw_types      on inv_sw_types.typ_id            = inv_software.sw_type ";
-  $q_string .= $where . " and typ_name = 'OS' and int_management = 1 ";
+  $q_string .= $where . " and typ_name = 'Operating System' and int_management = 1 ";
   $q_string .= $orderby;
   $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {

@@ -255,11 +255,11 @@ function return_Index( $p_db, $p_check, $p_string ) {
   return $r_index;
 }
 
-function wait_Process( $p_string ) {
+function wait_Process( $p_string, $p_start = 0, $p_end = 1 ) {
 # includeing in order to use path information
   include('settings.php');
 
-  $randgif = rand(0,1);
+  $randgif = rand( $p_start, $p_end );
 
   $output  = "<center>";
   switch ($randgif) {
@@ -369,134 +369,27 @@ function return_Virtual( $p_db, $p_string ) {
   return $output;
 }
 
-function return_ShortOS( $p_string ) {
+function return_ShortOS( $p_db, $p_string ) {
   include('settings.php');
+  $package = "function.php";
 
 # this should be the official string returned from the OS and not 
 # found strings.
-  $ret_string = $p_string;
-  if ($p_string == "Solaris 9 9/04 s9s_u7wos_09 SPARC") {
-    $ret_string = "Solaris 9 9/04";
-  }
-  if ($p_string == "Solaris 10 6/06 s10s_u2wos_09a SPARC") {
-    $ret_string = "Solaris 10 6/06";
-  }
-  if ($p_string == "Solaris 10 11/06 s10s_u3wos_10 SPARC") {
-    $ret_string = "Solaris 10 11/06";
-  }
-  if ($p_string == "Solaris 10 5/08 s10x_u5wos_10 X86") {
-    $ret_string = "Solaris 10 5/08";
-  }
-  if ($p_string == "Solaris 10 10/08 s10s_u6wos_07b SPARC") {
-    $ret_string = "Solaris 10 10/08";
-  }
-  if ($p_string == "Solaris 10 10/08 s10x_u6wos_07b X86") {
-    $ret_string = "Solaris 10 10/08";
-  }
-  if ($p_string == "Oracle Solaris 10 9/10 s10x_u9wos_14a X86") {
-    $ret_string = "Solaris 10 9/10";
-  }
-  if ($p_string == "Oracle Solaris 10 8/11 s10s_u10wos_17b SPARC") {
-    $ret_string = "Solaris 10 8/11";
-  }
-  if ($p_string == "Oracle Enterprise Linux Enterprise Linux AS release 4 (October Update 7)") {
-    $ret_string = "Oracle EL AS 4.7";
-  }
-  if ($p_string == "Red Hat Enterprise Linux ES release 4 (Nahant Update 4)") {
-    $ret_string = "RHEL ES 4.4";
-  }
-  if ($p_string == "Red Hat Enterprise Linux AS release 4 (Nahant Update 8)") {
-    $ret_string = "RHEL AS 4.8";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 5.1 (Tikanga)") {
-    $ret_string = "RHEL5.1";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 5.2 (Tikanga)") {
-    $ret_string = "RHEL5.2";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 5.3 (Tikanga)") {
-    $ret_string = "RHEL5.3";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 5.4 (Tikanga)") {
-    $ret_string = "RHEL5.4";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 5.11 (Tikanga)") {
-    $ret_string = "RHEL5.11";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 6.1 (Santiago)") {
-    $ret_string = "RHEL6.1";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 6.2 (Santiago)") {
-    $ret_string = "RHEL6.2";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 6.3 (Santiago)") {
-    $ret_string = "RHEL6.3";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 6.4 (Santiago)") {
-    $ret_string = "RHEL6.4";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 6.5 (Santiago)") {
-    $ret_string = "RHEL6.5";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 6.6 (Santiago)") {
-    $ret_string = "RHEL6.6";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 6.7 (Santiago)") {
-    $ret_string = "RHEL6.7";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 6.8 (Santiago)") {
-    $ret_string = "RHEL6.8";
-  }
-  if ($p_string == "CentOS release 6.8 (Final)") {
-    $ret_string = "COS6.8";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 6.9 (Santiago)") {
-    $ret_string = "RHEL6.9";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 6.10 (Santiago)") {
-    $ret_string = "RHEL6.10";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 7.0 (Maipo)") {
-    $ret_string = "RHEL7.0";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 7.1 (Maipo)") {
-    $ret_string = "RHEL7.1";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 7.2 (Maipo)") {
-    $ret_string = "RHEL7.2";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 7.3 (Maipo)") {
-    $ret_string = "RHEL7.3";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 7.4 (Maipo)") {
-    $ret_string = "RHEL7.4";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 7.5 (Maipo)") {
-    $ret_string = "RHEL7.5";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 7.6 (Maipo)") {
-    $ret_string = "RHEL7.6";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 7.7 (Maipo)") {
-    $ret_string = "RHEL7.7";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 7.8 (Maipo)") {
-    $ret_string = "RHEL7.8";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 7.9 (Maipo)") {
-    $ret_string = "RHEL7.9";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 8.0 (Ootpa)") {
-    $ret_string = "RHEL8.0";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 8.0 (Ootpa)") {
-    $ret_string = "RHEL8.1";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 8.1 (Ootpa)") {
-    $ret_string = "RHEL8.2";
-  }
-  if ($p_string == "Red Hat Enterprise Linux Server release 8.3 (Ootpa)") {
-    $ret_string = "RHEL8.3";
+  $ret_string = "";
+
+  if ($p_string == '') {
+    $ret_string = "OS not assigned";
+  } else {
+    $q_string  = "select os_short ";
+    $q_string .= "from inv_operatingsystem ";
+    $q_string .= "where os_software = \"" . $p_string . "\" ";
+    $q_inv_operatingsystem = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
+    if (mysqli_num_rows($q_inv_operatingsystem) > 0) {
+      $a_inv_operatingsystem = mysqli_fetch_array($q_inv_operatingsystem);
+      $ret_string = $a_inv_operatingsystem['os_short'];
+    } else {
+      $ret_string = $p_string;
+    }
   }
 
   return $ret_string;
@@ -511,63 +404,71 @@ function return_System( $p_db, $p_string ) {
   $q_string .= "from inv_software ";
   $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = inv_software.sw_type ";
   $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = inv_software.sw_id ";
-  $q_string .= "where typ_name = 'OS' and svr_companyid = " . $p_string;
+  $q_string .= "where typ_name = 'Operating System' and svr_companyid = " . $p_string;
   $q_inv_software = mysqli_query($p_db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($p_db)));
-  $a_inv_software = mysqli_fetch_array($q_inv_software);
+  if (mysqli_num_rows($q_inv_software) > 0) {
+    $a_inv_software = mysqli_fetch_array($q_inv_software);
 
-  $output = $a_inv_software['sw_software'];
-  if (stripos($a_inv_software['sw_software'], "linux") !== false) {
-    $output = 'Linux';
-  }
-  if (stripos($a_inv_software['sw_software'], "red hat") !== false) {
-    $output = 'Linux';
-  }
-  if (stripos($a_inv_software['sw_software'], "debian") !== false) {
-    $output = 'Linux';
-  }
-  if (stripos($a_inv_software['sw_software'], "ubuntu") !== false) {
-    $output = 'Linux';
-  }
-  if (stripos($a_inv_software['sw_software'], "centos") !== false) {
-    $output = 'Linux';
-  }
-  if (stripos($a_inv_software['sw_software'], "suse") !== false) {
-    $output = 'Linux';
-  }
-  if (stripos($a_inv_software['sw_software'], "fedora") !== false) {
-    $output = 'Linux';
-  }
-  if (stripos($a_inv_software['sw_software'], "solaris") !== false) {
-    $output = 'SunOS';
-  }
-  if (stripos($a_inv_software['sw_software'], "hp-ux") !== false) {
-    $output = 'HP-UX';
-  }
-  if (stripos($a_inv_software['sw_software'], "tru64") !== false) {
-    $output = 'OSF1';
-  }
-  if (stripos($a_inv_software['sw_software'], "osf1") !== false) {
-    $output = 'OSF1';
-  }
-  if (stripos($a_inv_software['sw_software'], "freebsd") !== false) {
-    $output = 'FreeBSD';
-  }
-  if (stripos($a_inv_software['sw_software'], "windows") !== false) {
-    $output = 'Windows';
-  }
-  if (stripos($a_inv_software['sw_software'], "esx") !== false) {
-    $output = 'VMWare';
-  }
-  if (stripos($a_inv_software['sw_software'], "vmware") !== false) {
-    $output = 'VMware';
-  }
-  if (stripos($a_inv_software['sw_software'], "cisco ios") !== false) {
-    $output = 'Cisco';
-  }
-  if (stripos($a_inv_software['sw_software'], "appliance") !== false) {
-    $output = 'Appliance';
+    $output = $a_inv_software['sw_software'];
+    if (stripos($a_inv_software['sw_software'], "linux") !== false) {
+      $output = 'Linux';
+    }
+    if (stripos($a_inv_software['sw_software'], "red hat") !== false) {
+      $output = 'Linux';
+    }
+    if (stripos($a_inv_software['sw_software'], "debian") !== false) {
+      $output = 'Linux';
+    }
+    if (stripos($a_inv_software['sw_software'], "ubuntu") !== false) {
+      $output = 'Linux';
+    }
+    if (stripos($a_inv_software['sw_software'], "centos") !== false) {
+      $output = 'Linux';
+    }
+    if (stripos($a_inv_software['sw_software'], "suse") !== false) {
+      $output = 'Linux';
+    }
+    if (stripos($a_inv_software['sw_software'], "fedora") !== false) {
+      $output = 'Linux';
+    }
+    if (stripos($a_inv_software['sw_software'], "solaris") !== false) {
+      $output = 'SunOS';
+    }
+    if (stripos($a_inv_software['sw_software'], "hp-ux") !== false) {
+      $output = 'HP-UX';
+    }
+    if (stripos($a_inv_software['sw_software'], "tru64") !== false) {
+      $output = 'OSF1';
+    }
+    if (stripos($a_inv_software['sw_software'], "osf1") !== false) {
+      $output = 'OSF1';
+    }
+    if (stripos($a_inv_software['sw_software'], "freebsd") !== false) {
+      $output = 'FreeBSD';
+    }
+    if (stripos($a_inv_software['sw_software'], "windows") !== false) {
+      $output = 'Windows';
+    }
+    if (stripos($a_inv_software['sw_software'], "esx") !== false) {
+      $output = 'VMWare';
+    }
+    if (stripos($a_inv_software['sw_software'], "vmware") !== false) {
+      $output = 'VMware';
+    }
+    if (stripos($a_inv_software['sw_software'], "cisco ios") !== false) {
+      $output = 'Cisco';
+    }
+    if (stripos($a_inv_software['sw_software'], "appliance") !== false) {
+      $output = 'Appliance';
+    }
+    if (stripos($a_inv_software['sw_software'], "rocky") !== false) {
+      $output = 'Linux';
+    }
   }
 
+  if ($output == '') {
+    $output = "N/A";
+  }
   return $output;
 }
 

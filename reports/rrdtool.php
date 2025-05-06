@@ -157,7 +157,7 @@
     $q_string .= "from inv_software ";
     $q_string .= "left join inv_svr_software on inv_svr_software.svr_softwareid = inv_software.sw_id ";
     $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id             = inv_software.sw_type ";
-    $q_string .= "where typ_name = 'OS' and svr_companyid = " . $a_inv_inventory['inv_id'];
+    $q_string .= "where typ_name = 'Operating System' and svr_companyid = " . $a_inv_inventory['inv_id'];
     $q_inv_software = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     $a_inv_software = mysqli_fetch_array($q_inv_software);
 
