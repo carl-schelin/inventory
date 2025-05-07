@@ -19,6 +19,37 @@
       $formVars['update'] = -1;
     }
 
+    $q_string  = "select part_id ";
+    $q_string .= "from inv_parts ";
+    $q_string .= "where part_name = \"Server\" ";
+    $q_inv_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    if (mysqli_num_rows($q_inv_parts) > 0) {
+      $a_inv_parts = mysqli_fetch_array($q_inv_parts);
+      $server_id = $a_inv_parts['part_id'];
+    } else {
+      $server_id = 0;
+    }
+    $q_string  = "select part_id ";
+    $q_string .= "from inv_parts ";
+    $q_string .= "where part_name = \"Memory\" ";
+    $q_inv_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    if (mysqli_num_rows($q_inv_parts) > 0) {
+      $a_inv_parts = mysqli_fetch_array($q_inv_parts);
+      $memory_id = $a_inv_parts['part_id'];
+    } else {
+      $memory_id = 0;
+    }
+    $q_string  = "select part_id ";
+    $q_string .= "from inv_parts ";
+    $q_string .= "where part_name = \"CPU\" ";
+    $q_inv_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    if (mysqli_num_rows($q_inv_parts) > 0) {
+      $a_inv_parts = mysqli_fetch_array($q_inv_parts);
+      $cpu_id = $a_inv_parts['part_id'];
+    } else {
+      $cpu_id = 0;
+    }
+
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['id'],           10);
@@ -94,7 +125,7 @@
       $q_string .= "from inv_models ";
       $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
       $q_string .= "left join inv_parts   on inv_parts.part_id  = inv_models.mod_type ";
-      $q_string .= "where mod_type != 2 and mod_type != 4 and mod_type != 8 and mod_primary != 1 ";
+      $q_string .= "where mod_type != " . $server_id . " and mod_type != " . $memory_id . " and mod_type != " . $cpu_id . " and mod_primary != 1 ";
       $q_string .= "order by ven_name,mod_name ";
       $q_inv_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_inv_models) > 0) {
