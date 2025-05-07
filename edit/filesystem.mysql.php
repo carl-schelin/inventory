@@ -174,10 +174,10 @@
           $output .= "  <td class=\"" . $class . " delete\">" . $linkdel                                                      . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['grp_name']             . $linkend . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_device']            . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_size']              . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_used']              . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_avail']             . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_percent'] . "%"     . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . " button\">"        . $linkstart . number_format($a_inv_filesystem['fs_size'], 0, '.', ',')              . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . " button\">"        . $linkstart . number_format($a_inv_filesystem['fs_used'], 0, '.', ',')              . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . " button\">"        . $linkstart . number_format($a_inv_filesystem['fs_avail'], 0, '.', ',')             . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . " delete\">"        . $linkstart . $a_inv_filesystem['fs_percent'] . "%"     . $linkend . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_mount']             . $linkend . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_volume']            . $linkend . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_wwid']              . $linkend . "</td>\n";
