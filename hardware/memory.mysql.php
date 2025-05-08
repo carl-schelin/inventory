@@ -12,12 +12,21 @@
   include($Sitepath . '/function.php');
 
   if (isset($_SESSION['username'])) {
-    $package = "memormemory.mysql.php";
+    $package = "memory.mysql.php";
     $formVars['update']         = clean($_GET['update'],       10);
-    $formVars['mod_type']       = 4;
 
     if ($formVars['update'] == '') {
       $formVars['update'] = -1;
+    }
+
+    $q_string  = "select part_id ";
+    $q_string .= "from inv_parts ";
+    $q_string .= "where part_name = \"Memory\" ";
+    $q_inv_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    if (mysqli_num_rows($q_inv_parts) > 0) {
+      $a_inv_parts = mysqli_fetch_array($q_inv_parts);
+    } else {
+      $a_inv_parts['part_id'] = 0;
     }
 
     if (check_userlevel($db, $AL_Edit)) {
@@ -43,11 +52,10 @@
         if (strlen($formVars['mod_name']) > 0) {
           logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
-
           $q_string =
             "mod_vendor     =   " . $formVars['mod_vendor']   . "," .
             "mod_name       = \"" . $formVars['mod_name']     . "\"," .
-            "mod_type       = \"" . $formVars['mod_type']     . "\"," .
+            "mod_type       = \"" . $a_inv_parts['part_id']   . "\"," .
             "mod_primary    =   " . $formVars['mod_primary']  . "," .
             "mod_size       = \"" . $formVars['mod_size']     . "\"," .
             "mod_speed      = \"" . $formVars['mod_speed']    . "\"," .
@@ -94,7 +102,7 @@
       $q_string  = "select mod_id,ven_name,mod_name,mod_size,mod_speed ";
       $q_string .= "from inv_models ";
       $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
-      $q_string .= "where mod_type = " . $formVars['mod_type'] . " ";
+      $q_string .= "where mod_type = " . $a_inv_parts['part_id'] . " ";
       $q_string .= "order by ven_name,mod_name ";
       $q_inv_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_inv_models) > 0) {
@@ -115,7 +123,7 @@
           $q_string  = "select hw_id ";
           $q_string .= "from inv_hardware ";
           $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_hardware.hw_companyid ";
-          $q_string .= "where hw_vendorid = " . $a_inv_models['mod_id'] . " and hw_type = " . $formVars['mod_type'] . " and inv_status = 0 ";
+          $q_string .= "where hw_vendorid = " . $a_inv_models['mod_id'] . " and hw_type = " . $a_inv_parts['part_id'] . " and inv_status = 0 ";
           $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $total = mysqli_num_rows($q_inv_hardware);
 

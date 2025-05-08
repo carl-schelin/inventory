@@ -19,6 +19,57 @@
       $formVars['update'] = -1;
     }
 
+    $q_string  = "select part_id ";
+    $q_string .= "from inv_parts ";
+    $q_string .= "where part_name = \"Virtual Machine\" ";
+    $q_inv_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    if (mysqli_num_rows($q_inv_parts) > 0) {
+      $a_inv_parts = mysqli_fetch_array($q_inv_parts);
+      $virtual_id = $a_inv_parts['part_id'];
+    } else {
+      $virtual_id = 0;
+    }
+    $q_string  = "select part_id ";
+    $q_string .= "from inv_parts ";
+    $q_string .= "where part_name = \"Server\" ";
+    $q_inv_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    if (mysqli_num_rows($q_inv_parts) > 0) {
+      $a_inv_parts = mysqli_fetch_array($q_inv_parts);
+      $server_id = $a_inv_parts['part_id'];
+    } else {
+      $server_id = 0;
+    }
+    $q_string  = "select part_id ";
+    $q_string .= "from inv_parts ";
+    $q_string .= "where part_name = \"Memory\" ";
+    $q_inv_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    if (mysqli_num_rows($q_inv_parts) > 0) {
+      $a_inv_parts = mysqli_fetch_array($q_inv_parts);
+      $memory_id = $a_inv_parts['part_id'];
+    } else {
+      $memory_id = 0;
+    }
+    $q_string  = "select part_id ";
+    $q_string .= "from inv_parts ";
+    $q_string .= "where part_name = \"CPU\" ";
+    $q_inv_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    if (mysqli_num_rows($q_inv_parts) > 0) {
+      $a_inv_parts = mysqli_fetch_array($q_inv_parts);
+      $cpu_id = $a_inv_parts['part_id'];
+    } else {
+      $cpu_id = 0;
+    }
+    $q_string  = "select part_id ";
+    $q_string .= "from inv_parts ";
+    $q_string .= "where part_name = \"Hard Disk\" ";
+    $q_inv_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+    if (mysqli_num_rows($q_inv_parts) > 0) {
+      $a_inv_parts = mysqli_fetch_array($q_inv_parts);
+      $harddisk_id = $a_inv_parts['part_id'];
+    } else {
+      $harddisk_id = 0;
+    }
+
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['id'],           10);
@@ -172,7 +223,7 @@
       $header .= "<table class=\"ui-styled-table\">\n";
       $header .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
-        $header .= "  <th class=\"ui-state-default\">Del</th>\n";
+        $header .= "  <th class=\"ui-state-default\" width=\"160\">Delete Hardware</th>\n";
       }
       $header .= "  <th class=\"ui-state-default\">Id</th>\n";
       $header .= "  <th class=\"ui-state-default\">Vendor</th>\n";
@@ -195,10 +246,11 @@
       $memory = $memory . $header . $secondary;
       $misc   = $misc   . $header . $secondary;
 
-      $q_string  = "select mod_id,mod_vendor,mod_name,mod_type,mod_size,mod_speed,volt_text,mod_start,mod_draw,mod_btu,part_type,part_name ";
+      $q_string  = "select mod_id,ven_name,mod_name,mod_type,mod_size,mod_speed,volt_text,mod_start,mod_draw,mod_btu,part_type,part_name ";
       $q_string .= "from inv_models ";
       $q_string .= "left join inv_parts     on inv_parts.part_id     = inv_models.mod_type ";
       $q_string .= "left join inv_int_volts on inv_int_volts.volt_id = inv_models.mod_volts ";
+      $q_string .= "left join inv_vendors   on inv_vendors.ven_id    = inv_models.mod_vendor ";
       $q_string .= "order by mod_vendor,mod_name";
       $q_inv_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_inv_models) > 0) {
@@ -211,15 +263,15 @@
           }
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('hardware.fill.php?id="  . $a_inv_models['mod_id'] . "');showDiv('hardware-hide');\">";
-          $linkdel   = "<a href=\"#\" onclick=\"delete_line('hardware.del.php?id=" . $a_inv_models['mod_id'] . "');\">";
+	  $linkdel   = "<input type=\"button\" value=\"Remove\"  onclick=\"delete_line('hardware.del.php?id=" . $a_inv_models['mod_id'] . "');\">";
           $linkend   = "</a>";
 
           $table  = "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
-            $table .= "  <td class=\"" . $class . " delete\">" . $linkdel . 'x'                     . $linkend . "</td>";
+            $table .= "  <td class=\"" . $class . " delete\">" . $linkdel . "</td>";
           }
           $table .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_inv_models['mod_id']     . $linkend . "</td>";
-          $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_models['mod_vendor'] . $linkend . "</td>";
+          $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_models['ven_name'] . $linkend . "</td>";
           $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_models['mod_name']   . $linkend . "</td>";
           $table .= "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_models['part_name']  . $linkend . "</td>";
           if ($a_inv_models['part_type'] == 1) {
@@ -233,16 +285,16 @@
           }
           $table .= "</tr>";
 
-          if ($a_inv_models['part_type'] == 1) {
+          if ($a_inv_models['mod_type'] == $server_id || $a_inv_models['mod_type'] == $virtual_id) {
             $server .= $table;
           } else {
-            if ($a_inv_models['mod_type'] == 2) {
+            if ($a_inv_models['mod_type'] == $harddisk_id) {
               $disk .= $table;
             } else {
-              if ($a_inv_models['mod_type'] == 8) {
+              if ($a_inv_models['mod_type'] == $cpu_id) {
                 $cpu .= $table;
               } else {
-                if ($a_inv_models['mod_type'] == 4) {
+                if ($a_inv_models['mod_type'] == $memory_id) {
                   $memory .= $table;
                 } else {
                   $misc .= $table;
