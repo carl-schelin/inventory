@@ -27,8 +27,8 @@
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['fs_id']        = clean($_GET['fs_id'],        10);
         $formVars['fs_backup']    = clean($_GET['fs_backup'],    10);
-        $formVars['fs_device']    = clean($_GET['fs_device'],    60);
-        $formVars['fs_mount']     = clean($_GET['fs_mount'],     60);
+        $formVars['fs_device']    = clean($_GET['fs_device'],   255);
+        $formVars['fs_mount']     = clean($_GET['fs_mount'],    255);
         $formVars['fs_group']     = clean($_GET['fs_group'],     10);
         $formVars['fs_size']      = clean($_GET['fs_size'],      10);
         $formVars['fs_used']      = clean($_GET['fs_used'],      10);
@@ -83,7 +83,7 @@
             "fs_size      =   " . $formVars['fs_size']      . "," .
             "fs_used      =   " . $formVars['fs_used']      . "," .
             "fs_avail     =   " . $formVars['fs_avail']     . "," .
-            "fs_percent   =   " . $formVars['fs_percent']   . "," .
+            "fs_percent   = \"" . $formVars['fs_percent']   . "\"," .
             "fs_wwid      = \"" . $formVars['fs_wwid']      . "\"," .
             "fs_subsystem = \"" . $formVars['fs_subsystem'] . "\"," .
             "fs_volume    = \"" . $formVars['fs_volume']    . "\"," .
