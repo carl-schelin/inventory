@@ -427,7 +427,7 @@
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
 # set up the hardware drop down to refresh the hardware listing
-      print "var selbox = document.edit.hw_hw_id;\n\n";
+      print "var selbox = document.edit.hw_hw_id;\n";
       print "selbox.options.length = 0;\n";
 
 # retrieve hardware list
@@ -445,7 +445,7 @@
 
 
 # set up the hardware drop down to refresh the hardware listing
-      print "var selbox = document.edit.hw_hd_id;\n\n";
+      print "\nvar selbox = document.edit.hw_hd_id;\n";
       print "selbox.options.length = 0;\n";
 
 # retrieve hardware list
