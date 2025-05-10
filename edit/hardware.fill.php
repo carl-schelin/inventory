@@ -31,7 +31,7 @@
       mysqli_free_result($q_inv_hardware);
 
 // set up the model type drop down to match the type of the retrieved record.
-      print "var selbox = document.edit.hw_vendorid;\n\n";
+      print "var selbox = document.edit.hw_vendorid;\n";
       print "selbox.options.length = 0;\n";
 
 // retrieve type list
@@ -49,7 +49,7 @@
 
 # for the fill part, we want to not present the current hw_id as a selectable option (can't be a sub-system of yourself).
 # set up the hardware drop down to refresh the hardware listing
-      print "var selbox = document.edit.hw_hw_id;\n\n";
+      print "\nvar selbox = document.edit.hw_hw_id;\n";
       print "selbox.options.length = 0;\n";
 
 # retrieve hardware list

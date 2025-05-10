@@ -27,8 +27,8 @@
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['fs_id']        = clean($_GET['fs_id'],        10);
         $formVars['fs_backup']    = clean($_GET['fs_backup'],    10);
-        $formVars['fs_device']    = clean($_GET['fs_device'],    60);
-        $formVars['fs_mount']     = clean($_GET['fs_mount'],     60);
+        $formVars['fs_device']    = clean($_GET['fs_device'],   255);
+        $formVars['fs_mount']     = clean($_GET['fs_mount'],    255);
         $formVars['fs_group']     = clean($_GET['fs_group'],     10);
         $formVars['fs_size']      = clean($_GET['fs_size'],      10);
         $formVars['fs_used']      = clean($_GET['fs_used'],      10);
@@ -83,7 +83,7 @@
             "fs_size      =   " . $formVars['fs_size']      . "," .
             "fs_used      =   " . $formVars['fs_used']      . "," .
             "fs_avail     =   " . $formVars['fs_avail']     . "," .
-            "fs_percent   =   " . $formVars['fs_percent']   . "," .
+            "fs_percent   = \"" . $formVars['fs_percent']   . "\"," .
             "fs_wwid      = \"" . $formVars['fs_wwid']      . "\"," .
             "fs_subsystem = \"" . $formVars['fs_subsystem'] . "\"," .
             "fs_volume    = \"" . $formVars['fs_volume']    . "\"," .
@@ -171,17 +171,17 @@
           }
 
           $output .= "<tr>\n";
-          $output .= "  <td class=\"" . $class . " delete\">" . $linkdel                                                      . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['grp_name']             . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_device']            . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . " button\">"        . $linkstart . number_format($a_inv_filesystem['fs_size'], 0, '.', ',')              . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . " button\">"        . $linkstart . number_format($a_inv_filesystem['fs_used'], 0, '.', ',')              . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . " button\">"        . $linkstart . number_format($a_inv_filesystem['fs_avail'], 0, '.', ',')             . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . " delete\">"        . $linkstart . $a_inv_filesystem['fs_percent'] . "%"     . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_mount']             . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_volume']            . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_wwid']              . $linkend . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_update'] . $checked . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . " delete\">" . $linkdel                                                                          . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['grp_name']                             . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_device']                            . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . " button\">" . $linkstart . number_format($a_inv_filesystem['fs_size'], 0, '.', ',')  . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . " button\">" . $linkstart . number_format($a_inv_filesystem['fs_used'], 0, '.', ',')  . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . " button\">" . $linkstart . number_format($a_inv_filesystem['fs_avail'], 0, '.', ',') . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . " delete\">" . $linkstart . $a_inv_filesystem['fs_percent']                           . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_mount']                             . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_volume']                            . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_wwid']                              . $linkend . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_filesystem['fs_update'] . $checked                 . $linkend . "</td>\n";
           $output .= "</tr>\n";
 
         }
