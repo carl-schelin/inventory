@@ -10,6 +10,20 @@ Install the following packages:
 * mysql-server
 * php
 
+For the image creation (pie chart in server stats mainly):
+
+* gd
+* php-gd
+
+If after the web server is started, restart the web server
+
+    systemctl restart httpd
+
+I also use tcpdf for the pdf rendering library. Install it in the same directory as inventory.
+
+* Inventory = /var/www/html/inventory
+* TCPDF = /var/www/html/tcpdf
+
 ### Getting Started
 
 ```
