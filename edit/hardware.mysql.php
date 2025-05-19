@@ -496,7 +496,7 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      $output .=   "<th class=\"ui-state-default\">Rem</th>\n";
+      $output .=   "<th class=\"ui-state-default\" colwidth=\"160\">Remove Hardware</th>\n";
       if (return_Virtual($db, $formVars['hw_companyid']) == 0) {
         $output .=   "<th class=\"ui-state-default\">Asset</th>\n";
         $output .=   "<th class=\"ui-state-default\">Serial</th>\n";
