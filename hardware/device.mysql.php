@@ -30,6 +30,7 @@
         $formVars['mod_eopur']      = clean($_GET['mod_eopur'],    30);
         $formVars['mod_eoship']     = clean($_GET['mod_eoship'],   30);
         $formVars['mod_eol']        = clean($_GET['mod_eol'],      30);
+        $formVars['mod_virtual']    = clean($_GET['mod_virtual'],  10);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
@@ -37,7 +38,11 @@
         $formVars['mod_plugs'] = 0;
         $formVars['mod_plugtype'] = 0;
         $formVars['mod_volts'] = 0;
-        $formVars['mod_virtual'] = 0;
+        if ($formVars['mod_virtual'] == 'on') {
+          $formVars['mod_virtual'] = 1;
+        } else {
+          $formVars['mod_virtual'] = 0;
+        }
 # if you're entering information here, the device is a primary device
         $formVars['mod_primary'] = 1;
 
