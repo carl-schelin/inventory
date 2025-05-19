@@ -69,6 +69,10 @@ insert into inv_parts set part_id = null,part_name = "Virtual Machine",part_type
 insert into inv_parts set part_id = null,part_name = "VPN Gateway",part_type = 0,part_acronym = "VG";
 insert into inv_parts set part_id = null,part_name = "WAN Optimizer",part_type = 0,part_acronym = "WO";
 insert into inv_parts set part_id = null,part_name = "Wireless Controller",part_type = 0,part_acronym = "WC";
+insert into inv_parts set part_id = null,part_name = "Laptop",part_type = 0,part_acronym = "LT";
+insert into inv_parts set part_id = null,part_name = "Desktop",part_type = 0,part_acronym = "DT";
+insert into inv_parts set part_id = null,part_name = "Tablet",part_type = 0,part_acronym = "TL";
+insert into inv_parts set part_id = null,part_name = "Smartphone",part_type = 0,part_acronym = "SP";
 insert into inv_service set svc_id = null,svc_name = "Life or Mission Critical Services",svc_acronym = "LMCS",svc_availability = "99.999%",
 svc_downtime = "5 min/year",svc_mtbf = ">5 years",svc_geographic = "1",svc_mttr = "<2 min",svc_resource = "0",svc_restore = "1 hour";
 insert into inv_service set svc_id = null,svc_name = "Business Critical Services",svc_acronym = "BCS",svc_availability = "99.9%",
