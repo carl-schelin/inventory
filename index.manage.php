@@ -55,15 +55,11 @@
   <li><a href="<?php print $Projectroot; ?>/project.php">Manage the Project Listing table</a></li>
   <li><a href="<?php print $Adminroot; ?>/service.php">Manage Service Class Descriptions table</a></li>
   <li><a href="<?php print $Adminroot; ?>/support.php">Manage Support Contract Information table</a></li>
-  <li><a href="<?php print $Usersroot; ?>/business.php">Manage Business Unit Names table</a></li>
-  <li><a href="<?php print $Usersroot; ?>/department.php">Manage Department Names table</a></li>
-  <li><a href="<?php print $Usersroot; ?>/organization.php">Manage Organizations table</a></li>
   <li><a href="<?php print $Usersroot; ?>/roles.php">Manage Roles table</a></li>
   <li><a href="<?php print $Adminroot; ?>/maintenance.windows.php">Manage Maintenance Windows table</a></li>
 </ul>
 
 <ul>
-  <li><a href="<?php print $Softwareroot; ?>/software.php">Manage Software table</a></li>
   <li><a href="<?php print $Softwareroot; ?>/license.php">Manage Software Licenses table</a></li>
   <li><a href="<?php print $Softwareroot; ?>/support.php">Manage Software Support table</a></li>
   <li><a href="<?php print $Adminroot; ?>/timezones.php">Manage System Timezones table</a></li>
