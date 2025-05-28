@@ -68,7 +68,7 @@ function attach_file( p_script_url, update ) {
   af_url += "&mod_vendor="     + af_form.mod_vendor.value;
   af_url += "&mod_name="       + encode_URI(af_form.mod_name.value);
   af_url += "&mod_type="       + af_form.mod_type.value;
-  af_url += "&mod_virtual="    + af_form.mod_virtual.value;
+  af_url += "&mod_virtual="    + af_form.mod_virtual.checked;
   af_url += "&mod_eopur="      + encode_URI(af_form.mod_eopur.value);
   af_url += "&mod_eoship="     + encode_URI(af_form.mod_eoship.value);
   af_url += "&mod_eol="        + encode_URI(af_form.mod_eol.value);
@@ -88,7 +88,7 @@ function update_file( p_script_url, update ) {
   uf_url += "&mod_vendor="     + uf_form.mod_vendor.value;
   uf_url += "&mod_name="       + encode_URI(uf_form.mod_name.value);
   uf_url += "&mod_type="       + uf_form.mod_type.value;
-  uf_url += "&mod_virtual="    + uf_form.mod_virtual.value;
+  uf_url += "&mod_virtual="    + uf_form.mod_virtual.checked;
   uf_url += "&mod_eopur="      + encode_URI(uf_form.mod_eopur.value);
   uf_url += "&mod_eoship="     + encode_URI(uf_form.mod_eoship.value);
   uf_url += "&mod_eol="        + encode_URI(uf_form.mod_eol.value);

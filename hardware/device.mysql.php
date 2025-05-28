@@ -38,7 +38,7 @@
         $formVars['mod_plugs'] = 0;
         $formVars['mod_plugtype'] = 0;
         $formVars['mod_volts'] = 0;
-        if ($formVars['mod_virtual'] == 'on') {
+        if ($formVars['mod_virtual'] == 'true') {
           $formVars['mod_virtual'] = 1;
         } else {
           $formVars['mod_virtual'] = 0;
