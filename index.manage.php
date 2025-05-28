@@ -57,6 +57,7 @@
   <li><a href="<?php print $Adminroot; ?>/support.php">Manage Support Contract Information table</a></li>
   <li><a href="<?php print $Usersroot; ?>/roles.php">Manage Roles table</a></li>
   <li><a href="<?php print $Adminroot; ?>/maintenance.windows.php">Manage Maintenance Windows table</a></li>
+  <li><a href="<?php print $Hardwareroot; ?>/vendors.php">Manage Vendors table</a></li>
 </ul>
 
 <ul>
@@ -68,10 +69,17 @@
 <ul>
   <li><a href="<?php print $Hardwareroot; ?>/hardware.php">Manage Hardware Model Data table</a></li>
   <li><a href="<?php print $Hardwareroot; ?>/parts.php">Manage Part Descriptions table</a></li>
-  <li><a href="<?php print $Hardwareroot; ?>/type.php">Manage Interface Names table</a></li>
-  <li><a href="<?php print $Hardwareroot; ?>/speed.php">Manage Interface Speeds table</a></li>
   <li><a href="<?php print $Hardwareroot; ?>/vlans.php">Manage Network VLANs table</a></li>
-  <li><a href="<?php print $Hardwareroot; ?>/zones.php">Manage Network Zones table</a></li>
+  <li><a href="<?php print $IPAMroot; ?>/zones.php">Manage Network Zones table</a></li>
+</ul>
+
+<ul>
+  <li><a href="<?php print $Hardwareroot; ?>/type.php">Manage Interface Names table</a></li>
+  <li><a href="<?php print $Hardwareroot; ?>/duplex.php">Manage Interface Duplex table</a></li>
+  <li><a href="<?php print $Hardwareroot; ?>/media.php">Manage Interface Media Types table</a></li>
+  <li><a href="<?php print $Hardwareroot; ?>/speed.php">Manage Interface Speeds table</a></li>
+  <li><a href="<?php print $Hardwareroot; ?>/redundancy.php">Manage Interface Redundancy table</a></li>
+
 </ul>
 
 <ul>
