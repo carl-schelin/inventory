@@ -53,10 +53,6 @@
 
       break; 
 
-    default:
-      echo 'Error, invalid action'; 
-      break;
-
     case 'check_level_exists': 
 
       if (get_magic_quotes_gpc()) { 
