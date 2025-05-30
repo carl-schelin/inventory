@@ -11,7 +11,7 @@
 
   logaccess($db, $formVars['uid'], $package, "Accessing the script.");
 
-  $headers  = "From: Inventory Management <root@" . $Sitehttp . ">\r\n";
+  $headers  = "From: <?php print $Sitename; ?> <root@" . $Sitehttp . ">\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
   $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
   $headers .= "Reply-To: " . $Sitedev . "\r\n";
@@ -26,7 +26,7 @@
   $body .= "<p>MySQL Error:</br></br>";
   $body .= $formVars['mysql'] . "</p>\n";;
 
-  mail($Sitedev, "Inventory Management Error", $body, $headers);
+  mail($Sitedev, "<?php print $Sitename; ?> Error", $body, $headers);
 
   if ($called == 'no') {
 ?>

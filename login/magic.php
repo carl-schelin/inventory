@@ -36,7 +36,7 @@ function generatePassword ($length = 8) {
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Inventory Management</title>
+<title><?php print $Sitename; ?></title>
 
 <link rel="stylesheet" href="<?php print $Loginroot; ?>/stylesheet.css" />
 
@@ -142,7 +142,7 @@ if (isset($_POST['mail_user'])) {
 
 <div id="footer">
 
-<a href="<?php print $Siteroot; ?>">Inventory Management</a>
+<a href="<?php print $Siteroot; ?>"><?php print $Sitename; ?></a>
 
 </div>
 

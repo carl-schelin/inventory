@@ -157,7 +157,7 @@ print $formVars['error'];
 
 <div id="footer">
 
-<a href="<?php print $Siteroot; ?>">Inventory Management</a>
+<a href="<?php print $Siteroot; ?>"><?php print $Sitename; ?></a>
 
 </div>
 

@@ -7,7 +7,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Inventory Management</title>
+<title><?php print $Sitename; ?></title>
 
 <link rel="stylesheet" href="<?php print $Loginroot; ?>/stylesheet.css" />
 
@@ -38,7 +38,7 @@ if (isset($_SESSION['username'])) {
 ?>
 </div>
 
-<div id="footer"><a href="<?php print $Siteroot; ?>">Inventory Management</a></div>
+<div id="footer"><a href="<?php print $Siteroot; ?>"><?php print $Sitename; ?></a></div>
 
 </body>
 </html>
@@ -101,7 +101,7 @@ if (isset($_POST['new_user'])) {
     $q_inv_users = mysqli_query($db, $q_string) or die("Fatal error: " . mysqli_error($db));
 
     echo "<h2>Success!</h2>";	
-    echo "<div class='success_message'>Thank you for registering! Go to the <a href='" . $Siteroot . "'>Inventory Management</a> application and log in.</div>";
+    echo "<div class='success_message'>Thank you for registering! Go to the <a href='" . $Siteroot . "'>" . $Sitename. "</a> application and log in.</div>";
 
     echo "<h2>Your login details</h2>";
 
@@ -128,7 +128,7 @@ if (isset($_POST['new_user'])) {
     $q_inv_users = mysqli_query($db, $q_string) or die("Fatal error: ".mysqli_error($db));
     while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
       $usermail = $a_inv_users['usr_email'];
-      $subject = "New member in Inventory Management";
+      $subject = "New member in " . $Sitename;
       $body = "$fname $lname has created an account and requested access to the " . $a_inv_groups['grp_name'] . " group and is currently waiting for confirmation.";
       mail($usermail, $subject, $body);
     }
@@ -219,7 +219,7 @@ function populate_email() {
 
 </div>
 
-<div id="footer"><a href="<?php print $Siteroot; ?>">Inventory Management</a></div>
+<div id="footer"><a href="<?php print $Siteroot; ?>"><?php print $Sitename; ?></a></div>
 
 </body>
 </html>
