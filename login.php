@@ -23,5 +23,4 @@
   $formVars['uid']      = $_SESSION['uid'];
   $formVars['username'] = $_SESSION['username'];
   $formVars['group']    = $_SESSION['group'];
-
 ?>
