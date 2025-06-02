@@ -27,6 +27,10 @@
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']              = clean($_GET['id'],               10);
         $formVars['clu_association'] = clean($_GET['clu_association'],  10);
+        $formVars['clu_type']        = clean($_GET['clu_type'],         10);
+        $formVars['clu_source']      = clean($_GET['clu_source'],      100);
+        $formVars['clu_target']      = clean($_GET['clu_target'],      100);
+        $formVars['clu_options']     = clean($_GET['clu_options'],      30);
         $formVars['clu_notes']       = clean($_GET['clu_notes'],       255);
 
         if ($formVars['id'] == '') {
@@ -42,6 +46,10 @@
           $q_string =
             "clu_companyid   =   " . $formVars['clu_companyid']   . "," .
             "clu_association =   " . $formVars['clu_association'] . "," .
+            "clu_type        =   " . $formVars['clu_type']        . "," .
+            "clu_source      = \"" . $formVars['clu_source']      . "\"," .
+            "clu_target      = \"" . $formVars['clu_target']      . "\"," .
+            "clu_options     = \"" . $formVars['clu_options']     . "\"," .
             "clu_notes       = \"" . $formVars['clu_notes']       . "\"";
 
           if ($formVars['update'] == 0) {
@@ -144,7 +152,23 @@
         $output .= "</select></td>\n";
         $output .= "</tr>\n";
         $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\">Notes <input type=\"text\" name=\"clu_notes\" size=\"60\"></td>\n";
+        $output .= "  <td class=\"ui-widget-content\">Association Type: <select name=\"clu_type\">\n";
+        $output .= "<option value=\"0\">None</option>\n";
+        $output .= "<option value=\"1\">NFS</option>\n";
+        $output .= "<option value=\"2\">Samba</option>\n";
+        $output .= "</select></td>\n";
+        $output .= "</tr>\n";
+        $output .= "<tr>\n";
+        $output .= "  <td class=\"ui-widget-content\">Source Mount Point <input type=\"text\" name=\"clu_source\" size=\"60\"></td>\n";
+        $output .= "</tr>\n";
+        $output .= "<tr>\n";
+        $output .= "  <td class=\"ui-widget-content\">Target Mount Point <input type=\"text\" name=\"clu_target\" size=\"60\"></td>\n";
+        $output .= "</tr>\n";
+        $output .= "<tr>\n";
+        $output .= "  <td class=\"ui-widget-content\">NFS Options <input type=\"text\" name=\"clu_options\" size=\"20\"></td>\n";
+        $output .= "</tr>\n";
+        $output .= "<tr>\n";
+        $output .= "  <td class=\"ui-widget-content\">Notes <input type=\"text\" name=\"clu_notes\" size=\"80\"></td>\n";
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
@@ -191,11 +215,14 @@
       $output .= "<tr>\n";
       $output .=   "<th class=\"ui-state-default\">Del</th>\n";
       $output .=   "<th class=\"ui-state-default\">Association</th>\n";
-      $output .=   "<th class=\"ui-state-default\">Platform</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Source Mount</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Target Mount</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Type</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Options</th>\n";
       $output .=   "<th class=\"ui-state-default\">Notes</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select clu_id,clu_association,clu_notes,grp_name,inv_name ";
+      $q_string  = "select clu_id,clu_association,clu_type,clu_source,clu_target,clu_options,clu_notes,grp_name,inv_name ";
       $q_string .= "from inv_cluster ";
       $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_cluster.clu_association ";
       $q_string .= "left join inv_groups    on inv_groups.grp_id    = inv_inventory.inv_manager ";
@@ -209,10 +236,21 @@
           $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_association('association.del.php?id="  . $a_inv_cluster['clu_id'] . "');\">";
           $linkend   = "</a>";
 
+          $type = "None";
+          if ($a_inv_cluster['clu_type'] == 1) {
+            $type = 'nfs';
+          }
+          if ($a_inv_cluster['clu_type'] == 2) {
+            $type = 'Samba';
+          }
+
           $output .= "<tr>\n";
           $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel                                          . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_cluster['inv_name']    . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_cluster['grp_name']    . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_cluster['clu_source']    . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_cluster['clu_target']    . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $type    . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_cluster['clu_options']    . $linkend . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_cluster['clu_notes']   . $linkend . "</td>\n";
           $output .= "</tr>\n";
 

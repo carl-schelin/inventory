@@ -658,9 +658,13 @@ function attach_association( p_script_url, update ) {
   aa_url += '&id='       + aa_form.clu_id.value;
   aa_url += '&copyfrom=' + aa_form.clu_copyfrom.value;
 
-  aa_url += "&clu_companyid="   + <?php print $formVars['server']; ?>;
-  aa_url += "&clu_association=" + aa_form.clu_association.value;
-  aa_url += "&clu_notes="       + encode_URI(aa_form.clu_notes.value);
+  aa_url += "&clu_companyid="    + <?php print $formVars['server']; ?>;
+  aa_url += "&clu_association="  + aa_form.clu_association.value;
+  aa_url += "&clu_type="         + aa_form.clu_type.value;
+  aa_url += "&clu_source="       + encode_URI(aa_form.clu_source.value);
+  aa_url += "&clu_target="       + encode_URI(aa_form.clu_target.value);
+  aa_url += "&clu_options="      + encode_URI(aa_form.clu_options.value);
+  aa_url += "&clu_notes="        + encode_URI(aa_form.clu_notes.value);
 
   script = document.createElement('script');
   script.src = p_script_url + aa_url;
