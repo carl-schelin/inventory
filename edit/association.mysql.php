@@ -197,7 +197,7 @@
 
       $q_string  = "select clu_id,clu_association,clu_notes,grp_name,inv_name ";
       $q_string .= "from inv_cluster ";
-      $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_cluster.clu_companyid ";
+      $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_cluster.clu_association ";
       $q_string .= "left join inv_groups    on inv_groups.grp_id    = inv_inventory.inv_manager ";
       $q_string .= "where clu_companyid = " . $formVars['clu_companyid'] . " ";
       $q_string .= "order by inv_name,clu_association,clu_port";
