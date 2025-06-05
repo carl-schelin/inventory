@@ -650,24 +650,42 @@ function attach_backups( p_script_url, update ) {
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
-function attach_association( p_script_url, update ) {
-  var aa_form = document.edit;
-  var aa_url;
+function create_association( p_script_url, update ) {
+  var ca_form = document.formAssociationCreate;
+  var ca_url;
 
-  aa_url  = '?update='   + update;
-  aa_url += '&id='       + aa_form.clu_id.value;
-  aa_url += '&copyfrom=' + aa_form.clu_copyfrom.value;
+  ca_url  = '?update='   + update;
 
-  aa_url += "&clu_companyid="    + <?php print $formVars['server']; ?>;
-  aa_url += "&clu_association="  + aa_form.clu_association.value;
-  aa_url += "&clu_type="         + aa_form.clu_type.value;
-  aa_url += "&clu_source="       + encode_URI(aa_form.clu_source.value);
-  aa_url += "&clu_target="       + encode_URI(aa_form.clu_target.value);
-  aa_url += "&clu_options="      + encode_URI(aa_form.clu_options.value);
-  aa_url += "&clu_notes="        + encode_URI(aa_form.clu_notes.value);
+  ca_url += "&clu_companyid="    + <?php print $formVars['server']; ?>;
+  ca_url += "&clu_association="  + ca_form.clu_association.value;
+  ca_url += "&clu_type="         + ca_form.clu_type.value;
+  ca_url += "&clu_source="       + encode_URI(ca_form.clu_source.value);
+  ca_url += "&clu_target="       + encode_URI(ca_form.clu_target.value);
+  ca_url += "&clu_options="      + encode_URI(ca_form.clu_options.value);
+  ca_url += "&clu_notes="        + encode_URI(ca_form.clu_notes.value);
 
   script = document.createElement('script');
-  script.src = p_script_url + aa_url;
+  script.src = p_script_url + ca_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+function update_association( p_script_url, update ) {
+  var ua_form = document.formAssociationUpdate;
+  var ua_url;
+
+  ua_url  = '?update='   + update;
+  ua_url += '&id='       + ua_form.clu_id.value;
+
+  ua_url += "&clu_companyid="    + <?php print $formVars['server']; ?>;
+  ua_url += "&clu_association="  + ua_form.clu_association.value;
+  ua_url += "&clu_type="         + ua_form.clu_type.value;
+  ua_url += "&clu_source="       + encode_URI(ua_form.clu_source.value);
+  ua_url += "&clu_target="       + encode_URI(ua_form.clu_target.value);
+  ua_url += "&clu_options="      + encode_URI(ua_form.clu_options.value);
+  ua_url += "&clu_notes="        + encode_URI(ua_form.clu_notes.value);
+
+  script = document.createElement('script');
+  script.src = p_script_url + ua_url;
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
@@ -1031,7 +1049,7 @@ $(document).ready( function() {
       {
         text: "Add Filesystem",
         click: function() {
-          update_filesystem('filesystem.mysql.php', 0);
+          create_filesystem('filesystem.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -1103,7 +1121,7 @@ $(document).ready( function() {
       {
         text: "Add Interface",
         click: function() {
-          update_interface('interface.mysql.php', 0);
+          create_interface('interface.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -1179,7 +1197,7 @@ $(document).ready( function() {
       {
         text: "Add Software",
         click: function() {
-          update_software('software.mysql.php', 0);
+          create_software('software.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -1187,13 +1205,76 @@ $(document).ready( function() {
   });
 
 
+  $( '#clickAssociationCreate' ).click(function() {
+    $( "#dialogAssociationCreate" ).dialog('open');
+  });
 
+  $( "#dialogAssociationCreate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 325,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogAssociationCreate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('association.mysql.php?update=-1&clu_companyid=<?php print $formVars['server']; ?>');
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Association",
+        click: function() {
+          create_association('association.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
 
-
-
-
-
-
+  $( "#dialogAssociationUpdate" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 325,
+    width: 600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogAssociationUpdate" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          show_file('association.mysql.php?update=-1&clu_companyid=<?php print $formVars['server']; ?>');
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Update Association",
+        click: function() {
+          update_association('association.mysql.php', 1);
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Association",
+        click: function() {
+          create_association('association.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
 
 
 
@@ -2433,7 +2514,7 @@ to modify it and then click the Add User button to begin managing the account.</
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default"><a href="javascript:;" onmousedown="toggleDiv('association-hide');">Association Management</a></th>
+  <th class="ui-state-default">Association Management</th>
   <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('association-help');">Help</a></th>
 </tr>
 </table>
@@ -2467,9 +2548,41 @@ to modify it and then click the Add User button to begin managing the account.</
 
 </div>
 
-<div id="association-hide" style="display: none">
+<table class="ui-styled-table">
+<tr>
+  <td class="button ui-widget-content"><input type="button" id="clickAssociationCreate" value="Add Association"></td>
+</tr>
+</table>
 
-<span id="association_form"><?php print wait_Process("Please Wait"); ?></span>
+<p></p>
+
+<table class="ui-styled-table">
+<tr>
+<th class="ui-state-default">Association Listing</th>
+<th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('association-listing-help');">Help</a></th>
+</tr>
+</table>
+
+<div id="association-listing-help" style="<?php print $display; ?>">
+
+<div class="main-help ui-widget-content">
+
+<ul>
+  <li><strong>Association Listing</strong>
+  <ul>
+    <li><strong>Delete (x)</strong> - Clicking the <strong>x</strong> will delete this association from this server.</li>
+    <li><strong>Editing</strong> - Click on an association to edit it.</li>
+  </ul></li>
+</ul>
+
+<ul>
+  <li><strong>Notes</strong>
+  <ul>
+    <li>Click the <strong>Association Management</strong> title bar to toggle the <strong>Association Form</strong>.</li>
+  </ul></li>
+</ul>
+
+</div>
 
 </div>
 
@@ -2625,6 +2738,7 @@ field shows you the limit of the number of characters. This limit is set by the 
 
 
 
+<?php include($Editpath . '/association.dialog.php'); ?>
 
 <?php include($Editpath . '/tags.dialog.php'); ?>
 
