@@ -56,6 +56,7 @@
   <li><a href="<?php print $Adminroot; ?>/service.php">Manage Service Class Descriptions table</a></li>
   <li><a href="<?php print $Adminroot; ?>/support.php">Manage Support Contract Information table</a></li>
   <li><a href="<?php print $Usersroot; ?>/roles.php">Manage Roles table</a></li>
+  <li><a href="<?php print $Adminroot; ?>/titles.php">Manage Titles table</a></li>
   <li><a href="<?php print $Adminroot; ?>/maintenance.windows.php">Manage Maintenance Windows table</a></li>
   <li><a href="<?php print $Hardwareroot; ?>/vendors.php">Manage Vendors table</a></li>
 </ul>
