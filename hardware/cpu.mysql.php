@@ -48,6 +48,15 @@
         $formVars['mod_volts'] = 0;
         $formVars['mod_virtual'] = 0;
         $formVars['mod_primary'] = 0;
+        if ($formVars['mod_eopur'] == '') {
+          $formVars['mod_eopur'] = "0000-00-00";
+        }
+        if ($formVars['mod_eoship'] == '') {
+          $formVars['mod_eoship'] = "0000-00-00";
+        }
+        if ($formVars['mod_eol'] == '') {
+          $formVars['mod_eol'] = "0000-00-00";
+        }
 
         if (strlen($formVars['mod_name']) > 0) {
           logaccess($db, $_SESSION['uid'], $package, "Building the query.");
