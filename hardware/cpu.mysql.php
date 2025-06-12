@@ -130,7 +130,7 @@
 
           $totallink = '';
           if ($total > 0) {
-            $totallink = "<a href=\"cpu.members.php?type=" . $a_inv_parts['pard_id'] . "&model=" . $a_inv_models['mod_id'] . "\" target=\"_blank\">";
+            $totallink = "<a href=\"cpu.members.php?type=" . $a_inv_parts['part_id'] . "&model=" . $a_inv_models['mod_id'] . "\" target=\"_blank\">";
           }
 
           $output .= "<tr>";
