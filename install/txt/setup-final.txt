@@ -392,3 +392,10 @@ os_short = "RHEL8.2",os_delete = 0,os_user = 1;
 insert into inv_operatingsystem set os_id = null,os_vendor = 'Red Hat',os_software = "Red Hat Enterprise Linux Server release 8.3 (Ootpa)",
 os_short = "RHEL8.3",os_delete = 0,os_user = 1;
 insert into inv_models set mod_id = null,mod_vendor = 1, mod_name = "Virtual Machine", mod_type = 44, mod_primary = 1,mod_virtual = 1;
+insert into inv_supportlevel set slv_id = null,slv_value = "None", slv_translate = "None";
+insert into inv_supportlevel set slv_id = null,slv_value = "24x7, 2 Hour Response", slv_translate = "24x7x2";
+insert into inv_supportlevel set slv_id = null,slv_value = "24x7, 4 Hour Response", slv_translate = "24x7x4,7x24x4";
+insert into inv_supportlevel set slv_id = null,slv_value = "24x7, Next Business Day", slv_translate = "7x24xnb,24x7xnbd";
+insert into inv_supportlevel set slv_id = null,slv_value = "9 to 5, 2 Hour Response", slv_translate = "9x5x2,5x9x2";
+insert into inv_supportlevel set slv_id = null,slv_value = "9 to 5, 4 Hour Response", slv_translate = "9x5x4";
+insert into inv_supportlevel set slv_id = null,slv_value = "9 to 5, Next Business Day", slv_translate = "9x5xnbd,5x9xnbd";
