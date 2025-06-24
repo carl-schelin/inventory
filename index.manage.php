@@ -54,6 +54,7 @@
   <li><a href="<?php print $Productroot; ?>/product.php">Manage the Product and Service Listing table</a></li>
   <li><a href="<?php print $Projectroot; ?>/project.php">Manage the Project Listing table</a></li>
   <li><a href="<?php print $Adminroot; ?>/service.php">Manage Service Class Descriptions table</a></li>
+  <li><a href="<?php print $Adminroot; ?>/supportlevel.php">Manage Support Levels table</a></li>
   <li><a href="<?php print $Adminroot; ?>/support.php">Manage Support Contract Information table</a></li>
   <li><a href="<?php print $Usersroot; ?>/roles.php">Manage Roles table</a></li>
   <li><a href="<?php print $Adminroot; ?>/titles.php">Manage Titles table</a></li>
