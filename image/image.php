@@ -157,7 +157,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 600,
+    height: 625,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -433,21 +433,13 @@ on the server. It can of course be uploaded after the fact.</p>
   <td class="ui-widget-content">Image Facing: <label><input type="radio" value="0" checked name="img_facing"> Rear</label> <label><input type="radio" value="1" name="img_facing"> Front<label></td>
 </tr>
 <tr>
-<td class="ui-widget-content delete" id="image_name"></td>
+  <td class="ui-widget-content delete" id="image_name"></td>
 </tr>
 </table>
 
 </form>
 
 </div>
-
-
-
-
-
-
-
-
 
 
 <?php include($Sitepath . '/footer.php'); ?>
