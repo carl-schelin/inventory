@@ -68,7 +68,8 @@
       }
       $output .= "  <th class=\"ui-state-default\">Access Level</th>";
       $output .= "  <th class=\"ui-state-default\">Level Name</th>";
-      $output .= "  <th class=\"ui-state-default\">Members</th>";
+      $output .= "  <th class=\"ui-state-default\">Active Members</th>";
+      $output .= "  <th class=\"ui-state-default\">Disabled Members</th>";
       $output .= "</tr>";
 
       $q_string  = "select lvl_id,lvl_name,lvl_level,lvl_disabled ";
@@ -111,14 +112,15 @@
               $output .= "  <td class=\"" . $class . " delete\">Members &gt; 0</td>";
             }
           }
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_levels['lvl_level']     . $linkend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_levels['lvl_name']      . $linkend . "</td>";
-          $output .= "  <td class=\"" . $class . "\">" . $total . " (" . $disabled . ")</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"  . $linkstart . $a_inv_levels['lvl_level']     . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . "\">"         . $linkstart . $a_inv_levels['lvl_name']      . $linkend . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">" . $total . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">" . $disabled . "</td>";
           $output .= "</tr>";
         }
       } else {
         $output .= "<tr>";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"4\">No records found.</td>";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"5\">No records found.</td>";
         $output .= "</tr>";
       }
 
