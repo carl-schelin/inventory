@@ -37,7 +37,7 @@
       if ($users > 0) {
         print "document.formUpdate.img_owner['"  . $users                  . "'].selected = true;\n";
       }
-      if ($a_image['img_facing']) {
+      if ($a_inv_images['img_facing']) {
         print "document.formUpdate.img_facing['" . $a_inv_images['img_facing'] . "'].checked  = true;\n";
       } else {
         print "document.formUpdate.img_facing['" . $a_inv_images['img_facing'] . "'].checked  = false;\n";
