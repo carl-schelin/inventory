@@ -74,12 +74,11 @@
           $linkdel   = "<input type=\"button\" value=\"Remove\"  onclick=\"delete_line('vendors.del.php?id=" . $a_inv_vendors['ven_id'] . "');\">";
           $linkend   = "</a>";
 
-#          $q_string  = "select ast_id ";
-#          $q_string .= "from inv_assets ";
-#          $q_string .= "where ast_modelid = " . $a_inv_models['mod_id'] . " ";
-#          $q_inv_assets = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-#          $total = mysqli_num_rows($q_inv_assets);
-          $total = 0;
+          $q_string  = "select mod_id ";
+          $q_string .= "from inv_models ";
+          $q_string .= "where mod_vendor = " . $a_inv_vendors['ven_id'] . " ";
+          $q_inv_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          $total = mysqli_num_rows($q_inv_models);
 
           $output .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
