@@ -36,7 +36,7 @@
 
   <li id="tm_hardware"><a href="<?php print $Siteroot; ?>/index.hardware.php">Assets</a>
     <ul>
-      <li><a href="<?php print $Hardwareroot; ?>/assets.php">Asset Manager</a></li>
+      <li><a href="<?php print $Assetroot; ?>/assets.php">Asset Manager</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/device.php">Device Manager</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/devicetype.php">Device Types</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/cpu.php">CPU Manager</a></li>
