@@ -58,6 +58,7 @@
       $q_string .= "left join inv_models  on inv_models.mod_id  = inv_hardware.hw_vendorid ";
       $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
       $q_string .= "where hw_companyid = " . $a_inv_hardware['hw_companyid'] . " and hw_hw_id = 0 and hw_id != " . $formVars['id'] . " ";
+      $q_string .= "order by ven_name,mod_name,hw_serial ";
       $q_hwselect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 # create the javascript bit for populating the hardware dropdown box.
@@ -69,12 +70,14 @@
 # set up the hardware drop down to refresh the hardware listing
       print "var selbox = document.edit.hw_hd_id;\n\n";
       print "selbox.options.length = 0;\n";
+      print "selbox.options[selbox.options.length] = new Option(\"None\",0);\n";
 
 # retrieve hardware list
       $q_string  = "select hw_id,hw_serial,hw_asset,mod_name ";
       $q_string .= "from inv_hardware ";
       $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
       $q_string .= "where hw_companyid = " . $a_inv_hardware['hw_companyid'] . " and mod_name like \"RAID%\" and hw_id != " . $formVars['id'] . " ";
+      $q_string .= "order by hw_serial,hw_asset,mod_name ";
       $q_hwselect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 # create the javascript bit for populating the model dropdown box.
@@ -103,10 +106,10 @@
 
       print "document.edit.hw_vendorid['"  . $model    . "'].selected = true;\n";
       print "document.edit.hw_type['"      . $type     . "'].selected = true;\n";
-      print "document.edit.hw_supportid['" . $support  . "'].selected = true;\n";
-      print "document.edit.hw_response['"  . $response . "'].selected = true;\n";
-      print "document.edit.hw_hw_id['"     . $hwselect . "'].selected = true;\n";
-      print "document.edit.hw_hd_id['"     . $hwdisk   . "'].selected = true;\n";
+#      print "document.edit.hw_supportid['" . $support  . "'].selected = true;\n";
+#      print "document.edit.hw_response['"  . $response . "'].selected = true;\n";
+#      print "document.edit.hw_hw_id['"     . $hwselect . "'].selected = true;\n";
+#      print "document.edit.hw_hd_id['"     . $hwdisk   . "'].selected = true;\n";
 
       if ($a_inv_hardware['hw_deleted']) {
         print "document.edit.hw_deleted.checked = true;\n";
