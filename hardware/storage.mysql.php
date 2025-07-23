@@ -19,21 +19,12 @@
       $formVars['update'] = -1;
     }
 
-    $q_string  = "select part_id ";
-    $q_string .= "from inv_parts ";
-    $q_string .= "where part_name = \"Hard Disk\" or part_name = \"Solid State Drive\" ";
-    $q_inv_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    if (mysqli_num_rows($q_inv_parts) > 0) {
-      $a_inv_parts = mysqli_fetch_array($q_inv_parts);
-    } else {
-      $a_inv_parts['part_id'] = 0;
-    }
-
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['id'],           10);
         $formVars['mod_vendor']     = clean($_GET['mod_vendor'],   10);
         $formVars['mod_name']       = clean($_GET['mod_name'],    100);
+        $formVars['mod_type']       = clean($_GET['mod_type'],     10);
         $formVars['mod_size']       = clean($_GET['mod_size'],    100);
         $formVars['mod_speed']      = clean($_GET['mod_speed'],    20);
         $formVars['mod_eopur']      = clean($_GET['mod_eopur'],    30);
@@ -64,7 +55,7 @@
           $q_string =
             "mod_vendor     =   " . $formVars['mod_vendor']   . "," .
             "mod_name       = \"" . $formVars['mod_name']     . "\"," .
-            "mod_type       = \"" . $a_inv_parts['part_id']   . "\"," .
+            "mod_type       =   " . $formVars['mod_type']     . "," .
             "mod_primary    =   " . $formVars['mod_primary']  . "," .
             "mod_size       = \"" . $formVars['mod_size']     . "\"," .
             "mod_speed      = \"" . $formVars['mod_speed']    . "\"," .
@@ -103,16 +94,18 @@
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Storage</th>\n";
       }
       $output .= "  <th class=\"ui-state-default\">Vendor</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Type</th>\n";
       $output .= "  <th class=\"ui-state-default\">Model</th>\n";
       $output .= "  <th class=\"ui-state-default\">Size of Device</th>\n";
       $output .= "  <th class=\"ui-state-default\">Speed</th>\n";
       $output .= "  <th class=\"ui-state-default\">Members</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select mod_id,ven_name,mod_name,mod_size,mod_speed ";
+      $q_string  = "select mod_id,ven_name,mod_name,part_name,mod_size,mod_speed ";
       $q_string .= "from inv_models ";
+      $q_string .= "left join inv_parts on inv_parts.part_id    = inv_models.mod_type ";
       $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
-      $q_string .= "where mod_type = " . $a_inv_parts['part_id'] . " ";
+      $q_string .= "where part_name = \"Hard Disk\" or part_name = \"Solid State Drive\" ";
       $q_string .= "order by ven_name,mod_name ";
       $q_inv_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_inv_models) > 0) {
@@ -139,6 +132,7 @@
             }
           }
           $output .= "  <td class=\"" . $class . " delete\">"              . $a_inv_models['ven_name']            . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"              . $a_inv_models['part_name']           . "</td>";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_models['mod_name'] . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"              . $a_inv_models['mod_size']            . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"              . $a_inv_models['mod_speed']           . "</td>";
@@ -156,6 +150,7 @@
       mysqli_free_result($q_inv_models);
 
       print "document.getElementById('mysql_table').innerHTML = '"    . mysqli_real_escape_string($db, $output) . "';\n\n";
+      print "clear_fields();";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
