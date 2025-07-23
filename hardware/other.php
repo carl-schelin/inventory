@@ -167,7 +167,7 @@ $(document).ready( function() {
       {
         text: "Add Hardware",
         click: function() {
-          update_file('other.mysql.php', 0);
+          attach_file('other.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
