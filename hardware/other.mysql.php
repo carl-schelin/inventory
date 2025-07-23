@@ -194,6 +194,7 @@
       mysqli_free_result($q_inv_models);
 
       print "document.getElementById('mysql_table').innerHTML = '"    . mysqli_real_escape_string($db, $output) . "';\n\n";
+      print "clear_fields();";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
