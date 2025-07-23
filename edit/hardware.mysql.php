@@ -369,14 +369,15 @@
         $output .= "<tr>\n";
         $output .= "  <td class=\"ui-widget-content\">Main Hardware Container <select name=\"hw_hw_id\">\n";
 
-        $q_string  = "select hw_id,ven_name,mod_name ";
+        $q_string  = "select hw_id,hw_serial,ven_name,mod_name ";
         $q_string .= "from inv_hardware ";
         $q_string .= "left join inv_models  on inv_models.mod_id  = inv_hardware.hw_vendorid ";
         $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
         $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = 0 ";
+        $q_string .= "order by ven_name,mod_name,hw_serial ";
         $q_hwselect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
         while ($a_hwselect = mysqli_fetch_array($q_hwselect)) {
-          $output .= "<option value=\"" . $a_hwselect['hw_id'] . "\">" . $a_hwselect['ven_name'] . ": " . $a_hwselect['mod_name'] . "</option>\n";
+          $output .= "<option value=\"" . $a_hwselect['hw_id'] . "\">" . $a_hwselect['ven_name'] . ": " . $a_hwselect['mod_name'] . "/" . $a_hwselect['hw_serial'] . "</option>\n";
         }
 
         $output .= "</select></td>\n";
@@ -386,9 +387,13 @@
         $q_string .= "from inv_hardware ";
         $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
         $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and mod_name like \"RAID%\" ";
+        $q_string .= "order by hw_serial,hw_asset,mod_name ";
         $q_hwselect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_hwselect = mysqli_fetch_array($q_hwselect)) {
-          $output .= "<option value=\"" . $a_hwselect['hw_id'] . "\">" . $a_hwselect['hw_asset'] . $a_hwselect['hw_serial'] . " " . $a_hwselect['mod_name'] . "</option>\n";
+        $output .= "<option value=\"0\">None</option>\n";
+        if (mysqli_num_rows($q_hwselect) > 0) {
+          while ($a_hwselect = mysqli_fetch_array($q_hwselect)) {
+            $output .= "<option value=\"" . $a_hwselect['hw_id'] . "\">" . $a_hwselect['hw_asset'] . $a_hwselect['hw_serial'] . " " . $a_hwselect['mod_name'] . "</option>\n";
+          }
         }
 
         $output .= "</select></td>\n";
@@ -431,28 +436,31 @@
       print "selbox.options.length = 0;\n";
 
 # retrieve hardware list
-      $q_string  = "select hw_id,ven_name,mod_name ";
+      $q_string  = "select hw_id,hw_serial,ven_name,mod_name ";
       $q_string .= "from inv_hardware ";
       $q_string .= "left join inv_models  on inv_models.mod_id  = inv_hardware.hw_vendorid ";
       $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
       $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = 0 ";
+      $q_string .= "order by ven_name,mod_name,hw_serial ";
       $q_hwselect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 # create the javascript bit for populating the hardware dropdown box.
       while ($a_hwselect = mysqli_fetch_array($q_hwselect)) {
-        print "selbox.options[selbox.options.length] = new Option(\"" . $a_hwselect['ven_name'] . ": " . $a_hwselect['mod_name'] . "\"," . $a_hwselect['hw_id'] . ");\n";
+        print "selbox.options[selbox.options.length] = new Option(\"" . $a_hwselect['ven_name'] . ": " . $a_hwselect['mod_name'] . "/" . $a_hwselect['hw_serial'] . "\"," . $a_hwselect['hw_id'] . ");\n";
       }
 
 
 # set up the hardware drop down to refresh the hardware listing
       print "\nvar selbox = document.edit.hw_hd_id;\n";
       print "selbox.options.length = 0;\n";
+      print "selbox.options[selbox.options.length] = new Option(\"None\",0);\n";
 
 # retrieve hardware list
       $q_string  = "select hw_id,hw_serial,hw_asset,mod_name ";
       $q_string .= "from inv_hardware ";
       $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
       $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and mod_name like \"RAID%\" ";
+      $q_string .= "order by hw_serial,hw_asset,mod_name ";
       $q_hwselect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
 
 # create the javascript bit for populating the model dropdown box.
@@ -496,7 +504,7 @@
 
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
-      $output .=   "<th class=\"ui-state-default\" colwidth=\"160\">Remove Hardware</th>\n";
+      $output .=   "<th class=\"ui-state-default\" width=\"160\">Remove Hardware</th>\n";
       if (return_Virtual($db, $formVars['hw_companyid']) == 0) {
         $output .=   "<th class=\"ui-state-default\">Asset</th>\n";
         $output .=   "<th class=\"ui-state-default\">Serial</th>\n";
@@ -509,13 +517,14 @@
       $output .= "</tr>\n";
 
       $primary = 0;
+      $greaterthan = "&gt;";
       $q_string  = "select hw_id,hw_companyid,part_name,hw_serial,hw_asset,hw_product,hw_vendorid,mod_speed,mod_size,";
       $q_string .= "mod_name,hw_active,mod_eol,hw_group,hw_primary,hw_retired,hw_deleted,hw_note,hw_rma,hw_verified,hw_update ";
       $q_string .= "from inv_hardware ";
       $q_string .= "left join inv_parts on inv_hardware.hw_type = inv_parts.part_id ";
       $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
       $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = 0 and hw_hd_id = 0 ";
-      $q_string .= "order by hw_type,hw_vendorid,hw_serial,hw_asset ";
+      $q_string .= "order by hw_asset ";
       $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_inv_hardware) > 0) {
         while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
@@ -576,7 +585,7 @@
           $q_string .= "left join inv_parts  on inv_hardware.hw_type = inv_parts.part_id ";
           $q_string .= "left join inv_models on inv_models.mod_id    = inv_hardware.hw_vendorid ";
           $q_string .= "where hw_companyid = " . $formVars['hw_companyid'] . " and hw_hw_id = " . $a_inv_hardware['hw_id'] . " and hw_hd_id = 0 ";
-          $q_string .= "order by hw_type,hw_vendorid,hw_serial,hw_asset ";
+          $q_string .= "order by hw_type,hw_vendorid,hw_asset,hw_serial,hw_asset ";
           $q_hwselect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_hwselect) > 0) {
             while ($a_hwselect = mysqli_fetch_array($q_hwselect)) {
@@ -619,10 +628,10 @@
               $output .= "<tr>\n";
               $output .= "<td " . $class . " delete\" " . $deltitle . ">" . $linkdel                                                           . "</td>\n";
               if (return_Virtual($db, $formVars['hw_companyid']) == 0) {
-                $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwselect['hw_asset']             . $linkend . "</td>\n";
-                $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwselect['hw_serial']            . $linkend . "</td>\n";
+                $output .= "<td " . $class .        "\" " . $title    . ">" . $greaterthan . $linkstart .        $a_hwselect['hw_asset']             . $linkend . "</td>\n";
+                $output .= "<td " . $class .        "\" " . $title    . ">" . $greaterthan . $linkstart .        $a_hwselect['hw_serial']            . $linkend . "</td>\n";
               }
-              $output .= "<td " . $class .        "\" " . $hwnote   . ">&gt; " . $linkstart . $rma . $a_hwselect['mod_name']             . $linkend . "</td>\n";
+              $output .= "<td " . $class .        "\" " . $hwnote   . ">" . $greaterthan . $linkstart . $rma . $a_hwselect['mod_name']             . $linkend . "</td>\n";
               $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwselect['part_name']            . $linkend . "</td>\n";
               $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwselect['mod_size']             . $linkend . "</td>\n";
               $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwselect['mod_speed']            . $linkend . "</td>\n";
@@ -681,10 +690,10 @@
                   $output .= "<tr>\n";
                   $output .= "<td " . $class . " delete\" " . $deltitle . ">" . $linkdel                                                           . "</td>\n";
                   if (return_Virtual($db, $formVars['hw_companyid']) == 0) {
-                    $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwdisk['hw_asset']             . $linkend . "</td>\n";
-                    $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwdisk['hw_serial']            . $linkend . "</td>\n";
+                    $output .= "<td " . $class .        "\" " . $title    . ">" . $greaterthan . $greaterthan . $linkstart .        $a_hwdisk['hw_asset']             . $linkend . "</td>\n";
+                    $output .= "<td " . $class .        "\" " . $title    . ">" . $greaterthan . $greaterthan . $linkstart .        $a_hwdisk['hw_serial']            . $linkend . "</td>\n";
                   }
-                  $output .= "<td " . $class .        "\" " . $hwnote   . ">&gt;&gt; " . $linkstart . $rma . $a_hwdisk['mod_name']             . $linkend . "</td>\n";
+                  $output .= "<td " . $class .        "\" " . $hwnote   . ">" . $greaterthan . $greaterthan . $linkstart . $rma . $a_hwdisk['mod_name']             . $linkend . "</td>\n";
                   $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwdisk['part_name']            . $linkend . "</td>\n";
                   $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwdisk['mod_size']             . $linkend . "</td>\n";
                   $output .= "<td " . $class .        "\" " . $title    . ">" . $linkstart .        $a_hwdisk['mod_speed']            . $linkend . "</td>\n";
@@ -693,6 +702,8 @@
 
                 }
               }
+
+# end associated hard disks
 
             }
           }
