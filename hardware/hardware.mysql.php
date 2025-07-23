@@ -61,7 +61,7 @@
     }
     $q_string  = "select part_id ";
     $q_string .= "from inv_parts ";
-    $q_string .= "where part_name = \"Hard Disk\" ";
+    $q_string .= "where part_name = \"Hard Disk\" or part_name = \"Solid State Drive\" ";
     $q_inv_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     if (mysqli_num_rows($q_inv_parts) > 0) {
       $a_inv_parts = mysqli_fetch_array($q_inv_parts);
