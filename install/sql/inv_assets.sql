@@ -26,6 +26,7 @@ CREATE TABLE `inv_assets` (
   `ast_modelid` int(10) NOT NULL DEFAULT '0',
   `ast_serial` char(100) NOT NULL DEFAULT '',
   `ast_asset` char(100) NOT NULL DEFAULT '',
+  `ast_name` char(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`ast_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;

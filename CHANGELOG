@@ -1542,4 +1542,10 @@ Several changes as I worked to install this on a fresh system.
 
 Lots of updates in the install directory
 
+### Timestape: 2025-08-01
+
+There will be more I'm sure as I fill out the system
+
+alter table inv_assets add ast_name char(100) not null default '';
+
 
