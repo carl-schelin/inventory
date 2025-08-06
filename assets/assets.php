@@ -18,6 +18,11 @@
 
   logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
+  $formVars['sort'] = '';
+  if (isset($_GET['sort'])) {
+    $formVars['sort'] = clean($_GET['sort'], 30);
+  }
+
 # if help has not been seen yet,
   if (show_Help($db, $Sitepath . "/" . $package)) {
     $display = "display: block";
@@ -65,10 +70,15 @@ function attach_file( p_script_url, update ) {
 
   af_url  = '?update='   + update;
 
+  af_url += "&ast_name="        + encode_URI(af_form.ast_name.value);
   af_url += "&ast_asset="       + encode_URI(af_form.ast_asset.value);
   af_url += "&ast_serial="      + encode_URI(af_form.ast_serial.value);
   af_url += "&ast_parentid="    + encode_URI(af_form.ast_parentid.value);
   af_url += "&ast_modelid="     + af_form.ast_modelid.value;
+  af_url += "&ast_unit="        + af_form.ast_unit.value;
+  af_url += "&ast_vendor="      + af_form.ast_vendor.checked;
+  af_url += "&ast_managed="     + af_form.ast_managed.checked;
+  af_url += "&ast_endsupport="  + encode_URI(af_form.ast_endsupport.value);
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
@@ -83,10 +93,15 @@ function update_file( p_script_url, update ) {
   uf_url  = '?update='   + update;
   uf_url += '&id='       + uf_form.id.value;
 
+  uf_url += "&ast_name="        + encode_URI(uf_form.ast_name.value);
   uf_url += "&ast_asset="       + encode_URI(uf_form.ast_asset.value);
   uf_url += "&ast_serial="      + encode_URI(uf_form.ast_serial.value);
   uf_url += "&ast_parentid="    + encode_URI(uf_form.ast_parentid.value);
   uf_url += "&ast_modelid="     + uf_form.ast_modelid.value;
+  uf_url += "&ast_unit="        + uf_form.ast_unit.value;
+  uf_url += "&ast_vendor="      + uf_form.ast_vendor.checked;
+  uf_url += "&ast_managed="     + uf_form.ast_managed.checked;
+  uf_url += "&ast_endsupport="  + encode_URI(uf_form.ast_endsupport.value);
 
   script = document.createElement('script');
   script.src = p_script_url + uf_url;
@@ -95,7 +110,7 @@ function update_file( p_script_url, update ) {
 }
 
 function clear_fields() {
-  show_file('assets.mysql.php?update=-1');
+  show_file('assets.mysql.php?update=-1&sort=<?php print $formVars['sort']; ?>');
 }
 
 $(document).ready( function() {
@@ -108,7 +123,7 @@ $(document).ready( function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 300,
+    height: 350,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -138,7 +153,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 300,
+    height: 350,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -165,7 +180,7 @@ $(document).ready( function() {
       {
         text: "Add Asset",
         click: function() {
-          attach_file('assets.mysql.php', 0);
+          update_file('assets.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -253,7 +268,7 @@ delete a CPU as long as this value is greater than zero.</p>
 </div>
 
 
-<div id="dialogCreate" title="Add CPU Form">
+<div id="dialogCreate" title="Add Asset Form">
 
 <form name="formCreate">
 
@@ -264,12 +279,11 @@ delete a CPU as long as this value is greater than zero.</p>
 </div>
 
 
-<div id="dialogUpdate" title="Update CPU Form">
+<div id="dialogUpdate" title="Update Asset Form">
 
 <form name="formUpdate">
 
 <input type="hidden" name="id" value="0">
-<input type="hidden" name="mod_type" value="8">
 
 <?php include('assets.dialog.php'); ?>
 
