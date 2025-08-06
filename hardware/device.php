@@ -68,10 +68,22 @@ function attach_file( p_script_url, update ) {
   af_url += "&mod_vendor="     + af_form.mod_vendor.value;
   af_url += "&mod_name="       + encode_URI(af_form.mod_name.value);
   af_url += "&mod_type="       + af_form.mod_type.value;
-  af_url += "&mod_virtual="    + af_form.mod_virtual.checked;
   af_url += "&mod_eopur="      + encode_URI(af_form.mod_eopur.value);
   af_url += "&mod_eoship="     + encode_URI(af_form.mod_eoship.value);
   af_url += "&mod_eol="        + encode_URI(af_form.mod_eol.value);
+  af_url += "&mod_virtual="    + af_form.mod_virtual.checked;
+  af_url += "&mod_desc="       + encode_URI(af_form.mod_desc.value);
+  af_url += "&mod_height="     + encode_URI(af_form.mod_height.value);
+  af_url += "&mod_weight="     + encode_URI(af_form.mod_weight.value);
+  af_url += "&mod_depth="      + af_form.mod_depth.checked;
+  af_url += "&mod_front="      + af_form.mod_front.value;
+  af_url += "&mod_rear="       + af_form.mod_rear.value;
+  af_url += "&mod_plugs="      + encode_URI(af_form.mod_plugs.value);
+  af_url += "&mod_plugtype="   + af_form.mod_plugtype.value;
+  af_url += "&mod_volts="      + af_form.mod_volts.value;
+  af_url += "&mod_draw="       + encode_URI(af_form.mod_draw.value);
+  af_url += "&mod_start="      + encode_URI(af_form.mod_start.value);
+  af_url += "&mod_btu="        + encode_URI(af_form.mod_btu.value);
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
@@ -88,10 +100,22 @@ function update_file( p_script_url, update ) {
   uf_url += "&mod_vendor="     + uf_form.mod_vendor.value;
   uf_url += "&mod_name="       + encode_URI(uf_form.mod_name.value);
   uf_url += "&mod_type="       + uf_form.mod_type.value;
-  uf_url += "&mod_virtual="    + uf_form.mod_virtual.checked;
   uf_url += "&mod_eopur="      + encode_URI(uf_form.mod_eopur.value);
   uf_url += "&mod_eoship="     + encode_URI(uf_form.mod_eoship.value);
   uf_url += "&mod_eol="        + encode_URI(uf_form.mod_eol.value);
+  uf_url += "&mod_virtual="    + uf_form.mod_virtual.checked;
+  uf_url += "&mod_desc="       + encode_URI(uf_form.mod_desc.value);
+  uf_url += "&mod_height="     + encode_URI(uf_form.mod_height.value);
+  uf_url += "&mod_weight="     + encode_URI(uf_form.mod_weight.value);
+  uf_url += "&mod_depth="      + uf_form.mod_depth.checked;
+  uf_url += "&mod_front="      + uf_form.mod_front.value;
+  uf_url += "&mod_rear="       + uf_form.mod_rear.value;
+  uf_url += "&mod_plugs="      + encode_URI(uf_form.mod_plugs.value);
+  uf_url += "&mod_plugtype="   + uf_form.mod_plugtype.value;
+  uf_url += "&mod_volts="      + uf_form.mod_volts.value;
+  uf_url += "&mod_draw="       + encode_URI(uf_form.mod_draw.value);
+  uf_url += "&mod_start="      + encode_URI(uf_form.mod_start.value);
+  uf_url += "&mod_btu="        + encode_URI(uf_form.mod_btu.value);
 
   script = document.createElement('script');
   script.src = p_script_url + uf_url;
@@ -112,7 +136,7 @@ $(document).ready( function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 275,
+    height: 600,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -142,7 +166,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 275,
+    height: 600,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -259,46 +283,7 @@ delete a device as long as this value is greater than zero.</p>
 
 <form name="formCreate">
 
-<table class="ui-styled-table">
-<tr>
-  <td class="ui-widget-content">Vendor: <select name="mod_vendor">
-<?php
-  $q_string  = "select ven_id,ven_name ";
-  $q_string .= "from inv_vendors ";
-  $q_string .= "order by ven_name";
-  $q_inv_vendors = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inv_vendors = mysqli_fetch_array($q_inv_vendors)) {
-    print "<option value=\"" . $a_inv_vendors['ven_id'] . "\">" . $a_inv_vendors['ven_name'] . "</option>\n";
-  }
-?>
-</select></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Model: <input type="text" name="mod_name" size="50"> <label>Virtual Machine? <input type="checkbox" name="mod_virtual"></label></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Device Type <select name="mod_type">
-<?php
-  $q_string  = "select part_id,part_name ";
-  $q_string .= "from inv_parts ";
-  $q_string .= "order by part_name";
-  $q_inv_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inv_parts = mysqli_fetch_array($q_inv_parts)) {
-    print "<option value=\"" . $a_inv_parts['part_id'] . "\">" . $a_inv_parts['part_name'] . "</option>\n";
-  }
-?>
-</select></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">End of Purchase: <input type="date" name="mod_eopur" size="12"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">End of Shipping: <input type="date" name="mod_eoship" size="12"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">End of Life: <input type="date" name="mod_eol" size="12"></td>
-</tr>
-</table>
+<?php include('device.dialog.php'); ?>
 
 </form>
 
@@ -311,46 +296,7 @@ delete a device as long as this value is greater than zero.</p>
 
 <input type="hidden" name="id" value="0">
 
-<table class="ui-styled-table">
-<tr>
-  <td class="ui-widget-content">Vendor: <select name="mod_vendor">
-<?php
-  $q_string  = "select ven_id,ven_name ";
-  $q_string .= "from inv_vendors ";
-  $q_string .= "order by ven_name";
-  $q_inv_vendors = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inv_vendors = mysqli_fetch_array($q_inv_vendors)) {
-    print "<option value=\"" . $a_inv_vendors['ven_id'] . "\">" . $a_inv_vendors['ven_name'] . "</option>\n";
-  }
-?>
-</select></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Model: <input type="text" name="mod_name" size="50"> <label>Virtual Machine? <input type="checkbox" name="mod_virtual"></label></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Device Type <select name="mod_type">
-<?php
-  $q_string  = "select part_id,part_name ";
-  $q_string .= "from inv_parts ";
-  $q_string .= "order by part_name";
-  $q_inv_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inv_parts = mysqli_fetch_array($q_inv_parts)) {
-    print "<option value=\"" . $a_inv_parts['part_id'] . "\">" . $a_inv_parts['part_name'] . "</option>\n";
-  }
-?>
-</select></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">End of Purchase: <input type="date" name="mod_eopur" size="12"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">End of Shipping: <input type="date" name="mod_eoship" size="12"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">End of Life: <input type="date" name="mod_eol" size="12"></td>
-</tr>
-</table>
+<?php include('device.dialog.php'); ?>
 
 </form>
 

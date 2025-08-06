@@ -22,26 +22,58 @@
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']             = clean($_GET['id'],           10);
-        $formVars['mod_vendor']     = clean($_GET['mod_vendor'],   10);
-        $formVars['mod_name']       = clean($_GET['mod_name'],    100);
-        $formVars['mod_type']       = clean($_GET['mod_type'],     10);
-        $formVars['mod_size']       = clean($_GET['mod_size'],    100);
-        $formVars['mod_speed']      = clean($_GET['mod_speed'],    20);
-        $formVars['mod_eopur']      = clean($_GET['mod_eopur'],    30);
-        $formVars['mod_eoship']     = clean($_GET['mod_eoship'],   30);
-        $formVars['mod_eol']        = clean($_GET['mod_eol'],      30);
-        $formVars['mod_virtual']    = clean($_GET['mod_virtual'],  10);
+        $formVars['mod_vendor']     = clean($_GET['mod_vendor'],   10);	# drop down
+        $formVars['mod_name']       = clean($_GET['mod_name'],    100);	# text: 100
+        $formVars['mod_type']       = clean($_GET['mod_type'],     10);	# drop down
+        $formVars['mod_size']       = clean($_GET['mod_size'],    100);	# text: 100
+        $formVars['mod_speed']      = clean($_GET['mod_speed'],    20);	# text: 20
+        $formVars['mod_eopur']      = clean($_GET['mod_eopur'],    30);	# date: 1971-01-01
+        $formVars['mod_eoship']     = clean($_GET['mod_eoship'],   30);	# date: 1971-01-01
+        $formVars['mod_eol']        = clean($_GET['mod_eol'],      30);	# date: 1971-01-01
+        $formVars['mod_virtual']    = clean($_GET['mod_virtual'],  10);	# checkbox
+        $formVars['mod_desc']       = clean($_GET['mod_desc'],    255);	# text: 255
+        $formVars['mod_height']     = clean($_GET['mod_height'],   10);	# int
+        $formVars['mod_weight']     = clean($_GET['mod_weight'],   10);	# int
+        $formVars['mod_depth']      = clean($_GET['mod_depth'],    10);	# checkbox
+        $formVars['mod_front']      = clean($_GET['mod_front'],    10);	# drop down
+        $formVars['mod_rear']       = clean($_GET['mod_rear'],     10);	# drop down
+        $formVars['mod_plugs']      = clean($_GET['mod_plugs'],    10);	# int
+        $formVars['mod_plugtype']   = clean($_GET['mod_plugtype'], 10);	# drop down
+        $formVars['mod_volts']      = clean($_GET['mod_volts'],    10);	# drop down
+        $formVars['mod_draw']       = clean($_GET['mod_draw'],     20);	# text: 20
+        $formVars['mod_start']      = clean($_GET['mod_start'],    20);	# text: 20
+        $formVars['mod_btu']        = clean($_GET['mod_btu'],      30);	# text: 30
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
         }
-        $formVars['mod_plugs'] = 0;
-        $formVars['mod_plugtype'] = 0;
-        $formVars['mod_volts'] = 0;
+        if ($formVars['mod_eopur'] == '') {
+          $formVars['mod_eopur'] = "1971-01-01";
+        }
+        if ($formVars['mod_eoship'] == '') {
+          $formVars['mod_eoship'] = "1971-01-01";
+        }
+        if ($formVars['mod_eol'] == '') {
+          $formVars['mod_eol'] = "1971-01-01";
+        }
+        if ($formVars['mod_height'] == '') {
+          $formVars['mod_height'] = 0;
+        }
+        if ($formVars['mod_weight'] == '') {
+          $formVars['mod_weight'] = 0;
+        }
+        if ($formVars['mod_plugs'] == '') {
+          $formVars['mod_plugs'] = 0;
+        }
         if ($formVars['mod_virtual'] == 'true') {
           $formVars['mod_virtual'] = 1;
         } else {
           $formVars['mod_virtual'] = 0;
+        }
+        if ($formVars['mod_depth'] == 'true') {
+          $formVars['mod_depth'] = 1;
+        } else {
+          $formVars['mod_depth'] = 0;
         }
 # if you're entering information here, the device is a primary device
         $formVars['mod_primary'] = 1;
@@ -52,7 +84,7 @@
           $q_string =
             "mod_vendor     =   " . $formVars['mod_vendor']   . "," .
             "mod_name       = \"" . $formVars['mod_name']     . "\"," .
-            "mod_type       = \"" . $formVars['mod_type']     . "\"," .
+            "mod_type       =   " . $formVars['mod_type']     . "," .
             "mod_primary    =   " . $formVars['mod_primary']  . "," .
             "mod_size       = \"" . $formVars['mod_size']     . "\"," .
             "mod_speed      = \"" . $formVars['mod_speed']    . "\"," .
@@ -65,7 +97,13 @@
             "mod_draw       = \"" . $formVars['mod_draw']     . "\"," .
             "mod_start      = \"" . $formVars['mod_start']    . "\"," .
             "mod_btu        = \"" . $formVars['mod_btu']      . "\"," .
-            "mod_virtual    =   " . $formVars['mod_virtual'];
+            "mod_virtual    =   " . $formVars['mod_virtual']  . "," . 
+            "mod_height     =   " . $formVars['mod_height']   . "," . 
+            "mod_weight     =   " . $formVars['mod_weight']   . "," . 
+            "mod_depth      =   " . $formVars['mod_depth']    . "," . 
+            "mod_front      =   " . $formVars['mod_front']    . "," . 
+            "mod_rear       =   " . $formVars['mod_rear']     . "," . 
+            "mod_desc       = \"" . $formVars['mod_desc']     . "\"";
 
           if ($formVars['update'] == 0) {
             $q_string = "insert into inv_models set mod_id = NULL, " . $q_string;
