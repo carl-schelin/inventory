@@ -27,6 +27,7 @@ CREATE TABLE `inv_ports` (
   `port_type` int(10) NOT NULL DEFAULT '0',
   `port_active` int(10) NOT NULL DEFAULT '0',
   `port_desc` char(100) NOT NULL DEFAULT '',
+  `port_facing` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`port_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
