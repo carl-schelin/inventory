@@ -21,7 +21,7 @@
     if (check_userlevel($db, $AL_Edit)) {
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_patch");
 
-      $q_string  = "select pat_deviceid,pat_name,pat_type,pat_active,pat_desc,pat_office ";
+      $q_string  = "select pat_deviceid,pat_name,pat_type,pat_active,pat_desc,pat_office,pat_verified ";
       $q_string .= "from inv_patch ";
       $q_string .= "where pat_id = " . $formVars['id'];
       $q_inv_patch = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -42,6 +42,11 @@
         print "document.formUpdate.pat_active.checked = true;\n";
       } else {
         print "document.formUpdate.pat_active.checked = false;\n";
+      }
+      if ($a_inv_patch['pat_verified']) {
+        print "document.formUpdate.pat_verified.checked = true;\n";
+      } else {
+        print "document.formUpdate.pat_verified.checked = false;\n";
       }
 
       print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";

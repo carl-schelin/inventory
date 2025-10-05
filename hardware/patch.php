@@ -23,6 +23,16 @@
     $formVars['sort'] = clean($_GET['sort'], 30);
   } 
 
+  $formVars['csv'] = '';
+  if (isset($_GET['csv'])) {
+    $formVars['csv'] = clean($_GET['csv'], 30);
+  } 
+
+  $formVars['view'] = '';
+  if (isset($_GET['view'])) {
+    $formVars['view'] = clean($_GET['view'], 30);
+  } 
+
 # if help has not been seen yet,
   if (show_Help($db, $Sitepath . "/" . $package)) {
     $display = "display: block";
@@ -76,6 +86,7 @@ function attach_file( p_script_url, update ) {
   af_url += "&pat_active="       + af_form.pat_active.checked;
   af_url += "&pat_desc="         + encode_URI(af_form.pat_desc.value);
   af_url += "&pat_office="       + encode_URI(af_form.pat_office.value);
+  af_url += "&pat_verified="     + af_form.pat_verified.checked;
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
@@ -96,6 +107,7 @@ function update_file( p_script_url, update ) {
   uf_url += "&pat_active="       + uf_form.pat_active.checked;
   uf_url += "&pat_desc="         + encode_URI(uf_form.pat_desc.value);
   uf_url += "&pat_office="       + encode_URI(uf_form.pat_office.value);
+  uf_url += "&pat_verified="     + uf_form.pat_verified.checked;
 
   script = document.createElement('script');
   script.src = p_script_url + uf_url;
@@ -104,7 +116,7 @@ function update_file( p_script_url, update ) {
 }
 
 function clear_fields() {
-  show_file('patch.mysql.php?update=-1&sort=<?php print $formVars['sort']; ?>');
+  show_file('patch.mysql.php?update=-1&sort=<?php print $formVars['sort']; ?>&csv=false&view=<?php print $formVars['view']; ?>');
 }
 
 $(document).ready( function() {
@@ -115,7 +127,7 @@ $(document).ready( function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 275,
+    height: 300,
     width:  600,
     show: 'slide',
     hide: 'slide',
@@ -145,7 +157,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 275,
+    height: 300,
     width:  600,
     show: 'slide',
     hide: 'slide',

@@ -33,6 +33,9 @@
   <td class="ui-widget-content"><label>Is the Drop Actively in use? <input type="checkbox" name="pat_active"></label></td>
 </tr>
 <tr>
+  <td class="ui-widget-content"><label>Is the Drop Verified? <input type="checkbox" name="pat_verified"></label></td>
+</tr>
+<tr>
   <td class="ui-widget-content">Office: <input type="text" name="pat_office" size="50"></td>
 </tr>
 <tr>
