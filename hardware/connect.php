@@ -26,6 +26,18 @@
   if (isset($_GET['sort'])) {
     $formVars['sort'] = clean($_GET['sort'], 30);
   } 
+  $formVars['csv'] = '';
+  if (isset($_GET['csv'])) {
+    $formVars['csv'] = clean($_GET['csv'], 30);
+  } 
+  $formVars['view'] = '';
+  if (isset($_GET['view'])) {
+    $formVars['view'] = clean($_GET['view'], 30);
+  }
+  $formVars['type'] = '';
+  if (isset($_GET['type'])) {
+    $formVars['type'] = clean($_GET['type'], 30);
+  }
 
 # if help has not been seen yet,
   if (show_Help($db, $Sitepath . "/" . $package)) {
@@ -68,8 +80,8 @@ function delete_line( p_script_url ) {
   }
 ?>
 
-function attach_file( p_script_url, update ) {
-  var af_form = document.formCreate;
+function attach_cat5( p_script_url, update ) {
+  var af_form = document.formCreateCat5;
   var af_url;
 
   af_url  = '?update='   + update;
@@ -84,8 +96,74 @@ function attach_file( p_script_url, update ) {
   clear_fields();
 }
 
-function update_file( p_script_url, update ) {
-  var uf_form = document.formUpdate;
+function update_cat5( p_script_url, update ) {
+  var uf_form = document.formUpdateCat5;
+  var uf_url;
+
+  uf_url  = '?update='   + update;
+  uf_url += '&id='       + uf_form.id.value;
+
+  uf_url += "&con_sourceid="     + uf_form.con_sourceid.value;
+  uf_url += "&con_targetid="     + uf_form.con_targetid.value;
+  uf_url += "&con_type="         + uf_form.con_type.value;
+
+  script = document.createElement('script');
+  script.src = p_script_url + uf_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
+  clear_fields();
+}
+
+function attach_power( p_script_url, update ) {
+  var af_form = document.formCreatePower;
+  var af_url;
+
+  af_url  = '?update='   + update;
+
+  af_url += "&con_sourceid="     + af_form.con_sourceid.value;
+  af_url += "&con_targetid="     + af_form.con_targetid.value;
+  af_url += "&con_type="         + af_form.con_type.value;
+
+  script = document.createElement('script');
+  script.src = p_script_url + af_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
+  clear_fields();
+}
+
+function update_power( p_script_url, update ) {
+  var uf_form = document.formUpdatePower;
+  var uf_url;
+
+  uf_url  = '?update='   + update;
+  uf_url += '&id='       + uf_form.id.value;
+
+  uf_url += "&con_sourceid="     + uf_form.con_sourceid.value;
+  uf_url += "&con_targetid="     + uf_form.con_targetid.value;
+  uf_url += "&con_type="         + uf_form.con_type.value;
+
+  script = document.createElement('script');
+  script.src = p_script_url + uf_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
+  clear_fields();
+}
+
+function attach_fiber( p_script_url, update ) {
+  var af_form = document.formCreateFiber;
+  var af_url;
+
+  af_url  = '?update='   + update;
+
+  af_url += "&con_sourceid="     + af_form.con_sourceid.value;
+  af_url += "&con_targetid="     + af_form.con_targetid.value;
+  af_url += "&con_type="         + af_form.con_type.value;
+
+  script = document.createElement('script');
+  script.src = p_script_url + af_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
+  clear_fields();
+}
+
+function update_fiber( p_script_url, update ) {
+  var uf_form = document.formUpdateFiber;
   var uf_url;
 
   uf_url  = '?update='   + update;
@@ -102,15 +180,21 @@ function update_file( p_script_url, update ) {
 }
 
 function clear_fields() {
-  show_file('connect.mysql.php?update=-1&sort=<?php print $formVars['sort']; ?>&dest=<?php print $formVars['dest']; ?>');
+  show_file('connect.mysql.php?update=-1&sort=<?php print $formVars['sort']; ?>&dest=<?php print $formVars['dest']; ?>&csv=<?php print $formVars['csv']; ?>&view=<?php print $formVars['view']; ?>&type=<?php print $formVars['type']; ?>');
 }
 
 $(document).ready( function() {
-  $( '#clickCreate' ).click(function() {
-    $( "#dialogCreate" ).dialog('open');
+  $( '#clickCat5' ).click(function() {
+    $( "#dialogCreateCat5" ).dialog('open');
+  });
+  $( '#clickPower' ).click(function() {
+    $( "#dialogCreatePower" ).dialog('open');
+  });
+  $( '#clickFiber' ).click(function() {
+    $( "#dialogCreateFiber" ).dialog('open');
   });
 
-  $( "#dialogCreate" ).dialog({
+  $( "#dialogCreateCat5" ).dialog({
     autoOpen: false,
     modal: true,
     height: 200,
@@ -120,27 +204,27 @@ $(document).ready( function() {
     closeOnEscape: true,
     dialogClass: 'dialogWithDropShadow',
     close: function(event, ui) {
-      $( "#dialogCreate" ).hide();
+      $( "#dialogCat5" ).hide();
     },
     buttons: [
       {
         text: "Cancel",
         click: function() {
-          attach_file('connect.mysql.php', -1);
+          attach_cat5('connect.mysql.php', -1);
           $( this ).dialog( "close" );
         }
       },
       {
-        text: "Add Connection",
+        text: "Add Cat5 Connection",
         click: function() {
-          attach_file('connect.mysql.php', 0);
+          attach_cat5('connect.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
     ]
   });
 
-  $( "#dialogUpdate" ).dialog({
+  $( "#dialogUpdateCat5" ).dialog({
     autoOpen: false,
     modal: true,
     height: 200,
@@ -150,27 +234,161 @@ $(document).ready( function() {
     closeOnEscape: true,
     dialogClass: 'dialogWithDropShadow',
     close: function(event, ui) {
-      $( "#dialogUpdate" ).hide();
+      $( "#dialogUpdateCat5" ).hide();
     },
     buttons: [
       {
         text: "Cancel",
         click: function() {
-          update_file('connect.mysql.php', -1);
+          update_cat5('connect.mysql.php', -1);
           $( this ).dialog( "close" );
         }
       },
       {
-        text: "Update Connection",
+        text: "Update Cat5 Connection",
         click: function() {
-          update_file('connect.mysql.php', 1);
+          update_cat5('connect.mysql.php', 1);
           $( this ).dialog( "close" );
         }
       },
       {
-        text: "Add Connection",
+        text: "Add Cat5 Connection",
         click: function() {
-          update_file('connect.mysql.php', 0);
+          update_cat5('connect.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+  $( "#dialogCreatePower" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 200,
+    width:  600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogPower" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          attach_power('connect.mysql.php', -1);
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Power",
+        click: function() {
+          attach_power('connect.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+  $( "#dialogUpdatePower" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 200,
+    width:  600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogUpdatePower" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          update_power('connect.mysql.php', -1);
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Update Power",
+        click: function() {
+          update_power('connect.mysql.php', 1);
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Power",
+        click: function() {
+          update_power('connect.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+  $( "#dialogCreateFiber" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 200,
+    width:  600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogFiber" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          attach_power('connect.mysql.php', -1);
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Fiber",
+        click: function() {
+          attach_fiber('connect.mysql.php', 0);
+          $( this ).dialog( "close" );
+        }
+      }
+    ]
+  });
+
+  $( "#dialogUpdateFiber" ).dialog({
+    autoOpen: false,
+    modal: true,
+    height: 200,
+    width:  600,
+    show: 'slide',
+    hide: 'slide',
+    closeOnEscape: true,
+    dialogClass: 'dialogWithDropShadow',
+    close: function(event, ui) {
+      $( "#dialogUpdateFiber" ).hide();
+    },
+    buttons: [
+      {
+        text: "Cancel",
+        click: function() {
+          update_fiber('connect.mysql.php', -1);
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Update Fiber",
+        click: function() {
+          update_fiber('connect.mysql.php', 1);
+          $( this ).dialog( "close" );
+        }
+      },
+      {
+        text: "Add Fiber",
+        click: function() {
+          update_fiber('connect.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }
@@ -214,7 +432,7 @@ and save the information.</p>
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add Connection"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickFiber" value="Add Fiber"> <input type="button" id="clickCat5" value="Add Cat5"> <input type="button" id="clickPower" value="Add Power"></td>
 </tr>
 </table>
 
@@ -250,24 +468,72 @@ isn't normally in a computer room is unnecessary.</p>
 </div>
 
 
-<div id="dialogCreate" title="Add Connection Form">
+<div id="dialogCreateCat5" title="Add Cat5 Connection Form">
 
-<form name="formCreate">
+<form name="formCreateCat5">
 
-<?php include('connect.dialog.php'); ?>
+<?php include('connect.cat5.php'); ?>
 
 </form>
 
 </div>
 
 
-<div id="dialogUpdate" title="Edit Connection Form">
+<div id="dialogUpdateCat5" title="Edit Cat5 Connection Form">
 
-<form name="formUpdate">
+<form name="formUpdateCat5">
 
 <input type="hidden" name="id" value="0">
 
-<?php include('connect.dialog.php'); ?>
+<?php include('connect.cat5.php'); ?>
+
+</form>
+
+</div>
+
+
+<div id="dialogCreatePower" title="Add Power Connection Form">
+
+<form name="formCreatePower">
+
+<?php include('connect.power.php'); ?>
+
+</form>
+
+</div>
+
+
+<div id="dialogUpdatePower" title="Edit Power Connection Form">
+
+<form name="formUpdatePower">
+
+<input type="hidden" name="id" value="0">
+
+<?php include('connect.power.php'); ?>
+
+</form>
+
+</div>
+
+
+<div id="dialogCreateFiber" title="Add Fiber Connection Form">
+
+<form name="formCreateFiber">
+
+<?php include('connect.fiber.php'); ?>
+
+</form>
+
+</div>
+
+
+<div id="dialogUpdateFiber" title="Edit Fiber Connection Form">
+
+<form name="formUpdateFiber">
+
+<input type="hidden" name="id" value="0">
+
+<?php include('connect.power.php'); ?>
 
 </form>
 
