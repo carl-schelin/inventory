@@ -28,6 +28,7 @@ CREATE TABLE `inv_outlets` (
   `out_active` int(10) NOT NULL DEFAULT '0',
   `out_desc` char(100) NOT NULL DEFAULT '',
   `out_facing` int(10) NOT NULL DEFAULT '0',
+  `out_verified` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`out_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
