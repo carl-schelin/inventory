@@ -37,12 +37,23 @@
   <li id="tm_hardware"><a href="<?php print $Siteroot; ?>/index.hardware.php">Assets</a>
     <ul>
       <li><a href="<?php print $Assetroot; ?>/assets.php">Asset Manager</a></li>
+      <li><a href="<?php print $Rackroot; ?>/racks.php">Rack Manager</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/device.php">Device Manager</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/devicetype.php">Device Types</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/cpu.php">CPU Manager</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/memory.php">Memory Manager</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/storage.php">Storage Manager</a></li>
       <li><a href="<?php print $Hardwareroot; ?>/other.php">Miscellaneous Hardware</a></li>
+    </ul>
+  </li>
+
+  <li id="tm_connect"><a href="<?php print $Siteroot; ?>/index.connections.php">Connections</a>
+    <ul>
+      <li><a href="<?php print $Hardwareroot; ?>/connect.php">Connection Manager</a></li>
+      <li><a href="<?php print $Hardwareroot; ?>/ports.php">Power Ports</a></li>
+      <li><a href="<?php print $Hardwareroot; ?>/outlets.php">Power Outlets</a></li>
+      <li><a href="<?php print $Hardwareroot; ?>/patch.php">Ethernet Ports</a></li>
+      <li><a href="<?php print $Hardwareroot; ?>/fiber.php">Fiber Ports</a></li>
     </ul>
   </li>
 
