@@ -64,9 +64,10 @@ right or bottom to top.</p>
 
 <p><strong><u>Power Outlets</u></strong></p>
 
-<p>Unless the outlets have labeling, I count outlets left to right and bottom to top. One of the 
-UPSs I reviewed had two rows of three outlets so bottom left would be PSU0, top right would be 
-PSU5.</p>
+<p>Unless the outlets have labeling, I tend to count outlets from the power cable or port when 
+something like a PSU, or left to right and bottom to top for something like a dedicated USP. 
+One of the UPSs I reviewed had two rows of three outlets so bottom left would be PSU0, top 
+right would be PSU5.</p>
 
 <p><strong><u>Ethernet Ports</u></strong></p>
 
@@ -82,6 +83,22 @@ drop is the target.</p>
 <p>This lists just the Fiber ports on devices. Check the cable. Many are LC connectors but I 
 found a lot are ST connectors.</p>
 
+<p><strong><u>Connection Manager</u></strong></p>
+
+<p>The connection manager has three buttons depending on what you're connecting. A Fiber one, 
+a Cat5 one, and a Power one.</p>
+
+<p>Fiber just connects fiber to fiber. There are fiber connections that are ethernet (RJ45) to 
+fiber or even to ethernet. This right now just lets you connect a fiber to fiber connection. 
+I've been just adding a text comment if it's a mixed connectin for now.</p>
+
+<p>While the button says Cat5, it actually lets you connect USB ports and other such ports. </p>
+
+<p>Power lets you connect a PSU with an Outlet.</p>
+
+<p>I'm trying to redo the scripts to let me restrict the views to an Asset but it's not quite 
+working like I want. Same with clicking on a connection type and only showing Power items for 
+example.</p>
 
 </div>
 
