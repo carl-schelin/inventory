@@ -42,11 +42,11 @@ do
   CALLED=$(echo $i | cut -f1 -d:)
   OUTPUT=$(echo $i | cut -f2 -d:)
 
-  /usr/local/bin/php ${SVRRUN}/ansible.yaml.php ${CALLED} > ${INVENTORY}/${OUTPUT}
+  /usr/bin/php ${SVRRUN}/ansible.yaml.php ${CALLED} > ${INVENTORY}/${OUTPUT}
 done
 
 # ensure file exists regardless; write to a temporary area to ensure the servers file continues to exist.
-/usr/local/bin/php ${SVRRUN}/servers.php | sort | uniq > ${TEMP}/servers
+/usr/bin/php ${SVRRUN}/servers.php | sort | uniq > ${TEMP}/servers
 
 # now copy it over the existing file.
 cp ${TEMP}/servers ${SERVERS}/servers
