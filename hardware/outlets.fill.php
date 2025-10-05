@@ -21,7 +21,7 @@
     if (check_userlevel($db, $AL_Edit)) {
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_outlets");
 
-      $q_string  = "select out_deviceid,out_name,out_type,out_active,out_desc,out_facing ";
+      $q_string  = "select out_deviceid,out_name,out_type,out_active,out_desc,out_facing,out_verified ";
       $q_string .= "from inv_outlets ";
       $q_string .= "where out_id = " . $formVars['id'];
       $q_inv_outlets = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -46,6 +46,11 @@
         print "document.formUpdate.out_facing.checked = true;\n";
       } else {
         print "document.formUpdate.out_facing.checked = false;\n";
+      }
+      if ($a_inv_outlets['out_verified']) {
+        print "document.formUpdate.out_verified.checked = true;\n";
+      } else {
+        print "document.formUpdate.out_verified.checked = false;\n";
       }
 
       print "document.formUpdate.id.value = " . $formVars['id'] . ";\n";

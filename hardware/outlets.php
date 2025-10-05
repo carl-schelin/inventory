@@ -22,6 +22,10 @@
   if (isset($_GET['sort'])) {
     $formVars['sort'] = clean($_GET['sort'], 30);
   } 
+  $formVars['view'] = '';
+  if (isset($_GET['view'])) {
+    $formVars['view'] = clean($_GET['view'], 30);
+  } 
 
 # if help has not been seen yet,
   if (show_Help($db, $Sitepath . "/" . $package)) {
@@ -76,6 +80,7 @@ function attach_file( p_script_url, update ) {
   af_url += "&out_active="       + af_form.out_active.checked;
   af_url += "&out_desc="         + encode_URI(af_form.out_desc.value);
   af_url += "&out_facing="       + af_form.out_facing.checked;
+  af_url += "&out_verified="     + af_form.out_verified.checked;
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
@@ -96,6 +101,7 @@ function update_file( p_script_url, update ) {
   uf_url += "&out_active="       + uf_form.out_active.checked;
   uf_url += "&out_desc="         + encode_URI(uf_form.out_desc.value);
   uf_url += "&out_facing="       + uf_form.out_facing.checked;
+  uf_url += "&out_verified="     + uf_form.out_verified.checked;
 
   script = document.createElement('script');
   script.src = p_script_url + uf_url;
@@ -104,7 +110,7 @@ function update_file( p_script_url, update ) {
 }
 
 function clear_fields() {
-  show_file('outlets.mysql.php?update=-1&sort=<?php print $formVars['sort']; ?>');
+  show_file('outlets.mysql.php?update=-1&sort=<?php print $formVars['sort']; ?>&view=<?php print $formVars['view']; ?>');
 }
 
 $(document).ready( function() {
@@ -115,7 +121,7 @@ $(document).ready( function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 275,
+    height: 300,
     width:  600,
     show: 'slide',
     hide: 'slide',
@@ -145,7 +151,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 275,
+    height: 300,
     width:  600,
     show: 'slide',
     hide: 'slide',
@@ -201,12 +207,12 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<p><u><strong>Power Port Listing</strong></u></p>
+<p><u><strong>Power Outlet Listing</strong></u></p>
 
-<p>The purpose behind the Power Port Listing is to identify the connection between 
+<p>The purpose behind the Power Outlet Listing is to identify the connection between 
 devices and ensure the racks are sufficiently powered.</p>
 
-<p>We'll select the device that has one or more ports, identify the correct port, 
+<p>We'll select the device that has one or more outlets, identify the correct outlets, 
 and save the information.</p>
 
 </div>
@@ -233,12 +239,15 @@ and save the information.</p>
 
 <div class="main-help ui-widget-content">
 
-<p><u><strong>Power Port Listing</strong></u></p>
+<p><u><strong>Power Outlet Listing</strong></u></p>
 
-<p>This is a list of the Power Ports for all Assets in the Inventory. to be 
-perfectly clear, ports only need to be defined for systems where we want to 
-track connections such as computer rooms. Assigning a port to a device that 
+<p>This is a list of the Power Outlets for all Physical Assets in the Inventory. to be 
+perfectly clear, outlets only need to be defined for PDUs and UPSs where we want to 
+track connections such as computer rooms. Assigning a outlet to a unit that 
 isn't normally in a computer room is unnecessary.</p>
+
+<p>Note that counting outlets starts from the unit Power Port which could be on 
+the left or right side of the unit.</p>
 
 <img src="<?php print $Imgsroot . "/powerports.webp"; ?>">
 

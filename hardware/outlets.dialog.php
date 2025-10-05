@@ -36,6 +36,9 @@
   <td class="ui-widget-content"><label>Is the Port on the Front of the unit? <input type="checkbox" name="out_facing"></label></td>
 </tr>
 <tr>
+  <td class="ui-widget-content"><label>Has the Port been verified? <input type="checkbox" name="out_verified"></label></td>
+</tr>
+<tr>
   <td class="ui-widget-content">Description: <input type="text" name="out_desc" size="50"></td>
 </tr>
 </table>
