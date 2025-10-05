@@ -31,6 +31,7 @@ CREATE TABLE `inv_assets` (
   `ast_vendor` int(10) NOT NULL DEFAULT '0',
   `ast_managed` int(10) NOT NULL DEFAULT '0',
   `ast_endsupport` date NOT NULL DEFAULT '1971-01-01',
+  `ast_facing` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ast_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
