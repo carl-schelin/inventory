@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `inv_patch`;
 CREATE TABLE `inv_patch` (
   `pat_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `pat_deviceid` int(10) NOT NULL DEFAULT '0',
-  `pat_name` char(30) NOT NULL DEFAULT '',
+  `pat_name` char(100) NOT NULL DEFAULT '',
   `pat_type` int(10) NOT NULL DEFAULT '0',
   `pat_active` int(10) NOT NULL DEFAULT '0',
   `pat_desc` char(100) NOT NULL DEFAULT '',
