@@ -86,7 +86,6 @@
 # network connections are patch to patch vs power to outlet or fiber to fiber
 # so get the connection when type == Network Interface
 # the source and target are from the patch table.
-      if ($formVars['type'] != '' and $formVars['type'] == 'Network Interface') {
       $q_string  = "select con_id,con_sourceid,con_targetid,ast_name,pat_name ";
       $q_string .= "from inv_connect ";
       $q_string .= "left join inv_patch on inv_patch.pat_id = inv_connect.con_sourceid ";
@@ -130,7 +129,6 @@
             $output .= "</tr>";
           }
         }
-      }
       }
 
 # next up is to show power and outlets for the inside check
