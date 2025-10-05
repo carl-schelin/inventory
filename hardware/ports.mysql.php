@@ -108,19 +108,32 @@
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('ports.del.php?id=" . $a_inv_ports['port_id'] . "');\">";
           $linkend   = "</a>";
 
-#          $q_string  = "select mod_id ";
-#          $q_string .= "from inv_models ";
-#          $q_string .= "where mod_type = " . $a_inv_parts['part_id'] . " ";
-#          $q_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-#          $total = mysqli_num_rows($q_models);
+# for the outlets script, need to get the port information
+# search the targetid and power type, in the connect table for this outlet 
+# get the sourceid and print the port name for that port_id
 
-# process:
-# assume ast_name,port_name is sourceid and ast_name,plug_text is targetid
-# get targetid which gives j
-# to create a connection, select the asset name (pdu-r103) and outlet name (out_name) 
-# from the db based on the connection
-          $q_string  = "select out_name ";
-          $q_string .= "from inv_outlets ";
+#select con_sourceid from inv_connect where con_targetid = out_id
+#select port_name from inv_ports where port_id = con_sourceid
+
+          $q_string  = "select con_targetid ";
+          $q_string .= "from inv_connect ";
+          $q_string .= "where con_sourceid = " . $a_inv_ports['port_id'] . " and con_type = 3 ";
+          $q_inv_connect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_inv_connect) > 0) {
+            $a_inv_connect = mysqli_fetch_array($q_inv_connect);
+
+            $q_string  = "select out_name,ast_name ";
+            $q_string .= "from inv_outlets ";
+            $q_string .= "left join inv_assets on inv_assets.ast_id = inv_outlets.out_deviceid ";
+            $q_string .= "where out_id = " . $a_inv_connect['con_targetid'] . " ";
+            $q_inv_outlets = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+            if (mysqli_num_rows($q_inv_outlets) > 0) {
+              $a_inv_outlets = mysqli_fetch_array($q_inv_outlets);
+              $outlet_name = $a_inv_outlets['out_name'] . " " . $a_inv_outlets['ast_name'];
+            }
+          } else {
+            $outlet_name = "--";
+          }
 
           $active = 'No';
           if ($a_inv_ports['port_active']) {
@@ -145,7 +158,7 @@
           $output .= "  <td class=\"" . $class . " delete\">"              . $active                                . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"              . $facing                                . "</td>";
           $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_ports['port_desc']              . "</td>";
-          $output .= "  <td class=\"" . $class . " delete\">"              . $total                                 . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"              . $outlet_name                           . "</td>";
           $output .= "</tr>";
         }
       } else {
