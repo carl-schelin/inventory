@@ -69,7 +69,7 @@
       if (mysqli_num_rows($q_inv_int_plugtype) > 0) {
         while ($a_inv_int_plugtype = mysqli_fetch_array($q_inv_int_plugtype)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('plugtype.fill.php?id="     . $a_inv_int_plugtype['plug_id']   . "');jQuery('#dialogUpdate').dialog('open');\">";
+          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('plugtype.fill.php?id="     . $a_inv_int_plugtype['plug_id']   . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('plugtype.del.php?id=" . $a_inv_int_plugtype['plug_id'] . "');\">";
           $linkend   = "</a>";
 
