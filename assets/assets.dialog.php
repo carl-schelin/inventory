@@ -29,19 +29,33 @@
 <tr>
   <td class="ui-widget-content">Parent: <select name="ast_parentid">
 <?php
-  $q_string  = "select ast_id,ast_name,ast_serial,ast_asset,mod_name,ven_name ";
+  $q_string  = "select ast_id,ast_name,ast_serial,ast_asset,ast_parentid,mod_name,ven_name ";
   $q_string .= "from inv_assets ";
   $q_string .= "left join inv_models on inv_models.mod_id = inv_assets.ast_modelid ";
   $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
   $q_string .= "where ast_name != \"\" ";
-  $q_string .= "order by mod_name ";
+  $q_string .= "order by ast_name ";
   $q_inv_assets = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   print "<option value=\"0\">None</option>\n";
   while ($a_inv_assets = mysqli_fetch_array($q_inv_assets)) {
-    print "<option value=\"" . $a_inv_assets['ast_id'] . "\">" . $a_inv_assets['ast_name'] . "</option>\n";
+
+    $asset_name = $a_inv_assets['ast_name'];
+    if ($a_inv_assets['ast_parentid'] > 0) {
+      $q_string  = "select ast_name,ast_parentid ";
+      $q_string .= "from inv_assets ";
+      $q_string .= "where ast_id = " . $a_inv_assets['ast_parentid'] . " ";
+      $q_parent = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      $a_parent = mysqli_fetch_array($q_parent);
+      $asset_name = $a_parent['ast_name'] . " -&gt; " . $a_inv_assets['ast_name'];
+    }
+
+    print "<option value=\"" . $a_inv_assets['ast_id'] . "\">" . $asset_name . "</option>\n";
   }
 ?>
 </select></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label>If Rack mounted, Is it front facing? <input type="checkbox" checked name="ast_facing"></label></td>
 </tr>
 <tr>
   <td class="ui-widget-content"><label>Recorded in Company Asset Management System: <input type="checkbox" name="ast_managed"></label></td>

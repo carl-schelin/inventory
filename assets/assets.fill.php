@@ -21,7 +21,7 @@
     if (check_userlevel($db, $AL_Edit)) {
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_assets");
 
-      $q_string  = "select ast_name,ast_asset,ast_serial,ast_parentid,ast_modelid,ast_unit,ast_vendor,ast_managed,ast_endsupport ";
+      $q_string  = "select ast_name,ast_asset,ast_serial,ast_parentid,ast_modelid,ast_unit,ast_vendor,ast_managed,ast_endsupport,ast_facing ";
       $q_string .= "from inv_assets ";
       $q_string .= "where ast_id = " . $formVars['id'];
       $q_inv_assets = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -46,6 +46,11 @@
 
       print "document.formUpdate.ast_modelid['" . $astmodel . "'].selected = true;\n";
 
+      if ($a_inv_assets['ast_facing'] == 1) {
+        print "document.formUpdate.ast_facing.checked = true;\n";
+      } else {
+        print "document.formUpdate.ast_facing.checked = false;\n";
+      }
       if ($a_inv_assets['ast_vendor'] == 1) {
         print "document.formUpdate.ast_vendor.checked = true;\n";
       } else {

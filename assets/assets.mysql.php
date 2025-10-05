@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
     if ($formVars['sort'] == '') {
-      $orderby = "order by ast_asset,mod_name ";
+      $orderby = "order by ast_asset,ast_facing,mod_name ";
     } else {
       $orderby = "order by " . $formVars['sort'] . " ";
     }
@@ -37,6 +37,7 @@
         $formVars['ast_vendor']         = clean($_GET['ast_vendor'],       10);
         $formVars['ast_managed']        = clean($_GET['ast_managed'],      10);
         $formVars['ast_endsupport']     = clean($_GET['ast_endsupport'],   20);
+        $formVars['ast_facing']         = clean($_GET['ast_facing'],       10);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
@@ -49,6 +50,11 @@
         }
         if ($formVars['ast_unit'] == '') {
           $formVars['ast_unit'] = "0";
+        }
+        if ($formVars['ast_facing'] == "true") {
+          $formVars['ast_facing'] = 1;
+        } else {
+          $formVars['ast_facing'] = 0;
         }
         if ($formVars['ast_vendor'] == "true") {
           $formVars['ast_vendor'] = 1;
@@ -76,7 +82,8 @@
             "ast_unit        =   " . $formVars['ast_unit']        . "," . 
             "ast_vendor      =   " . $formVars['ast_vendor']      . "," . 
             "ast_managed     =   " . $formVars['ast_managed']     . "," .
-            "ast_endsupport  = \"" . $formVars['ast_endsupport']  . "\"";
+            "ast_endsupport  = \"" . $formVars['ast_endsupport']  . "\"," .
+            "ast_facing      =   " . $formVars['ast_facing'];
 
           if ($formVars['update'] == 0) {
             $q_string = "insert into inv_assets set ast_id = NULL, " . $q_string;
@@ -104,6 +111,7 @@
       $output .= "  <th class=\"ui-state-default\"><a href=\"assets.php?sort=ast_name"   . "\">" . "Name or Label" . "</a></th>\n";
       $output .= "  <th class=\"ui-state-default\"><a href=\"assets.php?sort=mod_name"   . "\">" . "Device"        . "</a></th>\n";
       $output .= "  <th class=\"ui-state-default\"><a href=\"assets.php?sort=ast_unit"   . "\">" . "Starting Unit" . "</a></th>\n";
+      $output .= "  <th class=\"ui-state-default\"><a href=\"assets.php?sort=ast_facing" . "\">" . "Facing"        . "</a></th>\n";
       $output .= "  <th class=\"ui-state-default\"><a href=\"assets.php?sort=ast_asset"  . "\">" . "Asset Tag"     . "</a></th>\n";
       $output .= "  <th class=\"ui-state-default\"><a href=\"assets.php?sort=ast_serial" . "\">" . "Serial Number" . "</a></th>\n";
       $output .= "  <th class=\"ui-state-default\">Managed</th>\n";
@@ -112,7 +120,7 @@
       $output .= "  <th class=\"ui-state-default\">Members</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select ast_id,ast_name,ast_asset,ast_serial,ast_unit,ast_vendor,ast_managed,ast_endsupport,mod_name,ven_name ";
+      $q_string  = "select ast_id,ast_name,ast_asset,ast_serial,ast_unit,ast_vendor,ast_managed,ast_endsupport,ast_facing,mod_name,ven_name ";
       $q_string .= "from inv_assets ";
       $q_string .= "left join inv_models on inv_models.mod_id = inv_assets.ast_modelid ";
       $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
@@ -145,6 +153,12 @@
           $unit = $a_inv_assets['ast_unit'] . "U";
           if ($a_inv_assets['ast_unit'] == 0) {
             $unit = "--";
+            $facing = "--";
+          } else {
+            $facing = "Rear";
+            if ($a_inv_assets['ast_facing'] == 1) {
+              $facing = "Front";
+            }
           }
 
           $vendor = "No";
@@ -167,6 +181,7 @@
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_assets['ast_name']                                   . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_assets['ven_name'] . " " . $a_inv_assets['mod_name'] . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"              . $unit                                                                  . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"              . $facing                                                                . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"              . $a_inv_assets['ast_asset']                                             . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"              . $a_inv_assets['ast_serial']                                            . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"              . $managed                                                               . "</td>";
@@ -178,7 +193,7 @@
 ####
 # Any children?
 ####
-          $q_string  = "select ast_id,ast_name,ast_asset,ast_serial,ast_unit,ast_managed,ast_vendor,ast_endsupport,mod_name,ven_name ";
+          $q_string  = "select ast_id,ast_name,ast_asset,ast_serial,ast_unit,ast_managed,ast_vendor,ast_endsupport,ast_facing,mod_name,ven_name ";
           $q_string .= "from inv_assets ";
           $q_string .= "left join inv_models on inv_models.mod_id = inv_assets.ast_modelid ";
           $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
@@ -211,6 +226,12 @@
               $unit = $a_child['ast_unit'] . "U";
               if ($a_child['ast_unit'] == 0) {
                 $unit = "--";
+                $facing = "--";
+              } else {
+                $facing = "Rear";
+                if ($a_child['ast_facing'] == 1) {
+                  $facing = "Front";
+                }
               }
 
               $vendor = "No";
@@ -233,6 +254,7 @@
               $output .= "  <td class=\"" . $class . "\">&gt; "   . $linkstart . $a_child['ast_name']                              . $linkend . "</td>";
               $output .= "  <td class=\"" . $class . "\">&gt; "   . $linkstart . $a_child['ven_name'] . " " . $a_child['mod_name'] . $linkend . "</td>";
               $output .= "  <td class=\"" . $class . " delete\">"              . $unit                                                        . "</td>";
+              $output .= "  <td class=\"" . $class . " delete\">"              . $facing                                                      . "</td>";
               $output .= "  <td class=\"" . $class . " delete\">"              . $a_child['ast_asset']                                        . "</td>";
               $output .= "  <td class=\"" . $class . " delete\">"              . $a_child['ast_serial']                                       . "</td>";
               $output .= "  <td class=\"" . $class . " delete\">"              . $managed                                                     . "</td>";
@@ -244,7 +266,7 @@
 #####
 ## Any Grandchildren
 #####
-              $q_string  = "select ast_id,ast_name,ast_asset,ast_serial,ast_unit,ast_managed,ast_vendor,ast_endsupport,mod_name,ven_name ";
+              $q_string  = "select ast_id,ast_name,ast_asset,ast_serial,ast_unit,ast_managed,ast_vendor,ast_endsupport,ast_facing,mod_name,ven_name ";
               $q_string .= "from inv_assets ";
               $q_string .= "left join inv_models on inv_models.mod_id = inv_assets.ast_modelid ";
               $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
@@ -277,6 +299,12 @@
                   $unit = $a_grandchild['ast_unit'] . "U";
                   if ($a_grandchild['ast_unit'] == 0) {
                     $unit = "--";
+                    $facing = "--";
+                  } else {
+                    $facing = "Rear";
+                    if ($a_grandchild['ast_facing'] == 1) {
+                      $facing = "Front";
+                    }
                   }
 
                   $vendor = "No";
@@ -299,6 +327,7 @@
                   $output .= "  <td class=\"" . $class . "\">&gt;&gt; " . $linkstart . $a_grandchild['ast_name']                                   . $linkend . "</td>";
                   $output .= "  <td class=\"" . $class . "\">&gt;&gt; " . $linkstart . $a_grandchild['ven_name'] . " " . $a_grandchild['mod_name'] . $linkend . "</td>";
                   $output .= "  <td class=\"" . $class . " delete\">"                . $unit                                                                  . "</td>";
+                  $output .= "  <td class=\"" . $class . " delete\">"                . $facing                                                                . "</td>";
                   $output .= "  <td class=\"" . $class . " delete\">"                . $a_grandchild['ast_asset']                                             . "</td>";
                   $output .= "  <td class=\"" . $class . " delete\">"                . $a_grandchild['ast_serial']                                            . "</td>";
                   $output .= "  <td class=\"" . $class . " delete\">"                . $managed                                                               . "</td>";
@@ -310,7 +339,7 @@
 #####
 ## Start of Greatgrandchildren
 #####
-                  $q_string  = "select ast_id,ast_name,ast_asset,ast_serial,ast_unit,ast_managed,ast_vendor,ast_endsupport,mod_name,ven_name ";
+                  $q_string  = "select ast_id,ast_name,ast_asset,ast_serial,ast_unit,ast_managed,ast_vendor,ast_endsupport,ast_facing,mod_name,ven_name ";
                   $q_string .= "from inv_assets ";
                   $q_string .= "left join inv_models on inv_models.mod_id = inv_assets.ast_modelid ";
                   $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
@@ -343,6 +372,12 @@
                       $unit = $a_greatgrand['ast_unit'] . "U";
                       if ($a_greatgrand['ast_unit'] == 0) {
                         $unit = "--";
+                        $facing = "--";
+                      } else {
+                        $facing = "Rear";
+                        if ($a_greatgrand['ast_facing'] == 1) {
+                          $facing = "Front";
+                        }
                       }
 
                       $vendor = "No";
@@ -365,6 +400,7 @@
                       $output .= "  <td class=\"" . $class . "\">&gt;&gt;&gt; " . $linkstart . $a_greatgrand['ast_name']                                   . $linkend . "</td>";
                       $output .= "  <td class=\"" . $class . "\">&gt;&gt;&gt; " . $linkstart . $a_greatgrand['ven_name'] . " " . $a_greatgrand['mod_name'] . $linkend . "</td>";
                       $output .= "  <td class=\"" . $class . " delete\">"                    . $unit                                                                  . "</td>";
+                      $output .= "  <td class=\"" . $class . " delete\">"                    . $facing                                                                . "</td>";
                       $output .= "  <td class=\"" . $class . " delete\">"                    . $a_greatgrand['ast_asset']                                             . "</td>";
                       $output .= "  <td class=\"" . $class . " delete\">"                    . $a_greatgrand['ast_serial']                                            . "</td>";
                       $output .= "  <td class=\"" . $class . " delete\">"                    . $managed                                                               . "</td>";

@@ -79,6 +79,7 @@ function attach_file( p_script_url, update ) {
   af_url += "&ast_vendor="      + af_form.ast_vendor.checked;
   af_url += "&ast_managed="     + af_form.ast_managed.checked;
   af_url += "&ast_endsupport="  + encode_URI(af_form.ast_endsupport.value);
+  af_url += "&ast_facing="      + af_form.ast_facing.checked;
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
@@ -102,6 +103,7 @@ function update_file( p_script_url, update ) {
   uf_url += "&ast_vendor="      + uf_form.ast_vendor.checked;
   uf_url += "&ast_managed="     + uf_form.ast_managed.checked;
   uf_url += "&ast_endsupport="  + encode_URI(uf_form.ast_endsupport.value);
+  uf_url += "&ast_facing="      + uf_form.ast_facing.checked;
 
   script = document.createElement('script');
   script.src = p_script_url + uf_url;
@@ -123,7 +125,7 @@ $(document).ready( function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 350,
+    height: 375,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -153,7 +155,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 350,
+    height: 375,
     width: 600,
     show: 'slide',
     hide: 'slide',
