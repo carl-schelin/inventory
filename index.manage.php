@@ -71,6 +71,10 @@
 <ul>
   <li><a href="<?php print $Hardwareroot; ?>/hardware.php">Manage Hardware Model Data table</a></li>
   <li><a href="<?php print $Hardwareroot; ?>/parts.php">Manage Part Descriptions table</a></li>
+  <li><a href="<?php print $Hardwareroot; ?>/plugtype.php">Manage Power Port Type table</a></li>
+</ul>
+
+<ul>
   <li><a href="<?php print $Hardwareroot; ?>/vlans.php">Manage Network VLANs table</a></li>
   <li><a href="<?php print $IPAMroot; ?>/zones.php">Manage Network Zones table</a></li>
 </ul>
