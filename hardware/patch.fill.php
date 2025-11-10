@@ -21,7 +21,7 @@
     if (check_userlevel($db, $AL_Edit)) {
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_patch");
 
-      $q_string  = "select pat_deviceid,pat_name,pat_type,pat_active,pat_desc,pat_office,pat_verified ";
+      $q_string  = "select pat_deviceid,pat_name,pat_type,pat_active,pat_desc,pat_office,pat_verified,pat_facing ";
       $q_string .= "from inv_patch ";
       $q_string .= "where pat_id = " . $formVars['id'];
       $q_inv_patch = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -35,8 +35,9 @@
       print "document.formUpdate.pat_desc.value = '"    . mysqli_real_escape_string($db, $a_inv_patch['pat_desc'])    . "';\n";
       print "document.formUpdate.pat_office.value = '"  . mysqli_real_escape_string($db, $a_inv_patch['pat_office'])  . "';\n";
 
-      print "document.formUpdate.pat_deviceid['" . $patdeviceid . "'].selected = true;\n";
-      print "document.formUpdate.pat_type['"     . $pattype     . "'].selected = true;\n";
+      print "document.formUpdate.pat_deviceid['" . $patdeviceid               . "'].selected = true;\n";
+      print "document.formUpdate.pat_type['"     . $pattype                   . "'].selected = true;\n";
+      print "document.formUpdate.pat_facing['"   . $a_inv_patch['pat_facing'] . "'].selected = true;\n";
 
       if ($a_inv_patch['pat_active']) {
         print "document.formUpdate.pat_active.checked = true;\n";

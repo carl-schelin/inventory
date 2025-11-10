@@ -45,7 +45,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Manage Network Drops</title>
+<title>Manage Ports</title>
 
 <style type='text/css' title='currentStyle' media='screen'>
 <?php include($Sitepath . "/mobile.php"); ?>
@@ -62,7 +62,7 @@
   if (check_userlevel($db, $AL_Admin)) {
 ?>
 function delete_line( p_script_url ) {
-  var answer = confirm("Delete this Drop?")
+  var answer = confirm("Delete this Port?")
 
   if (answer) {
     script = document.createElement('script');
@@ -87,6 +87,7 @@ function attach_file( p_script_url, update ) {
   af_url += "&pat_desc="         + encode_URI(af_form.pat_desc.value);
   af_url += "&pat_office="       + encode_URI(af_form.pat_office.value);
   af_url += "&pat_verified="     + af_form.pat_verified.checked;
+  af_url += "&pat_facing="       + af_form.pat_facing.value;
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
@@ -108,6 +109,7 @@ function update_file( p_script_url, update ) {
   uf_url += "&pat_desc="         + encode_URI(uf_form.pat_desc.value);
   uf_url += "&pat_office="       + encode_URI(uf_form.pat_office.value);
   uf_url += "&pat_verified="     + uf_form.pat_verified.checked;
+  uf_url += "&pat_facing="       + uf_form.pat_facing.value;
 
   script = document.createElement('script');
   script.src = p_script_url + uf_url;
@@ -116,7 +118,7 @@ function update_file( p_script_url, update ) {
 }
 
 function clear_fields() {
-  show_file('patch.mysql.php?update=-1&sort=<?php print $formVars['sort']; ?>&csv=false&view=<?php print $formVars['view']; ?>');
+  show_file('patch.mysql.php?update=-1&sort=<?php print $formVars['sort']; ?>&csv=false&view=<?php print $formVars['view']; ?>&csv=<?php print $formVars['csv']; ?>');
 }
 
 $(document).ready( function() {
@@ -127,7 +129,7 @@ $(document).ready( function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 300,
+    height: 325,
     width:  600,
     show: 'slide',
     hide: 'slide',
@@ -145,7 +147,7 @@ $(document).ready( function() {
         }
       },
       {
-        text: "Add Drop",
+        text: "Add Port",
         click: function() {
           attach_file('patch.mysql.php', 0);
           $( this ).dialog( "close" );
@@ -157,7 +159,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 300,
+    height: 325,
     width:  600,
     show: 'slide',
     hide: 'slide',
@@ -175,14 +177,14 @@ $(document).ready( function() {
         }
       },
       {
-        text: "Update Drop",
+        text: "Update Port",
         click: function() {
           update_file('patch.mysql.php', 1);
           $( this ).dialog( "close" );
         }
       },
       {
-        text: "Add Drop",
+        text: "Add Port",
         click: function() {
           update_file('patch.mysql.php', 0);
           $( this ).dialog( "close" );
@@ -204,7 +206,7 @@ $(document).ready( function() {
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default">Network Drop Editor</th>
+  <th class="ui-state-default">Port Editor</th>
   <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('patch-help');">Help</a></th>
 </tr>
 </table>
@@ -213,7 +215,7 @@ $(document).ready( function() {
 
 <div class="main-help ui-widget-content">
 
-<p><u><strong>Network Drop Listing</strong></u></p>
+<p><u><strong>Port Listing</strong></u></p>
 
 <p>The purpose behind the Power Port Listing is to identify the connection between 
 devices and ensure the racks are sufficiently powered.</p>
@@ -228,7 +230,7 @@ and save the information.</p>
 
 <table class="ui-styled-table">
 <tr>
-  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add Network Drop"></td>
+  <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add Port"></td>
 </tr>
 </table>
 
@@ -236,7 +238,7 @@ and save the information.</p>
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default">Network Drop Listing</th>
+  <th class="ui-state-default">Port Listing</th>
   <th class="ui-state-default" width="20"><a href="javascript:;" onmousedown="toggleDiv('patch-listing-help');">Help</a></th>
 </tr>
 </table>
@@ -264,7 +266,7 @@ isn't normally in a computer room is unnecessary.</p>
 </div>
 
 
-<div id="dialogCreate" title="Add Network Drop Form">
+<div id="dialogCreate" title="Add Port Form">
 
 <form name="formCreate">
 
@@ -275,7 +277,7 @@ isn't normally in a computer room is unnecessary.</p>
 </div>
 
 
-<div id="dialogUpdate" title="Edit Network Drop Form">
+<div id="dialogUpdate" title="Edit Port Form">
 
 <form name="formUpdate">
 
