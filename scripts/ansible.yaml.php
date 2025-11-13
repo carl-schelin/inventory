@@ -37,6 +37,14 @@
     $environment = $argv[1];
   } else {
     print "You need to pass the environment this script runs against.\n";
+    $q_string  = "select env_name,env_abb ";
+    $q_string .= "from inv_environment ";
+    $q_inv_environment = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_inv_environment) > 0) {
+      while ($a_inv_environment = mysqli_fetch_array($q_inv_environment)) {
+        print " - " . $a_inv_environment['env_abb'] . ' for ' . $a_inv_environment['env_name'] . "\n";
+      }
+    }
     exit(1);
   }
 
@@ -48,6 +56,14 @@
     $a_inv_environment = mysqli_fetch_array($q_inv_environment);
   } else {
     print "You need to pass the environment this script runs against.\n";
+    $q_string  = "select env_name,env_abb ";
+    $q_string .= "from inv_environment ";
+    $q_inv_environment = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_inv_environment) > 0) {
+      while ($a_inv_environment = mysqli_fetch_array($q_inv_environment)) {
+        print " - " . $a_inv_environment['env_abb'] . ' for ' . $a_inv_environment['env_name'] . "\n";
+      }
+    }
     exit(1);
   }
 
