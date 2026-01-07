@@ -113,6 +113,7 @@ function attach_file( p_script_url, update ) {
   script = document.createElement('script');
   script.src = p_script_url + af_url;
   document.getElementsByTagName('head')[0].appendChild(script);
+  clear_fields();
 }
 
 function update_file( p_script_url, update ) {
@@ -136,6 +137,7 @@ function update_file( p_script_url, update ) {
   script = document.createElement('script');
   script.src = p_script_url + uf_url;
   document.getElementsByTagName('head')[0].appendChild(script);
+  clear_fields();
 }
 
 function clear_fields() {
