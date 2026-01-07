@@ -101,7 +101,12 @@
       if (mysqli_num_rows($q_inv_connect) > 0) {
         while ($a_inv_connect = mysqli_fetch_array($q_inv_connect)) {
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('connect.fill.php?id=" . $a_inv_connect['con_id'] . "');jQuery('#dialogUpdateCat5').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('connect.del.php?id=" . $a_inv_connect['con_id'] . "');\">";
+
+          if (check_userlevel($db, $AL_Admin)) {
+            $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('connect.del.php?id=" . $a_inv_connect['con_id'] . "');\">";
+          } else {
+            $linkdel   = "--";
+          }
           $linkend   = "</a>";
           $typestart = "<a href=\"connect.php?type=Network%20Interface\">";
           $viewlink  = "<a href=\"connect.php?view=" . $a_inv_connect['ast_id'] . "\">";
