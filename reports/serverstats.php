@@ -14,6 +14,8 @@
 
   check_login($db, $AL_ReadOnly);
 
+  $package = "serverstats.php";
+
   if (isset($_GET['group'])) {
     $formVars['group'] = clean($_GET['group'], 10);
   } else {

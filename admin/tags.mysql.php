@@ -163,10 +163,10 @@
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel   . "</td>";
           }
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $inv_name                                        . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_tags['tag_name']                              . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_tags['usr_first'] . " " . $a_inv_tags['usr_last'] . $linkend . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $a_inv_tags['grp_name']                              . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"          . $linkstart . $inv_name                                     . $linkend . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                       . $a_inv_tags['tag_name']                                  . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                       . $a_inv_tags['usr_first'] . " " . $a_inv_tags['usr_last'] . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                       . $a_inv_tags['grp_name']                                  . "</td>";
           $output .= "</tr>";
         }
       } else {

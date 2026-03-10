@@ -38,6 +38,12 @@ CREATE TABLE `inv_models` (
   `mod_start` char(20) NOT NULL DEFAULT '',
   `mod_btu` char(30) NOT NULL DEFAULT '',
   `mod_virtual` int(10) NOT NULL DEFAULT '0',
+  `mod_height` int(10) NOT NULL DEFAULT '0',
+  `mod_weight` int(10) NOT NULL DEFAULT '0',
+  `mod_depth` int(10) NOT NULL DEFAULT '0',
+  `mod_front` int(10) NOT NULL DEFAULT '0',
+  `mod_rear` int(10) NOT NULL DEFAULT '0',
+  `mod_desc` char(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`mod_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;

@@ -24,7 +24,7 @@ if (isset($_SESSION['username'])) {
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Inventory Management</title>
+<title><?php print $Sitename; ?></title>
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 <META HTTP-EQUIV="Expires" CONTENT="-1">
 <META NAME="robots" content="index,follow">
@@ -54,7 +54,7 @@ Go <a href='javascript:history.go(-1)'>back</a> to the page you were viewing bef
 
 </div>
 
-<div id="footer"><a href="<?php print $Siteroot; ?>">Inventory Management</a></div>
+<div id="footer"><a href="<?php print $Siteroot; ?>"><?php print $Sitename; ?></a></div>
 
 </body>
 </html>
@@ -152,7 +152,7 @@ include('settings.php');
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Inventory Management</title>
+<title><?php print $Sitename; ?></title>
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 <META HTTP-EQUIV="Expires" CONTENT="-1">
 <META NAME="robots" content="index,follow">
@@ -215,7 +215,7 @@ echo $error;
 
 </div>
 
-<div id="footer"><a href="<?php print $Siteroot; ?>">Inventory Management</a></div>
+<div id="footer"><a href="<?php print $Siteroot; ?>"><?php print $Sitename; ?></a></div>
 
 </body>
 </html>

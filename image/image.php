@@ -32,13 +32,13 @@
     $q_string  = "select img_title,img_file,img_date,img_owner ";
     $q_string .= "from inv_images ";
     $q_string .= "where img_id = " . $formVars['id'];
-    $q_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-    $a_images = mysqli_fetch_array($q_images);
+    $q_inv_images = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    $a_inv_images = mysqli_fetch_array($q_inv_images);
 
-    $formVars['img_title'] = $a_images['img_title'];
-    $formVars['img_file']  = $a_images['img_file'];
-    $formVars['img_date']  = $a_images['img_date'];
-    $formVars['img_owner'] = $a_images['img_owner'];
+    $formVars['img_title'] = $a_inv_images['img_title'];
+    $formVars['img_file']  = $a_inv_images['img_file'];
+    $formVars['img_date']  = $a_inv_images['img_date'];
+    $formVars['img_owner'] = $a_inv_images['img_owner'];
 
     $display = "display: block";
     $update = '';
@@ -157,7 +157,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 600,
+    height: 625,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -433,21 +433,13 @@ on the server. It can of course be uploaded after the fact.</p>
   <td class="ui-widget-content">Image Facing: <label><input type="radio" value="0" checked name="img_facing"> Rear</label> <label><input type="radio" value="1" name="img_facing"> Front<label></td>
 </tr>
 <tr>
-<td class="ui-widget-content delete" id="image_name"></td>
+  <td class="ui-widget-content delete" id="image_name"></td>
 </tr>
 </table>
 
 </form>
 
 </div>
-
-
-
-
-
-
-
-
 
 
 <?php include($Sitepath . '/footer.php'); ?>

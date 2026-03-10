@@ -5,7 +5,7 @@ include('settings.php');
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Inventory Management</title>
+<title><?php print $Sitename; ?></title>
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 <META HTTP-EQUIV="Expires" CONTENT="-1">
 <META NAME="robots" content="index,follow">
@@ -37,7 +37,7 @@ To see this page you must <a href='logout.php'>logout</a> and login with suffici
 
 </div>
 
-<div id="footer"><a href="<?php print $Siteroot; ?>">Inventory Management</a></div>
+<div id="footer"><a href="<?php print $Siteroot; ?>"><?php print $Sitename; ?></a></div>
 
 </body>
 </html>

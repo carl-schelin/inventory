@@ -248,14 +248,7 @@ You cannot delete a Description as long as this value is greater than zero.</p>
 
 <form name="formCreate">
 
-<table class="ui-styled-table">
-<tr>
-  <td class="ui-widget-content">Network Media Description: <input type="text" name="med_text" size="30"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Default? <input type="checkbox" name="med_default"></td>
-</tr>
-</table>
+<?php include('media.dialog.php'); ?>
 
 </form>
 
@@ -268,14 +261,7 @@ You cannot delete a Description as long as this value is greater than zero.</p>
 
 <input type="hidden" name="id" value="0">
 
-<table class="ui-styled-table">
-<tr>
-  <td class="ui-widget-content">Network Media Description: <input type="text" name="med_text" size="30"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Default? <input type="checkbox" name="med_default"></td>
-</tr>
-</table>
+<?php include('media.dialog.php'); ?>
 
 </form>
 

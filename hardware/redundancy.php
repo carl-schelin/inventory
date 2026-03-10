@@ -289,14 +289,7 @@ You cannot delete a Description as long as this value is greater than zero.</p>
 
 <form name="formCreate">
 
-<table class="ui-styled-table">
-<tr>
-  <td class="ui-widget-content">Network Redundancy Description: <input type="text" name="red_text" size="30"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Default? <input type="checkbox" name="red_default"></td>
-</tr>
-</table>
+<?php include('redundancy.dialog.php'); ?>
 
 </form>
 
@@ -309,14 +302,7 @@ You cannot delete a Description as long as this value is greater than zero.</p>
 
 <input type="hidden" name="id" value="0">
 
-<table class="ui-styled-table">
-<tr>
-  <td class="ui-widget-content">Network Redundancy Description: <input type="text" name="red_text" size="30"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Default? <input type="checkbox" name="red_default"></td>
-</tr>
-</table>
+<?php include('redundancy.dialog.php'); ?>
 
 </form>
 

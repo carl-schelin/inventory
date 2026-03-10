@@ -119,7 +119,7 @@
           }
 
           $output .= "<tr>";
-          if ($a_images['img_owner'] == $_SESSION['uid'] || check_userlevel($db, $AL_Admin)) {
+          if ($a_inv_images['img_owner'] == $_SESSION['uid'] || check_userlevel($db, $AL_Admin)) {
             if ($total == 0) {
               $output .= "  <td class=\"" . $class . " delete\">" . $linkdel . "</td>";
             } else {

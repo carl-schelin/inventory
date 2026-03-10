@@ -308,7 +308,7 @@
 
               $q_string  = "select fs_id ";
               $q_string .= "from inv_filesystem ";
-              $q_string .= "where fs_device = '" . $value[3] . "' and fs_companyid = " . $a_inv_inventory['inv_id'];
+              $q_string .= "where fs_device = '" . $value[3] . "' and fs_companyid = " . $a_inv_inventory['inv_id'] . " and fs_mount = \"" . $value[5] . "\" ";
               $q_inv_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
               $a_inv_filesystem = mysqli_fetch_array($q_inv_filesystem);
 
@@ -700,7 +700,7 @@
 
 
 
-#[server],software,backup,NetBackup-Solaris_x86_10_64 7.1.0.4
+#\[server\],software,backup,NetBackup-Solaris_x86_10_64 7.1.0.4
           if ($value[2] == 'backup') {
             if (strlen($value[3]) > 0) {
               $skip = 'no';
@@ -741,7 +741,7 @@
             }
           }
 
-#[server],software,monitor,08.60.501
+#\[server\],software,monitor,08.60.501
           if ($value[2] == 'monitor') {
             if (strlen($value[3]) > 0) {
               $skip = 'no';
@@ -827,7 +827,7 @@
           }
 
 # database listings
-#[server],software,mysqld,/opt/csw/mysql5/libexec/amd64/mysqld  Ver 5.0.75 for pc-solaris2.10 on i386 (Source distribution)
+#\[server\],software,mysqld,/opt/csw/mysql5/libexec/amd64/mysqld  Ver 5.0.75 for pc-solaris2.10 on i386 (Source distribution)
           if ($value[2] == 'mysqld') {
             if (strlen($value[3]) > 0) {
               $skip = 'no';
@@ -1106,7 +1106,7 @@
           }
 
 # other software
-#[server],software,sudo,Sudo version 1.7.2p6
+#\[server\],software,sudo,Sudo version 1.7.2p6
           if ($value[2] == 'sudo') {
             if (strlen($value[3]) > 0) {
               $skip = 'no';
@@ -1150,7 +1150,7 @@
           }
 
 # other software
-#[server],software,httpd,Server version: Apache/2.0.63
+#\[server\],software,httpd,Server version: Apache/2.0.63
           if ($value[2] == 'httpd') {
             if (strlen($value[3]) > 0) {
               $skip = 'no';

@@ -242,11 +242,7 @@ can add the necessary information and then save the new Role.</p>
 
 <form name="formCreate">
 
-<table class="ui-styled-table">
-<tr>
-  <td class="ui-widget-content">Role: <input type="text" name="role_name" size="60"></td>
-</tr>
-</table>
+<?php include('roles.dialog.php'); ?>
 
 </form>
 
@@ -259,11 +255,7 @@ can add the necessary information and then save the new Role.</p>
 
 <input type="hidden" name="id" value="0">
 
-<table class="ui-styled-table">
-<tr>
-  <td class="ui-widget-content">Role: <input type="text" name="role_name" size="60"></td>
-</tr>
-</table>
+<?php include('roles.dialog.php'); ?>
 
 </form>
 

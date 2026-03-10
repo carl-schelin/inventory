@@ -5,7 +5,7 @@ include('settings.php');
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Inventory Management</title>
+<title><?php print $Sitename; ?></title>
 <?php
 
 # use when the main site tanks for some reason
@@ -52,7 +52,7 @@ include('settings.php');
 ?>
 </div>
 
-<div id="footer"><a href="<?php print $Siteroot; ?>">Inventory Management</a></div>
+<div id="footer"><a href="<?php print $Siteroot; ?>"><?php print $Sitename; ?></a></div>
 
 </body>
 </html>

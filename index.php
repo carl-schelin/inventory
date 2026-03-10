@@ -621,6 +621,7 @@ selection of commonly selected Data Centers in the Data Center menu. By default 
 <ul>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/response.php');">Hardware Response Levels</a> - Report on the physical hardware and support contract details.</li>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/dell.php');">Dell Hardware End-of-Life</a> - Report on the end of life date for all Dell Hardware.</li>
+  <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/storage.php');">Storage Listing</a> - Report on all storage devices.</li>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/endoflife.php');">Operating System End-of-Life</a> - Report on the end of life date for all Operating Systems.</li>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/compiled.eol.php');">Hardware/Software End-of-Life</a> - Report on the end of life date for all Operating Systems and Hardware.</li>
   <li><a href="javascript:;" onClick="javascript:attach_group('<?php print $Reportroot; ?>/compiled.class.php');">Hardware/Software End-of-Life by Service Class</a> - Report on the end of life date for all Operating Systems and Hardware order by Service Class.</li>

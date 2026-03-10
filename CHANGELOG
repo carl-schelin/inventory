@@ -1542,4 +1542,32 @@ Several changes as I worked to install this on a fresh system.
 
 Lots of updates in the install directory
 
+### Timestape: 2025-08-01
+
+There will be more I'm sure as I fill out the system
+
+alter table inv_assets add ast_name char(100) not null default '';
+
+### Timestamp: 2025-08-05
+
+Adding some server and rack type info. If we're looking at printing a layout of a rack, we need this info.
+
+alter table inv_models add column mod_height int(10) not null default 0;
+alter table inv_models add column mod_weight int(10) not null default 0;
+alter table inv_models add column mod_depth int(10) not null default 0;
+alter table inv_models add column mod_front int(10) not null default 0;
+alter table inv_models add column mod_rear int(10) not null default 0;
+alter table inv_models add column mod_desc char(255) not null default 0;
+
+alter table inv_assets add column ast_unit int(10) not null default 0;
+
+### Timestamp: 2025-08-06
+
+Adding checkboxes to confirm system is in company asset management tool and 
+that it's registered on the vendor site (mostly Dell but others have similar 
+options).
+
+alter table inv_assets add column ast_vendor int(10) not null default 0;
+alter table inv_assets add column ast_managed int(10) not null default 0;
+alter table inv_assets add column ast_endsupport date not null default '1971-01-01';
 

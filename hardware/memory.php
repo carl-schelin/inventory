@@ -256,36 +256,7 @@ delete Memory as long as this value is greater than zero.</p>
 
 <form name="formCreate">
 
-<table class="ui-styled-table">
-<tr>
-  <td class="ui-widget-content">Vendor: <select name="mod_vendor">
-<?php
-  $q_string  = "select ven_id,ven_name ";
-  $q_string .= "from inv_vendors ";
-  $q_string .= "order by ven_name";
-  $q_inv_vendors = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inv_vendors = mysqli_fetch_array($q_inv_vendors)) {
-    print "<option value=\"" . $a_inv_vendors['ven_id'] . "\">" . $a_inv_vendors['ven_name'] . "</option>\n";
-  }
-?>
-</select></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Model: <input type="text" name="mod_name" size="50"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Memory Size: <input type="text" name="mod_size" size="10"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">End of Purchase: <input type="date" name="mod_eopur" size="12"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">End of Shipping: <input type="date" name="mod_eoship" size="12"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">End of Life: <input type="date" name="mod_eol" size="12"></td>
-</tr>
-</table>
+<?php include('memory.dialog.php'); ?>
 
 </form>
 
@@ -298,36 +269,7 @@ delete Memory as long as this value is greater than zero.</p>
 
 <input type="hidden" name="id" value="0">
 
-<table class="ui-styled-table">
-<tr>
-  <td class="ui-widget-content">Vendor: <select name="mod_vendor">
-<?php
-  $q_string  = "select ven_id,ven_name ";
-  $q_string .= "from inv_vendors ";
-  $q_string .= "order by ven_name";
-  $q_inv_vendors = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inv_vendors = mysqli_fetch_array($q_inv_vendors)) {
-    print "<option value=\"" . $a_inv_vendors['ven_id'] . "\">" . $a_inv_vendors['ven_name'] . "</option>\n";
-  }
-?>
-</select></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Model: <input type="text" name="mod_name" size="50"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Memory Size: <input type="text" name="mod_size" size="10"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">End of Purchase: <input type="date" name="mod_eopur" size="12"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">End of Shipping: <input type="date" name="mod_eoship" size="12"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">End of Life: <input type="date" name="mod_eol" size="12"></td>
-</tr>
-</table>
+<?php include('memory.dialog.php'); ?>
 
 </form>
 

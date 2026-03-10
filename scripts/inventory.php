@@ -188,7 +188,7 @@
     $a_inv_groups = mysqli_fetch_array($q_inv_groups);
 
     print "--------------------\n";
-    print "Inventory Management\n";
+    print "<?php print $Sitename; ?>\n";
     print "--------------------\n";
     if ($csv == 'yes') {
       print "\"ID\",\"Server\",\"Function\",\"Product\",\"Platform Managed By\",\"Applications Managed By\",\"Vendor\",\"Model\",\"Serial Number\",\"Asset Tag\",\"Dell Service Tag\",\"Data Center\",\"Address\",";

@@ -27,6 +27,10 @@
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']              = clean($_GET['id'],               10);
         $formVars['clu_association'] = clean($_GET['clu_association'],  10);
+        $formVars['clu_type']        = clean($_GET['clu_type'],         10);
+        $formVars['clu_source']      = clean($_GET['clu_source'],      100);
+        $formVars['clu_target']      = clean($_GET['clu_target'],      100);
+        $formVars['clu_options']     = clean($_GET['clu_options'],      30);
         $formVars['clu_notes']       = clean($_GET['clu_notes'],       255);
 
         if ($formVars['id'] == '') {
@@ -42,6 +46,10 @@
           $q_string =
             "clu_companyid   =   " . $formVars['clu_companyid']   . "," .
             "clu_association =   " . $formVars['clu_association'] . "," .
+            "clu_type        =   " . $formVars['clu_type']        . "," .
+            "clu_source      = \"" . $formVars['clu_source']      . "\"," .
+            "clu_target      = \"" . $formVars['clu_target']      . "\"," .
+            "clu_options     = \"" . $formVars['clu_options']     . "\"," .
             "clu_notes       = \"" . $formVars['clu_notes']       . "\"";
 
           if ($formVars['update'] == 0) {
@@ -85,119 +93,23 @@
       }
 
 
-      if ($formVars['update'] == -3) {
-
-        logaccess($db, $_SESSION['uid'], $package, "Creating the form for viewing.");
-
-        $output  = "<table class=\"ui-styled-table\">\n";
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"button ui-widget-content\">\n";
-        $output .= "<input type=\"button\" name=\"clu_refresh\" value=\"Refresh Association Listing\" onClick=\"javascript:attach_association('association.mysql.php', -1);\">\n";
-        $output .= "<input type=\"button\" name=\"clu_update\"  value=\"Update Association\"          onClick=\"javascript:attach_association('association.mysql.php', 1);hideDiv('assocation-hide');\">\n";
-        $output .= "<input type=\"hidden\" name=\"clu_id\"      value=\"0\">\n";
-        $output .= "<input type=\"button\" name=\"clu_addbtn\"  value=\"Add Association\"             onClick=\"javascript:attach_association('association.mysql.php', 0);\">\n";
-        $output .= "</tr>\n";
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"button ui-widget-content\">\n";
-        $output .= "<input type=\"button\" name=\"copyitem\"  value=\"Copy Association Table From:\" onClick=\"javascript:attach_association('association.mysql.php', -2);\">\n";
-        $output .= "<select name=\"clu_copyfrom\">\n";
-        $output .= "<option value=\"0\">None</option>\n";
-
-        $q_string  = "select inv_id,inv_name ";
-        $q_string .= "from inv_inventory ";
-        $q_string .= "where inv_status = 0 and inv_manager = " . $_SESSION['group'] . " ";
-        $q_string .= "order by inv_name";
-        $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
-          $q_string  = "select clu_id ";
-          $q_string .= "from inv_cluster ";
-          $q_string .= "where clu_companyid = " . $a_inv_inventory['inv_id'] . " ";
-          $q_inv_cluster = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          $clu_total = mysqli_num_rows($q_inv_cluster);
-
-          if ($clu_total > 0) {
-            $output .= "<option value=\"" . $a_inv_inventory['inv_id'] . "\">" . $a_inv_inventory['inv_name'] . " (" . $clu_total . ")</option>\n";
-          }
-        }
-
-        $output .= "</select></td>\n";
-        $output .= "</tr>\n";
-        $output .= "</table>\n";
-
-        $output .= "<table class=\"ui-styled-table\">\n";
-        $output .= "<tr>\n";
-        $output .= "  <th class=\"ui-state-default\">Association Form</th>\n";
-        $output .= "</tr>\n";
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\">Associate With: <select name=\"clu_association\">\n";
-        $output .= "<option value=\"0\">None</option>\n";
-
-        $q_string  = "select inv_id,inv_name ";
-        $q_string .= "from inv_inventory ";
-        $q_string .= "where inv_status = 0 ";
-        $q_string .= "order by inv_name ";
-        $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-        while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
-          $output .= "<option value=\"" . $a_inv_inventory['inv_id'] . "\">" . $a_inv_inventory['inv_name'] . "</option>\n";
-        }
-
-        $output .= "</select></td>\n";
-        $output .= "</tr>\n";
-        $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\">Notes <input type=\"text\" name=\"clu_notes\" size=\"60\"></td>\n";
-        $output .= "</tr>\n";
-        $output .= "</table>\n";
-
-        print "document.getElementById('association_form').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
-
-      }
-
-
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
-      $output  = "<p></p>\n";
-      $output .= "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\" colspan=\"6\">Association Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('association-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"association-listing-help\" style=\"display: none\">\n";
-
-      $output .= "<div class=\"main-help ui-widget-content\">\n";
-
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Association Listing</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li><strong>Delete (x)</strong> - Clicking the <strong>x</strong> will delete this association from this server.</li>\n";
-      $output .= "    <li><strong>Editing</strong> - Click on an association to edit it.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Notes</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li>Click the <strong>Association Management</strong> title bar to toggle the <strong>Association Form</strong>.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "<table class=\"ui-styled-table\">\n";
+      $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "</tr>\n";
       $output .= "<tr>\n";
       $output .=   "<th class=\"ui-state-default\">Del</th>\n";
       $output .=   "<th class=\"ui-state-default\">Association</th>\n";
-      $output .=   "<th class=\"ui-state-default\">Platform</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Source Mount</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Target Mount</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Type</th>\n";
+      $output .=   "<th class=\"ui-state-default\">Options</th>\n";
       $output .=   "<th class=\"ui-state-default\">Notes</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select clu_id,clu_association,clu_notes,grp_name,inv_name ";
+      $q_string  = "select clu_id,clu_association,clu_type,clu_source,clu_target,clu_options,clu_notes,grp_name,inv_name ";
       $q_string .= "from inv_cluster ";
-      $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_cluster.clu_companyid ";
+      $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_cluster.clu_association ";
       $q_string .= "left join inv_groups    on inv_groups.grp_id    = inv_inventory.inv_manager ";
       $q_string .= "where clu_companyid = " . $formVars['clu_companyid'] . " ";
       $q_string .= "order by inv_name,clu_association,clu_port";
@@ -205,14 +117,25 @@
       if (mysqli_num_rows($q_inv_cluster) > 0) {
         while ($a_inv_cluster = mysqli_fetch_array($q_inv_cluster)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('association.fill.php?id=" . $a_inv_cluster['clu_id'] . "');showDiv('association-hide');\">";
+          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('association.fill.php?id=" . $a_inv_cluster['clu_id'] . "');jQuery('#dialogAssociationUpdate').dialog('open'); return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onClick=\"javascript:delete_association('association.del.php?id="  . $a_inv_cluster['clu_id'] . "');\">";
           $linkend   = "</a>";
+
+          $type = "None";
+          if ($a_inv_cluster['clu_type'] == 1) {
+            $type = 'nfs';
+          }
+          if ($a_inv_cluster['clu_type'] == 2) {
+            $type = 'Samba';
+          }
 
           $output .= "<tr>\n";
           $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel                                          . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_cluster['inv_name']    . $linkend . "</td>\n";
-          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_cluster['grp_name']    . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_cluster['clu_source']    . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_cluster['clu_target']    . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $type    . $linkend . "</td>\n";
+          $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_cluster['clu_options']    . $linkend . "</td>\n";
           $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_cluster['clu_notes']   . $linkend . "</td>\n";
           $output .= "</tr>\n";
 

@@ -19,7 +19,7 @@
     $argc--;
   }
 
-  $headers  = "From: Inventory Management <inventory@" . $hostname . ">\r\n";
+  $headers  = "From: " . $Sitename . " <inventory@" . $hostname . ">\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
   $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
@@ -561,7 +561,7 @@
 # table one: name and managers
     $output .= "<table width=80%>\n";
     $output .= "<tr>\n";
-    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">Inventory Management</th>\n";
+    $output .= "  <th style=\"background-color: #99ccff; border: 1px solid #000000; font-size: 75%;\" colspan=\"5\">" . $Sitename . "</th>\n";
     $output .= "</tr>\n";
 
     $q_string  = "select inv_id,inv_name,inv_companyid,inv_function,inv_location,inv_product,inv_rack,";

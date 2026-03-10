@@ -96,50 +96,22 @@
         }
       }
 
-      $output  = "<table class=\"ui-styled-table\">\n";
-      $output .= "<tr>\n";
-      $output .= "  <th class=\"ui-state-default\">Group Listing</th>\n";
-      $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('group-listing-help');\">Help</a></th>\n";
-      $output .= "</tr>\n";
-      $output .= "</table>\n";
-
-      $output .= "<div id=\"group-listing-help\" style=\"display: none\">\n";
-
-      $output  = "<div class=\"main-help ui-widget-content\">\n";
-
-      $output .= "<ul>\n";
-      $output .= "  <li><strong>Group Listing</strong>\n";
-      $output .= "  <ul>\n";
-      $output .= "    <li><strong>Delete (x)</strong> - Click here to delete this group from the Inventory. It's better to disable the user.</li>\n";
-      $output .= "    <li><strong>Editing</strong> - Click on a group to toggle the form and edit the group.</li>\n";
-      $output .= "    <li><strong>Highlight</strong> - If a group is <span class=\"ui-state-error\">highlighted</span>, then the group has been disabled and will not be visible in any selection menus.</li>\n";
-      $output .= "  </ul></li>\n";
-      $output .= "</ul>\n";
-
-      $output .= "</div>\n";
-
-      $output .= "</div>\n";
-
-
       $output  = "<table class=\"ui-styled-table\">";
       $output .= "<tr>";
       if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Group</th>";
       }
-      $output .= "  <th class=\"ui-state-default\">Group</th>";
+      $output .= "  <th class=\"ui-state-default\">Group Name</th>";
       $output .= "  <th class=\"ui-state-default\">Department</th>";
       $output .= "  <th class=\"ui-state-default\">Business</th>";
       $output .= "  <th class=\"ui-state-default\">Organization</th>";
       $output .= "  <th class=\"ui-state-default\">Manager</th>";
       $output .= "  <th class=\"ui-state-default\">Group EMail</th>";
-      $output .= "  <th class=\"ui-state-default\">Members</th>";
       $output .= "  <th class=\"ui-state-default\">Status</th>";
       $output .= "  <th class=\"ui-state-default\">Server</th>";
       $output .= "  <th class=\"ui-state-default\">Import</th>";
+      $output .= "  <th class=\"ui-state-default\">Members</th>";
       $output .= "</tr>";
-
-      $output     .= $header . $title;
-
 
       $q_string  = "select grp_id,grp_name,dep_name,bus_name,org_name,grp_email,usr_last,";
       $q_string .= "usr_first,grp_disabled,grp_status,grp_server,grp_import ";
@@ -200,10 +172,10 @@
           $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_groups['org_name']             . "</td>";
           $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_groups['usr_first'] . " " . $a_inv_groups['usr_last'] . "</td>";
           $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_groups['grp_email']            . "</td>";
-          $output .= "  <td class=\"" . $class . " delete\">"              . $total                            . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"              . $grp_status                       . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"              . $grp_server                       . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"              . $grp_import                       . "</td>";
+          $output .= "  <td class=\"" . $class . " delete\">"              . $total                            . "</td>";
           $output .= "</tr>";
 
 
@@ -218,7 +190,7 @@
 
       $output .= "</table>";
 
-      print "document.getElementById('group_mysql').innerHTML = '"     . mysqli_real_escape_string($db, $output)     . "';\n\n";
+      print "document.getElementById('table_mysql').innerHTML = '"     . mysqli_real_escape_string($db, $output)     . "';\n\n";
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }

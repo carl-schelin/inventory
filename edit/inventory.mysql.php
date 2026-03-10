@@ -370,7 +370,7 @@
             if ($formVars['id'] > 0) {
               $q_string = "select bu_id,bu_companyid,bu_start,bu_include,bu_retention,bu_sunday,bu_monday,"
                         . "bu_tuesday,bu_wednesday,bu_thursday,bu_friday,bu_saturday,bu_suntime,bu_montime,"
-                        . "bu_tuetime,bu_wedtime,bu_thutime,bu_fritime,bu_sattime,bu_changedby "
+                        . "bu_tuetime,bu_wedtime,bu_thutime,bu_fritime,bu_sattime,bu_changedby,bu_notes "
                         . "from inv_backups "
                         . "where bu_companyid = " . $formVars['id'];
               $q_inv_backups = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -397,7 +397,8 @@
                     "bu_thutime   = \"" . $a_inv_backups['bu_thutime']   . "\"," .
                     "bu_fritime   = \"" . $a_inv_backups['bu_fritime']   . "\"," .
                     "bu_sattime   = \"" . $a_inv_backups['bu_sattime']   . "\"," .
-                    "bu_changedby =   " . $a_inv_backups['bu_changedby'];
+                    "bu_changedby =   " . $a_inv_backups['bu_changedby'] . "," . 
+                    "bu_notes     = \"" . $a_inv_backups['bu_notes']     . "\"" .
 
                   $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
                 }
@@ -409,7 +410,8 @@
                   "bu_include   =   " . 1                          . "," .
                   "bu_retention =   " . 4                          . "," .
                   "bu_saturday  =   " . 1                          . "," .
-                  "bu_changedby =   " . $_SESSION['uid'];
+                  "bu_changedby =   " . $_SESSION['uid']           . "," . 
+                  "bu_notes     = \"" . ""                         . "\"";
 
                 $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               }
@@ -421,7 +423,8 @@
                 "bu_include   =   " . 1                          . "," .
                 "bu_retention =   " . 4                          . "," .
                 "bu_saturday  =   " . 1                          . "," .
-                "bu_changedby =   " . $_SESSION['uid'];
+                "bu_changedby =   " . $_SESSION['uid']           . "," . 
+                "bu_notes     = \"" . ""                         . "\"";
 
               $query = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
             }

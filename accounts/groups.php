@@ -214,14 +214,11 @@ groups. You select from a list and select whether you're a full member or a read
 
 </div>
 
-
 <table class="ui-styled-table">
 <tr>
   <td class="ui-widget-content button"><input type="button" id="clickCreate" value="Add Group"></td>
 </tr>
 </table>
-
-<p></p>
 
 <table class="ui-styled-table">
 <tr>
@@ -230,26 +227,30 @@ groups. You select from a list and select whether you're a full member or a read
 </tr>
 </table>
 
-<div id="group-listing-help" style="<?php print $display; ?>">
+<div id="group-listing-help" style="display: none">
 
 <div class="main-help ui-widget-content">
 
-<p><strong>Group Listing</strong></p>
-
-<p>This page lists all of the Groups that have been defined for the Inventory.</p>
-
-<p>To add a new Group, click on the Add Group button. This will bring up a dialog box which you can use to add a 
-new Group.</p>
-
-<p>To edit an existing Group, click on the entry in the listing. A dialog box will be displayed where you can edit 
-the current entry, or if there is a small difference, you can make changes and add a new Group.</p>
+<ul>
+  <li><strong>Group Listing</strong>
+  <ul>
+    <li><strong>Delete Group</strong> - If there are any users that are a member of the group, the group cannot be deleted.
+    <li><strong>Department</strong> - This is the next level up the management chain.
+    <li><strong>Group Name</strong> - The Name of the Group.
+    <li><strong>E-Mail</strong> - The group email address.
+    <li><strong>Manager</strong> - The group manager.
+    <li><strong>Status</strong> - If this group is disabled, it won't accept members. A disabled group will be <span class="ui-state-error">highlighted</span>.
+    <li><strong>Receive Check Status Report</strong> - 
+    <li><strong>Receive Check Server Report</strong> - 
+    <li><strong>Import Server Data</strong> - 
+  </ul></li>
+</ul>
 
 </div>
 
 </div>
 
-
-<span id="group_mysql"></span>
+<span id="table_mysql"><?php print wait_Process('Waiting...')?></span>
 
 </div>
 
@@ -260,55 +261,7 @@ the current entry, or if there is a small difference, you can make changes and a
 
 <form name="formCreate">
 
-<table class="ui-styled-table">
-<tr>
-  <td class="ui-widget-content">Department: <select name="grp_department">
-<?php
-  $q_string  = "select dep_id,dep_name ";
-  $q_string .= "from inv_department ";
-  $q_string .= "order by dep_name ";
-  $q_inv_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inv_department = mysqli_fetch_array($q_inv_department)) {
-    print "<option value=\"" . $a_inv_department['dep_id'] . "\">" . $a_inv_department['dep_name'] . "</option>\n";
-  }
-?></select></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Group Name: <input type="text" name="grp_name" size="40"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">E-Mail: <input type="text" name="grp_email" size="40"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Manager: <select name="grp_manager">
-<?php
-  $q_string  = "select usr_id,usr_last,usr_first ";
-  $q_string .= "from inv_users ";
-  $q_string .= "where usr_disabled = 0 ";
-  $q_string .= "order by usr_last,usr_first ";
-  $q_inv_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
-    print "<option value=\"" . $a_inv_users['usr_id'] . "\">" . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "</option>\n";
-  }
-?>
-</select></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Status <select name="grp_disabled">
-<option value="0">Enabled</option>
-<option value="1">Disabled</option>
-</select></td>
-</tr>
-<tr>
-  <td class="ui-widget-content"><label>Receive Check Status Report? <input type="checkbox" name="grp_status"></label></td>
-</tr>
-<tr>
-  <td class="ui-widget-content"><label>Receive Check Server Report? <input type="checkbox" name="grp_server"></label></td>
-<tr>
-</tr>
-  <td class="ui-widget-content"><label>Import Server Data? <input type="checkbox" name="grp_import"></label></td>
-</tr>
-</table>
+<?php include('groups.dialog.php'); ?>
 
 </form>
 
@@ -321,55 +274,7 @@ the current entry, or if there is a small difference, you can make changes and a
 
 <input type="hidden" name="id" value="0">
 
-<table class="ui-styled-table">
-<tr>
-  <td class="ui-widget-content">Department: <select name="grp_department">
-<?php
-  $q_string  = "select dep_id,dep_name ";
-  $q_string .= "from inv_department ";
-  $q_string .= "order by dep_name ";
-  $q_inv_department = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inv_department = mysqli_fetch_array($q_inv_department)) {
-    print "<option value=\"" . $a_inv_department['dep_id'] . "\">" . $a_inv_department['dep_name'] . "</option>\n";
-  }
-?></select></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Group Name: <input type="text" name="grp_name" size="40"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">E-Mail: <input type="text" name="grp_email" size="40"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Manager: <select name="grp_manager">
-<?php
-  $q_string  = "select usr_id,usr_last,usr_first ";
-  $q_string .= "from inv_users ";
-  $q_string .= "where usr_disabled = 0 ";
-  $q_string .= "order by usr_last,usr_first ";
-  $q_inv_users = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-  while ($a_inv_users = mysqli_fetch_array($q_inv_users)) {
-    print "<option value=\"" . $a_inv_users['usr_id'] . "\">" . $a_inv_users['usr_last'] . ", " . $a_inv_users['usr_first'] . "</option>\n";
-  }
-?>
-</select></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Status <select name="grp_disabled">
-<option value="0">Enabled</option>
-<option value="1">Disabled</option>
-</select></td>
-</tr>
-<tr>
-  <td class="ui-widget-content"><label>Receive Check Status Report? <input type="checkbox" name="grp_status"></label></td>
-</tr>
-<tr>
-  <td class="ui-widget-content"><label>Receive Check Server Report? <input type="checkbox" name="grp_server"></label></td>
-<tr>
-</tr>
-  <td class="ui-widget-content"><label>Import Server Data? <input type="checkbox" name="grp_import"></label></td>
-</tr>
-</table>
+<?php include('groups.dialog.php'); ?>
 
 </form>
 

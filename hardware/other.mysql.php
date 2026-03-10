@@ -32,6 +32,17 @@
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
         }
+        if ($formVars['mod_eopur'] == '') {
+          $formVars['mod_eopur'] = '0000-00-00';
+        }
+        if ($formVars['mod_eoship'] == '') {
+          $formVars['mod_eoship'] = '0000-00-00';
+        }
+        if ($formVars['mod_eol'] == '') {
+          $formVars['mod_eol'] = '0000-00-00';
+        }
+
+# not used in this popup
         $formVars['mod_size'] = '';
         $formVars['mod_speed'] = '';
         $formVars['mod_plugs'] = 0;
@@ -79,6 +90,48 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
+# basically only display misc items
+      $q_string  = "select part_id ";
+      $q_string .= "from inv_parts ";
+      $q_string .= "where part_name = \"Server\" ";
+      $q_inv_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_parts) > 0) {
+        $a_inv_parts = mysqli_fetch_array($q_inv_parts);
+        $server_id = $a_inv_parts['part_id'];
+      } else {
+        $server_id = 0;
+      }
+      $q_string  = "select part_id ";
+      $q_string .= "from inv_parts ";
+      $q_string .= "where part_name = \"Memory\" ";
+      $q_inv_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_parts) > 0) {
+        $a_inv_parts = mysqli_fetch_array($q_inv_parts);
+        $memory_id = $a_inv_parts['part_id'];
+      } else {
+        $memory_id = 0;
+      }
+      $q_string  = "select part_id ";
+      $q_string .= "from inv_parts ";
+      $q_string .= "where part_name = \"CPU\" ";
+      $q_inv_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_parts) > 0) {
+        $a_inv_parts = mysqli_fetch_array($q_inv_parts);
+        $cpu_id = $a_inv_parts['part_id'];
+      } else {
+        $cpu_id = 0;
+      }
+      $q_string  = "select part_id ";
+      $q_string .= "from inv_parts ";
+      $q_string .= "where part_name = \"Hard Disk\" or part_name = \"Solid State Drive\" ";
+      $q_inv_parts = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_parts) > 0) {
+        $a_inv_parts = mysqli_fetch_array($q_inv_parts);
+        $harddisk_id = $a_inv_parts['part_id'];
+      } else {
+        $harddisk_id = 0;
+      }
+
       $output  = "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       if (check_userlevel($db, $AL_Admin)) {
@@ -94,7 +147,11 @@
       $q_string .= "from inv_models ";
       $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
       $q_string .= "left join inv_parts   on inv_parts.part_id  = inv_models.mod_type ";
-      $q_string .= "where mod_type != 2 and mod_type != 4 and mod_type != 8 and mod_primary != 1 ";
+      $q_string .= "where mod_type != " . $server_id . " ";
+      $q_string .= "and mod_type != " . $memory_id . " ";
+      $q_string .= "and mod_type != " . $cpu_id . " ";
+      $q_string .= "and mod_type != " . $harddisk_id . " ";
+      $q_string .= "and mod_primary != 1 ";
       $q_string .= "order by ven_name,mod_name ";
       $q_inv_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_inv_models) > 0) {
@@ -130,13 +187,14 @@
         $output .= "</table>";
       } else {
         $output .= "<tr>";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"5\">No hardware found</td>";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"5\">No miscellaneous hardware found</td>";
         $output .= "</tr>";
       }
 
       mysqli_free_result($q_inv_models);
 
       print "document.getElementById('mysql_table').innerHTML = '"    . mysqli_real_escape_string($db, $output) . "';\n\n";
+      print "clear_fields();";
 
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");

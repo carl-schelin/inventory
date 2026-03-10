@@ -23,8 +23,8 @@ DROP TABLE IF EXISTS `inv_filesystem`;
 CREATE TABLE `inv_filesystem` (
   `fs_id` int(10) NOT NULL AUTO_INCREMENT,
   `fs_companyid` int(10) NOT NULL DEFAULT '0',
-  `fs_device` char(60) NOT NULL DEFAULT '',
-  `fs_mount` char(60) NOT NULL DEFAULT '',
+  `fs_device` char(255) NOT NULL DEFAULT '',
+  `fs_mount` char(255) NOT NULL DEFAULT '',
   `fs_options` char(60) NOT NULL DEFAULT '',
   `fs_pass` int(10) NOT NULL DEFAULT '0',
   `fs_type` char(60) NOT NULL DEFAULT '',

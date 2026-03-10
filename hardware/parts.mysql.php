@@ -79,7 +79,7 @@
       if (mysqli_num_rows($q_inv_parts) > 0) {
         while ($a_inv_parts = mysqli_fetch_array($q_inv_parts)) {
 
-          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('parts.fill.php?id="     . $a_inv_parts['part_id']   . "');jQuery('#dialogUpdate').dialog('open');\">";
+          $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('parts.fill.php?id="     . $a_inv_parts['part_id']   . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('parts.del.php?id=" . $a_inv_parts['part_id'] . "');\">";
           $linkend   = "</a>";
 
@@ -95,6 +95,11 @@
           $q_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           $total = mysqli_num_rows($q_models);
 
+          $totallink = '';
+          if ($total > 0) {
+            $totallink = "<a href=\"parts.members.php?type=" . $a_inv_parts['part_id'] . "\" target=\"_blank\">";
+          }
+
           $output .= "<tr>";
           if (check_userlevel($db, $AL_Admin)) {
             if ($total == 0) {
@@ -105,8 +110,8 @@
           }
           $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_parts['part_name']    . $linkend . "</td>";
           $output .= "  <td class=\"ui-widget-content\">"                     . $a_inv_parts['part_acronym']            . "</td>";
-          $output .= "  <td class=\"ui-widget-content\">"                     . $parttype                           . "</td>";
-          $output .= "  <td class=\"ui-widget-content delete\">"              . $total                              . "</td>";
+          $output .= "  <td class=\"ui-widget-content\">"                     . $parttype                               . "</td>";
+          $output .= "  <td class=\"ui-widget-content delete\">" . $totallink . $total                       . $linkend . "</td>";
           $output .= "</tr>";
         }
       } else {

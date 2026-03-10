@@ -10,6 +10,20 @@ Install the following packages:
 * mysql-server
 * php
 
+For the image creation (pie chart in server stats mainly):
+
+* gd
+* php-gd
+
+If after the web server is started, restart the web server
+
+    systemctl restart httpd
+
+I also use tcpdf for the pdf rendering library. Install it in the same directory as inventory.
+
+* Inventory = /var/www/html/inventory
+* TCPDF = /var/www/html/tcpdf
+
 ### Getting Started
 
 ```
@@ -105,6 +119,22 @@ Every script loads up the guest.php file which isn't part of the installation. I
 If authentication is required, you'll need to link the login.php script to guest.php
 
     ln login.php guest.php
+
+
+### Email Queries
+
+The inventory system also lets you send queries to the server it's hosted on to have an email returned to you with information about various things such as server details, projects, and other items. I set this up so that in a meeting, for example, if someone asks for information regarding a device, I can quickly send a query and receive the necessary details.
+
+You'll need to create an **inventory** user that can accept emails in order to receive and process requests.
+
+#### show.inventory.userlist.php
+
+This script is run regularly and creates a list of users that are authorized to send emails to the inventory. The output should be stored in the inventory user home directory and checked before running the main script.
+
+#### show.inventory.submit.php
+
+This is the main script and is run with the necessary command line options to return the requested information.
+
 
 ### Finished
 
