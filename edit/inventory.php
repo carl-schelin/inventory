@@ -185,21 +185,32 @@ function delete_association( p_script_url ) {
   }
 ?>
 
-
-
-
 function create_tags(p_script_url, update) {
   var ct_form = document.formTagCreate;
   var ct_url;
   
   ct_url  = '?update='         + update;
-  ct_url += "&id="             + ct_form.tag_companyid.value;
 
   ct_url += "&tag_companyid="  + <?php print $formVars['server']; ?>;
   ct_url += "&tag_name="       + encode_URI(ct_form.tag_name.value);
 
   script = document.createElement('script');
   script.src = p_script_url + ct_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+function update_tags(p_script_url, update) {
+  var ut_form = document.formTagUpdate;
+  var ut_url;
+  
+  ut_url  = '?update='         + update;
+  ut_url += "&id="             + ut_form.tag_companyid.value;
+
+  ut_url += "&tag_companyid="  + <?php print $formVars['server']; ?>;
+  ut_url += "&tag_name="       + encode_URI(ut_form.tag_name.value);
+
+  script = document.createElement('script');
+  script.src = p_script_url + ut_url;
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
@@ -1323,6 +1334,7 @@ $(document).ready( function() {
   if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
 ?>
   <li><a href="#interface">Interfaces</a></li>
+  <li><a href="#networking">Networking</a></li>
   <li><a href="#users">Users</a></li>
   <li><a href="#routing">Routing</a></li>
   <li><a href="#backup">Backup</a></li>
@@ -2740,7 +2752,29 @@ field shows you the limit of the number of characters. This limit is set by the 
 
 <?php include($Editpath . '/association.dialog.php'); ?>
 
+
+<div id="dialogTagCreate" title="Add Server Tag">
+
+<form name="formTagCreate">
+
 <?php include($Editpath . '/tags.dialog.php'); ?>
+
+</form>
+
+</div>
+
+<div id="dialogTagUpdate" title="Edit Server Tag">
+
+<form name="formTagUpdate">
+
+<input type="hidden" name="tag_companyid" value="0">
+
+<?php include($Editpath . '/tags.dialog.php'); ?>
+
+</form>
+
+</div>
+
 
 <?php include($Editpath . '/filesystem.dialog.php'); ?>
 
