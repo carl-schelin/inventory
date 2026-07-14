@@ -1474,14 +1474,14 @@ $(document).ready( function() {
 </tr>
 <tr>
   <td class="ui-widget-content" id="edit_hn">Server Name <input type="text" name="inv_name" size="20" onkeyup="check_hostname();"><span id="gohere"></span></td>
-  <td class="ui-widget-content" colspan="5">Description <input type="text" name="inv_function" size="60"></td>
+  <td class="ui-widget-content" colspan="5">Description <input type="text" name="inv_function" size="40"></td>
   <td class="ui-widget-content" ><label>911 Call Path? <input type="checkbox" name="inv_callpath"></label></td>
   <td class="ui-widget-content" ><label>Decommission Ticket Number: <input type="text" name="inv_ticket" size="20"></label></td>
 </tr>
 <tr>
-  <td class="ui-widget-content"  colspan="3">Link to Documentation: <input type="text" name="inv_document" size="80"></td>
+  <td class="ui-widget-content"  colspan="3">Link to Documentation: <input type="text" name="inv_document" size="60"></td>
   <td class="ui-widget-content">Server is an Appliance? <input type="checkbox" name="inv_appliance"></td>
-  <td class="ui-widget-content"  colspan="3">Parent Device: <select name="inv_companyid">
+  <td class="ui-widget-content"  colspan="4">Parent Device: <select name="inv_companyid">
 <?php
   $q_string  = "select inv_id,inv_name ";
   $q_string .= "from inv_inventory ";
@@ -2749,8 +2749,8 @@ field shows you the limit of the number of characters. This limit is set by the 
 </form>
 
 
-
 <?php include($Editpath . '/association.dialog.php'); ?>
+
 
 
 <div id="dialogTagCreate" title="Add Server Tag">
@@ -2763,17 +2763,6 @@ field shows you the limit of the number of characters. This limit is set by the 
 
 </div>
 
-<div id="dialogTagUpdate" title="Edit Server Tag">
-
-<form name="formTagUpdate">
-
-<input type="hidden" name="tag_companyid" value="0">
-
-<?php include($Editpath . '/tags.dialog.php'); ?>
-
-</form>
-
-</div>
 
 
 <?php include($Editpath . '/filesystem.dialog.php'); ?>
