@@ -181,7 +181,16 @@ $(document).ready( function() {
   <th class="ui-state-default" colspan="12">Hardware Form</th>
 </tr>
 <tr>
-  <td class="ui-widget-content" colspan="4">Vendor: <input type="text" name="mod_vendor" size="30"></td>
+  <td class="ui-widget-content" colspan="4">Vendor: <select name="mod_vendor">
+<?php
+  $q_string  = "select ven_id,ven_name ";
+  $q_string .= "from inv_vendors ";
+  $q_string .= "order by ven_name";
+  $q_inv_vendors = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_vendors = mysqli_fetch_array($q_inv_vendors)) {
+    print "<option value=\"" . $a_inv_vendors['ven_id'] . "\">" . $a_inv_vendors['ven_name'] . "</option>\n";
+  }
+?></td>
   <td class="ui-widget-content" colspan="4">Model: <input type="text" name="mod_name" size="30"></td>
   <td class="ui-widget-content" colspan="4"><label>Virtual? <input type="checkbox" name="mod_virtual"></label></td>
 </tr>
