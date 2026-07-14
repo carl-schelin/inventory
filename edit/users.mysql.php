@@ -241,7 +241,7 @@
         }
       } else {
         $output .= "<tr>\n";
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"7\">No Users defined.</td>\n";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"11\">No Users defined.</td>\n";
         $output .= "</tr>\n";
       }
 
