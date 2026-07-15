@@ -22,6 +22,7 @@ DROP TABLE IF EXISTS `inv_assets`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `inv_assets` (
   `ast_id` int(10) NOT NULL AUTO_INCREMENT,
+  `ast_companyid` int(10) NOT NULL DEFAULT '0',
   `ast_parentid` int(10) NOT NULL DEFAULT '0',
   `ast_modelid` int(10) NOT NULL DEFAULT '0',
   `ast_serial` char(100) NOT NULL DEFAULT '',
