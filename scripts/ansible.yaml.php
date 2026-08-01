@@ -48,7 +48,7 @@
     exit(1);
   }
 
-  $q_string  = "select env_id,env_name ";
+  $q_string  = "select env_id,env_name,env_abb ";
   $q_string .= "from inv_environment ";
   $q_string .= "where env_abb = \"" . $environment . "\" ";
   $q_inv_environment = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -76,12 +76,12 @@
 #      5 | Home        | Home    |
 
 # print the header information of the file
-  print "# Inventory file for " . strtolower($a_inv_environment['env_name']) . " environment\n";
+  print "# Inventory file for " . strtolower($a_inv_environment['env_abb']) . " environment\n";
   print "all:\n";
   print "  children:\n";
-  print "    " . strtolower($a_inv_environment['env_name']) . ":\n";
+  print "    " . strtolower($a_inv_environment['env_abb']) . ":\n";
   print "      vars:\n";
-  print "        environment: " . strtolower($a_inv_environment['env_name']) . "\n";
+  print "        environment: " . strtolower($a_inv_environment['env_abb']) . "\n";
   print "      children:\n";
 
 
