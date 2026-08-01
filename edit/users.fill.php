@@ -34,6 +34,12 @@
         mysqli_free_result($q_inv_syspwd);
 
         $gecos = explode(",", $a_inv_syspwd['pwd_gecos']);
+        if (!isset($gecos[0])) {
+          $gecos[0] = '';
+        }
+        if (!isset($gecos[1])) {
+          $gecos[1] = '';
+        }
 
         $username = $a_inv_syspwd['pwd_user'];
         $name = $gecos[0];
@@ -44,6 +50,7 @@
         $ticket = '';
 
         print "document.edit.mu_update.disabled = true;\n";
+        print "document.edit.pwd_addbtn.disabled = false;\n";
       } else {
         logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_manageusers");
 
@@ -65,13 +72,16 @@
         print "document.edit.mu_id.value = " . $formVars['id'] . ";\n";
 
         print "document.edit.mu_update.disabled = false;\n";
+        print "document.edit.pwd_addbtn.disabled = true;\n";
       }
 
-      print "document.edit.mu_username.value = '" . mysqli_real_escape_string($db, $username) . "';\n";
-      print "document.edit.mu_name.value = '"     . mysqli_real_escape_string($db, $name)     . "';\n";
-      print "document.edit.mu_email.value = '"    . mysqli_real_escape_string($db, $email)    . "';\n";
-      print "document.edit.mu_comment.value = '"  . mysqli_real_escape_string($db, $comment)  . "';\n";
-      print "document.edit.mu_ticket.value = '"   . mysqli_real_escape_string($db, $ticket)   . "';\n";
+      print "document.getElementById(\"selectaccount\").innerHTML = '" . $username . "';\n";
+
+      print "document.edit.mu_username.value = '" . $username . "';\n";
+      print "document.edit.mu_name.value = '"     . $name     . "';\n";
+      print "document.edit.mu_email.value = '"    . $email    . "';\n";
+      print "document.edit.mu_comment.value = '"  . $comment  . "';\n";
+      print "document.edit.mu_ticket.value = '"   . $ticket   . "';\n";
 
       if ($locked) {
         print "document.edit.mu_locked.checked = true;\n";
