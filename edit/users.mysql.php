@@ -86,13 +86,16 @@
         $output .= "<input type=\"button\" name=\"pwd_refresh\" value=\"Refresh User Listing\" onClick=\"javascript:attach_user('users.mysql.php', -1);\">\n";
         $output .= "<input type=\"button\" name=\"mu_update\"   value=\"Update User\"          onClick=\"javascript:attach_user('users.mysql.php', 1);hideDiv('users-hide');\">\n";
         $output .= "<input type=\"hidden\" name=\"mu_id\"       value=\"0\">\n";
-        $output .= "<input type=\"button\" name=\"pwd_addbtn\"  value=\"Add User\"             onClick=\"javascript:attach_user('users.mysql.php', 0);\">\n";
+        $output .= "<input type=\"button\" name=\"pwd_addbtn\"  value=\"Manage User\"             onClick=\"javascript:attach_user('users.mysql.php', 0);\">\n";
         $output .= "</tr>\n";
         $output .= "</table>\n";
 
         $output .= "<table class=\"ui-styled-table\">\n";
         $output .= "<tr>\n";
         $output .= "  <th class=\"ui-state-default\" colspan=\"2\">User Form</th>\n";
+        $output .= "</tr>\n";
+        $output .= "<tr>\n";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"2\">Manage User <span id=\"selectaccount\">[Select Account]</span></td>\n";
         $output .= "</tr>\n";
         $output .= "<tr>\n";
         $output .= "  <td class=\"ui-widget-content\">Username <input type=\"text\" name=\"mu_username\" size=\"20\"></td>\n";
@@ -207,6 +210,12 @@
           }
 
           $gecos = explode(",", $a_inv_syspwd['pwd_gecos']);
+          if (!isset($gecos[0])) {
+            $gecos[0] = '';
+          }
+          if (!isset($gecos[1])) {
+            $gecos[1] = '';
+          }
 
 # system account so can't be locked.
           if ($a_inv_syspwd['pwd_uid'] <= 100) {
@@ -217,25 +226,30 @@
           $q_string .= "from inv_sysgrp ";
           $q_string .= "where grp_companyid = " . $formVars['pwd_companyid'] . " and grp_gid = " . $a_inv_syspwd['pwd_gid'] . " ";
           $q_inv_sysgrp = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-          $a_inv_sysgrp = mysqli_fetch_array($q_inv_sysgrp);
+          if (mysqli_num_rows($q_inv_sysgrp) == 0) {
+            $a_inv_sysgrp['grp_name'] = "No Group";
+          } else {
+            $a_inv_sysgrp = mysqli_fetch_array($q_inv_sysgrp);
+          }
 
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('users.fill.php?id=" . $a_inv_manageusers['mu_id'] . "&pwd_id=" . $a_inv_syspwd['pwd_id'] . "');showDiv('users-hide');\">";
           $linkend   = "</a>";
 
           $class = "ui-widget-content";
+          $high = "ui-state-highlight";
 
           $output .= "<tr>\n";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_syspwd['pwd_user'] . $linkend . "</td>\n";
-          $output .=   "<td class=\"" . $class . " delete\">"              . $locked                          . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"                     . $account                         . "</td>\n";
+          $output .=   "<td class=\"" . $high  . " delete\">"              . $locked                              . "</td>\n";
+          $output .= "  <td class=\"" . $high  . "\">"                     . $account                             . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_syspwd['pwd_uid']             . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_sysgrp['grp_name'] . " (" . $a_inv_syspwd['pwd_gid'] . ")</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"                     . $gecos[0]                        . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"                     . $gecos[1]                        . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_sysgrp['grp_name']            . " (" . $a_inv_syspwd['pwd_gid'] . ")</td>\n";
+          $output .= "  <td class=\"" . $high  . "\">"                     . $gecos[0]                            . "</td>\n";
+          $output .= "  <td class=\"" . $high  . "\">"                     . $gecos[1]                            . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_syspwd['pwd_home']            . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_syspwd['pwd_shell']           . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_manageusers['mu_ticket']      . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_manageusers['mu_comment']     . "</td>\n";
+          $output .= "  <td class=\"" . $high  . "\">"                     . $a_inv_manageusers['mu_ticket']      . "</td>\n";
+          $output .= "  <td class=\"" . $high  . "\">"                     . $a_inv_manageusers['mu_comment']     . "</td>\n";
           $output .= "</tr>\n";
 
         }
@@ -251,7 +265,19 @@
 
       print "document.getElementById('users_table').innerHTML = '" . mysqli_real_escape_string($db, $output) . "';\n\n";
 
+# as we're not duplicating creating accounts, we shouldn't save information from account to account
+      print "document.getElementById(\"selectaccount\").innerHTML = '[Select Account]';\n";
+      print "document.edit.mu_username.value = '';\n";
+      print "document.edit.mu_name.value = '';\n";
+      print "document.edit.mu_email.value = '';\n";
+      print "document.edit.mu_comment.value = '';\n";
+      print "document.edit.mu_ticket.value = '';\n";
+      print "document.edit.mu_locked.checked = false;\n";
+      print "document.edit.mu_account['0'].checked = true;\n";
+
+# and disable all the buttons
       print "document.edit.mu_update.disabled = true;\n";
+      print "document.edit.pwd_addbtn.disabled = true;\n";
     } else {
       logaccess($db, $_SESSION['uid'], $package, "Unauthorized access.");
     }
