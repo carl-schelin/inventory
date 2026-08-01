@@ -70,6 +70,7 @@ function attach_file( p_script_url, update ) {
 
   af_url  = '?update='   + update;
 
+  af_url += "&ast_companyid="   + af_form.ast_companyid.value;
   af_url += "&ast_name="        + encode_URI(af_form.ast_name.value);
   af_url += "&ast_asset="       + encode_URI(af_form.ast_asset.value);
   af_url += "&ast_serial="      + encode_URI(af_form.ast_serial.value);
@@ -94,6 +95,7 @@ function update_file( p_script_url, update ) {
   uf_url  = '?update='   + update;
   uf_url += '&id='       + uf_form.id.value;
 
+  uf_url += "&ast_companyid="   + uf_form.ast_companyid.value;
   uf_url += "&ast_name="        + encode_URI(uf_form.ast_name.value);
   uf_url += "&ast_asset="       + encode_URI(uf_form.ast_asset.value);
   uf_url += "&ast_serial="      + encode_URI(uf_form.ast_serial.value);
@@ -125,7 +127,7 @@ $(document).ready( function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 375,
+    height: 400,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -155,7 +157,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 375,
+    height: 400,
     width: 600,
     show: 'slide',
     hide: 'slide',

@@ -20,7 +20,7 @@
       $formVars['update'] = -1;
     }
     if ($formVars['sort'] == '') {
-      $orderby = "order by ast_asset,ast_facing,mod_name ";
+      $orderby = "order by ast_name,ast_facing,mod_name ";
     } else {
       $orderby = "order by " . $formVars['sort'] . " ";
     }
@@ -28,6 +28,7 @@
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']                 = clean($_GET['id'],               10);
+        $formVars['ast_companyid']      = clean($_GET['ast_companyid'],    10);
         $formVars['ast_name']           = clean($_GET['ast_name'],        100);
         $formVars['ast_asset']          = clean($_GET['ast_asset'],        10);
         $formVars['ast_serial']         = clean($_GET['ast_serial'],      100);
@@ -74,6 +75,7 @@
           logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
+            "ast_companyid   =   " . $formVars['ast_companyid']   . "," .
             "ast_name        = \"" . $formVars['ast_name']        . "\"," .
             "ast_asset       = \"" . $formVars['ast_asset']       . "\"," .
             "ast_serial      = \"" . $formVars['ast_serial']      . "\"," .
@@ -108,22 +110,24 @@
       if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Asset</th>\n";
       }
-      $output .= "  <th class=\"ui-state-default\"><a href=\"assets.php?sort=ast_name"   . "\">" . "Name or Label" . "</a></th>\n";
-      $output .= "  <th class=\"ui-state-default\"><a href=\"assets.php?sort=mod_name"   . "\">" . "Device"        . "</a></th>\n";
-      $output .= "  <th class=\"ui-state-default\"><a href=\"assets.php?sort=ast_unit"   . "\">" . "Starting Unit" . "</a></th>\n";
-      $output .= "  <th class=\"ui-state-default\"><a href=\"assets.php?sort=ast_facing" . "\">" . "Facing"        . "</a></th>\n";
-      $output .= "  <th class=\"ui-state-default\"><a href=\"assets.php?sort=ast_asset"  . "\">" . "Asset Tag"     . "</a></th>\n";
-      $output .= "  <th class=\"ui-state-default\"><a href=\"assets.php?sort=ast_serial" . "\">" . "Serial Number" . "</a></th>\n";
+      $output .= "  <th class=\"ui-state-default\"><a href=\"assets.php?sort=ast_companyid" . "\">" . "Inventory"     . "</a></th>\n";
+      $output .= "  <th class=\"ui-state-default\"><a href=\"assets.php?sort=ast_name"      . "\">" . "Name or Label" . "</a></th>\n";
+      $output .= "  <th class=\"ui-state-default\"><a href=\"assets.php?sort=mod_name"      . "\">" . "Device"        . "</a></th>\n";
+      $output .= "  <th class=\"ui-state-default\"><a href=\"assets.php?sort=ast_unit"      . "\">" . "Starting Unit" . "</a></th>\n";
+      $output .= "  <th class=\"ui-state-default\"><a href=\"assets.php?sort=ast_facing"    . "\">" . "Facing"        . "</a></th>\n";
+      $output .= "  <th class=\"ui-state-default\"><a href=\"assets.php?sort=ast_asset"     . "\">" . "Asset Tag"     . "</a></th>\n";
+      $output .= "  <th class=\"ui-state-default\"><a href=\"assets.php?sort=ast_serial"    . "\">" . "Serial Number" . "</a></th>\n";
       $output .= "  <th class=\"ui-state-default\">Managed</th>\n";
       $output .= "  <th class=\"ui-state-default\">Vendor</th>\n";
       $output .= "  <th class=\"ui-state-default\">End of Support</th>\n";
       $output .= "  <th class=\"ui-state-default\">Members</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select ast_id,ast_name,ast_asset,ast_serial,ast_unit,ast_vendor,ast_managed,ast_endsupport,ast_facing,mod_name,ven_name ";
+      $q_string  = "select ast_id,ast_name,ast_asset,ast_serial,ast_unit,ast_vendor,ast_managed,ast_endsupport,ast_facing,inv_name,mod_name,ven_name ";
       $q_string .= "from inv_assets ";
-      $q_string .= "left join inv_models on inv_models.mod_id = inv_assets.ast_modelid ";
-      $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
+      $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_assets.ast_companyid ";
+      $q_string .= "left join inv_models    on inv_models.mod_id    = inv_assets.ast_modelid ";
+      $q_string .= "left join inv_vendors   on inv_vendors.ven_id   = inv_models.mod_vendor ";
       $q_string .= "where ast_parentid = 0 ";
       $q_string .= $orderby;
       $q_inv_assets = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -178,6 +182,7 @@
               $output .= "  <td class=\"" . $class . " delete\">Members &gt; 0</td>";
             }
           }
+          $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_assets['inv_name']                                   . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_assets['ast_name']                                   . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_assets['ven_name'] . " " . $a_inv_assets['mod_name'] . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"              . $unit                                                                  . "</td>";
@@ -193,10 +198,11 @@
 ####
 # Any children?
 ####
-          $q_string  = "select ast_id,ast_name,ast_asset,ast_serial,ast_unit,ast_managed,ast_vendor,ast_endsupport,ast_facing,mod_name,ven_name ";
+          $q_string  = "select ast_id,ast_name,ast_asset,ast_serial,ast_unit,ast_managed,ast_vendor,ast_endsupport,ast_facing,inv_name,mod_name,ven_name ";
           $q_string .= "from inv_assets ";
-          $q_string .= "left join inv_models on inv_models.mod_id = inv_assets.ast_modelid ";
-          $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
+          $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_assets.ast_companyid ";
+          $q_string .= "left join inv_models    on inv_models.mod_id    = inv_assets.ast_modelid ";
+          $q_string .= "left join inv_vendors   on inv_vendors.ven_id   = inv_models.mod_vendor ";
           $q_string .= "where ast_parentid = " . $a_inv_assets['ast_id'] . " ";
           $q_string .= "order by ast_unit,ast_name ";
           $q_child = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -251,6 +257,7 @@
                   $output .= "  <td class=\"" . $class . " delete\">Members &gt; 0</td>";
                 }
               }
+              $output .= "  <td class=\"" . $class . "\">&gt; "   . $linkstart . $a_child['inv_name']                              . $linkend . "</td>";
               $output .= "  <td class=\"" . $class . "\">&gt; "   . $linkstart . $a_child['ast_name']                              . $linkend . "</td>";
               $output .= "  <td class=\"" . $class . "\">&gt; "   . $linkstart . $a_child['ven_name'] . " " . $a_child['mod_name'] . $linkend . "</td>";
               $output .= "  <td class=\"" . $class . " delete\">"              . $unit                                                        . "</td>";
@@ -266,10 +273,11 @@
 #####
 ## Any Grandchildren
 #####
-              $q_string  = "select ast_id,ast_name,ast_asset,ast_serial,ast_unit,ast_managed,ast_vendor,ast_endsupport,ast_facing,mod_name,ven_name ";
+              $q_string  = "select ast_id,ast_name,ast_asset,ast_serial,ast_unit,ast_managed,ast_vendor,ast_endsupport,ast_facing,inv_name,mod_name,ven_name ";
               $q_string .= "from inv_assets ";
-              $q_string .= "left join inv_models on inv_models.mod_id = inv_assets.ast_modelid ";
-              $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
+              $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_assets.ast_companyid ";
+              $q_string .= "left join inv_models    on inv_models.mod_id    = inv_assets.ast_modelid ";
+              $q_string .= "left join inv_vendors   on inv_vendors.ven_id   = inv_models.mod_vendor ";
               $q_string .= "where ast_parentid = " . $a_child['ast_id'] . " ";
               $q_string .= "order by ast_unit,ast_name ";
               $q_grandchild = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -324,6 +332,7 @@
                       $output .= "  <td class=\"" . $class . " delete\">Members &gt; 0</td>";
                     }
                   }
+                  $output .= "  <td class=\"" . $class . "\">&gt;&gt; " . $linkstart . $a_grandchild['inv_name']                                   . $linkend . "</td>";
                   $output .= "  <td class=\"" . $class . "\">&gt;&gt; " . $linkstart . $a_grandchild['ast_name']                                   . $linkend . "</td>";
                   $output .= "  <td class=\"" . $class . "\">&gt;&gt; " . $linkstart . $a_grandchild['ven_name'] . " " . $a_grandchild['mod_name'] . $linkend . "</td>";
                   $output .= "  <td class=\"" . $class . " delete\">"                . $unit                                                                  . "</td>";
@@ -339,10 +348,11 @@
 #####
 ## Start of Greatgrandchildren
 #####
-                  $q_string  = "select ast_id,ast_name,ast_asset,ast_serial,ast_unit,ast_managed,ast_vendor,ast_endsupport,ast_facing,mod_name,ven_name ";
+                  $q_string  = "select ast_id,ast_name,ast_asset,ast_serial,ast_unit,ast_managed,ast_vendor,ast_endsupport,ast_facing,inv_name,mod_name,ven_name ";
                   $q_string .= "from inv_assets ";
-                  $q_string .= "left join inv_models on inv_models.mod_id = inv_assets.ast_modelid ";
-                  $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
+                  $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_assets.ast_companyid ";
+                  $q_string .= "left join inv_models    on inv_models.mod_id    = inv_assets.ast_modelid ";
+                  $q_string .= "left join inv_vendors   on inv_vendors.ven_id   = inv_models.mod_vendor ";
                   $q_string .= "where ast_parentid = " . $a_grandchild['ast_id'] . " ";
                   $q_string .= "order by ast_unit,ast_name ";
                   $q_greatgrand = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -397,6 +407,7 @@
                           $output .= "  <td class=\"" . $class . " delete\">Members &gt; 0</td>";
                         }
                       }
+                      $output .= "  <td class=\"" . $class . "\">&gt;&gt;&gt; " . $linkstart . $a_greatgrand['inv_name']                                   . $linkend . "</td>";
                       $output .= "  <td class=\"" . $class . "\">&gt;&gt;&gt; " . $linkstart . $a_greatgrand['ast_name']                                   . $linkend . "</td>";
                       $output .= "  <td class=\"" . $class . "\">&gt;&gt;&gt; " . $linkstart . $a_greatgrand['ven_name'] . " " . $a_greatgrand['mod_name'] . $linkend . "</td>";
                       $output .= "  <td class=\"" . $class . " delete\">"                    . $unit                                                                  . "</td>";

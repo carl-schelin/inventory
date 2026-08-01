@@ -21,12 +21,17 @@
     if (check_userlevel($db, $AL_Edit)) {
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_assets");
 
-      $q_string  = "select ast_name,ast_asset,ast_serial,ast_parentid,ast_modelid,ast_unit,ast_vendor,ast_managed,ast_endsupport,ast_facing ";
+      $q_string  = "select ast_companyid,ast_name,ast_asset,ast_serial,ast_parentid,ast_modelid,ast_unit,ast_vendor,ast_managed,ast_endsupport,ast_facing ";
       $q_string .= "from inv_assets ";
       $q_string .= "where ast_id = " . $formVars['id'];
       $q_inv_assets = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_inv_assets = mysqli_fetch_array($q_inv_assets);
       mysqli_free_result($q_inv_assets);
+
+      $q_string  = "select inv_id ";
+      $q_string .= "from inv_inventory ";
+      $q_string .= "order by inv_name ";
+      $astinventory = return_Index($db, $a_inv_assets['ast_companyid'], $q_string);
 
       $q_string  = "select mod_id ";
       $q_string .= "from inv_models ";
@@ -44,6 +49,7 @@
         print "document.formUpdate.ast_endsupport.value = '" . mysqli_real_escape_string($db, $a_inv_assets['ast_endsupport']) . "';\n";
       }
 
+      print "document.formUpdate.ast_companyid['" . $astinventory . "'].selected = true;\n";
       print "document.formUpdate.ast_modelid['" . $astmodel . "'].selected = true;\n";
 
       if ($a_inv_assets['ast_facing'] == 1) {
