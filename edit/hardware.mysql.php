@@ -470,6 +470,153 @@
 
 
       $output  = "<p></p>\n";
+
+      $output .= "<table class=\"ui-styled-table\">\n";
+      $output .= "<tr>\n";
+      $output .= "  <th class=\"ui-state-default\" colspan=\"9\">Asset Listing</th>\n";
+      $output .= "</tr>\n";
+      $output .= "<tr>\n";
+      $output .= "  <th class=\"ui-state-default\">Delete Asset</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Name</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Asset Tag</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Serial</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Model</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Type</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Size</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Speed</th>\n";
+      $output .= "  <th class=\"ui-state-default\">Updated</th>\n";
+      $output .= "</tr>\n";
+
+      $q_string  = "select ast_id,ast_name,ast_serial,ast_asset,ast_updated,part_name,mod_name,mod_speed,mod_size ";
+      $q_string .= "from inv_assets ";
+      $q_string .= "left join inv_models on inv_models.mod_id = inv_assets.ast_modelid ";
+      $q_string .= "left join inv_parts  on inv_parts.part_id = inv_models.mod_type ";
+      $q_string .= "where ast_companyid = " . $formVars['hw_companyid'] . " ";
+      $q_string .= "order by ast_name ";
+
+      $q_inv_assets = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_assets) > 0) {
+        while ($a_inv_assets = mysqli_fetch_array($q_inv_assets)) {
+
+          $class = "class=\"ui-widget-content";
+          $linkstart = '';
+          $linkdel = '';
+          $linkend = '';
+
+          $output .= "<tr>\n";
+          $output .= "<td " . $class . " delete\">" . $linkdel                                             . "</td>\n";
+          $output .= "<td " . $class .        "\">" . $linkstart . $a_inv_assets['ast_name']    . $linkend . "</td>\n";
+          $output .= "<td " . $class .        "\">" . $linkstart . $a_inv_assets['ast_asset']   . $linkend . "</td>\n";
+          $output .= "<td " . $class .        "\">" . $linkstart . $a_inv_assets['ast_serial']  . $linkend . "</td>\n";
+          $output .= "<td " . $class .        "\">" . $linkstart . $a_inv_assets['mod_name']  . $linkend . "</td>\n";
+          $output .= "<td " . $class .        "\">" . $linkstart . $a_inv_assets['part_name']  . $linkend . "</td>\n";
+          $output .= "<td " . $class .        "\">" . $linkstart . $a_inv_assets['mod_size']  . $linkend . "</td>\n";
+          $output .= "<td " . $class .        "\">" . $linkstart . $a_inv_assets['mod_speed']  . $linkend . "</td>\n";
+          $output .= "<td " . $class .        "\">" . $linkstart . $a_inv_assets['ast_updated']  . $linkend . "</td>\n";
+          $output .= "</tr>\n";
+
+# get child
+
+          $q_string  = "select ast_id,ast_name,ast_serial,ast_asset,ast_name,ast_updated,part_name,mod_name,mod_size,mod_speed ";
+          $q_string .= "from inv_assets ";
+          $q_string .= "left join inv_models on inv_models.mod_id = inv_assets.ast_modelid ";
+          $q_string .= "left join inv_parts  on inv_parts.part_id = inv_models.mod_type ";
+          $q_string .= "where ast_parentid = " . $a_inv_assets['ast_id'] . " ";
+          $q_string .= "order by ast_name ";
+
+          $q_child = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_child) > 0) {
+            while ($a_child = mysqli_fetch_array($q_child)) {
+
+              $class = "class=\"ui-widget-content";
+              $linkstart = '';
+              $linkdel = '';
+              $linkend = '';
+              $greaterthan = '&gt;';
+
+              $output .= "<tr>\n";
+              $output .= "<td " . $class . " delete\">" . $linkdel                                             . "</td>\n";
+              $output .= "<td " . $class .        "\">" . $greaterthan . $linkstart . $a_child['ast_name']    . $linkend . "</td>\n";
+              $output .= "<td " . $class .        "\">" . $greaterthan . $linkstart . $a_child['ast_asset']   . $linkend . "</td>\n";
+              $output .= "<td " . $class .        "\">" . $greaterthan . $linkstart . $a_child['ast_serial']  . $linkend . "</td>\n";
+              $output .= "<td " . $class .        "\">" . $linkstart . $a_child['mod_name']  . $linkend . "</td>\n";
+              $output .= "<td " . $class .        "\">" . $linkstart . $a_child['part_name']  . $linkend . "</td>\n";
+              $output .= "<td " . $class .        "\">" . $linkstart . $a_child['mod_size']  . $linkend . "</td>\n";
+              $output .= "<td " . $class .        "\">" . $linkstart . $a_child['mod_speed']  . $linkend . "</td>\n";
+              $output .= "<td " . $class .        "\">" . $linkstart . $a_child['ast_updated']  . $linkend . "</td>\n";
+              $output .= "</tr>\n";
+
+
+              $q_string  = "select ast_id,ast_name,ast_serial,ast_asset,ast_name,ast_updated,part_name,mod_name,mod_size,mod_speed ";
+              $q_string .= "from inv_assets ";
+              $q_string .= "left join inv_models on inv_models.mod_id = inv_assets.ast_modelid ";
+              $q_string .= "left join inv_parts  on inv_parts.part_id = inv_models.mod_type ";
+              $q_string .= "where ast_parentid = " . $a_child['ast_id'] . " ";
+              $q_string .= "order by ast_name ";
+
+              $q_grand = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              if (mysqli_num_rows($q_grand) > 0) {
+                while ($a_grand = mysqli_fetch_array($q_grand)) {
+
+                  $class = "class=\"ui-widget-content";
+                  $linkstart = '';
+                  $linkdel = '';
+                  $linkend = '';
+                  $greaterthan = '&gt;&gt;';
+
+                  $output .= "<tr>\n";
+                  $output .= "<td " . $class . " delete\">" . $linkdel                                             . "</td>\n";
+                  $output .= "<td " . $class .        "\">" . $greaterthan . $linkstart . $a_grand['ast_name']    . $linkend . "</td>\n";
+                  $output .= "<td " . $class .        "\">" . $greaterthan . $linkstart . $a_grand['ast_asset']   . $linkend . "</td>\n";
+                  $output .= "<td " . $class .        "\">" . $greaterthan . $linkstart . $a_grand['ast_serial']  . $linkend . "</td>\n";
+                  $output .= "<td " . $class .        "\">" . $linkstart . $a_grand['mod_name']  . $linkend . "</td>\n";
+                  $output .= "<td " . $class .        "\">" . $linkstart . $a_grand['part_name']  . $linkend . "</td>\n";
+                  $output .= "<td " . $class .        "\">" . $linkstart . $a_grand['mod_size']  . $linkend . "</td>\n";
+                  $output .= "<td " . $class .        "\">" . $linkstart . $a_grand['mod_speed']  . $linkend . "</td>\n";
+                  $output .= "<td " . $class .        "\">" . $linkstart . $a_grand['ast_updated']  . $linkend . "</td>\n";
+                  $output .= "</tr>\n";
+
+
+                  $q_string  = "select ast_id,ast_name,ast_serial,ast_asset,ast_name,ast_updated,part_name,mod_name,mod_size,mod_speed ";
+                  $q_string .= "from inv_assets ";
+                  $q_string .= "left join inv_models on inv_models.mod_id    = inv_assets.ast_modelid ";
+                  $q_string .= "left join inv_parts  on inv_parts.part_id = inv_models.mod_type ";
+                  $q_string .= "where ast_parentid = " . $a_grand['ast_id'] . " ";
+                  $q_string .= "order by ast_name ";
+
+                  $q_great = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+                  if (mysqli_num_rows($q_great) > 0) {
+                    while ($a_great = mysqli_fetch_array($q_great)) {
+
+                      $class = "class=\"ui-widget-content";
+                      $linkstart = '';
+                      $linkdel = '';
+                      $linkend = '';
+                      $greaterthan = '&gt;&gt;';
+
+                      $output .= "<tr>\n";
+                      $output .= "<td " . $class . " delete\">" . $linkdel                                             . "</td>\n";
+                      $output .= "<td " . $class .        "\">" . $greaterthan . $linkstart . $a_great['ast_name']    . $linkend . "</td>\n";
+                      $output .= "<td " . $class .        "\">" . $greaterthan . $linkstart . $a_great['ast_asset']   . $linkend . "</td>\n";
+                      $output .= "<td " . $class .        "\">" . $greaterthan . $linkstart . $a_great['ast_serial']  . $linkend . "</td>\n";
+                      $output .= "<td " . $class .        "\">" . $linkstart . $a_great['mod_name']  . $linkend . "</td>\n";
+                      $output .= "<td " . $class .        "\">" . $linkstart . $a_great['part_name']  . $linkend . "</td>\n";
+                      $output .= "<td " . $class .        "\">" . $linkstart . $a_great['mod_size']  . $linkend . "</td>\n";
+                      $output .= "<td " . $class .        "\">" . $linkstart . $a_great['mod_speed']  . $linkend . "</td>\n";
+                      $output .= "<td " . $class .        "\">" . $linkstart . $a_great['ast_updated']  . $linkend . "</td>\n";
+                      $output .= "</tr>\n";
+
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      $output .= "</table>\n";
+
+
       $output .= "<table class=\"ui-styled-table\">\n";
       $output .= "<tr>\n";
       $output .= "  <th class=\"ui-state-default\" colspan=\"8\">Hardware Listing</th>\n";
