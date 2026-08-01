@@ -2286,25 +2286,36 @@ a tag that already exists, it does check for that and will simply toggle it vs a
 
 <div class="main-help ui-widget-content">
 
-<p>In general what you're seeing are the list of users, system accounts, and service accounts that are on this server. 
-In addition are columns for managing the user such as whether or not to lock the user, updating the type of account, 
-and/or updating the GECOS information.</p>
+<p>What you're seeing is a combination of the servers /etc/passwd and /etc/group files combined together and displayed. 
+In general, this information cannot be edited from this page. It's here to show you what accounts are on this server. 
+Note that I do try to include account information from FreeIPA/Red Hat IDM, Windows Active Directory, and Centrify, 
+there's no guarantee that information will be easily retrieved.</p>
 
-<p>When this information is updated, the following three files are also updated which subsequently change the information 
-on all servers during the following server script run.</p>
+<p>What this page does offer is the ability to better identify accounts as a User account, System account, or Service 
+account. This ability lets you manage the accounts that are on the servers.</p>
 
-<ul>
-  <li>valid.email - This changes the GECOS field on all servers to match the GECOS settings made here.</li>
-  <li>lockuser.dat - This file identifes who needs to be locked on a server due to departure from the company.</li>
-  <li>users.exclude - This file lists service accounts that aren't listed in the company.email file used to identify people who are still in the company.</li>
-</ul>
+<p>In order to Manage an account, click on the account name. That will fill in the displayed form with information 
+gleaned from the data located on the server. You can then describe the account as noted above, lock the account 
+should the user have departed the company, and provide ticket information about the modification.</p>
 
-<p>While you can fill out the fields and "create" a new user in this listing, adding the user does not add the user 
-on the server.</p>
+<p>Note that this is applied across all systems where the account exists. If you identify a user to be locked on this 
+system, if you then look at a second system in the Inventory that has that account, it'll be identified to be 
+locked there as well.</p>
 
-<p>Any user account with a '--' in the Account Type column indicates it is not currently being managed and is likely 
-being reported if a service or system account as it's not being found in the company.email file. Click on the user 
-to modify it and then click the Add User button to begin managing the account.</p>
+<p>When you've made the updates, click the <strong>Manage User</strong> button and the data will be saved.</p>
+
+<p>What this means is a lockuser.dat file will be created each night with all the user accounts that need to be 
+locked. Each system will parse the file and if the user is found, the account is locked.</p>
+
+<p>In addition, the GECOS field will be updated with whatever you save for the account. This is intended to let me 
+update the GECOS field with user name and email address to make it easier to manage the account.</p>
+
+<p>The users.exclude file contains service accounts that we want to manage but which aren't in the company email 
+file. The company email file lists folks who are active. It lets us report on accounts that are Managed, 
+not in the file, so have departed the company and can be Locked.</p>
+
+<p>The columns that are <span class="ui-state-highlight">highlighted</span> are ones that can be managed from 
+this tab.</p>
 
 </div>
 
