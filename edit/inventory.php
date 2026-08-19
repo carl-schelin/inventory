@@ -2286,17 +2286,37 @@ a tag that already exists, it does check for that and will simply toggle it vs a
 
 <div class="main-help ui-widget-content">
 
-<p>What you're seeing is a combination of the servers /etc/passwd and /etc/group files combined together and displayed. 
-In general, this information cannot be edited from this page. It's here to show you what accounts are on this server. 
-Note that I do try to include account information from FreeIPA/Red Hat IDM, Windows Active Directory, and Centrify, 
-there's no guarantee that information will be easily retrieved.</p>
+<p>This page shows the current list of users on the selected server and any accounts that are being managed by the 
+Inventory.The columns that are <span class="ui-state-highlight">highlighted</span> are ones that are managed in 
+the Inventory.</p>
 
-<p>What this page does offer is the ability to better identify accounts as a User account, System account, or Service 
-account. This ability lets you manage the accounts that are on the servers.</p>
+<p>When you select an account from the left column, a form is displayed where you can make changes to that account.</p>
 
-<p>In order to Manage an account, click on the account name. That will fill in the displayed form with information 
-gleaned from the data located on the server. You can then describe the account as noted above, lock the account 
-should the user have departed the company, and provide ticket information about the modification.</p>
+<p>There are two changes that you can select.</p>
+
+<p>1. <strong>Locked</strong> - This checkbox lets you lock an account, generally a User account for a user who 
+has left the company.</p>
+
+<p>A file called <strong>lockuser.dat</strong> is created each morning and copied to every accessible server. Then 
+each night the <strong>lockuser</strong> script is run which parses the file, checks to see if the user is already 
+locked, and lock them if not.  An email will be sent to root listing which accounts were locked.</p>
+
+<p>As a note, account UIDs that are 100 or lower cannot be locked through the Inventory. These are considered 
+system level accounts. In this display, the <strong>Locked?</strong> column will show an X for these accounts.</p>
+
+<p>In addition, in the <strong>.config</strong> file is a list of accounts that cannot be locked. These will be 
+system admin accounts or system level service accounts.</p>
+
+<p>2. <strong>GECOS</strong> - Filling out the user name and email address will update the GECOS field for that 
+user. In general I want to have the name of the user and their email address. This makes it easier to manage the 
+account and ensure it is locked when the user departs the company.</p>
+
+<p>A file called <strong>valid.email</strong> is created each morning and copied to every accessible server. Then 
+the <strong>update.gecos</strong> script is run which checks and updates all GECOS entries that need to be changed. 
+An email is sent to root for each updated account.</p>
+
+<p>In order to <strong>Manage</strong> an account, click on the account name. That will fill in the displayed form 
+with information gleaned from the data located on the server. You can then manage the account as noted above.</p>
 
 <p>Note that this is applied across all systems where the account exists. If you identify a user to be locked on this 
 system, if you then look at a second system in the Inventory that has that account, it'll be identified to be 
@@ -2304,18 +2324,10 @@ locked there as well.</p>
 
 <p>When you've made the updates, click the <strong>Manage User</strong> button and the data will be saved.</p>
 
-<p>What this means is a lockuser.dat file will be created each night with all the user accounts that need to be 
-locked. Each system will parse the file and if the user is found, the account is locked.</p>
-
-<p>In addition, the GECOS field will be updated with whatever you save for the account. This is intended to let me 
-update the GECOS field with user name and email address to make it easier to manage the account.</p>
-
-<p>The users.exclude file contains service accounts that we want to manage but which aren't in the company email 
-file. The company email file lists folks who are active. It lets us report on accounts that are Managed, 
-not in the file, so have departed the company and can be Locked.</p>
-
-<p>The columns that are <span class="ui-state-highlight">highlighted</span> are ones that can be managed from 
-this tab.</p>
+<p>A third file, <strong>users.exclude</strong>, contains service accounts that we want to manage but which aren't 
+in the company <strong>valid.email</strong> file. The email file lists folks who are active. It reports on accounts 
+that are <strong>Managed</strong> and not in the file, so have departed the company and can be 
+<strong>Locked</strong>.</p>
 
 </div>
 
