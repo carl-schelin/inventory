@@ -27,8 +27,8 @@
         $formVars['prj_task']       = clean($_GET['prj_task'],             30);
         $formVars['prj_desc']       = clean($_GET['prj_desc'],            100);
         $formVars['prj_directory']  = clean($_GET['prj_directory'],       100);
-        $formVars['prj_group']      = clean($_GET['prj_unit'],             10);
-        $formVars['prj_product']    = clean($_GET['prj_service'],          10);
+        $formVars['prj_group']      = clean($_GET['prj_group'],            10);
+        $formVars['prj_product']    = clean($_GET['prj_product'],          10);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
@@ -43,7 +43,7 @@
           $q_string =
             "prj_name       = \"" . $formVars['prj_name']      . "\"," .
             "prj_code       = \"" . $formVars['prj_code']      . "\"," .
-            "prj_task       = \"" . $formVars['prj_code']      . "\"," .
+            "prj_task       = \"" . $formVars['prj_task']      . "\"," .
             "prj_desc       = \"" . $formVars['prj_desc']      . "\"," .
             "prj_directory  = \"" . $formVars['prj_directory'] . "\"," .
             "prj_group      =   " . $formVars['prj_group']     . "," .
@@ -53,7 +53,7 @@
             $q_string = "insert into inv_projects set prj_id = NULL, " . $q_string;
           }
           if ($formVars['update'] == 1) {
-            $q_string = "update inv_projects set " . $q_string . " where proj_id = " . $formVars['id'];
+            $q_string = "update inv_projects set " . $q_string . " where prj_id = " . $formVars['id'];
           }
 
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['prj_name']);
