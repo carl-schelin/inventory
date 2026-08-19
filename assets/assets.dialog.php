@@ -78,6 +78,21 @@
   <td class="ui-widget-content"><label>Recorded at Vendor Site: <input type="checkbox" name="ast_vendor"></label></td>
 </tr>
 <tr>
+  <td class="ui-widget-content">Date Purchased: <input type="date" name="ast_purchased"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Date Built: <input type="date" name="ast_built"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Date Live: <input type="date" name="ast_active"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Date Retired: <input type="date" name="ast_retired"></td>
+</tr>
+<tr>
+  <td class="ui-widget-content">Date Reused: <input type="date" name="ast_reused"></td>
+</tr>
+<tr>
   <td class="ui-widget-content">Support End Date: <input type="date" name="ast_endsupport"></td>
 </tr>
 </table>

@@ -37,6 +37,11 @@
         $formVars['ast_unit']           = clean($_GET['ast_unit'],         10);
         $formVars['ast_vendor']         = clean($_GET['ast_vendor'],       10);
         $formVars['ast_managed']        = clean($_GET['ast_managed'],      10);
+        $formVars['ast_purchased']      = clean($_GET['ast_purchased'],    20);
+        $formVars['ast_built']          = clean($_GET['ast_built'],        20);
+        $formVars['ast_active']         = clean($_GET['ast_active'],       20);
+        $formVars['ast_retired']        = clean($_GET['ast_retired'],      20);
+        $formVars['ast_reused']         = clean($_GET['ast_reused'],       20);
         $formVars['ast_endsupport']     = clean($_GET['ast_endsupport'],   20);
         $formVars['ast_facing']         = clean($_GET['ast_facing'],       10);
 
@@ -67,6 +72,21 @@
         } else {
           $formVars['ast_managed'] = 0;
         }
+        if ($formVars['ast_purchased'] == '') {
+          $formVars['ast_purchased'] = '1971-01-01';
+        }
+        if ($formVars['ast_built'] == '') {
+          $formVars['ast_built'] = '1971-01-01';
+        }
+        if ($formVars['ast_active'] == '') {
+          $formVars['ast_active'] = '1971-01-01';
+        }
+        if ($formVars['ast_retired'] == '') {
+          $formVars['ast_retired'] = '1971-01-01';
+        }
+        if ($formVars['ast_reused'] == '') {
+          $formVars['ast_reused'] = '1971-01-01';
+        }
         if ($formVars['ast_endsupport'] == '') {
           $formVars['ast_endsupport'] = '1971-01-01';
         }
@@ -84,6 +104,11 @@
             "ast_unit        =   " . $formVars['ast_unit']        . "," . 
             "ast_vendor      =   " . $formVars['ast_vendor']      . "," . 
             "ast_managed     =   " . $formVars['ast_managed']     . "," .
+            "ast_purchased   = \"" . $formVars['ast_purchased']   . "\"," .
+            "ast_built       = \"" . $formVars['ast_built']       . "\"," .
+            "ast_active      = \"" . $formVars['ast_active']      . "\"," .
+            "ast_retired     = \"" . $formVars['ast_retired']     . "\"," .
+            "ast_reused      = \"" . $formVars['ast_reused']      . "\"," .
             "ast_endsupport  = \"" . $formVars['ast_endsupport']  . "\"," .
             "ast_facing      =   " . $formVars['ast_facing'];
 
