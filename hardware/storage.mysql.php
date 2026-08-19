@@ -115,8 +115,6 @@
           $class = "ui-widget-content";
 
           $linkstart = "<a href=\"#\" onclick=\"show_file('storage.fill.php?id="  . $a_inv_models['mod_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-          $linkstart = "<a href=\"#\" onclick=\"show_file('memory.fill.php?id="   . $a_inv_models['mod_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
-
           $linkdel   = "<input type=\"button\" value=\"Remove\"  onclick=\"delete_line('storage.del.php?id=" . $a_inv_models['mod_id'] . "');\">";
           $linkend   = "</a>";
 
