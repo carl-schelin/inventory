@@ -547,7 +547,7 @@
 
         if ($value[1] == 'software') {
           print "software found:\n";
-# table: software; rows: sw_verified, sw_user, sw_update;
+# table: software; rows: sw_user, sw_update;
 #sqatxt-vmapp01,software,os,Red Hat Enterprise Linux Server release 6.2 (Santiago)
 # check: sw_type = OS; just update it with the text
 # current software listing: os, backup, monitor, centrify, instance, mysqld, informix, postgres, opnet, datapal, oracle, sudo, httpd, wildfly, vmtoolsd, newrelic
@@ -662,7 +662,6 @@
                   "sw_software    = \"" . trim($value[3])                 . "\"," .
                   "sw_vendor      =   " . $a_inv_vendors['ven_id']        . "," .
                   "sw_type        =   " . $a_inv_sw_types['typ_id']       . "," .
-                  "sw_verified    =   " . "1"                             . "," .
                   "sw_user        =   " . "1"                             . "," .
                   "sw_update      = \"" . $date                           . "\"";
 
@@ -743,7 +742,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'Symantec'                  . "\"," . 
                 "sw_type      = \"" . 'Backups'                   . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -788,7 +786,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'HP'                        . "\"," . 
                 "sw_type      = \"" . 'Monitoring'                . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -826,7 +823,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'Oracle'                    . "\"," . 
                 "sw_type      = \"" . 'Instance'                  . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -870,7 +866,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'Oracle'                    . "\"," . 
                 "sw_type      = \"" . 'Commercial'                . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -914,7 +909,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'Informix'                  . "\"," . 
                 "sw_type      = \"" . 'Open Source'               . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -958,7 +952,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'PostgreSQL'                . "\"," . 
                 "sw_type      = \"" . 'Open Source'               . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -1003,7 +996,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'Riverbed'                  . "\"," . 
                 "sw_type      = \"" . 'Commercial'                . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -1052,7 +1044,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'HP'                        . "\"," . 
                 "sw_type      = \"" . 'Commercial'                . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -1101,7 +1092,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'Oracle'                    . "\"," . 
                 "sw_type      = \"" . 'Commercial'                . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -1149,7 +1139,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'Sudo'                      . "\"," . 
                 "sw_type      = \"" . 'Open Source'               . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -1193,7 +1182,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'Apache Foundation'         . "\"," . 
                 "sw_type      = \"" . 'Open Source'               . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -1237,7 +1225,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'Red Hat'                   . "\"," . 
                 "sw_type      = \"" . 'Open Source'               . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -1281,7 +1268,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'VMware'                    . "\"," . 
                 "sw_type      = \"" . 'Commercial'                . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -1326,7 +1312,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'NewRelic'         . "\"," . 
                 "sw_type      = \"" . 'Commercial'               . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -1371,7 +1356,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'Oracle'                    . "\"," . 
                 "sw_type      = \"" . 'Commercial'               . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -1416,7 +1400,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'Oracle'                    . "\"," . 
                 "sw_type      = \"" . 'Commercial'               . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
