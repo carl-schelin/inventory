@@ -22,28 +22,28 @@
   $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
-# get the misc hardware info
+  $output  = "<p></p>\n";
 
-  $output  = "<table class=\"ui-styled-table\">";
-  $output .= "<tr>";
+  $output .= "<table class=\"ui-styled-table\">\n";
+  $output .= "<tr>\n";
   $output .= "  <th class=\"ui-state-default\">";
   if (check_userlevel($db, $AL_Edit)) {
     if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
       $output .= "<a href=\"" . $Editroot . "/inventory.php?server=" . $formVars['id'] . "#hardware\" target=\"_blank\"><img src=\"" . $Imgsroot . "/pencil.gif\">";
     }
   }
-  $output .= "Hardware Information";
+  $output .= "Asset Listing";
   if (check_userlevel($db, $AL_Edit)) {
     if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
       $output .= "</a>";
     }
   }
   $output .= "</th>";
-  $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('hardware-help');\">Help</a></th>";
+  $output .= "  <th class=\"ui-state-default\" width=\"20\"><a href=\"javascript:;\" onmousedown=\"toggleDiv('asset-help');\">Help</a></th>";
   $output .= "</tr>";
   $output .= "</table>";
 
-  $output .= "<div id=\"hardware-help\" style=\"display: none\">";
+  $output .= "<div id=\"asset-help\" style=\"display: none\">";
 
   $output .= "<div class=\"main-help ui-widget-content\">";
 
@@ -70,126 +70,128 @@
   $output .= "</div>";
 
   $output .= "<table class=\"ui-styled-table\">";
-  $output .= "<tr>";
-  $output .= "<th class=\"ui-state-default\">Asset</th>";
-  $output .= "<th class=\"ui-state-default\">Serial</th>";
-  $output .= "<th class=\"ui-state-default\">Model</th>";
-  $output .= "<th class=\"ui-state-default\">Type</th>";
-  $output .= "<th class=\"ui-state-default\">Size</th>";
-  $output .= "<th class=\"ui-state-default\">Speed</th>";
-  $output .= "<th class=\"ui-state-default\">Updated</th>";
-  $output .= "</tr>";
+  $output .= "<tr>\n";
+  $output .= "  <th class=\"ui-state-default\">Name</th>\n";
+  $output .= "  <th class=\"ui-state-default\">Asset Tag</th>\n";
+  $output .= "  <th class=\"ui-state-default\">Serial</th>\n";
+  $output .= "  <th class=\"ui-state-default\">Model</th>\n";
+  $output .= "  <th class=\"ui-state-default\">Type</th>\n";
+  $output .= "  <th class=\"ui-state-default\">Size</th>\n";
+  $output .= "  <th class=\"ui-state-default\">Speed</th>\n";
+  $output .= "  <th class=\"ui-state-default\">Updated</th>\n";
+  $output .= "</tr>\n";
 
-  $support = 0;
-  $q_string  = "select hw_id,part_name,hw_serial,hw_asset,mod_name,mod_speed,mod_size,hw_supportid,hw_primary,hw_verified,hw_note,hw_update ";
-  $q_string .= "from inv_hardware ";
-  $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
-  $q_string .= "left join inv_parts  on inv_parts.part_id = inv_hardware.hw_type ";
-  $q_string .= "where hw_deleted = 0 and hw_companyid = " . $formVars['id'] . " and hw_hw_id = 0 and hw_hd_id = 0 ";
-  $q_string .= "order by hw_type,hw_serial";
-  $q_inv_hardware = mysqli_query($db, $q_string) or die("Hardware:" . mysqli_error($db));
-  while ($a_inv_hardware = mysqli_fetch_array($q_inv_hardware)) {
+  $q_string  = "select ast_id,ast_name,ast_serial,ast_asset,ast_updated,part_name,mod_name,mod_speed,mod_size ";
+  $q_string .= "from inv_assets ";
+  $q_string .= "left join inv_models on inv_models.mod_id = inv_assets.ast_modelid ";
+  $q_string .= "left join inv_parts  on inv_parts.part_id = inv_models.mod_type ";
+  $q_string .= "where ast_companyid = " . $formVars['id'] . " ";
+  $q_string .= "order by ast_name ";
+  $q_inv_assets = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_assets) > 0) {
+    while ($a_inv_assets = mysqli_fetch_array($q_inv_assets)) {
 
-    $link_name   = "<a href=\"" . $Reportroot . "/search.hardware.php?search_by=4&search_for=" . $a_inv_hardware['mod_name']  . "\" target=\"_blank\">";
-    $link_type   = "<a href=\"" . $Reportroot . "/search.hardware.php?search_by=4&search_for=" . $a_inv_hardware['part_name'] . "\" target=\"_blank\">";
-    $linkend     = "</a>";
+      $class = "class=\"ui-widget-content";
 
-    $checkmark = "";
-    if ($a_inv_hardware['hw_verified']) {
-      $checkmark = "&#x2713;";
-    }
+      $output .= "<tr>\n";
+      $output .= "<td " . $class .        "\">" . $a_inv_assets['ast_name']    . "</td>\n";
+      $output .= "<td " . $class .        "\">" . $a_inv_assets['ast_asset']   . "</td>\n";
+      $output .= "<td " . $class .        "\">" . $a_inv_assets['ast_serial']  . "</td>\n";
+      $output .= "<td " . $class .        "\">" . $a_inv_assets['mod_name']    . "</td>\n";
+      $output .= "<td " . $class .        "\">" . $a_inv_assets['part_name']   . "</td>\n";
+      $output .= "<td " . $class .        "\">" . $a_inv_assets['mod_size']    . "</td>\n";
+      $output .= "<td " . $class .        "\">" . $a_inv_assets['mod_speed']   . "</td>\n";
+      $output .= "<td " . $class .        "\">" . $a_inv_assets['ast_updated'] . "</td>\n";
+      $output .= "</tr>\n";
 
-    if ($a_inv_hardware['hw_primary']) {
-      $support = $a_inv_hardware['hw_supportid'];
-      $class = " class=\"ui-state-highlight\"";
-    } else {
-      $class = " class=\"ui-widget-content\"";
-    }
+# get child
 
-    $output .= "<tr>";
-    $output .= "<td" . $class . ">"                                                       . $a_inv_hardware['hw_asset']                           . "</td>";
-    $output .= "<td" . $class . ">"                                                       . $a_inv_hardware['hw_serial']                          . "</td>";
-    $output .= "<td" . $class . " title=\"" . $a_inv_hardware['hw_note'] . "\">" . $link_name . $a_inv_hardware['mod_name']                . $linkend . "</td>";
-    $output .= "<td" . $class . ">"                                          . $link_type . $a_inv_hardware['part_name']               . $linkend . "</td>";
-    $output .= "<td" . $class . ">"                                                       . $a_inv_hardware['mod_size']                            . "</td>";
-    $output .= "<td" . $class . ">"                                                       . $a_inv_hardware['mod_speed']                           . "</td>";
-    $output .= "<td" . $class . ">"                                                       . $a_inv_hardware['hw_update'] . $checkmark             . "</td>";
-    $output .= "</tr>";
+      $q_string  = "select ast_id,ast_name,ast_serial,ast_asset,ast_name,ast_updated,part_name,mod_name,mod_size,mod_speed ";
+      $q_string .= "from inv_assets ";
+      $q_string .= "left join inv_models on inv_models.mod_id = inv_assets.ast_modelid ";
+      $q_string .= "left join inv_parts  on inv_parts.part_id = inv_models.mod_type ";
+      $q_string .= "where ast_parentid = " . $a_inv_assets['ast_id'] . " ";
+      $q_string .= "order by ast_name ";
 
-    $q_string  = "select hw_id,part_name,hw_serial,hw_asset,mod_name,mod_speed,mod_size,hw_supportid,hw_primary,hw_verified,hw_note,hw_update ";
-    $q_string .= "from inv_hardware ";
-    $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
-    $q_string .= "left join inv_parts  on inv_parts.part_id = inv_hardware.hw_type ";
-    $q_string .= "where hw_deleted = 0 and hw_companyid = " . $formVars['id'] . " and hw_hw_id = " . $a_inv_hardware['hw_id'] . " and hw_hd_id = 0 ";
-    $q_string .= "order by hw_type,hw_serial";
-    $q_hwselect = mysqli_query($db, $q_string) or die("Hardware:" . mysqli_error($db));
-    while ($a_hwselect = mysqli_fetch_array($q_hwselect)) {
+      $q_child = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_child) > 0) {
+        while ($a_child = mysqli_fetch_array($q_child)) {
 
-      $link_name   = "<a href=\"" . $Reportroot . "/search.hardware.php?search_by=4&search_for=" . $a_hwselect['mod_name']  . "\" target=\"_blank\">";
-      $link_type   = "<a href=\"" . $Reportroot . "/search.hardware.php?search_by=4&search_for=" . $a_hwselect['part_name'] . "\" target=\"_blank\">";
-      $linkend     = "</a>";
+          $class = "class=\"ui-widget-content";
+          $greaterthan = '&gt;';
 
-      $checkmark = "";
-      if ($a_hwselect['hw_verified']) {
-        $checkmark = "&#x2713;";
-      }
+          $output .= "<tr>\n";
+          $output .= "<td " . $class .        "\">" . $greaterthan . $a_child['ast_name']    . "</td>\n";
+          $output .= "<td " . $class .        "\">" . $greaterthan . $a_child['ast_asset']   . "</td>\n";
+          $output .= "<td " . $class .        "\">" . $greaterthan . $a_child['ast_serial']  . "</td>\n";
+          $output .= "<td " . $class .        "\">"                . $a_child['mod_name']    . "</td>\n";
+          $output .= "<td " . $class .        "\">"                . $a_child['part_name']   . "</td>\n";
+          $output .= "<td " . $class .        "\">"                . $a_child['mod_size']    . "</td>\n";
+          $output .= "<td " . $class .        "\">"                . $a_child['mod_speed']   . "</td>\n";
+          $output .= "<td " . $class .        "\">"                . $a_child['ast_updated'] . "</td>\n";
+          $output .= "</tr>\n";
 
-      if ($a_hwselect['hw_primary']) {
-        $support = $a_hwselect['hw_supportid'];
-        $class = " class=\"ui-state-highlight\"";
-      } else {
-        $class = " class=\"ui-widget-content\"";
-      }
 
-      $output .= "<tr>";
-      $output .= "<td" . $class . ">"                                                            . $a_hwselect['hw_asset']                           . "</td>";
-      $output .= "<td" . $class . ">"                                                            . $a_hwselect['hw_serial']                          . "</td>";
-      $output .= "<td" . $class . " title=\"" . $a_inv_hardware['hw_note'] . "\"> &gt;" . $link_name . $a_hwselect['mod_name']                . $linkend . "</td>";
-      $output .= "<td" . $class . ">"                                               . $link_type . $a_hwselect['part_name']               . $linkend . "</td>";
-      $output .= "<td" . $class . ">"                                                            . $a_hwselect['mod_size']                            . "</td>";
-      $output .= "<td" . $class . ">"                                                            . $a_hwselect['mod_speed']                           . "</td>";
-      $output .= "<td" . $class . ">"                                                            . $a_hwselect['hw_update'] . $checkmark             . "</td>";
-      $output .= "</tr>";
+          $q_string  = "select ast_id,ast_name,ast_serial,ast_asset,ast_name,ast_updated,part_name,mod_name,mod_size,mod_speed ";
+          $q_string .= "from inv_assets ";
+          $q_string .= "left join inv_models on inv_models.mod_id = inv_assets.ast_modelid ";
+          $q_string .= "left join inv_parts  on inv_parts.part_id = inv_models.mod_type ";
+          $q_string .= "where ast_parentid = " . $a_child['ast_id'] . " ";
+          $q_string .= "order by ast_name ";
 
-      $q_string  = "select part_name,hw_serial,hw_asset,mod_name,mod_speed,mod_size,hw_supportid,hw_primary,hw_verified,hw_note,hw_update ";
-      $q_string .= "from inv_hardware ";
-      $q_string .= "left join inv_models on inv_models.mod_id = inv_hardware.hw_vendorid ";
-      $q_string .= "left join inv_parts  on inv_parts.part_id = inv_hardware.hw_type ";
-      $q_string .= "where hw_companyid = " . $formVars['id'] . " and hw_hw_id = " . $a_inv_hardware['hw_id'] . " and hw_hd_id = " . $a_hwselect['hw_id'] . " ";
-      $q_string .= "order by hw_type,hw_serial";
-      $q_hwdisk = mysqli_query($db, $q_string) or die("Hardware:" . mysqli_error($db));
-      while ($a_hwdisk = mysqli_fetch_array($q_hwdisk)) {
+          $q_grand = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+          if (mysqli_num_rows($q_grand) > 0) {
+            while ($a_grand = mysqli_fetch_array($q_grand)) {
 
-        $link_name   = "<a href=\"" . $Reportroot . "/search.hardware.php?search_by=4&search_for=" . $a_hwdisk['mod_name']  . "\" target=\"_blank\">";
-        $link_type   = "<a href=\"" . $Reportroot . "/search.hardware.php?search_by=4&search_for=" . $a_hwdisk['part_name'] . "\" target=\"_blank\">";
-        $linkend     = "</a>";
+              $class = "class=\"ui-widget-content";
+              $greaterthan = '&gt;&gt;';
 
-        $checkmark = "";
-        if ($a_hwdisk['hw_verified']) {
-          $checkmark = "&#x2713;";
+              $output .= "<tr>\n";
+              $output .= "<td " . $class .        "\">" . $greaterthan . $a_grand['ast_name']    . "</td>\n";
+              $output .= "<td " . $class .        "\">" . $greaterthan . $a_grand['ast_asset']   . "</td>\n";
+              $output .= "<td " . $class .        "\">" . $greaterthan . $a_grand['ast_serial']  . "</td>\n";
+              $output .= "<td " . $class .        "\">"                . $a_grand['mod_name']    . "</td>\n";
+              $output .= "<td " . $class .        "\">"                . $a_grand['part_name']   . "</td>\n";
+              $output .= "<td " . $class .        "\">"                . $a_grand['mod_size']    . "</td>\n";
+              $output .= "<td " . $class .        "\">"                . $a_grand['mod_speed']   . "</td>\n";
+              $output .= "<td " . $class .        "\">"                . $a_grand['ast_updated'] . "</td>\n";
+              $output .= "</tr>\n";
+
+
+              $q_string  = "select ast_id,ast_name,ast_serial,ast_asset,ast_name,ast_updated,part_name,mod_name,mod_size,mod_speed ";
+              $q_string .= "from inv_assets ";
+              $q_string .= "left join inv_models on inv_models.mod_id    = inv_assets.ast_modelid ";
+              $q_string .= "left join inv_parts  on inv_parts.part_id = inv_models.mod_type ";
+              $q_string .= "where ast_parentid = " . $a_grand['ast_id'] . " ";
+              $q_string .= "order by ast_name ";
+
+              $q_great = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+              if (mysqli_num_rows($q_great) > 0) {
+                while ($a_great = mysqli_fetch_array($q_great)) {
+
+                  $class = "class=\"ui-widget-content";
+                  $greaterthan = '&gt;&gt;';
+
+                  $output .= "<tr>\n";
+                  $output .= "<td " . $class .        "\">" . $greaterthan . $a_great['ast_name']    . "</td>\n";
+                  $output .= "<td " . $class .        "\">" . $greaterthan . $a_great['ast_asset']   . "</td>\n";
+                  $output .= "<td " . $class .        "\">" . $greaterthan . $a_great['ast_serial']  . "</td>\n";
+                  $output .= "<td " . $class .        "\">"                . $a_great['mod_name']    . "</td>\n";
+                  $output .= "<td " . $class .        "\">"                . $a_great['part_name']   . "</td>\n";
+                  $output .= "<td " . $class .        "\">"                . $a_great['mod_size']    . "</td>\n";
+                  $output .= "<td " . $class .        "\">"                . $a_great['mod_speed']   . "</td>\n";
+                  $output .= "<td " . $class .        "\">"                . $a_great['ast_updated'] . "</td>\n";
+                  $output .= "</tr>\n";
+
+                }
+              }
+            }
+          }
         }
-
-        if ($a_hwdisk['hw_primary']) {
-          $support = $a_hwdisk['hw_supportid'];
-          $class = " class=\"ui-state-highlight\"";
-        } else {
-          $class = " class=\"ui-widget-content\"";
-        }
-
-        $output .= "<tr>";
-        $output .= "<td" . $class . ">"                                                                . $a_hwdisk['hw_asset']                           . "</td>";
-        $output .= "<td" . $class . ">"                                                                . $a_hwdisk['hw_serial']                          . "</td>";
-        $output .= "<td" . $class . " title=\"" . $a_inv_hardware['hw_note'] . "\"> &gt;&gt;" . $link_name . $a_hwdisk['mod_name']                . $linkend . "</td>";
-        $output .= "<td" . $class . ">"                                                   . $link_type . $a_hwdisk['part_name']               . $linkend . "</td>";
-        $output .= "<td" . $class . ">"                                                                . $a_hwdisk['mod_size']                            . "</td>";
-        $output .= "<td" . $class . ">"                                                                . $a_hwdisk['mod_speed']                           . "</td>";
-        $output .= "<td" . $class . ">"                                                                . $a_hwdisk['hw_update'] . $checkmark             . "</td>";
-        $output .= "</tr>";
       }
     }
   }
-
-  $output .= "</table>";
+  $output .= "</table>\n";
 
 ?>
 
