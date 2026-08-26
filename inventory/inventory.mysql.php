@@ -13,30 +13,39 @@
 
   if (isset($_SESSION['username'])) {
     $package = "inventory.mysql.php";
-    $formVars['projectid'] = clean($_GET['projectid'],   10);
-    $formVars['productid'] = clean($_GET['productid'],   10);
-    $formVars['group']     = clean($_GET['group'],       10);
-    $formVars['filter']    = clean($_GET['filter'],    1024);
-    $formVars['location']  = clean($_GET['location'],    10);
-    $formVars['csv']       = clean($_GET['csv'],         10);
 
-    if ($formVars['projectid'] == '') {
+    if (isset($_GET['projectid'])) {
+      $formVars['projectid'] = clean($_GET['projectid'],   10);
+    } else {
       $formVars['projectid'] = 0;
     }
-    if ($formVars['productid'] == '') {
+    if (isset($_GET['productid'])) {
+      $formVars['productid'] = clean($_GET['productid'],   10);
+    } else {
       $formVars['productid'] = 0;
     }
-    if ($formVars['group'] == '') {
+    if (isset($_GET['filter'])) {
+      $formVars['filter']    = clean($_GET['filter'],    1024);
+    } else {
+      $formVars['filter'] = 0;
+    }
+    if (isset($_GET['group'])) {
+      $formVars['group']     = clean($_GET['group'],       10);
+    } else {
       $formVars['group'] = 0;
     }
-    if ($formVars['location'] == '') {
+    if (isset($_GET['location'])) {
+      $formVars['location']  = clean($_GET['location'],    10);
+    } else {
       $formVars['location'] = 0;
     }
-    if ($formVars['csv'] == '') {
+    if (isset($_GET['csv'])) {
+      $formVars['csv']       = clean($_GET['csv'],         10);
+    } else {
       $formVars['csv'] = 'false';
     }
 
-    $a_inventory_id['inventory_id'] = 0;
+    $a_inventory_id['inv_id'] = 0;
 
     $filter = '';
     if (strlen($formVars['filter']) > 0) {
@@ -46,7 +55,7 @@
       $filter = 'and (';
       $or = '';
       for ($i = 0; $i < count($filterinv); $i++) {
-        $filter .= $or . "inventory_id = " . $filterinv[$i] . " ";
+        $filter .= $or . "inv_id = " . $filterinv[$i] . " ";
         $or = 'or ';
       }
       $filter .= ") ";
@@ -164,7 +173,8 @@
         $detail .= "</tr>\n";
       }
 
-      $q_string  = "select inv_id,inv_companyid,inv_name,inv_function,inv_appadmin,grp_name,prod_name,prj_name,svc_name,loc_name,inv_row,inv_rack,inv_unit,inv_callpath,inv_ansible,inv_ssh,man_text ";
+      $q_string  = "select inv_id,inv_companyid,inv_name,inv_function,inv_appadmin,grp_name,prod_name,";
+      $q_string .= "prj_name,svc_name,loc_name,inv_row,inv_rack,inv_unit,inv_callpath,inv_ansible,inv_ssh,man_text ";
       $q_string .= "from inv_inventory ";
       $q_string .= "left join inv_groups      on inv_groups.grp_id      = inv_inventory.inv_manager ";
       $q_string .= "left join inv_products    on inv_products.prod_id   = inv_inventory.inv_product ";
