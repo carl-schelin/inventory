@@ -257,11 +257,12 @@
     }
     
     $count = 0;
-    $q_string  = "select int_id,int_server,int_domain,int_face,int_addr,int_eth,int_mask,int_gate,int_vlan,itp_name,";
+    $q_string  = "select int_id,int_server,int_domain,int_face,ip_ipv4,int_eth,int_mask,int_gate,int_vlan,itp_name,";
     $q_string .= "int_openview,int_nagios,int_ping,int_ssh,int_http,int_ftp,int_smtp,int_cfg2html,int_notify,int_hours,";
     $q_string .= "int_primary,int_switch,int_port,med_text,spd_text,dup_text,rol_text,int_management,int_backup,";
     $q_string .= "int_redundancy,int_groupname,int_virtual,zone_zone,zone_acronym,int_sysport ";
     $q_string .= "from inv_interface ";
+    $q_string .= "left join inv_ipaddress  on inv_ipaddress.ip_id   = inv_interface.int_ipaddressid ";
     $q_string .= "left join inv_net_zones  on inv_net_zones.zone_id = inv_interface.int_zone ";
     $q_string .= "left join inv_int_types  on inv_int_types.itp_id  = inv_interface.int_type ";
     $q_string .= "left join inv_int_duplex on inv_int_duplex.dup_id = inv_interface.int_duplex ";
@@ -313,7 +314,7 @@
         $servers[$a_inv_inventory['inv_name']]->inventory_network[$index]->interface_name         = $a_inv_interface['int_server'];
         $servers[$a_inv_inventory['inv_name']]->inventory_network[$index]->interface_fqdn         = $fqdn;
         $servers[$a_inv_inventory['inv_name']]->inventory_network[$index]->interface_label        = $a_inv_interface['int_face'];
-        $servers[$a_inv_inventory['inv_name']]->inventory_network[$index]->interface_address      = $a_inv_interface['int_addr'];
+        $servers[$a_inv_inventory['inv_name']]->inventory_network[$index]->interface_address      = $a_inv_interface['ip_ipv4'];
         $servers[$a_inv_inventory['inv_name']]->inventory_network[$index]->interface_ethernet     = $a_inv_interface['int_eth'];
         $servers[$a_inv_inventory['inv_name']]->inventory_network[$index]->interface_netmask      = $a_inv_interface['int_mask'];
         $servers[$a_inv_inventory['inv_name']]->inventory_network[$index]->interface_gateway      = $a_inv_interface['int_gate'];
@@ -348,11 +349,12 @@
 
 
         $intcount = 0;
-        $q_string  = "select int_id,int_server,int_domain,int_face,int_addr,int_eth,int_mask,int_gate,int_vlan,itp_name,";
+        $q_string  = "select int_id,int_server,int_domain,int_face,ip_ipv4,int_eth,int_mask,int_gate,int_vlan,itp_name,";
         $q_string .= "int_openview,int_nagios,int_ping,int_ssh,int_http,int_ftp,int_smtp,int_cfg2html,int_notify,int_hours,";
         $q_string .= "int_primary,int_switch,int_port,med_text,spd_text,dup_text,rol_text,int_management,int_backup,";
         $q_string .= "int_redundancy,int_groupname,int_virtual,zone_zone,int_sysport ";
         $q_string .= "from inv_interface ";
+        $q_string .= "left join inv_ipaddress  on inv_ipaddress.ip_id   = inv_interface.int_ipaddressid ";
         $q_string .= "left join inv_net_zones  on inv_net_zones.zone_id = inv_interface.int_zone ";
         $q_string .= "left join inv_int_types  on inv_int_types.itp_id  = inv_interface.int_type ";
         $q_string .= "left join inv_int_duplex on inv_int_duplex.dup_id = inv_interface.int_duplex ";
@@ -403,7 +405,7 @@
           $servers[$a_inv_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_name         = $a_internal['int_server'];
           $servers[$a_inv_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_fqdn         = $fqdn;
           $servers[$a_inv_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_label        = $a_internal['int_face'];
-          $servers[$a_inv_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_address      = $a_internal['int_addr'];
+          $servers[$a_inv_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_address      = $a_internal['ip_ipv4'];
           $servers[$a_inv_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_ethernet     = $a_internal['int_eth'];
           $servers[$a_inv_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_netmask      = $a_internal['int_mask'];
           $servers[$a_inv_inventory['inv_name']]->inventory_network[$index]->inventory_network[$cindex]->interface_gateway      = $a_internal['int_gate'];
