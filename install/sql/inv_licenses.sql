@@ -22,10 +22,13 @@ DROP TABLE IF EXISTS `inv_licenses`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `inv_licenses` (
   `lic_id` int(10) NOT NULL AUTO_INCREMENT,
+  `lic_parent` int(10) NOT NULL DEFAULT 0,
   `lic_vendor` char(30) NOT NULL DEFAULT '',
-  `lic_product` char(32) NOT NULL DEFAULT '',
+  `lic_product` char(255) NOT NULL DEFAULT '',
   `lic_date` date NOT NULL DEFAULT '1971-01-01',
+  `lic_expire` date NOT NULL DEFAULT '1971-01-01',
   `lic_vendorpo` char(20) NOT NULL DEFAULT '',
+  `lic_customer` char(30) NOT NULL DEFAULT '',
   `lic_po` char(20) NOT NULL DEFAULT '',
   `lic_project` int(10) NOT NULL DEFAULT '0',
   `lic_quantity` int(10) NOT NULL DEFAULT '0',
