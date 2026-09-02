@@ -70,7 +70,7 @@
       $_SESSION['sort'] = ' desc';
     }
   } else {
-    $orderby = "order by INET_ATON(int_addr),int_server";
+    $orderby = "order by INET_ATON(ip_ipv4),int_server";
     $_SESSION['sort'] = '';
   }
 
@@ -219,7 +219,7 @@
     $and = " and";
   }
 
-  $where = $product . $group . $inwork . $location . $type . $ipv6 . $loopback . $virtual . $and . " int_addr != '' ";
+  $where = $product . $group . $inwork . $location . $type . $ipv6 . $loopback . $virtual . $and . " ip_ipv4 != '' ";
 
   $passthrough = 
     "&group="    . $formVars['group']    .
@@ -259,7 +259,7 @@
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=int_face"              . $passthrough . "\">Logical Interface</a></th>\n";
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=int_sysport"           . $passthrough . "\">Physical Port</a></th>\n";
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=int_eth"               . $passthrough . "\">MAC Address</a></th>\n";
-    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=INET_ATON(int_addr)"   . $passthrough . "\">IP Address</a></th>\n";
+    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=INET_ATON(ip_ipv4)"    . $passthrough . "\">IP Address</a></th>\n";
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=sub_zone"              . $passthrough . "\">IP Zone</a></th>\n";
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=int_gate"              . $passthrough . "\">Gateway</a></th>\n";
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=int_switch"            . $passthrough . "\">Switch</a></th>\n";
@@ -282,7 +282,7 @@
     print "</br>\n";
   }
 
-  $q_string  = "select int_id,int_companyid,int_server,int_face,int_sysport,int_eth,int_addr,int_mask,";
+  $q_string  = "select int_id,int_companyid,int_server,int_face,int_sysport,int_eth,ip_ipv4,int_mask,";
   $q_string .= "sub_zone,int_gate,int_switch,int_port,itp_acronym,int_update,int_verified,int_primary,";
   $q_string .= "inv_manager,inv_status,ip_ipv4,ip_hostname ";
   $q_string .= "from inv_interface ";

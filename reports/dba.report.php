@@ -186,14 +186,15 @@
     $interface = "";
     $console = "";
 
-    $q_string  = "select int_face,int_addr,int_type,itp_acronym,int_ip6 ";
+    $q_string  = "select int_face,ip_ipv4,int_type,itp_acronym,int_ip6 ";
     $q_string .= "from inv_interface ";
+    $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id  = inv_interface.int_ipaddressid ";
     $q_string .= "left join inv_int_types on inv_int_types.itp_id = inv_interface.int_type ";
-    $q_string .= "where int_companyid = " . $a_inv_inventory['svr_companyid'] . " and int_type != 7 and int_type != 6 and int_addr != '' and int_ip6 = 0 ";
+    $q_string .= "where int_companyid = " . $a_inv_inventory['svr_companyid'] . " and int_type != 7 and int_type != 6 and ip_ipv4 != '' and int_ip6 = 0 ";
     $q_string .= "order by itp_acronym ";
     $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
-      $interface .= $a_inv_interface['itp_acronym'] . "=" . $a_inv_interface['int_addr'] . " ";
+      $interface .= $a_inv_interface['itp_acronym'] . "=" . $a_inv_interface['ip_ipv4'] . " ";
     }
 
     $q_string  = "select sw_software ";
