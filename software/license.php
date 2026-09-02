@@ -18,6 +18,12 @@
 
   logaccess($db, $_SESSION['uid'], $package, "Accessing script");
 
+  if (isset($_GET['product'])) {
+    $formVars['product'] = clean($_GET['product'], 10);
+  } else {
+    $formVars['product'] = 0;
+  }
+
 # if help has not been seen yet,
   if (show_Help($db, $Sitepath . "/" . $package)) {
     $display = "display: block";
@@ -65,15 +71,19 @@ function attach_file( p_script_url, update ) {
   af_url  = '?update='   + update;
 
   af_url += "&lic_vendor="    + af_form.lic_vendor.value;
+  af_url += "&lic_parent="    + af_form.lic_parent.value;
   af_url += "&lic_product="   + encode_URI(af_form.lic_product.value);
   af_url += "&lic_date="      + encode_URI(af_form.lic_date.value);
+  af_url += "&lic_expire="    + encode_URI(af_form.lic_expire.value);
   af_url += "&lic_quantity="  + encode_URI(af_form.lic_quantity.value);
   af_url += "&lic_vendorpo="  + encode_URI(af_form.lic_vendorpo.value);
+  af_url += "&lic_customer="  + encode_URI(af_form.lic_customer.value);
   af_url += "&lic_po="        + encode_URI(af_form.lic_po.value);
   af_url += "&lic_project="   + encode_URI(af_form.lic_project.value);
   af_url += "&lic_key="       + encode_URI(af_form.lic_key.value);
   af_url += "&lic_serial="    + encode_URI(af_form.lic_serial.value);
   af_url += "&lic_domain="    + encode_URI(af_form.lic_domain.value);
+  af_url += "&product="       + <?php print $formVars['product']; ?>;
 
   script = document.createElement('script');
   script.src = p_script_url + af_url;
@@ -88,15 +98,19 @@ function update_file( p_script_url, update ) {
   uf_url += '&id='       + uf_form.id.value;
 
   uf_url += "&lic_vendor="    + uf_form.lic_vendor.value;
+  uf_url += "&lic_parent="    + uf_form.lic_parent.value;
   uf_url += "&lic_product="   + encode_URI(uf_form.lic_product.value);
   uf_url += "&lic_date="      + encode_URI(uf_form.lic_date.value);
+  uf_url += "&lic_expire="    + encode_URI(uf_form.lic_expire.value);
   uf_url += "&lic_quantity="  + encode_URI(uf_form.lic_quantity.value);
   uf_url += "&lic_vendorpo="  + encode_URI(uf_form.lic_vendorpo.value);
   uf_url += "&lic_po="        + encode_URI(uf_form.lic_po.value);
+  uf_url += "&lic_customer="  + encode_URI(uf_form.lic_customer.value);
   uf_url += "&lic_project="   + encode_URI(uf_form.lic_project.value);
   uf_url += "&lic_key="       + encode_URI(uf_form.lic_key.value);
   uf_url += "&lic_serial="    + encode_URI(uf_form.lic_serial.value);
   uf_url += "&lic_domain="    + encode_URI(uf_form.lic_domain.value);
+  uf_url += "&product="       + <?php print $formVars['product']; ?>;
 
   script = document.createElement('script');
   script.src = p_script_url + uf_url;
@@ -104,7 +118,7 @@ function update_file( p_script_url, update ) {
 }
 
 function clear_fields() {
-  show_file('license.mysql.php?update=-1');
+  show_file('license.mysql.php?update=-1&product=<?php print $formVars['product']; ?>');
 }
 
 $(document).ready( function() {
@@ -115,7 +129,7 @@ $(document).ready( function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 375,
+    height: 400,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -128,7 +142,7 @@ $(document).ready( function() {
       {
         text: "Cancel",
         click: function() {
-          show_file('license.mysql.php?update=-1');
+          show_file('license.mysql.php?update=-1&product=<?php print $formVars['product']; ?>');
           $( this ).dialog( "close" );
         }
       },
@@ -145,7 +159,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 375,
+    height: 400,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -158,7 +172,7 @@ $(document).ready( function() {
       {
         text: "Cancel",
         click: function() {
-          show_file('license.mysql.php?update=-1');
+          show_file('license.mysql.php?update=-1&product=<?php print $formVars['product']; ?>');
           $( this ).dialog( "close" );
         }
       },
@@ -229,15 +243,23 @@ license key, serial number, PO number, and even what domain if it's something li
 
 <p><strong>License Manager Listing</strong></p>
 
-
-
 <p>This page lists details about purchased software licenses.</p>
+
+<p>Initially you'll just see the main license file information. Since expiration dates could be different in the 
+license file, no dates or quantities are shown. Clicking on the Product will show the selected license and all 
+supported products this license was generated for. This includes dates and quantities.</p>
+
+<p>Clicking on the Vendor will present the dialog box for the entry which you can edit or copy.</p>
 
 <p>To add a software license, click the Add License button. This will bring up a dialog box which you can then use to add 
 a software license.</p>
 
 <p>To edit a software license, click on an entry in the listing. A dialog box will be displayed where you can edit the 
 software license, or if there is a small difference, you can make changes and add a new software license.</p>
+
+<p>Licenses <span class="ui-state-highlight">highlighted like this</span>, are going to expire within 90 days.</p>
+
+<p>Licenses <span class="ui-state-error">highlighted like this</span>, are going to expire within 30 days.</p>
 
 </div>
 
@@ -255,58 +277,7 @@ software license, or if there is a small difference, you can make changes and ad
 
 <form name="formCreate">
 
-<table class="ui-styled-table">
-<tr>
-  <td class="ui-widget-content">Vendor: <select name="lic_vendor">
-<?php
-  $q_string  = "select ven_id,ven_name ";
-  $q_string .= "from inv_vendors ";
-  $q_string .= "order by ven_name ";
-  $q_inv_vendors = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_inv_vendors = mysqli_fetch_array($q_inv_vendors)) {
-    print "<option value=\"" . $a_inv_vendors['ven_id'] . "\">" . $a_inv_vendors['ven_name'] . "</option>\n";
-  }
-?>
-</select></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Product: <input type="text" name="lic_product" size="15"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Date Acquired: <input type="date" name="lic_date" size="15"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Quantity: <input type="number" name="lic_quantity" size="5"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Vendor PO Number: <input type="text" name="lic_vendorpo" size="10"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Company PO Number: <input type="text" name="lic_po" size="10"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Project: <select name="lic_project">
-<?php
-  $q_string  = "select prod_id,prod_name ";
-  $q_string .= "from inv_products ";
-  $q_string .= "order by prod_name";
-  $q_inv_products = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_inv_products = mysqli_fetch_array($q_inv_products)) {
-    print "<option value=\"" . $a_inv_products['prod_id'] . "\">" . $a_inv_products['prod_name'] . "</option>\n";
-  }
-?>
-</select></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">License Key: <input type="text" name="lic_key" size="30"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Serial No: <input type="text" name="lic_serial" size="20"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Domain: <input type="text" name="lic_domain" size="32"></td>
-</tr>
-</table>
+<?php include("license.dialog.php"); ?>
 
 </form>
 
@@ -316,60 +287,10 @@ software license, or if there is a small difference, you can make changes and ad
 <div id="dialogUpdate" title="Edit License">
 
 <form name="formUpdate">
+
 <input type="hidden" name="id" value="0">
 
-<table class="ui-styled-table">
-<tr>
-  <td class="ui-widget-content">Vendor: <select name="lic_vendor">
-<?php
-  $q_string  = "select ven_id,ven_name ";
-  $q_string .= "from inv_vendors ";
-  $q_string .= "order by ven_name ";
-  $q_inv_vendors = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_inv_vendors = mysqli_fetch_array($q_inv_vendors)) {
-    print "<option value=\"" . $a_inv_vendors['ven_id'] . "\">" . $a_inv_vendors['ven_name'] . "</option>\n";
-  }
-?>
-</select></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Product: <input type="text" name="lic_product" size="15"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Date Acquired: <input type="date" name="lic_date" size="15"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Quantity: <input type="number" name="lic_quantity" size="5"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Vendor PO Number: <input type="text" name="lic_vendorpo" size="10"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Company PO Number: <input type="text" name="lic_po" size="10"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Project: <select name="lic_project">
-<?php
-  $q_string  = "select prod_id,prod_name ";
-  $q_string .= "from inv_products ";
-  $q_string .= "order by prod_name";
-  $q_inv_products = mysqli_query($db, $q_string) or die(mysqli_error($db));
-  while ($a_inv_products = mysqli_fetch_array($q_inv_products)) {
-    print "<option value=\"" . $a_inv_products['prod_id'] . "\">" . $a_inv_products['prod_name'] . "</option>\n";
-  }
-?>
-</select></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">License Key: <input type="text" name="lic_key" size="30"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Serial No: <input type="text" name="lic_serial" size="20"></td>
-</tr>
-<tr>
-  <td class="ui-widget-content">Domain: <input type="text" name="lic_domain" size="32"></td>
-</tr>
-</table>
+<?php include("license.dialog.php"); ?>
 
 </form>
 
