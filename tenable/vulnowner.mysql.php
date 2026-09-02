@@ -143,8 +143,8 @@
             $_SESSION['sort'] = ' desc';
           }
         } else {
-#          $orderby = "order by prod_name,inv_name,int_addr,vuln_duplicate,sev_name,sec_name";
-          $orderby = "order by inv_name,int_server,int_addr";
+#          $orderby = "order by prod_name,inv_name,ip_ipv4,vuln_duplicate,sev_name,sec_name";
+          $orderby = "order by inv_name,int_server,ip_ipv4";
           $_SESSION['sort'] = '';
         }
 
@@ -223,10 +223,11 @@
         $product = '';
         $intid = 0;
         $secid = 0;
-        $q_string  = "select vul_id,inv_name,int_server,int_addr,vul_interface,vul_security,sec_name,sev_name,grp_name,vul_ticket,vul_exception,vul_description ";
+        $q_string  = "select vul_id,inv_name,int_server,ip_ipv4,vul_interface,vul_security,sec_name,sev_name,grp_name,vul_ticket,vul_exception,vul_description ";
         $q_string .= "from inv_vulnowner ";
         $q_string .= "left join inv_groups     on inv_groups.grp_id     = inv_vulnowner.vul_group ";
         $q_string .= "left join inv_interface  on inv_interface.int_id  = inv_vulnowner.vul_interface ";
+        $q_string .= "left join inv_ipaddress  on inv_ipaddress.ip_id   = inv_interface.int_ipaddressid ";
         $q_string .= "left join inv_inventory  on inv_inventory.inv_id  = inv_interface.int_companyid ";
         $q_string .= "left join inv_security   on inv_security.sec_id   = inv_vulnowner.vul_security ";
         $q_string .= "left join inv_severity   on inv_severity.sev_id   = inv_security.sec_severity ";
@@ -265,7 +266,7 @@
             $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_vulnowner['vul_security']       . $linkend . "</td>";
             $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_vulnowner['inv_name']           . $linkend . "</td>";
             $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_vulnowner['int_server']         . $linkend . "</td>";
-            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_vulnowner['int_addr']           . $linkend . "</td>";
+            $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_vulnowner['ip_ipv4']            . $linkend . "</td>";
             $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_vulnowner['sec_name']           . $linkend . "</td>";
             $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_vulnowner['sev_name']           . $linkend . "</td>";
             $output   .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_vulnowner['grp_name']           . $linkend . "</td>";

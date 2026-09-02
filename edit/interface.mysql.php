@@ -222,7 +222,7 @@
 
       $mgtcount = 0;
       $q_string  = "select int_id,int_server,int_domain,int_companyid,red_text,red_default,int_management,int_login,";
-      $q_string .= "int_backup,int_face,int_addr,int_eth,int_mask,int_switch,int_vaddr,int_veth,int_vgate,";
+      $q_string .= "int_backup,int_face,int_eth,int_mask,int_switch,int_vaddr,int_veth,int_vgate,";
       $q_string .= "int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,";
       $q_string .= "itp_description,int_gate,int_update,usr_name,int_nagios,int_openview,int_ip6,ip_ipv4 ";
       $q_string .= "from inv_interface ";
@@ -231,7 +231,7 @@
       $q_string .= "left join inv_users          on inv_users.usr_id          = inv_interface.int_user ";
       $q_string .= "left join inv_int_redundancy on inv_int_redundancy.red_id = inv_interface.int_redundancy ";
       $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = 0 ";
-      $q_string .= "order by int_face,int_addr,int_server";
+      $q_string .= "order by int_face,ip_ipv4,int_server";
       $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_inv_interface) > 0) {
         while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
@@ -254,11 +254,11 @@
           $revtitle = "";
 	  if ($a_inv_interface['int_ip6'] == 0) {
 # verify the interface has a valid IP first. No need to further check if not
-            if (filter_var($a_inv_interface['int_addr'], FILTER_VALIDATE_IP)) {
-              $actualhost = gethostbyaddr($a_inv_interface['int_addr']);
-              if ($actualhost == $a_inv_interface['int_addr'] || $actualhost != $servername) {
-                if ($actualhost == $a_inv_interface['int_addr']) {
-                  $revtitle = "IP Lookup Failed: " . $actualhost . ".\nShould have returned: " . $a_inv_interface['int_addr'] . ".";
+            if (filter_var($a_inv_interface['ip_ipv4'], FILTER_VALIDATE_IP)) {
+              $actualhost = gethostbyaddr($a_inv_interface['ip_ipv4']);
+              if ($actualhost == $a_inv_interface['ip_ipv4'] || $actualhost != $servername) {
+                if ($actualhost == $a_inv_interface['ip_ipv4']) {
+                  $revtitle = "IP Lookup Failed: " . $actualhost . ".\nShould have returned: " . $a_inv_interface['ip_ipv4'] . ".";
                 }
                 if ($actualhost != $servername) {
                   $revtitle = "Hostname Mismatch: " . $actualhost . ".\nShould have returned: " . $servername . ".";
@@ -270,15 +270,15 @@
                 $reverse = "&#x2713;";
               }
 # get the IP Address from the hostname but only if the hostname isn't an IP address and skip if the IP errors out
-              if ($a_inv_interface['int_addr'] != $servername) {
+              if ($a_inv_interface['ip_ipv4'] != $servername) {
                 if ($fqdn_flag) {
                   $actualip = gethostbyname($servername);
-                  if ($actualip == $servername || $actualip != $a_inv_interface['int_addr']) {
+                  if ($actualip == $servername || $actualip != $a_inv_interface['ip_ipv4']) {
                     if ($actualip == $servername) {
                       $fwdtitle = "Hostname Lookup Failed: " . $actualip . ".\nShould have returned: " . $servername . ".";
                     }
-                    if ($actualip != $a_inv_interface['int_addr']) {
-                      $fwdtitle = "IP Mismatch: " . $actualip . ".\nShould have returned: " . $a_inv_interface['int_addr'] . ".";
+                    if ($actualip != $a_inv_interface['ip_ipv4']) {
+                      $fwdtitle = "IP Mismatch: " . $actualip . ".\nShould have returned: " . $a_inv_interface['ip_ipv4'] . ".";
                     }
                     $forward = "";
                   } else {
@@ -298,7 +298,7 @@
           } else {
             $showmac = $a_inv_interface['int_eth'];
           }
-          if ($a_inv_interface['int_addr'] == '') {
+          if ($a_inv_interface['ip_ipv4'] == '') {
             $showmask = '';
           } else {
             $showmask = "/" . $a_inv_interface['int_mask'];
@@ -373,7 +373,7 @@
             $output .= "  <td"        . $default    . ">" . $linkstart . $a_inv_interface['int_sysport']                         . $linkend   . "</td>\n";
           }
           $output .= "  <td"          . $default    . ">" . $linkstart . $showmac                 . $ethchecked              . $linkend   . "</td>\n";
-          $output .= "  <td"          . $default    . ">" . $linkstart . $a_inv_interface['int_addr'] . $showmask . $addrchecked . $linkend   . "</td>\n";
+          $output .= "  <td"          . $default    . ">" . $linkstart . $a_inv_interface['ip_ipv4'] . $showmask . $addrchecked . $linkend   . "</td>\n";
           $output .= "  <td"          . $default    . ">" . $linkstart . $a_inv_interface['int_gate'] . $gatechecked             . $linkend   . "</td>\n";
           if (return_Virtual($db, $formVars['int_companyid']) == 0) {
             $output .= "  <td"        . $default    . ">" . $linkstart . $a_inv_interface['int_switch']                          . $linkend   . "</td>\n";
@@ -385,17 +385,18 @@
 
 
 # Display any redundancy memberships here
-          $q_string  = "select int_id,int_server,int_domain,int_companyid,int_face,int_addr,";
+          $q_string  = "select int_id,int_server,int_domain,int_companyid,int_face,ip_ipv4,";
           $q_string .= "int_eth,int_mask,int_switch,int_groupname,int_vaddr,int_veth,int_vgate,";
           $q_string .= "int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,";
           $q_string .= "itp_description,int_gate,int_update,usr_name,int_nagios,int_openview,";
           $q_string .= "red_text,red_default,int_management,int_backup,int_ip6,int_login ";
           $q_string .= "from inv_interface ";
+          $q_string .= "left join inv_ipaddress      on inv_ipaddress.ip_id       = inv_interface.int_ipaddressid ";
           $q_string .= "left join inv_int_types      on inv_int_types.itp_id      = inv_interface.int_type ";
           $q_string .= "left join inv_users          on inv_users.usr_id          = inv_interface.int_user ";
           $q_string .= "left join inv_int_redundancy on inv_int_redundancy.red_id = inv_interface.int_redundancy ";
           $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = " . $a_inv_interface['int_id'] . " ";
-          $q_string .= "order by int_face,int_addr,int_server";
+          $q_string .= "order by int_face,ip_ipv4,int_server";
           $q_redundancy = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_redundancy) > 0) {
             while ($a_redundancy = mysqli_fetch_array($q_redundancy)) {
@@ -418,11 +419,11 @@
               $revtitle = "";
 	      if ($a_redundancy['int_ip6'] == 0) {
 # verify the interface has a valid IP first. No need to further check if not
-                if (filter_var($a_redundancy['int_addr'], FILTER_VALIDATE_IP)) {
-                  $actualhost = gethostbyaddr($a_redundancy['int_addr']);
-                  if ($actualhost == $a_redundancy['int_addr'] || $actualhost != $servername) {
-                    if ($actualhost == $a_redundancy['int_addr']) {
-                      $revtitle = "IP Lookup Failed: " . $actualhost . ".\nShould have returned: " . $a_redundancy['int_addr'] . ".";
+                if (filter_var($a_redundancy['ip_ipv4'], FILTER_VALIDATE_IP)) {
+                  $actualhost = gethostbyaddr($a_redundancy['ip_ipv4']);
+                  if ($actualhost == $a_redundancy['ip_ipv4'] || $actualhost != $servername) {
+                    if ($actualhost == $a_redundancy['ip_ipv4']) {
+                      $revtitle = "IP Lookup Failed: " . $actualhost . ".\nShould have returned: " . $a_redundancy['ip_ipv4'] . ".";
                     }
                     if ($actualhost != $servername) {
                       $revtitle = "Hostname Mismatch: " . $actualhost . ".\nShould have returned: " . $servername . ".";
@@ -434,15 +435,15 @@
                     $reverse = "&#x2713;";
                   }
 # get the IP Address from the hostname but only if the hostname isn't an IP address and skip if the IP errors out
-                  if ($a_redundancy['int_addr'] != $servername) {
+                  if ($a_redundancy['ip_ipv4'] != $servername) {
                     if ($fqdn_flag) {
                       $actualip = gethostbyname($servername);
                       if ($actualip == $servername) {
                         if ($actualip == $servername) {
                           $fwdtitle = "Hostname Lookup Failed: " . $actualip . ".\nShould have returned: " . $servername . ".";
                         }
-                        if ($actualip != $a_redundancy['int_addr']) {
-                          $fwdtitle = "IP Mismatch: " . $actualip . ".\nShould have returned: " . $a_redundancy['int_addr'] . ".";
+                        if ($actualip != $a_redundancy['ip_ipv4']) {
+                          $fwdtitle = "IP Mismatch: " . $actualip . ".\nShould have returned: " . $a_redundancy['ip_ipv4'] . ".";
                         }
                         $forward = "";
                       } else {
@@ -462,7 +463,7 @@
               } else {
                 $showmac = $a_redundancy['int_eth'];
               }
-              if ($a_redundancy['int_addr'] == '') {
+              if ($a_redundancy['ip_ipv4'] == '') {
                 $showmask = '';
               } else {
                 $showmask = "/" . $a_redundancy['int_mask'];
@@ -541,7 +542,7 @@
                 $output .= "  <td"        . $default    . ">"   . $linkstart . $a_redundancy['int_sysport']           . $linkend            . "</td>\n";
               }
               $output .= "  <td"          . $default    . ">"   . $linkstart . $showmac                               . $ethchecked . $linkend            . "</td>\n";
-              $output .= "  <td"          . $default    . ">"   . $linkstart . $a_redundancy['int_addr'] . $showmask  . $addrchecked . $linkend            . "</td>\n";
+              $output .= "  <td"          . $default    . ">"   . $linkstart . $a_redundancy['ip_ipv4'] . $showmask  . $addrchecked . $linkend            . "</td>\n";
               $output .= "  <td"          . $default    . ">"   . $linkstart . $a_redundancy['int_gate']              . $gatechecked . $linkend            . "</td>\n";
               if (return_Virtual($db, $formVars['int_companyid']) == 0) {
                 $output .= "  <td"        . $default    . ">"   . $linkstart . $a_redundancy['int_switch']            . $linkend            . "</td>\n";
@@ -552,15 +553,16 @@
               $output .= "</tr>\n";
 
 # Display any secondary redundancy memberships here
-              $q_string  = "select int_id,int_server,int_domain,int_companyid,int_face,int_addr,int_eth,int_mask,int_switch,int_groupname,int_vaddr,int_veth,int_vgate,";
+              $q_string  = "select int_id,int_server,int_domain,int_companyid,int_face,ip_ipv4,int_eth,int_mask,int_switch,int_groupname,int_vaddr,int_veth,int_vgate,";
               $q_string .= "int_virtual,int_port,int_sysport,int_verified,int_primary,itp_acronym,itp_description,int_gate,int_update,usr_name,";
               $q_string .= "red_text,red_default,int_nagios,int_openview,int_management,int_backup,int_ip6,int_login ";
               $q_string .= "from inv_interface ";
+              $q_string .= "left join inv_ipaddress      on inv_ipaddress.ip_id       = inv_interface.int_ipaddressid ";
               $q_string .= "left join inv_int_types      on inv_int_types.itp_id      = inv_interface.int_type ";
               $q_string .= "left join inv_users          on inv_users.usr_id          = inv_interface.int_user ";
               $q_string .= "left join inv_int_redundancy on inv_int_redundancy.red_id = inv_interface.int_redundancy ";
               $q_string .= "where int_companyid = " . $formVars['int_companyid'] . " and int_int_id = " . $a_redundancy['int_id'] . " ";
-              $q_string .= "order by int_face,int_addr,int_server";
+              $q_string .= "order by int_face,ip_ipv4,int_server";
               $q_secondary = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
               if (mysqli_num_rows($q_secondary) > 0) {
                 while ($a_secondary = mysqli_fetch_array($q_secondary)) {
@@ -583,11 +585,11 @@
                   $revtitle = "";
 	          if ($a_secondary['int_ip6'] == 0) {
 # verify the interface has a valid IP first. No need to further check if not
-                    if (filter_var($a_secondary['int_addr'], FILTER_VALIDATE_IP)) {
-                      $actualhost = gethostbyaddr($a_secondary['int_addr']);
-                      if ($actualhost == $a_secondary['int_addr'] || $actualhost != $servername) {
-                        if ($actualhost == $a_secondary['int_addr']) {
-                          $revtitle = "IP Lookup Failed: " . $actualhost . ".\nShould have returned: " . $a_secondary['int_addr'] . ".";
+                    if (filter_var($a_secondary['ip_ipv4'], FILTER_VALIDATE_IP)) {
+                      $actualhost = gethostbyaddr($a_secondary['ip_ipv4']);
+                      if ($actualhost == $a_secondary['ip_ipv4'] || $actualhost != $servername) {
+                        if ($actualhost == $a_secondary['ip_ipv4']) {
+                          $revtitle = "IP Lookup Failed: " . $actualhost . ".\nShould have returned: " . $a_secondary['ip_ipv4'] . ".";
                         }
                         if ($actualhost != $servername) {
                           $revtitle = "Hostname Mismatch: " . $actualhost . ".\nShould have returned: " . $servername . ".";
@@ -599,15 +601,15 @@
                         $reverse = "&#x2713;";
                       }
 # get the IP Address from the hostname but only if the hostname isn't an IP address and skip if the IP errors out
-                      if ($a_secondary['int_addr'] != $servername) {
+                      if ($a_secondary['ip_ipv4'] != $servername) {
                         if ($fqdn_flag) {
                           $actualip = gethostbyname($servername);
                           if ($actualip == $servername) {
                             if ($actualip == $servername) {
                               $fwdtitle = "Hostname Lookup Failed: " . $actualip . ".\nShould have returned: " . $servername . ".";
                             }
-                            if ($actualip != $a_secondary['int_addr']) {
-                              $fwdtitle = "IP Mismatch: " . $actualip . ".\nShould have returned: " . $a_secondary['int_addr'] . ".";
+                            if ($actualip != $a_secondary['ip_ipv4']) {
+                              $fwdtitle = "IP Mismatch: " . $actualip . ".\nShould have returned: " . $a_secondary['ip_ipv4'] . ".";
                             }
                             $forward = "";
                           } else {
@@ -627,7 +629,7 @@
                   } else {
                     $showmac = $a_secondary['int_eth'];
                   }
-                  if ($a_secondary['int_addr'] == '') {
+                  if ($a_secondary['ip_ipv4'] == '') {
                     $showmask = '';
                   } else {
                     $showmask = "/" . $a_secondary['int_mask'];
@@ -706,7 +708,7 @@
                     $output .= "  <td"        . $default    . ">"   . $linkstart . $a_secondary['int_sysport']           . $linkend            . "</td>\n";
                   }
                   $output .= "  <td"          . $default    . ">"   . $linkstart . $showmac                               . $ethchecked . $linkend            . "</td>\n";
-                  $output .= "  <td"          . $default    . ">"   . $linkstart . $a_secondary['int_addr'] . $showmask  . $addrchecked . $linkend            . "</td>\n";
+                  $output .= "  <td"          . $default    . ">"   . $linkstart . $a_secondary['ip_ipv4'] . $showmask  . $addrchecked . $linkend            . "</td>\n";
                   $output .= "  <td"          . $default    . ">"   . $linkstart . $a_secondary['int_gate']              . $gatechecked . $linkend            . "</td>\n";
                   if (return_Virtual($db, $formVars['int_companyid']) == 0) {
                     $output .= "  <td"        . $default    . ">"   . $linkstart . $a_secondary['int_switch']            . $linkend            . "</td>\n";

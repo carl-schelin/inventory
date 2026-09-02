@@ -21,16 +21,17 @@
     if (check_userlevel($db, $AL_Edit)) {
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_vulnowner");
 
-      $q_string  = "select int_id,int_addr,sec_id,sec_name ";
+      $q_string  = "select int_id,ip_ipv4,sec_id,sec_name ";
       $q_string .= "from inv_vulnowner ";
       $q_string .= "left join inv_interface on inv_interface.int_id = inv_vulnowner.vul_interface ";
+      $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id  = inv_interface.int_ipaddressid ";
       $q_string .= "left join inv_security  on inv_security.sec_id  = inv_vulnowner.vul_security ";
       $q_string .= "where vul_id = " . $formVars['id'];
       $q_inv_vulnowner = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       $a_inv_vulnowner = mysqli_fetch_array($q_inv_vulnowner);
       mysqli_free_result($q_inv_vulnowner);
 
-      print "document.getElementById('vuln_interface').innerHTML = '"  . mysqli_real_escape_string($db, $a_inv_vulnowner['int_addr']) . "';\n";
+      print "document.getElementById('vuln_interface').innerHTML = '"  . mysqli_real_escape_string($db, $a_inv_vulnowner['ip_ipv4']) . "';\n";
       print "document.getElementById('vuln_securityid').innerHTML = '" . mysqli_real_escape_string($db, $a_inv_vulnowner['sec_name']) . "';\n";
 
       print "document.owner.int_id.value = " . $a_inv_vulnowner['int_id'] . ";\n";

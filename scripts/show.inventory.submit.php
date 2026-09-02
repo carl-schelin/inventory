@@ -191,10 +191,11 @@
         print $q_string . "\n\n";
       }
       if (mysqli_num_rows($q_inv_products) == 0) {
-        $q_string  = "select int_companyid,int_addr,int_face,int_eth ";
+        $q_string  = "select int_companyid,ip_ipv4,int_face,int_eth ";
         $q_string .= "from inv_interface ";
-        $q_string .= "where int_addr like '" . $serverip . "' ";
-        $q_string .= "order by INET_ATON(int_addr) ";
+        $q_string .= "left join inv_ipaddress on inv_ipaddress.ip.id = inv_interface.int_ipaddressid ";
+        $q_string .= "where ip_ipvr like '" . $serverip . "' ";
+        $q_string .= "order by INET_ATON(ip_ipvr) ";
         $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
 
         if ($debug == 'yes') {
@@ -258,7 +259,7 @@
               if ($a_inv_inventory['inv_status'] == 0) {
                 $output .= "<tr style=\"background-color: " . $color[0] . "; border: 1px solid #000000; font-size: 75%;\">\n";
                 $output .= "  <td><a href=\"mailto:inventory@" . $hostname . "?subject=" . $a_inv_inventory['inv_name'] . "\">" . $a_inv_inventory['inv_name'] . "</a></td>\n";
-                $output .= "  <td>" . $a_inv_interface['int_addr'] . "</td>\n";
+                $output .= "  <td>" . $a_inv_interface['ip_ipvr'] . "</td>\n";
                 $output .= "  <td>" . $a_inv_interface['int_face'] . "</td>\n";
                 $output .= "  <td>" . $a_inv_interface['int_eth'] . "</td>\n";
                 $output .= "  <td>" . $a_inv_groups['grp_name'] . "</td>\n";
@@ -998,13 +999,14 @@
       $output .= "  <th>Last</th>\n";
       $output .= "</tr>\n";
     
-      $q_string  = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,";
+      $q_string  = "select int_id,int_server,int_face,ip_ipv4,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,";
       $q_string .= "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_domain ";
       $q_string .= "from inv_interface ";
+      $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id    = inv_interface.int_ipaddressid  ";
       $q_string .= "left join inv_net_zones on inv_interface.int_zone = inv_net_zones.zone_id  ";
       $q_string .= "left join inv_int_types on inv_interface.int_type = inv_int_types.itp_id ";
       $q_string .= "where int_companyid = " . $a_inv_inventory['inv_id'] . " and int_int_id = 0 and int_ip6 = 0 ";
-      $q_string .= "order by int_face,int_addr ";
+      $q_string .= "order by int_face,ip_ipv4 ";
       $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     
       while ( $a_inv_interface = mysqli_fetch_array($q_inv_interface) ) {
@@ -1025,7 +1027,7 @@
         } else {
           $showmac = $a_inv_interface['int_eth'];
         }
-        if ($a_inv_interface['int_addr'] == '' ) {
+        if ($a_inv_interface['ip_ipv4'] == '' ) {
           $showmask = '';
         } else {
           $showmask = '/' . $a_inv_interface['int_mask'];
@@ -1040,7 +1042,7 @@
         }
     
         if ($a_inv_interface['int_type'] == 4 || $a_inv_interface['int_type'] == 6) {
-          $linkstart = "<a href=\"http://" . $a_inv_interface['int_addr'] . "\" target=\"_blank\">";
+          $linkstart = "<a href=\"http://" . $a_inv_interface['ip_ipv4'] . "\" target=\"_blank\">";
           $linkend = "</a>";
         } else {
           $linkstart = "";
@@ -1054,7 +1056,7 @@
           $output .= "<td" . $intnote . ">"            . $a_inv_interface['int_sysport']                         . "</td>\n";
         }
         $output .= "<td" . $intnote . ">"              . $showmac                                            . "</td>\n";
-        $output .= "<td" . $intnote . ">" . $linkstart . $a_inv_interface['int_addr']     . $showmask . $linkend . "</td>\n";
+        $output .= "<td" . $intnote . ">" . $linkstart . $a_inv_interface['ip_ipv4']     . $showmask . $linkend . "</td>\n";
         $output .= "<td" . $intnote . ">"              . $a_inv_interface['zone_zone']                           . "</td>\n";
         $output .= "<td" . $intnote . ">"              . $a_inv_interface['int_gate']                            . "</td>\n";
         if (return_Virtual($db, $a_inv_inventory['inv_id']) == 0) {
@@ -1066,13 +1068,14 @@
         $output .= "</tr>\n";
     
     
-        $q_string  = "select int_id,int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,int_domain,";
+        $q_string  = "select int_id,int_server,int_face,ip_ipv4,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,int_domain,";
         $q_string .= "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_groupname ";
         $q_string .= "from inv_interface ";
+        $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id    = inv_interface.int_ipaddressid  ";
         $q_string .= "left join inv_net_zones on inv_interface.int_zone = inv_net_zones.zone_id  ";
         $q_string .= "left join inv_int_types on inv_interface.int_type = inv_int_types.itp_id ";
         $q_string .= "where int_companyid = " . $a_inv_inventory['inv_id'] . " and int_int_id = " . $a_inv_interface['int_id'] . " and int_ip6 = 0 ";
-        $q_string .= "order by int_face,int_addr ";
+        $q_string .= "order by int_face,ip_ipv4 ";
         $q_redundancy = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     
         while ( $a_redundancy = mysqli_fetch_array($q_redundancy) ) {
@@ -1093,7 +1096,7 @@
           } else {
             $showmac = $a_redundancy['int_eth'];
           }
-          if ($a_redundancy['int_addr'] == '' ) {
+          if ($a_redundancy['ip_ipv4'] == '' ) {
             $showmask = '';
           } else {
             $showmask = '/' . $a_redundancy['int_mask'];
@@ -1108,7 +1111,7 @@
           }
     
           if ($a_redundancy['int_type'] == 4 || $a_redundancy['int_type'] == 6) {
-            $linkstart = "<a href=\"http://" . $a_redundancy['int_addr'] . "\" target=\"_blank\">";
+            $linkstart = "<a href=\"http://" . $a_redundancy['ip_ipv4'] . "\" target=\"_blank\">";
             $linkend = "</a>";
           } else {
             $linkstart = "";
@@ -1122,7 +1125,7 @@
             $output .= "<td" . $intnote . ">"            . $a_redundancy['int_sysport']                         . "</td>\n";
           }
           $output .= "<td" . $intnote . ">"              . $showmac                                            . "</td>\n";
-          $output .= "<td" . $intnote . ">" . $linkstart . $a_redundancy['int_addr']     . $showmask . $linkend . "</td>\n";
+          $output .= "<td" . $intnote . ">" . $linkstart . $a_redundancy['ip_ipv4']     . $showmask . $linkend . "</td>\n";
           $output .= "<td" . $intnote . ">"              . $a_redundancy['zone_zone']                           . "</td>\n";
           $output .= "<td" . $intnote . ">"              . $a_redundancy['int_gate']                            . "</td>\n";
           if (return_Virtual($db, $a_inv_inventory['inv_id']) == 0) {
@@ -1133,13 +1136,14 @@
           $output .= "<td" . $intnote . ">"              . $a_redundancy['int_update']                          . "</td>\n";
           $output .= "</tr>\n";
 
-          $q_string  = "select int_server,int_face,int_addr,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,int_domain,";
+          $q_string  = "select int_server,int_face,ip_ipv4,int_eth,int_mask,int_verified,int_sysport,int_redundancy,int_virtual,int_domain,";
           $q_string .= "int_switch,int_port,int_primary,itp_acronym,int_gate,int_note,int_update,int_type,zone_zone,int_groupname ";
           $q_string .= "from inv_interface ";
+          $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id    = inv_interface.int_ipaddressid  ";
           $q_string .= "left join inv_net_zones on inv_interface.int_zone = inv_net_zones.zone_id  ";
           $q_string .= "left join inv_int_types on inv_interface.int_type = inv_int_types.itp_id ";
           $q_string .= "where int_companyid = " . $a_inv_inventory['inv_id'] . " and int_int_id = " . $a_redundancy['int_id'] . " and int_ip6 = 0 ";
-          $q_string .= "order by int_face,int_addr ";
+          $q_string .= "order by int_face,ip_ipv4 ";
           $q_secondary = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     
           while ( $a_secondary = mysqli_fetch_array($q_secondary) ) {
@@ -1160,7 +1164,7 @@
             } else {
               $showmac = $a_secondary['int_eth'];
             }
-            if ($a_secondary['int_addr'] == '' ) {
+            if ($a_secondary['ip_ipv4'] == '' ) {
               $showmask = '';
             } else {
               $showmask = '/' . $a_secondary['int_mask'];
@@ -1175,7 +1179,7 @@
             }
     
             if ($a_secondary['int_type'] == 4 || $a_secondary['int_type'] == 6) {
-              $linkstart = "<a href=\"http://" . $a_secondary['int_addr'] . "\" target=\"_blank\">";
+              $linkstart = "<a href=\"http://" . $a_secondary['ip_ipv4'] . "\" target=\"_blank\">";
               $linkend = "</a>";
             } else {
               $linkstart = "";
@@ -1189,7 +1193,7 @@
               $output .= "<td" . $intnote . ">"            . $a_secondary['int_sysport']                         . "</td>\n";
             }
             $output .= "<td" . $intnote . ">"              . $showmac                                            . "</td>\n";
-            $output .= "<td" . $intnote . ">" . $linkstart . $a_secondary['int_addr']     . $showmask . $linkend . "</td>\n";
+            $output .= "<td" . $intnote . ">" . $linkstart . $a_secondary['ip_ipv4']     . $showmask . $linkend . "</td>\n";
             $output .= "<td" . $intnote . ">"              . $a_secondary['zone_zone']                           . "</td>\n";
             $output .= "<td" . $intnote . ">"              . $a_secondary['int_gate']                            . "</td>\n";
             if (return_Virtual($db, $a_inv_inventory['inv_id']) == 0) {
