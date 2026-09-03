@@ -35,6 +35,7 @@ CREATE TABLE `inv_licenses` (
   `lic_key` char(128) NOT NULL DEFAULT '',
   `lic_serial` char(128) NOT NULL DEFAULT '',
   `lic_domain` char(32) NOT NULL DEFAULT '',
+  `lic_status` int(10) NOT NULL DEFAULT 0,
   PRIMARY KEY (`lic_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
