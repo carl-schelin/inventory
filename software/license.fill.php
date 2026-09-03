@@ -23,7 +23,7 @@
       logaccess($db, $_SESSION['uid'], $package, "Requesting record " . $formVars['id'] . " from inv_licenses");
 
       $q_string  = "select lic_id,lic_parent,lic_vendor,lic_product,lic_customer,lic_date,lic_expire,lic_vendorpo,";
-      $q_string .= "lic_po,lic_project,lic_quantity,lic_key,lic_serial,lic_domain ";
+      $q_string .= "lic_po,lic_project,lic_quantity,lic_key,lic_serial,lic_domain,lic_status ";
       $q_string .= "from inv_licenses ";
       $q_string .= "where lic_id = " . $formVars['id'];
       $q_inv_licenses = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -51,6 +51,12 @@
         print "document.formUpdate.lic_parent['0'].selected = true;\n";
       } else {
         print "document.formUpdate.lic_parent['"  . $licparent + 1  . "'].selected = true;\n";
+      }
+
+      if ($a_inv_licenses['lic_status']) {
+        print "document.formUpdate.lic_status.checked = true;\n";
+      } else {
+        print "document.formUpdate.lic_status.checked = false;\n";
       }
 
       print "document.formUpdate.id.value = '" . $formVars['id'] . "'\n";

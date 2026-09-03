@@ -70,4 +70,7 @@
 <tr>
   <td class="ui-widget-content">Domain: <input type="text" name="lic_domain" size="32"></td>
 </tr>
+<tr>
+  <td class="ui-widget-content">Disable Notifications: <input type="checkbox" name="lic_status"></td>
+</tr>
 </table>

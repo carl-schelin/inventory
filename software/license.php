@@ -83,6 +83,7 @@ function attach_file( p_script_url, update ) {
   af_url += "&lic_key="       + encode_URI(af_form.lic_key.value);
   af_url += "&lic_serial="    + encode_URI(af_form.lic_serial.value);
   af_url += "&lic_domain="    + encode_URI(af_form.lic_domain.value);
+  af_url += "&lic_status="    + af_form.lic_status.checked;
   af_url += "&product="       + <?php print $formVars['product']; ?>;
 
   script = document.createElement('script');
@@ -110,6 +111,7 @@ function update_file( p_script_url, update ) {
   uf_url += "&lic_key="       + encode_URI(uf_form.lic_key.value);
   uf_url += "&lic_serial="    + encode_URI(uf_form.lic_serial.value);
   uf_url += "&lic_domain="    + encode_URI(uf_form.lic_domain.value);
+  uf_url += "&lic_status="    + uf_form.lic_status.checked;
   uf_url += "&product="       + <?php print $formVars['product']; ?>;
 
   script = document.createElement('script');
@@ -129,7 +131,7 @@ $(document).ready( function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 400,
+    height: 435,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -159,7 +161,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 400,
+    height: 435,
     width: 600,
     show: 'slide',
     hide: 'slide',

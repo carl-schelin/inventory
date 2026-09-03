@@ -53,6 +53,7 @@
         $formVars['lic_key']        = clean($_GET['lic_key'],       128);
         $formVars['lic_serial']     = clean($_GET['lic_serial'],    128);
         $formVars['lic_domain']     = clean($_GET['lic_domain'],     32);
+        $formVars['lic_status']     = clean($_GET['lic_status'],     10);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
@@ -62,6 +63,11 @@
         }
         if ($formVars['lic_quantity'] == '') {
           $formVars['lic_quantity'] = 0;
+        }
+        if ($formVars['lic_status'] == 'true') {
+          $formVars['lic_status'] = 1;
+        } else {
+          $formVars['lic_status'] = 0;
         }
 
         if (strlen($formVars['lic_vendor']) > 0) {
@@ -80,7 +86,8 @@
             "lic_quantity =   " . $formVars['lic_quantity'] . "," .
             "lic_key      = \"" . $formVars['lic_key']      . "\"," .
             "lic_serial   = \"" . $formVars['lic_serial']   . "\"," .
-            "lic_domain   = \"" . $formVars['lic_domain']   . "\"";
+            "lic_domain   = \"" . $formVars['lic_domain']   . "\"," .
+            "lic_status   =   " . $formVars['lic_status'];
 
           if ($formVars['update'] == 0) {
             $q_string = "insert into inv_licenses set lic_id = NULL, " . $q_string;
@@ -123,10 +130,11 @@
       $output .= "<th class=\"ui-state-default\">" . $linksort . "&sort=lic_key');\">License Key</a></th>\n";
       $output .= "<th class=\"ui-state-default\">" . $linksort . "&sort=lic_serial');\">Serial No.</a></th>\n";
       $output .= "<th class=\"ui-state-default\">" . $linksort . "&sort=lic_domain');\">Domain</a></th>\n";
+      $output .= "<th class=\"ui-state-default\">" . $linksort . "&sort=lic_status');\">Disabled</a></th>\n";
       $output .= "</tr>\n";
 
       $q_string  = "select lic_id,ven_name,lic_product,lic_date,lic_expire,lic_vendorpo,lic_po,";
-      $q_string .= "lic_customer,prod_name,lic_quantity,lic_key,lic_serial,lic_domain ";
+      $q_string .= "lic_customer,prod_name,lic_quantity,lic_key,lic_serial,lic_domain,lic_status ";
       $q_string .= "from inv_licenses ";
       $q_string .= "left join inv_products on inv_products.prod_id = inv_licenses.lic_project ";
       $q_string .= "left join inv_vendors  on inv_vendors.ven_id   = inv_licenses.lic_vendor ";
@@ -144,6 +152,12 @@
 
           $class = "ui-widget-content";
 
+          if ($a_inv_licenses['lic_status']) {
+            $status = 'Yes';
+          } else {
+            $status = 'No';
+          }
+
           $output .= "<tr>\n";
           if (check_userlevel($db, $AL_Admin)) {
             $output .= "<td class=\"" . $class . " delete\">" . $linkdel . "</td>\n";
@@ -160,12 +174,13 @@
           $output .= "<td class=\"" . $class . "\">"              . $a_inv_licenses['lic_key']                 . "</td>\n";
           $output .= "<td class=\"" . $class . "\">"              . $a_inv_licenses['lic_serial']              . "</td>\n";
           $output .= "<td class=\"" . $class . "\">"              . $a_inv_licenses['lic_domain']              . "</td>\n";
+          $output .= "<td class=\"" . $class . " delete\">"       . $status                                    . "</td>\n";
           $output .= "</tr>\n";
 
 
           if ($formVars['product'] > 0) {
             $q_string  = "select lic_id,ven_name,lic_product,lic_date,lic_expire,lic_vendorpo,lic_po,lic_customer,";
-            $q_string .= "prod_name,lic_quantity,lic_key,lic_serial,lic_domain ";
+            $q_string .= "prod_name,lic_quantity,lic_key,lic_serial,lic_domain,lic_status ";
             $q_string .= "from inv_licenses ";
             $q_string .= "left join inv_products on inv_products.prod_id = inv_licenses.lic_project ";
             $q_string .= "left join inv_vendors  on inv_vendors.ven_id   = inv_licenses.lic_vendor ";
@@ -202,6 +217,11 @@
                 if ($today > $error_date) {
                   $class = "ui-state-error";
                 }
+                if ($a_child['lic_status']) {
+                  $status = 'Yes';
+                } else {
+                  $status = 'No';
+                }
 
                 $output .= "<tr>\n";
                 if (check_userlevel($db, $AL_Admin)) {
@@ -219,6 +239,7 @@
                 $output .= "<td class=\"" . $class . "\">"              . $a_child['lic_key']                 . "</td>\n";
                 $output .= "<td class=\"" . $class . "\">"              . $a_child['lic_serial']              . "</td>\n";
                 $output .= "<td class=\"" . $class . "\">"              . $a_child['lic_domain']              . "</td>\n";
+                $output .= "<td class=\"" . $class . " delete\">"       . $status                             . "</td>\n";
                 $output .= "</tr>\n";
               }
             }
