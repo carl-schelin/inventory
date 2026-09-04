@@ -1454,7 +1454,7 @@
 #sqatxt-vmapp01,interface,eth0,,0,,,,1
 #sqatxt-vmapp01,interface,eth1,10.105.64.74,0,255.255.255.192,00:50:56:B8:68:1B,orapub,10.105.64.254,0,lan900
 #sqatxt-vmapp01,interface,lo,127.0.0.1,0,255.0.0.0,,10.105.64.254,0,
-# check: int_addr or int_eth
+# check: ip_ipv4 or int_eth
 # update!
 #tato0eudcnedb30,network,interface,ens224,10.39.3.18,0,24,00:50:56:99:f4:7a,,10.39.3.254,0
 
@@ -1545,7 +1545,7 @@ $value[11] = '';
 # now that I found the entry in the IPAM, search the interfaces created for the identified server
 # see if the found ipam id has been assigned.
 # check int_ipaddressid for the ipam id
-# else check int_addr for the passed ip address; if found, update int_ipaddressid - set 
+# else check ip_ipv4 for the passed ip address; if found, update int_ipaddressid - set 
 # else check int_mac for the passed mac address; if found, update int_ipaddressid
 
 
@@ -1562,7 +1562,8 @@ $value[11] = '';
 # but if we didn't find the id, look for the ip address in the inv_interface table
                   $q_string  = "select int_id ";
                   $q_string .= "from inv_interface ";
-                  $q_string .= "where int_addr = \"" . $value[4] . "\" and int_companyid = " . $a_inv_inventory['inv_id'] . " ";
+                  $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id = inv_interface.int_ipaddressid ";
+                  $q_string .= "where ip_ipv4 = \"" . $value[4] . "\" and int_companyid = " . $a_inv_inventory['inv_id'] . " ";
                   $q_getip = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
                   if (mysqli_num_rows($q_getip) > 0) {
                     $a_getip = mysqli_fetch_array($q_getip);

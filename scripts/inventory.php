@@ -151,11 +151,12 @@
   $q_string .= "left join inv_cities    on inv_cities.ct_id            = inv_locations.loc_city ";
   $q_string .= "left join inv_states    on inv_states.st_id            = inv_locations.loc_state ";
   $q_string .= "left join inv_interface on inv_interface.int_companyid = inv_inventory.inv_id ";
+  $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id         = inv_interface.int_ipaddressid ";
   if (strlen($server) > 0) {
     $q_string .= "where inv_name = '" . $server . "' ";
   }
   if (strlen($ipaddr) > 0) {
-    $q_string .= "where int_addr = '" . $ipaddr . "' ";
+    $q_string .= "where ip_ipv4 = '" . $ipaddr . "' ";
   }
   if (strlen($macaddr) > 0) {
     $q_string .= "where int_eth = '" . $macaddr . "' ";
@@ -409,9 +410,10 @@
         printf("%30s %10s %20s %20s %20s %5s %10s\n", "Name", "Interface", "IP Address/Mask", "MAC", "Gateway", "Type", "Zone");
       }
 
-      $q_string  = "select int_server,int_face,int_ip6,int_addr,int_eth,int_mask,int_gate,int_verified,int_type,int_update,zone_zone ";
+      $q_string  = "select int_server,int_face,int_ip6,ip_ipv4,int_eth,int_mask,int_gate,int_verified,int_type,int_update,zone_zone ";
       $q_string .= "from inv_interface ";
       $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = inv_interface.int_zone ";
+      $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id   = inv_interface.int_ipaddressid ";
       $q_string .= "where int_companyid = " . $a_inv_inventory['inv_id'] . " and int_ip6 = 0 ";
       $q_string .= "order by int_face";
       $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db) . "\n\n");
@@ -425,13 +427,13 @@
         if ($csv == 'yes') {
           print "\"" . $a_inv_interface['int_server'] . "\",";
           print "\"" . $a_inv_interface['int_face']   . "\",";
-          print "\"" . $a_inv_interface['int_addr']   . "/" . $a_inv_interface['int_mask'] . "\",";
+          print "\"" . $a_inv_interface['ip_ipv4']   . "/" . $a_inv_interface['int_mask'] . "\",";
           print "\"" . $a_inv_interface['int_eth']    . "\",";
           print "\"" . $a_inv_interface['int_gate']   . "\",";
           print "\"" . $a_inv_int_types['itp_acronym']  . "\"\n";
           print "\"" . $a_inv_interface['zone_zone']  . "\"\n";
         } else {
-          printf("%30s %10s %20s %20s %20s %5s %10s\n", $a_inv_interface['int_server'], $a_inv_interface['int_face'], $a_inv_interface['int_addr'] . "/" . $a_inv_interface['int_mask'], $a_inv_interface['int_eth'], $a_inv_interface['int_gate'], $a_inv_int_types['itp_acronym'], $a_inv_interface['zone_zone']);
+          printf("%30s %10s %20s %20s %20s %5s %10s\n", $a_inv_interface['int_server'], $a_inv_interface['int_face'], $a_inv_interface['ip_ipv4'] . "/" . $a_inv_interface['int_mask'], $a_inv_interface['int_eth'], $a_inv_interface['int_gate'], $a_inv_int_types['itp_acronym'], $a_inv_interface['zone_zone']);
         }
       }
     }
@@ -507,8 +509,9 @@
       }
 
       $interface = 0;
-      $q_string  = "select int_id,int_companyid,int_addr ";
+      $q_string  = "select int_id,int_companyid,ip_ipv4 ";
       $q_string .= "from inv_interface ";
+      $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id = inv_interface.int_ipaddressid ";
       $q_string .= "where int_companyid = " . $remove . " ";
       $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
       if (mysqli_num_rows($q_inv_interface) > 0) {
@@ -660,8 +663,9 @@
 
       if ($interface > 0) {
         print "Interfaces ";
-        $q_string  = "select int_id,int_companyid,int_addr ";
+        $q_string  = "select int_id,int_companyid,ip_ipv4 ";
         $q_string .= "from inv_interface ";
+        $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id = inv_interface.int_ipaddressid ";
         $q_string .= "where int_companyid = " . $remove . " ";
         $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
         if (mysqli_num_rows($q_inv_interface) > 0) {

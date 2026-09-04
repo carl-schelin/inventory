@@ -64,26 +64,27 @@
     $managementface = '';
 
 # interface information
-    $q_string  = "select int_addr,int_face,int_management,int_backup,int_openview,zone_zone ";
+    $q_string  = "select ip_ipv4,int_face,int_management,int_backup,int_openview,zone_zone ";
     $q_string .= "from inv_interface ";
     $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = inv_interface.int_zone ";
+    $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id   = inv_interface.int_ipaddressid ";
     $q_string .= "where int_companyid = " . $a_inv_inventory['inv_id'] . " and int_ip6 = 0 and (int_management = 1 or int_backup = 1 or int_openview = 1) ";
     $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
     if (mysqli_num_rows($q_inv_interface) > 0) {
       while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
 
         if ($a_inv_interface['int_management']) {
-          $managementip = $a_inv_interface['int_addr'];
+          $managementip = $a_inv_interface['ip_ipv4'];
           $managementface = $a_inv_interface['int_face'];
         }
 
         if ($a_inv_interface['int_openview']) {
-          $monitoringip = $a_inv_interface['int_addr'];
+          $monitoringip = $a_inv_interface['ip_ipv4'];
           $monitoringface = $a_inv_interface['int_face'];
         }
 
         if ($a_inv_interface['int_backup']) {
-          $backupip = $a_inv_interface['int_addr'];
+          $backupip = $a_inv_interface['ip_ipv4'];
           $backupface = $a_inv_interface['int_face'];
         }
 
