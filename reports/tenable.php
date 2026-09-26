@@ -18,10 +18,42 @@
 
   $formVars['product']   = clean($_GET['product'],  10);
   $formVars['group']     = clean($_GET['group'],    10);
-  $formVars['country']   = clean($_GET['country'],  10);
-  $formVars['state']     = clean($_GET['state'],    10);
-  $formVars['city']      = clean($_GET['city'],     10);
-  $formVars['location']  = clean($_GET['location'], 10);
+
+  if (isset($_GET['project'])) {
+    $formVars['project']   = clean($_GET['project'],   10);
+  } else {
+    $formVars['project']   = 0;
+  }
+  if (isset($_GET['inwork'])) {
+    $formVars['inwork']    = clean($_GET['inwork'],    10);
+  } else {
+    $formVars['inwork']    = 'false';
+  }
+  if (isset($_GET['country'])) {
+    $formVars['country']   = clean($_GET['country'],   10);
+  } else {
+    $formVars['country']   = 0;
+  }
+  if (isset($_GET['state'])) {
+    $formVars['state']     = clean($_GET['state'],     10);
+  } else {
+    $formVars['state']     = 0;
+  }
+  if (isset($_GET['city'])) {
+    $formVars['city']      = clean($_GET['city'],      10);
+  } else {
+    $formVars['city']      = 0;
+  }
+  if (isset($_GET['location'])) {
+    $formVars['location']  = clean($_GET['location'],  10);
+  } else {
+    $formVars['location']  = 0;
+  }
+  if (isset($_GET['csv'])) {
+    $formVars['csv']       = clean($_GET['csv'],       10);
+  } else {
+    $formVars['csv']       = 'false';
+  }
 
   if (isset($_GET['type'])) {
     $formVars['type'] = clean($_GET['type'], 10);
@@ -167,22 +199,28 @@
   print "<table class=\"ui-styled-table\">\n";
   print "<tr>\n";
   print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=prod_name"   . $passthrough . "\">Product Name</a></th>\n";
-  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=int_addr"    . $passthrough . "\">IP Addresses</a></th>\n";
+  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=ip_ipv4"     . $passthrough . "\">IP Addresses</a></th>\n";
   print "</tr>\n";
 
-#select int_addr from inv_interface left join inv_inventory on inv_id = int_companyid where inv_status = 0 and inv_manager = 1 and int_ip6 = 0 and int_type != 7 and inv_product = 134 order by int_addr;
+# select ip_ipv4 
+# from inv_interface 
+# left join inv_ipaddress on inv_ipaddress.ip_id  = inv_interface.int_ipaddressid
+# left join inv_inventory on inv_inventory.inv_id = inv_interface.int_companyid 
+# where inv_status = 0 and inv_manager = 1 and int_ip6 = 0 and int_type != 7 and inv_product = 134 
+# order by ip_ipv4;
 
   $product = '';
   $zone = '';
   $prodip = '';
 
-  $q_string  = "select inv_id,int_addr,prod_name,zone_zone ";
+  $q_string  = "select inv_id,ip_ipv4,prod_name,zone_zone ";
   $q_string .= "from inv_interface ";
+  $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id       = inv_interface.int_ipaddressid ";
   $q_string .= "left join inv_inventory on inv_inventory.inv_id      = inv_interface.int_companyid ";
   $q_string .= "left join inv_products  on inv_products.prod_id      = inv_inventory.inv_product ";
   $q_string .= "left join inv_locations on inv_locations.loc_id      = inv_inventory.inv_location ";
   $q_string .= "left join inv_net_zones on inv_net_zones.zone_id     = inv_interface.int_zone ";
-  $q_string .= $where . " and int_ip6 = 0 and int_addr != '' and int_addr != '0.0.0.0' and int_addr != '127.0.0.1' and (int_type = 1 or int_type = 2 or int_type = 4 or int_type = 6) ";
+  $q_string .= $where . " and int_ip6 = 0 and ip_ipv4 != '' and ip_ipv4 != '0.0.0.0' and ip_ipv4 != '127.0.0.1' and (int_type = 1 or int_type = 2 or int_type = 4 or int_type = 6) ";
   $q_string .= "order by prod_name,zone_zone ";
   $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   if (mysqli_num_rows($q_inv_interface) > 0) {
@@ -209,9 +247,9 @@
         print "</tr>\n";
         print "<tr>\n";
         print "  <td class=\"" . $class . "\">" . $product . " " . $zone . "</td>\n";
-        print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_interface['int_addr'] . $linkend . ", ";
+        print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_interface['ip_ipv4'] . $linkend . ", ";
       } else {
-        print $linkstart . $a_inv_interface['int_addr'] . $linkend . ", ";
+        print $linkstart . $a_inv_interface['ip_ipv4'] . $linkend . ", ";
       }
 
     }

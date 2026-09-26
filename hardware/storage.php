@@ -171,7 +171,7 @@ $(document).ready( function() {
       {
         text: "Add Storage Device",
         click: function() {
-          attach_file('storage.mysql.php', 0);
+          update_file('storage.mysql.php', 0);
           $( this ).dialog( "close" );
         }
       }

@@ -141,7 +141,7 @@
 
         }
       } else {
-        $output .= "  <td class=\"ui-widget-content\" colspan=\"4\">No Associations created.</td>\n";
+        $output .= "  <td class=\"ui-widget-content\" colspan=\"7\">No Associations created.</td>\n";
       }
       $output .= "</table>\n";
 

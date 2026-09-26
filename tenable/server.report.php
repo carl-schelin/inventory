@@ -190,8 +190,9 @@ if ($formVars['inwork'] == '') {
   $class = "ui-state-highlight";
   $inventory_id = 0;
   $total = 0;
-  $q_string  = "select inv_id,int_id,int_server,int_addr,prod_name,prj_name ";
+  $q_string  = "select inv_id,int_id,int_server,ip_ipv4,prod_name,prj_name ";
   $q_string .= "from inv_interface ";
+  $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id       = inv_interface.int_ipaddressid ";
   $q_string .= "left join inv_inventory on inv_inventory.inv_id      = inv_interface.int_companyid ";
   $q_string .= "left join inv_products  on inv_products.prod_id      = inv_inventory.inv_product ";
   $q_string .= "left join inv_projects  on inv_projects.prj_id       = inv_inventory.inv_project ";
@@ -199,7 +200,7 @@ if ($formVars['inwork'] == '') {
   $q_string .= "left join inv_cities    on inv_cities.ct_id          = inv_locations.loc_city ";
   $q_string .= "left join inv_states    on inv_states.st_id          = inv_locations.loc_state ";
   $q_string .= $where . " and int_ip6 = 0 and int_type != 7 and inv_status = 0 ";
-  $q_string .= "order by int_server,int_addr ";
+  $q_string .= "order by int_server,ip_ipv4 ";
   $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
 
@@ -269,7 +270,7 @@ if ($formVars['inwork'] == '') {
     print "  <td class=\"" . $output . "\">"        . $linkstart . $a_inv_interface['int_server'] . $linkend . "</td>\n";
     print "  <td class=\"" . $output . "\">"                     . $a_inv_interface['prod_name']             . "</td>\n";
     print "  <td class=\"" . $output . "\">"                     . $a_inv_interface['prj_name']              . "</td>\n";
-    print "  <td class=\"" . $output . "\">"                     . $a_inv_interface['int_addr']              . "</td>\n";
+    print "  <td class=\"" . $output . "\">"                     . $a_inv_interface['ip_ipv4']              . "</td>\n";
     print "  <td class=\"" . $output . " delete\">"              . $info                                 . "</td>\n";
     print "  <td class=\"" . $output . " delete\">"              . $low                                  . "</td>\n";
     print "  <td class=\"" . $output . " delete\">"              . $medium                               . "</td>\n";

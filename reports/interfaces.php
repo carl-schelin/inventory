@@ -18,12 +18,42 @@
   $formVars['ipv6']      = clean($_GET['ip6'],       10);
   $formVars['loopback']  = clean($_GET['loopback'],  10);
   $formVars['virtual']   = clean($_GET['virtual'],   10);
-  $formVars['inwork']    = clean($_GET['inwork'],    10);
-  $formVars['country']   = clean($_GET['country'],   10);
-  $formVars['state']     = clean($_GET['state'],     10);
-  $formVars['city']      = clean($_GET['city'],      10);
-  $formVars['location']  = clean($_GET['location'],  10);
-  $formVars['csv']       = clean($_GET['csv'],       10);
+
+  if (isset($_GET['project'])) {
+    $formVars['project']   = clean($_GET['project'],   10);
+  } else {
+    $formVars['project']   = 0;
+  }
+  if (isset($_GET['inwork'])) {
+    $formVars['inwork']    = clean($_GET['inwork'],    10);
+  } else {
+    $formVars['inwork']    = 'false';
+  }
+  if (isset($_GET['country'])) {
+    $formVars['country']   = clean($_GET['country'],   10);
+  } else {
+    $formVars['country']   = 0;
+  }
+  if (isset($_GET['state'])) {
+    $formVars['state']     = clean($_GET['state'],     10);
+  } else {
+    $formVars['state']     = 0;
+  }
+  if (isset($_GET['city'])) {
+    $formVars['city']      = clean($_GET['city'],      10);
+  } else {
+    $formVars['city']      = 0;
+  }
+  if (isset($_GET['location'])) {
+    $formVars['location']  = clean($_GET['location'],  10);
+  } else {
+    $formVars['location']  = 0;
+  }
+  if (isset($_GET['csv'])) {
+    $formVars['csv']       = clean($_GET['csv'],       10);
+  } else {
+    $formVars['csv']       = 'false';
+  }
 
   if (isset($_GET['type'])) {
     $formVars['type'] = clean($_GET['type'], 10);
@@ -40,7 +70,7 @@
       $_SESSION['sort'] = ' desc';
     }
   } else {
-    $orderby = "order by INET_ATON(int_addr),int_server";
+    $orderby = "order by INET_ATON(ip_ipv4),int_server";
     $_SESSION['sort'] = '';
   }
 
@@ -189,7 +219,7 @@
     $and = " and";
   }
 
-  $where = $product . $group . $inwork . $location . $type . $ipv6 . $loopback . $virtual . $and . " int_addr != '' ";
+  $where = $product . $group . $inwork . $location . $type . $ipv6 . $loopback . $virtual . $and . " ip_ipv4 != '' ";
 
   $passthrough = 
     "&group="    . $formVars['group']    .
@@ -229,7 +259,7 @@
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=int_face"              . $passthrough . "\">Logical Interface</a></th>\n";
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=int_sysport"           . $passthrough . "\">Physical Port</a></th>\n";
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=int_eth"               . $passthrough . "\">MAC Address</a></th>\n";
-    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=INET_ATON(int_addr)"   . $passthrough . "\">IP Address</a></th>\n";
+    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=INET_ATON(ip_ipv4)"    . $passthrough . "\">IP Address</a></th>\n";
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=sub_zone"              . $passthrough . "\">IP Zone</a></th>\n";
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=int_gate"              . $passthrough . "\">Gateway</a></th>\n";
     print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=int_switch"            . $passthrough . "\">Switch</a></th>\n";
@@ -252,9 +282,9 @@
     print "</br>\n";
   }
 
-  $q_string  = "select int_id,int_companyid,int_server,int_face,int_sysport,int_eth,int_addr,int_mask,";
+  $q_string  = "select int_id,int_companyid,int_server,int_face,int_sysport,int_eth,ip_ipv4,int_mask,";
   $q_string .= "sub_zone,int_gate,int_switch,int_port,itp_acronym,int_update,int_verified,int_primary,";
-  $q_string .= "inv_manager,inv_status ";
+  $q_string .= "inv_manager,inv_status,ip_ipv4,ip_hostname ";
   $q_string .= "from inv_interface ";
   $q_string .= "left join inv_inventory on inv_inventory.inv_id      = inv_interface.int_companyid ";
   $q_string .= "left join inv_locations on inv_locations.loc_id      = inv_inventory.inv_id ";
@@ -263,6 +293,7 @@
   $q_string .= "left join inv_hardware  on inv_hardware.hw_companyid = inv_inventory.inv_id ";
   $q_string .= "left join inv_sub_zones on inv_sub_zones.sub_id      = inv_interface.int_zone ";
   $q_string .= "left join inv_int_types on inv_int_types.itp_id      = inv_interface.int_type ";
+  $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id       = inv_interface.int_ipaddressid ";
   $q_string .= $where;
   $q_string .= $orderby;
   $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
@@ -288,12 +319,12 @@
 
     if ($formVars['csv'] == 'false') {
       print "<tr>\n";
-      print "  <td" . $class . ">" . $a_inv_interface['int_server']                    . "</td>\n";
+      print "  <td" . $class . ">" . $a_inv_interface['ip_hostname']                    . "</td>\n";
       print "  <td" . $class . ">" . $a_inv_interface['int_face']                      . "</td>\n";
       print "  <td" . $class . ">" . $a_inv_interface['int_sysport']                   . "</td>\n";
       print "  <td" . $class . ">" . $showmac                                      . "</td>\n";
-      print "  <td" . $class . ">" . $a_inv_interface['int_addr'] . '/' . $a_inv_interface['int_mask'] . "</td>\n";
-      print "  <td" . $class . ">" . $a_inv_interface['sub_name']                     . "</td>\n";
+      print "  <td" . $class . ">" . $a_inv_interface['ip_ipv4'] . '/' . $a_inv_interface['int_mask'] . "</td>\n";
+      print "  <td" . $class . ">" . $a_inv_interface['sub_zone']                     . "</td>\n";
       print "  <td" . $class . ">" . $a_inv_interface['int_gate']                      . "</td>\n";
       print "  <td" . $class . ">" . $a_inv_interface['int_switch']                    . "</td>\n";
       print "  <td" . $class . ">" . $a_inv_interface['int_port']                      . "</td>\n";
@@ -301,12 +332,12 @@
       print "  <td" . $class . ">" . $a_inv_interface['int_update']         . $checked . "</td>\n";
       print "</tr>\n";
     } else {
-      print "\"" . $a_inv_interface['int_server'] . "\",";
+      print "\"" . $a_inv_interface['ip_hostname'] . "\",";
       print "\"" . $a_inv_interface['int_face'] . "\",";
       print "\"" . $a_inv_interface['int_sysport'] . "\",";
       print "\"" . $showmac . "\",";
-      print "\"" . $a_inv_interface['int_addr'] . '/' . $a_inv_interface['int_mask'] . "\",";
-      print "\"" . $a_inv_interface['sub_name'] . "\",";
+      print "\"" . $a_inv_interface['ip_ipv4'] . '/' . $a_inv_interface['int_mask'] . "\",";
+      print "\"" . $a_inv_interface['sub_zone'] . "\",";
       print "\"" . $a_inv_interface['int_gate'] . "\",";
       print "\"" . $a_inv_interface['int_switch'] . "\",";
       print "\"" . $a_inv_interface['int_port'] . "\",";

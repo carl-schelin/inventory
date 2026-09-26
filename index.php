@@ -148,7 +148,7 @@ function attach_interface( p_script_url ) {
 
   ai_url  = '?group='      + ai_group;
   ai_url += '&product='    + ai_form.product.value;
-  if (ai.form.project.value > 0) {
+  if (ai_form.project.value > 0) {
     ai_url += '&project='    + ai_form.project.value;
   }
   ai_url += '&active='     + ai_form.active.checked;

@@ -22,12 +22,12 @@
     }
     $range = array();
     $where = '';
+    $ipv4 = 0;
+    $ipv6 = 0;
     if ($formVars['network'] > 0) {
       $where = "and net_id = " . $formVars['network'] . " ";
 
 # get the passed network range. You can't get here without it so it'll always be > 0
-      $ipv4 = 0;
-      $ipv6 = 0;
       $q_string  = "select net_ipv4,net_ipv6,net_mask,zone_zone ";
       $q_string .= "from inv_network ";
       $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = inv_network.net_zone ";
@@ -372,7 +372,7 @@
             $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['sub_name']                                            . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ip_types['ip_name']                                              . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['ip_description']                                      . "</td>\n";
-            $output .= "  <td class=\"" . $class . "\" title=\"Notes: " . $ip_address['ip_notes'] . "\">" . $notes                          . "</td>\n";
+            $output .= "  <td class=\"" . $class . "\" title=\"Notes: " . $a_inv_ipaddress['ip_notes'] . "\">" . $notes                          . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['usr_first'] . " " . $a_inv_ipaddress['usr_last']          . "</td>\n";
             $output .= "  <td class=\"" . $class . "\">"              . $a_inv_ipaddress['ip_timestamp']                                        . "</td>\n";
             $output .= "</tr>";

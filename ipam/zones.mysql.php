@@ -90,7 +90,7 @@
           $linkstart = "<a href=\"#\" onclick=\"show_file('zones.fill.php?id="  . $a_inv_net_zones['zone_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\"  onclick=\"delete_line('zones.del.php?id=" . $a_inv_net_zones['zone_id'] . "');\">";
           if ($total > 0) {
-            $ipstart   = "<a href=\"ipaddress.php?network=" . $a_inv_ipaddress['net_id'] . "\" target=\"_blank\">";
+            $ipstart   = "<a href=\"ipaddress.php?network=" . $a_inv_net_zones['zone_id'] . "\" target=\"_blank\">";
           } else {
             $ipstart   = "";
           }

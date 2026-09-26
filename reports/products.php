@@ -12,10 +12,10 @@
 
   logaccess($db, $formVars['uid'], $package, "Viewing the Products table");
 
-  $formVars['csv']       = clean($_GET['csv'],        10);
-
-  if ($formVars['csv'] == '') {
-    $formVars['csv'] = 'false';
+  if (isset($_GET['csv'])) {
+    $formVars['csv']       = clean($_GET['csv'],       10);
+  } else {
+    $formVars['csv']       = 'false';
   }
 
 # if help has not been seen yet,

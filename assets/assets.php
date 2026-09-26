@@ -70,6 +70,7 @@ function attach_file( p_script_url, update ) {
 
   af_url  = '?update='   + update;
 
+  af_url += "&ast_companyid="   + af_form.ast_companyid.value;
   af_url += "&ast_name="        + encode_URI(af_form.ast_name.value);
   af_url += "&ast_asset="       + encode_URI(af_form.ast_asset.value);
   af_url += "&ast_serial="      + encode_URI(af_form.ast_serial.value);
@@ -78,6 +79,11 @@ function attach_file( p_script_url, update ) {
   af_url += "&ast_unit="        + af_form.ast_unit.value;
   af_url += "&ast_vendor="      + af_form.ast_vendor.checked;
   af_url += "&ast_managed="     + af_form.ast_managed.checked;
+  af_url += "&ast_purchased="   + encode_URI(af_form.ast_purchased.value);
+  af_url += "&ast_built="       + encode_URI(af_form.ast_built.value);
+  af_url += "&ast_active="      + encode_URI(af_form.ast_active.value);
+  af_url += "&ast_retired="     + encode_URI(af_form.ast_retired.value);
+  af_url += "&ast_reused="      + encode_URI(af_form.ast_reused.value);
   af_url += "&ast_endsupport="  + encode_URI(af_form.ast_endsupport.value);
   af_url += "&ast_facing="      + af_form.ast_facing.checked;
 
@@ -94,6 +100,7 @@ function update_file( p_script_url, update ) {
   uf_url  = '?update='   + update;
   uf_url += '&id='       + uf_form.id.value;
 
+  uf_url += "&ast_companyid="   + uf_form.ast_companyid.value;
   uf_url += "&ast_name="        + encode_URI(uf_form.ast_name.value);
   uf_url += "&ast_asset="       + encode_URI(uf_form.ast_asset.value);
   uf_url += "&ast_serial="      + encode_URI(uf_form.ast_serial.value);
@@ -102,6 +109,11 @@ function update_file( p_script_url, update ) {
   uf_url += "&ast_unit="        + uf_form.ast_unit.value;
   uf_url += "&ast_vendor="      + uf_form.ast_vendor.checked;
   uf_url += "&ast_managed="     + uf_form.ast_managed.checked;
+  uf_url += "&ast_purchased="   + encode_URI(uf_form.ast_purchased.value);
+  uf_url += "&ast_built="       + encode_URI(uf_form.ast_built.value);
+  uf_url += "&ast_active="      + encode_URI(uf_form.ast_active.value);
+  uf_url += "&ast_retired="     + encode_URI(uf_form.ast_retired.value);
+  uf_url += "&ast_reused="      + encode_URI(uf_form.ast_reused.value);
   uf_url += "&ast_endsupport="  + encode_URI(uf_form.ast_endsupport.value);
   uf_url += "&ast_facing="      + uf_form.ast_facing.checked;
 
@@ -125,7 +137,7 @@ $(document).ready( function() {
   $( "#dialogCreate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 375,
+    height: 525,
     width: 600,
     show: 'slide',
     hide: 'slide',
@@ -155,7 +167,7 @@ $(document).ready( function() {
   $( "#dialogUpdate" ).dialog({
     autoOpen: false,
     modal: true,
-    height: 375,
+    height: 525,
     width: 600,
     show: 'slide',
     hide: 'slide',

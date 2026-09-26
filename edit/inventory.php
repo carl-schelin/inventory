@@ -185,21 +185,32 @@ function delete_association( p_script_url ) {
   }
 ?>
 
-
-
-
 function create_tags(p_script_url, update) {
   var ct_form = document.formTagCreate;
   var ct_url;
   
   ct_url  = '?update='         + update;
-  ct_url += "&id="             + ct_form.tag_companyid.value;
 
   ct_url += "&tag_companyid="  + <?php print $formVars['server']; ?>;
   ct_url += "&tag_name="       + encode_URI(ct_form.tag_name.value);
 
   script = document.createElement('script');
   script.src = p_script_url + ct_url;
+  document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+function update_tags(p_script_url, update) {
+  var ut_form = document.formTagUpdate;
+  var ut_url;
+  
+  ut_url  = '?update='         + update;
+  ut_url += "&id="             + ut_form.tag_companyid.value;
+
+  ut_url += "&tag_companyid="  + <?php print $formVars['server']; ?>;
+  ut_url += "&tag_name="       + encode_URI(ut_form.tag_name.value);
+
+  script = document.createElement('script');
+  script.src = p_script_url + ut_url;
   document.getElementsByTagName('head')[0].appendChild(script);
 }
 
@@ -1323,6 +1334,7 @@ $(document).ready( function() {
   if (check_grouplevel($db, $a_inv_inventory['inv_manager'])) {
 ?>
   <li><a href="#interface">Interfaces</a></li>
+  <li><a href="#networking">Networking</a></li>
   <li><a href="#users">Users</a></li>
   <li><a href="#routing">Routing</a></li>
   <li><a href="#backup">Backup</a></li>
@@ -1462,14 +1474,14 @@ $(document).ready( function() {
 </tr>
 <tr>
   <td class="ui-widget-content" id="edit_hn">Server Name <input type="text" name="inv_name" size="20" onkeyup="check_hostname();"><span id="gohere"></span></td>
-  <td class="ui-widget-content" colspan="5">Description <input type="text" name="inv_function" size="60"></td>
+  <td class="ui-widget-content" colspan="5">Description <input type="text" name="inv_function" size="40"></td>
   <td class="ui-widget-content" ><label>911 Call Path? <input type="checkbox" name="inv_callpath"></label></td>
   <td class="ui-widget-content" ><label>Decommission Ticket Number: <input type="text" name="inv_ticket" size="20"></label></td>
 </tr>
 <tr>
-  <td class="ui-widget-content"  colspan="3">Link to Documentation: <input type="text" name="inv_document" size="80"></td>
+  <td class="ui-widget-content"  colspan="3">Link to Documentation: <input type="text" name="inv_document" size="60"></td>
   <td class="ui-widget-content">Server is an Appliance? <input type="checkbox" name="inv_appliance"></td>
-  <td class="ui-widget-content"  colspan="3">Parent Device: <select name="inv_companyid">
+  <td class="ui-widget-content"  colspan="4">Parent Device: <select name="inv_companyid">
 <?php
   $q_string  = "select inv_id,inv_name ";
   $q_string .= "from inv_inventory ";
@@ -2274,25 +2286,48 @@ a tag that already exists, it does check for that and will simply toggle it vs a
 
 <div class="main-help ui-widget-content">
 
-<p>In general what you're seeing are the list of users, system accounts, and service accounts that are on this server. 
-In addition are columns for managing the user such as whether or not to lock the user, updating the type of account, 
-and/or updating the GECOS information.</p>
+<p>This page shows the current list of users on the selected server and any accounts that are being managed by the 
+Inventory.The columns that are <span class="ui-state-highlight">highlighted</span> are ones that are managed in 
+the Inventory.</p>
 
-<p>When this information is updated, the following three files are also updated which subsequently change the information 
-on all servers during the following server script run.</p>
+<p>When you select an account from the left column, a form is displayed where you can make changes to that account.</p>
 
-<ul>
-  <li>valid.email - This changes the GECOS field on all servers to match the GECOS settings made here.</li>
-  <li>lockuser.dat - This file identifes who needs to be locked on a server due to departure from the company.</li>
-  <li>users.exclude - This file lists service accounts that aren't listed in the company.email file used to identify people who are still in the company.</li>
-</ul>
+<p>There are two changes that you can select.</p>
 
-<p>While you can fill out the fields and "create" a new user in this listing, adding the user does not add the user 
-on the server.</p>
+<p>1. <strong>Locked</strong> - This checkbox lets you lock an account, generally a User account for a user who 
+has left the company.</p>
 
-<p>Any user account with a '--' in the Account Type column indicates it is not currently being managed and is likely 
-being reported if a service or system account as it's not being found in the company.email file. Click on the user 
-to modify it and then click the Add User button to begin managing the account.</p>
+<p>A file called <strong>lockuser.dat</strong> is created each morning and copied to every accessible server. Then 
+each night the <strong>lockuser</strong> script is run which parses the file, checks to see if the user is already 
+locked, and lock them if not.  An email will be sent to root listing which accounts were locked.</p>
+
+<p>As a note, account UIDs that are 100 or lower cannot be locked through the Inventory. These are considered 
+system level accounts. In this display, the <strong>Locked?</strong> column will show an X for these accounts.</p>
+
+<p>In addition, in the <strong>.config</strong> file is a list of accounts that cannot be locked. These will be 
+system admin accounts or system level service accounts.</p>
+
+<p>2. <strong>GECOS</strong> - Filling out the user name and email address will update the GECOS field for that 
+user. In general I want to have the name of the user and their email address. This makes it easier to manage the 
+account and ensure it is locked when the user departs the company.</p>
+
+<p>A file called <strong>valid.email</strong> is created each morning and copied to every accessible server. Then 
+the <strong>update.gecos</strong> script is run which checks and updates all GECOS entries that need to be changed. 
+An email is sent to root for each updated account.</p>
+
+<p>In order to <strong>Manage</strong> an account, click on the account name. That will fill in the displayed form 
+with information gleaned from the data located on the server. You can then manage the account as noted above.</p>
+
+<p>Note that this is applied across all systems where the account exists. If you identify a user to be locked on this 
+system, if you then look at a second system in the Inventory that has that account, it'll be identified to be 
+locked there as well.</p>
+
+<p>When you've made the updates, click the <strong>Manage User</strong> button and the data will be saved.</p>
+
+<p>A third file, <strong>users.exclude</strong>, contains service accounts that we want to manage but which aren't 
+in the company <strong>valid.email</strong> file. The email file lists folks who are active. It reports on accounts 
+that are <strong>Managed</strong> and not in the file, so have departed the company and can be 
+<strong>Locked</strong>.</p>
 
 </div>
 
@@ -2737,10 +2772,21 @@ field shows you the limit of the number of characters. This limit is set by the 
 </form>
 
 
-
 <?php include($Editpath . '/association.dialog.php'); ?>
 
+
+
+<div id="dialogTagCreate" title="Add Server Tag">
+
+<form name="formTagCreate">
+
 <?php include($Editpath . '/tags.dialog.php'); ?>
+
+</form>
+
+</div>
+
+
 
 <?php include($Editpath . '/filesystem.dialog.php'); ?>
 

@@ -63,9 +63,10 @@
 
   $q_string  = "select inv_id,inv_name,inv_function,";
   $q_string .= "sw_software,";
-  $q_string .= "int_server,int_addr,int_gate,inv_ssh,inv_location,inv_product,int_ssh,int_ping,int_http,int_ftp,int_smtp,";
+  $q_string .= "int_server,ip_ipv4,int_gate,inv_ssh,inv_location,inv_product,int_ssh,int_ping,int_http,int_ftp,int_smtp,";
   $q_string .= "grp_name ";
   $q_string .= "from inv_inventory ";
+  $q_string .= "left join inv_ipaddress    on inv_ipaddress.ip_id            = inv_interface.int_ipaddressid ";
   $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inv_inventory.inv_id ";
   $q_string .= "left join inv_software     on inv_software.sw_id             = inv_svr_software.svr_softwareid ";
   $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = inv_software.sw_type ";
@@ -83,7 +84,7 @@
 
     $groupname = str_replace(" ", "-", $a_inv_inventory['grp_name']);
 
-    if (filter_var($a_inv_inventory['int_addr'], FILTER_VALIDATE_IP)) {
+    if (filter_var($a_inv_inventory['ip_ipv4'], FILTER_VALIDATE_IP)) {
 
 # determine operating system
       $value = explode(" ", $a_inv_inventory['sw_software']);
@@ -138,7 +139,7 @@
       print "\tuse\t\t\t" . $os . "\n";
       print "\thost_name\t\t" . $a_inv_inventory['int_server'] . "\n";
       print "\talias\t\t\t" . $a_inv_inventory['int_server'] . "\n";
-      print "\taddress\t\t\t" . $a_inv_inventory['int_addr'] . "\n";
+      print "\taddress\t\t\t" . $a_inv_inventory['ip_ipv4'] . "\n";
       print "\tparents\t\t\t" . $a_inv_inventory['int_gate'] . "\n";
       print "\ticon_image_alt\t\t" . $a_inv_inventory['inv_function'] . "\n";
       print "\tcontact_groups\t\t" . $groupname . ",Monitoring\n";

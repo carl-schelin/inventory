@@ -175,7 +175,7 @@ if needed.</p>
   $header .= "<tr>\n";
   $header .= "  <th class=\"ui-state-default\"><a href=\"servers.php?sort=inv_name,vuln_securityid,sev_id" . $sorted . "\">" . "Hostname"       . "</th>\n";
   $header .= "  <th class=\"ui-state-default\"><a href=\"servers.php?sort=int_server" . $sorted . "\">"                      . "Interface Name" . "</a></th>\n";
-  $header .= "  <th class=\"ui-state-default\"><a href=\"servers.php?sort=int_addr,inv_name" . $sorted . "\">"               . "IP Address"     . "</a></th>\n";
+  $header .= "  <th class=\"ui-state-default\"><a href=\"servers.php?sort=ip_ipv4,inv_name" . $sorted . "\">"                . "IP Address"     . "</a></th>\n";
   $header .= "  <th class=\"ui-state-default\"><a href=\"servers.php?sort=sec_name,inv_name" . $sorted . "\">"               . "Name"           . "</a></th>\n";
   $header .= "  <th class=\"ui-state-default\"><a href=\"servers.php?sort=vuln_date,inv_name" . $sorted . "\">"              . "Seen"           . "</a></th>\n";
   $header .= "  <th class=\"ui-state-default\"><a href=\"servers.php?sort=sev_id,inv_name" . $sorted . "\">"                 . "Severity"       . "</a></th>\n";
@@ -190,12 +190,13 @@ if needed.</p>
   $numlow = 0;
   $numinfo = 0;
 
-  $q_string  = "select vuln_id,vuln_securityid,vuln_date,vuln_delete,vuln_deldate,sec_name,sev_name,prod_name,int_server,int_addr,inv_name,grp_name ";
+  $q_string  = "select vuln_id,vuln_securityid,vuln_date,vuln_delete,vuln_deldate,sec_name,sev_name,prod_name,int_server,ip_ipv4,inv_name,grp_name ";
   $q_string .= "from inv_vulnerabilities ";
   $q_string .= "left join inv_security  on inv_security.sec_id   = inv_vulnerabilities.vuln_securityid ";
   $q_string .= "left join inv_severity  on inv_severity.sev_id   = inv_security.sec_severity ";
   $q_string .= "left join inv_interface on inv_interface.int_id  = inv_vulnerabilities.vuln_interface ";
   $q_string .= "left join inv_inventory on inv_inventory.inv_id  = inv_interface.int_companyid ";
+  $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id   = inv_interface.int_ipaddressid ";
   $q_string .= "left join inv_groups    on inv_groups.grp_id     = inv_inventory.inv_manager ";
   $q_string .= "left join inv_products  on inv_products.prod_id  = inv_inventory.inv_product ";
 # add in bits if asked
@@ -297,7 +298,7 @@ if needed.</p>
     $output  = "<tr>\n";
     $output .= "  <td class=\"" . $class . "\">" . $a_inv_vulnerabilities['inv_name']     . "</td>\n";
     $output .= "  <td class=\"" . $class . "\">" . $a_inv_vulnerabilities['int_server']   . "</td>\n";
-    $output .= "  <td class=\"" . $class . "\">" . $a_inv_vulnerabilities['int_addr']     . "</td>\n";
+    $output .= "  <td class=\"" . $class . "\">" . $a_inv_vulnerabilities['ip_ipv4']     . "</td>\n";
     $output .= "  <td class=\"" . $class . "\">" . $nessus . $a_inv_vulnerabilities['sec_name'] . $linkend . "</td>\n";
     $output .= "  <td class=\"" . $class . "\">" . $a_inv_vulnerabilities['vuln_date']    . "</td>\n";
     $output .= "  <td class=\"" . $class . "\">" . $a_inv_vulnerabilities['sev_name']     . "</td>\n";

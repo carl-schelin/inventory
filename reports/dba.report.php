@@ -15,8 +15,42 @@
 # these are passed to each report
   $formVars['product']   = clean($_GET['product'],  10);
   $formVars['group']     = clean($_GET['group'],    10);
-  $formVars['inwork']    = clean($_GET['inwork'],   10);
-  $formVars['location']  = clean($_GET['location'], 10);
+
+  if (isset($_GET['project'])) {
+    $formVars['project']   = clean($_GET['project'],   10);
+  } else {
+    $formVars['project']   = 0;
+  }
+  if (isset($_GET['inwork'])) {
+    $formVars['inwork']    = clean($_GET['inwork'],    10);
+  } else {
+    $formVars['inwork']    = 'false';
+  }
+  if (isset($_GET['country'])) {
+    $formVars['country']   = clean($_GET['country'],   10);
+  } else {
+    $formVars['country']   = 0;
+  }
+  if (isset($_GET['state'])) {
+    $formVars['state']     = clean($_GET['state'],     10);
+  } else {
+    $formVars['state']     = 0;
+  }
+  if (isset($_GET['city'])) {
+    $formVars['city']      = clean($_GET['city'],      10);
+  } else {
+    $formVars['city']      = 0;
+  }
+  if (isset($_GET['location'])) {
+    $formVars['location']  = clean($_GET['location'],  10);
+  } else {
+    $formVars['location']  = 0;
+  }
+  if (isset($_GET['csv'])) {
+    $formVars['csv']       = clean($_GET['csv'],       10);
+  } else {
+    $formVars['csv']       = 'false';
+  }
 
 # this is only passwd for complete listings
   if (isset($_GET['type'])) {
@@ -152,14 +186,15 @@
     $interface = "";
     $console = "";
 
-    $q_string  = "select int_face,int_addr,int_type,itp_acronym,int_ip6 ";
+    $q_string  = "select int_face,ip_ipv4,int_type,itp_acronym,int_ip6 ";
     $q_string .= "from inv_interface ";
+    $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id  = inv_interface.int_ipaddressid ";
     $q_string .= "left join inv_int_types on inv_int_types.itp_id = inv_interface.int_type ";
-    $q_string .= "where int_companyid = " . $a_inv_inventory['svr_companyid'] . " and int_type != 7 and int_type != 6 and int_addr != '' and int_ip6 = 0 ";
+    $q_string .= "where int_companyid = " . $a_inv_inventory['svr_companyid'] . " and int_type != 7 and int_type != 6 and ip_ipv4 != '' and int_ip6 = 0 ";
     $q_string .= "order by itp_acronym ";
     $q_inv_interface = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
     while ($a_inv_interface = mysqli_fetch_array($q_inv_interface)) {
-      $interface .= $a_inv_interface['itp_acronym'] . "=" . $a_inv_interface['int_addr'] . " ";
+      $interface .= $a_inv_interface['itp_acronym'] . "=" . $a_inv_interface['ip_ipv4'] . " ";
     }
 
     $q_string  = "select sw_software ";
@@ -188,14 +223,18 @@
     $q_string .= "from inv_hardware ";
     $q_string .= "where hw_companyid = " . $a_inv_inventory['svr_companyid'] . " and hw_type = 15 ";
     $q_inv_hardware = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
+    if (mysqli_num_rows($q_inv_hardware) > 0) {
+      $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
 
-    if ($a_inv_hardware['hw_vendorid'] != '') {
-      $q_string  = "select mod_name ";
-      $q_string .= "from inv_models ";
-      $q_string .= "where mod_id = " . $a_inv_hardware['hw_vendorid'];
-      $q_inv_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-      $a_inv_models = mysqli_fetch_array($q_inv_models);
+      if ($a_inv_hardware['hw_vendorid'] != '') {
+        $q_string  = "select mod_name ";
+        $q_string .= "from inv_models ";
+        $q_string .= "where mod_id = " . $a_inv_hardware['hw_vendorid'];
+        $q_inv_models = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+        $a_inv_models = mysqli_fetch_array($q_inv_models);
+      }
+    } else {
+      $a_inv_models['mod_name'] = "Undefined";
     }
 
     print "<tr>\n";

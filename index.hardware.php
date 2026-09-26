@@ -45,51 +45,70 @@
 
 <div class="main ui-widget-content">
 
+<p><strong><u>Asset Tutorial</u></strong></p>
+
+<p>The purpose of this document is to give you insight into the process for adding and managing 
+assets but also the thought processes behind the author of this application (that would be Carl).</p>
+
+<p>The <b>Inventory</b> application is intended as a support tool for the team that manages 
+the assets and not for a department such as Finance, of which the purpose is to manage physical 
+assets. Due to this, the <b>Inventory</b> contains a lot more information about the asset than 
+a typical asset management application. We need to be able to give information to networking 
+about the asset such as an IP Address, MAC Address, or even Rack Information.</p>
+
+<p><b>Reminder</b> - Throughout all the tutorials, they are a work in progress and information 
+can change over time. Even in the initial stages, it'll be very raw with duplicate and even 
+missing information. Check the IPAM Tutorial. That's pretty much complete and should be an 
+example of what the other tutorials should look like.</p>
+
+
 <p><strong><u>Asset Management</u></strong></p>
 
-Asset Management tools are used to track assets. In the Inventory application, this is any device 
+<p>Asset Management tools are used to track assets. In the Inventory application, this is any device 
 that performs a function, however does not include items that generally don't have an asset tag 
-such as system components like hard drives, video cards, ram, and interfaces.
+such as system components like hard drives, video cards, ram, and interfaces.</p>
 
-In the Inventory application, the purpose is to document the computer rooms to make locating 
+<p>In the Inventory application, the purpose is to document the computer rooms to make locating 
 assets easier when troubleshooting. Especially when a computer room is in a remote location and 
-not physically accessible without a lengthy trip.
+not physically accessible without a lengthy trip.</p>
 
-A physical asset can consist of the following items:
+<p>A physical asset can consist of the following items:</p>
 
-* Case
-* Network Interfaces
-* Video Interfaces
-* USB Interfaces
-* Power Supplies
-* Power Outlets
-* Hard Drives
-* Memory
-* CPUs
+<ul>
+  <li>Case</li>
+  <li>Network Interfaces</li>
+  <li>Video Interfaces</li>
+  <li>USB Interfaces</li>
+  <li>Power Supplies</li>
+  <li>Power Outlets</li>
+  <li>Hard Drives</li>
+  <li>Memory</li>
+  <li>CPUs</li>
+</ul>
 
-In the Inventory, you'll be able to identify a device such as a server and then configure 
-the device.
+<p>In the Inventory, you'll be able to identify a device such as a server and then configure 
+the device.</p>
 
-There are two purposes here.
+<p>There are two purposes here.</p>
 
-1. To identify connections between devices and between power. For a UPS, for instance, 
-it has both Power Supplies and Power Outlets.
+<p>1. To identify connections between devices and between power. For a UPS, for instance, 
+it has both Power Supplies and Power Outlets.</p>
 
-2. 
-
-
-
-
-
-
-Connections
-
-In order to manage connections, we'll need to have a list of possible connection types.
+<p>2. </p>
 
 
 
 
-Components
+
+
+<p>Connections</p>
+
+<p>In order to manage connections, we'll need to have a list of possible connection types.</p>
+
+
+
+
+<p>Components</p>
 
 
 

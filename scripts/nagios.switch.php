@@ -63,22 +63,23 @@
 
   $q_string  = "select inv_id,inv_name,inv_function,";
   $q_string .= "sw_software,";
-  $q_string .= "int_server,int_addr,int_gate,inv_ssh,inv_location,inv_product,int_ssh,int_ping,int_http,int_ftp,int_smtp,";
+  $q_string .= "int_server,ip_ipv4,int_gate,inv_ssh,inv_location,inv_product,int_ssh,int_ping,int_http,int_ftp,int_smtp,";
   $q_string .= "grp_name ";
   $q_string .= "from inv_inventory ";
   $q_string .= "left join inv_svr_software on inv_svr_software.svr_companyid = inv_inventory.inv_id ";
   $q_string .= "left join inv_software     on inv_software.sw_id             = inv_svr_software.svr_softwareid ";
   $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = inv_software.sw_type ";
   $q_string .= "left join inv_interface    on inv_interface.int_companyid    = inv_inventory.inv_id ";
+  $q_string .= "left join inv_ipaddress    on inv_ipaddress.ip_id            = inv_interface.int_ipaddressid ";
   $q_string .= "left join inv_groups       on inv_groups.grp_id              = inv_inventory.inv_manager ";
   $q_string .= "where int_nagios = 1 and inv_status = 0 and typ_name = 'Operating System' and int_ip6 = 0 and int_type = 1 and inv_manager = 12 ";
-  $q_string .= "order by int_addr ";
+  $q_string .= "order by ip_ipv4 ";
   $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
   while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
     $groupname = str_replace(" ", "-", $a_inv_inventory['grp_name']);
 
-    if (filter_var($a_inv_inventory['int_addr'], FILTER_VALIDATE_IP)) {
+    if (filter_var($a_inv_inventory['ip_ipv4'], FILTER_VALIDATE_IP)) {
 
       $os = "generic-switch";
 
@@ -105,9 +106,9 @@
 
       print "define host{\n";
       print "\tuse\t\t\t" . $os . "\n";
-      print "\thost_name\t\t" . $a_inv_inventory['int_addr'] . "\n";
-      print "\talias\t\t\t" . $a_inv_inventory['int_addr'] . "\n";
-      print "\taddress\t\t\t" . $a_inv_inventory['int_addr'] . "\n";
+      print "\thost_name\t\t" . $a_inv_inventory['ip_ipv4'] . "\n";
+      print "\talias\t\t\t" . $a_inv_inventory['ip_ipv4'] . "\n";
+      print "\taddress\t\t\t" . $a_inv_inventory['ip_ipv4'] . "\n";
       if ($a_inv_inventory['int_gate'] != '10.100.128.1') {
         print "\tparents\t\t\t" . $a_inv_inventory['int_gate'] . "\n";
       }
@@ -130,57 +131,57 @@
       }
 # add to production hostgroups
       if ($a_inv_inventory['inv_product'] > 0) {
-        $products[$a_inv_inventory['inv_product']] .= $productcomma[$a_inv_inventory['inv_product']] . $a_inv_inventory['int_addr'];
+        $products[$a_inv_inventory['inv_product']] .= $productcomma[$a_inv_inventory['inv_product']] . $a_inv_inventory['ip_ipv4'];
         $productcomma[$a_inv_inventory['inv_product']] = ',';
       }
 
 # lab servers
       if ($a_inv_inventory['inv_location'] == 31) {
-        if (strpos($lab_members, $a_inv_inventory['int_addr']) === false) {
-          $lab_members .= $labcomma . $a_inv_inventory['int_addr'];
+        if (strpos($lab_members, $a_inv_inventory['ip_ipv4']) === false) {
+          $lab_members .= $labcomma . $a_inv_inventory['ip_ipv4'];
           $labcomma = ",";
         }
       }
 # sqa servers
       if ($a_inv_inventory['inv_location'] == 39) {
-        if (strpos($sqa_members, $a_inv_inventory['int_addr']) === false) {
-          $sqa_members .= $sqacomma . $a_inv_inventory['int_addr'];
+        if (strpos($sqa_members, $a_inv_inventory['ip_ipv4']) === false) {
+          $sqa_members .= $sqacomma . $a_inv_inventory['ip_ipv4'];
           $sqacomma = ",";
         }
       }
 # production longmont
       if ($a_inv_inventory['inv_location'] == 3) {
-        if (strpos($prod_members, $a_inv_inventory['int_addr']) === false) {
-          $prod_members .= $prodcomma . $a_inv_inventory['int_addr'];
+        if (strpos($prod_members, $a_inv_inventory['ip_ipv4']) === false) {
+          $prod_members .= $prodcomma . $a_inv_inventory['ip_ipv4'];
           $prodcomma = ",";
         }
       }
 # contact one servers
       if ($a_inv_inventory['inv_location'] == 29) {
-        if (strpos($contactone_members, $a_inv_inventory['int_addr']) === false) {
-          $contactone_members .= $contactonecomma . $a_inv_inventory['int_addr'];
+        if (strpos($contactone_members, $a_inv_inventory['ip_ipv4']) === false) {
+          $contactone_members .= $contactonecomma . $a_inv_inventory['ip_ipv4'];
           $contactonecomma = ",";
         }
       }
 
 # ssh to servers
       if ($a_inv_inventory['int_ssh'] == 1) {
-        $sshservers .= $sshcomma . $a_inv_inventory['int_addr'];
+        $sshservers .= $sshcomma . $a_inv_inventory['ip_ipv4'];
         $sshcomma = ",";
       }
 # ping servers
       if ($a_inv_inventory['int_ping'] == 1) {
-        $pingservers .= $pingcomma . $a_inv_inventory['int_addr'];
+        $pingservers .= $pingcomma . $a_inv_inventory['ip_ipv4'];
         $pingcomma = ",";
       }
 # http servers
       if ($a_inv_inventory['int_http'] == 1) {
-        $httpservers .= $httpcomma . $a_inv_inventory['int_addr'];
+        $httpservers .= $httpcomma . $a_inv_inventory['ip_ipv4'];
         $httpcomma = ",";
       }
 # ftp servers
       if ($a_inv_inventory['int_ftp'] == 1) {
-        $ftpservers .= $ftpcomma . $a_inv_inventory['int_addr'];
+        $ftpservers .= $ftpcomma . $a_inv_inventory['ip_ipv4'];
         $ftpcomma = ",";
       }
 # smtp servers

@@ -39,6 +39,7 @@
         $formVars['mod_volts'] = 0;
         $formVars['mod_virtual'] = 0;
         $formVars['mod_primary'] = 0;
+
         if ($formVars['mod_eopur'] == '') {
           $formVars['mod_eopur'] = "0000-00-00";
         }

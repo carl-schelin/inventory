@@ -277,18 +277,29 @@
         } else {
           $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
 
+          $q_string  = "select ip_id ";
+          $q_string .= "from inv_ipaddress ";
+          $q_string .= "where ip_ipv4 = \"" . $ipaddr . "\" ";
+          $q_inv_ipaddress = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+          if (mysqli_num_rows($q_inv_ipaddress) == 0) {
+            $a_inv_ipaddress['ip_id'] = 0;
+          } else {
+            $a_inv_ipaddress = mysqli_fetch_array($q_inv_ipaddress);
+          }
+
           $q_string  = "insert into inv_interface set int_id = null,";
-          $q_string .= "int_server      = \"" . $fqdn[0]               . "\",";
-          $q_string .= "int_domain      = \"" . $fqdn[1]               . "\",";
-          $q_string .= "int_companyid   =   " . $a_inv_inventory['inv_id'] . ",";
-          $q_string .= "int_face        = \"" . "ens192"               . "\",";
-          $q_string .= "int_addr        = \"" . $ipaddr                . "\",";
-          $q_string .= "int_mask        =   " . $mask                  . ",";
-          $q_string .= "int_eth         = \"" . "00:00:00:00:00:00"    . "\",";
-          $q_string .= "int_gate        = \"" . $gateway               . "\",";
-          $q_string .= "int_management  =   " . "1"                    . ",";
-          $q_string .= "int_nagios      =   " . "1"                    . ",";
-          $q_string .= "int_ping        =   " . "1"                    . ",";
+          $q_string .= "int_server      = \"" . $fqdn[0]                    . "\",";
+          $q_string .= "int_domain      = \"" . $fqdn[1]                    . "\",";
+          $q_string .= "int_companyid   =   " . $a_inv_inventory['inv_id']  . ",";
+          $q_string .= "int_face        = \"" . "ens192"                    . "\",";
+          $q_string .= "int_addr        = \"" . $ipaddr                     . "\",";
+          $q_string .= "int_ipaddressid = \"" . $a_inv_ipaddress['ip_id']   . "\",";
+          $q_string .= "int_mask        =   " . $mask                       . ",";
+          $q_string .= "int_eth         = \"" . "00:00:00:00:00:00"         . "\",";
+          $q_string .= "int_gate        = \"" . $gateway                    . "\",";
+          $q_string .= "int_management  =   " . "1"                         . ",";
+          $q_string .= "int_nagios      =   " . "1"                         . ",";
+          $q_string .= "int_ping        =   " . "1"                         . ",";
           $q_string .= "int_ssh         =   " . "1";
  
           $result = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));

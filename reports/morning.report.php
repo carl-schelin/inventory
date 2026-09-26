@@ -17,11 +17,42 @@
 
   $formVars['product']   = clean($_GET['product'],  10);
   $formVars['group']     = clean($_GET['group'],    10);
-  $formVars['inwork']    = clean($_GET['inwork'],   10);
-  $formVars['country']   = clean($_GET['country'],  10);
-  $formVars['state']     = clean($_GET['state'],    10);
-  $formVars['city']      = clean($_GET['city'],     10);
-  $formVars['location']  = clean($_GET['location'], 10);
+
+  if (isset($_GET['project'])) {
+    $formVars['project']   = clean($_GET['project'],   10);
+  } else {
+    $formVars['project']   = 0;
+  }
+  if (isset($_GET['inwork'])) {
+    $formVars['inwork']    = clean($_GET['inwork'],    10);
+  } else {
+    $formVars['inwork']    = 'false';
+  }
+  if (isset($_GET['country'])) {
+    $formVars['country']   = clean($_GET['country'],   10);
+  } else {
+    $formVars['country']   = 0;
+  }
+  if (isset($_GET['state'])) {
+    $formVars['state']     = clean($_GET['state'],     10);
+  } else {
+    $formVars['state']     = 0;
+  }
+  if (isset($_GET['city'])) {
+    $formVars['city']      = clean($_GET['city'],      10);
+  } else {
+    $formVars['city']      = 0;
+  }
+  if (isset($_GET['location'])) {
+    $formVars['location']  = clean($_GET['location'],  10);
+  } else {
+    $formVars['location']  = 0;
+  }
+  if (isset($_GET['csv'])) {
+    $formVars['csv']       = clean($_GET['csv'],       10);
+  } else {
+    $formVars['csv']       = 'false';
+  }
 
   if (isset($_GET['type'])) {
     $formVars['type'] = clean($_GET['type'], 10);

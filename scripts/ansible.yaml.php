@@ -37,10 +37,18 @@
     $environment = $argv[1];
   } else {
     print "You need to pass the environment this script runs against.\n";
+    $q_string  = "select env_name,env_abb ";
+    $q_string .= "from inv_environment ";
+    $q_inv_environment = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_inv_environment) > 0) {
+      while ($a_inv_environment = mysqli_fetch_array($q_inv_environment)) {
+        print " - " . $a_inv_environment['env_abb'] . ' for ' . $a_inv_environment['env_name'] . "\n";
+      }
+    }
     exit(1);
   }
 
-  $q_string  = "select env_id,env_name ";
+  $q_string  = "select env_id,env_name,env_abb ";
   $q_string .= "from inv_environment ";
   $q_string .= "where env_abb = \"" . $environment . "\" ";
   $q_inv_environment = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
@@ -48,6 +56,14 @@
     $a_inv_environment = mysqli_fetch_array($q_inv_environment);
   } else {
     print "You need to pass the environment this script runs against.\n";
+    $q_string  = "select env_name,env_abb ";
+    $q_string .= "from inv_environment ";
+    $q_inv_environment = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+    if (mysqli_num_rows($q_inv_environment) > 0) {
+      while ($a_inv_environment = mysqli_fetch_array($q_inv_environment)) {
+        print " - " . $a_inv_environment['env_abb'] . ' for ' . $a_inv_environment['env_name'] . "\n";
+      }
+    }
     exit(1);
   }
 
@@ -60,12 +76,12 @@
 #      5 | Home        | Home    |
 
 # print the header information of the file
-  print "# Inventory file for " . strtolower($a_inv_environment['env_name']) . " environment\n";
+  print "# Inventory file for " . strtolower($a_inv_environment['env_abb']) . " environment\n";
   print "all:\n";
   print "  children:\n";
-  print "    " . strtolower($a_inv_environment['env_name']) . ":\n";
+  print "    " . strtolower($a_inv_environment['env_abb']) . ":\n";
   print "      vars:\n";
-  print "        environment: " . strtolower($a_inv_environment['env_name']) . "\n";
+  print "        environment: " . strtolower($a_inv_environment['env_abb']) . "\n";
   print "      children:\n";
 
 

@@ -17,7 +17,7 @@
   <td class="ui-widget-content">Name: <input type="text" name="pat_name" size="30"></td>
 </tr>
 <tr>
-  <td class="ui-widget-content">Drop Type: <select name="pat_type">
+  <td class="ui-widget-content">Port Type: <select name="pat_type">
 <?php
   $q_string  = "select port_id,port_text ";
   $q_string .= "from inv_int_porttype ";
@@ -30,10 +30,16 @@
 </select></td>
 </tr>
 <tr>
-  <td class="ui-widget-content"><label>Is the Drop Actively in use? <input type="checkbox" name="pat_active"></label></td>
+  <td class="ui-widget-content">Facing: <select name="pat_facing">
+<option value="0">Rear</option>
+<option value="1">Front</option>
+  </select></td>
 </tr>
 <tr>
-  <td class="ui-widget-content"><label>Is the Drop Verified? <input type="checkbox" name="pat_verified"></label></td>
+  <td class="ui-widget-content"><label>Is the Port Actively in use? <input type="checkbox" name="pat_active"></label></td>
+</tr>
+<tr>
+  <td class="ui-widget-content"><label>Is the Port Verified? <input type="checkbox" name="pat_verified"></label></td>
 </tr>
 <tr>
   <td class="ui-widget-content">Office: <input type="text" name="pat_office" size="50"></td>

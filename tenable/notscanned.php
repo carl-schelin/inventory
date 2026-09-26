@@ -137,13 +137,14 @@
   $output = '';
   $count = 0;
   $scount = 0;
-  $q_string  = "select int_id,int_server,int_addr,inv_id,inv_name,inv_function,prod_name,prj_name,itp_name ";
+  $q_string  = "select int_id,int_server,ip_ipv4,inv_id,inv_name,inv_function,prod_name,prj_name,itp_name ";
   $q_string .= "from inv_interface ";
+  $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id  = inv_interface.int_ipaddressid ";
   $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_interface.int_companyid ";
   $q_string .= "left join inv_products  on inv_products.prod_id = inv_inventory.inv_product ";
   $q_string .= "left join inv_projects  on inv_projects.prj_id  = inv_inventory.inv_project ";
   $q_string .= "left join inv_int_types on inv_int_types.itp_id = inv_interface.int_type ";
-  $q_string .= "where inv_manager = " . $formVars['group'] . " and int_addr != '' and int_ip6 = 0 and int_addr != '127.0.0.1' and inv_status = 0 and (int_type = 1 or int_type = 2 or int_type = 6) ";
+  $q_string .= "where inv_manager = " . $formVars['group'] . " and ip_ipv4 != '' and int_ip6 = 0 and ip_ipv4 != '127.0.0.1' and inv_status = 0 and (int_type = 1 or int_type = 2 or int_type = 6) ";
   $q_string .= $formVars['product'];
   $q_string .= $formVars['project'];
   $q_string .= "order by inv_name ";
@@ -183,7 +184,7 @@
           $output .= "\"" . $a_inv_interface['inv_function'] . "\",";
           $output .= "\"" . $a_inv_interface['prod_name']    . "\",";
           $output .= "\"" . $a_inv_interface['prj_name']     . "\",";
-          $output .= "\"" . $a_inv_interface['int_addr']     . "\",";
+          $output .= "\"" . $a_inv_interface['ip_ipv4']      . "\",";
           $output .= "\"" . $a_inv_interface['itp_name']     . "\"\n";
         } else {
           $output .= "<tr>\n";
@@ -196,7 +197,7 @@
           $output .= "  <td class=\"" . $class . "\">" . $a_inv_interface['inv_function']  . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">" . $a_inv_interface['prod_name']     . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">" . $a_inv_interface['prj_name']      . "</td>\n";
-          $output .= "  <td class=\"" . $class . "\">" . $a_inv_interface['int_addr']      . "</td>\n";
+          $output .= "  <td class=\"" . $class . "\">" . $a_inv_interface['ip_ipv4']       . "</td>\n";
           $output .= "  <td class=\"" . $class . "\">" . $a_inv_interface['itp_name']      . "</td>\n";
           $output .= "</tr>\n";
           $count++;

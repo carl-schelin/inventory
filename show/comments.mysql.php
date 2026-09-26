@@ -23,6 +23,12 @@
 
       logaccess($db, $_SESSION['uid'], $package, "Creating the table for viewing.");
 
+      $q_string  = "select inv_manager ";
+      $q_string .= "from inv_inventory ";
+      $q_string .= "where inv_id = " . $formVars['id'] . " ";
+      $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
+      $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
+
       $output  = "<p></p>\n";
       $output .= "<table class=\"ui-styled-table\">";
       $output .= "<tr>";

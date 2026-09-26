@@ -14,16 +14,53 @@
 
   $formVars['product']   = clean($_GET['product'],  10);
   $formVars['group']     = clean($_GET['group'],    10);
-  $formVars['inwork']    = clean($_GET['inwork'],   10);
-  $formVars['country']   = clean($_GET['country'],  10);
-  $formVars['state']     = clean($_GET['state'],    10);
-  $formVars['city']      = clean($_GET['city'],     10);
-  $formVars['location']  = clean($_GET['location'], 10);
+
+  if (isset($_GET['project'])) {
+    $formVars['project']   = clean($_GET['project'],   10);
+  } else {
+    $formVars['project']   = 0;
+  }
+  if (isset($_GET['inwork'])) {
+    $formVars['inwork']    = clean($_GET['inwork'],    10);
+  } else {
+    $formVars['inwork']    = 'false';
+  }
+  if (isset($_GET['country'])) {
+    $formVars['country']   = clean($_GET['country'],   10);
+  } else {
+    $formVars['country']   = 0;
+  }
+  if (isset($_GET['state'])) {
+    $formVars['state']     = clean($_GET['state'],     10);
+  } else {
+    $formVars['state']     = 0;
+  }
+  if (isset($_GET['city'])) {
+    $formVars['city']      = clean($_GET['city'],      10);
+  } else {
+    $formVars['city']      = 0;
+  }
+  if (isset($_GET['location'])) {
+    $formVars['location']  = clean($_GET['location'],  10);
+  } else {
+    $formVars['location']  = 0;
+  }
+  if (isset($_GET['csv'])) {
+    $formVars['csv']       = clean($_GET['csv'],       10);
+  } else {
+    $formVars['csv']       = 'false';
+  }
 
   if (isset($_GET['type'])) {
     $formVars['type'] = clean($_GET['type'], 10);
   } else {
     $formVars['type'] = '';
+  }
+
+  if (isset($_GET['csv'])) {
+    $formVars['csv'] = clean($_GET['csv'], 10);
+  } else {
+    $formVars['csv'] = 'false';
   }
 
   if (isset($_GET["sort"])) {
@@ -163,19 +200,33 @@
 
   print "</div>\n\n";
 
-  print "<table class=\"ui-styled-table\">\n";
-  print "<tr>\n";
-  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=inv_name"      . $passthrough . "\">Server</a></th>\n";
-  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=inv_function"  . $passthrough . "\">Function</a></th>\n";
-  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=prod_name"     . $passthrough . "\">Product</a></th>\n";
-  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=fs_device"     . $passthrough . "\">Device</a></th>\n";
-  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=fs_mount"      . $passthrough . "\">Mount</a></th>\n";
-  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=fs_size"       . $passthrough . "\">Size</a></th>\n";
-  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=fs_used"       . $passthrough . "\">Used</a></th>\n";
-  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=fs_avail"      . $passthrough . "\">Available</a></th>\n";
-  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=fs_percent"    . $passthrough . "\">Percent</a></th>\n";
-  print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=fs_update"     . $passthrough . "\">Update</a></th>\n";
-  print "</tr>\n";
+  if ($formVars['csv'] == 'true') {
+    print "\"Server\",";
+    print "\"Function\",";
+    print "\"Product\",";
+    print "\"Device\",";
+    print "\"Mount\",";
+    print "\"Size\",";
+    print "\"Used\",";
+    print "\"Available\",";
+    print "\"Percent\",";
+    print "\"Update\"";
+    print "</br>\n";
+  } else {
+    print "<table class=\"ui-styled-table\">\n";
+    print "<tr>\n";
+    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=inv_name"      . $passthrough . "\">Server</a></th>\n";
+    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=inv_function"  . $passthrough . "\">Function</a></th>\n";
+    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=prod_name"     . $passthrough . "\">Product</a></th>\n";
+    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=fs_device"     . $passthrough . "\">Device</a></th>\n";
+    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=fs_mount"      . $passthrough . "\">Mount</a></th>\n";
+    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=fs_size"       . $passthrough . "\">Size</a></th>\n";
+    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=fs_used"       . $passthrough . "\">Used</a></th>\n";
+    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=fs_avail"      . $passthrough . "\">Available</a></th>\n";
+    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=fs_percent"    . $passthrough . "\">Percent</a></th>\n";
+    print "  <th class=\"ui-state-default\"><a href=\"" . $package . "?sort=fs_update"     . $passthrough . "\">Update</a></th>\n";
+    print "</tr>\n";
+  }
 
   $q_string  = "select inv_id,inv_name,inv_function,prod_name,fs_id,fs_device,fs_mount,fs_size,fs_used,fs_avail,fs_percent,fs_verified,fs_update ";
   $q_string .= "from inv_filesystem ";
@@ -205,27 +256,45 @@
         $checked = "&#x2713;";
       }
 
-      print "<tr>\n";
-      print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_filesystem['inv_name']  . $linkend . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['inv_function']         . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['prod_name']            . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['fs_device']            . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['fs_mount']             . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['fs_size']              . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['fs_used']              . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['fs_avail']             . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['fs_percent']           . "</td>\n";
-      print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['fs_update'] . $checked . "</td>\n";
-      print "</tr>\n";
+      if ($formVars['csv'] == 'true') {
+        print "\"" . $a_inv_filesystem['inv_name'] . "\",";
+        print "\"" . $a_inv_filesystem['inv_function'] . "\",";
+        print "\"" . $a_inv_filesystem['prod_name'] . "\",";
+        print "\"" . $a_inv_filesystem['fs_device'] . "\",";
+        print "\"" . $a_inv_filesystem['fs_mount'] . "\",";
+        print "\"" . $a_inv_filesystem['fs_size'] . "\",";
+        print "\"" . $a_inv_filesystem['fs_used'] . "\",";
+        print "\"" . $a_inv_filesystem['fs_avail'] . "\",";
+        print "\"" . $a_inv_filesystem['fs_percent'] . "\",";
+        print "\"" . $a_inv_filesystem['fs_update'] . "\"";
+        print "</br>\n";
+      } else {
+        print "<tr>\n";
+        print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_filesystem['inv_name']  . $linkend . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['inv_function']         . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['prod_name']            . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['fs_device']            . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['fs_mount']             . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['fs_size']              . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['fs_used']              . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['fs_avail']             . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['fs_percent']           . "</td>\n";
+        print "  <td class=\"" . $class . "\">"              . $a_inv_filesystem['fs_update'] . $checked . "</td>\n";
+        print "</tr>\n";
+      }
     }
   } else {
-    print "<tr>\n";
-    print "  <td class=\"ui-widget-content\" colspan=\"10\">No records found</td>\n";
-    print "</tr>\n";
+    if ($formVars['csv'] == 'false') {
+      print "<tr>\n";
+      print "  <td class=\"ui-widget-content\" colspan=\"10\">No records found</td>\n";
+      print "</tr>\n";
+    }
   }
 
+  if ($formVars['csv'] == 'false') {
+    print "</table>\n";
+  }
 ?>
-</table>
 
 </div>
 

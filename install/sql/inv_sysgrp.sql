@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `inv_sysgrp`;
 CREATE TABLE `inv_sysgrp` (
   `grp_id` int(10) NOT NULL AUTO_INCREMENT,
   `grp_companyid` int(10) NOT NULL DEFAULT '0',
-  `grp_name` char(30) NOT NULL DEFAULT '',
+  `grp_name` char(255) NOT NULL DEFAULT '',
   `grp_gid` double NOT NULL DEFAULT '0',
   `grp_update` date NOT NULL DEFAULT '1971-01-01',
   PRIMARY KEY (`grp_id`)

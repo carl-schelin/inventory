@@ -14,11 +14,42 @@
 
   $formVars['product']   = clean($_GET['product'],  10);
   $formVars['group']     = clean($_GET['group'],    10);
-  $formVars['inwork']    = clean($_GET['inwork'],   10);
-  $formVars['country']   = clean($_GET['country'],  10);
-  $formVars['state']     = clean($_GET['state'],    10);
-  $formVars['city']      = clean($_GET['city'],     10);
-  $formVars['location']  = clean($_GET['location'], 10);
+
+  if (isset($_GET['project'])) {
+    $formVars['project']   = clean($_GET['project'],   10);
+  } else {
+    $formVars['project']   = 0;
+  }
+  if (isset($_GET['inwork'])) {
+    $formVars['inwork']    = clean($_GET['inwork'],    10);
+  } else {
+    $formVars['inwork']    = 'false';
+  }
+  if (isset($_GET['country'])) {
+    $formVars['country']   = clean($_GET['country'],   10);
+  } else {
+    $formVars['country']   = 0;
+  }
+  if (isset($_GET['state'])) {
+    $formVars['state']     = clean($_GET['state'],     10);
+  } else {
+    $formVars['state']     = 0;
+  }
+  if (isset($_GET['city'])) {
+    $formVars['city']      = clean($_GET['city'],      10);
+  } else {
+    $formVars['city']      = 0;
+  }
+  if (isset($_GET['location'])) {
+    $formVars['location']  = clean($_GET['location'],  10);
+  } else {
+    $formVars['location']  = 0;
+  }
+  if (isset($_GET['csv'])) {
+    $formVars['csv']       = clean($_GET['csv'],       10);
+  } else {
+    $formVars['csv']       = 'false';
+  }
 
   if (isset($_GET['type'])) {
     $formVars['type'] = clean($_GET['type'], 10);
@@ -250,18 +281,21 @@
   $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
-    $q_string  = "select route_id from inv_routing ";
+    $q_string  = "select route_id ";
+    $q_string .= "from inv_routing ";
     $q_string .= "where route_companyid = " . $a_inv_inventory['inv_id'];
     $q_inv_routing = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
-    $a_inv_routing = mysqli_fetch_array($q_inv_routing);
+    if (mysqli_num_rows($q_inv_routing) > 0) {
+      $a_inv_routing = mysqli_fetch_array($q_inv_routing);
 
-    $linkstart = "<a href=\"" . $Editroot . "/routing.php?server=" . $a_inv_inventory['inv_id'] . "\" target=\"_blank\">";
-    $linkend   = "</a>";
+      $linkstart = "<a href=\"" . $Editroot . "/routing.php?server=" . $a_inv_inventory['inv_id'] . "\" target=\"_blank\">";
+      $linkend   = "</a>";
 
-    if ($a_inv_routing['route_id'] == '') {
-      print "<tr>\n";
-      print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_inventory['inv_name'] . $linkend . "</td>\n";
-      print "</tr>\n";
+      if ($a_inv_routing['route_id'] == '') {
+        print "<tr>\n";
+        print "  <td class=\"ui-widget-content\">" . $linkstart . $a_inv_inventory['inv_name'] . $linkend . "</td>\n";
+        print "</tr>\n";
+      }
     }
   }
   print "</table>\n";

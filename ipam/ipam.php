@@ -67,7 +67,7 @@ which then lets you manage the IP Addresses that are assigned to this network.</
 
 <table class="ui-styled-table">
 <tr>
-  <th class="ui-state-default">Network</td>
+  <th class="ui-state-default">IPv4 Networks</td>
   <th class="ui-state-default">Members</td>
   <th class="ui-state-default">Network Zone</td>
   <th class="ui-state-default">Location</td>
@@ -117,6 +117,65 @@ which then lets you manage the IP Addresses that are assigned to this network.</
   }
 ?>
 </table>
+
+
+<table class="ui-styled-table">
+<tr>
+  <th class="ui-state-default">IPv6 Networks</td>
+  <th class="ui-state-default">Members</td>
+  <th class="ui-state-default">Network Zone</td>
+  <th class="ui-state-default">Location</td>
+  <th class="ui-state-default">VLAN ID</td>
+  <th class="ui-state-default">Description</td>
+</tr>
+<?php
+  $q_string  = "select net_id,net_ipv6,net_mask,zone_zone,loc_name,net_vlan,net_description ";
+  $q_string .= "from inv_network ";
+  $q_string .= "left join inv_net_zones on inv_net_zones.zone_id = inv_network.net_zone ";
+  $q_string .= "left join inv_locations on inv_locations.loc_id  = inv_network.net_location ";
+  $q_string .= "where net_ipv6 != '' ";
+  $q_string .= "order by net_ipv6 ";
+  $q_inv_network = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  if (mysqli_num_rows($q_inv_network) > 0) {
+    while ($a_inv_network = mysqli_fetch_array($q_inv_network)) {
+
+      $linkstart = "<a href=\"ipaddress.php?network=" . $a_inv_network['net_id'] . "\" target=\"_blank\">";
+      $linkend = "</a>";
+
+      $total = 0;
+      $q_string  = "select ip_ipv6 ";
+      $q_string .= "from inv_ipaddress ";
+      $q_string .= "where ip_network = " . $a_inv_network['net_id'] . " ";
+      $q_inv_ipaddress = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+      if (mysqli_num_rows($q_inv_ipaddress) > 0) {
+        while ($a_inv_ipaddress = mysqli_fetch_array($q_inv_ipaddress)) {
+          $total++;
+        }
+      }
+
+      $class = "ui-widget-content";
+
+      print "<tr>\n";
+      print "  <td class=\"" . $class . "\">" . $linkstart . $a_inv_network['net_ipv6'] . "/" . $a_inv_network['net_mask'] . $linkend . "</td>\n";
+      print "  <td class=\"" . $class . " delete\">" . $total . "</td>\n";
+      print "  <td class=\"" . $class . "\">" . $a_inv_network['zone_zone'] . "</td>\n";
+      print "  <td class=\"" . $class . "\">" . $a_inv_network['loc_name'] . "</td>\n";
+      print "  <td class=\"" . $class . "\">" . $a_inv_network['net_vlan'] . "</td>\n";
+      print "  <td class=\"" . $class . "\">" . $a_inv_network['net_description'] . "</td>\n";
+      print "</tr>\n";
+    }
+  } else {
+    print "<tr>\n";
+    print "  <td class=\"ui-widget-content\" colspan=\"6\">You need to add network records.</td>\n";
+    print "</tr>\n";
+  }
+?>
+</table>
+
+
+
+
+
 
 </div>
 

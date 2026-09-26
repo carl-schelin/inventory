@@ -28,6 +28,7 @@
     if (check_userlevel($db, $AL_Edit)) {
       if ($formVars['update'] == 0 || $formVars['update'] == 1) {
         $formVars['id']                 = clean($_GET['id'],               10);
+        $formVars['ast_companyid']      = clean($_GET['ast_companyid'],    10);
         $formVars['ast_name']           = clean($_GET['ast_name'],        100);
         $formVars['ast_asset']          = clean($_GET['ast_asset'],        10);
         $formVars['ast_serial']         = clean($_GET['ast_serial'],      100);
@@ -74,6 +75,7 @@
           logaccess($db, $_SESSION['uid'], $package, "Building the query.");
 
           $q_string =
+            "ast_companyid   =   " . $formVars['ast_companyid']   . "," .
             "ast_name        = \"" . $formVars['ast_name']        . "\"," .
             "ast_asset       = \"" . $formVars['ast_asset']       . "\"," .
             "ast_serial      = \"" . $formVars['ast_serial']      . "\"," .
@@ -108,6 +110,7 @@
       if (check_userlevel($db, $AL_Admin)) {
         $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Asset</th>\n";
       }
+      $output .= "  <th class=\"ui-state-default\"><a href=\"racks.php?sort=inv_name"   . "\">" . "Inventory"     . "</a></th>\n";
       $output .= "  <th class=\"ui-state-default\"><a href=\"racks.php?sort=ast_name"   . "\">" . "Name or Label" . "</a></th>\n";
       $output .= "  <th class=\"ui-state-default\"><a href=\"racks.php?sort=mod_name"   . "\">" . "Device"        . "</a></th>\n";
       $output .= "  <th class=\"ui-state-default\"><a href=\"racks.php?sort=ast_unit"   . "\">" . "Starting Unit" . "</a></th>\n";
@@ -120,16 +123,21 @@
       $output .= "  <th class=\"ui-state-default\">Members</th>\n";
       $output .= "</tr>\n";
 
-      $q_string  = "select ast_id,ast_name,ast_asset,ast_serial,ast_unit,ast_vendor,ast_managed,ast_endsupport,ast_facing,mod_name,ven_name ";
+      $q_string  = "select ast_id,ast_name,ast_asset,ast_serial,ast_unit,ast_vendor,ast_managed,ast_endsupport,ast_facing,inv_name,mod_name,ven_name ";
       $q_string .= "from inv_assets ";
-      $q_string .= "left join inv_models  on inv_models.mod_id  = inv_assets.ast_modelid ";
-      $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
-      $q_string .= "left join inv_parts   on inv_parts.part_id  = inv_models.mod_type ";
+      $q_string .= "left join inv_inventory  on inv_inventory.inv_id  = inv_assets.ast_companyid ";
+      $q_string .= "left join inv_models     on inv_models.mod_id     = inv_assets.ast_modelid ";
+      $q_string .= "left join inv_vendors    on inv_vendors.ven_id    = inv_models.mod_vendor ";
+      $q_string .= "left join inv_parts      on inv_parts.part_id     = inv_models.mod_type ";
       $q_string .= "where ast_parentid = 0 and part_name = \"Rack\" ";
       $q_string .= $orderby;
       $q_inv_assets = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_inv_assets) > 0) {
         while ($a_inv_assets = mysqli_fetch_array($q_inv_assets)) {
+
+          if ($a_inv_assets['inv_name'] == '') {
+             $a_inv_assets['inv_name'] = 'None';
+          }
 
           $class = "ui-widget-content";
           if ($a_inv_assets['ast_endsupport'] != "1971-01-01") {
@@ -186,6 +194,7 @@
               $output .= "  <td class=\"" . $class . " delete\">Members &gt; 0</td>";
             }
           }
+          $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_assets['inv_name']                                              . "</td>";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_assets['ast_name']                                   . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_assets['ven_name'] . " " . $a_inv_assets['mod_name'] . $linkend . "</td>";
           $output .= "  <td class=\"" . $class . " delete\">"              . $unit                                                                  . "</td>";
@@ -201,15 +210,20 @@
 ####
 # Any children?
 ####
-          $q_string  = "select ast_id,ast_name,ast_asset,ast_serial,ast_unit,ast_managed,ast_vendor,ast_endsupport,ast_facing,mod_name,ven_name ";
+          $q_string  = "select ast_id,ast_name,ast_asset,ast_serial,ast_unit,ast_managed,ast_vendor,ast_endsupport,ast_facing,inv_name,mod_name,ven_name ";
           $q_string .= "from inv_assets ";
-          $q_string .= "left join inv_models on inv_models.mod_id = inv_assets.ast_modelid ";
-          $q_string .= "left join inv_vendors on inv_vendors.ven_id = inv_models.mod_vendor ";
+          $q_string .= "left join inv_inventory on inv_inventory.inv_id = inv_assets.ast_companyid ";
+          $q_string .= "left join inv_models    on inv_models.mod_id    = inv_assets.ast_modelid ";
+          $q_string .= "left join inv_vendors   on inv_vendors.ven_id   = inv_models.mod_vendor ";
           $q_string .= "where ast_parentid = " . $a_inv_assets['ast_id'] . " ";
           $q_string .= "order by ast_facing desc,ast_unit desc,ast_name ";
           $q_child = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_child) > 0) {
             while ($a_child = mysqli_fetch_array($q_child)) {
+
+              if ($a_child['inv_name'] == '') {
+                $a_child['inv_name'] = 'None';
+              }
 
               $class = "ui-widget-content";
               if ($a_child['ast_endsupport'] != "1971-01-01") {
@@ -261,6 +275,7 @@
                   $output .= "  <td class=\"" . $class . " delete\">Members &gt; 0</td>";
                 }
               }
+              $output .= "  <td class=\"" . $class . "\">&gt; "                . $a_child['inv_name']                                         . "</td>";
               $output .= "  <td class=\"" . $class . "\">&gt; "   . $linkstart . $a_child['ast_name']                              . $linkend . "</td>";
               $output .= "  <td class=\"" . $class . "\">&gt; "   . $linkstart . $a_child['ven_name'] . " " . $a_child['mod_name'] . $linkend . "</td>";
               $output .= "  <td class=\"" . $class . " delete\">"              . $unit                                                        . "</td>";

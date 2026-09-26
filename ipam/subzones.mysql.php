@@ -95,7 +95,7 @@
           $linkstart = "<a href=\"#\" onclick=\"show_file('subzones.fill.php?id="  . $a_inv_sub_zones['sub_id'] . "');jQuery('#dialogUpdate').dialog('open');return false;\">";
           $linkdel   = "<input type=\"button\" value=\"Remove\"  onclick=\"delete_line('subzones.del.php?id=" . $a_inv_sub_zones['sub_id'] . "');\">";
           if ($total > 0) {
-            $ipstart   = "<a href=\"ipaddress.php?network=" . $a_inv_ipaddress['net_id'] . "\" target=\"_blank\">";
+            $ipstart   = "<a href=\"ipaddress.php?network=" . $a_inv_sub_zones['sub_id'] . "\" target=\"_blank\">";
           } else {
             $ipstart   = "";
           }

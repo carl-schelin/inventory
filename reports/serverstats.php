@@ -444,7 +444,6 @@ to software and hardware section.</p>
   $q_string .= "left join inv_sw_types     on inv_sw_types.typ_id            = inv_software.sw_type ";
   $q_string .= "where inv_status = 0 and typ_name = 'Operating System' " . $admin . " ";
   $q_string .= "group by sw_software";
-print $q_string;
   $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
   while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
 
@@ -536,7 +535,7 @@ print $q_string;
   }
   $total = 0;
 
-  $q_string  = "select part_name,ven_name,mod_name,mod_virtual,count(inv_name) ";
+  $q_string  = "select part_name,ven_name,mod_vendor,mod_name,mod_virtual,count(inv_name) ";
   $q_string .= "from inv_hardware ";
   $q_string .= "left join inv_models    on inv_models.mod_id    = inv_hardware.hw_vendorid ";
   $q_string .= "left join inv_vendors   on inv_vendors.ven_id   = inv_models.mod_vendor ";

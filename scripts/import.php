@@ -54,11 +54,14 @@
       $q_string .= "from inv_inventory ";
       $q_string .= "where inv_status = 0 and inv_ssh = 1 and inv_name = '" . $value[0] . "'";
       $q_inv_inventory = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-      $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
-
+      if (mysqli_num_rows($q_inv_inventory) > 0) {
+        $a_inv_inventory = mysqli_fetch_array($q_inv_inventory);
+      } else {
+        $a_inv_inventory['inv_id'] = 0;
+      }
 
 # okay, can't find it in the main inventory; probably a different hostname vs the inventory name
-      if ($a_inv_inventory['inv_id'] == '') {
+      if ($a_inv_inventory['inv_id'] == 0) {
 # check the interface table
         print "can't find it in the inventory, checking interface names... ";
         $q_string  = "select int_companyid ";
@@ -67,9 +70,13 @@
         $q_string .= "where inv_status = 0 and inv_ssh = 1 and int_server = '" . $value[0] . "' ";
         $q_string .= "group by int_companyid";
         $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-        $a_inv_interface = mysqli_fetch_array($q_inv_interface);
+        if (mysqli_num_rows($q_inv_interface) > 0) {
+          $a_inv_interface = mysqli_fetch_array($q_inv_interface);
+        } else {
+          $a_inv_interface['int_companyid'] = 0;
+        }
 
-        if ($a_inv_interface['int_companyid'] != '') {
+        if ($a_inv_interface['int_companyid'] != 0) {
           $q_string  = "select inv_name,inv_id,inv_manager,inv_appadmin,inv_product ";
           $q_string .= "from inv_inventory ";
           $q_string .= "where inv_id = " . $a_inv_interface['int_companyid'];
@@ -78,7 +85,7 @@
         }
       }
 
-      if ($a_inv_inventory['inv_id'] != '') {
+      if ($a_inv_inventory['inv_id'] != 0) {
 # okay, found an existing server.
 # now delete any CPU from the system where the date is older than today.
 # in general, memory is a single entry and drive sizes don't change.
@@ -234,7 +241,7 @@
 
 # old info might still exist.
               if ($value[3] > 1000000) {
-                $value[3] = date('Y-m-d', $value[3]);
+                $value[3] = date('Y-m-d', (int)$value[3]);
               }
 
               $skip = 'no';
@@ -310,9 +317,13 @@
               $q_string .= "from inv_filesystem ";
               $q_string .= "where fs_device = '" . $value[3] . "' and fs_companyid = " . $a_inv_inventory['inv_id'] . " and fs_mount = \"" . $value[5] . "\" ";
               $q_inv_filesystem = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              $a_inv_filesystem = mysqli_fetch_array($q_inv_filesystem);
+              if (mysqli_num_rows($q_inv_filesystem) > 0) {
+                $a_inv_filesystem = mysqli_fetch_array($q_inv_filesystem);
+              } else {
+                $a_inv_filesystem['fs_id'] = 0;
+              }
 
-              if ($a_inv_filesystem['fs_id'] == '') {
+              if ($a_inv_filesystem['fs_id'] == 0) {
                 $q_string = "insert into inv_filesystem set fs_id = null," . $query;
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
@@ -370,7 +381,11 @@
               $q_string .= "where hw_type = 2 and hw_companyid = " . $a_inv_inventory['inv_id'] . " and hw_verified = 0 ";
               $q_string .= "limit 1";
               $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
+              if (mysqli_num_rows($q_inv_hardware) > 0) {
+                $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
+              } else {
+                $a_inv_hardware['hw_id'] = 0;
+              }
             
               $query = 
                 "hw_companyid =  " . $a_inv_inventory['inv_id']      . "," . 
@@ -380,7 +395,7 @@
                 "hw_user      =  " . '1'                         . "," . 
                 "hw_update    = '" . $date                       . "'";
 
-              if ($a_inv_hardware['hw_id'] == '') {
+              if ($a_inv_hardware['hw_id'] == 0) {
                 $q_string = "insert into inv_hardware set hw_id = null," . $query . ",hw_group = " . $a_inv_inventory['inv_manager'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
@@ -410,7 +425,11 @@
               $q_string .= "from inv_hardware ";
               $q_string .= "where hw_companyid = " . $a_inv_inventory['inv_id'] . " and hw_type = 4 ";
               $q_inv_hardware = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
+              if (mysqli_num_rows($q_inv_hardware) > 0) {
+                $a_inv_hardware = mysqli_fetch_array($q_inv_hardware);
+              } else {
+                $a_inv_hardware['hw_id'] = 0;
+              }
 
               $memory = preg_split('/\s+/', $value[3]);
               $ram = ceil($memory[0] / 1048576) . " GB Ram";
@@ -419,7 +438,11 @@
               $q_string .= "from inv_models ";
               $q_string .= "where mod_name = \"" . $ram . "\" ";
               $q_inv_models = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              $a_inv_models = mysqli_fetch_array($q_inv_models);
+              if (mysqli_num_rows($q_inv_models) > 0) {
+                $a_inv_models = mysqli_fetch_array($q_inv_models);
+              } else {
+                $a_inv_models['mod_id'] = 0;
+              }
 
               $query = 
                 "hw_companyid =  " . $a_inv_inventory['inv_id']      . "," . 
@@ -430,7 +453,7 @@
                 "hw_user      =  " . '1'                         . "," . 
                 "hw_update    = '" . $date                       . "'";
 
-              if ($a_inv_hardware['hw_id'] == '') {
+              if ($a_inv_hardware['hw_id'] == 0) {
                 $q_string = "insert into inv_hardware set hw_id = null," . $query . ",hw_group = " . $a_inv_inventory['inv_manager'];
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
@@ -524,7 +547,7 @@
 
         if ($value[1] == 'software') {
           print "software found:\n";
-# table: software; rows: sw_verified, sw_user, sw_update;
+# table: software; rows: sw_user, sw_update;
 #sqatxt-vmapp01,software,os,Red Hat Enterprise Linux Server release 6.2 (Santiago)
 # check: sw_type = OS; just update it with the text
 # current software listing: os, backup, monitor, centrify, instance, mysqld, informix, postgres, opnet, datapal, oracle, sudo, httpd, wildfly, vmtoolsd, newrelic
@@ -639,7 +662,6 @@
                   "sw_software    = \"" . trim($value[3])                 . "\"," .
                   "sw_vendor      =   " . $a_inv_vendors['ven_id']        . "," .
                   "sw_type        =   " . $a_inv_sw_types['typ_id']       . "," .
-                  "sw_verified    =   " . "1"                             . "," .
                   "sw_user        =   " . "1"                             . "," .
                   "sw_update      = \"" . $date                           . "\"";
 
@@ -700,7 +722,7 @@
 
 
 
-#\[server\],software,backup,NetBackup-Solaris_x86_10_64 7.1.0.4
+# [server],software,backup,NetBackup-Solaris_x86_10_64 7.1.0.4
           if ($value[2] == 'backup') {
             if (strlen($value[3]) > 0) {
               $skip = 'no';
@@ -708,7 +730,11 @@
               $q_string .= "from inv_software ";
               $q_string .= "where sw_companyid = " . $a_inv_inventory['inv_id'] . " and sw_type = 'Backups'";
               $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              $a_inv_software = mysqli_fetch_array($q_inv_software);
+              if (mysqli_num_rows($q_inv_software) > 0) {
+                $a_inv_software = mysqli_fetch_array($q_inv_software);
+              } else {
+                $a_inv_software['sw_id'] = 0;
+              }
 
               $query = 
                 "sw_companyid =   " . $a_inv_inventory['inv_id']      . "," . 
@@ -716,11 +742,10 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'Symantec'                  . "\"," . 
                 "sw_type      = \"" . 'Backups'                   . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
-              if ($a_inv_software['sw_id'] == '') {
+              if ($a_inv_software['sw_id'] == 0) {
                 $q_string = "insert into inv_software set sw_id = null," . $query . ",sw_group = 9";
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
@@ -741,7 +766,7 @@
             }
           }
 
-#\[server\],software,monitor,08.60.501
+# [server],software,monitor,08.60.501
           if ($value[2] == 'monitor') {
             if (strlen($value[3]) > 0) {
               $skip = 'no';
@@ -749,7 +774,11 @@
               $q_string .= "from inv_software ";
               $q_string .= "where sw_companyid = " . $a_inv_inventory['inv_id'] . " and sw_type = 'Monitoring'";
               $q_inv_software = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              $a_inv_software = mysqli_fetch_array($q_inv_software);
+              if (mysqli_num_rows($q_inv_software) > 0) {
+                $a_inv_software = mysqli_fetch_array($q_inv_software);
+              } else {
+                $a_inv_software['sw_id'] = 0;
+              }
 
               $query = 
                 "sw_companyid =   " . $a_inv_inventory['inv_id']      . "," . 
@@ -757,11 +786,10 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'HP'                        . "\"," . 
                 "sw_type      = \"" . 'Monitoring'                . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
-              if ($a_inv_software['sw_id'] == '') {
+              if ($a_inv_software['sw_id'] == 0) {
                 $q_string = "insert into inv_software set sw_id = null," . $query . ",sw_group = 10";
                 if ($debug == 'no') {
                   $result = mysqli_query($db, $q_string) or die($q_string . mysqli_error($db));
@@ -795,7 +823,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'Oracle'                    . "\"," . 
                 "sw_type      = \"" . 'Instance'                  . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -827,7 +854,7 @@
           }
 
 # database listings
-#\[server\],software,mysqld,/opt/csw/mysql5/libexec/amd64/mysqld  Ver 5.0.75 for pc-solaris2.10 on i386 (Source distribution)
+# [server],software,mysqld,/opt/csw/mysql5/libexec/amd64/mysqld  Ver 5.0.75 for pc-solaris2.10 on i386 (Source distribution)
           if ($value[2] == 'mysqld') {
             if (strlen($value[3]) > 0) {
               $skip = 'no';
@@ -839,7 +866,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'Oracle'                    . "\"," . 
                 "sw_type      = \"" . 'Commercial'                . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -883,7 +909,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'Informix'                  . "\"," . 
                 "sw_type      = \"" . 'Open Source'               . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -927,7 +952,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'PostgreSQL'                . "\"," . 
                 "sw_type      = \"" . 'Open Source'               . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -972,7 +996,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'Riverbed'                  . "\"," . 
                 "sw_type      = \"" . 'Commercial'                . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -1021,7 +1044,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'HP'                        . "\"," . 
                 "sw_type      = \"" . 'Commercial'                . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -1070,7 +1092,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'Oracle'                    . "\"," . 
                 "sw_type      = \"" . 'Commercial'                . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -1118,7 +1139,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'Sudo'                      . "\"," . 
                 "sw_type      = \"" . 'Open Source'               . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -1162,7 +1182,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'Apache Foundation'         . "\"," . 
                 "sw_type      = \"" . 'Open Source'               . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -1206,7 +1225,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'Red Hat'                   . "\"," . 
                 "sw_type      = \"" . 'Open Source'               . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -1250,7 +1268,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'VMware'                    . "\"," . 
                 "sw_type      = \"" . 'Commercial'                . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -1295,7 +1312,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'NewRelic'         . "\"," . 
                 "sw_type      = \"" . 'Commercial'               . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -1340,7 +1356,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'Oracle'                    . "\"," . 
                 "sw_type      = \"" . 'Commercial'               . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -1385,7 +1400,6 @@
                 "sw_software  = \"" . trim($value[3])             . "\"," . 
                 "sw_vendor    = \"" . 'Oracle'                    . "\"," . 
                 "sw_type      = \"" . 'Commercial'               . "\"," . 
-                "sw_verified  =   " . '1'                         . "," . 
                 "sw_user      =   " . '1'                         . "," . 
                 "sw_update    = \"" . $date                       . "\"";
 
@@ -1440,7 +1454,7 @@
 #sqatxt-vmapp01,interface,eth0,,0,,,,1
 #sqatxt-vmapp01,interface,eth1,10.105.64.74,0,255.255.255.192,00:50:56:B8:68:1B,orapub,10.105.64.254,0,lan900
 #sqatxt-vmapp01,interface,lo,127.0.0.1,0,255.0.0.0,,10.105.64.254,0,
-# check: int_addr or int_eth
+# check: ip_ipv4 or int_eth
 # update!
 #tato0eudcnedb30,network,interface,ens224,10.39.3.18,0,24,00:50:56:99:f4:7a,,10.39.3.254,0
 
@@ -1531,7 +1545,7 @@ $value[11] = '';
 # now that I found the entry in the IPAM, search the interfaces created for the identified server
 # see if the found ipam id has been assigned.
 # check int_ipaddressid for the ipam id
-# else check int_addr for the passed ip address; if found, update int_ipaddressid - set 
+# else check ip_ipv4 for the passed ip address; if found, update int_ipaddressid - set 
 # else check int_mac for the passed mac address; if found, update int_ipaddressid
 
 
@@ -1548,7 +1562,8 @@ $value[11] = '';
 # but if we didn't find the id, look for the ip address in the inv_interface table
                   $q_string  = "select int_id ";
                   $q_string .= "from inv_interface ";
-                  $q_string .= "where int_addr = \"" . $value[4] . "\" and int_companyid = " . $a_inv_inventory['inv_id'] . " ";
+                  $q_string .= "left join inv_ipaddress on inv_ipaddress.ip_id = inv_interface.int_ipaddressid ";
+                  $q_string .= "where ip_ipv4 = \"" . $value[4] . "\" and int_companyid = " . $a_inv_inventory['inv_id'] . " ";
                   $q_getip = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
                   if (mysqli_num_rows($q_getip) > 0) {
                     $a_getip = mysqli_fetch_array($q_getip);
@@ -1688,15 +1703,19 @@ $value[11] = '';
               $q_string .= "from inv_routing ";
               $q_string .= "where route_address = '" . $value[4] . "' and route_companyid = " . $a_inv_inventory['inv_id'];
               $q_inv_routing = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              $a_inv_routing = mysqli_fetch_array($q_inv_routing);
+              if (mysqli_num_rows($q_inv_routing) > 0) {
+                $a_inv_routing = mysqli_fetch_array($q_inv_routing);
+              } else {
+                $a_inv_routing['route_id'] = 0;
+              }
 
               $q_string  = "select int_id ";
               $q_string .= "from inv_interface ";
               $q_string .= "where int_companyid = " . $a_inv_inventory['inv_id'] . " and int_face = '" . $value[7] . "' and int_ip6 = " . $value[3] . " ";
               $q_inv_interface = mysqli_query($db, $q_string) or die($q_string . ": " . mysqli_error($db));
-              $a_inv_interface = mysqli_fetch_array($q_inv_interface);
-
-              if ($a_inv_interface['int_id'] == '') {
+              if (mysqli_num_rows($q_inv_interface) > 0) {
+                $a_inv_interface = mysqli_fetch_array($q_inv_interface);
+              } else {
                 $a_inv_interface['int_id'] = 0;
               }
 

@@ -44,6 +44,7 @@
         $formVars['pat_desc']         = clean($_GET['pat_desc'],     100);
         $formVars['pat_office']       = clean($_GET['pat_office'],   100);
         $formVars['pat_verified']     = clean($_GET['pat_verified'],  10);
+        $formVars['pat_facing']       = clean($_GET['pat_facing'],    10);
 
         if ($formVars['id'] == '') {
           $formVars['id'] = 0;
@@ -68,6 +69,7 @@
             "pat_type        =   " . $formVars['pat_type']       . "," . 
             "pat_active      =   " . $formVars['pat_active']     . "," . 
             "pat_verified    =   " . $formVars['pat_verified']   . "," . 
+            "pat_facing      =   " . $formVars['pat_facing']     . "," . 
             "pat_desc        = \"" . $formVars['pat_desc']       . "\"," .
             "pat_office      = \"" . $formVars['pat_office']     . "\"";
 
@@ -81,6 +83,21 @@
           logaccess($db, $_SESSION['uid'], $package, "Saving Changes to: " . $formVars['pat_name']);
 
           $result = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+
+# a problem is that the ethernet patches are for both the source and target. As such, when we verify the source, it doesn't 
+# automatically verify the target (or remove verification). 
+# steps wise, we'll want to check the network patch, connection, get the source and target, and update both with 
+# whatever the value is here.
+
+          $q_string  = "select con_target ";
+          $q_string .= "from inv_connect ";
+          $q_string .= "where con_source = " . $formVars['id'] . " and pt_name = \"Network Interface\" ";
+
+          $q_string  = "select con_source ";
+          $q_string .= "from inv_connect ";
+          $q_string .= "where con_target = " . $formVars['id'] . " and pt_name = \"Network Interface\" ";
+
+
         } else {
           print "alert('You must input data before saving changes.');\n";
         }
@@ -92,9 +109,10 @@
       if ($formVars['csv'] == 'true') {
         $output  = "\n";
         $output .= "\"Device\",";
-        $output .= "\"Drop Name\",";
+        $output .= "\"Port Name\",";
         $output .= "\"Port Type\",";
         $output .= "\"Active\",";
+        $output .= "\"Facing\",";
         $output .= "\"Verified\",";
         $output .= "\"Office\",";
         $output .= "\"Description\",";
@@ -103,12 +121,13 @@
         $output  = "<table class=\"ui-styled-table\">";
         $output .= "<tr>";
         if (check_userlevel($db, $AL_Admin)) {
-          $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Drop</th>";
+          $output .= "  <th class=\"ui-state-default\" width=\"160\">Delete Port</th>";
         }
         $output .= "  <th class=\"ui-state-default\"><a href=\"patch.php?sort=ast_name"     . "\">" . "Device</a></th>";
-        $output .= "  <th class=\"ui-state-default\"><a href=\"patch.php?sort=pat_name"     . "\">" . "Drop Name</a></th>";
+        $output .= "  <th class=\"ui-state-default\"><a href=\"patch.php?sort=pat_name"     . "\">" . "Port Name</a></th>";
         $output .= "  <th class=\"ui-state-default\"><a href=\"patch.php?sort=port_text"    . "\">" . "Port Type</a></th>";
         $output .= "  <th class=\"ui-state-default\"><a href=\"patch.php?sort=pat_active"   . "\">" . "Active</a></th>";
+        $output .= "  <th class=\"ui-state-default\"><a href=\"patch.php?sort=pat_facing"   . "\">" . "Facing</a></th>";
         $output .= "  <th class=\"ui-state-default\"><a href=\"patch.php?sort=pat_verified" . "\">" . "Verified</a></th>";
         $output .= "  <th class=\"ui-state-default\"><a href=\"patch.php?sort=pat_office"   . "\">" . "Office</a></th>";
         $output .= "  <th class=\"ui-state-default\"><a href=\"patch.php?sort=pat_desc"     . "\">" . "Description</a></th>";
@@ -116,7 +135,8 @@
         $output .= "</tr>";
       }
 
-      $q_string  = "select pat_id,pat_name,pat_active,pat_desc,pat_office,pat_verified,port_text,ast_id,ast_name ";
+      $q_string  = "select pat_id,pat_name,pat_active,pat_desc,pat_office,pat_facing,";
+      $q_string .= "pat_verified,port_text,ast_id,ast_name ";
       $q_string .= "from inv_patch ";
       $q_string .= "left join inv_assets on inv_assets.ast_id = inv_patch.pat_deviceid ";
       $q_string .= "left join inv_int_porttype on inv_int_porttype.port_id = inv_patch.pat_type ";
@@ -188,6 +208,11 @@
 
           }
 
+          $facing = "Rear";
+          if ($a_inv_patch['pat_facing']) {
+            $facing = "Front";
+          }
+
           $verified = 'No';
           $vclass = "ui-state-error";
           if ($a_inv_patch['pat_verified']) {
@@ -200,6 +225,7 @@
             $output .= "\"" . $a_inv_patch['pat_name'] . "\",";
             $output .= "\"" . $a_inv_patch['port_text'] . "\",";
             $output .= "\"" . $active . "\",";
+            $output .= "\"" . $facing . "\",";
             $output .= "\"" . $verified . "\",";
             $output .= "\"" . $a_inv_patch['pat_office'] . "\",";
             $output .= "\"" . $a_inv_patch['pat_desc'] . "\",";
@@ -213,7 +239,8 @@
             $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_patch['pat_name']             . "</td>";
             $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_patch['port_text']            . "</td>";
             $output .= "  <td class=\"" . $class . " delete\">"              . $active                              . "</td>";
-            $output .= "  <td class=\"" . $vclass . " delete\">"              . $verified                            . "</td>";
+            $output .= "  <td class=\"" . $class . " delete\">"              . $facing                              . "</td>";
+            $output .= "  <td class=\"" . $vclass . " delete\">"             . $verified                            . "</td>";
             $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_patch['pat_office']           . "</td>";
             $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_patch['pat_desc']             . "</td>";
             $output .= "  <td class=\"" . $class . " delete\">"              . $conlink . $patch_name . $linkend                         . "</td>";
@@ -225,7 +252,7 @@
           $output .= "\"No Drops found\"</br>\n";
         } else {
           $output .= "<tr>";
-          $output .= "  <td class=\"ui-widget-content\" colspan=\"9\">No Drops found</td>";
+          $output .= "  <td class=\"ui-widget-content\" colspan=\"10\">No Ports found</td>";
           $output .= "</tr>";
         }
       }

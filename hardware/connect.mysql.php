@@ -86,21 +86,30 @@
 # network connections are patch to patch vs power to outlet or fiber to fiber
 # so get the connection when type == Network Interface
 # the source and target are from the patch table.
-      $q_string  = "select con_id,con_sourceid,con_targetid,ast_name,pat_name ";
+      $where = "where pt_name = \"Network Interface\" ";
+      if ($formVars['view'] != '') {
+        $where .= "and ast_id = " . $formVars['view'] . " ";
+      }
+      $q_string  = "select con_id,con_sourceid,con_targetid,ast_id,ast_name,pat_name,pat_verified ";
       $q_string .= "from inv_connect ";
       $q_string .= "left join inv_patch on inv_patch.pat_id = inv_connect.con_sourceid ";
       $q_string .= "left join inv_assets on inv_assets.ast_id = inv_patch.pat_deviceid ";
       $q_string .= "left join inv_powertype on inv_powertype.pt_id = inv_connect.con_type ";
-      $q_string .= "where pt_name = \"" . "Network Interface" . "\" ";
+      $q_string .= $where;
       $q_string .= "order by ast_name,pat_name ";
       $q_inv_connect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_inv_connect) > 0) {
         while ($a_inv_connect = mysqli_fetch_array($q_inv_connect)) {
           $linkstart = "<a href=\"#\" onclick=\"javascript:show_file('connect.fill.php?id=" . $a_inv_connect['con_id'] . "');jQuery('#dialogUpdateCat5').dialog('open');return false;\">";
-          $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('connect.del.php?id=" . $a_inv_connect['con_id'] . "');\">";
+
+          if (check_userlevel($db, $AL_Admin)) {
+            $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('connect.del.php?id=" . $a_inv_connect['con_id'] . "');\">";
+          } else {
+            $linkdel   = "--";
+          }
           $linkend   = "</a>";
           $typestart = "<a href=\"connect.php?type=Network%20Interface\">";
-          $viewlink  = "<a href=\"connect.php?view=" . $a_inv_connect['con_sourceid'] . "&type=Network%20Interface\">";
+          $viewlink  = "<a href=\"connect.php?view=" . $a_inv_connect['ast_id'] . "\">";
           $viewfilter = "<img class=\"ui-icon-edit\" src=\"" . $Imgsroot . "/filter.webp\" height=\"10\">";
 
           $q_string  = "select ast_name,pat_name ";
@@ -112,6 +121,11 @@
             $a_inv_patch = mysqli_fetch_array($q_inv_patch);
           }
 
+          $class = "ui-widget-content";
+          if ($a_inv_connect['pat_verified'] != 1) {
+            $class = "ui-state-error";
+          }
+
           if ($formVars['csv'] == "true") {
             $output .= "\"" . $a_inv_connect['ast_name'] . "\",";
             $output .= "\"" . $a_inv_connect['pat_name'] . "\",";
@@ -120,24 +134,28 @@
             $output .= "\"Network Interface\"</br>\n";
           } else {
             $output .= "<tr>";
-            $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel . "</td>";
-            $output .= "  <td class=\"ui-widget-content\">"        . $viewlink . $viewfilter . $linkend . $linkstart . $a_inv_connect['ast_name']    . $linkend . "</td>";
-            $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_connect['pat_name']    . $linkend . "</td>";
-            $output .= "  <td class=\"ui-widget-content\">"                     . $a_inv_patch['ast_name']   . "</td>";
-            $output .= "  <td class=\"ui-widget-content\">"                     . $a_inv_patch['pat_name'] . "</td>";
-            $output .= "  <td class=\"ui-widget-content delete\">" . $typestart . "Network Interface" . $linkend . "</td>";
+            $output .= "  <td class=\"" . $class . " delete\">" . $linkdel . "</td>";
+            $output .= "  <td class=\"" . $class . "\">"        . $viewlink . $viewfilter . $linkend . $linkstart . $a_inv_connect['ast_name']    . $linkend . "</td>";
+            $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_connect['pat_name']    . $linkend . "</td>";
+            $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_patch['ast_name']   . "</td>";
+            $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_patch['pat_name'] . "</td>";
+            $output .= "  <td class=\"" . $class . " delete\">" . $typestart . "Network Interface" . $linkend . "</td>";
             $output .= "</tr>";
           }
         }
       }
 
 # next up is to show power and outlets for the inside check
-      $q_string  = "select con_id,con_sourceid,con_targetid,ast_name,port_name ";
+      $where = "where pt_name = \"Power\" ";
+      if ($formVars['view'] != '') {
+        $where .= "and ast_id = " . $formVars['view'] . " ";
+      }
+      $q_string  = "select con_id,con_sourceid,con_targetid,ast_id,ast_name,port_name,port_verified ";
       $q_string .= "from inv_connect ";
       $q_string .= "left join inv_ports on inv_ports.port_id = inv_connect.con_sourceid ";
       $q_string .= "left join inv_assets on inv_assets.ast_id = inv_ports.port_deviceid ";
       $q_string .= "left join inv_powertype on inv_powertype.pt_id = inv_connect.con_type ";
-      $q_string .= "where pt_name = \"" . "Power" . "\" ";
+      $q_string .= $where;
       $q_string .= "order by ast_name,port_name ";
       $q_inv_connect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_inv_connect) > 0) {
@@ -146,16 +164,21 @@
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('connect.del.php?id=" . $a_inv_connect['con_id'] . "');\">";
           $linkend   = "</a>";
           $typestart = "<a href=\"connect.php?type=Power\">";
-          $viewlink  = "<a href=\"connect.php?view=" . $a_inv_connect['con_sourceid'] . "&type=Power\">";
+          $viewlink  = "<a href=\"connect.php?view=" . $a_inv_connect['ast_id'] . "\">";
           $viewfilter = "<img class=\"ui-icon-edit\" src=\"" . $Imgsroot . "/filter.webp\" height=\"10\">";
 
-          $q_string  = "select ast_name,out_name ";
+          $q_string  = "select ast_name,out_name,out_verified ";
           $q_string .= "from inv_outlets ";
           $q_string .= "left join inv_assets on inv_assets.ast_id = inv_outlets.out_deviceid ";
           $q_string .= "where out_id = " . $a_inv_connect['con_targetid'] . " ";
           $q_inv_outlets = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
           if (mysqli_num_rows($q_inv_outlets) > 0) {
             $a_inv_outlets = mysqli_fetch_array($q_inv_outlets);
+          }
+
+          $class = "ui-widget-content";
+          if ($a_inv_outlets['out_verified'] != 1) {
+            $class = "ui-state-error";
           }
 
           if ($formVars['csv'] == "true") {
@@ -166,24 +189,28 @@
             $output .= "\"Power\"</br>\n";
           } else {
             $output .= "<tr>";
-            $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel . "</td>";
-            $output .= "  <td class=\"ui-widget-content\">"        . $viewlink . $viewfilter . $linkend . $linkstart . $a_inv_connect['ast_name']    . $linkend . "</td>";
-            $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_connect['port_name']    . $linkend . "</td>";
-            $output .= "  <td class=\"ui-widget-content\">"                     . $a_inv_outlets['ast_name']   . "</td>";
-            $output .= "  <td class=\"ui-widget-content\">"                     . $a_inv_outlets['out_name'] . "</td>";
-            $output .= "  <td class=\"ui-widget-content delete\">" . $typestart . "Power" . $linkend . "</td>";
+            $output .= "  <td class=\"" . $class . " delete\">" . $linkdel . "</td>";
+            $output .= "  <td class=\"" . $class . "\">"        . $viewlink . $viewfilter . $linkend . $linkstart . $a_inv_connect['ast_name']    . $linkend . "</td>";
+            $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_connect['port_name']    . $linkend . "</td>";
+            $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_outlets['ast_name']   . "</td>";
+            $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_outlets['out_name'] . "</td>";
+            $output .= "  <td class=\"" . $class . " delete\">" . $typestart . "Power" . $linkend . "</td>";
             $output .= "</tr>";
           }
         }
       }
 
 # finally, show fiber
-      $q_string  = "select con_id,con_sourceid,con_targetid,ast_name,fib_name ";
+      $where = "where pt_name = \"Fibre\" ";
+      if ($formVars['view'] != '') {
+        $where .= "and ast_id = " . $formVars['view'] . " ";
+      }
+      $q_string  = "select con_id,con_sourceid,con_targetid,ast_id,ast_name,fib_name,fib_verified ";
       $q_string .= "from inv_connect ";
       $q_string .= "left join inv_fiber on inv_fiber.fib_id = inv_connect.con_sourceid ";
       $q_string .= "left join inv_assets on inv_assets.ast_id = inv_fiber.fib_deviceid ";
       $q_string .= "left join inv_powertype on inv_powertype.pt_id = inv_connect.con_type ";
-      $q_string .= "where pt_name = \"" . "Fibre" . "\" ";
+      $q_string .= $where;
       $q_string .= "order by ast_name,fib_name ";
       $q_inv_connect = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
       if (mysqli_num_rows($q_inv_connect) > 0) {
@@ -192,7 +219,7 @@
           $linkdel   = "<input type=\"button\" value=\"Remove\" onclick=\"delete_line('connect.del.php?id=" . $a_inv_connect['con_id'] . "');\">";
           $linkend   = "</a>";
           $typestart = "<a href=\"connect.php?type=Fibre\">";
-          $viewlink  = "<a href=\"connect.php?view=" . $a_inv_connect['con_sourceid'] . "&type=Fibre\">";
+          $viewlink  = "<a href=\"connect.php?view=" . $a_inv_connect['ast_id'] . "\">";
           $viewfilter = "<img class=\"ui-icon-edit\" src=\"" . $Imgsroot . "/filter.webp\" height=\"10\">";
 
           $q_string  = "select ast_name,fib_name ";
@@ -204,6 +231,11 @@
             $a_inv_fiber = mysqli_fetch_array($q_inv_fiber);
           }
 
+          $class = "ui-widget-content";
+          if ($a_inv_connect['fib_verified'] != 1) {
+            $class = "ui-state-error";
+          }
+
           if ($formVars['csv'] == "true") {
             $output .= "\"" . $a_inv_connect['ast_name'] . "\",";
             $output .= "\"" . $a_inv_connect['fib_name'] . "\",";
@@ -212,12 +244,12 @@
             $output .= "\"Fibre\"</br>\n";
           } else {
             $output .= "<tr>";
-            $output .= "  <td class=\"ui-widget-content delete\">" . $linkdel . "</td>";
-            $output .= "  <td class=\"ui-widget-content\">"        . $viewlink . $viewfilter . $linkend . $linkstart . $a_inv_connect['ast_name']    . $linkend . "</td>";
-            $output .= "  <td class=\"ui-widget-content\">"        . $linkstart . $a_inv_connect['fib_name']    . $linkend . "</td>";
-            $output .= "  <td class=\"ui-widget-content\">"                     . $a_inv_fiber['ast_name']   . "</td>";
-            $output .= "  <td class=\"ui-widget-content\">"                     . $a_inv_fiber['fib_name'] . "</td>";
-            $output .= "  <td class=\"ui-widget-content delete\">" . $typestart . "Fibre" . $linkend . "</td>";
+            $output .= "  <td class=\"" . $class . " delete\">" . $linkdel . "</td>";
+            $output .= "  <td class=\"" . $class . "\">"        . $viewlink . $viewfilter . $linkend . $linkstart . $a_inv_connect['ast_name']    . $linkend . "</td>";
+            $output .= "  <td class=\"" . $class . "\">"        . $linkstart . $a_inv_connect['fib_name']    . $linkend . "</td>";
+            $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_fiber['ast_name']   . "</td>";
+            $output .= "  <td class=\"" . $class . "\">"                     . $a_inv_fiber['fib_name'] . "</td>";
+            $output .= "  <td class=\"" . $class . " delete\">" . $typestart . "Fibre" . $linkend . "</td>";
             $output .= "</tr>";
           }
         }

@@ -1,5 +1,19 @@
 <table class="ui-styled-table">
 <tr>
+  <td class="ui-widget-content">Inventory: <select name="ast_companyid">
+<option value="0">None</option>
+<?php
+  $q_string  = "select inv_id,inv_name ";
+  $q_string .= "from inv_inventory ";
+  $q_string .= "order by inv_name ";
+  $q_inv_inventory = mysqli_query($db, $q_string) or die(header("Location: " . $Siteroot . "/error.php?script=" . $package . "&error=" . $q_string . "&mysql=" . mysqli_error($db)));
+  while ($a_inv_inventory = mysqli_fetch_array($q_inv_inventory)) {
+    print "<option value=\"" . $a_inv_inventory['inv_id'] . "\">" . $a_inv_inventory['inv_name'] . "</option>\n";
+  }
+?>
+</select></td>
+</tr>
+<tr>
   <td class="ui-widget-content">Asset Name or Label: <input type="text" name="ast_name" size="50"></td>
 </tr>
 <tr>

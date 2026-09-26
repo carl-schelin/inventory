@@ -22,6 +22,7 @@ DROP TABLE IF EXISTS `inv_assets`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `inv_assets` (
   `ast_id` int(10) NOT NULL AUTO_INCREMENT,
+  `ast_companyid` int(10) NOT NULL DEFAULT '0',
   `ast_parentid` int(10) NOT NULL DEFAULT '0',
   `ast_modelid` int(10) NOT NULL DEFAULT '0',
   `ast_serial` char(100) NOT NULL DEFAULT '',
@@ -30,7 +31,13 @@ CREATE TABLE `inv_assets` (
   `ast_unit` int(10) NOT NULL DEFAULT '0',
   `ast_vendor` int(10) NOT NULL DEFAULT '0',
   `ast_managed` int(10) NOT NULL DEFAULT '0',
+  `ast_purchased` date NOT NULL DEFAULT '1971-01-01',
+  `ast_built` date NOT NULL DEFAULT '1971-01-01',
+  `ast_active` date NOT NULL DEFAULT '1971-01-01',
+  `ast_retired` date NOT NULL DEFAULT '1971-01-01',
+  `ast_reused` date NOT NULL DEFAULT '1971-01-01',
   `ast_endsupport` date NOT NULL DEFAULT '1971-01-01',
+  `ast_updated` date NOT NULL DEFAULT '1971-01-01',
   `ast_facing` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ast_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
